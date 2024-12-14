@@ -1,153 +1,223 @@
-Return-Path: <stable+bounces-104217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91309F2130
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 23:19:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D35A89F215B
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 23:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 090D4166D0D
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 22:19:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 243731887241
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 22:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DCA1B0F19;
-	Sat, 14 Dec 2024 22:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD0E1B4F2B;
+	Sat, 14 Dec 2024 22:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="oAvNMVdk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WNfNm3e1"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0BF1AB500
-	for <stable@vger.kernel.org>; Sat, 14 Dec 2024 22:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD9629CEF;
+	Sat, 14 Dec 2024 22:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734214750; cv=none; b=ipuGz9pkE7qgf2buZbF2JuxdQtZLJSoyFgFf7Ob9YzDOvwGFAQcCl8XAtdGxXc/SfzXeumpRnFVpUrONke8HAizoYvJ1iPsg8SCQTvmdGsIqtAZ0he8T+fx/tP0SuG16E1WdUCm0DvQtH0ti82w0leusn7WmMJbm2CRnDUXp5mg=
+	t=1734216966; cv=none; b=rrrRJ4lSkdMvm4FZczhy42e198WIi6gXl0/FFxI8+PbZtlsAQU23hAjcEaRA0O9gWZmVpsh520MGdSmejvdWIT408JhnwDcb12UhcAFc2UmGKbzBoCDfkG/tUwQWNx8GpgzJQbe7FqgdrvlOitit/Xs8rGMXA3yQ1WiO4Uz+5F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734214750; c=relaxed/simple;
-	bh=pKhOtl4mzQL4enUuf4f8HkMHFVdhHR+XuNvtR9c22WQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pd1fr8P71X3N00WficmFC+Lztd7F20OvyG0DWGgq6IqxfvxpPt77GhUwkj9PANz8CthGT7Ze3qk2rECPWFhZ3MXkc5z19kGY5J7VPnKTG//LMVI2r/cvCQcP39+c3uSF91xVkv7KqGUcuVJe1uZ3MSWH4PvU6HiK/Awz1FVTqsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=oAvNMVdk; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BEMGiki009609;
-	Sat, 14 Dec 2024 22:18:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2023-11-20; bh=1Qx+k
-	pZBQG36YW9tkLcDIHjLkPvIaZYZC3A5d7VA93k=; b=oAvNMVdkCpn2HcJ5DqT+U
-	7vnvtVO8Gb2Kfw0yVm4vELwBQW90axV6VnEn9XZD/nVehWJPwmTDRGdt5MRfY10a
-	wws9iVGbFNILfazKFc4yTzbp4SUJatH08p2jUtZQBkxpNzGykYEg1zAfbDyXN7Jg
-	tIP+PFYeX087E64/IGw0XEVPj3DGpHo7TQH7EwFMXx2JGAXPc7MD+cQrAtRK+2yE
-	Yyj7FL8ndqCckXu2F/H7wLIwyFZTtchXGmG4j7Cwe9HFaQAdaUnEWX0vflcv30xc
-	H0ZxKd3cH4lEqcHdRDAYwoaqAxACE4pnp1Vz3PRYamYP+dqrGHoS3TT14X8kZJfY
-	g==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43h0t28ry1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 14 Dec 2024 22:18:54 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4BEJGaYL010974;
-	Sat, 14 Dec 2024 22:18:53 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 43h0f5ry70-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 14 Dec 2024 22:18:53 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BEMIpQT029436;
-	Sat, 14 Dec 2024 22:18:52 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 43h0f5ry5t-2;
-	Sat, 14 Dec 2024 22:18:52 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: stable@vger.kernel.org, gregkh@linuxfoundation.org
-Cc: sherry.yang@oracle.com, vegard.nossum@oracle.com,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.1.y 2/2] exfat: fix potential deadlock on __exfat_get_dentry_set
-Date: Sat, 14 Dec 2024 14:18:39 -0800
-Message-ID: <20241214221839.3274375-2-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241214221839.3274375-1-harshit.m.mogalapalli@oracle.com>
-References: <20241214221839.3274375-1-harshit.m.mogalapalli@oracle.com>
+	s=arc-20240116; t=1734216966; c=relaxed/simple;
+	bh=BgCbCgnN6Io4CxvOgNBg12hpP6R57z2ThGYb1vcaWmg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TNzAWvR2TnOEgzlqiLzR+iPgNRQGkUyS7EsdA4L0tj6+cb/n92mZeV1DJuXDI7hpjp6rArXiMYyRKDz5jyxJ5IvZepDM9xi73gMPuDv2WBDVYrCl2bL2H9xfqW7+vHDvX3Da1d+k7AJKMMN+HZle+kazgVNTKvyg9jsfOJeQVUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WNfNm3e1; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-436202dd7f6so31900655e9.0;
+        Sat, 14 Dec 2024 14:56:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734216963; x=1734821763; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G9JU+pXn4uJOLQy6qorVJZGNm9FKTMEhW5Kr8WecGYk=;
+        b=WNfNm3e1SA487GiYxWyXqvQROL94tCRj+461JYebglPDELzkvxJCLPp7ED/NogrLdP
+         TOqcrPvO4W49axR/P+VeHqHfhGhWTSodnSQZO8jv0BHnukFzJJjcVAwjyzIULhoAc5ZJ
+         YYxxc6nN6rewMZbp/rwzx5IE6fR5YLnSC2VaAD4+2i6mB6965V+q7GBgEvVRP9/GYNwl
+         jgZV3nYLIcPbz9nZ+HxY74VSl9St/p9UMBFW91n5KUPU/W8iMYwUP7DOPqUFC+/0Uk6n
+         V3vUVh5a/o6L3dT2aNYw6j04vyucaQDXPEsTK23k2aS6TLTjnN+H9wiPzxyIDTlG6ea2
+         oi+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734216963; x=1734821763;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G9JU+pXn4uJOLQy6qorVJZGNm9FKTMEhW5Kr8WecGYk=;
+        b=GmpSlu4ppgA+DuChLIqSyBT9o4X3B/kFq4/9Om+Ip/A37ST5XGZxwUZUeJ1PNRFTmq
+         TRY8BaPdkydYTEcH+REayZ4jngjVeS8N9U6Ic4TQJC08tl2qyTbInNcGXJaOxnIlDWt7
+         agDlwoNCefs8CpY3ay4Tg0tGb439aRd6p6jqIuPesnTAcGLpoi0NRH4Vr5YPhKYUDeVg
+         vxmka3LT+eVj8pmV+nKag78K9yXBrdnw/JUsmqhAV2VdKxYYHcrik6a8cJldWhW91OkC
+         imvoKVMMcJAwcWzvL8gqQ6ji3H4kYAz3FTlR56I4ax/hiHuvtA4dxm4Nj+7HFMa8jsvG
+         buaA==
+X-Forwarded-Encrypted: i=1; AJvYcCWB0jNKmbFEJ9R+yv3VBZJtWVoFWatMOiChoUafUxVgg4CRQJU/9Nj4/gSKGHOZFtXV6vINTlL2@vger.kernel.org, AJvYcCWaL+1pXMK4J4U0n6W0lYYuIcfVySv2ijc3b8TIG98JA8Q/efa0FCkqs/cQJaFg8St8pVcUGpODhm9wWzWy@vger.kernel.org, AJvYcCX5zlwAfeDWXgPTIlnbJbyDbBwPRaRy1e5x2MCrHxlCoF4jt1v3t58hxOwIxHnKA/iIauc6NdFopRA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX1H3gc8+Gz05yrNiMFB0cwaD9/+VRnuswQD+4pzWty5wtuNJL
+	LRmK5xSciDbquwfzGhuPIBt25owSy7dutELF+z+5Q6Lz/0srnwoQ4BWcFg==
+X-Gm-Gg: ASbGncu+MsKPmVkpHWPz3wSV3RFalTFvrlVGMU2SrkPKLNk3RSAiMt5C+qJTiVhPSjJ
+	XWIMtSE04piOlrbv71b8mnrpzbnMmSvU5ED74DKB3BBS2V7WNjiZoy3MhwoU4/jbLBxToMkVNFt
+	fA0g0truIZwOT/LBjfLRU/qD2IzdRqBTbfUiryPhU2g1bhgvRDTuGyLd1vUaL6ozuLk34c1jv60
+	40yDMJkXNtQ0GLuWdQWI0Yq5/uVlHnWTvJvJgCZgWo/3FmRTseZhVqFRXKlJULOZVH+3TUZR/hk
+	ijaQe/MNwywEdAql8wmssLhuguxjjT05jFn7P65SOMiHnKtuG1myMCcKjPk3ledEKrsUTs13dt/
+	w4O0=
+X-Google-Smtp-Source: AGHT+IHCeumqiTzMF+lPxExwd2Ef1dUuNPTo6DmvjZ2sd9qx99lg8zhxRvkRPaBhtllcRRpRox3F+w==
+X-Received: by 2002:a5d:6c63:0:b0:385:ee59:4510 with SMTP id ffacd0b85a97d-38880ac1cc1mr7114757f8f.9.1734216963014;
+        Sat, 14 Dec 2024 14:56:03 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-3d12-6927-e558-75f6.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:3d12:6927:e558:75f6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4361e3406b3sm64795995e9.0.2024.12.14.14.56.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Dec 2024 14:56:02 -0800 (PST)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Date: Sat, 14 Dec 2024 23:55:50 +0100
+Subject: [PATCH v4] iio: light: as73211: fix channel handling in only-color
+ triggered buffer
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-14_09,2024-12-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
- definitions=main-2412140184
-X-Proofpoint-ORIG-GUID: _OFT0v_z8u0aOxz3DonI7plyDHj0klc8
-X-Proofpoint-GUID: _OFT0v_z8u0aOxz3DonI7plyDHj0klc8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPUMXmcC/3XN0QqCMBTG8VeRXbdwZ3O6rnqPCFnzTA+kCydSi
+ O/eCqIIvPx/cH5nYRFHwsgO2cJGnClSGFKoXcZcZ4cWOTWpGeSghADJiULdYx9xqqOzQ92FK0Z
+ udSkrKdEbCSzd3kb0dH+7p3PqjuIUxsf7zSxe60csNsRZ8Jzn7qLRVE1lCndse0vXvQs9e4kzf
+ BXI1ZYCSZHeKFEYsKVu/hX5owjYUiQXvPTK6Iv2JQD8Kuu6PgGdAZJORgEAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Christian Eggers <ceggers@arri.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734216961; l=4603;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=BgCbCgnN6Io4CxvOgNBg12hpP6R57z2ThGYb1vcaWmg=;
+ b=l+t4MypCOkhcCU5tVVVrmshL3+4W6g5PhmzU5CKJ0NrgJD9ok6I6tjfXIZxQrlsGGVxfq0Nha
+ jDDLUWQtCslB48Pl6+ekW0J3ejQ9Z2IDGEKvAc3Y+XDj3eI1rr16EKK
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-From: Sungjong Seo <sj1557.seo@samsung.com>
+The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
+set (optimized path for color channel readings), and it must be shifted
+instead of leaving an empty channel for the temperature when it is off.
 
-[ Upstream commit 89fc548767a2155231128cb98726d6d2ea1256c9 ]
+Once the channel index is fixed, the uninitialized channel must be set
+to zero to avoid pushing uninitialized data.
 
-When accessing a file with more entries than ES_MAX_ENTRY_NUM, the bh-array
-is allocated in __exfat_get_entry_set. The problem is that the bh-array is
-allocated with GFP_KERNEL. It does not make sense. In the following cases,
-a deadlock for sbi->s_lock between the two processes may occur.
+Add available_scan_masks for all channels and only-color channels to let
+the IIO core demux and repack the enabled channels.
 
-       CPU0                CPU1
-       ----                ----
-  kswapd
-   balance_pgdat
-    lock(fs_reclaim)
-                      exfat_iterate
-                       lock(&sbi->s_lock)
-                       exfat_readdir
-                        exfat_get_uniname_from_ext_entry
-                         exfat_get_dentry_set
-                          __exfat_get_dentry_set
-                           kmalloc_array
-                            ...
-                            lock(fs_reclaim)
-    ...
-    evict
-     exfat_evict_inode
-      lock(&sbi->s_lock)
-
-To fix this, let's allocate bh-array with GFP_NOFS.
-
-Fixes: a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
-Cc: stable@vger.kernel.org # v6.2+
-Reported-by: syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/000000000000fef47e0618c0327f@google.com
-Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-(cherry picked from commit 89fc548767a2155231128cb98726d6d2ea1256c9)
-[Harshit: Backport to 6.1.y, clean cherry-pick]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+Tested-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- fs/exfat/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This issue was found after attempting to make the same mistake for
+a driver I maintain, which was fortunately spotted by Jonathan [1].
 
-diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
-index 6fd9a06cc7d0..d58c69018051 100644
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -870,7 +870,7 @@ struct exfat_entry_set_cache *exfat_get_dentry_set(struct super_block *sb,
+Keeping old sensor values if the channel configuration changes is known
+and not considered an issue, which is also mentioned in [1], so it has
+not been addressed by this series. That keeps most of the drivers out
+of the way because they store the scan element in iio private data,
+which is kzalloc() allocated.
+
+This series only addresses cases where uninitialized i.e. unknown data
+is pushed to the userspace, either due to holes in structs or
+uninitialized struct members/array elements.
+
+While analyzing involved functions, I found and fixed some triviality
+(wrong function name) in the documentation of iio_dev_opaque.
+
+Link: https://lore.kernel.org/linux-iio/20241123151634.303aa860@jic23-huawei/ [1]
+---
+Changes in v4:
+- Fix as73211_scan_masks[] (first MASK_COLOR, then MASK_ALL, no comma
+  after 0 i.e. the last element).
+- Link to v3: https://lore.kernel.org/r/20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com
+
+Changes in v3:
+- as73211.c: add available_scan_masks for all channels and only-color
+  channels to let the IIO core demux and repack the enabled channels.
+- Link to v2: https://lore.kernel.org/r/20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com
+
+Changes in v2:
+- as73211.c: shift channels if no temperature is available and
+  initialize chan[3] to zero.
+- Link to v1: https://lore.kernel.org/r/20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com
+---
+ drivers/iio/light/as73211.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+index be0068081ebb..11fbdcdd26d6 100644
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -177,6 +177,12 @@ struct as73211_data {
+ 	BIT(AS73211_SCAN_INDEX_TEMP) | \
+ 	AS73211_SCAN_MASK_COLOR)
  
- 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
- 	if (num_bh > ARRAY_SIZE(es->__bh)) {
--		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
-+		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_NOFS);
- 		if (!es->bh) {
- 			brelse(bh);
- 			kfree(es);
++static const unsigned long as73211_scan_masks[] = {
++	AS73211_SCAN_MASK_COLOR,
++	AS73211_SCAN_MASK_ALL,
++	0
++};
++
+ static const struct iio_chan_spec as73211_channels[] = {
+ 	{
+ 		.type = IIO_TEMP,
+@@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+ 
+ 		/* AS73211 starts reading at address 2 */
+ 		ret = i2c_master_recv(data->client,
+-				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
++				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
+ 		if (ret < 0)
+ 			goto done;
++
++		/* Avoid pushing uninitialized data */
++		scan.chan[3] = 0;
+ 	}
+ 
+ 	if (data_result) {
+@@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+ 		 * Saturate all channels (in case of overflows). Temperature channel
+ 		 * is not affected by overflows.
+ 		 */
+-		scan.chan[1] = cpu_to_le16(U16_MAX);
+-		scan.chan[2] = cpu_to_le16(U16_MAX);
+-		scan.chan[3] = cpu_to_le16(U16_MAX);
++		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
++			scan.chan[1] = cpu_to_le16(U16_MAX);
++			scan.chan[2] = cpu_to_le16(U16_MAX);
++			scan.chan[3] = cpu_to_le16(U16_MAX);
++		} else {
++			scan.chan[0] = cpu_to_le16(U16_MAX);
++			scan.chan[1] = cpu_to_le16(U16_MAX);
++			scan.chan[2] = cpu_to_le16(U16_MAX);
++		}
+ 	}
+ 
+ 	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+@@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_client *client)
+ 	indio_dev->channels = data->spec_dev->channels;
+ 	indio_dev->num_channels = data->spec_dev->num_channels;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->available_scan_masks = as73211_scan_masks;
+ 
+ 	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
+ 	if (ret < 0)
+
+---
+base-commit: 91e71d606356e50f238d7a87aacdee4abc427f07
+change-id: 20241123-iio_memset_scan_holes-a673833ef932
+
+Best regards,
 -- 
-2.46.0
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
