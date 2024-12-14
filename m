@@ -1,192 +1,99 @@
-Return-Path: <stable+bounces-104193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71619F1F40
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 15:22:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DA99F1F4A
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 15:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4698165ABF
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 14:22:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B8381888EB8
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 14:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF255192589;
-	Sat, 14 Dec 2024 14:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BAC1922DC;
+	Sat, 14 Dec 2024 14:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9ijJajR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIACt5hi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73860653;
-	Sat, 14 Dec 2024 14:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D26169397
+	for <stable@vger.kernel.org>; Sat, 14 Dec 2024 14:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734186150; cv=none; b=erOMSvWBw3EVcCo2p/Wa8SeudYs1ozFVWeePW8cSJV8GTgXjTwt/QrZ6bQKKT9BZvLalel/0o4mnZI0HgbCFdz2SrecdkrJhE1SWvPP85+2i+bHw4arKjh6ta3EUHeO1/QkWEXTPNWmeBrYV/I6vX+yNOh391xlIDclXVMfuJFU=
+	t=1734186391; cv=none; b=jNIdW/xJkK5Ku7g7wvF1cXc2AeZfXMf4JXhD5jZWYUyLonog+rWIdL6oUFhldhyj4tu2nOOD+W6ScGuwYYSJGCdtd6aUlyUC6NwaCjcMgbFaMwSqTUu5woUjAbeeIwSfzjk/+OJ7XL7lsZxZ67cs6szCMQJuNfUBCgKdlY+frKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734186150; c=relaxed/simple;
-	bh=uehpG8mYumIcqRR5AOgovcyMyNpC9sPQLe4yKCCaf/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FFsiqiehf0exBSAamKJvnAs0ShSpt23HBQwh9tBnASrMtKOA7KkUVjiOxQKdQzbqoYyRFAYReRZfKpVndC75KT/eGvjg3VhCklrTXzjW96YRFhtJWigmue2gG5JKSQ7W4uVkwuYuAYLGof/glf95rxHPuQehPi7O3C7fA24Rmes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9ijJajR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EEBC4CED1;
-	Sat, 14 Dec 2024 14:22:26 +0000 (UTC)
+	s=arc-20240116; t=1734186391; c=relaxed/simple;
+	bh=fBLKRj4eKFRzwpnjXBikJouyM2xwEZObFWH2i/MmYRk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Q+itBntWg/kTVU6DWPq25f2WPxOgvxMNVJVV+lrTSLgunQy2Vi0hfSQD4RCsYjAP0Zg5V0NsETDNvsVZVUVOOBsO1auQsjFPtsodlOWDQKOuKIvEIMwXeeC6q2vHf7vPKp+va1qC0ip9v20dK4QdzfO1ugKW0fKGmN738/kFNpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIACt5hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD3FC4CED1;
+	Sat, 14 Dec 2024 14:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734186149;
-	bh=uehpG8mYumIcqRR5AOgovcyMyNpC9sPQLe4yKCCaf/o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=B9ijJajRYDD0GzZxpg92Fbma3tCb57pLgwawQFJhfQx99SY7Kq1t3o3dmnFF657ql
-	 BmOBK1U/otNSMrCLn8RVP9LlwcKKfH1mshT8vIwxJvrCJp6L+HtjvJCD7nJ+F8pX1M
-	 ACURRyCsMIyO0C/DnUXUDGVGx0C9gzv8PmsP5rj0NYgKxOC7Bu7pE2Pb7m+hhTx/D8
-	 Dmi5hatkhAoiURiQtqSRsP/29Ob9Fvj1736+JvarMEBktrtg2nswQxfRyrwzTPuuBp
-	 h34UM9ea0BcRjGTYBuDlazcGaDfqxlrjOae2FU6WHjZqyfu/EQpi882VQFaAyTgwIq
-	 B2s57jZoXjmdg==
-Date: Sat, 14 Dec 2024 14:22:21 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Christian Eggers
- <ceggers@arri.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v3] iio: light: as73211: fix channel handling in
- only-color triggered buffer
-Message-ID: <20241214142221.3412ad9c@jic23-huawei>
-In-Reply-To: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
-References: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=k20201202; t=1734186390;
+	bh=fBLKRj4eKFRzwpnjXBikJouyM2xwEZObFWH2i/MmYRk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XIACt5hiVzFls/7kHigJNPXx9uPZSC/pqfaR2MZGpAmAWDqyy/xTnRjbQR8HayUsC
+	 AvWSLP2WwD5KkCMkpm3iIuzPoSD+DAHXbxGP4glLx9zK+wS9oEFR/xPGobTs/kiGHi
+	 xYK3ZdVbqOJ32OnR6trK0clzlAEzEo2So4QLLY1oy+AQ5Y6tTs/Pi+HyOp42u2fuTi
+	 LRY4c4tmU0vunFRZCovBfHL4AO1DzW9kw9y12DFgpNrAVjdOug9Qo2DHyIf/McQu7u
+	 OT6DIWGtLpa1Ae/3N/6zZamvEG7SPa4DiqF/298ln8NyYc9dyMRhgyvM1aKIC6ItD5
+	 HLxPENBcL2rXg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sherry Yang <sherry.yang@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y, 5.10.y] exfat: fix potential deadlock on __exfat_get_dentry_set
+Date: Sat, 14 Dec 2024 09:26:28 -0500
+Message-Id: <20241214091651-0af6196918c18d20@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20241213235705.2201714-1-sherry.yang@oracle.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 12 Dec 2024 18:56:32 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+[ Sasha's backport helper bot ]
 
-> The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-> set (optimized path for color channel readings), and it must be shifted
-> instead of leaving an empty channel for the temperature when it is off.
-> 
-> Once the channel index is fixed, the uninitialized channel must be set
-> to zero to avoid pushing uninitialized data.
-> 
-> Add available_scan_masks for all channels and only-color channels to let
-> the IIO core demux and repack the enabled channels.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-> Tested-by: Christian Eggers <ceggers@arri.de>
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
-> This issue was found after attempting to make the same mistake for
-> a driver I maintain, which was fortunately spotted by Jonathan [1].
-> 
-> Keeping old sensor values if the channel configuration changes is known
-> and not considered an issue, which is also mentioned in [1], so it has
-> not been addressed by this series. That keeps most of the drivers out
-> of the way because they store the scan element in iio private data,
-> which is kzalloc() allocated.
-> 
-> This series only addresses cases where uninitialized i.e. unknown data
-> is pushed to the userspace, either due to holes in structs or
-> uninitialized struct members/array elements.
-> 
-> While analyzing involved functions, I found and fixed some triviality
-> (wrong function name) in the documentation of iio_dev_opaque.
-> 
-> Link: https://lore.kernel.org/linux-iio/20241123151634.303aa860@jic23-huawei/ [1]
-> ---
-> Changes in v3:
-> - as73211.c: add available_scan_masks for all channels and only-color
->   channels to let the IIO core demux and repack the enabled channels.
-> - Link to v2: https://lore.kernel.org/r/20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com
-> 
-> Changes in v2:
-> - as73211.c: shift channels if no temperature is available and
->   initialize chan[3] to zero.
-> - Link to v1: https://lore.kernel.org/r/20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com
-> ---
->  drivers/iio/light/as73211.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> index be0068081ebb..4be2e349a068 100644
-> --- a/drivers/iio/light/as73211.c
-> +++ b/drivers/iio/light/as73211.c
-> @@ -177,6 +177,12 @@ struct as73211_data {
->  	BIT(AS73211_SCAN_INDEX_TEMP) | \
->  	AS73211_SCAN_MASK_COLOR)
->  
-> +static const unsigned long as73211_scan_masks[] = {
-> +	AS73211_SCAN_MASK_ALL,
-> +	AS73211_SCAN_MASK_COLOR,
+Hi,
 
-I probably mislead you on this :(
-Needs to be the other way around as the core code starts at first
-entry whilst trying to find a mask that is a superset of what is turned on.
-here that means it will always use the first one.
-See iio_scan_mask_match() - strict isn't set int this case.
+The upstream commit SHA1 provided is correct: 89fc548767a2155231128cb98726d6d2ea1256c9
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Sherry Yang <sherry.yang@oracle.com>
+Commit author: Sungjong Seo <sj1557.seo@samsung.com>
 
 
-	
-> +	0,
-No need for comma on the 0. It's a terminating entry so we don't
-want anyone to think they can add things after this
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: a7ac198f8dba)
+6.1.y | Not found
+5.15.y | Not found
 
-> +};
-> +
->  static const struct iio_chan_spec as73211_channels[] = {
->  	{
->  		.type = IIO_TEMP,
-> @@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  
->  		/* AS73211 starts reading at address 2 */
->  		ret = i2c_master_recv(data->client,
-> -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-> +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
->  		if (ret < 0)
->  			goto done;
-> +
-> +		/* Avoid pushing uninitialized data */
-> +		scan.chan[3] = 0;
->  	}
->  
->  	if (data_result) {
-> @@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  		 * Saturate all channels (in case of overflows). Temperature channel
->  		 * is not affected by overflows.
->  		 */
-> -		scan.chan[1] = cpu_to_le16(U16_MAX);
-> -		scan.chan[2] = cpu_to_le16(U16_MAX);
-> -		scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +			scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		} else {
-> +			scan.chan[0] = cpu_to_le16(U16_MAX);
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +		}
->  	}
->  
->  	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-> @@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_client *client)
->  	indio_dev->channels = data->spec_dev->channels;
->  	indio_dev->num_channels = data->spec_dev->num_channels;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->available_scan_masks = as73211_scan_masks;
->  
->  	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
->  	if (ret < 0)
-> 
-> ---
-> base-commit: 91e71d606356e50f238d7a87aacdee4abc427f07
-> change-id: 20241123-iio_memset_scan_holes-a673833ef932
-> 
-> Best regards,
+Note: The patch differs from the upstream commit:
+---
+1:  89fc548767a2 < -:  ------------ exfat: fix potential deadlock on __exfat_get_dentry_set
+-:  ------------ > 1:  9b4fc692990f exfat: fix potential deadlock on __exfat_get_dentry_set
+---
 
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Success    |  Failed    |
+| stable/linux-5.10.y       |  Success    |  Failed    |
+
+Build Errors:
+Build error for stable/linux-5.15.y:
+    
+
+Build error for stable/linux-5.10.y:
+    make: *** No rule to make target 'allmodconfig'.  Stop.
+    make: *** No targets specified and no makefile found.  Stop.
 
