@@ -1,172 +1,256 @@
-Return-Path: <stable+bounces-104183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E4A9F1E25
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 11:56:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C02C9F1E27
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 11:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70B62166B45
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 10:56:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55A79188A5FD
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 10:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B682018B483;
-	Sat, 14 Dec 2024 10:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0443718C903;
+	Sat, 14 Dec 2024 10:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="th5CW7Ny"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m5jQ8aji"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E82415666D;
-	Sat, 14 Dec 2024 10:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D381E18A92C
+	for <stable@vger.kernel.org>; Sat, 14 Dec 2024 10:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734173777; cv=none; b=G/Gswq5XNaqtzz8Tm1yXg4eoarqEBQcfphcNiOJwcpQF1gDipAGIEJ25jhwuWBW+zTakk/jIX1PECTZMYGpsp6DldDf/xmfHKHoDHGGi+IIK1ltemAi13PvWsrKVAAEG9Mw39YZPVVhYNSDDHjW4oGVvuPBEHViIvMvzQuTKslo=
+	t=1734173795; cv=none; b=HmfZSUcK2994dMHVQV8HHmxNDg4w5JunUJeOOAjK/VSVewpTs3V9Vyc63PxdQ7Pt5U8QAiqWAGh3/ummunXDqWunqIuPsmMNBGAy2E6dpn+gmnxaOVEf8haXwHE0L0EmG3v630DY7eMc+pL8Q9iIClyjwf45+q2PqHntkD8ISOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734173777; c=relaxed/simple;
-	bh=MMR2ErCeRcdYEu0/gbXMrmxEoyPZCFQNk9/Pe021FjY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GoAlsMoM49I21LVfGXUjZh4HOV6X20WMmBewVn2gji6RfZrgtjAUtR2qocRukaCJt/GgNi83G4GevbF6Hk8Pinoj9bXzn6423bK1nBxbL0t8LF08QtjSpdYiRUd3eHCOWaSDh9X9MRGiguOo1X1+jPasGSK6lWBYTsXtqEouOFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=th5CW7Ny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3940C4CED1;
-	Sat, 14 Dec 2024 10:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734173776;
-	bh=MMR2ErCeRcdYEu0/gbXMrmxEoyPZCFQNk9/Pe021FjY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=th5CW7NyRAO6AsL9GNbhpzvJiKkxS1V55bQYfK0IyALfxQHhYSL09/9hhCK+BGWZ8
-	 i7SuR2nX14gd8AYPjYMKA0yvLgOsdhW+6PjK2qTT41A6qt5wtFqMJzewN//X8hho7T
-	 8rjyRCJ/ehrvGXvUCX/tgGuf2r6sUyqJzZVomH13BJTHwA7XdMRBAjriuQHUC5D450
-	 mWdj5t5xrs0q5RVLgSa7bzuyX0pjaGvwfDwCfp1b3eqf2xkNMXQ0NDHyZOQ6Dip9+K
-	 ML085KJ+qsCFUFtxprICFbA0S4bc9vO5mu/R9Q3mshmHCEbkisIyclqrvsR400VO8V
-	 nzrQm3k7RVCIQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tMPok-003hQI-5a;
-	Sat, 14 Dec 2024 10:56:14 +0000
-Date: Sat, 14 Dec 2024 10:56:13 +0000
-Message-ID: <87a5cysfci.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Collingbourne <pcc@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to __cpuinfo_store_cpu()
-In-Reply-To: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
-References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1734173795; c=relaxed/simple;
+	bh=SwgLmHir7iw5XKBVoy6nlfxS98I0Q5lW41Q/AqTrYSY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UIFeX0fBqpOuyKMgpHrd77iL9I2RS2F58W7x4WBGFlRLsZkwpzAQKXrW5bG+VSSOKSq/rclaJLD9CXvjv+9HYe1oYarAtCQoANqvP0QznfaOAVxn+8lI6RlrkhCLb7FEWi794rcrCC0110SBFIRJi/HHoGT8mBgOaZBUK6n8R0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m5jQ8aji; arc=none smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4afe4f1ce18so686307137.3
+        for <stable@vger.kernel.org>; Sat, 14 Dec 2024 02:56:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1734173793; x=1734778593; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=narLqxaJwE3g0of16nAyBHPw88Usne8YUFy2RA1V1Gs=;
+        b=m5jQ8ajiQKonxARulcVMvAwpz8gdSZzdYP9t/90PfZ3WSnDzAzqN7mmDBV32owBIBO
+         pwdTxT85n63I99zE9pvCMTCOIaEcWPPdswTWytzdHoMHSI8z7rSvsb1vJ4LjQ3Pjd7Ex
+         EQJotRSxvuT8xYWxffjDSyIZiO4f/kyyes5PEgciehHh7IWqSt6vOWN8/7aUYKsjWARE
+         sk8C/arQvIhLghwuvTRUgUkJ7I02aLCcP/3GpOhXY2uaBP8/wwHam9K43YCcPWVGJOQK
+         17dtKXHKaG4CFrz+/G9+lADlmeEQxEdRuq6jkuT890wU3aMuLVGaC/UiENcXl171DeX7
+         nYUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734173793; x=1734778593;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=narLqxaJwE3g0of16nAyBHPw88Usne8YUFy2RA1V1Gs=;
+        b=oG1hQZtD2X5lfujsowjfI3+fq/20fl1b6GO0G/ZLP46FUrJ9ydC0ejthrIhEU3+isN
+         KyOJ3RhwMxLmfsGebGFB4db8rsfER8MvwFE4ayw79QxW7BmTkCCFXM8kicZ1vHPA1xap
+         zaaqutagwIcIY6ITpK4meuSNz0K2CQBlWI9mzsOxa8aTtfM+ZcaFcT7ldrnsFss7wKjG
+         a1xtdQrQp1VO1bBA6cQsO6z0ugcoxZiu5H+wiE6hBVWzWXg6EL3+Quy7Nf7WFfveEHcb
+         h6lZDh6aPRaGaidLO0dKxR1omipnCvrUO+likJVIZC4WlPc5EOOpbcZp9dOO3IpTq1AQ
+         0Rdg==
+X-Gm-Message-State: AOJu0YzjJ+vx5Gh326mUrALxXOsiICHcrdSq/TObaTp4ssLutoR6aknq
+	KOc1VeX84tZ5o1uEwGwLdDoiZJMvv31Dp16IJcx23R853ZmezmivmyByq5+UPwci+jt7bqg+w8/
+	/RtHrVSP3i8aOWe0WzrFT0FPw1ylQ3n9Gmq6E2g==
+X-Gm-Gg: ASbGncsytRF0MakZrShtYA5vIJRJJuhgLIbu4mX5nPwuUJs0meGfcqnvu3A61BRWIlR
+	K+pZn5oUIEm/LRmpN3Zq9k7a37dguY2hIWHHCOnH9ySLpqMAZ2/GvUsC2clNpOs+DL4sMWgg=
+X-Google-Smtp-Source: AGHT+IEqQWhBWWG+leHF6WEWvTIhZKnROuv/ysScTSqBxjTzOD3slKUGgagixsSpZrByTkB5UBK14VZRj/ryjeEJSHE=
+X-Received: by 2002:a05:6102:54a8:b0:4af:d487:45ef with SMTP id
+ ada2fe7eead31-4b25d95e5ddmr6550643137.5.1734173792686; Sat, 14 Dec 2024
+ 02:56:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org, pcc@google.com, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20241213150009.122200534@linuxfoundation.org>
+In-Reply-To: <20241213150009.122200534@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Sat, 14 Dec 2024 16:26:21 +0530
+Message-ID: <CA+G9fYv6RgaCka6p7-wcsFaOfjEXDeXWNCpYP0T8aGjSiyOK+A@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/772] 6.1.120-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Luo Qiu <luoqiu@kylinsec.com.cn>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-[+ Mark]
-On Sat, 14 Dec 2024 00:52:08 +0000,
-Mark Brown <broonie@kernel.org> wrote:
-> 
-> In commit 892f7237b3ff ("arm64: Delay initialisation of
-> cpuinfo_arm64::reg_{zcr,smcr}") we moved access to ZCR, SMCR and SMIDR
-> later in the boot process in order to ensure that we don't attempt to
-> interact with them if SVE or SME is disabled on the command line.
-> Unfortunately when initialising the boot CPU in init_cpu_features() we work
-> on a copy of the struct cpuinfo_arm64 for the boot CPU used only during
-> boot, not the percpu copy used by the sysfs code.
-> 
-> Fix this by moving the handling for SMIDR_EL1 for the boot CPU to
-> cpuinfo_store_boot_cpu() so it can operate on the percpu copy of the data.
-> This reduces the potential for error that could come from having both the
-> percpu and boot CPU copies in init_cpu_features().
-> 
-> This issue wasn't apparent when testing on emulated platforms that do not
-> report values in this ID register.
-> 
-> Fixes: 892f7237b3ff ("arm64: Delay initialisation of cpuinfo_arm64::reg_{zcr,smcr}")
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
->  arch/arm64/kernel/cpufeature.c |  6 ------
->  arch/arm64/kernel/cpuinfo.c    | 11 +++++++++++
->  2 files changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 6ce71f444ed84f9056196bb21bbfac61c9687e30..b88102fd2c20f77e25af6df513fda09a484e882e 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -1167,12 +1167,6 @@ void __init init_cpu_features(struct cpuinfo_arm64 *info)
->  	    id_aa64pfr1_sme(read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1))) {
->  		unsigned long cpacr = cpacr_save_enable_kernel_sme();
->  
-> -		/*
-> -		 * We mask out SMPS since even if the hardware
-> -		 * supports priorities the kernel does not at present
-> -		 * and we block access to them.
-> -		 */
-> -		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
->  		vec_init_vq_map(ARM64_VEC_SME);
->  
->  		cpacr_restore(cpacr);
-> diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-> index d79e88fccdfce427507e7a34c5959ce6309cbd12..b7d403da71e5a01ed3943eb37e7a00af238771a2 100644
-> --- a/arch/arm64/kernel/cpuinfo.c
-> +++ b/arch/arm64/kernel/cpuinfo.c
-> @@ -499,4 +499,15 @@ void __init cpuinfo_store_boot_cpu(void)
->  
->  	boot_cpu_data = *info;
->  	init_cpu_features(&boot_cpu_data);
-> +
-> +	/* SMIDR_EL1 needs to be stored in the percpu data for sysfs */
-> +	if (IS_ENABLED(CONFIG_ARM64_SME) &&
-> +	    id_aa64pfr1_sme(read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1))) {
-> +		/*
-> +		 * We mask out SMPS since even if the hardware
-> +		 * supports priorities the kernel does not at present
-> +		 * and we block access to them.
-> +		 */
-> +		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
-> +	}
->  }
+On Fri, 13 Dec 2024 at 20:34, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.120 release.
+> There are 772 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 15 Dec 2024 14:57:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.120-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I don't understand the need to single out SMIDR_EL1. It seems to only
-make things even more fragile than they already are by adding more
-synchronisation phases.
+The Dragonboard 845c boot failed on the Linux stable-rc linux-6.1.y
+due to the following boot crash log.
 
-Why isn't the following a good enough fix? It makes it plain that
-boot_cpu_data is only a copy of CPU0's initial boot state.
+This issue is observed exclusively when the kernel is built with GCC-13.
+However, the same kernel built with Clang-19 and Clang-nightly
+successfully boots.
 
-diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-index d79e88fccdfce..0cbb42fd48850 100644
---- a/arch/arm64/kernel/cpuinfo.c
-+++ b/arch/arm64/kernel/cpuinfo.c
-@@ -497,6 +497,6 @@ void __init cpuinfo_store_boot_cpu(void)
- 	struct cpuinfo_arm64 *info = &per_cpu(cpu_data, 0);
- 	__cpuinfo_store_cpu(info);
- 
-+	init_cpu_features(info);
- 	boot_cpu_data = *info;
--	init_cpu_features(&boot_cpu_data);
- }
+First seen on 6.1.120-rc1
+Good: v6.1.119
+BAD: 6.1.120-rc1 and 6.1.120-rc2
+Toolchain: gcc-13
+
+Boot log:
+----------
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x517f803c]
+[    0.000000] Linux version 6.1.120-rc2 (tuxmake@tuxmake)
+(aarch64-linux-gnu-gcc (Debian 13.3.0-5) 13.3.0, GNU ld (GNU Binutils
+for Debian) 2.43.1) #1 SMP PREEMPT @1734104611
+[    0.000000] Machine model: Thundercomm Dragonboard 845c
+[    0.000000] efi: UEFI not found.
+[    0.000000] earlycon: qcom_geni0 at MMIO 0x0000000000a84000
+(options '115200n8')
+[    0.000000] printk: bootconsole [qcom_geni0] enabled
+[    0.000000] NUMA: No NUMA configuration found
+[    0.000000] NUMA: Faking a node at [mem
+0x0000000080000000-0x000000017df9ffff]
+[    0.000000] NUMA: NODE_DATA [mem 0x17d5a2a00-0x17d5a4fff]
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000080000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x000000017df9ffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080000000-0x00000000856fffff]
+[    0.000000]   node   0: [mem 0x0000000085700000-0x0000000085cfffff]
+[    0.000000]   node   0: [mem 0x0000000085d00000-0x0000000085dfffff]
+[    0.000000]   node   0: [mem 0x0000000085e00000-0x0000000085efffff]
+[    0.000000]   node   0: [mem 0x0000000085f00000-0x0000000085fbffff]
+[    0.000000]   node   0: [mem 0x0000000085fc0000-0x00000000890fffff]
+[    0.000000]   node   0: [mem 0x0000000089100000-0x000000008aafffff]
+[    0.000000]   node   0: [mem 0x000000008ab00000-0x000000008c416fff]
+[    0.000000]   node   0: [mem 0x000000008c417000-0x000000008c4fffff]
+[    0.000000]   node   0: [mem 0x000000008c500000-0x0000000097bfffff]
+[    0.000000]   node   0: [mem 0x0000000097c00000-0x000000009d3fffff]
+[    0.000000]   node   0: [mem 0x000000009d400000-0x000000009f7fffff]
+[    0.000000]   node   0: [mem 0x000000009f800000-0x000000017df9ffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x000000017df9ffff]
+[    0.000000] On node 0, zone Normal: 8288 pages in unavailable ranges
+[    0.000000] cma: Reserved 32 MiB at 0x00000000fe000000
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: MIGRATE_INFO_TYPE not supported.
+[    0.000000] Unable to handle kernel NULL pointer dereference at
+virtual address 0000000000000d7c
+[    0.000000] Mem abort info:
+[    0.000000]   ESR = 0x0000000096000004
+[    0.000000]   EC = 0x25: DABT (current EL), IL = 32 bits
+[    0.000000]   SET = 0, FnV = 0
+[    0.000000]   EA = 0, S1PTW = 0
+[    0.000000]   FSC = 0x04: level 0 translation fault
+[    0.000000] Data abort info:
+[    0.000000]   ISV = 0, ISS = 0x00000004
+[    0.000000]   CM = 0, WnR = 0
+[    0.000000] [0000000000000d7c] user address but active_mm is swapper
+[    0.000000] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.1.120-rc2 #1
+[    0.000000] Hardware name: Thundercomm Dragonboard 845c (DT)
+[    0.000000] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    0.000000] pc : arm_smccc_version_init (drivers/firmware/smccc/smccc.c:31)
+[    0.000000] lr : psci_probe (drivers/firmware/psci/psci.c:597
+drivers/firmware/psci/psci.c:642)
+[    0.000000] sp : ffffabcd52e33ce0
+[    0.000000] x29: ffffabcd52e33ce0 x28: 0000000081000200 x27: ffffabcd51fe4930
+[    0.000000] x26: ffffabcd52029280 x25: ffffabcd53237d60 x24: ffffabcd51c084c0
+[    0.000000] x23: ffffabcd53437318 x22: 0000000000000001 x21: ffffabcd52e5abd8
+[    0.000000] x20: ffffabcd53437000 x19: 0000000000010002 x18: 0000000000000006
+[    0.000000] x17: 6666663966643731 x16: 3030303030303078 x15: ffffabcd52e337c0
+[    0.000000] x14: 0000000000000000 x13: 2e646574726f7070 x12: 757320746f6e2045
+[    0.000000] x11: 5059545f4f464e49 x10: ffffabcd52ebb878 x9 : ffffabcd52e63878
+[    0.000000] x8 : ffffabcd52e33ca8 x7 : 0000000000000000 x6 : 0000000000000000
+[    0.000000] x5 : ffffabcd53437000 x4 : ffffabcd52207000 x3 : 0000000000000000
+[    0.000000] x2 : 0000000000000000 x1 : 0000000000000001 x0 : 0000000000000000
+[    0.000000] Call trace:
+[    0.000000] arm_smccc_version_init (drivers/firmware/smccc/smccc.c:31)
+[    0.000000] psci_0_2_init (drivers/firmware/psci/psci.c:675)
+[    0.000000] psci_1_0_init (drivers/firmware/psci/psci.c:720)
+[    0.000000] psci_dt_init (drivers/firmware/psci/psci.c:758)
+[    0.000000] setup_arch (arch/arm64/kernel/setup.c:354)
+[    0.000000] start_kernel (init/main.c:278 init/main.c:476 init/main.c:963)
+[    0.000000] __primary_switched (arch/arm64/kernel/head.S:469)
+[ 0.000000] Code: 1a9f97e0 14000002 52800000 b0fff644 (b94d7cc2)
+All code
+========
+   0: 1a9f97e0 cset w0, hi // hi = pmore
+   4: 14000002 b 0xc
+   8: 52800000 mov w0, #0x0                    // #0
+   c: b0fff644 adrp x4, 0xffffffffffec9000
+  10:* b94d7cc2 ldr w2, [x6, #3452] <-- trapping instruction
+
+Code starting with the faulting instruction
+===========================================
+   0: b94d7cc2 ldr w2, [x6, #3452]
+[    0.000000] ---[ end trace 0000000000000000 ]---
+[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
+[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill
+the idle task! ]---
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Links:
+-------
+Boot failed with gcc-13:
+-----------------
+- https://lkft.validation.linaro.org/scheduler/job/7998804
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.119-773-gcb4fbe91b7b2/testrun/26315180/suite/boot/test/gcc-13-lkftconfig/log
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.119-773-gcb4fbe91b7b2/testrun/26315180/suite/boot/test/gcc-13-lkftconfig/history/
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.119-773-gcb4fbe91b7b2/testrun/26315180/suite/boot/test/gcc-13-lkftconfig/details/
+
+Boot pass with clang-19:
+------------------
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.119-773-g9f320894b9c2/testrun/26290281/suite/boot/test/clang-19-lkftconfig/history/
 
 
-Thanks,
+metadata:
+----
+Linux kernel version: 6.1.120-rc2 and 6.1.120-rc1
+git describe: v6.1.119-773-gcb4fbe91b7b2
+git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+git sha: cb4fbe91b7b21057b4bc23c91e5fd87c0fb79e47
+kernel config: https://storage.tuxsuite.com/public/linaro/lkft/builds/2qATClPBY52T2swKNeLeVQtyyS1/config
+build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2qATClPBY52T2swKNeLeVQtyyS1/
+toolchain: gcc-13
+config: gcc-13-defconfig
+arch: arm64
+device: Dragonboard-845c
 
-	M.
 
--- 
-Without deviation from the norm, progress is not possible.
+--
+Linaro LKFT
+https://lkft.linaro.org
 
