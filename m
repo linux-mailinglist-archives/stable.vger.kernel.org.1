@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-104262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8079F22BA
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 09:54:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DB19F22BB
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 09:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495B9165F98
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 08:54:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92630165F7F
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 08:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE2F13E03A;
-	Sun, 15 Dec 2024 08:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D61113E043;
+	Sun, 15 Dec 2024 08:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtDQCn4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+9Qe/AJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C65713D28F
-	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 08:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AED313D28F
+	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 08:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734252836; cv=none; b=VI2xrpqkQBejeCFKwfGFIQfC92jpKApecuP1pKVZgie7ElyTNIpa+fNmbFqZInYcLJTVSf2AbUCW7+d+B0aJJvc3wHmPcaPF+adtr8xm4EtY7om6OGWpdrGg2K08HXZhE80hx+eDuyYP0C8ioAWYnf7SMbb5azceV4un9Db9uwE=
+	t=1734252966; cv=none; b=EC29A4p3p6qtgNos6szHZhA7I9S6icYW0iEe9ZBM3M6ITieVcwLwu1bn/j4TGPC3EeJ1OPblkisqmkPrQw0Dr3cuu1EY45nKeNUJfKPG1Yb8h9SGpsR9TgvJgwW0b8kb0CD2yf2HOWLwJS72k6QtT+AwbKnVzmlav95zZ+3B2Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734252836; c=relaxed/simple;
-	bh=N4FURxuyAQKwYvk0kG/bf388tHDA9hwDSOSa1LCs+BM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sMXKDy532UHuX1D0Khq5wvy8vWxzHq/y6ugcLrWsWz2SxSKOIiUs6fNC3ygHdVYLzekxB/hyq3LCryuzf6bLIcZ5gwP11Em3CzVcHQ4zEShFUWKbS8I7l3Ku8dSDWz60g0QYlnQ6SHnXXk2f3qHVQmLSrGww5nJAklfoRqCMfWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtDQCn4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3040C4CECE;
-	Sun, 15 Dec 2024 08:53:55 +0000 (UTC)
+	s=arc-20240116; t=1734252966; c=relaxed/simple;
+	bh=GmbIorLS95qFYTSDBrmxmDD3Cj5QUs2aoM+qs5/oNT4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Qg3mK/Um541LjvuKtG1Oe0l9klb1w+jXwHb4Zg0mvogeFQ2AeEhrRQMKUm0p16NvlpIBdkUEKrWgBaYzTjScIQixOcJHTYlXquyKDtVaWBkSyRI0vqX+mOOTZLmC61a0KnJ0lqijGaOTec3bhfnFwTUA4Cn3YIJWX1bbvRs9ZkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+9Qe/AJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6D4C4CECE;
+	Sun, 15 Dec 2024 08:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734252836;
-	bh=N4FURxuyAQKwYvk0kG/bf388tHDA9hwDSOSa1LCs+BM=;
+	s=korg; t=1734252966;
+	bh=GmbIorLS95qFYTSDBrmxmDD3Cj5QUs2aoM+qs5/oNT4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZtDQCn4wWZxxY4oMvNUbY50JvrcyfVZSJ5UvwbQp4zx6XLiRDvlG0rwK7Mwbsxoaw
-	 fVEtyeLUJvTlaKXUotCOD7OXZzphmLW/mVRX7v1mP3GPWQHhWJZs71nu5z2v04mQ2P
-	 YnD5Tm/rux7kD/3fG81kLE1mZX4Km2FRua4WFHu8=
-Subject: FAILED: patch "[PATCH] xfs: fix off-by-one error in fsmap's end_daddr usage" failed to apply to 6.12-stable tree
-To: djwong@kernel.org,hch@lst.de,stable@vger.kernel.org,wozizhi@huawei.com
+	b=V+9Qe/AJbphStIaX2GuL6i0/KrYh/0VdVHWKgxKvfXsRwrdAXMUqiIxxZzijjYA8x
+	 frlbnGLOBjJqsBteLJdduwvsX6uOGC5MzfNPd3LsyCQ+bD0cbTdRM2ul7D7yNyFqzH
+	 lssP3WX/It7gxcckXAivraW1XCb9W+yt3t2lWbz8=
+Subject: FAILED: patch "[PATCH] bpf: Check size for BTF-based ctx access of pointer members" failed to apply to 6.1-stable tree
+To: memxor@gmail.com,ast@kernel.org,rtm@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 15 Dec 2024 09:53:53 +0100
-Message-ID: <2024121553-prison-usage-c221@gregkh>
+Date: Sun, 15 Dec 2024 09:56:02 +0100
+Message-ID: <2024121502-patriarch-unguarded-b4c5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x a440a28ddbdcb861150987b4d6e828631656b92f
+git cherry-pick -x 659b9ba7cb2d7adb64618b87ddfaa528a143766e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121553-prison-usage-c221@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121502-patriarch-unguarded-b4c5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,125 +77,107 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a440a28ddbdcb861150987b4d6e828631656b92f Mon Sep 17 00:00:00 2001
-From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Mon, 2 Dec 2024 10:57:24 -0800
-Subject: [PATCH] xfs: fix off-by-one error in fsmap's end_daddr usage
+From 659b9ba7cb2d7adb64618b87ddfaa528a143766e Mon Sep 17 00:00:00 2001
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Date: Thu, 12 Dec 2024 01:20:49 -0800
+Subject: [PATCH] bpf: Check size for BTF-based ctx access of pointer members
 
-In commit ca6448aed4f10a, we created an "end_daddr" variable to fix
-fsmap reporting when the end of the range requested falls in the middle
-of an unknown (aka free on the rmapbt) region.  Unfortunately, I didn't
-notice that the the code sets end_daddr to the last sector of the device
-but then uses that quantity to compute the length of the synthesized
-mapping.
+Robert Morris reported the following program type which passes the
+verifier in [0]:
 
-Zizhi Wo later observed that when end_daddr isn't set, we still don't
-report the last fsblock on a device because in that case (aka when
-info->last is true), the info->high mapping that we pass to
-xfs_getfsmap_group_helper has a startblock that points to the last
-fsblock.  This is also wrong because the code uses startblock to
-compute the length of the synthesized mapping.
+SEC("struct_ops/bpf_cubic_init")
+void BPF_PROG(bpf_cubic_init, struct sock *sk)
+{
+	asm volatile("r2 = *(u16*)(r1 + 0)");     // verifier should demand u64
+	asm volatile("*(u32 *)(r2 +1504) = 0");   // 1280 in some configs
+}
 
-Fix the second problem by setting end_daddr unconditionally, and fix the
-first problem by setting start_daddr to one past the end of the range to
-query.
+The second line may or may not work, but the first instruction shouldn't
+pass, as it's a narrow load into the context structure of the struct ops
+callback. The code falls back to btf_ctx_access to ensure correctness
+and obtaining the types of pointers. Ensure that the size of the access
+is correctly checked to be 8 bytes, otherwise the verifier thinks the
+narrow load obtained a trusted BTF pointer and will permit loads/stores
+as it sees fit.
 
-Cc: <stable@vger.kernel.org> # v6.11
-Fixes: ca6448aed4f10a ("xfs: Fix missing interval for missing_owner in xfs fsmap")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reported-by: Zizhi Wo <wozizhi@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Perform the check on size after we've verified that the load is for a
+pointer field, as for scalar values narrow loads are fine. Access to
+structs passed as arguments to a BPF program are also treated as
+scalars, therefore no adjustment is needed in their case.
 
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index 82f2e0dd2249..3290dd8524a6 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -163,7 +163,8 @@ struct xfs_getfsmap_info {
- 	xfs_daddr_t		next_daddr;	/* next daddr we expect */
- 	/* daddr of low fsmap key when we're using the rtbitmap */
- 	xfs_daddr_t		low_daddr;
--	xfs_daddr_t		end_daddr;	/* daddr of high fsmap key */
-+	/* daddr of high fsmap key, or the last daddr on the device */
-+	xfs_daddr_t		end_daddr;
- 	u64			missing_owner;	/* owner of holes */
- 	u32			dev;		/* device id */
- 	/*
-@@ -387,8 +388,8 @@ xfs_getfsmap_group_helper(
- 	 * we calculated from userspace's high key to synthesize the record.
- 	 * Note that if the btree query found a mapping, there won't be a gap.
- 	 */
--	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL)
--		frec->start_daddr = info->end_daddr;
-+	if (info->last)
-+		frec->start_daddr = info->end_daddr + 1;
- 	else
- 		frec->start_daddr = xfs_gbno_to_daddr(xg, startblock);
+Existing verifier selftests are broken by this change, but because they
+were incorrect. Verifier tests for d_path were performing narrow load
+into context to obtain path pointer, had this program actually run it
+would cause a crash. The same holds for verifier_btf_ctx_access tests.
+
+  [0]: https://lore.kernel.org/bpf/51338.1732985814@localhost
+
+Fixes: 9e15db66136a ("bpf: Implement accurate raw_tp context access via BTF")
+Reported-by: Robert Morris <rtm@mit.edu>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20241212092050.3204165-2-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index e7a59e6462a9..a63a03582f02 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6543,6 +6543,12 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
+ 		return false;
+ 	}
  
-@@ -736,11 +737,10 @@ xfs_getfsmap_rtdev_rtbitmap_helper(
- 	 * we calculated from userspace's high key to synthesize the record.
- 	 * Note that if the btree query found a mapping, there won't be a gap.
- 	 */
--	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL) {
--		frec.start_daddr = info->end_daddr;
--	} else {
-+	if (info->last)
-+		frec.start_daddr = info->end_daddr + 1;
-+	else
- 		frec.start_daddr = xfs_rtb_to_daddr(mp, start_rtb);
--	}
- 
- 	frec.len_daddr = XFS_FSB_TO_BB(mp, rtbcount);
- 	return xfs_getfsmap_helper(tp, info, &frec);
-@@ -933,7 +933,10 @@ xfs_getfsmap(
- 	struct xfs_trans		*tp = NULL;
- 	struct xfs_fsmap		dkeys[2];	/* per-dev keys */
- 	struct xfs_getfsmap_dev		handlers[XFS_GETFSMAP_DEVS];
--	struct xfs_getfsmap_info	info = { NULL };
-+	struct xfs_getfsmap_info	info = {
-+		.fsmap_recs		= fsmap_recs,
-+		.head			= head,
-+	};
- 	bool				use_rmap;
- 	int				i;
- 	int				error = 0;
-@@ -998,9 +1001,6 @@ xfs_getfsmap(
- 
- 	info.next_daddr = head->fmh_keys[0].fmr_physical +
- 			  head->fmh_keys[0].fmr_length;
--	info.end_daddr = XFS_BUF_DADDR_NULL;
--	info.fsmap_recs = fsmap_recs;
--	info.head = head;
- 
- 	/* For each device we support... */
- 	for (i = 0; i < XFS_GETFSMAP_DEVS; i++) {
-@@ -1013,17 +1013,23 @@ xfs_getfsmap(
- 			break;
- 
- 		/*
--		 * If this device number matches the high key, we have
--		 * to pass the high key to the handler to limit the
--		 * query results.  If the device number exceeds the
--		 * low key, zero out the low key so that we get
--		 * everything from the beginning.
-+		 * If this device number matches the high key, we have to pass
-+		 * the high key to the handler to limit the query results, and
-+		 * set the end_daddr so that we can synthesize records at the
-+		 * end of the query range or device.
- 		 */
- 		if (handlers[i].dev == head->fmh_keys[1].fmr_device) {
- 			dkeys[1] = head->fmh_keys[1];
- 			info.end_daddr = min(handlers[i].nr_sectors - 1,
- 					     dkeys[1].fmr_physical);
-+		} else {
-+			info.end_daddr = handlers[i].nr_sectors - 1;
- 		}
++	if (size != sizeof(u64)) {
++		bpf_log(log, "func '%s' size %d must be 8\n",
++			tname, size);
++		return false;
++	}
 +
-+		/*
-+		 * If the device number exceeds the low key, zero out the low
-+		 * key so that we get everything from the beginning.
-+		 */
- 		if (handlers[i].dev > head->fmh_keys[0].fmr_device)
- 			memset(&dkeys[0], 0, sizeof(struct xfs_fsmap));
- 
+ 	/* check for PTR_TO_RDONLY_BUF_OR_NULL or PTR_TO_RDWR_BUF_OR_NULL */
+ 	for (i = 0; i < prog->aux->ctx_arg_info_size; i++) {
+ 		const struct bpf_ctx_arg_aux *ctx_arg_info = &prog->aux->ctx_arg_info[i];
+diff --git a/tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c b/tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c
+index a570e48b917a..bfc3bf18fed4 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c
++++ b/tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c
+@@ -11,7 +11,7 @@ __success __retval(0)
+ __naked void btf_ctx_access_accept(void)
+ {
+ 	asm volatile ("					\
+-	r2 = *(u32*)(r1 + 8);		/* load 2nd argument value (int pointer) */\
++	r2 = *(u64 *)(r1 + 8);		/* load 2nd argument value (int pointer) */\
+ 	r0 = 0;						\
+ 	exit;						\
+ "	::: __clobber_all);
+@@ -23,7 +23,7 @@ __success __retval(0)
+ __naked void ctx_access_u32_pointer_accept(void)
+ {
+ 	asm volatile ("					\
+-	r2 = *(u32*)(r1 + 0);		/* load 1nd argument value (u32 pointer) */\
++	r2 = *(u64 *)(r1 + 0);		/* load 1nd argument value (u32 pointer) */\
+ 	r0 = 0;						\
+ 	exit;						\
+ "	::: __clobber_all);
+diff --git a/tools/testing/selftests/bpf/progs/verifier_d_path.c b/tools/testing/selftests/bpf/progs/verifier_d_path.c
+index ec79cbcfde91..87e51a215558 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_d_path.c
++++ b/tools/testing/selftests/bpf/progs/verifier_d_path.c
+@@ -11,7 +11,7 @@ __success __retval(0)
+ __naked void d_path_accept(void)
+ {
+ 	asm volatile ("					\
+-	r1 = *(u32*)(r1 + 0);				\
++	r1 = *(u64 *)(r1 + 0);				\
+ 	r2 = r10;					\
+ 	r2 += -8;					\
+ 	r6 = 0;						\
+@@ -31,7 +31,7 @@ __failure __msg("helper call is not allowed in probe")
+ __naked void d_path_reject(void)
+ {
+ 	asm volatile ("					\
+-	r1 = *(u32*)(r1 + 0);				\
++	r1 = *(u64 *)(r1 + 0);				\
+ 	r2 = r10;					\
+ 	r2 += -8;					\
+ 	r6 = 0;						\
 
 
