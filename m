@@ -1,113 +1,191 @@
-Return-Path: <stable+bounces-104278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B489F2427
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 14:13:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E88399F244F
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 15:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB1151885EAA
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 13:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B6191650DC
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 14:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00362189F43;
-	Sun, 15 Dec 2024 13:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E8818EFDE;
+	Sun, 15 Dec 2024 14:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="UgdALH13"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAe7lJvI"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A40514BFA2;
-	Sun, 15 Dec 2024 13:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ABC1805A;
+	Sun, 15 Dec 2024 14:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734268400; cv=none; b=mozqShdGLH6Q/fEfPRg38wzbI0o3LaL5TluzBXS806lYWf8iCcBoZZr6GQsw3YIKkNHsP1GKBkdOR4EUQmd0h7qwa9ysH3JnA4gnp5fop8uf64LthSJ7TB4uUfzCaWC4jz2nw2661w92YtGWafKcYZCmHNd0pLQAjVAQRogBWnA=
+	t=1734271952; cv=none; b=J4Ne8tQEMsy6Bi2sPliKSYdVHGVFLDcVp+bw4WO0NlFfrlKNIpi/cinpFKUfSVIFITTRZXCVjj6N0ig4sj/N5GWSWe6w+ZxhS3h8TXZN1+GEarbFb2frz9zPHstMtYkpCm+uNQp3LstRw0K3Ip17P6+75tCP/A7HV7ME7NORPmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734268400; c=relaxed/simple;
-	bh=oVsaFywUpOuv+msqvVac4ISm2LdrnqEXWubTqo/CYlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RCeepaZQ8F5g6dRHe/tKJh1OgWRQs36o8vIBEkBXRVMzGt3uiwRKpbwquM3poj7EA4GLD27lF/JNsX5V4gnR/65/KHpHMVAiF9/Mi9DT4q7yKnG4uGoC624BdmTUEbOJpffAi5vkj+b1vIfHRxGclnfSrGcDk510Hn2TIHxnhyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=UgdALH13; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 3A454A57;
-	Sun, 15 Dec 2024 14:12:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1734268359;
-	bh=oVsaFywUpOuv+msqvVac4ISm2LdrnqEXWubTqo/CYlw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UgdALH13Od9P2Xwxw2tffH3ewbTXorof9YJ0zEZTayP4/AuuA7GBo9G1Qu/tQ4O9D
-	 /4pgzVcnY/NLA+WsSi2IBCkvs/iqRuT/PXRktwTYBncCEVo0yt7+QwCjxx19LQkaGi
-	 eGx5eqBzNm7eH10t/R2GXEqEgtcMdu8NG17/3GQA=
-Date: Sun, 15 Dec 2024 15:12:58 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Karol Przybylski <karprzy7@gmail.com>
-Cc: tomi.valkeinen@ideasonboard.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	simona@ffwll.ch, michal.simek@amd.com,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCHv3] drm: zynqmp_dp: Fix integer overflow in
- zynqmp_dp_rate_get()
-Message-ID: <20241215131258.GC25852@pendragon.ideasonboard.com>
-References: <20241215125355.938953-1-karprzy7@gmail.com>
+	s=arc-20240116; t=1734271952; c=relaxed/simple;
+	bh=C+fkFXJDD2gYrYFFw7MKPSxt8fU/qG5ZsjWmCqJBbVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SEGpzipsIwWVOyDIZOzSOhapMCQaCwrvQdLoQ2vJSiO8myy/I702ZzOLQBGvKwrx2ODfv5yNrmYt3MAddI/puK6vPWTF9J5dETd3UcYHrBuy50AQRCHZ9trw2CzQJxvkqTakR98fZloQB2BcVmtBgW8k64hhd979brUxCKoYGvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAe7lJvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D11DC4CECE;
+	Sun, 15 Dec 2024 14:12:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734271952;
+	bh=C+fkFXJDD2gYrYFFw7MKPSxt8fU/qG5ZsjWmCqJBbVY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LAe7lJvIofTgXqxh1euei5ekS910YOX364ZSpCIQvyatdW8PVGFkHxHUKuOy5repb
+	 3YpWYjyeO7LdoL9O6qNd96iFTY59IoW9MzDLRehR/HAQjGlcN89/0t0Poq10jPG8aC
+	 +x9xX55JZG5mvGNOxd4SoqTIiB8hhg4qiX/RnoowuAxBf/E29G0+aznCGpfDXak2gV
+	 wQ2T9KIxkv6lid4iMsz/s7Scj224NLKC+MTQB0mwZEPjUQYYYt9OONNmnsDGTJD1NI
+	 3XBRbplOauDuCCXOnarGu1XUQw5IbKx7JfQz4EGpMpHaHRS+rMUGLBbq8+3djAIGAa
+	 X6FFA3v7SvWLA==
+Date: Sun, 15 Dec 2024 14:12:26 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Christian Eggers
+ <ceggers@arri.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4] iio: light: as73211: fix channel handling in
+ only-color triggered buffer
+Message-ID: <20241215141226.31c81048@jic23-huawei>
+In-Reply-To: <20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com>
+References: <20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241215125355.938953-1-karprzy7@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Ho Karol,
+On Sat, 14 Dec 2024 23:55:50 +0100
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-Thank you for the patch.
-
-On Sun, Dec 15, 2024 at 01:53:55PM +0100, Karol Przybylski wrote:
-> This patch fixes a potential integer overflow in the zynqmp_dp_rate_get()
+> The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
+> set (optimized path for color channel readings), and it must be shifted
+> instead of leaving an empty channel for the temperature when it is off.
 > 
-> The issue comes up when the expression
-> drm_dp_bw_code_to_link_rate(dp->test.bw_code) * 10000 is evaluated using 32-bit
-> Now the constant is a compatible 64-bit type.
+> Once the channel index is fixed, the uninitialized channel must be set
+> to zero to avoid pushing uninitialized data.
 > 
-> Resolves coverity issues: CID 1636340 and CID 1635811
+> Add available_scan_masks for all channels and only-color channels to let
+> the IIO core demux and repack the enabled channels.
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: 28edaacb821c6 ("drm: zynqmp_dp: Add debugfs interface for compliance testing")
-> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+> Tested-by: Christian Eggers <ceggers@arri.de>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Applied to the fixes-togreg branch of iio.git.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Thanks,
+
+Jonathan
 
 > ---
-> Changes from previous versions:
-> Added Fixes tag
-> Added Cc for stable kernel version
-> Fixed formatting
+> This issue was found after attempting to make the same mistake for
+> a driver I maintain, which was fortunately spotted by Jonathan [1].
 > 
->  drivers/gpu/drm/xlnx/zynqmp_dp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Keeping old sensor values if the channel configuration changes is known
+> and not considered an issue, which is also mentioned in [1], so it has
+> not been addressed by this series. That keeps most of the drivers out
+> of the way because they store the scan element in iio private data,
+> which is kzalloc() allocated.
 > 
-> diff --git a/drivers/gpu/drm/xlnx/zynqmp_dp.c b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> index 25c5dc61ee88..56a261a40ea3 100644
-> --- a/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> +++ b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-> @@ -2190,7 +2190,7 @@ static int zynqmp_dp_rate_get(void *data, u64 *val)
->  	struct zynqmp_dp *dp = data;
+> This series only addresses cases where uninitialized i.e. unknown data
+> is pushed to the userspace, either due to holes in structs or
+> uninitialized struct members/array elements.
+> 
+> While analyzing involved functions, I found and fixed some triviality
+> (wrong function name) in the documentation of iio_dev_opaque.
+> 
+> Link: https://lore.kernel.org/linux-iio/20241123151634.303aa860@jic23-huawei/ [1]
+> ---
+> Changes in v4:
+> - Fix as73211_scan_masks[] (first MASK_COLOR, then MASK_ALL, no comma
+>   after 0 i.e. the last element).
+> - Link to v3: https://lore.kernel.org/r/20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com
+> 
+> Changes in v3:
+> - as73211.c: add available_scan_masks for all channels and only-color
+>   channels to let the IIO core demux and repack the enabled channels.
+> - Link to v2: https://lore.kernel.org/r/20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com
+> 
+> Changes in v2:
+> - as73211.c: shift channels if no temperature is available and
+>   initialize chan[3] to zero.
+> - Link to v1: https://lore.kernel.org/r/20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com
+> ---
+>  drivers/iio/light/as73211.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+> index be0068081ebb..11fbdcdd26d6 100644
+> --- a/drivers/iio/light/as73211.c
+> +++ b/drivers/iio/light/as73211.c
+> @@ -177,6 +177,12 @@ struct as73211_data {
+>  	BIT(AS73211_SCAN_INDEX_TEMP) | \
+>  	AS73211_SCAN_MASK_COLOR)
 >  
->  	mutex_lock(&dp->lock);
-> -	*val = drm_dp_bw_code_to_link_rate(dp->test.bw_code) * 10000;
-> +	*val = drm_dp_bw_code_to_link_rate(dp->test.bw_code) * 10000ULL;
->  	mutex_unlock(&dp->lock);
->  	return 0;
->  }
+> +static const unsigned long as73211_scan_masks[] = {
+> +	AS73211_SCAN_MASK_COLOR,
+> +	AS73211_SCAN_MASK_ALL,
+> +	0
+> +};
+> +
+>  static const struct iio_chan_spec as73211_channels[] = {
+>  	{
+>  		.type = IIO_TEMP,
+> @@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+>  
+>  		/* AS73211 starts reading at address 2 */
+>  		ret = i2c_master_recv(data->client,
+> -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
+> +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
+>  		if (ret < 0)
+>  			goto done;
+> +
+> +		/* Avoid pushing uninitialized data */
+> +		scan.chan[3] = 0;
+>  	}
+>  
+>  	if (data_result) {
+> @@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+>  		 * Saturate all channels (in case of overflows). Temperature channel
+>  		 * is not affected by overflows.
+>  		 */
+> -		scan.chan[1] = cpu_to_le16(U16_MAX);
+> -		scan.chan[2] = cpu_to_le16(U16_MAX);
+> -		scan.chan[3] = cpu_to_le16(U16_MAX);
+> +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
+> +			scan.chan[1] = cpu_to_le16(U16_MAX);
+> +			scan.chan[2] = cpu_to_le16(U16_MAX);
+> +			scan.chan[3] = cpu_to_le16(U16_MAX);
+> +		} else {
+> +			scan.chan[0] = cpu_to_le16(U16_MAX);
+> +			scan.chan[1] = cpu_to_le16(U16_MAX);
+> +			scan.chan[2] = cpu_to_le16(U16_MAX);
+> +		}
+>  	}
+>  
+>  	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+> @@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_client *client)
+>  	indio_dev->channels = data->spec_dev->channels;
+>  	indio_dev->num_channels = data->spec_dev->num_channels;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->available_scan_masks = as73211_scan_masks;
+>  
+>  	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
+>  	if (ret < 0)
+> 
+> ---
+> base-commit: 91e71d606356e50f238d7a87aacdee4abc427f07
+> change-id: 20241123-iio_memset_scan_holes-a673833ef932
+> 
+> Best regards,
 
--- 
-Regards,
-
-Laurent Pinchart
 
