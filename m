@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-104261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597349F22B9
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 09:53:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8079F22BA
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 09:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4824188059F
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 08:53:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495B9165F98
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 08:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A1813E03A;
-	Sun, 15 Dec 2024 08:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE2F13E03A;
+	Sun, 15 Dec 2024 08:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9rP43GE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtDQCn4w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1E013D28F
-	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 08:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C65713D28F
+	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 08:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734252826; cv=none; b=SmdmPXt9Qx21GBeeY3Xgn3Wu4ZvFLRk8lRf7DiJ4M/g9YGaSX87aIvAfVg56dpE2d+CHV5kJCsOoMAY8jPiYdSNhnYncoTY/rC1In4iCSYTQ0rFjI3kXLHBbIF9QV+gtPY1F1QwIyvsCtVvM5lvBfe7mCH/iV1nj7Aa3zBFVHtE=
+	t=1734252836; cv=none; b=VI2xrpqkQBejeCFKwfGFIQfC92jpKApecuP1pKVZgie7ElyTNIpa+fNmbFqZInYcLJTVSf2AbUCW7+d+B0aJJvc3wHmPcaPF+adtr8xm4EtY7om6OGWpdrGg2K08HXZhE80hx+eDuyYP0C8ioAWYnf7SMbb5azceV4un9Db9uwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734252826; c=relaxed/simple;
-	bh=aB4KKaqmItIBQrnTOozoZDslneNVZOVc9F7ck+EWqzk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QVDbwqCvK3h/HZ/JQpyng/yVS0YRFcQgAuHrzVDGggKTAtd9+nrP6Bi6wWTvlYlpW5PlfLVolCD7TtxdGMW9blcF+KvhLWL43MJ8v/68mgAVHppn3TtnjkCkEVxs5nyt0HxEcjxHnjRXCys1rhXk3XZnWFQHIewHG7Jw8BCL2R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9rP43GE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1100C4CECE;
-	Sun, 15 Dec 2024 08:53:45 +0000 (UTC)
+	s=arc-20240116; t=1734252836; c=relaxed/simple;
+	bh=N4FURxuyAQKwYvk0kG/bf388tHDA9hwDSOSa1LCs+BM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sMXKDy532UHuX1D0Khq5wvy8vWxzHq/y6ugcLrWsWz2SxSKOIiUs6fNC3ygHdVYLzekxB/hyq3LCryuzf6bLIcZ5gwP11Em3CzVcHQ4zEShFUWKbS8I7l3Ku8dSDWz60g0QYlnQ6SHnXXk2f3qHVQmLSrGww5nJAklfoRqCMfWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtDQCn4w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3040C4CECE;
+	Sun, 15 Dec 2024 08:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734252826;
-	bh=aB4KKaqmItIBQrnTOozoZDslneNVZOVc9F7ck+EWqzk=;
+	s=korg; t=1734252836;
+	bh=N4FURxuyAQKwYvk0kG/bf388tHDA9hwDSOSa1LCs+BM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=i9rP43GE2z3VJ1XZbOvIYlWk5RfVcZ4GKBuI0WtRXPsXBsE6x3Qy7y8E6o2Sulqjb
-	 gN12z+sdboCoNqILJXS85PyUJKD08lEL3BWlY86wbs9mbVCQq5hn3ZcTBO1GBRU5E+
-	 b5GXCFmI0DKwkG1iIayeV0qFILXXp/q3QzWxZJ+Q=
-Subject: FAILED: patch "[PATCH] xfs: separate healthy clearing mask during repair" failed to apply to 6.12-stable tree
-To: djwong@kernel.org,hch@lst.de,stable@vger.kernel.org
+	b=ZtDQCn4wWZxxY4oMvNUbY50JvrcyfVZSJ5UvwbQp4zx6XLiRDvlG0rwK7Mwbsxoaw
+	 fVEtyeLUJvTlaKXUotCOD7OXZzphmLW/mVRX7v1mP3GPWQHhWJZs71nu5z2v04mQ2P
+	 YnD5Tm/rux7kD/3fG81kLE1mZX4Km2FRua4WFHu8=
+Subject: FAILED: patch "[PATCH] xfs: fix off-by-one error in fsmap's end_daddr usage" failed to apply to 6.12-stable tree
+To: djwong@kernel.org,hch@lst.de,stable@vger.kernel.org,wozizhi@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 15 Dec 2024 09:53:43 +0100
-Message-ID: <2024121542-fretful-identity-5931@gregkh>
+Date: Sun, 15 Dec 2024 09:53:53 +0100
+Message-ID: <2024121553-prison-usage-c221@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x aa7bfb537edf62085d7718845f6644b0e4efb9df
+git cherry-pick -x a440a28ddbdcb861150987b4d6e828631656b92f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121542-fretful-identity-5931@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121553-prison-usage-c221@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,187 +77,125 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From aa7bfb537edf62085d7718845f6644b0e4efb9df Mon Sep 17 00:00:00 2001
+From a440a28ddbdcb861150987b4d6e828631656b92f Mon Sep 17 00:00:00 2001
 From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Mon, 2 Dec 2024 10:57:27 -0800
-Subject: [PATCH] xfs: separate healthy clearing mask during repair
+Date: Mon, 2 Dec 2024 10:57:24 -0800
+Subject: [PATCH] xfs: fix off-by-one error in fsmap's end_daddr usage
 
-In commit d9041681dd2f53 we introduced some XFS_SICK_*ZAPPED flags so
-that the inode record repair code could clean up a damaged inode record
-enough to iget the inode but still be able to remember that the higher
-level repair code needs to be called.  As part of that, we introduced a
-xchk_mark_healthy_if_clean helper that is supposed to cause the ZAPPED
-state to be removed if that higher level metadata actually checks out.
-This was done by setting additional bits in sick_mask hoping that
-xchk_update_health will clear all those bits after a healthy scrub.
+In commit ca6448aed4f10a, we created an "end_daddr" variable to fix
+fsmap reporting when the end of the range requested falls in the middle
+of an unknown (aka free on the rmapbt) region.  Unfortunately, I didn't
+notice that the the code sets end_daddr to the last sector of the device
+but then uses that quantity to compute the length of the synthesized
+mapping.
 
-Unfortunately, that's not quite what sick_mask means -- bits in that
-mask are indeed cleared if the metadata is healthy, but they're set if
-the metadata is NOT healthy.  fsck is only intended to set the ZAPPED
-bits explicitly.
+Zizhi Wo later observed that when end_daddr isn't set, we still don't
+report the last fsblock on a device because in that case (aka when
+info->last is true), the info->high mapping that we pass to
+xfs_getfsmap_group_helper has a startblock that points to the last
+fsblock.  This is also wrong because the code uses startblock to
+compute the length of the synthesized mapping.
 
-If something else sets the CORRUPT/XCORRUPT state after the
-xchk_mark_healthy_if_clean call, we end up marking the metadata zapped.
-This can happen if the following sequence happens:
+Fix the second problem by setting end_daddr unconditionally, and fix the
+first problem by setting start_daddr to one past the end of the range to
+query.
 
-1. Scrub runs, discovers that the metadata is fine but could be
-   optimized and calls xchk_mark_healthy_if_clean on a ZAPPED flag.
-   That causes the ZAPPED flag to be set in sick_mask because the
-   metadata is not CORRUPT or XCORRUPT.
-
-2. Repair runs to optimize the metadata.
-
-3. Some other metadata used for cross-referencing in (1) becomes
-   corrupt.
-
-4. Post-repair scrub runs, but this time it sets CORRUPT or XCORRUPT due
-   to the events in (3).
-
-5. Now the xchk_health_update sets the ZAPPED flag on the metadata we
-   just repaired.  This is not the correct state.
-
-Fix this by moving the "if healthy" mask to a separate field, and only
-ever using it to clear the sick state.
-
-Cc: <stable@vger.kernel.org> # v6.8
-Fixes: d9041681dd2f53 ("xfs: set inode sick state flags when we zap either ondisk fork")
+Cc: <stable@vger.kernel.org> # v6.11
+Fixes: ca6448aed4f10a ("xfs: Fix missing interval for missing_owner in xfs fsmap")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reported-by: Zizhi Wo <wozizhi@huawei.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-diff --git a/fs/xfs/scrub/health.c b/fs/xfs/scrub/health.c
-index ce86bdad37fa..ccc6ca5934ca 100644
---- a/fs/xfs/scrub/health.c
-+++ b/fs/xfs/scrub/health.c
-@@ -71,7 +71,8 @@
- /* Map our scrub type to a sick mask and a set of health update functions. */
- 
- enum xchk_health_group {
--	XHG_FS = 1,
-+	XHG_NONE = 1,
-+	XHG_FS,
- 	XHG_AG,
- 	XHG_INO,
- 	XHG_RTGROUP,
-@@ -83,6 +84,7 @@ struct xchk_health_map {
- };
- 
- static const struct xchk_health_map type_to_health_flag[XFS_SCRUB_TYPE_NR] = {
-+	[XFS_SCRUB_TYPE_PROBE]		= { XHG_NONE,  0 },
- 	[XFS_SCRUB_TYPE_SB]		= { XHG_AG,  XFS_SICK_AG_SB },
- 	[XFS_SCRUB_TYPE_AGF]		= { XHG_AG,  XFS_SICK_AG_AGF },
- 	[XFS_SCRUB_TYPE_AGFL]		= { XHG_AG,  XFS_SICK_AG_AGFL },
-@@ -133,7 +135,7 @@ xchk_mark_healthy_if_clean(
- {
- 	if (!(sc->sm->sm_flags & (XFS_SCRUB_OFLAG_CORRUPT |
- 				  XFS_SCRUB_OFLAG_XCORRUPT)))
--		sc->sick_mask |= mask;
-+		sc->healthy_mask |= mask;
- }
- 
- /*
-@@ -189,6 +191,7 @@ xchk_update_health(
- {
- 	struct xfs_perag	*pag;
- 	struct xfs_rtgroup	*rtg;
-+	unsigned int		mask = sc->sick_mask;
- 	bool			bad;
- 
+diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
+index 82f2e0dd2249..3290dd8524a6 100644
+--- a/fs/xfs/xfs_fsmap.c
++++ b/fs/xfs/xfs_fsmap.c
+@@ -163,7 +163,8 @@ struct xfs_getfsmap_info {
+ 	xfs_daddr_t		next_daddr;	/* next daddr we expect */
+ 	/* daddr of low fsmap key when we're using the rtbitmap */
+ 	xfs_daddr_t		low_daddr;
+-	xfs_daddr_t		end_daddr;	/* daddr of high fsmap key */
++	/* daddr of high fsmap key, or the last daddr on the device */
++	xfs_daddr_t		end_daddr;
+ 	u64			missing_owner;	/* owner of holes */
+ 	u32			dev;		/* device id */
  	/*
-@@ -203,50 +206,56 @@ xchk_update_health(
- 		return;
- 	}
- 
--	if (!sc->sick_mask)
--		return;
--
- 	bad = (sc->sm->sm_flags & (XFS_SCRUB_OFLAG_CORRUPT |
- 				   XFS_SCRUB_OFLAG_XCORRUPT));
-+	if (!bad)
-+		mask |= sc->healthy_mask;
- 	switch (type_to_health_flag[sc->sm->sm_type].group) {
-+	case XHG_NONE:
-+		break;
- 	case XHG_AG:
-+		if (!mask)
-+			return;
- 		pag = xfs_perag_get(sc->mp, sc->sm->sm_agno);
- 		if (bad)
--			xfs_group_mark_corrupt(pag_group(pag), sc->sick_mask);
-+			xfs_group_mark_corrupt(pag_group(pag), mask);
- 		else
--			xfs_group_mark_healthy(pag_group(pag), sc->sick_mask);
-+			xfs_group_mark_healthy(pag_group(pag), mask);
- 		xfs_perag_put(pag);
- 		break;
- 	case XHG_INO:
- 		if (!sc->ip)
- 			return;
--		if (bad) {
--			unsigned int	mask = sc->sick_mask;
--
--			/*
--			 * If we're coming in for repairs then we don't want
--			 * sickness flags to propagate to the incore health
--			 * status if the inode gets inactivated before we can
--			 * fix it.
--			 */
--			if (sc->sm->sm_flags & XFS_SCRUB_IFLAG_REPAIR)
--				mask |= XFS_SICK_INO_FORGET;
-+		/*
-+		 * If we're coming in for repairs then we don't want sickness
-+		 * flags to propagate to the incore health status if the inode
-+		 * gets inactivated before we can fix it.
-+		 */
-+		if (sc->sm->sm_flags & XFS_SCRUB_IFLAG_REPAIR)
-+			mask |= XFS_SICK_INO_FORGET;
-+		if (!mask)
-+			return;
-+		if (bad)
- 			xfs_inode_mark_corrupt(sc->ip, mask);
--		} else
--			xfs_inode_mark_healthy(sc->ip, sc->sick_mask);
-+		else
-+			xfs_inode_mark_healthy(sc->ip, mask);
- 		break;
- 	case XHG_FS:
-+		if (!mask)
-+			return;
- 		if (bad)
--			xfs_fs_mark_corrupt(sc->mp, sc->sick_mask);
-+			xfs_fs_mark_corrupt(sc->mp, mask);
- 		else
--			xfs_fs_mark_healthy(sc->mp, sc->sick_mask);
-+			xfs_fs_mark_healthy(sc->mp, mask);
- 		break;
- 	case XHG_RTGROUP:
-+		if (!mask)
-+			return;
- 		rtg = xfs_rtgroup_get(sc->mp, sc->sm->sm_agno);
- 		if (bad)
--			xfs_group_mark_corrupt(rtg_group(rtg), sc->sick_mask);
-+			xfs_group_mark_corrupt(rtg_group(rtg), mask);
- 		else
--			xfs_group_mark_healthy(rtg_group(rtg), sc->sick_mask);
-+			xfs_group_mark_healthy(rtg_group(rtg), mask);
- 		xfs_rtgroup_put(rtg);
- 		break;
- 	default:
-diff --git a/fs/xfs/scrub/scrub.h b/fs/xfs/scrub/scrub.h
-index a7fda3e2b013..5dbbe93cb49b 100644
---- a/fs/xfs/scrub/scrub.h
-+++ b/fs/xfs/scrub/scrub.h
-@@ -184,6 +184,12 @@ struct xfs_scrub {
+@@ -387,8 +388,8 @@ xfs_getfsmap_group_helper(
+ 	 * we calculated from userspace's high key to synthesize the record.
+ 	 * Note that if the btree query found a mapping, there won't be a gap.
  	 */
- 	unsigned int			sick_mask;
+-	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL)
+-		frec->start_daddr = info->end_daddr;
++	if (info->last)
++		frec->start_daddr = info->end_daddr + 1;
+ 	else
+ 		frec->start_daddr = xfs_gbno_to_daddr(xg, startblock);
  
-+	/*
-+	 * Clear these XFS_SICK_* flags but only if the scan is ok.  Useful for
-+	 * removing ZAPPED flags after a repair.
-+	 */
-+	unsigned int			healthy_mask;
+@@ -736,11 +737,10 @@ xfs_getfsmap_rtdev_rtbitmap_helper(
+ 	 * we calculated from userspace's high key to synthesize the record.
+ 	 * Note that if the btree query found a mapping, there won't be a gap.
+ 	 */
+-	if (info->last && info->end_daddr != XFS_BUF_DADDR_NULL) {
+-		frec.start_daddr = info->end_daddr;
+-	} else {
++	if (info->last)
++		frec.start_daddr = info->end_daddr + 1;
++	else
+ 		frec.start_daddr = xfs_rtb_to_daddr(mp, start_rtb);
+-	}
+ 
+ 	frec.len_daddr = XFS_FSB_TO_BB(mp, rtbcount);
+ 	return xfs_getfsmap_helper(tp, info, &frec);
+@@ -933,7 +933,10 @@ xfs_getfsmap(
+ 	struct xfs_trans		*tp = NULL;
+ 	struct xfs_fsmap		dkeys[2];	/* per-dev keys */
+ 	struct xfs_getfsmap_dev		handlers[XFS_GETFSMAP_DEVS];
+-	struct xfs_getfsmap_info	info = { NULL };
++	struct xfs_getfsmap_info	info = {
++		.fsmap_recs		= fsmap_recs,
++		.head			= head,
++	};
+ 	bool				use_rmap;
+ 	int				i;
+ 	int				error = 0;
+@@ -998,9 +1001,6 @@ xfs_getfsmap(
+ 
+ 	info.next_daddr = head->fmh_keys[0].fmr_physical +
+ 			  head->fmh_keys[0].fmr_length;
+-	info.end_daddr = XFS_BUF_DADDR_NULL;
+-	info.fsmap_recs = fsmap_recs;
+-	info.head = head;
+ 
+ 	/* For each device we support... */
+ 	for (i = 0; i < XFS_GETFSMAP_DEVS; i++) {
+@@ -1013,17 +1013,23 @@ xfs_getfsmap(
+ 			break;
+ 
+ 		/*
+-		 * If this device number matches the high key, we have
+-		 * to pass the high key to the handler to limit the
+-		 * query results.  If the device number exceeds the
+-		 * low key, zero out the low key so that we get
+-		 * everything from the beginning.
++		 * If this device number matches the high key, we have to pass
++		 * the high key to the handler to limit the query results, and
++		 * set the end_daddr so that we can synthesize records at the
++		 * end of the query range or device.
+ 		 */
+ 		if (handlers[i].dev == head->fmh_keys[1].fmr_device) {
+ 			dkeys[1] = head->fmh_keys[1];
+ 			info.end_daddr = min(handlers[i].nr_sectors - 1,
+ 					     dkeys[1].fmr_physical);
++		} else {
++			info.end_daddr = handlers[i].nr_sectors - 1;
+ 		}
 +
- 	/* next time we want to cond_resched() */
- 	struct xchk_relax		relax;
++		/*
++		 * If the device number exceeds the low key, zero out the low
++		 * key so that we get everything from the beginning.
++		 */
+ 		if (handlers[i].dev > head->fmh_keys[0].fmr_device)
+ 			memset(&dkeys[0], 0, sizeof(struct xfs_fsmap));
  
 
 
