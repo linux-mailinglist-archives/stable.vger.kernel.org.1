@@ -1,81 +1,56 @@
-Return-Path: <stable+bounces-104283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4A09F2499
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 16:24:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE719F24B5
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 17:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0A40164E49
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 15:24:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3A5418854B6
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 16:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C2C18E764;
-	Sun, 15 Dec 2024 15:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37C7191473;
+	Sun, 15 Dec 2024 16:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m7bRwl1L"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="Aky+lveZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A22A937;
-	Sun, 15 Dec 2024 15:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C23A189912;
+	Sun, 15 Dec 2024 16:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734276285; cv=none; b=OFjDn5DSMeOjrMx3m2AYfWf/Kt+OvpRN6DsbNbgqrkABAvon3VOwxzc+M6b/fmImzRaARPt3TVji+tcSYCc2A3ksVdPPqneRA6bIsj+y3mw+8oRRUhyYo44hyF3UzfM45l9EPkFwlYTy47SIuc/8pYN4v4EdGmXsFXE9ZGb2vkc=
+	t=1734278685; cv=none; b=SKC4LUSziaWuDk3Px+6vaypZQuZEWFkWZnfeZNUPxmJ1PpsFAsBt4kekktlJ55jBRoe41v8yM8To1yEvAIzmTcGG36FoFOvLnvHwjknCI8YbdNOy7ZTuChjIQR4R7gQwpX0oksQzoEAchyYgSYNJfERg/8ntpguMr9FyYRiZD9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734276285; c=relaxed/simple;
-	bh=uJwSVTELTC1sTrqowQm2wbj8CLUErNT/UwouAw0vAQo=;
+	s=arc-20240116; t=1734278685; c=relaxed/simple;
+	bh=lG3oa76h+CM7R0sveI4lJVV207XxC/3DQZgSOboWY7A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jE0Y1HUTvE4oDA57wDjRSnOQS/YGj48oK0sDv/HxOgGhHqF6NzAsLdoxSNMWWFt395/wzcZXsI5qX4NRHfbrPKkFatYNso2xzjaoTK5RTU7W//GHQfCSHgIOGVtto1B1rSXIYWXzsMfV2N2OUBqJAuu041cr+RkSyIiHI3NEk6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m7bRwl1L; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21661be2c2dso23418845ad.1;
-        Sun, 15 Dec 2024 07:24:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734276283; x=1734881083; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=l7GkpgTNsSY/87wFOQW4jbUwJHQNpW/KOST5BhXKZpE=;
-        b=m7bRwl1LN97rUfG2z3Fbe+NGxYeXZ33eBI51ACUK68iexn9exgMt1IVCmx7cjMJ1lQ
-         UeXu+RgB4AjyqkEB+fZlWM6/je9hvSzuS34C4SdQvowbMK9eQjMWoENqR4q61SIhIT2c
-         duDak9mkHSVHH0G0Nzm8/K30Dt2CgW1pBM09HqGj1A92Ext5glVn+h7pwxI5I58A4YcJ
-         D4GHUFX7oEFAlTk2kDuTvEZHMPQMJ/bdBfh+1G/rzUlvNe2+PInIaRcRJ2+IzUJ3IIh3
-         /pW3y/e2WTwGMukv0qlCT0YDRv1qbILplxfnh4iO3lfxe7oePQGcdwgtJBGCdq1AgLTG
-         Pgsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734276283; x=1734881083;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l7GkpgTNsSY/87wFOQW4jbUwJHQNpW/KOST5BhXKZpE=;
-        b=qsQjT89OCUO1Uxe7LC0OFWj/ZI95bDq1Qp53aBXacHWPKrDtmWjtyb/G1DyX1tAi7d
-         vuz1EIIUfv9asxeam8/uBDN13XEiyZQ9hXkNp8wSyXqcVmHq6miSBimvrLkGAAC2AqdA
-         y7Rlhve6MImaIdiZcSfXaWiuNljY06QDXUcNI8CeIIJFcgAzAF0HWMZr7EC5SjXp6N9U
-         3nACpdPihrNQoy5lXBwmc72HT2zNgy7lxmLH0nTyASoDbVjjhPD/Izla5h31lz3Gif1Z
-         r6s03JHEcN8k7dx1BaRD7AV3RZmEYw3/OHfshH0IwHQUuUjdjeaKLXM6Wkn/NTAWdvX3
-         OMXw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0amyi/4AvzBsXHrruCM3J+ikw7YDxPfsXFx27vBiusMceGXn+qbON1EYa0rgDwhkUsxsC+ZU4@vger.kernel.org, AJvYcCWai0zRREqxLHSSqWfGtGcOVmMUr7o7ZuKEYJvarDUO5UEpfOnFClLwSfA3jS6Vs2zNakIDlE4qybiO6+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRLaEqH/fAv9gcvt4YojpZqOkYKdtrUBGb0VHcjP0szPkdcED6
-	SHcjk4zDmjx2ZgjabVYcCIGNYhswSah27jJoqmfJ77wDVjTgFDJU
-X-Gm-Gg: ASbGncuM8PTNIHf0ZpttQQ+DyIpg9ekC9dz3HXMlbjuI2fzaWe2lV/TyCh/Ehnben3P
-	faveEKu60PoYXqrHBu0pAJOz5iGvCAzKI84Cw14zJIdHmK2WUGIbImxZhnPvoO0Cu4Kqm+67Cg2
-	n9bbsxJwPr/nwcHgbh/J6xYx3r+yn/yS+nNAzh3U1v4o04sbi5KvnqV7IlRx9xkesi78aCpW+0D
-	J2mJVzx+ZaBpLK2aFNwemEkdNRysOjSbXyujrhJbPotAYgqj7Xcg0X+43UG/0ofGY7uzhSHbILV
-	Nl8+KvQDuAzTWGGVI3C+ZWdcT8em1Q==
-X-Google-Smtp-Source: AGHT+IHawsBInKi/8r40Bxr6xWE+mGyOQXeKK3ifPyHgYRS9y5pkqF8bcHuEH078fuYQM4bIWj1bew==
-X-Received: by 2002:a17:903:32cf:b0:215:b9a7:5282 with SMTP id d9443c01a7336-218929c3a18mr135670195ad.26.1734276283392;
-        Sun, 15 Dec 2024 07:24:43 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e50250sm26774675ad.122.2024.12.15.07.24.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Dec 2024 07:24:42 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <436a575b-4ec0-43a2-b4e9-7eb00d9bbbeb@roeck-us.net>
-Date: Sun, 15 Dec 2024 07:24:40 -0800
+	 In-Reply-To:Content-Type; b=bJU13xfqphL9IzG7DM/F/NI70kAe9Ic6KaXJoQMSxSjYLFSjU86MEx08K9R8NGlb3Ss5XwTskvj4vSYqTMrY3BxvA6jUhFrSDkakdfam+LPgqg3hP7mnYACHI4RjzZC56LbnFnv98lO/ECl4Sz6SZgveusO2vhPBLx/MJD30Qo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=Aky+lveZ; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1734278676; x=1734883476; i=deller@gmx.de;
+	bh=g4BgLYlQJWV0uClMLmCWbIXGgt3L/2H1UTwttrn3fes=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=Aky+lveZeflozekH7N0gn8x53/Zshr5bUVAFzmSCaD7wfvgJdQLd+Ugusl50sGe5
+	 uoPz3ZYandsZ+29k1sSXq5BIF4uKp60B8h2sTx3sYw/lk3TjUMvCDvE+tk0LnNe39
+	 g8o0hNA9lDI8r3SSFt5hfzOFkY3/E0UTo1KJhwSZvIu6v+7AEKsBR3dLXtRzHDQQs
+	 JkDp18QD9tzye2riMQZX+c782Eb8WjxK3+zUDOzLlGF38saLNINw6HqbFI2OgEsTr
+	 tK9xC6Ge+CmEuHuGPDz8ab4fWAO1uH36jSLKgdI29+DUHJfKxOBwvBpoFVZMuZmM+
+	 oAuU7QXXypjzLswRjw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.172] ([109.250.63.155]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mof57-1tyKez1ag5-00pqPd; Sun, 15
+ Dec 2024 17:04:36 +0100
+Message-ID: <5c806fca-9081-4b67-ae6c-1a2c47869177@gmx.de>
+Date: Sun, 15 Dec 2024 17:04:35 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,121 +58,134 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/565] 5.15.174-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org
-References: <20241212144311.432886635@linuxfoundation.org>
+Subject: Re: [PATCH] fbdev/udlfb: Remove world-writability from EDID attribute
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ Bernie Thompson <bernie@plugable.com>, Greg Kroah-Hartman <gregkh@suse.de>
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241215-udlfb-perms-v1-1-2d1f8c96b1ab@weissschuh.net>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20241215-udlfb-perms-v1-1-2d1f8c96b1ab@weissschuh.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:pN7hPfaqEPivIMyJfEePKwVnDDcEneG/sTdxsCZSey0tY3uyyBh
+ v0K6HzuBQ6fTLyIJ3WoIhzPIuvpez4qre3Wa3DaWaDDZ4S1pJvfLPngwfRjXihHL3eUsfmw
+ L9FAbGWlMtb7PcvhB2ab5yd3BWF4BU+2zOQQIqaG4Zq5LO4oJ4gGB3i+YuAaN+Jk58FtS2p
+ 9KE1aADajPLEr3oS/nwjg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:2WZfOk496HI=;IS8oNBDis3gWh52kXcPVKfpoX6L
+ PRTND+/zemu2SpX+OaAbU8N0S9wjlIS/COIdWo1+xOcdGf6+0/t8PbbdfSr7hmaqF27MhZzuT
+ c7F1avRkbil//J6+Jao43ImGsOzmgwxsdiNWXjt6hIrgQFKSnCI79DUgnFSWuEMPHAgfxFMK2
+ RmKC9mMobmDY1MPSX8s3Ype1wNjt69HtnPWZeKJofrdFJwhdqmzye++wJ8ddrlH6vQ1oAGBx/
+ j8uy1TpVxud+Ug7W4q44ttYemuoFLT3so6pi103UOmCigtXWeARz3gsyfy2V+9L9L8yk2qCfm
+ ydbjM89w9v1MBuCwPhYx3hN1o0Sjiqm8cAoCUewQd17QqQxNowgBJPGIp8NBJkqWf9RTGc9TT
+ 41oNnGg0Pn8Nwbbh4lhedGBsYG8jjsTn5RJpznq2R+55Sbpv8tpB/1L584sziyNuMkPn4znHL
+ uNBIB6VWfvh4kIC+/M1AwUqACAt/IJnUK7kBW9Z1dY5mFltz0xWd3BM9o+lqXv6+AUkF22+IZ
+ PIoV5VNjeYPOxlwQ8d5WgwJv5fagQzpl0x7HBEV0yZeSfum14jaHnQ4SNhkzbpFH2/r+dNIJI
+ NAV3xwbjSCoz5t2A4UMu83LT21oFmtlfH8xpxn5EuDnirE53XqB8AMwhqokwYdleeMmccYNNS
+ iJHRaroy29zmoO14m8+ktI9LbxxS8XsliANbAbQHXw+zRHQJzVbnTVeksZ72v102x2RTWiKLT
+ z+8WBPs/2XaT4EYYBPSOkboV0S1AElruxE0IE/tfG/7Li5aTK1r0rg3hpBa7Ie+MxIfas/MlK
+ uAktrv85tllxLfZ1VWGJIJxebvC4+9IVmAB1JJhH9uvujXvs196HcGdLUhI+X1gMoMfX480J7
+ T/bJkeQdqBIZTL3ES0Zfu81I8mKdCyroI7/bVt3mAVUPoPKyuVotYW6es8wwNhGwjf12/j8Ng
+ voa+7x7gh6WC3x4cyCYKuc3oxYN8ronXpELh5C1ZLlITbvvPSbJpXsoTu5sb+oOJMFmo3HTxQ
+ gZoOkQSfJRfy+bFsyZyf6u1mEVJvUt/HiC7XlV4ubOJ82ztPucAluWRrbPfCrb/GknqIghRIv
+ MugKJGcyQlck41mLillj6wmeg8m2J8
 
-On 12/12/24 06:53, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.174 release.
-> There are 565 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 14 Dec 2024 14:41:35 +0000.
-> Anything received after that time might be too late.
-> 
+On 12/15/24 16:15, Thomas Wei=C3=9Fschuh wrote:
+> It should not be possible for every user to override the EDID.
+> Limit it to the system administrator.
+>
+> Fixes: 8ef8cc4fca4a ("staging: udlfb: support for writing backup EDID to=
+ sysfs file")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+> ---
+> The EDID passed through sysfs is only used as a fallback if the hardware
+> does not provide one. To me it still feels incorrect to have this
+> world-writable.
 
-All parisc builds fail.
+I'm wondering if there is any real danger to the system integrity if
+a user writes an own EDID (or a broken one)?
+I mean, the only reason to use an own EDID is if you are a desktop user,
+and then you usually are not a root user.
+So, user-writeable *seems* safe to me, especially since the provided EDID =
+is only
+used if a real one isn't provided by the monitor.
 
-In file included from include/linux/pci-dma-compat.h:8,
-                  from include/linux/pci.h:2477:
-include/linux/dma-mapping.h:546:47: error: macro "cache_line_size" passed 1 arguments, but takes just 0
-   546 | static inline int dma_get_cache_alignment(void)
-       |                                               ^
-arch/parisc/include/asm/cache.h:31: note: macro "cache_line_size" defined here
-    31 | #define cache_line_size()       dcache_stride
-       |
-include/linux/dma-mapping.h:547:1: error: expected '=', ',', ';', 'asm' or '__attribute__' before '{' token
-   547 | {
+Maybe Bernie has an opinion here?
 
-There are also lots of warnings.
+Helge
 
-./include/linux/slab.h:208: warning: "ARCH_KMALLOC_MINALIGN" redefined
-   208 | #define ARCH_KMALLOC_MINALIGN ARCH_DMA_MINALIGN
 
-./arch/parisc/include/asm/cache.h:28: note: this is the location of the previous definition
-    28 | #define ARCH_KMALLOC_MINALIGN   16      /* ldcw requires 16-byte alignment */
 
-Bisect log attached. Reverting the offending patch fixes the build error and the warnings.
-
-Guenter
-
----
-# bad: [963e654022cc32d72c184b4ab86a76226b3e3b8d] Linux 5.15.174
-# good: [0a51d2d4527b43c5e467ffa6897deefeaf499358] Linux 5.15.173
-git bisect start 'HEAD' 'v5.15.173'
-# good: [16aa78edf6dd33d13320a0802322cade7a9e587b] net: hsr: fix hsr_init_sk() vs network/transport headers.
-git bisect good 16aa78edf6dd33d13320a0802322cade7a9e587b
-# bad: [c20f91bd939553be347196ecf4ab7b69dff19193] ethtool: Fix wrong mod state in case of verbose and no_mask bitset
-git bisect bad c20f91bd939553be347196ecf4ab7b69dff19193
-# bad: [f5872a2a84ec889d0a8f264d3ed0936670860479] rpmsg: glink: Propagate TX failures in intentless mode as well
-git bisect bad f5872a2a84ec889d0a8f264d3ed0936670860479
-# bad: [1d1e618c170643dfb07ebd1f6cab64278bfa06eb] exfat: fix uninit-value in __exfat_get_dentry_set
-git bisect bad 1d1e618c170643dfb07ebd1f6cab64278bfa06eb
-# bad: [13327d78229f954995a8535b369d4aa7f1d721dc] Revert "drivers: clk: zynqmp: update divider round rate logic"
-git bisect bad 13327d78229f954995a8535b369d4aa7f1d721dc
-# good: [098480edee1b64b6e811e0bf101b32cd11e71582] misc: apds990x: Fix missing pm_runtime_disable()
-git bisect good 098480edee1b64b6e811e0bf101b32cd11e71582
-# bad: [dadac97f066a67334268132c1e2d0fd599fbcbec] parisc: fix a possible DMA corruption
-git bisect bad dadac97f066a67334268132c1e2d0fd599fbcbec
-# good: [3c7355690f375bcfa3639aea7daa801789a85532] ALSA: hda/realtek: Update ALC256 depop procedure
-git bisect good 3c7355690f375bcfa3639aea7daa801789a85532
-# good: [487b128f07b82294bd0847c2c462dfcf1de9660a] apparmor: fix 'Do simple duplicate message elimination'
-git bisect good 487b128f07b82294bd0847c2c462dfcf1de9660a
-# first bad commit: [dadac97f066a67334268132c1e2d0fd599fbcbec] parisc: fix a possible DMA corruption
+> ---
+>   drivers/video/fbdev/udlfb.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/video/fbdev/udlfb.c b/drivers/video/fbdev/udlfb.c
+> index 71ac9e36f67c68aa7a54dce32323047a2a9a48bf..391bdb71197549caa839d862=
+f0ce7456dc7bf9ec 100644
+> --- a/drivers/video/fbdev/udlfb.c
+> +++ b/drivers/video/fbdev/udlfb.c
+> @@ -1480,7 +1480,7 @@ static ssize_t metrics_reset_store(struct device *=
+fbdev,
+>
+>   static const struct bin_attribute edid_attr =3D {
+>   	.attr.name =3D "edid",
+> -	.attr.mode =3D 0666,
+> +	.attr.mode =3D 0644,
+>   	.size =3D EDID_LENGTH,
+>   	.read =3D edid_show,
+>   	.write =3D edid_store
+>
+> ---
+> base-commit: 2d8308bf5b67dff50262d8a9260a50113b3628c6
+> change-id: 20241215-udlfb-perms-bb6ed270facf
+>
+> Best regards,
 
 
