@@ -1,99 +1,55 @@
-Return-Path: <stable+bounces-104292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FC59F262C
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 22:07:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3D39F2694
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 23:27:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3151E1885C21
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 21:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D06C164D6F
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 22:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01731BD4F7;
-	Sun, 15 Dec 2024 21:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E4WyYlSX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EECE1BC9E6;
+	Sun, 15 Dec 2024 22:27:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399A6189F20;
-	Sun, 15 Dec 2024 21:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1C3A41;
+	Sun, 15 Dec 2024 22:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734296828; cv=none; b=CgLXmB1Swm5dLn+QMb5LxXXSbp3sRC6XZ2tRcctTKRgzz+y1Jx8eR4wb3USS84m/k7I+VSYP7CpcYuB6NGVrnWkbNtIfXM7BoGb/hc+/rR3/kxw+9qdZ3U3EWQKlKTKTSeu/xMJmNGSuRL3p30LeUdNB1Y32yNv4YYYYvU1M/1U=
+	t=1734301656; cv=none; b=Ta0bJoDamiXSXjbfCaBhEpDVX0ZzoOHwp4hu6FG1MoAJtTZEnwo1oEPuSUq95gLq9fZg+juMpLHWfxg5n+TmF5MletKq4QCpiWIB52bMuKARxt/KCRyTuFGkQ+VOf2oO+S39cgthNTIra4tMUffd2KY6ikxv0m1Xo/T90lHxt+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734296828; c=relaxed/simple;
-	bh=JuAj/vluOFw1XrMxa05AfTbJpFfElNRTDiH0R867NaQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mBTKthJNSE+2s1gPH0Ab1YwyHLNL/T+hjA3CqvIArqHar5DR1LsInQfAMF0IbOfUuSDEX3meOdTPRHls3thCgHmaqJk4d7+KA87a6/Os7Ogc/DhpjfQzSQYKNqxN+Cf2oaMd/ErNaXfgfCSNkgTsK1FoPZIACVeI7qYUZdLQIsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E4WyYlSX; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734296828; x=1765832828;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JuAj/vluOFw1XrMxa05AfTbJpFfElNRTDiH0R867NaQ=;
-  b=E4WyYlSXOjddNdppG8z6yPlwQtx7EIb56LN5x/VKTTJhTDl4GP9SA5jN
-   B9+YA44XEq0xYLdtO0h2FlQHFaDpjk/BZvWfWzzq+q8V5UCchX5Fq0oF4
-   MxdtO51fEQC3IgJ5VU3FoGkqGYfLlXU3bRkTMnaxbkPcMnKHhCfp/bcvi
-   A2T/BxjnM3sCMJmF6O3YmPlgxXzmQ54TFM6aE6RcY1ABDXcBscecPWblU
-   wtjV/WaW4HHzhLqsMuSt7BB3mop1fQJQBf0+a/uCPvLfm4PmGAYaGWetR
-   nYSSUtzqp1CDRptRHqTcwcZQ6MCkqKYQehubHE4YxeAZcheWQuBOsMJOv
-   w==;
-X-CSE-ConnectionGUID: mbd2XQODQS6IDquekeURAA==
-X-CSE-MsgGUID: SKo6BBWDS2iJQ4PXTaWrlw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="34817247"
-X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; 
-   d="scan'208";a="34817247"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 13:07:07 -0800
-X-CSE-ConnectionGUID: Dt+rX3ZAQqqn2eSEWPPseQ==
-X-CSE-MsgGUID: qcfv1rcWSRq89b8u17Yrcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,237,1728975600"; 
-   d="scan'208";a="97568320"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2024 13:06:59 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tMvpH-00000008K4Y-1RVU;
-	Sun, 15 Dec 2024 23:06:55 +0200
-Date: Sun, 15 Dec 2024 23:06:55 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, masahiroy@kernel.org,
-	Matthias Maennich <maennich@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Federico Vaga <federico.vaga@vaga.pv.it>,
-	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Kristen Accardi <kristen.c.accardi@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jan Dabros <jsd@semihalf.com>, Andi Shyti <andi.shyti@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: Patch "module: Convert default symbol namespace to string
- literal" has been added to the 6.12-stable tree
-Message-ID: <Z19E7xNsk6IMUvp3@smile.fi.intel.com>
-References: <20241215165452.418957-1-sashal@kernel.org>
+	s=arc-20240116; t=1734301656; c=relaxed/simple;
+	bh=y9ECdaR/x9UTauFlwVvPjZJ2Cu2SqXvHOrC9C3SfedA=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=oRznExC++UqOxuxBqTpqt8Vnybob44OCfws11ASoO3hG3vGV9BCbVcldpefYru53sJG4ae1a+svg4bt04cfZSDcvUYir2E1F4TvxDqDjVCdVPz7x5tWzQrFK+4jqvkOQ4BWnbjK7yrwtok5LCMY9jcIhSSOl0qM6igm2pt4hiSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1tMwo8-000000002oV-1Trq;
+	Sun, 15 Dec 2024 22:09:48 +0000
+Date: Sun, 15 Dec 2024 22:09:41 +0000
+From: Daniel Golle <daniel@makrotopia.org>
+To: Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Justin Green <greenjustin@chromium.org>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	John Crispin <john@phrozen.org>, dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: [PATCH] drm/mediatek: only touch DISP_REG_OVL_PITCH_MSB if AFBC is
+ supported
+Message-ID: <8c001c8e70d93d64d3ee6bf7dc5078d2783d4e32.1734300345.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,30 +58,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241215165452.418957-1-sashal@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sun, Dec 15, 2024 at 11:54:50AM -0500, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     module: Convert default symbol namespace to string literal
-> 
-> to the 6.12-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      module-convert-default-symbol-namespace-to-string-li.patch
-> and it can be found in the queue-6.12 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+Touching DISP_REG_OVL_PITCH_MSB leads to video overlay on MT2701, MT7623N
+and probably other older SoCs being broken.
 
-IIUC if you take this one, you would want to take more that are fixing
-documentation generation and other noticed regressions.
+Only touching it on hardware which actually supports AFBC like it was
+before commit c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek
+DRM driver") fixes it.
 
+Fixes: c410fa9b07c3 ("drm/mediatek: Add AFBC support to Mediatek DRM driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+index f731d4fbe8b6..321b40a387cd 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+@@ -545,7 +545,7 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
+ 		mtk_ddp_write_relaxed(cmdq_pkt, hdr_pitch, &ovl->cmdq_reg, ovl->regs,
+ 				      DISP_REG_OVL_HDR_PITCH(ovl, idx));
+-	} else {
++	} else if (ovl->data->supports_afbc) {
+ 		mtk_ddp_write_relaxed(cmdq_pkt,
+ 				      overlay_pitch.split_pitch.msb,
+ 				      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH_MSB(idx));
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.47.1
 
 
