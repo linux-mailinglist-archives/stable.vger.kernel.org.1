@@ -1,182 +1,190 @@
-Return-Path: <stable+bounces-104220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02109F2201
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 04:11:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2014B9F221E
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 04:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAFAD16631E
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 03:11:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73EC8188507A
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 03:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89AC8BFF;
-	Sun, 15 Dec 2024 03:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9D79450;
+	Sun, 15 Dec 2024 03:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C4trGbL1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DdsQfMBc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0880979D2;
-	Sun, 15 Dec 2024 03:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190B9946C;
+	Sun, 15 Dec 2024 03:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734232255; cv=none; b=epbDGFu77nyY4i/lVgdbzB7bJ/TfRaPskjaK21j1SEsYpRtjwiKYrR7ELcUme+j+GRn/nINIVLKgDlvU0k2HSYw13nzkTdo6vrZETNe+RtWB09CHvv2kmh76g6AlyEvsJn5c0+uPJUKk8C3jRopbTthhr/QQ0ChAOLmx76n6i0w=
+	t=1734233400; cv=none; b=b27fxNz/ggQAdKlpIkV5rkUe1SlPnUcEOKGORur1nRp3ir97gzCKLK16gHbyZzbP6euyB24FKuoQ87OvqjOBcHrqHBPaojQGka1ccZ6LkgmPUbUo6fpTHtXYuRlFxRn4d8G4mpVvFpL75A6L68mPqYVitzDoDS5vfOo7uw2zNo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734232255; c=relaxed/simple;
-	bh=IizuzCgImeBZsiKbSoTeAlUg+T712L5odw9MCAKyUIM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CxumSIVwnnr1kewgdgZT3+NvFTHHECykDd6o/+GGYzHlLp+RghFL6J5gq6xTVq2HOct5Cd3c2jSZ9pSwxcHHlQk6tDEWwC52LQJbeYwWQUvhzs9M5UINKKN6TjmuLxc+FoIkCV7+JKLhxcaCdpB6n596OLBCxBf7PFwrEv1jL+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C4trGbL1; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6d8f916b40bso48100246d6.3;
-        Sat, 14 Dec 2024 19:10:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734232253; x=1734837053; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aAg9Dt17My/poSoH2lviKlhhmYoW3u3q6pccNlEuOo8=;
-        b=C4trGbL1Q7mNPrdAoSzct4pJNCkcKAFBXz0HQG2yb6aIzZqexkWGOUdVuXb/gqvMcI
-         qLEAcMtt3cnnJRCROEaaiYGjEHqNtw4rzNJaEC0Q3SDjus9kwyBBUXFLobvSHCqlAAje
-         lsjDDrwgfO1DYHczKBi4j9phBun4qdVp40SSmLXj8e04b7aYLf1QVjTc21xEuHanUU+7
-         uyQiZ3D69VHcM/R36n6xcExByOtPbEZ/as4ghEj+nE67PSU5OOJeUeg2v7LWS9WqTsQz
-         OeEDBaossU70OLv8iCq3P9+QOhjAVWeR/QK/jfwbRgUHjb5KK8bYSKbXHuLekTKiw2n4
-         SGGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734232253; x=1734837053;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aAg9Dt17My/poSoH2lviKlhhmYoW3u3q6pccNlEuOo8=;
-        b=aE+t8WlIeJDbkKwnm5gDpVDYybH649G5fHawQntfcjh7O8aBFmcwqfrldLEOdcxVG6
-         X4ICArlrcMcn2ELKZwf/dkbmR/qEa70nDMHGa9NXlcmjfTF9SJj+QD48sQRzm5alAWjy
-         9oL5e+uJY0jtU9HpaPuQhODPwiL1EqxQogUFte/y3+IX/+lkR7dzqU1OvIWeUWa0cXwF
-         1zi4i2P7j41JCL9dGrIFYdZnkBDo2bfqwcmMi9bHIvOqZU2jAof9yuVi2YceANg4Yh8y
-         21F2GP7ppMgI38pV0e+MTf55dsPyxd6Fxtwjm7O4S78GtFQ+MB2p7Eupg92JNMKF5zD0
-         BJQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVry0ad5HgD+sB1lTktxj45DNHAMyWo3rxthN4navLwvtz/2mQaHuUIH7f2odDFBs7X6gaySn0bI5k6ryom@vger.kernel.org, AJvYcCWiJ9mM8cN2TLaeN7ebV07CP/aNDwLCNnbuWURQGmg82lcvV9VwmHwccOJZ2k7NFxvRoKSKbg1i@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJ+iJFiYwv47fwoA6AJkwWIabU4YzFr9SzPES381ahH/k7geBm
-	fNzFjZMq1cHUfkcwnLvargnuOy5rYn+vna0TSTV+SYEjrzT23RKucO5p532PUL3hXFe3VG8NTpW
-	+v6ebWlqcwot+p/r+U9JRok8yd7s=
-X-Gm-Gg: ASbGncvVEuRujPV+OgwX3iUK1ZtGRpe42qsc29/Za3hVmr98dHvrP3yzGa9Ab7xekQ2
-	llpKD5pCNnm3I5edg2iJ8CGbaJCgiugtkTgIsFOE=
-X-Google-Smtp-Source: AGHT+IFeP/0vYFVff+ko43d8W5hG2jzmDAJOPoSV/2Ia3Km3xVaOa6aGqs9rkpo+RFoGcHGxCIySFjTVwuXobAIAyK8=
-X-Received: by 2002:a05:6214:cca:b0:6d8:8f3d:4d82 with SMTP id
- 6a1803df08f44-6dc969a9b19mr119280226d6.46.1734232252887; Sat, 14 Dec 2024
- 19:10:52 -0800 (PST)
+	s=arc-20240116; t=1734233400; c=relaxed/simple;
+	bh=/NX2EoaKM0CshF8ayVfhRdRlhGgTbc6ZwoH2EXyMGFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z5JTsA4EkjJeSK1SU+fYaU65/fnNYGtg2Lr4yfVgdd2OQA1V3o7pGDYGJiU9IJbenSQ0gy60ieQ0hpfHAR8L84kvU5JKNV05+UUDKPZLwkNXSroagU2v878vHJP5OkwUMETJzqkPgbbLiX05mxd2LAgV2JlEovWBuoOv21fI+Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DdsQfMBc; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734233397; x=1765769397;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/NX2EoaKM0CshF8ayVfhRdRlhGgTbc6ZwoH2EXyMGFQ=;
+  b=DdsQfMBcVZbcLACDFwhECn+lA7iphNu4e4EQe5uVzS15LvLb5y5EZhXA
+   iJeZ9CaJp4R3gf+eqI9a2zVkeGqDnK3fDzWhSZOjmGogpvl6caOVnas/b
+   qRJSXb2/pztC4QimS6pPgyL2+uBVcHLTUSqBvU63emml1BnmvHsyCzBVs
+   jEiPfi31qzGpVaHqO2Q3HAvKRixgFJ8go6ZkNBfsuekch5LI2/6KTTfd1
+   gYNOMhmw35Sm+jaSp7ab67eTuway8AC5qrvJ+SuawHvUvRYk1yBZ5AYeE
+   6c8cRgmDxkfjJAlT/UWEtRO7cf/6nJhmEKfxb3r6lj5OIAUWUocApHshX
+   Q==;
+X-CSE-ConnectionGUID: IaO9tpA8QZCNEsZ3md1zsw==
+X-CSE-MsgGUID: s1gBHvZgQRWVQzR4XcX5iw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="46040090"
+X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; 
+   d="scan'208";a="46040090"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2024 19:29:57 -0800
+X-CSE-ConnectionGUID: JeaPkRPVQA2mB1GwWL2aeA==
+X-CSE-MsgGUID: BmK1I43cRvGQvhA3Xj2xXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="97679538"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 14 Dec 2024 19:29:54 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tMfKJ-000DP2-1X;
+	Sun, 15 Dec 2024 03:29:51 +0000
+Date: Sun, 15 Dec 2024 11:29:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: yangge1116@126.com, akpm@linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	21cnbao@gmail.com, david@redhat.com, baolin.wang@linux.alibaba.com,
+	vbabka@suse.cz, liuzixing@hygon.cn, yangge <yangge1116@126.com>
+Subject: Re: [PATCH V2] mm, compaction: don't use ALLOC_CMA in long term GUP
+ flow
+Message-ID: <202412151139.n93obAio-lkp@intel.com>
+References: <1734157420-31110-1-git-send-email-yangge1116@126.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206083025.3478-1-laoar.shao@gmail.com>
-In-Reply-To: <20241206083025.3478-1-laoar.shao@gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Sun, 15 Dec 2024 11:10:17 +0800
-Message-ID: <CALOAHbAGOwax+LOo0weyesA=9XfY3hDwUHqunz=24Viu=pjy5g@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/readahead: fix large folio support in async readahead
-To: akpm@linux-foundation.org
-Cc: willy@infradead.org, david@redhat.com, oliver.sang@intel.com, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1734157420-31110-1-git-send-email-yangge1116@126.com>
 
-On Fri, Dec 6, 2024 at 4:31=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com> w=
-rote:
->
-> When testing large folio support with XFS on our servers, we observed tha=
-t
-> only a few large folios are mapped when reading large files via mmap.
-> After a thorough analysis, I identified it was caused by the
-> `/sys/block/*/queue/read_ahead_kb` setting.  On our test servers, this
-> parameter is set to 128KB.  After I tune it to 2MB, the large folio can
-> work as expected.  However, I believe the large folio behavior should not
-> be dependent on the value of read_ahead_kb.  It would be more robust if
-> the kernel can automatically adopt to it.
->
-> With /sys/block/*/queue/read_ahead_kb set to 128KB and performing a
-> sequential read on a 1GB file using MADV_HUGEPAGE, the differences in
-> /proc/meminfo are as follows:
->
-> - before this patch
->   FileHugePages:     18432 kB
->   FilePmdMapped:      4096 kB
->
-> - after this patch
->   FileHugePages:   1067008 kB
->   FilePmdMapped:   1048576 kB
->
-> This shows that after applying the patch, the entire 1GB file is mapped t=
-o
-> huge pages.  The stable list is CCed, as without this patch, large folios
-> don't function optimally in the readahead path.
->
-> It's worth noting that if read_ahead_kb is set to a larger value that
-> isn't aligned with huge page sizes (e.g., 4MB + 128KB), it may still fail
-> to map to hugepages.
->
-> Link: https://lkml.kernel.org/r/20241108141710.9721-1-laoar.shao@gmail.co=
-m
-> Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> Tested-by: kernel test robot <oliver.sang@intel.com>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->  mm/readahead.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> Changes:
-> v2->v3:
-> - Fix the softlockup reported by kernel test robot
->   https://lore.kernel.org/linux-fsdevel/202411292300.61edbd37-lkp@intel.c=
-om/
->
-> v1->v2: https://lore.kernel.org/linux-mm/20241108141710.9721-1-laoar.shao=
-@gmail.com/
-> - Drop the alignment (Matthew)
-> - Improve commit log (Andrew)
->
-> RFC->v1: https://lore.kernel.org/linux-mm/20241106092114.8408-1-laoar.sha=
-o@gmail.com/
-> - Simplify the code as suggested by Matthew
->
-> RFC: https://lore.kernel.org/linux-mm/20241104143015.34684-1-laoar.shao@g=
-mail.com/
->
-> diff --git a/mm/readahead.c b/mm/readahead.c
-> index 3dc6c7a128dd..1dc3cffd4843 100644
-> --- a/mm/readahead.c
-> +++ b/mm/readahead.c
-> @@ -642,7 +642,11 @@ void page_cache_async_ra(struct readahead_control *r=
-actl,
->                         1UL << order);
->         if (index =3D=3D expected) {
->                 ra->start +=3D ra->size;
-> -               ra->size =3D get_next_ra_size(ra, max_pages);
-> +               /*
-> +                * In the case of MADV_HUGEPAGE, the actual size might ex=
-ceed
-> +                * the readahead window.
-> +                */
-> +               ra->size =3D max(ra->size, get_next_ra_size(ra, max_pages=
-));
->                 ra->async_size =3D ra->size;
->                 goto readit;
->         }
-> --
-> 2.43.5
->
+Hi,
 
-Andrew, could you please drop the previous version and apply this
-updated one instead?
+kernel test robot noticed the following build errors:
 
---=20
-Regards
-Yafang
+[auto build test ERROR on akpm-mm/mm-everything]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/yangge1116-126-com/mm-compaction-don-t-use-ALLOC_CMA-in-long-term-GUP-flow/20241214-142453
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/1734157420-31110-1-git-send-email-yangge1116%40126.com
+patch subject: [PATCH V2] mm, compaction: don't use ALLOC_CMA in long term GUP flow
+config: i386-buildonly-randconfig-004-20241215 (https://download.01.org/0day-ci/archive/20241215/202412151139.n93obAio-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241215/202412151139.n93obAio-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412151139.n93obAio-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/vmscan.c: In function 'should_continue_reclaim':
+>> mm/vmscan.c:5822:21: error: too many arguments to function 'compaction_suitable'
+    5822 |                 if (compaction_suitable(zone, sc->order, sc->reclaim_idx, 0))
+         |                     ^~~~~~~~~~~~~~~~~~~
+   In file included from mm/vmscan.c:36:
+   include/linux/compaction.h:111:20: note: declared here
+     111 | static inline bool compaction_suitable(struct zone *zone, int order,
+         |                    ^~~~~~~~~~~~~~~~~~~
+   mm/vmscan.c: In function 'compaction_ready':
+   mm/vmscan.c:6050:14: error: too many arguments to function 'compaction_suitable'
+    6050 |         if (!compaction_suitable(zone, sc->order, sc->reclaim_idx, 0))
+         |              ^~~~~~~~~~~~~~~~~~~
+   include/linux/compaction.h:111:20: note: declared here
+     111 | static inline bool compaction_suitable(struct zone *zone, int order,
+         |                    ^~~~~~~~~~~~~~~~~~~
+
+
+vim +/compaction_suitable +5822 mm/vmscan.c
+
+  5778	
+  5779	/*
+  5780	 * Reclaim/compaction is used for high-order allocation requests. It reclaims
+  5781	 * order-0 pages before compacting the zone. should_continue_reclaim() returns
+  5782	 * true if more pages should be reclaimed such that when the page allocator
+  5783	 * calls try_to_compact_pages() that it will have enough free pages to succeed.
+  5784	 * It will give up earlier than that if there is difficulty reclaiming pages.
+  5785	 */
+  5786	static inline bool should_continue_reclaim(struct pglist_data *pgdat,
+  5787						unsigned long nr_reclaimed,
+  5788						struct scan_control *sc)
+  5789	{
+  5790		unsigned long pages_for_compaction;
+  5791		unsigned long inactive_lru_pages;
+  5792		int z;
+  5793	
+  5794		/* If not in reclaim/compaction mode, stop */
+  5795		if (!in_reclaim_compaction(sc))
+  5796			return false;
+  5797	
+  5798		/*
+  5799		 * Stop if we failed to reclaim any pages from the last SWAP_CLUSTER_MAX
+  5800		 * number of pages that were scanned. This will return to the caller
+  5801		 * with the risk reclaim/compaction and the resulting allocation attempt
+  5802		 * fails. In the past we have tried harder for __GFP_RETRY_MAYFAIL
+  5803		 * allocations through requiring that the full LRU list has been scanned
+  5804		 * first, by assuming that zero delta of sc->nr_scanned means full LRU
+  5805		 * scan, but that approximation was wrong, and there were corner cases
+  5806		 * where always a non-zero amount of pages were scanned.
+  5807		 */
+  5808		if (!nr_reclaimed)
+  5809			return false;
+  5810	
+  5811		/* If compaction would go ahead or the allocation would succeed, stop */
+  5812		for (z = 0; z <= sc->reclaim_idx; z++) {
+  5813			struct zone *zone = &pgdat->node_zones[z];
+  5814			if (!managed_zone(zone))
+  5815				continue;
+  5816	
+  5817			/* Allocation can already succeed, nothing to do */
+  5818			if (zone_watermark_ok(zone, sc->order, min_wmark_pages(zone),
+  5819					      sc->reclaim_idx, 0))
+  5820				return false;
+  5821	
+> 5822			if (compaction_suitable(zone, sc->order, sc->reclaim_idx, 0))
+  5823				return false;
+  5824		}
+  5825	
+  5826		/*
+  5827		 * If we have not reclaimed enough pages for compaction and the
+  5828		 * inactive lists are large enough, continue reclaiming
+  5829		 */
+  5830		pages_for_compaction = compact_gap(sc->order);
+  5831		inactive_lru_pages = node_page_state(pgdat, NR_INACTIVE_FILE);
+  5832		if (can_reclaim_anon_pages(NULL, pgdat->node_id, sc))
+  5833			inactive_lru_pages += node_page_state(pgdat, NR_INACTIVE_ANON);
+  5834	
+  5835		return inactive_lru_pages > pages_for_compaction;
+  5836	}
+  5837	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
