@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-104223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F332E9F2278
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 08:39:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837399F2279
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 08:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F370A1886B84
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 07:39:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFE91660E4
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 07:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B04C17C96;
-	Sun, 15 Dec 2024 07:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C65117C96;
+	Sun, 15 Dec 2024 07:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmSJ+yud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKloAnrj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B814C80
-	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 07:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8394C80
+	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 07:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734248344; cv=none; b=IT1ywFLy8W0uiuSsJraLgv0Htd7NB0Jpq5KqUGUlb3o+qZWKwv5dYBhrKpxX/2w30NiS6AsvZcyptc3Nt9isbjWJRsnLH/LVxNvnMU7CvRy/J4X3GnChRwcTUqLzkTlw/d8RT48RSokW4E5Qp0bkmU7qMBncQ0d/m8xzgT1R8gM=
+	t=1734248373; cv=none; b=cYV37o/AOKzzLCA+MM7T0PY/leHcdnT0uQAsPir//R0it9cwOjxsg4d6SR7QP9FiMc3D4xuvDyR3whQ61Dy2NR3hodnoJLzmQ42FdP9hVaL4/Z4nbiRknoyD0A8b4zqx5Wqnsc0VKduu3TxA7LJhas8lQyZJEAmO/fbPWQ1E5DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734248344; c=relaxed/simple;
-	bh=PAPgnMizaAKo2qQl+8972g3lGXXyVC5YxH+Q1IBm75c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=abPA4Zil0zQ4LBggO3F0sBUvFEgngrkcrj4MNgtxntIGr/EVQSMc8mhwuDKZakjzirUjaBEVkN++VgcPZ4wWeNfp88B1XkSgURKVL9HI2pzrNFcaE2mvUk1ImOqvjC4B2lYMq3d1TcE6mDD3miwBHfMEMVDblmX/i8KBhVgXfT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmSJ+yud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65436C4CECE;
-	Sun, 15 Dec 2024 07:39:03 +0000 (UTC)
+	s=arc-20240116; t=1734248373; c=relaxed/simple;
+	bh=Z7pe0h++jXBPpqipaxfM5ndW9e5DRleOnHCcRWJMrcU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OWx5+JabCbl9gzljtj/pwRB3bpx4OHCBEdYd6hPVblAZG2aG5ltYhZskohK4aZ4dn2IjuxtYC+OjYlKIaWWi1v7lPFi4yfKPL5qeEQz+EO+hE4PFQvXJXtN1+MIUWuuzw5CwjbCb2Enbxc2pO4NsTZuC/X6nY+vf8hGBGDzIJCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKloAnrj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3A0C4CECE;
+	Sun, 15 Dec 2024 07:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734248344;
-	bh=PAPgnMizaAKo2qQl+8972g3lGXXyVC5YxH+Q1IBm75c=;
+	s=korg; t=1734248373;
+	bh=Z7pe0h++jXBPpqipaxfM5ndW9e5DRleOnHCcRWJMrcU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vmSJ+yudZ4LFzw6rf3QTb5qUmz4o/hRS7ZEs45ur5GazfagpjYuaudcV6U3RO1iYc
-	 itC1L6cZd5XtNvqVTm7K2Gp2uCDxWH4ySLikdHMEZpMf1oajakH7+2BJRVcawxgQRi
-	 8q6CR4+/OlFL1rW8VBs/3optkK5a2B0hceYtRG2s=
-Subject: FAILED: patch "[PATCH] rust: kbuild: set `bindgen`'s Rust target version" failed to apply to 6.12-stable tree
-To: ojeda@kernel.org,aliceryhl@google.com,emilio@crisal.io,git@pvdrz.com
+	b=OKloAnrjuVMVSpR1sGNEJbHn0pLSHMh+7MOOSyKlOsKZsXV46oZgy0GJPScBCnJB9
+	 fIkFJjDaLfsrLHGhdkg2/e/g8tS6a7wMdlq18YG2qtC4GRg6Cq9VDvgaSDy72TKH42
+	 laYHZbm7AC1h4Qdd6wYQkdf22b95XW7L6YNWCOBg=
+Subject: FAILED: patch "[PATCH] serial: sh-sci: Check if TX data was written to device in" failed to apply to 6.6-stable tree
+To: claudiu.beznea.uj@bp.renesas.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 15 Dec 2024 08:39:00 +0100
-Message-ID: <2024121500-switch-jab-65fc@gregkh>
+Date: Sun, 15 Dec 2024 08:39:30 +0100
+Message-ID: <2024121530-womanlike-motocross-3283@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7a5f93ea5862da91488975acaa0c7abd508f192b
+git cherry-pick -x 7cc0e0a43a91052477c2921f924a37d9c3891f0c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121500-switch-jab-65fc@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121530-womanlike-motocross-3283@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,115 +77,144 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7a5f93ea5862da91488975acaa0c7abd508f192b Mon Sep 17 00:00:00 2001
-From: Miguel Ojeda <ojeda@kernel.org>
-Date: Sat, 23 Nov 2024 19:03:23 +0100
-Subject: [PATCH] rust: kbuild: set `bindgen`'s Rust target version
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 7cc0e0a43a91052477c2921f924a37d9c3891f0c Mon Sep 17 00:00:00 2001
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Date: Mon, 25 Nov 2024 13:58:56 +0200
+Subject: [PATCH] serial: sh-sci: Check if TX data was written to device in
+ .tx_empty()
 
-Each `bindgen` release may upgrade the list of Rust targets. For instance,
-currently, in their master branch [1], the latest ones are:
+On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
+is called. The uart_suspend_port() calls 3 times the
+struct uart_port::ops::tx_empty() before shutting down the port.
 
-    Nightly => {
-        vectorcall_abi: #124485,
-        ptr_metadata: #81513,
-        layout_for_ptr: #69835,
-    },
-    Stable_1_77(77) => { offset_of: #106655 },
-    Stable_1_73(73) => { thiscall_abi: #42202 },
-    Stable_1_71(71) => { c_unwind_abi: #106075 },
-    Stable_1_68(68) => { abi_efiapi: #105795 },
+According to the documentation, the struct uart_port::ops::tx_empty()
+API tests whether the transmitter FIFO and shifter for the port is
+empty.
 
-By default, the highest stable release in their list is used, and users
-are expected to set one if they need to support older Rust versions
-(e.g. see [2]).
+The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
+transmit FIFO through the FDR (FIFO Data Count Register). The data units
+in the FIFOs are written in the shift register and transmitted from there.
+The TEND bit in the Serial Status Register reports if the data was
+transmitted from the shift register.
 
-Thus, over time, new Rust features are used by default, and at some
-point, it is likely that `bindgen` will emit Rust code that requires a
-Rust version higher than our minimum (or perhaps enabling an unstable
-feature). Currently, there is no problem because the maximum they have,
-as seen above, is Rust 1.77.0, and our current minimum is Rust 1.78.0.
+In the previous code, in the tx_empty() API implemented by the sh-sci
+driver, it is considered that the TX is empty if the hardware reports the
+TEND bit set and the number of data units in the FIFO is zero.
 
-Therefore, set a Rust target explicitly now to prevent going forward in
-time too much and thus getting potential build failures at some point.
+According to the HW manual, the TEND bit has the following meaning:
 
-Since we also support a minimum `bindgen` version, and since `bindgen`
-does not support passing unknown Rust target versions, we need to use
-the list of our minimum `bindgen` version, rather than the latest. So,
-since `bindgen` 0.65.1 had this list [3], we need to use Rust 1.68.0:
+0: Transmission is in the waiting state or in progress.
+1: Transmission is completed.
 
-    /// Rust stable 1.64
-    ///  * `core_ffi_c` ([Tracking issue](https://github.com/rust-lang/rust/issues/94501))
-    => Stable_1_64 => 1.64;
-    /// Rust stable 1.68
-    ///  * `abi_efiapi` calling convention ([Tracking issue](https://github.com/rust-lang/rust/issues/65815))
-    => Stable_1_68 => 1.68;
-    /// Nightly rust
-    ///  * `thiscall` calling convention ([Tracking issue](https://github.com/rust-lang/rust/issues/42202))
-    ///  * `vectorcall` calling convention (no tracking issue)
-    ///  * `c_unwind` calling convention ([Tracking issue](https://github.com/rust-lang/rust/issues/74990))
-    => Nightly => nightly;
+It has been noticed that when opening the serial device w/o using it and
+then switch to a power saving mode, the tx_empty() call in the
+uart_port_suspend() function fails, leading to the "Unable to drain
+transmitter" message being printed on the console. This is because the
+TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
+TEND=0 has double meaning (waiting state, in progress) we can't
+determined the scenario described above.
 
-    ...
+Add a software workaround for this. This sets a variable if any data has
+been sent on the serial console (when using PIO) or if the DMA callback has
+been called (meaning something has been transmitted). In the tx_empty()
+API the status of the DMA transaction is also checked and if it is
+completed or in progress the code falls back in checking the hardware
+registers instead of relying on the software variable.
 
-    /// Latest stable release of Rust
-    pub const LATEST_STABLE_RUST: RustTarget = RustTarget::Stable_1_68;
+Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20241125115856.513642-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Thus add the `--rust-target 1.68` parameter. Add a comment as well
-explaining this.
-
-An alternative would be to use the currently running (i.e. actual) `rustc`
-and `bindgen` versions to pick a "better" Rust target version. However,
-that would introduce more moving parts depending on the user setup and
-is also more complex to implement.
-
-Starting with `bindgen` 0.71.0 [4], we will be able to set any future
-Rust version instead, i.e. we will be able to set here our minimum
-supported Rust version. Christian implemented it [5] after seeing this
-patch. Thanks!
-
-Cc: Christian Poveda <git@pvdrz.com>
-Cc: Emilio Cobos Álvarez <emilio@crisal.io>
-Cc: stable@vger.kernel.org # needed for 6.12.y; unneeded for 6.6.y; do not apply to 6.1.y
-Fixes: c844fa64a2d4 ("rust: start supporting several `bindgen` versions")
-Link: https://github.com/rust-lang/rust-bindgen/blob/21c60f473f4e824d4aa9b2b508056320d474b110/bindgen/features.rs#L97-L105 [1]
-Link: https://github.com/rust-lang/rust-bindgen/issues/2960 [2]
-Link: https://github.com/rust-lang/rust-bindgen/blob/7d243056d335fdc4537f7bca73c06d01aae24ddc/bindgen/features.rs#L131-L150 [3]
-Link: https://github.com/rust-lang/rust-bindgen/blob/main/CHANGELOG.md#0710-2024-12-06 [4]
-Link: https://github.com/rust-lang/rust-bindgen/pull/2993 [5]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20241123180323.255997-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 9da9042fd627..a40a3936126d 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -280,9 +280,22 @@ endif
- # architecture instead of generating `usize`.
- bindgen_c_flags_final = $(bindgen_c_flags_lto) -fno-builtin -D__BINDGEN__
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index df523c744423..924b803af440 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -157,6 +157,7 @@ struct sci_port {
  
-+# Each `bindgen` release may upgrade the list of Rust target versions. By
-+# default, the highest stable release in their list is used. Thus we need to set
-+# a `--rust-target` to avoid future `bindgen` releases emitting code that
-+# `rustc` may not understand. On top of that, `bindgen` does not support passing
-+# an unknown Rust target version.
-+#
-+# Therefore, the Rust target for `bindgen` can be only as high as the minimum
-+# Rust version the kernel supports and only as high as the greatest stable Rust
-+# target supported by the minimum `bindgen` version the kernel supports (that
-+# is, if we do not test the actual `rustc`/`bindgen` versions running).
-+#
-+# Starting with `bindgen` 0.71.0, we will be able to set any future Rust version
-+# instead, i.e. we will be able to set here our minimum supported Rust version.
- quiet_cmd_bindgen = BINDGEN $@
-       cmd_bindgen = \
--	$(BINDGEN) $< $(bindgen_target_flags) \
-+	$(BINDGEN) $< $(bindgen_target_flags) --rust-target 1.68 \
- 		--use-core --with-derive-default --ctypes-prefix ffi --no-layout-tests \
- 		--no-debug '.*' --enable-function-attribute-detection \
- 		-o $@ -- $(bindgen_c_flags_final) -DMODULE \
+ 	bool has_rtscts;
+ 	bool autorts;
++	bool tx_occurred;
+ };
+ 
+ #define SCI_NPORTS CONFIG_SERIAL_SH_SCI_NR_UARTS
+@@ -850,6 +851,7 @@ static void sci_transmit_chars(struct uart_port *port)
+ {
+ 	struct tty_port *tport = &port->state->port;
+ 	unsigned int stopped = uart_tx_stopped(port);
++	struct sci_port *s = to_sci_port(port);
+ 	unsigned short status;
+ 	unsigned short ctrl;
+ 	int count;
+@@ -885,6 +887,7 @@ static void sci_transmit_chars(struct uart_port *port)
+ 		}
+ 
+ 		sci_serial_out(port, SCxTDR, c);
++		s->tx_occurred = true;
+ 
+ 		port->icount.tx++;
+ 	} while (--count > 0);
+@@ -1241,6 +1244,8 @@ static void sci_dma_tx_complete(void *arg)
+ 	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
+ 		uart_write_wakeup(port);
+ 
++	s->tx_occurred = true;
++
+ 	if (!kfifo_is_empty(&tport->xmit_fifo)) {
+ 		s->cookie_tx = 0;
+ 		schedule_work(&s->work_tx);
+@@ -1731,6 +1736,19 @@ static void sci_flush_buffer(struct uart_port *port)
+ 		s->cookie_tx = -EINVAL;
+ 	}
+ }
++
++static void sci_dma_check_tx_occurred(struct sci_port *s)
++{
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	if (!s->chan_tx)
++		return;
++
++	status = dmaengine_tx_status(s->chan_tx, s->cookie_tx, &state);
++	if (status == DMA_COMPLETE || status == DMA_IN_PROGRESS)
++		s->tx_occurred = true;
++}
+ #else /* !CONFIG_SERIAL_SH_SCI_DMA */
+ static inline void sci_request_dma(struct uart_port *port)
+ {
+@@ -1740,6 +1758,10 @@ static inline void sci_free_dma(struct uart_port *port)
+ {
+ }
+ 
++static void sci_dma_check_tx_occurred(struct sci_port *s)
++{
++}
++
+ #define sci_flush_buffer	NULL
+ #endif /* !CONFIG_SERIAL_SH_SCI_DMA */
+ 
+@@ -2076,6 +2098,12 @@ static unsigned int sci_tx_empty(struct uart_port *port)
+ {
+ 	unsigned short status = sci_serial_in(port, SCxSR);
+ 	unsigned short in_tx_fifo = sci_txfill(port);
++	struct sci_port *s = to_sci_port(port);
++
++	sci_dma_check_tx_occurred(s);
++
++	if (!s->tx_occurred)
++		return TIOCSER_TEMT;
+ 
+ 	return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT : 0;
+ }
+@@ -2247,6 +2275,7 @@ static int sci_startup(struct uart_port *port)
+ 
+ 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
+ 
++	s->tx_occurred = false;
+ 	sci_request_dma(port);
+ 
+ 	ret = sci_request_irq(s);
 
 
