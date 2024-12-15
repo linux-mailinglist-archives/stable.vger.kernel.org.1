@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-104252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0429F22B0
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 09:53:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2193C9F22B1
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 09:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 736787A11AA
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 08:52:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B461886A4D
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 08:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07CB145B24;
-	Sun, 15 Dec 2024 08:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3633A13D28F;
+	Sun, 15 Dec 2024 08:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPkghffb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdgecX4P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF71145B03
-	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 08:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62EE13E03A
+	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 08:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734252760; cv=none; b=LSXhfspAS/ShULAQxe6vmIvnuROh/jbTocmzSXtQDVBG/XV89JV2gWhPeWMScPaIVYHoIc/6j8Ez8Ii4yX04A0o6mOpQCqZbKo79x4un8tnTyoGk+aVnv0a01BaeOm3m/1MXP17J1E6dv8ZsEdzBWyOY5lIZ7U9YMz5Y1D184v4=
+	t=1734252781; cv=none; b=RlI7JmAdELdCPQ+UhNQ+slpQeMxx8WFpAzZUzBlRGRtZGX9WRKjuDatI4hWtu8FEIerOiEPzdAiqi7pgyWKSUt9LEYB/S7JV+o9PBXj4ia+jMTeV42oO0eb4Zw1GsDrc2frWkDyOMiOSE8XXFIxWBzOoWF9B+sPY9TuofbnbFgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734252760; c=relaxed/simple;
-	bh=tzY80wvX7lqaNJ7of1Iqi2TfjOjoomWAwt8wkrb6c2U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Xa/HfjtqMVNSTFRpz8YjTpsfe7PnfclmlZSpqjNODz8UlVCrbvfs6KxxcXTRxBo1IBVPaULk3owbeEZbdeLggKKLQ6j0MTUADCIxa3E8XTy0+zULHpnFmsFmJrBF9AisZZo8cl6pqw6gvGLnaNQqlX7nUKnAdIZMwKASQLQGysg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPkghffb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FB8C4CECE;
-	Sun, 15 Dec 2024 08:52:39 +0000 (UTC)
+	s=arc-20240116; t=1734252781; c=relaxed/simple;
+	bh=1Ea67Wf2k3h9dFTBLT+rjU+JH7gDw1gggN7GtQ3EZSA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lWdABmQIC9CptSldZs9wZPztg0GF092+ss8U8ksL3qvjxV2TFBDLiPPZWclMFOGNQJajNEnKmNbAoBqKG6lXrKyPRzB0SOv7q7uwuDH5EySweE1Gb2mdwPROAOLkxZIMtsp9LgCD7RfRX7SXyAJolkQyp/jcvBaLPHGGQ4XKCCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdgecX4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B179C4CECE;
+	Sun, 15 Dec 2024 08:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734252760;
-	bh=tzY80wvX7lqaNJ7of1Iqi2TfjOjoomWAwt8wkrb6c2U=;
+	s=korg; t=1734252780;
+	bh=1Ea67Wf2k3h9dFTBLT+rjU+JH7gDw1gggN7GtQ3EZSA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rPkghffbtPDk+IVs3C8FvG7sQ2DJCvm6//NoQywCJq8fgPhPYpTtI8GGsn+e6+1uX
-	 0o5TTT6vUlPuGEj6sd6mn2gDJWtfVEYuo1A4hVpdB4LuZmMQZPAhIDiLy0Kp2wacYe
-	 09ak0arZABwoiBk0U0H4vbBVngvg5AaNB/GAUsHc=
-Subject: FAILED: patch "[PATCH] xfs: fix zero byte checking in the superblock scrubber" failed to apply to 5.4-stable tree
+	b=xdgecX4Pvj6tt1bdJeEa9E3cD1SxO+kvisguX64wCkdDK1iCT8fJ90NF5kD/09xTN
+	 zSQQvQkIaO5xNxmTyZ/adHqjohEFaA0niXurelw97EBMgGntwtjnv4kSJ4P5RrnzAz
+	 Z+HwGGFBNk2RuESKBpiTW2k+EJrRvD+PskVskvdA=
+Subject: FAILED: patch "[PATCH] xfs: convert quotacheck to attach dquot buffers" failed to apply to 6.12-stable tree
 To: djwong@kernel.org,hch@lst.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 15 Dec 2024 09:52:24 +0100
-Message-ID: <2024121523-ought-imminent-d0a7@gregkh>
+Date: Sun, 15 Dec 2024 09:52:57 +0100
+Message-ID: <2024121557-herring-copartner-3013@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x c004a793e0ec34047c3bd423bcd8966f5fac88dc
+git cherry-pick -x ca378189fdfa890a4f0622f85ee41b710bbac271
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121523-ought-imminent-d0a7@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121557-herring-copartner-3013@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,80 +77,129 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c004a793e0ec34047c3bd423bcd8966f5fac88dc Mon Sep 17 00:00:00 2001
+From ca378189fdfa890a4f0622f85ee41b710bbac271 Mon Sep 17 00:00:00 2001
 From: "Darrick J. Wong" <djwong@kernel.org>
-Date: Mon, 2 Dec 2024 10:57:42 -0800
-Subject: [PATCH] xfs: fix zero byte checking in the superblock scrubber
+Date: Mon, 2 Dec 2024 10:57:39 -0800
+Subject: [PATCH] xfs: convert quotacheck to attach dquot buffers
 
-The logic to check that the region past the end of the superblock is all
-zeroes is wrong -- we don't want to check only the bytes past the end of
-the maximally sized ondisk superblock structure as currently defined in
-xfs_format.h; we want to check the bytes beyond the end of the ondisk as
-defined by the feature bits.
+Now that we've converted the dquot logging machinery to attach the dquot
+buffer to the li_buf pointer so that the AIL dqflush doesn't have to
+allocate or read buffers in a reclaim path, do the same for the
+quotacheck code so that the reclaim shrinker dqflush call doesn't have
+to do that either.
 
-Port the superblock size logic from xfs_repair and then put it to use in
-xfs_scrub.
-
-Cc: <stable@vger.kernel.org> # v4.15
-Fixes: 21fb4cb1981ef7 ("xfs: scrub the secondary superblocks")
+Cc: <stable@vger.kernel.org> # v6.12
+Fixes: 903edea6c53f09 ("mm: warn about illegal __GFP_NOFAIL usage in a more appropriate location and manner")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-diff --git a/fs/xfs/scrub/agheader.c b/fs/xfs/scrub/agheader.c
-index 88063d67cb5f..9f8c312dfd3c 100644
---- a/fs/xfs/scrub/agheader.c
-+++ b/fs/xfs/scrub/agheader.c
-@@ -59,6 +59,32 @@ xchk_superblock_xref(
- 	/* scrub teardown will take care of sc->sa for us */
- }
+diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
+index 708fd3358375..f11d475898f2 100644
+--- a/fs/xfs/xfs_dquot.c
++++ b/fs/xfs/xfs_dquot.c
+@@ -1285,11 +1285,10 @@ xfs_qm_dqflush_check(
+  * Requires dquot flush lock, will clear the dirty flag, delete the quota log
+  * item from the AIL, and shut down the system if something goes wrong.
+  */
+-int
++static int
+ xfs_dquot_read_buf(
+ 	struct xfs_trans	*tp,
+ 	struct xfs_dquot	*dqp,
+-	xfs_buf_flags_t		xbf_flags,
+ 	struct xfs_buf		**bpp)
+ {
+ 	struct xfs_mount	*mp = dqp->q_mount;
+@@ -1297,10 +1296,8 @@ xfs_dquot_read_buf(
+ 	int			error;
  
-+/*
-+ * Calculate the ondisk superblock size in bytes given the feature set of the
-+ * mounted filesystem (aka the primary sb).  This is subtlely different from
-+ * the logic in xfs_repair, which computes the size of a secondary sb given the
-+ * featureset listed in the secondary sb.
-+ */
-+STATIC size_t
-+xchk_superblock_ondisk_size(
-+	struct xfs_mount	*mp)
-+{
-+	if (xfs_has_metadir(mp))
-+		return offsetofend(struct xfs_dsb, sb_pad);
-+	if (xfs_has_metauuid(mp))
-+		return offsetofend(struct xfs_dsb, sb_meta_uuid);
-+	if (xfs_has_crc(mp))
-+		return offsetofend(struct xfs_dsb, sb_lsn);
-+	if (xfs_sb_version_hasmorebits(&mp->m_sb))
-+		return offsetofend(struct xfs_dsb, sb_bad_features2);
-+	if (xfs_has_logv2(mp))
-+		return offsetofend(struct xfs_dsb, sb_logsunit);
-+	if (xfs_has_sector(mp))
-+		return offsetofend(struct xfs_dsb, sb_logsectsize);
-+	/* only support dirv2 or more recent */
-+	return offsetofend(struct xfs_dsb, sb_dirblklog);
-+}
-+
- /*
-  * Scrub the filesystem superblock.
-  *
-@@ -75,6 +101,7 @@ xchk_superblock(
- 	struct xfs_buf		*bp;
- 	struct xfs_dsb		*sb;
- 	struct xfs_perag	*pag;
-+	size_t			sblen;
- 	xfs_agnumber_t		agno;
- 	uint32_t		v2_ok;
- 	__be32			features_mask;
-@@ -388,8 +415,8 @@ xchk_superblock(
+ 	error = xfs_trans_read_buf(mp, tp, mp->m_ddev_targp, dqp->q_blkno,
+-				   mp->m_quotainfo->qi_dqchunklen, xbf_flags,
++				   mp->m_quotainfo->qi_dqchunklen, 0,
+ 				   &bp, &xfs_dquot_buf_ops);
+-	if (error == -EAGAIN)
+-		return error;
+ 	if (xfs_metadata_is_sick(error))
+ 		xfs_dquot_mark_sick(dqp);
+ 	if (error)
+@@ -1334,7 +1331,7 @@ xfs_dquot_attach_buf(
+ 		struct xfs_buf	*bp = NULL;
+ 
+ 		spin_unlock(&qlip->qli_lock);
+-		error = xfs_dquot_read_buf(tp, dqp, 0, &bp);
++		error = xfs_dquot_read_buf(tp, dqp, &bp);
+ 		if (error)
+ 			return error;
+ 
+diff --git a/fs/xfs/xfs_dquot.h b/fs/xfs/xfs_dquot.h
+index c7e80fc90823..c617bac75361 100644
+--- a/fs/xfs/xfs_dquot.h
++++ b/fs/xfs/xfs_dquot.h
+@@ -214,8 +214,6 @@ void xfs_dquot_to_disk(struct xfs_disk_dquot *ddqp, struct xfs_dquot *dqp);
+ #define XFS_DQ_IS_DIRTY(dqp)	((dqp)->q_flags & XFS_DQFLAG_DIRTY)
+ 
+ void		xfs_qm_dqdestroy(struct xfs_dquot *dqp);
+-int		xfs_dquot_read_buf(struct xfs_trans *tp, struct xfs_dquot *dqp,
+-				xfs_buf_flags_t flags, struct xfs_buf **bpp);
+ int		xfs_qm_dqflush(struct xfs_dquot *dqp, struct xfs_buf *bp);
+ void		xfs_qm_dqunpin_wait(struct xfs_dquot *dqp);
+ void		xfs_qm_adjust_dqtimers(struct xfs_dquot *d);
+diff --git a/fs/xfs/xfs_qm.c b/fs/xfs/xfs_qm.c
+index 7d07d4b5c339..69b70c3e999d 100644
+--- a/fs/xfs/xfs_qm.c
++++ b/fs/xfs/xfs_qm.c
+@@ -148,13 +148,13 @@ xfs_qm_dqpurge(
+ 		 * We don't care about getting disk errors here. We need
+ 		 * to purge this dquot anyway, so we go ahead regardless.
+ 		 */
+-		error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
++		error = xfs_dquot_use_attached_buf(dqp, &bp);
+ 		if (error == -EAGAIN) {
+ 			xfs_dqfunlock(dqp);
+ 			dqp->q_flags &= ~XFS_DQFLAG_FREEING;
+ 			goto out_unlock;
+ 		}
+-		if (error)
++		if (!bp)
+ 			goto out_funlock;
+ 
+ 		/*
+@@ -506,8 +506,8 @@ xfs_qm_dquot_isolate(
+ 		/* we have to drop the LRU lock to flush the dquot */
+ 		spin_unlock(&lru->lock);
+ 
+-		error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
+-		if (error) {
++		error = xfs_dquot_use_attached_buf(dqp, &bp);
++		if (!bp || error == -EAGAIN) {
+ 			xfs_dqfunlock(dqp);
+ 			goto out_unlock_dirty;
+ 		}
+@@ -1331,6 +1331,10 @@ xfs_qm_quotacheck_dqadjust(
+ 		return error;
  	}
  
- 	/* Everything else must be zero. */
--	if (memchr_inv(sb + 1, 0,
--			BBTOB(bp->b_length) - sizeof(struct xfs_dsb)))
-+	sblen = xchk_superblock_ondisk_size(mp);
-+	if (memchr_inv((char *)sb + sblen, 0, BBTOB(bp->b_length) - sblen))
- 		xchk_block_set_corrupt(sc, bp);
++	error = xfs_dquot_attach_buf(NULL, dqp);
++	if (error)
++		return error;
++
+ 	trace_xfs_dqadjust(dqp);
  
- 	xchk_superblock_xref(sc, bp);
+ 	/*
+@@ -1513,9 +1517,13 @@ xfs_qm_flush_one(
+ 		goto out_unlock;
+ 	}
+ 
+-	error = xfs_dquot_read_buf(NULL, dqp, XBF_TRYLOCK, &bp);
++	error = xfs_dquot_use_attached_buf(dqp, &bp);
+ 	if (error)
+ 		goto out_unlock;
++	if (!bp) {
++		error = -EFSCORRUPTED;
++		goto out_unlock;
++	}
+ 
+ 	error = xfs_qm_dqflush(dqp, bp);
+ 	if (!error)
 
 
