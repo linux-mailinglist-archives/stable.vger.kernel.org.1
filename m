@@ -1,134 +1,117 @@
-Return-Path: <stable+bounces-104270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402049F22CB
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 10:02:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBB59F22F5
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 10:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF434188548F
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 09:02:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E2DE188373C
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 09:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5792B2F2;
-	Sun, 15 Dec 2024 09:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA5D49627;
+	Sun, 15 Dec 2024 09:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGw5Qj1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhdoQNf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23302F42
-	for <stable@vger.kernel.org>; Sun, 15 Dec 2024 09:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37B928FD;
+	Sun, 15 Dec 2024 09:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734253331; cv=none; b=eCkVymrFkGlFTh3O4UvAl31Uwe3Rv4qYilg/xYQ1PDayE8kVuDsDxN83NlZDJiv1+2db0LEiPfOHyGQUQnvEYdAlpRpenw+tPG6U9j9/dHjqVpsKP7WG1NC1Zwcg21liAWrhNKMpPKJ7fClC4ALoIscAkI3lEfP7Sv0lLBYSt3w=
+	t=1734254576; cv=none; b=nkKjWACvsPb7aq94B05ox0zUzAeAMleT1+rklmE4n8+yhWi/AZCNrBTCu/hXy7BxgJHAlryRFBFZG+gV8gji3U8p4AJplH27AeVieQqr8O0kl1FIJY76A+zR0oy8Asspy1LQKchIi91twU2DT40Vh0nCi1uz+D6ImueLz634u7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734253331; c=relaxed/simple;
-	bh=lSRNQymgMCL0KQs+WdbhQBB0cwbktLXxIO+u/1Ve8xM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dgMfbvd4OJUe2Ex8Df2wIxpjrba/84BgXubJZ9CgptKa0L1fjOvSJTn+nbZtoP6UVE8aXh3c7FY/AJDMDuIcW1sHsMz8ntmWFabw0uNdycHqIv6Xw7zGyg53ZPXW5f+8U9mA70TIA/LgZkh3mUE7dVhWC/61tSf4YXsO4yfEi08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGw5Qj1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA9BC4CECE;
-	Sun, 15 Dec 2024 09:02:09 +0000 (UTC)
+	s=arc-20240116; t=1734254576; c=relaxed/simple;
+	bh=VA/fr2fanU2w8E9A58sNN9gLlEV2wRsSO8gXxlKoJjc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JtXgfRgag4rTG27QgpnMmjzx3vPIA1H2OG/ZWGHh9rx6reJpwRPMe9hSx8rPBosj4N6UwEupQAdUhyGV5DWbbd2CUBRvKhYEftN1dB7+uz7GYaqcUDFJE0rUJr90MEVs7bSqjumKBM2IiYeCQWqZTfRv6GsU1D7Ik4O1yIsv0GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhdoQNf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB77C4CECE;
+	Sun, 15 Dec 2024 09:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734253330;
-	bh=lSRNQymgMCL0KQs+WdbhQBB0cwbktLXxIO+u/1Ve8xM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=hGw5Qj1Xv6bSExEVvgUYspUDOgrdxMkbJBK9ii74aQ2+4VP+BaUuSh95nQTxefwAA
-	 5gIilngMuZROADoIttpJ9sdD1SeFZu8gZU83wgUe4JiHOaUGL8v7KAQzSHU2PMN1L0
-	 6YWUaukZckvTdBfgOCIMn4kmZ0FqdDy+InUqDod4=
-Subject: FAILED: patch "[PATCH] bpf,perf: Fix invalid prog_array access in" failed to apply to 5.15-stable tree
-To: jolsa@kernel.org,andrii@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 15 Dec 2024 10:02:07 +0100
-Message-ID: <2024121506-pancreas-mosaic-0ae0@gregkh>
+	s=korg; t=1734254576;
+	bh=VA/fr2fanU2w8E9A58sNN9gLlEV2wRsSO8gXxlKoJjc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rhdoQNf8ZGsxq0OtLSI6TOY8eXGLpQiMg80mC9co5MB8vkpw0TO6RSdI2TXbLarRr
+	 3puHKaN152VDKGxcAGKQHHoUv8YpKIcGE7RdDdhGElwIw2TV+oXx0ek8hpp+N495bn
+	 eMNvUw87z4AMK5lq0N6m/Vfd2qbHpnzNSDSI0ALQ=
+Date: Sun, 15 Dec 2024 10:22:53 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, gshan@redhat.com, james.morse@arm.com,
+	maz@kernel.org, oliver.upton@linux.dev,
+	shameerali.kolothum.thodi@huawei.com, vt@altlinux.org,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 6.6 v1] KVM: arm64: Disable MPAM visibility by default
+ and ignore VMM writes
+Message-ID: <2024121528-refurbish-plausibly-31c7@gregkh>
+References: <20241212151406.1436382-1-joey.gouly@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241212151406.1436382-1-joey.gouly@arm.com>
 
+On Thu, Dec 12, 2024 at 03:14:06PM +0000, Joey Gouly wrote:
+> From: James Morse <james.morse@arm.com>
+> 
+> commit 6685f5d572c22e1003e7c0d089afe1c64340ab1f upstream.
+> 
+> commit 011e5f5bf529f ("arm64/cpufeature: Add remaining feature bits in
+> ID_AA64PFR0 register") exposed the MPAM field of AA64PFR0_EL1 to guests,
+> but didn't add trap handling. A previous patch supplied the missing trap
+> handling.
+> 
+> Existing VMs that have the MPAM field of ID_AA64PFR0_EL1 set need to
+> be migratable, but there is little point enabling the MPAM CPU
+> interface on new VMs until there is something a guest can do with it.
+> 
+> Clear the MPAM field from the guest's ID_AA64PFR0_EL1 and on hardware
+> that supports MPAM, politely ignore the VMMs attempts to set this bit.
+> 
+> Guests exposed to this bug have the sanitised value of the MPAM field,
+> so only the correct value needs to be ignored. This means the field
+> can continue to be used to block migration to incompatible hardware
+> (between MPAM=1 and MPAM=5), and the VMM can't rely on the field
+> being ignored.
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Co-developed-by: Joey Gouly <joey.gouly@arm.com>
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> Reviewed-by: Marc Zyngier <maz@kernel.org>
+> Link: https://lore.kernel.org/r/20241030160317.2528209-7-joey.gouly@arm.com
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> [ joey: fixed up merge conflict, no ID_FILTERED macro in 6.6 ]
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Cc: stable@vger.kernel.org # 6.6.x
+> Cc: Vitaly Chikunov <vt@altlinux.org>
+> Link: https://lore.kernel.org/linux-arm-kernel/20241202045830.e4yy3nkvxtzaybxk@altlinux.org/
+> ---
+> 
+> This fixes an issue seen when using KVM with a 6.6 host kernel, and
+> newer (6.13+) kernels in the guest.
+> 
+> Tested with a stripped down version of set_id_regs from the original
+> patch series.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 978c4486cca5c7b9253d3ab98a88c8e769cb9bbd
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121506-pancreas-mosaic-0ae0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
+What about 6.12.y?  You can't just skip a stable tree, otherwise you
+will get a regression when you upgrade to 6.12.y, right?
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 978c4486cca5c7b9253d3ab98a88c8e769cb9bbd Mon Sep 17 00:00:00 2001
-From: Jiri Olsa <jolsa@kernel.org>
-Date: Sun, 8 Dec 2024 15:25:07 +0100
-Subject: [PATCH] bpf,perf: Fix invalid prog_array access in
- perf_event_detach_bpf_prog
-
-Syzbot reported [1] crash that happens for following tracing scenario:
-
-  - create tracepoint perf event with attr.inherit=1, attach it to the
-    process and set bpf program to it
-  - attached process forks -> chid creates inherited event
-
-    the new child event shares the parent's bpf program and tp_event
-    (hence prog_array) which is global for tracepoint
-
-  - exit both process and its child -> release both events
-  - first perf_event_detach_bpf_prog call will release tp_event->prog_array
-    and second perf_event_detach_bpf_prog will crash, because
-    tp_event->prog_array is NULL
-
-The fix makes sure the perf_event_detach_bpf_prog checks prog_array
-is valid before it tries to remove the bpf program from it.
-
-[1] https://lore.kernel.org/bpf/Z1MR6dCIKajNS6nU@krava/T/#m91dbf0688221ec7a7fc95e896a7ef9ff93b0b8ad
-
-Fixes: 0ee288e69d03 ("bpf,perf: Fix perf_event_detach_bpf_prog error handling")
-Reported-by: syzbot+2e0d2840414ce817aaac@syzkaller.appspotmail.com
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241208142507.1207698-1-jolsa@kernel.org
-
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index a403b05a7091..1b8db5aee9d3 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2250,6 +2250,9 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
- 		goto unlock;
- 
- 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
-+	if (!old_array)
-+		goto put;
-+
- 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
- 	if (ret < 0) {
- 		bpf_prog_array_delete_safe(old_array, event->prog);
-@@ -2258,6 +2261,7 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
- 		bpf_prog_array_free_sleepable(old_array);
- 	}
- 
-+put:
- 	/*
- 	 * It could be that the bpf_prog is not sleepable (and will be freed
- 	 * via normal RCU), but is called from a point that supports sleepable
-
 
