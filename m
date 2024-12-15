@@ -1,191 +1,175 @@
-Return-Path: <stable+bounces-104279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88399F244F
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 15:12:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FF99F247D
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 15:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B6191650DC
-	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 14:12:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37ECD164271
+	for <lists+stable@lfdr.de>; Sun, 15 Dec 2024 14:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E8818EFDE;
-	Sun, 15 Dec 2024 14:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A2418D63C;
+	Sun, 15 Dec 2024 14:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAe7lJvI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eaE2pkxs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ABC1805A;
-	Sun, 15 Dec 2024 14:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512B6143C69;
+	Sun, 15 Dec 2024 14:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734271952; cv=none; b=J4Ne8tQEMsy6Bi2sPliKSYdVHGVFLDcVp+bw4WO0NlFfrlKNIpi/cinpFKUfSVIFITTRZXCVjj6N0ig4sj/N5GWSWe6w+ZxhS3h8TXZN1+GEarbFb2frz9zPHstMtYkpCm+uNQp3LstRw0K3Ip17P6+75tCP/A7HV7ME7NORPmI=
+	t=1734274681; cv=none; b=sgMtwWM6xz7XaCiIr3lmHJ4tJ4z/jeWA70e3rlxMcPyL4I92P79JWXh8NVTsSakKlmeeMML7fKFRCSCyoNTQQAFeajjVHuU6pO8IuYOgdIpEZyIxH07wKysoOO7d/uaFcQ1R1Ep9rILGXRHR9RBHfZoPtdOdaRAr/dZOcEQjqGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734271952; c=relaxed/simple;
-	bh=C+fkFXJDD2gYrYFFw7MKPSxt8fU/qG5ZsjWmCqJBbVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SEGpzipsIwWVOyDIZOzSOhapMCQaCwrvQdLoQ2vJSiO8myy/I702ZzOLQBGvKwrx2ODfv5yNrmYt3MAddI/puK6vPWTF9J5dETd3UcYHrBuy50AQRCHZ9trw2CzQJxvkqTakR98fZloQB2BcVmtBgW8k64hhd979brUxCKoYGvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAe7lJvI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D11DC4CECE;
-	Sun, 15 Dec 2024 14:12:28 +0000 (UTC)
+	s=arc-20240116; t=1734274681; c=relaxed/simple;
+	bh=bLqiIUlt20Jld63ONUwAvSfGMJlPjgwEaqK5EmB1zVs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tAi/9a+B+UNpkfURH1m973um+Ac/A/Vyh94aF5/mxiTjS2fQFzrtpsq6nOoY3wUfULMhYFraCxGKhkmV9G+iWW0YQrOoGJGWKbmZZmtHBfG2f6x9L785CPL79j4EbxxI85jl0tZI6y26F3cv7EhdhhPUj3YXyajq89NKNLrSjE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eaE2pkxs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CA5C4CECE;
+	Sun, 15 Dec 2024 14:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734271952;
-	bh=C+fkFXJDD2gYrYFFw7MKPSxt8fU/qG5ZsjWmCqJBbVY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LAe7lJvIofTgXqxh1euei5ekS910YOX364ZSpCIQvyatdW8PVGFkHxHUKuOy5repb
-	 3YpWYjyeO7LdoL9O6qNd96iFTY59IoW9MzDLRehR/HAQjGlcN89/0t0Poq10jPG8aC
-	 +x9xX55JZG5mvGNOxd4SoqTIiB8hhg4qiX/RnoowuAxBf/E29G0+aznCGpfDXak2gV
-	 wQ2T9KIxkv6lid4iMsz/s7Scj224NLKC+MTQB0mwZEPjUQYYYt9OONNmnsDGTJD1NI
-	 3XBRbplOauDuCCXOnarGu1XUQw5IbKx7JfQz4EGpMpHaHRS+rMUGLBbq8+3djAIGAa
-	 X6FFA3v7SvWLA==
-Date: Sun, 15 Dec 2024 14:12:26 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Christian Eggers
- <ceggers@arri.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v4] iio: light: as73211: fix channel handling in
- only-color triggered buffer
-Message-ID: <20241215141226.31c81048@jic23-huawei>
-In-Reply-To: <20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com>
-References: <20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=k20201202; t=1734274680;
+	bh=bLqiIUlt20Jld63ONUwAvSfGMJlPjgwEaqK5EmB1zVs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eaE2pkxslAyUy+Qk8zATSo4Oco1x7tU0xa2joPsC6z720WYRUtDhbR40b9sas5rTx
+	 I6Df2GyIbSyZ/g85CjmOj9Dj5Fbwu/5UKlswY9E9X8MqKYO7xWHkMo1+IWbvqFBUSc
+	 4871bhSf/P0boKECRv2kHfn002/gkFPVqMNxagvJZ37T2E3a9T4qg2Oic/7+e7tKB/
+	 777K4tMHPdyvxoIPFJczxZvlK1wolA6PUBfJ3vapd4m8mrg6NihHyW9EAc8myStwws
+	 wI8pFKR9CAdS6+J/M0+R0DcQiaMEHQsoKEgbR1VC7GbXUC2KnQyHcsUzyqd4jx+nL2
+	 REoxdpKAmCKrA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Christian Poveda <git@pvdrz.com>,
+	=?UTF-8?q?Emilio=20Cobos=20=C3=81lvarez?= <emilio@crisal.io>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.12.y] rust: kbuild: set `bindgen`'s Rust target version
+Date: Sun, 15 Dec 2024 15:57:40 +0100
+Message-ID: <20241215145740.237008-1-ojeda@kernel.org>
+In-Reply-To: <2024121500-switch-jab-65fc@gregkh>
+References: <2024121500-switch-jab-65fc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, 14 Dec 2024 23:55:50 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+commit 7a5f93ea5862da91488975acaa0c7abd508f192b upstream.
 
-> The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-> set (optimized path for color channel readings), and it must be shifted
-> instead of leaving an empty channel for the temperature when it is off.
-> 
-> Once the channel index is fixed, the uninitialized channel must be set
-> to zero to avoid pushing uninitialized data.
-> 
-> Add available_scan_masks for all channels and only-color channels to let
-> the IIO core demux and repack the enabled channels.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-> Tested-by: Christian Eggers <ceggers@arri.de>
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Applied to the fixes-togreg branch of iio.git.
+Each `bindgen` release may upgrade the list of Rust targets. For instance,
+currently, in their master branch [1], the latest ones are:
 
-Thanks,
+    Nightly => {
+        vectorcall_abi: #124485,
+        ptr_metadata: #81513,
+        layout_for_ptr: #69835,
+    },
+    Stable_1_77(77) => { offset_of: #106655 },
+    Stable_1_73(73) => { thiscall_abi: #42202 },
+    Stable_1_71(71) => { c_unwind_abi: #106075 },
+    Stable_1_68(68) => { abi_efiapi: #105795 },
 
-Jonathan
+By default, the highest stable release in their list is used, and users
+are expected to set one if they need to support older Rust versions
+(e.g. see [2]).
 
-> ---
-> This issue was found after attempting to make the same mistake for
-> a driver I maintain, which was fortunately spotted by Jonathan [1].
-> 
-> Keeping old sensor values if the channel configuration changes is known
-> and not considered an issue, which is also mentioned in [1], so it has
-> not been addressed by this series. That keeps most of the drivers out
-> of the way because they store the scan element in iio private data,
-> which is kzalloc() allocated.
-> 
-> This series only addresses cases where uninitialized i.e. unknown data
-> is pushed to the userspace, either due to holes in structs or
-> uninitialized struct members/array elements.
-> 
-> While analyzing involved functions, I found and fixed some triviality
-> (wrong function name) in the documentation of iio_dev_opaque.
-> 
-> Link: https://lore.kernel.org/linux-iio/20241123151634.303aa860@jic23-huawei/ [1]
-> ---
-> Changes in v4:
-> - Fix as73211_scan_masks[] (first MASK_COLOR, then MASK_ALL, no comma
->   after 0 i.e. the last element).
-> - Link to v3: https://lore.kernel.org/r/20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com
-> 
-> Changes in v3:
-> - as73211.c: add available_scan_masks for all channels and only-color
->   channels to let the IIO core demux and repack the enabled channels.
-> - Link to v2: https://lore.kernel.org/r/20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com
-> 
-> Changes in v2:
-> - as73211.c: shift channels if no temperature is available and
->   initialize chan[3] to zero.
-> - Link to v1: https://lore.kernel.org/r/20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com
-> ---
->  drivers/iio/light/as73211.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> index be0068081ebb..11fbdcdd26d6 100644
-> --- a/drivers/iio/light/as73211.c
-> +++ b/drivers/iio/light/as73211.c
-> @@ -177,6 +177,12 @@ struct as73211_data {
->  	BIT(AS73211_SCAN_INDEX_TEMP) | \
->  	AS73211_SCAN_MASK_COLOR)
->  
-> +static const unsigned long as73211_scan_masks[] = {
-> +	AS73211_SCAN_MASK_COLOR,
-> +	AS73211_SCAN_MASK_ALL,
-> +	0
-> +};
-> +
->  static const struct iio_chan_spec as73211_channels[] = {
->  	{
->  		.type = IIO_TEMP,
-> @@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  
->  		/* AS73211 starts reading at address 2 */
->  		ret = i2c_master_recv(data->client,
-> -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-> +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
->  		if (ret < 0)
->  			goto done;
-> +
-> +		/* Avoid pushing uninitialized data */
-> +		scan.chan[3] = 0;
->  	}
->  
->  	if (data_result) {
-> @@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  		 * Saturate all channels (in case of overflows). Temperature channel
->  		 * is not affected by overflows.
->  		 */
-> -		scan.chan[1] = cpu_to_le16(U16_MAX);
-> -		scan.chan[2] = cpu_to_le16(U16_MAX);
-> -		scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +			scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		} else {
-> +			scan.chan[0] = cpu_to_le16(U16_MAX);
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +		}
->  	}
->  
->  	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-> @@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_client *client)
->  	indio_dev->channels = data->spec_dev->channels;
->  	indio_dev->num_channels = data->spec_dev->num_channels;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->available_scan_masks = as73211_scan_masks;
->  
->  	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
->  	if (ret < 0)
-> 
-> ---
-> base-commit: 91e71d606356e50f238d7a87aacdee4abc427f07
-> change-id: 20241123-iio_memset_scan_holes-a673833ef932
-> 
-> Best regards,
+Thus, over time, new Rust features are used by default, and at some
+point, it is likely that `bindgen` will emit Rust code that requires a
+Rust version higher than our minimum (or perhaps enabling an unstable
+feature). Currently, there is no problem because the maximum they have,
+as seen above, is Rust 1.77.0, and our current minimum is Rust 1.78.0.
+
+Therefore, set a Rust target explicitly now to prevent going forward in
+time too much and thus getting potential build failures at some point.
+
+Since we also support a minimum `bindgen` version, and since `bindgen`
+does not support passing unknown Rust target versions, we need to use
+the list of our minimum `bindgen` version, rather than the latest. So,
+since `bindgen` 0.65.1 had this list [3], we need to use Rust 1.68.0:
+
+    /// Rust stable 1.64
+    ///  * `core_ffi_c` ([Tracking issue](https://github.com/rust-lang/rust/issues/94501))
+    => Stable_1_64 => 1.64;
+    /// Rust stable 1.68
+    ///  * `abi_efiapi` calling convention ([Tracking issue](https://github.com/rust-lang/rust/issues/65815))
+    => Stable_1_68 => 1.68;
+    /// Nightly rust
+    ///  * `thiscall` calling convention ([Tracking issue](https://github.com/rust-lang/rust/issues/42202))
+    ///  * `vectorcall` calling convention (no tracking issue)
+    ///  * `c_unwind` calling convention ([Tracking issue](https://github.com/rust-lang/rust/issues/74990))
+    => Nightly => nightly;
+
+    ...
+
+    /// Latest stable release of Rust
+    pub const LATEST_STABLE_RUST: RustTarget = RustTarget::Stable_1_68;
+
+Thus add the `--rust-target 1.68` parameter. Add a comment as well
+explaining this.
+
+An alternative would be to use the currently running (i.e. actual) `rustc`
+and `bindgen` versions to pick a "better" Rust target version. However,
+that would introduce more moving parts depending on the user setup and
+is also more complex to implement.
+
+Starting with `bindgen` 0.71.0 [4], we will be able to set any future
+Rust version instead, i.e. we will be able to set here our minimum
+supported Rust version. Christian implemented it [5] after seeing this
+patch. Thanks!
+
+Cc: Christian Poveda <git@pvdrz.com>
+Cc: Emilio Cobos Álvarez <emilio@crisal.io>
+Cc: stable@vger.kernel.org # needed for 6.12.y; unneeded for 6.6.y; do not apply to 6.1.y
+Fixes: c844fa64a2d4 ("rust: start supporting several `bindgen` versions")
+Link: https://github.com/rust-lang/rust-bindgen/blob/21c60f473f4e824d4aa9b2b508056320d474b110/bindgen/features.rs#L97-L105 [1]
+Link: https://github.com/rust-lang/rust-bindgen/issues/2960 [2]
+Link: https://github.com/rust-lang/rust-bindgen/blob/7d243056d335fdc4537f7bca73c06d01aae24ddc/bindgen/features.rs#L131-L150 [3]
+Link: https://github.com/rust-lang/rust-bindgen/blob/main/CHANGELOG.md#0710-2024-12-06 [4]
+Link: https://github.com/rust-lang/rust-bindgen/pull/2993 [5]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20241123180323.255997-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/Makefile | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index b5e0a73b78f3..9f59baacaf77 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -267,9 +267,22 @@ endif
+ 
+ bindgen_c_flags_final = $(bindgen_c_flags_lto) -D__BINDGEN__
+ 
++# Each `bindgen` release may upgrade the list of Rust target versions. By
++# default, the highest stable release in their list is used. Thus we need to set
++# a `--rust-target` to avoid future `bindgen` releases emitting code that
++# `rustc` may not understand. On top of that, `bindgen` does not support passing
++# an unknown Rust target version.
++#
++# Therefore, the Rust target for `bindgen` can be only as high as the minimum
++# Rust version the kernel supports and only as high as the greatest stable Rust
++# target supported by the minimum `bindgen` version the kernel supports (that
++# is, if we do not test the actual `rustc`/`bindgen` versions running).
++#
++# Starting with `bindgen` 0.71.0, we will be able to set any future Rust version
++# instead, i.e. we will be able to set here our minimum supported Rust version.
+ quiet_cmd_bindgen = BINDGEN $@
+       cmd_bindgen = \
+-	$(BINDGEN) $< $(bindgen_target_flags) \
++	$(BINDGEN) $< $(bindgen_target_flags) --rust-target 1.68 \
+ 		--use-core --with-derive-default --ctypes-prefix core::ffi --no-layout-tests \
+ 		--no-debug '.*' --enable-function-attribute-detection \
+ 		-o $@ -- $(bindgen_c_flags_final) -DMODULE \
+-- 
+2.47.1
 
 
