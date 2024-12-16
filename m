@@ -1,166 +1,184 @@
-Return-Path: <stable+bounces-104357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40429F3340
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:31:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48BF9F3343
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:32:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3D40162181
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:31:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DDA018844E2
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C073E202C2A;
-	Mon, 16 Dec 2024 14:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avK1n6GR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D9129406;
+	Mon, 16 Dec 2024 14:32:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7930D18E25;
-	Mon, 16 Dec 2024 14:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D3C18E25;
+	Mon, 16 Dec 2024 14:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734359506; cv=none; b=MVF9ehmRhaoE550DBgmJR011wNi6pkbE/R6S+4PYR+BpYe3X6TnYh7QTLIE6CGSEoGOj+seJZT7r80rcWyR0BaVn/O/2ptdRHTHjFiC66LUnKX8z6HFyI+0uuQNwOnb118sXeRLme/eYEgpCm+S0bpz1MgN23eFeDImKKnxYmZ0=
+	t=1734359520; cv=none; b=JYMoaZz56QaxrftxOqop1U2PpVWokflHtW/C4cN/AF3rrRu7RMk/JFH1lqcgqzL3jNQtx3G4FDd7tTIRVftC5v+m4mK+IZqYy8OnNBCndiCwLZtvwJh2AF1SipWZJUuyYs4KlKyHCzi+0DTIs0W2lSHwC1al50YU2T7e/ise1VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734359506; c=relaxed/simple;
-	bh=q//uXuHw5NNyHRrYJA+t5Do7tOiMP5mB0zY7GpysFuw=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kp4YEf3R5CLjrVwez8WLZMZllgyDIZC5lOme62EF83vmPFXE3AVj1mQv0G7u9GRwc1oZkYxPHeBuWl9F5QeRDcnM0NB5sb+5e2Tp5y5RIRh4kSYBJChEKdiqVEWGKqWmp4ewMMl7QrzjVUS0aDlQeXlnFFL/kRQOZZXhulNGZH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avK1n6GR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE72EC4CED0;
-	Mon, 16 Dec 2024 14:31:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734359506;
-	bh=q//uXuHw5NNyHRrYJA+t5Do7tOiMP5mB0zY7GpysFuw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=avK1n6GRfEbGCiA5MGkHoGcE+AINRnA4Gm4Gxqm4ZzgfVfxrRshODochg9mUYzZoA
-	 EuaMvt+DZPrqbCSp17+I2Qt+UtkV5f7U2hMg47Xq8me29/Jo4ceCrd0mkFdqAdQ+K+
-	 0/4PjG18v2Wih8ks4QULfOjTjEiCgWZpwGFG6+dz7MSBwEi6bgyD/7ojs5jH8t8ngb
-	 dcL/rq39tKYYQPEFKw5HTN7UEAKAATnPq/+9hL7w3Gz70NEBiydO7aVqNTU54oXK4K
-	 wXAS49UjQ6842fF2nciDYfbnEmOJVId1jXhIujipWFqyR5Tf9UQIQlsoEtmCFm47x8
-	 nZLFKKiHX7Gog==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tNC8N-004CsH-N6;
-	Mon, 16 Dec 2024 14:31:43 +0000
-Date: Mon, 16 Dec 2024 14:31:43 +0000
-Message-ID: <865xnjsnqo.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Peter Collingbourne <pcc@google.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to __cpuinfo_store_cpu()
-In-Reply-To: <Z2AfOZ82QG_ukWry@J2N7QTR9R3>
-References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>	<87a5cysfci.wl-maz@kernel.org>	<Z2AfOZ82QG_ukWry@J2N7QTR9R3>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-X-TUID: 7+uNRFeFxaHZ
+	s=arc-20240116; t=1734359520; c=relaxed/simple;
+	bh=dglKhAEZ5GcPn4/vHvJBOyuC1GCMSzd1CLig1Ni8yA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K3v7byD1OBcl2Gwyb7Eyss/bJ5269QT1O3CMm4X8OyRIpzvvkzeDOPjrn0rnr89/61aZahu7gv+cqPW4l8A3wshY8XB1HgWB3cLTqw4Ru8hEqY7hBgQ4b+L5w1xM0eocD78sch39bbVG6yZWs4jUmE8v7R0mXjGfUxIOs8kQyEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 50212113E;
+	Mon, 16 Dec 2024 06:32:25 -0800 (PST)
+Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D7D693F58B;
+	Mon, 16 Dec 2024 06:31:55 -0800 (PST)
+Date: Mon, 16 Dec 2024 14:31:47 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Peter Collingbourne <pcc@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to
+ __cpuinfo_store_cpu()
+Message-ID: <Z2A502_EpqvLYN8g@J2N7QTR9R3.cambridge.arm.com>
+References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
+ <87a5cysfci.wl-maz@kernel.org>
+ <709a0e75-0d0c-4bff-b9fd-3bbb55c97bd5@sirena.org.uk>
+ <Z2Agntn52mY5bSTp@J2N7QTR9R3>
+ <855dbb91-db37-4178-bd0b-511994d3aef7@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: mark.rutland@arm.com, broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org, pcc@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <855dbb91-db37-4178-bd0b-511994d3aef7@sirena.org.uk>
 
-On Mon, 16 Dec 2024 12:38:17 +0000,
-Mark Rutland <mark.rutland@arm.com> wrote:
+On Mon, Dec 16, 2024 at 01:23:55PM +0000, Mark Brown wrote:
+> On Mon, Dec 16, 2024 at 12:44:14PM +0000, Mark Rutland wrote:
 > 
-> On Sat, Dec 14, 2024 at 10:56:13AM +0000, Marc Zyngier wrote:
->
-> > Why isn't the following a good enough fix? It makes it plain that
-> > boot_cpu_data is only a copy of CPU0's initial boot state.
-> > 
-> > diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-> > index d79e88fccdfce..0cbb42fd48850 100644
-> > --- a/arch/arm64/kernel/cpuinfo.c
-> > +++ b/arch/arm64/kernel/cpuinfo.c
-> > @@ -497,6 +497,6 @@ void __init cpuinfo_store_boot_cpu(void)
-> >  	struct cpuinfo_arm64 *info = &per_cpu(cpu_data, 0);
-> >  	__cpuinfo_store_cpu(info);
-> >  
-> > +	init_cpu_features(info);
-> >  	boot_cpu_data = *info;
-> > -	init_cpu_features(&boot_cpu_data);
-> >  }
+> > ... didn't matter either way, and using '&boot_cpu_data' was intended to
+> > make it clear that the features were based on the boot CPU's info, even
+> > if you just grepped for that and didn't see the surrounding context.
 > 
-> I think that change in isolation is fine, but I don't think that's the
-> right fix.
+> Right, that was my best guess as to what was supposed to be going on
+> but it wasn't super clear.  The code could use some more comments.
 > 
-> I think that what we did in commit:
+> > I think the real fix here is to move the reading back into
+> > __cpuinfo_store_cpu(), but to have an explicit check that SME has been
+> > disabled on the commandline, with a comment explaining that this is a
+> > bodge for broken FW which traps the SME ID regs.
 > 
->    892f7237b3ff ("arm64: Delay initialisation of cpuinfo_arm64::reg_{zcr,smcr}")
+> That should be doable.
 > 
-> ... introduces an anti-pattern that'd be nice to avoid. That broke the
-> existing split of __cpuinfo_store_cpu() and init_cpu_features(), where
-> the former read the ID regs, and the latter set up the features
-> *without* altering the copy of the ID regs that was read. i.e.
-> init_cpu_features() shouldn't write to its info argument at all.
-> 
-> I understand that we have to do something as a bodge for broken FW which
-> traps SME, but I'd much rather we did that within __cpuinfo_store_cpu().
+> There's a few other similar ID registers (eg, we already read GMID_EL1
+> and MPAMIDR_EL1) make me a bit nervous that we might need to generalise
+> it a bit, but we can deal with that if it comes up.  Even for SME the
+> disable was added speculatively, the factors that made this come up for
+> SVE are less likely to be an issue with SME.
 
-Honestly, I'd rather revert that patch, together with b3000e2133d8
-("arm64: Add the arm64.nosme command line option"). I'm getting tired
-of the FW nonsense, and we are only allowing vendors to ship untested
-crap.
+FWIW, I had a quick go (with only the SME case), and I think the shape
+that we want is roughly as below, which I think is easy to generalise to
+those other cases.
 
-Furthermore, given the state of SME in the kernel, I don't think this
-is makes any difference. So maybe this is the right time to reset
-everything to a sane state.
+MarcZ, thoughts?
 
-> Can we add something to check whether SME was disabled on the command
-> line, and use that in __cpuinfo_store_cpu(), effectively reverting
-> 892f7237b3ff?
+Mark.
 
-Maybe, but that'd be before any sanitisation of the overrides, so it
-would have to severely limit its scope. Something like this, which I
-haven't tested:
-
-diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-index d79e88fccdfce..9e9295e045009 100644
---- a/arch/arm64/kernel/cpuinfo.c
-+++ b/arch/arm64/kernel/cpuinfo.c
-@@ -492,10 +492,22 @@ void cpuinfo_store_cpu(void)
- 	update_cpu_features(smp_processor_id(), info, &boot_cpu_data);
- }
+---->8----
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index 8b4e5a3cd24c8..f16eb99c10723 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -91,6 +91,16 @@ struct arm64_ftr_override {
+ 	u64		mask;
+ };
  
-+static void cpuinfo_apply_overrides(struct cpuinfo_arm64 *info)
++static inline u64
++arm64_ftr_override_apply(const struct arm64_ftr_override *override,
++			 u64 val)
 +{
-+	if (FIELD_GET(ID_AA64PFR0_EL1_SVE, id_aa64pfr0_override.mask) &&
-+	    !FIELD_GET(ID_AA64PFR0_EL1_SVE, id_aa64pfr0_override.val))
-+		info->reg_id_aa64pfr0 &= ~ID_AA64PFR0_EL1_SVE;
++	val &= ~override->mask;
++	val |= override->val & override->mask;
 +
-+	if (FIELD_GET(ID_AA64PFR1_EL1_SME, id_aa64pfr1_override.mask) &&
-+	    !FIELD_GET(ID_AA64PFR1_EL1_SME, id_aa64pfr1_override.val))
-+		info->reg_id_aa64pfr1 &= ~ID_AA64PFR1_EL1_SME;
++	return val;
 +}
 +
- void __init cpuinfo_store_boot_cpu(void)
- {
- 	struct cpuinfo_arm64 *info = &per_cpu(cpu_data, 0);
- 	__cpuinfo_store_cpu(info);
-+	cpuinfo_apply_overrides(info);
+ /*
+  * @arm64_ftr_reg - Feature register
+  * @strict_mask		Bits which should match across all CPUs for sanity.
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 6ce71f444ed84..faad7d3e4cf5f 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -1167,12 +1167,6 @@ void __init init_cpu_features(struct cpuinfo_arm64 *info)
+ 	    id_aa64pfr1_sme(read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1))) {
+ 		unsigned long cpacr = cpacr_save_enable_kernel_sme();
  
- 	boot_cpu_data = *info;
- 	init_cpu_features(&boot_cpu_data);
+-		/*
+-		 * We mask out SMPS since even if the hardware
+-		 * supports priorities the kernel does not at present
+-		 * and we block access to them.
+-		 */
+-		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
+ 		vec_init_vq_map(ARM64_VEC_SME);
+ 
+ 		cpacr_restore(cpacr);
+@@ -1550,10 +1544,8 @@ u64 __read_sysreg_by_encoding(u32 sys_id)
+ 	}
+ 
+ 	regp  = get_arm64_ftr_reg(sys_id);
+-	if (regp) {
+-		val &= ~regp->override->mask;
+-		val |= (regp->override->val & regp->override->mask);
+-	}
++	if (regp)
++		val = arm64_ftr_override_apply(regp->override, val);
+ 
+ 	return val;
+ }
+diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
+index d79e88fccdfce..1460e3541132f 100644
+--- a/arch/arm64/kernel/cpuinfo.c
++++ b/arch/arm64/kernel/cpuinfo.c
+@@ -439,6 +439,24 @@ static void __cpuinfo_store_cpu_32bit(struct cpuinfo_32bit *info)
+ 	info->reg_mvfr2 = read_cpuid(MVFR2_EL1);
+ }
+ 
++static void __cpuinfo_store_cpu_sme(struct cpuinfo_arm64 *info)
++{
++	/*
++	 * TODO: explain that this bodge is to avoid trapping.
++	 */
++	u64 pfr1 = info->reg_id_aa64pfr1;
++	pfr1 = arm64_ftr_override_apply(&id_aa64pfr1_override, pfr1);
++	if (!id_aa64pfr1_sme(pfr1))
++		return;
++
++	/*
++	 * We mask out SMPS since even if the hardware
++	 * supports priorities the kernel does not at present
++	 * and we block access to them.
++	 */
++	info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
++}
++
+ static void __cpuinfo_store_cpu(struct cpuinfo_arm64 *info)
+ {
+ 	info->reg_cntfrq = arch_timer_get_cntfrq();
+@@ -482,6 +500,8 @@ static void __cpuinfo_store_cpu(struct cpuinfo_arm64 *info)
+ 	if (id_aa64pfr0_mpam(info->reg_id_aa64pfr0))
+ 		info->reg_mpamidr = read_cpuid(MPAMIDR_EL1);
+ 
++	__cpuinfo_store_cpu_sme(info);
++
+ 	cpuinfo_detect_icache_policy(info);
+ }
+ 
 
-But this will have ripple effects on the rest of the override code
-(the kernel messages are likely to be wrong).
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
 
