@@ -1,127 +1,159 @@
-Return-Path: <stable+bounces-104301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F139F2792
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 01:42:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210EB9F27C6
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 02:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5E7318858A1
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 00:42:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B51D1655B8
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 01:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B444B2745C;
-	Mon, 16 Dec 2024 00:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7FB101EE;
+	Mon, 16 Dec 2024 01:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="EvI2/3b7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGNZAQBm"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10021101.me.com (pv50p00im-ztdg10021101.me.com [17.58.6.44])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409B528DD0
-	for <stable@vger.kernel.org>; Mon, 16 Dec 2024 00:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8495CF9DD;
+	Mon, 16 Dec 2024 01:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734309682; cv=none; b=XuOfTAHwPiZahLE7+Ydqi3BydzPh/JSZOI9j2rraCQkIpVpzgS/Ba1C2Eb8W1CPpozT7abPegDjjSUlklT4L46RAOJZKu4AcoePEuUWmvfihu9B0+7cIyQMGtQjrbalcczJeEt4PUsbbxFSZK09+faWkcnJ/D/D3QeKL4uQ0o9c=
+	t=1734312570; cv=none; b=QnZiKExhmwR+28JTUheodBmm0DMcq3hrdGYYCZW8nU2yNGggV37lY2xBvYH6cW2EJQ7xngtFG9OtsrOpmXd+pcs2OGNwwTqJPxHruIk1RvmqCSleHYgqESn5stmA6B3Q3WbwSYKhUGYtL3dM6YwKAOi9nfCYaZZG4rjsdaf8BNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734309682; c=relaxed/simple;
-	bh=F7VAazrVJ3p7QlbMjlcZ0vd+3ltdvGaw1yJxrtSHdRM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jDoQeNGofvjKTTBRkHGJP4iR+/cF1uu58O4eWQ5+uqaXeBQzxELZ2+62da4m7mU9wr1zt8xr38rCleYTuqJvH/wrMlh9jMkMyci/uz9iogZYHEEVf9ZyH8Fx9yTeKVrtzxA6oIetTuNEkmW0dz18fOH7ssLPiXelzG1M8KqPKRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=EvI2/3b7; arc=none smtp.client-ip=17.58.6.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1734309680;
-	bh=1qAwxeqobZh1wxnxdDloQZW9DdsopGVNulsZoYj9sn8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=EvI2/3b7vO79Td/eHUfdKoPN87R2WhhuUIUNJBuBxH4WZqajCNVMv3h+IvGnVSD+0
-	 SfLHgRrxwTI7SGYGNjswEIi+XqNR+H0IV7GE7sPR5A06PWADZTXMwbOblk6xMAp/67
-	 +NVfKQQ8SwaSC5MH7VMtTtRBjFQXwAhOcjZIln4g+gUHiHZ6I/zagzIIfQaBQ6MzI5
-	 YExaQxuV0Ve2Jbrkvx9OFeYgjyKiOQRUDJNtT87pWLzzXOIOE7AYiu4jFebwBqhxFa
-	 515C4gFGmlIcueerpOE0pCIAh5SGDLE8euGVxAhRV/Zgpci5urNX1A2qyE1bV5TtyF
-	 YWZ6kKcMdYHmg==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10021101.me.com (Postfix) with ESMTPSA id AF7E4D00191;
-	Mon, 16 Dec 2024 00:41:16 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Mon, 16 Dec 2024 08:40:42 +0800
-Subject: [PATCH v2 3/7] of: Correct child specifier used as input of the
- 2nd nexus node
+	s=arc-20240116; t=1734312570; c=relaxed/simple;
+	bh=jMkke77rPQvcJJ0rdaw2kiRhZ+G5mtAK+9KZFaDeOIo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=errvc3+tZESacfYza3/dSzoJXb5Rm4pFelgjGKfTGKFyXPuQGePR060JxKQ4F3TWFHyv9RqHvy5HvT8x6mN4ekE/sO8zMWlfcg6i5GalJ9XgIP2auKKymwdHJy5GJi9Fv0/3bz1gLhWlIC+yo8fJlmkX+h73gXfVlseqHaNhkxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGNZAQBm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE66C4CECE;
+	Mon, 16 Dec 2024 01:29:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734312570;
+	bh=jMkke77rPQvcJJ0rdaw2kiRhZ+G5mtAK+9KZFaDeOIo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QGNZAQBm5O+nzAkQEUP/tk5roAYX4D7m+yXNGa5O7bFIUW9bG9nUnBXLWt95z/590
+	 hRe/nL4J6MC5MZU+ekVsJJZPIUVpdoIQ9IbxK/tMXkIuLFr256e7wIBr+VClQpg5bD
+	 XvnOujtXPmcZOvG16GaIfNrdMEi/GdGHdKHQOscDl8wAXSAWFj1mzK1voR9lqlaHLm
+	 H3FolfjvaJ7PfhtuXdRjG/Gts39DxivM0ptWfG3v6C2AKd6dA5bki5oH7JVBUMOFW/
+	 jPU1tin5za2UYR9SgRDyiktwjThOxVSmRA4nv4+0b5JqoyRUmJxqYSsf2lLvdsnQdo
+	 DeqWRd4ftZp3g==
+Date: Mon, 16 Dec 2024 09:29:21 +0800
+From: Peter Chen <peter.chen@kernel.org>
+To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Cc: gregkh@linuxfoundation.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-usb@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: chipidea: ci_hdrc_imx: decrement device's refcount
+ on the error path of .probe()
+Message-ID: <20241216012921.GA4105602@nchen-desktop>
+References: <20241212094945.3784866-1-joe@pf.is.s.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241216-of_core_fix-v2-3-e69b8f60da63@quicinc.com>
-References: <20241216-of_core_fix-v2-0-e69b8f60da63@quicinc.com>
-In-Reply-To: <20241216-of_core_fix-v2-0-e69b8f60da63@quicinc.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Maxime Ripard <mripard@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
- Grant Likely <grant.likely@secretlab.ca>
-Cc: Zijun Hu <zijun_hu@icloud.com>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: -ykJM0NGSyyXqdyLVu9ZY0Qb8rFOwFSa
-X-Proofpoint-ORIG-GUID: -ykJM0NGSyyXqdyLVu9ZY0Qb8rFOwFSa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-15_10,2024-12-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
- malwarescore=0 clxscore=1015 mlxlogscore=999 adultscore=0 bulkscore=0
- spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412160002
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241212094945.3784866-1-joe@pf.is.s.u-tokyo.ac.jp>
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On 24-12-12 18:49:45, Joe Hattori wrote:
+> Current implementation of ci_hdrc_imx_probe() does not decrement the
+> refcount of the device obtained in usbmisc_get_init_data(). Add a
+> put_device() call before returning an error after the call.
+> 
+> This bug was found by an experimental static analysis tool that I am
+> developing.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: f40017e0f332 ("chipidea: usbmisc_imx: Add USB support for VF610 SoCs")
+> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+> ---
+>  drivers/usb/chipidea/ci_hdrc_imx.c | 24 ++++++++++++++++--------
+>  1 file changed, 16 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+> index f2801700be8e..6418052264f2 100644
+> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
+> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+> @@ -370,25 +370,29 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+>  		data->pinctrl = devm_pinctrl_get(dev);
+>  		if (PTR_ERR(data->pinctrl) == -ENODEV)
+>  			data->pinctrl = NULL;
+> -		else if (IS_ERR(data->pinctrl))
+> -			return dev_err_probe(dev, PTR_ERR(data->pinctrl),
+> +		else if (IS_ERR(data->pinctrl)) {
+> +			ret = dev_err_probe(dev, PTR_ERR(data->pinctrl),
+>  					     "pinctrl get failed\n");
+> +			goto err_put;
+> +		}
+>  
+>  		data->hsic_pad_regulator =
+>  				devm_regulator_get_optional(dev, "hsic");
+>  		if (PTR_ERR(data->hsic_pad_regulator) == -ENODEV) {
+>  			/* no pad regulator is needed */
+>  			data->hsic_pad_regulator = NULL;
+> -		} else if (IS_ERR(data->hsic_pad_regulator))
+> -			return dev_err_probe(dev, PTR_ERR(data->hsic_pad_regulator),
+> +		} else if (IS_ERR(data->hsic_pad_regulator)) {
+> +			ret = dev_err_probe(dev, PTR_ERR(data->hsic_pad_regulator),
+>  					     "Get HSIC pad regulator error\n");
+> +			goto err_put;
+> +		}
+>  
+>  		if (data->hsic_pad_regulator) {
+>  			ret = regulator_enable(data->hsic_pad_regulator);
+>  			if (ret) {
+>  				dev_err(dev,
+>  					"Failed to enable HSIC pad regulator\n");
+> -				return ret;
+> +				goto err_put;
+>  			}
+>  		}
+>  	}
+> @@ -402,13 +406,14 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+>  			dev_err(dev,
+>  				"pinctrl_hsic_idle lookup failed, err=%ld\n",
+>  					PTR_ERR(pinctrl_hsic_idle));
+> -			return PTR_ERR(pinctrl_hsic_idle);
+> +			ret = PTR_ERR(pinctrl_hsic_idle);
+> +			goto err_put;
+>  		}
+>  
+>  		ret = pinctrl_select_state(data->pinctrl, pinctrl_hsic_idle);
+>  		if (ret) {
+>  			dev_err(dev, "hsic_idle select failed, err=%d\n", ret);
+> -			return ret;
+> +			goto err_put;
+>  		}
+>  
+>  		data->pinctrl_hsic_active = pinctrl_lookup_state(data->pinctrl,
+> @@ -417,7 +422,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+>  			dev_err(dev,
+>  				"pinctrl_hsic_active lookup failed, err=%ld\n",
+>  					PTR_ERR(data->pinctrl_hsic_active));
+> -			return PTR_ERR(data->pinctrl_hsic_active);
+> +			ret = PTR_ERR(data->pinctrl_hsic_active);
+> +			goto err_put;
+>  		}
+>  	}
+>  
+> @@ -527,6 +533,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+>  	if (pdata.flags & CI_HDRC_PMQOS)
+>  		cpu_latency_qos_remove_request(&data->pm_qos_req);
+>  	data->ci_pdev = NULL;
+> +err_put:
+> +	put_device(data->usbmisc_data->dev);
+>  	return ret;
+>  }
+>  
 
-API of_parse_phandle_with_args_map() will use wrong input for nexus node
-Nexus_2 as shown below:
+Thanks for your fix, would you mind also add put_device at the end of 
+ci_hdrc_imx_remove?
 
-    Node_1		Nexus_1                              Nexus_2
-&Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
-		  map-pass-thru=<...>
-
-Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
-wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
-
-Fix by always making @match_array point to @initial_match_array into
-which to store nexus output.
-
-Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/of/base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index bf18d5997770eb81e47e749198dd505a35203d10..969b99838655534915882abe358814d505c6f748 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1536,7 +1536,6 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
- 		 * specifier into the out_args structure, keeping the
- 		 * bits specified in <list>-map-pass-thru.
- 		 */
--		match_array = map - new_size;
- 		for (i = 0; i < new_size; i++) {
- 			__be32 val = *(map - new_size + i);
- 
-@@ -1545,6 +1544,7 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
- 				val |= cpu_to_be32(out_args->args[i]) & pass[i];
- 			}
- 
-+			initial_match_array[i] = val;
- 			out_args->args[i] = be32_to_cpu(val);
- 		}
- 		out_args->args_count = list_size = new_size;
-
--- 
-2.34.1
-
+Peter
 
