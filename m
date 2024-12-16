@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-104382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EB09F36F5
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 18:05:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BAC9F36FC
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 18:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 379191894AFE
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 17:02:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B097E164292
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 17:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF66207A31;
-	Mon, 16 Dec 2024 16:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1470A1F706A;
+	Mon, 16 Dec 2024 17:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uniQaLX2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="A5e9G68W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5501C9B9B;
-	Mon, 16 Dec 2024 16:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EDF126BF7;
+	Mon, 16 Dec 2024 17:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734368251; cv=none; b=GXZT5+rLhjx10Aaag4ae+cNMGd60ixrkRhP+ckLWQ4yriiXSsPd9/M1AoFCsqAbNPP2MxSNHrfSTvq2tl061rG74qmPdtBMs2AK2KWV+gFBKZupCzfUfx71UjH9oAnyIMhY3zVNVA3W0hueTNs383qeeO2bKy8OEIMziTjkL2Eg=
+	t=1734368801; cv=none; b=ZqTQLgCWfzofNsfwrj5sa2PqmRHUxjz86mzEdU57RG+82gU/JXO+O2mGtvQ0BM60GHFl7au6Qc/iGKgQz54uPPhpG/g6c6yqVvusxRzNmzG25+S9la66xfMDkfYd2otR7WgDKWHm/l+YdtTer40TIOMfDb9v5mpmAvVescHt+KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734368251; c=relaxed/simple;
-	bh=rHVRkW2GHn2zDA48jsGrXdtqGkdG8/EWEMV2UC6pN4M=;
-	h=Date:To:From:Subject:Message-Id; b=FR8Yv8yemB2dM9PA6i8fQZK2fYYEMHbPuT7bdg1eamYsfnVRDlSXHbs7czu8XitALYFdAhW1/cjrcugbDbipSnaUp3bzq3xhVBAsS6TTmyBo1sQ5fQEH7mUlRXB6yd3F1Nj1VCaxHLYeKiDvgP88o6bN3/aZZfT1YTZRSJIIVX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uniQaLX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97162C4CED0;
-	Mon, 16 Dec 2024 16:57:30 +0000 (UTC)
+	s=arc-20240116; t=1734368801; c=relaxed/simple;
+	bh=6rLbqDpq132Fc2qmsHPS4g5GfEjn6kctkcgMIJMbVGA=;
+	h=Date:To:From:Subject:Message-Id; b=mRRKSGiOvCvVCeNDjDYPq0nJq5XjGia59qxQur45s9WYZEUd9YbzKum8H7UxUhdQoNhVLC8lYlXChmmyuSzXDZLw88WzP+cneEq9O9TrE0crGW6mnuvWypO0XKJ5oUWiaYqBL/B+EWoAKLGzWmOmapFceuMAGjiFQIEdRVIx8gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=A5e9G68W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A50C4CED0;
+	Mon, 16 Dec 2024 17:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1734368250;
-	bh=rHVRkW2GHn2zDA48jsGrXdtqGkdG8/EWEMV2UC6pN4M=;
+	s=korg; t=1734368801;
+	bh=6rLbqDpq132Fc2qmsHPS4g5GfEjn6kctkcgMIJMbVGA=;
 	h=Date:To:From:Subject:From;
-	b=uniQaLX2NquGqwpctb6DU0l32YU5XNx6QaIi6+PTqWWWozc9HwTfpCAOHHOzJehXK
-	 2sjbHI031qNchU1w0TmH1UyBfiU4tmTNJXRAH6kNYwl+kJH13yvjvDpMfJp6uYaMm9
-	 8IkY5X0aPWGFArf9qAS99w2KfQ35Tm1fpFYnUpnA=
-Date: Mon, 16 Dec 2024 08:57:30 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,david@redhat.com,baolin.wang@linux.alibaba.com,yangge1116@126.com,akpm@linux-foundation.org
+	b=A5e9G68W5HLQLKv/GDU2NyS9EBnoBhdknNRBkzu9WfG2/y++7uJS9udGfJ6evoBKx
+	 hN/aii36Z67VMP7z/gOqEDmZY1DwXG3weMbiw0hqR9W4LJCWu1ChyzZl3d1YDVzyEf
+	 EAJwVanDa4c71r56FcTfX6xouONmBO4WTsWm79wQ=
+Date: Mon, 16 Dec 2024 09:06:40 -0800
+To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,sunnanyong@huawei.com,stable@vger.kernel.org,muchun.song@linux.dev,kenneth.w.chen@intel.com,liushixin2@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241216165730.97162C4CED0@smtp.kernel.org>
+Subject: + mm-hugetlb-independent-pmd-page-table-shared-count.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241216170641.37A50C4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm, compaction: don't use ALLOC_CMA in long term GUP flow
+     Subject: mm: hugetlb: independent PMD page table shared count
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow.patch
+     mm-hugetlb-independent-pmd-page-table-shared-count.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-independent-pmd-page-table-shared-count.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,244 +73,194 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: yangge <yangge1116@126.com>
-Subject: mm, compaction: don't use ALLOC_CMA in long term GUP flow
-Date: Mon, 16 Dec 2024 19:54:04 +0800
+From: Liu Shixin <liushixin2@huawei.com>
+Subject: mm: hugetlb: independent PMD page table shared count
+Date: Mon, 16 Dec 2024 15:11:47 +0800
 
-Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags in
-__compaction_suitable()") allow compaction to proceed when free pages
-required for compaction reside in the CMA pageblocks, it's possible that
-__compaction_suitable() always returns true, and in some cases, it's not
-acceptable.
+The folio refcount may be increased unexpectly through try_get_folio() by
+caller such as split_huge_pages.  In huge_pmd_unshare(), we use refcount
+to check whether a pmd page table is shared.  The check is incorrect if
+the refcount is increased by the above caller, and this can cause the page
+table leaked:
 
-There are 4 NUMA nodes on my machine, and each NUMA node has 32GB of
-memory.  I have configured 16GB of CMA memory on each NUMA node, and
-starting a 32GB virtual machine with device passthrough is extremely slow,
-taking almost an hour.
+ BUG: Bad page state in process sh  pfn:109324
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x66 pfn:0x109324
+ flags: 0x17ffff800000000(node=0|zone=2|lastcpupid=0xfffff)
+ page_type: f2(table)
+ raw: 017ffff800000000 0000000000000000 0000000000000000 0000000000000000
+ raw: 0000000000000066 0000000000000000 00000000f2000000 0000000000000000
+ page dumped because: nonzero mapcount
+ ...
+ CPU: 31 UID: 0 PID: 7515 Comm: sh Kdump: loaded Tainted: G    B              6.13.0-rc2master+ #7
+ Tainted: [B]=BAD_PAGE
+ Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+ Call trace:
+  show_stack+0x20/0x38 (C)
+  dump_stack_lvl+0x80/0xf8
+  dump_stack+0x18/0x28
+  bad_page+0x8c/0x130
+  free_page_is_bad_report+0xa4/0xb0
+  free_unref_page+0x3cc/0x620
+  __folio_put+0xf4/0x158
+  split_huge_pages_all+0x1e0/0x3e8
+  split_huge_pages_write+0x25c/0x2d8
+  full_proxy_write+0x64/0xd8
+  vfs_write+0xcc/0x280
+  ksys_write+0x70/0x110
+  __arm64_sys_write+0x24/0x38
+  invoke_syscall+0x50/0x120
+  el0_svc_common.constprop.0+0xc8/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x34/0x128
+  el0t_64_sync_handler+0xc8/0xd0
+  el0t_64_sync+0x190/0x198
 
-During the start-up of the virtual machine, it will call
-pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.  Long
-term GUP cannot allocate memory from CMA area, so a maximum of 16 GB of
-no-CMA memory on a NUMA node can be used as virtual machine memory.  Since
-there is 16G of free CMA memory on the NUMA node, watermark for order-0
-always be met for compaction, so __compaction_suitable() always returns
-true, even if the node is unable to allocate non-CMA memory for the
-virtual machine.
+The issue may be triggered by damon, offline_page, page_idle, etc, which
+will increase the refcount of page table.
 
-For costly allocations, because __compaction_suitable() always
-returns true, __alloc_pages_slowpath() can't exit at the appropriate
-place, resulting in excessively long virtual machine startup times.
-Call trace:
-__alloc_pages_slowpath
-    if (compact_result == COMPACT_SKIPPED ||
-        compact_result == COMPACT_DEFERRED)
-        goto nopage; // should exit __alloc_pages_slowpath() from here
+Fix it by introducing independent PMD page table shared count.  As
+described by comment, pt_index/pt_mm/pt_frag_refcount are used for s390
+gmap, x86 pgds and powerpc, pt_share_count is used for x86/arm64/riscv
+pmds, so we can reuse the field as pt_share_count.
 
-In order to quickly fall back to remote node, we should remove ALLOC_CMA
-both in __compaction_suitable() and __isolate_free_page() in long term GUP
-flow.  After this fix, starting a 32GB virtual machine with device
-passthrough takes only a few seconds.
-
-Link: https://lkml.kernel.org/r/1734350044-12928-1-git-send-email-yangge1116@126.com
-Fixes: 984fdba6a32e ("mm, compaction: use proper alloc_flags in __compaction_suitable()")
-Signed-off-by: yangge <yangge1116@126.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
+Link: https://lkml.kernel.org/r/20241216071147.3984217-1-liushixin2@huawei.com
+Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Ken Chen <kenneth.w.chen@intel.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/compaction.h |    6 ++++--
- mm/compaction.c            |   20 +++++++++++---------
- mm/internal.h              |    3 ++-
- mm/page_alloc.c            |    6 ++++--
- mm/page_isolation.c        |    3 ++-
- mm/page_reporting.c        |    2 +-
- mm/vmscan.c                |    4 ++--
- 7 files changed, 26 insertions(+), 18 deletions(-)
+ include/linux/mm.h       |    1 +
+ include/linux/mm_types.h |   30 ++++++++++++++++++++++++++++++
+ mm/hugetlb.c             |   16 +++++++---------
+ 3 files changed, 38 insertions(+), 9 deletions(-)
 
---- a/include/linux/compaction.h~mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow
-+++ a/include/linux/compaction.h
-@@ -90,7 +90,8 @@ extern enum compact_result try_to_compac
- 		struct page **page);
- extern void reset_isolation_suitable(pg_data_t *pgdat);
- extern bool compaction_suitable(struct zone *zone, int order,
--					       int highest_zoneidx);
-+					       int highest_zoneidx,
-+					       unsigned int alloc_flags);
- 
- extern void compaction_defer_reset(struct zone *zone, int order,
- 				bool alloc_success);
-@@ -108,7 +109,8 @@ static inline void reset_isolation_suita
+--- a/include/linux/mm.h~mm-hugetlb-independent-pmd-page-table-shared-count
++++ a/include/linux/mm.h
+@@ -3125,6 +3125,7 @@ static inline bool pagetable_pmd_ctor(st
+ 	if (!pmd_ptlock_init(ptdesc))
+ 		return false;
+ 	__folio_set_pgtable(folio);
++	ptdesc_pmd_pts_init(ptdesc);
+ 	lruvec_stat_add_folio(folio, NR_PAGETABLE);
+ 	return true;
  }
+--- a/include/linux/mm_types.h~mm-hugetlb-independent-pmd-page-table-shared-count
++++ a/include/linux/mm_types.h
+@@ -445,6 +445,7 @@ FOLIO_MATCH(compound_head, _head_2a);
+  * @pt_index:         Used for s390 gmap.
+  * @pt_mm:            Used for x86 pgds.
+  * @pt_frag_refcount: For fragmented page table tracking. Powerpc only.
++ * @pt_share_count:   Used for HugeTLB PMD page table share count.
+  * @_pt_pad_2:        Padding to ensure proper alignment.
+  * @ptl:              Lock for the page table.
+  * @__page_type:      Same as page->page_type. Unused for page tables.
+@@ -471,6 +472,9 @@ struct ptdesc {
+ 		pgoff_t pt_index;
+ 		struct mm_struct *pt_mm;
+ 		atomic_t pt_frag_refcount;
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++		atomic_t pt_share_count;
++#endif
+ 	};
  
- static inline bool compaction_suitable(struct zone *zone, int order,
--						      int highest_zoneidx)
-+						      int highest_zoneidx,
-+						      unsigned int alloc_flags)
- {
- 	return false;
- }
---- a/mm/compaction.c~mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow
-+++ a/mm/compaction.c
-@@ -654,7 +654,7 @@ static unsigned long isolate_freepages_b
+ 	union {
+@@ -516,6 +520,32 @@ static_assert(sizeof(struct ptdesc) <= s
+ 	const struct page *:		(const struct ptdesc *)(p),	\
+ 	struct page *:			(struct ptdesc *)(p)))
  
- 		/* Found a free page, will break it into order-0 pages */
- 		order = buddy_order(page);
--		isolated = __isolate_free_page(page, order);
-+		isolated = __isolate_free_page(page, order, cc->alloc_flags);
- 		if (!isolated)
- 			break;
- 		set_page_private(page, order);
-@@ -1633,7 +1633,7 @@ static void fast_isolate_freepages(struc
- 
- 		/* Isolate the page if available */
- 		if (page) {
--			if (__isolate_free_page(page, order)) {
-+			if (__isolate_free_page(page, order, cc->alloc_flags)) {
- 				set_page_private(page, order);
- 				nr_isolated = 1 << order;
- 				nr_scanned += nr_isolated - 1;
-@@ -2379,6 +2379,7 @@ static enum compact_result compact_finis
- 
- static bool __compaction_suitable(struct zone *zone, int order,
- 				  int highest_zoneidx,
-+				  unsigned int alloc_flags,
- 				  unsigned long wmark_target)
- {
- 	unsigned long watermark;
-@@ -2393,25 +2394,26 @@ static bool __compaction_suitable(struct
- 	 * even if compaction succeeds.
- 	 * For costly orders, we require low watermark instead of min for
- 	 * compaction to proceed to increase its chances.
--	 * ALLOC_CMA is used, as pages in CMA pageblocks are considered
--	 * suitable migration targets
-+	 * In addition to long term GUP flow, ALLOC_CMA is used, as pages in
-+	 * CMA pageblocks are considered suitable migration targets
- 	 */
- 	watermark = (order > PAGE_ALLOC_COSTLY_ORDER) ?
- 				low_wmark_pages(zone) : min_wmark_pages(zone);
- 	watermark += compact_gap(order);
- 	return __zone_watermark_ok(zone, 0, watermark, highest_zoneidx,
--				   ALLOC_CMA, wmark_target);
-+				   alloc_flags & ALLOC_CMA, wmark_target);
- }
- 
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
++{
++	atomic_set(&ptdesc->pt_share_count, 0);
++}
++
++static inline void ptdesc_pmd_pts_inc(struct ptdesc *ptdesc)
++{
++	atomic_inc(&ptdesc->pt_share_count);
++}
++
++static inline void ptdesc_pmd_pts_dec(struct ptdesc *ptdesc)
++{
++	atomic_dec(&ptdesc->pt_share_count);
++}
++
++static inline int ptdesc_pmd_pts_count(struct ptdesc *ptdesc)
++{
++	return atomic_read(&ptdesc->pt_share_count);
++}
++#else
++static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
++{
++}
++#endif
++
  /*
-  * compaction_suitable: Is this suitable to run compaction on this zone now?
+  * Used for sizing the vmemmap region on some architectures
   */
--bool compaction_suitable(struct zone *zone, int order, int highest_zoneidx)
-+bool compaction_suitable(struct zone *zone, int order, int highest_zoneidx,
-+				   unsigned int alloc_flags)
- {
- 	enum compact_result compact_result;
- 	bool suitable;
- 
--	suitable = __compaction_suitable(zone, order, highest_zoneidx,
-+	suitable = __compaction_suitable(zone, order, highest_zoneidx, alloc_flags,
- 					 zone_page_state(zone, NR_FREE_PAGES));
- 	/*
- 	 * fragmentation index determines if allocation failures are due to
-@@ -2472,7 +2474,7 @@ bool compaction_zonelist_suitable(struct
- 		available = zone_reclaimable_pages(zone) / order;
- 		available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
- 		if (__compaction_suitable(zone, order, ac->highest_zoneidx,
--					  available))
-+					  alloc_flags, available))
- 			return true;
- 	}
- 
-@@ -2497,7 +2499,7 @@ compaction_suit_allocation_order(struct
- 			      alloc_flags))
- 		return COMPACT_SUCCESS;
- 
--	if (!compaction_suitable(zone, order, highest_zoneidx))
-+	if (!compaction_suitable(zone, order, highest_zoneidx, alloc_flags))
- 		return COMPACT_SKIPPED;
- 
- 	return COMPACT_CONTINUE;
---- a/mm/internal.h~mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow
-+++ a/mm/internal.h
-@@ -662,7 +662,8 @@ static inline void clear_zone_contiguous
- 	zone->contiguous = false;
- }
- 
--extern int __isolate_free_page(struct page *page, unsigned int order);
-+extern int __isolate_free_page(struct page *page, unsigned int order,
-+				    unsigned int alloc_flags);
- extern void __putback_isolated_page(struct page *page, unsigned int order,
- 				    int mt);
- extern void memblock_free_pages(struct page *page, unsigned long pfn,
---- a/mm/page_alloc.c~mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow
-+++ a/mm/page_alloc.c
-@@ -2808,7 +2808,8 @@ void split_page(struct page *page, unsig
- }
- EXPORT_SYMBOL_GPL(split_page);
- 
--int __isolate_free_page(struct page *page, unsigned int order)
-+int __isolate_free_page(struct page *page, unsigned int order,
-+				   unsigned int alloc_flags)
- {
- 	struct zone *zone = page_zone(page);
- 	int mt = get_pageblock_migratetype(page);
-@@ -2822,7 +2823,8 @@ int __isolate_free_page(struct page *pag
- 		 * exists.
- 		 */
- 		watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
--		if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
-+		if (!zone_watermark_ok(zone, 0, watermark, 0,
-+			    alloc_flags & ALLOC_CMA))
- 			return 0;
- 	}
- 
---- a/mm/page_isolation.c~mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow
-+++ a/mm/page_isolation.c
-@@ -229,7 +229,8 @@ static void unset_migratetype_isolate(st
- 			buddy = find_buddy_page_pfn(page, page_to_pfn(page),
- 						    order, NULL);
- 			if (buddy && !is_migrate_isolate_page(buddy)) {
--				isolated_page = !!__isolate_free_page(page, order);
-+				isolated_page = !!__isolate_free_page(page, order,
-+						    ALLOC_CMA);
- 				/*
- 				 * Isolating a free page in an isolated pageblock
- 				 * is expected to always work as watermarks don't
---- a/mm/page_reporting.c~mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow
-+++ a/mm/page_reporting.c
-@@ -198,7 +198,7 @@ page_reporting_cycle(struct page_reporti
- 
- 		/* Attempt to pull page from list and place in scatterlist */
- 		if (*offset) {
--			if (!__isolate_free_page(page, order)) {
-+			if (!__isolate_free_page(page, order, ALLOC_CMA)) {
- 				next = page;
+--- a/mm/hugetlb.c~mm-hugetlb-independent-pmd-page-table-shared-count
++++ a/mm/hugetlb.c
+@@ -7211,7 +7211,7 @@ pte_t *huge_pmd_share(struct mm_struct *
+ 			spte = hugetlb_walk(svma, saddr,
+ 					    vma_mmu_pagesize(svma));
+ 			if (spte) {
+-				get_page(virt_to_page(spte));
++				ptdesc_pmd_pts_inc(virt_to_ptdesc(spte));
  				break;
  			}
---- a/mm/vmscan.c~mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow
-+++ a/mm/vmscan.c
-@@ -5861,7 +5861,7 @@ static inline bool should_continue_recla
- 				      sc->reclaim_idx, 0))
- 			return false;
- 
--		if (compaction_suitable(zone, sc->order, sc->reclaim_idx))
-+		if (compaction_suitable(zone, sc->order, sc->reclaim_idx, ALLOC_CMA))
- 			return false;
+ 		}
+@@ -7226,7 +7226,7 @@ pte_t *huge_pmd_share(struct mm_struct *
+ 				(pmd_t *)((unsigned long)spte & PAGE_MASK));
+ 		mm_inc_nr_pmds(mm);
+ 	} else {
+-		put_page(virt_to_page(spte));
++		ptdesc_pmd_pts_dec(virt_to_ptdesc(spte));
  	}
+ 	spin_unlock(&mm->page_table_lock);
+ out:
+@@ -7238,10 +7238,6 @@ out:
+ /*
+  * unmap huge page backed by shared pte.
+  *
+- * Hugetlb pte page is ref counted at the time of mapping.  If pte is shared
+- * indicated by page_count > 1, unmap is achieved by clearing pud and
+- * decrementing the ref count. If count == 1, the pte page is not shared.
+- *
+  * Called with page table lock held.
+  *
+  * returns: 1 successfully unmapped a shared pte page
+@@ -7250,18 +7246,20 @@ out:
+ int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
+ 					unsigned long addr, pte_t *ptep)
+ {
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 	pgd_t *pgd = pgd_offset(mm, addr);
+ 	p4d_t *p4d = p4d_offset(pgd, addr);
+ 	pud_t *pud = pud_offset(p4d, addr);
  
-@@ -6089,7 +6089,7 @@ static inline bool compaction_ready(stru
- 		return true;
+ 	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+ 	hugetlb_vma_assert_locked(vma);
+-	BUG_ON(page_count(virt_to_page(ptep)) == 0);
+-	if (page_count(virt_to_page(ptep)) == 1)
++	if (sz != PMD_SIZE)
++		return 0;
++	if (!ptdesc_pmd_pts_count(virt_to_ptdesc(ptep)))
+ 		return 0;
  
- 	/* Compaction cannot yet proceed. Do reclaim. */
--	if (!compaction_suitable(zone, sc->order, sc->reclaim_idx))
-+	if (!compaction_suitable(zone, sc->order, sc->reclaim_idx, ALLOC_CMA))
- 		return false;
- 
- 	/*
+ 	pud_clear(pud);
+-	put_page(virt_to_page(ptep));
++	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
+ 	mm_dec_nr_pmds(mm);
+ 	return 1;
+ }
 _
 
-Patches currently in -mm which might be from yangge1116@126.com are
+Patches currently in -mm which might be from liushixin2@huawei.com are
 
-mm-compaction-dont-use-alloc_cma-in-long-term-gup-flow.patch
+mm-hugetlb-independent-pmd-page-table-shared-count.patch
 
 
