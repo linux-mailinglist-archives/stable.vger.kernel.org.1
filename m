@@ -1,182 +1,186 @@
-Return-Path: <stable+bounces-104401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 399F19F3CCD
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 22:29:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F969F3CF2
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 22:43:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55CA21884D58
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 21:29:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E15C016B5C4
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 21:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D371D5165;
-	Mon, 16 Dec 2024 21:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EE41D54E3;
+	Mon, 16 Dec 2024 21:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="isnOhTst"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dBuJ8FUC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2087.outbound.protection.outlook.com [40.107.102.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759131D434F
-	for <stable@vger.kernel.org>; Mon, 16 Dec 2024 21:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734384572; cv=none; b=qQDtNcRIKRaPkIhe1pU3CkfqRV+c3Yllb2ZDQ0MuN4dF3wSog0CJ6xEfi4WHXGQGxcj4WQDu1X3Tipy/LO6x3OofkY5HuavyB5XPnoOSN+r5dx5Vi5JEBi2jvuWUuV6OPoO+oA6D0fgjIxYn1BzPZOzDOQTNGP1dMa9ccLj5xrI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734384572; c=relaxed/simple;
-	bh=G/NWvy/T67wNQqnhJzeR7JlZsIpKitZV5e9Xln/qnac=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O/dzjKins3MU8BgW3+KL2md/1WB7wSwZhK4EXk+b8iXhb211sPKeyHMiuojYpt4s9Vy7uKC5BFGEkYj8XIZu8jpwlhq8M3ZB6SkqbXtP2C3Pr3udsFTz39vAbWxz0KWvnZWxAAY1EasXEZxUNgHHRCj0oqNsf7kqgAjg/ZSdmT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=isnOhTst; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3011c7b39c7so50571381fa.1
-        for <stable@vger.kernel.org>; Mon, 16 Dec 2024 13:29:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1734384565; x=1734989365; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G/NWvy/T67wNQqnhJzeR7JlZsIpKitZV5e9Xln/qnac=;
-        b=isnOhTstgGhcEf+8Ubq7BLyCbO+PZIK1YL9Pn9c7aARaYTZ+MD4J8uDgT60xa2EYL3
-         NTG6Tutm+UeaPlYOO+w6o9HUEDHk0UvKuv4uMAW+6EbfyBRP7v/q0b5YuQVTC8+TGAb+
-         bjrcLZtfZUtI+UuKCsvtfcaEaaNC75xLdUQsM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734384565; x=1734989365;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G/NWvy/T67wNQqnhJzeR7JlZsIpKitZV5e9Xln/qnac=;
-        b=qwlZU8eTcVoWyb747CKaw+FVuv+64Pc+0GfiBP9cd/bCyHKGyLOc4BHHi4xuYaoSLU
-         e+F98ANNWzsEBNKTn+pu8dHUq6A+idLYztR+7hnllFjLCuS5eqRmiecb8ZbI4MTumC3o
-         HNTv80nh75Cm2oAnrTJvjX81QN2ad/2ci5+IDA7uQBs+AEI+bY6gKyRZjf3EZSzgAV2d
-         +sra8QcP3tMiscwp+5Rk0ZQjYd4kBBRldC5f7qbrdYWr+ikscLofaG01ckXu2suaMWv9
-         4VnHUCq7Ozl2B7U473/jErVZCDvhfkC+NwaZsUb2eXjUy1Fgjyic0evJLz8Gjm10fFLd
-         wi/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUdCev25kk6cUumoJ3shUQb2i8YaUQBSCS5ypsQXhBtZPZB+TtBEREiv/uu1t6uKWFRt9tGRuk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHFgYeBCByN0WvsfHOvpROaQ4hCsAyLazJzIjBGXnHyQWXAGAO
-	UTIwXH0y/BEa38UfU18NHdkP2nzJ0MmID4NUJn4FUNVLWBjt4yXmHPLbL6iLNQju4RItXszJ0tq
-	35w==
-X-Gm-Gg: ASbGncvc9wp5nTdRC0dtXHaUVwfEFICWmv5is1Ba8wHi59Yuo1pO1rmMI2VAXsdLCWS
-	/jZCHjwZgqelQGL5XfbBa2/Z931A1ISaxAi3tjJsl5LWzQUV7G+/iMGsA1TPNtM5t+wRdRfMxcS
-	jp4VamFBR04KBZ7AAYyDe04MVHDbZ3snmFI+MHYlbC1HcoZwu42/5uBNmeOc1cGgnh7tYLrHvzi
-	VULIyckQutJWzCx1H5lQ0/YlTREeKNz/f79GnDCYbOHnIDjs9Z/6/Y1ZdCOl1Ouu1VU24b5neCz
-	iWbAKoSYyuNKd3o0Ja8b
-X-Google-Smtp-Source: AGHT+IEMHkJzvpXWvsF/evuJDZyu1j8XS/qRwqKSYvLvfpEa3C7BY/zoyZzol3SnCBUxBQCC2bde5w==
-X-Received: by 2002:a2e:be8e:0:b0:302:3b3f:fdab with SMTP id 38308e7fff4ca-3025459d115mr59962401fa.28.1734384565375;
-        Mon, 16 Dec 2024 13:29:25 -0800 (PST)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30344175b76sm10352321fa.90.2024.12.16.13.29.23
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Dec 2024 13:29:24 -0800 (PST)
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53ffaaeeb76so4935132e87.0
-        for <stable@vger.kernel.org>; Mon, 16 Dec 2024 13:29:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXknuuRfpEqAvltfV0/C1GBV6C6UQQkMk5tIepTyRhKAKyya0hM5Ma8tjaWwODKOyxqhPJ66XA=@vger.kernel.org
-X-Received: by 2002:a05:6512:b94:b0:540:353a:df8e with SMTP id
- 2adb3069b0e04-540905ab051mr4197028e87.39.1734384562829; Mon, 16 Dec 2024
- 13:29:22 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8EE1D54E2;
+	Mon, 16 Dec 2024 21:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734385429; cv=fail; b=WG6kZ43tRQ/jR71073Kzbtfn1sZcDmUo53TO3b0g0s6dlxsyostibs70MTYrAN1mw47zS8vMJ03OZzj4YPCIlK3VE2bGrKWkLRJ/+vBE+IWoVfo6aB5LKMJFU3b5UVPNqmvn4ka/UWjV4QGZpBsW5t3lvqbhRUffWLQcPB7/1Oo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734385429; c=relaxed/simple;
+	bh=8eLFPD5yN/IYqXoCn1Gj96eJVTJTOB/DpU8du9Zy0fs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=etcpXyWMtGaUquTimSOe8WV7Jdg/nM9jbjFtGXI0oceDB+3ZG1OH4B1q2+fvJDiiMhgUiAtFcy1wWeFSvWmmf7tQ8f/szgXN5eVQzuvLHH/9IaUFOjEFtoopH6vvNjItMCr5YrPCSKlZar/KaFCgXShwi1qlPgHWd2+OI6XRoNw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dBuJ8FUC; arc=fail smtp.client-ip=40.107.102.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CK+33Qy53sJQ/NE2uDXy8M7C5Zde2y67L8sN0Lu4G5C+O1tRksSuKliM6Gdr11DYX8WsepKNsT+UHhAF1pqz5O2nx0/R1q0wu8BQ34ihxvaXlOVV0I6pKmnV4Mvnp5ldOny0JMsKTFP/fvOu+xFCLOkaHdrovoGZvpZqikJg9BVZdashLwCuPKELFXkwi9wTT5k9trXKVfJq+AvVcgGU2lHPmZwuHa8WSEIjJOUb172KcEF6nBPGKxAvKjPZl9rwFPBmuaU3vuNuIeM5uYDgEhDuISvxRyKdBhtmsIvwzvln5qc2GTyPKzCSZZEhSfN8Y5fHCEySmaxWaeh1Iq56sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HJUFEqm3bRN/HRGbs3CpErmu5dSNYWAcCQnBa7nsPJ4=;
+ b=cYlZuOh44iEl21ztvOJafGyVhXMeshZl+c8/v3vlObLomSQ4aiiKZQCRYTOnQPV9RRQTKM162OggPoPZs0GU2U6HNwan+w8tYChZ7x+oJgcrG2yGexIQ+xjhZf2mT6RI4vKCcBHwZiLGkcGtq840UduRbAYEEfPGV7a789zRUyCJDYXDCYRsOoE8XEU//bgMn8rNYhJfk0EhVuFek1M7msZpE/RlAx5sGo56q74YbXiKhzya3IbyK7okIAGOHb3d2ndgPr7OF4CISAMF5xxwgo4egbv9gTzB5QCN5t2t1BXUmqrdgFWQm/t4I1XHrhrJNmJJtAhM8RtlLeYVo59Skg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HJUFEqm3bRN/HRGbs3CpErmu5dSNYWAcCQnBa7nsPJ4=;
+ b=dBuJ8FUCCPEZ3o1LMXXeQDQl++nnwXffzhlxqfeXS2n4CkTbrHd1ovPJ46//aI2+keEkBi8SNRxkz3kU1epbuXviRUC9Z/nr7c+kv+IXyUdDrlvSyX8aCzBRPTwWClYaJgvPxw/L/pgYjheinvVOvFrQLAi6YJEChBN8V9tvz6k=
+Received: from MW4PR03CA0301.namprd03.prod.outlook.com (2603:10b6:303:dd::6)
+ by IA0PR12MB8328.namprd12.prod.outlook.com (2603:10b6:208:3dd::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.20; Mon, 16 Dec
+ 2024 21:43:44 +0000
+Received: from CO1PEPF000042AD.namprd03.prod.outlook.com
+ (2603:10b6:303:dd:cafe::6b) by MW4PR03CA0301.outlook.office365.com
+ (2603:10b6:303:dd::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.18 via Frontend Transport; Mon,
+ 16 Dec 2024 21:43:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CO1PEPF000042AD.mail.protection.outlook.com (10.167.243.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8251.15 via Frontend Transport; Mon, 16 Dec 2024 21:43:43 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 16 Dec
+ 2024 15:43:42 -0600
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 16 Dec
+ 2024 15:43:42 -0600
+Received: from xsjtanmays50.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 16 Dec 2024 15:43:41 -0600
+From: Tanmay Shah <tanmay.shah@amd.com>
+To: <jassisinghbrar@gmail.com>, <michal.simek@amd.com>, <ben.levinsky@amd.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	Tanmay Shah <tanmay.shah@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] mailbox: zynqmp: setup IPI for each valid child node
+Date: Mon, 16 Dec 2024 13:42:58 -0800
+Message-ID: <20241216214257.3924162-1-tanmay.shah@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241214005248.198803-1-dianders@chromium.org>
- <20241213165201.v2.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid> <CAODwPW_c+Ycu_zhiDOKN-fH2FEWf2pxr+FcugpqEjLX-nVjQrg@mail.gmail.com>
-In-Reply-To: <CAODwPW_c+Ycu_zhiDOKN-fH2FEWf2pxr+FcugpqEjLX-nVjQrg@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 16 Dec 2024 13:29:10 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=UHBA7zXZEw3K6TRpZEN-ApOkmymhRCOkz7h+yrAkR_Dw@mail.gmail.com>
-X-Gm-Features: AbW1kvbmXu3MO-VJHQBuZxXwEAVNjn8ERCKhnS19UuE5S2BYm8ga04moQxlHz9o
-Message-ID: <CAD=FV=UHBA7zXZEw3K6TRpZEN-ApOkmymhRCOkz7h+yrAkR_Dw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] arm64: errata: Assume that unknown CPUs _are_
- vulnerable to Spectre BHB
-To: Julius Werner <jwerner@chromium.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, linux-arm-msm@vger.kernel.org, 
-	Jeffrey Hugo <quic_jhugo@quicinc.com>, linux-arm-kernel@lists.infradead.org, 
-	Roxana Bradescu <roxabee@google.com>, Trilok Soni <quic_tsoni@quicinc.com>, 
-	bjorn.andersson@oss.qualcomm.com, stable@vger.kernel.org, 
-	James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB05.amd.com: tanmay.shah@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042AD:EE_|IA0PR12MB8328:EE_
+X-MS-Office365-Filtering-Correlation-Id: 36ebe1b9-0fbf-4ba8-ba92-08dd1e1ab68f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xMyGP6FgaNqI3dtqtxXQitvdevB1NIy6EoV84WFAMUcdoSnKgg5I+3be0xLQ?=
+ =?us-ascii?Q?9Ujx7N7b1njIY5lcjAokl/PS+iqRs4DfSecADCE/+uz/CGeyMJcpQRoo8iPU?=
+ =?us-ascii?Q?y/8ON0vgH6bdQNXFRAlUPsrIUAD3ln0gybAWGtVywdwdq2/qKgaaHDxdq+4+?=
+ =?us-ascii?Q?kYMuEZRmMZY2M2eFo96YoKRLknqZm+zzauo1v8Z3AIxwcrcGm0u82RMiWijK?=
+ =?us-ascii?Q?MsILN1fn3VY+nRmpuonBcmgGUzzFT2E77VX/O4WKgHYRhcSDeZ90Fz6yLC8G?=
+ =?us-ascii?Q?h02PLNdLiPZJr9U+Fypf0KJ3LR1wev+twRE3GbBy0P2l91DZhJTAbueX0+Xe?=
+ =?us-ascii?Q?GBBiwzaovprJak1shXQJtwXOwT207xtz3rrF8tyzD9JqT3jPm/UED6iKD9FQ?=
+ =?us-ascii?Q?6dUdMiJb2sWMUjNSJ0tuzoQ+kDPD/7KPbBJkGUrQnTdM8dxZlRrbbCUx3bMj?=
+ =?us-ascii?Q?nINpS4kGRMQB77om7yivpycKEJsFo02i7UgfVbi1+iuZhvclyfEoQgvsaicK?=
+ =?us-ascii?Q?zDmP31cyEkn/fjrdeT0TqlHm3H8bVkA7Cb4rNR51nh6awRHlRHyAHjj5fQk3?=
+ =?us-ascii?Q?PnZ5Wam9SdHZc/bMytb74/fOZrwNtsASKXu2Gsi5hHqeiDQqCNLgb1kdOEJ+?=
+ =?us-ascii?Q?3EU2P46/O9xNQQzJ8hwfmqDDC1lKqpcrr0NRq4HirLvwP4s20RwTwIS8yM2k?=
+ =?us-ascii?Q?I49z31HbpubmXaA7AswG3PbbBxYiKuM9U3ugvIOKHK1DR3raKvJ22E3IgrRt?=
+ =?us-ascii?Q?uosBUZTIeYGGUJwux1WGmTmAhx6b4lupfpyWYnnOm3Op9asas8/lIANmZ3LL?=
+ =?us-ascii?Q?8ygUSYF6mfarzDIlv6mEoeJDOEA91hIDzma4/xRwXISpElRiryo04XwPO53m?=
+ =?us-ascii?Q?O4FS40v/oQlBtDgbjc4UnM/vNI4sFEO9HNfx8BRWm/iLwHtWCHZosfpftOy5?=
+ =?us-ascii?Q?R0fMkJArHXwe1+ZWtqzA4O4gMeH1ZIJUCTqD/6l3LuAHQyURGnxsWb0y/MQ0?=
+ =?us-ascii?Q?GGOaw2b6+/YBhn1dLn41UCcrE7q+PF/10+AY1vA/Qs8MPnbO4aJJBYO3y14Q?=
+ =?us-ascii?Q?bjeG95Ra+Q6jfoNZy7B2i4ZNMvwNzIiAjI8R1etUx9gZuihsi3U7H4M3Y+If?=
+ =?us-ascii?Q?EjpjnITtJLtATsKOZ7W1M/o1zNQl9FMuwyQGJ+D9GRoKFen4nPwONAxlUe5P?=
+ =?us-ascii?Q?u+QwJqJKju5X4zxDxMIF7Cxj5E4HcePH02qbIbZ+qgAoXUzZG7ExN91FpFhM?=
+ =?us-ascii?Q?sr5uIzzY7lqvHCWqfobnCPMctjngac1jRRMjmO1lwANRgyIzxS2//R1aenDF?=
+ =?us-ascii?Q?UIgka42P2ApZKNjdLXZk79l8Z51fZVtkNhfFqTgKS8NppWxQZDsiej+S5Jwh?=
+ =?us-ascii?Q?8A40kUuIT/rhl6zJqGPlquJByVCkC4/ikvMbxQgOD3Uy4OA/OqkMV2p4RsqM?=
+ =?us-ascii?Q?Wqe0MWDqjEEyrE7FiNgW+sTXQEN+2Iwn/G6B88fvPqvnmf/5eno5Jw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 21:43:43.5615
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36ebe1b9-0fbf-4ba8-ba92-08dd1e1ab68f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000042AD.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8328
 
-Hi,
+As per zynqmp-ipi bindings, zynqmp IPI node can have multiple child nodes.
+Current IPI setup function is set only for first child node. If IPI node
+has multiple child nodes in the device-tree, then IPI setup fails for
+child nodes other than first child node. In such case kernel will crash.
+Fix this crash by registering IPI setup function for each available child
+node.
 
-On Fri, Dec 13, 2024 at 6:25=E2=80=AFPM Julius Werner <jwerner@chromium.org=
-> wrote:
->
-> I feel like this patch is maybe taking a bit of a wrong angle at
-> achieving what you're trying to do. The code seems to be structured in
-> a way that it has separate functions to test for each of the possible
-> mitigation options one at a time, and pushing the default case into
-> spectre_bhb_loop_affected() feels like a bit of a layering violation.
-> I think it would work the way you wrote it, but it depends heavily on
-> the order functions are called in is_spectre_bhb_affected(), which
-> seems counter-intuitive with the way the functions seem to be designed
-> as independent checks.
->
-> What do you think about an approach like this instead:
->
-> - Refactor max_bhb_k in spectre_bhb_loop_affected() to be a global
-> instead, which starts out as zero, is updated by
-> spectre_bhb_loop_affected(), and is directly read by
-> spectre_bhb_patch_loop_iter() (could probably remove the `scope`
-> argument from spectre_bhb_loop_affected() then).
+Cc: stable@vger.kernel.org
+Fixes: 41bcf30100c5 (mailbox: zynqmp: Move buffered IPI setup)
+Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+---
 
-Refactoring "max_bhb_k" would be a general cleanup and not related to
-anything else here, right?
+Changes in v2:
+  - Add Fixes tag
 
-...but the function is_spectre_bhb_affected() is called from
-"cpu_errata.c" and has a scope. Can we guarantee that it's always
-"SCOPE_LOCAL_CPU"? I tried reading through the code and it's
-_probably_ SCOPE_LOCAL_CPU most of the time, but it doesn't seem worth
-it to add an assumption here for a small cleanup.
+ drivers/mailbox/zynqmp-ipi-mailbox.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I'm not going to do this, though I will move "max_bhb_k" to be a
-global for the suggestion below.
+diff --git a/drivers/mailbox/zynqmp-ipi-mailbox.c b/drivers/mailbox/zynqmp-ipi-mailbox.c
+index 521d08b9ab47..815e0492f029 100644
+--- a/drivers/mailbox/zynqmp-ipi-mailbox.c
++++ b/drivers/mailbox/zynqmp-ipi-mailbox.c
+@@ -940,10 +940,10 @@ static int zynqmp_ipi_probe(struct platform_device *pdev)
+ 	pdata->num_mboxes = num_mboxes;
+ 
+ 	mbox = pdata->ipi_mboxes;
+-	mbox->setup_ipi_fn = ipi_fn;
+-
+ 	for_each_available_child_of_node(np, nc) {
+ 		mbox->pdata = pdata;
++		mbox->setup_ipi_fn = ipi_fn;
++
+ 		ret = zynqmp_ipi_mbox_probe(mbox, nc);
+ 		if (ret) {
+ 			of_node_put(nc);
 
+base-commit: 28955f4fa2823e39f1ecfb3a37a364563527afbc
+-- 
+2.34.1
 
-> - Add a function is_spectre_bhb_safe() that just checks if the MIDR is
-> in the new list you're adding
->
-> - Add an `if (is_spectre_bhb_safe()) return false;` to the top of
-> is_spectre_bhb_affected
-
-That seems reasonable to do and lets me get rid of the "safe" checks
-from is_spectre_bhb_fw_affected() and spectre_bhb_loop_affected(), so
-it sounds good.
-
-
-> - Change the `return false` into `return true` at the end of
-> is_spectre_bhb_affected (in fact, you can probably take out some of
-> the other calls that result in returning true as well then)
-
-I'm not sure you can take out the other calls. Specifically, both
-spectre_bhb_loop_affected() and is_spectre_bhb_fw_affected() _need_ to
-be called for each CPU so that they update static globals, right?
-Maybe we could get rid of the call to supports_clearbhb(), but that
-_would_ change things in ways that are not obvious. Specifically I
-could believe that someone could have backported "clear BHB" to their
-core but their core is otherwise listed as "loop affected". That would
-affect "max_bhb_k". Maybe (?) it doesn't matter in this case, but I'd
-rather not mess with it unless someone really wants me to and is sure
-it's safe.
-
-
-> - In spectre_bhb_enable_mitigations(), at the end of the long if-else
-> chain, put a last else block that prints your WARN_ONCE(), sets the
-> max_bhb_k global to 32, and then does the same stuff that the `if
-> (spectre_bhb_loop_affected())` block would have installed (maybe
-> factoring that out into a helper function called from both cases).
-
-...or just reorder it so that the spectre_bhb_loop_affected() code is
-last and it can be the "else". Then I can WARN_ONCE() if
-spectre_bhb_loop_affected(). ...or I could just do the WARN_ONCE()
-when I get to the end of is_spectre_bhb_affected() and set "max_bhb_k"
-to 32 there. I'd actually rather do that so that "max_bhb_k" is
-consistently set after is_spectre_bhb_affected() is called on all
-cores regardless of whether or not some cores are unknown.
 
