@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-104372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CF89F3491
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 16:33:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8549F3492
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 16:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79FB1887D0F
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:33:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BB811886CE3
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33D4136349;
-	Mon, 16 Dec 2024 15:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79559139CEF;
+	Mon, 16 Dec 2024 15:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9N8pVsC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9ph6lo/"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A229C17C64
-	for <Stable@vger.kernel.org>; Mon, 16 Dec 2024 15:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9EA136337
+	for <Stable@vger.kernel.org>; Mon, 16 Dec 2024 15:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734363177; cv=none; b=Izpx6F4jN36e4irTxXpZp4lI7vDVGri0mDySWGrfrcPisXCV3DWLoeFLmi5WjBNZhLQE4N+O7fkC3sFI95zO5tpYZN7hsdYFjKTLxWqtoRWYYvaXoyJwU6JB1pF4UvrowZWhj/mYSCb/kZlazsFxzhtaZOr/a3jMuUduV+GfHeg=
+	t=1734363181; cv=none; b=RXZtAHFpic6I7xFB9YMd4EElJJe7VzhJwAxYmqAz2Ss6sSjMEqjonWRMdtx8cwFvlCxImPo76YghyTHDTWaGcfW1ocjEQorBDlvDBXiKwyuA76Ts7/IFq3O+oM6GvxEwvCnfK1v4oSLaOZ9whAoXFaLt+Xeq8b92/IE4nGAtaMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734363177; c=relaxed/simple;
-	bh=7lSjTnUABwTj0y/lbKboeAU9IoiISEu23zRvHja0ZOw=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=k8x8v/gBcOdaHBTdJSYcjZVOGYBdq03N8+BrfzNRK3Z9j7YXt9FvMXwcJifBmfWeObkJBN+0QZt8pEJcwexpPfK7UBzkM6Zyxk6U17AYRbMUtcV4l1MF5FNms9aXdAHb/rI6T8085US51KFjM+bAU8RllHuW6+asSjJ8s/yY2tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9N8pVsC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD6BC4CED0;
-	Mon, 16 Dec 2024 15:32:56 +0000 (UTC)
+	s=arc-20240116; t=1734363181; c=relaxed/simple;
+	bh=MTZcgGcH7u8jf2J8V8d+9NLazxYoCEZ2O31bmN7TWwI=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=kogWBNkaNRuyrtwe6JacwuZmY1QQzcBi+vS/5Jgqh26o5u8dxn3Vd3+6NmssaRJ+3/rPsEeQcsglR49zocHtvqjjWHZivQpSk5h5jTAzzCRqLEYXb2pKj9Qc3Kb1rlG1NAr//V5OuwGHJ/6A1SbiWrAXURRiifUIaivOGqdTeL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9ph6lo/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD07C4CED0;
+	Mon, 16 Dec 2024 15:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734363177;
-	bh=7lSjTnUABwTj0y/lbKboeAU9IoiISEu23zRvHja0ZOw=;
+	s=korg; t=1734363180;
+	bh=MTZcgGcH7u8jf2J8V8d+9NLazxYoCEZ2O31bmN7TWwI=;
 	h=Subject:To:From:Date:From;
-	b=C9N8pVsC3x+vy0pnULSkG7nanKe1jNXihs4jC52sakBENE/djunnL0bNCUyL/UyPl
-	 yj1Mdv1AAoB54i8jXOQF7zmrluUr6cLf3jaaBTose7doSXK4aUHLKrFDJf/arGFfoH
-	 J9OQzvtnyYn4X9DmkYHlfvt9w5j/iJyw8OqAoJbc=
-Subject: patch "iio: adc: at91: call input_free_device() on allocated iio_dev" added to char-misc-linus
+	b=U9ph6lo/anweZHr1uhpEC2HNOwJB5WNj4sUeXdG2B4cWQ0uns+qY5lEHX9/z7qIaE
+	 T7LCZ/dUKcd6tKvyWVCkeD9ZYjsWuH14xrcWBz5VYnmBXYoe+0dRY0WhxqqqJWdVG3
+	 08ZD7DRzcV9VdWWD8I6cRyK6/EYV+eQVnXsGrlPE=
+Subject: patch "iio: inkern: call iio_device_put() only on mapped devices" added to char-misc-linus
 To: joe@pf.is.s.u-tokyo.ac.jp,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 16 Dec 2024 16:31:44 +0100
-Message-ID: <2024121643-corroding-contrite-83b6@gregkh>
+Date: Mon, 16 Dec 2024 16:31:45 +0100
+Message-ID: <2024121645-unwired-fraternal-d257@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: at91: call input_free_device() on allocated iio_dev
+    iio: inkern: call iio_device_put() only on mapped devices
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,38 +69,38 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From de6a73bad1743e9e81ea5a24c178c67429ff510b Mon Sep 17 00:00:00 2001
+From 64f43895b4457532a3cc524ab250b7a30739a1b1 Mon Sep 17 00:00:00 2001
 From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Date: Sat, 7 Dec 2024 13:30:45 +0900
-Subject: iio: adc: at91: call input_free_device() on allocated iio_dev
+Date: Wed, 4 Dec 2024 20:13:42 +0900
+Subject: iio: inkern: call iio_device_put() only on mapped devices
 
-Current implementation of at91_ts_register() calls input_free_deivce()
-on st->ts_input, however, the err label can be reached before the
-allocated iio_dev is stored to st->ts_input. Thus call
-input_free_device() on input instead of st->ts_input.
+In the error path of iio_channel_get_all(), iio_device_put() is called
+on all IIO devices, which can cause a refcount imbalance. Fix this error
+by calling iio_device_put() only on IIO devices whose refcounts were
+previously incremented by iio_device_get().
 
-Fixes: 84882b060301 ("iio: adc: at91_adc: Add support for touchscreens without TSMR")
+Fixes: 314be14bb893 ("iio: Rename _st_ functions to loose the bit that meant the staging version.")
 Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241207043045.1255409-1-joe@pf.is.s.u-tokyo.ac.jp
+Link: https://patch.msgid.link/20241204111342.1246706-1-joe@pf.is.s.u-tokyo.ac.jp
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/at91_adc.c | 2 +-
+ drivers/iio/inkern.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
-index a3f0a2321666..5927756b749a 100644
---- a/drivers/iio/adc/at91_adc.c
-+++ b/drivers/iio/adc/at91_adc.c
-@@ -979,7 +979,7 @@ static int at91_ts_register(struct iio_dev *idev,
- 	return ret;
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index 136b225b6bc8..9050a59129e6 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -500,7 +500,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
+ 	return_ptr(chans);
  
- err:
--	input_free_device(st->ts_input);
-+	input_free_device(input);
- 	return ret;
+ error_free_chans:
+-	for (i = 0; i < nummaps; i++)
++	for (i = 0; i < mapind; i++)
+ 		iio_device_put(chans[i].indio_dev);
+ 	return ERR_PTR(ret);
  }
- 
 -- 
 2.47.1
 
