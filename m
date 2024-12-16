@@ -1,199 +1,284 @@
-Return-Path: <stable+bounces-104329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C569F2FAE
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 12:43:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F1B9F2FDF
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 12:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF341882EA6
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 11:43:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3C1D7A29B9
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 11:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEEC204563;
-	Mon, 16 Dec 2024 11:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C151D204579;
+	Mon, 16 Dec 2024 11:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="moh4lp8Y"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="AKwuk2sc"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2060.outbound.protection.outlook.com [40.107.223.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8243203D50;
-	Mon, 16 Dec 2024 11:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734349425; cv=fail; b=OSfMgdyp6AVsgTZYUEej7RA0TyFOBQ1kfFOXJBe2lOE7Hg2oD4NPVrkuTnEo8qGj6Q4CsWKI0lb8aW8EnzTt8n/IqZuRN6G8NE3Amz5hEa63WsUjUFapu8h6v0iSkQtyTGbu+2aBEdcSMYHkG8iOio5hpsadYTJ6ABDdfk1qtGs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734349425; c=relaxed/simple;
-	bh=TflrNTmd1SALRlpC5zbUAXWdiGJrrunK5AzYWN4lW7I=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=f2tJyF/IPcGgOw7+VkgcJIsT6FZZBjKx9qnOU0osYgteQCxrpDbhztVNM3LfGtSd6TbaO0t2Vc7zvfYZT0BD4OUdnCv4/nLvkINicMSUPvA2M9IsNcaHKmsQiL8+u0Ie/+smwPGTbm+hihXVxQunkDf9B5zBZ1fOgBuD67tpJAw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=moh4lp8Y; arc=fail smtp.client-ip=40.107.223.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KOBMM3pBMpFrwMrDAOFbD/+gz+eaVwIZEw6chTzcYwhUQbE485nU2qS+5jXXiDREbZB6x5oS/K7IpVDRJfbw86QXqWAauiXbNfm49vrAaNS//p3fhHJ9o2IbTDPJ/3DH93fW4vIqYKtutqaje1QDj7HxRYlYXid5K1yVmB40Y98tiPiRFW8CdNkrOoEHHsP6iySFqOsHn7GYLgf99i3aa+2kSPCf2Tri7uS4pyB9DPHfdhc3FkuXXmufvPqG778NlMBVC/FSShWitkdMWN3q9grWefmZ/TvW3ig/HKvqGhmS977eQCGh4qjIiMajRe+FXYz+Mn2Ro18oIoK0YdguzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p9RBbGB6nh3+BHU4D87ZyfIb21nN4y9mz/daBZpyDMA=;
- b=rPqCXAgFguK73QtxwV/OxXD81TWDFds82VeGQxkgdmYqPpqyyjxJSeUi4onh4zQ0dxUNWFD7r0/mCELLhExrHc56ubuC5NDhnMPfU1puDWijGBg6kfzQWL/HTVSBbOSBZUsSB83OSPvRQ6QKa3qcBxl4rdqNMDaLSUPH/koG3GzWSJiHrpLm0eQZrhW0femtt1xwkeIsSk19JnHL1sEqoiXEzIr12HTU5nF2Jn+H9fW16qusAJysHaa3x6V/RcwfS77ccYaHKWe1udb45GCbUkWfLrMSPFABkivCAg5F4C6DE0khICFBusOgW4jnS6U4LVCc6MLFQZI12LltEA3uyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p9RBbGB6nh3+BHU4D87ZyfIb21nN4y9mz/daBZpyDMA=;
- b=moh4lp8Y5ZgZLVQZEy7dm5UASSpgDYSX8ufvT2dZ2ZlQ7RSY9pIxLiXolbvmsjRYQ8+CUD7bnIPOcV58LoEPFey6ROsnyWmX9tKBvHYJJzGdJnOPzBwqQyQOAn1a0QqixgzSmUWm1tvdkkoKbRjKolqjezc+eykMffUzdiWV7pMLUZRLhGvaiomLpIYTpaN8iLCRvKhBloE9N0WZyJhiuyg9kdamSmhRZC7AaZiYlkqOO7ph9zdEYwVT+Hatl6BTLakYYpINIS2Z1gtawqzZW0mpMlJTik3dq/2W0yeNHy8G6j+sKVOTv/Ah0Xv8w6k5fZtjz9aTPRObo5d2LjBcPQ==
-Received: from CH2PR18CA0016.namprd18.prod.outlook.com (2603:10b6:610:4f::26)
- by DS0PR12MB9273.namprd12.prod.outlook.com (2603:10b6:8:193::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.17; Mon, 16 Dec
- 2024 11:43:40 +0000
-Received: from CH1PEPF0000A349.namprd04.prod.outlook.com
- (2603:10b6:610:4f:cafe::53) by CH2PR18CA0016.outlook.office365.com
- (2603:10b6:610:4f::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.20 via Frontend Transport; Mon,
- 16 Dec 2024 11:43:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- CH1PEPF0000A349.mail.protection.outlook.com (10.167.244.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8251.15 via Frontend Transport; Mon, 16 Dec 2024 11:43:40 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 16 Dec
- 2024 03:43:40 -0800
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 16 Dec 2024 03:43:39 -0800
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Mon, 16 Dec 2024 03:43:39 -0800
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.1 000/772] 6.1.120-rc2 review
-In-Reply-To: <20241213150009.122200534@linuxfoundation.org>
-References: <20241213150009.122200534@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDC82040BC;
+	Mon, 16 Dec 2024 11:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734350136; cv=none; b=h/WK12NcW7U5Qopb1qwL2czI8t/L8yoxEQWn9608S4yhjnOwTwJ25/PoJP9Quka9izmvINAIROQRfAMpkqv+MEYphObDJM6LXMn3EWMBMCij0HUSU+4I7aH+TFxfSh2ldMNjGs5RBXF86b8a18YA5HuYCmdzWBH8ZF4EqBGUiB0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734350136; c=relaxed/simple;
+	bh=kVAP8PxF3UrpxZw87ELx0B/Q/qq63lJQQJUfxtANVPU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IFa0zVTNxBpozMYoGWOea5w1is0fAZURD8Djaz1rBPVSzytNFJ3bJkgN0nRipPAp+TWqzsG//y29cTy8i924zn11FzNsk0tVfq7r6/eclrwK42Nsi/r3FeZhcto+YJN3x0sM7gYoE2EKDiaZX+7gV4mTOqgLoDFtlAUQt1Qy6jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=AKwuk2sc; arc=none smtp.client-ip=117.135.210.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=vHai0bofydY5qRIK3SpVBL5Nv8an8p0CBft58pGYi0Q=;
+	b=AKwuk2scUnVAC4EwlrIo2GqsmFEisCsrP2hXSTmnaUv9rn7zdoI8r6V68R2p5W
+	+6UL6qcLVL6reTSyUR0eJ2UzC1PTDvlVcv+PwYrYgVodbLQb2Bv0dtToeq+UEGPd
+	7YBLLMqXsDHEsgwTNZj5YVdKJDJbfAcnhXjPb4s3XDcok=
+Received: from [172.21.22.210] (unknown [118.242.3.34])
+	by gzsmtp3 (Coremail) with SMTP id pykvCgC3HlLCFGBnu946Cg--.55143S2;
+	Mon, 16 Dec 2024 19:53:38 +0800 (CST)
+Message-ID: <3e160d54-5860-4616-bd32-5faff3afdb49@126.com>
+Date: Mon, 16 Dec 2024 19:53:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <66cb808c-bb6d-4c7e-a1f5-5a9b0a185870@drhqmail202.nvidia.com>
-Date: Mon, 16 Dec 2024 03:43:39 -0800
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000A349:EE_|DS0PR12MB9273:EE_
-X-MS-Office365-Filtering-Correlation-Id: 953520ea-baca-4479-5817-08dd1dc6e31f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SmJzcnFXOTR0WFRsMnA4ZjFIc3hZaGFTV3ltNTBVNXBibmVtUGhGMnNqNzE1?=
- =?utf-8?B?bzBTZzJ2TUdqRW5lWHk4NzBOcUMrcVAyd2RydHJPbzJqVVFzVDRUdjJzZEN4?=
- =?utf-8?B?cDVIMk1RTm51YjhoMnF1ejUwU0tqbjNpWWhPZ0VEaytqV0JjZEJvcmxqdFVK?=
- =?utf-8?B?QzBRRlRCVEdvMWpUcHdHUWpXdkZQYlZ6empQd3ROc3Nvd2diUTgyT0xvaFFw?=
- =?utf-8?B?b0wybWNJSzFXUTVRdno3a1ZHMHFQR0RpSDd2ZkdXMGZPVUtxQjRYeHJhb1Vq?=
- =?utf-8?B?alFTclFSY2h1MlE0ME52SlVKdTFELy9nTWE0RHJpZlJNYjZhdktxOUhUb2F0?=
- =?utf-8?B?ek11UGUwL0hITWw3bkdISXl0R1ZvU1BCbFN1QmI3YlBVQWxrTHNRdVdhMHhK?=
- =?utf-8?B?KzkvaUZ3K1pVV1YzYTJ5VHZHc3ZjNWxLQ1hWeDF6N0xqSWk3SzFzS01jeFZY?=
- =?utf-8?B?aGREOHFFS0RmZUV0YTNOSmJGb0ZxbnZHY3dNV09hQVNZaU9DcTFDVGJTdjV2?=
- =?utf-8?B?SlMvMWtGdmxOREM2UGk5MVV4d2pqZG9vR01HOUt0MlZobS84YTRWUkIwOXhp?=
- =?utf-8?B?OTNtMGFaYU14RVYxNUt4Wk9SQ1dJelMydGVZa0JxcWZkeUVCaE8zcURmaG93?=
- =?utf-8?B?S2JhcGlDNy9BQ2xQNlcvNUw4dWY5QXBVdWlmK1VrZ2Z0UmM4aXY1cXI5MW5N?=
- =?utf-8?B?YmVaWW05cHJQakZseXVubmxIVDhFVmp0WlA1K3JkNExyU29GMVFvNnNPeVRi?=
- =?utf-8?B?Zi9WSTZseXV2Vld2QjkwZmZvRWlKN3h1dmJLelpvRUhBRHhweXB3ZmxIaUVw?=
- =?utf-8?B?WFUwaVh1UjZ4bTJsNXlWZFovR0NBVy9EL1dkME1lZzRoL2xGT2hoU1lEYW50?=
- =?utf-8?B?WVRmczNHcnZWbUd5TTVKTG44L0s2UWJCY2wrRGRybTJsVkx1TTc3N2FDcmh3?=
- =?utf-8?B?MjdpL0hKTS9yRnpKWFlTWXVLdzFKTzJyajUxM2dkSUY5bkNOblNveHVsd0tu?=
- =?utf-8?B?SlZjb1R0eU9hOCttYmVzUkdVcXNnbHFPMDJhcjlwdGlRT2lXZHAyTzlOQzdt?=
- =?utf-8?B?VUNubHJmcGgzZCtUTkZ0TXp3QXlSV0pKR0RyNXhnWTFVZEFEbzF6UmZTZ05w?=
- =?utf-8?B?N29yMlRIQmQ4UzlxUjV3Z2lpRjl4SFBiekV6ZWc0ZEN4RlhBbVkzbVhibkhE?=
- =?utf-8?B?TFNaS1RuaVR4S0xxd0VkTGNzUnR5SllvSnFhNkxpaS9tYk1mOEZiYXhHM2F3?=
- =?utf-8?B?bjd1YWxZR25leWxSYmp0cmJENDJrNXU1S3NpTkFuQ2VzNDV1T0k0RmViMEJU?=
- =?utf-8?B?YVJHeU1nZ2RCejhXR0IzVTZXWEwraVdaNUtjbUVCbmVhaEpvQnF4M0JidVRm?=
- =?utf-8?B?dHQ3MXJGM3VRd3RHWHl6RmMvTlJSVFFBQ3BvQjE4NXk2akRNSmNLNWMwNVFF?=
- =?utf-8?B?S050Q1AzY3A1WE4zSmpnd2J1aUhsOFRaZUtsajMrNXh6Sjh4UHNBeGlYc0Vj?=
- =?utf-8?B?U3JneFFySWdZNE9IQUxhWWgybmdIaUdnZW11VDV1ZTJQTDhSOUtMS0FWbWU3?=
- =?utf-8?B?SUJubmpCN1dObzI5cmpZOUUzRzF6dDRXTzAxcEpoWmpsaUNLWk9lQysvc3pB?=
- =?utf-8?B?M1k1NXhCNjhHYVR3a1ZUby9KREpOdS9XQW1uWDdXdk9ld1dzMWlvbEpjL2M3?=
- =?utf-8?B?SkFKK25RRCt5TloraGV1b1BRU3FHU2w3dzFmUGZ3eEVqcFEya2JFR3ZqZVNq?=
- =?utf-8?B?UGdwWkZ2R1lISVdJejEyKzE1MDAzQUxLb3VGU3FBWC93R2M4MVlORDBMRk0r?=
- =?utf-8?B?Zjdud2lTdTh1amNQelFmSDBadmg4UFlsRVlrbTZuamxVeWM2bmZZd1l4M3Qv?=
- =?utf-8?B?ZXVXbUw0a1NzQ1ExS0I3RFB2N0xJQVUwcnRNZXFQbDR0S2VsUkZMRGFOM0tz?=
- =?utf-8?B?YVJBYWRkc1VZQ0NMUC9DQktHeko2MVdPenVFRDI4OU1wajJKK1BnREg5QVpY?=
- =?utf-8?Q?0MYFs77nwUmhZtch2cqBMKRBAZk7l8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 11:43:40.6440
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 953520ea-baca-4479-5817-08dd1dc6e31f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000A349.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9273
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4] mm, compaction: don't use ALLOC_CMA in long term GUP
+ flow
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, david@redhat.com, vbabka@suse.cz, liuzixing@hygon.cn
+References: <1734256867-19614-1-git-send-email-yangge1116@126.com>
+ <f3bf705a-89db-47be-860f-31227b0133a2@linux.alibaba.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <f3bf705a-89db-47be-860f-31227b0133a2@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:pykvCgC3HlLCFGBnu946Cg--.55143S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GrWUuF1fur45Jr1rGw47twb_yoW3tw45pF
+	18Z3W2y395XFy3Cr48tF409F4Fqw4xKF18Ar1Igw1xZa4akF9293WkKFy3AF4UXryYka1Y
+	qFWq9F9ruFsxAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uq2NtUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOgW3G2dgFFkEhwAAsa
 
-On Fri, 13 Dec 2024 16:04:17 +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.120 release.
-> There are 772 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+
+
+在 2024/12/16 16:41, Baolin Wang 写道:
 > 
-> Responses should be made by Sun, 15 Dec 2024 14:57:53 +0000.
-> Anything received after that time might be too late.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.120-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> On 2024/12/15 18:01, yangge1116@126.com wrote:
+>> From: yangge <yangge1116@126.com>
+>>
+>> Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
+>> in __compaction_suitable()") allow compaction to proceed when free
+>> pages required for compaction reside in the CMA pageblocks, it's
+>> possible that __compaction_suitable() always returns true, and in
+>> some cases, it's not acceptable.
+>>
+>> There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
+>> of memory. I have configured 16GB of CMA memory on each NUMA node,
+>> and starting a 32GB virtual machine with device passthrough is
+>> extremely slow, taking almost an hour.
+>>
+>> During the start-up of the virtual machine, it will call
+>> pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
+>> Long term GUP cannot allocate memory from CMA area, so a maximum
+>> of 16 GB of no-CMA memory on a NUMA node can be used as virtual
+>> machine memory. Since there is 16G of free CMA memory on the NUMA
+>> node, watermark for order-0 always be met for compaction, so
+>> __compaction_suitable() always returns true, even if the node is
+>> unable to allocate non-CMA memory for the virtual machine.
+>>
+>> For costly allocations, because __compaction_suitable() always
+>> returns true, __alloc_pages_slowpath() can't exit at the appropriate
+>> place, resulting in excessively long virtual machine startup times.
+>> Call trace:
+>> __alloc_pages_slowpath
+>>      if (compact_result == COMPACT_SKIPPED ||
+>>          compact_result == COMPACT_DEFERRED)
+>>          goto nopage; // should exit __alloc_pages_slowpath() from here
+>>
+>> In order to quickly fall back to remote node, we should remove
+>> ALLOC_CMA both in __compaction_suitable() and __isolate_free_page()
+>> in long term GUP flow. After this fix, starting a 32GB virtual machine
+>> with device passthrough takes only a few seconds.
+>>
+>> Fixes: 984fdba6a32e ("mm, compaction: use proper alloc_flags in 
+>> __compaction_suitable()")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: yangge <yangge1116@126.com>
+>> ---
+>>
+>> V4:
+>> - rich the commit log description
+>>
+>> V3:
+>> - fix build errors
+>> - add ALLOC_CMA both in should_continue_reclaim() and compaction_ready()
+>>
+>> V2:
+>> - using the 'cc->alloc_flags' to determin if 'ALLOC_CMA' is needed
+>> - rich the commit log description
+>>
+>>   include/linux/compaction.h |  6 ++++--
+>>   mm/compaction.c            | 18 +++++++++++-------
+>>   mm/page_alloc.c            |  4 +++-
+>>   mm/vmscan.c                |  4 ++--
+>>   4 files changed, 20 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+>> index e947764..b4c3ac3 100644
+>> --- a/include/linux/compaction.h
+>> +++ b/include/linux/compaction.h
+>> @@ -90,7 +90,8 @@ extern enum compact_result 
+>> try_to_compact_pages(gfp_t gfp_mask,
+>>           struct page **page);
+>>   extern void reset_isolation_suitable(pg_data_t *pgdat);
+>>   extern bool compaction_suitable(struct zone *zone, int order,
+>> -                           int highest_zoneidx);
+>> +                           int highest_zoneidx,
+>> +                           unsigned int alloc_flags);
+>>   extern void compaction_defer_reset(struct zone *zone, int order,
+>>                   bool alloc_success);
+>> @@ -108,7 +109,8 @@ static inline void 
+>> reset_isolation_suitable(pg_data_t *pgdat)
+>>   }
+>>   static inline bool compaction_suitable(struct zone *zone, int order,
+>> -                              int highest_zoneidx)
+>> +                              int highest_zoneidx,
+>> +                              unsigned int alloc_flags)
+>>   {
+>>       return false;
+>>   }
+>> diff --git a/mm/compaction.c b/mm/compaction.c
+>> index 07bd227..585f5ab 100644
+>> --- a/mm/compaction.c
+>> +++ b/mm/compaction.c
+>> @@ -2381,9 +2381,11 @@ static enum compact_result 
+>> compact_finished(struct compact_control *cc)
+>>   static bool __compaction_suitable(struct zone *zone, int order,
+>>                     int highest_zoneidx,
+>> +                  unsigned int alloc_flags,
+>>                     unsigned long wmark_target)
+>>   {
+>>       unsigned long watermark;
+>> +    bool use_cma;
+>>       /*
+>>        * Watermarks for order-0 must be met for compaction to be able to
+>>        * isolate free pages for migration targets. This means that the
+>> @@ -2395,25 +2397,27 @@ static bool __compaction_suitable(struct zone 
+>> *zone, int order,
+>>        * even if compaction succeeds.
+>>        * For costly orders, we require low watermark instead of min for
+>>        * compaction to proceed to increase its chances.
+>> -     * ALLOC_CMA is used, as pages in CMA pageblocks are considered
+>> -     * suitable migration targets
+>> +     * In addition to long term GUP flow, ALLOC_CMA is used, as pages in
+>> +     * CMA pageblocks are considered suitable migration targets
+>>        */
+>>       watermark = (order > PAGE_ALLOC_COSTLY_ORDER) ?
+>>                   low_wmark_pages(zone) : min_wmark_pages(zone);
+>>       watermark += compact_gap(order);
+>> +    use_cma = !!(alloc_flags & ALLOC_CMA);
+>>       return __zone_watermark_ok(zone, 0, watermark, highest_zoneidx,
+>> -                   ALLOC_CMA, wmark_target);
+>> +                   use_cma ? ALLOC_CMA : 0, wmark_target);
 > 
-> thanks,
+> Why not just use 'alloc_flags & ALLOC_CMA' instead? then you can remove 
+> the 'use_cma' variable.
+yes, I will change it in next version.
 > 
-> greg k-h
+>>   }
+>>   /*
+>>    * compaction_suitable: Is this suitable to run compaction on this 
+>> zone now?
+>>    */
+>> -bool compaction_suitable(struct zone *zone, int order, int 
+>> highest_zoneidx)
+>> +bool compaction_suitable(struct zone *zone, int order, int 
+>> highest_zoneidx,
+>> +                   unsigned int alloc_flags)
+>>   {
+>>       enum compact_result compact_result;
+>>       bool suitable;
+>> -    suitable = __compaction_suitable(zone, order, highest_zoneidx,
+>> +    suitable = __compaction_suitable(zone, order, highest_zoneidx, 
+>> alloc_flags,
+>>                        zone_page_state(zone, NR_FREE_PAGES));
+>>       /*
+>>        * fragmentation index determines if allocation failures are due to
+>> @@ -2474,7 +2478,7 @@ bool compaction_zonelist_suitable(struct 
+>> alloc_context *ac, int order,
+>>           available = zone_reclaimable_pages(zone) / order;
+>>           available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
+>>           if (__compaction_suitable(zone, order, ac->highest_zoneidx,
+>> -                      available))
+>> +                      alloc_flags, available))
+>>               return true;
+>>       }
+>> @@ -2499,7 +2503,7 @@ compaction_suit_allocation_order(struct zone 
+>> *zone, unsigned int order,
+>>                     alloc_flags))
+>>           return COMPACT_SUCCESS;
+>> -    if (!compaction_suitable(zone, order, highest_zoneidx))
+>> +    if (!compaction_suitable(zone, order, highest_zoneidx, alloc_flags))
+>>           return COMPACT_SKIPPED;
+>>       return COMPACT_CONTINUE;
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index dde19db..9a5dfda 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -2813,6 +2813,7 @@ int __isolate_free_page(struct page *page, 
+>> unsigned int order)
+>>   {
+>>       struct zone *zone = page_zone(page);
+>>       int mt = get_pageblock_migratetype(page);
+>> +    bool pin;
+>>       if (!is_migrate_isolate(mt)) {
+>>           unsigned long watermark;
+>> @@ -2823,7 +2824,8 @@ int __isolate_free_page(struct page *page, 
+>> unsigned int order)
+>>            * exists.
+>>            */
+>>           watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
+>> -        if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
+>> +        pin = !!(current->flags & PF_MEMALLOC_PIN);
+>> +        if (!zone_watermark_ok(zone, 0, watermark, 0, pin ? 0 : 
+>> ALLOC_CMA))
+>>               return 0;
+> 
+> I wonder why not pass ‘cc->alloc_flags’ as a parameter for 
+> __isolate_free_page()?
+Some places that use __isolate_free_page() don't have 'cc->alloc_flags', 
+which leads me to believe that no modification is required.
+I will change it in next version.
+> 
+>>       }
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 5e03a61..33f5b46 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -5815,7 +5815,7 @@ static inline bool 
+>> should_continue_reclaim(struct pglist_data *pgdat,
+>>                         sc->reclaim_idx, 0))
+>>               return false;
+>> -        if (compaction_suitable(zone, sc->order, sc->reclaim_idx))
+>> +        if (compaction_suitable(zone, sc->order, sc->reclaim_idx, 
+>> ALLOC_CMA))
+>>               return false;
+>>       }
+>> @@ -6043,7 +6043,7 @@ static inline bool compaction_ready(struct zone 
+>> *zone, struct scan_control *sc)
+>>           return true;
+>>       /* Compaction cannot yet proceed. Do reclaim. */
+>> -    if (!compaction_suitable(zone, sc->order, sc->reclaim_idx))
+>> +    if (!compaction_suitable(zone, sc->order, sc->reclaim_idx, 
+>> ALLOC_CMA))
+>>           return false;
+>>       /*
 
-All tests passing for Tegra ...
-
-Test results for stable-v6.1:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    115 tests:	115 pass, 0 fail
-
-Linux version:	6.1.120-rc2-gcb4fbe91b7b2
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
-
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-
-Jon
 
