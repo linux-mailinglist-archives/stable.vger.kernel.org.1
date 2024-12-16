@@ -1,99 +1,137 @@
-Return-Path: <stable+bounces-104366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E2B9F3459
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 16:22:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 282E29F347E
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 16:28:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E84718862D1
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:21:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A0AE7A125F
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ACB1465BE;
-	Mon, 16 Dec 2024 15:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B1E1465BE;
+	Mon, 16 Dec 2024 15:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JKa9HMkH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlwThIKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC5913C690;
-	Mon, 16 Dec 2024 15:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE04146599;
+	Mon, 16 Dec 2024 15:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734362500; cv=none; b=pvIVr/+9g6ukEzGlrMyL/84YwiGdH7rnp7wl4uczczJlyOeeKo2rqW/KmWBv/YzIRvyBh/kmMtwlTHWDrvgJnX8DiKdjybT+3vtMFHCTNxF+L59YaEVAMbAHyfeP3qVN5ShhatmGU4IiNICX0rTFCdjkEoKndfDitHgp7G2pE+A=
+	t=1734362908; cv=none; b=BzCA5qc95fVgzI74XW/uCerEf5Bx7yicrPn+yUaVaWriiZpZmmslNbvVp3pYTu7S10ia27Q9EX7bMLNCoYvoKf6d2+Y/AdMEC70CZR9U32pZNsl7jK429ezKz8YJpPvRHo0RRVASVlV/Ahoq32mntFZvGj0H0Z1Xl4yPRNsEWQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734362500; c=relaxed/simple;
-	bh=slzMq2uKF9jRRkGUhn2WleIyyRQ8+cdzqcpgL4p7oYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FQo88btZjjurkVXJP9PC8bM4epIyt91CNESr0PQvT1ZzD/IKe/DJ4sN5P3HkSIpl+tLO/HKmf6vzjz7IgmS3zbdRKJDezWjwEeUuRMYAEc6MlGdqtE9Cfwon8RLsoeU6GfSorEQHMOvvVMKqHlig4NWlwH4AigQvbUBkCyYG/Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JKa9HMkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FC4C4CED0;
-	Mon, 16 Dec 2024 15:21:37 +0000 (UTC)
+	s=arc-20240116; t=1734362908; c=relaxed/simple;
+	bh=IbsaaHxncXLMIVV4lJHHEMhHUJMHu9Y+Jmy4PIDzRz4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ANVBfcmJQV6xSbnFhF0uyggKFdYbezktFYB5HvI2Cyb7EsLBWwu5FJQEPdgUQxTrsG9k0XmAwMRHYYIVng/QybutPE1o+OcPwIJC9cgGuh981iH6MsgV/OweN3dePk1iOxV4Ni6erK00YwtKcNtOdWFTCXHrt25dmGwDBmjJlqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlwThIKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E699AC4CED0;
+	Mon, 16 Dec 2024 15:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734362499;
-	bh=slzMq2uKF9jRRkGUhn2WleIyyRQ8+cdzqcpgL4p7oYI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JKa9HMkHgsp+XrMG0sF+EpAXTypgy9rNBBoDLglXsdMOFg29LozcEpM5Dzrwg1ZU6
-	 HyZxDYJQS4SrJ8ePxaZYdm+LMFzHiNpCytcS/JzVrvVsKM5rKIjNpAYIEBH3gDVJE0
-	 7Lm/N3eWic7K7eUkPQ7NC36/avdT4BC5klsxVZ/XbhUJpM4VwQ8IuVZbwWDzsFgh2D
-	 zvwIEVUFyjB7pPh9W5gHXHVAqeRVVeEVvyymw/6eFqVt7sZNjSkJL2+2RyCIDr7348
-	 CUKZWWqJEIeI1CvTF05xFrxglP0OIkdvegCWMgZyAn+Qe1K4BnCKheHC+YlTvNaQ+q
-	 pXN8IrSJPh+Kg==
-Date: Mon, 16 Dec 2024 15:21:35 +0000
-From: Mark Brown <broonie@kernel.org>
+	s=k20201202; t=1734362908;
+	bh=IbsaaHxncXLMIVV4lJHHEMhHUJMHu9Y+Jmy4PIDzRz4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LlwThIKjhLawfVwAbbGwpbaPFHItPOwAP4RqMDS/gLnvUEf2UqemRUVCbdYA0VptC
+	 CnCVPKvrlgRZzW9dZ8yAH8i8ucxO05s9OqNGbjH9j23UXJFQt7ykL6crXz0UaPKWNo
+	 yHQvNe14PFgBbMNify7hFQMow1QxN47behDRyzQ77Aasny5wn1UBmFl1Ut1KNO63lx
+	 eeiIpmy6vvjHSESD4ggZujLqQCGa/QzI0sj1ujw5ntWeKYpFGH7xQlo3DI9TbPwt+h
+	 KtsL8snCYo3baV+VNgWmJlRCQAJ2xUULAWfHXR/PO5YDnAXthWC9Ll4Ti6AirB/4HY
+	 7wQMznuOX5O+g==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tND1F-004ECw-Pc;
+	Mon, 16 Dec 2024 15:28:25 +0000
+Date: Mon, 16 Dec 2024 15:28:25 +0000
+Message-ID: <8634insl46.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 To: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>,
+Cc: Mark Brown <broonie@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Peter Collingbourne <pcc@google.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Will Deacon <will@kernel.org>,
+	Peter Collingbourne <pcc@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to
- __cpuinfo_store_cpu()
-Message-ID: <4f72a6ec-63e8-4947-9455-fd354d03cadc@sirena.org.uk>
+Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to __cpuinfo_store_cpu()
+In-Reply-To: <Z2BCI61c9QWG7mMB@J2N7QTR9R3.cambridge.arm.com>
 References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
- <87a5cysfci.wl-maz@kernel.org>
- <Z2AfOZ82QG_ukWry@J2N7QTR9R3>
- <865xnjsnqo.wl-maz@kernel.org>
- <Z2BCI61c9QWG7mMB@J2N7QTR9R3.cambridge.arm.com>
+	<87a5cysfci.wl-maz@kernel.org>
+	<Z2AfOZ82QG_ukWry@J2N7QTR9R3>
+	<865xnjsnqo.wl-maz@kernel.org>
+	<Z2BCI61c9QWG7mMB@J2N7QTR9R3.cambridge.arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1CzcJPayw88to6gv"
-Content-Disposition: inline
-In-Reply-To: <Z2BCI61c9QWG7mMB@J2N7QTR9R3.cambridge.arm.com>
-X-Cookie: Be different: conform.
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mark.rutland@arm.com, broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org, pcc@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-
---1CzcJPayw88to6gv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Dec 16, 2024 at 03:07:15PM +0000, Mark Rutland wrote:
-
+On Mon, 16 Dec 2024 15:07:15 +0000,
+Mark Rutland <mark.rutland@arm.com> wrote:
+> 
+> On Mon, Dec 16, 2024 at 02:31:43PM +0000, Marc Zyngier wrote:
+> > On Mon, 16 Dec 2024 12:38:17 +0000,
+> > Mark Rutland <mark.rutland@arm.com> wrote:
+> > > I think that what we did in commit:
+> > > 
+> > >    892f7237b3ff ("arm64: Delay initialisation of cpuinfo_arm64::reg_{zcr,smcr}")
+> > > 
+> > > ... introduces an anti-pattern that'd be nice to avoid. That broke the
+> > > existing split of __cpuinfo_store_cpu() and init_cpu_features(), where
+> > > the former read the ID regs, and the latter set up the features
+> > > *without* altering the copy of the ID regs that was read. i.e.
+> > > init_cpu_features() shouldn't write to its info argument at all.
+> > > 
+> > > I understand that we have to do something as a bodge for broken FW which
+> > > traps SME, but I'd much rather we did that within __cpuinfo_store_cpu().
+> > 
+> > Honestly, I'd rather revert that patch, together with b3000e2133d8
+> > ("arm64: Add the arm64.nosme command line option"). I'm getting tired
+> > of the FW nonsense, and we are only allowing vendors to ship untested
+> > crap.
+> > 
+> > Furthermore, given the state of SME in the kernel, I don't think this
+> > is makes any difference. So maybe this is the right time to reset
+> > everything to a sane state.
+> 
 > Looking again, a revert does look to be the best option.
+> 
+> We removed reg_zcr and reg_smcr in v6.7 in commits:
+> 
+>   abef0695f9665c3d ("arm64/sve: Remove ZCR pseudo register from cpufeature code")
+>   391208485c3ad50f ("arm64/sve: Remove SMCR pseudo register from cpufeature code")
+> 
+> As of those commits, ZCR and SCMR no longer matter to
+> __cpuinfo_store_cpu(), and only SMIDR_EL1 remains...
+> 
+> Per ARM DDI 0487 L.a, accesses to SMIDR_EL1 never trap to EL3, so we can
+> read that safely as long as ID_AA64PFR1_EL1.SME indicates that SME is
+> implemented.
+> 
+> Which is to say that if we revert the remaining portion of 892f7237b3ff
+> and restore the read of SMIDR, that should be good as far back as v6.7,
+> which sounds good to me.
 
-Since we all seem to agree I'll send a patch doing this.
+Sounds reasonable indeed. I guess *someone* will want it for the
+previous kernel versions, but they can have fun with the backport on
+their own.
 
---1CzcJPayw88to6gv
-Content-Type: application/pgp-signature; name="signature.asc"
+	M.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdgRX4ACgkQJNaLcl1U
-h9AyKAf+JZiB5GX/WUa5gpdsOOm851W7LTNeG0kD3S0epkj08gyTGU31EDGh51Lh
-SK9sTHXqRTB8ao4x1kZsHlXaDQGsfUyChkhyRr6UDshKsujbl0DBbrmPVdTDOPXZ
-b4ALBlRN++sWNzKrrk1w2ARRAmxJfwmr4CtVockPd+E+4pMhmK0kGKsEuKNQ+4Dw
-J0Hc4pmpcx0RM7kUmqVi4xtcORNJWfViE0bxu600syWj6KpmtedvRiY81vKs7chs
-F9DTPHY5vtEjJCxAE/GZHiV7cVi59MpvrexbF0cjps2inWdoXa2C87YYXPxmyXAx
-ISPS5WchssIms5WNwe9k5P5LjHyUAw==
-=bdtR
------END PGP SIGNATURE-----
-
---1CzcJPayw88to6gv--
+-- 
+Without deviation from the norm, progress is not possible.
 
