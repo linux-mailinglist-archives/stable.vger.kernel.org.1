@@ -1,201 +1,75 @@
-Return-Path: <stable+bounces-104359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8D49F336E
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:44:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D342C9F33CB
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:57:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E0417A1D56
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:44:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11303188A06C
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBA0205E31;
-	Mon, 16 Dec 2024 14:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6BB288DB;
+	Mon, 16 Dec 2024 14:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yf9rtZhA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFmnGmLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4083205E17;
-	Mon, 16 Dec 2024 14:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F8E20328
+	for <stable@vger.kernel.org>; Mon, 16 Dec 2024 14:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734360250; cv=none; b=XnbokgNBVP0nYYuqe59ECVNxlcSZyJo+c/FB3hKBlmBc9ATv27IO/Ryc3+TJmWTMkMCs8d0H2vdL4cLoOUea49DxbvlHfNEMHnuT/fi+hX7TwlNDQRsT1QOVTHU8atK5hyCCvQb4XOJtx/TMMx3U3U0EadS2HW4NzSrYln/xmOg=
+	t=1734360833; cv=none; b=s5VcRAUa5vyCupWqtGeahcBqGgOEZ1hwVh/oz1AQTrNFmNH9EOfUledba+E+shh8nJ4LmVXAz1DiW+ysniSvetKrXKADavEOrbQaSAWPYIYqcUXAcxSbxkr4IyF2OuOZQXNKY0VQegpdcEzvXMejyHSSAE+ZNMzycflzzOdFvWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734360250; c=relaxed/simple;
-	bh=AJ/WWhVzPaKeE1rHmsubud7EyXr2Qfu3Wp7Xd9V3jfQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ujZnis+UwPWRIbCKUSDN0UaImba2phXI4SoeJyS3Jzu9w59MjrEdZiF30i2/OJ/tsBhNdRxe4Unt64lS7Fd4f869/0Nu5TzFrv6YMYWIFGIXhRjPqLfm7TzfGOL8QqUxjogI8xVK44Sah5CLcm0RFd26mwL4jHf7xE1elj+aNHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yf9rtZhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B14FC4CED0;
-	Mon, 16 Dec 2024 14:44:10 +0000 (UTC)
+	s=arc-20240116; t=1734360833; c=relaxed/simple;
+	bh=8/DJ1WlFUJJpAnPWqt4Jzm3bhEEC1BLLhSADFTNCrkY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=R/okH5BuO2b37BUCSRRjp/QFXNd0TqSXz3n433iIuxEjbGBGtiZDc4MgGheon18iMaRomo0UQhVSIZfpziUPLZuUl5F54wxMslrujSuTdCIgjB5cMifezjw37EqJG1pf21HX1W5WrcURkpy54ria5zaeffIP0U2zdQMr08aD9V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFmnGmLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E677AC4CED0;
+	Mon, 16 Dec 2024 14:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734360250;
-	bh=AJ/WWhVzPaKeE1rHmsubud7EyXr2Qfu3Wp7Xd9V3jfQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Yf9rtZhA2oEw1g636fsQEdJ6KiJ7SmFldnYMm5h2qxBZWBpG52AX0ZLLI9djdGwzl
-	 w7DGj87h6/6U4mf5UtiVgFs65B/Z0Q2Q/QB3qM1kIXKVC8ti4L1+1dsWPQS17loNXw
-	 lNOL7MJzdpj7fVWnSKCiCkANXZmyDM+oZIkC2aIWWCkC4ckODEO1wiU0C2eyFjlYGM
-	 kB4T1hku2AqdcGAT/U3UbY3lJmCs1Qll1v7G577nHGzOljuFdIQlXMpZDY0oqntheZ
-	 cF3sXL4lyKRtKyf/u3E4wJknfXJfTZ6pdiWPi3eoo0VaqTshfTuBKQ52jhZXU1mXeS
-	 J8aeqO+00jr/w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tNCKO-004D9u-50;
-	Mon, 16 Dec 2024 14:44:08 +0000
-Date: Mon, 16 Dec 2024 14:44:07 +0000
-Message-ID: <864j33sn60.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Collingbourne <pcc@google.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to __cpuinfo_store_cpu()
-In-Reply-To: <Z2A502_EpqvLYN8g@J2N7QTR9R3.cambridge.arm.com>
-References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
-	<87a5cysfci.wl-maz@kernel.org>
-	<709a0e75-0d0c-4bff-b9fd-3bbb55c97bd5@sirena.org.uk>
-	<Z2Agntn52mY5bSTp@J2N7QTR9R3>
-	<855dbb91-db37-4178-bd0b-511994d3aef7@sirena.org.uk>
-	<Z2A502_EpqvLYN8g@J2N7QTR9R3.cambridge.arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1734360833;
+	bh=8/DJ1WlFUJJpAnPWqt4Jzm3bhEEC1BLLhSADFTNCrkY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TFmnGmLAZfAm3JTdw9q/wMfU2QtlH8FYKHIZysXQtUGf0kQqno2+B/0liFAhva6gu
+	 47FvCLdTo0aCl55vVFRRMDu7FVuKV4pQIQ2kTpkJEh9/ZYwph9Aash59vUAbUBQ4Sy
+	 6Sc4A573cn1u6a1B0WZhS9Tg6zgSMFVf1nCLisOrZ/BddsqFHEqz76tKRVcwD0vpKW
+	 QMsCDQ+vYmGX4AJ0T4I6X9SdsI/FsK6IhkRxw260GaCP7kRaiMwuexUlVXzk+5jt8X
+	 +BRom7oo/K0WFaOI+VXulZU5RG47IXMJVLuIWRmMwBsez5EcIXWyPBV7nn2/+OcIfr
+	 2jAbB7JKP4jhg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Nikolay Kuratov <kniv@yandex-team.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH v2 5.4 5.15 6.6] tracing/kprobes: Skip symbol counting logic for module symbols in create_local_trace_kprobe()
+Date: Mon, 16 Dec 2024 09:53:51 -0500
+Message-Id: <20241216081721-187c6625ed01b125@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20241216111923.2547104-1-kniv@yandex-team.ru>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: mark.rutland@arm.com, broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org, pcc@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 16 Dec 2024 14:31:47 +0000,
-Mark Rutland <mark.rutland@arm.com> wrote:
-> 
-> On Mon, Dec 16, 2024 at 01:23:55PM +0000, Mark Brown wrote:
-> > On Mon, Dec 16, 2024 at 12:44:14PM +0000, Mark Rutland wrote:
-> > 
-> > > ... didn't matter either way, and using '&boot_cpu_data' was intended to
-> > > make it clear that the features were based on the boot CPU's info, even
-> > > if you just grepped for that and didn't see the surrounding context.
-> > 
-> > Right, that was my best guess as to what was supposed to be going on
-> > but it wasn't super clear.  The code could use some more comments.
-> > 
-> > > I think the real fix here is to move the reading back into
-> > > __cpuinfo_store_cpu(), but to have an explicit check that SME has been
-> > > disabled on the commandline, with a comment explaining that this is a
-> > > bodge for broken FW which traps the SME ID regs.
-> > 
-> > That should be doable.
-> > 
-> > There's a few other similar ID registers (eg, we already read GMID_EL1
-> > and MPAMIDR_EL1) make me a bit nervous that we might need to generalise
-> > it a bit, but we can deal with that if it comes up.  Even for SME the
-> > disable was added speculatively, the factors that made this come up for
-> > SVE are less likely to be an issue with SME.
-> 
-> FWIW, I had a quick go (with only the SME case), and I think the shape
-> that we want is roughly as below, which I think is easy to generalise to
-> those other cases.
-> 
-> MarcZ, thoughts?
-> 
-> Mark.
-> 
-> ---->8----
-> diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-> index 8b4e5a3cd24c8..f16eb99c10723 100644
-> --- a/arch/arm64/include/asm/cpufeature.h
-> +++ b/arch/arm64/include/asm/cpufeature.h
-> @@ -91,6 +91,16 @@ struct arm64_ftr_override {
->  	u64		mask;
->  };
->  
-> +static inline u64
-> +arm64_ftr_override_apply(const struct arm64_ftr_override *override,
-> +			 u64 val)
-> +{
-> +	val &= ~override->mask;
-> +	val |= override->val & override->mask;
-> +
-> +	return val;
-> +}
-> +
->  /*
->   * @arm64_ftr_reg - Feature register
->   * @strict_mask		Bits which should match across all CPUs for sanity.
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 6ce71f444ed84..faad7d3e4cf5f 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -1167,12 +1167,6 @@ void __init init_cpu_features(struct cpuinfo_arm64 *info)
->  	    id_aa64pfr1_sme(read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1))) {
->  		unsigned long cpacr = cpacr_save_enable_kernel_sme();
->  
-> -		/*
-> -		 * We mask out SMPS since even if the hardware
-> -		 * supports priorities the kernel does not at present
-> -		 * and we block access to them.
-> -		 */
-> -		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
->  		vec_init_vq_map(ARM64_VEC_SME);
->  
->  		cpacr_restore(cpacr);
-> @@ -1550,10 +1544,8 @@ u64 __read_sysreg_by_encoding(u32 sys_id)
->  	}
->  
->  	regp  = get_arm64_ftr_reg(sys_id);
-> -	if (regp) {
-> -		val &= ~regp->override->mask;
-> -		val |= (regp->override->val & regp->override->mask);
-> -	}
-> +	if (regp)
-> +		val = arm64_ftr_override_apply(regp->override, val);
->  
->  	return val;
->  }
-> diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-> index d79e88fccdfce..1460e3541132f 100644
-> --- a/arch/arm64/kernel/cpuinfo.c
-> +++ b/arch/arm64/kernel/cpuinfo.c
-> @@ -439,6 +439,24 @@ static void __cpuinfo_store_cpu_32bit(struct cpuinfo_32bit *info)
->  	info->reg_mvfr2 = read_cpuid(MVFR2_EL1);
->  }
->  
-> +static void __cpuinfo_store_cpu_sme(struct cpuinfo_arm64 *info)
-> +{
-> +	/*
-> +	 * TODO: explain that this bodge is to avoid trapping.
-> +	 */
-> +	u64 pfr1 = info->reg_id_aa64pfr1;
-> +	pfr1 = arm64_ftr_override_apply(&id_aa64pfr1_override, pfr1);
-> +	if (!id_aa64pfr1_sme(pfr1))
-> +		return;
+[ Sasha's backport helper bot ]
 
-I don't think blindly applying the override at this stage is a good
-thing. Specially not the whole register, and definitely not
-non-disabling values.
+Hi,
 
-It needs to be done on a per feature basis, and only to disable
-things.
+No upstream commit was identified. Using temporary commit for testing.
 
-See the hack I posted for the things I think need checking.
+Results of testing on various branches:
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
