@@ -1,155 +1,166 @@
-Return-Path: <stable+bounces-104356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706AB9F3319
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:25:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40429F3340
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAEE77A1CFF
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:25:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3D40162181
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A4E204585;
-	Mon, 16 Dec 2024 14:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C073E202C2A;
+	Mon, 16 Dec 2024 14:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="ASG6K8Ln"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avK1n6GR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22AF1E87B;
-	Mon, 16 Dec 2024 14:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7930D18E25;
+	Mon, 16 Dec 2024 14:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734359100; cv=none; b=Y76/+/bx+tPBCWfDJFSuGAO+6ZtElPjoIhrMYpU+c7dHue/IWy2QDTv0dZdYznqa7zS1JNk2m2xM6mHEQXATBoiQC10Lcx+RdE9QLJdhdJt+E6IWcpI7pR+SAVNjnQethyi9c78tCwXf+DB9sp5bADvZrJy/CpugnaBp8QKsycI=
+	t=1734359506; cv=none; b=MVF9ehmRhaoE550DBgmJR011wNi6pkbE/R6S+4PYR+BpYe3X6TnYh7QTLIE6CGSEoGOj+seJZT7r80rcWyR0BaVn/O/2ptdRHTHjFiC66LUnKX8z6HFyI+0uuQNwOnb118sXeRLme/eYEgpCm+S0bpz1MgN23eFeDImKKnxYmZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734359100; c=relaxed/simple;
-	bh=hl1NZL68ZB5FnrnEybP69KYMS4J1xDdmM+P/exug8jE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZrMsT9Jc41bftuJv046OKBwfTXCM+hkd1ObmAhk/JSeSvp/DCV+C/KBbBdiP4b5kQM+KalxOHFU/hmYvSodn7zpYS+QS87cf98qK4EykgxxQAST0jofIAum2zSM3518XJVM44NUEHCLAHsJn8/wzfv8cZ7bl52ArJNaizO656/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=ASG6K8Ln; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from ldvnode.intra.ispras.ru (unknown [10.10.2.153])
-	by mail.ispras.ru (Postfix) with ESMTPSA id A15184076735;
-	Mon, 16 Dec 2024 14:24:56 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A15184076735
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1734359096;
-	bh=LlvSfZAo1SMRkgfgawBITp8XZZSbyWqpruAeVRVltmg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ASG6K8Ln7DEr7G1zGsf9hwUQgGp1QBFpDOTmIP9tdmKYD0C1KEYCZFTO0R1SBknAM
-	 cn7yoQWcvUWmEmLfGalwiv0aZkgzNjlGRE7chCJ6pJhTIvWf8kdqP3c4OLDTsvFNMi
-	 l2vxKg/TFwjIlGuOqLDQ5jFX+kRV5i6LQhojcycM=
-From: Vitalii Mordan <mordan@ispras.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Vitalii Mordan <mordan@ispras.ru>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Felipe Balbi <felipe.balbi@linux.intel.com>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Vadim Mutilin <mutilin@ispras.ru>,
-	stable@vger.kernel.org
-Subject: [PATCH] usb: phy-tahvo: fix call balance for tu->ick handling routines
-Date: Mon, 16 Dec 2024 17:24:39 +0300
-Message-Id: <20241216142439.3682719-1-mordan@ispras.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1734359506; c=relaxed/simple;
+	bh=q//uXuHw5NNyHRrYJA+t5Do7tOiMP5mB0zY7GpysFuw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kp4YEf3R5CLjrVwez8WLZMZllgyDIZC5lOme62EF83vmPFXE3AVj1mQv0G7u9GRwc1oZkYxPHeBuWl9F5QeRDcnM0NB5sb+5e2Tp5y5RIRh4kSYBJChEKdiqVEWGKqWmp4ewMMl7QrzjVUS0aDlQeXlnFFL/kRQOZZXhulNGZH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avK1n6GR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE72EC4CED0;
+	Mon, 16 Dec 2024 14:31:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734359506;
+	bh=q//uXuHw5NNyHRrYJA+t5Do7tOiMP5mB0zY7GpysFuw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=avK1n6GRfEbGCiA5MGkHoGcE+AINRnA4Gm4Gxqm4ZzgfVfxrRshODochg9mUYzZoA
+	 EuaMvt+DZPrqbCSp17+I2Qt+UtkV5f7U2hMg47Xq8me29/Jo4ceCrd0mkFdqAdQ+K+
+	 0/4PjG18v2Wih8ks4QULfOjTjEiCgWZpwGFG6+dz7MSBwEi6bgyD/7ojs5jH8t8ngb
+	 dcL/rq39tKYYQPEFKw5HTN7UEAKAATnPq/+9hL7w3Gz70NEBiydO7aVqNTU54oXK4K
+	 wXAS49UjQ6842fF2nciDYfbnEmOJVId1jXhIujipWFqyR5Tf9UQIQlsoEtmCFm47x8
+	 nZLFKKiHX7Gog==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tNC8N-004CsH-N6;
+	Mon, 16 Dec 2024 14:31:43 +0000
+Date: Mon, 16 Dec 2024 14:31:43 +0000
+Message-ID: <865xnjsnqo.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Peter Collingbourne <pcc@google.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to __cpuinfo_store_cpu()
+In-Reply-To: <Z2AfOZ82QG_ukWry@J2N7QTR9R3>
+References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>	<87a5cysfci.wl-maz@kernel.org>	<Z2AfOZ82QG_ukWry@J2N7QTR9R3>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+X-TUID: 7+uNRFeFxaHZ
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mark.rutland@arm.com, broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org, pcc@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-If the clock tu->ick was not enabled in tahvo_usb_probe,
-it may still hold a non-error pointer, potentially causing
-the clock to be incorrectly disabled later in the function.
+On Mon, 16 Dec 2024 12:38:17 +0000,
+Mark Rutland <mark.rutland@arm.com> wrote:
+> 
+> On Sat, Dec 14, 2024 at 10:56:13AM +0000, Marc Zyngier wrote:
+>
+> > Why isn't the following a good enough fix? It makes it plain that
+> > boot_cpu_data is only a copy of CPU0's initial boot state.
+> > 
+> > diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
+> > index d79e88fccdfce..0cbb42fd48850 100644
+> > --- a/arch/arm64/kernel/cpuinfo.c
+> > +++ b/arch/arm64/kernel/cpuinfo.c
+> > @@ -497,6 +497,6 @@ void __init cpuinfo_store_boot_cpu(void)
+> >  	struct cpuinfo_arm64 *info = &per_cpu(cpu_data, 0);
+> >  	__cpuinfo_store_cpu(info);
+> >  
+> > +	init_cpu_features(info);
+> >  	boot_cpu_data = *info;
+> > -	init_cpu_features(&boot_cpu_data);
+> >  }
+> 
+> I think that change in isolation is fine, but I don't think that's the
+> right fix.
+> 
+> I think that what we did in commit:
+> 
+>    892f7237b3ff ("arm64: Delay initialisation of cpuinfo_arm64::reg_{zcr,smcr}")
+> 
+> ... introduces an anti-pattern that'd be nice to avoid. That broke the
+> existing split of __cpuinfo_store_cpu() and init_cpu_features(), where
+> the former read the ID regs, and the latter set up the features
+> *without* altering the copy of the ID regs that was read. i.e.
+> init_cpu_features() shouldn't write to its info argument at all.
+> 
+> I understand that we have to do something as a bodge for broken FW which
+> traps SME, but I'd much rather we did that within __cpuinfo_store_cpu().
 
-Use the devm_clk_get_enabled helper function to ensure proper call balance
-for tu->ick.
+Honestly, I'd rather revert that patch, together with b3000e2133d8
+("arm64: Add the arm64.nosme command line option"). I'm getting tired
+of the FW nonsense, and we are only allowing vendors to ship untested
+crap.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
+Furthermore, given the state of SME in the kernel, I don't think this
+is makes any difference. So maybe this is the right time to reset
+everything to a sane state.
 
-Fixes: 9ba96ae5074c ("usb: omap1: Tahvo USB transceiver driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
----
-v2: Corrected a typo in the error handling of the devm_clk_get_enabled
-call. This issue was reported by Dan Carpenter <dan.carpenter@linaro.org>.
- drivers/usb/phy/phy-tahvo.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+> Can we add something to check whether SME was disabled on the command
+> line, and use that in __cpuinfo_store_cpu(), effectively reverting
+> 892f7237b3ff?
 
-diff --git a/drivers/usb/phy/phy-tahvo.c b/drivers/usb/phy/phy-tahvo.c
-index ae7bf3ff89ee..4182e86dc450 100644
---- a/drivers/usb/phy/phy-tahvo.c
-+++ b/drivers/usb/phy/phy-tahvo.c
-@@ -341,9 +341,11 @@ static int tahvo_usb_probe(struct platform_device *pdev)
- 
- 	mutex_init(&tu->serialize);
- 
--	tu->ick = devm_clk_get(&pdev->dev, "usb_l4_ick");
--	if (!IS_ERR(tu->ick))
--		clk_enable(tu->ick);
-+	tu->ick = devm_clk_get_enabled(&pdev->dev, "usb_l4_ick");
-+	if (IS_ERR(tu->ick)) {
-+		dev_err(&pdev->dev, "failed to get and enable clock\n");
-+		return PTR_ERR(tu->ick);
-+	}
- 
- 	/*
- 	 * Set initial state, so that we generate kevents only on state changes.
-@@ -353,15 +355,14 @@ static int tahvo_usb_probe(struct platform_device *pdev)
- 	tu->extcon = devm_extcon_dev_allocate(&pdev->dev, tahvo_cable);
- 	if (IS_ERR(tu->extcon)) {
- 		dev_err(&pdev->dev, "failed to allocate memory for extcon\n");
--		ret = PTR_ERR(tu->extcon);
--		goto err_disable_clk;
-+		return PTR_ERR(tu->extcon);
- 	}
- 
- 	ret = devm_extcon_dev_register(&pdev->dev, tu->extcon);
- 	if (ret) {
- 		dev_err(&pdev->dev, "could not register extcon device: %d\n",
- 			ret);
--		goto err_disable_clk;
-+		return ret;
- 	}
- 
- 	/* Set the initial cable state. */
-@@ -384,7 +385,7 @@ static int tahvo_usb_probe(struct platform_device *pdev)
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "cannot register USB transceiver: %d\n",
- 			ret);
--		goto err_disable_clk;
-+		return ret;
- 	}
- 
- 	dev_set_drvdata(&pdev->dev, tu);
-@@ -405,9 +406,6 @@ static int tahvo_usb_probe(struct platform_device *pdev)
- 
- err_remove_phy:
- 	usb_remove_phy(&tu->phy);
--err_disable_clk:
--	if (!IS_ERR(tu->ick))
--		clk_disable(tu->ick);
- 
- 	return ret;
- }
-@@ -418,8 +416,6 @@ static void tahvo_usb_remove(struct platform_device *pdev)
- 
- 	free_irq(tu->irq, tu);
- 	usb_remove_phy(&tu->phy);
--	if (!IS_ERR(tu->ick))
--		clk_disable(tu->ick);
+Maybe, but that'd be before any sanitisation of the overrides, so it
+would have to severely limit its scope. Something like this, which I
+haven't tested:
+
+diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
+index d79e88fccdfce..9e9295e045009 100644
+--- a/arch/arm64/kernel/cpuinfo.c
++++ b/arch/arm64/kernel/cpuinfo.c
+@@ -492,10 +492,22 @@ void cpuinfo_store_cpu(void)
+ 	update_cpu_features(smp_processor_id(), info, &boot_cpu_data);
  }
  
- static struct platform_driver tahvo_usb_driver = {
++static void cpuinfo_apply_overrides(struct cpuinfo_arm64 *info)
++{
++	if (FIELD_GET(ID_AA64PFR0_EL1_SVE, id_aa64pfr0_override.mask) &&
++	    !FIELD_GET(ID_AA64PFR0_EL1_SVE, id_aa64pfr0_override.val))
++		info->reg_id_aa64pfr0 &= ~ID_AA64PFR0_EL1_SVE;
++
++	if (FIELD_GET(ID_AA64PFR1_EL1_SME, id_aa64pfr1_override.mask) &&
++	    !FIELD_GET(ID_AA64PFR1_EL1_SME, id_aa64pfr1_override.val))
++		info->reg_id_aa64pfr1 &= ~ID_AA64PFR1_EL1_SME;
++}
++
+ void __init cpuinfo_store_boot_cpu(void)
+ {
+ 	struct cpuinfo_arm64 *info = &per_cpu(cpu_data, 0);
+ 	__cpuinfo_store_cpu(info);
++	cpuinfo_apply_overrides(info);
+ 
+ 	boot_cpu_data = *info;
+ 	init_cpu_features(&boot_cpu_data);
+
+But this will have ripple effects on the rest of the override code
+(the kernel messages are likely to be wrong).
+
+	M.
+
 -- 
-2.25.1
-
+Without deviation from the norm, progress is not possible.
 
