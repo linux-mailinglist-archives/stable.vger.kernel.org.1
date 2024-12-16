@@ -1,130 +1,130 @@
-Return-Path: <stable+bounces-104321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8565E9F2C51
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 09:52:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8727C9F2C86
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 10:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A35F1883912
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 08:52:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3989164E5B
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 09:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E81F1FFC73;
-	Mon, 16 Dec 2024 08:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38DB1C2323;
+	Mon, 16 Dec 2024 09:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJvDvFsa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mPlt+zUt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2681FFC44;
-	Mon, 16 Dec 2024 08:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93462E628
+	for <stable@vger.kernel.org>; Mon, 16 Dec 2024 09:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734339128; cv=none; b=diU6wJvYqG+oM+2r39T1VzKEN3MuiFozs5Dhi+VaGBsteX4HqCcyNgcMUSt1YDW+0WaafEWA0W09Ki0k2dmqZwQ65kC02LdxP8lGG6HPEP5sHBY0erJTobsFq2o8JxspN1QDW4PkV3du2tDAA4gFb2T/nN0No3WNhZjDeRbgfD8=
+	t=1734339690; cv=none; b=czykb9aZOi5YSWkDXjoWKKDte+SXS9R+++f+b2cJxiarnzGQdKybja9w2/sMOV5qdnwIJ8TcmTVbc8YyAfQ6bZ//DR+5Uiv9gK0rxLlxCxptMQmL+PcGFNCpjmGSb2uWwUtGpZ4IqHXQ34BlI0Y68tW7oR5F3FbaivBAH0EgeCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734339128; c=relaxed/simple;
-	bh=gs8goDXstShtLE5/00djVnwCrZT3j32AWHB5T4dafHw=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qKUM7CJxfTSGxEfu4jGDtPvDHBBgCzxMCdoCyTFIzqHkKbakYkCmOTVJxKZEJVUxZGcRHO6ONAXHtCUXA/0p8UW/2taywGWEUeRrya8A1mRvseQgQpZlTw40D/e+k8vaeihqLhXwxkoMWT61QCs3XPNLVlotv7mjjHyYjE8KTVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJvDvFsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C61DC4CED3;
-	Mon, 16 Dec 2024 08:52:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734339127;
-	bh=gs8goDXstShtLE5/00djVnwCrZT3j32AWHB5T4dafHw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sJvDvFsa933M12L8z+R4lazlDeiMs4UtDXOn0WqNRRBAbC+8GphlQaAoN7xajLvFt
-	 t2/m3hUqTR+Mu/Upg/Wnklr7ARLghcz1q/2TDtMFkloRcBnNkuO1HQdVhYri7NhfJT
-	 p6uTExjlBm63voZi8dj0FJy5bdczf/xMOZbQ7/FDRRbl+jjSW19xEKnROes8x/+lI6
-	 4kDiW4WXXLM9gPV7K578dXKQzD1rjx0qbD3i8ZQP5gpVnXi32g1HIlP9zONzuDY2qV
-	 vnXiE34zKI+Ugkh437jG3ikY1Il8+rFP2kBZzd9iiz+7EdEYKOCald7Xqarly4lHTl
-	 /3ch0HGR/P3uQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tN6ph-0046M6-Ar;
-	Mon, 16 Dec 2024 08:52:05 +0000
-Date: Mon, 16 Dec 2024 08:52:04 +0000
-Message-ID: <868qsgrowb.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Joey Gouly <joey.gouly@arm.com>
-Cc: stable@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	gshan@redhat.com,
-	james.morse@arm.com,
-	oliver.upton@linux.dev,
-	shameerali.kolothum.thodi@huawei.com,
-	vt@altlinux.org,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Jing Zhang <jingzhangos@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 6.6 v1] KVM: arm64: Disable MPAM visibility by default and ignore VMM writes
-In-Reply-To: <20241212151406.1436382-1-joey.gouly@arm.com>
-References: <20241212151406.1436382-1-joey.gouly@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1734339690; c=relaxed/simple;
+	bh=r/KozuYMeTjHbcO8LwWrshAe4Zp5Zn+4O4INxZnk/Xg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QwyM+aIFRKzWyx3W/ntVKv6xOKUrALC3CDzNIdCL9G97O512wPhupMw+08x2V6IxJVK9//ZFv5BdTxsFcy2EZi3geFvViC0OPS5SnvGXocA3aNNVYLo/rPNWWQjWQ/gWm5Y8rEO5ZUg4uA+Uic88UH6XslX5OInomSR1rA80Td0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mPlt+zUt; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734339689; x=1765875689;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=r/KozuYMeTjHbcO8LwWrshAe4Zp5Zn+4O4INxZnk/Xg=;
+  b=mPlt+zUtiSzKLonEyvMHKktZfDGzm1TIPfFf1j9VWjeWQFW9WT7ez5Qw
+   OG74MA/mXvGeClioS1v5k0AdywquS2+VSsc3HSBmCaZSXfQLZRpObqY6i
+   GMs49/dPKBbzxtmg97GkEdLygyzhp/e6Ug8m8g3msDUXVCoB0Z9qW0Fs/
+   CShKqWxyhrvUJtpnmkUMBPLJK9o7N4D0WQMuIS1818aWDb9l9Hm6DgJe6
+   /Vg3dgSTM6NQjsK64mzbV/Gh9CreSTGWd6LsdqDiVmNlD/odYRIwQSYru
+   moeH+z6Gl6yeFoh4vCp51ZGseD5NbxjNm4TqGk+mBULC+Ol3zRRERbp55
+   w==;
+X-CSE-ConnectionGUID: 0cIhS+BiRbmrx5IBOH0Gig==
+X-CSE-MsgGUID: kM8ldLB+S+OpK0jwdjy+dA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="34942743"
+X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; 
+   d="scan'208";a="34942743"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 01:01:26 -0800
+X-CSE-ConnectionGUID: WpAwzNajTpyWNqhzwDmVCg==
+X-CSE-MsgGUID: 6W4ckSrpRCeRz/aYcPelwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="102119524"
+Received: from mwiniars-desk2.ger.corp.intel.com (HELO [10.245.246.246]) ([10.245.246.246])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 01:01:23 -0800
+Message-ID: <24eeb9dcbb1845bdb420df12384f54d60234a411.camel@linux.intel.com>
+Subject: Re: [PATCH v4 1/2] drm/xe: Use non-interruptible wait when moving
+ BO to system
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Nirmoy Das <nirmoy.das@intel.com>, intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>, Lucas De Marchi
+	 <lucas.demarchi@intel.com>, stable@vger.kernel.org, Matthew Auld
+	 <matthew.auld@intel.com>
+Date: Mon, 16 Dec 2024 10:01:21 +0100
+In-Reply-To: <20241213122415.3880017-1-nirmoy.das@intel.com>
+References: <20241213122415.3880017-1-nirmoy.das@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: joey.gouly@arm.com, stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, gshan@redhat.com, james.morse@arm.com, oliver.upton@linux.dev, shameerali.kolothum.thodi@huawei.com, vt@altlinux.org, suzuki.poulose@arm.com, yuzenghui@huawei.com, jingzhangos@google.com, catalin.marinas@arm.com, will@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
 
-On Thu, 12 Dec 2024 15:14:06 +0000,
-Joey Gouly <joey.gouly@arm.com> wrote:
-> 
-> From: James Morse <james.morse@arm.com>
-> 
-> commit 6685f5d572c22e1003e7c0d089afe1c64340ab1f upstream.
-> 
-> commit 011e5f5bf529f ("arm64/cpufeature: Add remaining feature bits in
-> ID_AA64PFR0 register") exposed the MPAM field of AA64PFR0_EL1 to guests,
-> but didn't add trap handling. A previous patch supplied the missing trap
-> handling.
-> 
-> Existing VMs that have the MPAM field of ID_AA64PFR0_EL1 set need to
-> be migratable, but there is little point enabling the MPAM CPU
-> interface on new VMs until there is something a guest can do with it.
-> 
-> Clear the MPAM field from the guest's ID_AA64PFR0_EL1 and on hardware
-> that supports MPAM, politely ignore the VMMs attempts to set this bit.
-> 
-> Guests exposed to this bug have the sanitised value of the MPAM field,
-> so only the correct value needs to be ignored. This means the field
-> can continue to be used to block migration to incompatible hardware
-> (between MPAM=1 and MPAM=5), and the VMM can't rely on the field
-> being ignored.
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Co-developed-by: Joey Gouly <joey.gouly@arm.com>
-> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> Reviewed-by: Marc Zyngier <maz@kernel.org>
-> Link: https://lore.kernel.org/r/20241030160317.2528209-7-joey.gouly@arm.com
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-> [ joey: fixed up merge conflict, no ID_FILTERED macro in 6.6 ]
-> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> Cc: stable@vger.kernel.org # 6.6.x
-> Cc: Vitaly Chikunov <vt@altlinux.org>
-> Link: https://lore.kernel.org/linux-arm-kernel/20241202045830.e4yy3nkvxtzaybxk@altlinux.org/
+HI, Nirmoy,
 
-Acked-by: Marc Zyngier <maz@kernel.org>
+On Fri, 2024-12-13 at 13:24 +0100, Nirmoy Das wrote:
+> Ensure a non-interruptible wait is used when moving a bo to
+> XE_PL_SYSTEM. This prevents dma_mappings from being removed
+> prematurely
+> while a GPU job is still in progress, even if the CPU receives a
+> signal during the operation.
+>=20
+> Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system
+> buffer objects to TT")
+> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.11+
+> Suggested-by: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-	M.
+For both patches
+Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
 
--- 
-Without deviation from the norm, progress is not possible.
+
+
+
+> ---
+> =C2=A0drivers/gpu/drm/xe/xe_bo.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+> index 283cd0294570..06931df876ab 100644
+> --- a/drivers/gpu/drm/xe/xe_bo.c
+> +++ b/drivers/gpu/drm/xe/xe_bo.c
+> @@ -733,7 +733,7 @@ static int xe_bo_move(struct ttm_buffer_object
+> *ttm_bo, bool evict,
+> =C2=A0	=C2=A0=C2=A0=C2=A0 new_mem->mem_type =3D=3D XE_PL_SYSTEM) {
+> =C2=A0		long timeout =3D dma_resv_wait_timeout(ttm_bo-
+> >base.resv,
+> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0
+> DMA_RESV_USAGE_BOOKKEEP,
+> -						=C2=A0=C2=A0=C2=A0=C2=A0 true,
+> +						=C2=A0=C2=A0=C2=A0=C2=A0 false,
+> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0
+> MAX_SCHEDULE_TIMEOUT);
+> =C2=A0		if (timeout < 0) {
+> =C2=A0			ret =3D timeout;
+
 
