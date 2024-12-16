@@ -1,138 +1,114 @@
-Return-Path: <stable+bounces-104342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A20B9F311A
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 490199F3169
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 230E91887F9C
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 13:05:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0058318866F5
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 13:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35D6205515;
-	Mon, 16 Dec 2024 13:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151762054E6;
+	Mon, 16 Dec 2024 13:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdHnvuBM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.213])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 3C19C148FF2;
-	Mon, 16 Dec 2024 13:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C478C20011E;
+	Mon, 16 Dec 2024 13:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734354282; cv=none; b=XR34Tr+BkjCbY3DEUZyUbUPZZjl/wUTCOcOmK3JNcgvIV2ZCW3Acd2ETMfAx4mqBn1PAzNnPOVkjbAzqYfbm++edCdDAnyXrZvTJNPAxwSp2BhectXJ0WqOHGcCOyLFJsAcy+fGDnLj8208uzbKqd/A38lWK+6JvZjLefsRCY3s=
+	t=1734355440; cv=none; b=kXOW08ptyrwr61NMXJCXzN6GEr2IXm6HC1ugI9plHsQBNwRBpewb9/ae/rm4BJD9vEIFRnaElrF4atmXGDvkxUCL6c3wCj230zjHznEzJnMIjUWgSWm0gWNRTkDSIMhEnwwde9ECqgudKpftIJHG6jPGyk8+GyuSyAks7USRGB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734354282; c=relaxed/simple;
-	bh=vqxXOFHRl25qENardnOS297fxLEdufccVSUcODPUPks=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version; b=H4tRQM7z5vOd8x7EcZq/VYmfRvTAAXvEJjvK7IUwtaQKjfBfkBPGOyQeylOWBbfT25LRoWG2DxUvJLKAGHCtELj29AYhxcPI1g/4HL7BLAxr2sVB7T/63FrWr6tJvMyKulFf+Y68HZnc/AGqesXC6YeuiAjtTveMT+oyHnSqiG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from localhost.localdomain (unknown [103.163.180.3])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 635BE602A5E7F;
-	Mon, 16 Dec 2024 21:04:26 +0800 (CST)
-X-MD-Sfrom: zhanxin@nfschina.com
-X-MD-SrcIP: 103.163.180.3
-From: Zhanxin Qi <zhanxin@nfschina.com>
-To: kherbst@redhat.com,
-	lyude@redhat.com,
-	dakr@redhat.com,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Zhanxin Qi <zhanxin@nfschina.com>,
-	Duanjun Li <duanjun@nfschina.com>
-Subject: [PATCH v1 v1] drm/nouveau: Fix memory leak in nvbios_iccsense_parse
-Date: Mon, 16 Dec 2024 21:03:03 +0800
-Message-Id: <20241216130303.246223-1-zhanxin@nfschina.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <Z1_2sugsla44LgIz@cassiopeiae>
+	s=arc-20240116; t=1734355440; c=relaxed/simple;
+	bh=GJputwvqPFp8XHDoVt2MCbWbXO/bSXIWyKEjo2h5cdQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lx4rhPMwQbcxrXf0Itpcwv6g9sNj0xoNiuFwU1ecnH51/L8Tn5HOhKfebFRjqnnBwwGTxD6ulrzi4rHW7kYCwOYVyIEUTjOffMe1xi71vTDq1wgexLWdZAAGQ+HfnNN/EBn5VBSeew1IYvCOjQHlNGmNYsR7n4mLmahSgIRoaDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdHnvuBM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16B7C4CED0;
+	Mon, 16 Dec 2024 13:23:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734355440;
+	bh=GJputwvqPFp8XHDoVt2MCbWbXO/bSXIWyKEjo2h5cdQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HdHnvuBM6bPFioPn2l9M8vNgNFewmnsOzAxSf3q89sHLdZ3C5rynChVOyHucUewmM
+	 0mYDwV6FUv1676hrEYMT55QYQNcx165VWZt5SP7JteoTiEwqJX+2BWfVrILfikwbxs
+	 xAGCYOt485Z6SE33E3RAzSB4IgSlBAP+LZrCciaVNccqV+Ms84wNDZ+ZqFmfHOsl+L
+	 t7Qowf3T6dJrFHlW0oGQ6UqzgKRtHnvJPk+ybesAZr/nl8Zkn0pIU7osMoheC8E61H
+	 BsMMiYBr77sZfG7Mvhxv8WbHu0gvQ3/zRePQE5nRMXCiD4zBx+NSOg51uHLSwd37dC
+	 sJPlWoH/3/l2Q==
+Date: Mon, 16 Dec 2024 13:23:55 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Peter Collingbourne <pcc@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to
+ __cpuinfo_store_cpu()
+Message-ID: <855dbb91-db37-4178-bd0b-511994d3aef7@sirena.org.uk>
+References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
+ <87a5cysfci.wl-maz@kernel.org>
+ <709a0e75-0d0c-4bff-b9fd-3bbb55c97bd5@sirena.org.uk>
+ <Z2Agntn52mY5bSTp@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tQvdM+9sz/vOFjes"
+Content-Disposition: inline
+In-Reply-To: <Z2Agntn52mY5bSTp@J2N7QTR9R3>
+X-Cookie: Be different: conform.
 
-The nvbios_iccsense_parse function allocates memory for sensor data
-but fails to free it when the function exits, leading to a memory
-leak. Add proper cleanup to free the allocated memory.
 
-Fixes: 39b7e6e547ff ("drm/nouveau/nvbios/iccsense: add parsing of the SENSE table")
+--tQvdM+9sz/vOFjes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhanxin Qi <zhanxin@nfschina.com>
-Signed-off-by: Duanjun Li <duanjun@nfschina.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
----
- .../include/nvkm/subdev/bios/iccsense.h       |  2 ++
- .../drm/nouveau/nvkm/subdev/bios/iccsense.c   | 20 +++++++++++++++++++
- .../drm/nouveau/nvkm/subdev/iccsense/base.c   |  3 +++
- 3 files changed, 25 insertions(+)
+On Mon, Dec 16, 2024 at 12:44:14PM +0000, Mark Rutland wrote:
 
-diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/iccsense.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/iccsense.h
-index 4c108fd2c805..8bfc28c3f7a7 100644
---- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/iccsense.h
-+++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/iccsense.h
-@@ -20,4 +20,6 @@ struct nvbios_iccsense {
- };
- 
- int nvbios_iccsense_parse(struct nvkm_bios *, struct nvbios_iccsense *);
-+
-+void nvbios_iccsense_cleanup(struct nvbios_iccsense *iccsense);
- #endif
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/iccsense.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/iccsense.c
-index dea444d48f94..38fcc91ffea6 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/iccsense.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/iccsense.c
-@@ -56,6 +56,19 @@ nvbios_iccsense_table(struct nvkm_bios *bios, u8 *ver, u8 *hdr, u8 *cnt,
- 	return 0;
- }
- 
-+/**
-+ * nvbios_iccsense_parse - Parse ICCSENSE table from VBIOS
-+ * @bios: VBIOS base pointer
-+ * @iccsense: ICCSENSE table structure to fill
-+ *
-+ * Parses the ICCSENSE table from VBIOS and fills the provided structure.
-+ * The caller must invoke nvbios_iccsense_cleanup() after successful parsing
-+ * to free the allocated rail resources.
-+ *
-+ * Returns:
-+ *   0        - Success
-+ *   -ENODEV  - Table not found
-+ */
- int
- nvbios_iccsense_parse(struct nvkm_bios *bios, struct nvbios_iccsense *iccsense)
- {
-@@ -127,3 +140,10 @@ nvbios_iccsense_parse(struct nvkm_bios *bios, struct nvbios_iccsense *iccsense)
- 
- 	return 0;
- }
-+
-+void
-+nvbios_iccsense_cleanup(struct nvbios_iccsense *iccsense)
-+{
-+	kfree(iccsense->rail);
-+	iccsense->rail = NULL;
-+}
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/iccsense/base.c b/drivers/gpu/drm/nouveau/nvkm/subdev/iccsense/base.c
-index 8f0ccd3664eb..4c1759ecce38 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/iccsense/base.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/iccsense/base.c
-@@ -291,6 +291,9 @@ nvkm_iccsense_oneinit(struct nvkm_subdev *subdev)
- 			list_add_tail(&rail->head, &iccsense->rails);
- 		}
- 	}
-+
-+	nvbios_iccsense_cleanup(&stbl);
-+
- 	return 0;
- }
- 
--- 
-2.30.2
+> ... didn't matter either way, and using '&boot_cpu_data' was intended to
+> make it clear that the features were based on the boot CPU's info, even
+> if you just grepped for that and didn't see the surrounding context.
 
+Right, that was my best guess as to what was supposed to be going on
+but it wasn't super clear.  The code could use some more comments.
+
+> I think the real fix here is to move the reading back into
+> __cpuinfo_store_cpu(), but to have an explicit check that SME has been
+> disabled on the commandline, with a comment explaining that this is a
+> bodge for broken FW which traps the SME ID regs.
+
+That should be doable.
+
+There's a few other similar ID registers (eg, we already read GMID_EL1
+and MPAMIDR_EL1) make me a bit nervous that we might need to generalise
+it a bit, but we can deal with that if it comes up.  Even for SME the
+disable was added speculatively, the factors that made this come up for
+SVE are less likely to be an issue with SME.
+
+--tQvdM+9sz/vOFjes
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdgKesACgkQJNaLcl1U
+h9Dn1Af6Aoi1kYEJgEpP9SuLVKjtDdtspvPJ1Zxcn5F9yCCeGy6jEdCF64uMyukR
+zRDEveJcHwLSdXwWI3vuogbEugswRQGaCZkqXq6GIYcqkL4bK0rZuO9MbsEY/evo
+lSuvJTX77/lHZnIpFYVL6kMuDGgTanmm+moofxK6ae8y9edKYGpsNqiJsyIUQ44G
+t0QqBHLFQzaEzjZV39B89oSIDWmilLJr6Hzw3Ht7S33xCa4IPICjfYxFSapua2Lg
+nyqGOLkIVafK7Ob8Bs1ZnZdt84rL24d72f4cM+Frb7X7yNlWUstqJVRGjjVwxPhU
++UEB5595YufyuCdHMCBKWu8T64mNPQ==
+=b0ul
+-----END PGP SIGNATURE-----
+
+--tQvdM+9sz/vOFjes--
 
