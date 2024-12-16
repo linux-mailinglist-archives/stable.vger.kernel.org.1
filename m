@@ -1,179 +1,114 @@
-Return-Path: <stable+bounces-104361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB199F33CC
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:57:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A497F9F33FB
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 16:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62AD01889E21
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 14:57:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53B3818821E7
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 15:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1F185626;
-	Mon, 16 Dec 2024 14:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7BF81ACA;
+	Mon, 16 Dec 2024 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tIf8NCiQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZMKhukK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEA541C94
-	for <stable@vger.kernel.org>; Mon, 16 Dec 2024 14:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C85199B9;
+	Mon, 16 Dec 2024 15:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734360835; cv=none; b=XrYicr+xsj8NIx/38K9mu6da76vhtPL/I6XKV5LX2OpgdS1cuNM7PxFe83fhqLCIxd2+03jwGzzPAGgv4pw6yFH6ZlvcRhdhBtVgTrq1wz9SwpNe3soWqzusMF7qeFW7RRu9JtB1Vqsa+eIzUpfAzlsb6ybz/duae/JRWHkthSg=
+	t=1734361549; cv=none; b=bAnHrwFnG1rLJ044wf9KarjfNVV+fgVULEqC5etBHE5WYpiGImbdJMn5fVo2vb65yI93cw2qz7EA4G1U0BjqK4khx6KVEu5vwcbIJmRxT9HmStS0sPh6XN4zf2D/b9Xa3YAB3N1lNck4raGDQKO87t9k6byl5oHYNSpN2N0shLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734360835; c=relaxed/simple;
-	bh=bqnBvYOPMyc4SkZ5XxYDYNoIAvco3PVin7wGh6uDU1w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VMlzaCjzw83jC4461r1gaMrpkfqvivzvRfOG/xT+o1ESbTjGXGQgobSjDPK1zuihGxEyPFWPNOopyGB6HnbGqGPD4Fmvhkb4vALnWti/Rb8qstOKLtg4WMovVLk/ecDCgIKA3xhpK2UatUavOX52uEOlpMfG51aaueRU+oEIaf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tIf8NCiQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10779C4CED0;
-	Mon, 16 Dec 2024 14:53:54 +0000 (UTC)
+	s=arc-20240116; t=1734361549; c=relaxed/simple;
+	bh=tIdFuiLb3rusJpAdSMP7WjnLxa5HWfHnlLwtg03T/JM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VhsaqxxMACv3LUWaqOSs6TrQTVKdLJuIwO+YLn29htf2uDAlk0w3E7tBWeBgzUqvKhR8Irz55srdfjmERoaxxovqHafWt02WynUCKklE7Rk4zSAEleL2WLnYdGvHHpaZ0ac4OE++E/tMJmuwk5YHTxesz+92LYUNuNH0TspQpCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZMKhukK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BDBC4CEDD;
+	Mon, 16 Dec 2024 15:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734360835;
-	bh=bqnBvYOPMyc4SkZ5XxYDYNoIAvco3PVin7wGh6uDU1w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIf8NCiQxekG4z5oWzvLiB/UXMNtZGGGmJVOFLZMh+dHtGn5CbKupccWeuXYuRPxj
-	 F+qu6SFBMenIwwX1F/CBBteo+JKS0KXi/gqpfDE3QclcoMwxdXCCdXIz7B9X60kbFm
-	 85fHrkBvxAlyIgmaWMK/nExA9owtAlahvezBLz+/yDrMgdiUR23XxLxq80OJIOI9tJ
-	 07zofI052J6zND80WzZHmYjV2O/mpUmTU5ixphDDsMGbbW+p3m5fsneaKNGVNfCg8H
-	 JD7C838C+5izfKH5ctINxJ9e+Z+Y/kJ6CQWeY6rskD/ZahZ+vfdXzFPpowKIsT92BG
-	 /XA8G/tM968QA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Marc Zyngier <maz@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.12] KVM: arm64: Disable MPAM visibility by default and ignore VMM writes
-Date: Mon, 16 Dec 2024 09:53:53 -0500
-Message-Id: <20241216082543-39b396803606fa7f@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20241216085002.334880-1-maz@kernel.org>
-References: 
+	s=k20201202; t=1734361548;
+	bh=tIdFuiLb3rusJpAdSMP7WjnLxa5HWfHnlLwtg03T/JM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LZMKhukKWnoBFUlSjwHUQUkCf+Sxv5EBpSNvEqrsh9wzufQiR3BXbv+98ABYURrHE
+	 uarkrXb0TDr4MRrX1zCV5a3MW8XAkpCX6Ef03LbJ3Cijx+8pI31/TawQ2DtNNdF4vu
+	 JtpIiVQRWcAIWl5K1RoaMRWLy43Iv1AosC03BD8WI3wes2/8hlENJCLY5NYONkF3ZK
+	 /WuXf7zno0laeVB0SpZBm4p5mGZg0/3kCMDFpwWJnM9w8HRKDAj70Kkreumu5VsHco
+	 z6m9Ae9yWH/qNvhsY+9/LY6fxbsh9pzithCNd1wYkiW/cCrwFiiJT2f72jORBBSAJS
+	 uc7byt1/Od7hA==
+Date: Mon, 16 Dec 2024 15:05:44 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Peter Collingbourne <pcc@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to
+ __cpuinfo_store_cpu()
+Message-ID: <c0501e6c-7657-4885-abfa-1c0753c0e063@sirena.org.uk>
+References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
+ <87a5cysfci.wl-maz@kernel.org>
+ <Z2AfOZ82QG_ukWry@J2N7QTR9R3>
+ <865xnjsnqo.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-[ Sasha's backport helper bot ]
-
-Hi,
-
-The upstream commit SHA1 provided is correct: 6685f5d572c22e1003e7c0d089afe1c64340ab1f
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Marc Zyngier <maz@kernel.org>
-Commit author: James Morse <james.morse@arm.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rYVWTQ29yACSStov"
+Content-Disposition: inline
+In-Reply-To: <865xnjsnqo.wl-maz@kernel.org>
+X-Cookie: Be different: conform.
 
 
-Status in newer kernel trees:
-6.12.y | Not found
+--rYVWTQ29yACSStov
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Note: The patch differs from the upstream commit:
----
-1:  6685f5d572c2 ! 1:  aab69d989e76 KVM: arm64: Disable MPAM visibility by default and ignore VMM writes
-    @@ Metadata
-      ## Commit message ##
-         KVM: arm64: Disable MPAM visibility by default and ignore VMM writes
-     
-    +    commit 6685f5d572c22e1003e7c0d089afe1c64340ab1f upstream.
-    +
-         commit 011e5f5bf529f ("arm64/cpufeature: Add remaining feature bits in
-         ID_AA64PFR0 register") exposed the MPAM field of AA64PFR0_EL1 to guests,
-         but didn't add trap handling. A previous patch supplied the missing trap
-    @@ Commit message
-         Reviewed-by: Marc Zyngier <maz@kernel.org>
-         Link: https://lore.kernel.org/r/20241030160317.2528209-7-joey.gouly@arm.com
-         Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-    +    [maz: adapted to lack of ID_FILTERED()]
-    +    Signed-off-by: Marc Zyngier <maz@kernel.org>
-    +    Cc: stable@vger.kernel.org
-     
-      ## arch/arm64/kvm/sys_regs.c ##
-     @@ arch/arm64/kvm/sys_regs.c: static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
-    @@ arch/arm64/kvm/sys_regs.c: static u64 __kvm_read_sanitised_id_reg(const struct k
-      		break;
-      	case SYS_ID_AA64PFR2_EL1:
-      		/* We only expose FPMR */
-    -@@ arch/arm64/kvm/sys_regs.c: static u64 sanitise_id_aa64pfr0_el1(const struct kvm_vcpu *vcpu, u64 val)
-    +@@ arch/arm64/kvm/sys_regs.c: static u64 read_sanitised_id_aa64pfr0_el1(struct kvm_vcpu *vcpu,
-      
-      	val &= ~ID_AA64PFR0_EL1_AMU_MASK;
-      
-    @@ arch/arm64/kvm/sys_regs.c: static u64 sanitise_id_aa64pfr0_el1(const struct kvm_
-      }
-      
-     @@ arch/arm64/kvm/sys_regs.c: static int set_id_dfr0_el1(struct kvm_vcpu *vcpu,
-    + 	return set_id_reg(vcpu, rd, val);
-      }
-      
-    - static int set_id_aa64pfr0_el1(struct kvm_vcpu *vcpu,
-    --			       const struct sys_reg_desc *rd, u64 val)
-    ++static int set_id_aa64pfr0_el1(struct kvm_vcpu *vcpu,
-     +			       const struct sys_reg_desc *rd, u64 user_val)
-    - {
-    --	return set_id_reg(vcpu, rd, val);
-    ++{
-     +	u64 hw_val = read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1);
-     +	u64 mpam_mask = ID_AA64PFR0_EL1_MPAM_MASK;
-     +
-    @@ arch/arm64/kvm/sys_regs.c: static int set_id_dfr0_el1(struct kvm_vcpu *vcpu,
-     +		user_val &= ~ID_AA64PFR1_EL1_MPAM_frac_MASK;
-     +
-     +	return set_id_reg(vcpu, rd, user_val);
-    - }
-    - 
-    ++}
-    ++
-      /*
-    +  * cpufeature ID register user accessors
-    +  *
-     @@ arch/arm64/kvm/sys_regs.c: static const struct sys_reg_desc sys_reg_descs[] = {
-    - 		      ID_AA64PFR0_EL1_RAS |
-    - 		      ID_AA64PFR0_EL1_AdvSIMD |
-    - 		      ID_AA64PFR0_EL1_FP)),
-    + 	{ SYS_DESC(SYS_ID_AA64PFR0_EL1),
-    + 	  .access = access_id_reg,
-    + 	  .get_user = get_id_reg,
-    +-	  .set_user = set_id_reg,
-    ++	  .set_user = set_id_aa64pfr0_el1,
-    + 	  .reset = read_sanitised_id_aa64pfr0_el1,
-    + 	  .val = ~(ID_AA64PFR0_EL1_AMU |
-    + 		   ID_AA64PFR0_EL1_MPAM |
-    +@@ arch/arm64/kvm/sys_regs.c: static const struct sys_reg_desc sys_reg_descs[] = {
-    + 		   ID_AA64PFR0_EL1_RAS |
-    + 		   ID_AA64PFR0_EL1_AdvSIMD |
-    + 		   ID_AA64PFR0_EL1_FP), },
-     -	ID_WRITABLE(ID_AA64PFR1_EL1, ~(ID_AA64PFR1_EL1_PFAR |
-    -+	ID_FILTERED(ID_AA64PFR1_EL1, id_aa64pfr1_el1,
-    -+				     ~(ID_AA64PFR1_EL1_PFAR |
-    ++	{ SYS_DESC(SYS_ID_AA64PFR1_EL1),
-    ++	  .access	= access_id_reg,
-    ++	  .get_user	= get_id_reg,
-    ++	  .set_user	= set_id_aa64pfr1_el1,
-    ++	  .reset	= kvm_read_sanitised_id_reg,
-    ++	  .val		=	     ~(ID_AA64PFR1_EL1_PFAR |
-      				       ID_AA64PFR1_EL1_DF2 |
-      				       ID_AA64PFR1_EL1_MTEX |
-      				       ID_AA64PFR1_EL1_THE |
-    +@@ arch/arm64/kvm/sys_regs.c: static const struct sys_reg_desc sys_reg_descs[] = {
-    + 				       ID_AA64PFR1_EL1_RES0 |
-    + 				       ID_AA64PFR1_EL1_MPAM_frac |
-    + 				       ID_AA64PFR1_EL1_RAS_frac |
-    +-				       ID_AA64PFR1_EL1_MTE)),
-    ++				       ID_AA64PFR1_EL1_MTE), },
-    + 	ID_WRITABLE(ID_AA64PFR2_EL1, ID_AA64PFR2_EL1_FPMR),
-    + 	ID_UNALLOCATED(4,3),
-    + 	ID_WRITABLE(ID_AA64ZFR0_EL1, ~ID_AA64ZFR0_EL1_RES0),
----
+On Mon, Dec 16, 2024 at 02:31:43PM +0000, Marc Zyngier wrote:
+> Mark Rutland <mark.rutland@arm.com> wrote:
 
-Results of testing on various branches:
+> > I understand that we have to do something as a bodge for broken FW which
+> > traps SME, but I'd much rather we did that within __cpuinfo_store_cpu().
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+> Honestly, I'd rather revert that patch, together with b3000e2133d8
+> ("arm64: Add the arm64.nosme command line option"). I'm getting tired
+> of the FW nonsense, and we are only allowing vendors to ship untested
+> crap.
+
+I'd certainly be happy to remove the override for SME, the circumstances
+that lead to the need to override SVE are much less likely to occur with
+SME.  We can add it again later if there's a need for it.
+
+> Furthermore, given the state of SME in the kernel, I don't think this
+> is makes any difference. So maybe this is the right time to reset
+> everything to a sane state.
+
+I'm not aware of any issues that don't have fixes on the list (the fixes
+have all been on the list for about a month, apart from this one).
+
+--rYVWTQ29yACSStov
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdgQccACgkQJNaLcl1U
+h9CjQQf+KATDHPC+FxibIGuzocFvYNi2gMtyaa0fWsGVNddEp+BzHwP015ssdDKl
+JteEjEknFyE7l9Y0F6bePJqYx/L/MIag8IweEZ5XWLAIOH6aMAameWJaewCa9kLW
+PqVq30dEYb/pcV0GcuntAsVUekhHKf73mZui0RXugGWnwA6Bbz0GSE5OYig2vhsX
+E8vc/V/SUm1eUmfAno7lV0cesuM31qtKlppJgxtoTELP/WbRwCGCIzVz/xZ+LtWP
+5N2NxHPjOeZefcRfu6emhVpeWiAjB9lLsDiB+4q2mLXe1tngZKjVrdE8ZEHuFpBe
+9n2oYo4dQRPsmqDsgByqvKgusClUGw==
+=xWKA
+-----END PGP SIGNATURE-----
+
+--rYVWTQ29yACSStov--
 
