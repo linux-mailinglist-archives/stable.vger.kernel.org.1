@@ -1,132 +1,199 @@
-Return-Path: <stable+bounces-104328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008609F2FA4
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 12:39:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C569F2FAE
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 12:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0FC918819DB
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 11:39:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF341882EA6
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 11:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A81200B8C;
-	Mon, 16 Dec 2024 11:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEEC204563;
+	Mon, 16 Dec 2024 11:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kolumbus.fi header.i=@kolumbus.fi header.b="GCfDkvzh"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="moh4lp8Y"
 X-Original-To: stable@vger.kernel.org
-Received: from fgw22-4.mail.saunalahti.fi (fgw22-4.mail.saunalahti.fi [62.142.5.109])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2060.outbound.protection.outlook.com [40.107.223.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E3B200121
-	for <stable@vger.kernel.org>; Mon, 16 Dec 2024 11:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.109
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734349185; cv=none; b=YAz9TcLu41KeTzh6p/+L3GD4dHrrd54Y2YUvSc5kvNR9LwdM4eyyiyt/l8/kmGgH/GBdAMzOONvF1aGYE2Qve7Cf8Zg67pFjGnAqxBadpgWUoUJZ+x/++PXa11jGk7qBIkjn3ozWRR2UlPjjaszirfAvRBREM8dtqOS4BAG04wk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734349185; c=relaxed/simple;
-	bh=nJcrKjbb/izKfhO5ZCTPYd6zolh1/6O7j/l3sTLP/NQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RAsPwp65qjHXYU4M3KkShpoTs17FZYQo7+Hj98uI2ts2e6v7vCovqEH/582VAvqCPakfOkFDM3TG83RE0viC2cQssmX3+fvuFZ2qyfrtt3FkC7SFkeMhNlImXmeBSDVC1xOkF1ZKvx+8oKXk/z0ONr/SIq5yI53OD5xZvomNXcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kolumbus.fi; spf=pass smtp.mailfrom=kolumbus.fi; dkim=pass (2048-bit key) header.d=kolumbus.fi header.i=@kolumbus.fi header.b=GCfDkvzh; arc=none smtp.client-ip=62.142.5.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kolumbus.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kolumbus.fi
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=kolumbus.fi; s=elisa1;
-	h=content-transfer-encoding:content-type:mime-version:message-id:date:subject:
-	 cc:to:from:from:to:cc:reply-to:subject:date:in-reply-to:references:
-	 list-archive:list-subscribe:list-unsubscribe:content-type:
-	 content-transfer-encoding:message-id;
-	bh=nQ/yC+8xWtNHB16AC7Zp2qZMVpjX31p5rRFFK6w3pLg=;
-	b=GCfDkvzhqb7rTXUPy1KQQaNd6o3SVWoogVimHogTCazU4aVJPidYVr41kx630NglfcSQu26Cax+5b
-	 rxbEl0k8BA+Q2NBslkfqzEjPrzEmdfM2h/VNSQR/BD3dQCMZ6rTfUf/FuzSbM15v8k4uy1s7HdDPtn
-	 /LJgm+s4rUbGTbXfxchsvF2+CCor+8palLwYiYVUyBTP5VCaDzQznp7YjPSwLVSKjj1Tn0nAhUfjRb
-	 629RDPGZOqsKwdBtGay29EvCVSCTci87U9M5RRaxTh17C0Lk9zeknhyzdQNXnPS98qnlNzTPy6ApBz
-	 j8OFMyOWUxNXbffv/5n15710KcSc0+g==
-Received: from kaipn1.makisara.private (85-156-116-90.elisa-laajakaista.fi [85.156.116.90])
-	by fgw23.mail.saunalahti.fi (Halon) with ESMTPSA
-	id 3ed63cc6-bba2-11ef-a13a-005056bdfda7;
-	Mon, 16 Dec 2024 13:38:19 +0200 (EET)
-From: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>
-To: linux-scsi@vger.kernel.org,
-	jmeneghi@redhat.com
-Cc: martin.petersen@oracle.com,
-	James.Bottomley@HansenPartnership.com,
-	loberman@redhat.com,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: st: Regression fix: Don't set pos_unknown just after device recognition
-Date: Mon, 16 Dec 2024 13:37:55 +0200
-Message-ID: <20241216113755.30415-1-Kai.Makisara@kolumbus.fi>
-X-Mailer: git-send-email 2.47.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8243203D50;
+	Mon, 16 Dec 2024 11:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734349425; cv=fail; b=OSfMgdyp6AVsgTZYUEej7RA0TyFOBQ1kfFOXJBe2lOE7Hg2oD4NPVrkuTnEo8qGj6Q4CsWKI0lb8aW8EnzTt8n/IqZuRN6G8NE3Amz5hEa63WsUjUFapu8h6v0iSkQtyTGbu+2aBEdcSMYHkG8iOio5hpsadYTJ6ABDdfk1qtGs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734349425; c=relaxed/simple;
+	bh=TflrNTmd1SALRlpC5zbUAXWdiGJrrunK5AzYWN4lW7I=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=f2tJyF/IPcGgOw7+VkgcJIsT6FZZBjKx9qnOU0osYgteQCxrpDbhztVNM3LfGtSd6TbaO0t2Vc7zvfYZT0BD4OUdnCv4/nLvkINicMSUPvA2M9IsNcaHKmsQiL8+u0Ie/+smwPGTbm+hihXVxQunkDf9B5zBZ1fOgBuD67tpJAw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=moh4lp8Y; arc=fail smtp.client-ip=40.107.223.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KOBMM3pBMpFrwMrDAOFbD/+gz+eaVwIZEw6chTzcYwhUQbE485nU2qS+5jXXiDREbZB6x5oS/K7IpVDRJfbw86QXqWAauiXbNfm49vrAaNS//p3fhHJ9o2IbTDPJ/3DH93fW4vIqYKtutqaje1QDj7HxRYlYXid5K1yVmB40Y98tiPiRFW8CdNkrOoEHHsP6iySFqOsHn7GYLgf99i3aa+2kSPCf2Tri7uS4pyB9DPHfdhc3FkuXXmufvPqG778NlMBVC/FSShWitkdMWN3q9grWefmZ/TvW3ig/HKvqGhmS977eQCGh4qjIiMajRe+FXYz+Mn2Ro18oIoK0YdguzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p9RBbGB6nh3+BHU4D87ZyfIb21nN4y9mz/daBZpyDMA=;
+ b=rPqCXAgFguK73QtxwV/OxXD81TWDFds82VeGQxkgdmYqPpqyyjxJSeUi4onh4zQ0dxUNWFD7r0/mCELLhExrHc56ubuC5NDhnMPfU1puDWijGBg6kfzQWL/HTVSBbOSBZUsSB83OSPvRQ6QKa3qcBxl4rdqNMDaLSUPH/koG3GzWSJiHrpLm0eQZrhW0femtt1xwkeIsSk19JnHL1sEqoiXEzIr12HTU5nF2Jn+H9fW16qusAJysHaa3x6V/RcwfS77ccYaHKWe1udb45GCbUkWfLrMSPFABkivCAg5F4C6DE0khICFBusOgW4jnS6U4LVCc6MLFQZI12LltEA3uyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p9RBbGB6nh3+BHU4D87ZyfIb21nN4y9mz/daBZpyDMA=;
+ b=moh4lp8Y5ZgZLVQZEy7dm5UASSpgDYSX8ufvT2dZ2ZlQ7RSY9pIxLiXolbvmsjRYQ8+CUD7bnIPOcV58LoEPFey6ROsnyWmX9tKBvHYJJzGdJnOPzBwqQyQOAn1a0QqixgzSmUWm1tvdkkoKbRjKolqjezc+eykMffUzdiWV7pMLUZRLhGvaiomLpIYTpaN8iLCRvKhBloE9N0WZyJhiuyg9kdamSmhRZC7AaZiYlkqOO7ph9zdEYwVT+Hatl6BTLakYYpINIS2Z1gtawqzZW0mpMlJTik3dq/2W0yeNHy8G6j+sKVOTv/Ah0Xv8w6k5fZtjz9aTPRObo5d2LjBcPQ==
+Received: from CH2PR18CA0016.namprd18.prod.outlook.com (2603:10b6:610:4f::26)
+ by DS0PR12MB9273.namprd12.prod.outlook.com (2603:10b6:8:193::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.17; Mon, 16 Dec
+ 2024 11:43:40 +0000
+Received: from CH1PEPF0000A349.namprd04.prod.outlook.com
+ (2603:10b6:610:4f:cafe::53) by CH2PR18CA0016.outlook.office365.com
+ (2603:10b6:610:4f::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.20 via Frontend Transport; Mon,
+ 16 Dec 2024 11:43:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CH1PEPF0000A349.mail.protection.outlook.com (10.167.244.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8251.15 via Frontend Transport; Mon, 16 Dec 2024 11:43:40 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 16 Dec
+ 2024 03:43:40 -0800
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Mon, 16 Dec 2024 03:43:39 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Mon, 16 Dec 2024 03:43:39 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.1 000/772] 6.1.120-rc2 review
+In-Reply-To: <20241213150009.122200534@linuxfoundation.org>
+References: <20241213150009.122200534@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <66cb808c-bb6d-4c7e-a1f5-5a9b0a185870@drhqmail202.nvidia.com>
+Date: Mon, 16 Dec 2024 03:43:39 -0800
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A349:EE_|DS0PR12MB9273:EE_
+X-MS-Office365-Filtering-Correlation-Id: 953520ea-baca-4479-5817-08dd1dc6e31f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SmJzcnFXOTR0WFRsMnA4ZjFIc3hZaGFTV3ltNTBVNXBibmVtUGhGMnNqNzE1?=
+ =?utf-8?B?bzBTZzJ2TUdqRW5lWHk4NzBOcUMrcVAyd2RydHJPbzJqVVFzVDRUdjJzZEN4?=
+ =?utf-8?B?cDVIMk1RTm51YjhoMnF1ejUwU0tqbjNpWWhPZ0VEaytqV0JjZEJvcmxqdFVK?=
+ =?utf-8?B?QzBRRlRCVEdvMWpUcHdHUWpXdkZQYlZ6empQd3ROc3Nvd2diUTgyT0xvaFFw?=
+ =?utf-8?B?b0wybWNJSzFXUTVRdno3a1ZHMHFQR0RpSDd2ZkdXMGZPVUtxQjRYeHJhb1Vq?=
+ =?utf-8?B?alFTclFSY2h1MlE0ME52SlVKdTFELy9nTWE0RHJpZlJNYjZhdktxOUhUb2F0?=
+ =?utf-8?B?ek11UGUwL0hITWw3bkdISXl0R1ZvU1BCbFN1QmI3YlBVQWxrTHNRdVdhMHhK?=
+ =?utf-8?B?KzkvaUZ3K1pVV1YzYTJ5VHZHc3ZjNWxLQ1hWeDF6N0xqSWk3SzFzS01jeFZY?=
+ =?utf-8?B?aGREOHFFS0RmZUV0YTNOSmJGb0ZxbnZHY3dNV09hQVNZaU9DcTFDVGJTdjV2?=
+ =?utf-8?B?SlMvMWtGdmxOREM2UGk5MVV4d2pqZG9vR01HOUt0MlZobS84YTRWUkIwOXhp?=
+ =?utf-8?B?OTNtMGFaYU14RVYxNUt4Wk9SQ1dJelMydGVZa0JxcWZkeUVCaE8zcURmaG93?=
+ =?utf-8?B?S2JhcGlDNy9BQ2xQNlcvNUw4dWY5QXBVdWlmK1VrZ2Z0UmM4aXY1cXI5MW5N?=
+ =?utf-8?B?YmVaWW05cHJQakZseXVubmxIVDhFVmp0WlA1K3JkNExyU29GMVFvNnNPeVRi?=
+ =?utf-8?B?Zi9WSTZseXV2Vld2QjkwZmZvRWlKN3h1dmJLelpvRUhBRHhweXB3ZmxIaUVw?=
+ =?utf-8?B?WFUwaVh1UjZ4bTJsNXlWZFovR0NBVy9EL1dkME1lZzRoL2xGT2hoU1lEYW50?=
+ =?utf-8?B?WVRmczNHcnZWbUd5TTVKTG44L0s2UWJCY2wrRGRybTJsVkx1TTc3N2FDcmh3?=
+ =?utf-8?B?MjdpL0hKTS9yRnpKWFlTWXVLdzFKTzJyajUxM2dkSUY5bkNOblNveHVsd0tu?=
+ =?utf-8?B?SlZjb1R0eU9hOCttYmVzUkdVcXNnbHFPMDJhcjlwdGlRT2lXZHAyTzlOQzdt?=
+ =?utf-8?B?VUNubHJmcGgzZCtUTkZ0TXp3QXlSV0pKR0RyNXhnWTFVZEFEbzF6UmZTZ05w?=
+ =?utf-8?B?N29yMlRIQmQ4UzlxUjV3Z2lpRjl4SFBiekV6ZWc0ZEN4RlhBbVkzbVhibkhE?=
+ =?utf-8?B?TFNaS1RuaVR4S0xxd0VkTGNzUnR5SllvSnFhNkxpaS9tYk1mOEZiYXhHM2F3?=
+ =?utf-8?B?bjd1YWxZR25leWxSYmp0cmJENDJrNXU1S3NpTkFuQ2VzNDV1T0k0RmViMEJU?=
+ =?utf-8?B?YVJHeU1nZ2RCejhXR0IzVTZXWEwraVdaNUtjbUVCbmVhaEpvQnF4M0JidVRm?=
+ =?utf-8?B?dHQ3MXJGM3VRd3RHWHl6RmMvTlJSVFFBQ3BvQjE4NXk2akRNSmNLNWMwNVFF?=
+ =?utf-8?B?S050Q1AzY3A1WE4zSmpnd2J1aUhsOFRaZUtsajMrNXh6Sjh4UHNBeGlYc0Vj?=
+ =?utf-8?B?U3JneFFySWdZNE9IQUxhWWgybmdIaUdnZW11VDV1ZTJQTDhSOUtMS0FWbWU3?=
+ =?utf-8?B?SUJubmpCN1dObzI5cmpZOUUzRzF6dDRXTzAxcEpoWmpsaUNLWk9lQysvc3pB?=
+ =?utf-8?B?M1k1NXhCNjhHYVR3a1ZUby9KREpOdS9XQW1uWDdXdk9ld1dzMWlvbEpjL2M3?=
+ =?utf-8?B?SkFKK25RRCt5TloraGV1b1BRU3FHU2w3dzFmUGZ3eEVqcFEya2JFR3ZqZVNq?=
+ =?utf-8?B?UGdwWkZ2R1lISVdJejEyKzE1MDAzQUxLb3VGU3FBWC93R2M4MVlORDBMRk0r?=
+ =?utf-8?B?Zjdud2lTdTh1amNQelFmSDBadmg4UFlsRVlrbTZuamxVeWM2bmZZd1l4M3Qv?=
+ =?utf-8?B?ZXVXbUw0a1NzQ1ExS0I3RFB2N0xJQVUwcnRNZXFQbDR0S2VsUkZMRGFOM0tz?=
+ =?utf-8?B?YVJBYWRkc1VZQ0NMUC9DQktHeko2MVdPenVFRDI4OU1wajJKK1BnREg5QVpY?=
+ =?utf-8?Q?0MYFs77nwUmhZtch2cqBMKRBAZk7l8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2024 11:43:40.6440
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 953520ea-baca-4479-5817-08dd1dc6e31f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000A349.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9273
 
-Commit 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
-in v6.6 added new code to handle the Power On/Reset Unit Attention
-(POR UA) sense data. This was in addition to the existing method. When
-this Unit Attention is received, the driver blocks attempts to read,
-write and some other operations because the reset may have rewinded
-the tape. Because of the added code, also the initial POR UA resulted
-in blocking operations, including those that are used to set the driver
-options after the device is recognized. Also, reading and writing are
-refused, whereas they succeeded before this commit.
+On Fri, 13 Dec 2024 16:04:17 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.120 release.
+> There are 772 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 15 Dec 2024 14:57:53 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.120-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-This patch adds code to not set pos_unknown to block operations if the
-POR UA is received from the first test_ready() call after the st device
-has been created. This restores the behavior before v6.6.
+All tests passing for Tegra ...
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Fixes: 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
-Closes: https://lore.kernel.org/linux-scsi/2201CF73-4795-4D3B-9A79-6EE5215CF58D@kolumbus.fi/
-CC: stable@vger.kernel.org
----
- drivers/scsi/st.c | 6 ++++++
- drivers/scsi/st.h | 1 +
- 2 files changed, 7 insertions(+)
+Test results for stable-v6.1:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    115 tests:	115 pass, 0 fail
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index e8ef27d7ef61..ebbd50ec0cda 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -1030,6 +1030,11 @@ static int test_ready(struct scsi_tape *STp, int do_wait)
- 			retval = new_session ? CHKRES_NEW_SESSION : CHKRES_READY;
- 		break;
- 	}
-+	if (STp->first_tur) {
-+		/* Don't set pos_unknown right after device recognition */
-+		STp->pos_unknown = 0;
-+		STp->first_tur = 0;
-+	}
- 
- 	if (SRpnt != NULL)
- 		st_release_request(SRpnt);
-@@ -4328,6 +4333,7 @@ static int st_probe(struct device *dev)
- 	blk_queue_rq_timeout(tpnt->device->request_queue, ST_TIMEOUT);
- 	tpnt->long_timeout = ST_LONG_TIMEOUT;
- 	tpnt->try_dio = try_direct_io;
-+	tpnt->first_tur = 1;
- 
- 	for (i = 0; i < ST_NBR_MODES; i++) {
- 		STm = &(tpnt->modes[i]);
-diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
-index 7a68eaba7e81..1aaaf5369a40 100644
---- a/drivers/scsi/st.h
-+++ b/drivers/scsi/st.h
-@@ -170,6 +170,7 @@ struct scsi_tape {
- 	unsigned char rew_at_close;  /* rewind necessary at close */
- 	unsigned char inited;
- 	unsigned char cleaning_req;  /* cleaning requested? */
-+	unsigned char first_tur;     /* first TEST UNIT READY */
- 	int block_size;
- 	int min_block;
- 	int max_block;
--- 
-2.43.0
+Linux version:	6.1.120-rc2-gcb4fbe91b7b2
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
 
