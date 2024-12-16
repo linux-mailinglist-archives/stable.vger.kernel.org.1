@@ -1,130 +1,133 @@
-Return-Path: <stable+bounces-104322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8727C9F2C86
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 10:01:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DC09F2D13
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 10:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3989164E5B
-	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 09:01:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115091881D5A
+	for <lists+stable@lfdr.de>; Mon, 16 Dec 2024 09:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38DB1C2323;
-	Mon, 16 Dec 2024 09:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC60F20102A;
+	Mon, 16 Dec 2024 09:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mPlt+zUt"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="DpRG0KXR"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93462E628
-	for <stable@vger.kernel.org>; Mon, 16 Dec 2024 09:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDC02AF03;
+	Mon, 16 Dec 2024 09:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734339690; cv=none; b=czykb9aZOi5YSWkDXjoWKKDte+SXS9R+++f+b2cJxiarnzGQdKybja9w2/sMOV5qdnwIJ8TcmTVbc8YyAfQ6bZ//DR+5Uiv9gK0rxLlxCxptMQmL+PcGFNCpjmGSb2uWwUtGpZ4IqHXQ34BlI0Y68tW7oR5F3FbaivBAH0EgeCc=
+	t=1734341724; cv=none; b=nRCw1gifyFsyCVMBosjIcjTNuSRIudgUhmsl33h7jVfQC7qd3AlBvz905aBwELp8g7pB4vXGPsmb60WxwcANHc1h7ZE1wazY5CJvqV66inHgrKKb5AQLveWlE1Rny3bC3stYyy2NlMWzVwy8J6So/qxtGe6seR7tHUbRGRRy6Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734339690; c=relaxed/simple;
-	bh=r/KozuYMeTjHbcO8LwWrshAe4Zp5Zn+4O4INxZnk/Xg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QwyM+aIFRKzWyx3W/ntVKv6xOKUrALC3CDzNIdCL9G97O512wPhupMw+08x2V6IxJVK9//ZFv5BdTxsFcy2EZi3geFvViC0OPS5SnvGXocA3aNNVYLo/rPNWWQjWQ/gWm5Y8rEO5ZUg4uA+Uic88UH6XslX5OInomSR1rA80Td0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mPlt+zUt; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734339689; x=1765875689;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=r/KozuYMeTjHbcO8LwWrshAe4Zp5Zn+4O4INxZnk/Xg=;
-  b=mPlt+zUtiSzKLonEyvMHKktZfDGzm1TIPfFf1j9VWjeWQFW9WT7ez5Qw
-   OG74MA/mXvGeClioS1v5k0AdywquS2+VSsc3HSBmCaZSXfQLZRpObqY6i
-   GMs49/dPKBbzxtmg97GkEdLygyzhp/e6Ug8m8g3msDUXVCoB0Z9qW0Fs/
-   CShKqWxyhrvUJtpnmkUMBPLJK9o7N4D0WQMuIS1818aWDb9l9Hm6DgJe6
-   /Vg3dgSTM6NQjsK64mzbV/Gh9CreSTGWd6LsdqDiVmNlD/odYRIwQSYru
-   moeH+z6Gl6yeFoh4vCp51ZGseD5NbxjNm4TqGk+mBULC+Ol3zRRERbp55
-   w==;
-X-CSE-ConnectionGUID: 0cIhS+BiRbmrx5IBOH0Gig==
-X-CSE-MsgGUID: kM8ldLB+S+OpK0jwdjy+dA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11287"; a="34942743"
-X-IronPort-AV: E=Sophos;i="6.12,238,1728975600"; 
-   d="scan'208";a="34942743"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 01:01:26 -0800
-X-CSE-ConnectionGUID: WpAwzNajTpyWNqhzwDmVCg==
-X-CSE-MsgGUID: 6W4ckSrpRCeRz/aYcPelwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="102119524"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO [10.245.246.246]) ([10.245.246.246])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 01:01:23 -0800
-Message-ID: <24eeb9dcbb1845bdb420df12384f54d60234a411.camel@linux.intel.com>
-Subject: Re: [PATCH v4 1/2] drm/xe: Use non-interruptible wait when moving
- BO to system
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Nirmoy Das <nirmoy.das@intel.com>, intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>, Lucas De Marchi
-	 <lucas.demarchi@intel.com>, stable@vger.kernel.org, Matthew Auld
-	 <matthew.auld@intel.com>
-Date: Mon, 16 Dec 2024 10:01:21 +0100
-In-Reply-To: <20241213122415.3880017-1-nirmoy.das@intel.com>
-References: <20241213122415.3880017-1-nirmoy.das@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1734341724; c=relaxed/simple;
+	bh=TPhIZlVaq2DqrJ6uhJgGWWzBLtWixstsmW6LhSeSavo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=FL/vzUCuPdc5/0hRaqmwNYEVfRLeK2MyTtK3vGmK4udFuN3jVeNXNoae9WQtRKwr7wM2Uobh0LxnhUVvhC62zBTIqySY7JQCRTicOv9EvoRdAXjVghQxzziCWXVP+T7MdFlYecQ/K0VjkdnExTmLGFPg6ZyKSYDyn2fhIodAYAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=DpRG0KXR; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BG9ZEmO42950541, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1734341714; bh=TPhIZlVaq2DqrJ6uhJgGWWzBLtWixstsmW6LhSeSavo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=DpRG0KXReL8evmlN+F4uir7kHYivdJlYnJWLi/NFWT0Dh1oWkk4j7fX/tqP8MG4to
+	 4m9jTLOyxoZwpTxxIwZsBoQPBkzbkJF3XSqh/WAlTPsstLnOyQm7XmvnMoB8UdHbuQ
+	 eymwxk4bVy01wio9yoifWgy74mHZtq3mUAE5dF463IgU6XUK0figMZhNLKYu2KHNgP
+	 HcQfNuyohzZHUM2lS923cLu8uQPIr7FeChocdv+9wVB4PVqKAh9CQm5bnV0i2OPm1i
+	 k3aEFvs4ciaywuLcIYSkm9JlyrZomiti80+dSwaFA3t70HhtLP6A6pJKhlsXl951/0
+	 dRjWwbEsBbbSA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BG9ZEmO42950541
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Dec 2024 17:35:14 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 16 Dec 2024 17:35:14 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 16 Dec 2024 17:35:14 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
+ RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
+ 15.01.2507.035; Mon, 16 Dec 2024 17:35:14 +0800
+From: Kailang <kailang@realtek.com>
+To: Evgeny Kapun <abacabadabacaba@gmail.com>,
+        Linux Sound Mailing List
+	<linux-sound@vger.kernel.org>
+CC: Takashi Iwai <tiwai@suse.de>,
+        Linux Kernel Mailing List
+	<linux-kernel@vger.kernel.org>,
+        Linux Regressions Mailing List
+	<regressions@lists.linux.dev>,
+        Linux Stable Mailing List
+	<stable@vger.kernel.org>
+Subject: RE: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
+Thread-Topic: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
+Thread-Index: AQHbTvIxtyWK99B6LkqZbi3R9/JZE7LonTDg
+Date: Mon, 16 Dec 2024 09:35:13 +0000
+Message-ID: <a96a5ec1b8d54b9b805d546512641dec@realtek.com>
+References: <e142749b-7714-4733-9452-918fbe328c8f@gmail.com>
+In-Reply-To: <e142749b-7714-4733-9452-918fbe328c8f@gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-HI, Nirmoy,
-
-On Fri, 2024-12-13 at 13:24 +0100, Nirmoy Das wrote:
-> Ensure a non-interruptible wait is used when moving a bo to
-> XE_PL_SYSTEM. This prevents dma_mappings from being removed
-> prematurely
-> while a GPU job is still in progress, even if the CPU receives a
-> signal during the operation.
->=20
-> Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system
-> buffer objects to TT")
-> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.11+
-> Suggested-by: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-
-For both patches
-Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-
-
-
-
-> ---
-> =C2=A0drivers/gpu/drm/xe/xe_bo.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-> index 283cd0294570..06931df876ab 100644
-> --- a/drivers/gpu/drm/xe/xe_bo.c
-> +++ b/drivers/gpu/drm/xe/xe_bo.c
-> @@ -733,7 +733,7 @@ static int xe_bo_move(struct ttm_buffer_object
-> *ttm_bo, bool evict,
-> =C2=A0	=C2=A0=C2=A0=C2=A0 new_mem->mem_type =3D=3D XE_PL_SYSTEM) {
-> =C2=A0		long timeout =3D dma_resv_wait_timeout(ttm_bo-
-> >base.resv,
-> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0
-> DMA_RESV_USAGE_BOOKKEEP,
-> -						=C2=A0=C2=A0=C2=A0=C2=A0 true,
-> +						=C2=A0=C2=A0=C2=A0=C2=A0 false,
-> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0
-> MAX_SCHEDULE_TIMEOUT);
-> =C2=A0		if (timeout < 0) {
-> =C2=A0			ret =3D timeout;
-
+UGxlYXNlIGFsc28gZG8gaXQgb24gb2xkZXIga2VybmVsLg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVz
+c2FnZS0tLS0tDQo+IEZyb206IEV2Z2VueSBLYXB1biA8YWJhY2FiYWRhYmFjYWJhQGdtYWlsLmNv
+bT4NCj4gU2VudDogU3VuZGF5LCBEZWNlbWJlciAxNSwgMjAyNCA5OjA3IFBNDQo+IFRvOiBMaW51
+eCBTb3VuZCBNYWlsaW5nIExpc3QgPGxpbnV4LXNvdW5kQHZnZXIua2VybmVsLm9yZz4NCj4gQ2M6
+IEthaWxhbmcgPGthaWxhbmdAcmVhbHRlay5jb20+OyBUYWthc2hpIEl3YWkgPHRpd2FpQHN1c2Uu
+ZGU+OyBMaW51eA0KPiBLZXJuZWwgTWFpbGluZyBMaXN0IDxsaW51eC1rZXJuZWxAdmdlci5rZXJu
+ZWwub3JnPjsgTGludXggUmVncmVzc2lvbnMgTWFpbGluZw0KPiBMaXN0IDxyZWdyZXNzaW9uc0Bs
+aXN0cy5saW51eC5kZXY+OyBMaW51eCBTdGFibGUgTWFpbGluZyBMaXN0DQo+IDxzdGFibGVAdmdl
+ci5rZXJuZWwub3JnPg0KPiBTdWJqZWN0OiBbUkVHUkVTU0lPTl0gRGlzdG9ydGVkIHNvdW5kIG9u
+IEFjZXIgQXNwaXJlIEExMTUtMzEgbGFwdG9wDQo+IA0KPiANCj4gRXh0ZXJuYWwgbWFpbC4NCj4g
+DQo+IA0KPiANCj4gSSBhbSB1c2luZyBhbiBBY2VyIEFzcGlyZSBBMTE1LTMxIGxhcHRvcC4gV2hl
+biBydW5uaW5nIG5ld2VyIGtlcm5lbA0KPiB2ZXJzaW9ucywgc291bmQgcGxheWVkIHRocm91Z2gg
+aGVhZHBob25lcyBpcyBkaXN0b3J0ZWQsIGJ1dCB3aGVuIHJ1bm5pbmcNCj4gb2xkZXIgdmVyc2lv
+bnMsIGl0IGlzIG5vdC4NCj4gDQo+IEtlcm5lbCB2ZXJzaW9uOiBMaW51eCB2ZXJzaW9uIDYuMTIu
+NSAodXNlckBob3N0bmFtZSkgKGdjYyAoRGViaWFuDQo+IDE0LjIuMC04KSAxNC4yLjAsIEdOVSBs
+ZCAoR05VIEJpbnV0aWxzIGZvciBEZWJpYW4pIDIuNDMuNTAuMjAyNDEyMTApICMxIFNNUA0KPiBQ
+UkVFTVBUX0RZTkFNSUMgU3VuIERlYyAxNSAwNTowOToxNiBJU1QgMjAyNCBPcGVyYXRpbmcgU3lz
+dGVtOiBEZWJpYW4NCj4gR05VL0xpbnV4IHRyaXhpZS9zaWQNCj4gDQo+IE5vIHNwZWNpYWwgYWN0
+aW9ucyBhcmUgbmVlZGVkIHRvIHJlcHJvZHVjZSB0aGUgaXNzdWUuIFRoZSBzb3VuZCBpcyBkaXN0
+b3J0ZWQgYWxsDQo+IHRoZSB0aW1lLCBhbmQgaXQgZG9lc24ndCBkZXBlbmQgb24gYW55dGhpbmcg
+YmVzaWRlcyB1c2luZyBhbiBhZmZlY3RlZCBrZXJuZWwNCj4gdmVyc2lvbi4NCj4gDQo+IEl0IHNl
+ZW1zIHRvIGJlIGNhdXNlZCBieSBjb21taXQNCj4gMzRhYjViYmM2ZTgyMjE0ZDdmNzM5M2ViYTI2
+ZDE2NGIzMDNlYmI0ZQ0KPiAoQUxTQTogaGRhL3JlYWx0ZWsgLSBBZGQgSGVhZHNldCBNaWMgc3Vw
+cG9ydGVkIEFjZXIgTkIgcGxhdGZvcm0pLg0KPiBJbmRlZWQsIGlmIEkgcmVtb3ZlIHRoZSBlbnRy
+eSB0aGF0IHRoaXMgY29tbWl0IGFkZHMsIHRoZSBpc3N1ZSBkaXNhcHBlYXJzLg0KPiANCj4gbHNw
+Y2kgb3V0cHV0IGZvciB0aGUgZGV2aWNlIGluIHF1ZXN0aW9uOg0KPiANCj4gMDA6MGUuMCBNdWx0
+aW1lZGlhIGF1ZGlvIGNvbnRyb2xsZXIgWzA0MDFdOiBJbnRlbCBDb3Jwb3JhdGlvbiBDZWxlcm9u
+L1BlbnRpdW0NCj4gU2lsdmVyIFByb2Nlc3NvciBIaWdoIERlZmluaXRpb24gQXVkaW8gWzgwODY6
+MzE5OF0gKHJldiAwNikNCj4gICAgICBTdWJzeXN0ZW06IEFjZXIgSW5jb3Jwb3JhdGVkIFtBTEld
+IERldmljZSBbMTAyNToxMzYwXQ0KPiAgICAgIEZsYWdzOiBidXMgbWFzdGVyLCBmYXN0IGRldnNl
+bCwgbGF0ZW5jeSAwLCBJUlEgMTMwDQo+ICAgICAgTWVtb3J5IGF0IGExMjE0MDAwICg2NC1iaXQs
+IG5vbi1wcmVmZXRjaGFibGUpIFtzaXplPTE2S10NCj4gICAgICBNZW1vcnkgYXQgYTEwMDAwMDAg
+KDY0LWJpdCwgbm9uLXByZWZldGNoYWJsZSkgW3NpemU9MU1dDQo+ICAgICAgQ2FwYWJpbGl0aWVz
+OiBbNTBdIFBvd2VyIE1hbmFnZW1lbnQgdmVyc2lvbiAzDQo+ICAgICAgQ2FwYWJpbGl0aWVzOiBb
+ODBdIFZlbmRvciBTcGVjaWZpYyBJbmZvcm1hdGlvbjogTGVuPTE0IDw/Pg0KPiAgICAgIENhcGFi
+aWxpdGllczogWzYwXSBNU0k6IEVuYWJsZSsgQ291bnQ9MS8xIE1hc2thYmxlLSA2NGJpdCsNCj4g
+ICAgICBDYXBhYmlsaXRpZXM6IFs3MF0gRXhwcmVzcyBSb290IENvbXBsZXggSW50ZWdyYXRlZCBF
+bmRwb2ludCwgSW50TXNnTnVtDQo+IDANCj4gICAgICBLZXJuZWwgZHJpdmVyIGluIHVzZTogc25k
+X2hkYV9pbnRlbA0KPiAgICAgIEtlcm5lbCBtb2R1bGVzOiBzbmRfaGRhX2ludGVsLCBzbmRfc29j
+X2F2cywgc25kX3NvZl9wY2lfaW50ZWxfYXBsDQoNCg==
 
