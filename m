@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-104960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 749C89F5409
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:36:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C41F9F530C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BFB18922F8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:33:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42A1E164CAE
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B801F9EB0;
-	Tue, 17 Dec 2024 17:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C1F1E0493;
+	Tue, 17 Dec 2024 17:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mymD5x/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1I4XgXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5291F9EA6;
-	Tue, 17 Dec 2024 17:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F76B8615A;
+	Tue, 17 Dec 2024 17:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456646; cv=none; b=D6pu0SClfHgARDMY/CakI554kNsVKNFr541AulWCs56sGETZbYEKIcDvT1pXTN1vtWBWAdvN6qWm8FQayKT1orqebmojl7l6YiftM21eoZGm3v0N6oBjb2oBsUaLId29T2kWTN/qAWbU0uNsNc/Izete97f6WULV4os93g9fwNI=
+	t=1734456142; cv=none; b=Cq4mJxn9Q7zRTojYvk7ZRlEWLG6S6eSMLzseYQJCU+0xkAmJw5Xb+VPPjoGgqSEJ4uP0Me/EWFIVfO7N3Jw8WjmrUR5+0kTJGA+pdGjzDuwSKBBhCIWry6G6Jr4ND/dpyJcUzhHlchGWOwFftb6AMe84X6X+QrfGbJO9lGCIJtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456646; c=relaxed/simple;
-	bh=nUdM9ia1Ea0pcPwjTJlmW6nIcckpzyuAuYK4q0i78Xk=;
+	s=arc-20240116; t=1734456142; c=relaxed/simple;
+	bh=O2olsEdDpWj/40ywc6hk6Ggizhh0OqOyK6Z6Xxfec2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1t5jFKi8SMTb63p1A9eXvZWnxOuTp+oAAiR/QZ0ihLniQ5FE89ezvbu4B7oSc93asMawKdHOOg2f4qM5M882YGfARGYOE0NYT4P1pA862bxX7nSAR0BqiH7StTsazY4+6DYVNtM62xVq7YSzfCAVEMOA37F1xZbK00BOJ5IzbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mymD5x/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58833C4CED3;
-	Tue, 17 Dec 2024 17:30:45 +0000 (UTC)
+	 MIME-Version; b=RSSZUESVZ2RIJgdOC5Ycw6Dkw2L0i5Ti2fztv3s8F7dwjG4WMnNizWN9tIU41SBp6oCrHeDbNCEYJbnTzu2XyqeYYZxCTWSej7qEH26Osjj4n9LUOZAHDdFgN7mL0+5FGAGXusEKYZDhWnyPe4X9Ts0+KYQ4ziRcD5hLQ50wD2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1I4XgXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26224C4CED3;
+	Tue, 17 Dec 2024 17:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456645;
-	bh=nUdM9ia1Ea0pcPwjTJlmW6nIcckpzyuAuYK4q0i78Xk=;
+	s=korg; t=1734456142;
+	bh=O2olsEdDpWj/40ywc6hk6Ggizhh0OqOyK6Z6Xxfec2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mymD5x/3V4F0pFCBktKac8fukem6/SuV+g0ZRjM/tQz9AIdwkDA1NRgTwdJS7inN+
-	 B36niIarPVuUZqcnehMGrmzHchhoIS2l4QHJxBdQY9/f3wOMYnIQZYUappuvky6oRZ
-	 Dl8vMfetzvZu1MKIxtxFfWhOSD9UeDn35a1O/x2Y=
+	b=Q1I4XgXvfiiCvasgEVXTRaL/qdcLF20JvowRpD30pUrkL2bQXYOq/Agj/0U4LklzK
+	 PPtX1iI4jKRyLAQE572LQU4nL4LuLK807Ab0LiU7qZg/gQ5Q5odj7c5gOvlJt37ekw
+	 8BOIZfpbkrFMM+GYZe9jt8q8oHjDVjxDQE44MbVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 123/172] net: renesas: rswitch: fix possible early skb release
+Subject: [PATCH 6.6 075/109] net: renesas: rswitch: fix leaked pointer on error path
 Date: Tue, 17 Dec 2024 18:07:59 +0100
-Message-ID: <20241217170551.443154267@linuxfoundation.org>
+Message-ID: <20241217170536.514943937@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit 5cb099902b6b6292b3a85ffa1bb844e0ba195945 ]
+[ Upstream commit bb617328bafa1023d8e9c25a25345a564c66c14f ]
 
-When sending frame split into multiple descriptors, hardware processes
-descriptors one by one, including writing back DT values. The first
-descriptor could be already marked as completed when processing of
-next descriptors for the same frame is still in progress.
+If error path is taken while filling descriptor for a frame, skb
+pointer is left in the entry. Later, on the ring entry reuse, the
+same entry could be used as a part of a multi-descriptor frame,
+and skb for that new frame could be stored in a different entry.
 
-Although only the last descriptor is configured to generate interrupt,
-completion of the first descriptor could be noticed by the driver when
-handling interrupt for the previous frame.
+Then, the stale pointer will reach the completion routine, and passed
+to the release operation.
 
-Currently, driver stores skb in the entry that corresponds to the first
-descriptor. This results into skb could be unmapped and freed when
-hardware did not complete the send yet. This opens a window for
-corrupting the data being sent.
-
-Fix this by saving skb in the entry that corresponds to the last
-descriptor used to send the frame.
+Fix that by clearing the saved skb pointer at the error path.
 
 Fixes: d2c96b9d5f83 ("net: rswitch: Add jumbo frames handling for TX")
 Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://patch.msgid.link/20241208095004.69468-2-nikita.yoush@cogentembedded.com
+Link: https://patch.msgid.link/20241208095004.69468-4-nikita.yoush@cogentembedded.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rswitch.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-index b80aa27a7214..32b32aa7e01f 100644
+index 13577fe2c7ec..b1432ca79f1e 100644
 --- a/drivers/net/ethernet/renesas/rswitch.c
 +++ b/drivers/net/ethernet/renesas/rswitch.c
-@@ -1681,8 +1681,9 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 	if (dma_mapping_error(ndev->dev.parent, dma_addr_orig))
- 		goto err_kfree;
+@@ -1631,6 +1631,7 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
+ 	return ret;
  
--	gq->skbs[gq->cur] = skb;
--	gq->unmap_addrs[gq->cur] = dma_addr_orig;
-+	/* Stored the skb at the last descriptor to avoid skb free before hardware completes send */
-+	gq->skbs[(gq->cur + nr_desc - 1) % gq->ring_size] = skb;
-+	gq->unmap_addrs[(gq->cur + nr_desc - 1) % gq->ring_size] = dma_addr_orig;
+ err_unmap:
++	gq->skbs[(gq->cur + nr_desc - 1) % gq->ring_size] = NULL;
+ 	dma_unmap_single(ndev->dev.parent, dma_addr_orig, skb->len, DMA_TO_DEVICE);
  
- 	/* DT_FSTART should be set at last. So, this is reverse order. */
- 	for (i = nr_desc; i-- > 0; ) {
+ err_kfree:
 -- 
 2.39.5
 
