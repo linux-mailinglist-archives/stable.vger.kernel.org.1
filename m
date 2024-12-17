@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6136C9F53C5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:32:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762559F52BD
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77A751884FE1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99C9A16E0AD
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDC51F8680;
-	Tue, 17 Dec 2024 17:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A909142E77;
+	Tue, 17 Dec 2024 17:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeY8aNGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqJm1TVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4157F8615A;
-	Tue, 17 Dec 2024 17:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5BE1F7577;
+	Tue, 17 Dec 2024 17:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456543; cv=none; b=fmlx6eg+o4xydNU2g7feaX3KQCosZS6MOcQv1a7fVpO+aPo445ImGtrQKuWEaUAtUers5l8SrqXIEISTokzBwDUt6MsdRZLSDQpEZeDTHYsO9Np1F0fSXxR2p6TxBcnB8BW2gLkRalKzv9YO9m2BsdJGufXDwcbcOu6YCS1fvWE=
+	t=1734455943; cv=none; b=YwK54fjbr9j8Xx/xqFbmFJPBcFZyDzc3ZXZZx8rtAX4Y+PCN9D74sGtfDxP74J2hrLFpgsKJ3BbcjAkCbTiLoBS9aMmqxul6u7uUkuef47GkGzNIZKdv7GsAguAfmu+ZJF4/0ZZTRlqJlgvXZJQdsEk1sh/ZET3wjMUOnBX6c2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456543; c=relaxed/simple;
-	bh=WgNbggOy/58LMfC26E0kShzWIEKKl7siOFP2R6GI5j4=;
+	s=arc-20240116; t=1734455943; c=relaxed/simple;
+	bh=2FAKj98RKFau3ZF9QCI7FzbvAtU0StcIPL+gTSjfv/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5KFHcd2VziKXyj9rFbVEPYhFn4BUgbJg9NYB2m5SNjK3G00rpMuGypp1mWpvWHvn/2uNxgGc94CAETU+JO/c/zY2ta3q0NY/9jh7rXRiLjKAGYGDSFDmAtREOfNuJy96J8uvKYt5Bt/xexU6vKRWcHRDXxM7TgxdFac1aTsI8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeY8aNGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B84C4CED7;
-	Tue, 17 Dec 2024 17:29:02 +0000 (UTC)
+	 MIME-Version; b=qihFOFsfRdKCLnZ8hQjJ1wDh2WicVPdJ2oRAfh6pvVxCpj0jD3uEy1DZ3//yjjKOjNm8f3JO1PqNuwZC24isTgLhH7A9a3XXJr9XnoGOsrUgfqLHqhSrBUxuOgQEnXOPIaXfrGshZ5R12Hyu0Rw1JCCg4LJT7KkkuzMBZDnRu18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqJm1TVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739B1C4CED3;
+	Tue, 17 Dec 2024 17:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456542;
-	bh=WgNbggOy/58LMfC26E0kShzWIEKKl7siOFP2R6GI5j4=;
+	s=korg; t=1734455942;
+	bh=2FAKj98RKFau3ZF9QCI7FzbvAtU0StcIPL+gTSjfv/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeY8aNGgzd1woNR1QC8afTGJspU09q1xI40XUatpNDgfoCOuHjmcYa/PyM2pGSGli
-	 XxyC8STVypiuBZ76pBWISyp04DRZNRHSJTsP4Ob8dZI9JaPUc0igIw2WhA3vUOKFLO
-	 czezHK7GGf3FjqbhnqboKoxx01ykDhbjzcaPGGJY=
+	b=CqJm1TVlw5x9Cfn14hfvc/D2RxavWpkmiJpWr2/4KJaRaDDHqirIqorDOSyL8zcxJ
+	 J2jcwFo7NG0MEcPq0KB2rFBczpU1Jjj1wAfWG/CLIQzJAOX+vrtpZ80+M3W8bYIIPb
+	 yBcH99i0DBaszGdhAgfWET2r/ij3Ep8DD9cCeTR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Antonio Quartulli <Antonio@mandelbit.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/172] batman-adv: Do not let TT changes list grows indefinitely
+Subject: [PATCH 6.1 48/76] net: mscc: ocelot: perform error cleanup in ocelot_hwstamp_set()
 Date: Tue, 17 Dec 2024 18:07:28 +0100
-Message-ID: <20241217170550.110773509@linuxfoundation.org>
+Message-ID: <20241217170528.257809720@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit fff8f17c1a6fc802ca23bbd3a276abfde8cc58e6 ]
+[ Upstream commit 43a4166349a254446e7a3db65f721c6a30daccf3 ]
 
-When TT changes list is too big to fit in packet due to MTU size, an
-empty OGM is sent expected other node to send TT request to get the
-changes. The issue is that tt.last_changeset was not built thus the
-originator was responding with previous changes to those TT requests
-(see batadv_send_my_tt_response). Also the changes list was never
-cleaned up effectively never ending growing from this point onwards,
-repeatedly sending the same TT response changes over and over, and
-creating a new empty OGM every OGM interval expecting for the local
-changes to be purged.
+An unsupported RX filter will leave the port with TX timestamping still
+applied as per the new request, rather than the old setting. When
+parsing the tx_type, don't apply it just yet, but delay that until after
+we've parsed the rx_filter as well (and potentially returned -ERANGE for
+that).
 
-When there is more TT changes that can fit in packet, drop all changes,
-send empty OGM and wait for TT request so we can respond with a full
-table instead.
+Similarly, copy_to_user() may fail, which is a rare occurrence, but
+should still be treated by unwinding what was done.
 
-Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Acked-by: Antonio Quartulli <Antonio@mandelbit.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Fixes: 96ca08c05838 ("net: mscc: ocelot: set up traps for PTP packets")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241205145519.1236778-6-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mscc/ocelot_ptp.c | 59 ++++++++++++++++++--------
+ 1 file changed, 42 insertions(+), 17 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index bbab7491c83f..53dea8ae96e4 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -990,6 +990,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 	int tt_diff_len, tt_change_len = 0;
- 	int tt_diff_entries_num = 0;
- 	int tt_diff_entries_count = 0;
-+	bool drop_changes = false;
- 	size_t tt_extra_len = 0;
- 	u16 tvlv_len;
+diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
+index bc44aa635d49..34a2d8ea3b2d 100644
+--- a/drivers/net/ethernet/mscc/ocelot_ptp.c
++++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
+@@ -497,6 +497,28 @@ static int ocelot_traps_to_ptp_rx_filter(unsigned int proto)
+ 	return HWTSTAMP_FILTER_NONE;
+ }
  
-@@ -997,10 +998,17 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 	tt_diff_len = batadv_tt_len(tt_diff_entries_num);
- 
- 	/* if we have too many changes for one packet don't send any
--	 * and wait for the tt table request which will be fragmented
-+	 * and wait for the tt table request so we can reply with the full
-+	 * (fragmented) table.
-+	 *
-+	 * The local change history should still be cleaned up so the next
-+	 * TT round can start again with a clean state.
- 	 */
--	if (tt_diff_len > bat_priv->soft_iface->mtu)
-+	if (tt_diff_len > bat_priv->soft_iface->mtu) {
- 		tt_diff_len = 0;
-+		tt_diff_entries_num = 0;
-+		drop_changes = true;
++static int ocelot_ptp_tx_type_to_cmd(int tx_type, int *ptp_cmd)
++{
++	switch (tx_type) {
++	case HWTSTAMP_TX_ON:
++		*ptp_cmd = IFH_REW_OP_TWO_STEP_PTP;
++		break;
++	case HWTSTAMP_TX_ONESTEP_SYNC:
++		/* IFH_REW_OP_ONE_STEP_PTP updates the correctionField,
++		 * what we need to update is the originTimestamp.
++		 */
++		*ptp_cmd = IFH_REW_OP_ORIGIN_PTP;
++		break;
++	case HWTSTAMP_TX_OFF:
++		*ptp_cmd = 0;
++		break;
++	default:
++		return -ERANGE;
 +	}
++
++	return 0;
++}
++
+ int ocelot_hwstamp_get(struct ocelot *ocelot, int port, struct ifreq *ifr)
+ {
+ 	struct ocelot_port *ocelot_port = ocelot->ports[port];
+@@ -523,30 +545,19 @@ EXPORT_SYMBOL(ocelot_hwstamp_get);
+ int ocelot_hwstamp_set(struct ocelot *ocelot, int port, struct ifreq *ifr)
+ {
+ 	struct ocelot_port *ocelot_port = ocelot->ports[port];
++	int ptp_cmd, old_ptp_cmd = ocelot_port->ptp_cmd;
+ 	bool l2 = false, l4 = false;
+ 	struct hwtstamp_config cfg;
++	bool old_l2, old_l4;
+ 	int err;
  
- 	tvlv_len = batadv_tt_prepare_tvlv_local_data(bat_priv, &tt_data,
- 						     &tt_change, &tt_diff_len);
-@@ -1009,7 +1017,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	if (copy_from_user(&cfg, ifr->ifr_data, sizeof(cfg)))
+ 		return -EFAULT;
  
- 	tt_data->flags = BATADV_TT_OGM_DIFF;
+ 	/* Tx type sanity check */
+-	switch (cfg.tx_type) {
+-	case HWTSTAMP_TX_ON:
+-		ocelot_port->ptp_cmd = IFH_REW_OP_TWO_STEP_PTP;
+-		break;
+-	case HWTSTAMP_TX_ONESTEP_SYNC:
+-		/* IFH_REW_OP_ONE_STEP_PTP updates the correctional field, we
+-		 * need to update the origin time.
+-		 */
+-		ocelot_port->ptp_cmd = IFH_REW_OP_ORIGIN_PTP;
+-		break;
+-	case HWTSTAMP_TX_OFF:
+-		ocelot_port->ptp_cmd = 0;
+-		break;
+-	default:
+-		return -ERANGE;
+-	}
++	err = ocelot_ptp_tx_type_to_cmd(cfg.tx_type, &ptp_cmd);
++	if (err)
++		return err;
  
--	if (tt_diff_len == 0)
-+	if (!drop_changes && tt_diff_len == 0)
- 		goto container_register;
+ 	switch (cfg.rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+@@ -571,13 +582,27 @@ int ocelot_hwstamp_set(struct ocelot *ocelot, int port, struct ifreq *ifr)
+ 		return -ERANGE;
+ 	}
  
- 	spin_lock_bh(&bat_priv->tt.changes_list_lock);
++	old_l2 = ocelot_port->trap_proto & OCELOT_PROTO_PTP_L2;
++	old_l4 = ocelot_port->trap_proto & OCELOT_PROTO_PTP_L4;
++
+ 	err = ocelot_setup_ptp_traps(ocelot, port, l2, l4);
+ 	if (err)
+ 		return err;
+ 
++	ocelot_port->ptp_cmd = ptp_cmd;
++
+ 	cfg.rx_filter = ocelot_traps_to_ptp_rx_filter(ocelot_port->trap_proto);
+ 
+-	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
++	if (copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg))) {
++		err = -EFAULT;
++		goto out_restore_ptp_traps;
++	}
++
++	return 0;
++out_restore_ptp_traps:
++	ocelot_setup_ptp_traps(ocelot, port, old_l2, old_l4);
++	ocelot_port->ptp_cmd = old_ptp_cmd;
++	return err;
+ }
+ EXPORT_SYMBOL(ocelot_hwstamp_set);
+ 
 -- 
 2.39.5
 
