@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-104638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 354839F5248
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B0E9F53D8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D001189203D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36C3F173B1A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EFE1F8684;
-	Tue, 17 Dec 2024 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D322B1F8933;
+	Tue, 17 Dec 2024 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfwNopAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLaFbL7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F42E1DE2AC;
-	Tue, 17 Dec 2024 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7821F63D5;
+	Tue, 17 Dec 2024 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455655; cv=none; b=XHyLYSFdaCqTVJ8P23TTR6dRHmCTty73ZqiGebWMSEJ+kYlipJjrZQ9sSn6ksXPOij3J40UwJNWznRqtZgh2MK+eZpUjMHBAKMP+f1GnteT5jySqmuuyTy+qAf0HXmEtWEW1w27iDagab5ZzM4P35WNIHNz6dZIBG5qsEP+GrgM=
+	t=1734456554; cv=none; b=ZYYFuRd77gu0RVF/3xUHYS51r/Z8mCwxVEuQk6dsNViO991hvIXX2cYWBSpKh68ZGvbszJRfzjviGrL2G/p42dBDNGmdqfIkNRT+3isVCPFetrs9EnAFABNRchAOqB5SqStVHdWsoom5bqDvutaMoFfPEGf87EP0ORXn3VCJxuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455655; c=relaxed/simple;
-	bh=dL4hEDXwhYJuRrLSAFISUVB4GUA7Fe8udc/jIK9g950=;
+	s=arc-20240116; t=1734456554; c=relaxed/simple;
+	bh=kf00t/cnxCEhzRgjHXwL9409Ai9kvi0RbznICASEawo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhree6qSNgh3t9mcq7Q7H8B67jH6s5t1yOj4xD7FpfPpyoBhdjtejXCp5A8mU97veoNNSsyhKWdLeHko5uvdrAVMl3fh1eD0/JXklANcXyThxR6OJXmM2UOARRz7jnBIp2ULHe5cwRznnKwcwEwSXIqVLlZdDUOoaUyimf+ofuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfwNopAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA541C4CED3;
-	Tue, 17 Dec 2024 17:14:14 +0000 (UTC)
+	 MIME-Version; b=eEEQ9Wb+2m9frWe/0h5AL29KcfuY5yH1uNARyhBrmTthci1tDc/1rxK2XPKQg8TKlRyfPrIU7j4XmMBJmuRvnG8IJUwYYoCezoyBuRgJmonn5baqt18iZ88XMW+sM9tYEr9Kuij4+nBD/38NuhCF+YJRGff79g0f/UdSkIjU1Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLaFbL7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C162C4CED3;
+	Tue, 17 Dec 2024 17:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455655;
-	bh=dL4hEDXwhYJuRrLSAFISUVB4GUA7Fe8udc/jIK9g950=;
+	s=korg; t=1734456554;
+	bh=kf00t/cnxCEhzRgjHXwL9409Ai9kvi0RbznICASEawo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfwNopAm9CvGci+t0zuNGpa+cE1XvbGv0u1s3JppZ8IIC8R3t6qcPKVM2ACZfcDC1
-	 d4OJzddhB+aMYPM0N2YznOqDDSujaGykCbLK52c8So5TVqQyKL7Fsw2JiL8DcZcYPL
-	 1szrLGThcLLEdjuqua9N3TJFop4UBeSRe981a58U=
+	b=JLaFbL7R8U64dDEPlH4fpEeUSbwKCnxUpAtA3TgwaE/YIQcB0by64q/tfqd2D+GFs
+	 JveFOTLtz3t2y8gRW0ibQ3zyiYnHF8WlbmFlFmTKzx0K5CuR4c1M2J6DJBnGt8tbWF
+	 L/Bn6Ri9kiAfZcP3VrQwZyp4O9uUfIL4u2fXG0wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	kernel test robot <lkp@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 39/51] blk-iocost: Avoid using clamp() on inuse in __propagate_weights()
+Subject: [PATCH 6.12 096/172] selftests: mlxsw: sharedbuffer: Remove h1 ingress test case
 Date: Tue, 17 Dec 2024 18:07:32 +0100
-Message-ID: <20241217170522.080207114@linuxfoundation.org>
+Message-ID: <20241217170550.273324696@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Danielle Ratson <danieller@nvidia.com>
 
-[ Upstream commit 57e420c84f9ab55ba4c5e2ae9c5f6c8e1ea834d2 ]
+[ Upstream commit cf3515c556907b4da290967a2a6cbbd9ee0ee723 ]
 
-After a recent change to clamp() and its variants [1] that increases the
-coverage of the check that high is greater than low because it can be
-done through inlining, certain build configurations (such as s390
-defconfig) fail to build with clang with:
+The test is sending only one packet generated with mausezahn from $h1 to
+$h2. However, for some reason, it is testing for non-zero maximum occupancy
+in both the ingress pool of $h1 and $h2. The former only passes when $h2
+happens to send a packet.
 
-  block/blk-iocost.c:1101:11: error: call to '__compiletime_assert_557' declared with 'error' attribute: clamp() low limit 1 greater than high limit active
-   1101 |                 inuse = clamp_t(u32, inuse, 1, active);
-        |                         ^
-  include/linux/minmax.h:218:36: note: expanded from macro 'clamp_t'
-    218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-        |                                    ^
-  include/linux/minmax.h:195:2: note: expanded from macro '__careful_clamp'
-    195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-        |         ^
-  include/linux/minmax.h:188:2: note: expanded from macro '__clamp_once'
-    188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
-        |         ^
+Avoid intermittent failures by removing unintentional test case
+regarding the ingress pool of $h1.
 
-__propagate_weights() is called with an active value of zero in
-ioc_check_iocgs(), which results in the high value being less than the
-low value, which is undefined because the value returned depends on the
-order of the comparisons.
-
-The purpose of this expression is to ensure inuse is not more than
-active and at least 1. This could be written more simply with a ternary
-expression that uses min(inuse, active) as the condition so that the
-value of that condition can be used if it is not zero and one if it is.
-Do this conversion to resolve the error and add a comment to deter
-people from turning this back into clamp().
-
-Fixes: 7caa47151ab2 ("blkcg: implement blk-iocost")
-Link: https://lore.kernel.org/r/34d53778977747f19cce2abb287bb3e6@AcuMS.aculab.com/ [1]
-Suggested-by: David Laight <david.laight@aculab.com>
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/llvm/CA+G9fYsD7mw13wredcZn0L-KBA3yeoVSTuxnss-AEWMN3ha0cA@mail.gmail.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412120322.3GfVe3vF-lkp@intel.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/5b7344608d5e06f38209e48d8af8c92fa11b6742.1733414773.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index 9654d1c2c20f..ba23562abc80 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1087,7 +1087,14 @@ static void __propagate_weights(struct ioc_gq *iocg, u32 active, u32 inuse,
- 		inuse = DIV64_U64_ROUND_UP(active * iocg->child_inuse_sum,
- 					   iocg->child_active_sum);
- 	} else {
--		inuse = clamp_t(u32, inuse, 1, active);
-+		/*
-+		 * It may be tempting to turn this into a clamp expression with
-+		 * a lower limit of 1 but active may be 0, which cannot be used
-+		 * as an upper limit in that situation. This expression allows
-+		 * active to clamp inuse unless it is 0, in which case inuse
-+		 * becomes 1.
-+		 */
-+		inuse = min(inuse, active) ?: 1;
- 	}
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+index 0c47faff9274..a7b3d6cf3185 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+@@ -108,11 +108,6 @@ port_pool_test()
  
- 	iocg->last_inuse = iocg->inuse;
+ 	devlink sb occupancy snapshot $DEVLINK_DEV
+ 
+-	RET=0
+-	max_occ=$(sb_occ_pool_check $dl_port1 $SB_POOL_ING $exp_max_occ)
+-	check_err $? "Expected iPool($SB_POOL_ING) max occupancy to be $exp_max_occ, but got $max_occ"
+-	log_test "physical port's($h1) ingress pool"
+-
+ 	RET=0
+ 	max_occ=$(sb_occ_pool_check $dl_port2 $SB_POOL_ING $exp_max_occ)
+ 	check_err $? "Expected iPool($SB_POOL_ING) max occupancy to be $exp_max_occ, but got $max_occ"
 -- 
 2.39.5
 
