@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-104568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B359F51DE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA56E9F5216
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01BEA188576F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC88416A1D4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66F31F757B;
-	Tue, 17 Dec 2024 17:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5E41F7577;
+	Tue, 17 Dec 2024 17:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfKxg9tz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWuEFR4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6114F1F37BE;
-	Tue, 17 Dec 2024 17:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4C51DE2AC;
+	Tue, 17 Dec 2024 17:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455447; cv=none; b=ozw5KmecV71ddJeK84WzcaC8hcYJl0kbRo9R8QBKZl6HpcQbgoHZWJz3856xh9Af75tkeRpV6gkpGeJ9QhJT8JqRqCzQlOu1xGMtCx6TSEkY2iWk9GDTNHcCwP6CuDY4/QPJv90eHTGSyNfLvgxhV1E2Tj5aWpXjwxg0BK59AwM=
+	t=1734455572; cv=none; b=UmrplKAy1YTSZeFyjUgt7psVPlCpSVCyBmYknaiOwTLjcjDdFOKF8TnSj99K2M23KoOQp3EAhQukAznBXYPTP64x+PBN+N3bfXQn7JSXNia9+ERI3HVLcwAEhaPAdGiKDOvCRDTcr7Zi1yhEJUdCOSiSzZKeU4vO8rUuoSfhpjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455447; c=relaxed/simple;
-	bh=g8iB+wUsghGy+QQ/UyaUz70FRjP2IjzWnetWm3gqYiQ=;
+	s=arc-20240116; t=1734455572; c=relaxed/simple;
+	bh=Fs62zVzO3UgiTJvayH2l+SxQ/9hN3zbNfmLbbFBkrn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGg/wFEHVebmh8rk0tswhubcAFFMkSWS4nXsFvFXYzSJbLtr7tap0kJ0AlfEMKtUI7fzNqCtS7kJs7Db46Cdr4s6M+zn7+9fvUcOwXo0tui9uvgjf6eox7bHaHHaGXlDeRxozuKckjNwW93PdsF7nQwvj+u6F70C1PXZg7geKr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfKxg9tz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6F8C4CED3;
-	Tue, 17 Dec 2024 17:10:46 +0000 (UTC)
+	 MIME-Version; b=ZY9t3UGXVgMUUuha60l5AF6hEI/csKKvwBi4qJxu/bFUOAa01R1YTA0HjJgWaX359nWlBT409CsQyRlhwdRuBujUWnYVdUqVPTOUkPxeFkz/Rf8QEiJPJu9vdweLhmb0nLxA/B0Mimd04h46YLINxBI/U5GQfKVjZvhZ7KCNTJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWuEFR4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403C2C4CED3;
+	Tue, 17 Dec 2024 17:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455447;
-	bh=g8iB+wUsghGy+QQ/UyaUz70FRjP2IjzWnetWm3gqYiQ=;
+	s=korg; t=1734455572;
+	bh=Fs62zVzO3UgiTJvayH2l+SxQ/9hN3zbNfmLbbFBkrn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfKxg9tzh63MijQ1pTwVjrqqqdruRfg/vD6NxLMdznN3x4aabNm/swaGGoKNAShlc
-	 GZ0L6fI0TkP8pjG7EbN8hzWhgG765/uQCyuMvO7tfYpd1yfaGfRWGZHrYCaiNMcA2t
-	 SYV9FyJzFAEFy4aQcjwRWfpHAZGoiGhI4JW70BOs=
+	b=FWuEFR4y+S+W2EulLm7JgFDea0n3c6H7cQ6qD6Pre5viyQp3MeFNhM4xIbFpZ15Ne
+	 NsajFmqwOwJE0DLCtTXjxxLOdF/6z8ef8qV14Ub075Ka6rs9E6ivsmOET9T0TGXRJQ
+	 TmwyylUoIF+f3+YuEFaT32CWTY+0N3mvs+JLf9Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 14/43] batman-adv: Remove uninitialized data in full table TT response
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 5.15 12/51] xfs: dont drop errno values when we fail to ficlone the entire range
 Date: Tue, 17 Dec 2024 18:07:05 +0100
-Message-ID: <20241217170521.032894752@linuxfoundation.org>
+Message-ID: <20241217170520.809238224@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 8038806db64da15721775d6b834990cacbfcf0b2 ]
+commit 7ce31f20a0771d71779c3b0ec9cdf474cc3c8e9a upstream.
 
-The number of entries filled by batadv_tt_tvlv_generate() can be less
-than initially expected in batadv_tt_prepare_tvlv_{global,local}_data()
-(changes can be removed by batadv_tt_local_event() in ADD+DEL sequence
-in the meantime as the lock held during the whole tvlv global/local data
-generation).
+Way back when we first implemented FICLONE for XFS, life was simple --
+either the the entire remapping completed, or something happened and we
+had to return an errno explaining what happened.  Neither of those
+ioctls support returning partial results, so it's all or nothing.
 
-Thus tvlv_len could be bigger than the actual TT entry size that need
-to be sent so full table TT_RESPONSE could hold invalid TT entries such
-as below.
+Then things got complicated when copy_file_range came along, because it
+actually can return the number of bytes copied, so commit 3f68c1f562f1e4
+tried to make it so that we could return a partial result if the
+REMAP_FILE_CAN_SHORTEN flag is set.  This is also how FIDEDUPERANGE can
+indicate that the kernel performed a partial deduplication.
 
- * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
- * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
+Unfortunately, the logic is wrong if an error stops the remapping and
+CAN_SHORTEN is not set.  Because those callers cannot return partial
+results, it is an error for ->remap_file_range to return a positive
+quantity that is less than the @len passed in.  Implementations really
+should be returning a negative errno in this case, because that's what
+btrfs (which introduced FICLONE{,RANGE}) did.
 
-Remove the extra allocated space to avoid sending uninitialized entries
-for full table TT_RESPONSE in both batadv_send_other_tt_response() and
-batadv_send_my_tt_response().
+Therefore, ->remap_range implementations cannot silently drop an errno
+that they might have when the number of bytes remapped is less than the
+number of bytes requested and CAN_SHORTEN is not set.
 
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by running generic/562 on a 64k fsblock filesystem and wondering
+why it reported corrupt files.
+
+Cc: <stable@vger.kernel.org> # v4.20
+Fixes: 3fc9f5e409319e ("xfs: remove xfs_reflink_remap_range")
+Really-Fixes: 3f68c1f562f1e4 ("xfs: support returning partial reflink results")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c | 37 ++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ fs/xfs/xfs_file.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 1eb3562259be..4eba6c8b04a8 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -2984,14 +2984,16 @@ static bool batadv_tt_global_valid(const void *entry_ptr,
-  *
-  * Fills the tvlv buff with the tt entries from the specified hash. If valid_cb
-  * is not provided then this becomes a no-op.
-+ *
-+ * Return: Remaining unused length in tvlv_buff.
-  */
--static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
--				    struct batadv_hashtable *hash,
--				    void *tvlv_buff, u16 tt_len,
--				    bool (*valid_cb)(const void *,
--						     const void *,
--						     u8 *flags),
--				    void *cb_data)
-+static u16 batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
-+				   struct batadv_hashtable *hash,
-+				   void *tvlv_buff, u16 tt_len,
-+				   bool (*valid_cb)(const void *,
-+						    const void *,
-+						    u8 *flags),
-+				   void *cb_data)
- {
- 	struct batadv_tt_common_entry *tt_common_entry;
- 	struct batadv_tvlv_tt_change *tt_change;
-@@ -3005,7 +3007,7 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 	tt_change = (struct batadv_tvlv_tt_change *)tvlv_buff;
- 
- 	if (!valid_cb)
--		return;
-+		return tt_len;
- 
- 	rcu_read_lock();
- 	for (i = 0; i < hash->size; i++) {
-@@ -3031,6 +3033,8 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 		}
- 	}
- 	rcu_read_unlock();
-+
-+	return batadv_tt_len(tt_tot - tt_num_entries);
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -1193,6 +1193,14 @@ out_unlock:
+ 	xfs_iunlock2_io_mmap(src, dest);
+ 	if (ret)
+ 		trace_xfs_reflink_remap_range_error(dest, ret, _RET_IP_);
++	/*
++	 * If the caller did not set CAN_SHORTEN, then it is not prepared to
++	 * handle partial results -- either the whole remap succeeds, or we
++	 * must say why it did not.  In this case, any error should be returned
++	 * to the caller.
++	 */
++	if (ret && remapped < len && !(remap_flags & REMAP_FILE_CAN_SHORTEN))
++		return ret;
+ 	return remapped > 0 ? remapped : ret;
  }
  
- /**
-@@ -3308,10 +3312,11 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
- 			goto out;
- 
- 		/* fill the rest of the tvlv with the real TT entries */
--		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.global_hash,
--					tt_change, tt_len,
--					batadv_tt_global_valid,
--					req_dst_orig_node);
-+		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
-+						    bat_priv->tt.global_hash,
-+						    tt_change, tt_len,
-+						    batadv_tt_global_valid,
-+						    req_dst_orig_node);
- 	}
- 
- 	/* Don't send the response, if larger than fragmented packet. */
-@@ -3437,9 +3442,11 @@ static bool batadv_send_my_tt_response(struct batadv_priv *bat_priv,
- 			goto out;
- 
- 		/* fill the rest of the tvlv with the real TT entries */
--		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.local_hash,
--					tt_change, tt_len,
--					batadv_tt_local_valid, NULL);
-+		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
-+						    bat_priv->tt.local_hash,
-+						    tt_change, tt_len,
-+						    batadv_tt_local_valid,
-+						    NULL);
- 	}
- 
- 	tvlv_tt_data->flags = BATADV_TT_RESPONSE;
--- 
-2.39.5
-
 
 
 
