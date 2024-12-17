@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-104740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3649F52C2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 144489F53A0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7F4216A330
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A114A16EC13
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C331C1F8666;
-	Tue, 17 Dec 2024 17:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2B41F76CB;
+	Tue, 17 Dec 2024 17:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0gRkruC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgxjSZfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8001B1F76D5;
-	Tue, 17 Dec 2024 17:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD13E1F755B;
+	Tue, 17 Dec 2024 17:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455958; cv=none; b=sUIzRX+ln6CwgvPeq8NxG+sAxHskH5KAaNfboVVKcCj+sN9MvH7G0ML4VooNz5CoWmHJLEx3MoprQB/Wij4jRvhECNDxN8sZrS/DpOfz+N63hqEw3uozYX++0LcW/IE1LuFqxOR3GktzcyDZPj0HVT28++Z433ykeqfzPoPWJL8=
+	t=1734456439; cv=none; b=jPl5xb2tKxBWWydRA7tafoh7lhY1D5k/NY2zCVwhKmChQBlJgdRWQA+/JRa3+cMYaRtYYqtL0nitBjl+fk0ES5HftnEFyAxdJtEF4AXZioP0FQxsjWQ1ioE3NNS9ECOMz6hGihUpL6fUtD+NGZvx0CVPdVN2nQMLaypa/Rf+Dso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455958; c=relaxed/simple;
-	bh=pIz8Uf5MH5XEDHpgsg3YJBXGeQe8niaKHAnIZiu8zh4=;
+	s=arc-20240116; t=1734456439; c=relaxed/simple;
+	bh=TzWhIK9mazOQLGbVOX2N2SEfysuRMBpT+u/leVTVNp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfNym3vtPVC/wRdrYDnyMNknfwGVMgZ56CDS5pJrMiZTsbe3K2F7tOD73/DL9Uirr/8yVGcAGUuYgO1IYjBw18t80nhRRcgsK/sWFS9uCceicpVpYkSkBgdv9hrmDK3wFn4qYHKybSfpzj8JhEEWn6byhvsMwMrSYCZzXMHbFlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0gRkruC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CFDC4CED3;
-	Tue, 17 Dec 2024 17:19:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sL+2DVomTyampukmCNk/Yb4w6LR/bBC2cYJyLQbuZ0TTLKIBG0/emuWdUd6NT+LLFtLnADZfXgl0xX4dPM4FMDK5i8otScGpciDy9pBkxDuWEydIRoglDQU9lc0Zqbj/HAewkfLkjvlJt6bB7ObnnO5N9ywZ4Hd7CXUPqPbz6j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgxjSZfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E418C4CED3;
+	Tue, 17 Dec 2024 17:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455958;
-	bh=pIz8Uf5MH5XEDHpgsg3YJBXGeQe8niaKHAnIZiu8zh4=;
+	s=korg; t=1734456438;
+	bh=TzWhIK9mazOQLGbVOX2N2SEfysuRMBpT+u/leVTVNp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0gRkruCQn7FryQmtV6Zhpd0qTgh2TNuy6VpyZT5e3t6t7J6TP/Ex7orrM/muS2VF
-	 nJ88VrlLlXetUrTo/Uv86oevoeg6ebYDzoyjein/gGTeFuTMu5uLk7D7z1uuzxjDjC
-	 +bqihv3QId4RdcoKF4eM+33AtfYTQJrtFvAVF8S4=
+	b=bgxjSZfyqWR/6uNSUaYLaOB4rnamTp5zNW1GVP7gEfTphz//VI0lPsz9DsaBR1mL4
+	 d+hbR7hySqX6i5fLiHk6mwdgb0UHsuF1vNDYjmdvYBWWPEa7Zsi4EurqkoBJBsq9do
+	 Sj6z6XxpY3uK9uwONenrcom3BlZo+0MJWtrTNSnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 6.6 013/109] usb: dwc2: hcd: Fix GetPortStatus & SetPortFeature
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 061/172] drm/amdgpu: fix UVD contiguous CS mapping problem
 Date: Tue, 17 Dec 2024 18:06:57 +0100
-Message-ID: <20241217170533.911246339@linuxfoundation.org>
+Message-ID: <20241217170548.807885550@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,73 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Christian König <christian.koenig@amd.com>
 
-commit a8d3e4a734599c7d0f6735f8db8a812e503395dd upstream.
+commit 12f325bcd2411e571dbb500bf6862c812c479735 upstream.
 
-On Rasperry Pis without onboard USB hub the power cycle during
-power connect init only disable the port but never enabled it again:
+When starting the mpv player, Radeon R9 users are observing
+the below error in dmesg.
 
-  usb usb1-port1: attempt power cycle
+[drm:amdgpu_uvd_cs_pass2 [amdgpu]]
+*ERROR* msg/fb buffer ff00f7c000-ff00f7e000 out of 256MB segment!
 
-The port relevant part in dwc2_hcd_hub_control() is skipped in case
-port_connect_status = 0 under the assumption the core is or will be soon
-in device mode. But this assumption is wrong, because after ClearPortFeature
-USB_PORT_FEAT_POWER the port_connect_status will also be 0 and
-SetPortFeature (incl. USB_PORT_FEAT_POWER) will be a no-op.
+The patch tries to set the TTM_PL_FLAG_CONTIGUOUS for both user
+flag(AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS) set and not set cases.
 
-Fix the behavior of dwc2_hcd_hub_control() by replacing the
-port_connect_status check with dwc2_is_device_mode().
+v2: Make the TTM_PL_FLAG_CONTIGUOUS mandatory for user BO's.
+v3: revert back to v1, but fix the check instead (chk).
 
-Link: https://github.com/raspberrypi/linux/issues/6247
-Fixes: 7359d482eb4d ("staging: HCD files for the DWC2 driver")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20241202001631.75473-3-wahrenst@gmx.net
+Closes:https://gitlab.freedesktop.org/drm/amd/-/issues/3599
+Closes:https://gitlab.freedesktop.org/drm/amd/-/issues/3501
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.10+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c  | 17 +++++++++++------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c |  2 ++
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -3546,11 +3546,9 @@ static int dwc2_hcd_hub_control(struct d
- 			port_status |= USB_PORT_STAT_C_OVERCURRENT << 16;
- 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index d891ab779ca7..5df21529b3b1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1801,13 +1801,18 @@ int amdgpu_cs_find_mapping(struct amdgpu_cs_parser *parser,
+ 	if (dma_resv_locking_ctx((*bo)->tbo.base.resv) != &parser->exec.ticket)
+ 		return -EINVAL;
  
--		if (!hsotg->flags.b.port_connect_status) {
-+		if (dwc2_is_device_mode(hsotg)) {
- 			/*
--			 * The port is disconnected, which means the core is
--			 * either in device mode or it soon will be. Just
--			 * return 0's for the remainder of the port status
-+			 * Just return 0's for the remainder of the port status
- 			 * since the port register can't be read if the core
- 			 * is in device mode.
- 			 */
-@@ -3620,13 +3618,11 @@ static int dwc2_hcd_hub_control(struct d
- 		if (wvalue != USB_PORT_FEAT_TEST && (!windex || windex > 1))
- 			goto error;
++	/* Make sure VRAM is allocated contigiously */
+ 	(*bo)->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
+-	amdgpu_bo_placement_from_domain(*bo, (*bo)->allowed_domains);
+-	for (i = 0; i < (*bo)->placement.num_placement; i++)
+-		(*bo)->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
+-	r = ttm_bo_validate(&(*bo)->tbo, &(*bo)->placement, &ctx);
+-	if (r)
+-		return r;
++	if ((*bo)->tbo.resource->mem_type == TTM_PL_VRAM &&
++	    !((*bo)->tbo.resource->placement & TTM_PL_FLAG_CONTIGUOUS)) {
++
++		amdgpu_bo_placement_from_domain(*bo, (*bo)->allowed_domains);
++		for (i = 0; i < (*bo)->placement.num_placement; i++)
++			(*bo)->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
++		r = ttm_bo_validate(&(*bo)->tbo, &(*bo)->placement, &ctx);
++		if (r)
++			return r;
++	}
  
--		if (!hsotg->flags.b.port_connect_status) {
-+		if (dwc2_is_device_mode(hsotg)) {
- 			/*
--			 * The port is disconnected, which means the core is
--			 * either in device mode or it soon will be. Just
--			 * return without doing anything since the port
--			 * register can't be written if the core is in device
--			 * mode.
-+			 * Just return 0's for the remainder of the port status
-+			 * since the port register can't be read if the core
-+			 * is in device mode.
- 			 */
- 			break;
- 		}
+ 	return amdgpu_ttm_alloc_gart(&(*bo)->tbo);
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c
+index 31fd30dcd593..65bb26215e86 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c
+@@ -551,6 +551,8 @@ static void amdgpu_uvd_force_into_uvd_segment(struct amdgpu_bo *abo)
+ 	for (i = 0; i < abo->placement.num_placement; ++i) {
+ 		abo->placements[i].fpfn = 0 >> PAGE_SHIFT;
+ 		abo->placements[i].lpfn = (256 * 1024 * 1024) >> PAGE_SHIFT;
++		if (abo->placements[i].mem_type == TTM_PL_VRAM)
++			abo->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
+ 	}
+ }
+ 
+-- 
+2.47.1
+
 
 
 
