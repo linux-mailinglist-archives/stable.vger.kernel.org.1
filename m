@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833179F52F7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2449F528B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BFB18942BC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17BFA189308F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CACA1F8666;
-	Tue, 17 Dec 2024 17:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3871F892A;
+	Tue, 17 Dec 2024 17:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdXHPQWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+k09n5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190061F76C3;
-	Tue, 17 Dec 2024 17:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C71F8923;
+	Tue, 17 Dec 2024 17:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456037; cv=none; b=R6qPsJf6fq0wQbGYrxcopgsKR7s9dbOFCnlvRTOysqU3xnpJn0m8wnD5ZuCeJMIO4N0lFZ5yDoiwwfiC+d+01p2nkkn3jABjHg4hqmK55aXAi0zXX/e8uAtIS+3bRs+8Ctvf/d957rqwAzrmycUYz570LfvUbEtKcm4iK2eviUc=
+	t=1734455830; cv=none; b=orPO8TtIYfEtQ2LreO5ii7PTwc9+rXG9r9Aee747QMPJu/wOA4vhXZJGSfHD1vF6avYtQoHaPQxh++xr+fAjXT18AFxNKIy2nGoAeMDzNOQroSFvoGph1zJL1t3eBTKk7EI0KfZrt+6ANAldAAxjlDKG8xie/Cet3Di7FcIuYio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456037; c=relaxed/simple;
-	bh=5ZoR4DJ5E3vb0tVfW5eTy8xKqa9HyIyDkXO48EnM6Gg=;
+	s=arc-20240116; t=1734455830; c=relaxed/simple;
+	bh=55XFQyBQ97rMil4EVoyE7KvKXmHuRvtXxEBfRsEJbYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mp/nN1DS1L8OoKi84UO90T8urhd99uihazMOgE1IaCuZYklB4qm6gUKvZle7xvF+3L7GKh/KGllTYS/QeiE2D5medBc15a8jiiB0k4pB90GaK3x+4FhUc1hpeAARozqf+tabNg1HbvVawbu1j6qcSJA+iWUSbLp2NORyFW31T5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdXHPQWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E387C4CED3;
-	Tue, 17 Dec 2024 17:20:36 +0000 (UTC)
+	 MIME-Version; b=iAjmH891VUfUF+a8Yv7YldpQCHnXIJ9hJ/YFRzIiXeapeg4yGB/bcjwVyRe+Jykv6XfUHnFYJ1mILqUIFub+S2IACE9NIY3V/0s+Jb/+PqyM1kcBls17UuyyTwIA9cDn0VftKZbe2NaOO472pq+rbBogBGikZltRuQbZqaAxNdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+k09n5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A1DC4CEDD;
+	Tue, 17 Dec 2024 17:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456036;
-	bh=5ZoR4DJ5E3vb0tVfW5eTy8xKqa9HyIyDkXO48EnM6Gg=;
+	s=korg; t=1734455830;
+	bh=55XFQyBQ97rMil4EVoyE7KvKXmHuRvtXxEBfRsEJbYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdXHPQWhQQwjB9kk989wjcYGzwKL50hE9FX4s+3bv40v1sLuMXvcBxNP4lStb5bBk
-	 M3EJibcJEkAG6kqQ8qeV9M1yMy8DtnuEbwH2lKt7WE0cIMOP1tgaT5mOmajTLkl/9o
-	 JTwiES18urYe9N9QWiW/8/YVeJjMv6hMlwL1Ksss=
+	b=i+k09n5y2nmnEUHJXsHOO2cmRAo8GvvxqR7vgVa7Vntng5PAumybnoK+KkN3tAyoa
+	 W2PhfyejvvpCyfzIe0WfiVMg2l1YXI/201+aaIQ/ivMjBadT6XjMPxIZQOxT31iD+3
+	 qmdOsFMyVoeg1aPxIJ08APv/cQaBmaEC5Mt7YjmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/109] amdgpu/uvd: get ring reference from rq scheduler
-Date: Tue, 17 Dec 2024 18:07:24 +0100
-Message-ID: <20241217170535.045444957@linuxfoundation.org>
+Subject: [PATCH 6.1 45/76] net: mscc: ocelot: improve handling of TX timestamp for unknown skb
+Date: Tue, 17 Dec 2024 18:07:25 +0100
+Message-ID: <20241217170528.135250477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David (Ming Qiang) Wu <David.Wu3@amd.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 47f402a3e08113e0f5d8e1e6fcc197667a16022f ]
+[ Upstream commit b6fba4b3f0becb794e274430f3a0839d8ba31262 ]
 
-base.sched may not be set for each instance and should not
-be used for cases such as non-IB tests.
+This condition, theoretically impossible to trigger, is not really
+handled well. By "continuing", we are skipping the write to SYS_PTP_NXT
+which advances the timestamp FIFO to the next entry. So we are reading
+the same FIFO entry all over again, printing stack traces and eventually
+killing the kernel.
 
-Fixes: 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
-Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+No real problem has been observed here. This is part of a larger rework
+of the timestamp IRQ procedure, with this logical change split out into
+a patch of its own. We will need to "goto next_ts" for other conditions
+as well.
+
+Fixes: 9fde506e0c53 ("net: mscc: ocelot: warn when a PTP IRQ is raised for an unknown skb")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241205145519.1236778-3-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mscc/ocelot_ptp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c b/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
-index 86d1d46e1e5e..4fba0b3d10f1 100644
---- a/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
-@@ -1286,7 +1286,7 @@ static int uvd_v7_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,
- 					   struct amdgpu_job *job,
- 					   struct amdgpu_ib *ib)
- {
--	struct amdgpu_ring *ring = to_amdgpu_ring(job->base.sched);
-+	struct amdgpu_ring *ring = amdgpu_job_ring(job);
- 	unsigned i;
+diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
+index 3c22652879ac..1386fb2ff4a9 100644
+--- a/drivers/net/ethernet/mscc/ocelot_ptp.c
++++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
+@@ -790,7 +790,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
+ 		spin_unlock_irqrestore(&port->tx_skbs.lock, flags);
  
- 	/* No patching necessary for the first instance */
+ 		if (WARN_ON(!skb_match))
+-			continue;
++			goto next_ts;
+ 
+ 		if (!ocelot_validate_ptp_skb(skb_match, seqid)) {
+ 			dev_err_ratelimited(ocelot->dev,
+@@ -808,7 +808,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
+ 		shhwtstamps.hwtstamp = ktime_set(ts.tv_sec, ts.tv_nsec);
+ 		skb_complete_tx_timestamp(skb_match, &shhwtstamps);
+ 
+-		/* Next ts */
++next_ts:
+ 		ocelot_write(ocelot, SYS_PTP_NXT_PTP_NXT, SYS_PTP_NXT);
+ 	}
+ }
 -- 
 2.39.5
 
