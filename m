@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F7C9F51BE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78E79F52C4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8612D1888125
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8486163BEB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F42291F6671;
-	Tue, 17 Dec 2024 17:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987911F7582;
+	Tue, 17 Dec 2024 17:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WczKGPXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7hn6+Iw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC87C1F37BE;
-	Tue, 17 Dec 2024 17:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490DF1F75A6;
+	Tue, 17 Dec 2024 17:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455357; cv=none; b=QtZTXhAuyBuPkE0wIhIHci177sLvz8xKWVi0rbxXyx/mmoR/jWSEWqbRDdD82eYgrmdUQ9Wc0bWa6Quav8tQ8MxA63EMLymsBa3jjzzdEge54ynZpIvlc7+TSFVjOUORICS5GBbTjh42xbrgbOHrDtOz7P4/pXVYfeFqfzHCnhI=
+	t=1734455964; cv=none; b=Sc+aJkcR49ZqofYQEC/eaVUyyMZDpYENV91jmo4cdUnTGoiR0Vts1A81piuXGBHZ9X/RgEaLvlixo4LvqzUfxDv8jTd4J8YELjqRz0yF3iP2HqcawLAIPHzO3K5AKv9qFOgrG4LqrbqV1gjrr5EtWIionMHYIW+KC2IBWkTpnQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455357; c=relaxed/simple;
-	bh=Iann/wFmLIj9xWof4Ztst2ntKja20OXa6BE3zEZslqk=;
+	s=arc-20240116; t=1734455964; c=relaxed/simple;
+	bh=xUjXYTbM/QJvZCKBh/nnWRWudFsyLrL1fVDQPNwzIiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuwR7GuSf+ckJuiwgspTpiMzy4amlRf1dilK6QCLiVKQ/SUCIk72AfQot7crj4Wk6wM1TedW0zi9WBRLrO5ehNYqIjfIrpK0pEGpRt0vlkXpDyr6nRtAu7hoU437PlVmS5naCKa2hx7Pey4NEmEipkV5/aQ5bs6mBzu0SLoByVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WczKGPXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA032C4CED7;
-	Tue, 17 Dec 2024 17:09:15 +0000 (UTC)
+	 MIME-Version; b=p9iKxveK7X0NBC1/h3Fn77k/rWMFudXdi8YiyoUnHsvbmFTu5EcxhFm47xGQqtBpkKpt3j9HuGNVXQqnICRrcrmdfOEiJXY/gsHcOSFPuou49nH75C3iMN/w76y2ZI5cBlsIQ4zIHMk94X/omZGLplX/90cEcho2UUmrbrwq8fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7hn6+Iw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F70C4CED3;
+	Tue, 17 Dec 2024 17:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455356;
-	bh=Iann/wFmLIj9xWof4Ztst2ntKja20OXa6BE3zEZslqk=;
+	s=korg; t=1734455964;
+	bh=xUjXYTbM/QJvZCKBh/nnWRWudFsyLrL1fVDQPNwzIiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WczKGPXMCsqSkvstZPvelNh9YkMmSaxKjWQDr6OgbjGmAWjTUvb0tgVGeNdWEcxUd
-	 QkDOqhlwTxDt/LcJ0Upa7xSOrpgi44LSdsthPV7R3fD0xQeHRQXHcXD3Fu9NSflF+5
-	 Oc35Q9CvFzO3V55p/62cmMkWORdvx96ITwHS1EZU=
+	b=h7hn6+Iw59gt3o5LCr5fzbk/z5z95FGsQvElUWGKGsOylQq6yc4p2RDotTaxLz2c5
+	 IOJ+QJYkJMpX3nqVmClThhnpLqMA5pwbP4nNn9GytdFhg1PZgYaWhpsz42CJmIJ/F8
+	 SRKyApnl4hZvEKLKjks2cdbeFDxvOOOBq5QM3wk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
-Subject: [PATCH 5.4 01/24] usb: host: max3421-hcd: Correctly abort a USB request.
+	Bean Huo <beanhuo@micron.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	liuderong <liuderong@oppo.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 015/109] scsi: ufs: core: Update compl_time_stamp_local_clock after completing a cqe
 Date: Tue, 17 Dec 2024 18:06:59 +0100
-Message-ID: <20241217170519.070064694@linuxfoundation.org>
+Message-ID: <20241217170533.998884171@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
-References: <20241217170519.006786596@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+From: liuderong <liuderong@oppo.com>
 
-commit 0d2ada05227881f3d0722ca2364e3f7a860a301f upstream.
+commit f103396ae31851d00b561ff9f8a32a441953ff8b upstream.
 
-If the current USB request was aborted, the spi thread would not respond
-to any further requests. This is because the "curr_urb" pointer would
-not become NULL, so no further requests would be taken off the queue.
-The solution here is to set the "urb_done" flag, as this will cause the
-correct handling of the URB. Also clear interrupts that should only be
-expected if an URB is in progress.
+lrbp->compl_time_stamp_local_clock is set to zero after sending a sqe
+but it is not updated after completing a cqe.  Thus the printed
+information in ufshcd_print_tr() will always be zero.
 
-Fixes: 2d53139f3162 ("Add support for using a MAX3421E chip as a host driver.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
-Link: https://lore.kernel.org/r/20241124221430.1106080-1-mark.tomlinson@alliedtelesis.co.nz
+Update lrbp->cmpl_time_stamp_local_clock after completing a cqe.
+
+Log sample:
+
+ufshcd-qcom 1d84000.ufshc: UPIU[8] - issue time 8750227249 us
+ufshcd-qcom 1d84000.ufshc: UPIU[8] - complete time 0 us
+
+Fixes: c30d8d010b5e ("scsi: ufs: core: Prepare for completion in MCQ")
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: liuderong <liuderong@oppo.com>
+Link: https://lore.kernel.org/r/1733470182-220841-1-git-send-email-liuderong@oppo.com
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/max3421-hcd.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/ufs/core/ufshcd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/host/max3421-hcd.c
-+++ b/drivers/usb/host/max3421-hcd.c
-@@ -785,11 +785,17 @@ max3421_check_unlink(struct usb_hcd *hcd
- 				retval = 1;
- 				dev_dbg(&spi->dev, "%s: URB %p unlinked=%d",
- 					__func__, urb, urb->unlinked);
--				usb_hcd_unlink_urb_from_ep(hcd, urb);
--				spin_unlock_irqrestore(&max3421_hcd->lock,
--						       flags);
--				usb_hcd_giveback_urb(hcd, urb, 0);
--				spin_lock_irqsave(&max3421_hcd->lock, flags);
-+				if (urb == max3421_hcd->curr_urb) {
-+					max3421_hcd->urb_done = 1;
-+					max3421_hcd->hien &= ~(BIT(MAX3421_HI_HXFRDN_BIT) |
-+							       BIT(MAX3421_HI_RCVDAV_BIT));
-+				} else {
-+					usb_hcd_unlink_urb_from_ep(hcd, urb);
-+					spin_unlock_irqrestore(&max3421_hcd->lock,
-+							       flags);
-+					usb_hcd_giveback_urb(hcd, urb, 0);
-+					spin_lock_irqsave(&max3421_hcd->lock, flags);
-+				}
- 			}
- 		}
- 	}
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -5439,6 +5439,7 @@ void ufshcd_compl_one_cqe(struct ufs_hba
+ 
+ 	lrbp = &hba->lrb[task_tag];
+ 	lrbp->compl_time_stamp = ktime_get();
++	lrbp->compl_time_stamp_local_clock = local_clock();
+ 	cmd = lrbp->cmd;
+ 	if (cmd) {
+ 		if (unlikely(ufshcd_should_inform_monitor(hba, lrbp)))
 
 
 
