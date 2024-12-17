@@ -1,149 +1,101 @@
-Return-Path: <stable+bounces-104427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A9D9F42D5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 06:32:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7489F432D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 06:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23E247A5148
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:32:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2809016A0E1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C4F14A4EB;
-	Tue, 17 Dec 2024 05:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF6914F11E;
+	Tue, 17 Dec 2024 05:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ascbri/1"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="sD4oeyqs"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC611361;
-	Tue, 17 Dec 2024 05:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDA883CC7;
+	Tue, 17 Dec 2024 05:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734413549; cv=none; b=DVA8rpDVCNpjr6uW2Oc/AeR12kXUuO3Xmr6UI3c+p6uoolGsNZLAQQ5JeaEdIe8fxrLxbIdno1HYN4RT72SN17VGKiFEfOyqTj7Kln997+8tcRYjZGyeiOmMeKPtN0Q63GixinTCSbRBadjWVQQJHG2W0EBWTq0B4eZoxw8JYak=
+	t=1734414663; cv=none; b=llUk7aOLKEO2b9pREyk4RHqnGXbed8HafXz229m/zLIYBx+7ujffMHBi+B5YWYuZ26XajcoZvG7Uy5N/thAhCStHFrEQ6797YcO4gDFv+WQuXSuUItoR4K+NgoAHWaafBf2cRrZx/iSTVCne+jkp9DPUqFqutU3HFPHiDzZsHZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734413549; c=relaxed/simple;
-	bh=avI8ClOrtHzD2SipA/Fyk+O8iRhwsleato1FpezpTWY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uWAAWHeJbMky/vC3uoMi9/Fa6KjFVlH/WG+ifkQFdn3O78T8kZZKIx6Jy/YpCW1dS4ZYDwyvZ4SWzzhEw/fVfhdiYgR3/JCM+TICJuXIj0dWOLr1N+oMwgPHBqCd1LZquD2m+ESQyq9vNqAsIKPu+rsV6KAPCt6I6bOegnhdthw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ascbri/1; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 95B5455;
-	Tue, 17 Dec 2024 06:31:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1734413508;
-	bh=avI8ClOrtHzD2SipA/Fyk+O8iRhwsleato1FpezpTWY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ascbri/1u93szfYgP25SSr857XPCHi19Xxk75o3Uuyt6a0yr3rlQOOx+jtAM4ELOO
-	 HZW5wGirgk5wEjLt7hZtZuWre2fR6/Urijr2e0PyFNa+2aJ5Gh/rB6KDtvGc6kzI3V
-	 HyHILpRgRQsw6/Oy2w0u7OKSdEu49Hp99em50UZA=
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Date: Tue, 17 Dec 2024 07:31:35 +0200
-Subject: [PATCH v5 1/7] drm/rcar-du: dsi: Fix PHY lock bit check
+	s=arc-20240116; t=1734414663; c=relaxed/simple;
+	bh=bPwQShof+vswbSf/CYo+caDqGjI4PPBpNF2MsWMY7Hs=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=XcIiJJf1kUw3yFLynzvN03RSVXbK4G8hLdfS0RcPxTD0hOK3FHWdW3/HiQUpNELCPli/tkdC+aSH3JWWqrRdVFi+NwKP7b5w55LmILjBPyXVXce89wkim2Sg8p8cAofOabIl2rA6S86f/kjKApLX6Ihs+4cYF5IkNnYv7tx46p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=sD4oeyqs; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1734414656; h=Message-ID:Subject:Date:From:To;
+	bh=k594UHrD4sW4gyFiUBIeQmb6/7gl1rH5o5a9yezmc84=;
+	b=sD4oeyqs21VLo3R90ztoS5EQnBNbjB635VPVuvsWX8Uf+/1grD2DrS96L6sRUL6DDm5fTdq52wdE03ej9Z7DtzcUHEKYjlTZ25KuryMohT3WhvBqLE/WqkGh/kJvhNxmzDVSJ/5wTA+bDRE6X0sYTbG1LDzTfFTIV6gaKqeKbdo=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WLhajSd_1734414655 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 17 Dec 2024 13:50:56 +0800
+Message-ID: <1734414558.011073-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH] virtio: fix reference leak in register_virtio_device()
+Date: Tue, 17 Dec 2024 13:49:18 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Ma Ke <make_ruc2021@163.com>
+Cc: virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ Ma Ke <make_ruc2021@163.com>,
+ stable@vger.kernel.org,
+ mst@redhat.com,
+ jasowang@redhat.com,
+ eperezma@redhat.com,
+ arnd@arndb.de,
+ viresh.kumar@linaro.org
+References: <20241217035432.2892059-1-make_ruc2021@163.com>
+In-Reply-To: <20241217035432.2892059-1-make_ruc2021@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241217-rcar-gh-dsi-v5-1-e77421093c05@ideasonboard.com>
-References: <20241217-rcar-gh-dsi-v5-0-e77421093c05@ideasonboard.com>
-In-Reply-To: <20241217-rcar-gh-dsi-v5-0-e77421093c05@ideasonboard.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, LUU HOAI <hoai.luu.ub@renesas.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, Sam Ravnborg <sam@ravnborg.org>, 
- Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- dri-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
- linux-clk@vger.kernel.org, 
- Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2124;
- i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
- bh=oDefLvswOZixERy//YecN6qGggsNckidLEErkzhvvTE=;
- b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnYQziJXZaCRqtyAepVhFqXvRuXc7hmQtry8RBi
- vb+pezoR5+JAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ2EM4gAKCRD6PaqMvJYe
- 9fpzD/98xI478iBWlIUKmY8TkYpK9YSt/GywTd/lEUxSQPNX4pbS6yEF4M20oDZT3JotFemFaV1
- DcBidbJnDoR+OOwktWAv6n0nbZn6klPFHFDq2c4dWW5b+7DIpZj7Hw+I5trhok5xBirxOlscrII
- NJt4rTo6oMGZaRwB0nyiBf8sNnwva0m/auJ5zldAzlGWrC//LEAaxZ9th0RU5HK02UY6tzpsGou
- rYZUx6UqBXFj7TckZwSvWU9Hf2qpSBbtM9YHh4nWqUPcrxL6PtWFWRUw41EChcOC2nR8gVwqhh9
- EPmK+vkZxtf6aYEfOUiT4dKELd+SHoVXINkiXLiFTJRRK1NdI5vKgOCwvJvRqckfdkkuhc1TuUc
- YwJVH71Ck+p8YEgw15JJnf3W88sxrYyGj2xkZBll55FwWGwAzckqSlP+IxFHftxM01Bej5a0MIW
- t46SFnbK+Tn+MRgXep1T70W8RlkEMNlL2sfWjsUFLBnWi8OFhQx7akQfJdRb2164t7KufLR0/b1
- iLOmMfbsc/A4bsGjrxBAcPts0m7Db0Xqd/fje1Tg7NeW12r4loOOkJ+p9tL+BrdMcfJylwm4CdI
- j7tzBKhjKJcaQ7pG76UmbJ+aEOZmp18aEfHsKpFSkGCFdbeanEGwnMQkEjQPPKzmj9M+DcrjB4z
- kDeh8xdiSBFxqdQ==
-X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
- fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 
-From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+On Tue, 17 Dec 2024 11:54:32 +0800, Ma Ke <make_ruc2021@163.com> wrote:
+> When device_add(&dev->dev) failed, calling put_device() to explicitly
+> release dev->dev. Otherwise, it could cause double free problem.
 
-The driver checks for bit 16 (using CLOCKSET1_LOCK define) in CLOCKSET1
-register when waiting for the PPI clock. However, the right bit to check
-is bit 17 (CLOCKSET1_LOCK_PHY define). Not only that, but there's
-nothing in the documents for bit 16 for V3U nor V4H.
+Who frees it doublely?
+If device_add() failed, the put_device is called inside device_add(),
+why we need to call it again?
 
-So, fix the check to use bit 17, and drop the define for bit 16.
+Maybe you need to say more?
 
-Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
-Fixes: 11696c5e8924 ("drm: Place Renesas drivers in a separate dir")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c      | 2 +-
- drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+Thanks.
 
-diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
-index 2dba7c5ffd2c..92f4261305bd 100644
---- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
-+++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
-@@ -587,7 +587,7 @@ static int rcar_mipi_dsi_startup(struct rcar_mipi_dsi *dsi,
- 	for (timeout = 10; timeout > 0; --timeout) {
- 		if ((rcar_mipi_dsi_read(dsi, PPICLSR) & PPICLSR_STPST) &&
- 		    (rcar_mipi_dsi_read(dsi, PPIDLSR) & PPIDLSR_STPST) &&
--		    (rcar_mipi_dsi_read(dsi, CLOCKSET1) & CLOCKSET1_LOCK))
-+		    (rcar_mipi_dsi_read(dsi, CLOCKSET1) & CLOCKSET1_LOCK_PHY))
- 			break;
- 
- 		usleep_range(1000, 2000);
-diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-index f8114d11f2d1..a6b276f1d6ee 100644
---- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-+++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
-@@ -142,7 +142,6 @@
- 
- #define CLOCKSET1			0x101c
- #define CLOCKSET1_LOCK_PHY		(1 << 17)
--#define CLOCKSET1_LOCK			(1 << 16)
- #define CLOCKSET1_CLKSEL		(1 << 8)
- #define CLOCKSET1_CLKINSEL_EXTAL	(0 << 2)
- #define CLOCKSET1_CLKINSEL_DIG		(1 << 2)
 
--- 
-2.43.0
-
+>
+> Found by code review.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 694a1116b405 ("virtio: Bind virtio device to device-tree node")
+> Signed-off-by: Ma Ke <make_ruc2021@163.com>
+> ---
+>  drivers/virtio/virtio.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+> index b9095751e43b..ac721b5597e8 100644
+> --- a/drivers/virtio/virtio.c
+> +++ b/drivers/virtio/virtio.c
+> @@ -503,6 +503,7 @@ int register_virtio_device(struct virtio_device *dev)
+>
+>  out_of_node_put:
+>  	of_node_put(dev->dev.of_node);
+> +	put_device(&dev->dev);
+>  out_ida_remove:
+>  	ida_free(&virtio_index_ida, dev->index);
+>  out:
+> --
+> 2.25.1
+>
 
