@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-104668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68E89F525A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:18:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C34EF9F52BE
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0286E16F916
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1305D16B291
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F5B1F8685;
-	Tue, 17 Dec 2024 17:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0044E1F76B5;
+	Tue, 17 Dec 2024 17:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBN8gnH9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMpafJeU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D218613DBB6;
-	Tue, 17 Dec 2024 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34581F7577;
+	Tue, 17 Dec 2024 17:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455743; cv=none; b=YP8kJt0Z9pDrz5NaKTHY4V7upt6DQrtk6g32bjDlBoVKb4EL4AY7YQfXkuaNFW+RgOt+D63uIWKgGdtragYpS6q1SnitvGxpIfX/ER8BEh5EH16QWltM52uxO29YmS9LfCJKQLfZW4i9D64NWOPgwHPFpD9OyJKwMijPl3APeo4=
+	t=1734455946; cv=none; b=F7/wplM18au8GfrJ+NW5Ene0676F2Vzftp0KnqLuCJIifYjdQwiO6gsUs8YbVkLfrFU4iVX8DDMU7C/oTOtREEl/+OliSij9UhpkHwcH01HLMdhwlU2A0l3YMYmKUyu31y6TMr3tUnGcyh3ZaC9CeohVjBzQuAPKP06CgwNlIek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455743; c=relaxed/simple;
-	bh=NjOHgIVrA5anYyWdN50CsUm+sg/1VYQTrwA2LL88ubM=;
+	s=arc-20240116; t=1734455946; c=relaxed/simple;
+	bh=OPoFM9v7srdb0U7u7f0oUpc45M293FkfL1Cg07iNx0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gh0LLcmZkJZG1v5A3MItL+Th1vEsIZAzpFDwCVFTxxW5KuJPHIANuSt4TMIs1H8WXEKKJeEZLNcMGTWvoB9YwcKU2iwgJE55UnoGUtNlmXD6q9Z4UdDZofgCplDnOk2Sctn+qS5f9oaM1iWWObA5aMzNsUg8/Kx7YTOOkDhN75E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBN8gnH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25971C4CED3;
-	Tue, 17 Dec 2024 17:15:42 +0000 (UTC)
+	 MIME-Version; b=lk0TXJBQd3nT7rxNVfbAyCUHjeLivffotKoHTTwNQputzbmz51RftqEnAFz8+9ptn9BUry/1EUhnc7YSh4ZQx8GC85zLG/GQ7Xm6oUky9o4RkE4O00NzifGL3Xc2CqPLyuR29W0kLG1nrWgxyJN2njdlXhP64bNLpW5KvHH6EYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMpafJeU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16083C4CED3;
+	Tue, 17 Dec 2024 17:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455743;
-	bh=NjOHgIVrA5anYyWdN50CsUm+sg/1VYQTrwA2LL88ubM=;
+	s=korg; t=1734455946;
+	bh=OPoFM9v7srdb0U7u7f0oUpc45M293FkfL1Cg07iNx0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YBN8gnH9sSjJwpKDqbM18vguXa1dAA518heaXaCyK4HxJv45K0RInCQfbwC53ViAL
-	 ksKjdoR6TmgVv3+ZG0RHscrFUq1YY4rvcM2tUY2VcUFlyJ6HpYQ93D4RY7fik0EB5G
-	 qbbSXVkBauLhTIR7jR+pBXIT3L7Ebn5niLMCg/IM=
+	b=OMpafJeUWrVsUQnj/m1fQ3Nbuo60f0gluHJtwNfySPH4bU50ThJItr82lvxvUNL2K
+	 pSQGf9EmZm2dbwj9rEawSF32MTZOLYKK71Ch815YMzeJCCbPFT76ySJxWxuhC5UefY
+	 REyFeg7X0utbzfi2ICPBZ0Cjy1vl6ifqbLByAoaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaakko Salo <jaakkos@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 05/76] ALSA: usb-audio: Add implicit feedback quirk for Yamaha THR5
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.6 001/109] bpf: Fix UAF via mismatching bpf_prog/attachment RCU flavors
 Date: Tue, 17 Dec 2024 18:06:45 +0100
-Message-ID: <20241217170526.468263987@linuxfoundation.org>
+Message-ID: <20241217170533.395054721@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaakko Salo <jaakkos@gmail.com>
+From: Jann Horn <jannh@google.com>
 
-commit 82fdcf9b518b205da040046fbe7747fb3fd18657 upstream.
+commit ef1b808e3b7c98612feceedf985c2fbbeb28f956 upstream.
 
-Use implicit feedback from the capture endpoint to fix popping
-sounds during playback.
+Uprobes always use bpf_prog_run_array_uprobe() under tasks-trace-RCU
+protection. But it is possible to attach a non-sleepable BPF program to a
+uprobe, and non-sleepable BPF programs are freed via normal RCU (see
+__bpf_prog_put_noref()). This leads to UAF of the bpf_prog because a normal
+RCU grace period does not imply a tasks-trace-RCU grace period.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219567
-Signed-off-by: Jaakko Salo <jaakkos@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241206164448.8136-1-jaakkos@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix it by explicitly waiting for a tasks-trace-RCU grace period after
+removing the attachment of a bpf_prog to a perf_event.
+
+Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/bpf/20241210-bpf-fix-actual-uprobe-uaf-v1-1-19439849dd44@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/bpf_trace.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2065,6 +2065,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
- 	DEVICE_FLG(0x046d, 0x09a4, /* Logitech QuickCam E 3500 */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_IGNORE_CTL_ERROR),
-+	DEVICE_FLG(0x0499, 0x1506, /* Yamaha THR5 */
-+		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
- 	DEVICE_FLG(0x0499, 0x1509, /* Steinberg UR22 */
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
- 	DEVICE_FLG(0x0499, 0x3108, /* Yamaha YIT-W12TX */
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2224,6 +2224,13 @@ void perf_event_detach_bpf_prog(struct p
+ 		bpf_prog_array_free_sleepable(old_array);
+ 	}
+ 
++	/*
++	 * It could be that the bpf_prog is not sleepable (and will be freed
++	 * via normal RCU), but is called from a point that supports sleepable
++	 * programs and uses tasks-trace-RCU.
++	 */
++	synchronize_rcu_tasks_trace();
++
+ 	bpf_prog_put(event->prog);
+ 	event->prog = NULL;
+ 
 
 
 
