@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-104868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E879F5348
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9CA9F5378
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 497BB7A5216
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3817171E6A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629C51F76B1;
-	Tue, 17 Dec 2024 17:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380A11F8666;
+	Tue, 17 Dec 2024 17:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAdnqHmA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjvoewL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA9C8615A;
-	Tue, 17 Dec 2024 17:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EDF140E38;
+	Tue, 17 Dec 2024 17:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456349; cv=none; b=nabZvA2n6HRHlmbHetzdLwDWL6tavLrnjdsvSqapOA2qxIEyHzCr0ocxDrMr8EqCCm8af5KF+r41gtfaJCOd1Yc7N9MDMpefgT1vuXfl8AkgOt0bMcEbeD93YqYBbXOmkD3u6Kq7ePgR0LZL+7tsd0eR1YjGDmMN3Yuh10ZCRgM=
+	t=1734456355; cv=none; b=idhNUtAlkPT6HmCr1U3rEv0o9tnDUvs5jjvVo7z+BeGEF+AGz96LBvoYr3pi5G7w4EdvU4qM++9icVSKJ8TbbQ7b8fs+hp61KJUWufapepcEA09qZ3vVMDKvkZK+FtFhYOfGj5AgaQSgZJIfvpltr92JT8cDwzWinwVznUeKjtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456349; c=relaxed/simple;
-	bh=72OrcYTbqlKYVwS+SNbFdBBhdEfaE6iUr6J+EMwWPBY=;
+	s=arc-20240116; t=1734456355; c=relaxed/simple;
+	bh=Fxav36wyEyWd7Yyaa7BCsAB9rgGUVMsPWsyialfVVHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ci+L/a+FLc/5MSS0GrfjxZ44qGL3rvTUSGNILnzE/M9lJvUiF49DoHMfATJFrn1jP76UtQNtTSijlfnKy5nlW0RfaKCnmXIA3agb1ZX25gO35y02Jy3fmGM9OBLDHhQ+2/Hkxxy/IUNi5j7o7a/4PquLJISYHaDXPcSX01qMXXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAdnqHmA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FB3C4CED3;
-	Tue, 17 Dec 2024 17:25:48 +0000 (UTC)
+	 MIME-Version; b=YmFerxwBJ3WBGpVVVJ173nOf46w4UfDHnmWA1p6BDSz+dE542WnpFumkhpTkiTfT4wDa8yHTb7QKv9GXaus/vRAXoUnFeAcG7y3uYVfP9QIneQyjtGvqgvxQIIpKMrswgljlKy92QKm8cbLJ7szX5Wnsl6lo9STSqPJQAeuJbGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjvoewL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C199C4CED3;
+	Tue, 17 Dec 2024 17:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456348;
-	bh=72OrcYTbqlKYVwS+SNbFdBBhdEfaE6iUr6J+EMwWPBY=;
+	s=korg; t=1734456354;
+	bh=Fxav36wyEyWd7Yyaa7BCsAB9rgGUVMsPWsyialfVVHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAdnqHmANRnYPXgRPjcB+c5RfgLLbX0sh4XXTgk8YuGD4+dhgSixd1vVN8sK/BhnP
-	 BIPXCtmUS9PrJQK6hqW9XlRfpBru3UzIL3qnKvhIBk38dRT5oiRrYX7hV7XxZJR+ZW
-	 Sop3Phd5ry4spYrIEd8cQXMCph7XGqn2MuZNtJNI=
+	b=KjvoewL5fIZ3vicftCZYNUp73JygBs+SgdeATIpr8AsyuobwkDDYu9TpCPH+xIPfz
+	 KAOVG9KHMAFWdYwZ6X5SNlgQATHyE1kbVXABple8GQeJd25SN/h0U5f74Cxab8ITzF
+	 +RXfQMmdr2ucHRqNAsMnNMze1rRF3wYNHdjglh6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 031/172] block: Ignore REQ_NOWAIT for zone reset and zone finish operations
-Date: Tue, 17 Dec 2024 18:06:27 +0100
-Message-ID: <20241217170547.551963598@linuxfoundation.org>
+	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.12 032/172] gpio: graniterapids: Fix vGPIO driver crash
+Date: Tue, 17 Dec 2024 18:06:28 +0100
+Message-ID: <20241217170547.594930447@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
 References: <20241217170546.209657098@linuxfoundation.org>
@@ -67,48 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
 
-commit 5eb3317aa5a2ffe4574ab1a12cf9bc9447ca26c0 upstream.
+commit eb9640fd1ce666610b77f5997596e9570a36378f upstream.
 
-There are currently any issuer of REQ_OP_ZONE_RESET and
-REQ_OP_ZONE_FINISH operations that set REQ_NOWAIT. However, as we cannot
-handle this flag correctly due to the potential request allocation
-failure that may happen in blk_mq_submit_bio() after blk_zone_plug_bio()
-has handled the zone write plug write pointer updates for the targeted
-zones, modify blk_zone_wplug_handle_reset_or_finish() to warn if this
-flag is set and ignore it.
+Move setting irq_chip.name from probe() function to the initialization
+of "irq_chip" struct in order to fix vGPIO driver crash during bootup.
 
-Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
+Crash was caused by unauthorized modification of irq_chip.name field
+where irq_chip struct was initialized as const.
+
+This behavior is a consequence of suboptimal implementation of
+gpio_irq_chip_set_chip(), which should be changed to avoid
+casting away const qualifier.
+
+Crash log:
+BUG: unable to handle page fault for address: ffffffffc0ba81c0
+/#PF: supervisor write access in kernel mode
+/#PF: error_code(0x0003) - permissions violation
+CPU: 33 UID: 0 PID: 1075 Comm: systemd-udevd Not tainted 6.12.0-rc6-00077-g2e1b3cc9d7f7 #1
+Hardware name: Intel Corporation Kaseyville RP/Kaseyville RP, BIOS KVLDCRB1.PGS.0026.D73.2410081258 10/08/2024
+RIP: 0010:gnr_gpio_probe+0x171/0x220 [gpio_graniterapids]
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20241209122357.47838-3-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Acked-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20241204070415.1034449-2-mika.westerberg@linux.intel.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-zoned.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpio/gpio-graniterapids.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -704,6 +704,15 @@ static bool blk_zone_wplug_handle_reset_
- 	}
+--- a/drivers/gpio/gpio-graniterapids.c
++++ b/drivers/gpio/gpio-graniterapids.c
+@@ -234,6 +234,7 @@ static int gnr_gpio_irq_set_type(struct
+ }
  
- 	/*
-+	 * No-wait reset or finish BIOs do not make much sense as the callers
-+	 * issue these as blocking operations in most cases. To avoid issues
-+	 * the BIO execution potentially failing with BLK_STS_AGAIN, warn about
-+	 * REQ_NOWAIT being set and ignore that flag.
-+	 */
-+	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT))
-+		bio->bi_opf &= ~REQ_NOWAIT;
-+
-+	/*
- 	 * If we have a zone write plug, set its write pointer offset to 0
- 	 * (reset case) or to the zone size (finish case). This will abort all
- 	 * BIOs plugged for the target zone. It is fine as resetting or
+ static const struct irq_chip gnr_gpio_irq_chip = {
++	.name		= "gpio-graniterapids",
+ 	.irq_ack	= gnr_gpio_irq_ack,
+ 	.irq_mask	= gnr_gpio_irq_mask,
+ 	.irq_unmask	= gnr_gpio_irq_unmask,
+@@ -324,7 +325,6 @@ static int gnr_gpio_probe(struct platfor
+ 
+ 	girq = &priv->gc.irq;
+ 	gpio_irq_chip_set_chip(girq, &gnr_gpio_irq_chip);
+-	girq->chip->name	= dev_name(dev);
+ 	girq->parent_handler	= NULL;
+ 	girq->num_parents	= 0;
+ 	girq->parents		= NULL;
 
 
 
