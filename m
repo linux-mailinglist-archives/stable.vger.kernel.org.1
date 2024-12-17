@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDEB9F5467
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:41:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4ACB9F52C8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3108E1734A8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CAC9188FC3C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6407D1F893E;
-	Tue, 17 Dec 2024 17:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356C91F8688;
+	Tue, 17 Dec 2024 17:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5+7D7Qw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IhPBvkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221231F75A6;
-	Tue, 17 Dec 2024 17:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FED1F868C;
+	Tue, 17 Dec 2024 17:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456722; cv=none; b=miwuOt94wCuJzrRVNMCq4CXhovtsJWeJHiMyVK4TEdH36QXwehU8w1rrOfe0XMHuv+Mx1CCDou9HMhBaLTk9GCJH3nIfUH6IJNymZ6pF812U46Hk253j6amLGuPiGHn9BgKigM3F095lMq081anx6tYan41zgzRp6vPcHGVuVoU=
+	t=1734455913; cv=none; b=gQuUWOmR8grAaCsi+2LjJd3iaOr8TLqrfu/oLGjAqIpznyCEapojARG43BsPFKuUteIR18XmuwzN+6KGlQkzFDTpqD1FXoBv0Erz5pW+GVnChB5an63r5Hgn3w2Ce9k95iWh5xVwycoWKWuKnvsCA8cGgT6Xm0hfphVhezWyJjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456722; c=relaxed/simple;
-	bh=iML2ElUzDJPqPSNgKzrvhf+/2XSD4lPLQtSUT+qHcRE=;
+	s=arc-20240116; t=1734455913; c=relaxed/simple;
+	bh=tl80PoyuL3clOc7BzFZ/vL5GVhI8meuCWVy4dYCdHds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfa3WZ3ro0MIpXKuLfZc199n4eJlzXc7NTbyc217jjy58tZLThhCVQlEZv/OFCQbpsLuMGj9ojPVmDWfTbJb56LknSCodkyy1kf6VVROzfiQ1H3AaL1uB+uF/U0oJgqcqfVL3Y8vIGXBuUdJk8nJb42OT+v8y6N+07GZ4VBakK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5+7D7Qw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D583C4CED3;
-	Tue, 17 Dec 2024 17:32:01 +0000 (UTC)
+	 MIME-Version; b=Vy66jIZNbWAjkFGoY26upBxJ6KG1gm/kDtWmLJrQuMm16R+Yqy4NVuEf8I4Xs82lvQzVrz4BM4p4W0wjOt7SjX6LH7LQDsbX7/c/83G/5vZatBB+C7dx+0QxJ6F7eWkwELNCjzIE00BId6Xm/W4GbG0O0Z3UbPs/BfMYGEU940E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IhPBvkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3FEC4CED3;
+	Tue, 17 Dec 2024 17:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456722;
-	bh=iML2ElUzDJPqPSNgKzrvhf+/2XSD4lPLQtSUT+qHcRE=;
+	s=korg; t=1734455912;
+	bh=tl80PoyuL3clOc7BzFZ/vL5GVhI8meuCWVy4dYCdHds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5+7D7Qw7eymVgQ21NnpJr/m4489TpwEBsJFicF8J7yzMaKMpriOyt9tARlxFuHTe
-	 6yO55xHpXCEIcv2MXnTtU8GBcpr0GQwhXT7i8gJfVbrtW6Nto79ognw6cksFTA34I5
-	 LuXevhJOKQotwJb5Br103zinLNeZiDEKjsAM+/ic=
+	b=1IhPBvkhWUzIRB7cX3D1jOOYRWEdpSqR9FOxtDat4HBC+QFodMuJpH6j7UBH2RnWQ
+	 ZMvb94tipFG+HpYwDKQM7Gzldn9OzU7qe2Iwd8JlL6Btt6BW4hWMjUXmcEzG1Xks1O
+	 KVOGQN0vDscNGjC7pfH7NPNiu0gkVcyxdruuUatg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/172] Documentation: PM: Clarify pm_runtime_resume_and_get() return value
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>
+Subject: [PATCH 6.1 74/76] x86/xen: use new hypercall functions instead of hypercall page
 Date: Tue, 17 Dec 2024 18:07:54 +0100
-Message-ID: <20241217170551.221268834@linuxfoundation.org>
+Message-ID: <20241217170529.664441919@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit ccb84dc8f4a02e7d30ffd388522996546b4d00e1 ]
+commit b1c2cb86f4a7861480ad54bb9a58df3cbebf8e92 upstream.
 
-Update the documentation to match the behaviour of the code.
+Call the Xen hypervisor via the new xen_hypercall_func static-call
+instead of the hypercall page.
 
-pm_runtime_resume_and_get() always returns 0 on success, even if
-__pm_runtime_resume() returns 1.
+This is part of XSA-466 / CVE-2024-53241.
 
-Fixes: 2c412337cfe6 ("PM: runtime: Add documentation for pm_runtime_resume_and_get()")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Link: https://patch.msgid.link/20241203143729.478-1-paul.barker.ct@bp.renesas.com
-[ rjw: Subject and changelog edits, adjusted new comment formatting ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Co-developed-by: Peter Zijlstra <peterz@infradead.org>
+Co-developed-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/power/runtime_pm.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/xen/hypercall.h |   33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/power/runtime_pm.rst b/Documentation/power/runtime_pm.rst
-index 53d1996460ab..12f429359a82 100644
---- a/Documentation/power/runtime_pm.rst
-+++ b/Documentation/power/runtime_pm.rst
-@@ -347,7 +347,9 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -39,9 +39,11 @@
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/pgtable.h>
++#include <linux/instrumentation.h>
  
-   `int pm_runtime_resume_and_get(struct device *dev);`
-     - run pm_runtime_resume(dev) and if successful, increment the device's
--      usage counter; return the result of pm_runtime_resume
-+      usage counter; returns 0 on success (whether or not the device's
-+      runtime PM status was already 'active') or the error code from
-+      pm_runtime_resume() on failure.
+ #include <trace/events/xen.h>
  
-   `int pm_request_idle(struct device *dev);`
-     - submit a request to execute the subsystem-level idle callback for the
--- 
-2.39.5
-
++#include <asm/alternative.h>
+ #include <asm/page.h>
+ #include <asm/smap.h>
+ #include <asm/nospec-branch.h>
+@@ -91,9 +93,17 @@ extern struct { char _entry[32]; } hyper
+ void xen_hypercall_func(void);
+ DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
+ 
+-#define __HYPERCALL		"call hypercall_page+%c[offset]"
+-#define __HYPERCALL_ENTRY(x)						\
+-	[offset] "i" (__HYPERVISOR_##x * sizeof(hypercall_page[0]))
++#ifdef MODULE
++#define __ADDRESSABLE_xen_hypercall
++#else
++#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
++#endif
++
++#define __HYPERCALL					\
++	__ADDRESSABLE_xen_hypercall			\
++	"call __SCT__xen_hypercall"
++
++#define __HYPERCALL_ENTRY(x)	"a" (x)
+ 
+ #ifdef CONFIG_X86_32
+ #define __HYPERCALL_RETREG	"eax"
+@@ -151,7 +161,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
+ 	__HYPERCALL_0ARG();						\
+ 	asm volatile (__HYPERCALL					\
+ 		      : __HYPERCALL_0PARAM				\
+-		      : __HYPERCALL_ENTRY(name)				\
++		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
+ 		      : __HYPERCALL_CLOBBER0);				\
+ 	(type)__res;							\
+ })
+@@ -162,7 +172,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
+ 	__HYPERCALL_1ARG(a1);						\
+ 	asm volatile (__HYPERCALL					\
+ 		      : __HYPERCALL_1PARAM				\
+-		      : __HYPERCALL_ENTRY(name)				\
++		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
+ 		      : __HYPERCALL_CLOBBER1);				\
+ 	(type)__res;							\
+ })
+@@ -173,7 +183,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
+ 	__HYPERCALL_2ARG(a1, a2);					\
+ 	asm volatile (__HYPERCALL					\
+ 		      : __HYPERCALL_2PARAM				\
+-		      : __HYPERCALL_ENTRY(name)				\
++		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
+ 		      : __HYPERCALL_CLOBBER2);				\
+ 	(type)__res;							\
+ })
+@@ -184,7 +194,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
+ 	__HYPERCALL_3ARG(a1, a2, a3);					\
+ 	asm volatile (__HYPERCALL					\
+ 		      : __HYPERCALL_3PARAM				\
+-		      : __HYPERCALL_ENTRY(name)				\
++		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
+ 		      : __HYPERCALL_CLOBBER3);				\
+ 	(type)__res;							\
+ })
+@@ -195,7 +205,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
+ 	__HYPERCALL_4ARG(a1, a2, a3, a4);				\
+ 	asm volatile (__HYPERCALL					\
+ 		      : __HYPERCALL_4PARAM				\
+-		      : __HYPERCALL_ENTRY(name)				\
++		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
+ 		      : __HYPERCALL_CLOBBER4);				\
+ 	(type)__res;							\
+ })
+@@ -209,12 +219,9 @@ xen_single_call(unsigned int call,
+ 	__HYPERCALL_DECLS;
+ 	__HYPERCALL_5ARG(a1, a2, a3, a4, a5);
+ 
+-	if (call >= PAGE_SIZE / sizeof(hypercall_page[0]))
+-		return -EINVAL;
+-
+-	asm volatile(CALL_NOSPEC
++	asm volatile(__HYPERCALL
+ 		     : __HYPERCALL_5PARAM
+-		     : [thunk_target] "a" (&hypercall_page[call])
++		     : __HYPERCALL_ENTRY(call)
+ 		     : __HYPERCALL_CLOBBER5);
+ 
+ 	return (long)__res;
 
 
 
