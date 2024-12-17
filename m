@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-104795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C0A9F5306
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 313039F51C9
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A4A5170C7F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CFC7163669
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0EC1F76B5;
-	Tue, 17 Dec 2024 17:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20561F75BE;
+	Tue, 17 Dec 2024 17:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izussGfs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiqMg/r6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC491F76CE;
-	Tue, 17 Dec 2024 17:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48B21F75A6;
+	Tue, 17 Dec 2024 17:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456122; cv=none; b=gwe1Y/TpJtv6SRw3vzAZkaQIJA+8OBxK2MejxI5QjaEHaUzR+vP2qNVWRdN6E5e9K6YWFBKZ4LeRCE0l1HDB7L6sL9fydIaw3w57etFa5Yk0gOCXMkFHcz3KUzd5KY+fpUgmD6XGOhsJd29j90P/J7Q1u+kBBTDUBidJkxyMUqE=
+	t=1734455423; cv=none; b=KL/JoOaiaKaew27aXnauzI0xZXjGioB/xjZzBtH/cUvFHheqZ5/MdPvblLEpRaCpWS6Kys+2cXbdHkc5gbDdZru1gSkW+Y5j7PVTcmxTDE4wUkg1KbmT28o64lVrf1TZRvQ5QExXy5RlRwZ/ORjNILAbCCJs5y2wOcOlRx6eVJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456122; c=relaxed/simple;
-	bh=6Z/TGMzipaeVOlElqV69XfSs8bllmuuVu+Vs1zHrAf0=;
+	s=arc-20240116; t=1734455423; c=relaxed/simple;
+	bh=SaPiE6TTbVFmF1slL6TjMzTxJQ6qlg9DX35yOYlWmMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJupIlz+oLRmoHrHayJPG6ugDkO95zd0Uk/Z2d6/w7gOahgURxtFp3Oq1MhhovaTcsOLmGdX1tIXRFGxSgvA01o5zDbRDrFveR24dgXQz32W6dQPxgJ9N/pqekK2vlS3b51ynG4tmVTjGEZOJq24+CoAxPSE+1De2BsRe8//NaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izussGfs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A4BC4CEDE;
-	Tue, 17 Dec 2024 17:22:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=obUpwns9XgRCmfvLu4vaPol5rhTrRCfQ34uIWGAbTsL1Uzg6YBj7z96OtK+c6EnuDAepjR5gNVxbo2uvfDGM5CWql1da6ZqI2fhzzcO4cDyQx4BeH4fC32hpMytqxy0PWlz9ONJhpamoRKLQuYnv2a12OQmA8XUHRac+KSEFt5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiqMg/r6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7A6C4CED3;
+	Tue, 17 Dec 2024 17:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456122;
-	bh=6Z/TGMzipaeVOlElqV69XfSs8bllmuuVu+Vs1zHrAf0=;
+	s=korg; t=1734455423;
+	bh=SaPiE6TTbVFmF1slL6TjMzTxJQ6qlg9DX35yOYlWmMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izussGfsWt3LSoD2/cFgGy+nPoZ6Ag2hpk5x/5RK0BlfvZE0/dGzRM+iRFb+wN5iK
-	 iBkF91AncPZpHBDu1t+SfvEc+xiHqXLaPhRKfYH7/+bG5uOlvXWYhS6aEUvq2wBOhX
-	 zR0f9G5gvAUE6kzksy6k1cZQWNo+5e+0qIbp3FjM=
+	b=LiqMg/r6zqMIPncglaowUReB5Zl2F7Z1s0dPBtQATz6RlQLewaS7uIzw/iLWZX8Ql
+	 bdzjn0wu5outBHqecTnda3PEl3m2gb1uTGHaQCQzHBGR8Y1X5XcOgrD+ML4BK8sXb8
+	 gEYphU9/TIMZCOqfaVEZupGYhqyJApV7Ol5RXb54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/109] wifi: mac80211: clean up ret in sta_link_apply_parameters()
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 5.4 23/24] xen/netfront: fix crash when removing device
 Date: Tue, 17 Dec 2024 18:07:21 +0100
-Message-ID: <20241217170534.923654230@linuxfoundation.org>
+Message-ID: <20241217170519.951147046@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 642508a42f74d7467aae7c56dff3016db64a25bd ]
+commit f9244fb55f37356f75c739c57323d9422d7aa0f8 upstream.
 
-There's no need to have the always-zero ret variable in
-the function scope, move it into the inner scope only.
+When removing a netfront device directly after a suspend/resume cycle
+it might happen that the queues have not been setup again, causing a
+crash during the attempt to stop the queues another time.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240605135233.eb7a24632d98.I72d7fe1da89d4b89bcfd0f5fb9057e3e69355cfe@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 819e0f1e58e0 ("wifi: mac80211: fix station NSS capability initialization order")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix that by checking the queues are existing before trying to stop
+them.
+
+This is XSA-465 / CVE-2024-53240.
+
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Fixes: d50b7914fae0 ("xen-netfront: Fix NULL sring after live migration")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/xen-netfront.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index fe4469af3cc9..f9395cd80051 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1795,7 +1795,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 				     struct sta_info *sta, bool new_link,
- 				     struct link_station_parameters *params)
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -787,7 +787,7 @@ static netdev_tx_t xennet_start_xmit(str
+ static int xennet_close(struct net_device *dev)
  {
--	int ret = 0;
- 	struct ieee80211_supported_band *sband;
- 	struct ieee80211_sub_if_data *sdata = sta->sdata;
- 	u32 link_id = params->link_id < 0 ? 0 : params->link_id;
-@@ -1837,6 +1836,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 	}
+ 	struct netfront_info *np = netdev_priv(dev);
+-	unsigned int num_queues = dev->real_num_tx_queues;
++	unsigned int num_queues = np->queues ? dev->real_num_tx_queues : 0;
+ 	unsigned int i;
+ 	struct netfront_queue *queue;
+ 	netif_tx_stop_all_queues(np->netdev);
+@@ -802,6 +802,9 @@ static void xennet_destroy_queues(struct
+ {
+ 	unsigned int i;
  
- 	if (params->txpwr_set) {
-+		int ret;
++	if (!info->queues)
++		return;
 +
- 		link_sta->pub->txpwr.type = params->txpwr.type;
- 		if (params->txpwr.type == NL80211_TX_POWER_LIMITED)
- 			link_sta->pub->txpwr.power = params->txpwr.power;
-@@ -1889,7 +1890,7 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 	for (i = 0; i < info->netdev->real_num_tx_queues; i++) {
+ 		struct netfront_queue *queue = &info->queues[i];
  
- 	ieee80211_sta_init_nss(link_sta);
- 
--	return ret;
-+	return 0;
- }
- 
- static int sta_apply_parameters(struct ieee80211_local *local,
--- 
-2.39.5
-
 
 
 
