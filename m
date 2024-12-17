@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34499F52B6
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8A19F52A3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17A95172771
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6927D7A3330
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98361F869D;
-	Tue, 17 Dec 2024 17:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E581F76B1;
+	Tue, 17 Dec 2024 17:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLcRBJkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsgKQPu/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BF91F37BE;
-	Tue, 17 Dec 2024 17:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F2B1F63D5;
+	Tue, 17 Dec 2024 17:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455921; cv=none; b=ZiWoHS39e48UVaiiWd/nzL5L0rRHZQ8I9WUSFNfiefilgjFHOBgS41UHzgs44c38RsLl8izmZbErnvkT+VisbzThjiBLIby/Mrb/y0GLohPZj4Ur0goQGoyuGYbYI2TbekURuJm0wupSILfTqmLMVSDm32FcDfRqLdprjGT7cak=
+	t=1734456058; cv=none; b=lGijSyD332j0rlQtTVpT7jFd4oHEx5xQdICMWb/O4P0ryCYCi6tnts6uujM03rhPrhklbBd6mWLFxfiFv/aE4+zncdyeY7a/bLydjLbbgDi3Xtz6M2aUp2m4wB02K3ppZMPge+IH6koPfSTQePdP2jKJOhnEkMcnFl+XwmbSrxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455921; c=relaxed/simple;
-	bh=n3OL7BDUDmJVb4cDJF+hruyKd/Iq3v5Phi5eKH8iqhs=;
+	s=arc-20240116; t=1734456058; c=relaxed/simple;
+	bh=99bjrKFi/BON++OmUxG/4DudaeggpksqlZuH6fCTm8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdWrVo+C3Rn6qj61VOFximtOy8K1Qp42GUyzqB+8hXGjRGAFWErTJN+zLfz2Ug7GqYnpDtFiR1WfvDej9U6N0NcPwU35Mj6lGeyoPPl/5eMcJWt8+vH8VRIQ5Pc0eLZecwXJAklgFZQLS18KOHG7qqpq+iyjvrD2QScAPyCYqio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLcRBJkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E74C4CED3;
-	Tue, 17 Dec 2024 17:18:40 +0000 (UTC)
+	 MIME-Version; b=TaucQxFNvoGsftRJ8yLNH2pyDydVj0PdE36LJIVJ9h12TB+LORG7LspFFyE4U6LXVN1vbBfxTiojO+EaBgQfD2pl63RxTdLOz/cIrxxVywefi1vhhfeCv/N6+JEX9n2XfzadAB2x8srD2Dk6gXzt1xi+0NxwBR5WmypFBVYdJi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsgKQPu/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15337C4CEE8;
+	Tue, 17 Dec 2024 17:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455921;
-	bh=n3OL7BDUDmJVb4cDJF+hruyKd/Iq3v5Phi5eKH8iqhs=;
+	s=korg; t=1734456057;
+	bh=99bjrKFi/BON++OmUxG/4DudaeggpksqlZuH6fCTm8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLcRBJkhN04132oFBoDQtsfFfS2h+fJKUQRRDFZvhZ5L/OdD/9CI2nPg63T0GLxoV
-	 owHCxHoU/sTrRX67KtCWYYJULOetJ9cztq6ikrN5/1RqcVo4i3qdNG9qx+YoYt0Qzi
-	 /lwclnoijTh7PCa4zBhOzxrRkgyvpjM7dvGM3KoQ=
+	b=IsgKQPu/CFwWv+thZuKtt3z8M28XguGt8LphCc/hP4CmF8VA048BQIZ0xKUN0cxQ6
+	 w98cp9lx70Zi+NCg0RYz0ZxBJt2EMnRFGhEKABS+vYOlv2njubDrPFUi83j4z05431
+	 DyQhEEq/taBxHG7EM/XRwPBGvqnvVEfGbWvaEsgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/76] net: sparx5: fix the maximum frame length register
+Subject: [PATCH 6.6 047/109] selftests: mlxsw: sharedbuffer: Remove h1 ingress test case
 Date: Tue, 17 Dec 2024 18:07:31 +0100
-Message-ID: <20241217170528.386409093@linuxfoundation.org>
+Message-ID: <20241217170535.340834265@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Danielle Ratson <danieller@nvidia.com>
 
-[ Upstream commit ddd7ba006078a2bef5971b2dc5f8383d47f96207 ]
+[ Upstream commit cf3515c556907b4da290967a2a6cbbd9ee0ee723 ]
 
-On port initialization, we configure the maximum frame length accepted
-by the receive module associated with the port. This value is currently
-written to the MAX_LEN field of the DEV10G_MAC_ENA_CFG register, when in
-fact, it should be written to the DEV10G_MAC_MAXLEN_CFG register. Fix
-this.
+The test is sending only one packet generated with mausezahn from $h1 to
+$h2. However, for some reason, it is testing for non-zero maximum occupancy
+in both the ingress pool of $h1 and $h2. The former only passes when $h2
+happens to send a packet.
 
-Fixes: 946e7fd5053a ("net: sparx5: add port module support")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Avoid intermittent failures by removing unintentional test case
+regarding the ingress pool of $h1.
+
+Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/5b7344608d5e06f38209e48d8af8c92fa11b6742.1733414773.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index 212bf6f4ed72..e1df6bc86949 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -1113,7 +1113,7 @@ int sparx5_port_init(struct sparx5 *sparx5,
- 	spx5_inst_rmw(DEV10G_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
- 		      DEV10G_MAC_MAXLEN_CFG_MAX_LEN,
- 		      devinst,
--		      DEV10G_MAC_ENA_CFG(0));
-+		      DEV10G_MAC_MAXLEN_CFG(0));
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+index 0c47faff9274..a7b3d6cf3185 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+@@ -108,11 +108,6 @@ port_pool_test()
  
- 	/* Handle Signal Detect in 10G PCS */
- 	spx5_inst_wr(PCS10G_BR_PCS_SD_CFG_SD_POL_SET(sd_pol) |
+ 	devlink sb occupancy snapshot $DEVLINK_DEV
+ 
+-	RET=0
+-	max_occ=$(sb_occ_pool_check $dl_port1 $SB_POOL_ING $exp_max_occ)
+-	check_err $? "Expected iPool($SB_POOL_ING) max occupancy to be $exp_max_occ, but got $max_occ"
+-	log_test "physical port's($h1) ingress pool"
+-
+ 	RET=0
+ 	max_occ=$(sb_occ_pool_check $dl_port2 $SB_POOL_ING $exp_max_occ)
+ 	check_err $? "Expected iPool($SB_POOL_ING) max occupancy to be $exp_max_occ, but got $max_occ"
 -- 
 2.39.5
 
