@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7289F5303
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3241F9F52CF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D2518952C4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CCC81890CF4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CE41F76BF;
-	Tue, 17 Dec 2024 17:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F1D1F8AD3;
+	Tue, 17 Dec 2024 17:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8dSlrqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEkGL/VM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01668615A;
-	Tue, 17 Dec 2024 17:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8426B1F8ACE;
+	Tue, 17 Dec 2024 17:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456060; cv=none; b=QDCKCInBSko02vqLbQ5T3LARg54cOVPuLpDxVOZaL6DL7n5iFicUzVy89xCiXPN76jzyZrQe6Q8aG5QTj0k/cI/gV7e6/Cl6cXN6ljk8pVzRJmKs1NuVL/x3f8lsF1ptrpCV2bbkg6I9lLqkODZ/aqRvBwqEnnbx/sVvtTEul58=
+	t=1734455924; cv=none; b=n6da7+F6z0jyVwRqP41mmpUoRcg8A6Bt/kkj+PgDbuOeTCd0ATN7K0WtnbqBBIljyAr4gEXaAnnteI3E/hwx2ZIma91H7+Mxo6BxCk8jc9o4zbGG8gqh2MgifM+MqOebvfXD4n2T4JVrWSZTOjEWJh3aJLCUDoF9kanJww0WCEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456060; c=relaxed/simple;
-	bh=ubyjvrUgIh/xuH5dUoxvjSpC5jdRbMVXONaTRkEB2Uw=;
+	s=arc-20240116; t=1734455924; c=relaxed/simple;
+	bh=VX/4dt8R2mA1mzN5xhBsHStVEhOqdafWRfsiYkMkTkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bamg0SE03zbeM9hX/4yq25p//8llqeOthuobHnKcQ7c9JrQVuQ5lispJTMaIx60QsxCjTV3dCbYOOOMUAqf9nleH6pRN+Hwi1YcirwpwxZ5lu+JXxz8fLnNE6xt+HRdaGswQa7xrIZv64Tmbc5qjeO78rA8Mx+LZur8/v3VOlVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8dSlrqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44ABFC4CED7;
-	Tue, 17 Dec 2024 17:21:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fwzYMpQMnlWMR0P8I7qDGo8Gw8zgq80sbHHFNB5Zkb6//VuSl1qfVAE2m0n2YkZv6Y/0EmS2yhdSDzqFej6GmeUZh18D71rnj3z724in3fOxnJ5nnouc4UKJrHWQCzf/P+riDkrX8DdaxRlYP21KSgJbkJGa/xaCdzbQkYrV5so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEkGL/VM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096F6C4CED3;
+	Tue, 17 Dec 2024 17:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456060;
-	bh=ubyjvrUgIh/xuH5dUoxvjSpC5jdRbMVXONaTRkEB2Uw=;
+	s=korg; t=1734455924;
+	bh=VX/4dt8R2mA1mzN5xhBsHStVEhOqdafWRfsiYkMkTkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8dSlrqLH7NZxqxTHaiREydP/W/nSCbiE+gY3MUZbfNaOKh2YP9+sEo0IkOPBSM9H
-	 ZgPW2Vy7zd9syVIorKdg2y7B8NwEZKMvxUnIaLQMs+R76QKI5mpXJlDQ+XbsFwxh7i
-	 TGkObgFOJgCoh3xYniv+e5cinsVpXXjmZeYt/3DM=
+	b=tEkGL/VMLt5ue1kmTK48zu/0zx2AcI2SJI2JxqiTe8FIyPZ5Z8VzoQhEYnn7X2zpr
+	 PQz+XJMJlB4OyK+xzPIc9YbjCOLZyfaDjz3xeVmkZdgU8IST/3sUy0+zRTshRMzyYY
+	 BTG8RkCzBcKvs7PeGt7vWC73bXiDUbn/eZy9I9sE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/109] selftests: mlxsw: sharedbuffer: Remove duplicate test cases
+Subject: [PATCH 6.1 52/76] ACPI: resource: Fix memory resource type union access
 Date: Tue, 17 Dec 2024 18:07:32 +0100
-Message-ID: <20241217170535.382138784@linuxfoundation.org>
+Message-ID: <20241217170528.427059305@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 6c46ad4d1bb2e8ec2265296e53765190f6e32f33 ]
+[ Upstream commit 7899ca9f3bd2b008e9a7c41f2a9f1986052d7e96 ]
 
-On both port_tc_ip_test() and port_tc_arp_test(), the max occupancy is
-checked on $h2 twice, when only the error message is different and does not
-match the check itself.
+In acpi_decode_space() addr->info.mem.caching is checked on main level
+for any resource type but addr->info.mem is part of union and thus
+valid only if the resource type is memory range.
 
-Remove the two duplicated test cases from the test.
+Move the check inside the preceeding switch/case to only execute it
+when the union is of correct type.
 
-Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/d9eb26f6fc16a06a30b5c2c16ad80caf502bc561.1733414773.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fcb29bbcd540 ("ACPI: Add prefetch decoding to the address space parser")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20241202100614.20731-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/drivers/net/mlxsw/sharedbuffer.sh        | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/acpi/resource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-index a7b3d6cf3185..21bebc5726f6 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-@@ -131,11 +131,6 @@ port_tc_ip_test()
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index d57bc814dec4..b36b8592667d 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -250,6 +250,9 @@ static bool acpi_decode_space(struct resource_win *win,
+ 	switch (addr->resource_type) {
+ 	case ACPI_MEMORY_RANGE:
+ 		acpi_dev_memresource_flags(res, len, wp);
++
++		if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
++			res->flags |= IORESOURCE_PREFETCH;
+ 		break;
+ 	case ACPI_IO_RANGE:
+ 		acpi_dev_ioresource_flags(res, len, iodec,
+@@ -265,9 +268,6 @@ static bool acpi_decode_space(struct resource_win *win,
+ 	if (addr->producer_consumer == ACPI_PRODUCER)
+ 		res->flags |= IORESOURCE_WINDOW;
  
- 	devlink sb occupancy snapshot $DEVLINK_DEV
- 
--	RET=0
--	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
--	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
--	log_test "physical port's($h1) ingress TC - IP packet"
+-	if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
+-		res->flags |= IORESOURCE_PREFETCH;
 -
- 	RET=0
- 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
- 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
-@@ -158,11 +153,6 @@ port_tc_arp_test()
+ 	return !(res->flags & IORESOURCE_DISABLED);
+ }
  
- 	devlink sb occupancy snapshot $DEVLINK_DEV
- 
--	RET=0
--	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
--	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
--	log_test "physical port's($h1) ingress TC - ARP packet"
--
- 	RET=0
- 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
- 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
 -- 
 2.39.5
 
