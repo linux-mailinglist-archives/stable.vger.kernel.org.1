@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-104755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E306B9F52E8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA729F51E8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76DD21886916
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAE311883A45
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C172A1F75BE;
-	Tue, 17 Dec 2024 17:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D26F1F7562;
+	Tue, 17 Dec 2024 17:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbwYdbqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7IC0PYA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA161F758C;
-	Tue, 17 Dec 2024 17:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C4F1F4735;
+	Tue, 17 Dec 2024 17:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456002; cv=none; b=FL3ntqWpqYSPDCiggbsK6aBDr3zdiUXb+JaGYb47+2LDuJ8+p474Esvb27nRZXR51oKdblL0cHo4JubqYfzp3J27xYNrf0tdI8OaCKI1PA73RcaVO0P6XmX5aF0odRwWd/7Mi8UgDKOu+XGyg7VK3PGRHLuxd8cGMexcI4kq3gI=
+	t=1734455468; cv=none; b=X/q1Kn6VQmQOwl8SQ26l1OcmHxUMPY/sy0RxtGBhIK+m48CIyzWqol2jDujrq0u8iMCM5/Rss1VNinL6PJ2EEh0G1U3UIjMU1CYc5nviZ713bPJEjZ0uLguFx6bBc69wIhre7cw140I1IqzmxCzwbg2udyVaSrHDOWJiwl5rmRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456002; c=relaxed/simple;
-	bh=F9H8iZCf9WE6gkeQuO4iGeHXnRDN4JwZstc3fK/M+C4=;
+	s=arc-20240116; t=1734455468; c=relaxed/simple;
+	bh=rzh36FC+bp+AOUdreuCrO5YcMVaJxYVoL+6p6DyIJXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rztEgYnkjwypY5xmkKI85fYLedmDNeUW+ApXdRuwIS4SZa1AK9Rxpy7FyYOoYe3fShsaanJm81uHQxc3Zr+W63OP4awD4MKjBs9jTwAWnBVYptPp4ydQWkTlRauxXoiB5E4uUwoZSFeniTBTc9p+Vt9+hlDiH+FzoJsDPwdaQds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbwYdbqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0ECC4CED3;
-	Tue, 17 Dec 2024 17:20:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K+6c+CYLCCXGh9uYmHHxWSDMxq2UdC+jEOlUNOWGxUg1dnvJqnbYBL8vkyjQJKNjS3YPUpQ+GEZpPHSTAiHon0yHys7TGXLw2nIqN/LjhGYy/uAdNLpZqPd0tmEz72AZVzVjvI7/qxwOyV27XsI6aoPRIkOYZMrDi1ADBIf9k4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7IC0PYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92164C4CED3;
+	Tue, 17 Dec 2024 17:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456002;
-	bh=F9H8iZCf9WE6gkeQuO4iGeHXnRDN4JwZstc3fK/M+C4=;
+	s=korg; t=1734455468;
+	bh=rzh36FC+bp+AOUdreuCrO5YcMVaJxYVoL+6p6DyIJXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WbwYdbqyOUHyg4+j/C50xYX+3EcSCEvFx/n66wCysGTI/Dmuc34pHmN+S/rOQ5QHs
-	 MnfzjWbcjiXRz/U27d4R6WIN6ziFQ59W8QPMcqs850UHZ7VbudirTSSSYC6pRS8Lc3
-	 IODGO+nL/U4HeKJz0OsgjmydzwDA6FXpe/L35Yko=
+	b=K7IC0PYAMjJ3PfTyxnOI9VnJk4q5miNpq8ft1pZuuxpCsJ7setqJSD+ESdS6fKGxA
+	 PLB/qNJ0oZ3eb2T4NDknrI1ps8eqyIweOmne6Dq2ha3Q+1wC9QSKWEYAmNNedmtD0H
+	 dMkPnzgbiSQHxbh1oQmHARUcfuxDiaVUV30bnyUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.6 027/109] xfs: fix scrub tracepoints when inode-rooted btrees are involved
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 20/43] ACPI: resource: Fix memory resource type union access
 Date: Tue, 17 Dec 2024 18:07:11 +0100
-Message-ID: <20241217170534.517242559@linuxfoundation.org>
+Message-ID: <20241217170521.271528604@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit ffc3ea4f3c1cc83a86b7497b0c4b0aee7de5480d upstream.
+[ Upstream commit 7899ca9f3bd2b008e9a7c41f2a9f1986052d7e96 ]
 
-Fix a minor mistakes in the scrub tracepoints that can manifest when
-inode-rooted btrees are enabled.  The existing code worked fine for bmap
-btrees, but we should tighten the code up to be less sloppy.
+In acpi_decode_space() addr->info.mem.caching is checked on main level
+for any resource type but addr->info.mem is part of union and thus
+valid only if the resource type is memory range.
 
-Cc: <stable@vger.kernel.org> # v5.7
-Fixes: 92219c292af8dd ("xfs: convert btree cursor inode-private member names")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move the check inside the preceeding switch/case to only execute it
+when the union is of correct type.
+
+Fixes: fcb29bbcd540 ("ACPI: Add prefetch decoding to the address space parser")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20241202100614.20731-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/scrub/trace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/resource.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/xfs/scrub/trace.h
-+++ b/fs/xfs/scrub/trace.h
-@@ -506,7 +506,7 @@ TRACE_EVENT(xchk_ifork_btree_error,
- 	TP_fast_assign(
- 		xfs_fsblock_t fsbno = xchk_btree_cur_fsbno(cur, level);
- 		__entry->dev = sc->mp->m_super->s_dev;
--		__entry->ino = sc->ip->i_ino;
-+		__entry->ino = cur->bc_ino.ip->i_ino;
- 		__entry->whichfork = cur->bc_ino.whichfork;
- 		__entry->type = sc->sm->sm_type;
- 		__entry->btnum = cur->bc_btnum;
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 01e91a7451b0..fdb896be5a00 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -250,6 +250,9 @@ static bool acpi_decode_space(struct resource_win *win,
+ 	switch (addr->resource_type) {
+ 	case ACPI_MEMORY_RANGE:
+ 		acpi_dev_memresource_flags(res, len, wp);
++
++		if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
++			res->flags |= IORESOURCE_PREFETCH;
+ 		break;
+ 	case ACPI_IO_RANGE:
+ 		acpi_dev_ioresource_flags(res, len, iodec,
+@@ -265,9 +268,6 @@ static bool acpi_decode_space(struct resource_win *win,
+ 	if (addr->producer_consumer == ACPI_PRODUCER)
+ 		res->flags |= IORESOURCE_WINDOW;
+ 
+-	if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
+-		res->flags |= IORESOURCE_PREFETCH;
+-
+ 	return !(res->flags & IORESOURCE_DISABLED);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
