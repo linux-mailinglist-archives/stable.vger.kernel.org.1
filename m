@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46329F52DF
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772E79F545C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A3657A4C28
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66AA017182F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192571F7577;
-	Tue, 17 Dec 2024 17:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D031F893C;
+	Tue, 17 Dec 2024 17:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2wabns5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qp2EC+BG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C981914A4E7;
-	Tue, 17 Dec 2024 17:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAA41F8927;
+	Tue, 17 Dec 2024 17:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456181; cv=none; b=DP1MwwknBms/nptBLeHBaiZm1XxJqJN3GUtsKLocnOKhqnF6hVFsdp1J23Yzk1R/6IKc8sG9NuTzZKfEEXYQW65pJ7RzfCydDmDfmkWRQlTnSdLjhc0aCWUb24mDAPqVUeZxCuWGS7izjlUs0U05qdB8BPY5WuvS6dDhP4M/T+s=
+	t=1734456681; cv=none; b=qJmgUSRVURyjqoRHbROiYQoxb3d9Msq0TO1qpDsLHMRBA+XPUU2fkkxsHec7zKPVledgNreY3VFsJcZpHRyTQ7vHiAkACil6VgXFHYPBxf8OTEHdRvrwI7SLssuEI/efFQFNd7uRnmrLTCHNuTp/uBeAzo5y7ibhvPng4BwEAsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456181; c=relaxed/simple;
-	bh=tu8dvgXN3QOoqYwDL9gf1+zNzer3AU55LUv8jVTjvLY=;
+	s=arc-20240116; t=1734456681; c=relaxed/simple;
+	bh=66sTYsW7AL9o3YitKHafXmKX9trXH7QAR9BBx6W0E3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbGb2ZH3J5GOsrcdSwnv/JojSSFCJTwc6SvXtCVuMNgfHU2jVrsec/0EZ3cbpOZ95ZZhbyz8tWcutEK2ZPd/tsqEW2JQ/kT85erpqhWoZwBQ8YdsIojbegKzjy3CFvmaPySrNHPm12ZRHsnaBhQt+e2aMf7OyIqv92GhhDI4BQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2wabns5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BEDC4CED3;
-	Tue, 17 Dec 2024 17:23:00 +0000 (UTC)
+	 MIME-Version; b=ucYjUJFRbaJv9b5lmcpJzQy3QOQC0CHKL072FIBeEtPKzDY4hEYJlMOacxQi3w5COgCVD07cv6rSkzYuI63JmKafiwDMzGLDeuEV7Bo2uA4aJlN66cGr0Gvrph6HdfI3pF4VtsiqJwTxlYgGkpnL0zqzYhO4O5IHL+YCqcsXuOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qp2EC+BG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B20CC4CED3;
+	Tue, 17 Dec 2024 17:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456181;
-	bh=tu8dvgXN3QOoqYwDL9gf1+zNzer3AU55LUv8jVTjvLY=;
+	s=korg; t=1734456681;
+	bh=66sTYsW7AL9o3YitKHafXmKX9trXH7QAR9BBx6W0E3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2wabns5WAEB4J5mI7HDbBFUdJ+qHjl9PY9vS4YKVHJRS2QBHsFnn6WjOfIfWZC9b
-	 L2Q/4pQvW7NQBi4MVo7AtENO9Yylvw84F2NvPDKStws5y1fn2ERegXvPKtPDEw3FEI
-	 uJvIsseIJAo8PFDZ9umwZAbj8hXmeCqA1LaXjego=
+	b=qp2EC+BGfuxt8R3ebJPRAgDGrVoNfAVp6TnWJlmX5v+MU5p4xlDEohkodg2GV/47u
+	 41MmQT3cgz1u0CS55GwDPVe3MgMj1p1cIhmxdBtB6pkGa5qtDYwnTN19uanirfyWD+
+	 jTc0dNgcCPzmdULihCabBY0uPkkTYZuhDO6lt5Y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/109] ACPICA: events/evxfregn: dont release the ContextMutex that was never acquired
+Subject: [PATCH 6.12 133/172] selftests: netfilter: Stabilize rpath.sh
 Date: Tue, 17 Dec 2024 18:08:09 +0100
-Message-ID: <20241217170536.928503770@linuxfoundation.org>
+Message-ID: <20241217170551.855032464@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit c53d96a4481f42a1635b96d2c1acbb0a126bfd54 ]
+[ Upstream commit d92906fd1b940681b4509f7bb8ae737789fb4695 ]
 
-This bug was first introduced in c27f3d011b08, where the author of the
-patch probably meant to do DeleteMutex instead of ReleaseMutex. The
-mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
-MutexRelease line was never removed, so do it now.
+On some systems, neighbor discoveries from ns1 for fec0:42::1 (i.e., the
+martian trap address) would happen at the wrong time and cause
+false-negative test result.
 
-Link: https://github.com/acpica/acpica/pull/982
-Fixes: c27f3d011b08 ("ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling")
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Link: https://patch.msgid.link/20241122082954.658356-1-d-tatianin@yandex-team.ru
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Problem analysis also discovered that IPv6 martian ping test was broken
+in that sent neighbor discoveries, not echo requests were inadvertently
+trapped
+
+Avoid the race condition by introducing the neighbors to each other
+upfront. Also pin down the firewall rules to matching on echo requests
+only.
+
+Fixes: efb056e5f1f0 ("netfilter: ip6t_rpfilter: Fix regression with VRF interfaces")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/evxfregn.c | 2 --
- 1 file changed, 2 deletions(-)
+ tools/testing/selftests/net/netfilter/rpath.sh | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
-index 95f78383bbdb..bff2d099f469 100644
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -232,8 +232,6 @@ acpi_remove_address_space_handler(acpi_handle device,
+diff --git a/tools/testing/selftests/net/netfilter/rpath.sh b/tools/testing/selftests/net/netfilter/rpath.sh
+index 4485fd7675ed..86ec4e68594d 100755
+--- a/tools/testing/selftests/net/netfilter/rpath.sh
++++ b/tools/testing/selftests/net/netfilter/rpath.sh
+@@ -61,9 +61,20 @@ ip -net "$ns2" a a 192.168.42.1/24 dev d0
+ ip -net "$ns1" a a fec0:42::2/64 dev v0 nodad
+ ip -net "$ns2" a a fec0:42::1/64 dev d0 nodad
  
- 			/* Now we can delete the handler object */
- 
--			acpi_os_release_mutex(handler_obj->address_space.
--					      context_mutex);
- 			acpi_ut_remove_reference(handler_obj);
- 			goto unlock_and_exit;
- 		}
++# avoid neighbor lookups and enable martian IPv6 pings
++ns2_hwaddr=$(ip -net "$ns2" link show dev v0 | \
++	     sed -n 's, *link/ether \([^ ]*\) .*,\1,p')
++ns1_hwaddr=$(ip -net "$ns1" link show dev v0 | \
++	     sed -n 's, *link/ether \([^ ]*\) .*,\1,p')
++ip -net "$ns1" neigh add fec0:42::1 lladdr "$ns2_hwaddr" nud permanent dev v0
++ip -net "$ns1" neigh add fec0:23::1 lladdr "$ns2_hwaddr" nud permanent dev v0
++ip -net "$ns2" neigh add fec0:42::2 lladdr "$ns1_hwaddr" nud permanent dev d0
++ip -net "$ns2" neigh add fec0:23::2 lladdr "$ns1_hwaddr" nud permanent dev v0
++
+ # firewall matches to test
+ [ -n "$iptables" ] && {
+ 	common='-t raw -A PREROUTING -s 192.168.0.0/16'
++	common+=' -p icmp --icmp-type echo-request'
+ 	if ! ip netns exec "$ns2" "$iptables" $common -m rpfilter;then
+ 		echo "Cannot add rpfilter rule"
+ 		exit $ksft_skip
+@@ -72,6 +83,7 @@ ip -net "$ns2" a a fec0:42::1/64 dev d0 nodad
+ }
+ [ -n "$ip6tables" ] && {
+ 	common='-t raw -A PREROUTING -s fec0::/16'
++	common+=' -p icmpv6 --icmpv6-type echo-request'
+ 	if ! ip netns exec "$ns2" "$ip6tables" $common -m rpfilter;then
+ 		echo "Cannot add rpfilter rule"
+ 		exit $ksft_skip
+@@ -82,8 +94,10 @@ ip -net "$ns2" a a fec0:42::1/64 dev d0 nodad
+ table inet t {
+ 	chain c {
+ 		type filter hook prerouting priority raw;
+-		ip saddr 192.168.0.0/16 fib saddr . iif oif exists counter
+-		ip6 saddr fec0::/16 fib saddr . iif oif exists counter
++		ip saddr 192.168.0.0/16 icmp type echo-request \
++			fib saddr . iif oif exists counter
++		ip6 saddr fec0::/16 icmpv6 type echo-request \
++			fib saddr . iif oif exists counter
+ 	}
+ }
+ EOF
 -- 
 2.39.5
 
