@@ -1,127 +1,145 @@
-Return-Path: <stable+bounces-104529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E88A9F50C7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1909F50CB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63B9C7A3DEF
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:19:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA81B188064A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61ACA1F868E;
-	Tue, 17 Dec 2024 16:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEA81FBCB7;
+	Tue, 17 Dec 2024 16:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZtPMKi6S"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="alRyg0p0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD81D1F7582;
-	Tue, 17 Dec 2024 16:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C8D1FBCAD
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 16:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734452009; cv=none; b=UojPDO+FOc7jx6fb0NU0P8Ps8LHz8rBRDaMROcqtZ4VhHW1vk1dCo2kjSboEopFyodVVp84Wp3DPlmTWz3L6XwG9KQobr1Ys3SOHufaqiP5c1wNAsn7eBEuzj7P2HxbZTpHsUkbFDoCNYKzjikqeCsfjm836lLwDmG0zaKSHBRA=
+	t=1734452057; cv=none; b=mPf7pNWALf4Red1AEM47SEX5izVambWzZLZZ/KRCSfHLXjY3b66N0XJUzGezYMuStPo6KodDrIFmys37vwg7N9dxaqyXPHnvbKsI8YWNzfsEgVfA3sa38htCmdBKe1bfv/NkZjZitPuvsOt955Q9Rb+JNBzyLb+dgD22UE8diYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734452009; c=relaxed/simple;
-	bh=IKiMlbHKdsAOVicyR7fjBrKL7cu5uBWz9FdHlUHqWrE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Yj1m7Bg9vlxM7UNCGa8o1MYrw1n11TT0XklkwYoORiedtUbKNxA6ocRym/ZB1HkvbsjSTxY9BL9AgVZuPFnI3koMYJjbKhVmk8O2iMGfdkKiw22EWuFRBFCHyCc7x59W6+UNzDyUbMtXWbgLpUf8yxZ8GhKGnPEBG4BuFlrzh+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZtPMKi6S; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-725f2f79ed9so4389465b3a.2;
-        Tue, 17 Dec 2024 08:13:27 -0800 (PST)
+	s=arc-20240116; t=1734452057; c=relaxed/simple;
+	bh=J6QwD7x+lm5XadIBl1uLohp69xgLjMMyXU1tNM/lWUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DM8WM/n8KqSjMTGJ0tdJCd/R8LiTG2HYH98owlHJy6ybFrySG/dEfm0xxxZX/4C2qEyB3BzHBKp4pVqo/2Y+X4TCCcxpCOiXLdKrXFnz9725BvwuO9Go2zALGLks6n5ob8qY6MKvk+BHt9/82tw+GcbQ7KNuhlxkotCwGQnfpaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=alRyg0p0; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-467838e75ffso68110571cf.3
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 08:14:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734452007; x=1735056807; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kahqqPMSTr9XgU+xN0T1Ws/ewFe4FMQQ8UQQ00n/SUM=;
-        b=ZtPMKi6SZGYlbv/By5PXHuplIth7qfwOzSaeNvi64gGVO8F9QLD8xou2D3Cg4uXcnf
-         +EmrV0R6O1EdP7MtF5XZoDHhWADuB08CZEnYjEqNiUky07hlbrW9141X3PRHw7SL91Sq
-         aCcsip5t3e9JDXyoUMDMFGDYVYn6zBhdoAdJzVzj19pZ+W9cEPS1NdI7t4hxIgPJaPcQ
-         m6AJyXh5dbYkW3DCc9FcGf87bAq9tnG2QLdgX7LYniSF1zJBI5LtpJxBh0Lr+KjjuHG1
-         auJMKZjeBmXElB46BVOw2UxSzMm3pczTmaCJcrnegB53hkkPxrSEiiFvyHOZEWNNdt2G
-         1aTg==
+        d=rowland.harvard.edu; s=google; t=1734452055; x=1735056855; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+3Rccgquk3pMB0e8JLxIrtXCYyTNacSqTIXQ+I+xU6k=;
+        b=alRyg0p0eHkzRig8i/llDqD5OHw4O0W9NCPLdS58FsCVY5l8WPkKQVcUHowOt8Lqvv
+         ckxpSQNtc/Si53S84tmV/mQ4zSnGiVi+pn1aeMYkqZmOUeitXCtacuAxQ4mPivZelgwJ
+         iRbKDZcsRZSeZ7PoZf3WWUBxulwQy+rz48VuGRH0LEUO0Mnli+xYBYu00/cy4EwvaR5w
+         zPbaxlFceemxWvlISPIMWyyt2fr7sSYYPhkt8pcO8u7p+oq4lpCELX6QWOGdJXO/Vwpj
+         yJ1MyIxYNPlhRACjG9G/YGzrU7TThO/ZMVJcQYtGLmh5xKdU4l6prlMHrj9i9MZ9YZx2
+         dO7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734452007; x=1735056807;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kahqqPMSTr9XgU+xN0T1Ws/ewFe4FMQQ8UQQ00n/SUM=;
-        b=dnjeo+r7J/m6E8iIL6+Cz6GTR0+3HnUmXvbiKGyzoKAu6tERyj38IaSw1Su17QXbHR
-         a/2mhOPELAAye5P99Q1AMLuw1CJzFAXSV4JNGvIcMdDisvDgEy8qjuwM1jcLREnaK/2n
-         YXRpPdWY1Ni2l1PSnhciFCND24Xe2q5YeEyObQflDB3C0yFPGEAvgfQmXpKihau+vSoS
-         ud50cVq4ysidpKk/iaDj62ZrRywTqz8YuK5e1g0z2usYsjRKnkXqrc8Re0IcHx45OYoK
-         xBAVChVQbNCeV0GE+i1y+/giBcfDPWt4vM820l1SPxSV3VSPDRQV2OVgG6sNhhZLj2H/
-         7OJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLMtTKFpqUDRFkFs42U8Mv9DCBaJqz9/9fi6OzBuyrFCUA+Mnxc8bCx+ris5VD52TaAqzvBHs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgiFOCm/8f+RlZh8oOPLeen1vG3/fxKI6TY7kLofBBTHVwdj6+
-	xiWmqDQ6Hxjz2ElpVxkpAgOX9e4A8y2bNAUf+iAgrODmFUg1pikt
-X-Gm-Gg: ASbGnculVDVjHQTstWXMTHO+gzoN+OAgYb5zA93QGRs1LW4cKkPm65BCMA27ukdKRkQ
-	zpsrso6lMjZivi0LZUTYWdQ4qar69XnzU1RWKvmt0Lys65RjlYl8UBoSKDgT/vHUJAGJgGj3z+q
-	iL1nK1Uf8H2dzGXMOwHjVUElCIg+qMJ8Eub44526+plpib7J7GCFpWle1pci+mWMxh6Czemud8p
-	AnXRbAynruCh2dtg/mbpKnR4PpJwel6d487JLsKvth9OkcXsoyf50oJO4bO2JK/QlkSLJyOUoI=
-X-Google-Smtp-Source: AGHT+IHFkdSu25meZ3P40S+TgoYUNiCRsPaAFdS/ugZ0zuvDJbW0VQPUcPHg1pqZLNrOw0lfVX8WnQ==
-X-Received: by 2002:a05:6a20:4321:b0:1db:e338:ab0a with SMTP id adf61e73a8af0-1e1dfbfbe83mr29896481637.8.1734452006837;
-        Tue, 17 Dec 2024 08:13:26 -0800 (PST)
-Received: from localhost.localdomain ([222.205.46.101])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72918ad5664sm6879415b3a.73.2024.12.17.08.13.24
+        d=1e100.net; s=20230601; t=1734452055; x=1735056855;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+3Rccgquk3pMB0e8JLxIrtXCYyTNacSqTIXQ+I+xU6k=;
+        b=TbDvm4ViAom6kUhnUDk+ufQGnnEgbt92aV8nE+Y9Ba168LBWbt5gIYX5TMHa0xiw2Z
+         c9iFufTb/oayyVkVgb3XkhgLEZIjsrc/eTRIUzxKvhm/rkzNkMbkQoRizSGYcMz1d6T9
+         xD2KjLeUhN5l+O5pjs7Ms4cQE/WeZFziKvUgDJi5PpRCVmEX6xyl5hDyNS/bNxgXhpS/
+         IRhw/SVz3vgP76SseKIY8rYyFCTsZ/twsyWpb+9DbiPapcuQt0JAu3KGo+JYPp2/3K7S
+         rz2UyL+uvVrZCne+34cXLs/bSf24kZoHJRcd6vF6PU84bwbNmwBuSWRIGA/EUf69uU9i
+         WhLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqfG990an91RYrOi2WiQwn6qB283QcQZ/yghPCzMQdjhQbNba1zDYImHBwM+6N/SdJTxRy88o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+QczOHbCyLmRttthQ5L9cwZw7swSuEqZG/TgDc7dK1rEQiEnW
+	SDcy4bnsTQWslbLsZ09+x60/V/BkfHMEu2g4bpSIWphaCS1OfGgizqmf8X45hw==
+X-Gm-Gg: ASbGnct35Z8QHHQZlUGiqUMveVykjBYvnP0nibvEJMtgyjnzcPU70pkhsoDapJeA1DB
+	qNgSAERyiVO1CFrAqYCzO7EcLUigz95deSXMF+HaObRDlWTR0W2/YlN31bs1n1fExhhpEZS8f7d
+	4nPJifGaQXIr1zLsLnzU88EA3oYOEcjmtCH1mxJ2F7LMd8utpNndLurbqvZldx7Mu1F7dKGovTM
+	6u9gwou9A9jZEuyvzupqicMasDePbXLS5PAqPnlI9prK4AY310lb1ufxQ==
+X-Google-Smtp-Source: AGHT+IFoPz5nV0F70qkjNPbX4NA7B77WNReqNOXg8KtZoNW+iEe5zl1EB6kQNtekItrIEdv6nU0pbQ==
+X-Received: by 2002:ac8:5741:0:b0:467:6cd9:3093 with SMTP id d75a77b69052e-467a582a976mr334266611cf.46.1734452054891;
+        Tue, 17 Dec 2024 08:14:14 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:681:fd10::ba54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-467b2e84db6sm40614951cf.54.2024.12.17.08.14.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2024 08:13:26 -0800 (PST)
-From: Gax-c <zichenxie0106@gmail.com>
-To: trondmy@kernel.org,
-	anna@kernel.org,
-	bcodding@redhat.com
-Cc: linux-nfs@vger.kernel.org,
-	chenyuan0y@gmail.com,
-	zzjas98@gmail.com,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] NFS: Fix potential buffer overflowin nfs_sysfs_link_rpc_client()
-Date: Wed, 18 Dec 2024 00:13:12 +0800
-Message-Id: <20241217161311.28640-1-zichenxie0106@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Tue, 17 Dec 2024 08:14:14 -0800 (PST)
+Date: Tue, 17 Dec 2024 11:14:11 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Ma Ke <make_ruc2021@163.com>
+Cc: gregkh@linuxfoundation.org, mka@chromium.org,
+	christophe.jaillet@wanadoo.fr, quic_ugoswami@quicinc.com,
+	oneukum@suse.com, stanley_chang@realtek.com,
+	javier.carrasco@wolfvision.net, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: fix reference leak in usb_new_device()
+Message-ID: <ccc1083b-5ae8-490b-b357-52e162ba0a1f@rowland.harvard.edu>
+References: <20241217035353.2891942-1-make_ruc2021@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217035353.2891942-1-make_ruc2021@163.com>
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+On Tue, Dec 17, 2024 at 11:53:52AM +0800, Ma Ke wrote:
+> When device_add(&udev->dev) failed, calling put_device() to explicitly
+> release udev->dev. Otherwise, it could cause double free problem.
 
-name is char[64] where the size of clnt->cl_program->name remains
-unknown. Invoking strcat() directly will also lead to potential buffer
-overflow. Change them to strscpy() and strncat() to fix potential
-issues.
+If you're worried that the same object might be freed more than once 
+(double free), how can calling put_device() help?  Won't that cause 
+udev->dev to be freed a third time?
 
-Fixes: e13b549319a6 ("NFS: Add sysfs links to sunrpc clients for nfs_clients")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Cc: stable@vger.kernel.org
----
- fs/nfs/sysfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> Found by code review.
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index bf378ecd5d9f..7b59a40d40c0 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -280,9 +280,9 @@ void nfs_sysfs_link_rpc_client(struct nfs_server *server,
- 	char name[RPC_CLIENT_NAME_SIZE];
- 	int ret;
- 
--	strcpy(name, clnt->cl_program->name);
--	strcat(name, uniq ? uniq : "");
--	strcat(name, "_client");
-+	strscpy(name, clnt->cl_program->name, sizeof(name));
-+	strncat(name, uniq ? uniq : "", sizeof(name) - strlen(name) - 1);
-+	strncat(name, "_client", sizeof(name) - strlen(name) - 1);
- 
- 	ret = sysfs_create_link_nowarn(&server->kobj,
- 						&clnt->cl_sysfs->kobject, name);
--- 
-2.25.1
+In your code review, did you check to see whether the routine which 
+calls usb_new_device() will do the put_device() when an error occurs?
 
+> Cc: stable@vger.kernel.org
+> Fixes: 9f8b17e643fe ("USB: make usbdevices export their device nodes instead of using a separate class")
+> Signed-off-by: Ma Ke <make_ruc2021@163.com>
+> ---
+>  drivers/usb/core/hub.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+> index 4b93c0bd1d4b..05b778d2ad63 100644
+> --- a/drivers/usb/core/hub.c
+> +++ b/drivers/usb/core/hub.c
+> @@ -2651,6 +2651,7 @@ int usb_new_device(struct usb_device *udev)
+>  	err = device_add(&udev->dev);
+>  	if (err) {
+>  		dev_err(&udev->dev, "can't device_add, error %d\n", err);
+> +		put_device(&udev->dev);
+>  		goto fail;
+>  	}
+>  
+> @@ -2683,6 +2684,9 @@ int usb_new_device(struct usb_device *udev)
+>  	pm_runtime_put_sync_autosuspend(&udev->dev);
+>  	return err;
+>  
+> +out_del_dev:
+> +	device_del(&udev->dev);
+> +	put_device(&udev->dev);
+
+You added a new statement label but you did not add any jumps to that 
+label.  As a result, these two lines will never be executed.
+
+Alan Stern
+
+>  fail:
+>  	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
+>  	pm_runtime_disable(&udev->dev);
+> -- 
+> 2.25.1
+> 
 
