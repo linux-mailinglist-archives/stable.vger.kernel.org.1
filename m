@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C76B9F5228
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:15:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371549F52BC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A30F170271
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBC627A4181
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2403F1F893A;
-	Tue, 17 Dec 2024 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FD91F8660;
+	Tue, 17 Dec 2024 17:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s180QRSf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ez+hxAfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E9A1F893C;
-	Tue, 17 Dec 2024 17:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAFE1F7574;
+	Tue, 17 Dec 2024 17:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455613; cv=none; b=FsPUNTUXOXWbSkA/on5EkakuuccASpPNbhe/9jVQfQWnhVwTB0dj83b+i/mq/NSL5WC1kEcdkvzk4wZc2Mqgc+kbiwgAmfpAqFEoIB/QvW88ZnYKIztnq1/LuFrlfefft+Ov5XSeTQF7rVVEgKNZ6W18ao62hkoig5ukDm17n5w=
+	t=1734456116; cv=none; b=FOAIlNilL6keZ9Baza2800UEYDFLOdMV/1OvHmm2PcAZXSakCGr2cw77PLCsYXIi+jdHhewM+5b4pQ4fVE4I5a0TGsvM21/Pg+9fXZbbs8gdAkybuN9gOBcfBsAApS44jZf7DdhUMbbVHsi6wBVJVttMXzabsaZipF/7vnXLANM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455613; c=relaxed/simple;
-	bh=1ukvaR2B7jyaXrxZDTsZMncDWS0rZXMvYSX2oA7jRtE=;
+	s=arc-20240116; t=1734456116; c=relaxed/simple;
+	bh=jYW7rPwDXV/CFsyCPr6NjirrECyleAb98f6rSRIFtLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tR9HtMtfm7ire7PRJ33Ber1gdkddFO40MR0FhKyA3Xa5Q9wT7+KbMZCW5nLZPclC/7rfv447W13ZJOBFkxaX+KueGgHwwobKDz1jJdT/444ft51hpxi94tyNqXDA5C2KjjOVq9omQeaLtBN5KVwXzKRdl27K1NAckG7enNis0YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s180QRSf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D942C4CED3;
-	Tue, 17 Dec 2024 17:13:32 +0000 (UTC)
+	 MIME-Version; b=EgZ9w/eKL/D9itXoBp/dovPddSxgIqoDkfRM7G+qs0zQu3mhhFLFeG4nRty7rCwZ4NkgRFAOQOcWRn9yNntxQP760Q8r4NkikieT/j9w3Q7mcEYNom/s5UdYCJmutyfeMaEqP6/INRYz+s856qeBHzateW12qEc8EbfqmXyLd8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ez+hxAfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03535C4CED3;
+	Tue, 17 Dec 2024 17:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455613;
-	bh=1ukvaR2B7jyaXrxZDTsZMncDWS0rZXMvYSX2oA7jRtE=;
+	s=korg; t=1734456116;
+	bh=jYW7rPwDXV/CFsyCPr6NjirrECyleAb98f6rSRIFtLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s180QRSfld2t2krYWtkGSvz8IPxAs42CmMZEzyiuG2dz7FMe+fK/XDUy01Yb/EgX0
-	 uTliqaRkAke3Lf3p0nCAGDAIpsCcYJkxkKFFNEtN0aBRuG+Ynl3iLzx1KovwYYMMeP
-	 zmCuVFrc8XmYBiD6BS8eYt8aBDcLm4N44H9LaR1w=
+	b=ez+hxAfWrX9xI363l1I5mYR3n8cFpdE9uZoqT9xqKEbXXZbXuQK48UfptpRz9UB1+
+	 Z8FPlsA8foP6bnkA2NOm3I0/ROVMFEdXEi6zSUJ+CTT4rLiqtnlQ6rQCUG285wQq+8
+	 Unkm4tQuDSeWQVlzm5A9fXXhA8vsZ+p61sr1XWbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lin Ma <linma@zju.edu.cn>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/51] ptp: kvm: x86: Return EOPNOTSUPP instead of ENODEV from kvm_arch_ptp_init()
+Subject: [PATCH 6.6 035/109] wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
 Date: Tue, 17 Dec 2024 18:07:19 +0100
-Message-ID: <20241217170521.365279054@linuxfoundation.org>
+Message-ID: <20241217170534.843613039@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 5e7aa97c7acf171275ac02a8bb018c31b8918d13 ]
+[ Upstream commit 2e3dbf938656986cce73ac4083500d0bcfbffe24 ]
 
-The caller, ptp_kvm_init(), emits a warning if kvm_arch_ptp_init() exits
-with any error which is not EOPNOTSUPP:
+Since the netlink attribute range validation provides inclusive
+checking, the *max* of attribute NL80211_ATTR_MLO_LINK_ID should be
+IEEE80211_MLD_MAX_NUM_LINKS - 1 otherwise causing an off-by-one.
 
-	"fail to initialize ptp_kvm"
+One crash stack for demonstration:
+==================================================================
+BUG: KASAN: wild-memory-access in ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
+Read of size 6 at addr 001102080000000c by task fuzzer.386/9508
 
-Replace ENODEV with EOPNOTSUPP to avoid this spurious warning,
-aligning with the ARM implementation.
+CPU: 1 PID: 9508 Comm: syz.1.386 Not tainted 6.1.70 #2
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
+ print_report+0xe0/0x750 mm/kasan/report.c:398
+ kasan_report+0x139/0x170 mm/kasan/report.c:495
+ kasan_check_range+0x287/0x290 mm/kasan/generic.c:189
+ memcpy+0x25/0x60 mm/kasan/shadow.c:65
+ ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
+ rdev_tx_control_port net/wireless/rdev-ops.h:761 [inline]
+ nl80211_tx_control_port+0x7b3/0xc40 net/wireless/nl80211.c:15453
+ genl_family_rcv_msg_doit+0x22e/0x320 net/netlink/genetlink.c:756
+ genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
+ genl_rcv_msg+0x539/0x740 net/netlink/genetlink.c:850
+ netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
+ netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
+ netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
+ netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
+ sock_sendmsg_nosec net/socket.c:716 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
+ ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
+ __sys_sendmsg net/socket.c:2582 [inline]
+ __do_sys_sendmsg net/socket.c:2591 [inline]
+ __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Fixes: a86ed2cfa13c ("ptp: Don't print an error if ptp_kvm is not supported")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20241203-kvm_ptp-eopnotsuppp-v2-1-d1d060f27aa6@weissschuh.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Update the policy to ensure correct validation.
+
+Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Suggested-by: Cengiz Can <cengiz.can@canonical.com>
+Link: https://patch.msgid.link/20241130170526.96698-1-linma@zju.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_kvm_x86.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_kvm_x86.c b/drivers/ptp/ptp_kvm_x86.c
-index 902844cc1a17..5e5b2ef78547 100644
---- a/drivers/ptp/ptp_kvm_x86.c
-+++ b/drivers/ptp/ptp_kvm_x86.c
-@@ -26,7 +26,7 @@ int kvm_arch_ptp_init(void)
- 	long ret;
- 
- 	if (!kvm_para_available())
--		return -ENODEV;
-+		return -EOPNOTSUPP;
- 
- 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		p = alloc_page(GFP_KERNEL | __GFP_ZERO);
-@@ -46,14 +46,14 @@ int kvm_arch_ptp_init(void)
- 
- 	clock_pair_gpa = slow_virt_to_phys(clock_pair);
- 	if (!pvclock_get_pvti_cpu0_va()) {
--		ret = -ENODEV;
-+		ret = -EOPNOTSUPP;
- 		goto err;
- 	}
- 
- 	ret = kvm_hypercall2(KVM_HC_CLOCK_PAIRING, clock_pair_gpa,
- 			     KVM_CLOCK_PAIRING_WALLCLOCK);
- 	if (ret == -KVM_ENOSYS) {
--		ret = -ENODEV;
-+		ret = -EOPNOTSUPP;
- 		goto err;
- 	}
- 
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 797907303669..5b9f39d93b04 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -811,7 +811,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MLO_LINKS] =
+ 		NLA_POLICY_NESTED_ARRAY(nl80211_policy),
+ 	[NL80211_ATTR_MLO_LINK_ID] =
+-		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS),
++		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS - 1),
+ 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
+ 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
 -- 
 2.39.5
 
