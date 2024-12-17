@@ -1,185 +1,105 @@
-Return-Path: <stable+bounces-104509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70A59F4DC7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6D99F4E44
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1827916D0BE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:31:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308531673DA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9C11F5411;
-	Tue, 17 Dec 2024 14:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A91C1F7078;
+	Tue, 17 Dec 2024 14:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="smruJOT3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2d5V7Emf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB001F3D50
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 14:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152D51F7071;
+	Tue, 17 Dec 2024 14:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734445891; cv=none; b=gcohScTT6YbkVt+rBRQwmclD+ImODn/zrJ1yBoQr2ukJzdSrXDe1zT85pojNa/8bKEhvUrooVjr/8kmWEkktBhC9I/fHfZXT0qMW6LIG6LRRHWU/f9tceJdUeqoU7+h3wtjGpfvwDxAA+cR4RVkoJa6Ji53J7i8SSzaayg2EEgw=
+	t=1734446997; cv=none; b=eYtvVbeNw1TwUBcN4s4MqtoWIxHtl9ZlcqWIWgUm4u+VVoD4uYju/AcEnQBe8D7hc5uGBNuFIOIAYQSCNh4NRUzGFwirshxDx/FbBJWjSJgwOE2SjlAurMK3EQdz9fgamEw1J2HtAQsQcpFAcoHuTZ62rt5PsmJV00FKkNxhUVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734445891; c=relaxed/simple;
-	bh=zy50t/hza8/qqnHZ5cqN0yNA8hpNOnCQM+jwlTDCTW8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bJ5qSTn/7OvtSDhI6J3Z+TkZ4wyPiZ7Jbr+l9m4XgYEkAiZm13JnXrGt9rotuke88+OW6QgDV95bxdSpaClxGLM6Qb1mMUp7RwBdyFczldU1gzc/B9u8ploih9kthygNAmTOO27VncOABsbnU96G/5CnX42bCxFa9mw0nX+Z1Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=smruJOT3; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-215740b7fb8so150525ad.0
-        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 06:31:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734445889; x=1735050689; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6IUKnZ0lzp04EWEQI6yO8xDcmIbMp5DmKbv3o4rFPlE=;
-        b=smruJOT3NugDErNbgpA1Iqyu/zZwXpmen7P2Tmsqf7e3mn3ZixFxHW22iAg5m4CEVO
-         Ez/ilbOKb97OspbpUwAX8j9hMNmO+LxSEDSU4fUqAVPs5CDrHDM0958Ip2WJTtTxjND8
-         Agca2EZmCKwpNYe666IHBquB9BbhKP+Mh04+M5lsfRhJ+JxqHS30+v9oCxdDctb6Dlhs
-         5UWac3JhBVp/ElTMC3jVajjCgVlo5sRO2hi2myJ45FdLjfkIu4RH/2iC8jsYPGUlsuWu
-         5ENr7smAXPYc7/JyGqH5QZVaPrKdK0QgrXtd6CE0TnmAGN+u0Z2Rq5VJ+wYKTcAYRrPV
-         vw4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734445889; x=1735050689;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6IUKnZ0lzp04EWEQI6yO8xDcmIbMp5DmKbv3o4rFPlE=;
-        b=e9zQRfbL2H9gQx9Webklrs4CZt/OuCP+FxsNYwyqRduUw2cL7d/lQuuQssIP6oCw/w
-         0RXo4j5ehleyydPzBY151e43/lFPBl0QWqGfT3A1lZC14DO56Oqzqke1TAGEnGMjU2tv
-         1ic59gRhs/Dh9sp88FGSiK7DZTpm17XK6k/oANA55ULicDk25TVDQfmtUsSTDKK3LxHo
-         a3B9loNBlziJ8stQ3Gha+ON/lm2awQR+vYcJ0P1yPlL1YCUbZwcRrY6ad9QnnuSqG7qq
-         mqdriHtlnRZbSDYqnkPF+nZwFXV4ZTf/t/seWaA8TWF0Ov3IaLuSW9McHYfw7junwGg+
-         sVuA==
-X-Forwarded-Encrypted: i=1; AJvYcCWvjYi9cRaEP84MeQRKpA16PfIY5kxvNg383hF1COwkLruK6n85q4nB0j59d1o6Uu4lBIt9bYk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHnvCNgHMnAlwrqQ+tg2gOIUoEgeDrA4dQNlyF13L+U/ygCrX+
-	Non0r9B1iaG5/BDpwtC+D0xFfXyJKXhEY30Zr1mvAkdq9rIQvFHUTBMLT/AhOJULD43c1jyHuFt
-	iHHyo/Kt7QC2JM3O9ErG7VklwonGffN/G/T+qy33M6QgO58roKDZh
-X-Gm-Gg: ASbGncs3aPZMyug1mLDCRIbNdsuf3JPfrqbFwKLUawvLlr6Lf3x/x6zx/TEpV56RIko
-	t8uEXTndlrN+Ynxsp+Awg1p9qjUFszzXbsVlq
-X-Google-Smtp-Source: AGHT+IHbAEaUpJMyIaGlrjcJhGwBko6mxJsWZi6pmCmhJ4SsZtC8iAiesZb8JsVR66lmc8LPi188LgFqCcBX8rJnxzU=
-X-Received: by 2002:a17:903:120e:b0:215:b077:5c21 with SMTP id
- d9443c01a7336-218c9cd8afcmr2759855ad.26.1734445888799; Tue, 17 Dec 2024
- 06:31:28 -0800 (PST)
+	s=arc-20240116; t=1734446997; c=relaxed/simple;
+	bh=H3XMaMnqYuL3e4+tH/pvlndNBZxo6dScvYg4WOvDYKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D7JJ+1ym9sb18HfkwbwFtXhxz4tblAtSDArIiZFaZhHaSK+glGc8simx6P7+zzWNYR3yM4QQ9Unj0PIUDCypNinjWmgOQJUuqY2mdOZyGbuZSgXwhLGBDiKL5jKy+YUrFAmb/tNLqGhpR/n33jfNhvhl5Ic5vFjpfrZpE+bZVog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2d5V7Emf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BB2C4CED3;
+	Tue, 17 Dec 2024 14:49:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734446996;
+	bh=H3XMaMnqYuL3e4+tH/pvlndNBZxo6dScvYg4WOvDYKU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=2d5V7EmftUKj89yQA/hqiFVotXPQdqxKwkVwEc0A9sgXBGtZutQbjaJTAQGyAsIwI
+	 h9XGc8xFt8kXKGFTQxfnt9at3G7rS23WeVqeFt9VgebQJsVtQc9nIDw3J6vSsdu+Sd
+	 C2iDNHBPirYgPnNEzEg3hzHye4Iwkg2UtLeOyUzM=
+Date: Tue, 17 Dec 2024 15:49:53 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Gustavo Padovan <gus@collabora.com>
+Cc: sashal <sashal@kernel.org>,
+	"kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
+	stable <stable@vger.kernel.org>,
+	Engineering - Kernel <kernel@collabora.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: Re: add 'X-KernelTest-Commit' in the stable-rc mail header
+Message-ID: <2024121700-spotless-alike-5455@gregkh>
+References: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
+ <2024121731-famine-vacate-c548@gregkh>
+ <193d506e75f.b285743e1543989.3693511477622845098@collabora.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240426080548.8203-1-xuewen.yan@unisoc.com> <20241016-kurieren-intellektuell-50bd02f377e4@brauner>
- <ZxAOgj9RWm4NTl9d@google.com> <Z1saBPCh_oVzbPQy@google.com>
-In-Reply-To: <Z1saBPCh_oVzbPQy@google.com>
-From: Brian Geffon <bgeffon@google.com>
-Date: Tue, 17 Dec 2024 09:30:51 -0500
-Message-ID: <CADyq12y=MGzcvemZTVVGN4yhzr2ihr96OB-Vpg0yvrtrewnFDg@mail.gmail.com>
-Subject: Re: [RFC PATCH] epoll: Add synchronous wakeup support for ep_poll_callback
-To: Greg KH <gregkh@linuxfoundation.org>, "# v4 . 10+" <stable@vger.kernel.org>
-Cc: Xuewen Yan <xuewen.yan@unisoc.com>, Christian Brauner <brauner@kernel.org>, jack@suse.cz, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com, cmllamas@google.com, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ke.wang@unisoc.com, jing.xia@unisoc.com, xuewen.yan94@gmail.com, 
-	viro@zeniv.linux.org.uk, mingo@redhat.com, peterz@infradead.org, 
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, lizeb@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <193d506e75f.b285743e1543989.3693511477622845098@collabora.com>
 
-On Thu, Dec 12, 2024 at 12:14=E2=80=AFPM Brian Geffon <bgeffon@google.com> =
-wrote:
->
-> On Wed, Oct 16, 2024 at 03:05:38PM -0400, Brian Geffon wrote:
-> > On Wed, Oct 16, 2024 at 03:10:34PM +0200, Christian Brauner wrote:
-> > > On Fri, 26 Apr 2024 16:05:48 +0800, Xuewen Yan wrote:
-> > > > Now, the epoll only use wake_up() interface to wake up task.
-> > > > However, sometimes, there are epoll users which want to use
-> > > > the synchronous wakeup flag to hint the scheduler, such as
-> > > > Android binder driver.
-> > > > So add a wake_up_sync() define, and use the wake_up_sync()
-> > > > when the sync is true in ep_poll_callback().
-> > > >
-> > > > [...]
-> > >
-> > > Applied to the vfs.misc branch of the vfs/vfs.git tree.
-> > > Patches in the vfs.misc branch should appear in linux-next soon.
-> > >
-> > > Please report any outstanding bugs that were missed during review in =
-a
-> > > new review to the original patch series allowing us to drop it.
-> > >
-> > > It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> > > patch has now been applied. If possible patch trailers will be update=
-d.
-> > >
-> > > Note that commit hashes shown below are subject to change due to reba=
-se,
-> > > trailer updates or similar. If in doubt, please check the listed bran=
-ch.
-> > >
-> > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> > > branch: vfs.misc
-> >
-> > This is a bug that's been present for all of time, so I think we should=
-:
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Cc: stable@vger.kernel.org
->
-> This is in as 900bbaae ("epoll: Add synchronous wakeup support for
-> ep_poll_callback"). How do maintainers feel about:
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
+On Tue, Dec 17, 2024 at 11:30:19AM -0300, Gustavo Padovan wrote:
+> 
+> 
+> ---- On Tue, 17 Dec 2024 11:15:58 -0300 Greg KH  wrote ---
+> 
+>  > On Tue, Dec 17, 2024 at 11:08:17AM -0300, Gustavo Padovan wrote: 
+>  > > Hey Greg, Sasha, 
+>  > > 
+>  > > 
+>  > > We are doing some work to further automate stable-rc testing, triage, validation and reporting of stable-rc branches in the new KernelCI system. As part of that, we want to start relying on the X-KernelTest-* mail header parameters, however there is no parameter with the git commit hash of the brach head. 
+>  > > 
+>  > > Today, there is only information about the tree and branch, but no tags or commits. Essentially, we want to parse the email headers and immediately be able to request results from the KernelCI Dashboard API passing the head commit being tested. 
+>  > > 
+>  > > Is it possible to add 'X-KernelTest-Commit'? 
+>  >  
+>  > Not really, no.  When I create the -rc branches, I apply them from 
+>  > quilt, push out the -rc branch, and then delete the branch locally, 
+>  > never to be seen again. 
+>  >  
+>  > That branch is ONLY for systems that can not handle a quilt series, as 
+>  > it gets rebased constantly and nothing there should ever be treated as 
+>  > stable at all. 
+>  >  
+>  > So my systems don't even have that git id around in order to reference 
+>  > it in an email, sorry.  Can't you all handle a quilt series? 
+> 
+> We have no support at all for quilt in KernelCI. The system pulls kernel
+> branches frequently from all the configured trees and build and test them,
+> so it does the same for stable-rc.
+> 
+> Let me understand how quilt works before adding a more elaborated
+> answer here as I never used it before.
 
-Dear stable maintainers, this fixes a bug goes all the way back and
-beyond Linux 2.6.12-rc2. Can you please add this commit to the stable
-releases?
+Ok, in digging, I think I can save off the git id, as I do have it right
+_before_ I create the email.  If you don't do anything with quilt, I
+can try to add it, but for some reason I thought kernelci was handling
+quilt trees in the past.  Did this change?
 
-commit 900bbaae67e980945dec74d36f8afe0de7556d5a upstream.
+thanks,
 
->
-> >
-> > I sent a patch which adds a benchmark for nonblocking pipes using epoll=
-:
-> > https://lore.kernel.org/lkml/20241016190009.866615-1-bgeffon@google.com=
-/
-> >
-> > Using this new benchmark I get the following results without this fix
-> > and with this fix:
-> >
-> > $ tools/perf/perf bench sched pipe -n
-> > # Running 'sched/pipe' benchmark:
-> > # Executed 1000000 pipe operations between two processes
-> >
-> >      Total time: 12.194 [sec]
-> >
-> >       12.194376 usecs/op
-> >           82005 ops/sec
-> >
-> >
-> > $ tools/perf/perf bench sched pipe -n
-> > # Running 'sched/pipe' benchmark:
-> > # Executed 1000000 pipe operations between two processes
-> >
-> >      Total time: 9.229 [sec]
-> >
-> >        9.229738 usecs/op
-> >          108345 ops/sec
-> >
-> > >
-> > > [1/1] epoll: Add synchronous wakeup support for ep_poll_callback
-> > >       https://git.kernel.org/vfs/vfs/c/2ce0e17660a7
->
-> Thanks,
-> Brian
->
-
- Thanks,
- Brian
+greg k-h
 
