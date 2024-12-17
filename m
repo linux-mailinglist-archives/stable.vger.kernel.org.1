@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E14C9F5279
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 660149F51D2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559E3189008B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18A3D188CD9D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D911527B1;
-	Tue, 17 Dec 2024 17:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51521F76B5;
+	Tue, 17 Dec 2024 17:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0P8hYBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSf4zbvu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C64D13DBB6;
-	Tue, 17 Dec 2024 17:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F46C1F868D;
+	Tue, 17 Dec 2024 17:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455796; cv=none; b=duImq2YbU5cB58tYK0UB0X2a21e+XJhPOlX/WT/vRaDB6vZakEoNkPQh0/QYKV/MekYeS+UV0eN1ucDyVvBQVDvJegRPl96mlttBbNzgIlRnaYCeuzMmiUrm7rjB40GA3UkOLto7pukq6HlVZVE/Imtr36AsPBotO3fN1PDOQ94=
+	t=1734455405; cv=none; b=VA5oqwVqbRhfQk6KXvMSsKppFjdjJJZwXCDEUN/9tBxaddOKKgi0Ti0JkaTsXhKPsIHaRy339JxlXrnVddVgCn8Y43yhHoADtSo1Hp3Id2+z29y9rqz6M9YdMOutZw2g1yAWAX2e67u7LQFy57wtj+WpwdjOHOsPAn5pADN6AgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455796; c=relaxed/simple;
-	bh=wh1nFX4ys9bJFRo1iPt3bwXZIDR7Y98kjiQS5npvVkE=;
+	s=arc-20240116; t=1734455405; c=relaxed/simple;
+	bh=IGHlFQodvhRaKdz2CHqLemRGi41pGXb6w99ExZeKj9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MThqL/AXxHu2HkZNF16RYbqFgDtXD82BjTQ5pOY0mXz/2zRAf7MEmMVO0rcnWXtJ9iDCQJDalJmNg9f5t8a1lATs0KkbMhAY8Samhbn7aY9f9n/xKFaXJbI3KhcD02IGIPBEY0LbKkh9Xoo+n/6XrqBHzd3yd/vbmxChbwIyaGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0P8hYBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002E3C4CED3;
-	Tue, 17 Dec 2024 17:16:35 +0000 (UTC)
+	 MIME-Version; b=Dsor26oDFW9wzqs0PIKojuAMUuZ2W0iIbeo5uAgqJ/2V2S5z9umYm2KlEerxOkMAGWvVRv4CFHI+0qDDne1PZvBtgs4n20xvbNlV3HaB1goO/d7T8JiEpK+PRYzDzpNF+nOeMlcujgXzuxioiM3k9dcwWy6Bo8b06KkojMwPTSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSf4zbvu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E0DC4CED3;
+	Tue, 17 Dec 2024 17:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455796;
-	bh=wh1nFX4ys9bJFRo1iPt3bwXZIDR7Y98kjiQS5npvVkE=;
+	s=korg; t=1734455405;
+	bh=IGHlFQodvhRaKdz2CHqLemRGi41pGXb6w99ExZeKj9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0P8hYBzH3g0GvU/f0n4DpV6w9x4CW2D+eo7gv8z3qJHTd0vHIQxX8MDEXeafVjCa
-	 5yPE75fWM00Cz59VzOx4sXtPv71zGfb/FRClx1LmHS4wUmlGpFisI63H/zv22VEClT
-	 uaJkH96mEfTY5ChE47PwyH9dxg5AvCr07K5GQZwU=
+	b=lSf4zbvuqtyR3eRp4NoNFhw6fOvTRZ15AYFFsmumj6M4yLGHmgVN/y6Gpyqe+G42E
+	 2+tj++B+RoajqKXubc7ZH0m5eS86l45MIiciJYJpVcNTrgUM1+I7h/brHMozChDXxK
+	 eQ5lI6pqANT2qe9qYlDUzLHObYIRTrrLKeJAglyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniil Tatianin <d-tatianin@yandex-team.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/76] tipc: fix NULL deref in cleanup_bearer()
+Subject: [PATCH 5.4 17/24] ACPICA: events/evxfregn: dont release the ContextMutex that was never acquired
 Date: Tue, 17 Dec 2024 18:07:15 +0100
-Message-ID: <20241217170527.718665495@linuxfoundation.org>
+Message-ID: <20241217170519.713777558@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 
-[ Upstream commit b04d86fff66b15c07505d226431f808c15b1703c ]
+[ Upstream commit c53d96a4481f42a1635b96d2c1acbb0a126bfd54 ]
 
-syzbot found [1] that after blamed commit, ub->ubsock->sk
-was NULL when attempting the atomic_dec() :
+This bug was first introduced in c27f3d011b08, where the author of the
+patch probably meant to do DeleteMutex instead of ReleaseMutex. The
+mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
+MutexRelease line was never removed, so do it now.
 
-atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
-
-Fix this by caching the tipc_net pointer.
-
-[1]
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-CPU: 0 UID: 0 PID: 5896 Comm: kworker/0:3 Not tainted 6.13.0-rc1-next-20241203-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events cleanup_bearer
- RIP: 0010:read_pnet include/net/net_namespace.h:387 [inline]
- RIP: 0010:sock_net include/net/sock.h:655 [inline]
- RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
-Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 3c f7 99 f6 48 8b 1b 48 83 c3 30 e8 f0 e4 60 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 1a f7 99 f6 49 83 c7 e8 48 8b 1b
-RSP: 0018:ffffc9000410fb70 EFLAGS: 00010206
-RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88802fe45a00
-RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffc9000410f900
-RBP: ffff88807e1f0908 R08: ffffc9000410f907 R09: 1ffff92000821f20
-R10: dffffc0000000000 R11: fffff52000821f21 R12: ffff888031d19980
-R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff88807e1f0918
-FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556ca050b000 CR3: 0000000031c0c000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-Fixes: 6a2fa13312e5 ("tipc: Fix use-after-free of kernel socket in cleanup_bearer().")
-Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67508b5f.050a0220.17bd51.0070.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241204170548.4152658-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/acpica/acpica/pull/982
+Fixes: c27f3d011b08 ("ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling")
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Link: https://patch.msgid.link/20241122082954.658356-1-d-tatianin@yandex-team.ru
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/udp_media.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/acpi/acpica/evxfregn.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 3f5a12b85b2d..f5bd75d931c1 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -811,6 +811,7 @@ static void cleanup_bearer(struct work_struct *work)
- {
- 	struct udp_bearer *ub = container_of(work, struct udp_bearer, work);
- 	struct udp_replicast *rcast, *tmp;
-+	struct tipc_net *tn;
+diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
+index 6e0d2a98c4ad..47265b073e6f 100644
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -201,8 +201,6 @@ acpi_remove_address_space_handler(acpi_handle device,
  
- 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
- 		dst_cache_destroy(&rcast->dst_cache);
-@@ -818,10 +819,14 @@ static void cleanup_bearer(struct work_struct *work)
- 		kfree_rcu(rcast, rcu);
- 	}
+ 			/* Now we can delete the handler object */
  
-+	tn = tipc_net(sock_net(ub->ubsock->sk));
-+
- 	dst_cache_destroy(&ub->rcast.dst_cache);
- 	udp_tunnel_sock_release(ub->ubsock);
-+
-+	/* Note: could use a call_rcu() to avoid another synchronize_net() */
- 	synchronize_net();
--	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
-+	atomic_dec(&tn->wq_count);
- 	kfree(ub);
- }
- 
+-			acpi_os_release_mutex(handler_obj->address_space.
+-					      context_mutex);
+ 			acpi_ut_remove_reference(handler_obj);
+ 			goto unlock_and_exit;
+ 		}
 -- 
 2.39.5
 
