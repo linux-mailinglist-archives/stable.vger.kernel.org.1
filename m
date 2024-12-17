@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-104680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CABD9F5275
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB42E9F53B3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 895E1188F783
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93E3A17288F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680281F7577;
-	Tue, 17 Dec 2024 17:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB50E1F76B1;
+	Tue, 17 Dec 2024 17:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e22M2fgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrycHGxF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F7B1F76A1;
-	Tue, 17 Dec 2024 17:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8983D1EF085;
+	Tue, 17 Dec 2024 17:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455780; cv=none; b=ff0bULvkkZVIMEOT5QwTG9P5luQqfy0GUlAgVKmKsrdDSPRTtRDrNZxoHNeBa1YP8xvd6Ugh2yDjqxDDxu1oEDbLkCbRbC8B3mvDkpfAuJF4gb6s3GdJs3u6j8gK3rPiGPSyciNPsGs/Q8zcXE4bR9OZx6AWtie8bd41S07SISA=
+	t=1734456486; cv=none; b=VwVlZSrGzc6k2XB6CBFERGhvz3LuPKVEul+cf51nGNkRiIvaZa+Z9PJSlMqASlIcJzItk8G5mO4RPsfDNjmWAhBBZdNGKAXmnmnPnVahycoueiaN+29+QwR2pGbqBOq3X50VR7jvInbcrDikvq1Am6MDOqqlX6VyUpcp+GEYWJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455780; c=relaxed/simple;
-	bh=MzUtrhLuDhWgHK2Hbf6coxrZElNe87pvF7XWRbFgM0g=;
+	s=arc-20240116; t=1734456486; c=relaxed/simple;
+	bh=mr3ZbEjnR0xmim4ZGdX6N3fh1qZvao6bHRJ6jw561TU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tT73Kywxq49ACcIRjT00zD34Sabb/j/lkDTwCNvKAt20qh7R2qgG6UYFDugSvQSFq5Mq+GwxrAlAbz0cZHnOMoY/YJ86BE8HlTFHcBlooIR7yONN1kWePnYF3ECrvmUlcRY9NygrBNzlfjT6dtEnN5emlsp/6OICOeYJNbXdV8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e22M2fgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC46C4CED3;
-	Tue, 17 Dec 2024 17:16:18 +0000 (UTC)
+	 MIME-Version; b=p8FdCuWzU2mR8umeCwYIZmzY7Jm6OdpA0dl/WqEmvsIIcU6jkA3dtYlkZZLfXWJkQfHxszZyYYAziRKdlduJBHoXIVmilu7Cr7Pf0/Fsn401LoFQIxcQerLVoxpvmUE3TxvWIAeT1sayOsnWr6BL8U6GyM4Dc8gzdrueDKb+0Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrycHGxF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10343C4CED3;
+	Tue, 17 Dec 2024 17:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455778;
-	bh=MzUtrhLuDhWgHK2Hbf6coxrZElNe87pvF7XWRbFgM0g=;
+	s=korg; t=1734456486;
+	bh=mr3ZbEjnR0xmim4ZGdX6N3fh1qZvao6bHRJ6jw561TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e22M2fgkXMhmyNO5em34pnW+3MuBftR23AwoL2Lf+UVhIpkS+TNU7zSOgwjqVQvof
-	 7AaYHl8ecPYlY0tAfSDN6bYqxw+dvdighWC3+RMhoI7MrIOZp/YrgnqgzOGuCnhHWE
-	 sgLaWecl9LrD4g/m6/MwCj+ZyhA3gva4siWClS7o=
+	b=YrycHGxFNnhPDcXPDmYBwVfCjH57ha4+2Tf8RPT5qSKaLX7C8BmiGWr7cIxJlqBa1
+	 hcmfyDeprV/CCbsIjlVDE7AA7Uu9WLd0rTlgeWdmhq14FjPq5+s4x+K4q7vr4YTP46
+	 qr0+ier9Dyt58VfYXdblssEl5maqztfjqyflPflY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com,
-	Suraj Sonawane <surajsonawane0215@gmail.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/76] acpi: nfit: vmalloc-out-of-bounds Read in acpi_nfit_ctl
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 074/172] xfs: only run precommits once per transaction object
 Date: Tue, 17 Dec 2024 18:07:10 +0100
-Message-ID: <20241217170527.516427000@linuxfoundation.org>
+Message-ID: <20241217170549.357524722@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Sonawane <surajsonawane0215@gmail.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 265e98f72bac6c41a4492d3e30a8e5fd22fe0779 ]
+commit 44d9b07e52db25035680713c3428016cadcd2ea1 upstream.
 
-Fix an issue detected by syzbot with KASAN:
+Committing a transaction tx0 with a defer ops chain of (A, B, C)
+creates a chain of transactions that looks like this:
 
-BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
-core.c:416 [inline]
-BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
-drivers/acpi/nfit/core.c:459
+tx0 -> txA -> txB -> txC
 
-The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
-array is accessed without verifying that call_pkg points to a buffer
-that is appropriately sized as a struct nd_cmd_pkg. This can lead
-to out-of-bounds access and undefined behavior if the buffer does not
-have sufficient space.
+Prior to commit cb042117488dbf, __xfs_trans_commit would run precommits
+on tx0, then call xfs_defer_finish_noroll to convert A-C to tx[A-C].
+Unfortunately, after the finish_noroll loop we forgot to run precommits
+on txC.  That was fixed by adding the second precommit call.
 
-To address this, a check was added in acpi_nfit_ctl() to ensure that
-buf is not NULL and that buf_len is less than sizeof(*call_pkg)
-before accessing it. This ensures safe access to the members of
-call_pkg, including the nd_reserved2 array.
+Unfortunately, none of us remembered that xfs_defer_finish_noroll
+calls __xfs_trans_commit a second time to commit tx0 before finishing
+work A in txA and committing that.  In other words, we run precommits
+twice on tx0:
 
-Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
-Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
-Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
-Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20241118162609.29063-1-surajsonawane0215@gmail.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+xfs_trans_commit(tx0)
+    __xfs_trans_commit(tx0, false)
+        xfs_trans_run_precommits(tx0)
+        xfs_defer_finish_noroll(tx0)
+            xfs_trans_roll(tx0)
+                txA = xfs_trans_dup(tx0)
+                __xfs_trans_commit(tx0, true)
+                xfs_trans_run_precommits(tx0)
+
+This currently isn't an issue because the inode item precommit is
+idempotent; the iunlink item precommit deletes itself so it can't be
+called again; and the buffer/dquot item precommits only check the incore
+objects for corruption.  However, it doesn't make sense to run
+precommits twice.
+
+Fix this situation by only running precommits after finish_noroll.
+
+Cc: <stable@vger.kernel.org> # v6.4
+Fixes: cb042117488dbf ("xfs: defered work could create precommits")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/nfit/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_trans.c |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 6d4ac934cd49..1535fe196646 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -454,8 +454,13 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 	if (cmd_rc)
- 		*cmd_rc = -EINVAL;
+--- a/fs/xfs/xfs_trans.c
++++ b/fs/xfs/xfs_trans.c
+@@ -834,13 +834,6 @@ __xfs_trans_commit(
  
--	if (cmd == ND_CMD_CALL)
-+	if (cmd == ND_CMD_CALL) {
-+		if (!buf || buf_len < sizeof(*call_pkg))
-+			return -EINVAL;
+ 	trace_xfs_trans_commit(tp, _RET_IP_);
+ 
+-	error = xfs_trans_run_precommits(tp);
+-	if (error) {
+-		if (tp->t_flags & XFS_TRANS_PERM_LOG_RES)
+-			xfs_defer_cancel(tp);
+-		goto out_unreserve;
+-	}
+-
+ 	/*
+ 	 * Finish deferred items on final commit. Only permanent transactions
+ 	 * should ever have deferred ops.
+@@ -851,13 +844,12 @@ __xfs_trans_commit(
+ 		error = xfs_defer_finish_noroll(&tp);
+ 		if (error)
+ 			goto out_unreserve;
+-
+-		/* Run precommits from final tx in defer chain. */
+-		error = xfs_trans_run_precommits(tp);
+-		if (error)
+-			goto out_unreserve;
+ 	}
+ 
++	error = xfs_trans_run_precommits(tp);
++	if (error)
++		goto out_unreserve;
 +
- 		call_pkg = buf;
-+	}
-+
- 	func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
- 	if (func < 0)
- 		return func;
--- 
-2.39.5
-
+ 	/*
+ 	 * If there is nothing to be logged by the transaction,
+ 	 * then unlock all of the items associated with the
 
 
 
