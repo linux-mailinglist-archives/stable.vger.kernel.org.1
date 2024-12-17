@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-104677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDD09F5272
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B10E09F52E5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13EDE188D52A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F4D1892AE4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BECA1F76B5;
-	Tue, 17 Dec 2024 17:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC6F1F8696;
+	Tue, 17 Dec 2024 17:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aImStsVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFLfuuQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F741F7582;
-	Tue, 17 Dec 2024 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F541F76AC;
+	Tue, 17 Dec 2024 17:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455770; cv=none; b=aX/rVcjCpz5kI5sBj3sQIm3Xb1SA7+Dbl+iKnKFCvMKGXcXpH0CYRkyJa2PKw7o80ocTTdVgBSAq7yJDwvrwBBcUmQAo8udCoRZij4mgiJioQmdnmFRzYp68QcBoIkI0dlYI0xNrpeGAt1deqbAWn9DN25phvfIuPCJILioKMK4=
+	t=1734455990; cv=none; b=BCdigXXL5ZB3sCwu8mgNFScCJ7f0zf0X6xY8cWJFhoy5Z37RxJ9em8EUhGcqwJ2MWFMZXDt6xPSL/kIpY8zRyfhu5HgkhCoTEOrufUmLpUYUKOTpbac4FEjjmFDewjhbc14H6W+BfhMigOs5uOpjTP9FPU8n2uIAophe5lGa62I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455770; c=relaxed/simple;
-	bh=4F1rZBUW5R9N3K+oUd7GmDpSeAk0QZcZUu4O5FxAl0A=;
+	s=arc-20240116; t=1734455990; c=relaxed/simple;
+	bh=tS3kBuKeFeGDUU9OYgkdFAoLviy+hFvNs7J0O/Daa0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwUIXSbLYanyZ7Chv1gJ+owh5Td6wvZJNimAxxa+Toby6Q1RNhqKfAArg5EtJZi/2mem3JRkfa/PSkkn9Sp0g/e3l+GIcGTV4zaP1tLp6pa7msoa4s7V8VAJeTi728ARRypr38iNMAtFGm1MusKOFXmK0yjJyDdYPYhK2vVtMDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aImStsVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3417EC4CED3;
-	Tue, 17 Dec 2024 17:16:09 +0000 (UTC)
+	 MIME-Version; b=NRPKPAxglk4nxQaiI90NKg2Q4XN43W2vD801jgeALCeg86XQV495JHJNx1RKCdVoem/9IjkJiM0y+MzRMZdKeDtg0KcrESbUbiVKCgnxzHI12dH4nnRCx9MfBdY/hA6UIWHlhhtlMawrMsmnIcOylAijLGM/H7rOzESzgpESypM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFLfuuQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31EDC4CED3;
+	Tue, 17 Dec 2024 17:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455769;
-	bh=4F1rZBUW5R9N3K+oUd7GmDpSeAk0QZcZUu4O5FxAl0A=;
+	s=korg; t=1734455990;
+	bh=tS3kBuKeFeGDUU9OYgkdFAoLviy+hFvNs7J0O/Daa0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aImStsVDAdpiF66iZVF8GDtfVdU81iTX1n3BwfpgVIBOi5cCOR4zUNKQzDuHdLa0R
-	 dF5Cb1dnQ2IPLWo5ze5pwBcNwJvisUH9WDIj2I7xs3sCie4D+o2W73/ODDE1/ltArh
-	 +NrM+f2aNVIShJkRDOGbgTdHEXy/rnT0ytxfTi6k=
+	b=AFLfuuQHm+YeOGSwlWui5aWfc4us0rxYsz9fYua1Wc+/chQXNY5sEzWGb4JGG/Zzj
+	 olXf/UY8UOpFFOd1eimVKUppF9drNHEt+30yHX/FFYJU/nIdRBiUbWl5fsnm+IFxEr
+	 HgtUQaSJ2gHkw3KKRPz7BKlS7cOFTyrt9KKIFlqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 27/76] wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Eugene Kobyak <eugene.kobyak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.6 023/109] drm/i915: Fix NULL pointer dereference in capture_engine
 Date: Tue, 17 Dec 2024 18:07:07 +0100
-Message-ID: <20241217170527.389786197@linuxfoundation.org>
+Message-ID: <20241217170534.335512649@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Eugene Kobyak <eugene.kobyak@intel.com>
 
-[ Upstream commit 2e3dbf938656986cce73ac4083500d0bcfbffe24 ]
+commit da0b986256ae9a78b0215214ff44f271bfe237c1 upstream.
 
-Since the netlink attribute range validation provides inclusive
-checking, the *max* of attribute NL80211_ATTR_MLO_LINK_ID should be
-IEEE80211_MLD_MAX_NUM_LINKS - 1 otherwise causing an off-by-one.
+When the intel_context structure contains NULL,
+it raises a NULL pointer dereference error in drm_info().
 
-One crash stack for demonstration:
-==================================================================
-BUG: KASAN: wild-memory-access in ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
-Read of size 6 at addr 001102080000000c by task fuzzer.386/9508
-
-CPU: 1 PID: 9508 Comm: syz.1.386 Not tainted 6.1.70 #2
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
- print_report+0xe0/0x750 mm/kasan/report.c:398
- kasan_report+0x139/0x170 mm/kasan/report.c:495
- kasan_check_range+0x287/0x290 mm/kasan/generic.c:189
- memcpy+0x25/0x60 mm/kasan/shadow.c:65
- ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
- rdev_tx_control_port net/wireless/rdev-ops.h:761 [inline]
- nl80211_tx_control_port+0x7b3/0xc40 net/wireless/nl80211.c:15453
- genl_family_rcv_msg_doit+0x22e/0x320 net/netlink/genetlink.c:756
- genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
- genl_rcv_msg+0x539/0x740 net/netlink/genetlink.c:850
- netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
- netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
- netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
- netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
- sock_sendmsg_nosec net/socket.c:716 [inline]
- __sock_sendmsg net/socket.c:728 [inline]
- ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
- ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
- __sys_sendmsg net/socket.c:2582 [inline]
- __do_sys_sendmsg net/socket.c:2591 [inline]
- __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Update the policy to ensure correct validation.
-
-Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Suggested-by: Cengiz Can <cengiz.can@canonical.com>
-Link: https://patch.msgid.link/20241130170526.96698-1-linma@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e8a3319c31a1 ("drm/i915: Allow error capture without a request")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12309
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: <stable@vger.kernel.org> # v6.3+
+Signed-off-by: Eugene Kobyak <eugene.kobyak@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/xmsgfynkhycw3cf56akp4he2ffg44vuratocsysaowbsnhutzi@augnqbm777at
+(cherry picked from commit 754302a5bc1bd8fd3b7d85c168b0a1af6d4bba4d)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_gpu_error.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 3e1c4e23484d..0ba824c3fd1b 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -806,7 +806,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_MLO_LINKS] =
- 		NLA_POLICY_NESTED_ARRAY(nl80211_policy),
- 	[NL80211_ATTR_MLO_LINK_ID] =
--		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS),
-+		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS - 1),
- 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
- 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/i915/i915_gpu_error.c
++++ b/drivers/gpu/drm/i915/i915_gpu_error.c
+@@ -1638,9 +1638,21 @@ capture_engine(struct intel_engine_cs *e
+ 		return NULL;
+ 
+ 	intel_engine_get_hung_entity(engine, &ce, &rq);
+-	if (rq && !i915_request_started(rq))
+-		drm_info(&engine->gt->i915->drm, "Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
+-			 engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
++	if (rq && !i915_request_started(rq)) {
++		/*
++		 * We want to know also what is the guc_id of the context,
++		 * but if we don't have the context reference, then skip
++		 * printing it.
++		 */
++		if (ce)
++			drm_info(&engine->gt->i915->drm,
++				 "Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
++				 engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
++		else
++			drm_info(&engine->gt->i915->drm,
++				 "Got hung context on %s with active request %lld:%lld not yet started\n",
++				 engine->name, rq->fence.context, rq->fence.seqno);
++	}
+ 
+ 	if (rq) {
+ 		capture = intel_engine_coredump_add_request(ee, rq, ATOMIC_MAYFAIL);
 
 
 
