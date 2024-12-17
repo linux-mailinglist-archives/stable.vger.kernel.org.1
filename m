@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8F19F51E5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 850EE9F523A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:16:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 779957A35A7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76231188FF89
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651101F75BE;
-	Tue, 17 Dec 2024 17:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27691F8ADF;
+	Tue, 17 Dec 2024 17:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPvVtMr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4P9iF3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4841F543C;
-	Tue, 17 Dec 2024 17:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2E91F8AD9;
+	Tue, 17 Dec 2024 17:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455492; cv=none; b=pGOAiw1KbpSu4GszPfTiuTvF4TIuX+GHWCKjOyhsyebQPa2DKQ3NCU7bL8Jr9xdj/mVnCfxrMZ0dXgTl0YHmY3p6/Nr6NZdMgiCarKKzfkPwSSdbwipQ9FbwPr1oJkFvt3vW/Sdpg5iyhRXRm1gz9fqBKfO46e4SXqsNLiKmdtI=
+	t=1734455617; cv=none; b=qFxTaB8zOYVxuUoWL+ko9noOQNrwEgEIL34VmkH8LMk7ST4WaOQBV2kp6vgJVRo07NjxPyVe3+81k3tqJGMKCLAuCjgCzCVJotOCUdvYn6EaCcZzJG8bDnOlQ3HzLG6ng8pNnl7jT5PjCygujbAfCNTqcAGMdvk4e/cqB+UxcG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455492; c=relaxed/simple;
-	bh=woxuRYY8bHPfxpHhZU7pwg3mUBvTiVhvJ3PLxFbcFQ0=;
+	s=arc-20240116; t=1734455617; c=relaxed/simple;
+	bh=LnyXziZFAcm2njzKI0sDimFWfV38TrV8v87aYCSJm1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAM1tzge0tIsjaLjMCyTX4BkbbiHyKIcaDuAzOWmZiabgUbfDFTHSxVaUl1W9LgqEsUCQWKB0UG8aRFuPOnMXZn59LuyJXH0V5AE+/qEtg7RIgjaeTgLie9SZu30aR3+xsJ/fIvF0CXJwmUIhvn/a5yLA6T411C7g2b3P4JtZ+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPvVtMr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF8AC4CED3;
-	Tue, 17 Dec 2024 17:11:31 +0000 (UTC)
+	 MIME-Version; b=OYUdPRi8tTdEgmKhzS40Tc4MZBOnMPZA3N8XFXJRZ2wWjqnb/nfCR0wvc7IuqocGMQzQmftDEfXwOWMJg5+ltYhfhRl2o732a+QgZntRdzfWZ5TmCFRSOH4HXZrhEnYqZoR3/f6i3R2Es+6VXUo/QViS/sGyhHyr7hdLa8d4TYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4P9iF3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D9EC4CEDD;
+	Tue, 17 Dec 2024 17:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455492;
-	bh=woxuRYY8bHPfxpHhZU7pwg3mUBvTiVhvJ3PLxFbcFQ0=;
+	s=korg; t=1734455617;
+	bh=LnyXziZFAcm2njzKI0sDimFWfV38TrV8v87aYCSJm1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPvVtMr3nR4+aHQx8zaeiHngnRJ8kyv161DynEi11LeOZBgeujP2QanTp5NtkoNGQ
-	 NAw3JzWW/SPdSUfPUrUDJ2uyIB9CgOJE33WbistL7JnFNj6I1XHS3ZY+LTd/NLcRMy
-	 w7cfZU4JPbyJSHkXxSycw+RjVQi8h5vEWGUKLoxs=
+	b=C4P9iF3qYOOQIq79ZVEZj9vmYChLzGlwwqo3D7DRW3VycNePXK4jTNxgDpXr6LJVE
+	 csNk1oiuo1M+kbtBA5DNAk3A/clwW2lnl80Yhg8sCiQ4iiysde/NovD1BPR2ayNf+8
+	 yWCaTBxsI/wayZlwDdk3AFMLutX2ECFMlguQxtbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+fb99d1b0c0f81d94a5e2@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 28/43] ACPICA: events/evxfregn: dont release the ContextMutex that was never acquired
-Date: Tue, 17 Dec 2024 18:07:19 +0100
-Message-ID: <20241217170521.588026987@linuxfoundation.org>
+Subject: [PATCH 5.15 27/51] net: lapb: increase LAPB_HEADER_LEN
+Date: Tue, 17 Dec 2024 18:07:20 +0100
+Message-ID: <20241217170521.406555574@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c53d96a4481f42a1635b96d2c1acbb0a126bfd54 ]
+[ Upstream commit a6d75ecee2bf828ac6a1b52724aba0a977e4eaf4 ]
 
-This bug was first introduced in c27f3d011b08, where the author of the
-patch probably meant to do DeleteMutex instead of ReleaseMutex. The
-mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
-MutexRelease line was never removed, so do it now.
+It is unclear if net/lapb code is supposed to be ready for 8021q.
 
-Link: https://github.com/acpica/acpica/pull/982
-Fixes: c27f3d011b08 ("ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling")
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Link: https://patch.msgid.link/20241122082954.658356-1-d-tatianin@yandex-team.ru
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+We can at least avoid crashes like the following :
+
+skbuff: skb_under_panic: text:ffffffff8aabe1f6 len:24 put:20 head:ffff88802824a400 data:ffff88802824a3fe tail:0x16 end:0x140 dev:nr0.2
+------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:206 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 UID: 0 PID: 5508 Comm: dhcpcd Not tainted 6.12.0-rc7-syzkaller-00144-g66418447d27b #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
+ RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
+ RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
+Code: 0d 8d 48 c7 c6 2e 9e 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 1a 6f 37 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc90002ddf638 EFLAGS: 00010282
+RAX: 0000000000000086 RBX: dffffc0000000000 RCX: 7a24750e538ff600
+RDX: 0000000000000000 RSI: 0000000000000201 RDI: 0000000000000000
+RBP: ffff888034a86650 R08: ffffffff8174b13c R09: 1ffff920005bbe60
+R10: dffffc0000000000 R11: fffff520005bbe61 R12: 0000000000000140
+R13: ffff88802824a400 R14: ffff88802824a3fe R15: 0000000000000016
+FS:  00007f2a5990d740(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000110c2631fd CR3: 0000000029504000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_push+0xe5/0x100 net/core/skbuff.c:2636
+  nr_header+0x36/0x320 net/netrom/nr_dev.c:69
+  dev_hard_header include/linux/netdevice.h:3148 [inline]
+  vlan_dev_hard_header+0x359/0x480 net/8021q/vlan_dev.c:83
+  dev_hard_header include/linux/netdevice.h:3148 [inline]
+  lapbeth_data_transmit+0x1f6/0x2a0 drivers/net/wan/lapbether.c:257
+  lapb_data_transmit+0x91/0xb0 net/lapb/lapb_iface.c:447
+  lapb_transmit_buffer+0x168/0x1f0 net/lapb/lapb_out.c:149
+ lapb_establish_data_link+0x84/0xd0
+ lapb_device_event+0x4e0/0x670
+  notifier_call_chain+0x19f/0x3e0 kernel/notifier.c:93
+ __dev_notify_flags+0x207/0x400
+  dev_change_flags+0xf0/0x1a0 net/core/dev.c:8922
+  devinet_ioctl+0xa4e/0x1aa0 net/ipv4/devinet.c:1188
+  inet_ioctl+0x3d7/0x4f0 net/ipv4/af_inet.c:1003
+  sock_do_ioctl+0x158/0x460 net/socket.c:1227
+  sock_ioctl+0x626/0x8e0 net/socket.c:1346
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:907 [inline]
+  __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+fb99d1b0c0f81d94a5e2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67506220.050a0220.17bd51.006c.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241204141031.4030267-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/evxfregn.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/net/lapb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
-index 3bb06f17a18b..da97fd0c6b51 100644
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -201,8 +201,6 @@ acpi_remove_address_space_handler(acpi_handle device,
+diff --git a/include/net/lapb.h b/include/net/lapb.h
+index 124ee122f2c8..6c07420644e4 100644
+--- a/include/net/lapb.h
++++ b/include/net/lapb.h
+@@ -4,7 +4,7 @@
+ #include <linux/lapb.h>
+ #include <linux/refcount.h>
  
- 			/* Now we can delete the handler object */
+-#define	LAPB_HEADER_LEN	20		/* LAPB over Ethernet + a bit more */
++#define	LAPB_HEADER_LEN MAX_HEADER		/* LAPB over Ethernet + a bit more */
  
--			acpi_os_release_mutex(handler_obj->address_space.
--					      context_mutex);
- 			acpi_ut_remove_reference(handler_obj);
- 			goto unlock_and_exit;
- 		}
+ #define	LAPB_ACK_PENDING_CONDITION	0x01
+ #define	LAPB_REJECT_CONDITION		0x02
 -- 
 2.39.5
 
