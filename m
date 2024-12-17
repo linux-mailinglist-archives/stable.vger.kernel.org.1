@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0729F51FA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B4E9F53A3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C6B168B21
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5803617239A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE97B1F707D;
-	Tue, 17 Dec 2024 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164B91F7577;
+	Tue, 17 Dec 2024 17:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tug+78dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ee2oSYEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCE21F6671;
-	Tue, 17 Dec 2024 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E7614A4E7;
+	Tue, 17 Dec 2024 17:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455510; cv=none; b=U+io1hL/TnZV9NsWF0B7BEWuZAquTALAER7Wier2Oh9TSMB+4+fZxE6WMqT/yYklFqaGsJuUp/7mbnYmECiN/8/KbSYCrJNVHbsjW8SEd3OgY9NM2hSPrKqj+eN1mg5IhhBdnh2++tqvaQMYsRZFlUPrHEiDQHKxje8vIus4bFE=
+	t=1734456444; cv=none; b=dkA0eHk24EvdoMUjaRWSAjbtqjxArcdqbNjXBTxE2LPcA21wP4FzC5ltdUHCh+iBLttmd41emUgujALDRYnhVx0Xayd0nyxjC7oSnhAsuGWf/Rxx5MKuFblxBBvIsZPo4tq4FdEYlxtGC5TsD7yBC6xgdwT3EYyq7QotF+H/JyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455510; c=relaxed/simple;
-	bh=VvO7ZKi1mkRzVvaLIBgbPrFBTkmUnFxD5d4w5ISFeTQ=;
+	s=arc-20240116; t=1734456444; c=relaxed/simple;
+	bh=ugmH94tfe8ACc9KvlmfwlJYd86ZAVotaR0sYuq1JSGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKQOg9V524lCdoQ9lh2PDXyAVrHSBRLl557By148hy8bTpZxRIdUQTT2cZ5WoX/rPzrYELwSjYV5MvwMkklJ4urpKdr4/T1c+94TlBfZQuTc099TPMwjYl8AcRZhLtxR1xNYHTq7Sm9cz9M2NARScpWbKCfgzlP9SSVQGoZARPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tug+78dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270FBC4CED3;
-	Tue, 17 Dec 2024 17:11:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TUPLQcbKTtgbD2P+jXDOkfap5ym3a2ypxpdPV4UNhOgrATJ1Cs+6h41d4utb3Wg5p0CIKR7fbQyilgHV7Vr8YHikguil/8KGz5Hq45041VPcM0e6hQhGMAM3UJHseQMT3u83d+RCW2RrBZQFlfcjxUwHyP+b06WA333OLKRw1w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ee2oSYEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE73C4CED3;
+	Tue, 17 Dec 2024 17:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455510;
-	bh=VvO7ZKi1mkRzVvaLIBgbPrFBTkmUnFxD5d4w5ISFeTQ=;
+	s=korg; t=1734456444;
+	bh=ugmH94tfe8ACc9KvlmfwlJYd86ZAVotaR0sYuq1JSGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tug+78dvRrg51Cs1+p18VEQlvsIL/8tAtO21hxIX3yAUzkhxuym4G4cX9fCZnfNuW
-	 HVL6aetLXNWQxbh9I4/B5lXQRGym0Ja1TF+LTiu1/eNdKeYVx3k6dgekq4sSupQIgx
-	 H63seDMBqTOw7mC9YhUmbdgblk4G1h/GEFmdfPCA=
+	b=ee2oSYEMUcbdUJJX2/JHi2wihQyugmoHISXehYzkWq9E5Rat+5e1x1p/4LJtVeilU
+	 S98BPxOdMzBoH0GLgsTGLqGbipdPvYcc6iGhckOFRQrjIkvwaGso0Gi4WVKDaaj8mp
+	 ekS7xuc9HHLIGzxZNA+Qvp64V6aZ2GBqGpFWkowc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 5.10 07/43] xfs: dont drop errno values when we fail to ficlone the entire range
-Date: Tue, 17 Dec 2024 18:06:58 +0100
-Message-ID: <20241217170520.757002181@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 063/172] drm/amdgpu: fix when the cleaner shader is emitted
+Date: Tue, 17 Dec 2024 18:06:59 +0100
+Message-ID: <20241217170548.891968749@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Christian König <christian.koenig@amd.com>
 
-commit 7ce31f20a0771d71779c3b0ec9cdf474cc3c8e9a upstream.
+commit f4df208177d02f1c90f3644da3a2453080b8c24f upstream.
 
-Way back when we first implemented FICLONE for XFS, life was simple --
-either the the entire remapping completed, or something happened and we
-had to return an errno explaining what happened.  Neither of those
-ioctls support returning partial results, so it's all or nothing.
+Emitting the cleaner shader must come after the check if a VM switch is
+necessary or not.
 
-Then things got complicated when copy_file_range came along, because it
-actually can return the number of bytes copied, so commit 3f68c1f562f1e4
-tried to make it so that we could return a partial result if the
-REMAP_FILE_CAN_SHORTEN flag is set.  This is also how FIDEDUPERANGE can
-indicate that the kernel performed a partial deduplication.
+Otherwise we will emit the cleaner shader every time and not just when it is
+necessary because we switched between applications.
 
-Unfortunately, the logic is wrong if an error stops the remapping and
-CAN_SHORTEN is not set.  Because those callers cannot return partial
-results, it is an error for ->remap_file_range to return a positive
-quantity that is less than the @len passed in.  Implementations really
-should be returning a negative errno in this case, because that's what
-btrfs (which introduced FICLONE{,RANGE}) did.
+This can otherwise crash on gang submit and probably decreases performance
+quite a bit.
 
-Therefore, ->remap_range implementations cannot silently drop an errno
-that they might have when the number of bytes remapped is less than the
-number of bytes requested and CAN_SHORTEN is not set.
+v2: squash in fix from Srini (Alex)
 
-Found by running generic/562 on a 64k fsblock filesystem and wondering
-why it reported corrupt files.
-
-Cc: <stable@vger.kernel.org> # v4.20
-Fixes: 3fc9f5e409319e ("xfs: remove xfs_reflink_remap_range")
-Really-Fixes: 3f68c1f562f1e4 ("xfs: support returning partial reflink results")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: ee7a846ea27b ("drm/amdgpu: Emit cleaner shader at end of IB submission")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_file.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -1133,6 +1133,14 @@ out_unlock:
- 	xfs_iunlock2_io_mmap(src, dest);
- 	if (ret)
- 		trace_xfs_reflink_remap_range_error(dest, ret, _RET_IP_);
-+	/*
-+	 * If the caller did not set CAN_SHORTEN, then it is not prepared to
-+	 * handle partial results -- either the whole remap succeeds, or we
-+	 * must say why it did not.  In this case, any error should be returned
-+	 * to the caller.
-+	 */
-+	if (ret && remapped < len && !(remap_flags & REMAP_FILE_CAN_SHORTEN))
-+		return ret;
- 	return remapped > 0 ? remapped : ret;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 8d9bf7a0857f..ddd7f05e4db9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -674,12 +674,8 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 	pasid_mapping_needed &= adev->gmc.gmc_funcs->emit_pasid_mapping &&
+ 		ring->funcs->emit_wreg;
  
+-	if (adev->gfx.enable_cleaner_shader &&
+-	    ring->funcs->emit_cleaner_shader &&
+-	    job->enforce_isolation)
+-		ring->funcs->emit_cleaner_shader(ring);
+-
+-	if (!vm_flush_needed && !gds_switch_needed && !need_pipe_sync)
++	if (!vm_flush_needed && !gds_switch_needed && !need_pipe_sync &&
++	    !(job->enforce_isolation && !job->vmid))
+ 		return 0;
+ 
+ 	amdgpu_ring_ib_begin(ring);
+@@ -690,6 +686,11 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 	if (need_pipe_sync)
+ 		amdgpu_ring_emit_pipeline_sync(ring);
+ 
++	if (adev->gfx.enable_cleaner_shader &&
++	    ring->funcs->emit_cleaner_shader &&
++	    job->enforce_isolation)
++		ring->funcs->emit_cleaner_shader(ring);
++
+ 	if (vm_flush_needed) {
+ 		trace_amdgpu_vm_flush(ring, job->vmid, job->vm_pd_addr);
+ 		amdgpu_ring_emit_vm_flush(ring, job->vmid, job->vm_pd_addr);
+-- 
+2.47.1
+
 
 
 
