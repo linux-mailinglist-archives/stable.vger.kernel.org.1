@@ -1,133 +1,187 @@
-Return-Path: <stable+bounces-105030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FA19F5566
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 19:03:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9327C9F558F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 19:06:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15998177C59
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5361E1897E8E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FC61F8938;
-	Tue, 17 Dec 2024 17:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A68A1FC10F;
+	Tue, 17 Dec 2024 17:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="aWu94mcL"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qWg6JEWB"
 X-Original-To: stable@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7951F709A
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 17:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0511FA157;
+	Tue, 17 Dec 2024 17:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734457860; cv=none; b=kx1Ch8rGqdQ0hb3Au7kRhNHUdRjBKgZhdGrIDVRjgf5jOKBAOoifaAfPuPskGdNZgbvL/ijY+RUQ4uQyWot0tA428RtnFgZb5H2ot9HqC14fwUE3Zfza1Nqf/l2PNIAQjgiSE1/TNpeiFiDrLRFfT1zrtuNUxAyNEbuXdGh2/8c=
+	t=1734458122; cv=none; b=t+hsuslq/z6zUj4oqXyRjmiNCKDlvwLyqUJPCoI3EPqnAioxk6L6k6o9/hVkoJYI49np3bzg1BriV5hcpKsTASzrw6NXse++LIKOp/NjX5708S949OpqqWOq0h8dT4kRkKu6i2ZGB+KKgaUJcPXTATlt4uqJLheZL7Ty7qFVb5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734457860; c=relaxed/simple;
-	bh=SO2/6RdTJZQ4nWgovKQYC9cxzKtOymQ4yQuG2Ycp80I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hqOEeJMlOVW+Y/FKx3/fJMsB8m/tJUfhPRetfoyAl6M2OtN82ERldI2xbbKDaF9HJKna4CX1V0hPM3Z4kAQpB3ivYMlADc+08Fub4nO+Nk0WopOo3hatY8dR7skp81kr5WIMWGWBpGvS89iT9W/DUZzDs5gqTRsgRYKoeZEcM9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=aWu94mcL; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 0D366A0EA7;
-	Tue, 17 Dec 2024 18:50:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=KFwwISF3N2I9Nwpx1P/a
-	QoASwk1XWgtZt8HzJy20fiw=; b=aWu94mcLxRmY6y/hrfNz/zkLBAVtQIJ9d26X
-	HnBrDZkgKY6onGsAXWUp/DY8dlQYpn0AeeTCHlkfNbMJtanXSr4/+czJHZq33LxG
-	2kkxmZvNP35TsiAtZHJFK7Es7lENmIkwZbt/ygQBtQ36QoDQ7A2j5sjZM7r47Owv
-	dRhl2lrscCDnOtNSFejKtnZObGtX5mC6IHxLP/j0q5jSoPyUbU1lfDmpGWTzKrD+
-	u99t7o2qa5miCETLPjJ+QW86x77pcXDwUiZhu3wpieaEt3roZry5ru5YLlcEJGA0
-	XTm89bk0r6zqC4vdBmJ6pXxKkc2fmCQvLfKnaxdtysBr6rdPLtssOdNA/pYWbDNu
-	660VZLsR1aCSljUa9GNZBtk/x9oCIaSH+Pam3rVp6z9rydhHW++DfJMASSAJNkYg
-	KBzEuCtEvo9jhWz/83c8chxE768hhKRwApqvVFm/zvLtihZCnSMEMPITi5Sp/A/d
-	FNdA6saH1ie/vL2FWRWdiR4VJr90un68vZGE27dzWPiBBeZREY/fU3gNS4HdWFT5
-	nGP5SfbUPu0sab3mFgeN0YDs+bcODr4Q7pL1kHJ3UOIhCeSpBJOV29WY3bDLHtxZ
-	W1d/Gad5+GzfmXW/ER+gxHf3RUxfcxR4gP6N3eUHgRSfwFTqMPcWsuK0yLkxb7PR
-	0/Cb+oo=
-From: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
-To: <stable@vger.kernel.org>
-CC: Francesco Dolcini <francesco.dolcini@toradex.com>, Sasha Levin
-	<sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>, Frank Li
-	<Frank.Li@nxp.com>, Rafael Beims <rafael.beims@toradex.com>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: [PATCH 6.6 3/3] net: fec: make PPS channel configurable
-Date: Tue, 17 Dec 2024 18:50:42 +0100
-Message-ID: <20241217175042.284122-4-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241217175042.284122-1-csokas.bence@prolan.hu>
-References: <20241217175042.284122-1-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1734458122; c=relaxed/simple;
+	bh=XS5IvDfgvR8yVowHUW14u4vct0tHwPPXXoqopb1SBT8=;
+	h=Date:To:From:Subject:Message-Id; b=NffPlTxIZOEiV5AgXXCM3kT3jPWqpVDaD44KeSmkzWFruF5zrbsx3ShJ/U81E6B4sJfq6C+fKFjRVnE0JfYXCACUOtMmUex+QJtIOGnpzWZITDPrzA9SRQa9ONh9VeTOu61OHMjgjnEVMEKmNGxQyuoFH08Czudjg32k71d0ARU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qWg6JEWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0120C4CED3;
+	Tue, 17 Dec 2024 17:55:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1734458121;
+	bh=XS5IvDfgvR8yVowHUW14u4vct0tHwPPXXoqopb1SBT8=;
+	h=Date:To:From:Subject:From;
+	b=qWg6JEWB3rP4bP+JcXGewLopnOXJeAHsOlVYueTEO5LHDp8tVv87bBdWJLwSKpgNq
+	 Ca4m9tDiBllabyXv6QilbkPHV4gSXQMGPv2NWRisedqBLyHB2gxA7w3MimBsh3ZcGT
+	 +ogU1I/YDO+e36K83bTIfMAskwqCTPGaLnTBFgWs=
+Date: Tue, 17 Dec 2024 09:55:21 -0800
+To: mm-commits@vger.kernel.org,thomas.weissschuh@linutronix.de,stable@vger.kernel.org,rostedt@goodmis.org,juri.lelli@redhat.com,gpaoloni@redhat.com,echanude@redhat.com,clement.leger@bootlin.com,catalin.marinas@arm.com,bigeasy@linutronix.de,acarmina@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-kmemleak-fix-sleeping-function-called-from-invalid-context-at-print-message.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241217175521.B0120C4CED3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1734457850;VERSION=7982;MC=2423810478;ID=67967;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A29ACD948556D766B
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Depending on the SoC where the FEC is integrated into the PPS channel
-might be routed to different timer instances. Make this configurable
-from the devicetree.
+The patch titled
+     Subject: mm/kmemleak: fix sleeping function called from invalid context at print message
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-kmemleak-fix-sleeping-function-called-from-invalid-context-at-print-message.patch
 
-When the related DT property is not present fallback to the previous
-default and use channel 0.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-kmemleak-fix-sleeping-function-called-from-invalid-context-at-print-message.patch
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-(cherry picked from commit 566c2d83887f0570056833102adc5b88e681b0c7)
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Alessandro Carminati <acarmina@redhat.com>
+Subject: mm/kmemleak: fix sleeping function called from invalid context at print message
+Date: Tue, 17 Dec 2024 14:20:33 +0000
+
+Address a bug in the kernel that triggers a "sleeping function called from
+invalid context" warning when /sys/kernel/debug/kmemleak is printed under
+specific conditions:
+- CONFIG_PREEMPT_RT=y
+- Set SELinux as the LSM for the system
+- Set kptr_restrict to 1
+- kmemleak buffer contains at least one item
+
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 136, name: cat
+preempt_count: 1, expected: 0
+RCU nest depth: 2, expected: 2
+6 locks held by cat/136:
+ #0: ffff32e64bcbf950 (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0xb8/0xe30
+ #1: ffffafe6aaa9dea0 (scan_mutex){+.+.}-{3:3}, at: kmemleak_seq_start+0x34/0x128
+ #3: ffff32e6546b1cd0 (&object->lock){....}-{2:2}, at: kmemleak_seq_show+0x3c/0x1e0
+ #4: ffffafe6aa8d8560 (rcu_read_lock){....}-{1:2}, at: has_ns_capability_noaudit+0x8/0x1b0
+ #5: ffffafe6aabbc0f8 (notif_lock){+.+.}-{2:2}, at: avc_compute_av+0xc4/0x3d0
+irq event stamp: 136660
+hardirqs last  enabled at (136659): [<ffffafe6a80fd7a0>] _raw_spin_unlock_irqrestore+0xa8/0xd8
+hardirqs last disabled at (136660): [<ffffafe6a80fd85c>] _raw_spin_lock_irqsave+0x8c/0xb0
+softirqs last  enabled at (0): [<ffffafe6a5d50b28>] copy_process+0x11d8/0x3df8
+softirqs last disabled at (0): [<0000000000000000>] 0x0
+Preemption disabled at:
+[<ffffafe6a6598a4c>] kmemleak_seq_show+0x3c/0x1e0
+CPU: 1 UID: 0 PID: 136 Comm: cat Tainted: G            E      6.11.0-rt7+ #34
+Tainted: [E]=UNSIGNED_MODULE
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+ dump_backtrace+0xa0/0x128
+ show_stack+0x1c/0x30
+ dump_stack_lvl+0xe8/0x198
+ dump_stack+0x18/0x20
+ rt_spin_lock+0x8c/0x1a8
+ avc_perm_nonode+0xa0/0x150
+ cred_has_capability.isra.0+0x118/0x218
+ selinux_capable+0x50/0x80
+ security_capable+0x7c/0xd0
+ has_ns_capability_noaudit+0x94/0x1b0
+ has_capability_noaudit+0x20/0x30
+ restricted_pointer+0x21c/0x4b0
+ pointer+0x298/0x760
+ vsnprintf+0x330/0xf70
+ seq_printf+0x178/0x218
+ print_unreferenced+0x1a4/0x2d0
+ kmemleak_seq_show+0xd0/0x1e0
+ seq_read_iter+0x354/0xe30
+ seq_read+0x250/0x378
+ full_proxy_read+0xd8/0x148
+ vfs_read+0x190/0x918
+ ksys_read+0xf0/0x1e0
+ __arm64_sys_read+0x70/0xa8
+ invoke_syscall.constprop.0+0xd4/0x1d8
+ el0_svc+0x50/0x158
+ el0t_64_sync+0x17c/0x180
+
+%pS and %pK, in the same back trace line, are redundant, and %pS can void
+%pK service in certain contexts.
+
+%pS alone already provides the necessary information, and if it cannot
+resolve the symbol, it falls back to printing the raw address voiding
+the original intent behind the %pK.
+
+Additionally, %pK requires a privilege check CAP_SYSLOG enforced through
+the LSM, which can trigger a "sleeping function called from invalid
+context" warning under RT_PREEMPT kernels when the check occurs in an
+atomic context. This issue may also affect other LSMs.
+
+This change avoids the unnecessary privilege check and resolves the
+sleeping function warning without any loss of information.
+
+Link: https://lkml.kernel.org/r/20241217142032.55793-1-acarmina@redhat.com
+Fixes: 3a6f33d86baa ("mm/kmemleak: use %pK to display kernel pointers in backtrace")
+Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
+Cc: Clément Léger <clement.leger@bootlin.com>
+Cc: Alessandro Carminati <acarmina@redhat.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Eric Chanudet <echanude@redhat.com>
+Cc: Gabriele Paoloni <gpaoloni@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 37e1c895f1b8..7f6b57432071 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 	unsigned long flags;
- 	int ret = 0;
- 
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--
- 	if (rq->type == PTP_CLK_REQ_PPS) {
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
-@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-+	struct device_node *np = fep->pdev->dev.of_node;
- 	int irq;
- 	int ret;
- 
- 	fep->ptp_caps.owner = THIS_MODULE;
- 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
-+
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
--- 
-2.34.1
+ mm/kmemleak.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+--- a/mm/kmemleak.c~mm-kmemleak-fix-sleeping-function-called-from-invalid-context-at-print-message
++++ a/mm/kmemleak.c
+@@ -373,7 +373,7 @@ static void print_unreferenced(struct se
+ 
+ 	for (i = 0; i < nr_entries; i++) {
+ 		void *ptr = (void *)entries[i];
+-		warn_or_seq_printf(seq, "    [<%pK>] %pS\n", ptr, ptr);
++		warn_or_seq_printf(seq, "    %pS\n", ptr);
+ 	}
+ }
+ 
+_
+
+Patches currently in -mm which might be from acarmina@redhat.com are
+
+mm-kmemleak-fix-sleeping-function-called-from-invalid-context-at-print-message.patch
 
 
