@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF0F9F52C1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BBD89F544F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C3F188E197
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FBC1188EB0E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869301F8937;
-	Tue, 17 Dec 2024 17:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09A41F8AEC;
+	Tue, 17 Dec 2024 17:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H35EvozC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvcD9g8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4394E1F8930;
-	Tue, 17 Dec 2024 17:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2B71F8AD4;
+	Tue, 17 Dec 2024 17:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455898; cv=none; b=PX4upbcXRjVgN0j3vWs1JwLKkrRdKY3zj7Rg2aE1QF8pw2qprXdMeUk3fi32s3Bhn7tPAOtGG4I1IFl/93nOTCX+E7pOqAqZY4FbQbnwS0cJgBek6iV0VLvXvRx435KNGyHLEZMmVOhybnTVPIMW5pZyKQ6AzmQ/F2KQvqtPZRE=
+	t=1734456707; cv=none; b=leALbn54zoUbSh3QyymDq1u4tXbvvZF+yEdR6uqT1qpMdDSSK3l7GMrD2c6LbY4wS+R67TcJX6fc1xNQQx3uqdJIRtcs7L+sZ6KmukQl1+80cWc92elCCJ1vTiW4QpiEAQ3OhnzmCkwlZd6gMe/uBT/2EsZgvF4B7/Rg+EQAaAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455898; c=relaxed/simple;
-	bh=44eCIYLC5kT7LOiVnJ+HN3PDRLqLl+imq1/Er1m0sy0=;
+	s=arc-20240116; t=1734456707; c=relaxed/simple;
+	bh=opZX3tgAv0Iyp3iaufPxWah/eYbjm9ivosCCrnCYICg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgFzfPievAfETXwuRPyikRF+tsawoq5Gi4X2DAqFA/oEO2fXNqz7XJzZdSH250UK/H50rjt8CpbQB1laUZl+p0paW2/iaw3mXhzBM7O2O5VuTYm81z7r0wtBUSgZCeUIq+hDpKJ6aTb5ks1dLgfpZ+lf1Cq78liEJ5ea/3KXnZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H35EvozC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73B5C4CED3;
-	Tue, 17 Dec 2024 17:18:16 +0000 (UTC)
+	 MIME-Version; b=WDbxyG1+Y5ryOgA14TjegOpZnvCo9cPvivIU7tc5vGy3+QluAax10l0xMxyRSUhkb9/ffK3WwhygAngTDCwWHMARHa4rwBFgwIiweWbgERenKor/rX5bzip3W4dHnhF5i+7YQcqr4+lJCoB/PB74kotfgU723jv6yP0hCEMy9GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvcD9g8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD265C4CED3;
+	Tue, 17 Dec 2024 17:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455897;
-	bh=44eCIYLC5kT7LOiVnJ+HN3PDRLqLl+imq1/Er1m0sy0=;
+	s=korg; t=1734456707;
+	bh=opZX3tgAv0Iyp3iaufPxWah/eYbjm9ivosCCrnCYICg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H35EvozCBnt6szzKd5eR4KcESR3t17cPMfn51LvifrPhweIee+ohEgcF98q+CAIiw
-	 5R71Jd7B4TF82StwBoRe5RiVMaKipT06rzI9Fb+3f4FXjv2lD4k4jz8knLEUjM7wvi
-	 ETuHSFfVcU9E/fnfNC1XVmgVs9kpp/PUdpYp7sEk=
+	b=dvcD9g8JXQqYsU1r+jaX21baSgfRCu3c9uW5mNZ20GcPJNLYG/aJ5vkFO1UR1fLxA
+	 LqkE88YHOICc2ml7MoFWBq7dhDj6dWKom/Nt2QbMKOgrRMPkqmMG1Hk+nyHlHnR5rB
+	 wSHeKU33F/MYbKbzbxEr3y8/O2JLu4OcM9YaFM8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.1 69/76] x86: make get_cpu_vendor() accessible from Xen code
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 113/172] cxgb4: use port number to set mac addr
 Date: Tue, 17 Dec 2024 18:07:49 +0100
-Message-ID: <20241217170529.331267942@linuxfoundation.org>
+Message-ID: <20241217170551.011588060@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-commit efbcd61d9bebb771c836a3b8bfced8165633db7c upstream.
+[ Upstream commit 356983f569c1f5991661fc0050aa263792f50616 ]
 
-In order to be able to differentiate between AMD and Intel based
-systems for very early hypercalls without having to rely on the Xen
-hypercall page, make get_cpu_vendor() non-static.
+t4_set_vf_mac_acl() uses pf to set mac addr, but t4vf_get_vf_mac_acl()
+uses port number to get mac addr, this leads to error when an attempt
+to set MAC address on VF's of PF2 and PF3.
+This patch fixes the issue by using port number to set mac address.
 
-Refactor early_cpu_init() for the same reason by splitting out the
-loop initializing cpu_devs() into an externally callable function.
-
-This is part of XSA-466 / CVE-2024-53241.
-
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0cdac65ba26 ("cxgb4vf: configure ports accessible by the VF")
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241206062014.49414-1-anumula@chelsio.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/processor.h |    2 ++
- arch/x86/kernel/cpu/common.c     |   36 +++++++++++++++++++++---------------
- 2 files changed, 23 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h      | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c      | 5 +++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -199,6 +199,8 @@ static inline unsigned long long l1tf_pf
- 	return BIT_ULL(boot_cpu_data.x86_cache_bits - 1 - PAGE_SHIFT);
- }
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+index bbf7641a0fc7..7e13cd69f68a 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+@@ -2077,7 +2077,7 @@ void t4_idma_monitor(struct adapter *adapter,
+ 		     struct sge_idma_monitor_state *idma,
+ 		     int hz, int ticks);
+ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+-		      unsigned int naddr, u8 *addr);
++		      u8 start, unsigned int naddr, u8 *addr);
+ void t4_tp_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
+ 		    u32 start_index, bool sleep_ok);
+ void t4_tp_tm_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index 2418645c8823..fb3933fbb842 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -3246,7 +3246,7 @@ static int cxgb4_mgmt_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
  
-+void init_cpu_devs(void);
-+void get_cpu_vendor(struct cpuinfo_x86 *c);
- extern void early_cpu_init(void);
- extern void identify_boot_cpu(void);
- extern void identify_secondary_cpu(struct cpuinfo_x86 *);
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -906,7 +906,7 @@ void detect_ht(struct cpuinfo_x86 *c)
- #endif
- }
- 
--static void get_cpu_vendor(struct cpuinfo_x86 *c)
-+void get_cpu_vendor(struct cpuinfo_x86 *c)
+ 	dev_info(pi->adapter->pdev_dev,
+ 		 "Setting MAC %pM on VF %d\n", mac, vf);
+-	ret = t4_set_vf_mac_acl(adap, vf + 1, 1, mac);
++	ret = t4_set_vf_mac_acl(adap, vf + 1, pi->lport, 1, mac);
+ 	if (!ret)
+ 		ether_addr_copy(adap->vfinfo[vf].vf_mac_addr, mac);
+ 	return ret;
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+index 76de55306c4d..175bf9b13058 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+@@ -10215,11 +10215,12 @@ int t4_load_cfg(struct adapter *adap, const u8 *cfg_data, unsigned int size)
+  *	t4_set_vf_mac_acl - Set MAC address for the specified VF
+  *	@adapter: The adapter
+  *	@vf: one of the VFs instantiated by the specified PF
++ *	@start: The start port id associated with specified VF
+  *	@naddr: the number of MAC addresses
+  *	@addr: the MAC address(es) to be set to the specified VF
+  */
+ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+-		      unsigned int naddr, u8 *addr)
++		      u8 start, unsigned int naddr, u8 *addr)
  {
- 	char *v = c->x86_vendor_id;
- 	int i;
-@@ -1672,15 +1672,11 @@ static void __init early_identify_cpu(st
- 	detect_nopl();
- }
+ 	struct fw_acl_mac_cmd cmd;
  
--void __init early_cpu_init(void)
-+void __init init_cpu_devs(void)
- {
- 	const struct cpu_dev *const *cdev;
- 	int count = 0;
+@@ -10234,7 +10235,7 @@ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+ 	cmd.en_to_len16 = cpu_to_be32((unsigned int)FW_LEN16(cmd));
+ 	cmd.nmac = naddr;
  
--#ifdef CONFIG_PROCESSOR_SELECT
--	pr_info("KERNEL supported cpus:\n");
--#endif
--
- 	for (cdev = __x86_cpu_dev_start; cdev < __x86_cpu_dev_end; cdev++) {
- 		const struct cpu_dev *cpudev = *cdev;
- 
-@@ -1688,20 +1684,30 @@ void __init early_cpu_init(void)
- 			break;
- 		cpu_devs[count] = cpudev;
- 		count++;
-+	}
-+}
- 
-+void __init early_cpu_init(void)
-+{
- #ifdef CONFIG_PROCESSOR_SELECT
--		{
--			unsigned int j;
-+	unsigned int i, j;
- 
--			for (j = 0; j < 2; j++) {
--				if (!cpudev->c_ident[j])
--					continue;
--				pr_info("  %s %s\n", cpudev->c_vendor,
--					cpudev->c_ident[j]);
--			}
--		}
-+	pr_info("KERNEL supported cpus:\n");
- #endif
-+
-+	init_cpu_devs();
-+
-+#ifdef CONFIG_PROCESSOR_SELECT
-+	for (i = 0; i < X86_VENDOR_NUM && cpu_devs[i]; i++) {
-+		for (j = 0; j < 2; j++) {
-+			if (!cpu_devs[i]->c_ident[j])
-+				continue;
-+			pr_info("  %s %s\n", cpu_devs[i]->c_vendor,
-+				cpu_devs[i]->c_ident[j]);
-+		}
- 	}
-+#endif
-+
- 	early_identify_cpu(&boot_cpu_data);
- }
- 
+-	switch (adapter->pf) {
++	switch (start) {
+ 	case 3:
+ 		memcpy(cmd.macaddr3, addr, sizeof(cmd.macaddr3));
+ 		break;
+-- 
+2.39.5
+
 
 
 
