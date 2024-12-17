@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-104961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2E09F542C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:37:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4A49F5321
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BB8716D6CA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:34:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38E34188E119
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311321FA140;
-	Tue, 17 Dec 2024 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1021F63D5;
+	Tue, 17 Dec 2024 17:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpFOGll1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4j0cKP3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5A01F9F79;
-	Tue, 17 Dec 2024 17:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480CE142E77;
+	Tue, 17 Dec 2024 17:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456649; cv=none; b=Mkt6tuVdrIdprrI0czpu7cidVa2N9ZiwF24GNDSxgkiI2Xn7gIxKbnwvlzXNIYV/LsY/bL1B+CV3EVd98KWOZWjTlOdDBcCDWKcRmCTSovcyZBZz/h+p7iF//nNkGmFH3ru3mVkLec5r+wnlWJlVbn2buJYh8dm8iQ69Kl1hARk=
+	t=1734456148; cv=none; b=S8hycrU90pZXiUsyt8tIFGYULXK+wz3cmNtdIXnQVqfbasKhwXRgdP156qn783cYU8fetppvkTV7cdaJffgwVixqmvSDbmu18n9lkq5iMqOuYcQizQC7BuAQmyCpH2+UJxj8Ejg8GjV2G4PUu2SrL/adOA1PJto+xfiwfUiSMjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456649; c=relaxed/simple;
-	bh=HmqSiW5z1WEwZkpn+cNl5o+PAHtBaMZDsfGeD72+0zA=;
+	s=arc-20240116; t=1734456148; c=relaxed/simple;
+	bh=V7H/+lg2VJq2/ksJ9tAsOAKrjCEwpJpsC1DbfKb7gRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PmKKbycJWcgVbjTtqAYJj4yROXl+vowZy1KE46Xe63wAU5xZfDrisRtaJXN2L4B5kNhI1O77qn7S7P6rgUb9i068Tw/A5aHubmhEIBmxPUcsHqFMbEauvH8zam30vDukdSWujPgJxNqpCxZOwhC5YhRB1OQxeS3slhg5SGjlyno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpFOGll1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533D3C4CED3;
-	Tue, 17 Dec 2024 17:30:48 +0000 (UTC)
+	 MIME-Version; b=YqwxvAMLkWi22+Lagc9mJYTIqBMfYS/sJ4m4bLFIn3CQBbys5giA4VqutnLPqC3NgJgDxW4jNWSZI+oYVvEtYPilpGNNrBP/aRhM/wqk7+00Wg05C87FsZzImwMe3hYyYO7H0YoafS/IEDYHFiZPSBOhsObFyJufevmldVMchw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4j0cKP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA75EC4CED3;
+	Tue, 17 Dec 2024 17:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456648;
-	bh=HmqSiW5z1WEwZkpn+cNl5o+PAHtBaMZDsfGeD72+0zA=;
+	s=korg; t=1734456148;
+	bh=V7H/+lg2VJq2/ksJ9tAsOAKrjCEwpJpsC1DbfKb7gRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpFOGll102DDUS/RL81gbF/EhCT+K55qbGeFsOvpSp4DTjsSO/zPpP7O6dVvjvb9S
-	 uz/lnTvpn0Kvuin4s7nJgC6kivBL1LwwXO5UT1LFIu8B7Rt8+0UJi8IQCW3isc0R0m
-	 mqwmm/NfZtPcrlw953A5ruR3fa4zh4erBDy8vTQQ=
+	b=X4j0cKP3XqPjyFOUTrNp+w8f6PdZVID5n304dd0AkMlt73WXmxM6QLw2uKrLYsTuF
+	 AIESYmHHnAUrKfUH3NsaV8pjuVyZ3p9Msi42fgSaYIBJyu3xbyE5txDCKdVyvMuTkA
+	 Fsg9FtbyhPV46IOLo09KvnL17DJJ9Kh60bBLhtwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/172] net: renesas: rswitch: fix race window between tx start and complete
-Date: Tue, 17 Dec 2024 18:08:00 +0100
-Message-ID: <20241217170551.485239451@linuxfoundation.org>
+Subject: [PATCH 6.6 077/109] net: renesas: rswitch: handle stop vs interrupt race
+Date: Tue, 17 Dec 2024 18:08:01 +0100
+Message-ID: <20241217170536.599560553@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit 0c9547e6ccf40455b0574cf589be3b152a3edf5b ]
+[ Upstream commit 3dd002f20098b9569f8fd7f8703f364571e2e975 ]
 
-If hardware is already transmitting, it can start handling the
-descriptor being written to immediately after it observes updated DT
-field, before the queue is kicked by a write to GWTRC.
+Currently the stop routine of rswitch driver does not immediately
+prevent hardware from continuing to update descriptors and requesting
+interrupts.
 
-If the start_xmit() execution is preempted at unfortunate moment, this
-transmission can complete, and interrupt handled, before gq->cur gets
-updated. With the current implementation of completion, this will cause
-the last entry not completed.
+It can happen that when rswitch_stop() executes the masking of
+interrupts from the queues of the port being closed, napi poll for
+that port is already scheduled or running on a different CPU. When
+execution of this napi poll completes, it will unmask the interrupts.
+And unmasked interrupt can fire after rswitch_stop() returns from
+napi_disable() call. Then, the handler won't mask it, because
+napi_schedule_prep() will return false, and interrupt storm will
+happen.
 
-Fix that by changing completion loop to check DT values directly, instead
-of depending on gq->cur.
+This can't be fixed by making rswitch_stop() call napi_disable() before
+masking interrupts. In this case, the interrupt storm will happen if
+interrupt fires between napi_disable() and masking.
 
-Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Fix this by checking for priv->opened_ports bit when unmasking
+interrupts after napi poll. For that to be consistent, move
+priv->opened_ports changes into spinlock-protected areas, and reorder
+other operations in rswitch_open() and rswitch_stop() accordingly.
+
 Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://patch.msgid.link/20241208095004.69468-3-nikita.yoush@cogentembedded.com
+Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Link: https://patch.msgid.link/20241209113204.175015-1-nikita.yoush@cogentembedded.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rswitch.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.c | 33 ++++++++++++++------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-index 32b32aa7e01f..c251becef6f8 100644
+index d04a79ece698..4dd218b6f308 100644
 --- a/drivers/net/ethernet/renesas/rswitch.c
 +++ b/drivers/net/ethernet/renesas/rswitch.c
-@@ -862,13 +862,10 @@ static void rswitch_tx_free(struct net_device *ndev)
- 	struct rswitch_ext_desc *desc;
- 	struct sk_buff *skb;
+@@ -839,8 +839,10 @@ static int rswitch_poll(struct napi_struct *napi, int budget)
  
--	for (; rswitch_get_num_cur_queues(gq) > 0;
--	     gq->dirty = rswitch_next_queue_index(gq, false, 1)) {
--		desc = &gq->tx_ring[gq->dirty];
--		if ((desc->desc.die_dt & DT_MASK) != DT_FEMPTY)
--			break;
--
-+	desc = &gq->tx_ring[gq->dirty];
-+	while ((desc->desc.die_dt & DT_MASK) == DT_FEMPTY) {
- 		dma_rmb();
-+
- 		skb = gq->skbs[gq->dirty];
- 		if (skb) {
- 			rdev->ndev->stats.tx_packets++;
-@@ -879,7 +876,10 @@ static void rswitch_tx_free(struct net_device *ndev)
- 			dev_kfree_skb_any(gq->skbs[gq->dirty]);
- 			gq->skbs[gq->dirty] = NULL;
- 		}
-+
- 		desc->desc.die_dt = DT_EEMPTY;
-+		gq->dirty = rswitch_next_queue_index(gq, false, 1);
-+		desc = &gq->tx_ring[gq->dirty];
- 	}
- }
- 
-@@ -1685,6 +1685,8 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 	gq->skbs[(gq->cur + nr_desc - 1) % gq->ring_size] = skb;
- 	gq->unmap_addrs[(gq->cur + nr_desc - 1) % gq->ring_size] = dma_addr_orig;
- 
-+	dma_wmb();
-+
- 	/* DT_FSTART should be set at last. So, this is reverse order. */
- 	for (i = nr_desc; i-- > 0; ) {
- 		desc = &gq->tx_ring[rswitch_next_queue_index(gq, true, i)];
-@@ -1695,8 +1697,6 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 			goto err_unmap;
+ 	if (napi_complete_done(napi, budget - quota)) {
+ 		spin_lock_irqsave(&priv->lock, flags);
+-		rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
+-		rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
++		if (test_bit(rdev->port, priv->opened_ports)) {
++			rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
++			rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
++		}
+ 		spin_unlock_irqrestore(&priv->lock, flags);
  	}
  
--	wmb();	/* gq->cur must be incremented after die_dt was set */
+@@ -1467,20 +1469,20 @@ static int rswitch_open(struct net_device *ndev)
+ 	struct rswitch_device *rdev = netdev_priv(ndev);
+ 	unsigned long flags;
+ 
+-	phy_start(ndev->phydev);
++	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
++		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
+ 
+ 	napi_enable(&rdev->napi);
+-	netif_start_queue(ndev);
+ 
+ 	spin_lock_irqsave(&rdev->priv->lock, flags);
++	bitmap_set(rdev->priv->opened_ports, rdev->port, 1);
+ 	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, true);
+ 	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, true);
+ 	spin_unlock_irqrestore(&rdev->priv->lock, flags);
+ 
+-	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
+-		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
++	phy_start(ndev->phydev);
+ 
+-	bitmap_set(rdev->priv->opened_ports, rdev->port, 1);
++	netif_start_queue(ndev);
+ 
+ 	return 0;
+ };
+@@ -1492,7 +1494,16 @@ static int rswitch_stop(struct net_device *ndev)
+ 	unsigned long flags;
+ 
+ 	netif_tx_stop_all_queues(ndev);
++
++	phy_stop(ndev->phydev);
++
++	spin_lock_irqsave(&rdev->priv->lock, flags);
++	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
++	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
+ 	bitmap_clear(rdev->priv->opened_ports, rdev->port, 1);
++	spin_unlock_irqrestore(&rdev->priv->lock, flags);
++
++	napi_disable(&rdev->napi);
+ 
+ 	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
+ 		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDID);
+@@ -1505,14 +1516,6 @@ static int rswitch_stop(struct net_device *ndev)
+ 		kfree(ts_info);
+ 	}
+ 
+-	spin_lock_irqsave(&rdev->priv->lock, flags);
+-	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
+-	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
+-	spin_unlock_irqrestore(&rdev->priv->lock, flags);
 -
- 	gq->cur = rswitch_next_queue_index(gq, true, nr_desc);
- 	rswitch_modify(rdev->addr, GWTRC(gq->index), 0, BIT(gq->index % 32));
+-	phy_stop(ndev->phydev);
+-	napi_disable(&rdev->napi);
+-
+ 	return 0;
+ };
  
 -- 
 2.39.5
