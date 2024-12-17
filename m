@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F449F53B1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70379F51B7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EB70188A3C4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B489162F21
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA6A1F8937;
-	Tue, 17 Dec 2024 17:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B309149DFA;
+	Tue, 17 Dec 2024 17:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGAPIvFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaS057pW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6C31F7582;
-	Tue, 17 Dec 2024 17:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6731F37BE;
+	Tue, 17 Dec 2024 17:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456477; cv=none; b=emz1Mlztu6LKV5zffsRJS2O7X7tJCxE0v4CYqle/9RE5Dg9rFt8K01bRbdqhrLZJZo8HZqCUxSOS0pwhDQ7HKd9xHNXfqlWrD8IBB6VDyGm9jpPqtQU+G/N8YPzmxicfY1tTu8fDhlV+qwlyINcO92cXkLWFKqhcUrK7eQhzvGQ=
+	t=1734455363; cv=none; b=fws+pn8eFP4zO2VH6jhO0otYGAqs9tfQJhtBw/nqOyBks8qWMDNHcYWT7fAbdGHU8+6YHxzNBbRQGD7ZoGtwBz4kGfU2KKVf+aPaz+UQigNyPI6pZjOJYmSVdvqxIFGvW5wXuh03mPafVHZB+wV481wmboh9VqAEJIxmiesgfDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456477; c=relaxed/simple;
-	bh=TaaSPIM91nOYMcRpHJER/lppiPfhmPBbNO+M5Yf+4Fc=;
+	s=arc-20240116; t=1734455363; c=relaxed/simple;
+	bh=SycOf8asPKFt/ZTQk+lv1FmsNrGa+qZdpXOOYZ32/kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0o031DDkKpIXpIdNajCbf4DR0oIjVmBd8ganZuoNbSqBYo04dfgq/8asFPDC5eGSj8aUJ4pE2o0ApYqht8MPQyCRvrtiyXMxBeUNH2VZueUeE6laeRo5c699v7mRbObf0Gu/s+PI1f5cqf0JmL0a4a8JovajfqjCpr/G6Dom7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGAPIvFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258E2C4CED3;
-	Tue, 17 Dec 2024 17:27:56 +0000 (UTC)
+	 MIME-Version; b=fiUqdWvFYRIc3Ag7yUG08hTfxZKOf/m20X4R5xmoAHKt1Ct2m65DDh9bGXwVS3xX/8zxOn1EhNHkZHN0pVN4Id6z3SURtD9NKn7VwVoixaWK1Dv0UfQQcpsLk8HgLMMW3iuOC3o9vVVmy2NhuP40cXnw+7Io19m9ExXzeOHbrHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaS057pW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46251C4CED3;
+	Tue, 17 Dec 2024 17:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456477;
-	bh=TaaSPIM91nOYMcRpHJER/lppiPfhmPBbNO+M5Yf+4Fc=;
+	s=korg; t=1734455362;
+	bh=SycOf8asPKFt/ZTQk+lv1FmsNrGa+qZdpXOOYZ32/kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGAPIvFWUWYBoxCL1fmsh5iN4DYafJArJSsjeFrRHVLw+m/whUvMOkGxbt5hfSRQ0
-	 +JFvfpN1iaDpOz6RgnGZ+oGRoHk/MSm6xxhPKd54Hb6yTvF4WHEwnk59cxzPjuyMuu
-	 5KOSuYvFFvQMAGrvco1WolE7NyMCsZQYF774VXQo=
+	b=XaS057pWOO7dzJ3hjsb3e2zHieMOZsKyAdNZROQZo2hUH2VQxk08OLm0M2XdHgVYq
+	 MfgYfkTg2yWmkpd0ykDlDZRPk2FW8Q3vZD+IOW+oTrcnUHgQczodf0Un/RHO1uy059
+	 Qugq3vqrOLTX0t6kSFVqQ0VwLd59LY/acBLC131s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 072/172] xfs: return from xfs_symlink_verify early on V4 filesystems
-Date: Tue, 17 Dec 2024 18:07:08 +0100
-Message-ID: <20241217170549.271146465@linuxfoundation.org>
+	syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 11/24] tipc: fix NULL deref in cleanup_bearer()
+Date: Tue, 17 Dec 2024 18:07:09 +0100
+Message-ID: <20241217170519.469107476@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 7f8b718c58783f3ff0810b39e2f62f50ba2549f6 upstream.
+[ Upstream commit b04d86fff66b15c07505d226431f808c15b1703c ]
 
-V4 symlink blocks didn't have headers, so return early if this is a V4
-filesystem.
+syzbot found [1] that after blamed commit, ub->ubsock->sk
+was NULL when attempting the atomic_dec() :
 
-Cc: <stable@vger.kernel.org> # v5.1
-Fixes: 39708c20ab5133 ("xfs: miscellaneous verifier magic value fixups")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
+
+Fix this by caching the tipc_net pointer.
+
+[1]
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+CPU: 0 UID: 0 PID: 5896 Comm: kworker/0:3 Not tainted 6.13.0-rc1-next-20241203-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events cleanup_bearer
+ RIP: 0010:read_pnet include/net/net_namespace.h:387 [inline]
+ RIP: 0010:sock_net include/net/sock.h:655 [inline]
+ RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
+Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 3c f7 99 f6 48 8b 1b 48 83 c3 30 e8 f0 e4 60 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 1a f7 99 f6 49 83 c7 e8 48 8b 1b
+RSP: 0018:ffffc9000410fb70 EFLAGS: 00010206
+RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88802fe45a00
+RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffc9000410f900
+RBP: ffff88807e1f0908 R08: ffffc9000410f907 R09: 1ffff92000821f20
+R10: dffffc0000000000 R11: fffff52000821f21 R12: ffff888031d19980
+R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff88807e1f0918
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556ca050b000 CR3: 0000000031c0c000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Fixes: 6a2fa13312e5 ("tipc: Fix use-after-free of kernel socket in cleanup_bearer().")
+Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67508b5f.050a0220.17bd51.0070.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20241204170548.4152658-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_symlink_remote.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/tipc/udp_media.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/libxfs/xfs_symlink_remote.c
-+++ b/fs/xfs/libxfs/xfs_symlink_remote.c
-@@ -92,8 +92,10 @@ xfs_symlink_verify(
- 	struct xfs_mount	*mp = bp->b_mount;
- 	struct xfs_dsymlink_hdr	*dsl = bp->b_addr;
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index 696a21208b24..5f278c25462e 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -798,6 +798,7 @@ static void cleanup_bearer(struct work_struct *work)
+ {
+ 	struct udp_bearer *ub = container_of(work, struct udp_bearer, work);
+ 	struct udp_replicast *rcast, *tmp;
++	struct tipc_net *tn;
  
-+	/* no verification of non-crc buffers */
- 	if (!xfs_has_crc(mp))
--		return __this_address;
-+		return NULL;
+ 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
+ 		dst_cache_destroy(&rcast->dst_cache);
+@@ -805,10 +806,14 @@ static void cleanup_bearer(struct work_struct *work)
+ 		kfree_rcu(rcast, rcu);
+ 	}
+ 
++	tn = tipc_net(sock_net(ub->ubsock->sk));
 +
- 	if (!xfs_verify_magic(bp, dsl->sl_magic))
- 		return __this_address;
- 	if (!uuid_equal(&dsl->sl_uuid, &mp->m_sb.sb_meta_uuid))
+ 	dst_cache_destroy(&ub->rcast.dst_cache);
+ 	udp_tunnel_sock_release(ub->ubsock);
++
++	/* Note: could use a call_rcu() to avoid another synchronize_net() */
+ 	synchronize_net();
+-	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
++	atomic_dec(&tn->wq_count);
+ 	kfree(ub);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
