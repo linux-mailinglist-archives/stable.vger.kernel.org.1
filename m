@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701409F5278
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 118169F53C8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61142188FC49
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47D35167F85
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367221E0493;
-	Tue, 17 Dec 2024 17:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E9B1F75BE;
+	Tue, 17 Dec 2024 17:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k959zYe8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKScSr58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74C914A4E7;
-	Tue, 17 Dec 2024 17:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211061F7574;
+	Tue, 17 Dec 2024 17:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455791; cv=none; b=JkxGIpAteXZME6cJSJ0D+ELt4qPP2tvfJ7siVY8NvYszyi5616rBMfQBNwGxbHo2EtTkjIMwLPz1YUvKjc4RYSJP7UhQsIi87ClVPHoeWMPUOS0vyetEm2pNhCfoyJCXg/nNt6VlgeD/6kvHPmz8Q46w1ZejIF1peNdE4LBM2EA=
+	t=1734456524; cv=none; b=SOihquZdKnCEi9tx1DgYY7j8tkwtAPyFnZfIKydmFG3lY43UwrYe/3Zpoya+VOryePZgEOBVpmDUPIPxj20oBHanFZ1vQ/TiN2DuY0Mhzm13RJRvByjH9oUAYwdPMzvGtDeqJ+LHDz8d9MTL7ujGoMCJKRT1vKwvLWOtDBPLBHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455791; c=relaxed/simple;
-	bh=QLTaWLU4/K8VdXOzY2Q4WawzWrGmXT2grzqintEIKFc=;
+	s=arc-20240116; t=1734456524; c=relaxed/simple;
+	bh=kpslnGk57HAh923wo0VZ7CoH0OAwGNpA3WVt3lM3hg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDrW6b+Ly0Y/pGyAdl+APSkCdzU2joZ4dGo8PX2qbQYYwJhsSs8GXodNSoMaEM5+rjdBv7sm/YUmxNvWNZx4NhDt42q4/hEZIaxF5PRrC9xkAzHhaiFOA+HNkU9NylwoH2fkX5OEXmnzokVeCXlm6p/gH1YzWllJ79fM2dzkfbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k959zYe8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1B1C4CED3;
-	Tue, 17 Dec 2024 17:16:29 +0000 (UTC)
+	 MIME-Version; b=RpwDEmuvgzOftmjiNIazStoKSDRWrAAvB3DYp0y29yWtIXGNkDzR2xgWnjoUICa3iPrFey3yNttl7ffvKmBvfG0vk4BSZnkWu8Okrz9EMXiS215TV1KMUpZCSMdeyLNVPOh6WUYpjFmTQe9lWSORvGcOrhnBuO0/dSTQbl6/Hrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKScSr58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F412C4CED3;
+	Tue, 17 Dec 2024 17:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455790;
-	bh=QLTaWLU4/K8VdXOzY2Q4WawzWrGmXT2grzqintEIKFc=;
+	s=korg; t=1734456523;
+	bh=kpslnGk57HAh923wo0VZ7CoH0OAwGNpA3WVt3lM3hg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k959zYe82WVOGPtePd+Dh4gJnR3oXNLgDweOC8l839x08d+GehJOmVCtio5TgHE+4
-	 x1sLolbb10ov+0A1fdI+mmupLqvN583MiA9xoub0AYrB/UtcXe+o9uPr1af8CYxLEP
-	 jRrPPweZBLbLKiFMfix/rWVnGpQCUx5fU8WwP0dI=
+	b=IKScSr58RkKXn8f2tvIjBW5TK8Kjq/pFhN9X6qkLjSpu+T/ZhmjrSsi9WFlRyBxwC
+	 EAOASirYzDDbvg2liq9af57tB+kgoAh2NW9RPEW+ivmyoP/er8lDxOF9rDA0itQCkO
+	 l1iW7vyKgIlLWrntacdPSwdWpe/Dw3h81OtEjr2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Antonio Quartulli <Antonio@mandelbit.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 34/76] batman-adv: Do not let TT changes list grows indefinitely
+	syzbot+2e0d2840414ce817aaac@syzkaller.appspotmail.com,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: [PATCH 6.12 078/172] bpf,perf: Fix invalid prog_array access in perf_event_detach_bpf_prog
 Date: Tue, 17 Dec 2024 18:07:14 +0100
-Message-ID: <20241217170527.679527546@linuxfoundation.org>
+Message-ID: <20241217170549.524270906@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit fff8f17c1a6fc802ca23bbd3a276abfde8cc58e6 ]
+commit 978c4486cca5c7b9253d3ab98a88c8e769cb9bbd upstream.
 
-When TT changes list is too big to fit in packet due to MTU size, an
-empty OGM is sent expected other node to send TT request to get the
-changes. The issue is that tt.last_changeset was not built thus the
-originator was responding with previous changes to those TT requests
-(see batadv_send_my_tt_response). Also the changes list was never
-cleaned up effectively never ending growing from this point onwards,
-repeatedly sending the same TT response changes over and over, and
-creating a new empty OGM every OGM interval expecting for the local
-changes to be purged.
+Syzbot reported [1] crash that happens for following tracing scenario:
 
-When there is more TT changes that can fit in packet, drop all changes,
-send empty OGM and wait for TT request so we can respond with a full
-table instead.
+  - create tracepoint perf event with attr.inherit=1, attach it to the
+    process and set bpf program to it
+  - attached process forks -> chid creates inherited event
 
-Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Acked-by: Antonio Quartulli <Antonio@mandelbit.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    the new child event shares the parent's bpf program and tp_event
+    (hence prog_array) which is global for tracepoint
+
+  - exit both process and its child -> release both events
+  - first perf_event_detach_bpf_prog call will release tp_event->prog_array
+    and second perf_event_detach_bpf_prog will crash, because
+    tp_event->prog_array is NULL
+
+The fix makes sure the perf_event_detach_bpf_prog checks prog_array
+is valid before it tries to remove the bpf program from it.
+
+[1] https://lore.kernel.org/bpf/Z1MR6dCIKajNS6nU@krava/T/#m91dbf0688221ec7a7fc95e896a7ef9ff93b0b8ad
+
+Fixes: 0ee288e69d03 ("bpf,perf: Fix perf_event_detach_bpf_prog error handling")
+Reported-by: syzbot+2e0d2840414ce817aaac@syzkaller.appspotmail.com
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241208142507.1207698-1-jolsa@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/trace/bpf_trace.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index d7f874ff1a70..2b5453801bf0 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -990,6 +990,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 	int tt_diff_len, tt_change_len = 0;
- 	int tt_diff_entries_num = 0;
- 	int tt_diff_entries_count = 0;
-+	bool drop_changes = false;
- 	size_t tt_extra_len = 0;
- 	u16 tvlv_len;
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2215,6 +2215,9 @@ void perf_event_detach_bpf_prog(struct p
+ 		goto unlock;
  
-@@ -997,10 +998,17 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 	tt_diff_len = batadv_tt_len(tt_diff_entries_num);
+ 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
++	if (!old_array)
++		goto put;
++
+ 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
+ 	if (ret < 0) {
+ 		bpf_prog_array_delete_safe(old_array, event->prog);
+@@ -2223,6 +2226,7 @@ void perf_event_detach_bpf_prog(struct p
+ 		bpf_prog_array_free_sleepable(old_array);
+ 	}
  
- 	/* if we have too many changes for one packet don't send any
--	 * and wait for the tt table request which will be fragmented
-+	 * and wait for the tt table request so we can reply with the full
-+	 * (fragmented) table.
-+	 *
-+	 * The local change history should still be cleaned up so the next
-+	 * TT round can start again with a clean state.
- 	 */
--	if (tt_diff_len > bat_priv->soft_iface->mtu)
-+	if (tt_diff_len > bat_priv->soft_iface->mtu) {
- 		tt_diff_len = 0;
-+		tt_diff_entries_num = 0;
-+		drop_changes = true;
-+	}
- 
- 	tvlv_len = batadv_tt_prepare_tvlv_local_data(bat_priv, &tt_data,
- 						     &tt_change, &tt_diff_len);
-@@ -1009,7 +1017,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 
- 	tt_data->flags = BATADV_TT_OGM_DIFF;
- 
--	if (tt_diff_len == 0)
-+	if (!drop_changes && tt_diff_len == 0)
- 		goto container_register;
- 
- 	spin_lock_bh(&bat_priv->tt.changes_list_lock);
--- 
-2.39.5
-
++put:
+ 	/*
+ 	 * It could be that the bpf_prog is not sleepable (and will be freed
+ 	 * via normal RCU), but is called from a point that supports sleepable
 
 
 
