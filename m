@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF149F51C4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBBA9F52C9
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8A0D188D394
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06D4F16C82F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB631F7577;
-	Tue, 17 Dec 2024 17:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20991F868B;
+	Tue, 17 Dec 2024 17:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqdjhhEY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZm78Qc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984DA1F4735;
-	Tue, 17 Dec 2024 17:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E53F1F76A1;
+	Tue, 17 Dec 2024 17:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455390; cv=none; b=u7t/VUzsjWKGo+YcjxVDg8N/9j1CWDOKeNfZ19El717aq7Zy7uXmeNGy/DCiLFmN1BzaOZMKJvXrNnang2KG6sNiOqk4zawSOO9k29xHrgOR+U/KpfqZb1SzkeNfjQ1sDYmMHc9WZclqtpoU59eOVJgDkl2Ig7vQhwvlUdouoXw=
+	t=1734455984; cv=none; b=szAqy7DoWu1VOKb2gaJPt9PVQOcx5nVtavJXK554JrdkUgy1Lj4wp4A+qEZ4SPlTC9JTb3XEgmOyvWstjcpDtvt4l+ICdABCwVIRdJq35KoM96xxK8EpaHlOT4ybvmQ3w45WRhykExL/vcTy4SeZhWeDzMrzDl71ZgJMcIpAFaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455390; c=relaxed/simple;
-	bh=fz1ZH4HQs8Tqr6QSZzKy2bEjgigoVLetit03pGd+vgg=;
+	s=arc-20240116; t=1734455984; c=relaxed/simple;
+	bh=A+8b1x9nWRv5Zg8NTr5aRbtu10/QfqdgdqJbI5AIf6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGMQiIxZiIW7WH4dk7l0OCeImP2/NvWdYmJznIGjyqbEpWhe+ntyIvZ3CgVf/LsA9tm9V1Y90n4entMW813l4aC27lvU8T31FHOdZNcW0wta/I9aWApL1DMewaS0gKhdMbtrvSsXdZPbhjI96S2kzKVSv3fWdKOQjGsyqPhYKVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqdjhhEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FEEC4CED3;
-	Tue, 17 Dec 2024 17:09:49 +0000 (UTC)
+	 MIME-Version; b=aSuX1IY9LUMwrHUuco7IueQPmdj0lzqTLccpEnd40ie9b4arST1doc51SSALjDLZO5A8J4MMlTdovUXbyfyE84kKh7h9u3VccWDQImR9Dd1+/keS1Vx+T6a/c8c1GTVg5gRZHYO/zpX5/Z90Mc4OOPB4BKARlpBVb0f25rHHU8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZm78Qc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4B5C4CED7;
+	Tue, 17 Dec 2024 17:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455390;
-	bh=fz1ZH4HQs8Tqr6QSZzKy2bEjgigoVLetit03pGd+vgg=;
+	s=korg; t=1734455984;
+	bh=A+8b1x9nWRv5Zg8NTr5aRbtu10/QfqdgdqJbI5AIf6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqdjhhEY7XArqfWu0APeY6XGoUGsM9zXl28rMVJkTikzHK3sgGkzaNauduMKEO8EO
-	 +TeUqWgh9dbOILu9sxNvBxUsDiDuszya+L1Na+TFOftiBxPxf6pPHLCvGo6ZKngz+S
-	 FxQHSAcVziZtuf/MfkUHvAUzP+cTWC2Gn9niR1Aw=
+	b=DZm78Qc7XiQiSWGt4isvEUh0DhDDA9POUfb9RvunJnMXLi0mUQovMMg2PssO84jy1
+	 VmDOzLlxcpTRWC9IJtgyzxKTArUjs2AImKuQ4/7S5ZmbbClUDuHp0gJprSm+FG/mQZ
+	 h8u/QYg16Z70uQKlCFgChawfFBPFUcvm1rMILYp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH 5.4 07/24] bpf, sockmap: Fix update element with same
+	Neal Frager <neal.frager@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Peter Korsgaard <peter@korsgaard.com>
+Subject: [PATCH 6.6 021/109] usb: dwc3: xilinx: make sure pipe clock is deselected in usb2 only mode
 Date: Tue, 17 Dec 2024 18:07:05 +0100
-Message-ID: <20241217170519.307875750@linuxfoundation.org>
+Message-ID: <20241217170534.250374414@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
-References: <20241217170519.006786596@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Neal Frager <neal.frager@amd.com>
 
-commit 75e072a390da9a22e7ae4a4e8434dfca5da499fb upstream.
+commit a48f744bef9ee74814a9eccb030b02223e48c76c upstream.
 
-Consider a sockmap entry being updated with the same socket:
+When the USB3 PHY is not defined in the Linux device tree, there could
+still be a case where there is a USB3 PHY active on the board and enabled
+by the first stage bootloader. If serdes clock is being used then the USB
+will fail to enumerate devices in 2.0 only mode.
 
-	osk = stab->sks[idx];
-	sock_map_add_link(psock, link, map, &stab->sks[idx]);
-	stab->sks[idx] = sk;
-	if (osk)
-		sock_map_unref(osk, &stab->sks[idx]);
+To solve this, make sure that the PIPE clock is deselected whenever the
+USB3 PHY is not defined and guarantees that the USB2 only mode will work
+in all cases.
 
-Due to sock_map_unref(), which invokes sock_map_del_link(), all the
-psock's links for stab->sks[idx] are torn:
-
-	list_for_each_entry_safe(link, tmp, &psock->link, list) {
-		if (link->link_raw == link_raw) {
-			...
-			list_del(&link->list);
-			sk_psock_free_link(link);
-		}
-	}
-
-And that includes the new link sock_map_add_link() added just before
-the unref.
-
-This results in a sockmap holding a socket, but without the respective
-link. This in turn means that close(sock) won't trigger the cleanup,
-i.e. a closed socket will not be automatically removed from the sockmap.
-
-Stop tearing the links when a matching link_raw is found.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241202-sockmap-replace-v1-1-1e88579e7bd5@rbox.co
+Fixes: 9678f3361afc ("usb: dwc3: xilinx: Skip resets and USB3 register settings for USB2.0 mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Neal Frager <neal.frager@amd.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/1733163111-1414816-1-git-send-email-radhey.shyam.pandey@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock_map.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/dwc3-xilinx.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -152,6 +152,7 @@ static void sock_map_del_link(struct soc
- 				strp_stop = true;
- 			list_del(&link->list);
- 			sk_psock_free_link(link);
-+			break;
- 		}
- 	}
- 	spin_unlock_bh(&psock->link_lock);
+--- a/drivers/usb/dwc3/dwc3-xilinx.c
++++ b/drivers/usb/dwc3/dwc3-xilinx.c
+@@ -121,8 +121,11 @@ static int dwc3_xlnx_init_zynqmp(struct
+ 	 * in use but the usb3-phy entry is missing from the device tree.
+ 	 * Therefore, skip these operations in this case.
+ 	 */
+-	if (!priv_data->usb3_phy)
++	if (!priv_data->usb3_phy) {
++		/* Deselect the PIPE Clock Select bit in FPD PIPE Clock register */
++		writel(PIPE_CLK_DESELECT, priv_data->regs + XLNX_USB_FPD_PIPE_CLK);
+ 		goto skip_usb3_phy;
++	}
+ 
+ 	crst = devm_reset_control_get_exclusive(dev, "usb_crst");
+ 	if (IS_ERR(crst)) {
 
 
 
