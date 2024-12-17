@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-104903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD54F9F53A8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194289F5295
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D00891725A0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6E916FFA0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C181F8910;
-	Tue, 17 Dec 2024 17:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83471F8AF2;
+	Tue, 17 Dec 2024 17:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXrw8YQy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DX+WNO/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36B614A4E7;
-	Tue, 17 Dec 2024 17:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A3D1F8AF5;
+	Tue, 17 Dec 2024 17:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456454; cv=none; b=JTike8l/weLR6qL7B7ESS26zXRE7HsnA8HdiHoW2w4/bvQBRJGc9yxX3I5uIip2Ak578i5d8rZtAiQ1ouudUe1ch1B6qwaupAsrePAz4d+HM8sXYiuqs0uecRsAc2MXu5fd+zFlrIyFkXa4sxGkP6w4ycp/AvptnjMgqhE9xI6A=
+	t=1734455844; cv=none; b=eykD2HwAiXHA78a5i0qtVnDZbJn3eG/oar9CfwrLU3CyTVzxwBD2A0cURdeeRWkJoFuuNRA5wthSn7y3jnp46eN0hUhKlu/8OJFqk+pbMpDgMCEsEn5Fr/ThFDNcygDMTCWILwpgwj+UkUx5od6++tbibGBCTF/1h3JTK18PbRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456454; c=relaxed/simple;
-	bh=JS03GM9u0cmm3ecdM8fqg9og9S/Z8giiFKhfw6V13P4=;
+	s=arc-20240116; t=1734455844; c=relaxed/simple;
+	bh=Lj5TI1rZ0zc7E4JU+wJTgw3G6HBlPlkU1UoRIeKP5uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4LrmzuMHSxpRyuADNxLjQvFnC4fPemPqjfeWnAU+sKaHYqgMWBqLKJ6BN2M3nX1l7S04SKljMM2W/qqAW0+ADQ5zKSARDJGrD2PChbC+a0mDarNPqeWI+Bv3Oq+suY5MMIsNs4mtQw6F+gNbHCjde61fs6qM4dMWjD3R2q6GTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXrw8YQy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174D5C4CED7;
-	Tue, 17 Dec 2024 17:27:33 +0000 (UTC)
+	 MIME-Version; b=ssb2fQ6vnVxkZ8mX3USWF4FlYNHHnHZXXEyPIbqivEZyuPwFThtmv0A0pHBk6CvHEjemlVVMJPEoYe0xp3YThz3lHADWD/bm3yzuglJO76inTbs+5oBPAsBk6h6gvvIqjJf4zDNJJOIaruGZSVSYQwqLMQqTM6aAbjKPSufomv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DX+WNO/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C384C4CEDE;
+	Tue, 17 Dec 2024 17:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456454;
-	bh=JS03GM9u0cmm3ecdM8fqg9og9S/Z8giiFKhfw6V13P4=;
+	s=korg; t=1734455844;
+	bh=Lj5TI1rZ0zc7E4JU+wJTgw3G6HBlPlkU1UoRIeKP5uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXrw8YQyb6w6XQ3mMM+xNb9yroOQSljary6QmAQgPxZ3K3uLenv96lPtXowvpGFjT
-	 p9Ck4PbsuDiUBO18/ZRZu2t6jc4x8XcEGkS7cZVp1Y0XCP9GnVA2ernH2a1uPUupmr
-	 yXHV0pwjyN3TVqV/IYXKfzB6GV4PzVcIUbS9uaPw=
+	b=DX+WNO/LGAbujtiq2OgCxvz89Jzt+7csnWcys7a7MFAHgUY7EGWPTrxo3mguVlQoy
+	 lMuCholPgSmRRtHAfxQaUyc1jkPvGoDkjw9XcVADIzFZmqWhxH9kWJapabe8nmZp3q
+	 ZFrffPKJkJQQBYKEULLR6Quo77w/RxaB69+NHQcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	David Belanger <david.belanger@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 065/172] drm/amdkfd: hard-code cacheline size for gfx11
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.1 21/76] xfs: only run precommits once per transaction object
 Date: Tue, 17 Dec 2024 18:07:01 +0100
-Message-ID: <20241217170548.976211477@linuxfoundation.org>
+Message-ID: <20241217170527.136885799@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 321048c4a3e375416b51b4093978f9ce2aa4d391 upstream.
+commit 44d9b07e52db25035680713c3428016cadcd2ea1 upstream.
 
-This information is not available in ip discovery table.
+Committing a transaction tx0 with a defer ops chain of (A, B, C)
+creates a chain of transactions that looks like this:
 
-Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Reviewed-by: David Belanger <david.belanger@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+tx0 -> txA -> txB -> txC
+
+Prior to commit cb042117488dbf, __xfs_trans_commit would run precommits
+on tx0, then call xfs_defer_finish_noroll to convert A-C to tx[A-C].
+Unfortunately, after the finish_noroll loop we forgot to run precommits
+on txC.  That was fixed by adding the second precommit call.
+
+Unfortunately, none of us remembered that xfs_defer_finish_noroll
+calls __xfs_trans_commit a second time to commit tx0 before finishing
+work A in txA and committing that.  In other words, we run precommits
+twice on tx0:
+
+xfs_trans_commit(tx0)
+    __xfs_trans_commit(tx0, false)
+        xfs_trans_run_precommits(tx0)
+        xfs_defer_finish_noroll(tx0)
+            xfs_trans_roll(tx0)
+                txA = xfs_trans_dup(tx0)
+                __xfs_trans_commit(tx0, true)
+                xfs_trans_run_precommits(tx0)
+
+This currently isn't an issue because the inode item precommit is
+idempotent; the iunlink item precommit deletes itself so it can't be
+called again; and the buffer/dquot item precommits only check the incore
+objects for corruption.  However, it doesn't make sense to run
+precommits twice.
+
+Fix this situation by only running precommits after finish_noroll.
+
+Cc: <stable@vger.kernel.org> # v6.4
+Fixes: cb042117488dbf ("xfs: defered work could create precommits")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_crat.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_trans.c |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
-@@ -1422,6 +1422,7 @@ err:
+--- a/fs/xfs/xfs_trans.c
++++ b/fs/xfs/xfs_trans.c
+@@ -955,13 +955,6 @@ __xfs_trans_commit(
  
+ 	trace_xfs_trans_commit(tp, _RET_IP_);
  
- static int kfd_fill_gpu_cache_info_from_gfx_config(struct kfd_dev *kdev,
-+						   bool cache_line_size_missing,
- 						   struct kfd_gpu_cache_info *pcache_info)
- {
- 	struct amdgpu_device *adev = kdev->adev;
-@@ -1436,6 +1437,8 @@ static int kfd_fill_gpu_cache_info_from_
- 					CRAT_CACHE_FLAGS_SIMD_CACHE);
- 		pcache_info[i].num_cu_shared = adev->gfx.config.gc_num_tcp_per_wpg / 2;
- 		pcache_info[i].cache_line_size = adev->gfx.config.gc_tcp_cache_line_size;
-+		if (cache_line_size_missing && !pcache_info[i].cache_line_size)
-+			pcache_info[i].cache_line_size = 128;
- 		i++;
+-	error = xfs_trans_run_precommits(tp);
+-	if (error) {
+-		if (tp->t_flags & XFS_TRANS_PERM_LOG_RES)
+-			xfs_defer_cancel(tp);
+-		goto out_unreserve;
+-	}
+-
+ 	/*
+ 	 * Finish deferred items on final commit. Only permanent transactions
+ 	 * should ever have deferred ops.
+@@ -972,13 +965,12 @@ __xfs_trans_commit(
+ 		error = xfs_defer_finish_noroll(&tp);
+ 		if (error)
+ 			goto out_unreserve;
+-
+-		/* Run precommits from final tx in defer chain. */
+-		error = xfs_trans_run_precommits(tp);
+-		if (error)
+-			goto out_unreserve;
  	}
- 	/* Scalar L1 Instruction Cache per SQC */
-@@ -1448,6 +1451,8 @@ static int kfd_fill_gpu_cache_info_from_
- 					CRAT_CACHE_FLAGS_SIMD_CACHE);
- 		pcache_info[i].num_cu_shared = adev->gfx.config.gc_num_sqc_per_wgp * 2;
- 		pcache_info[i].cache_line_size = adev->gfx.config.gc_instruction_cache_line_size;
-+		if (cache_line_size_missing && !pcache_info[i].cache_line_size)
-+			pcache_info[i].cache_line_size = 128;
- 		i++;
- 	}
- 	/* Scalar L1 Data Cache per SQC */
-@@ -1459,6 +1464,8 @@ static int kfd_fill_gpu_cache_info_from_
- 					CRAT_CACHE_FLAGS_SIMD_CACHE);
- 		pcache_info[i].num_cu_shared = adev->gfx.config.gc_num_sqc_per_wgp * 2;
- 		pcache_info[i].cache_line_size = adev->gfx.config.gc_scalar_data_cache_line_size;
-+		if (cache_line_size_missing && !pcache_info[i].cache_line_size)
-+			pcache_info[i].cache_line_size = 64;
- 		i++;
- 	}
- 	/* GL1 Data Cache per SA */
-@@ -1471,7 +1478,8 @@ static int kfd_fill_gpu_cache_info_from_
- 					CRAT_CACHE_FLAGS_DATA_CACHE |
- 					CRAT_CACHE_FLAGS_SIMD_CACHE);
- 		pcache_info[i].num_cu_shared = adev->gfx.config.max_cu_per_sh;
--		pcache_info[i].cache_line_size = 0;
-+		if (cache_line_size_missing)
-+			pcache_info[i].cache_line_size = 128;
- 		i++;
- 	}
- 	/* L2 Data Cache per GPU (Total Tex Cache) */
-@@ -1483,6 +1491,8 @@ static int kfd_fill_gpu_cache_info_from_
- 					CRAT_CACHE_FLAGS_SIMD_CACHE);
- 		pcache_info[i].num_cu_shared = adev->gfx.config.max_cu_per_sh;
- 		pcache_info[i].cache_line_size = adev->gfx.config.gc_tcc_cache_line_size;
-+		if (cache_line_size_missing && !pcache_info[i].cache_line_size)
-+			pcache_info[i].cache_line_size = 128;
- 		i++;
- 	}
- 	/* L3 Data Cache per GPU */
-@@ -1568,6 +1578,7 @@ static int kfd_fill_gpu_cache_info_from_
- int kfd_get_gpu_cache_info(struct kfd_node *kdev, struct kfd_gpu_cache_info **pcache_info)
- {
- 	int num_of_cache_types = 0;
-+	bool cache_line_size_missing = false;
  
- 	switch (kdev->adev->asic_type) {
- 	case CHIP_KAVERI:
-@@ -1691,10 +1702,17 @@ int kfd_get_gpu_cache_info(struct kfd_no
- 		case IP_VERSION(11, 5, 0):
- 		case IP_VERSION(11, 5, 1):
- 		case IP_VERSION(11, 5, 2):
-+			/* Cacheline size not available in IP discovery for gc11.
-+			 * kfd_fill_gpu_cache_info_from_gfx_config to hard code it
-+			 */
-+			cache_line_size_missing = true;
-+			fallthrough;
- 		case IP_VERSION(12, 0, 0):
- 		case IP_VERSION(12, 0, 1):
- 			num_of_cache_types =
--				kfd_fill_gpu_cache_info_from_gfx_config(kdev->kfd, *pcache_info);
-+				kfd_fill_gpu_cache_info_from_gfx_config(kdev->kfd,
-+									cache_line_size_missing,
-+									*pcache_info);
- 			break;
- 		default:
- 			*pcache_info = dummy_cache_info;
++	error = xfs_trans_run_precommits(tp);
++	if (error)
++		goto out_unreserve;
++
+ 	/*
+ 	 * If there is nothing to be logged by the transaction,
+ 	 * then unlock all of the items associated with the
 
 
 
