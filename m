@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240E49F51BC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:09:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CC69F53AA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ABA816332F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A59A172603
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FA21F7577;
-	Tue, 17 Dec 2024 17:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6D91F8933;
+	Tue, 17 Dec 2024 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlpoLbQg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jivEB6w1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2971E1F6671;
-	Tue, 17 Dec 2024 17:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9E41F8697;
+	Tue, 17 Dec 2024 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455383; cv=none; b=Aims/tiCiR5N3i9SBdK2CmjlIRDhxRGscAkmoJIYoPlOcITc7EVPet5twuKCqvRzHiIIZk/Y7woTS5RUXouMN5ZCHjqkwI9o4ik4z48+ZNI2Zx1UjzoGBLE6/2OQGf7m4jkIOr5fV1ZBemNlLsn/UsrtO1lmvWhllK/9b0E8WBs=
+	t=1734456460; cv=none; b=e9tzNBTAPM5GTyq7bQGQOeRWew6IIbBxmVF4HPQFD1/u1xj5Mtidb1+YJvbBaKZ9gRFYJV9Hpz+f9FJcOwfnKjapdJizQEWYYQXuKLZhm6nuwd+pZWdCNi/uS/ilr4ohBROuKac1kqt4UIQdQ4qEhKT+3K6VHK1vxcmWRMpQlqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455383; c=relaxed/simple;
-	bh=xW3IeqA57Sou/YOU/U0nhtLQtWezjwVNPhec/URiHhE=;
+	s=arc-20240116; t=1734456460; c=relaxed/simple;
+	bh=nk7+KI+1MXu0pZmIbV8QC/nhc27Q8/4fBZPu8bi7DtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WREPt8xapEvuQUDTW95KGgCo1MZyKdl4+3ON7dqk5qhtrWUCrSw4p4KYNgegotNUGMn5cpdzQjCfGNigK4m/QAVdf10SQ95WuyT1IhvX9fDS3YIQWP4HJFJHDP63QBPcCLymbnFbwhDrJiQuqlfAhOEoM2sB0IowL4GN++u7YAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlpoLbQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43649C4CED3;
-	Tue, 17 Dec 2024 17:09:41 +0000 (UTC)
+	 MIME-Version; b=cyoRJ8gTVWo1NDHCgT/NbV9Xvf8g30+fDImkIzLXzL/mQbHJnqViTECrsEawRrZg27S7Z3d7z/yuavNI9DMnxEdM8pB9L7Mfpqm5ZRPHdObzF0/cs/eXv1fu8F45ewHrrOpn6h4nsh9UBooY9nqhe1OR0JEirhcGESOwsL8gaUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jivEB6w1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E68C4CED3;
+	Tue, 17 Dec 2024 17:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455381;
-	bh=xW3IeqA57Sou/YOU/U0nhtLQtWezjwVNPhec/URiHhE=;
+	s=korg; t=1734456460;
+	bh=nk7+KI+1MXu0pZmIbV8QC/nhc27Q8/4fBZPu8bi7DtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlpoLbQgQXsTL4Kp+PYlFGBeRTzPLeHEyFI6mWp3ux1oXDC3wJMZeHjdKNMYD0BoH
-	 cEX0FwMov7fxebZZC1mzL6QF+5r+LdTuN0ImICKMLDjobUgYyV/zCRUyZH8A3WtJ/J
-	 2Oq/+0ISbpj/9OQNBKUlUQuivGq6y54ABFbVvgNQ=
+	b=jivEB6w1QyiHDcqSoeWVirP7eaoWPH5ZhNPZkKdnz7uJJ8x6HL+rgwCBJWFFFEyNC
+	 SXaXbLcoQEpjD+Ct8fA3nh63N1Gq1KYEzEhh3YFgw4dlN91RgtvSKJPmJvT4p2BDBi
+	 AR8VZ6/b632sqObqSeOqcbOhQoJ/72wWY/2yGG1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.4 04/24] usb: ehci-hcd: fix call balance of clocks handling routines
-Date: Tue, 17 Dec 2024 18:07:02 +0100
-Message-ID: <20241217170519.187347305@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 067/172] xfs: set XFS_SICK_INO_SYMLINK_ZAPPED explicitly when zapping a symlink
+Date: Tue, 17 Dec 2024 18:07:03 +0100
+Message-ID: <20241217170549.058141516@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
-References: <20241217170519.006786596@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 97264eaaba0122a5b7e8ddd7bf4ff3ac57c2b170 upstream.
+commit 6f4669708a69fd21f0299c2d5c4780a6ce358ab5 upstream.
 
-If the clocks priv->iclk and priv->fclk were not enabled in ehci_hcd_sh_probe,
-they should not be disabled in any path.
+If we need to reset a symlink target to the "durr it's busted" string,
+then we clear the zapped flag as well.  However, this should be using
+the provided helper so that we don't set the zapped state on an
+otherwise ok symlink.
 
-Conversely, if they was enabled in ehci_hcd_sh_probe, they must be disabled
-in all error paths to ensure proper cleanup.
-
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Fixes: 63c845522263 ("usb: ehci-hcd: Add support for SuperH EHCI.")
-Cc: stable@vger.kernel.org # ff30bd6a6618: sh: clk: Fix clk_enable() to return 0 on NULL clk
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241121114700.2100520-1-mordan@ispras.ru
+Cc: <stable@vger.kernel.org> # v6.10
+Fixes: 2651923d8d8db0 ("xfs: online repair of symbolic links")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ehci-sh.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/xfs/scrub/symlink_repair.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/ehci-sh.c
-+++ b/drivers/usb/host/ehci-sh.c
-@@ -124,8 +124,12 @@ static int ehci_hcd_sh_probe(struct plat
- 	if (IS_ERR(priv->iclk))
- 		priv->iclk = NULL;
+diff --git a/fs/xfs/scrub/symlink_repair.c b/fs/xfs/scrub/symlink_repair.c
+index d015a86ef460..953ce7be78dc 100644
+--- a/fs/xfs/scrub/symlink_repair.c
++++ b/fs/xfs/scrub/symlink_repair.c
+@@ -36,6 +36,7 @@
+ #include "scrub/tempfile.h"
+ #include "scrub/tempexch.h"
+ #include "scrub/reap.h"
++#include "scrub/health.h"
  
--	clk_enable(priv->fclk);
--	clk_enable(priv->iclk);
-+	ret = clk_enable(priv->fclk);
-+	if (ret)
-+		goto fail_request_resource;
-+	ret = clk_enable(priv->iclk);
-+	if (ret)
-+		goto fail_iclk;
+ /*
+  * Symbolic Link Repair
+@@ -233,7 +234,7 @@ xrep_symlink_salvage(
+ 	 * target zapped flag.
+ 	 */
+ 	if (buflen == 0) {
+-		sc->sick_mask |= XFS_SICK_INO_SYMLINK_ZAPPED;
++		xchk_mark_healthy_if_clean(sc, XFS_SICK_INO_SYMLINK_ZAPPED);
+ 		sprintf(target_buf, DUMMY_TARGET);
+ 	}
  
- 	if (pdata && pdata->phy_init)
- 		pdata->phy_init();
-@@ -144,6 +148,7 @@ static int ehci_hcd_sh_probe(struct plat
- 
- fail_add_hcd:
- 	clk_disable(priv->iclk);
-+fail_iclk:
- 	clk_disable(priv->fclk);
- 
- fail_request_resource:
+-- 
+2.47.1
+
 
 
 
