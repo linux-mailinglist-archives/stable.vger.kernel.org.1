@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C2A9F5231
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:16:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 682A09F53C3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:32:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45A5A166167
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 587B218923BB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5641F867A;
-	Tue, 17 Dec 2024 17:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B78C1F757B;
+	Tue, 17 Dec 2024 17:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4d1uYLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ibty/sj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD18149DFA;
-	Tue, 17 Dec 2024 17:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297008615A;
+	Tue, 17 Dec 2024 17:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455632; cv=none; b=YlTbCMigN5eGYCl4Ts7WZ7YchdehDlR8pEDgR/j5IubpyCINwBRjSMu7sLoM1ccHYua/mPcOzhqDX14y/8xeM5bDRnmWEqMIuQEKHOzMigeifIiKoF1JRnaEs3fLiHs0h02/www9EPZ8BtQkMGUh63bW4h0d0MKKiDgYQa2QU1M=
+	t=1734456534; cv=none; b=Wcyb5JIossuJO8KRakE2LmHYz7oKf186hShAubTf0lhStM+8YMqVWIMBh20YEYuGff942yETZ1P2lKJEtbKvOeiF4FfVv5b3y0Og1wiqbd9Vcm9NQBjqdUCtL/7leGalx+gGyH9HLCE78r1I/JYitBCOkMGcfHEX3BCVRTsbN3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455632; c=relaxed/simple;
-	bh=iLqAsxZmAqZd8CXBOdjODmdO2pZcbg+Em71756rspUM=;
+	s=arc-20240116; t=1734456534; c=relaxed/simple;
+	bh=taLJPHvg4EAMX8etQ9Wr4tMiN5VQVletPkgcKvM58YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5bTgl3LSd1QNhWXhduZ4nEOnBaA1ItDa2M16UKybl+hxAGAoBWQwFUsaM0ir35JvKXUZGRnMaW/K1uN+aTtsH/A+lzXKSa03VgW2ycRbIi2su/XcraxFDH15b5ZSCqCn6d/ZNohR7Q/3vdd9489nqLKIXqLX9pPMyz+CH3JXZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4d1uYLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5F0C4CED3;
-	Tue, 17 Dec 2024 17:13:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OhVFHCYExhLaiIKwlHlHTFEI7Azv93f1nhU+V8bollZ8o1eS9LlZjzOAZRqN7ArvXdClkq6fJl2g5nPCj2WDE30DDsCRQx/rU1ZVJVLMIzsI7sUeN7emFHoG6mGfS8UMQXh4h8mfqAdEEJq7e3IqHciQJdF6/tEaVvwkmSWaU5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ibty/sj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60EEC4CED3;
+	Tue, 17 Dec 2024 17:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455632;
-	bh=iLqAsxZmAqZd8CXBOdjODmdO2pZcbg+Em71756rspUM=;
+	s=korg; t=1734456534;
+	bh=taLJPHvg4EAMX8etQ9Wr4tMiN5VQVletPkgcKvM58YU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4d1uYLXmbaD6VqncGJT984LnLi6ayohYWXs2hSrreH0RWDABHvz/lheaIYxvgY32
-	 6hInb5hbCbqvg+D6kKhAPzl7TL32zE0ksEubpAlIIwk5L3nfDRwU1V6L6tNslXWPZt
-	 3HvEZAK+4WDt1EdmmISEjPeMSaS37K54CfeZ/V5Q=
+	b=Ibty/sj6He/2Y8Gxb72HIXdQ+mQd2kd4dVv/qAIw9u+VudOw3w8kuvoUX1z5gerI/
+	 wJCzUJeSAGSGr521GPa+drnbnUUgDWUmYNcBU1U6bC8sxIs/QnbXoIHaPA0Cu6WD0Q
+	 mLCZCIYEMC3AgmYlV/45hD5wxb6jxZjhfkl8BwNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 32/51] qca_spi: Fix clock speed for multiple QCA7000
+Subject: [PATCH 6.12 089/172] amdgpu/uvd: get ring reference from rq scheduler
 Date: Tue, 17 Dec 2024 18:07:25 +0100
-Message-ID: <20241217170521.600644543@linuxfoundation.org>
+Message-ID: <20241217170549.987508811@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: David (Ming Qiang) Wu <David.Wu3@amd.com>
 
-[ Upstream commit 4dba406fac06b009873fe7a28231b9b7e4288b09 ]
+[ Upstream commit 47f402a3e08113e0f5d8e1e6fcc197667a16022f ]
 
-Storing the maximum clock speed in module parameter qcaspi_clkspeed
-has the unintended side effect that the first probed instance
-defines the value for all other instances. Fix this issue by storing
-it in max_speed_hz of the relevant SPI device.
+base.sched may not be set for each instance and should not
+be used for cases such as non-IB tests.
 
-This fix keeps the priority of the speed parameter (module parameter,
-device tree property, driver default). Btw this uses the opportunity
-to get the rid of the unused member clkspeed.
-
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://patch.msgid.link/20241206184643.123399-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_spi.c | 24 ++++++++++--------------
- drivers/net/ethernet/qualcomm/qca_spi.h |  1 -
- 2 files changed, 10 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index 385e4c62ca03..926eec0a9532 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -829,7 +829,6 @@ qcaspi_netdev_init(struct net_device *dev)
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c b/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
+index 6068b784dc69..9a30b8c10838 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
+@@ -1289,7 +1289,7 @@ static int uvd_v7_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,
+ 					   struct amdgpu_job *job,
+ 					   struct amdgpu_ib *ib)
+ {
+-	struct amdgpu_ring *ring = to_amdgpu_ring(job->base.sched);
++	struct amdgpu_ring *ring = amdgpu_job_ring(job);
+ 	unsigned i;
  
- 	dev->mtu = QCAFRM_MAX_MTU;
- 	dev->type = ARPHRD_ETHER;
--	qca->clkspeed = qcaspi_clkspeed;
- 	qca->burst_len = qcaspi_burst_len;
- 	qca->spi_thread = NULL;
- 	qca->buffer_size = (dev->mtu + VLAN_ETH_HLEN + QCAFRM_HEADER_LEN +
-@@ -918,17 +917,15 @@ qca_spi_probe(struct spi_device *spi)
- 	legacy_mode = of_property_read_bool(spi->dev.of_node,
- 					    "qca,legacy-mode");
- 
--	if (qcaspi_clkspeed == 0) {
--		if (spi->max_speed_hz)
--			qcaspi_clkspeed = spi->max_speed_hz;
--		else
--			qcaspi_clkspeed = QCASPI_CLK_SPEED;
--	}
-+	if (qcaspi_clkspeed)
-+		spi->max_speed_hz = qcaspi_clkspeed;
-+	else if (!spi->max_speed_hz)
-+		spi->max_speed_hz = QCASPI_CLK_SPEED;
- 
--	if ((qcaspi_clkspeed < QCASPI_CLK_SPEED_MIN) ||
--	    (qcaspi_clkspeed > QCASPI_CLK_SPEED_MAX)) {
--		dev_err(&spi->dev, "Invalid clkspeed: %d\n",
--			qcaspi_clkspeed);
-+	if (spi->max_speed_hz < QCASPI_CLK_SPEED_MIN ||
-+	    spi->max_speed_hz > QCASPI_CLK_SPEED_MAX) {
-+		dev_err(&spi->dev, "Invalid clkspeed: %u\n",
-+			spi->max_speed_hz);
- 		return -EINVAL;
- 	}
- 
-@@ -953,14 +950,13 @@ qca_spi_probe(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 
--	dev_info(&spi->dev, "ver=%s, clkspeed=%d, burst_len=%d, pluggable=%d\n",
-+	dev_info(&spi->dev, "ver=%s, clkspeed=%u, burst_len=%d, pluggable=%d\n",
- 		 QCASPI_DRV_VERSION,
--		 qcaspi_clkspeed,
-+		 spi->max_speed_hz,
- 		 qcaspi_burst_len,
- 		 qcaspi_pluggable);
- 
- 	spi->mode = SPI_MODE_3;
--	spi->max_speed_hz = qcaspi_clkspeed;
- 	if (spi_setup(spi) < 0) {
- 		dev_err(&spi->dev, "Unable to setup SPI device\n");
- 		return -EFAULT;
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.h b/drivers/net/ethernet/qualcomm/qca_spi.h
-index 58ad910068d4..b3b17bd46e12 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.h
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.h
-@@ -101,7 +101,6 @@ struct qcaspi {
- #endif
- 
- 	/* user configurable options */
--	u32 clkspeed;
- 	u8 legacy_mode;
- 	u16 burst_len;
- };
+ 	/* No patching necessary for the first instance */
 -- 
 2.39.5
 
