@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-104602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFEB9F520D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:14:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55979F53C4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4B5316CF73
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01F7E18925AC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025F31F76B2;
-	Tue, 17 Dec 2024 17:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8191F76CB;
+	Tue, 17 Dec 2024 17:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kf/d+wYN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8MHzWld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BB8149DFA;
-	Tue, 17 Dec 2024 17:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0911F1F6661;
+	Tue, 17 Dec 2024 17:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455549; cv=none; b=fcabr/TDrgYmATswg7ItziWGUmk9k8s+CMjJDTkd4/C7dwE3+OZEf2B6yoxcSnneWVV3UA25k4djE1pU3akpnSvoEcPux0vkmQ9vlYINC1ANVMan8sSPtIJCADgVlHm5F9R9Q7+kAWpxcNUw1kI251D/dhUdqviX6CdKrDpiHKg=
+	t=1734456540; cv=none; b=O/3h3kwDqrx07k3XrkDUE4/7UoUeHKDAVdB/YcCy7itYO4IFcfoTu/09KTPnymFD7qfe83s5JpJdqnmRapVlL+r7OlPTpfBFEvU5psoTOw4UmNEBQrmdR+iFoPnPBoH2D3iZUXXct7voCG8eyaazen4DD3+WJRqcsz/VkVXRynw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455549; c=relaxed/simple;
-	bh=nXG3OKXvEm40OGVHDzM54CLhsC73E27Fka5CDuUm+84=;
+	s=arc-20240116; t=1734456540; c=relaxed/simple;
+	bh=3d2TWROIxMj/epBPtSmou2WdqqWSM31JB44BELmTT18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4LGC7y/ySebcaWyJxWOOfQSR/asJXrqitCHVC9gfNIghQAk4R3D8lYb7GVY+OsRANf7IcsSdMvewCOhlwzGZ4cr3PB0rqg9iaLz0GMtJBIA+Ihl/9KaWUDruCl55FbuLB+6P5BijJvzCeNrmne2RyKD7PAxIanCunStcN0tbYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kf/d+wYN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD1DC4CED3;
-	Tue, 17 Dec 2024 17:12:28 +0000 (UTC)
+	 MIME-Version; b=Efj1Sk478KBSsBEOHFD7le9rZFXghTc3cMALJYjztDtWuM73TAMH80VSjnHHtyCah1BlU/43uq2epD+FIVDRSl/Q4hFkVk8XMFGaIMfAZKMVKKpTFn/jqP6x3dwIgbaBwi09QbEXcfDDEUmKNdbY6PBNxCx8wsXcD+48atYcMNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8MHzWld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AB7C4CED3;
+	Tue, 17 Dec 2024 17:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455549;
-	bh=nXG3OKXvEm40OGVHDzM54CLhsC73E27Fka5CDuUm+84=;
+	s=korg; t=1734456539;
+	bh=3d2TWROIxMj/epBPtSmou2WdqqWSM31JB44BELmTT18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kf/d+wYNgctFU85/QH3iRZSrrAdcL2E4EhIyDcJR2lDs2zQT1HAhOutP9DJ4NsHCu
-	 DHl+NSqgXmefZ9tdb7FvVVVwjqz/L5BOINisNlQIwV1jEyzPcMgXKtwX6u2De6uQ2L
-	 iwbaVZ0Nqv+dME+Lx71uDp5JfGfv/XZUw3UCI3Wk=
+	b=B8MHzWldu/CM/S9tCl9SRygkg3qE4c4ZHWi13fssIvW3JrqSHuudZp9jQ//56TIKE
+	 W9NJb3kQCRO6zK0Z82fosvkkJPQj7Lu7mbaV7v8qurd6DH6PetpR1F/z9S6czeBJlZ
+	 q3Z7CESAC+Qrq8jz0OlZUH/BkcdR5l8a6/pLmLfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.10 36/43] x86: make get_cpu_vendor() accessible from Xen code
+	Remi Pommarel <repk@triplefau.lt>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 091/172] batman-adv: Remove uninitialized data in full table TT response
 Date: Tue, 17 Dec 2024 18:07:27 +0100
-Message-ID: <20241217170522.165121640@linuxfoundation.org>
+Message-ID: <20241217170550.068700626@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit efbcd61d9bebb771c836a3b8bfced8165633db7c upstream.
+[ Upstream commit 8038806db64da15721775d6b834990cacbfcf0b2 ]
 
-In order to be able to differentiate between AMD and Intel based
-systems for very early hypercalls without having to rely on the Xen
-hypercall page, make get_cpu_vendor() non-static.
+The number of entries filled by batadv_tt_tvlv_generate() can be less
+than initially expected in batadv_tt_prepare_tvlv_{global,local}_data()
+(changes can be removed by batadv_tt_local_event() in ADD+DEL sequence
+in the meantime as the lock held during the whole tvlv global/local data
+generation).
 
-Refactor early_cpu_init() for the same reason by splitting out the
-loop initializing cpu_devs() into an externally callable function.
+Thus tvlv_len could be bigger than the actual TT entry size that need
+to be sent so full table TT_RESPONSE could hold invalid TT entries such
+as below.
 
-This is part of XSA-466 / CVE-2024-53241.
+ * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
+ * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
 
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove the extra allocated space to avoid sending uninitialized entries
+for full table TT_RESPONSE in both batadv_send_other_tt_response() and
+batadv_send_my_tt_response().
+
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/processor.h |    2 ++
- arch/x86/kernel/cpu/common.c     |   36 +++++++++++++++++++++---------------
- 2 files changed, 23 insertions(+), 15 deletions(-)
+ net/batman-adv/translation-table.c | 37 ++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -194,6 +194,8 @@ static inline unsigned long long l1tf_pf
- 	return BIT_ULL(boot_cpu_data.x86_cache_bits - 1 - PAGE_SHIFT);
- }
- 
-+void init_cpu_devs(void);
-+void get_cpu_vendor(struct cpuinfo_x86 *c);
- extern void early_cpu_init(void);
- extern void identify_boot_cpu(void);
- extern void identify_secondary_cpu(struct cpuinfo_x86 *);
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -792,7 +792,7 @@ void detect_ht(struct cpuinfo_x86 *c)
- #endif
- }
- 
--static void get_cpu_vendor(struct cpuinfo_x86 *c)
-+void get_cpu_vendor(struct cpuinfo_x86 *c)
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index f0590f9bc2b1..bbab7491c83f 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -2754,14 +2754,16 @@ static bool batadv_tt_global_valid(const void *entry_ptr,
+  *
+  * Fills the tvlv buff with the tt entries from the specified hash. If valid_cb
+  * is not provided then this becomes a no-op.
++ *
++ * Return: Remaining unused length in tvlv_buff.
+  */
+-static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
+-				    struct batadv_hashtable *hash,
+-				    void *tvlv_buff, u16 tt_len,
+-				    bool (*valid_cb)(const void *,
+-						     const void *,
+-						     u8 *flags),
+-				    void *cb_data)
++static u16 batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
++				   struct batadv_hashtable *hash,
++				   void *tvlv_buff, u16 tt_len,
++				   bool (*valid_cb)(const void *,
++						    const void *,
++						    u8 *flags),
++				   void *cb_data)
  {
- 	char *v = c->x86_vendor_id;
- 	int i;
-@@ -1505,15 +1505,11 @@ static void __init early_identify_cpu(st
- 	detect_nopl();
- }
+ 	struct batadv_tt_common_entry *tt_common_entry;
+ 	struct batadv_tvlv_tt_change *tt_change;
+@@ -2775,7 +2777,7 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
+ 	tt_change = tvlv_buff;
  
--void __init early_cpu_init(void)
-+void __init init_cpu_devs(void)
- {
- 	const struct cpu_dev *const *cdev;
- 	int count = 0;
+ 	if (!valid_cb)
+-		return;
++		return tt_len;
  
--#ifdef CONFIG_PROCESSOR_SELECT
--	pr_info("KERNEL supported cpus:\n");
--#endif
--
- 	for (cdev = __x86_cpu_dev_start; cdev < __x86_cpu_dev_end; cdev++) {
- 		const struct cpu_dev *cpudev = *cdev;
- 
-@@ -1521,20 +1517,30 @@ void __init early_cpu_init(void)
- 			break;
- 		cpu_devs[count] = cpudev;
- 		count++;
-+	}
-+}
- 
-+void __init early_cpu_init(void)
-+{
- #ifdef CONFIG_PROCESSOR_SELECT
--		{
--			unsigned int j;
-+	unsigned int i, j;
- 
--			for (j = 0; j < 2; j++) {
--				if (!cpudev->c_ident[j])
--					continue;
--				pr_info("  %s %s\n", cpudev->c_vendor,
--					cpudev->c_ident[j]);
--			}
--		}
-+	pr_info("KERNEL supported cpus:\n");
- #endif
-+
-+	init_cpu_devs();
-+
-+#ifdef CONFIG_PROCESSOR_SELECT
-+	for (i = 0; i < X86_VENDOR_NUM && cpu_devs[i]; i++) {
-+		for (j = 0; j < 2; j++) {
-+			if (!cpu_devs[i]->c_ident[j])
-+				continue;
-+			pr_info("  %s %s\n", cpu_devs[i]->c_vendor,
-+				cpu_devs[i]->c_ident[j]);
-+		}
+ 	rcu_read_lock();
+ 	for (i = 0; i < hash->size; i++) {
+@@ -2801,6 +2803,8 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
+ 		}
  	}
-+#endif
+ 	rcu_read_unlock();
 +
- 	early_identify_cpu(&boot_cpu_data);
++	return batadv_tt_len(tt_tot - tt_num_entries);
  }
  
+ /**
+@@ -3076,10 +3080,11 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
+ 			goto out;
+ 
+ 		/* fill the rest of the tvlv with the real TT entries */
+-		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.global_hash,
+-					tt_change, tt_len,
+-					batadv_tt_global_valid,
+-					req_dst_orig_node);
++		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
++						    bat_priv->tt.global_hash,
++						    tt_change, tt_len,
++						    batadv_tt_global_valid,
++						    req_dst_orig_node);
+ 	}
+ 
+ 	/* Don't send the response, if larger than fragmented packet. */
+@@ -3203,9 +3208,11 @@ static bool batadv_send_my_tt_response(struct batadv_priv *bat_priv,
+ 			goto out;
+ 
+ 		/* fill the rest of the tvlv with the real TT entries */
+-		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.local_hash,
+-					tt_change, tt_len,
+-					batadv_tt_local_valid, NULL);
++		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
++						    bat_priv->tt.local_hash,
++						    tt_change, tt_len,
++						    batadv_tt_local_valid,
++						    NULL);
+ 	}
+ 
+ 	tvlv_tt_data->flags = BATADV_TT_RESPONSE;
+-- 
+2.39.5
+
 
 
 
