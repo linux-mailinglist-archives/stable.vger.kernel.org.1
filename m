@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-104752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F247D9F52CB
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B83A9F5241
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5947A16CFA2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9668618915D6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA4F1F869D;
-	Tue, 17 Dec 2024 17:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6621F76A4;
+	Tue, 17 Dec 2024 17:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15NprSBM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7YCKPoO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B90E1F37BE;
-	Tue, 17 Dec 2024 17:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DF5149DFA;
+	Tue, 17 Dec 2024 17:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455993; cv=none; b=A0UL93nzVtzqoAHBqcJng22yosaI9WgTW7uohj45pGu7spfTHBtDvsxlIEzbXEBs8JzZcZCdlULA5gU7jtjewtHVOOSmWLCyzFo0heNsdFCu0+ZVe43vz+3/h5Iv5o/4BnCdfn+6W80sLMRA/YxtkFW5pKozS7/d2ZVpkGHL3W0=
+	t=1734455635; cv=none; b=NSF+L6jhkwnTwEzoIPGLkQNzP91lonvqDLkrsqe6VY0yswsYN4yVG56wdgeJ/QUNzkwQggtFSLf21kxuoqMxG30o2IRx+nxsIQaG+EOP8MXylWkclBjmOj2TO4PSEvnXRhrmjDH8yxJpxtAkhZHEhjZH3s8WdkrzjOWC7m62Rrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455993; c=relaxed/simple;
-	bh=wyPWCV69bP/GAMJGxgkPHRIvj6+W3RZfhy8E/9ET9Vc=;
+	s=arc-20240116; t=1734455635; c=relaxed/simple;
+	bh=sdA+4GteIbPvSVnWKUfnKlW21jBwns7hm29ZnU/d7VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtZFG5YYNrmYKNXFAuN69amq27hHqH5buu4yn5hYUGGAX0+9XqZ0D+nLL03UmFBGma2ri/Nh1Al4yYRjnrRA+TnECCf9erY+03F4WaShUnljdjQkHBVSfIJ+8zutACFpTNMZhRHaY0V5pWwIPnKO62imizi58TwdYjXeoEYRy3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15NprSBM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BB0C4CED3;
-	Tue, 17 Dec 2024 17:19:52 +0000 (UTC)
+	 MIME-Version; b=i7xEIgDvhcGHws64FW15AxrK3ZwuOBQQhKGZzyS10BLOJycBJG8yaqnaASxsmwjREsba7PwonUNa/luEwkLfS+h8doN3UDwxK4dHxcEB/bKaXvr5vdR4mo8OYSyE3pHxIMNIp04DXKcQ1ZyQaaujATDj6uOuVdihyiyl1wpMo0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7YCKPoO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FC6C4CED3;
+	Tue, 17 Dec 2024 17:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455993;
-	bh=wyPWCV69bP/GAMJGxgkPHRIvj6+W3RZfhy8E/9ET9Vc=;
+	s=korg; t=1734455634;
+	bh=sdA+4GteIbPvSVnWKUfnKlW21jBwns7hm29ZnU/d7VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15NprSBMJzALbXDca9KHT0rU6rDwG5Sc1qzhAwhEReUFC3gTdBkNsrhyAIWV0Da18
-	 zn8LWnOtp5Ih8nCvPmxpbwWmyLseJ8LZ6GANEgFqxrn5iUeqvZKipkdvBobQKOFkK3
-	 ctPiSgjHnbyp8+Xf2XRuoHdQIwkANYnZANUhFOtM=
+	b=M7YCKPoOC2pc9JR3USYQoK2QjLdzzyeCYcZfa7CylHMw23r6hdewaZ3oSJTpdj988
+	 PR6IyS+30IztDYpRk/YLwfyfnTqTaT4neydT+uLdXozQP9Tlpa/CBy1WzlH5IbgeuK
+	 y6Up55zL5IhUptoSLDz10xS2CSXqVY144QXapCt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.6 024/109] xfs: update btree keys correctly when _insrec splits an inode root block
+	Michal Luczaj <mhal@rbox.co>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: [PATCH 5.15 15/51] bpf, sockmap: Fix update element with same
 Date: Tue, 17 Dec 2024 18:07:08 +0100
-Message-ID: <20241217170534.378093911@linuxfoundation.org>
+Message-ID: <20241217170520.929873718@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit 6d7b4bc1c3e00b1a25b7a05141a64337b4629337 upstream.
+commit 75e072a390da9a22e7ae4a4e8434dfca5da499fb upstream.
 
-In commit 2c813ad66a72, I partially fixed a bug wherein xfs_btree_insrec
-would erroneously try to update the parent's key for a block that had
-been split if we decided to insert the new record into the new block.
-The solution was to detect this situation and update the in-core key
-value that we pass up to the caller so that the caller will (eventually)
-add the new block to the parent level of the tree with the correct key.
+Consider a sockmap entry being updated with the same socket:
 
-However, I missed a subtlety about the way inode-rooted btrees work.  If
-the full block was a maximally sized inode root block, we'll solve that
-fullness by moving the root block's records to a new block, resizing the
-root block, and updating the root to point to the new block.  We don't
-pass a pointer to the new block to the caller because that work has
-already been done.  The new record will /always/ land in the new block,
-so in this case we need to use xfs_btree_update_keys to update the keys.
+	osk = stab->sks[idx];
+	sock_map_add_link(psock, link, map, &stab->sks[idx]);
+	stab->sks[idx] = sk;
+	if (osk)
+		sock_map_unref(osk, &stab->sks[idx]);
 
-This bug can theoretically manifest itself in the very rare case that we
-split a bmbt root block and the new record lands in the very first slot
-of the new block, though I've never managed to trigger it in practice.
-However, it is very easy to reproduce by running generic/522 with the
-realtime rmapbt patchset if rtinherit=1.
+Due to sock_map_unref(), which invokes sock_map_del_link(), all the
+psock's links for stab->sks[idx] are torn:
 
-Cc: <stable@vger.kernel.org> # v4.8
-Fixes: 2c813ad66a7218 ("xfs: support btrees with overlapping intervals for keys")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+	list_for_each_entry_safe(link, tmp, &psock->link, list) {
+		if (link->link_raw == link_raw) {
+			...
+			list_del(&link->list);
+			sk_psock_free_link(link);
+		}
+	}
+
+And that includes the new link sock_map_add_link() added just before
+the unref.
+
+This results in a sockmap holding a socket, but without the respective
+link. This in turn means that close(sock) won't trigger the cleanup,
+i.e. a closed socket will not be automatically removed from the sockmap.
+
+Stop tearing the links when a matching link_raw is found.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241202-sockmap-replace-v1-1-1e88579e7bd5@rbox.co
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_btree.c |   29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ net/core/sock_map.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/xfs/libxfs/xfs_btree.c
-+++ b/fs/xfs/libxfs/xfs_btree.c
-@@ -3429,14 +3429,31 @@ xfs_btree_insrec(
- 	xfs_btree_log_block(cur, bp, XFS_BB_NUMRECS);
- 
- 	/*
--	 * If we just inserted into a new tree block, we have to
--	 * recalculate nkey here because nkey is out of date.
-+	 * Update btree keys to reflect the newly added record or keyptr.
-+	 * There are three cases here to be aware of.  Normally, all we have to
-+	 * do is walk towards the root, updating keys as necessary.
- 	 *
--	 * Otherwise we're just updating an existing block (having shoved
--	 * some records into the new tree block), so use the regular key
--	 * update mechanism.
-+	 * If the caller had us target a full block for the insertion, we dealt
-+	 * with that by calling the _make_block_unfull function.  If the
-+	 * "make unfull" function splits the block, it'll hand us back the key
-+	 * and pointer of the new block.  We haven't yet added the new block to
-+	 * the next level up, so if we decide to add the new record to the new
-+	 * block (bp->b_bn != old_bn), we have to update the caller's pointer
-+	 * so that the caller adds the new block with the correct key.
-+	 *
-+	 * However, there is a third possibility-- if the selected block is the
-+	 * root block of an inode-rooted btree and cannot be expanded further,
-+	 * the "make unfull" function moves the root block contents to a new
-+	 * block and updates the root block to point to the new block.  In this
-+	 * case, no block pointer is passed back because the block has already
-+	 * been added to the btree.  In this case, we need to use the regular
-+	 * key update function, just like the first case.  This is critical for
-+	 * overlapping btrees, because the high key must be updated to reflect
-+	 * the entire tree, not just the subtree accessible through the first
-+	 * child of the root (which is now two levels down from the root).
- 	 */
--	if (bp && xfs_buf_daddr(bp) != old_bn) {
-+	if (!xfs_btree_ptr_is_null(cur, &nptr) &&
-+	    bp && xfs_buf_daddr(bp) != old_bn) {
- 		xfs_btree_get_keys(cur, block, lkey);
- 	} else if (xfs_btree_needs_key_update(cur, optr)) {
- 		error = xfs_btree_update_keys(cur, level);
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -158,6 +158,7 @@ static void sock_map_del_link(struct soc
+ 				verdict_stop = true;
+ 			list_del(&link->list);
+ 			sk_psock_free_link(link);
++			break;
+ 		}
+ 	}
+ 	spin_unlock_bh(&psock->link_lock);
 
 
 
