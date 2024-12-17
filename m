@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-104671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551569F5232
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:16:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE4C9F5374
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:29:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82F5C7A4B7A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDB927A6C37
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887F61F8695;
-	Tue, 17 Dec 2024 17:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E971F8AD4;
+	Tue, 17 Dec 2024 17:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1Ig7Lir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3xGk9ql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470A11F75A6;
-	Tue, 17 Dec 2024 17:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763AF1F892B;
+	Tue, 17 Dec 2024 17:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455752; cv=none; b=aBW/esMvb5qhnuxSQz0o8y/hzayNJSEaWiBZZWvFH5vmlp+MfuSeziIivbnfnm5FUQ+73mnA8mMdnBkEpAcnLyUx05WWdUKNYx+z4jaNboyauwR5dyKz8k123iWckUMLULT+6UC8nrc12PToWdXO+yc0OaoP1vYAgPpaNLR5YW0=
+	t=1734456513; cv=none; b=TmxvoF/I6twDzU7oLrj4dcVgQZEHKLmgGW3cVNglVXswGtNXa/he9OJlT/2s49fSs6VEcVKBrWVHc92LOsgRYmn+08vpPtt3v1yAtakdlcYY/cIEoax9mmpoCkNqzIgIduj+qm+3+i4JPtDAE9cyA4chQKh8bcaTCnKnicVBpKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455752; c=relaxed/simple;
-	bh=r8M/Lc62qMAnZbVi83WKLFFZDXPwntcmMW1KgQcysWc=;
+	s=arc-20240116; t=1734456513; c=relaxed/simple;
+	bh=ZID6AY0hPVK4xaTy3ZqjQ1BtbfdrIEjJH4zmC722J9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlvHuFkFrszdTz1Ik/BJKTv8l4ef2QwRIBt+y5IU9OfQZbN+SuZIvzG4kuvHflOQ1d0uz9lZdBF2l/c/e0zGDKc9r3Fuqia3LTfXfZc+l8MwcoBk4Hcm0ldh5q/RVGE3vL/yKTYueSqbqDFhIPjYvrw12XlGXMevujEnwpvL/Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1Ig7Lir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A9AC4CED3;
-	Tue, 17 Dec 2024 17:15:51 +0000 (UTC)
+	 MIME-Version; b=GbreU/mMjP4vY1A0M8hn/at2yraK1qGD5YjF5eAyX8k6vN1GqGBv4VylLppEcZcrozCfWRq1badWuqKGCgGT6LRylCmwI5Tq//kr3kEq2Uel9CQfXgAFqisXyxW1R5UVdqjATwwVKJNQ51Wp9ORLRQ0Fu9kTVeztyWHRWg2VkOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3xGk9ql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA85FC4CED3;
+	Tue, 17 Dec 2024 17:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455752;
-	bh=r8M/Lc62qMAnZbVi83WKLFFZDXPwntcmMW1KgQcysWc=;
+	s=korg; t=1734456513;
+	bh=ZID6AY0hPVK4xaTy3ZqjQ1BtbfdrIEjJH4zmC722J9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1Ig7Lir1bzYu9RVQBbItBmNIILupybgecVp6S4RhLASPNoLy0hPhBPRUjzkRu33O
-	 HlnKMptnfpPM75j8+RL3X3GRz/KpNdnYPdFodf5dB6X5QUqVr3gIfI0KWhy1px3T3K
-	 pbFUvLUDKeSvu9LsmcqitHgK6tkBr51gFGunBaZw=
+	b=z3xGk9ql+rd1QWtVxm1fg+KyhwNrljRmYDB/zNAieu0EKNDgVn5EFoVz8zMHm2/Yn
+	 H0QXeIKVQuEt0nI7Wc7qPBDqVpQ6P4595gUes6+HC+8UHWio9EqXUE7SvCDKGpSQum
+	 3KY1sWTc78SNCBO32Gw7h6fsj6Yghb24P0yIwaU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 6.1 08/76] usb: dwc2: Fix HCD resume
+	Neal Frager <neal.frager@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Peter Korsgaard <peter@korsgaard.com>
+Subject: [PATCH 6.12 052/172] usb: dwc3: xilinx: make sure pipe clock is deselected in usb2 only mode
 Date: Tue, 17 Dec 2024 18:06:48 +0100
-Message-ID: <20241217170526.587614306@linuxfoundation.org>
+Message-ID: <20241217170548.427757929@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Neal Frager <neal.frager@amd.com>
 
-commit 336f72d3cbf5cc17df2947bbbd2ba6e2509f17e8 upstream.
+commit a48f744bef9ee74814a9eccb030b02223e48c76c upstream.
 
-The Raspberry Pi can suffer on interrupt storms on HCD resume. The dwc2
-driver sometimes misses to enable HCD_FLAG_HW_ACCESSIBLE before re-enabling
-the interrupts. This causes a situation where both handler ignore a incoming
-port interrupt and force the upper layers to disable the dwc2 interrupt
-line. This leaves the USB interface in a unusable state:
+When the USB3 PHY is not defined in the Linux device tree, there could
+still be a case where there is a USB3 PHY active on the board and enabled
+by the first stage bootloader. If serdes clock is being used then the USB
+will fail to enumerate devices in 2.0 only mode.
 
-irq 66: nobody cared (try booting with the "irqpoll" option)
-CPU: 0 PID: 0 Comm: swapper/0 Tainted: G W          6.10.0-rc3
-Hardware name: BCM2835
-Call trace:
-unwind_backtrace from show_stack+0x10/0x14
-show_stack from dump_stack_lvl+0x50/0x64
-dump_stack_lvl from __report_bad_irq+0x38/0xc0
-__report_bad_irq from note_interrupt+0x2ac/0x2f4
-note_interrupt from handle_irq_event+0x88/0x8c
-handle_irq_event from handle_level_irq+0xb4/0x1ac
-handle_level_irq from generic_handle_domain_irq+0x24/0x34
-generic_handle_domain_irq from bcm2836_chained_handle_irq+0x24/0x28
-bcm2836_chained_handle_irq from generic_handle_domain_irq+0x24/0x34
-generic_handle_domain_irq from generic_handle_arch_irq+0x34/0x44
-generic_handle_arch_irq from __irq_svc+0x88/0xb0
-Exception stack(0xc1b01f20 to 0xc1b01f68)
-1f20: 0005c0d4 00000001 00000000 00000000 c1b09780 c1d6b32c c1b04e54 c1a5eae8
-1f40: c1b04e90 00000000 00000000 00000000 c1d6a8a0 c1b01f70 c11d2da8 c11d4160
-1f60: 60000013 ffffffff
-__irq_svc from default_idle_call+0x1c/0xb0
-default_idle_call from do_idle+0x21c/0x284
-do_idle from cpu_startup_entry+0x28/0x2c
-cpu_startup_entry from kernel_init+0x0/0x12c
-handlers:
-[<f539e0f4>] dwc2_handle_common_intr
-[<75cd278b>] usb_hcd_irq
-Disabling IRQ #66
+To solve this, make sure that the PIPE clock is deselected whenever the
+USB3 PHY is not defined and guarantees that the USB2 only mode will work
+in all cases.
 
-So enable the HCD_FLAG_HW_ACCESSIBLE flag in case there is a port
-connection.
-
-Fixes: c74c26f6e398 ("usb: dwc2: Fix partial power down exiting by system resume")
-Closes: https://lore.kernel.org/linux-usb/3fd0c2fb-4752-45b3-94eb-42352703e1fd@gmx.net/T/
-Link: https://lore.kernel.org/all/5e8cbce0-3260-2971-484f-fc73a3b2bd28@synopsys.com/
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20241202001631.75473-2-wahrenst@gmx.net
+Fixes: 9678f3361afc ("usb: dwc3: xilinx: Skip resets and USB3 register settings for USB2.0 mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Neal Frager <neal.frager@amd.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/1733163111-1414816-1-git-send-email-radhey.shyam.pandey@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/dwc3-xilinx.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -4431,6 +4431,7 @@ static int _dwc2_hcd_resume(struct usb_h
- 	 * Power Down mode.
+--- a/drivers/usb/dwc3/dwc3-xilinx.c
++++ b/drivers/usb/dwc3/dwc3-xilinx.c
+@@ -121,8 +121,11 @@ static int dwc3_xlnx_init_zynqmp(struct
+ 	 * in use but the usb3-phy entry is missing from the device tree.
+ 	 * Therefore, skip these operations in this case.
  	 */
- 	if (hprt0 & HPRT0_CONNSTS) {
-+		set_bit(HCD_FLAG_HW_ACCESSIBLE, &hcd->flags);
- 		hsotg->lx_state = DWC2_L0;
- 		goto unlock;
- 	}
+-	if (!priv_data->usb3_phy)
++	if (!priv_data->usb3_phy) {
++		/* Deselect the PIPE Clock Select bit in FPD PIPE Clock register */
++		writel(PIPE_CLK_DESELECT, priv_data->regs + XLNX_USB_FPD_PIPE_CLK);
+ 		goto skip_usb3_phy;
++	}
+ 
+ 	crst = devm_reset_control_get_exclusive(dev, "usb_crst");
+ 	if (IS_ERR(crst)) {
 
 
 
