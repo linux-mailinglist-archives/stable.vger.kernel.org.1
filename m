@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E059F53CA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 805F79F5274
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D57C1892858
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C6A97A557B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9801F8906;
-	Tue, 17 Dec 2024 17:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFA21F892B;
+	Tue, 17 Dec 2024 17:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWdaZfH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTWCLTQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE57E1F8923;
-	Tue, 17 Dec 2024 17:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC3F1F8925;
+	Tue, 17 Dec 2024 17:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456550; cv=none; b=TUT7Wfr78XZC2oQEmWIYB03RpSrYGOM5AXM/v1RRgAHwvlQe0LQAQpSSqnsqx4oVEjp9Z69D4/mM75jz4Dy+L5cg7jbb5Rd3xfYEjvv3glKpzVpFLTedv8ISc2z3uOcLLPsgp12EB+s5SI+YZqU5HWL6AD016E4HS4DrACAYY9M=
+	t=1734455891; cv=none; b=jaJUe3mfGHlg8LB60YsLz9LLMZgzcOJLapGRodyOcDSMpgu6dKeGCZtEpGzHZ+TtlLny0VEXYOSzrxmLBX2KaMoDONidRcYmJpTvEOewMEh+ClHkeanx2fDdAdVcik4L47M258oBxugfAQIhoKPI437Ad/2tValVXlrlpfYiJs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456550; c=relaxed/simple;
-	bh=YNNTmUMn+cKLsvx7qeLrOhOw1PqnqY7PYkO+uEYEBpU=;
+	s=arc-20240116; t=1734455891; c=relaxed/simple;
+	bh=xa01LEecnjssHj4DKZGUOhP1KMvs1U/rNRvmRxV1da4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpxbfOv9XrXoAu6HeskhxvjL5XpiK2Zxz43LNj1qKSrVkcf5MB5j+1DEjGZDb8Wp7//twbbQgekfhLKQsyybEFDyUOZ7wGTDgnenZ7Q4Eo+3OD0WglkJPKiN27oRGZCjp68WQNruWfocJ5ynB/a1/QajHpG6SBpUf+9iWVRgSxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWdaZfH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A8AC4CED3;
-	Tue, 17 Dec 2024 17:29:07 +0000 (UTC)
+	 MIME-Version; b=INXJyn7+imZEy1y/7c+nhLfik8lyjR/alqHEV8ueXBAO8a+zL8N/RSqJnECVPvP9lrgDp0xZr0hdnuDbFXzb6rU3r9s/dhiPNq+dgv7Bv7LqvaXVnmxuniUnok+BIw4aDqrcE7NKtgyMK+/l4MVBRBjWOUv3b41/1B2yRDxZLzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTWCLTQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C860EC4CED3;
+	Tue, 17 Dec 2024 17:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456548;
-	bh=YNNTmUMn+cKLsvx7qeLrOhOw1PqnqY7PYkO+uEYEBpU=;
+	s=korg; t=1734455891;
+	bh=xa01LEecnjssHj4DKZGUOhP1KMvs1U/rNRvmRxV1da4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWdaZfH2vp8qAwRpf11uDo33/8aT3NJtumk+H1asuBBdr5ELntC+CooAZVtOpipIp
-	 b2cGcS2y+6OhbGfUnBwjlJgV14ih6iXQBErYIHxdSfsn6QrVFov5QH+BHE9b7rUO0u
-	 VdSu3bm0Dp9dmDFSE/t4NQfTMSSFEsxCSGaph3JQ=
+	b=QTWCLTQtgwAMQ5YUrjjZskAS9q6qFjwbmyLzz6OVWf0X+hFDA+QSP6SrzOS0gj7p1
+	 n7Mo0keoHo/S6+Aw/zLP1o8Zij0hmQiO6wIzGIxH43EQHQW/4d4V/rAIBvi6LVkQyD
+	 DoBVaolbgJMtI1E7q1MLV8qEAqJIO4acEr182As4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/172] net/mlx5: DR, prevent potential error pointer dereference
+Subject: [PATCH 6.1 50/76] net: sparx5: fix FDMA performance issue
 Date: Tue, 17 Dec 2024 18:07:30 +0100
-Message-ID: <20241217170550.192259041@linuxfoundation.org>
+Message-ID: <20241217170528.345587492@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit 11776cff0b563c8b8a4fa76cab620bfb633a8cb8 ]
+[ Upstream commit f004f2e535e2b66ccbf5ac35f8eaadeac70ad7b7 ]
 
-The dr_domain_add_vport_cap() function generally returns NULL on error
-but sometimes we want it to return ERR_PTR(-EBUSY) so the caller can
-retry.  The problem here is that "ret" can be either -EBUSY or -ENOMEM
-and if it's and -ENOMEM then the error pointer is propogated back and
-eventually dereferenced in dr_ste_v0_build_src_gvmi_qpn_tag().
+The FDMA handler is responsible for scheduling a NAPI poll, which will
+eventually fetch RX packets from the FDMA queue. Currently, the FDMA
+handler is run in a threaded context. For some reason, this kills
+performance.  Admittedly, I did not do a thorough investigation to see
+exactly what causes the issue, however, I noticed that in the other
+driver utilizing the same FDMA engine, we run the FDMA handler in hard
+IRQ context.
 
-Fixes: 11a45def2e19 ("net/mlx5: DR, Add support for SF vports")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/07477254-e179-43e2-b1b3-3b9db4674195@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this performance issue, by  running the FDMA handler in hard IRQ
+context, not deferring any work to a thread.
+
+Prior to this change, the RX UDP performance was:
+
+Interval           Transfer     Bitrate         Jitter
+0.00-10.20  sec    44.6 MBytes  36.7 Mbits/sec  0.027 ms
+
+After this change, the rx UDP performance is:
+
+Interval           Transfer     Bitrate         Jitter
+0.00-9.12   sec    1.01 GBytes  953 Mbits/sec   0.020 ms
+
+Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
-index 3d74109f8230..49f22cad92bf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
-@@ -297,7 +297,9 @@ dr_domain_add_vport_cap(struct mlx5dr_domain *dmn, u16 vport)
- 	if (ret) {
- 		mlx5dr_dbg(dmn, "Couldn't insert new vport into xarray (%d)\n", ret);
- 		kvfree(vport_caps);
--		return ERR_PTR(ret);
-+		if (ret == -EBUSY)
-+			return ERR_PTR(-EBUSY);
-+		return NULL;
- 	}
- 
- 	return vport_caps;
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index 7031f41287e0..1ed69e77b895 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -680,12 +680,11 @@ static int sparx5_start(struct sparx5 *sparx5)
+ 	err = -ENXIO;
+ 	if (sparx5->fdma_irq >= 0) {
+ 		if (GCB_CHIP_ID_REV_ID_GET(sparx5->chip_id) > 0)
+-			err = devm_request_threaded_irq(sparx5->dev,
+-							sparx5->fdma_irq,
+-							NULL,
+-							sparx5_fdma_handler,
+-							IRQF_ONESHOT,
+-							"sparx5-fdma", sparx5);
++			err = devm_request_irq(sparx5->dev,
++					       sparx5->fdma_irq,
++					       sparx5_fdma_handler,
++					       0,
++					       "sparx5-fdma", sparx5);
+ 		if (!err)
+ 			err = sparx5_fdma_start(sparx5);
+ 		if (err)
 -- 
 2.39.5
 
