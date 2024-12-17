@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-104907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739FE9F53AC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2719F52CA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E5B61726B0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77F2916E7EC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE50C1F892B;
-	Tue, 17 Dec 2024 17:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900811F8691;
+	Tue, 17 Dec 2024 17:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsn/6Hvl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpqTTGZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B41C14A4E7;
-	Tue, 17 Dec 2024 17:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDAE1E0493;
+	Tue, 17 Dec 2024 17:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456466; cv=none; b=JoTkcyC+fCsnoB7WTD+loQRjuEJzCkhFuHBSU0/KJUYWU9gIuw0FsWM6VYMEga6B7w13JSSAAsEt/I2o+gGZAIZuz79SCN3sltgKF9PNrexN2wXm06JJb8uv7LBKL6/iTxFNjzJNXZmEyqRJTxBLdLNYBwY5qhvOtBGvgYRsT+w=
+	t=1734455987; cv=none; b=CtkI7CXX8455mAMcEtBOHl1NnuK+KbSHTe4CH1ubLDZPLk85IPZvqGIxyAyqYhqii2ZPOxvMdUiv98aqL6SjMk48YI+sicAurlh7SMEc2WzQ069IXvl4sv2vjkjmv7xmblEFYl5oeDURDZgbZPf+YlBWHOHbNswXGM6cWU+SSfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456466; c=relaxed/simple;
-	bh=u6Y8uF8+vbSshYq7UqaQjMpviTjNGF77qKdQF5ARh34=;
+	s=arc-20240116; t=1734455987; c=relaxed/simple;
+	bh=zoECW1UQTrRUx9LLcmcQ3tLwL7biJVjk+ri9voJAu88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HglOB2MgeLWh24qTlBiwsJQg/cpg2fcbpKWgUPvwgKmAy879pV47X9v8lAuYxMkd5b0YOaLiuPaVigoyLPsi8Tq3H/3ucxJ68m51fvSPhUW6SlV4OTkxhCRhyEy1R5IE1NIQsCVcvZoNgko1gXNTloucEW1Hab07FQqN0GzXy7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsn/6Hvl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03BFC4CED3;
-	Tue, 17 Dec 2024 17:27:45 +0000 (UTC)
+	 MIME-Version; b=a5C0H1qPAxfkr0uJBRx6CwNZNn3Q3lsGo4BI7pnAdsCy/8nSWcuKl/3lyica7y0/dFpu8XKz1aBWUbrDTaMGfrn14qjqh23nBaKM/AwOFNP4HWMSYXumpR8eEYcRzpV5nrXFjKVDB95hKpJhR0/8cjYkBa/KV569zzWw9kfZG5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpqTTGZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CCBC4CED3;
+	Tue, 17 Dec 2024 17:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456466;
-	bh=u6Y8uF8+vbSshYq7UqaQjMpviTjNGF77qKdQF5ARh34=;
+	s=korg; t=1734455987;
+	bh=zoECW1UQTrRUx9LLcmcQ3tLwL7biJVjk+ri9voJAu88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fsn/6HvlC6Xt9cdnArNo/qO40vitmY6RdM79eMD4N57qn1KqXWN2YORBmB8R0xiRT
-	 +15+8GuszE/0Ic+baSEaA6FCYQAkE25G2XwPOIU5r7ElKUHxiQO754vlodld5iyqVz
-	 +jXB9ldnNnmZDg/hqFLPpIvuHYWnSWcw7i6tw1DY=
+	b=PpqTTGZhLuy4UeVgD9KetAoJwT8zHusfPtuT8s0wo32mEszrnvvfgWC+IcR+vj+on
+	 eL6/WnDoq84vdz3rFciq5ynumpOnsDh/AxJVsA8+RWZgORLrO8o8W3F5ACJWrJRN7l
+	 qeJukht480lChM9bQc0Zs8hAcLzbBZXkfawyzewc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 069/172] xfs: dont drop errno values when we fail to ficlone the entire range
-Date: Tue, 17 Dec 2024 18:07:05 +0100
-Message-ID: <20241217170549.142013356@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.6 022/109] drm/i915: Fix memory leak by correcting cache object name in error handler
+Date: Tue, 17 Dec 2024 18:07:06 +0100
+Message-ID: <20241217170534.292909377@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
 
-commit 7ce31f20a0771d71779c3b0ec9cdf474cc3c8e9a upstream.
+commit 2828e5808bcd5aae7fdcd169cac1efa2701fa2dd upstream.
 
-Way back when we first implemented FICLONE for XFS, life was simple --
-either the the entire remapping completed, or something happened and we
-had to return an errno explaining what happened.  Neither of those
-ioctls support returning partial results, so it's all or nothing.
+Replace "slab_priorities" with "slab_dependencies" in the error handler
+to avoid memory leak.
 
-Then things got complicated when copy_file_range came along, because it
-actually can return the number of bytes copied, so commit 3f68c1f562f1e4
-tried to make it so that we could return a partial result if the
-REMAP_FILE_CAN_SHORTEN flag is set.  This is also how FIDEDUPERANGE can
-indicate that the kernel performed a partial deduplication.
-
-Unfortunately, the logic is wrong if an error stops the remapping and
-CAN_SHORTEN is not set.  Because those callers cannot return partial
-results, it is an error for ->remap_file_range to return a positive
-quantity that is less than the @len passed in.  Implementations really
-should be returning a negative errno in this case, because that's what
-btrfs (which introduced FICLONE{,RANGE}) did.
-
-Therefore, ->remap_range implementations cannot silently drop an errno
-that they might have when the number of bytes remapped is less than the
-number of bytes requested and CAN_SHORTEN is not set.
-
-Found by running generic/562 on a 64k fsblock filesystem and wondering
-why it reported corrupt files.
-
-Cc: <stable@vger.kernel.org> # v4.20
-Fixes: 3fc9f5e409319e ("xfs: remove xfs_reflink_remap_range")
-Really-Fixes: 3f68c1f562f1e4 ("xfs: support returning partial reflink results")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241127201042.29620-1-jiashengjiangcool@gmail.com
+(cherry picked from commit 9bc5e7dc694d3112bbf0fa4c46ef0fa0f114937a)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_file.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/i915/i915_scheduler.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -1228,6 +1228,14 @@ out_unlock:
- 	xfs_iunlock2_remapping(src, dest);
- 	if (ret)
- 		trace_xfs_reflink_remap_range_error(dest, ret, _RET_IP_);
-+	/*
-+	 * If the caller did not set CAN_SHORTEN, then it is not prepared to
-+	 * handle partial results -- either the whole remap succeeds, or we
-+	 * must say why it did not.  In this case, any error should be returned
-+	 * to the caller.
-+	 */
-+	if (ret && remapped < len && !(remap_flags & REMAP_FILE_CAN_SHORTEN))
-+		return ret;
- 	return remapped > 0 ? remapped : ret;
- }
+--- a/drivers/gpu/drm/i915/i915_scheduler.c
++++ b/drivers/gpu/drm/i915/i915_scheduler.c
+@@ -506,6 +506,6 @@ int __init i915_scheduler_module_init(vo
+ 	return 0;
  
+ err_priorities:
+-	kmem_cache_destroy(slab_priorities);
++	kmem_cache_destroy(slab_dependencies);
+ 	return -ENOMEM;
+ }
 
 
 
