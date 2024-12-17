@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DA09F53A9
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8F99F51DC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F21E171C85
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9ACE188DFB5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072D71F8929;
-	Tue, 17 Dec 2024 17:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A8D1F76A4;
+	Tue, 17 Dec 2024 17:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pa2fj/gk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB4ywmR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B793F1F8697;
-	Tue, 17 Dec 2024 17:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C501F543C;
+	Tue, 17 Dec 2024 17:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456457; cv=none; b=kc139fbXdfxvY1lyrBZuVVropUhB6IhVJLnusf+v3KTyAhJkuiB+fgmEBN2S0dpXe6NRz+NxlbEo2YhUvCxt3ITFwNpKn0DpA3h9UvVcdEmn/TTDI2KV0S+Glz9asZZLtKase/Or7FI3Riab+Ijc2m36bbwMlqhkgkGwbShe5E4=
+	t=1734455438; cv=none; b=RRDmKU8sbK95/hf/BAlKvycG1xoSzj7LVaFyxTgF9QAjbxR/54//oHgf6fV7MCrpPqxNSQ9CHv7EweXH1OsjDWCvgCZPJYyVUKUhVYv2jyoMfqSyVoJi6qDnbnMHrMHOp+iIAK7dcZUVEx6yrlEJ/d9/r8YspbidRoU5fPUUbTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456457; c=relaxed/simple;
-	bh=8vwmemZ0C7lx5EAZfRWHX5eFJDFetATRKMogKPCQPec=;
+	s=arc-20240116; t=1734455438; c=relaxed/simple;
+	bh=JkxWJOOo+MpokwxmZAgS8d54HAENlvoK/sldgrUOnKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7AfWBtkexODXmrrfNYrPO2TuK2qyu5nzDpWEj3t5A1g2Hy8/PyQ5EwezRp7UeFGUJKBdgHZk+a810dVSk953bcxy1Qcu3CE9EUs22JBqjyUQt2HWTWiBavUa6wBTEJFC4KVIpQCy3DLiew5hP5Fvyownk882uMPyZSw7GIeGDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pa2fj/gk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB83C4CED3;
-	Tue, 17 Dec 2024 17:27:37 +0000 (UTC)
+	 MIME-Version; b=DNCMPMOq19t3vQnjSCa4DYQv5r2khGUfKbeWQZGiJ7HqQhnJpqv05apR043AdwnBwsnmVteSCowwLB8KF5hZiUXNJu7HiLK0JGzR80nLQfZJoavXgktJ2oX+wOyw0LXq7PriWjVN/Wt4HcZivTZEKcGB3QxsbJ3NSWxvm2h2vDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB4ywmR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD522C4CED3;
+	Tue, 17 Dec 2024 17:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456457;
-	bh=8vwmemZ0C7lx5EAZfRWHX5eFJDFetATRKMogKPCQPec=;
+	s=korg; t=1734455438;
+	bh=JkxWJOOo+MpokwxmZAgS8d54HAENlvoK/sldgrUOnKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pa2fj/gk05xV5+tyB+VUAGbm7XQ7TrNprL/y4Ct6J2J39dsue6gK5Ls/Yqk25i+QV
-	 Mh5eoicSLW4AM1hi3SnmQt4tvoLmV/3Vl6go3M3qcpGZ+2657h7BJW5HHa44wwwmq/
-	 J0yGFGJv3uftdFIIQ40t0iAhFiat7uY0p53HBXlU=
+	b=VB4ywmR2pFlmfdRjnGpv/3pRAfnqewAmCRr9nXfUQCI8ejMRQJ2zFd/wTWULFUj0B
+	 GKL/1sBJpSFzWeoEDjTlJDZPbwlb5Ea0/1/95HrkVE2n3T58XfrXLLU82rx6o0yXHy
+	 R1CJh8h1YY0jh6K01wGrXw/O0kZkwkYPKo/SmHOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	David Belanger <david.belanger@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 066/172] drm/amdkfd: hard-code MALL cacheline size for gfx11, gfx12
+	syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sherry Yang <sherry.yang@oracle.com>
+Subject: [PATCH 5.10 11/43] exfat: fix potential deadlock on __exfat_get_dentry_set
 Date: Tue, 17 Dec 2024 18:07:02 +0100
-Message-ID: <20241217170549.016335561@linuxfoundation.org>
+Message-ID: <20241217170520.913023504@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-commit d50bf3f0fab636574c163ba8b5863e12b1ed19bd upstream.
+commit 89fc548767a2155231128cb98726d6d2ea1256c9 upstream.
 
-This information is not available in ip discovery table.
+When accessing a file with more entries than ES_MAX_ENTRY_NUM, the bh-array
+is allocated in __exfat_get_entry_set. The problem is that the bh-array is
+allocated with GFP_KERNEL. It does not make sense. In the following cases,
+a deadlock for sbi->s_lock between the two processes may occur.
 
-Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Reviewed-by: David Belanger <david.belanger@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+       CPU0                CPU1
+       ----                ----
+  kswapd
+   balance_pgdat
+    lock(fs_reclaim)
+                      exfat_iterate
+                       lock(&sbi->s_lock)
+                       exfat_readdir
+                        exfat_get_uniname_from_ext_entry
+                         exfat_get_dentry_set
+                          __exfat_get_dentry_set
+                           kmalloc_array
+                            ...
+                            lock(fs_reclaim)
+    ...
+    evict
+     exfat_evict_inode
+      lock(&sbi->s_lock)
+
+To fix this, let's allocate bh-array with GFP_NOFS.
+
+Fixes: a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
+Cc: stable@vger.kernel.org # v6.2+
+Reported-by: syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000fef47e0618c0327f@google.com
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+[Sherry: The problematic commit was backported to 5.15.y and 5.10.y, thus backport this fix]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_crat.c |    2 +-
+ fs/exfat/dir.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
-@@ -1503,7 +1503,7 @@ static int kfd_fill_gpu_cache_info_from_
- 					CRAT_CACHE_FLAGS_DATA_CACHE |
- 					CRAT_CACHE_FLAGS_SIMD_CACHE);
- 		pcache_info[i].num_cu_shared = adev->gfx.config.max_cu_per_sh;
--		pcache_info[i].cache_line_size = 0;
-+		pcache_info[i].cache_line_size = 64;
- 		i++;
- 	}
- 	return i;
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -873,7 +873,7 @@ struct exfat_entry_set_cache *exfat_get_
+ 
+ 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
+ 	if (num_bh > ARRAY_SIZE(es->__bh)) {
+-		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
++		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_NOFS);
+ 		if (!es->bh) {
+ 			brelse(bh);
+ 			kfree(es);
 
 
 
