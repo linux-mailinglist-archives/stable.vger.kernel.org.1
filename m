@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-104643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD409F5227
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:15:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D46819F5281
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14F597A2EBE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B7957A5758
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07481F8929;
-	Tue, 17 Dec 2024 17:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A71F8615A;
+	Tue, 17 Dec 2024 17:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtM/ybVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsMnCAA2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D12E1F8918;
-	Tue, 17 Dec 2024 17:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B14142E77;
+	Tue, 17 Dec 2024 17:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455670; cv=none; b=BqclZ4RenZdTrQjNP0Filb5eDtvfXmF5PjmH7Ha4rqDul05WgOYAHuJ6uE/Gv5Qrm6yegiF5GGubKPYuOJi6dq4B4tKKW5HFwvFwL6Q1F5jyFmS3jw9SsSgrjPL79J9dukM9+PffZBexSJ8sPj9Qch3iQhGom6f75nGEl7ZjrUk=
+	t=1734455937; cv=none; b=FctLzTPrh/+yVWeLCSqEUo1rKlIgbaftGPJwDzcofSgp9Ic5xyjz1/lBPY2vmeNnfCzmCYkIM59GOPbafIFUsxiE5Y7/8r9LkDkHtjEkQO6VlwsNa3X6cGETTX35aolJuf2rl800Zd6r05sLXD5rGoZ57x5DJmwiyZAS2ARva60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455670; c=relaxed/simple;
-	bh=kZ0DJfaGoXTF91rXFsIdI2aaaxEzKD0tsUk7EbrAQsQ=;
+	s=arc-20240116; t=1734455937; c=relaxed/simple;
+	bh=4J6jtz2Cd37FlJrFCeU1YSPxiof6f+HrStldQdgfqdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H0m9USRz3nLBZrrisZyRW8icSlwQ98GwoKn6aFQevlyKg2F4dgPQ4c2xJjuteuQzI3jWAOEKYn+urBXqfAw/+q+8BFAyy8dvkPjvswguRxxTa7H2AV0AhWu3KtFw9UaeEGR9fA5ey/G9UhVEZJsZLdlwJ4XM3rodb54+6T6M6oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtM/ybVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10415C4CED3;
-	Tue, 17 Dec 2024 17:14:29 +0000 (UTC)
+	 MIME-Version; b=rXPSgM4ZnyS5LQOLlSwR8Zu0ZMwHahV6PYWfL227e0G7x9j9ovrhBdJ3SBABnhSOgmUDtk635/UEbAvS41rtlnkaAxbWdK/hOuTruOTw8yX2qOFuwMGmuF9efZymnjjvqr5tNuKrDxJJdx9ZFHpzUnLDYC1ZaUEdmY9B/Vkb6O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsMnCAA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFB8C4CED7;
+	Tue, 17 Dec 2024 17:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455670;
-	bh=kZ0DJfaGoXTF91rXFsIdI2aaaxEzKD0tsUk7EbrAQsQ=;
+	s=korg; t=1734455937;
+	bh=4J6jtz2Cd37FlJrFCeU1YSPxiof6f+HrStldQdgfqdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtM/ybVRVRT0nHcsyZbaAOBUqh9E8mHkktCl8KPtI2dLHoAKUapSd44oWBN70ToGk
-	 FKgNyQHGQA9X4J/nOTMJVZANfV+sFIh03oehR636ztxIERmgp/vh4kh5N93nEmaTJJ
-	 WRPSlMPLGuMjZV8oDRXnGIDVZNixksaykP65KXsw=
+	b=EsMnCAA2OHUfAilyF82pQaE4IBa9XP5JAXOLTd011ZX8cB9uycBlPJAXx/9SMVbve
+	 2rYlczTk6v19QqvNaKoc8sI1H/9H9s2gwyim6qKJdvs4SaK2O90VsE/G1gsWehlB6+
+	 sroCQRIKLQLZ0yktqv8Mi+WtCLrWiTAG6pi/wHzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 43/51] xen/netfront: fix crash when removing device
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 56/76] ASoC: amd: yc: Fix the wrong return value
 Date: Tue, 17 Dec 2024 18:07:36 +0100
-Message-ID: <20241217170522.242884193@linuxfoundation.org>
+Message-ID: <20241217170528.593400005@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
 
-commit f9244fb55f37356f75c739c57323d9422d7aa0f8 upstream.
+[ Upstream commit 984795e76def5c903724b8d6a8228e356bbdf2af ]
 
-When removing a netfront device directly after a suspend/resume cycle
-it might happen that the queues have not been setup again, causing a
-crash during the attempt to stop the queues another time.
+With the current implementation, when ACP driver fails to read
+ACPI _WOV entry then the DMI overrides code won't invoke,
+may cause regressions for some BIOS versions.
 
-Fix that by checking the queues are existing before trying to stop
-them.
+Add a condition check to jump to check the DMI entries incase of
+ACP driver fail to read ACPI _WOV method.
 
-This is XSA-465 / CVE-2024-53240.
+Fixes: 4095cf872084 (ASoC: amd: yc: Fix for enabling DMIC on acp6x via _DSD entry)
 
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Fixes: d50b7914fae0 ("xen-netfront: Fix NULL sring after live migration")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Link: https://patch.msgid.link/20241210091026.996860-1-venkataprasad.potturu@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -869,7 +869,7 @@ static netdev_tx_t xennet_start_xmit(str
- static int xennet_close(struct net_device *dev)
- {
- 	struct netfront_info *np = netdev_priv(dev);
--	unsigned int num_queues = dev->real_num_tx_queues;
-+	unsigned int num_queues = np->queues ? dev->real_num_tx_queues : 0;
- 	unsigned int i;
- 	struct netfront_queue *queue;
- 	netif_tx_stop_all_queues(np->netdev);
-@@ -884,6 +884,9 @@ static void xennet_destroy_queues(struct
- {
- 	unsigned int i;
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index af9601bea275..9c1bf0eb2deb 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -473,14 +473,19 @@ static int acp6x_probe(struct platform_device *pdev)
  
-+	if (!info->queues)
-+		return;
-+
- 	for (i = 0; i < info->netdev->real_num_tx_queues; i++) {
- 		struct netfront_queue *queue = &info->queues[i];
+ 	handle = ACPI_HANDLE(pdev->dev.parent);
+ 	ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
+-	if (!ACPI_FAILURE(ret))
++	if (!ACPI_FAILURE(ret)) {
+ 		wov_en = dmic_status;
++		if (!wov_en)
++			return -ENODEV;
++	} else {
++		/* Incase of ACPI method read failure then jump to check_dmi_entry */
++		goto check_dmi_entry;
++	}
  
+-	if (is_dmic_enable && wov_en)
++	if (is_dmic_enable)
+ 		platform_set_drvdata(pdev, &acp6x_card);
+-	else
+-		return 0;
+ 
++check_dmi_entry:
+ 	/* check for any DMI overrides */
+ 	dmi_id = dmi_first_match(yc_acp_quirk_table);
+ 	if (dmi_id)
+-- 
+2.39.5
+
 
 
 
