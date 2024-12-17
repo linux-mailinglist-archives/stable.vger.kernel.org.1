@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CF49F4B57
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:55:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A349F4B58
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51AE97A2911
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 12:55:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F94F7A2A72
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 12:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5281F37D7;
-	Tue, 17 Dec 2024 12:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81EA1F37DE;
+	Tue, 17 Dec 2024 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RE91eYSo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cFIBx3wb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF921F2360
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 12:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772EF1F131A
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734440138; cv=none; b=Dv91gMcbPcuZVm/gnaCtGxim8ge0W86qxhp3gYxvbB1fTHLcRPFlLk3hpzQmArU8YG2vgeZUIfZSWQR/wL0rEQE04Pc9BP+hjqvr3Kn7CPLvqgQLmvXauaDXGed/YIZa1bETLNtG1S8aysNgXeHocCS2MrkJYtUyYZNwLY2HzMo=
+	t=1734440140; cv=none; b=YI5LgNpFMBnSIbcB8uK3t8EIPEj5lS5kDsIFR4ZuXQRRrSQJ6e/EECuq+M3yu4U196WeB6tCozutvwGgUXa6kqv40PSztBsCkHkjtARoenYH2UwwoQ0aY7PZVnPZu7HJGmF7qPpnst1m/fYMX/H1Wx1UKQxIIJTStHT6grU/bU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734440138; c=relaxed/simple;
-	bh=SaIvQE/6CtnRkNGkR/hrYCuo6XwvvflX8NcXqM/a8p4=;
+	s=arc-20240116; t=1734440140; c=relaxed/simple;
+	bh=EUR2lw1K1v+pAOyuB+RwKdvAOHh/w/Pzc8C5oPHS6EM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kEGIdc7I+x05jv3yeetreprtZQTOmze91dx7mjYUVPBXYDvYwCMY15kl7KcH2PYkpiHcWU/aIpMPLbQtuEnIoc6G/YuV8zDXwRhpyF/9vrt/+Dl1o6e0tZA3aZTYuJ4fSUkpoooFgS33LizjZBctY+4QR47AY1PsqydyXbn9NyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RE91eYSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D06C4CED3;
-	Tue, 17 Dec 2024 12:55:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f2JNbwqFYagwRxKY8OadTsqntTyxT9C1OqS94Ng7GNEhGvx29H667mYLIfaocVdGeTUSxvwjvdFmWk+uilqMyyBJ/RqgfauGZREIwO0cLi8LcJDJsj6YXUx687Ll1TDcOG/xw2lBhBspUXWJORlzK5YYRwTWVPTTKAFuEKDCqtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cFIBx3wb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D07C4CED3;
+	Tue, 17 Dec 2024 12:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734440138;
-	bh=SaIvQE/6CtnRkNGkR/hrYCuo6XwvvflX8NcXqM/a8p4=;
+	s=k20201202; t=1734440140;
+	bh=EUR2lw1K1v+pAOyuB+RwKdvAOHh/w/Pzc8C5oPHS6EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RE91eYSoJnp78gfo0O+qWaFiNiqcRq4IM+Uv39vfPBxT4Lr/ErjM90m2bchYwsoMr
-	 dbngtHEbVq5y8gfgR9PdxATbGesWpU8QdsUnVKdWoQXEOQPJUGdbAvNeDWXrW+0WO5
-	 Eqf44bzfSqPdsc6Cb6/yyYeSZNHHTCjCy41HrO+VT0dCUz0AyxlDRDx+ms5TEuk/Y+
-	 eziGn0e+SW5NXJHPj7h+LIVq01L9sp+jnyXF+vuWJ+tJiC+gtBzd25NPePG6r/s6Yy
-	 aqp0zNsfend88swQ10wnImnrlYW3CwOGzcNXhV8G/Rat0wV6v0Hk4khq9IsYoiiDJY
-	 AveBtA2SOKTTA==
+	b=cFIBx3wbAtiZo8flDostqx7eOP4jbvZxI1iqOp2ZX2W2AbkyZmrAX5t3GYy3ciPRs
+	 FfkWQcC+EaJalKx1GJslHAAPnZuOg0ZeP0i3iTwegTDbgTKptVSD7yLSFtlL6yZhae
+	 XD1GK2/1+4zh5JrYZb9XCQe/z4eGtuubSpGy0ZYeCqaMYXAs0kHa3jdL46j3vmQN77
+	 CtAECngxF51kGXhhC2/LsI5MQi2b90eaHuqrHXHxBqEl2IwjbkIICALA81NSxvvYnB
+	 lI2IUd2B9HSy6yywWcwd0480QhHWaTLYmZj9dv/lLz4Lk07gl00WmtzY7ABS+Jb7vg
+	 q+oGnPVytRCnA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] ALSA: usb-audio: Fix a DMA to stack memory bug
-Date: Tue, 17 Dec 2024 07:55:36 -0500
-Message-Id: <20241217074127-0bfa41d9096d0a10@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] ALSA: usb-audio: Fix a DMA to stack memory bug
+Date: Tue, 17 Dec 2024 07:55:38 -0500
+Message-Id: <20241217073727-eaff937ebfe124cf@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20241217115858.688737-1-bsevens@google.com>
+In-Reply-To:  <20241217121141.705217-1-bsevens@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,15 +74,17 @@ Commit author: Dan Carpenter <dan.carpenter@linaro.org>
 Status in newer kernel trees:
 6.12.y | Present (different SHA1: 7f1292f8d4d6)
 6.6.y | Not found
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f7d306b47a24 ! 1:  5164cdff6b91 ALSA: usb-audio: Fix a DMA to stack memory bug
+1:  f7d306b47a24 ! 1:  4deadc91ddb0 ALSA: usb-audio: Fix a DMA to stack memory bug
     @@ Commit message
          Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
          Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
          Signed-off-by: Takashi Iwai <tiwai@suse.de>
     +    (cherry picked from commit f7d306b47a24367302bd4fe846854e07752ffcd9)
+    +    [Benoît: backport for changed error message format]
     +    Signed-off-by: Benoît Sevens <bsevens@google.com>
      
       ## sound/usb/quirks.c ##
@@ -124,5 +126,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
