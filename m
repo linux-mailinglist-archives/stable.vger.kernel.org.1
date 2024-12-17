@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C959F5479
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:42:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C63559F533B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27E5E16EF91
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:38:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61EF61702DE
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00B11F8F1E;
-	Tue, 17 Dec 2024 17:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B053F1F76B1;
+	Tue, 17 Dec 2024 17:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmfWQbz0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9g6k1b2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4981F8F16;
-	Tue, 17 Dec 2024 17:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC261EF085;
+	Tue, 17 Dec 2024 17:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456740; cv=none; b=HWCWJ3ais3wzrUj3wgPhHlhuejVmvwP0lzVmh329OBFVo2Dx8uEEhtOjP+oCz9p22py+vaeYJuqbP6CpQ56FUWBM+JfRcTqrzIeKJKl0OZDfF1EkH+Ctmg9hmp/UUtTFzTKUVD5ACny72bxlgvsrdEUw7dMM5P4YIb7Bhaq+KOc=
+	t=1734456273; cv=none; b=NjML0Ffz501PrjxkX+B061Rr5s6AOrwoRZD3yBa164+Ty3t8eDxzG5Wl3hZ7fRehIDqE5r56XePmePGjhz22GcfL6WlqhYbkwGxxOo2aVdMCJebUCG1d8tNOp7tlgGypt605qzl/Sos1e8WMSzyzkTe9bOQ+EtgMkCoOF5c5/AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456740; c=relaxed/simple;
-	bh=ugHlXcEckKn7PmZ4urfYRK/1swh3BkCA5CN3kJ0v8fk=;
+	s=arc-20240116; t=1734456273; c=relaxed/simple;
+	bh=18xLHDrYE6Y9AjJ3aD/By7eXh2+PbKjUd99aQHHZn+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geXQOtoyIdl7LPZxIg/0Q7YB88Xb+TvxZ5ER9svrCUcIzsh67wPpJQBKIqb22MyLhBVwxjfETgcE39A6CGM+zbP0riD1X7fKPHNPQfYa8ChwSpuedFcxY9yapcGuWgzvYWLYXMNAhbSCToFtCgB0tNf4Fn1xFwoS9l5p99rKcFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmfWQbz0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893FAC4CED3;
-	Tue, 17 Dec 2024 17:32:19 +0000 (UTC)
+	 MIME-Version; b=QNG/7FPtEbu7pXPWHQ7yCqnYHSCfR1p30n6cTxuEoW3n426CmD3HhnAmKagpzJ0x+eW2cyavppyf7Db6BAEUtvM8tiap1H4On8MmWz0vc3HXpS3xDyloog2rozDH/eTicIV1Y9yBKSX/BVT/7qWOQpvawmBsyHQFsZOd4VzI6lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9g6k1b2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8F6C4CED7;
+	Tue, 17 Dec 2024 17:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456740;
-	bh=ugHlXcEckKn7PmZ4urfYRK/1swh3BkCA5CN3kJ0v8fk=;
+	s=korg; t=1734456273;
+	bh=18xLHDrYE6Y9AjJ3aD/By7eXh2+PbKjUd99aQHHZn+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AmfWQbz0JsUdYjxqO7SwVDDI0UvB0aSNQrTgJq5O7pyoAIlNHFqrLBKalRsjGt6tK
-	 lA8e3PWWk91ATOzCwXmes3W+ObZNgpqiOkrW8UyXnYixF72CETVSteKk3tVDBs5ROR
-	 jrrVXqXlcInsHlJSi24rGwhkA7RH9KliI4Oo/C34=
+	b=e9g6k1b2DDoyGMK9FkC02oAVrV6g1OMEfzuLsXCP7VxjB7zstSqod7Qy1FpnhJY2F
+	 UUl6SLTGJvELkDHr/Skv61RGUKGQkFvYf87JMKHB3Mm+/ZCWRklbeZewl7c+n/IjGu
+	 9xo33L8fgmaw42ufNxUOedCinBfa54mIjJSMaR+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 152/172] Bluetooth: iso: Fix circular lock in iso_conn_big_sync
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>
+Subject: [PATCH 6.6 104/109] x86/static-call: provide a way to do very early static-call updates
 Date: Tue, 17 Dec 2024 18:08:28 +0100
-Message-ID: <20241217170552.631719590@linuxfoundation.org>
+Message-ID: <20241217170537.748652732@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,187 +63,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 7a17308c17880d259105f6e591eb1bc77b9612f0 ]
+commit 0ef8047b737d7480a5d4c46d956e97c190f13050 upstream.
 
-This fixes the circular locking dependency warning below, by reworking
-iso_sock_recvmsg, to ensure that the socket lock is always released
-before calling a function that locks hdev.
+Add static_call_update_early() for updating static-call targets in
+very early boot.
 
-[  561.670344] ======================================================
-[  561.670346] WARNING: possible circular locking dependency detected
-[  561.670349] 6.12.0-rc6+ #26 Not tainted
-[  561.670351] ------------------------------------------------------
-[  561.670353] iso-tester/3289 is trying to acquire lock:
-[  561.670355] ffff88811f600078 (&hdev->lock){+.+.}-{3:3},
-               at: iso_conn_big_sync+0x73/0x260 [bluetooth]
-[  561.670405]
-               but task is already holding lock:
-[  561.670407] ffff88815af58258 (sk_lock-AF_BLUETOOTH){+.+.}-{0:0},
-               at: iso_sock_recvmsg+0xbf/0x500 [bluetooth]
-[  561.670450]
-               which lock already depends on the new lock.
+This will be needed for support of Xen guest type specific hypercall
+functions.
 
-[  561.670452]
-               the existing dependency chain (in reverse order) is:
-[  561.670453]
-               -> #2 (sk_lock-AF_BLUETOOTH){+.+.}-{0:0}:
-[  561.670458]        lock_acquire+0x7c/0xc0
-[  561.670463]        lock_sock_nested+0x3b/0xf0
-[  561.670467]        bt_accept_dequeue+0x1a5/0x4d0 [bluetooth]
-[  561.670510]        iso_sock_accept+0x271/0x830 [bluetooth]
-[  561.670547]        do_accept+0x3dd/0x610
-[  561.670550]        __sys_accept4+0xd8/0x170
-[  561.670553]        __x64_sys_accept+0x74/0xc0
-[  561.670556]        x64_sys_call+0x17d6/0x25f0
-[  561.670559]        do_syscall_64+0x87/0x150
-[  561.670563]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  561.670567]
-               -> #1 (sk_lock-AF_BLUETOOTH-BTPROTO_ISO){+.+.}-{0:0}:
-[  561.670571]        lock_acquire+0x7c/0xc0
-[  561.670574]        lock_sock_nested+0x3b/0xf0
-[  561.670577]        iso_sock_listen+0x2de/0xf30 [bluetooth]
-[  561.670617]        __sys_listen_socket+0xef/0x130
-[  561.670620]        __x64_sys_listen+0xe1/0x190
-[  561.670623]        x64_sys_call+0x2517/0x25f0
-[  561.670626]        do_syscall_64+0x87/0x150
-[  561.670629]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  561.670632]
-               -> #0 (&hdev->lock){+.+.}-{3:3}:
-[  561.670636]        __lock_acquire+0x32ad/0x6ab0
-[  561.670639]        lock_acquire.part.0+0x118/0x360
-[  561.670642]        lock_acquire+0x7c/0xc0
-[  561.670644]        __mutex_lock+0x18d/0x12f0
-[  561.670647]        mutex_lock_nested+0x1b/0x30
-[  561.670651]        iso_conn_big_sync+0x73/0x260 [bluetooth]
-[  561.670687]        iso_sock_recvmsg+0x3e9/0x500 [bluetooth]
-[  561.670722]        sock_recvmsg+0x1d5/0x240
-[  561.670725]        sock_read_iter+0x27d/0x470
-[  561.670727]        vfs_read+0x9a0/0xd30
-[  561.670731]        ksys_read+0x1a8/0x250
-[  561.670733]        __x64_sys_read+0x72/0xc0
-[  561.670736]        x64_sys_call+0x1b12/0x25f0
-[  561.670738]        do_syscall_64+0x87/0x150
-[  561.670741]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  561.670744]
-               other info that might help us debug this:
+This is part of XSA-466 / CVE-2024-53241.
 
-[  561.670745] Chain exists of:
-&hdev->lock --> sk_lock-AF_BLUETOOTH-BTPROTO_ISO --> sk_lock-AF_BLUETOOTH
-
-[  561.670751]  Possible unsafe locking scenario:
-
-[  561.670753]        CPU0                    CPU1
-[  561.670754]        ----                    ----
-[  561.670756]   lock(sk_lock-AF_BLUETOOTH);
-[  561.670758]                                lock(sk_lock
-                                              AF_BLUETOOTH-BTPROTO_ISO);
-[  561.670761]                                lock(sk_lock-AF_BLUETOOTH);
-[  561.670764]   lock(&hdev->lock);
-[  561.670767]
-                *** DEADLOCK ***
-
-Fixes: 07a9342b94a9 ("Bluetooth: ISO: Send BIG Create Sync via hci_sync")
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Co-developed-by: Peter Zijlstra <peterz@infradead.org>
+Co-developed-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/iso.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/static_call.h |   15 +++++++++++++++
+ arch/x86/include/asm/sync_core.h   |    6 +++---
+ arch/x86/kernel/static_call.c      |    9 +++++++++
+ include/linux/compiler.h           |   37 ++++++++++++++++++++++++++-----------
+ include/linux/static_call.h        |    1 +
+ kernel/static_call_inline.c        |    2 +-
+ 6 files changed, 55 insertions(+), 15 deletions(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 809e88fd3fcb..644b606743e2 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1411,6 +1411,7 @@ static void iso_conn_big_sync(struct sock *sk)
- 	 * change.
- 	 */
- 	hci_dev_lock(hdev);
-+	lock_sock(sk);
+--- a/arch/x86/include/asm/static_call.h
++++ b/arch/x86/include/asm/static_call.h
+@@ -65,4 +65,19 @@
  
- 	if (!test_and_set_bit(BT_SK_BIG_SYNC, &iso_pi(sk)->flags)) {
- 		err = hci_le_big_create_sync(hdev, iso_pi(sk)->conn->hcon,
-@@ -1423,6 +1424,7 @@ static void iso_conn_big_sync(struct sock *sk)
- 				   err);
- 	}
+ extern bool __static_call_fixup(void *tramp, u8 op, void *dest);
  
-+	release_sock(sk);
- 	hci_dev_unlock(hdev);
- }
++extern void __static_call_update_early(void *tramp, void *func);
++
++#define static_call_update_early(name, _func)				\
++({									\
++	typeof(&STATIC_CALL_TRAMP(name)) __F = (_func);			\
++	if (static_call_initialized) {					\
++		__static_call_update(&STATIC_CALL_KEY(name),		\
++				     STATIC_CALL_TRAMP_ADDR(name), __F);\
++	} else {							\
++		WRITE_ONCE(STATIC_CALL_KEY(name).func, _func);		\
++		__static_call_update_early(STATIC_CALL_TRAMP_ADDR(name),\
++					   __F);			\
++	}								\
++})
++
+ #endif /* _ASM_STATIC_CALL_H */
+--- a/arch/x86/include/asm/sync_core.h
++++ b/arch/x86/include/asm/sync_core.h
+@@ -8,7 +8,7 @@
+ #include <asm/special_insns.h>
  
-@@ -1431,39 +1433,57 @@ static int iso_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+ #ifdef CONFIG_X86_32
+-static inline void iret_to_self(void)
++static __always_inline void iret_to_self(void)
  {
- 	struct sock *sk = sock->sk;
- 	struct iso_pinfo *pi = iso_pi(sk);
-+	bool early_ret = false;
-+	int err = 0;
+ 	asm volatile (
+ 		"pushfl\n\t"
+@@ -19,7 +19,7 @@ static inline void iret_to_self(void)
+ 		: ASM_CALL_CONSTRAINT : : "memory");
+ }
+ #else
+-static inline void iret_to_self(void)
++static __always_inline void iret_to_self(void)
+ {
+ 	unsigned int tmp;
  
- 	BT_DBG("sk %p", sk);
+@@ -55,7 +55,7 @@ static inline void iret_to_self(void)
+  * Like all of Linux's memory ordering operations, this is a
+  * compiler barrier as well.
+  */
+-static inline void sync_core(void)
++static __always_inline void sync_core(void)
+ {
+ 	/*
+ 	 * The SERIALIZE instruction is the most straightforward way to
+--- a/arch/x86/kernel/static_call.c
++++ b/arch/x86/kernel/static_call.c
+@@ -172,6 +172,15 @@ void arch_static_call_transform(void *si
+ }
+ EXPORT_SYMBOL_GPL(arch_static_call_transform);
  
- 	if (test_and_clear_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags)) {
-+		sock_hold(sk);
- 		lock_sock(sk);
++noinstr void __static_call_update_early(void *tramp, void *func)
++{
++	BUG_ON(system_state != SYSTEM_BOOTING);
++	BUG_ON(!early_boot_irqs_disabled);
++	BUG_ON(static_call_initialized);
++	__text_gen_insn(tramp, JMP32_INSN_OPCODE, tramp, func, JMP32_INSN_SIZE);
++	sync_core();
++}
 +
- 		switch (sk->sk_state) {
- 		case BT_CONNECT2:
- 			if (test_bit(BT_SK_PA_SYNC, &pi->flags)) {
-+				release_sock(sk);
- 				iso_conn_big_sync(sk);
-+				lock_sock(sk);
-+
- 				sk->sk_state = BT_LISTEN;
- 			} else {
- 				iso_conn_defer_accept(pi->conn->hcon);
- 				sk->sk_state = BT_CONFIG;
- 			}
--			release_sock(sk);
--			return 0;
-+
-+			early_ret = true;
-+			break;
- 		case BT_CONNECTED:
- 			if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags)) {
-+				release_sock(sk);
- 				iso_conn_big_sync(sk);
-+				lock_sock(sk);
-+
- 				sk->sk_state = BT_LISTEN;
--				release_sock(sk);
--				return 0;
-+				early_ret = true;
- 			}
+ #ifdef CONFIG_RETHUNK
+ /*
+  * This is called by apply_returns() to fix up static call trampolines,
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -204,28 +204,43 @@ void ftrace_likely_update(struct ftrace_
  
--			release_sock(sk);
- 			break;
- 		case BT_CONNECT:
- 			release_sock(sk);
--			return iso_connect_cis(sk);
-+			err = iso_connect_cis(sk);
-+			lock_sock(sk);
-+
-+			early_ret = true;
-+			break;
- 		default:
--			release_sock(sk);
- 			break;
- 		}
-+
-+		release_sock(sk);
-+		sock_put(sk);
-+
-+		if (early_ret)
-+			return err;
- 	}
+ #endif /* __KERNEL__ */
  
- 	return bt_sock_recvmsg(sock, msg, len, flags);
--- 
-2.39.5
-
++/**
++ * offset_to_ptr - convert a relative memory offset to an absolute pointer
++ * @off:	the address of the 32-bit offset value
++ */
++static inline void *offset_to_ptr(const int *off)
++{
++	return (void *)((unsigned long)off + *off);
++}
++
++#endif /* __ASSEMBLY__ */
++
++#ifdef CONFIG_64BIT
++#define ARCH_SEL(a,b) a
++#else
++#define ARCH_SEL(a,b) b
++#endif
++
+ /*
+  * Force the compiler to emit 'sym' as a symbol, so that we can reference
+  * it from inline assembler. Necessary in case 'sym' could be inlined
+  * otherwise, or eliminated entirely due to lack of references that are
+  * visible to the compiler.
+  */
+-#define ___ADDRESSABLE(sym, __attrs) \
+-	static void * __used __attrs \
++#define ___ADDRESSABLE(sym, __attrs)						\
++	static void * __used __attrs						\
+ 		__UNIQUE_ID(__PASTE(__addressable_,sym)) = (void *)&sym;
++
+ #define __ADDRESSABLE(sym) \
+ 	___ADDRESSABLE(sym, __section(".discard.addressable"))
+ 
+-/**
+- * offset_to_ptr - convert a relative memory offset to an absolute pointer
+- * @off:	the address of the 32-bit offset value
+- */
+-static inline void *offset_to_ptr(const int *off)
+-{
+-	return (void *)((unsigned long)off + *off);
+-}
++#define __ADDRESSABLE_ASM(sym)						\
++	.pushsection .discard.addressable,"aw";				\
++	.align ARCH_SEL(8,4);						\
++	ARCH_SEL(.quad, .long) __stringify(sym);			\
++	.popsection;
+ 
+-#endif /* __ASSEMBLY__ */
++#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
+ 
+ /* &a[0] degrades to a pointer: a different type from an array */
+ #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+--- a/include/linux/static_call.h
++++ b/include/linux/static_call.h
+@@ -138,6 +138,7 @@
+ #ifdef CONFIG_HAVE_STATIC_CALL
+ #include <asm/static_call.h>
+ 
++extern int static_call_initialized;
+ /*
+  * Either @site or @tramp can be NULL.
+  */
+--- a/kernel/static_call_inline.c
++++ b/kernel/static_call_inline.c
+@@ -15,7 +15,7 @@ extern struct static_call_site __start_s
+ extern struct static_call_tramp_key __start_static_call_tramp_key[],
+ 				    __stop_static_call_tramp_key[];
+ 
+-static int static_call_initialized;
++int static_call_initialized;
+ 
+ /*
+  * Must be called before early_initcall() to be effective.
 
 
 
