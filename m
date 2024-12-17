@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-104947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7890F9F53D3
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683AB9F5302
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C04231881585
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2AFE170926
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9530A1F868D;
-	Tue, 17 Dec 2024 17:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E97B1F76A9;
+	Tue, 17 Dec 2024 17:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vp8xSX2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrtyCmTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A7A1F8685;
-	Tue, 17 Dec 2024 17:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5811F7568;
+	Tue, 17 Dec 2024 17:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456602; cv=none; b=YCI2I7pW7VLIqAEyN1bCenrd3i8zgkSzrx7q822KvxgRhFyqgEQpD7YQbJnRfNbh9ahcqjhFo8nlPvNZc2BoNfYWYde/mW7n0lAfqBeFT3Xa41vk2ttkFgj7BbIITt75gMqBFx1J8u4d/HcEraLMbS6BztMK9yzteyi/0B80VfU=
+	t=1734456104; cv=none; b=mFoevwuSV+cLvtB2yZMDrsWLNFN6UnpsOnRu+9UEKk2wXiWPFAowYvypkBq7/cwiE0B1SqDJQCh4MfwBPrZUxpx0N5QE0uwBaRGiuTfj998H5jNjv/1Wqu8mmLk1WRn4byZuo6imSzP/aTL9TafM2lflpDY8YdrB9wGgJd76pLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456602; c=relaxed/simple;
-	bh=oTnbVSmDAFk+yTNjgzMnBq/0VfWUq6OBu+G8AduxG4g=;
+	s=arc-20240116; t=1734456104; c=relaxed/simple;
+	bh=+TInIydtzLgoMpmZPLYGacVHJaZBHH2eDJ0foHqxV9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAKWPyPPRZHMgKkWwKIKAv24pJED2TFlC3oaOheNosVvyDZ9JlG13pME/Whwt0oMlQA5ojbb+hOR3bBR8hX155MxuKwBSyMH7znGa7pXrUvWLsI8NmwF7s6PVOvfKFrdOSbdUeUogaxGxQrLz/UVfAbjROwcT5RDf35nw+vSRtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vp8xSX2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7AAAC4CED3;
-	Tue, 17 Dec 2024 17:30:01 +0000 (UTC)
+	 MIME-Version; b=m9rYGOJknWSawXrYmVxtpVCqrhbj3L5OK+f2/WE4vI4H+mes2vqXNAMFQgTL549b7nipOdORyCFEPBtElqmBKk2S7A0kGZ63b5Ns6dhPZshZGODFNNA1Mxf3xd64RYQHzwXgEkuflYcAL2eN8OIACsOxvChCcL/c4oC4Njbtyws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrtyCmTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E318EC4CED3;
+	Tue, 17 Dec 2024 17:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456602;
-	bh=oTnbVSmDAFk+yTNjgzMnBq/0VfWUq6OBu+G8AduxG4g=;
+	s=korg; t=1734456104;
+	bh=+TInIydtzLgoMpmZPLYGacVHJaZBHH2eDJ0foHqxV9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vp8xSX2PA/RFJRXQ20PUZrd6JtzxUqMY6B8nGr5vH1eU0wOexUkdzXLe5nD5aZrhd
-	 r8+gM1p9aZVKb0syP6C7SmYPs2AaKtvYNrmIxOZ5cUuRKRWxq+L7I9/wd6H7KwhdA3
-	 QgKGvcUaVXphqXECkEuUUFgaPDubKLmat8EBkTGw=
+	b=zrtyCmTeJaSY8sEP+GawX0FEJobuGAg19Asla8VgiihH1LguaBIh2FDR1T9iRkgnG
+	 KCD7209Cc2aaqeyl9JayS7ZL953Wkx+2gFwds2p8mGzHRIi+z0S24ED1g/ob6Zd1sS
+	 cGZmED1mJbeOjlegsAvGk3Gafnv8kTfn5cxCbkRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe Simons <simons.philippe@gmail.com>,
-	Hironori KIKUCHI <kikuchan98@gmail.com>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/172] regulator: axp20x: AXP717: set ramp_delay
+Subject: [PATCH 6.6 060/109] net: sparx5: fix the maximum frame length register
 Date: Tue, 17 Dec 2024 18:07:44 +0100
-Message-ID: <20241217170550.804520752@linuxfoundation.org>
+Message-ID: <20241217170535.878833053@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,127 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philippe Simons <simons.philippe@gmail.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit f07ae52f5cf6a5584fdf7c8c652f027d90bc8b74 ]
+[ Upstream commit ddd7ba006078a2bef5971b2dc5f8383d47f96207 ]
 
-AXP717 datasheet says that regulator ramp delay is 15.625 us/step,
-which is 10mV in our case.
+On port initialization, we configure the maximum frame length accepted
+by the receive module associated with the port. This value is currently
+written to the MAX_LEN field of the DEV10G_MAC_ENA_CFG register, when in
+fact, it should be written to the DEV10G_MAC_MAXLEN_CFG register. Fix
+this.
 
-Add a AXP_DESC_RANGES_DELAY macro and update AXP_DESC_RANGES macro to
-expand to AXP_DESC_RANGES_DELAY with ramp_delay = 0
-
-For DCDC4, steps is 100mv
-
-Add a AXP_DESC_DELAY macro and update AXP_DESC macro to
-expand to AXP_DESC_DELAY with ramp_delay = 0
-
-This patch fix crashes when using CPU DVFS.
-
-Signed-off-by: Philippe Simons <simons.philippe@gmail.com>
-Tested-by: Hironori KIKUCHI <kikuchan98@gmail.com>
-Tested-by: Chris Morgan <macromorgan@hotmail.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Fixes: d2ac3df75c3a ("regulator: axp20x: add support for the AXP717")
-Link: https://patch.msgid.link/20241208124308.5630-1-simons.philippe@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 946e7fd5053a ("net: sparx5: add port module support")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/axp20x-regulator.c | 36 ++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/axp20x-regulator.c b/drivers/regulator/axp20x-regulator.c
-index a8e91d9d028b..945d2917b91b 100644
---- a/drivers/regulator/axp20x-regulator.c
-+++ b/drivers/regulator/axp20x-regulator.c
-@@ -371,8 +371,8 @@
- 		.ops		= &axp20x_ops,					\
- 	}
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+index 60dd2fd603a8..fcdaa37879f7 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+@@ -1119,7 +1119,7 @@ int sparx5_port_init(struct sparx5 *sparx5,
+ 	spx5_inst_rmw(DEV10G_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
+ 		      DEV10G_MAC_MAXLEN_CFG_MAX_LEN,
+ 		      devinst,
+-		      DEV10G_MAC_ENA_CFG(0));
++		      DEV10G_MAC_MAXLEN_CFG(0));
  
--#define AXP_DESC(_family, _id, _match, _supply, _min, _max, _step, _vreg,	\
--		 _vmask, _ereg, _emask) 					\
-+#define AXP_DESC_DELAY(_family, _id, _match, _supply, _min, _max, _step, _vreg,	\
-+		 _vmask, _ereg, _emask, _ramp_delay) 				\
- 	[_family##_##_id] = {							\
- 		.name		= (_match),					\
- 		.supply_name	= (_supply),					\
-@@ -388,9 +388,15 @@
- 		.vsel_mask	= (_vmask),					\
- 		.enable_reg	= (_ereg),					\
- 		.enable_mask	= (_emask),					\
-+		.ramp_delay = (_ramp_delay),					\
- 		.ops		= &axp20x_ops,					\
- 	}
- 
-+#define AXP_DESC(_family, _id, _match, _supply, _min, _max, _step, _vreg,	\
-+		 _vmask, _ereg, _emask) 					\
-+	AXP_DESC_DELAY(_family, _id, _match, _supply, _min, _max, _step, _vreg,	\
-+		 _vmask, _ereg, _emask, 0)
-+
- #define AXP_DESC_SW(_family, _id, _match, _supply, _ereg, _emask)		\
- 	[_family##_##_id] = {							\
- 		.name		= (_match),					\
-@@ -419,8 +425,8 @@
- 		.ops		= &axp20x_ops_fixed				\
- 	}
- 
--#define AXP_DESC_RANGES(_family, _id, _match, _supply, _ranges, _n_voltages,	\
--			_vreg, _vmask, _ereg, _emask)				\
-+#define AXP_DESC_RANGES_DELAY(_family, _id, _match, _supply, _ranges, _n_voltages,	\
-+			_vreg, _vmask, _ereg, _emask, _ramp_delay)	\
- 	[_family##_##_id] = {							\
- 		.name		= (_match),					\
- 		.supply_name	= (_supply),					\
-@@ -436,9 +442,15 @@
- 		.enable_mask	= (_emask),					\
- 		.linear_ranges	= (_ranges),					\
- 		.n_linear_ranges = ARRAY_SIZE(_ranges),				\
-+		.ramp_delay = (_ramp_delay),					\
- 		.ops		= &axp20x_ops_range,				\
- 	}
- 
-+#define AXP_DESC_RANGES(_family, _id, _match, _supply, _ranges, _n_voltages,	\
-+			_vreg, _vmask, _ereg, _emask)				\
-+	AXP_DESC_RANGES_DELAY(_family, _id, _match, _supply, _ranges,		\
-+		 _n_voltages, _vreg, _vmask, _ereg, _emask, 0)
-+
- static const int axp209_dcdc2_ldo3_slew_rates[] = {
- 	1600,
- 	 800,
-@@ -781,21 +793,21 @@ static const struct linear_range axp717_dcdc3_ranges[] = {
- };
- 
- static const struct regulator_desc axp717_regulators[] = {
--	AXP_DESC_RANGES(AXP717, DCDC1, "dcdc1", "vin1",
-+	AXP_DESC_RANGES_DELAY(AXP717, DCDC1, "dcdc1", "vin1",
- 			axp717_dcdc1_ranges, AXP717_DCDC1_NUM_VOLTAGES,
- 			AXP717_DCDC1_CONTROL, AXP717_DCDC_V_OUT_MASK,
--			AXP717_DCDC_OUTPUT_CONTROL, BIT(0)),
--	AXP_DESC_RANGES(AXP717, DCDC2, "dcdc2", "vin2",
-+			AXP717_DCDC_OUTPUT_CONTROL, BIT(0), 640),
-+	AXP_DESC_RANGES_DELAY(AXP717, DCDC2, "dcdc2", "vin2",
- 			axp717_dcdc2_ranges, AXP717_DCDC2_NUM_VOLTAGES,
- 			AXP717_DCDC2_CONTROL, AXP717_DCDC_V_OUT_MASK,
--			AXP717_DCDC_OUTPUT_CONTROL, BIT(1)),
--	AXP_DESC_RANGES(AXP717, DCDC3, "dcdc3", "vin3",
-+			AXP717_DCDC_OUTPUT_CONTROL, BIT(1), 640),
-+	AXP_DESC_RANGES_DELAY(AXP717, DCDC3, "dcdc3", "vin3",
- 			axp717_dcdc3_ranges, AXP717_DCDC3_NUM_VOLTAGES,
- 			AXP717_DCDC3_CONTROL, AXP717_DCDC_V_OUT_MASK,
--			AXP717_DCDC_OUTPUT_CONTROL, BIT(2)),
--	AXP_DESC(AXP717, DCDC4, "dcdc4", "vin4", 1000, 3700, 100,
-+			AXP717_DCDC_OUTPUT_CONTROL, BIT(2), 640),
-+	AXP_DESC_DELAY(AXP717, DCDC4, "dcdc4", "vin4", 1000, 3700, 100,
- 		 AXP717_DCDC4_CONTROL, AXP717_DCDC_V_OUT_MASK,
--		 AXP717_DCDC_OUTPUT_CONTROL, BIT(3)),
-+		 AXP717_DCDC_OUTPUT_CONTROL, BIT(3), 6400),
- 	AXP_DESC(AXP717, ALDO1, "aldo1", "aldoin", 500, 3500, 100,
- 		 AXP717_ALDO1_CONTROL, AXP717_LDO_V_OUT_MASK,
- 		 AXP717_LDO0_OUTPUT_CONTROL, BIT(0)),
+ 	/* Handle Signal Detect in 10G PCS */
+ 	spx5_inst_wr(PCS10G_BR_PCS_SD_CFG_SD_POL_SET(sd_pol) |
 -- 
 2.39.5
 
