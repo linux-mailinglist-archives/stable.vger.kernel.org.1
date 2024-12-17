@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-104880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7ED9F5389
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCFA9F538F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DE771891150
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 333181892021
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154351F868F;
-	Tue, 17 Dec 2024 17:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6401F892F;
+	Tue, 17 Dec 2024 17:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK+h8SkT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjCvCBS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D04140E38;
-	Tue, 17 Dec 2024 17:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC101F8924;
+	Tue, 17 Dec 2024 17:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456384; cv=none; b=HNQMun41gcaFKSgswf/ZUeCBgaseZwdW5YAZExCo10fMtiMP2Yb4zU+rf6qOQRtSwJ7oYcospzNq/R4XHlIv71WmoJTPqvXwWRJtvHgQocGw4Ou7izWtVutL0Vxr3xNVPhJRZhqQFe55JE9WozYw7HpE8dA22oZ5zLEGRZugMww=
+	t=1734456394; cv=none; b=oHe+ZYUV6AexzXcOuX+b2NU/2ynRKmNl6+WQB2ttvTmJjvLYhS83Gq7X+NQnaWEy7lISWfoGzAMrcpQYME53D7icJZh69FftiwChX7Me+EBnh70euQycmW1EXwiFFBsfXDQRWXMkZchI8SJLbvRyb8Fpq5SwYGewjbSNAAnf0S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456384; c=relaxed/simple;
-	bh=NlBvde220NmW8C8EPsKzu8J09Ktei1S6DhI8VfXefME=;
+	s=arc-20240116; t=1734456394; c=relaxed/simple;
+	bh=8wZz1flM3NHkWgJvF0tZn+VTGJoTExWiWHsYJ/XK3NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sy0NB98vi6jqHkv+4bB6C2pbd6JWTIda0LrTmBMOvqQjGbyqZycyiOWazNRfGRpTjrFspUHUw6XGTaVpBZWiv5wmOBuYLlVYJUxPawBnvygW+QcpURF1FP0v5FC9TGgI5cfJ+7p53aimr0uA39ge/sOcz6lqMaJWSyd474P1444=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GK+h8SkT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F16C4CED3;
-	Tue, 17 Dec 2024 17:26:24 +0000 (UTC)
+	 MIME-Version; b=mCKff8Kkh+cjCvh8QbncG4hP5aWt6S6AuOJkw0yVIBTFyd18E+XKxg4ECLBzl6Yj/hdrX/dVvFzLQsUslvk7bedy1xJknsKJIhBFv2EaP2zUIHm/18xTyB3Ui4gTpSTqKb9KVCsIFHJXRqtKhIZff9v8Xmieu29dtwSOfJWsKXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjCvCBS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5F2C4CEDE;
+	Tue, 17 Dec 2024 17:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456384;
-	bh=NlBvde220NmW8C8EPsKzu8J09Ktei1S6DhI8VfXefME=;
+	s=korg; t=1734456394;
+	bh=8wZz1flM3NHkWgJvF0tZn+VTGJoTExWiWHsYJ/XK3NQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GK+h8SkTwvu6qDJD5N+b+Vr/9ujO6/AzYueuP439BjWiwEWFj28zONArI4DlGfBZ/
-	 MEkKuq9gVC+U9FXehG6ZGhduSz5U9k2Io2tGfz1DILkkdy8wcdMx47WuvOprFHQIf/
-	 G8DK1OlBbywn7UQBMtjoOEWBaAaMQnA6p3x7GFuw=
+	b=RjCvCBS/toJ9ZRGCQTZDOPuqC9DQoUcjrymJHRm+Q01P8eeEe3l45j2v2FQM9IABY
+	 A5psiurrEArlH65BQqnuzISXxVj0GXNqB9u5QCDHlJPDcJ7GmptlEVK8ykgNhzVUQV
+	 K1vVY3WT6QsxMsR1e/wSqZGJU/fiI+y251oaOOpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.12 015/172] riscv: Fix wrong usage of __pa() on a fixmap address
-Date: Tue, 17 Dec 2024 18:06:11 +0100
-Message-ID: <20241217170546.884264949@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Abagail ren <renzezhongucas@gmail.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 016/172] blk-cgroup: Fix UAF in blkcg_unpin_online()
+Date: Tue, 17 Dec 2024 18:06:12 +0100
+Message-ID: <20241217170546.927199150@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
 References: <20241217170546.209657098@linuxfoundation.org>
@@ -65,34 +67,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit c796e187201242992d6d292bfeff41aadfdf3f29 upstream.
+commit 86e6ca55b83c575ab0f2e105cf08f98e58d3d7af upstream.
 
-riscv uses fixmap addresses to map the dtb so we can't use __pa() which
-is reserved for linear mapping addresses.
+blkcg_unpin_online() walks up the blkcg hierarchy putting the online pin. To
+walk up, it uses blkcg_parent(blkcg) but it was calling that after
+blkcg_destroy_blkgs(blkcg) which could free the blkcg, leading to the
+following UAF:
 
-Fixes: b2473a359763 ("of/fdt: add dt_phys arg to early_init_dt_scan and early_init_dt_verify")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20241209074508.53037-1-alexghiti@rivosinc.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in blkcg_unpin_online+0x15a/0x270
+  Read of size 8 at addr ffff8881057678c0 by task kworker/9:1/117
+
+  CPU: 9 UID: 0 PID: 117 Comm: kworker/9:1 Not tainted 6.13.0-rc1-work-00182-gb8f52214c61a-dirty #48
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS unknown 02/02/2022
+  Workqueue: cgwb_release cgwb_release_workfn
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x27/0x80
+   print_report+0x151/0x710
+   kasan_report+0xc0/0x100
+   blkcg_unpin_online+0x15a/0x270
+   cgwb_release_workfn+0x194/0x480
+   process_scheduled_works+0x71b/0xe20
+   worker_thread+0x82a/0xbd0
+   kthread+0x242/0x2c0
+   ret_from_fork+0x33/0x70
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+  ...
+  Freed by task 1944:
+   kasan_save_track+0x2b/0x70
+   kasan_save_free_info+0x3c/0x50
+   __kasan_slab_free+0x33/0x50
+   kfree+0x10c/0x330
+   css_free_rwork_fn+0xe6/0xb30
+   process_scheduled_works+0x71b/0xe20
+   worker_thread+0x82a/0xbd0
+   kthread+0x242/0x2c0
+   ret_from_fork+0x33/0x70
+   ret_from_fork_asm+0x1a/0x30
+
+Note that the UAF is not easy to trigger as the free path is indirected
+behind a couple RCU grace periods and a work item execution. I could only
+trigger it with artifical msleep() injected in blkcg_unpin_online().
+
+Fix it by reading the parent pointer before destroying the blkcg's blkg's.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Abagail ren <renzezhongucas@gmail.com>
+Suggested-by: Linus Torvalds <torvalds@linuxfoundation.org>
+Fixes: 4308a434e5e0 ("blkcg: don't offline parent blkcg first")
+Cc: stable@vger.kernel.org # v5.7+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/setup.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-cgroup.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -227,7 +227,7 @@ static void __init init_resources(void)
- static void __init parse_dtb(void)
- {
- 	/* Early scan of device tree from init memory */
--	if (early_init_dt_scan(dtb_early_va, __pa(dtb_early_va))) {
-+	if (early_init_dt_scan(dtb_early_va, dtb_early_pa)) {
- 		const char *name = of_flat_dt_get_machine_name();
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1324,10 +1324,14 @@ void blkcg_unpin_online(struct cgroup_su
+ 	struct blkcg *blkcg = css_to_blkcg(blkcg_css);
  
- 		if (name) {
+ 	do {
++		struct blkcg *parent;
++
+ 		if (!refcount_dec_and_test(&blkcg->online_pin))
+ 			break;
++
++		parent = blkcg_parent(blkcg);
+ 		blkcg_destroy_blkgs(blkcg);
+-		blkcg = blkcg_parent(blkcg);
++		blkcg = parent;
+ 	} while (blkcg);
+ }
+ 
 
 
 
