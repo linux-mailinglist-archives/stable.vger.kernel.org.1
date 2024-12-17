@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4139F53AD
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D749F51E1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A3AE1884C92
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44F118889C3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF44F1F8902;
-	Tue, 17 Dec 2024 17:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBABF1F4735;
+	Tue, 17 Dec 2024 17:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1nT50Yi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jroDUv6W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1E314A4E7;
-	Tue, 17 Dec 2024 17:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CA81F37BE;
+	Tue, 17 Dec 2024 17:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456469; cv=none; b=uzGK9EhPfnOYZn/zV1vIZJ/iA+dgxQ7Qq9X0hsncnCDIKocVW11vMwdNBEsBaIlp3KbjyopB/ZvB413ukeV/Y0jBHihL+IyYtPT8xEHY5wYGdrEjFS+w9ZW6N28ojEWDNBH6cvHEgEm0ngAE67rVu19s81v7dCwY0hoY2Wz3DTE=
+	t=1734455453; cv=none; b=N6kj+wmJpy/QYGvDfCB+HMi4/KqrIRGWHlw5+gDjR5gXVqdqrATbwnkF3CL+4W277wwgSDRlNQ2LyijFvT7Qe2InUmgWXjYRXXkgaprWGfIsbCfjcMiRShgmdUCkcGbIpH0NVYIfMWMIWOrpQhSOlUM+ZPVgtp3tvzfmqcqw48I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456469; c=relaxed/simple;
-	bh=y0Pw70RI7C1ROkjHQxXMc8CfPzDuzipvpOsIKkCdEOI=;
+	s=arc-20240116; t=1734455453; c=relaxed/simple;
+	bh=AffMrQfWiqyBpbx+nn1VwVqkXWGoVWIIB5ZQwDudp3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=br1rOK/+5/TyNIFfafJDLAKul30AJfCL7wDqFS5e6ulGHY922MOjbAjgHALR6v0OjE7pIQZzEy8qTIFQtV68Aut0grhuKhOLNkvBFzYC44pKNCu4JOlYtw7twydx5NQrT5GoCfHPpejj2yjBLWeihXiMSi+TWzQw5tsEZBQMJhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1nT50Yi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E725FC4CED3;
-	Tue, 17 Dec 2024 17:27:48 +0000 (UTC)
+	 MIME-Version; b=kXseFph8cufQpwXemwQ4LwELOuT+0oUHquueUtk/JtJ4Yp/l3cdEkA9MbJIUaoAd+6rPn+1+WJtuDyGZ/nkgmsavHr1+XaTDoWzyOXNdPYSuIPb/MSJU8R7OehGa5jGqsvM39MVhWrZvXYu0KoOwkiJXKY1etBsRP9F6NJHODCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jroDUv6W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF08C4CED3;
+	Tue, 17 Dec 2024 17:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456469;
-	bh=y0Pw70RI7C1ROkjHQxXMc8CfPzDuzipvpOsIKkCdEOI=;
+	s=korg; t=1734455453;
+	bh=AffMrQfWiqyBpbx+nn1VwVqkXWGoVWIIB5ZQwDudp3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1nT50YiYCF6ZVvBON7tA1W8rVig5gpOxrvCZ6cdrD2CvnDdFp15CXoHyL1BsDdBo
-	 MqAR3955yjHW73drPNjSE63QC0oyoTi0uUWlOHK2x5cqCxOm167Pco10gxYvHyt34d
-	 SXugfAdqU/qnjY0N2iNVCVlGOWIQh+NwgOZm177M=
+	b=jroDUv6WSnQiX5vrD99ztL6fAcpgNnd4Waq/idmugLCBl3BM0/QJ1Mtd7u2+y/nOI
+	 x5o/K+yk4088ll1QiVAJ008iBTb6hJC/57AuBBkhLP6KitUutico0narwRCLEfbz5y
+	 ZyRTAe0CNn8n8W1AK1NVweYjGK0zJPlSRq3cY9oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 070/172] xfs: return a 64-bit block count from xfs_btree_count_blocks
-Date: Tue, 17 Dec 2024 18:07:06 +0100
-Message-ID: <20241217170549.184457999@linuxfoundation.org>
+	syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 16/43] tipc: fix NULL deref in cleanup_bearer()
+Date: Tue, 17 Dec 2024 18:07:07 +0100
+Message-ID: <20241217170521.112782294@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,199 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit bd27c7bcdca25ce8067ebb94ded6ac1bd7b47317 upstream.
+[ Upstream commit b04d86fff66b15c07505d226431f808c15b1703c ]
 
-With the nrext64 feature enabled, it's possible for a data fork to have
-2^48 extent mappings.  Even with a 64k fsblock size, that maps out to
-a bmbt containing more than 2^32 blocks.  Therefore, this predicate must
-return a u64 count to avoid an integer wraparound that will cause scrub
-to do the wrong thing.
+syzbot found [1] that after blamed commit, ub->ubsock->sk
+was NULL when attempting the atomic_dec() :
 
-It's unlikely that any such filesystem currently exists, because the
-incore bmbt would consume more than 64GB of kernel memory on its own,
-and so far nobody except me has driven a filesystem that far, judging
-from the lack of complaints.
+atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
 
-Cc: <stable@vger.kernel.org> # v5.19
-Fixes: df9ad5cc7a5240 ("xfs: Introduce macros to represent new maximum extent counts for data/attr forks")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by caching the tipc_net pointer.
+
+[1]
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+CPU: 0 UID: 0 PID: 5896 Comm: kworker/0:3 Not tainted 6.13.0-rc1-next-20241203-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events cleanup_bearer
+ RIP: 0010:read_pnet include/net/net_namespace.h:387 [inline]
+ RIP: 0010:sock_net include/net/sock.h:655 [inline]
+ RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
+Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 3c f7 99 f6 48 8b 1b 48 83 c3 30 e8 f0 e4 60 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 1a f7 99 f6 49 83 c7 e8 48 8b 1b
+RSP: 0018:ffffc9000410fb70 EFLAGS: 00010206
+RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88802fe45a00
+RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffc9000410f900
+RBP: ffff88807e1f0908 R08: ffffc9000410f907 R09: 1ffff92000821f20
+R10: dffffc0000000000 R11: fffff52000821f21 R12: ffff888031d19980
+R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff88807e1f0918
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556ca050b000 CR3: 0000000031c0c000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Fixes: 6a2fa13312e5 ("tipc: Fix use-after-free of kernel socket in cleanup_bearer().")
+Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67508b5f.050a0220.17bd51.0070.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20241204170548.4152658-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_btree.c        |    4 ++--
- fs/xfs/libxfs/xfs_btree.h        |    2 +-
- fs/xfs/libxfs/xfs_ialloc_btree.c |    4 +++-
- fs/xfs/scrub/agheader.c          |    6 +++---
- fs/xfs/scrub/agheader_repair.c   |    6 +++---
- fs/xfs/scrub/fscounters.c        |    2 +-
- fs/xfs/scrub/ialloc.c            |    4 ++--
- fs/xfs/scrub/refcount.c          |    2 +-
- fs/xfs/xfs_bmap_util.c           |    2 +-
- 9 files changed, 17 insertions(+), 15 deletions(-)
+ net/tipc/udp_media.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/libxfs/xfs_btree.c
-+++ b/fs/xfs/libxfs/xfs_btree.c
-@@ -5173,7 +5173,7 @@ xfs_btree_count_blocks_helper(
- 	int			level,
- 	void			*data)
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index d54b5c1d3c83..25e733919131 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -803,6 +803,7 @@ static void cleanup_bearer(struct work_struct *work)
  {
--	xfs_extlen_t		*blocks = data;
-+	xfs_filblks_t		*blocks = data;
- 	(*blocks)++;
+ 	struct udp_bearer *ub = container_of(work, struct udp_bearer, work);
+ 	struct udp_replicast *rcast, *tmp;
++	struct tipc_net *tn;
  
- 	return 0;
-@@ -5183,7 +5183,7 @@ xfs_btree_count_blocks_helper(
- int
- xfs_btree_count_blocks(
- 	struct xfs_btree_cur	*cur,
--	xfs_extlen_t		*blocks)
-+	xfs_filblks_t		*blocks)
- {
- 	*blocks = 0;
- 	return xfs_btree_visit_blocks(cur, xfs_btree_count_blocks_helper,
---- a/fs/xfs/libxfs/xfs_btree.h
-+++ b/fs/xfs/libxfs/xfs_btree.h
-@@ -485,7 +485,7 @@ typedef int (*xfs_btree_visit_blocks_fn)
- int xfs_btree_visit_blocks(struct xfs_btree_cur *cur,
- 		xfs_btree_visit_blocks_fn fn, unsigned int flags, void *data);
+ 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
+ 		dst_cache_destroy(&rcast->dst_cache);
+@@ -810,10 +811,14 @@ static void cleanup_bearer(struct work_struct *work)
+ 		kfree_rcu(rcast, rcu);
+ 	}
  
--int xfs_btree_count_blocks(struct xfs_btree_cur *cur, xfs_extlen_t *blocks);
-+int xfs_btree_count_blocks(struct xfs_btree_cur *cur, xfs_filblks_t *blocks);
- 
- union xfs_btree_rec *xfs_btree_rec_addr(struct xfs_btree_cur *cur, int n,
- 		struct xfs_btree_block *block);
---- a/fs/xfs/libxfs/xfs_ialloc_btree.c
-+++ b/fs/xfs/libxfs/xfs_ialloc_btree.c
-@@ -743,6 +743,7 @@ xfs_finobt_count_blocks(
- {
- 	struct xfs_buf		*agbp = NULL;
- 	struct xfs_btree_cur	*cur;
-+	xfs_filblks_t		blocks;
- 	int			error;
- 
- 	error = xfs_ialloc_read_agi(pag, tp, 0, &agbp);
-@@ -750,9 +751,10 @@ xfs_finobt_count_blocks(
- 		return error;
- 
- 	cur = xfs_finobt_init_cursor(pag, tp, agbp);
--	error = xfs_btree_count_blocks(cur, tree_blocks);
-+	error = xfs_btree_count_blocks(cur, &blocks);
- 	xfs_btree_del_cursor(cur, error);
- 	xfs_trans_brelse(tp, agbp);
-+	*tree_blocks = blocks;
- 
- 	return error;
++	tn = tipc_net(sock_net(ub->ubsock->sk));
++
+ 	dst_cache_destroy(&ub->rcast.dst_cache);
+ 	udp_tunnel_sock_release(ub->ubsock);
++
++	/* Note: could use a call_rcu() to avoid another synchronize_net() */
+ 	synchronize_net();
+-	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
++	atomic_dec(&tn->wq_count);
+ 	kfree(ub);
  }
---- a/fs/xfs/scrub/agheader.c
-+++ b/fs/xfs/scrub/agheader.c
-@@ -434,7 +434,7 @@ xchk_agf_xref_btreeblks(
- {
- 	struct xfs_agf		*agf = sc->sa.agf_bp->b_addr;
- 	struct xfs_mount	*mp = sc->mp;
--	xfs_agblock_t		blocks;
-+	xfs_filblks_t		blocks;
- 	xfs_agblock_t		btreeblks;
- 	int			error;
  
-@@ -483,7 +483,7 @@ xchk_agf_xref_refcblks(
- 	struct xfs_scrub	*sc)
- {
- 	struct xfs_agf		*agf = sc->sa.agf_bp->b_addr;
--	xfs_agblock_t		blocks;
-+	xfs_filblks_t		blocks;
- 	int			error;
- 
- 	if (!sc->sa.refc_cur)
-@@ -816,7 +816,7 @@ xchk_agi_xref_fiblocks(
- 	struct xfs_scrub	*sc)
- {
- 	struct xfs_agi		*agi = sc->sa.agi_bp->b_addr;
--	xfs_agblock_t		blocks;
-+	xfs_filblks_t		blocks;
- 	int			error = 0;
- 
- 	if (!xfs_has_inobtcounts(sc->mp))
---- a/fs/xfs/scrub/agheader_repair.c
-+++ b/fs/xfs/scrub/agheader_repair.c
-@@ -256,7 +256,7 @@ xrep_agf_calc_from_btrees(
- 	struct xfs_agf		*agf = agf_bp->b_addr;
- 	struct xfs_mount	*mp = sc->mp;
- 	xfs_agblock_t		btreeblks;
--	xfs_agblock_t		blocks;
-+	xfs_filblks_t		blocks;
- 	int			error;
- 
- 	/* Update the AGF counters from the bnobt. */
-@@ -946,7 +946,7 @@ xrep_agi_calc_from_btrees(
- 	if (error)
- 		goto err;
- 	if (xfs_has_inobtcounts(mp)) {
--		xfs_agblock_t	blocks;
-+		xfs_filblks_t	blocks;
- 
- 		error = xfs_btree_count_blocks(cur, &blocks);
- 		if (error)
-@@ -959,7 +959,7 @@ xrep_agi_calc_from_btrees(
- 	agi->agi_freecount = cpu_to_be32(freecount);
- 
- 	if (xfs_has_finobt(mp) && xfs_has_inobtcounts(mp)) {
--		xfs_agblock_t	blocks;
-+		xfs_filblks_t	blocks;
- 
- 		cur = xfs_finobt_init_cursor(sc->sa.pag, sc->tp, agi_bp);
- 		error = xfs_btree_count_blocks(cur, &blocks);
---- a/fs/xfs/scrub/fscounters.c
-+++ b/fs/xfs/scrub/fscounters.c
-@@ -261,7 +261,7 @@ xchk_fscount_btreeblks(
- 	struct xchk_fscounters	*fsc,
- 	xfs_agnumber_t		agno)
- {
--	xfs_extlen_t		blocks;
-+	xfs_filblks_t		blocks;
- 	int			error;
- 
- 	error = xchk_ag_init_existing(sc, agno, &sc->sa);
---- a/fs/xfs/scrub/ialloc.c
-+++ b/fs/xfs/scrub/ialloc.c
-@@ -652,8 +652,8 @@ xchk_iallocbt_xref_rmap_btreeblks(
- 	struct xfs_scrub	*sc)
- {
- 	xfs_filblks_t		blocks;
--	xfs_extlen_t		inobt_blocks = 0;
--	xfs_extlen_t		finobt_blocks = 0;
-+	xfs_filblks_t		inobt_blocks = 0;
-+	xfs_filblks_t		finobt_blocks = 0;
- 	int			error;
- 
- 	if (!sc->sa.ino_cur || !sc->sa.rmap_cur ||
---- a/fs/xfs/scrub/refcount.c
-+++ b/fs/xfs/scrub/refcount.c
-@@ -490,7 +490,7 @@ xchk_refcount_xref_rmap(
- 	struct xfs_scrub	*sc,
- 	xfs_filblks_t		cow_blocks)
- {
--	xfs_extlen_t		refcbt_blocks = 0;
-+	xfs_filblks_t		refcbt_blocks = 0;
- 	xfs_filblks_t		blocks;
- 	int			error;
- 
---- a/fs/xfs/xfs_bmap_util.c
-+++ b/fs/xfs/xfs_bmap_util.c
-@@ -111,7 +111,7 @@ xfs_bmap_count_blocks(
- 	struct xfs_mount	*mp = ip->i_mount;
- 	struct xfs_ifork	*ifp = xfs_ifork_ptr(ip, whichfork);
- 	struct xfs_btree_cur	*cur;
--	xfs_extlen_t		btblocks = 0;
-+	xfs_filblks_t		btblocks = 0;
- 	int			error;
- 
- 	*nextents = 0;
+-- 
+2.39.5
+
 
 
 
