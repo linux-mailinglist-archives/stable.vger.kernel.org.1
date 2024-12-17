@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587CA9F51EF
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFB59F5257
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:18:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17A77188EAD3
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C8C616F6BF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553871F76AE;
-	Tue, 17 Dec 2024 17:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E8F1F866E;
+	Tue, 17 Dec 2024 17:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVQS1fNj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVz2ss40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119151F543C;
-	Tue, 17 Dec 2024 17:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8CF1F76B2;
+	Tue, 17 Dec 2024 17:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455498; cv=none; b=MAgShcOcfgb+53jzW65sq6PTtRoqzCAaxOF8mFgoTSxQPOdnweZIWk51g61hAc1KeiJe4YmhVNVP8ZW0077GvEukg95m1r6oLfZ1ar++sB+8rqritFGG0K1cqrAiJUgiakoYuRPoGXqr5kalVDqVgKXwu3gcFkAtptSkRf++6UY=
+	t=1734455732; cv=none; b=avRwJjUMM8pncuvdbr7Doi7Qt/O7aTJBhCG5fDzlfLe+ZP/zGPZCQsBlzyPdJUsUaEwqqBuBbMzmgaHxEr9digaWIzjLpiytpla2IkbU/fxD7/RImrLcCPokmXOLLQBi64Mj4uT4D5LIxvRaEeaRlRnA27H4Smc5I+XQFL2VJ00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455498; c=relaxed/simple;
-	bh=9qLIxceUbjKEh2wu3+JGNBPFramnnrEpGJl4SAPnod4=;
+	s=arc-20240116; t=1734455732; c=relaxed/simple;
+	bh=w69nFz20Ig6fLWkOnicIzcEqxkupVlrVzOhm6zcWn80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bm+MrHTwI8hLes/HyDhCjYdzRGBHZjrXDNZK2Nyz+20ZWTbyGLsN0Dzc2N9+RiAflEoMtkuNrfaezFBb8Z/BUY2PxTVYbhHgvVpW07arsef9T55WcNC77wYqfwgWlKd2YrP048CdDDyIUKMFcKPInqcQnSrBEoug24pADQxD674=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVQS1fNj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E691C4CED3;
-	Tue, 17 Dec 2024 17:11:37 +0000 (UTC)
+	 MIME-Version; b=A+yAb9Pqlcnca03yIYBvQWE0oOPV5BBKC8k8kkTvlfN8QP8hZfkPCcfKeHaipK3Bdcr/bhfqH7Nl7Tzi3QMbzKs5SJynQ7M7CLWe2YtUChj8IXBxZs21HOfj4bNOdvRuaKks1tf/cbM+2nRK6wkENvj5zgE7p6BrYadvlk43iIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVz2ss40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F48C4CED3;
+	Tue, 17 Dec 2024 17:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455497;
-	bh=9qLIxceUbjKEh2wu3+JGNBPFramnnrEpGJl4SAPnod4=;
+	s=korg; t=1734455732;
+	bh=w69nFz20Ig6fLWkOnicIzcEqxkupVlrVzOhm6zcWn80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVQS1fNjAC80fBlfjLYb/r+110yibTzJKLr2vsb+a55A4l5QRT63LCxq8IxtphDTr
-	 htpzTwyNa+SL2H8GAJiJEhOQeFqhCW8v+pXJ3iiDsSaHMKn/tH9JUuzyMdP7dJNm+G
-	 PyjJOI4qAQstOZHBrLnt86ANLqff41ptN6eOmLKs=
+	b=TVz2ss40S4qFUo1Mdpd5UkmWb3vdQJ7X4Em71vbOv2tTp01OvmrBlaUG9pRpsQNi7
+	 Gsl9Yge+QdbqXDqfnzhHu2NxBcQ9G4EM5SKIzNZD+ZgYgm80o+m4IOixS+2o3G8KAH
+	 zmjoAaI8dRc1LeEGIb5CRRrpeqeoijskLROeEVBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.10 03/43] ata: sata_highbank: fix OF node reference leak in highbank_initialize_phys()
+	Prashanth K <quic_prashk@quicinc.com>,
+	Lianqin Hu <hulianqin@vivo.com>
+Subject: [PATCH 6.1 14/76] usb: gadget: u_serial: Fix the issue that gs_start_io crashed due to accessing null pointer
 Date: Tue, 17 Dec 2024 18:06:54 +0100
-Message-ID: <20241217170520.601838473@linuxfoundation.org>
+Message-ID: <20241217170526.843172120@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Lianqin Hu <hulianqin@vivo.com>
 
-commit 676fe1f6f74db988191dab5df3bf256908177072 upstream.
+commit 4cfbca86f6a8b801f3254e0e3c8f2b1d2d64be2b upstream.
 
-The OF node reference obtained by of_parse_phandle_with_args() is not
-released on early return. Add a of_node_put() call before returning.
+Considering that in some extreme cases,
+when u_serial driver is accessed by multiple threads,
+Thread A is executing the open operation and calling the gs_open,
+Thread B is executing the disconnect operation and calling the
+gserial_disconnect function,The port->port_usb pointer will be set to NULL.
 
-Fixes: 8996b89d6bc9 ("ata: add platform driver for Calxeda AHCI controller")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+E.g.
+    Thread A                                 Thread B
+    gs_open()                                gadget_unbind_driver()
+    gs_start_io()                            composite_disconnect()
+    gs_start_rx()                            gserial_disconnect()
+    ...                                      ...
+    spin_unlock(&port->port_lock)
+    status = usb_ep_queue()                  spin_lock(&port->port_lock)
+    spin_lock(&port->port_lock)              port->port_usb = NULL
+    gs_free_requests(port->port_usb->in)     spin_unlock(&port->port_lock)
+    Crash
+
+This causes thread A to access a null pointer (port->port_usb is null)
+when calling the gs_free_requests function, causing a crash.
+
+If port_usb is NULL, the release request will be skipped as it
+will be done by gserial_disconnect.
+
+So add a null pointer check to gs_start_io before attempting
+to access the value of the pointer port->port_usb.
+
+Call trace:
+ gs_start_io+0x164/0x25c
+ gs_open+0x108/0x13c
+ tty_open+0x314/0x638
+ chrdev_open+0x1b8/0x258
+ do_dentry_open+0x2c4/0x700
+ vfs_open+0x2c/0x3c
+ path_openat+0xa64/0xc60
+ do_filp_open+0xb8/0x164
+ do_sys_openat2+0x84/0xf0
+ __arm64_sys_openat+0x70/0x9c
+ invoke_syscall+0x58/0x114
+ el0_svc_common+0x80/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x38/0x68
+
+Fixes: c1dca562be8a ("usb gadget: split out serial core")
+Cc: stable@vger.kernel.org
+Suggested-by: Prashanth K <quic_prashk@quicinc.com>
+Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
+Acked-by: Prashanth K <quic_prashk@quicinc.com>
+Link: https://lore.kernel.org/r/TYUPR06MB62178DC3473F9E1A537DCD02D2362@TYUPR06MB6217.apcprd06.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/sata_highbank.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/function/u_serial.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/ata/sata_highbank.c
-+++ b/drivers/ata/sata_highbank.c
-@@ -348,6 +348,7 @@ static int highbank_initialize_phys(stru
- 			phy_nodes[phy] = phy_data.np;
- 			cphy_base[phy] = of_iomap(phy_nodes[phy], 0);
- 			if (cphy_base[phy] == NULL) {
-+				of_node_put(phy_data.np);
- 				return 0;
- 			}
- 			phy_count += 1;
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -570,9 +570,12 @@ static int gs_start_io(struct gs_port *p
+ 		 * we didn't in gs_start_tx() */
+ 		tty_wakeup(port->port.tty);
+ 	} else {
+-		gs_free_requests(ep, head, &port->read_allocated);
+-		gs_free_requests(port->port_usb->in, &port->write_pool,
+-			&port->write_allocated);
++		/* Free reqs only if we are still connected */
++		if (port->port_usb) {
++			gs_free_requests(ep, head, &port->read_allocated);
++			gs_free_requests(port->port_usb->in, &port->write_pool,
++				&port->write_allocated);
++		}
+ 		status = -EIO;
+ 	}
+ 
 
 
 
