@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-104966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC399F543A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:38:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27769F526F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E728F1894E9F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:36:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B09F27A54C8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231C51F8925;
-	Tue, 17 Dec 2024 17:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A1B1F866E;
+	Tue, 17 Dec 2024 17:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7J/SN5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWG3NPfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53D21F8918;
-	Tue, 17 Dec 2024 17:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD071E0493;
+	Tue, 17 Dec 2024 17:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456665; cv=none; b=VqJBg9cV61oEw2qN7ZJ/f9u/0iOG3y4Iyby3nJQBCg27lE3wrGnUDv5C7Sqyf1BQCxcDQmXwui0OmSi4z63utT1yzTmNsKhvz0byAJZQ+irlPtucVFLmYa11S1OG1OwE4ee6utxsyuPJl7z+yeUuqoRVgclzzp86Q+Ufwa0OiI4=
+	t=1734455888; cv=none; b=d5t84SPMffPCy1ZRcw/kPXf9+mm7ey+0uvf4iIgFoJULf1lczICS7CNtySFEQzsHfAOrfX+NUqgb4JVYszCGoI+rJ+lihyP4c/um9dLx3CY2pfyaUGC19emMRRgVyUh9+mKyuhCyEAiZcA+113STpLc2ss/YBF2RyxW+V7mstag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456665; c=relaxed/simple;
-	bh=k/p+CpvEVGAhkK+7svTft8qyLetDV+Gvs3MvskbCjrw=;
+	s=arc-20240116; t=1734455888; c=relaxed/simple;
+	bh=yPU5n+5gIzaVC6W+CoZvW0/B5EyRJUaubsa2bwfea1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvUelSI3WfzljqbR9OaQ7jF/+fN4cylIurlndZ9bMmNry2hFCZ5Qn22WIcNtxoWHO7371Nq/e4+xt56Ghw+UAenqVEKnveu7KTI3EISJLiln7FaTViOSrjUVyflKn2zjBUL9P9/2EsnmyNRVKYt/YlCcAoNALBn6z0sf/XC5azU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7J/SN5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DED3C4CED3;
-	Tue, 17 Dec 2024 17:31:05 +0000 (UTC)
+	 MIME-Version; b=eB84pMJsHL+bar8JSwKRWNTJk0Kgu3oknmNg/MJWgBdguSSyEzPD+50CCCGJSr46GldfadvvpBc6BuJcu/fBem5ox6idLGBq82YTkfCO7OqlCWrY01p//aMd9T+//PRwBJFSEXqOQR7XCI4ViVxd+YXWyj+fomNnafCsEEIjVm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWG3NPfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94BDC4CED3;
+	Tue, 17 Dec 2024 17:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456665;
-	bh=k/p+CpvEVGAhkK+7svTft8qyLetDV+Gvs3MvskbCjrw=;
+	s=korg; t=1734455888;
+	bh=yPU5n+5gIzaVC6W+CoZvW0/B5EyRJUaubsa2bwfea1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7J/SN5h+jvsvA1T9uNngzHPRv90onZRPocsDgeBrzknEXJEqVd7LB9CK9ZevTPSr
-	 SXyZwe8j+KBBGQQ6Kv9M+29qnscKk6hu99uiv/vH/5BwEKgZK/bAH6U4Ek3+CsWnsG
-	 ijkHOdaQswg3huIc/U54d0XIfLHBKDjGJ0Gs0D9k=
+	b=LWG3NPfpGoXKemB5mXvVja5asgCYrY96YgZ8ckEGsTUprIPQjN7laT6Njbkq08fAr
+	 n27MosZIZWiq9ZxWojqf1Db6Vk5+uJTk7cB4zMmtCRyo3qtLCk6JRRKqhXfX149Nlu
+	 c6+NxgEIFcrH537a/6ftu7Q408APUw3rbSLKcvKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/172] net: sparx5: fix the maximum frame length register
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.1 67/76] tracing/kprobes: Skip symbol counting logic for module symbols in create_local_trace_kprobe()
 Date: Tue, 17 Dec 2024 18:07:47 +0100
-Message-ID: <20241217170550.929185013@linuxfoundation.org>
+Message-ID: <20241217170529.191400017@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit ddd7ba006078a2bef5971b2dc5f8383d47f96207 ]
+commit b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+avoids checking number_of_same_symbols() for module symbol in
+__trace_kprobe_create(), but create_local_trace_kprobe() should avoid this
+check too. Doing this check leads to ENOENT for module_name:symbol_name
+constructions passed over perf_event_open.
 
-On port initialization, we configure the maximum frame length accepted
-by the receive module associated with the port. This value is currently
-written to the MAX_LEN field of the DEV10G_MAC_ENA_CFG register, when in
-fact, it should be written to the DEV10G_MAC_MAXLEN_CFG register. Fix
-this.
+No bug in newer kernels as it was fixed more generally by
+commit 9d8616034f16 ("tracing/kprobes: Add symbol counting check when module loads")
 
-Fixes: 946e7fd5053a ("net: sparx5: add port module support")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20240705161030.b3ddb33a8167013b9b1da202@kernel.org
+Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 2 +-
+v1 -> v2:
+ * Reword commit title and message
+ * Send for stable instead of mainline
+
+ kernel/trace/trace_kprobe.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index 062e486c002c..672508efce5c 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -1119,7 +1119,7 @@ int sparx5_port_init(struct sparx5 *sparx5,
- 	spx5_inst_rmw(DEV10G_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
- 		      DEV10G_MAC_MAXLEN_CFG_MAX_LEN,
- 		      devinst,
--		      DEV10G_MAC_ENA_CFG(0));
-+		      DEV10G_MAC_MAXLEN_CFG(0));
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1816,7 +1816,7 @@ create_local_trace_kprobe(char *func, vo
+ 	int ret;
+ 	char *event;
  
- 	/* Handle Signal Detect in 10G PCS */
- 	spx5_inst_wr(PCS10G_BR_PCS_SD_CFG_SD_POL_SET(sd_pol) |
--- 
-2.39.5
-
+-	if (func) {
++	if (func && !strchr(func, ':')) {
+ 		unsigned int count;
+ 
+ 		count = number_of_same_symbols(func);
 
 
 
