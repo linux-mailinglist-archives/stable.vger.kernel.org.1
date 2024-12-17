@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313039F51C9
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D33B9F5207
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CFC7163669
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECD94188B729
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20561F75BE;
-	Tue, 17 Dec 2024 17:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2FD1F76B5;
+	Tue, 17 Dec 2024 17:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiqMg/r6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Du38a+hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48B21F75A6;
-	Tue, 17 Dec 2024 17:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444C7149DFA;
+	Tue, 17 Dec 2024 17:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455423; cv=none; b=KL/JoOaiaKaew27aXnauzI0xZXjGioB/xjZzBtH/cUvFHheqZ5/MdPvblLEpRaCpWS6Kys+2cXbdHkc5gbDdZru1gSkW+Y5j7PVTcmxTDE4wUkg1KbmT28o64lVrf1TZRvQ5QExXy5RlRwZ/ORjNILAbCCJs5y2wOcOlRx6eVJc=
+	t=1734455561; cv=none; b=rkq8cKZdVxIsYNbFbh33AkAZoc/2Bjre/azvusDzvHpFm+R4HcA/Pz+8dm6VLp5yCniA4yIicqt/8XnYM8VoGc78JQROQTB9BBJ9lt0AyPHHiZtdNjbZnbzlRAIEZGkRQ81uIOg+ciFJqYWoDRtFQU6Ldu0vFmx7cClQGRBvBRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455423; c=relaxed/simple;
-	bh=SaPiE6TTbVFmF1slL6TjMzTxJQ6qlg9DX35yOYlWmMY=;
+	s=arc-20240116; t=1734455561; c=relaxed/simple;
+	bh=CLgZs1KvKkymlTokGZDanRvPhBOuSEE6nVBZnxYSYlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=obUpwns9XgRCmfvLu4vaPol5rhTrRCfQ34uIWGAbTsL1Uzg6YBj7z96OtK+c6EnuDAepjR5gNVxbo2uvfDGM5CWql1da6ZqI2fhzzcO4cDyQx4BeH4fC32hpMytqxy0PWlz9ONJhpamoRKLQuYnv2a12OQmA8XUHRac+KSEFt5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiqMg/r6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7A6C4CED3;
-	Tue, 17 Dec 2024 17:10:22 +0000 (UTC)
+	 MIME-Version; b=T5nBHPogv1yr1Z1701+Om9cnl0ZIJRSF/1IEyqH4ldnQgey3o3A2FE2X+4Q7nnUErmacwHgr9WCGci2gI/DGH9cp9IxrwJGkep6fOwpUlFCPJ4KuOny6omRqSAo3In4QD39Wycun0HeLDk0HXx8rj8+MejZnItTounDn1Y9TmIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Du38a+hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961D5C4CED3;
+	Tue, 17 Dec 2024 17:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455423;
-	bh=SaPiE6TTbVFmF1slL6TjMzTxJQ6qlg9DX35yOYlWmMY=;
+	s=korg; t=1734455561;
+	bh=CLgZs1KvKkymlTokGZDanRvPhBOuSEE6nVBZnxYSYlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiqMg/r6zqMIPncglaowUReB5Zl2F7Z1s0dPBtQATz6RlQLewaS7uIzw/iLWZX8Ql
-	 bdzjn0wu5outBHqecTnda3PEl3m2gb1uTGHaQCQzHBGR8Y1X5XcOgrD+ML4BK8sXb8
-	 gEYphU9/TIMZCOqfaVEZupGYhqyJApV7Ol5RXb54=
+	b=Du38a+hjhRegj5xEjTpUN3fz9i7XqbIhwuCuSqhKjNDGZZFOG0loT54vCscZJ9+YS
+	 kkoOb8UYFCi3iC8zRvotZOw6fGynqY/AHyTJ9kQTb9cKwdImmRYFhZHWr91g7447ZV
+	 Dy6PUack+QCg0sBKwgrVfiVmnMJpZbySQP1nox7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.4 23/24] xen/netfront: fix crash when removing device
+	Lonial Con <kongln9170@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 5.10 30/43] bpf: sync_linked_regs() must preserve subreg_def
 Date: Tue, 17 Dec 2024 18:07:21 +0100
-Message-ID: <20241217170519.951147046@linuxfoundation.org>
+Message-ID: <20241217170521.666678246@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
-References: <20241217170519.006786596@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit f9244fb55f37356f75c739c57323d9422d7aa0f8 upstream.
+commit e9bd9c498cb0f5843996dbe5cbce7a1836a83c70 upstream.
 
-When removing a netfront device directly after a suspend/resume cycle
-it might happen that the queues have not been setup again, causing a
-crash during the attempt to stop the queues another time.
+Range propagation must not affect subreg_def marks, otherwise the
+following example is rewritten by verifier incorrectly when
+BPF_F_TEST_RND_HI32 flag is set:
 
-Fix that by checking the queues are existing before trying to stop
-them.
+  0: call bpf_ktime_get_ns                   call bpf_ktime_get_ns
+  1: r0 &= 0x7fffffff       after verifier   r0 &= 0x7fffffff
+  2: w1 = w0                rewrites         w1 = w0
+  3: if w0 < 10 goto +0     -------------->  r11 = 0x2f5674a6     (r)
+  4: r1 >>= 32                               r11 <<= 32           (r)
+  5: r0 = r1                                 r1 |= r11            (r)
+  6: exit;                                   if w0 < 0xa goto pc+0
+                                             r1 >>= 32
+                                             r0 = r1
+                                             exit
 
-This is XSA-465 / CVE-2024-53240.
+(or zero extension of w1 at (2) is missing for architectures that
+ require zero extension for upper register half).
 
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Fixes: d50b7914fae0 ("xen-netfront: Fix NULL sring after live migration")
-Signed-off-by: Juergen Gross <jgross@suse.com>
+The following happens w/o this patch:
+- r0 is marked as not a subreg at (0);
+- w1 is marked as subreg at (2);
+- w1 subreg_def is overridden at (3) by copy_register_state();
+- w1 is read at (5) but mark_insn_zext() does not mark (2)
+  for zero extension, because w1 subreg_def is not set;
+- because of BPF_F_TEST_RND_HI32 flag verifier inserts random
+  value for hi32 bits of (2) (marked (r));
+- this random value is read at (5).
+
+Fixes: 75748837b7e5 ("bpf: Propagate scalar ranges through register assignments.")
+Reported-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Closes: https://lore.kernel.org/bpf/7e2aa30a62d740db182c170fdd8f81c596df280d.camel@gmail.com
+Link: https://lore.kernel.org/bpf/20240924210844.1758441-1-eddyz87@gmail.com
+[ shung-hsi.yu: sync_linked_regs() was called find_equal_scalars() before commit
+  4bf79f9be434 ("bpf: Track equal scalars history on per-instruction level"), and
+  modification is done because there is only a single call to
+  copy_register_state() before commit 98d7ca374ba4 ("bpf: Track delta between
+  "linked" registers."). ]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/xen-netfront.c |    5 ++++-
+ kernel/bpf/verifier.c |    5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -787,7 +787,7 @@ static netdev_tx_t xennet_start_xmit(str
- static int xennet_close(struct net_device *dev)
- {
- 	struct netfront_info *np = netdev_priv(dev);
--	unsigned int num_queues = dev->real_num_tx_queues;
-+	unsigned int num_queues = np->queues ? dev->real_num_tx_queues : 0;
- 	unsigned int i;
- 	struct netfront_queue *queue;
- 	netif_tx_stop_all_queues(np->netdev);
-@@ -802,6 +802,9 @@ static void xennet_destroy_queues(struct
- {
- 	unsigned int i;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -8168,8 +8168,11 @@ static void find_equal_scalars(struct bp
+ 	struct bpf_reg_state *reg;
  
-+	if (!info->queues)
-+		return;
-+
- 	for (i = 0; i < info->netdev->real_num_tx_queues; i++) {
- 		struct netfront_queue *queue = &info->queues[i];
+ 	bpf_for_each_reg_in_vstate(vstate, state, reg, ({
+-		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id)
++		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id) {
++			s32 saved_subreg_def = reg->subreg_def;
+ 			copy_register_state(reg, known_reg);
++			reg->subreg_def = saved_subreg_def;
++		}
+ 	}));
+ }
  
 
 
