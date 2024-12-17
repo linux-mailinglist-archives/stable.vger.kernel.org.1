@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954FF9F53E9
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:34:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F1D9F52B1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BD411721AB
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E98EF18886B8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC751F76DA;
-	Tue, 17 Dec 2024 17:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8311527B1;
+	Tue, 17 Dec 2024 17:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fahz++xr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kv4FUQT1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8258615A;
-	Tue, 17 Dec 2024 17:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1A41F8699;
+	Tue, 17 Dec 2024 17:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456588; cv=none; b=pPi6jRbPOWLKenXPE6hZFB7y/mCN4zCUiDRbBA1f8jb3CedNkrN4JlP1WSLV6IHpjGJKoukNuEHtHnmmq9ab/h0R4hN38E0ZEDjrdREz9ObO8UDAHsqFddQRjs0dEKip/b5G1hl/UP9/P5PO4CcVm4ZKmo25c0b2/2E1qP/E7qI=
+	t=1734455873; cv=none; b=WXntQ5eO2GKnpMT4yV5ld/zuday5xmy/WClGKuwrZhWKf9NE+HgrovE5T1j6pH/6ngTmC+AKVb1x2nX1su2v6sKBJe15jLucIWEznko8MNWg2TGQWrl82Rl10jszR9Frg/HFUyXCroJjzZZsIGXyE8QtqQ2AsW+xbbBZBKmZZp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456588; c=relaxed/simple;
-	bh=WCa8DwNU32IAbUQiW41C3U4R7VtOdTRbbAED5HWCYjo=;
+	s=arc-20240116; t=1734455873; c=relaxed/simple;
+	bh=FrhY7ZdWvY81D3LlT+/UU0IdGj3+v42MbRd0bKFagb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFikgW86SwiocodXWH5FHT+Mo/sTFVSU504G0OhlcO3rCKRiB9t7HnnCipMl9fJqYAJsJ7Rk9ANd+Z/YtsfzM9etAn2jk+hPEXlsdPRoHPbNUfvJB7orA2GX8RUq1o1tpvdK7h3Qg72+NNhToDpSG4mPDNvFY0kCPuiTiERqWiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fahz++xr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F67C4CED7;
-	Tue, 17 Dec 2024 17:29:47 +0000 (UTC)
+	 MIME-Version; b=FWI3KJQlmiu/6WOkkdY4oi25dZ/HuTafNMPvU3G44LEif8X0H0WPQ4OiUWp45jjkdO/mIDI+HXBrekc5BOUj/jhSWelm4pg8UDtZ1TGbFGc/tvPGPtktAg0jfz3Ub8VR5Yc00yakg06ZhGrXWT0mzdL8Km+Qjz1Rez+qDAfIhKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kv4FUQT1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C46C4CED3;
+	Tue, 17 Dec 2024 17:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456588;
-	bh=WCa8DwNU32IAbUQiW41C3U4R7VtOdTRbbAED5HWCYjo=;
+	s=korg; t=1734455873;
+	bh=FrhY7ZdWvY81D3LlT+/UU0IdGj3+v42MbRd0bKFagb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fahz++xr3GSlBZV1vJL8cmf+NlHfdsXOoWmXULAvkL1ex64MT/azImk9G+8G6zvAa
-	 IBfwudiZNl57MyzRTAWWs2yPGWOmh9EfsUukMiiqAOkyaqjzz2LEImYAhkXumbpDWA
-	 RTfwKtntaEdYBH3ZjqIob4AvEmti2P4ZBG8gWgDY=
+	b=Kv4FUQT1WGaWwQrXXVN32UJeO1U4Pai6NNuUc27xgU6d1Nhgb5FIng8RkwrDfkYqW
+	 frkg/1xg1kFWANT9WutsTX/SoybSMTrmsRwOLZleRMEJTZsJHy1qO5PQIH/1COtyz6
+	 mQMfoT16ZbL/fRaJR72A55FPPTmD3pnwKcyYN1ZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniil Tatianin <d-tatianin@yandex-team.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/172] net: mscc: ocelot: ocelot->ts_id_lock and ocelot_port->tx_skbs.lock are IRQ-safe
-Date: Tue, 17 Dec 2024 18:07:41 +0100
-Message-ID: <20241217170550.684764846@linuxfoundation.org>
+Subject: [PATCH 6.1 62/76] ACPICA: events/evxfregn: dont release the ContextMutex that was never acquired
+Date: Tue, 17 Dec 2024 18:07:42 +0100
+Message-ID: <20241217170528.871619882@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 
-[ Upstream commit 0c53cdb95eb4a604062e326636971d96dd9b1b26 ]
+[ Upstream commit c53d96a4481f42a1635b96d2c1acbb0a126bfd54 ]
 
-ocelot_get_txtstamp() is a threaded IRQ handler, requested explicitly as
-such by both ocelot_ptp_rdy_irq_handler() and vsc9959_irq_handler().
+This bug was first introduced in c27f3d011b08, where the author of the
+patch probably meant to do DeleteMutex instead of ReleaseMutex. The
+mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
+MutexRelease line was never removed, so do it now.
 
-As such, it runs with IRQs enabled, and not in hardirq context. Thus,
-ocelot_port_add_txtstamp_skb() has no reason to turn off IRQs, it cannot
-be preempted by ocelot_get_txtstamp(). For the same reason,
-dev_kfree_skb_any_reason() will always evaluate as kfree_skb_reason() in
-this calling context, so just simplify the dev_kfree_skb_any() call to
-kfree_skb().
-
-Also, ocelot_port_txtstamp_request() runs from NET_TX softirq context,
-not with hardirqs enabled. Thus, ocelot_get_txtstamp() which shares the
-ocelot_port->tx_skbs.lock lock with it, has no reason to disable hardirqs.
-
-This is part of a larger rework of the TX timestamping procedure.
-A logical subportion of the rework has been split into a separate
-change.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241205145519.1236778-4-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: b454abfab525 ("net: mscc: ocelot: be resilient to loss of PTP packets during transmission")
+Link: https://github.com/acpica/acpica/pull/982
+Fixes: c27f3d011b08 ("ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling")
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Link: https://patch.msgid.link/20241122082954.658356-1-d-tatianin@yandex-team.ru
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/ocelot_ptp.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/acpi/acpica/evxfregn.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
-index 95a5267bc9ce..d732f99e6391 100644
---- a/drivers/net/ethernet/mscc/ocelot_ptp.c
-+++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
-@@ -607,13 +607,12 @@ static int ocelot_port_add_txtstamp_skb(struct ocelot *ocelot, int port,
- 					struct sk_buff *clone)
- {
- 	struct ocelot_port *ocelot_port = ocelot->ports[port];
--	unsigned long flags;
+diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
+index 0a8372bf6a77..6fa6b485e30d 100644
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -201,8 +201,6 @@ acpi_remove_address_space_handler(acpi_handle device,
  
--	spin_lock_irqsave(&ocelot->ts_id_lock, flags);
-+	spin_lock(&ocelot->ts_id_lock);
+ 			/* Now we can delete the handler object */
  
- 	if (ocelot_port->ptp_skbs_in_flight == OCELOT_MAX_PTP_ID ||
- 	    ocelot->ptp_skbs_in_flight == OCELOT_PTP_FIFO_SIZE) {
--		spin_unlock_irqrestore(&ocelot->ts_id_lock, flags);
-+		spin_unlock(&ocelot->ts_id_lock);
- 		return -EBUSY;
- 	}
- 
-@@ -630,7 +629,7 @@ static int ocelot_port_add_txtstamp_skb(struct ocelot *ocelot, int port,
- 
- 	skb_queue_tail(&ocelot_port->tx_skbs, clone);
- 
--	spin_unlock_irqrestore(&ocelot->ts_id_lock, flags);
-+	spin_unlock(&ocelot->ts_id_lock);
- 
- 	return 0;
- }
-@@ -749,7 +748,6 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 		u32 val, id, seqid, txport;
- 		struct ocelot_port *port;
- 		struct timespec64 ts;
--		unsigned long flags;
- 
- 		val = ocelot_read(ocelot, SYS_PTP_STATUS);
- 
-@@ -773,7 +771,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 
- 		/* Retrieve its associated skb */
- try_again:
--		spin_lock_irqsave(&port->tx_skbs.lock, flags);
-+		spin_lock(&port->tx_skbs.lock);
- 
- 		skb_queue_walk_safe(&port->tx_skbs, skb, skb_tmp) {
- 			if (OCELOT_SKB_CB(skb)->ts_id != id)
-@@ -783,7 +781,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 			break;
+-			acpi_os_release_mutex(handler_obj->address_space.
+-					      context_mutex);
+ 			acpi_ut_remove_reference(handler_obj);
+ 			goto unlock_and_exit;
  		}
- 
--		spin_unlock_irqrestore(&port->tx_skbs.lock, flags);
-+		spin_unlock(&port->tx_skbs.lock);
- 
- 		if (WARN_ON(!skb_match))
- 			goto next_ts;
-@@ -792,7 +790,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 			dev_err_ratelimited(ocelot->dev,
- 					    "port %d received stale TX timestamp for seqid %d, discarding\n",
- 					    txport, seqid);
--			dev_kfree_skb_any(skb);
-+			kfree_skb(skb);
- 			goto try_again;
- 		}
- 
 -- 
 2.39.5
 
