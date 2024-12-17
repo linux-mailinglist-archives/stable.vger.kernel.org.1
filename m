@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D89DA9F532B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B40759F5456
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E35E216ED17
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC177188DA80
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7751F75B5;
-	Tue, 17 Dec 2024 17:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845F61F8EE1;
+	Tue, 17 Dec 2024 17:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/ovCbXd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bieFW+pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6818A140E38;
-	Tue, 17 Dec 2024 17:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D9E1F8AD4;
+	Tue, 17 Dec 2024 17:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456214; cv=none; b=D3CZ5zkjRgfpT+D9OJbtSrInUKXbwJIptGhUz4q3IRMJGy+7psr0U7P4KdcBX8MSvLpry2K344ZVYQvZiG9MmPiTe8n+05+Cr9vGjiYm5mqlRRtPlTymh+MmL9KTnE3vI2+k3jPl51mi1kD5ZDw3BwVHCq0nwRPKedMiFfnl8ko=
+	t=1734456713; cv=none; b=t0HELCe8O3Md5HbtpqeGeVwpqQw+B/LWK0iIXeksaTOGCqKtsdAtR6tGpMNGVeroqR6ajM8OEzdEcDz3RI/ePSMielH/HfdfL6Yh5Kx/oLFjN4bOZ1ECsqUV6Jcq9a6ugOY38BmFOAcNems3A1z4P9P0gr1OAc1P053oMi8aIGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456214; c=relaxed/simple;
-	bh=0G4dYahSHZ5OPdKAQoStvcFrInKt0Wl0/gpRdNjMScA=;
+	s=arc-20240116; t=1734456713; c=relaxed/simple;
+	bh=+YS/Fc8edvNCUuag61CWUjrEMTEYt6l57S7a4tvBLpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3UVrPhNj4yRE8/E8I1GIsK4BuPD3vkgZCCcrBNo36+59yRWNn8F673M6LiBgCzhwkZ58VFR/Akn2xUokvYiTT4P4i760FYAr8mn4aS7sB3xP/PlL+4s/K5/JGXZ+HnrA/5IJjB7gag+qReQpmgspnLnGx1QAf+kPazDa30YnbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/ovCbXd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1EBC4CED3;
-	Tue, 17 Dec 2024 17:23:33 +0000 (UTC)
+	 MIME-Version; b=qcZEWqD4BSwYus5l6Af7+V78Qv57eYLJyCLFBVCukse7qSvWZ+ZAEUwi0rnaC0lGTwpRNA5WUkC6csQvSNt/lnqRYBnAsD5ChhwiuwPX7vE6JgWFjpGgdLw+jUtccMKVdhM+CAlo1Fsk6/sklKKTT7n+h9YY+G2Iwwmc61EfSH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bieFW+pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB96AC4CED3;
+	Tue, 17 Dec 2024 17:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456214;
-	bh=0G4dYahSHZ5OPdKAQoStvcFrInKt0Wl0/gpRdNjMScA=;
+	s=korg; t=1734456713;
+	bh=+YS/Fc8edvNCUuag61CWUjrEMTEYt6l57S7a4tvBLpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/ovCbXdgwMuhoT2FMo4NLnuFfoXicppKnPmeSEjPFT1SA6GgdeNnOgFD7HIkxelk
-	 DnF4eNB/7v2T7tCWv+8QXFghx70iZKRRcLBclrTtIZeceS7XGnvyT6/FscBAEFBxjS
-	 F5F5l9cCwjpFQ16tcBjlH2BD5kLNDILjkpV9HfbE=
+	b=bieFW+pllz0aC6P5dOBUPdrdcyQCKHefxqvOIZpU7HqAN5ey8oq73sKchDcbCm92u
+	 9sI2ADMVReWOLQithUL3bC/hYCJEGiUfYr1nb83stntDYWtNnOOfTwQAScR8PCgYa3
+	 UfIQeiSG0digsbp9Utf3PrB8TQlUgelotqcqzI10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/109] Documentation: PM: Clarify pm_runtime_resume_and_get() return value
+Subject: [PATCH 6.12 115/172] qca_spi: Make driver probing reliable
 Date: Tue, 17 Dec 2024 18:07:51 +0100
-Message-ID: <20241217170536.181252675@linuxfoundation.org>
+Message-ID: <20241217170551.101438859@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit ccb84dc8f4a02e7d30ffd388522996546b4d00e1 ]
+[ Upstream commit becc6399ce3b724cffe9ccb7ef0bff440bb1b62b ]
 
-Update the documentation to match the behaviour of the code.
+The module parameter qcaspi_pluggable controls if QCA7000 signature
+should be checked at driver probe (current default) or not. Unfortunately
+this could fail in case the chip is temporary in reset, which isn't under
+total control by the Linux host. So disable this check per default
+in order to avoid unexpected probe failures.
 
-pm_runtime_resume_and_get() always returns 0 on success, even if
-__pm_runtime_resume() returns 1.
-
-Fixes: 2c412337cfe6 ("PM: runtime: Add documentation for pm_runtime_resume_and_get()")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Link: https://patch.msgid.link/20241203143729.478-1-paul.barker.ct@bp.renesas.com
-[ rjw: Subject and changelog edits, adjusted new comment formatting ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20241206184643.123399-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/power/runtime_pm.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/qualcomm/qca_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/power/runtime_pm.rst b/Documentation/power/runtime_pm.rst
-index 65b86e487afe..b6d5a3a8febc 100644
---- a/Documentation/power/runtime_pm.rst
-+++ b/Documentation/power/runtime_pm.rst
-@@ -347,7 +347,9 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index a73426a8c429..6b4b40c6e1fe 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -53,7 +53,7 @@ MODULE_PARM_DESC(qcaspi_burst_len, "Number of data bytes per burst. Use 1-5000."
  
-   `int pm_runtime_resume_and_get(struct device *dev);`
-     - run pm_runtime_resume(dev) and if successful, increment the device's
--      usage counter; return the result of pm_runtime_resume
-+      usage counter; returns 0 on success (whether or not the device's
-+      runtime PM status was already 'active') or the error code from
-+      pm_runtime_resume() on failure.
+ #define QCASPI_PLUGGABLE_MIN 0
+ #define QCASPI_PLUGGABLE_MAX 1
+-static int qcaspi_pluggable = QCASPI_PLUGGABLE_MIN;
++static int qcaspi_pluggable = QCASPI_PLUGGABLE_MAX;
+ module_param(qcaspi_pluggable, int, 0);
+ MODULE_PARM_DESC(qcaspi_pluggable, "Pluggable SPI connection (yes/no).");
  
-   `int pm_request_idle(struct device *dev);`
-     - submit a request to execute the subsystem-level idle callback for the
 -- 
 2.39.5
 
