@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-105015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570C49F549F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:44:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6450F9F5337
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D40C5188FB39
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:40:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB9F16C10E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D241F9F4D;
-	Tue, 17 Dec 2024 17:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526231F429B;
+	Tue, 17 Dec 2024 17:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP8IpfdF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzAQdDmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EADC1F9EDC;
-	Tue, 17 Dec 2024 17:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F48D8615A;
+	Tue, 17 Dec 2024 17:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456835; cv=none; b=js/gtWJWrlNhr4ZPDef46JTcqpSZ/L14OtaLE05Fo2Tui9u7nJ9QmMI+kABE47FLVFmqZs+O8OyF54jcnoRsJRDQDJSlnB0kgZ2LXbjlTL2tQgD1dtNOzADDeDuvYwjHXz06V3O/Zy6m5Aztz1gbChdx6v0ql5tZh4qa/ittk68=
+	t=1734456265; cv=none; b=el2ufDMkjbMEjBWkGLL8Zxf5LyOs16f7846K6pF4tfEZMj21HnMVU1MyrTcB44NCb60FvibOLBgX8xrZjPenpsd1DtPdjXE/XSYWahChIuRAfIA0Iu2XuF11ZSjFfQXPZQqg03p4j/XydZ7exsTfjQz2jJMLiORp53vbhrJpEyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456835; c=relaxed/simple;
-	bh=5QYx/Z7PrJuNfdxD+fqxP6Bh8RA9haPBjAGZAq7aW/4=;
+	s=arc-20240116; t=1734456265; c=relaxed/simple;
+	bh=aggI1TBr+9rM2SXlxeflJ2ruZxwyKXItqVOvS0ypfhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anzKADCYNORTVlULkPNkr4rLqq2nj6p9QdAMfLLeGk2kW9r9kAdCoSQz2GxeFH7RCbNhVBZ7YvPnUERis19zpMgDLIBu1xJXYYRN9mulWUXxHkFFgesC5s3HkPv6wNdV+qvH3gkABKjML0VAzPcYYYgdPbxpSTP15ZbEFEaPOJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP8IpfdF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EDAC4CED3;
-	Tue, 17 Dec 2024 17:33:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TIqimQFvaUMk0pnt4DycfNfWttvOxb5guhcXzE+OKgJX0qv9QDpqzDieEKV4DiZKIzoKKNpCEy3ASgRRfX+R9Krfe419BFUrVEQhmh54CL6WXnUBrHEiP1Y7PZjSCc3ZoaK1+m1wHi1oIxKoWGU6I1CwrbIaracrkQS+gC24ZBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzAQdDmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB31C4CED3;
+	Tue, 17 Dec 2024 17:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456835;
-	bh=5QYx/Z7PrJuNfdxD+fqxP6Bh8RA9haPBjAGZAq7aW/4=;
+	s=korg; t=1734456264;
+	bh=aggI1TBr+9rM2SXlxeflJ2ruZxwyKXItqVOvS0ypfhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yP8IpfdF+352auaufMt0lCk1nFzlj+9o38c3QuVix4dNxmfJWyz08DjzSl64NG9YS
-	 0/S29ZcbTyT+dC+Samz6gnSCLlvWHZMJsiZuz86riNE4d3rBUvDf+3+z/Ao3MsrPzG
-	 TpwCh0tkD7Z0v07TNtGCBdCv0b2LgR5EWlSk/mZU=
+	b=AzAQdDmNeikyv03f59/RuRx4w4OXBzPpOEyBDNmapv98tjZXGu+fqY10zk5sjITVJ
+	 H+MFyK9GU32InNiBGuycAdLJECtXDSPa1crWhvbcL+/TfSnNYX6Lb/4UU08oNsDChz
+	 8+ZvEP4tCkJfQ65IVIBKKsaB9PONINDAf/4WjpCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 148/172] Bluetooth: iso: Always release hdev at the end of iso_listen_bis
-Date: Tue, 17 Dec 2024 18:08:24 +0100
-Message-ID: <20241217170552.471014005@linuxfoundation.org>
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 101/109] xen/netfront: fix crash when removing device
+Date: Tue, 17 Dec 2024 18:08:25 +0100
+Message-ID: <20241217170537.618324069@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 9c76fff747a73ba01d1d87ed53dd9c00cb40ba05 ]
+commit f9244fb55f37356f75c739c57323d9422d7aa0f8 upstream.
 
-Since hci_get_route holds the device before returning, the hdev
-should be released with hci_dev_put at the end of iso_listen_bis
-even if the function returns with an error.
+When removing a netfront device directly after a suspend/resume cycle
+it might happen that the queues have not been setup again, causing a
+crash during the attempt to stop the queues another time.
 
-Fixes: 02171da6e86a ("Bluetooth: ISO: Add hcon for listening bis sk")
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix that by checking the queues are existing before trying to stop
+them.
+
+This is XSA-465 / CVE-2024-53240.
+
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Fixes: d50b7914fae0 ("xen-netfront: Fix NULL sring after live migration")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/iso.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/xen-netfront.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 7212fd6047b9..34eade4b0587 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1158,10 +1158,9 @@ static int iso_listen_bis(struct sock *sk)
- 		goto unlock;
- 	}
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -867,7 +867,7 @@ static netdev_tx_t xennet_start_xmit(str
+ static int xennet_close(struct net_device *dev)
+ {
+ 	struct netfront_info *np = netdev_priv(dev);
+-	unsigned int num_queues = dev->real_num_tx_queues;
++	unsigned int num_queues = np->queues ? dev->real_num_tx_queues : 0;
+ 	unsigned int i;
+ 	struct netfront_queue *queue;
+ 	netif_tx_stop_all_queues(np->netdev);
+@@ -882,6 +882,9 @@ static void xennet_destroy_queues(struct
+ {
+ 	unsigned int i;
  
--	hci_dev_put(hdev);
--
- unlock:
- 	hci_dev_unlock(hdev);
-+	hci_dev_put(hdev);
- 	return err;
- }
++	if (!info->queues)
++		return;
++
+ 	for (i = 0; i < info->netdev->real_num_tx_queues; i++) {
+ 		struct netfront_queue *queue = &info->queues[i];
  
--- 
-2.39.5
-
 
 
 
