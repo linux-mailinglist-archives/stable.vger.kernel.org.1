@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-104733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46819F5281
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C599F53CE
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B7957A5758
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28FD1887D95
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A71F8615A;
-	Tue, 17 Dec 2024 17:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9FF1F8926;
+	Tue, 17 Dec 2024 17:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsMnCAA2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZV8pAZcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B14142E77;
-	Tue, 17 Dec 2024 17:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4E21F8903;
+	Tue, 17 Dec 2024 17:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455937; cv=none; b=FctLzTPrh/+yVWeLCSqEUo1rKlIgbaftGPJwDzcofSgp9Ic5xyjz1/lBPY2vmeNnfCzmCYkIM59GOPbafIFUsxiE5Y7/8r9LkDkHtjEkQO6VlwsNa3X6cGETTX35aolJuf2rl800Zd6r05sLXD5rGoZ57x5DJmwiyZAS2ARva60=
+	t=1734456569; cv=none; b=B4rcDoEPeLHudRhj8wt/08JBJR1wQlF5PfRwMMRw3t/sEhFuyw88ihF6CBhZzwWDj6DFZpzK+0NoOgCdLTcebZyVVyizHnrL0rTymhthE4qxxbGvwJdIpMeQ5IFR9a8sqIIhc+MIqPXFBj4xpz5zNQazUhUHNSDN1a/jruTzXuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455937; c=relaxed/simple;
-	bh=4J6jtz2Cd37FlJrFCeU1YSPxiof6f+HrStldQdgfqdQ=;
+	s=arc-20240116; t=1734456569; c=relaxed/simple;
+	bh=KtTE3qarCNO5dIrGuBZevaJw/+2dS0oUzH1yCx3emVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXPSgM4ZnyS5LQOLlSwR8Zu0ZMwHahV6PYWfL227e0G7x9j9ovrhBdJ3SBABnhSOgmUDtk635/UEbAvS41rtlnkaAxbWdK/hOuTruOTw8yX2qOFuwMGmuF9efZymnjjvqr5tNuKrDxJJdx9ZFHpzUnLDYC1ZaUEdmY9B/Vkb6O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsMnCAA2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFB8C4CED7;
-	Tue, 17 Dec 2024 17:18:56 +0000 (UTC)
+	 MIME-Version; b=VQXBYYSCs7AqqthYV3hHjtsHTACSuouIfXqwRyy94pzCDR4SYL8eKnYwKiXm9f5ypEVdHKphqiIIE125sdg3lZpVP0U+2DlOWETYdcBD3VMySFyeHCwK7dVGx1GRWKC5tXM5tnQda2+7FHm1d8Kzu8MlXpGss+qPG82A4laNGXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZV8pAZcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697F0C4CEDE;
+	Tue, 17 Dec 2024 17:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455937;
-	bh=4J6jtz2Cd37FlJrFCeU1YSPxiof6f+HrStldQdgfqdQ=;
+	s=korg; t=1734456568;
+	bh=KtTE3qarCNO5dIrGuBZevaJw/+2dS0oUzH1yCx3emVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsMnCAA2OHUfAilyF82pQaE4IBa9XP5JAXOLTd011ZX8cB9uycBlPJAXx/9SMVbve
-	 2rYlczTk6v19QqvNaKoc8sI1H/9H9s2gwyim6qKJdvs4SaK2O90VsE/G1gsWehlB6+
-	 sroCQRIKLQLZ0yktqv8Mi+WtCLrWiTAG6pi/wHzE=
+	b=ZV8pAZcwHZN6O6no0J0XTSaw3Vo9hOIew0wVUxuKUR1sRrIPKrs49qI+Fnd1eYoRy
+	 pONFa4vIAhZtyPNZ/7EcDBAoXCR8ZYIwm89+eV/xt+Lkf7WDDBxPH4Hbayt2Eo/mYk
+	 TRd08A24TkwNtMNbhGsW2D0qcsmk6MooXJfQAdDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Colin Winegarden <colin.winegarden@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 56/76] ASoC: amd: yc: Fix the wrong return value
+Subject: [PATCH 6.12 100/172] bnxt_en: Fix GSO type for HW GRO packets on 5750X chips
 Date: Tue, 17 Dec 2024 18:07:36 +0100
-Message-ID: <20241217170528.593400005@linuxfoundation.org>
+Message-ID: <20241217170550.455739731@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 984795e76def5c903724b8d6a8228e356bbdf2af ]
+[ Upstream commit de37faf41ac55619dd329229a9bd9698faeabc52 ]
 
-With the current implementation, when ACP driver fails to read
-ACPI _WOV entry then the DMI overrides code won't invoke,
-may cause regressions for some BIOS versions.
+The existing code is using RSS profile to determine IPV4/IPV6 GSO type
+on all chips older than 5760X.  This won't work on 5750X chips that may
+be using modified RSS profiles.  This commit from 2018 has updated the
+driver to not use RSS profile for HW GRO packets on newer chips:
 
-Add a condition check to jump to check the DMI entries incase of
-ACP driver fail to read ACPI _WOV method.
+50f011b63d8c ("bnxt_en: Update RSS setup and GRO-HW logic according to the latest spec.")
 
-Fixes: 4095cf872084 (ASoC: amd: yc: Fix for enabling DMIC on acp6x via _DSD entry)
+However, a recent commit to add support for the newest 5760X chip broke
+the logic.  If the GRO packet needs to be re-segmented by the stack, the
+wrong GSO type will cause the packet to be dropped.
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Link: https://patch.msgid.link/20241210091026.996860-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix it to only use RSS profile to determine GSO type on the oldest
+5730X/5740X chips which cannot use the new method and is safe to use the
+RSS profiles.
+
+Also fix the L3/L4 hash type for RX packets by not using the RSS
+profile for the same reason.  Use the ITYPE field in the RX completion
+to determine L3/L4 hash types correctly.
+
+Fixes: a7445d69809f ("bnxt_en: Add support for new RX and TPA_START completion types for P7")
+Reviewed-by: Colin Winegarden <colin.winegarden@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20241204215918.1692597-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 14 ++++++--------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h |  3 +++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index af9601bea275..9c1bf0eb2deb 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -473,14 +473,19 @@ static int acp6x_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 3d9ee91e1f8b..dafc5a4039cd 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -1518,7 +1518,7 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
+ 		if (TPA_START_IS_IPV6(tpa_start1))
+ 			tpa_info->gso_type = SKB_GSO_TCPV6;
+ 		/* RSS profiles 1 and 3 with extract code 0 for inner 4-tuple */
+-		else if (cmp_type == CMP_TYPE_RX_L2_TPA_START_CMP &&
++		else if (!BNXT_CHIP_P4_PLUS(bp) &&
+ 			 TPA_START_HASH_TYPE(tpa_start) == 3)
+ 			tpa_info->gso_type = SKB_GSO_TCPV6;
+ 		tpa_info->rss_hash =
+@@ -2212,15 +2212,13 @@ static int bnxt_rx_pkt(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 		if (cmp_type == CMP_TYPE_RX_L2_V3_CMP) {
+ 			type = bnxt_rss_ext_op(bp, rxcmp);
+ 		} else {
+-			u32 hash_type = RX_CMP_HASH_TYPE(rxcmp);
++			u32 itypes = RX_CMP_ITYPES(rxcmp);
  
- 	handle = ACPI_HANDLE(pdev->dev.parent);
- 	ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
--	if (!ACPI_FAILURE(ret))
-+	if (!ACPI_FAILURE(ret)) {
- 		wov_en = dmic_status;
-+		if (!wov_en)
-+			return -ENODEV;
-+	} else {
-+		/* Incase of ACPI method read failure then jump to check_dmi_entry */
-+		goto check_dmi_entry;
-+	}
+-			/* RSS profiles 1 and 3 with extract code 0 for inner
+-			 * 4-tuple
+-			 */
+-			if (hash_type != 1 && hash_type != 3)
+-				type = PKT_HASH_TYPE_L3;
+-			else
++			if (itypes == RX_CMP_FLAGS_ITYPE_TCP ||
++			    itypes == RX_CMP_FLAGS_ITYPE_UDP)
+ 				type = PKT_HASH_TYPE_L4;
++			else
++				type = PKT_HASH_TYPE_L3;
+ 		}
+ 		skb_set_hash(skb, le32_to_cpu(rxcmp->rx_cmp_rss_hash), type);
+ 	}
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 69231e85140b..1d97219369c5 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -267,6 +267,9 @@ struct rx_cmp {
+ 	(((le32_to_cpu((rxcmp)->rx_cmp_misc_v1) & RX_CMP_RSS_HASH_TYPE) >>\
+ 	  RX_CMP_RSS_HASH_TYPE_SHIFT) & RSS_PROFILE_ID_MASK)
  
--	if (is_dmic_enable && wov_en)
-+	if (is_dmic_enable)
- 		platform_set_drvdata(pdev, &acp6x_card);
--	else
--		return 0;
- 
-+check_dmi_entry:
- 	/* check for any DMI overrides */
- 	dmi_id = dmi_first_match(yc_acp_quirk_table);
- 	if (dmi_id)
++#define RX_CMP_ITYPES(rxcmp)					\
++	(le32_to_cpu((rxcmp)->rx_cmp_len_flags_type) & RX_CMP_FLAGS_ITYPES_MASK)
++
+ #define RX_CMP_V3_HASH_TYPE_LEGACY(rxcmp)				\
+ 	((le32_to_cpu((rxcmp)->rx_cmp_misc_v1) & RX_CMP_V3_RSS_EXT_OP_LEGACY) >>\
+ 	 RX_CMP_V3_RSS_EXT_OP_LEGACY_SHIFT)
 -- 
 2.39.5
 
