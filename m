@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-104967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BDE9F5417
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:36:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1BD9F5319
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59BE67A26D1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:36:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21610169AE6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551E61FBEA9;
-	Tue, 17 Dec 2024 17:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9851F76AE;
+	Tue, 17 Dec 2024 17:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVuk73Jd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsJo6dSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFFD1FBE9E;
-	Tue, 17 Dec 2024 17:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC6E1F75B5;
+	Tue, 17 Dec 2024 17:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456670; cv=none; b=AMvlqDw0aiRj9gYk5oz/rDj+dolv21b/HykQTJypliyM+otiSicE0XjYmiHE3LnxL+E1ftACGdZetkTReKgGcNpNMWiBaEera3aYPdUWP7QOdtzrCeOQWomPlUlOXmzpKlk8AJ/vgQf8hOILMILMy97tkLx786y/dnEtlZ1W4W4=
+	t=1734456161; cv=none; b=byW96RkvZcin7ve0w7Ph4JYXYtoOkBvBlTqKvxB+q5TFLy39z9BvZej39EHOS1MjPw+Cd8pxxMuW8RJQgAVv7xOxY2J1IqrroKOF9rBqbW1p36N1Lx8+9UQt0iI63G4zo4f5GvTlyCeRnUHuoLLE0qdmqwgS7BIY185p62Ad8+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456670; c=relaxed/simple;
-	bh=+osRh5gb6ibLTHH2uOlg44IiadE/APgGlGfDlh0IaD8=;
+	s=arc-20240116; t=1734456161; c=relaxed/simple;
+	bh=olxB5N+YoHo6WlCt+sOodmXHgEsWp7fP0gYu9zK7EG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHxmeK/+lPWdl2xKxBEW+9RNp3CGOv/CQU5yfVq6Tg8HA/AESSCS46+NBV2dk2VexdsJw/v71fRyn8dS8A9agCQPwXEee4z4Ft8Sp2LF0Uklgd+Ur4oTDS6hFJSHBTUdbBP7c2ADRd0bo7WUgKotdXHdQAYaeoe6dj4LBAr6l98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVuk73Jd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F5CC4CED7;
-	Tue, 17 Dec 2024 17:31:08 +0000 (UTC)
+	 MIME-Version; b=a72Boa3PyMwcK481/g7azgbLkz3KikKlC3Frt4LYRSX2yOagPeaxgF3PKdFNrPexlvEsCtbm7GPoFR4bP/es7MwkY4McGoybS/xv/iSVObt5va7mWLXNtN3id6i82nslzwwyro/5MbXG/CcOtaO1RnCtrswoKXVxhj9aMHWrehE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsJo6dSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62216C4CED7;
+	Tue, 17 Dec 2024 17:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456668;
-	bh=+osRh5gb6ibLTHH2uOlg44IiadE/APgGlGfDlh0IaD8=;
+	s=korg; t=1734456160;
+	bh=olxB5N+YoHo6WlCt+sOodmXHgEsWp7fP0gYu9zK7EG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVuk73JdUnWSiPAserX+7W5Mgov/wTYd5bRVBz3h26OnYz4Z109o4hPgAoR9+MFGT
-	 Ofij3WlPxeDTOqVfEZFbOaH3c6EnGFX9GOAonV0jPnt2QTvM6jP4dW7v2HFNEpFsUg
-	 ReT8n219HbiUoDq22Z86bY0J8mkzKoMdPcSYUjrw=
+	b=fsJo6dSCpAhrQVCPPe4J8Rc/Ma2hvUDUY8AFIa6S1rhQItNfhPZj0OMeb79rqbXWc
+	 cZSmjpUt19Ihk7YK8oHHKNjj+YsDm/XnBBd0AN5x3FhbnFK1xAx/5viopb9LLDr7te
+	 PdxwirE913GnzQmwoPJmVTmbZCDEnpmaGLX6FY54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	David Wei <dw@davidwei.uk>,
-	Michal Luczaj <mhal@rbox.co>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/172] Bluetooth: Improve setsockopt() handling of malformed user input
+Subject: [PATCH 6.6 081/109] net: dsa: felix: fix stuck CPU-injected packets with short taprio windows
 Date: Tue, 17 Dec 2024 18:08:05 +0100
-Message-ID: <20241217170551.689817992@linuxfoundation.org>
+Message-ID: <20241217170536.765092577@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,340 +63,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 3e643e4efa1e87432204b62f9cfdea3b2508c830 ]
+[ Upstream commit acfcdb78d5d4cdb78e975210c8825b9a112463f6 ]
 
-The bt_copy_from_sockptr() return value is being misinterpreted by most
-users: a non-zero result is mistakenly assumed to represent an error code,
-but actually indicates the number of bytes that could not be copied.
+With this port schedule:
 
-Remove bt_copy_from_sockptr() and adapt callers to use
-copy_safe_from_sockptr().
+tc qdisc replace dev $send_if parent root handle 100 taprio \
+	num_tc 8 queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 \
+	map 0 1 2 3 4 5 6 7 \
+	base-time 0 cycle-time 10000 \
+	sched-entry S 01 1250 \
+	sched-entry S 02 1250 \
+	sched-entry S 04 1250 \
+	sched-entry S 08 1250 \
+	sched-entry S 10 1250 \
+	sched-entry S 20 1250 \
+	sched-entry S 40 1250 \
+	sched-entry S 80 1250 \
+	flags 2
 
-For sco_sock_setsockopt() (case BT_CODEC) use copy_struct_from_sockptr() to
-scrub parts of uninitialized buffer.
+ptp4l would fail to take TX timestamps of Pdelay_Resp messages like this:
 
-Opportunistically, rename `len` to `optlen` in hci_sock_setsockopt_old()
-and hci_sock_setsockopt().
+increasing tx_timestamp_timeout may correct this issue, but it is likely caused by a driver bug
+ptp4l[4134.168]: port 2: send peer delay response failed
 
-Fixes: 51eda36d33e4 ("Bluetooth: SCO: Fix not validating setsockopt user input")
-Fixes: a97de7bff13b ("Bluetooth: RFCOMM: Fix not validating setsockopt user input")
-Fixes: 4f3951242ace ("Bluetooth: L2CAP: Fix not validating setsockopt user input")
-Fixes: 9e8742cdfc4b ("Bluetooth: ISO: Fix not validating setsockopt user input")
-Fixes: b2186061d604 ("Bluetooth: hci_sock: Fix not validating setsockopt user input")
-Reviewed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Reviewed-by: David Wei <dw@davidwei.uk>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+It turns out that the driver can't take their TX timestamps because it
+can't transmit them in the first place. And there's nothing special
+about the Pdelay_Resp packets - they're just regular 68 byte packets.
+But with this taprio configuration, the switch would refuse to send even
+the ETH_ZLEN minimum packet size.
+
+This should have definitely not been the case. When applying the taprio
+config, the driver prints:
+
+mscc_felix 0000:00:00.5: port 0 tc 0 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 132 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 1 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 132 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 2 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 132 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 3 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 132 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 4 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 132 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 5 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 132 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 6 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 132 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 7 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 132 octets including FCS
+
+and thus, everything under 132 bytes - ETH_FCS_LEN should have been sent
+without problems. Yet it's not.
+
+For the forwarding path, the configuration is fine, yet packets injected
+from Linux get stuck with this schedule no matter what.
+
+The first hint that the static guard bands are the cause of the problem
+is that reverting Michael Walle's commit 297c4de6f780 ("net: dsa: felix:
+re-enable TAS guard band mode") made things work. It must be that the
+guard bands are calculated incorrectly.
+
+I remembered that there is a magic constant in the driver, set to 33 ns
+for no logical reason other than experimentation, which says "never let
+the static guard bands get so large as to leave less than this amount of
+remaining space in the time slot, because the queue system will refuse
+to schedule packets otherwise, and they will get stuck". I had a hunch
+that my previous experimentally-determined value was only good for
+packets coming from the forwarding path, and that the CPU injection path
+needed more.
+
+I came to the new value of 35 ns through binary search, after seeing
+that with 544 ns (the bit time required to send the Pdelay_Resp packet
+at gigabit) it works. Again, this is purely experimental, there's no
+logic and the manual doesn't say anything.
+
+The new driver prints for this schedule look like this:
+
+mscc_felix 0000:00:00.5: port 0 tc 0 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 131 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 1 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 131 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 2 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 131 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 3 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 131 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 4 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 131 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 5 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 131 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 6 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 131 octets including FCS
+mscc_felix 0000:00:00.5: port 0 tc 7 min gate length 1250 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 131 octets including FCS
+
+So yes, the maximum MTU is now even smaller by 1 byte than before.
+This is maybe counter-intuitive, but makes more sense with a diagram of
+one time slot.
+
+Before:
+
+ Gate open                                   Gate close
+ |                                                    |
+ v           1250 ns total time slot duration         v
+ <---------------------------------------------------->
+ <----><---------------------------------------------->
+  33 ns            1217 ns static guard band
+  useful
+
+ Gate open                                   Gate close
+ |                                                    |
+ v           1250 ns total time slot duration         v
+ <---------------------------------------------------->
+ <-----><--------------------------------------------->
+  35 ns            1215 ns static guard band
+  useful
+
+The static guard band implemented by this switch hardware directly
+determines the maximum allowable MTU for that traffic class. The larger
+it is, the earlier the switch will stop scheduling frames for
+transmission, because otherwise they might overrun the gate close time
+(and avoiding that is the entire purpose of Michael's patch).
+So, we now have guard bands smaller by 2 ns, thus, in this particular
+case, we lose a byte of the maximum MTU.
+
+Fixes: 11afdc6526de ("net: dsa: felix: tc-taprio intervals smaller than MTU should send at least one packet")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Link: https://patch.msgid.link/20241210132640.3426788-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/bluetooth.h |  9 ---------
- net/bluetooth/hci_sock.c          | 14 +++++++-------
- net/bluetooth/iso.c               | 10 +++++-----
- net/bluetooth/l2cap_sock.c        | 20 +++++++++++---------
- net/bluetooth/rfcomm/sock.c       |  9 ++++-----
- net/bluetooth/sco.c               | 11 ++++++-----
- 6 files changed, 33 insertions(+), 40 deletions(-)
+ drivers/net/dsa/ocelot/felix_vsc9959.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index f66bc85c6411..e6760c11f007 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -590,15 +590,6 @@ static inline struct sk_buff *bt_skb_sendmmsg(struct sock *sk,
- 	return skb;
+diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
+index afb5dae4439c..8d27933c3733 100644
+--- a/drivers/net/dsa/ocelot/felix_vsc9959.c
++++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
+@@ -24,7 +24,7 @@
+ #define VSC9959_NUM_PORTS		6
+ 
+ #define VSC9959_TAS_GCL_ENTRY_MAX	63
+-#define VSC9959_TAS_MIN_GATE_LEN_NS	33
++#define VSC9959_TAS_MIN_GATE_LEN_NS	35
+ #define VSC9959_VCAP_POLICER_BASE	63
+ #define VSC9959_VCAP_POLICER_MAX	383
+ #define VSC9959_SWITCH_PCI_BAR		4
+@@ -1056,11 +1056,15 @@ static void vsc9959_mdio_bus_free(struct ocelot *ocelot)
+ 	mdiobus_free(felix->imdio);
  }
  
--static inline int bt_copy_from_sockptr(void *dst, size_t dst_size,
--				       sockptr_t src, size_t src_size)
--{
--	if (dst_size > src_size)
--		return -EINVAL;
--
--	return copy_from_sockptr(dst, src, dst_size);
--}
--
- int bt_to_errno(u16 code);
- __u8 bt_status(int err);
- 
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 2272e1849ebd..022b86797acd 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -1926,7 +1926,7 @@ static int hci_sock_sendmsg(struct socket *sock, struct msghdr *msg,
- }
- 
- static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
--				   sockptr_t optval, unsigned int len)
-+				   sockptr_t optval, unsigned int optlen)
- {
- 	struct hci_ufilter uf = { .opcode = 0 };
- 	struct sock *sk = sock->sk;
-@@ -1943,7 +1943,7 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
- 
- 	switch (optname) {
- 	case HCI_DATA_DIR:
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1954,7 +1954,7 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case HCI_TIME_STAMP:
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1974,7 +1974,7 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
- 			uf.event_mask[1] = *((u32 *) f->event_mask + 1);
- 		}
- 
--		err = bt_copy_from_sockptr(&uf, sizeof(uf), optval, len);
-+		err = copy_safe_from_sockptr(&uf, sizeof(uf), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -2005,7 +2005,7 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
- }
- 
- static int hci_sock_setsockopt(struct socket *sock, int level, int optname,
--			       sockptr_t optval, unsigned int len)
-+			       sockptr_t optval, unsigned int optlen)
- {
- 	struct sock *sk = sock->sk;
- 	int err = 0;
-@@ -2015,7 +2015,7 @@ static int hci_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 	if (level == SOL_HCI)
- 		return hci_sock_setsockopt_old(sock, level, optname, optval,
--					       len);
-+					       optlen);
- 
- 	if (level != SOL_BLUETOOTH)
- 		return -ENOPROTOOPT;
-@@ -2035,7 +2035,7 @@ static int hci_sock_setsockopt(struct socket *sock, int level, int optname,
- 			goto done;
- 		}
- 
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 5e2d9758bd3c..7212fd6047b9 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1566,7 +1566,7 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1577,7 +1577,7 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case BT_PKT_STATUS:
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1596,7 +1596,7 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(&qos, sizeof(qos), optval, optlen);
-+		err = copy_safe_from_sockptr(&qos, sizeof(qos), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1617,8 +1617,8 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(iso_pi(sk)->base, optlen, optval,
--					   optlen);
-+		err = copy_safe_from_sockptr(iso_pi(sk)->base, optlen, optval,
-+					     optlen);
- 		if (err)
- 			break;
- 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 18e89e764f3b..3d2553dcdb1b 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -755,7 +755,8 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
- 		opts.max_tx   = chan->max_tx;
- 		opts.txwin_size = chan->tx_win;
- 
--		err = bt_copy_from_sockptr(&opts, sizeof(opts), optval, optlen);
-+		err = copy_safe_from_sockptr(&opts, sizeof(opts), optval,
-+					     optlen);
- 		if (err)
- 			break;
- 
-@@ -800,7 +801,7 @@ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname,
- 		break;
- 
- 	case L2CAP_LM:
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -909,7 +910,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 		sec.level = BT_SECURITY_LOW;
- 
--		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
-+		err = copy_safe_from_sockptr(&sec, sizeof(sec), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -956,7 +957,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -970,7 +971,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case BT_FLUSHABLE:
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1004,7 +1005,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 		pwr.force_active = BT_POWER_FORCE_ACTIVE_ON;
- 
--		err = bt_copy_from_sockptr(&pwr, sizeof(pwr), optval, optlen);
-+		err = copy_safe_from_sockptr(&pwr, sizeof(pwr), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1015,7 +1016,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case BT_CHANNEL_POLICY:
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1046,7 +1047,7 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(&mtu, sizeof(mtu), optval, optlen);
-+		err = copy_safe_from_sockptr(&mtu, sizeof(mtu), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -1076,7 +1077,8 @@ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(&mode, sizeof(mode), optval, optlen);
-+		err = copy_safe_from_sockptr(&mode, sizeof(mode), optval,
-+					     optlen);
- 		if (err)
- 			break;
- 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index 40766f8119ed..913402806fa0 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -629,10 +629,9 @@ static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname,
- 
- 	switch (optname) {
- 	case RFCOMM_LM:
--		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
--			err = -EFAULT;
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt & RFCOMM_LM_FIPS) {
- 			err = -EINVAL;
-@@ -685,7 +684,7 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 		sec.level = BT_SECURITY_LOW;
- 
--		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
-+		err = copy_safe_from_sockptr(&sec, sizeof(sec), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -703,7 +702,7 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index 1c7252a36866..700abb639a55 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -853,7 +853,7 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -872,8 +872,8 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
- 
- 		voice.setting = sco_pi(sk)->setting;
- 
--		err = bt_copy_from_sockptr(&voice, sizeof(voice), optval,
--					   optlen);
-+		err = copy_safe_from_sockptr(&voice, sizeof(voice), optval,
-+					     optlen);
- 		if (err)
- 			break;
- 
-@@ -898,7 +898,7 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case BT_PKT_STATUS:
--		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
- 		if (err)
- 			break;
- 
-@@ -941,7 +941,8 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		err = bt_copy_from_sockptr(buffer, optlen, optval, optlen);
-+		err = copy_struct_from_sockptr(buffer, sizeof(buffer), optval,
-+					       optlen);
- 		if (err) {
- 			hci_dev_put(hdev);
- 			break;
+-/* The switch considers any frame (regardless of size) as eligible for
+- * transmission if the traffic class gate is open for at least 33 ns.
++/* The switch considers any frame (regardless of size) as eligible
++ * for transmission if the traffic class gate is open for at least
++ * VSC9959_TAS_MIN_GATE_LEN_NS.
++ *
+  * Overruns are prevented by cropping an interval at the end of the gate time
+- * slot for which egress scheduling is blocked, but we need to still keep 33 ns
+- * available for one packet to be transmitted, otherwise the port tc will hang.
++ * slot for which egress scheduling is blocked, but we need to still keep
++ * VSC9959_TAS_MIN_GATE_LEN_NS available for one packet to be transmitted,
++ * otherwise the port tc will hang.
++ *
+  * This function returns the size of a gate interval that remains available for
+  * setting the guard band, after reserving the space for one egress frame.
+  */
+@@ -1303,7 +1307,8 @@ static void vsc9959_tas_guard_bands_update(struct ocelot *ocelot, int port)
+ 			 * per-tc static guard band lengths, so it reduces the
+ 			 * useful gate interval length. Therefore, be careful
+ 			 * to calculate a guard band (and therefore max_sdu)
+-			 * that still leaves 33 ns available in the time slot.
++			 * that still leaves VSC9959_TAS_MIN_GATE_LEN_NS
++			 * available in the time slot.
+ 			 */
+ 			max_sdu = div_u64(remaining_gate_len_ps, picos_per_byte);
+ 			/* A TC gate may be completely closed, which is a
 -- 
 2.39.5
 
