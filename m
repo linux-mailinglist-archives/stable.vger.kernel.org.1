@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-104790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F5B9F5317
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C34E9F52B8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BD4D1889090
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 800A018898B6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA3E1F757B;
-	Tue, 17 Dec 2024 17:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA04E1F4735;
+	Tue, 17 Dec 2024 17:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sx5WJiHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ify84JdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE9A142E77;
-	Tue, 17 Dec 2024 17:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F921E0493;
+	Tue, 17 Dec 2024 17:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456107; cv=none; b=uDPiLHXa9HJgSuJZNGvdbet9VK9oUj/iD/PEmko96pEgOp28jesGrtv5wyzl2PLkJFyI9Cv9Jytrzi3swvz6XZtsUv5+Q1xsfPvnUKZIBs9QmtBjk7sEw6KGTXa6HY0cYiPxNxA5Mq/f+U50rkp8TncLjOC5YgQnR1l4LadD1qs=
+	t=1734455882; cv=none; b=DOZ/cIeiGImBlxs8TbdWc4acroW0AGkSIdmbDt7Z9FqIFVuktogqPuJVHeITSqbUhsKiJo3oizfLjryKM7Dt3wc7zaRZCKqKFxHXWEicnz97+NrwLyFqFi+TaWWsCk0uxjN0hRw8Vh30mvpJ17sIojChhRC/cCAaC5j6+DeuYz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456107; c=relaxed/simple;
-	bh=BN92/hscj3vuBwLSLEzVTugkgk9PVhWVcfPiA5D2AVM=;
+	s=arc-20240116; t=1734455882; c=relaxed/simple;
+	bh=dlw+5ASagSxmWbbE2yf3BG8ion7HKe/gGFVdNl+y/ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U59VZj8uYP0YTXjwMBbMDPSDOpEvPr5wXo/Z7MZy8h5sS01mnhRzW/kNcrp8YutQl6XKwbBF2vMQswscCZ1egVa3fGGE55Pb6SwdeUUZakLJ47sYnoibRhGjzn1BcaV+ZzlvujOyeila2jqtQoLQQ6uaJwMMI8FMd9su42k5HZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sx5WJiHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6D2C4CED3;
-	Tue, 17 Dec 2024 17:21:47 +0000 (UTC)
+	 MIME-Version; b=uIYeSLfmvS+UXA8sJGsPii9Co3zGuSdx83lIbJuGKVkFCxbIR1R+1gmLIrtMcApEr9LVSiWgqVj02vLC8eUkADE5C+N3xCxoenhQM4tToaQRBX5Clohi+6fPbKIXt5BM/AcWfB6NqxCaq8CQTU6P50k3c+gUTA0ya4r9UNGgXy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ify84JdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B62DC4CED3;
+	Tue, 17 Dec 2024 17:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456107;
-	bh=BN92/hscj3vuBwLSLEzVTugkgk9PVhWVcfPiA5D2AVM=;
+	s=korg; t=1734455882;
+	bh=dlw+5ASagSxmWbbE2yf3BG8ion7HKe/gGFVdNl+y/ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sx5WJiHt59TGMPw1xM2Gql3Zy6CRzv5GUqrp+lunzNy/OxQSa+S5qeNG8wzM2smsI
-	 /gdV8E0XiJE4McjNT1m3cIHpI/kdZYAc8N6juL0H5714qy9J2FKg8r///MRJIrJLna
-	 bD3CYcL4uwylUEU+AaZnCTl/3Meb7B+gaQy2iars=
+	b=ify84JdNYYo/A9zutGWUWiDeoNI7seWFWyogySiCRS5zdf6MdqXm6IqR51PrMihRB
+	 ikKqEuV9LugXYV+9Uniawur7gD2YNDe8fZGzLxRmdrNen2mvicXJxW+KiyhP9XzDFd
+	 PePFGhXYSm7yEnE422nddh41Smkb4hJBuRTtbs4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	David Laight <david.laight@aculab.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/109] ACPI: resource: Fix memory resource type union access
+Subject: [PATCH 6.1 65/76] blk-iocost: Avoid using clamp() on inuse in __propagate_weights()
 Date: Tue, 17 Dec 2024 18:07:45 +0100
-Message-ID: <20241217170535.924361969@linuxfoundation.org>
+Message-ID: <20241217170529.046085991@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 7899ca9f3bd2b008e9a7c41f2a9f1986052d7e96 ]
+[ Upstream commit 57e420c84f9ab55ba4c5e2ae9c5f6c8e1ea834d2 ]
 
-In acpi_decode_space() addr->info.mem.caching is checked on main level
-for any resource type but addr->info.mem is part of union and thus
-valid only if the resource type is memory range.
+After a recent change to clamp() and its variants [1] that increases the
+coverage of the check that high is greater than low because it can be
+done through inlining, certain build configurations (such as s390
+defconfig) fail to build with clang with:
 
-Move the check inside the preceeding switch/case to only execute it
-when the union is of correct type.
+  block/blk-iocost.c:1101:11: error: call to '__compiletime_assert_557' declared with 'error' attribute: clamp() low limit 1 greater than high limit active
+   1101 |                 inuse = clamp_t(u32, inuse, 1, active);
+        |                         ^
+  include/linux/minmax.h:218:36: note: expanded from macro 'clamp_t'
+    218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
+        |                                    ^
+  include/linux/minmax.h:195:2: note: expanded from macro '__careful_clamp'
+    195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+        |         ^
+  include/linux/minmax.h:188:2: note: expanded from macro '__clamp_once'
+    188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
+        |         ^
 
-Fixes: fcb29bbcd540 ("ACPI: Add prefetch decoding to the address space parser")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20241202100614.20731-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+__propagate_weights() is called with an active value of zero in
+ioc_check_iocgs(), which results in the high value being less than the
+low value, which is undefined because the value returned depends on the
+order of the comparisons.
+
+The purpose of this expression is to ensure inuse is not more than
+active and at least 1. This could be written more simply with a ternary
+expression that uses min(inuse, active) as the condition so that the
+value of that condition can be used if it is not zero and one if it is.
+Do this conversion to resolve the error and add a comment to deter
+people from turning this back into clamp().
+
+Fixes: 7caa47151ab2 ("blkcg: implement blk-iocost")
+Link: https://lore.kernel.org/r/34d53778977747f19cce2abb287bb3e6@AcuMS.aculab.com/ [1]
+Suggested-by: David Laight <david.laight@aculab.com>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/llvm/CA+G9fYsD7mw13wredcZn0L-KBA3yeoVSTuxnss-AEWMN3ha0cA@mail.gmail.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412120322.3GfVe3vF-lkp@intel.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ block/blk-iocost.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index d3d776d4fb5a..df598de0cb18 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -250,6 +250,9 @@ static bool acpi_decode_space(struct resource_win *win,
- 	switch (addr->resource_type) {
- 	case ACPI_MEMORY_RANGE:
- 		acpi_dev_memresource_flags(res, len, wp);
-+
-+		if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
-+			res->flags |= IORESOURCE_PREFETCH;
- 		break;
- 	case ACPI_IO_RANGE:
- 		acpi_dev_ioresource_flags(res, len, iodec,
-@@ -265,9 +268,6 @@ static bool acpi_decode_space(struct resource_win *win,
- 	if (addr->producer_consumer == ACPI_PRODUCER)
- 		res->flags |= IORESOURCE_WINDOW;
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 772e909e9fbf..e270e64ba342 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1082,7 +1082,14 @@ static void __propagate_weights(struct ioc_gq *iocg, u32 active, u32 inuse,
+ 		inuse = DIV64_U64_ROUND_UP(active * iocg->child_inuse_sum,
+ 					   iocg->child_active_sum);
+ 	} else {
+-		inuse = clamp_t(u32, inuse, 1, active);
++		/*
++		 * It may be tempting to turn this into a clamp expression with
++		 * a lower limit of 1 but active may be 0, which cannot be used
++		 * as an upper limit in that situation. This expression allows
++		 * active to clamp inuse unless it is 0, in which case inuse
++		 * becomes 1.
++		 */
++		inuse = min(inuse, active) ?: 1;
+ 	}
  
--	if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
--		res->flags |= IORESOURCE_PREFETCH;
--
- 	return !(res->flags & IORESOURCE_DISABLED);
- }
- 
+ 	iocg->last_inuse = iocg->inuse;
 -- 
 2.39.5
 
