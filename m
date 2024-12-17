@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E359F5267
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:18:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5A29F51B8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:09:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7556169D35
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A06697A5DC3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139371F76AE;
-	Tue, 17 Dec 2024 17:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2761F7582;
+	Tue, 17 Dec 2024 17:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auz4JxWB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2pAeD/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57C01F429B;
-	Tue, 17 Dec 2024 17:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30A91F543C;
+	Tue, 17 Dec 2024 17:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455772; cv=none; b=NIZ6zVWjzpj/0Q3KcPmb93RGf1HzMY+2gc8tRJMC7fqr2/WkOwQOW/qwow0Jq8pLIsOaMqi66uy2zlkWDvcFWpyTjtwekVlzFwEBIvDwILzePERpB+F5253spLXDlVFiYpzkW7YSvpkFU2sP9FHaWwPTZKsbww+v6k7qhpUHLPQ=
+	t=1734455359; cv=none; b=VeWuYn7MoZeh6VMpM+ZENqzaUYUSYk+nsYbRXG5TXISsYQrle+VjiylF90jyn1KeDvpiIigysz6q3XBgRI5DSxg0B+6QevmmKpTg+Am6t0KlZ6c81y3iIAvDd6IlwTijqKOcCjr+rKkOBVCugCRzIQiWtraXOtNG/91408ElmZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455772; c=relaxed/simple;
-	bh=4il20ni1N1kg0/g0aOirNNJsx5jOc3JwVvk0hG48+BI=;
+	s=arc-20240116; t=1734455359; c=relaxed/simple;
+	bh=cR/yf+cOvYWbOKiO5OGNqME1O6mhy4U8S5T6F+Dqc8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPKqg1AVYQgOx/y76rli1oHzqCj39acowQVKfmt+qrwMlN9kTFSYyOBsDAOxUfnHHTpC/5SGEwoU6Rrw3NxMFITQ+FPPh64caLGesRd+WU9o2QjTXRCpG/BSa0uiTvXHqKOdlJqiztxNyHYF0dX09QXJpvI9eWzfOTHuKpXE5Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auz4JxWB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6B7C4CED3;
-	Tue, 17 Dec 2024 17:16:11 +0000 (UTC)
+	 MIME-Version; b=uqsM3XdUJEDeej+dqeNPfHhjLMeHbPQHEldTfB+VbdXFwGF6W7UwQwcE9YwgbSmf20FhMvzpseglEDHs+EvWCdwfWIbu/8p+Oamy87olPuOqquXaY02u1UwQON8sq/DBikMtumJN5uBP44gvd49sZouojjVKoHFduaoo3btfcFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2pAeD/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E053C4CEDD;
+	Tue, 17 Dec 2024 17:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455772;
-	bh=4il20ni1N1kg0/g0aOirNNJsx5jOc3JwVvk0hG48+BI=;
+	s=korg; t=1734455359;
+	bh=cR/yf+cOvYWbOKiO5OGNqME1O6mhy4U8S5T6F+Dqc8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auz4JxWBO6ohrT8lJ8NIMSSdDW6hPV5oPGg51wyLDtjzPdFtXzirGtPDZdGrEKIJe
-	 qD08tYD92oDNxI6CSgB+Gq/i5/FyAUbYz2us06qz1SRZtI6BIGt0iiEKxQqlrGvTh7
-	 7UTC6lEIwJOEAxLOWlTOih+4TIa8VS7oYyJG5KYM=
+	b=Z2pAeD/UHPj5q3SWEH2GPDtGGAxW7JtEMsAFPnO0vWnjkYROCHredH3LFnnczLT5r
+	 twWtJCXAIwDTMnmlKapALw1prXiXqGw1HbzUo+GqhUdjIL4bx+xfnhuO6uH8ADkVvb
+	 iinGJExvYCEQtRO/TIAHHHXQkJDoBBE1SwwZyous=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Antonio Quartulli <Antonio@mandelbit.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/76] wifi: mac80211: clean up ret in sta_link_apply_parameters()
+Subject: [PATCH 5.4 10/24] batman-adv: Do not let TT changes list grows indefinitely
 Date: Tue, 17 Dec 2024 18:07:08 +0100
-Message-ID: <20241217170527.430760898@linuxfoundation.org>
+Message-ID: <20241217170519.428230935@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 642508a42f74d7467aae7c56dff3016db64a25bd ]
+[ Upstream commit fff8f17c1a6fc802ca23bbd3a276abfde8cc58e6 ]
 
-There's no need to have the always-zero ret variable in
-the function scope, move it into the inner scope only.
+When TT changes list is too big to fit in packet due to MTU size, an
+empty OGM is sent expected other node to send TT request to get the
+changes. The issue is that tt.last_changeset was not built thus the
+originator was responding with previous changes to those TT requests
+(see batadv_send_my_tt_response). Also the changes list was never
+cleaned up effectively never ending growing from this point onwards,
+repeatedly sending the same TT response changes over and over, and
+creating a new empty OGM every OGM interval expecting for the local
+changes to be purged.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240605135233.eb7a24632d98.I72d7fe1da89d4b89bcfd0f5fb9057e3e69355cfe@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 819e0f1e58e0 ("wifi: mac80211: fix station NSS capability initialization order")
+When there is more TT changes that can fit in packet, drop all changes,
+send empty OGM and wait for TT request so we can respond with a full
+table instead.
+
+Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Acked-by: Antonio Quartulli <Antonio@mandelbit.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/batman-adv/translation-table.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index c0dccaceb05e..aa5daa2fad11 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1683,7 +1683,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 				     struct sta_info *sta, bool new_link,
- 				     struct link_station_parameters *params)
- {
--	int ret = 0;
- 	struct ieee80211_supported_band *sband;
- 	struct ieee80211_sub_if_data *sdata = sta->sdata;
- 	u32 link_id = params->link_id < 0 ? 0 : params->link_id;
-@@ -1725,6 +1724,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 	}
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index e6d51d5070aa..0c23df3ea0c3 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -1000,6 +1000,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	int tt_diff_len, tt_change_len = 0;
+ 	int tt_diff_entries_num = 0;
+ 	int tt_diff_entries_count = 0;
++	bool drop_changes = false;
+ 	size_t tt_extra_len = 0;
+ 	u16 tvlv_len;
  
- 	if (params->txpwr_set) {
-+		int ret;
-+
- 		link_sta->pub->txpwr.type = params->txpwr.type;
- 		if (params->txpwr.type == NL80211_TX_POWER_LIMITED)
- 			link_sta->pub->txpwr.power = params->txpwr.power;
-@@ -1777,7 +1778,7 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+@@ -1007,10 +1008,17 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	tt_diff_len = batadv_tt_len(tt_diff_entries_num);
  
- 	ieee80211_sta_init_nss(link_sta);
+ 	/* if we have too many changes for one packet don't send any
+-	 * and wait for the tt table request which will be fragmented
++	 * and wait for the tt table request so we can reply with the full
++	 * (fragmented) table.
++	 *
++	 * The local change history should still be cleaned up so the next
++	 * TT round can start again with a clean state.
+ 	 */
+-	if (tt_diff_len > bat_priv->soft_iface->mtu)
++	if (tt_diff_len > bat_priv->soft_iface->mtu) {
+ 		tt_diff_len = 0;
++		tt_diff_entries_num = 0;
++		drop_changes = true;
++	}
  
--	return ret;
-+	return 0;
- }
+ 	tvlv_len = batadv_tt_prepare_tvlv_local_data(bat_priv, &tt_data,
+ 						     &tt_change, &tt_diff_len);
+@@ -1019,7 +1027,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
  
- static int sta_apply_parameters(struct ieee80211_local *local,
+ 	tt_data->flags = BATADV_TT_OGM_DIFF;
+ 
+-	if (tt_diff_len == 0)
++	if (!drop_changes && tt_diff_len == 0)
+ 		goto container_register;
+ 
+ 	spin_lock_bh(&bat_priv->tt.changes_list_lock);
 -- 
 2.39.5
 
