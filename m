@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB8A9F545B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:41:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46329F52DF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 140F9171635
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A3657A4C28
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F6B1F8938;
-	Tue, 17 Dec 2024 17:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192571F7577;
+	Tue, 17 Dec 2024 17:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsOO/alm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2wabns5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3377D1F8930;
-	Tue, 17 Dec 2024 17:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C981914A4E7;
+	Tue, 17 Dec 2024 17:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456678; cv=none; b=mlRgeHWUCua/H2q7cubEvdv6gdmD3Yys1u7MEDGjSd+rOX6ZmP6lgMp41vzMg7IFeTaxFTnWfT7pi2dz9sB5Qp7kFg0/8Ukup1c65GstmKmG9R0ve/+po6K2Wx1r+ipnZvR/5lVDhisZoQL8twYBiLBHqcfwCLegBfbbF2zvyIg=
+	t=1734456181; cv=none; b=DP1MwwknBms/nptBLeHBaiZm1XxJqJN3GUtsKLocnOKhqnF6hVFsdp1J23Yzk1R/6IKc8sG9NuTzZKfEEXYQW65pJ7RzfCydDmDfmkWRQlTnSdLjhc0aCWUb24mDAPqVUeZxCuWGS7izjlUs0U05qdB8BPY5WuvS6dDhP4M/T+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456678; c=relaxed/simple;
-	bh=aagDCXjWLoIllyA0Q3yoqFgD9fXdI4T4YimpU4GPGOU=;
+	s=arc-20240116; t=1734456181; c=relaxed/simple;
+	bh=tu8dvgXN3QOoqYwDL9gf1+zNzer3AU55LUv8jVTjvLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqhXml7tgHC2y3gC2jY7VpI6BETHfC8e2PGN6yto9eyMPlEIhHc0uI1COa2g/Uo/GdsWk6gaYaY+t5LaRhLEr0C3HgPXGaav9M215xxrCNp3anBuFswlaOUDMklFZdGHUn5FRJtHmjxqp+lTFfXO+kahd9dHWszn5AZXd5kogp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsOO/alm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2FDC4CED3;
-	Tue, 17 Dec 2024 17:31:17 +0000 (UTC)
+	 MIME-Version; b=tbGb2ZH3J5GOsrcdSwnv/JojSSFCJTwc6SvXtCVuMNgfHU2jVrsec/0EZ3cbpOZ95ZZhbyz8tWcutEK2ZPd/tsqEW2JQ/kT85erpqhWoZwBQ8YdsIojbegKzjy3CFvmaPySrNHPm12ZRHsnaBhQt+e2aMf7OyIqv92GhhDI4BQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2wabns5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BEDC4CED3;
+	Tue, 17 Dec 2024 17:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456678;
-	bh=aagDCXjWLoIllyA0Q3yoqFgD9fXdI4T4YimpU4GPGOU=;
+	s=korg; t=1734456181;
+	bh=tu8dvgXN3QOoqYwDL9gf1+zNzer3AU55LUv8jVTjvLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NsOO/almju0bGc3VXdzczyu3SfT+EGq1rUXATy/+J4X7Nyv7zf85BAJ3wcm8686+f
-	 3dwCdcgGMMccVpt5h6OstE4sEGD8/N/EApSPOeCdJtxXG+auYFZpGEiQZzpdx0SiVw
-	 BKEty5oMX5h9BKH5n0aQHHGDcoIyyPX6k77/kpBM=
+	b=F2wabns5WAEB4J5mI7HDbBFUdJ+qHjl9PY9vS4YKVHJRS2QBHsFnn6WjOfIfWZC9b
+	 L2Q/4pQvW7NQBi4MVo7AtENO9Yylvw84F2NvPDKStws5y1fn2ERegXvPKtPDEw3FEI
+	 uJvIsseIJAo8PFDZ9umwZAbj8hXmeCqA1LaXjego=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniil Tatianin <d-tatianin@yandex-team.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 132/172] ASoC: fsl_spdif: change IFACE_PCM to IFACE_MIXER
-Date: Tue, 17 Dec 2024 18:08:08 +0100
-Message-ID: <20241217170551.816178673@linuxfoundation.org>
+Subject: [PATCH 6.6 085/109] ACPICA: events/evxfregn: dont release the ContextMutex that was never acquired
+Date: Tue, 17 Dec 2024 18:08:09 +0100
+Message-ID: <20241217170536.928503770@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 
-[ Upstream commit bb76e82bfe57fdd1fe595cb0ccd33159df49ed09 ]
+[ Upstream commit c53d96a4481f42a1635b96d2c1acbb0a126bfd54 ]
 
-As the snd_soc_card_get_kcontrol() is updated to use
-snd_ctl_find_id_mixer() in
-commit 897cc72b0837 ("ASoC: soc-card: Use
-snd_ctl_find_id_mixer() instead of open-coding")
-which make the iface fix to be IFACE_MIXER.
+This bug was first introduced in c27f3d011b08, where the author of the
+patch probably meant to do DeleteMutex instead of ReleaseMutex. The
+mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
+MutexRelease line was never removed, so do it now.
 
-Fixes: 897cc72b0837 ("ASoC: soc-card: Use snd_ctl_find_id_mixer() instead of open-coding")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20241126053254.3657344-3-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://github.com/acpica/acpica/pull/982
+Fixes: c27f3d011b08 ("ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling")
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Link: https://patch.msgid.link/20241122082954.658356-1-d-tatianin@yandex-team.ru
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_spdif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/evxfregn.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index b6ff04f7138a..ee946e0d3f49 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -1204,7 +1204,7 @@ static struct snd_kcontrol_new fsl_spdif_ctrls[] = {
- 	},
- 	/* DPLL lock info get controller */
- 	{
--		.iface = SNDRV_CTL_ELEM_IFACE_PCM,
-+		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
- 		.name = RX_SAMPLE_RATE_KCONTROL,
- 		.access = SNDRV_CTL_ELEM_ACCESS_READ |
- 			SNDRV_CTL_ELEM_ACCESS_VOLATILE,
+diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
+index 95f78383bbdb..bff2d099f469 100644
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -232,8 +232,6 @@ acpi_remove_address_space_handler(acpi_handle device,
+ 
+ 			/* Now we can delete the handler object */
+ 
+-			acpi_os_release_mutex(handler_obj->address_space.
+-					      context_mutex);
+ 			acpi_ut_remove_reference(handler_obj);
+ 			goto unlock_and_exit;
+ 		}
 -- 
 2.39.5
 
