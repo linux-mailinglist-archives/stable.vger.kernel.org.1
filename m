@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63559F533B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72609F5461
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61EF61702DE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8F9B1884EB5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B053F1F76B1;
-	Tue, 17 Dec 2024 17:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D491F75BE;
+	Tue, 17 Dec 2024 17:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9g6k1b2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUu945Gs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC261EF085;
-	Tue, 17 Dec 2024 17:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B811F8F16;
+	Tue, 17 Dec 2024 17:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456273; cv=none; b=NjML0Ffz501PrjxkX+B061Rr5s6AOrwoRZD3yBa164+Ty3t8eDxzG5Wl3hZ7fRehIDqE5r56XePmePGjhz22GcfL6WlqhYbkwGxxOo2aVdMCJebUCG1d8tNOp7tlgGypt605qzl/Sos1e8WMSzyzkTe9bOQ+EtgMkCoOF5c5/AQ=
+	t=1734456744; cv=none; b=tkhw6bgeziIZSWCi85VUli5DppzhweJglQr0YNd5efpUH23ku+ax3Sc/6zmphZY/W6ZP5/r4AC2a5IELdL1jGySeTuIyNZII1CTqn9kc5U0nadiJEDWOe0lq/Cm3LBCsuhKDhiSnRbufddkyBK7AKP5XeCr3Pw1uPkgms+08C1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456273; c=relaxed/simple;
-	bh=18xLHDrYE6Y9AjJ3aD/By7eXh2+PbKjUd99aQHHZn+c=;
+	s=arc-20240116; t=1734456744; c=relaxed/simple;
+	bh=SdVr5qGS7U9aMGlEFEFsUBnTPPdbdD42o+zj8Wk7U1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNG/7FPtEbu7pXPWHQ7yCqnYHSCfR1p30n6cTxuEoW3n426CmD3HhnAmKagpzJ0x+eW2cyavppyf7Db6BAEUtvM8tiap1H4On8MmWz0vc3HXpS3xDyloog2rozDH/eTicIV1Y9yBKSX/BVT/7qWOQpvawmBsyHQFsZOd4VzI6lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9g6k1b2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8F6C4CED7;
-	Tue, 17 Dec 2024 17:24:32 +0000 (UTC)
+	 MIME-Version; b=c1z8uXeZw+o2LlqPLWWlnF+ND4sQpm/Gwff2L3qgsfQBsjA0ISpPoyTCls6NU5D8o1L9y/I17vdwfI4EHbvjLwehYXgpDQFfZWSGlZH8ziciD96TnliNMwZ1EUKIf8xxx01MpAxLv/dimDMhCnrADalkwPhF9ojuKlyKjt3UAxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUu945Gs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B3BC4CED3;
+	Tue, 17 Dec 2024 17:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456273;
-	bh=18xLHDrYE6Y9AjJ3aD/By7eXh2+PbKjUd99aQHHZn+c=;
+	s=korg; t=1734456744;
+	bh=SdVr5qGS7U9aMGlEFEFsUBnTPPdbdD42o+zj8Wk7U1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9g6k1b2DDoyGMK9FkC02oAVrV6g1OMEfzuLsXCP7VxjB7zstSqod7Qy1FpnhJY2F
-	 UUl6SLTGJvELkDHr/Skv61RGUKGQkFvYf87JMKHB3Mm+/ZCWRklbeZewl7c+n/IjGu
-	 9xo33L8fgmaw42ufNxUOedCinBfa54mIjJSMaR+Y=
+	b=pUu945GsKiHXqyqbYKQuDSRJkfYOUCd4i3u3FUYk2/6K0CQSPi7IB+e2NDk1NiJWQ
+	 fVpSi1Z4C+5UwM6hPN+Dv7jtobQ64wZ7N3ll4THdHxdIQb87JdYT4spYSnz4fgEugI
+	 mPOWuf1jKXWvMI1mljWQLLuNynot4T9mjiF3movE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: [PATCH 6.6 104/109] x86/static-call: provide a way to do very early static-call updates
-Date: Tue, 17 Dec 2024 18:08:28 +0100
-Message-ID: <20241217170537.748652732@linuxfoundation.org>
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 153/172] Bluetooth: btmtk: avoid UAF in btmtk_process_coredump
+Date: Tue, 17 Dec 2024 18:08:29 +0100
+Message-ID: <20241217170552.672472742@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,183 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit 0ef8047b737d7480a5d4c46d956e97c190f13050 upstream.
+[ Upstream commit b548f5e9456c568155499d9ebac675c0d7a296e8 ]
 
-Add static_call_update_early() for updating static-call targets in
-very early boot.
+hci_devcd_append may lead to the release of the skb, so it cannot be
+accessed once it is called.
 
-This will be needed for support of Xen guest type specific hypercall
-functions.
+==================================================================
+BUG: KASAN: slab-use-after-free in btmtk_process_coredump+0x2a7/0x2d0 [btmtk]
+Read of size 4 at addr ffff888033cfabb0 by task kworker/0:3/82
 
-This is part of XSA-466 / CVE-2024-53241.
+CPU: 0 PID: 82 Comm: kworker/0:3 Tainted: G     U             6.6.40-lockdep-03464-g1d8b4eb3060e #1 b0b3c1cc0c842735643fb411799d97921d1f688c
+Hardware name: Google Yaviks_Ufs/Yaviks_Ufs, BIOS Google_Yaviks_Ufs.15217.552.0 05/07/2024
+Workqueue: events btusb_rx_work [btusb]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xfd/0x150
+ print_report+0x131/0x780
+ kasan_report+0x177/0x1c0
+ btmtk_process_coredump+0x2a7/0x2d0 [btmtk 03edd567dd71a65958807c95a65db31d433e1d01]
+ btusb_recv_acl_mtk+0x11c/0x1a0 [btusb 675430d1e87c4f24d0c1f80efe600757a0f32bec]
+ btusb_rx_work+0x9e/0xe0 [btusb 675430d1e87c4f24d0c1f80efe600757a0f32bec]
+ worker_thread+0xe44/0x2cc0
+ kthread+0x2ff/0x3a0
+ ret_from_fork+0x51/0x80
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Co-developed-by: Peter Zijlstra <peterz@infradead.org>
-Co-developed-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allocated by task 82:
+ stack_trace_save+0xdc/0x190
+ kasan_set_track+0x4e/0x80
+ __kasan_slab_alloc+0x4e/0x60
+ kmem_cache_alloc+0x19f/0x360
+ skb_clone+0x132/0xf70
+ btusb_recv_acl_mtk+0x104/0x1a0 [btusb]
+ btusb_rx_work+0x9e/0xe0 [btusb]
+ worker_thread+0xe44/0x2cc0
+ kthread+0x2ff/0x3a0
+ ret_from_fork+0x51/0x80
+ ret_from_fork_asm+0x1b/0x30
+
+Freed by task 1733:
+ stack_trace_save+0xdc/0x190
+ kasan_set_track+0x4e/0x80
+ kasan_save_free_info+0x28/0xb0
+ ____kasan_slab_free+0xfd/0x170
+ kmem_cache_free+0x183/0x3f0
+ hci_devcd_rx+0x91a/0x2060 [bluetooth]
+ worker_thread+0xe44/0x2cc0
+ kthread+0x2ff/0x3a0
+ ret_from_fork+0x51/0x80
+ ret_from_fork_asm+0x1b/0x30
+
+The buggy address belongs to the object at ffff888033cfab40
+ which belongs to the cache skbuff_head_cache of size 232
+The buggy address is located 112 bytes inside of
+ freed 232-byte region [ffff888033cfab40, ffff888033cfac28)
+
+The buggy address belongs to the physical page:
+page:00000000a174ba93 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x33cfa
+head:00000000a174ba93 order:1 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+anon flags: 0x4000000000000840(slab|head|zone=1)
+page_type: 0xffffffff()
+raw: 4000000000000840 ffff888100848a00 0000000000000000 0000000000000001
+raw: 0000000000000000 0000000080190019 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff888033cfaa80: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
+ ffff888033cfab00: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
+>ffff888033cfab80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                     ^
+ ffff888033cfac00: fb fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc
+ ffff888033cfac80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+
+Check if we need to call hci_devcd_complete before calling
+hci_devcd_append. That requires that we check data->cd_info.cnt >=
+MTK_COREDUMP_NUM instead of data->cd_info.cnt > MTK_COREDUMP_NUM, as we
+increment data->cd_info.cnt only once the call to hci_devcd_append
+succeeds.
+
+Fixes: 0b7015132878 ("Bluetooth: btusb: mediatek: add MediaTek devcoredump support")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/static_call.h |   15 +++++++++++++++
- arch/x86/include/asm/sync_core.h   |    6 +++---
- arch/x86/kernel/static_call.c      |    9 +++++++++
- include/linux/compiler.h           |   37 ++++++++++++++++++++++++++-----------
- include/linux/static_call.h        |    1 +
- kernel/static_call_inline.c        |    2 +-
- 6 files changed, 55 insertions(+), 15 deletions(-)
+ drivers/bluetooth/btmtk.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/arch/x86/include/asm/static_call.h
-+++ b/arch/x86/include/asm/static_call.h
-@@ -65,4 +65,19 @@
- 
- extern bool __static_call_fixup(void *tramp, u8 op, void *dest);
- 
-+extern void __static_call_update_early(void *tramp, void *func);
-+
-+#define static_call_update_early(name, _func)				\
-+({									\
-+	typeof(&STATIC_CALL_TRAMP(name)) __F = (_func);			\
-+	if (static_call_initialized) {					\
-+		__static_call_update(&STATIC_CALL_KEY(name),		\
-+				     STATIC_CALL_TRAMP_ADDR(name), __F);\
-+	} else {							\
-+		WRITE_ONCE(STATIC_CALL_KEY(name).func, _func);		\
-+		__static_call_update_early(STATIC_CALL_TRAMP_ADDR(name),\
-+					   __F);			\
-+	}								\
-+})
-+
- #endif /* _ASM_STATIC_CALL_H */
---- a/arch/x86/include/asm/sync_core.h
-+++ b/arch/x86/include/asm/sync_core.h
-@@ -8,7 +8,7 @@
- #include <asm/special_insns.h>
- 
- #ifdef CONFIG_X86_32
--static inline void iret_to_self(void)
-+static __always_inline void iret_to_self(void)
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index 480e4adba9fa..85e99641eaae 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -395,6 +395,7 @@ int btmtk_process_coredump(struct hci_dev *hdev, struct sk_buff *skb)
  {
- 	asm volatile (
- 		"pushfl\n\t"
-@@ -19,7 +19,7 @@ static inline void iret_to_self(void)
- 		: ASM_CALL_CONSTRAINT : : "memory");
- }
- #else
--static inline void iret_to_self(void)
-+static __always_inline void iret_to_self(void)
- {
- 	unsigned int tmp;
+ 	struct btmtk_data *data = hci_get_priv(hdev);
+ 	int err;
++	bool complete = false;
  
-@@ -55,7 +55,7 @@ static inline void iret_to_self(void)
-  * Like all of Linux's memory ordering operations, this is a
-  * compiler barrier as well.
-  */
--static inline void sync_core(void)
-+static __always_inline void sync_core(void)
- {
- 	/*
- 	 * The SERIALIZE instruction is the most straightforward way to
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -172,6 +172,15 @@ void arch_static_call_transform(void *si
- }
- EXPORT_SYMBOL_GPL(arch_static_call_transform);
- 
-+noinstr void __static_call_update_early(void *tramp, void *func)
-+{
-+	BUG_ON(system_state != SYSTEM_BOOTING);
-+	BUG_ON(!early_boot_irqs_disabled);
-+	BUG_ON(static_call_initialized);
-+	__text_gen_insn(tramp, JMP32_INSN_OPCODE, tramp, func, JMP32_INSN_SIZE);
-+	sync_core();
-+}
+ 	if (!IS_ENABLED(CONFIG_DEV_COREDUMP)) {
+ 		kfree_skb(skb);
+@@ -416,19 +417,22 @@ int btmtk_process_coredump(struct hci_dev *hdev, struct sk_buff *skb)
+ 		fallthrough;
+ 	case HCI_DEVCOREDUMP_ACTIVE:
+ 	default:
++		/* Mediatek coredump data would be more than MTK_COREDUMP_NUM */
++		if (data->cd_info.cnt >= MTK_COREDUMP_NUM &&
++		    skb->len > MTK_COREDUMP_END_LEN)
++			if (!memcmp((char *)&skb->data[skb->len - MTK_COREDUMP_END_LEN],
++				    MTK_COREDUMP_END, MTK_COREDUMP_END_LEN - 1))
++				complete = true;
 +
- #ifdef CONFIG_RETHUNK
- /*
-  * This is called by apply_returns() to fix up static call trampolines,
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -204,28 +204,43 @@ void ftrace_likely_update(struct ftrace_
+ 		err = hci_devcd_append(hdev, skb);
+ 		if (err < 0)
+ 			break;
+ 		data->cd_info.cnt++;
  
- #endif /* __KERNEL__ */
+-		/* Mediatek coredump data would be more than MTK_COREDUMP_NUM */
+-		if (data->cd_info.cnt > MTK_COREDUMP_NUM &&
+-		    skb->len > MTK_COREDUMP_END_LEN)
+-			if (!memcmp((char *)&skb->data[skb->len - MTK_COREDUMP_END_LEN],
+-				    MTK_COREDUMP_END, MTK_COREDUMP_END_LEN - 1)) {
+-				bt_dev_info(hdev, "Mediatek coredump end");
+-				hci_devcd_complete(hdev);
+-			}
++		if (complete) {
++			bt_dev_info(hdev, "Mediatek coredump end");
++			hci_devcd_complete(hdev);
++		}
  
-+/**
-+ * offset_to_ptr - convert a relative memory offset to an absolute pointer
-+ * @off:	the address of the 32-bit offset value
-+ */
-+static inline void *offset_to_ptr(const int *off)
-+{
-+	return (void *)((unsigned long)off + *off);
-+}
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#ifdef CONFIG_64BIT
-+#define ARCH_SEL(a,b) a
-+#else
-+#define ARCH_SEL(a,b) b
-+#endif
-+
- /*
-  * Force the compiler to emit 'sym' as a symbol, so that we can reference
-  * it from inline assembler. Necessary in case 'sym' could be inlined
-  * otherwise, or eliminated entirely due to lack of references that are
-  * visible to the compiler.
-  */
--#define ___ADDRESSABLE(sym, __attrs) \
--	static void * __used __attrs \
-+#define ___ADDRESSABLE(sym, __attrs)						\
-+	static void * __used __attrs						\
- 		__UNIQUE_ID(__PASTE(__addressable_,sym)) = (void *)&sym;
-+
- #define __ADDRESSABLE(sym) \
- 	___ADDRESSABLE(sym, __section(".discard.addressable"))
- 
--/**
-- * offset_to_ptr - convert a relative memory offset to an absolute pointer
-- * @off:	the address of the 32-bit offset value
-- */
--static inline void *offset_to_ptr(const int *off)
--{
--	return (void *)((unsigned long)off + *off);
--}
-+#define __ADDRESSABLE_ASM(sym)						\
-+	.pushsection .discard.addressable,"aw";				\
-+	.align ARCH_SEL(8,4);						\
-+	ARCH_SEL(.quad, .long) __stringify(sym);			\
-+	.popsection;
- 
--#endif /* __ASSEMBLY__ */
-+#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
- 
- /* &a[0] degrades to a pointer: a different type from an array */
- #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
---- a/include/linux/static_call.h
-+++ b/include/linux/static_call.h
-@@ -138,6 +138,7 @@
- #ifdef CONFIG_HAVE_STATIC_CALL
- #include <asm/static_call.h>
- 
-+extern int static_call_initialized;
- /*
-  * Either @site or @tramp can be NULL.
-  */
---- a/kernel/static_call_inline.c
-+++ b/kernel/static_call_inline.c
-@@ -15,7 +15,7 @@ extern struct static_call_site __start_s
- extern struct static_call_tramp_key __start_static_call_tramp_key[],
- 				    __stop_static_call_tramp_key[];
- 
--static int static_call_initialized;
-+int static_call_initialized;
- 
- /*
-  * Must be called before early_initcall() to be effective.
+ 		break;
+ 	}
+-- 
+2.39.5
+
 
 
 
