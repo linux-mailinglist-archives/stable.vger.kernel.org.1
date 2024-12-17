@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2449F528B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBA39F52F9
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17BFA189308F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E515188973D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3871F892A;
-	Tue, 17 Dec 2024 17:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9861F757B;
+	Tue, 17 Dec 2024 17:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+k09n5y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REroepGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6C71F8923;
-	Tue, 17 Dec 2024 17:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473021DE2AC;
+	Tue, 17 Dec 2024 17:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455830; cv=none; b=orPO8TtIYfEtQ2LreO5ii7PTwc9+rXG9r9Aee747QMPJu/wOA4vhXZJGSfHD1vF6avYtQoHaPQxh++xr+fAjXT18AFxNKIy2nGoAeMDzNOQroSFvoGph1zJL1t3eBTKk7EI0KfZrt+6ANAldAAxjlDKG8xie/Cet3Di7FcIuYio=
+	t=1734456040; cv=none; b=pj3gWpfuYuZlNY8DXDVMJBw+m8uOGqgL9gRUA9zZaaRHTWRTMuQLI9di4BXW3FSUvwKcJVMpDUhx8/aN7wSs45iTPeLTHekkl6frn4AA5dDRsl8YOIiKDlh+JRkkzk6/aglobLGH9YKJI5s5P4/tc8Yupdc+0GOgHQ1E4pIZj/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455830; c=relaxed/simple;
-	bh=55XFQyBQ97rMil4EVoyE7KvKXmHuRvtXxEBfRsEJbYo=;
+	s=arc-20240116; t=1734456040; c=relaxed/simple;
+	bh=U2s3gU5eLRBIY6uSyRfCNAO8+BNcdOo9LOTLiD515Mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAjmH891VUfUF+a8Yv7YldpQCHnXIJ9hJ/YFRzIiXeapeg4yGB/bcjwVyRe+Jykv6XfUHnFYJ1mILqUIFub+S2IACE9NIY3V/0s+Jb/+PqyM1kcBls17UuyyTwIA9cDn0VftKZbe2NaOO472pq+rbBogBGikZltRuQbZqaAxNdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+k09n5y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A1DC4CEDD;
-	Tue, 17 Dec 2024 17:17:09 +0000 (UTC)
+	 MIME-Version; b=Mo9iMXsUbkdGTjQ263AMkwwmHVLcXsJ3dbGCWoW6sN+M5S6PIA7+MDya5KvZ6M+8h6faiyGzFnC7fSj9rGwusLowNhOLZQCALhWZNpzhiWX1ciaPk1osiCzXnbeNasoPjm6CNvEjJ+fa+zzWVGBSsiB8XxEjSkeJwUvLv+gocFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REroepGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC10C4CED3;
+	Tue, 17 Dec 2024 17:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455830;
-	bh=55XFQyBQ97rMil4EVoyE7KvKXmHuRvtXxEBfRsEJbYo=;
+	s=korg; t=1734456039;
+	bh=U2s3gU5eLRBIY6uSyRfCNAO8+BNcdOo9LOTLiD515Mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+k09n5y2nmnEUHJXsHOO2cmRAo8GvvxqR7vgVa7Vntng5PAumybnoK+KkN3tAyoa
-	 W2PhfyejvvpCyfzIe0WfiVMg2l1YXI/201+aaIQ/ivMjBadT6XjMPxIZQOxT31iD+3
-	 qmdOsFMyVoeg1aPxIJ08APv/cQaBmaEC5Mt7YjmM=
+	b=REroepGWuONOS5I796b0376+5K+7j9glCyrPn9d+05newaq0aaeTK8xPsXza+nzbu
+	 EOIbnwNDJMWBUo0aXHjkVMoWWM72SOWluySWfGMchT/LLphn6LflyYrkU2Laf2p1we
+	 AWrXmKiy/gziXK1gopa6Vk8sRLxc0HKOZ6WjMwyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 45/76] net: mscc: ocelot: improve handling of TX timestamp for unknown skb
+Subject: [PATCH 6.6 041/109] batman-adv: Do not send uninitialized TT changes
 Date: Tue, 17 Dec 2024 18:07:25 +0100
-Message-ID: <20241217170528.135250477@linuxfoundation.org>
+Message-ID: <20241217170535.088357137@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit b6fba4b3f0becb794e274430f3a0839d8ba31262 ]
+[ Upstream commit f2f7358c3890e7366cbcb7512b4bc8b4394b2d61 ]
 
-This condition, theoretically impossible to trigger, is not really
-handled well. By "continuing", we are skipping the write to SYS_PTP_NXT
-which advances the timestamp FIFO to the next entry. So we are reading
-the same FIFO entry all over again, printing stack traces and eventually
-killing the kernel.
+The number of TT changes can be less than initially expected in
+batadv_tt_tvlv_container_update() (changes can be removed by
+batadv_tt_local_event() in ADD+DEL sequence between reading
+tt_diff_entries_num and actually iterating the change list under lock).
 
-No real problem has been observed here. This is part of a larger rework
-of the timestamp IRQ procedure, with this logical change split out into
-a patch of its own. We will need to "goto next_ts" for other conditions
-as well.
+Thus tt_diff_len could be bigger than the actual changes size that need
+to be sent. Because batadv_send_my_tt_response sends the whole
+packet, uninitialized data can be interpreted as TT changes on other
+nodes leading to weird TT global entries on those nodes such as:
 
-Fixes: 9fde506e0c53 ("net: mscc: ocelot: warn when a PTP IRQ is raised for an unknown skb")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241205145519.1236778-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+ * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
+ * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
+
+All of the above also applies to OGM tvlv container buffer's tvlv_len.
+
+Remove the extra allocated space to avoid sending uninitialized TT
+changes in batadv_send_my_tt_response() and batadv_v_ogm_send_softif().
+
+Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/ocelot_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/translation-table.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
-index 3c22652879ac..1386fb2ff4a9 100644
---- a/drivers/net/ethernet/mscc/ocelot_ptp.c
-+++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
-@@ -790,7 +790,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 		spin_unlock_irqrestore(&port->tx_skbs.lock, flags);
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 2243cec18ecc..f0590f9bc2b1 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -990,6 +990,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	int tt_diff_len, tt_change_len = 0;
+ 	int tt_diff_entries_num = 0;
+ 	int tt_diff_entries_count = 0;
++	size_t tt_extra_len = 0;
+ 	u16 tvlv_len;
  
- 		if (WARN_ON(!skb_match))
--			continue;
-+			goto next_ts;
- 
- 		if (!ocelot_validate_ptp_skb(skb_match, seqid)) {
- 			dev_err_ratelimited(ocelot->dev,
-@@ -808,7 +808,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 		shhwtstamps.hwtstamp = ktime_set(ts.tv_sec, ts.tv_nsec);
- 		skb_complete_tx_timestamp(skb_match, &shhwtstamps);
- 
--		/* Next ts */
-+next_ts:
- 		ocelot_write(ocelot, SYS_PTP_NXT_PTP_NXT, SYS_PTP_NXT);
+ 	tt_diff_entries_num = atomic_read(&bat_priv->tt.local_changes);
+@@ -1027,6 +1028,9 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
  	}
- }
+ 	spin_unlock_bh(&bat_priv->tt.changes_list_lock);
+ 
++	tt_extra_len = batadv_tt_len(tt_diff_entries_num -
++				     tt_diff_entries_count);
++
+ 	/* Keep the buffer for possible tt_request */
+ 	spin_lock_bh(&bat_priv->tt.last_changeset_lock);
+ 	kfree(bat_priv->tt.last_changeset);
+@@ -1035,6 +1039,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	tt_change_len = batadv_tt_len(tt_diff_entries_count);
+ 	/* check whether this new OGM has no changes due to size problems */
+ 	if (tt_diff_entries_count > 0) {
++		tt_diff_len -= tt_extra_len;
+ 		/* if kmalloc() fails we will reply with the full table
+ 		 * instead of providing the diff
+ 		 */
+@@ -1047,6 +1052,8 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	}
+ 	spin_unlock_bh(&bat_priv->tt.last_changeset_lock);
+ 
++	/* Remove extra packet space for OGM */
++	tvlv_len -= tt_extra_len;
+ container_register:
+ 	batadv_tvlv_container_register(bat_priv, BATADV_TVLV_TT, 1, tt_data,
+ 				       tvlv_len);
 -- 
 2.39.5
 
