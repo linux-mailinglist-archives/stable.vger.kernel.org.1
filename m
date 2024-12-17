@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-104601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E33F9F520C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:14:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C088C9F53CC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45D0216CE56
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB97C1737F2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E6D1F866C;
-	Tue, 17 Dec 2024 17:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659EE1F76DA;
+	Tue, 17 Dec 2024 17:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVRiMYNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dx0Nf2Qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58EE149DFA;
-	Tue, 17 Dec 2024 17:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2358E1F76CB;
+	Tue, 17 Dec 2024 17:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455546; cv=none; b=cWpv/Nx0gdn30+941/JpC/YEfe/lT48iE867NZnzq2YUyC1JGXI5WW2rNzOtIcHGnt8dq3m5XUQOIAGRQXNU4HcD+LDN6pub8byJt+Up4QU23G8cLWzZ6i9kGYbrZ3XAimasv9RH83+0mcK5ampZJ+t/kM/mzvKzjPTTVD5dSDY=
+	t=1734456537; cv=none; b=BgMBYSpZ0cde1Xrc8mMfbnWKWDWT2+H+1NnyuiH5h2lNw1GVjQgqNqeQ60rlo+f9fa1r9RjenCXzbmu8LXtshPz8V3SvYdZmPvi11zNVofQ0u0Ctrq23NDT/coPkSoZDjMmu7Toi+GTZqmKTykpOZb65WBaAD82pLmZIeVkeUUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455546; c=relaxed/simple;
-	bh=dH1gzPKo6eR7XwYhrfWpuMU5A0+Bq8kFKZKHH7o8Bhk=;
+	s=arc-20240116; t=1734456537; c=relaxed/simple;
+	bh=6PczD+ATbH2gUjp43mtKFGRamMZQ79I1JP7fT7JXsZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bU/zrjluQ1YdLmUwyDpCTNvr4ASpp0BXCgsKIeQa/DdLFEyvZojmgs4C+4L46hU7qlTRatkOJDFDELHTEDiaTaIEhs+zNPLU0dBgWViJe0UauwlXk0nW0MLwtl9vK4ytHCFAR/3KS0V4aZIbB4TvooDb4prGBLeKSwkKuovtJhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVRiMYNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E33FC4CED3;
-	Tue, 17 Dec 2024 17:12:26 +0000 (UTC)
+	 MIME-Version; b=fM9GWGxdvUmVfbVBPJYb8MloVUk/G1kKws3/N0zqK8lvES9ibUkYIugjoOYdJoFJK15/TO2TW7O7I//7ewwGKORRtZJpgWI8i0RDBJbZl/spOjQPTwKhnXqoOw1lCVIUeUSY+/P3sWK7p8t7mnywvUpa/9gRlFLKSsGL906CUUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dx0Nf2Qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C75C4CED3;
+	Tue, 17 Dec 2024 17:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455546;
-	bh=dH1gzPKo6eR7XwYhrfWpuMU5A0+Bq8kFKZKHH7o8Bhk=;
+	s=korg; t=1734456537;
+	bh=6PczD+ATbH2gUjp43mtKFGRamMZQ79I1JP7fT7JXsZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVRiMYNTP7YVVrrkJULVc45jXGnq8paCSHsEWowgVhiR3f/oozo71dQKgiU3Pxz+i
-	 V5ryQPViws+jL0mYZRbQ6y6ekEcyyWJ65o5ZOwmHBMblIiczaDgECxdh6lsqh4VPc5
-	 +eqieuKjyubTVUn1BZTgKGEyXSyW1t7dMaVGoIEQ=
+	b=dx0Nf2QwTRbqP1fgTIB5VfPk8NXBWQEZ4oVhnaqkgGQqlthwTZs++KtjNlyQX6TTY
+	 YY0JPrP2TNu+CiI7bftsFLg5WEJL4T5XttDzs6z6ZfbNiMzX9eiXjamraWdue1tVC6
+	 SBHGYVSCe3GXN0tbLXBIKXOydeRSSXZAMeO7pjJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.10 35/43] xen/netfront: fix crash when removing device
+	Remi Pommarel <repk@triplefau.lt>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 090/172] batman-adv: Do not send uninitialized TT changes
 Date: Tue, 17 Dec 2024 18:07:26 +0100
-Message-ID: <20241217170522.126029310@linuxfoundation.org>
+Message-ID: <20241217170550.027989384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit f9244fb55f37356f75c739c57323d9422d7aa0f8 upstream.
+[ Upstream commit f2f7358c3890e7366cbcb7512b4bc8b4394b2d61 ]
 
-When removing a netfront device directly after a suspend/resume cycle
-it might happen that the queues have not been setup again, causing a
-crash during the attempt to stop the queues another time.
+The number of TT changes can be less than initially expected in
+batadv_tt_tvlv_container_update() (changes can be removed by
+batadv_tt_local_event() in ADD+DEL sequence between reading
+tt_diff_entries_num and actually iterating the change list under lock).
 
-Fix that by checking the queues are existing before trying to stop
-them.
+Thus tt_diff_len could be bigger than the actual changes size that need
+to be sent. Because batadv_send_my_tt_response sends the whole
+packet, uninitialized data can be interpreted as TT changes on other
+nodes leading to weird TT global entries on those nodes such as:
 
-This is XSA-465 / CVE-2024-53240.
+ * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
+ * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
 
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Fixes: d50b7914fae0 ("xen-netfront: Fix NULL sring after live migration")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+All of the above also applies to OGM tvlv container buffer's tvlv_len.
+
+Remove the extra allocated space to avoid sending uninitialized TT
+changes in batadv_send_my_tt_response() and batadv_v_ogm_send_softif().
+
+Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/batman-adv/translation-table.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -870,7 +870,7 @@ static netdev_tx_t xennet_start_xmit(str
- static int xennet_close(struct net_device *dev)
- {
- 	struct netfront_info *np = netdev_priv(dev);
--	unsigned int num_queues = dev->real_num_tx_queues;
-+	unsigned int num_queues = np->queues ? dev->real_num_tx_queues : 0;
- 	unsigned int i;
- 	struct netfront_queue *queue;
- 	netif_tx_stop_all_queues(np->netdev);
-@@ -885,6 +885,9 @@ static void xennet_destroy_queues(struct
- {
- 	unsigned int i;
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 2243cec18ecc..f0590f9bc2b1 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -990,6 +990,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	int tt_diff_len, tt_change_len = 0;
+ 	int tt_diff_entries_num = 0;
+ 	int tt_diff_entries_count = 0;
++	size_t tt_extra_len = 0;
+ 	u16 tvlv_len;
  
-+	if (!info->queues)
-+		return;
+ 	tt_diff_entries_num = atomic_read(&bat_priv->tt.local_changes);
+@@ -1027,6 +1028,9 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	}
+ 	spin_unlock_bh(&bat_priv->tt.changes_list_lock);
+ 
++	tt_extra_len = batadv_tt_len(tt_diff_entries_num -
++				     tt_diff_entries_count);
 +
- 	for (i = 0; i < info->netdev->real_num_tx_queues; i++) {
- 		struct netfront_queue *queue = &info->queues[i];
+ 	/* Keep the buffer for possible tt_request */
+ 	spin_lock_bh(&bat_priv->tt.last_changeset_lock);
+ 	kfree(bat_priv->tt.last_changeset);
+@@ -1035,6 +1039,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	tt_change_len = batadv_tt_len(tt_diff_entries_count);
+ 	/* check whether this new OGM has no changes due to size problems */
+ 	if (tt_diff_entries_count > 0) {
++		tt_diff_len -= tt_extra_len;
+ 		/* if kmalloc() fails we will reply with the full table
+ 		 * instead of providing the diff
+ 		 */
+@@ -1047,6 +1052,8 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	}
+ 	spin_unlock_bh(&bat_priv->tt.last_changeset_lock);
  
++	/* Remove extra packet space for OGM */
++	tvlv_len -= tt_extra_len;
+ container_register:
+ 	batadv_tvlv_container_register(bat_priv, BATADV_TVLV_TT, 1, tt_data,
+ 				       tvlv_len);
+-- 
+2.39.5
+
 
 
 
