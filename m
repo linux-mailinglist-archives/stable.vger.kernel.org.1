@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-104987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3EBA9F5475
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:42:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B0D9F52E6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 737F216E639
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:38:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4A8C7A5908
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446CA1FC11F;
-	Tue, 17 Dec 2024 17:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEF41F63D5;
+	Tue, 17 Dec 2024 17:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDc8llaS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfRI5o1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F316F1F8F0C;
-	Tue, 17 Dec 2024 17:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C9B8615A;
+	Tue, 17 Dec 2024 17:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456728; cv=none; b=poiGGKwCQxgcZA82T13tdqV/59Kot8MSxIM7yaLiIVGVImArOujbi6ZLY36w/lHUK103VkZUTlbN+9rkg8HL6HZEJd7m7Um7I+mAbGQ6SoXfMJlFKYW9hd/7dVLQU5fCwc/0NwVsrP00qNkl/CTqBY/R5jFY8PEuoLwNfP2l9dU=
+	t=1734456211; cv=none; b=YbaatlRwOd1MygLFg2qEVLCwImnkeSLeZHEp4hpvLfzfs9zIZ7A6RwkyCQsLPbQVHOcbDOxjpPSFhJLKbvJhtjMTH/AdscpTu4r3jrSGMj2R2GsX2CRUkbX6rtnpU/W1IOXx9/8KlhBA0BKqLw29B40AQSRVJLTxNI2Iqod3Dr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456728; c=relaxed/simple;
-	bh=XMgx/Ga+ivC7bhYF2eVO6LMViIKLIFDGprLp1moXitI=;
+	s=arc-20240116; t=1734456211; c=relaxed/simple;
+	bh=3vkH6jsu4UiviGJmYhVLVb9GjhUck3ujvxUFru2vGuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktwu1tFOQQIYzE2JqzWxtCjwZqwa2hK9F13ECO3qwR0IZyEfOVB7S2Pp1UmlW7gOYKzLBGbkvOqHUJVrYMPzuAbVRwsT78yPnjkFS/zX3F+d65mlHQ3Gl2yoOnwCFzJw9tAjYhDlbZxSUl1l581HQMTaajx+eO+Z5syKWOqxIvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDc8llaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788ADC4CEF4;
-	Tue, 17 Dec 2024 17:32:07 +0000 (UTC)
+	 MIME-Version; b=bpwUF89xcojeY3H46VbAATiUHNUzOftqxnf0Y1vGFmqSTXbkXd/ClKUX8Uw5ba5WM7t42gSyVHY3TlolvSJovmSccQC4nsjP8x8tlkh/l5kddzDK/DhcI4ONwwqqz/jYFWl6vE7WXmpl4yiB2kMgb6Tarne8Gj2Tg0GY3z67j3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfRI5o1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02786C4CED3;
+	Tue, 17 Dec 2024 17:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456727;
-	bh=XMgx/Ga+ivC7bhYF2eVO6LMViIKLIFDGprLp1moXitI=;
+	s=korg; t=1734456211;
+	bh=3vkH6jsu4UiviGJmYhVLVb9GjhUck3ujvxUFru2vGuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDc8llaS0dQ03e/wc4ojZzjVQd03BtoXd8RILZrGtoTVuO368N+3+lJ/kf1wMf2mw
-	 uEKZig5ZlnxXBlBz3vsBKdunMPlsRg+JEvD02/Wiqwzm7VUmuLz4vmWUGFdIMKRfmw
-	 vP2fTtGD8bBm2lS9RPpMp+viGKI0lKGmuq8WaEMs=
+	b=BfRI5o1WEHi1+Hkc29fQciWuhX6e1HHOSMzb6ro6XmLaV+t7TtMEIQYm3WOiHCh+8
+	 Kv9+YzCavutjhyuN9lr7tpBoZ18Vr5loXQEljBF+/NqZxmQwYCdxXO+Wo243X8uCKx
+	 t9IoHP7WBVr1IpPY1YskXjO0FS7xb4T+o1qVmIjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@idosch.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Weizhao Ouyang <o451686892@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 142/172] bonding: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
+Subject: [PATCH 6.6 094/109] kselftest/arm64: abi: fix SVCR detection
 Date: Tue, 17 Dec 2024 18:08:18 +0100
-Message-ID: <20241217170552.225423484@linuxfoundation.org>
+Message-ID: <20241217170537.317241481@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Weizhao Ouyang <o451686892@gmail.com>
 
-[ Upstream commit 77b11c8bf3a228d1c63464534c2dcc8d9c8bf7ff ]
+[ Upstream commit ce03573a1917532da06057da9f8e74a2ee9e2ac9 ]
 
-Drivers like mlx5 expose NIC's vlan_features such as
-NETIF_F_GSO_UDP_TUNNEL & NETIF_F_GSO_UDP_TUNNEL_CSUM which are
-later not propagated when the underlying devices are bonded and
-a vlan device created on top of the bond.
+When using svcr_in to check ZA and Streaming Mode, we should make sure
+that the value in x2 is correct, otherwise it may trigger an Illegal
+instruction if FEAT_SVE and !FEAT_SME.
 
-Right now, the more cumbersome workaround for this is to create
-the vlan on top of the mlx5 and then enslave the vlan devices
-to a bond.
-
-To fix this, add NETIF_F_GSO_ENCAP_ALL to BOND_VLAN_FEATURES
-such that bond_compute_features() can probe and propagate the
-vlan_features from the slave devices up to the vlan device.
-
-Given the following bond:
-
-  # ethtool -i enp2s0f{0,1}np{0,1}
-  driver: mlx5_core
-  [...]
-
-  # ethtool -k enp2s0f0np0 | grep udp
-  tx-udp_tnl-segmentation: on
-  tx-udp_tnl-csum-segmentation: on
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: on
-  rx-udp-gro-forwarding: off
-
-  # ethtool -k enp2s0f1np1 | grep udp
-  tx-udp_tnl-segmentation: on
-  tx-udp_tnl-csum-segmentation: on
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: on
-  rx-udp-gro-forwarding: off
-
-  # ethtool -k bond0 | grep udp
-  tx-udp_tnl-segmentation: on
-  tx-udp_tnl-csum-segmentation: on
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: off [fixed]
-  rx-udp-gro-forwarding: off
-
-Before:
-
-  # ethtool -k bond0.100 | grep udp
-  tx-udp_tnl-segmentation: off [requested on]
-  tx-udp_tnl-csum-segmentation: off [requested on]
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: off [fixed]
-  rx-udp-gro-forwarding: off
-
-After:
-
-  # ethtool -k bond0.100 | grep udp
-  tx-udp_tnl-segmentation: on
-  tx-udp_tnl-csum-segmentation: on
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: off [fixed]
-  rx-udp-gro-forwarding: off
-
-Various users have run into this reporting performance issues when
-configuring Cilium in vxlan tunneling mode and having the combination
-of bond & vlan for the core devices connecting the Kubernetes cluster
-to the outside world.
-
-Fixes: a9b3ace44c7d ("bonding: fix vlan_features computing")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Ido Schimmel <idosch@idosch.org>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20241210141245.327886-3-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 43e3f85523e4 ("kselftest/arm64: Add SME support to syscall ABI test")
+Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241211111639.12344-1-o451686892@gmail.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../selftests/arm64/abi/syscall-abi-asm.S     | 32 +++++++++----------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index dfad7b6f9f35..4d73abae503d 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1534,6 +1534,7 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
+diff --git a/tools/testing/selftests/arm64/abi/syscall-abi-asm.S b/tools/testing/selftests/arm64/abi/syscall-abi-asm.S
+index df3230fdac39..66ab2e0bae5f 100644
+--- a/tools/testing/selftests/arm64/abi/syscall-abi-asm.S
++++ b/tools/testing/selftests/arm64/abi/syscall-abi-asm.S
+@@ -81,32 +81,31 @@ do_syscall:
+ 	stp	x27, x28, [sp, #96]
  
- #define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
- 				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
-+				 NETIF_F_GSO_ENCAP_ALL | \
- 				 NETIF_F_HIGHDMA | NETIF_F_LRO)
+ 	// Set SVCR if we're doing SME
+-	cbz	x1, 1f
++	cbz	x1, load_gpr
+ 	adrp	x2, svcr_in
+ 	ldr	x2, [x2, :lo12:svcr_in]
+ 	msr	S3_3_C4_C2_2, x2
+-1:
  
- #define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+ 	// Load ZA and ZT0 if enabled - uses x12 as scratch due to SME LDR
+-	tbz	x2, #SVCR_ZA_SHIFT, 1f
++	tbz	x2, #SVCR_ZA_SHIFT, load_gpr
+ 	mov	w12, #0
+ 	ldr	x2, =za_in
+-2:	_ldr_za 12, 2
++1:	_ldr_za 12, 2
+ 	add	x2, x2, x1
+ 	add	x12, x12, #1
+ 	cmp	x1, x12
+-	bne	2b
++	bne	1b
+ 
+ 	// ZT0
+ 	mrs	x2, S3_0_C0_C4_5	// ID_AA64SMFR0_EL1
+ 	ubfx	x2, x2, #ID_AA64SMFR0_EL1_SMEver_SHIFT, \
+ 			 #ID_AA64SMFR0_EL1_SMEver_WIDTH
+-	cbz	x2, 1f
++	cbz	x2, load_gpr
+ 	adrp	x2, zt_in
+ 	add	x2, x2, :lo12:zt_in
+ 	_ldr_zt 2
+-1:
+ 
++load_gpr:
+ 	// Load GPRs x8-x28, and save our SP/FP for later comparison
+ 	ldr	x2, =gpr_in
+ 	add	x2, x2, #64
+@@ -125,9 +124,9 @@ do_syscall:
+ 	str	x30, [x2], #8		// LR
+ 
+ 	// Load FPRs if we're not doing neither SVE nor streaming SVE
+-	cbnz	x0, 1f
++	cbnz	x0, check_sve_in
+ 	ldr	x2, =svcr_in
+-	tbnz	x2, #SVCR_SM_SHIFT, 1f
++	tbnz	x2, #SVCR_SM_SHIFT, check_sve_in
+ 
+ 	ldr	x2, =fpr_in
+ 	ldp	q0, q1, [x2]
+@@ -148,8 +147,8 @@ do_syscall:
+ 	ldp	q30, q31, [x2, #16 * 30]
+ 
+ 	b	2f
+-1:
+ 
++check_sve_in:
+ 	// Load the SVE registers if we're doing SVE/SME
+ 
+ 	ldr	x2, =z_in
+@@ -256,32 +255,31 @@ do_syscall:
+ 	stp	q30, q31, [x2, #16 * 30]
+ 
+ 	// Save SVCR if we're doing SME
+-	cbz	x1, 1f
++	cbz	x1, check_sve_out
+ 	mrs	x2, S3_3_C4_C2_2
+ 	adrp	x3, svcr_out
+ 	str	x2, [x3, :lo12:svcr_out]
+-1:
+ 
+ 	// Save ZA if it's enabled - uses x12 as scratch due to SME STR
+-	tbz	x2, #SVCR_ZA_SHIFT, 1f
++	tbz	x2, #SVCR_ZA_SHIFT, check_sve_out
+ 	mov	w12, #0
+ 	ldr	x2, =za_out
+-2:	_str_za 12, 2
++1:	_str_za 12, 2
+ 	add	x2, x2, x1
+ 	add	x12, x12, #1
+ 	cmp	x1, x12
+-	bne	2b
++	bne	1b
+ 
+ 	// ZT0
+ 	mrs	x2, S3_0_C0_C4_5	// ID_AA64SMFR0_EL1
+ 	ubfx	x2, x2, #ID_AA64SMFR0_EL1_SMEver_SHIFT, \
+ 			#ID_AA64SMFR0_EL1_SMEver_WIDTH
+-	cbz	x2, 1f
++	cbz	x2, check_sve_out
+ 	adrp	x2, zt_out
+ 	add	x2, x2, :lo12:zt_out
+ 	_str_zt 2
+-1:
+ 
++check_sve_out:
+ 	// Save the SVE state if we have some
+ 	cbz	x0, 1f
+ 
 -- 
 2.39.5
 
