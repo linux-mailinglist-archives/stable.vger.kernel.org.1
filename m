@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-104891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1155B9F5399
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C3E9F522E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:16:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA1016E8CC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1DEE7A1946
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3DF1F8AF6;
-	Tue, 17 Dec 2024 17:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB411F76A9;
+	Tue, 17 Dec 2024 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0C8Ay+Ux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amVU5/JI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9DE1F869F;
-	Tue, 17 Dec 2024 17:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4461F76B2;
+	Tue, 17 Dec 2024 17:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456418; cv=none; b=Scl3EFJ5YfiTnKYnYD3Q/x1T22AyXQL1bXlYlBCQYmCvto3sEwo07FJ5/A/leK7qDalaPsJxSzfdL3n655d4M7ZxhGyDe6oXFh+HKNdYbJFNptJKq3VvK7YDrrf9HZINIeQwRcpYNKaaa3t5SfDfpuqm8jcF4slPAYbY6X4ndNw=
+	t=1734455721; cv=none; b=BawEOJllQzpB27BQRDaPVrLOhHQWJ0A6JD2wDbZlBpdssFr+jcvr6RfquVtbdfOPujEnsyvf4KD/GvNyAXnHhAUD3kxnijK2ucQgjNqgYGWyfMDVCgpSgsC1u6MsEj9pOTaWoXf6VLakL0fSKrv4KJl9dFv3edSMkkXqQLP3Bp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456418; c=relaxed/simple;
-	bh=uI+QaZm3L+ijbyXiBGLCnvuEC3wqYxUmb1Np4PvYb0I=;
+	s=arc-20240116; t=1734455721; c=relaxed/simple;
+	bh=QNnmArYG0W3Xv+53c2hYe+bHClL5OY6Y55o+YbrB+yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEtEKBN/UGLnQDr+kq3k3FXsfOhxgjmqkIi4d2UFINBYp/7wOxN7uvYKe2HXgLilrtBzjyodWqwWkuJ2fSmTJ4VZ7HU15qHiteuQAu8hIIq1Adm+nhtqqxOsAdp2tt0xTp4PaEG3ZmctRVI4/mg8ffLG0gt/fb/WF+EabY3rGbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0C8Ay+Ux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9329C4CED7;
-	Tue, 17 Dec 2024 17:26:57 +0000 (UTC)
+	 MIME-Version; b=DFeFgXgxIqyMqoqd+FVs9pG0fJ9rpZxaNFsmTte2P8AMx8kpJ68JIbevLR3cNOgViaWPt2u74T/U1CIcmXWb89mdSUQQVraApKJzFmLCULPHsWLdtAlMvgTbDZsmlCyA/4031XDPTlbnAZpVg4N+wNZxppu88RnA3HMRy1SNw84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amVU5/JI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72303C4CED3;
+	Tue, 17 Dec 2024 17:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456418;
-	bh=uI+QaZm3L+ijbyXiBGLCnvuEC3wqYxUmb1Np4PvYb0I=;
+	s=korg; t=1734455720;
+	bh=QNnmArYG0W3Xv+53c2hYe+bHClL5OY6Y55o+YbrB+yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0C8Ay+UxnTVwIn/gKTAT/uNBnFai8t9rGgNQRJtXZN7/h9sv9XNWH9EnR16Y0B17D
-	 vCwxmRfgxCpriAtxQwgxlBsImQTQy9OYdZnXZ+Q/8xH3Ep7LugYvHY1p7QqQdyHINR
-	 gFmGrWPfcWXn6XMIGxMJjaEMIdLbLx5UDbkdU9Ew=
+	b=amVU5/JIBq3U5TIiekXWuD4pNRvHhTV58GWjhR1s3FQMsXIAoYsIZLDGA6wUnAjVS
+	 oOqR2qj4kRQpxwJTgv62m1jPXMwFPKfYlz6qjaYsXF7+JncWAEOyobnJsK0C9wm0k8
+	 Lxkr63b2pVTdWeoClDcW6BY3l0emAKKKnNXccQ9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.12 054/172] iommu/vt-d: Remove cache tags before disabling ATS
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 6.1 10/76] usb: dwc2: Fix HCD port connection race
 Date: Tue, 17 Dec 2024 18:06:50 +0100
-Message-ID: <20241217170548.511056011@linuxfoundation.org>
+Message-ID: <20241217170526.675436988@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 1f2557e08a617a4b5e92a48a1a9a6f86621def18 upstream.
+commit 1cf1bd88f129f3bd647fead4dca270a5894274bb upstream.
 
-The current implementation removes cache tags after disabling ATS,
-leading to potential memory leaks and kernel crashes. Specifically,
-CACHE_TAG_DEVTLB type cache tags may still remain in the list even
-after the domain is freed, causing a use-after-free condition.
+On Raspberry Pis without onboard USB hub frequent device reconnects
+can trigger a interrupt storm after DWC2 entered host clock gating.
+This is caused by a race between _dwc2_hcd_suspend() and the port
+interrupt, which sets port_connect_status. The issue occurs if
+port_connect_status is still 1, but there is no connection anymore:
 
-This issue really shows up when multiple VFs from different PFs
-passed through to a single user-space process via vfio-pci. In such
-cases, the kernel may crash with kernel messages like:
+usb 1-1: USB disconnect, device number 25
+dwc2 3f980000.usb: _dwc2_hcd_suspend: port_connect_status: 1
+dwc2 3f980000.usb: Entering host clock gating.
+Disabling IRQ #66
+irq 66: nobody cared (try booting with the "irqpoll" option)
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.0-gc1bb81b13202-dirty #322
+Hardware name: BCM2835
+Call trace:
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x50/0x64
+ dump_stack_lvl from __report_bad_irq+0x38/0xc0
+ __report_bad_irq from note_interrupt+0x2ac/0x2f4
+ note_interrupt from handle_irq_event+0x88/0x8c
+ handle_irq_event from handle_level_irq+0xb4/0x1ac
+ handle_level_irq from generic_handle_domain_irq+0x24/0x34
+ generic_handle_domain_irq from bcm2836_chained_handle_irq+0x24/0x28
+ bcm2836_chained_handle_irq from generic_handle_domain_irq+0x24/0x34
+ generic_handle_domain_irq from generic_handle_arch_irq+0x34/0x44
+ generic_handle_arch_irq from __irq_svc+0x88/0xb0
+ Exception stack(0xc1d01f20 to 0xc1d01f68)
+ 1f20: 0004ef3c 00000001 00000000 00000000 c1d09780 c1f6bb5c c1d04e54 c1c60ca8
+ 1f40: c1d04e94 00000000 00000000 c1d092a8 c1f6af20 c1d01f70 c1211b98 c1212f40
+ 1f60: 60000013 ffffffff
+ __irq_svc from default_idle_call+0x1c/0xb0
+ default_idle_call from do_idle+0x21c/0x284
+ do_idle from cpu_startup_entry+0x28/0x2c
+ cpu_startup_entry from kernel_init+0x0/0x12c
+handlers:
+ [<e3a25c00>] dwc2_handle_common_intr
+ [<58bf98a3>] usb_hcd_irq
+Disabling IRQ #66
 
- BUG: kernel NULL pointer dereference, address: 0000000000000014
- PGD 19036a067 P4D 1940a3067 PUD 136c9b067 PMD 0
- Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 74 UID: 0 PID: 3183 Comm: testCli Not tainted 6.11.9 #2
- RIP: 0010:cache_tag_flush_range+0x9b/0x250
- Call Trace:
-  <TASK>
-  ? __die+0x1f/0x60
-  ? page_fault_oops+0x163/0x590
-  ? exc_page_fault+0x72/0x190
-  ? asm_exc_page_fault+0x22/0x30
-  ? cache_tag_flush_range+0x9b/0x250
-  ? cache_tag_flush_range+0x5d/0x250
-  intel_iommu_tlb_sync+0x29/0x40
-  intel_iommu_unmap_pages+0xfe/0x160
-  __iommu_unmap+0xd8/0x1a0
-  vfio_unmap_unpin+0x182/0x340 [vfio_iommu_type1]
-  vfio_remove_dma+0x2a/0xb0 [vfio_iommu_type1]
-  vfio_iommu_type1_ioctl+0xafa/0x18e0 [vfio_iommu_type1]
+So avoid this by reading the connection status directly.
 
-Move cache_tag_unassign_domain() before iommu_disable_pci_caps() to fix
-it.
-
-Fixes: 3b1d9e2b2d68 ("iommu/vt-d: Add cache tag assignment interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20241129020506.576413-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 113f86d0c302 ("usb: dwc2: Update partial power down entering by system suspend")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20241202001631.75473-4-wahrenst@gmx.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/dwc2/hcd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3372,6 +3372,9 @@ void device_block_translation(struct dev
- 	struct intel_iommu *iommu = info->iommu;
- 	unsigned long flags;
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -4345,7 +4345,7 @@ static int _dwc2_hcd_suspend(struct usb_
+ 	if (hsotg->bus_suspended)
+ 		goto skip_power_saving;
  
-+	if (info->domain)
-+		cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
-+
- 	iommu_disable_pci_caps(info);
- 	if (!dev_is_real_dma_subdevice(dev)) {
- 		if (sm_supported(iommu))
-@@ -3388,7 +3391,6 @@ void device_block_translation(struct dev
- 	list_del(&info->link);
- 	spin_unlock_irqrestore(&info->domain->lock, flags);
+-	if (hsotg->flags.b.port_connect_status == 0)
++	if (!(dwc2_read_hprt0(hsotg) & HPRT0_CONNSTS))
+ 		goto skip_power_saving;
  
--	cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
- 	domain_detach_iommu(info->domain, iommu);
- 	info->domain = NULL;
- }
+ 	switch (hsotg->params.power_down) {
 
 
 
