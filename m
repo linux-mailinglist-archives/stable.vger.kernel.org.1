@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2195C9F528D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7039F5300
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 872E81893537
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:18:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51C7B18850FB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EACE1F75A6;
-	Tue, 17 Dec 2024 17:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729A21F7577;
+	Tue, 17 Dec 2024 17:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UaRAcsW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJnPxVQN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C55E13DBB6;
-	Tue, 17 Dec 2024 17:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303AB1F75B5;
+	Tue, 17 Dec 2024 17:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455837; cv=none; b=Zg8RrtmcgZ/HXO2pfF0XZSVMZqbOiRanu+60hTwr+xJbNtpFoktOKwb3yH1puHAgCF5lQ1tqW//ti5eyDTSR4GlYCX/IN4S4EipPCwFcpGw04m9i0++zHXeBYGZljKknCOlaAhyUMhUhF044fPt1bgDB2qorsDdT+prz319FwOc=
+	t=1734456049; cv=none; b=Oz9Xb1NlYD4oJpV5qSJHEalMMYV8segX4zzG+ZLDfV/by6EPZnLnKAZBa4/EGOmVOHJdeFPk61InKQHGPsyAbtiT2HykXogfS5oIdCl35iNKmfnDktPqQeBzuUU2sbw01x2sYmPx5k5F+3Zyl1a5gL51nuTT3zLxdCKlEjDpgpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455837; c=relaxed/simple;
-	bh=d/NR9yskenGmxsHNEPQlUA9XTO8yhdZi/ZrVNxlB36M=;
+	s=arc-20240116; t=1734456049; c=relaxed/simple;
+	bh=YD5ZbqTxIuyKPIDF4N7dCB2OJhl79PQL4LBbbaNu7UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6YPNTqR/HyAfngSzIjLQjQBOkNKzxl6kv2vY7Q99KQkSB3StWCelycAMzU0o2vcZpo0A2t7Oo8tk17EzNa+MNDVVl/pizRTM2Dye6CFOIT9NWOXuKZx4vzl/8c23qLxAq1ilgFJBvthjgsPbLb9IIjQZkcFpU6wMj2olaSZYnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UaRAcsW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC8FC4CED3;
-	Tue, 17 Dec 2024 17:17:15 +0000 (UTC)
+	 MIME-Version; b=TfAj1q7elSWPPwWfu+hJr8MpN51EsezBl+7LJ8NRG6wJS2SXxaPR0wspbJ8qKJ0LtOwwjmVJ57v3nybBmaZT96VOtdZJ4ddd1Nn/tPOlCtK1c1Gt9CQ2otNEZaOGnZ8wWaPB0PCmEfRURGmx5+rnbYbtrDJGBxVbbO+n7HrXU54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJnPxVQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1F0C4CED3;
+	Tue, 17 Dec 2024 17:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455835;
-	bh=d/NR9yskenGmxsHNEPQlUA9XTO8yhdZi/ZrVNxlB36M=;
+	s=korg; t=1734456048;
+	bh=YD5ZbqTxIuyKPIDF4N7dCB2OJhl79PQL4LBbbaNu7UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UaRAcsWM4sWmr01SkuqO9QhKCNnsT/rXkcWmAxhnSNXgCi0NRb+RRz0w09EmUSTn
-	 Yn7En8fC5mRB/NaQenbJVt8IxvZHp/gU/a1bXtvOeG6b95bgjgiFlI8ihoZWkDvuOr
-	 ZyR7c5Rr10WLjBG/9iyvnKnskroh+B+zIgxhs6pM=
+	b=pJnPxVQNcN8sEjY/7/c1MnnrYSk/sBVPwHJp4Wd3PhBFjFI5QuZVU1HIU3k2nMTJ5
+	 omlOhJX+AFJVNUJWpgJtJSZlFq9SiPPxv72jrgmWZKmsLj0Z+yef1BNKLRInNkPL/W
+	 N1FH0KRTGd9vbUi9p5+KLbiAtZKbfiZMNoi8vzFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/76] net: mscc: ocelot: be resilient to loss of PTP packets during transmission
-Date: Tue, 17 Dec 2024 18:07:27 +0100
-Message-ID: <20241217170528.217201398@linuxfoundation.org>
+Subject: [PATCH 6.6 044/109] tipc: fix NULL deref in cleanup_bearer()
+Date: Tue, 17 Dec 2024 18:07:28 +0100
+Message-ID: <20241217170535.213361477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,404 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b454abfab52543c44b581afc807b9f97fc1e7a3a ]
+[ Upstream commit b04d86fff66b15c07505d226431f808c15b1703c ]
 
-The Felix DSA driver presents unique challenges that make the simplistic
-ocelot PTP TX timestamping procedure unreliable: any transmitted packet
-may be lost in hardware before it ever leaves our local system.
+syzbot found [1] that after blamed commit, ub->ubsock->sk
+was NULL when attempting the atomic_dec() :
 
-This may happen because there is congestion on the DSA conduit, the
-switch CPU port or even user port (Qdiscs like taprio may delay packets
-indefinitely by design).
+atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
 
-The technical problem is that the kernel, i.e. ocelot_port_add_txtstamp_skb(),
-runs out of timestamp IDs eventually, because it never detects that
-packets are lost, and keeps the IDs of the lost packets on hold
-indefinitely. The manifestation of the issue once the entire timestamp
-ID range becomes busy looks like this in dmesg:
+Fix this by caching the tipc_net pointer.
 
-mscc_felix 0000:00:00.5: port 0 delivering skb without TX timestamp
-mscc_felix 0000:00:00.5: port 1 delivering skb without TX timestamp
+[1]
 
-At the surface level, we need a timeout timer so that the kernel knows a
-timestamp ID is available again. But there is a deeper problem with the
-implementation, which is the monotonically increasing ocelot_port->ts_id.
-In the presence of packet loss, it will be impossible to detect that and
-reuse one of the holes created in the range of free timestamp IDs.
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+CPU: 0 UID: 0 PID: 5896 Comm: kworker/0:3 Not tainted 6.13.0-rc1-next-20241203-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events cleanup_bearer
+ RIP: 0010:read_pnet include/net/net_namespace.h:387 [inline]
+ RIP: 0010:sock_net include/net/sock.h:655 [inline]
+ RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
+Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 3c f7 99 f6 48 8b 1b 48 83 c3 30 e8 f0 e4 60 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 1a f7 99 f6 49 83 c7 e8 48 8b 1b
+RSP: 0018:ffffc9000410fb70 EFLAGS: 00010206
+RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88802fe45a00
+RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffc9000410f900
+RBP: ffff88807e1f0908 R08: ffffc9000410f907 R09: 1ffff92000821f20
+R10: dffffc0000000000 R11: fffff52000821f21 R12: ffff888031d19980
+R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff88807e1f0918
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556ca050b000 CR3: 0000000031c0c000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
-What we actually need is a bitmap of 63 timestamp IDs tracking which one
-is available. That is able to use up holes caused by packet loss, but
-also gives us a unique opportunity to not implement an actual timer_list
-for the timeout timer (very complicated in terms of locking).
-
-We could only declare a timestamp ID stale on demand (lazily), aka when
-there's no other timestamp ID available. There are pros and cons to this
-approach: the implementation is much more simple than per-packet timers
-would be, but most of the stale packets would be quasi-leaked - not
-really leaked, but blocked in driver memory, since this algorithm sees
-no reason to free them.
-
-An improved technique would be to check for stale timestamp IDs every
-time we allocate a new one. Assuming a constant flux of PTP packets,
-this avoids stale packets being blocked in memory, but of course,
-packets lost at the end of the flux are still blocked until the flux
-resumes (nobody left to kick them out).
-
-Since implementing per-packet timers is way too complicated, this should
-be good enough.
-
-Testing procedure:
-
-Persistently block traffic class 5 and try to run PTP on it:
-$ tc qdisc replace dev swp3 parent root taprio num_tc 8 \
-	map 0 1 2 3 4 5 6 7 queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 \
-	base-time 0 sched-entry S 0xdf 100000 flags 0x2
-[  126.948141] mscc_felix 0000:00:00.5: port 3 tc 5 min gate length 0 ns not enough for max frame size 1526 at 1000 Mbps, dropping frames over 1 octets including FCS
-$ ptp4l -i swp3 -2 -P -m --socket_priority 5 --fault_reset_interval ASAP --logSyncInterval -3
-ptp4l[70.351]: port 1 (swp3): INITIALIZING to LISTENING on INIT_COMPLETE
-ptp4l[70.354]: port 0 (/var/run/ptp4l): INITIALIZING to LISTENING on INIT_COMPLETE
-ptp4l[70.358]: port 0 (/var/run/ptp4lro): INITIALIZING to LISTENING on INIT_COMPLETE
-[   70.394583] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-ptp4l[70.406]: timed out while polling for tx timestamp
-ptp4l[70.406]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[70.406]: port 1 (swp3): send peer delay response failed
-ptp4l[70.407]: port 1 (swp3): clearing fault immediately
-ptp4l[70.952]: port 1 (swp3): new foreign master d858d7.fffe.00ca6d-1
-[   71.394858] mscc_felix 0000:00:00.5: port 3 timestamp id 1
-ptp4l[71.400]: timed out while polling for tx timestamp
-ptp4l[71.400]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[71.401]: port 1 (swp3): send peer delay response failed
-ptp4l[71.401]: port 1 (swp3): clearing fault immediately
-[   72.393616] mscc_felix 0000:00:00.5: port 3 timestamp id 2
-ptp4l[72.401]: timed out while polling for tx timestamp
-ptp4l[72.402]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[72.402]: port 1 (swp3): send peer delay response failed
-ptp4l[72.402]: port 1 (swp3): clearing fault immediately
-ptp4l[72.952]: port 1 (swp3): new foreign master d858d7.fffe.00ca6d-1
-[   73.395291] mscc_felix 0000:00:00.5: port 3 timestamp id 3
-ptp4l[73.400]: timed out while polling for tx timestamp
-ptp4l[73.400]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[73.400]: port 1 (swp3): send peer delay response failed
-ptp4l[73.400]: port 1 (swp3): clearing fault immediately
-[   74.394282] mscc_felix 0000:00:00.5: port 3 timestamp id 4
-ptp4l[74.400]: timed out while polling for tx timestamp
-ptp4l[74.401]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[74.401]: port 1 (swp3): send peer delay response failed
-ptp4l[74.401]: port 1 (swp3): clearing fault immediately
-ptp4l[74.953]: port 1 (swp3): new foreign master d858d7.fffe.00ca6d-1
-[   75.396830] mscc_felix 0000:00:00.5: port 3 invalidating stale timestamp ID 0 which seems lost
-[   75.405760] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-ptp4l[75.410]: timed out while polling for tx timestamp
-ptp4l[75.411]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[75.411]: port 1 (swp3): send peer delay response failed
-ptp4l[75.411]: port 1 (swp3): clearing fault immediately
-(...)
-
-Remove the blocking condition and see that the port recovers:
-$ same tc command as above, but use "sched-entry S 0xff" instead
-$ same ptp4l command as above
-ptp4l[99.489]: port 1 (swp3): INITIALIZING to LISTENING on INIT_COMPLETE
-ptp4l[99.490]: port 0 (/var/run/ptp4l): INITIALIZING to LISTENING on INIT_COMPLETE
-ptp4l[99.492]: port 0 (/var/run/ptp4lro): INITIALIZING to LISTENING on INIT_COMPLETE
-[  100.403768] mscc_felix 0000:00:00.5: port 3 invalidating stale timestamp ID 0 which seems lost
-[  100.412545] mscc_felix 0000:00:00.5: port 3 invalidating stale timestamp ID 1 which seems lost
-[  100.421283] mscc_felix 0000:00:00.5: port 3 invalidating stale timestamp ID 2 which seems lost
-[  100.430015] mscc_felix 0000:00:00.5: port 3 invalidating stale timestamp ID 3 which seems lost
-[  100.438744] mscc_felix 0000:00:00.5: port 3 invalidating stale timestamp ID 4 which seems lost
-[  100.447470] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  100.505919] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-ptp4l[100.963]: port 1 (swp3): new foreign master d858d7.fffe.00ca6d-1
-[  101.405077] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  101.507953] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  102.405405] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  102.509391] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  103.406003] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  103.510011] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  104.405601] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  104.510624] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-ptp4l[104.965]: selected best master clock d858d7.fffe.00ca6d
-ptp4l[104.966]: port 1 (swp3): assuming the grand master role
-ptp4l[104.967]: port 1 (swp3): LISTENING to GRAND_MASTER on RS_GRAND_MASTER
-[  105.106201] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  105.232420] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  105.359001] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  105.405500] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  105.485356] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  105.511220] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  105.610938] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-[  105.737237] mscc_felix 0000:00:00.5: port 3 timestamp id 0
-(...)
-
-Notice that in this new usage pattern, a non-congested port should
-basically use timestamp ID 0 all the time, progressing to higher numbers
-only if there are unacknowledged timestamps in flight. Compare this to
-the old usage, where the timestamp ID used to monotonically increase
-modulo OCELOT_MAX_PTP_ID.
-
-In terms of implementation, this simplifies the bookkeeping of the
-ocelot_port :: ts_id and ptp_skbs_in_flight. Since we need to traverse
-the list of two-step timestampable skbs for each new packet anyway, the
-information can already be computed and does not need to be stored.
-Also, ocelot_port->tx_skbs is always accessed under the switch-wide
-ocelot->ts_id_lock IRQ-unsafe spinlock, so we don't need the skb queue's
-lock and can use the unlocked primitives safely.
-
-This problem was actually detected using the tc-taprio offload, and is
-causing trouble in TSN scenarios, which Felix (NXP LS1028A / VSC9959)
-supports but Ocelot (VSC7514) does not. Thus, I've selected the commit
-to blame as the one adding initial timestamping support for the Felix
-switch.
-
-Fixes: c0bcf537667c ("net: dsa: ocelot: add hardware timestamping support for Felix")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241205145519.1236778-5-vladimir.oltean@nxp.com
+Fixes: 6a2fa13312e5 ("tipc: Fix use-after-free of kernel socket in cleanup_bearer().")
+Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67508b5f.050a0220.17bd51.0070.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20241204170548.4152658-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/ocelot_ptp.c | 134 +++++++++++++++----------
- include/linux/dsa/ocelot.h             |   1 +
- include/soc/mscc/ocelot.h              |   2 -
- 3 files changed, 80 insertions(+), 57 deletions(-)
+ net/tipc/udp_media.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
-index c54e96ff3976..bc44aa635d49 100644
---- a/drivers/net/ethernet/mscc/ocelot_ptp.c
-+++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
-@@ -14,6 +14,8 @@
- #include <soc/mscc/ocelot.h>
- #include "ocelot.h"
- 
-+#define OCELOT_PTP_TX_TSTAMP_TIMEOUT		(5 * HZ)
-+
- int ocelot_ptp_gettime64(struct ptp_clock_info *ptp, struct timespec64 *ts)
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index 70a39e29a635..b16ca400ff55 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -807,6 +807,7 @@ static void cleanup_bearer(struct work_struct *work)
  {
- 	struct ocelot *ocelot = container_of(ptp, struct ocelot, ptp_info);
-@@ -607,34 +609,88 @@ int ocelot_get_ts_info(struct ocelot *ocelot, int port,
- }
- EXPORT_SYMBOL(ocelot_get_ts_info);
+ 	struct udp_bearer *ub = container_of(work, struct udp_bearer, work);
+ 	struct udp_replicast *rcast, *tmp;
++	struct tipc_net *tn;
  
--static int ocelot_port_add_txtstamp_skb(struct ocelot *ocelot, int port,
-+static struct sk_buff *ocelot_port_dequeue_ptp_tx_skb(struct ocelot *ocelot,
-+						      int port, u8 ts_id,
-+						      u32 seqid)
-+{
-+	struct ocelot_port *ocelot_port = ocelot->ports[port];
-+	struct sk_buff *skb, *skb_tmp, *skb_match = NULL;
-+	struct ptp_header *hdr;
-+
-+	spin_lock(&ocelot->ts_id_lock);
-+
-+	skb_queue_walk_safe(&ocelot_port->tx_skbs, skb, skb_tmp) {
-+		if (OCELOT_SKB_CB(skb)->ts_id != ts_id)
-+			continue;
-+
-+		/* Check that the timestamp ID is for the expected PTP
-+		 * sequenceId. We don't have to test ptp_parse_header() against
-+		 * NULL, because we've pre-validated the packet's ptp_class.
-+		 */
-+		hdr = ptp_parse_header(skb, OCELOT_SKB_CB(skb)->ptp_class);
-+		if (seqid != ntohs(hdr->sequence_id))
-+			continue;
-+
-+		__skb_unlink(skb, &ocelot_port->tx_skbs);
-+		ocelot->ptp_skbs_in_flight--;
-+		skb_match = skb;
-+		break;
-+	}
-+
-+	spin_unlock(&ocelot->ts_id_lock);
-+
-+	return skb_match;
-+}
-+
-+static int ocelot_port_queue_ptp_tx_skb(struct ocelot *ocelot, int port,
- 					struct sk_buff *clone)
- {
- 	struct ocelot_port *ocelot_port = ocelot->ports[port];
-+	DECLARE_BITMAP(ts_id_in_flight, OCELOT_MAX_PTP_ID);
-+	struct sk_buff *skb, *skb_tmp;
-+	unsigned long n;
- 
- 	spin_lock(&ocelot->ts_id_lock);
- 
--	if (ocelot_port->ptp_skbs_in_flight == OCELOT_MAX_PTP_ID ||
--	    ocelot->ptp_skbs_in_flight == OCELOT_PTP_FIFO_SIZE) {
-+	/* To get a better chance of acquiring a timestamp ID, first flush the
-+	 * stale packets still waiting in the TX timestamping queue. They are
-+	 * probably lost.
-+	 */
-+	skb_queue_walk_safe(&ocelot_port->tx_skbs, skb, skb_tmp) {
-+		if (time_before(OCELOT_SKB_CB(skb)->ptp_tx_time +
-+				OCELOT_PTP_TX_TSTAMP_TIMEOUT, jiffies)) {
-+			dev_warn_ratelimited(ocelot->dev,
-+					     "port %d invalidating stale timestamp ID %u which seems lost\n",
-+					     port, OCELOT_SKB_CB(skb)->ts_id);
-+			__skb_unlink(skb, &ocelot_port->tx_skbs);
-+			kfree_skb(skb);
-+			ocelot->ptp_skbs_in_flight--;
-+		} else {
-+			__set_bit(OCELOT_SKB_CB(skb)->ts_id, ts_id_in_flight);
-+		}
-+	}
-+
-+	if (ocelot->ptp_skbs_in_flight == OCELOT_PTP_FIFO_SIZE) {
- 		spin_unlock(&ocelot->ts_id_lock);
- 		return -EBUSY;
+ 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
+ 		dst_cache_destroy(&rcast->dst_cache);
+@@ -814,10 +815,14 @@ static void cleanup_bearer(struct work_struct *work)
+ 		kfree_rcu(rcast, rcu);
  	}
  
--	skb_shinfo(clone)->tx_flags |= SKBTX_IN_PROGRESS;
--	/* Store timestamp ID in OCELOT_SKB_CB(clone)->ts_id */
--	OCELOT_SKB_CB(clone)->ts_id = ocelot_port->ts_id;
--
--	ocelot_port->ts_id++;
--	if (ocelot_port->ts_id == OCELOT_MAX_PTP_ID)
--		ocelot_port->ts_id = 0;
-+	n = find_first_zero_bit(ts_id_in_flight, OCELOT_MAX_PTP_ID);
-+	if (n == OCELOT_MAX_PTP_ID) {
-+		spin_unlock(&ocelot->ts_id_lock);
-+		return -EBUSY;
-+	}
- 
--	ocelot_port->ptp_skbs_in_flight++;
-+	/* Found an available timestamp ID, use it */
-+	OCELOT_SKB_CB(clone)->ts_id = n;
-+	OCELOT_SKB_CB(clone)->ptp_tx_time = jiffies;
- 	ocelot->ptp_skbs_in_flight++;
--
--	skb_queue_tail(&ocelot_port->tx_skbs, clone);
-+	__skb_queue_tail(&ocelot_port->tx_skbs, clone);
- 
- 	spin_unlock(&ocelot->ts_id_lock);
- 
-+	dev_dbg_ratelimited(ocelot->dev, "port %d timestamp id %lu\n", port, n);
++	tn = tipc_net(sock_net(ub->ubsock->sk));
 +
- 	return 0;
+ 	dst_cache_destroy(&ub->rcast.dst_cache);
+ 	udp_tunnel_sock_release(ub->ubsock);
++
++	/* Note: could use a call_rcu() to avoid another synchronize_net() */
+ 	synchronize_net();
+-	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
++	atomic_dec(&tn->wq_count);
+ 	kfree(ub);
  }
- 
-@@ -690,12 +746,14 @@ int ocelot_port_txtstamp_request(struct ocelot *ocelot, int port,
- 		if (!(*clone))
- 			return -ENOMEM;
- 
--		err = ocelot_port_add_txtstamp_skb(ocelot, port, *clone);
-+		/* Store timestamp ID in OCELOT_SKB_CB(clone)->ts_id */
-+		err = ocelot_port_queue_ptp_tx_skb(ocelot, port, *clone);
- 		if (err) {
- 			kfree_skb(*clone);
- 			return err;
- 		}
- 
-+		skb_shinfo(*clone)->tx_flags |= SKBTX_IN_PROGRESS;
- 		OCELOT_SKB_CB(skb)->ptp_cmd = ptp_cmd;
- 		OCELOT_SKB_CB(*clone)->ptp_class = ptp_class;
- 	}
-@@ -731,26 +789,14 @@ static void ocelot_get_hwtimestamp(struct ocelot *ocelot,
- 	spin_unlock_irqrestore(&ocelot->ptp_clock_lock, flags);
- }
- 
--static bool ocelot_validate_ptp_skb(struct sk_buff *clone, u16 seqid)
--{
--	struct ptp_header *hdr;
--
--	hdr = ptp_parse_header(clone, OCELOT_SKB_CB(clone)->ptp_class);
--	if (WARN_ON(!hdr))
--		return false;
--
--	return seqid == ntohs(hdr->sequence_id);
--}
--
- void ocelot_get_txtstamp(struct ocelot *ocelot)
- {
- 	int budget = OCELOT_PTP_QUEUE_SZ;
- 
- 	while (budget--) {
--		struct sk_buff *skb, *skb_tmp, *skb_match = NULL;
- 		struct skb_shared_hwtstamps shhwtstamps;
- 		u32 val, id, seqid, txport;
--		struct ocelot_port *port;
-+		struct sk_buff *skb_match;
- 		struct timespec64 ts;
- 
- 		val = ocelot_read(ocelot, SYS_PTP_STATUS);
-@@ -766,36 +812,14 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 		txport = SYS_PTP_STATUS_PTP_MESS_TXPORT_X(val);
- 		seqid = SYS_PTP_STATUS_PTP_MESS_SEQ_ID(val);
- 
--		port = ocelot->ports[txport];
--
--		spin_lock(&ocelot->ts_id_lock);
--		port->ptp_skbs_in_flight--;
--		ocelot->ptp_skbs_in_flight--;
--		spin_unlock(&ocelot->ts_id_lock);
--
- 		/* Retrieve its associated skb */
--try_again:
--		spin_lock(&port->tx_skbs.lock);
--
--		skb_queue_walk_safe(&port->tx_skbs, skb, skb_tmp) {
--			if (OCELOT_SKB_CB(skb)->ts_id != id)
--				continue;
--			__skb_unlink(skb, &port->tx_skbs);
--			skb_match = skb;
--			break;
--		}
--
--		spin_unlock(&port->tx_skbs.lock);
--
--		if (WARN_ON(!skb_match))
-+		skb_match = ocelot_port_dequeue_ptp_tx_skb(ocelot, txport, id,
-+							   seqid);
-+		if (!skb_match) {
-+			dev_warn_ratelimited(ocelot->dev,
-+					     "port %d received TX timestamp (seqid %d, ts id %u) for packet previously declared stale\n",
-+					     txport, seqid, id);
- 			goto next_ts;
--
--		if (!ocelot_validate_ptp_skb(skb_match, seqid)) {
--			dev_err_ratelimited(ocelot->dev,
--					    "port %d received stale TX timestamp for seqid %d, discarding\n",
--					    txport, seqid);
--			kfree_skb(skb);
--			goto try_again;
- 		}
- 
- 		/* Get the h/w timestamp */
-diff --git a/include/linux/dsa/ocelot.h b/include/linux/dsa/ocelot.h
-index 6fbfbde68a37..620a3260fc08 100644
---- a/include/linux/dsa/ocelot.h
-+++ b/include/linux/dsa/ocelot.h
-@@ -15,6 +15,7 @@
- struct ocelot_skb_cb {
- 	struct sk_buff *clone;
- 	unsigned int ptp_class; /* valid only for clones */
-+	unsigned long ptp_tx_time; /* valid only for clones */
- 	u32 tstamp_lo;
- 	u8 ptp_cmd;
- 	u8 ts_id;
-diff --git a/include/soc/mscc/ocelot.h b/include/soc/mscc/ocelot.h
-index 9b5562f54548..99cfaa9347c9 100644
---- a/include/soc/mscc/ocelot.h
-+++ b/include/soc/mscc/ocelot.h
-@@ -941,7 +941,6 @@ struct ocelot_port {
- 
- 	phy_interface_t			phy_mode;
- 
--	unsigned int			ptp_skbs_in_flight;
- 	struct sk_buff_head		tx_skbs;
- 
- 	unsigned int			trap_proto;
-@@ -949,7 +948,6 @@ struct ocelot_port {
- 	u16				mrp_ring_id;
- 
- 	u8				ptp_cmd;
--	u8				ts_id;
- 
- 	u8				index;
  
 -- 
 2.39.5
