@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F06C9F536D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:29:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2AE9F52EA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 694CE7A6B5A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB1EC189358A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA241F867D;
-	Tue, 17 Dec 2024 17:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BE11F7582;
+	Tue, 17 Dec 2024 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlNlFNPS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxUpXKCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FC71F8684;
-	Tue, 17 Dec 2024 17:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66FD14A4E7;
+	Tue, 17 Dec 2024 17:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456507; cv=none; b=U70QmmZRumCWlsnelG2jXxrbg3jg0pPJlLrCdTDpshhnuVKw0P7rI+6+ZV0QlGvVBaLLYiBrHvSgFUE2Vls0FSignfGA/B/O6eNaidWK8ur3h/3hDhieHSQfpDdJVpFRHxv2+wTRufWmA9dSJ+M1Ug7xoqDkZp1NtkMeI5C9Y94=
+	t=1734456010; cv=none; b=DL1eZCWK8m8qNQC8eM4/VQHsBeCHvTtD8Q2wch9v1ECgdGqZWfM6DTXlP2BjAnZOZcbnVVk1AcfaN9PMnIYjQnE+OxAEx3S7skSaVc2Eyu0gL5roFb2ucCaZdGbPZong3iinnUrpHEuoglKYJGRReVlNYbRKVSVNhaeqfaxqXqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456507; c=relaxed/simple;
-	bh=nYYH3dKO7ecUtYEP5soDNg7kTa8eyhKXTv+yvqKwWcI=;
+	s=arc-20240116; t=1734456010; c=relaxed/simple;
+	bh=xxBHVPpskiOqfYFb/1oUlSz4NZZl0paqgQAPTcBL2DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FXx4kQjT1gmn8NQEnmyTXYztraFDhe2IgOSPF1tlxsYbevo/NrICoKTApUGYLwtOKF6fFvuVdoT/hLx32IqprW7FFLsDNNPwaEZvLE7UVoV5Oi3syhbYgp/6i71JCmuoRVCx4nfNNmHZLqMk1Z2HkF5RN4nT44lUJLEUxb3wB/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlNlFNPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FA7C4CED7;
-	Tue, 17 Dec 2024 17:28:26 +0000 (UTC)
+	 MIME-Version; b=qgO9jgmUM3IYSaoU3DAIQpHXWMLumvqt4sHiNiRevsXLKCSRjthqUeXOldQHmtA6Lk9vsm22KdhJOMXZAkzwkcu6jJN/n0l4LcV8bvVbqKwWjAd6P7EV3T7tm3f6QOCTDllQfAC0HhnYMVYh76Fj4oWu7vy8rbvwmP3jCFaLDS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxUpXKCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB8DC4CED3;
+	Tue, 17 Dec 2024 17:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456507;
-	bh=nYYH3dKO7ecUtYEP5soDNg7kTa8eyhKXTv+yvqKwWcI=;
+	s=korg; t=1734456010;
+	bh=xxBHVPpskiOqfYFb/1oUlSz4NZZl0paqgQAPTcBL2DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlNlFNPSVqlE7tIGoyR9eNN4IXcZh1gQ9JFss0Im21MOsolDLPb5jnbOGDWP8QdO0
-	 c/nB2/KD1Up9sacGYUVO6hRHM+5QbKCPDVQ4ldphrB6CXKLlw2qwp7nXJdXVQtLJti
-	 NlR9sps5pI5U8nIpJ/a7O8KEtxoYgcaE7pV9evrY=
+	b=vxUpXKCVGAxxO2Szk7FZsONasWaDenbm8dti8rtec15PtiLr1MN0j8XYWPpulN/vn
+	 1F+CdTVZjnNnvYINssWeycaGLNTf8UQAAcI4YO5V6wC6opKUQ74RGw1WuUiwiXBqd7
+	 V867RMkKxw/LlLrp4qSrh0XGOxJFJx4iUb64z1i8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>
-Subject: [PATCH 6.12 051/172] usb: typec: ucsi: Fix completion notifications
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.6 003/109] ksmbd: fix racy issue from session lookup and expire
 Date: Tue, 17 Dec 2024 18:06:47 +0100
-Message-ID: <20241217170548.384791168@linuxfoundation.org>
+Message-ID: <20241217170533.474857362@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +60,203 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit e37b383df91ba9bde9c6a31bf3ea9072561c5126 upstream.
+commit b95629435b84b9ecc0c765995204a4d8a913ed52 upstream.
 
-OPM                         PPM                         LPM
- |        1.send cmd         |                           |
- |-------------------------->|                           |
- |                           |--                         |
- |                           |  | 2.set busy bit in CCI  |
- |                           |<-                         |
- |      3.notify the OPM     |                           |
- |<--------------------------|                           |
- |                           | 4.send cmd to be executed |
- |                           |-------------------------->|
- |                           |                           |
- |                           |      5.cmd completed      |
- |                           |<--------------------------|
- |                           |                           |
- |                           |--                         |
- |                           |  | 6.set cmd completed    |
- |                           |<-       bit in CCI        |
- |                           |                           |
- |     7.notify the OPM      |                           |
- |<--------------------------|                           |
- |                           |                           |
- |   8.handle notification   |                           |
- |   from point 3, read CCI  |                           |
- |<--------------------------|                           |
- |                           |                           |
+Increment the session reference count within the lock for lookup to avoid
+racy issue with session expire.
 
-When the PPM receives command from the OPM (p.1) it sets the busy bit
-in the CCI (p.2), sends notification to the OPM (p.3) and forwards the
-command to be executed by the LPM (p.4). When the PPM receives command
-completion from the LPM (p.5) it sets command completion bit in the CCI
-(p.6) and sends notification to the OPM (p.7). If command execution by
-the LPM is fast enough then when the OPM starts handling the notification
-from p.3 in p.8 and reads the CCI value it will see command completion bit
-set and will call complete(). Then complete() might be called again when
-the OPM handles notification from p.7.
-
-This fix replaces test_bit() with test_and_clear_bit()
-in ucsi_notify_common() in order to call complete() only
-once per request.
-
-This fix also reinitializes completion variable in
-ucsi_sync_control_common() before a command is sent.
-
-Fixes: 584e8df58942 ("usb: typec: ucsi: extract common code for command handling")
 Cc: stable@vger.kernel.org
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://lore.kernel.org/r/20241203102318.3386345-1-ukaszb@chromium.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-25737
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/smb/server/auth.c              |    2 ++
+ fs/smb/server/mgmt/user_session.c |    6 +++++-
+ fs/smb/server/server.c            |    4 ++--
+ fs/smb/server/smb2pdu.c           |   27 ++++++++++++++-------------
+ 4 files changed, 23 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index c435c0835744..7a65a7672e18 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -46,11 +46,11 @@ void ucsi_notify_common(struct ucsi *ucsi, u32 cci)
- 		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -1012,6 +1012,8 @@ static int ksmbd_get_encryption_key(stru
  
- 	if (cci & UCSI_CCI_ACK_COMPLETE &&
--	    test_bit(ACK_PENDING, &ucsi->flags))
-+	    test_and_clear_bit(ACK_PENDING, &ucsi->flags))
- 		complete(&ucsi->complete);
+ 	ses_enc_key = enc ? sess->smb3encryptionkey :
+ 		sess->smb3decryptionkey;
++	if (enc)
++		ksmbd_user_session_get(sess);
+ 	memcpy(key, ses_enc_key, SMB3_ENC_DEC_KEY_SIZE);
  
- 	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
--	    test_bit(COMMAND_PENDING, &ucsi->flags))
-+	    test_and_clear_bit(COMMAND_PENDING, &ucsi->flags))
- 		complete(&ucsi->complete);
+ 	return 0;
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -262,8 +262,10 @@ struct ksmbd_session *ksmbd_session_look
+ 
+ 	down_read(&conn->session_lock);
+ 	sess = xa_load(&conn->sessions, id);
+-	if (sess)
++	if (sess) {
+ 		sess->last_active = jiffies;
++		ksmbd_user_session_get(sess);
++	}
+ 	up_read(&conn->session_lock);
+ 	return sess;
  }
- EXPORT_SYMBOL_GPL(ucsi_notify_common);
-@@ -65,6 +65,8 @@ int ucsi_sync_control_common(struct ucsi *ucsi, u64 command)
- 	else
- 		set_bit(COMMAND_PENDING, &ucsi->flags);
+@@ -274,6 +276,8 @@ struct ksmbd_session *ksmbd_session_look
  
-+	reinit_completion(&ucsi->complete);
-+
- 	ret = ucsi->ops->async_control(ucsi, command);
- 	if (ret)
- 		goto out_clear_bit;
--- 
-2.47.1
-
+ 	down_read(&sessions_table_lock);
+ 	sess = __session_lookup(id);
++	if (sess)
++		ksmbd_user_session_get(sess);
+ 	up_read(&sessions_table_lock);
+ 
+ 	return sess;
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -241,14 +241,14 @@ send:
+ 	if (work->tcon)
+ 		ksmbd_tree_connect_put(work->tcon);
+ 	smb3_preauth_hash_rsp(work);
+-	if (work->sess)
+-		ksmbd_user_session_put(work->sess);
+ 	if (work->sess && work->sess->enc && work->encrypted &&
+ 	    conn->ops->encrypt_resp) {
+ 		rc = conn->ops->encrypt_resp(work);
+ 		if (rc < 0)
+ 			conn->ops->set_rsp_status(work, STATUS_DATA_ERROR);
+ 	}
++	if (work->sess)
++		ksmbd_user_session_put(work->sess);
+ 
+ 	ksmbd_conn_write(work);
+ }
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -67,8 +67,10 @@ static inline bool check_session_id(stru
+ 		return false;
+ 
+ 	sess = ksmbd_session_lookup_all(conn, id);
+-	if (sess)
++	if (sess) {
++		ksmbd_user_session_put(sess);
+ 		return true;
++	}
+ 	pr_err("Invalid user session id: %llu\n", id);
+ 	return false;
+ }
+@@ -605,10 +607,8 @@ int smb2_check_user_session(struct ksmbd
+ 
+ 	/* Check for validity of user session */
+ 	work->sess = ksmbd_session_lookup_all(conn, sess_id);
+-	if (work->sess) {
+-		ksmbd_user_session_get(work->sess);
++	if (work->sess)
+ 		return 1;
+-	}
+ 	ksmbd_debug(SMB, "Invalid user session, Uid %llu\n", sess_id);
+ 	return -ENOENT;
+ }
+@@ -1704,29 +1704,35 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 
+ 		if (conn->dialect != sess->dialect) {
+ 			rc = -EINVAL;
++			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+ 
+ 		if (!(req->hdr.Flags & SMB2_FLAGS_SIGNED)) {
+ 			rc = -EINVAL;
++			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+ 
+ 		if (strncmp(conn->ClientGUID, sess->ClientGUID,
+ 			    SMB2_CLIENT_GUID_SIZE)) {
+ 			rc = -ENOENT;
++			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+ 
+ 		if (sess->state == SMB2_SESSION_IN_PROGRESS) {
+ 			rc = -EACCES;
++			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
+ 
+ 		if (sess->state == SMB2_SESSION_EXPIRED) {
+ 			rc = -EFAULT;
++			ksmbd_user_session_put(sess);
+ 			goto out_err;
+ 		}
++		ksmbd_user_session_put(sess);
+ 
+ 		if (ksmbd_conn_need_reconnect(conn)) {
+ 			rc = -EFAULT;
+@@ -1734,7 +1740,8 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 			goto out_err;
+ 		}
+ 
+-		if (ksmbd_session_lookup(conn, sess_id)) {
++		sess = ksmbd_session_lookup(conn, sess_id);
++		if (!sess) {
+ 			rc = -EACCES;
+ 			goto out_err;
+ 		}
+@@ -1745,7 +1752,6 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 		}
+ 
+ 		conn->binding = true;
+-		ksmbd_user_session_get(sess);
+ 	} else if ((conn->dialect < SMB30_PROT_ID ||
+ 		    server_conf.flags & KSMBD_GLOBAL_FLAG_SMB3_MULTICHANNEL) &&
+ 		   (req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
+@@ -1772,7 +1778,6 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 		}
+ 
+ 		conn->binding = false;
+-		ksmbd_user_session_get(sess);
+ 	}
+ 	work->sess = sess;
+ 
+@@ -2196,9 +2201,9 @@ err_out:
+ int smb2_session_logoff(struct ksmbd_work *work)
+ {
+ 	struct ksmbd_conn *conn = work->conn;
++	struct ksmbd_session *sess = work->sess;
+ 	struct smb2_logoff_req *req;
+ 	struct smb2_logoff_rsp *rsp;
+-	struct ksmbd_session *sess;
+ 	u64 sess_id;
+ 	int err;
+ 
+@@ -2220,11 +2225,6 @@ int smb2_session_logoff(struct ksmbd_wor
+ 	ksmbd_close_session_fds(work);
+ 	ksmbd_conn_wait_idle(conn);
+ 
+-	/*
+-	 * Re-lookup session to validate if session is deleted
+-	 * while waiting request complete
+-	 */
+-	sess = ksmbd_session_lookup_all(conn, sess_id);
+ 	if (ksmbd_tree_conn_session_logoff(sess)) {
+ 		ksmbd_debug(SMB, "Invalid tid %d\n", req->hdr.Id.SyncId.TreeId);
+ 		rsp->hdr.Status = STATUS_NETWORK_NAME_DELETED;
+@@ -8964,6 +8964,7 @@ int smb3_decrypt_req(struct ksmbd_work *
+ 		       le64_to_cpu(tr_hdr->SessionId));
+ 		return -ECONNABORTED;
+ 	}
++	ksmbd_user_session_put(sess);
+ 
+ 	iov[0].iov_base = buf;
+ 	iov[0].iov_len = sizeof(struct smb2_transform_hdr) + 4;
 
 
 
