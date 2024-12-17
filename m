@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-104642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560F69F523D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CABD9F5275
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD37616796E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 895E1188F783
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093A21F8923;
-	Tue, 17 Dec 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680281F7577;
+	Tue, 17 Dec 2024 17:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXwxioT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e22M2fgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21241F8902;
-	Tue, 17 Dec 2024 17:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F7B1F76A1;
+	Tue, 17 Dec 2024 17:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455667; cv=none; b=t8zuUqq4xD/4ZOtBCnDrDt8kg9QxjGEHUBD+1nK4PFY0Rpz9YtZVuMZcsb7eDCX4qwmT+CWvoyy469iMVzNmg6dT6zBX6fQNKTyHRD8Bx2YY/GKSMBj5mY9wFL1Po+iZjnzZ3/88/Y5qpHJiNlRucIpiQ5eIGh343ekK2udlqac=
+	t=1734455780; cv=none; b=ff0bULvkkZVIMEOT5QwTG9P5luQqfy0GUlAgVKmKsrdDSPRTtRDrNZxoHNeBa1YP8xvd6Ugh2yDjqxDDxu1oEDbLkCbRbC8B3mvDkpfAuJF4gb6s3GdJs3u6j8gK3rPiGPSyciNPsGs/Q8zcXE4bR9OZx6AWtie8bd41S07SISA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455667; c=relaxed/simple;
-	bh=PZ6sCghGX3IUN4tEsjrJmQR39Ng+EC4PLuMmocI1MUI=;
+	s=arc-20240116; t=1734455780; c=relaxed/simple;
+	bh=MzUtrhLuDhWgHK2Hbf6coxrZElNe87pvF7XWRbFgM0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLyEiti/WC3U/h3WCa9q84IHxbdLNVwwxnRdKXANM4ueyG73+tO5TxWsjF1PdziS68NhRaciqOymXO9htI/1Aatl2WKiynnL77db5/YogaaJ0r9icu5oru7AKAt4/lP6i0M3DgBaZ0uWLmdhuFO1Z58wlIhoUpM1LNlUnsiPK2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXwxioT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C93C4CEDE;
-	Tue, 17 Dec 2024 17:14:27 +0000 (UTC)
+	 MIME-Version; b=tT73Kywxq49ACcIRjT00zD34Sabb/j/lkDTwCNvKAt20qh7R2qgG6UYFDugSvQSFq5Mq+GwxrAlAbz0cZHnOMoY/YJ86BE8HlTFHcBlooIR7yONN1kWePnYF3ECrvmUlcRY9NygrBNzlfjT6dtEnN5emlsp/6OICOeYJNbXdV8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e22M2fgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC46C4CED3;
+	Tue, 17 Dec 2024 17:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455667;
-	bh=PZ6sCghGX3IUN4tEsjrJmQR39Ng+EC4PLuMmocI1MUI=;
+	s=korg; t=1734455778;
+	bh=MzUtrhLuDhWgHK2Hbf6coxrZElNe87pvF7XWRbFgM0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXwxioT5WRnFB2KNKxoeieDzO2Jf57PWRBtOBoKOqq40C2tHSGTvOICHDyBv6Puz6
-	 XwgA+xwbdnhkvCT9qV0m/xVy2uEV3VZ8mvVb3SZqDxtTrZGl2AbZNZSJMhZcWms9vg
-	 w6O5XTn4KPu8tw1Mb/LHEASJz9eON2V9rnqFvkMk=
+	b=e22M2fgkXMhmyNO5em34pnW+3MuBftR23AwoL2Lf+UVhIpkS+TNU7zSOgwjqVQvof
+	 7AaYHl8ecPYlY0tAfSDN6bYqxw+dvdighWC3+RMhoI7MrIOZp/YrgnqgzOGuCnhHWE
+	 sgLaWecl9LrD4g/m6/MwCj+ZyhA3gva4siWClS7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Tomas Krcka <krckatom@amazon.de>
-Subject: [PATCH 5.15 16/51] virtio/vsock: Fix accept_queue memory leak
-Date: Tue, 17 Dec 2024 18:07:09 +0100
-Message-ID: <20241217170520.968739469@linuxfoundation.org>
+	syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 30/76] acpi: nfit: vmalloc-out-of-bounds Read in acpi_nfit_ctl
+Date: Tue, 17 Dec 2024 18:07:10 +0100
+Message-ID: <20241217170527.516427000@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
 
-commit d7b0ff5a866724c3ad21f2628c22a63336deec3f upstream.
+[ Upstream commit 265e98f72bac6c41a4492d3e30a8e5fd22fe0779 ]
 
-As the final stages of socket destruction may be delayed, it is possible
-that virtio_transport_recv_listen() will be called after the accept_queue
-has been flushed, but before the SOCK_DONE flag has been set. As a result,
-sockets enqueued after the flush would remain unremoved, leading to a
-memory leak.
+Fix an issue detected by syzbot with KASAN:
 
-vsock_release
-  __vsock_release
-    lock
-    virtio_transport_release
-      virtio_transport_close
-        schedule_delayed_work(close_work)
-    sk_shutdown = SHUTDOWN_MASK
-(!) flush accept_queue
-    release
-                                        virtio_transport_recv_pkt
-                                          vsock_find_bound_socket
-                                          lock
-                                          if flag(SOCK_DONE) return
-                                          virtio_transport_recv_listen
-                                            child = vsock_create_connected
-                                      (!)   vsock_enqueue_accept(child)
-                                          release
-close_work
-  lock
-  virtio_transport_do_close
-    set_flag(SOCK_DONE)
-    virtio_transport_remove_sock
-      vsock_remove_sock
-        vsock_remove_bound
-  release
+BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
+core.c:416 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
+drivers/acpi/nfit/core.c:459
 
-Introduce a sk_shutdown check to disallow vsock_enqueue_accept() during
-socket destruction.
+The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
+array is accessed without verifying that call_pkg points to a buffer
+that is appropriately sized as a struct nd_cmd_pkg. This can lead
+to out-of-bounds access and undefined behavior if the buffer does not
+have sufficient space.
 
-unreferenced object 0xffff888109e3f800 (size 2040):
-  comm "kworker/5:2", pid 371, jiffies 4294940105
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    28 00 0b 40 00 00 00 00 00 00 00 00 00 00 00 00  (..@............
-  backtrace (crc 9e5f4e84):
-    [<ffffffff81418ff1>] kmem_cache_alloc_noprof+0x2c1/0x360
-    [<ffffffff81d27aa0>] sk_prot_alloc+0x30/0x120
-    [<ffffffff81d2b54c>] sk_alloc+0x2c/0x4b0
-    [<ffffffff81fe049a>] __vsock_create.constprop.0+0x2a/0x310
-    [<ffffffff81fe6d6c>] virtio_transport_recv_pkt+0x4dc/0x9a0
-    [<ffffffff81fe745d>] vsock_loopback_work+0xfd/0x140
-    [<ffffffff810fc6ac>] process_one_work+0x20c/0x570
-    [<ffffffff810fce3f>] worker_thread+0x1bf/0x3a0
-    [<ffffffff811070dd>] kthread+0xdd/0x110
-    [<ffffffff81044fdd>] ret_from_fork+0x2d/0x50
-    [<ffffffff8100785a>] ret_from_fork_asm+0x1a/0x30
+To address this, a check was added in acpi_nfit_ctl() to ensure that
+buf is not NULL and that buf_len is less than sizeof(*call_pkg)
+before accessing it. This ensures safe access to the members of
+call_pkg, including the nd_reserved2 array.
 
-Fixes: 3fe356d58efa ("vsock/virtio: discard packets only when socket is really closed")
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Adapted due to missing commit 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff") ]
-Signed-off-by: Tomas Krcka <krckatom@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
+Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241118162609.29063-1-surajsonawane0215@gmail.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/nfit/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1196,6 +1196,14 @@ virtio_transport_recv_listen(struct sock
- 		return -ENOMEM;
- 	}
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 6d4ac934cd49..1535fe196646 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -454,8 +454,13 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 	if (cmd_rc)
+ 		*cmd_rc = -EINVAL;
  
-+	/* __vsock_release() might have already flushed accept_queue.
-+	 * Subsequent enqueues would lead to a memory leak.
-+	 */
-+	if (sk->sk_shutdown == SHUTDOWN_MASK) {
-+		virtio_transport_reset_no_sock(t, pkt);
-+		return -ESHUTDOWN;
+-	if (cmd == ND_CMD_CALL)
++	if (cmd == ND_CMD_CALL) {
++		if (!buf || buf_len < sizeof(*call_pkg))
++			return -EINVAL;
++
+ 		call_pkg = buf;
 +	}
 +
- 	child = vsock_create_connected(sk);
- 	if (!child) {
- 		virtio_transport_reset_no_sock(t, pkt);
+ 	func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
+ 	if (func < 0)
+ 		return func;
+-- 
+2.39.5
+
 
 
 
