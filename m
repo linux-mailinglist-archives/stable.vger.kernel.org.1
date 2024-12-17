@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149C69F521B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:15:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 240E49F51BC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C0AA16F0E7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:13:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ABA816332F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C034D1F867B;
-	Tue, 17 Dec 2024 17:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FA21F7577;
+	Tue, 17 Dec 2024 17:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcixEfHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlpoLbQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720651F76B1;
-	Tue, 17 Dec 2024 17:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2971E1F6671;
+	Tue, 17 Dec 2024 17:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455596; cv=none; b=fVFCWmDutoQEuVrE2BDK0FjldU5TOBGIUjSxj639iEasZP8NYrYAoGy5HnfsGJlmPQz6FGetiQKaaCeWK4KRfLYV8YfE9ffNiGmpCPB2YuJCT37QNeC6E3CZcQX5COrOkbDzqaTSWmUFS1/m9P1e8ED2Y2LsGlL6crwZPDHgtic=
+	t=1734455383; cv=none; b=Aims/tiCiR5N3i9SBdK2CmjlIRDhxRGscAkmoJIYoPlOcITc7EVPet5twuKCqvRzHiIIZk/Y7woTS5RUXouMN5ZCHjqkwI9o4ik4z48+ZNI2Zx1UjzoGBLE6/2OQGf7m4jkIOr5fV1ZBemNlLsn/UsrtO1lmvWhllK/9b0E8WBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455596; c=relaxed/simple;
-	bh=4m9S0w9qy9M+D9DBxjuirZ5ykHRo3sGjvTLXrvZs7Fg=;
+	s=arc-20240116; t=1734455383; c=relaxed/simple;
+	bh=xW3IeqA57Sou/YOU/U0nhtLQtWezjwVNPhec/URiHhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DiZpqUpewDaxeKW2qDURPDLRsRzvD8TEWxC/D325N6frRanskchp6e37IHVkgirNG/vla9obUjyEz2FSgCSvMQwYD9PfnJoPE+TtaKVr3SzjM63BiFrjU2/t1+7haGXfzfxlwLs/4UmgkMo3dkJBz3KPIktXbp8bbBE5zRymOq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcixEfHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D687C4CED3;
-	Tue, 17 Dec 2024 17:13:15 +0000 (UTC)
+	 MIME-Version; b=WREPt8xapEvuQUDTW95KGgCo1MZyKdl4+3ON7dqk5qhtrWUCrSw4p4KYNgegotNUGMn5cpdzQjCfGNigK4m/QAVdf10SQ95WuyT1IhvX9fDS3YIQWP4HJFJHDP63QBPcCLymbnFbwhDrJiQuqlfAhOEoM2sB0IowL4GN++u7YAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlpoLbQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43649C4CED3;
+	Tue, 17 Dec 2024 17:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455596;
-	bh=4m9S0w9qy9M+D9DBxjuirZ5ykHRo3sGjvTLXrvZs7Fg=;
+	s=korg; t=1734455381;
+	bh=xW3IeqA57Sou/YOU/U0nhtLQtWezjwVNPhec/URiHhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GcixEfHsAQeuP5nWuwjCXa/PV4N78ILvyrEEhnTWnN5o2I5YcqrUIzchJCEtoex6l
-	 EilNN4Efkk8V8XJFj2IQHQOYi6a2ps8zAWA2nVuJpCk6TYYQt4/XpzCmT3ZMjjgsaQ
-	 mhRXBkNpet/eoDDOP9NnG6LauZ9V7DU4SXlwzR4w=
+	b=MlpoLbQgQXsTL4Kp+PYlFGBeRTzPLeHEyFI6mWp3ux1oXDC3wJMZeHjdKNMYD0BoH
+	 cEX0FwMov7fxebZZC1mzL6QF+5r+LdTuN0ImICKMLDjobUgYyV/zCRUyZH8A3WtJ/J
+	 2Oq/+0ISbpj/9OQNBKUlUQuivGq6y54ABFbVvgNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashanth K <quic_prashk@quicinc.com>,
-	Lianqin Hu <hulianqin@vivo.com>
-Subject: [PATCH 5.15 09/51] usb: gadget: u_serial: Fix the issue that gs_start_io crashed due to accessing null pointer
+	Vitalii Mordan <mordan@ispras.ru>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.4 04/24] usb: ehci-hcd: fix call balance of clocks handling routines
 Date: Tue, 17 Dec 2024 18:07:02 +0100
-Message-ID: <20241217170520.692948198@linuxfoundation.org>
+Message-ID: <20241217170519.187347305@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-commit 4cfbca86f6a8b801f3254e0e3c8f2b1d2d64be2b upstream.
+commit 97264eaaba0122a5b7e8ddd7bf4ff3ac57c2b170 upstream.
 
-Considering that in some extreme cases,
-when u_serial driver is accessed by multiple threads,
-Thread A is executing the open operation and calling the gs_open,
-Thread B is executing the disconnect operation and calling the
-gserial_disconnect function,The port->port_usb pointer will be set to NULL.
+If the clocks priv->iclk and priv->fclk were not enabled in ehci_hcd_sh_probe,
+they should not be disabled in any path.
 
-E.g.
-    Thread A                                 Thread B
-    gs_open()                                gadget_unbind_driver()
-    gs_start_io()                            composite_disconnect()
-    gs_start_rx()                            gserial_disconnect()
-    ...                                      ...
-    spin_unlock(&port->port_lock)
-    status = usb_ep_queue()                  spin_lock(&port->port_lock)
-    spin_lock(&port->port_lock)              port->port_usb = NULL
-    gs_free_requests(port->port_usb->in)     spin_unlock(&port->port_lock)
-    Crash
+Conversely, if they was enabled in ehci_hcd_sh_probe, they must be disabled
+in all error paths to ensure proper cleanup.
 
-This causes thread A to access a null pointer (port->port_usb is null)
-when calling the gs_free_requests function, causing a crash.
+Found by Linux Verification Center (linuxtesting.org) with Klever.
 
-If port_usb is NULL, the release request will be skipped as it
-will be done by gserial_disconnect.
-
-So add a null pointer check to gs_start_io before attempting
-to access the value of the pointer port->port_usb.
-
-Call trace:
- gs_start_io+0x164/0x25c
- gs_open+0x108/0x13c
- tty_open+0x314/0x638
- chrdev_open+0x1b8/0x258
- do_dentry_open+0x2c4/0x700
- vfs_open+0x2c/0x3c
- path_openat+0xa64/0xc60
- do_filp_open+0xb8/0x164
- do_sys_openat2+0x84/0xf0
- __arm64_sys_openat+0x70/0x9c
- invoke_syscall+0x58/0x114
- el0_svc_common+0x80/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x38/0x68
-
-Fixes: c1dca562be8a ("usb gadget: split out serial core")
-Cc: stable@vger.kernel.org
-Suggested-by: Prashanth K <quic_prashk@quicinc.com>
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Acked-by: Prashanth K <quic_prashk@quicinc.com>
-Link: https://lore.kernel.org/r/TYUPR06MB62178DC3473F9E1A537DCD02D2362@TYUPR06MB6217.apcprd06.prod.outlook.com
+Fixes: 63c845522263 ("usb: ehci-hcd: Add support for SuperH EHCI.")
+Cc: stable@vger.kernel.org # ff30bd6a6618: sh: clk: Fix clk_enable() to return 0 on NULL clk
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20241121114700.2100520-1-mordan@ispras.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/host/ehci-sh.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -570,9 +570,12 @@ static int gs_start_io(struct gs_port *p
- 		 * we didn't in gs_start_tx() */
- 		tty_wakeup(port->port.tty);
- 	} else {
--		gs_free_requests(ep, head, &port->read_allocated);
--		gs_free_requests(port->port_usb->in, &port->write_pool,
--			&port->write_allocated);
-+		/* Free reqs only if we are still connected */
-+		if (port->port_usb) {
-+			gs_free_requests(ep, head, &port->read_allocated);
-+			gs_free_requests(port->port_usb->in, &port->write_pool,
-+				&port->write_allocated);
-+		}
- 		status = -EIO;
- 	}
+--- a/drivers/usb/host/ehci-sh.c
++++ b/drivers/usb/host/ehci-sh.c
+@@ -124,8 +124,12 @@ static int ehci_hcd_sh_probe(struct plat
+ 	if (IS_ERR(priv->iclk))
+ 		priv->iclk = NULL;
  
+-	clk_enable(priv->fclk);
+-	clk_enable(priv->iclk);
++	ret = clk_enable(priv->fclk);
++	if (ret)
++		goto fail_request_resource;
++	ret = clk_enable(priv->iclk);
++	if (ret)
++		goto fail_iclk;
+ 
+ 	if (pdata && pdata->phy_init)
+ 		pdata->phy_init();
+@@ -144,6 +148,7 @@ static int ehci_hcd_sh_probe(struct plat
+ 
+ fail_add_hcd:
+ 	clk_disable(priv->iclk);
++fail_iclk:
+ 	clk_disable(priv->fclk);
+ 
+ fail_request_resource:
 
 
 
