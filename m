@@ -1,126 +1,161 @@
-Return-Path: <stable+bounces-104425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536759F41B4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:23:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064CF9F41DF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 06:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EE0A188DF8C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 04:23:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99FAC188C27A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D97714B092;
-	Tue, 17 Dec 2024 04:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF9C15533F;
+	Tue, 17 Dec 2024 05:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uisHgzKG"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gkps6dHi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8951920EB
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 04:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444A9155A30
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 05:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734409374; cv=none; b=NwrA7lU4t2fZK8b2A2D1Dn+l1uwPgywOcKjGpmqsoGVC0n8XI70nuuLtgmOxeGM2yIgeUberHLKRmSKHkS/3zwZXmNXmlP+2Y/wFT7c4hcNVOfTYrckryZbOVOMAdSL7hECixXgXqvuSBssCA4anONZOUR+Y6gatWgIhqL5obss=
+	t=1734411623; cv=none; b=OE/Hha6D5Vj2zoIr4Cgro62vPxL6HcdPrmBJ0Ikjw17YvmsGQ2QTuNuVb4NeQK+PFwQ+k6JJppVDGbiGLkGpZ8QKS8L/GBiY2DHHTBZlyGahVWbv2N0v3EIUKbubS5Fn2q3o3uCXabP3G+/czn6rC3udW2B5svB5J6LLKgm6hLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734409374; c=relaxed/simple;
-	bh=zqpqLDi9o2HN9pkhqRL/t6PUB037p1nJeo7h79OIEuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sKlcX0faLV0nQHtXij/dzOoJ+epMunAfiYnCgzm6qygul7dcmZtCrSG+59irwmYOeE8K3gmI1yPEgIZRbA/nncpzQKukmZhAhKa/DlfuW0PYmF93oIy5nysyz0O16w2xT/U3nwk6YsO/ymt18wsssr+PkHEUwa2/CLCEm83ZVdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uisHgzKG; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-218c8aca5f1so6645375ad.0
-        for <stable@vger.kernel.org>; Mon, 16 Dec 2024 20:22:51 -0800 (PST)
+	s=arc-20240116; t=1734411623; c=relaxed/simple;
+	bh=sXr55O7+VrwSmdzqpu9DqbaHrugZJPrvbnP67L8sbZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tOOVDJcKfeZT3zvq/W/IW4DWK6BEkjqgQ13eX551NF6F+Af5OHQRXPwwAIj6Zbj9Ze6Fo0r/iSG7XmEHCq3/01WsZ20LJIpeWg8llPb7HaHG8IyV5MlDzRzTYzh8vcKH8sEMQZnY1tSiWk35ZqUv0qy2Wz48RFVeqOUU4RD5XQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gkps6dHi; arc=none smtp.client-ip=209.85.221.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-3863c36a731so3469864f8f.1
+        for <stable@vger.kernel.org>; Mon, 16 Dec 2024 21:00:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734409371; x=1735014171; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=07JoRp2HdL+fGtPDXl2NqAHgCCvT4umPfbJtAb58RtM=;
-        b=uisHgzKGo41X8yN2cDoQjf0jPSsWruhMhjAt3ryjllmuG1qyOA+FBJS81GRXRvvu2u
-         NxFTrOVDrJBRGrY14sidtok6LIWqXHmwVeJzYn7ZADRv82XC8P5f2r80i4BpKEPhjwKS
-         VC7sk7OJDByKM8Wkitvu3S1C8daaAEE2qmPzIMiHAPSkOAsk3Y9bOo6a3zl6A2qB4SNM
-         1e2LuXQgTZswZHTanWSE2DW5suGF7eSjg94IKAVh20gy5ol97eqggG5pCro5Is0+i17/
-         sPVZmB00nh/rapAfStCWvixT/qpSnDDoNhpB/g8ZcPFN5VT8Mr9KjvvDPYOpi6w25lsK
-         y9Dg==
+        d=suse.com; s=google; t=1734411619; x=1735016419; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MdPLGP20ShGmqTBZSio9WvX6t8pN8HosL8dCIPo6zx0=;
+        b=gkps6dHit8Bpt/HXWZgf1YAmhLUaYQ+qsyvOHk4Zf/ssm1aV9w4RFDTwp4IY43sU+z
+         oB7ukTBJfQ53q7SEqSGKgQWDS65qQjBrENKQeo79iUH9809kWxc47waqUuldt+4Xf0cp
+         aTbGaREjYn3vpZaH2fktpr+L4H/tMW/PM46KhAJt4ibhjW+wulFLL4DRlmIRN6fH1Uzl
+         ckHZiWIWQP8oM25pKG+/fzOdo3A4X1nnr6lPy3hLL0xozJpVr3LCxa94Q9xU3bYM7DSc
+         bOYKefPc/RiGodEyJ/OwJoEycAO3/5VVXpt9tQ0fCubxGNUjsz5cNyNfuA/D9N0+Vv9U
+         ykww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734409371; x=1735014171;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=07JoRp2HdL+fGtPDXl2NqAHgCCvT4umPfbJtAb58RtM=;
-        b=UVkzmKFDeV5rX9pUfI0VvHeP9dZPoOyVyJsckcU018Dv+KwoRerRS1FaHNqG+M5tpI
-         Cneq6g8N3UEEJTHwbUyhS6V0PrR8yCUEEUTDYZnQShheGx/6LZUXm/RsFL3D99mnzf/8
-         U4dgFyvRY+g/AbqaHcEtcjI7dFy2aFcq+WG8OmOIlhDsUOPfHgXuX76FHqZvsMyozyVN
-         c+2bIhYO5w9C8zyV1XbvJQTcU9mZL4DvMQNRhpWLc4KoTbMVRFlZZFhbLwcZ3inE/uR/
-         A04h0rkYbqMF5PLK4onrprM5zb6pg7LCADLHoiE/+bXlDWkcRG1LjdMSKe9+7GkQjyLj
-         ViwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVXqp/RUSvjMhl0yXtlJPliBxJ5Yrr9efByXCGQYzWWV48PzV6urHZaW3u5YNlK8OZ72dlhfiE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzV83t/hfKT1zqK35ocoAwLQ/EV2T0TsAmON8YCx368BXie/ZB8
-	7ipwCZvgz5Yj8hEai6gIb9Q9BDo6cieiB11kGlMtUxNcoUvPlcTzUgIFhm5RolA=
-X-Gm-Gg: ASbGncvFts0wvTi5Ti/3dAEAy8Z1aOC77ymTHPct22wh57/GY7A0o1qGl8Kk/7GNtj3
-	wULCn6v0JUVrfWd+I0Xah5/p2lalObA7Dv9QUWjMbUVmMF2kRQmAxsUqJ+oh7yZIuIk+3zdj0O8
-	B5dNfXM9ZMttGnB2KEH1FbctW5xTpgoBqygVZvrE1Ndkbigf0tGTFQIiIQXf1b1XHsVeXfYlk80
-	5+IHQ/bEBXB3S/3vflt5YtVLZoAUWqikQqeU0zJmyyps8iceogMdwxas4c=
-X-Google-Smtp-Source: AGHT+IEKbIgA6J6tdVvc/CKVL0o8Qbd3JlzKf10BNjP+GnyYPGnHpKt+dWfA7AT7ES0/R2gK7S0k+g==
-X-Received: by 2002:a17:902:d484:b0:215:431f:268f with SMTP id d9443c01a7336-21892999536mr230452625ad.10.1734409370906;
-        Mon, 16 Dec 2024 20:22:50 -0800 (PST)
-Received: from localhost ([122.172.83.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e7227asm50376595ad.272.2024.12.16.20.22.49
+        d=1e100.net; s=20230601; t=1734411619; x=1735016419;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MdPLGP20ShGmqTBZSio9WvX6t8pN8HosL8dCIPo6zx0=;
+        b=fMW1iharYJhKjbSfX3YYB+uAd5GTtN9koc38qqEBpYtmOl9vWuSyuH03J2cgA+jmk/
+         Qman4me50IoiCzN7CFhxFhBbWU9bvWCINmwnfv2vV05XRw+HQsJp5GDhM12rSQQp471t
+         P/mCZ9JqipoZ3n+3igwHKtqODe6ZqmKSniTKoH4Ts90riErbvDTHQWBqcaGTz4meqgD3
+         DRljgMK3faEuxQ+39LP5ATKh0Zy/+1ShQzpXk3hFIcNYL8hyRWRSP4VqUcieByJhoyh1
+         jkGn86t694Yxf3ZejCrTeBlwF1WCygQ+MeqaKVQcBKqthSvvc0WxNVBvF/Za3DnSEeIR
+         jxyA==
+X-Gm-Message-State: AOJu0YxHTPC+Xrlu0LPwQuzBO+NvUeyictbIEEpQ1o7vHQSBh811BxkQ
+	pU2NqY5Z+cno/paZn+YlWnVi6zTPsEhc+uBJHxH9wiR0pQjuIc6fWy/CQJ+QcNuBbZuO2tzKDCj
+	pU4xfvA==
+X-Gm-Gg: ASbGncsXYb0GaGpFABoiaO9Mz2hItZJK9dl6orjzMNCH6PS+JvBDEcliIXscsVnpB1s
+	oASgOtOD6TZ1Bsk7mMKivRChr1N2fiDj9rMZsJj8vB/gsZ4q8eB9Zo5hDemm1VorsfqRBLxP2l5
+	Akzip3hRAscwCzHtDb2F/DBR8MSjAm/sfP/bPNMM+SDsOsvyfw5XNpYKQ4ThsQxmarFmQL8lhIW
+	tW30giN46HmdI3cIO8iiiPiHe3UKnCD4d8587C0JOyugn80DsiofDRLQZw=
+X-Google-Smtp-Source: AGHT+IEtuWv0FHIApdcs3cOQekrj4Z3uN4axoUKzoRdeFUtNXF/HsQfhXqnHq4side54nCTWN5D3aQ==
+X-Received: by 2002:a05:6000:4615:b0:385:de8d:c0f5 with SMTP id ffacd0b85a97d-38880acd81fmr12358021f8f.16.1734411619210;
+        Mon, 16 Dec 2024 21:00:19 -0800 (PST)
+Received: from localhost ([2401:e180:8862:6db6:63ae:a60b:ac30:803a])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b7048d1338sm285485285a.124.2024.12.16.21.00.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Dec 2024 20:22:50 -0800 (PST)
-Date: Tue, 17 Dec 2024 09:52:48 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Ma Ke <make_ruc2021@163.com>
-Cc: mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, arnd@arndb.de, virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] virtio: fix reference leak in register_virtio_device()
-Message-ID: <20241217042248.omldhsl4royrfo4o@vireshk-i7>
-References: <20241217035432.2892059-1-make_ruc2021@163.com>
+        Mon, 16 Dec 2024 21:00:17 -0800 (PST)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: stable@vger.kernel.org
+Cc: Eduard Zingerman <eddyz87@gmail.com>,
+	Lonial Con <kongln9170@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH stable 6.6 6.1 5.15 5.10] bpf: sync_linked_regs() must preserve subreg_def
+Date: Tue, 17 Dec 2024 13:00:03 +0800
+Message-ID: <20241217050005.33680-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241217035432.2892059-1-make_ruc2021@163.com>
+Content-Transfer-Encoding: 8bit
 
-On 17-12-24, 11:54, Ma Ke wrote:
-> When device_add(&dev->dev) failed, calling put_device() to explicitly
-> release dev->dev. Otherwise, it could cause double free problem.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 694a1116b405 ("virtio: Bind virtio device to device-tree node")
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-The fixes tag looks incorrect as the problem must be present before this commit
-too.
+[ Upstream commit e9bd9c498cb0f5843996dbe5cbce7a1836a83c70 ]
 
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> ---
->  drivers/virtio/virtio.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-> index b9095751e43b..ac721b5597e8 100644
-> --- a/drivers/virtio/virtio.c
-> +++ b/drivers/virtio/virtio.c
-> @@ -503,6 +503,7 @@ int register_virtio_device(struct virtio_device *dev)
->  
->  out_of_node_put:
->  	of_node_put(dev->dev.of_node);
-> +	put_device(&dev->dev);
->  out_ida_remove:
->  	ida_free(&virtio_index_ida, dev->index);
->  out:
-> -- 
-> 2.25.1
+Range propagation must not affect subreg_def marks, otherwise the
+following example is rewritten by verifier incorrectly when
+BPF_F_TEST_RND_HI32 flag is set:
 
+  0: call bpf_ktime_get_ns                   call bpf_ktime_get_ns
+  1: r0 &= 0x7fffffff       after verifier   r0 &= 0x7fffffff
+  2: w1 = w0                rewrites         w1 = w0
+  3: if w0 < 10 goto +0     -------------->  r11 = 0x2f5674a6     (r)
+  4: r1 >>= 32                               r11 <<= 32           (r)
+  5: r0 = r1                                 r1 |= r11            (r)
+  6: exit;                                   if w0 < 0xa goto pc+0
+                                             r1 >>= 32 r0 = r1
+                                             exit
+
+(or zero extension of w1 at (2) is missing for architectures that
+ require zero extension for upper register half).
+
+The following happens w/o this patch:
+- r0 is marked as not a subreg at (0);
+- w1 is marked as subreg at (2);
+- w1 subreg_def is overridden at (3) by copy_register_state();
+- w1 is read at (5) but mark_insn_zext() does not mark (2)
+  for zero extension, because w1 subreg_def is not set;
+- because of BPF_F_TEST_RND_HI32 flag verifier inserts random
+  value for hi32 bits of (2) (marked (r));
+- this random value is read at (5).
+
+Fixes: 75748837b7e5 ("bpf: Propagate scalar ranges through register assignments.")
+Reported-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Closes: https://lore.kernel.org/bpf/7e2aa30a62d740db182c170fdd8f81c596df280d.camel@gmail.com
+Link: https://lore.kernel.org/bpf/20240924210844.1758441-1-eddyz87@gmail.com
+shung-hsi.yu: sync_linked_regs() was called find_equal_scalars() before commit
+4bf79f9be434 ("bpf: Track equal scalars history on per-instruction level"), and
+modification is done because there is only a single call to
+copy_register_state() before commit 98d7ca374ba4 ("bpf: Track delta between
+"linked" registers.").
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+---
+ kernel/bpf/verifier.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 3f47cfa17141..a3c3c66ca047 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -14497,8 +14497,11 @@ static void find_equal_scalars(struct bpf_verifier_state *vstate,
+ 	struct bpf_reg_state *reg;
+ 
+ 	bpf_for_each_reg_in_vstate(vstate, state, reg, ({
+-		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id)
++		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id) {
++			s32 saved_subreg_def = reg->subreg_def;
+ 			copy_register_state(reg, known_reg);
++			reg->subreg_def = saved_subreg_def;
++		}
+ 	}));
+ }
+ 
 -- 
-viresh
+2.47.1
+
 
