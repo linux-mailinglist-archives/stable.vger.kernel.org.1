@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DD89F5252
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4609F52B7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAA0116F48C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 077A9188E3FC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C321F8680;
-	Tue, 17 Dec 2024 17:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87F91F869B;
+	Tue, 17 Dec 2024 17:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUGmxcVa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxIhtK81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632361F7089;
-	Tue, 17 Dec 2024 17:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8533E1F76A1;
+	Tue, 17 Dec 2024 17:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455712; cv=none; b=hPO5ye0kcLKdaQ1roaX+hH6N/emhG6VunLiL+4vCPVwpvHtJMjZvr1yY/zzoiSUhy31tNJCJ7FFwPJYURGq9ZBfC4ARohk1kI8HhIC1FC7hF0cbekke2wBpLbCfM9GMKSU7ewREqnDqqYBFag07PyWVCK3EZVofccbW/mdO1Hg8=
+	t=1734455879; cv=none; b=kopKNs9+jPjpC4af0fqWEpFzx93BUypM8t7i8/Sj+pJqRrJYv7ua+j+bxjX/dfGndGTikt0AeWcrm5da3Eg1rYymqvVfFCzxzpD86xb7rP87PSl+pwODHQAaI4AKS7+943RmJ6UpN5QagnMi8AwySFawxPL0br3b6fBM3XJkOQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455712; c=relaxed/simple;
-	bh=MdPfAGAz+61sXlLUZ3uQpnQhUPf8JxtILNIWJaIE+04=;
+	s=arc-20240116; t=1734455879; c=relaxed/simple;
+	bh=OJhpnC3dgEW0kv+/1T9Gv0DS5b3wr5nVk3VRm+6UVfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hrAPxktBF5d+CtaX1xYMldAE3RxIiujkVsuRMEK/BpXcZtM1P9Ce3AFtu2DwFKRv/qfLyG1p6Sw+MMUqpKchZOFUYvZfCh6h1rl5sXWdqWJcQVWDQXuNXNxgJhm9yBtsOGIBJ3C3UbopFKCpVUawUlSW0pLmwgoxkUqttdye8Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUGmxcVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D6EC4CED3;
-	Tue, 17 Dec 2024 17:15:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=beTiz3aDDz9ovwLWkoDdp4QqttII1mnSfGFIbZoOhvJfUC5Flaap9RzSUy5hWKZf8GqJot9hVmn8a3g7sTihsaPBihUgDmdB3uU7Hu5kDeaf5dPjLe6bbTHkishxhN0hqh25L4x5az0psgOfnqex/EL/y9UUTui92XpevlYkApI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxIhtK81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4E3C4CED3;
+	Tue, 17 Dec 2024 17:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455712;
-	bh=MdPfAGAz+61sXlLUZ3uQpnQhUPf8JxtILNIWJaIE+04=;
+	s=korg; t=1734455879;
+	bh=OJhpnC3dgEW0kv+/1T9Gv0DS5b3wr5nVk3VRm+6UVfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUGmxcVaf6leShemLDXC+9/IMsbkox9nU6j+ohD5N7BABjRV/T+PYqWQy0BjLfNgf
-	 5Jm52UpSf8BUzEqNZ4XjRvC0EsDXPj0aORE2zc/rdNoP6yKdYAStbR6lMD65A5oLmn
-	 0/JHDcAgRgMVcT9yhjD3YZQvd11ctiJmT3VbPiQ8=
+	b=yxIhtK81x4sfCZALLDvfd8EqptMmo8xwaSDc+0kBsUjCR/p0pAzAQxCPROOTq/R6R
+	 YO0is4aHDNtlGZslokaKHQMuL8Nd0Xifm8F2QYZOkJDK9XEjg9/P7t69fm9uJpHn65
+	 fLV9LtYqBC0sJ4vomy88DL8p/pk1Iwb/9geMulMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>
-Subject: [PATCH 5.15 51/51] ALSA: usb-audio: Fix a DMA to stack memory bug
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 64/76] Bluetooth: SCO: Add support for 16 bits transparent voice setting
 Date: Tue, 17 Dec 2024 18:07:44 +0100
-Message-ID: <20241217170522.565979823@linuxfoundation.org>
+Message-ID: <20241217170528.980283196@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,106 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-commit f7d306b47a24367302bd4fe846854e07752ffcd9 upstream.
+[ Upstream commit 29a651451e6c264f58cd9d9a26088e579d17b242 ]
 
-The usb_get_descriptor() function does DMA so we're not allowed
-to use a stack buffer for that.  Doing DMA to the stack is not portable
-all architectures.  Move the "new_device_descriptor" from being stored
-on the stack and allocate it with kmalloc() instead.
+The voice setting is used by sco_connect() or sco_conn_defer_accept()
+after being set by sco_sock_setsockopt().
 
-Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices")
-Cc: stable@kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The PCM part of the voice setting is used for offload mode through PCM
+chipset port.
+This commits add support for mSBC 16 bits offloading, i.e. audio data
+not transported over HCI.
+
+The BCM4349B1 supports 16 bits transparent data on its I2S port.
+If BT_VOICE_TRANSPARENT is used when accepting a SCO connection, this
+gives only garbage audio while using BT_VOICE_TRANSPARENT_16BIT gives
+correct audio.
+This has been tested with connection to iPhone 14 and Samsung S24.
+
+Fixes: ad10b1a48754 ("Bluetooth: Add Bluetooth socket voice option")
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |   31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ include/net/bluetooth/bluetooth.h |  1 +
+ net/bluetooth/sco.c               | 29 +++++++++++++++--------------
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -591,7 +591,7 @@ int snd_usb_create_quirk(struct snd_usb_
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor = NULL;
- 	int err;
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index 41fc7f12971a..5689b4744764 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -122,6 +122,7 @@ struct bt_voice {
  
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -602,15 +602,20 @@ static int snd_usb_extigy_boot_quirk(str
- 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
-+
-+		new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+		if (!new_device_descriptor)
-+			return -ENOMEM;
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&new_device_descriptor, sizeof(new_device_descriptor));
-+				new_device_descriptor, sizeof(*new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--				new_device_descriptor.bNumConfigurations);
-+				new_device_descriptor->bNumConfigurations);
- 		else
--			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
-+		kfree(new_device_descriptor);
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -942,7 +947,7 @@ static void mbox2_setup_48_24_magic(stru
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor = NULL;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -977,15 +982,21 @@ static int snd_usb_mbox2_boot_quirk(stru
+ #define BT_VOICE_TRANSPARENT			0x0003
+ #define BT_VOICE_CVSD_16BIT			0x0060
++#define BT_VOICE_TRANSPARENT_16BIT		0x0063
  
- 	dev_dbg(&dev->dev, "device initialised!\n");
- 
-+	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
-+
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
+ #define BT_SNDMTU		12
+ #define BT_RCVMTU		13
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index ad5afde17213..fe8728041ad0 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -268,10 +268,13 @@ static int sco_connect(struct sock *sk)
  	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
-+
-+	kfree(new_device_descriptor);
+ 		type = SCO_LINK;
  
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
+-	if (sco_pi(sk)->setting == BT_VOICE_TRANSPARENT &&
+-	    (!lmp_transp_capable(hdev) || !lmp_esco_capable(hdev))) {
+-		err = -EOPNOTSUPP;
+-		goto unlock;
++	switch (sco_pi(sk)->setting & SCO_AIRMODE_MASK) {
++	case SCO_AIRMODE_TRANSP:
++		if (!lmp_transp_capable(hdev) || !lmp_esco_capable(hdev)) {
++			err = -EOPNOTSUPP;
++			goto unlock;
++		}
++		break;
+ 	}
+ 
+ 	hcon = hci_connect_sco(hdev, type, &sco_pi(sk)->dst,
+@@ -888,13 +891,6 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		if (err)
+ 			break;
+ 
+-		/* Explicitly check for these values */
+-		if (voice.setting != BT_VOICE_TRANSPARENT &&
+-		    voice.setting != BT_VOICE_CVSD_16BIT) {
+-			err = -EINVAL;
+-			break;
+-		}
+-
+ 		sco_pi(sk)->setting = voice.setting;
+ 		hdev = hci_get_route(&sco_pi(sk)->dst, &sco_pi(sk)->src,
+ 				     BDADDR_BREDR);
+@@ -902,9 +898,14 @@ static int sco_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			err = -EBADFD;
+ 			break;
+ 		}
+-		if (enhanced_sync_conn_capable(hdev) &&
+-		    voice.setting == BT_VOICE_TRANSPARENT)
+-			sco_pi(sk)->codec.id = BT_CODEC_TRANSPARENT;
++
++		switch (sco_pi(sk)->setting & SCO_AIRMODE_MASK) {
++		case SCO_AIRMODE_TRANSP:
++			if (enhanced_sync_conn_capable(hdev))
++				sco_pi(sk)->codec.id = BT_CODEC_TRANSPARENT;
++			break;
++		}
++
+ 		hci_dev_put(hdev);
+ 		break;
+ 
+-- 
+2.39.5
+
 
 
 
