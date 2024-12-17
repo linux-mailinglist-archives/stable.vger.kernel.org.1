@@ -1,146 +1,126 @@
-Return-Path: <stable+bounces-104424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66FF9F419C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:17:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536759F41B4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:23:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB36416C983
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 04:17:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EE0A188DF8C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 04:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F5614F9F9;
-	Tue, 17 Dec 2024 04:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D97714B092;
+	Tue, 17 Dec 2024 04:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TnM3iiaH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uisHgzKG"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22FB14D456;
-	Tue, 17 Dec 2024 04:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8951920EB
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 04:22:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734409041; cv=none; b=ShOGPbXiApmvqp927koMHiUvuTuxuq4MPeuNs/fVB7s0583b8ImUQvLcNfeeqs/+jF694MDmCw9Byi+h8dolztvA5j9rcelUAsz+cmd91Bpc35L1XTnPzyNtTqzZI5CwkkBbEEaxdqLqLmWwTjq1wj0URqwBNEcScq49y6sTK2s=
+	t=1734409374; cv=none; b=NwrA7lU4t2fZK8b2A2D1Dn+l1uwPgywOcKjGpmqsoGVC0n8XI70nuuLtgmOxeGM2yIgeUberHLKRmSKHkS/3zwZXmNXmlP+2Y/wFT7c4hcNVOfTYrckryZbOVOMAdSL7hECixXgXqvuSBssCA4anONZOUR+Y6gatWgIhqL5obss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734409041; c=relaxed/simple;
-	bh=wbI0mKMWdKJTpHoGI+h2MBkSNibVAgdQ8V1iBKzfkQE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=c58aChuyGMH347g6mfSRqKqrSsMgVRbRRWOwKjoRFmBzzyqeonbcWCXr88kczH73P7P8x5eD/w3+xT7J4Tj2Kj5drSfe6u8eL0XuUgJp701CRoID7izuh17XW/0GeUJCYb/x64M+1DKL0e9/cJEJbhkr8AyCmpPVwzNJA0oLUoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TnM3iiaH; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 63230204720E; Mon, 16 Dec 2024 20:17:19 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 63230204720E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1734409039;
-	bh=rohi30jQued/musal8jVbkH2QFLeJasEFrkrbds2La4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnM3iiaHo7K6UE6HpBYOL6z9JRnTJrJmB6bvFlL44sb+TTPgoU4J2WYJobgIlGRgw
-	 bIlda3ThmedYRWVkwyAWQk0ur+gGzCDPZjBSVbqmSkrjru+oiazGhiHI6VqnapKMsf
-	 QKd2Dfau95SHALpUSGdzZfYvzlZNuXm8L6T/YTxs=
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	dmitry.torokhov@gmail.com,
-	linux-hyperv@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	stable@vger.kernel.org,
-	Saurabh Sengar <ssengar@linux.microsoft.com>
-Subject: [PATCH v4 1/3] Drivers: hv: vmbus: Disable Suspend-to-Idle for VMBus
-Date: Mon, 16 Dec 2024 20:17:07 -0800
-Message-Id: <1734409029-10419-2-git-send-email-ernis@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1734409029-10419-1-git-send-email-ernis@linux.microsoft.com>
-References: <1734409029-10419-1-git-send-email-ernis@linux.microsoft.com>
+	s=arc-20240116; t=1734409374; c=relaxed/simple;
+	bh=zqpqLDi9o2HN9pkhqRL/t6PUB037p1nJeo7h79OIEuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sKlcX0faLV0nQHtXij/dzOoJ+epMunAfiYnCgzm6qygul7dcmZtCrSG+59irwmYOeE8K3gmI1yPEgIZRbA/nncpzQKukmZhAhKa/DlfuW0PYmF93oIy5nysyz0O16w2xT/U3nwk6YsO/ymt18wsssr+PkHEUwa2/CLCEm83ZVdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uisHgzKG; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-218c8aca5f1so6645375ad.0
+        for <stable@vger.kernel.org>; Mon, 16 Dec 2024 20:22:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1734409371; x=1735014171; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=07JoRp2HdL+fGtPDXl2NqAHgCCvT4umPfbJtAb58RtM=;
+        b=uisHgzKGo41X8yN2cDoQjf0jPSsWruhMhjAt3ryjllmuG1qyOA+FBJS81GRXRvvu2u
+         NxFTrOVDrJBRGrY14sidtok6LIWqXHmwVeJzYn7ZADRv82XC8P5f2r80i4BpKEPhjwKS
+         VC7sk7OJDByKM8Wkitvu3S1C8daaAEE2qmPzIMiHAPSkOAsk3Y9bOo6a3zl6A2qB4SNM
+         1e2LuXQgTZswZHTanWSE2DW5suGF7eSjg94IKAVh20gy5ol97eqggG5pCro5Is0+i17/
+         sPVZmB00nh/rapAfStCWvixT/qpSnDDoNhpB/g8ZcPFN5VT8Mr9KjvvDPYOpi6w25lsK
+         y9Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734409371; x=1735014171;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=07JoRp2HdL+fGtPDXl2NqAHgCCvT4umPfbJtAb58RtM=;
+        b=UVkzmKFDeV5rX9pUfI0VvHeP9dZPoOyVyJsckcU018Dv+KwoRerRS1FaHNqG+M5tpI
+         Cneq6g8N3UEEJTHwbUyhS6V0PrR8yCUEEUTDYZnQShheGx/6LZUXm/RsFL3D99mnzf/8
+         U4dgFyvRY+g/AbqaHcEtcjI7dFy2aFcq+WG8OmOIlhDsUOPfHgXuX76FHqZvsMyozyVN
+         c+2bIhYO5w9C8zyV1XbvJQTcU9mZL4DvMQNRhpWLc4KoTbMVRFlZZFhbLwcZ3inE/uR/
+         A04h0rkYbqMF5PLK4onrprM5zb6pg7LCADLHoiE/+bXlDWkcRG1LjdMSKe9+7GkQjyLj
+         ViwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVXqp/RUSvjMhl0yXtlJPliBxJ5Yrr9efByXCGQYzWWV48PzV6urHZaW3u5YNlK8OZ72dlhfiE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzV83t/hfKT1zqK35ocoAwLQ/EV2T0TsAmON8YCx368BXie/ZB8
+	7ipwCZvgz5Yj8hEai6gIb9Q9BDo6cieiB11kGlMtUxNcoUvPlcTzUgIFhm5RolA=
+X-Gm-Gg: ASbGncvFts0wvTi5Ti/3dAEAy8Z1aOC77ymTHPct22wh57/GY7A0o1qGl8Kk/7GNtj3
+	wULCn6v0JUVrfWd+I0Xah5/p2lalObA7Dv9QUWjMbUVmMF2kRQmAxsUqJ+oh7yZIuIk+3zdj0O8
+	B5dNfXM9ZMttGnB2KEH1FbctW5xTpgoBqygVZvrE1Ndkbigf0tGTFQIiIQXf1b1XHsVeXfYlk80
+	5+IHQ/bEBXB3S/3vflt5YtVLZoAUWqikQqeU0zJmyyps8iceogMdwxas4c=
+X-Google-Smtp-Source: AGHT+IEKbIgA6J6tdVvc/CKVL0o8Qbd3JlzKf10BNjP+GnyYPGnHpKt+dWfA7AT7ES0/R2gK7S0k+g==
+X-Received: by 2002:a17:902:d484:b0:215:431f:268f with SMTP id d9443c01a7336-21892999536mr230452625ad.10.1734409370906;
+        Mon, 16 Dec 2024 20:22:50 -0800 (PST)
+Received: from localhost ([122.172.83.132])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e7227asm50376595ad.272.2024.12.16.20.22.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Dec 2024 20:22:50 -0800 (PST)
+Date: Tue, 17 Dec 2024 09:52:48 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Ma Ke <make_ruc2021@163.com>
+Cc: mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, arnd@arndb.de, virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] virtio: fix reference leak in register_virtio_device()
+Message-ID: <20241217042248.omldhsl4royrfo4o@vireshk-i7>
+References: <20241217035432.2892059-1-make_ruc2021@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217035432.2892059-1-make_ruc2021@163.com>
 
-This change is specific to Hyper-V VM user.
-If the Virtual Machine Connection window is focused,
-a Hyper-V VM user can unintentionally touch the keyboard/mouse
-when the VM is hibernating or resuming, and consequently the
-hibernation or resume operation can be aborted unexpectedly.
-Fix the issue by no longer registering the keyboard/mouse as
-wakeup devices (see the other two patches for the
-changes to drivers/input/serio/hyperv-keyboard.c and
-drivers/hid/hid-hyperv.c).
+On 17-12-24, 11:54, Ma Ke wrote:
+> When device_add(&dev->dev) failed, calling put_device() to explicitly
+> release dev->dev. Otherwise, it could cause double free problem.
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 694a1116b405 ("virtio: Bind virtio device to device-tree node")
 
-The keyboard/mouse were registered as wakeup devices because the
-VM needs to be woken up from the Suspend-to-Idle state after
-a user runs "echo freeze > /sys/power/state". It seems like
-the Suspend-to-Idle feature has no real users in practice, so
-let's no longer support that by returning -EOPNOTSUPP if a
-user tries to use that.
+The fixes tag looks incorrect as the problem must be present before this commit
+too.
 
-Fixes: 1a06d017fb3f ("Drivers: hv: vmbus: Fix Suspend-to-Idle for Generation-2 VM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>>
----
-Changes in v4:
-* No change
+> Signed-off-by: Ma Ke <make_ruc2021@163.com>
+> ---
+>  drivers/virtio/virtio.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+> index b9095751e43b..ac721b5597e8 100644
+> --- a/drivers/virtio/virtio.c
+> +++ b/drivers/virtio/virtio.c
+> @@ -503,6 +503,7 @@ int register_virtio_device(struct virtio_device *dev)
+>  
+>  out_of_node_put:
+>  	of_node_put(dev->dev.of_node);
+> +	put_device(&dev->dev);
+>  out_ida_remove:
+>  	ida_free(&virtio_index_ida, dev->index);
+>  out:
+> -- 
+> 2.25.1
 
-Changes in v3:
-* Add "Cc: stable@vger.kernel.org" in sign-off area.
-
-Changes in v2:
-* Add "#define vmbus_freeze NULL" when CONFIG_PM_SLEEP is not 
-  enabled.
----
- drivers/hv/vmbus_drv.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 6d89d37b069a..4df6b12bf6a1 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -900,6 +900,19 @@ static void vmbus_shutdown(struct device *child_device)
- }
- 
- #ifdef CONFIG_PM_SLEEP
-+/*
-+ * vmbus_freeze - Suspend-to-Idle
-+ */
-+static int vmbus_freeze(struct device *child_device)
-+{
-+/*
-+ * Do not support Suspend-to-Idle ("echo freeze > /sys/power/state") as
-+ * that would require registering the Hyper-V synthetic mouse/keyboard
-+ * devices as wakeup devices, which can abort hibernation/resume unexpectedly.
-+ */
-+	return -EOPNOTSUPP;
-+}
-+
- /*
-  * vmbus_suspend - Suspend a vmbus device
-  */
-@@ -938,6 +951,7 @@ static int vmbus_resume(struct device *child_device)
- 	return drv->resume(dev);
- }
- #else
-+#define vmbus_freeze NULL
- #define vmbus_suspend NULL
- #define vmbus_resume NULL
- #endif /* CONFIG_PM_SLEEP */
-@@ -969,7 +983,7 @@ static void vmbus_device_release(struct device *device)
-  */
- 
- static const struct dev_pm_ops vmbus_pm = {
--	.suspend_noirq	= NULL,
-+	.suspend_noirq  = vmbus_freeze,
- 	.resume_noirq	= NULL,
- 	.freeze_noirq	= vmbus_suspend,
- 	.thaw_noirq	= vmbus_resume,
 -- 
-2.34.1
-
+viresh
 
