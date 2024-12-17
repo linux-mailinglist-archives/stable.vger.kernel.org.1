@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E13C79F527C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833179F52F7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F026F16D6A5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BFB18942BC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8E91DE2AC;
-	Tue, 17 Dec 2024 17:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CACA1F8666;
+	Tue, 17 Dec 2024 17:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M49gNQd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdXHPQWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3171F7568;
-	Tue, 17 Dec 2024 17:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190061F76C3;
+	Tue, 17 Dec 2024 17:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455823; cv=none; b=rh8ItI5/D5cKBzaajLxYS+680BLGwyFr5g7l3iJXPBadGhG2Yfh0kjoN9MRGY11+9+TbH+2zGzQ+JrmeCVFNNuEWca/drTIMNV6zs0Deg6Qm5m59o5HJrZ9TBR+/YbKbm26QB5slHelVyWGTsNqvu9Dycfs8rIF4JguaDp7++mg=
+	t=1734456037; cv=none; b=R6qPsJf6fq0wQbGYrxcopgsKR7s9dbOFCnlvRTOysqU3xnpJn0m8wnD5ZuCeJMIO4N0lFZ5yDoiwwfiC+d+01p2nkkn3jABjHg4hqmK55aXAi0zXX/e8uAtIS+3bRs+8Ctvf/d957rqwAzrmycUYz570LfvUbEtKcm4iK2eviUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455823; c=relaxed/simple;
-	bh=F5YCH1pXhqRNbsNepJwR9e/JxZdZqpxoWsp35FR7iaY=;
+	s=arc-20240116; t=1734456037; c=relaxed/simple;
+	bh=5ZoR4DJ5E3vb0tVfW5eTy8xKqa9HyIyDkXO48EnM6Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wq+LiTXYadPWyTg96kR4nDU2Yx5GTs9ywdXdAKrhyLwfmHy3F9wNx5v3GM1MP8IjjofJMijfPyK3GMY1ZTaaEN2RmlKkrOI+7PpJDVUxJzpybkVXZdj6ru3FIRmeR9J4yMhMJjNk/OXjs5T1nc4t0XyavRAFIB7xVUp3nAbsTMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M49gNQd6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C788EC4CED3;
-	Tue, 17 Dec 2024 17:17:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mp/nN1DS1L8OoKi84UO90T8urhd99uihazMOgE1IaCuZYklB4qm6gUKvZle7xvF+3L7GKh/KGllTYS/QeiE2D5medBc15a8jiiB0k4pB90GaK3x+4FhUc1hpeAARozqf+tabNg1HbvVawbu1j6qcSJA+iWUSbLp2NORyFW31T5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdXHPQWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E387C4CED3;
+	Tue, 17 Dec 2024 17:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455823;
-	bh=F5YCH1pXhqRNbsNepJwR9e/JxZdZqpxoWsp35FR7iaY=;
+	s=korg; t=1734456036;
+	bh=5ZoR4DJ5E3vb0tVfW5eTy8xKqa9HyIyDkXO48EnM6Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M49gNQd6S7VV9G9wYgz898E+MEy/45b3Oh+JuxdEfrMJBiNQ76bKEnRGAN0iYJDEH
-	 2JMS0sH3TQbqP95C9oUpOSw6eMAPd1DufOlk9zBQ+/z8fHBRYuN98+KE3XQw2ZBUbR
-	 ouH5jWdXJWPNnMn50AkuYtb8CGWyYhJbth8Sx5yQ=
+	b=MdXHPQWhQQwjB9kk989wjcYGzwKL50hE9FX4s+3bv40v1sLuMXvcBxNP4lStb5bBk
+	 M3EJibcJEkAG6kqQ8qeV9M1yMy8DtnuEbwH2lKt7WE0cIMOP1tgaT5mOmajTLkl/9o
+	 JTwiES18urYe9N9QWiW/8/YVeJjMv6hMlwL1Ksss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 44/76] net: mscc: ocelot: fix memory leak on ocelot_port_add_txtstamp_skb()
+Subject: [PATCH 6.6 040/109] amdgpu/uvd: get ring reference from rq scheduler
 Date: Tue, 17 Dec 2024 18:07:24 +0100
-Message-ID: <20241217170528.093336111@linuxfoundation.org>
+Message-ID: <20241217170535.045444957@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: David (Ming Qiang) Wu <David.Wu3@amd.com>
 
-[ Upstream commit 4b01bec25bef62544228bce06db6a3afa5d3d6bb ]
+[ Upstream commit 47f402a3e08113e0f5d8e1e6fcc197667a16022f ]
 
-If ocelot_port_add_txtstamp_skb() fails, for example due to a full PTP
-timestamp FIFO, we must undo the skb_clone_sk() call with kfree_skb().
-Otherwise, the reference to the skb clone is lost.
+base.sched may not be set for each instance and should not
+be used for cases such as non-IB tests.
 
-Fixes: 52849bcf0029 ("net: mscc: ocelot: avoid overflowing the PTP timestamp FIFO")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241205145519.1236778-2-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/ocelot_ptp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
-index cb32234a5bf1..3c22652879ac 100644
---- a/drivers/net/ethernet/mscc/ocelot_ptp.c
-+++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
-@@ -692,8 +692,10 @@ int ocelot_port_txtstamp_request(struct ocelot *ocelot, int port,
- 			return -ENOMEM;
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c b/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
+index 86d1d46e1e5e..4fba0b3d10f1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
+@@ -1286,7 +1286,7 @@ static int uvd_v7_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,
+ 					   struct amdgpu_job *job,
+ 					   struct amdgpu_ib *ib)
+ {
+-	struct amdgpu_ring *ring = to_amdgpu_ring(job->base.sched);
++	struct amdgpu_ring *ring = amdgpu_job_ring(job);
+ 	unsigned i;
  
- 		err = ocelot_port_add_txtstamp_skb(ocelot, port, *clone);
--		if (err)
-+		if (err) {
-+			kfree_skb(*clone);
- 			return err;
-+		}
- 
- 		OCELOT_SKB_CB(skb)->ptp_cmd = ptp_cmd;
- 		OCELOT_SKB_CB(*clone)->ptp_class = ptp_class;
+ 	/* No patching necessary for the first instance */
 -- 
 2.39.5
 
