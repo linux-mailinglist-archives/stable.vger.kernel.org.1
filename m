@@ -1,130 +1,143 @@
-Return-Path: <stable+bounces-104512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2129F4ECD
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:06:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AE79F4EEA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:10:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92AD189438A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:01:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 167D5164FA6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EFD1F5421;
-	Tue, 17 Dec 2024 15:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFAD1F7574;
+	Tue, 17 Dec 2024 15:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="BYJ5d6eW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FW/9P3Fd"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBDB148850
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 15:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734447707; cv=pass; b=oGThueSOtjUNBsOLgaK7dmB9JaRAqaxmmEN7vJ4PBNhnSE7HCBo1WiZJs2rfv6V6YhSAg83buHUrdyZApW3PAnjLW2vS6jfXA0RwmMPwNwED2Ce7UjgPa/ZHYe/V4gFXVdyFfTX5TaZGUmDofkqpw5VKmuKf2jlweQWYBgfk88I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734447707; c=relaxed/simple;
-	bh=owL6Jb2ucV79lWXE+yGx3Qqe0SfG9BpFiGhd7x9aCAI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ueME7HZlDmn6k7V7F4rMcCtjhZ7gVgQY8m5bH8bgMyfjWH4c/8jK8Ka+hB4K23sB3PKP1Tec4IauO7uP6uAEKc+mjRSpxrkof5VK8wcb5IVuSRkJb9dHGAAlUcDw3wJc59Hyh3o0Wi9W8lrtxnfXoNT+yCKxM8w4g7O+sj/Y00o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=BYJ5d6eW; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1734447694; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=gfhRSx/3rGofvHnQWh3KBkQT4+nFxeTqlvsqAB4Xw+9E+4ABUyda9bq18pyV/0qjfWS5sVDmef+iE/Hkpi/bHem76HwYqt9Pc/zlnIWAd8RT24BkjTcXaZPtOiAZ6NLAnwyl4xuv4UGwdOcx75cNyJcS9JkKnlARNEr8+Rr74lE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1734447694; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=natGVYadNY1uO4Ycg79DCI9gFnr2nyFb4qa/JABKF1A=; 
-	b=gY3PGvsd3j243FqsLxo40kUUlpDsotbOmgoor7UshnCumd4X1JsRR3DqOCfj+SePt11yhExsgKJf6B60v+9zWNOkxtXJ2LW/iOdQW9W3Nb97k+g0pjVKLJtqSLJeXkDEW508VwJhlstB8aLv1DLSUropuKPKJHaxfVKjq1Z4/7Y=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1734447694;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=natGVYadNY1uO4Ycg79DCI9gFnr2nyFb4qa/JABKF1A=;
-	b=BYJ5d6eW0PZnnaWezodI5edZO6o7IoHARbFRwcuYXALqn4TJMTTqqltOupvTpxzv
-	ielBiYkwOhapX4B6EB0uVW/xmWuizUQdz2xgJ5JMJNhCbM3diCnreYei2eveOc7TrB0
-	mVYg7g6Ndy0CMai/bnohP5za58pjO4u4XaIc5g2g=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1734447692416375.198128358649; Tue, 17 Dec 2024 07:01:32 -0800 (PST)
-Date: Tue, 17 Dec 2024 12:01:32 -0300
-From: Gustavo Padovan <gus@collabora.com>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-Cc: "sashal" <sashal@kernel.org>,
-	"kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
-	"stable" <stable@vger.kernel.org>,
-	"Engineering - Kernel" <kernel@collabora.com>,
-	"Muhammad Usama Anjum" <usama.anjum@collabora.com>
-Message-ID: <193d5237a65.c96d8ccf1557906.2641695653454944180@collabora.com>
-In-Reply-To: <2024121700-spotless-alike-5455@gregkh>
-References: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
- <2024121731-famine-vacate-c548@gregkh>
- <193d506e75f.b285743e1543989.3693511477622845098@collabora.com> <2024121700-spotless-alike-5455@gregkh>
-Subject: Re: add 'X-KernelTest-Commit' in the stable-rc mail header
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FE41482E7
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 15:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734448192; cv=none; b=r3aMLSX7V6VekThY0ur9YnTEnbqZsgcGc4/Taa41+feHNnuFxN0dcYrewXJY61OTjyICeGFrqEX+zsWda6Ak2AZD76vd8Y16ceSPGBRQdw2XAxxUdBM3EzMlqWf7/LRRFzrhEfMPK5UDxjA6fEEs98ic5dXGuO0d4PkY153i39Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734448192; c=relaxed/simple;
+	bh=4eP60qs48KatjV27oK9VXq50Pn4jVK8V8NN5JyN3p3Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gir8sRuVT4Plhtl/dSJvk6nfJ3huTEYT6kK2Q6s0RNXx3yMc5n2hvpK+rR4SywblJ7S0VVl8jQTEhz6z0A0oyG+rDM/0QlTuuT0XdZF0TJw6RT0fH9kj07/9744dl7tsj3KFHANWyQyRg6XwZKXXzVK+m/9jWOJP5tYDJpKb7tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FW/9P3Fd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734448188;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MqetoIFcgXu59rkxSpWYfsgYEfKFRQrtPQ/2cVt2LjY=;
+	b=FW/9P3FdMLR0PDLT4GXWL/3NaUwrQmoZBCmLqBp0ApISiiaHwL+awj7rth2xlmhIIjOZVh
+	SlvtFGET9Om4b2bSI725wP0KjENr5DeI2zrWSnqGsUS0OnN04Ukf2Do/DY74g2YrMQtSIS
+	Luk3SJxHw4H7ceZpj5nx5UDK+4RaWA8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-dFrx-ed-Ot-DGKWnwgWqEA-1; Tue,
+ 17 Dec 2024 10:09:45 -0500
+X-MC-Unique: dFrx-ed-Ot-DGKWnwgWqEA-1
+X-Mimecast-MFC-AGG-ID: dFrx-ed-Ot-DGKWnwgWqEA
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 77CC119560BE;
+	Tue, 17 Dec 2024 15:09:43 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.190])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 7BE8419560A2;
+	Tue, 17 Dec 2024 15:09:39 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 17 Dec 2024 16:09:19 +0100 (CET)
+Date: Tue, 17 Dec 2024 16:09:14 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Nam Cao <namcao@linutronix.de>
+Cc: Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dylan Hatch <dylanbhatch@google.com>,
+	"Eric W . Biederman" <ebiederm@xmission.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] fs/proc: do_task_stat: Fix ESP not readable during
+ coredump
+Message-ID: <20241217150913.GB29091@redhat.com>
+References: <cover.1730883229.git.namcao@linutronix.de>
+ <11e1777296b7d06085c9fd341bafc4b9d82e6e4e.1730883229.git.namcao@linutronix.de>
+ <20241217145923.GA29091@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217145923.GA29091@redhat.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+
+On 12/17, Oleg Nesterov wrote:
+>
+> On 11/06, Nam Cao wrote:
+> >
+> > @@ -534,6 +517,23 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
+> >  		ppid = task_tgid_nr_ns(task->real_parent, ns);
+> >  		pgid = task_pgrp_nr_ns(task, ns);
+> >
+> > +		/*
+> > +		 * esp and eip are intentionally zeroed out.  There is no
+> > +		 * non-racy way to read them without freezing the task.
+> > +		 * Programs that need reliable values can use ptrace(2).
+>
+> OK,
+>
+> but then:
+>
+> > +		 * The only exception is if the task is core dumping because
+> > +		 * a program is not able to use ptrace(2) in that case. It is
+> > +		 * safe because the task has stopped executing permanently.
+> > +		 */
+> > +		if (permitted && task->signal->core_state) {
+> > +			if (try_get_task_stack(task)) {
+> > +				eip = KSTK_EIP(task);
+> > +				esp = KSTK_ESP(task);
+> > +				put_task_stack(task);
+>
+> How can the task->signal->core_state check help ?
+>
+> Suppose we have a task T1 with T1-pid == 100 and you read /proc/100/stat.
+> It is possible that the T1's sub-thread T2 starts the coredumping and sets
+> signal->core_state != NULL.
+>
+> But read(/proc/100/stat) can run before T1 gets SIGKILL from T2 and enters
+> the kernel mode?
+
+Can't the trivial patch below fix the problem?
+
+Oleg.
 
 
-
----- On Tue, 17 Dec 2024 11:49:53 -0300 Greg KH  wrote ---
-
- > On Tue, Dec 17, 2024 at 11:30:19AM -0300, Gustavo Padovan wrote: 
- > > 
- > > 
- > > ---- On Tue, 17 Dec 2024 11:15:58 -0300 Greg KH  wrote --- 
- > > 
- > >  > On Tue, Dec 17, 2024 at 11:08:17AM -0300, Gustavo Padovan wrote: 
- > >  > > Hey Greg, Sasha, 
- > >  > > 
- > >  > > 
- > >  > > We are doing some work to further automate stable-rc testing, triage, validation and reporting of stable-rc branches in the new KernelCI system. As part of that, we want to start relying on the X-KernelTest-* mail header parameters, however there is no parameter with the git commit hash of the brach head. 
- > >  > > 
- > >  > > Today, there is only information about the tree and branch, but no tags or commits. Essentially, we want to parse the email headers and immediately be able to request results from the KernelCI Dashboard API passing the head commit being tested. 
- > >  > > 
- > >  > > Is it possible to add 'X-KernelTest-Commit'? 
- > >  > 
- > >  > Not really, no.  When I create the -rc branches, I apply them from 
- > >  > quilt, push out the -rc branch, and then delete the branch locally, 
- > >  > never to be seen again. 
- > >  > 
- > >  > That branch is ONLY for systems that can not handle a quilt series, as 
- > >  > it gets rebased constantly and nothing there should ever be treated as 
- > >  > stable at all. 
- > >  > 
- > >  > So my systems don't even have that git id around in order to reference 
- > >  > it in an email, sorry.  Can't you all handle a quilt series? 
- > > 
- > > We have no support at all for quilt in KernelCI. The system pulls kernel 
- > > branches frequently from all the configured trees and build and test them, 
- > > so it does the same for stable-rc. 
- > > 
- > > Let me understand how quilt works before adding a more elaborated 
- > > answer here as I never used it before. 
- >  
- > Ok, in digging, I think I can save off the git id, as I do have it right 
- > _before_ I create the email.  If you don't do anything with quilt, I 
- > can try to add it, but for some reason I thought kernelci was handling 
- > quilt trees in the past.  Did this change? 
-
-If you can save the git id that would help us tremoundously right now!
-We understand it is ephemeral, but it helps during the rc test window.
-
-I don't believe our legacy KernelCI supported quilt either, unless this 
-happened in a remote past. We basically pull git trees and are now
-opening the path to receive patchsets from Patchwork et al.
-
+--- xfs/proc/array.c
++++ x/fs/proc/array.c
+@@ -500,7 +500,7 @@
+ 		 * a program is not able to use ptrace(2) in that case. It is
+ 		 * safe because the task has stopped executing permanently.
+ 		 */
+-		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE))) {
++		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE|PF_POSTCOREDUMP))) {
+ 			if (try_get_task_stack(task)) {
+ 				eip = KSTK_EIP(task);
+ 				esp = KSTK_ESP(task);
 
 
