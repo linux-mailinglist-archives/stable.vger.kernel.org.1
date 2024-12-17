@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E829F53EC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BD99F51C5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70DD516E3F2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACD591628C1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2594C1F867D;
-	Tue, 17 Dec 2024 17:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33ED1F76B2;
+	Tue, 17 Dec 2024 17:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAvqggnh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUkldIrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D572F1527B1;
-	Tue, 17 Dec 2024 17:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FB01F543C;
+	Tue, 17 Dec 2024 17:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456595; cv=none; b=dalNJI2PTKt50mLLKKXc/lXLoFSzExHmoX7L4XV5jEdCZgtR4AbvqVDl43wSX4lTUuM7D8bZbu8XlTnWL83XtIM7a4p8nDCCY9U8wgAqOW0wAcqYx4axsCEGv4H/4MN1UYjLqWs7dxSWiCK6laJb5kPREtd1Mph6/lu5Dx/w7mg=
+	t=1734455408; cv=none; b=qQeKSDUr8D6jUOLAgpDhTim1VKn9LPPo6roLWBELwE0BxzRqV4EaDiLJ71M/tIgMUDgmTYRlapuq1xryolBSEl/m/2Y0pOMUDhaKJfQavaxBc/PomS5BaU/xhx+mw7XigcU/PlpmEZslX4i9IG072aFvjAT/dNsIESY82IYAoIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456595; c=relaxed/simple;
-	bh=ZARmz087mEQAV19gmCR4ccwOIv/5zbVv3oji1IWjs8A=;
+	s=arc-20240116; t=1734455408; c=relaxed/simple;
+	bh=Csj8Hmd6H/+IHpygYq4awUcZG3616RU16dezj7RwNY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOiU66IE8ch9BzWdV3qkCz+6ETCp5L7Vb1zqpRw8wH4ww8LYuYER7WK/33vvFtDZxBMi//Enmk4pUFnr7j6ENPusQyfopCc5yuzYj6fOi4JHUvI3+JwknCLkbb2vYppu2F4nOY4xxyiEtTraycZyn3JHy6x0lDtYDTWWftSReGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAvqggnh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EFFC4CED3;
-	Tue, 17 Dec 2024 17:29:54 +0000 (UTC)
+	 MIME-Version; b=i6dS/iFXdCivFgajy+SuZJtWqFdGJ2EYwV9Sxix0rJe81bQ4eaiRxmZCRNxXBWVwIFouJwGer7CIeBW1FRWIAJdu8KAqcqmJsR/cFTksA0AS96qeAOvRMBh9b3FSHFbXeKdcnMqL5n/EiRmmgYTd97NWP96InC1BxFhv4RJp2tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUkldIrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5C0C4CED3;
+	Tue, 17 Dec 2024 17:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456595;
-	bh=ZARmz087mEQAV19gmCR4ccwOIv/5zbVv3oji1IWjs8A=;
+	s=korg; t=1734455408;
+	bh=Csj8Hmd6H/+IHpygYq4awUcZG3616RU16dezj7RwNY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PAvqggnhU+jlOtszxYqaT/S5Z6eNI/N6GhEMLSweGz0m2sNtldUJNysLyn7sQxesO
-	 96WFcxMtpvuWF01jKp+8PLQfGUUYOLUANnfbr8mepZPACc+Ct3Um2hXMTNml9yQDov
-	 4KPq/gT79F0oJTYt2H/erOA+YiVRVqtzjajVKEfg=
+	b=AUkldIrKlFYiVfNKIFdsWL2l7cugRAKglToM7Hj8yfP7G+Prg60KWnOGiJHlaDU57
+	 n8LKtxpFbpiqRng/0aBM2ju6pIGAPgK23MX6pKw9kGsvnjKM5NHvYLqemwkoiDeSIX
+	 veGqxGexTnAhuiFIR3vV6Q3eUj0XmJaX2N5TvU04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH 6.12 080/172] bpf, sockmap: Fix update element with same
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 18/24] blk-iocost: clamp inuse and skip noops in __propagate_weights()
 Date: Tue, 17 Dec 2024 18:07:16 +0100
-Message-ID: <20241217170549.605368050@linuxfoundation.org>
+Message-ID: <20241217170519.751688563@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Tejun Heo <tj@kernel.org>
 
-commit 75e072a390da9a22e7ae4a4e8434dfca5da499fb upstream.
+[ Upstream commit db84a72af6be422abf2089a5896293590dda5066 ]
 
-Consider a sockmap entry being updated with the same socket:
+__propagate_weights() currently expects the callers to clamp inuse within
+[1, active], which is needlessly fragile. The inuse adjustment logic is
+going to be revamped, in preparation, let's make __propagate_weights() clamp
+inuse on entry.
 
-	osk = stab->sks[idx];
-	sock_map_add_link(psock, link, map, &stab->sks[idx]);
-	stab->sks[idx] = sk;
-	if (osk)
-		sock_map_unref(osk, &stab->sks[idx]);
+Also, make it avoid weight updates altogether if neither active or inuse is
+changed.
 
-Due to sock_map_unref(), which invokes sock_map_del_link(), all the
-psock's links for stab->sks[idx] are torn:
-
-	list_for_each_entry_safe(link, tmp, &psock->link, list) {
-		if (link->link_raw == link_raw) {
-			...
-			list_del(&link->list);
-			sk_psock_free_link(link);
-		}
-	}
-
-And that includes the new link sock_map_add_link() added just before
-the unref.
-
-This results in a sockmap holding a socket, but without the respective
-link. This in turn means that close(sock) won't trigger the cleanup,
-i.e. a closed socket will not be automatically removed from the sockmap.
-
-Stop tearing the links when a matching link_raw is found.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241202-sockmap-replace-v1-1-1e88579e7bd5@rbox.co
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 57e420c84f9a ("blk-iocost: Avoid using clamp() on inuse in __propagate_weights()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c |    1 +
- 1 file changed, 1 insertion(+)
+ block/blk-iocost.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -159,6 +159,7 @@ static void sock_map_del_link(struct soc
- 				verdict_stop = true;
- 			list_del(&link->list);
- 			sk_psock_free_link(link);
-+			break;
- 		}
- 	}
- 	spin_unlock_bh(&psock->link_lock);
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index e7d5aafa5e99..75eb90b3241e 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -907,7 +907,10 @@ static void __propagate_active_weight(struct ioc_gq *iocg, u32 active, u32 inuse
+ 
+ 	lockdep_assert_held(&ioc->lock);
+ 
+-	inuse = min(active, inuse);
++	inuse = clamp_t(u32, inuse, 1, active);
++
++	if (active == iocg->active && inuse == iocg->inuse)
++		return;
+ 
+ 	for (lvl = iocg->level - 1; lvl >= 0; lvl--) {
+ 		struct ioc_gq *parent = iocg->ancestors[lvl];
+-- 
+2.39.5
+
 
 
 
