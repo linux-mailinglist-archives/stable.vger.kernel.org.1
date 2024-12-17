@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555279F523C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C11719F5307
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D7501890F26
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22C9716DBEB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C26A1F7582;
-	Tue, 17 Dec 2024 17:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892C28615A;
+	Tue, 17 Dec 2024 17:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntEiKhr4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep5LZGtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ACF1F76B5;
-	Tue, 17 Dec 2024 17:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CEB1F7574;
+	Tue, 17 Dec 2024 17:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455623; cv=none; b=pNLlwAHkfXN3yG54HlZDkZsv+1rzFVKkkhP8yDBq9MG/E0mpAHlCdOx/U9I2XSijnD/Q80Rd/KChgYkI+G8NZyaAfeOJ2g7qP8uuDsF+QU1Xk18THbNHNLG3EUqF7SAPSQHYXG5XpEvBnPm5VySqKyr9dthBAu0o6J54khgQkTo=
+	t=1734456125; cv=none; b=Itd0rxVTT7M/ETAxnC0DijIThWEx76ogn2Yrxs9v7oF37xOUvUb1bOwNdxcfENub/2RcxVN87qrblXgb65RKZpApza/BxNk8LsQ9jxy7TN1dFWt7HCfUITgO4YaV0iQ8nVGgf6xFER/GcVxUcRGuT2oWK38KP9MiSw/z5I7Ohjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455623; c=relaxed/simple;
-	bh=llGlQIw+otLO5/rFbqp5DsspE+/BTz2mZU7UdpjBPYQ=;
+	s=arc-20240116; t=1734456125; c=relaxed/simple;
+	bh=XRD+xlUTndTdbeIhIBqF9v7cdn/7joRQCABBAhsfDWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jq5Sz8ypiewJD06WdLmD7ANnx+XVn+9eVmleoegfnYFnEOmSPWzubT6VkXQQPmk1PNcbypolNQVTfp6GGSQdGveLn7m32lRgnSnhC46aq2GttOLehFZ1XZHTz1tXzZ4RsEW/f+dMP3gUYiLLSxbhObc+A6t9upFuxuU3nmpiIv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntEiKhr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A349C4CED3;
-	Tue, 17 Dec 2024 17:13:42 +0000 (UTC)
+	 MIME-Version; b=AEGN9JkjPQurh82bohDDE6wupbu00DyKZo7ySUIJc+BWvNi3cugF/efB6j2Y409WVX40fWkH/IrdQrJdixraBYn1mZIEMToAsMc9J8u4tboh/hgoW0ARftWFg/d3S0p+ukWYOcn5+wSk8yAdfbKIB1xPj9ogu6m/lehCxWIfZfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep5LZGtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DDEC4CED3;
+	Tue, 17 Dec 2024 17:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455623;
-	bh=llGlQIw+otLO5/rFbqp5DsspE+/BTz2mZU7UdpjBPYQ=;
+	s=korg; t=1734456125;
+	bh=XRD+xlUTndTdbeIhIBqF9v7cdn/7joRQCABBAhsfDWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntEiKhr45jT0kJcPT6fYfACdycdfXkEYj+ID598FmyplMVI/Ieuw4NfQfX3d8RNcc
-	 UqZCUDPmEVszDanGM25AWKo32CaSiSxqwhKkaYJZQvVXnjjoy3UYjr0uER1syOV9tN
-	 2jQ554DcdItawp79OaZYf3QDxEMN3ilq/eiM3Zs4=
+	b=ep5LZGtDOcyRzaDYhpacaWZl2N2+TEyLvuBUQAyr5t98O4OTUTUUGMoi0bAhG51Pg
+	 Jk54YWA5+PlSItXW61woYYwlCXps5lsUUQWW4EhfSX+OZJXPseZ+L5OnGsetJcJGji
+	 +nf6cp9nOblW2aRXviZsys2+n+GRLx1YkW3Ig0aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/51] net: sparx5: fix the maximum frame length register
+Subject: [PATCH 6.6 038/109] wifi: mac80211: fix station NSS capability initialization order
 Date: Tue, 17 Dec 2024 18:07:22 +0100
-Message-ID: <20241217170521.482326018@linuxfoundation.org>
+Message-ID: <20241217170534.966315982@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-[ Upstream commit ddd7ba006078a2bef5971b2dc5f8383d47f96207 ]
+[ Upstream commit 819e0f1e58e0ba3800cd9eb96b2a39e44e49df97 ]
 
-On port initialization, we configure the maximum frame length accepted
-by the receive module associated with the port. This value is currently
-written to the MAX_LEN field of the DEV10G_MAC_ENA_CFG register, when in
-fact, it should be written to the DEV10G_MAC_MAXLEN_CFG register. Fix
-this.
+Station's spatial streaming capability should be initialized before
+handling VHT OMN, because the handling requires the capability information.
 
-Fixes: 946e7fd5053a ("net: sparx5: add port module support")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a8bca3e9371d ("wifi: mac80211: track capability/opmode NSS separately")
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Link: https://patch.msgid.link/20241118080722.9603-1-benjamin-jw.lin@mediatek.com
+[rewrite subject]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/cfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-index 8561a7bf53e1..0d9ff3db3144 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
-@@ -1113,7 +1113,7 @@ int sparx5_port_init(struct sparx5 *sparx5,
- 	spx5_inst_rmw(DEV10G_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
- 		      DEV10G_MAC_MAXLEN_CFG_MAX_LEN,
- 		      devinst,
--		      DEV10G_MAC_ENA_CFG(0));
-+		      DEV10G_MAC_MAXLEN_CFG(0));
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f9395cd80051..a3c5d4d995db 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1879,6 +1879,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 						    params->eht_capa_len,
+ 						    link_sta);
  
- 	/* Handle Signal Detect in 10G PCS */
- 	spx5_inst_wr(PCS10G_BR_PCS_SD_CFG_SD_POL_SET(sd_pol) |
++	ieee80211_sta_init_nss(link_sta);
++
+ 	if (params->opmode_notif_used) {
+ 		/* returned value is only needed for rc update, but the
+ 		 * rc isn't initialized here yet, so ignore it
+@@ -1888,8 +1890,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 					      sband->band);
+ 	}
+ 
+-	ieee80211_sta_init_nss(link_sta);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
