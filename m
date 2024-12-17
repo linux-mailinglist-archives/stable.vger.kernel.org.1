@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5E79F528C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F7C9F51BE
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71F616EBFE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:18:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8612D1888125
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE121F866E;
-	Tue, 17 Dec 2024 17:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F42291F6671;
+	Tue, 17 Dec 2024 17:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fupNLuDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WczKGPXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7921F7582;
-	Tue, 17 Dec 2024 17:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC87C1F37BE;
+	Tue, 17 Dec 2024 17:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455839; cv=none; b=cfMCiN1aZi3rsW1aek+JKwybfq0FzG5zTDknVcI7K0tE+hsf0c8XVNpQGXUHl47d5CWrx4b97xzUVcNZ+2UtF/fzA7/IwMnJ2goLUQ+evzfbi4TDomjE1bVb98rAgm4IQNXmfwm7NqJYuF3o1TjlhyoCcw8QZTd9gQl5CNNMDGw=
+	t=1734455357; cv=none; b=QtZTXhAuyBuPkE0wIhIHci177sLvz8xKWVi0rbxXyx/mmoR/jWSEWqbRDdD82eYgrmdUQ9Wc0bWa6Quav8tQ8MxA63EMLymsBa3jjzzdEge54ynZpIvlc7+TSFVjOUORICS5GBbTjh42xbrgbOHrDtOz7P4/pXVYfeFqfzHCnhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455839; c=relaxed/simple;
-	bh=hOAP/W4+xOLbLzSrZDL7u08T+xcsYTuux/8TOrAQXm4=;
+	s=arc-20240116; t=1734455357; c=relaxed/simple;
+	bh=Iann/wFmLIj9xWof4Ztst2ntKja20OXa6BE3zEZslqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIVjv83p8idk/mI9K6KeOYrzffpbPlpoXgOfwvo+GaJWa9kshRRgEkze8R+Gns7X3rrVH78nzWXZx5hO2tgoi47y8DqezwO3G9FiHXmELYAVsI+Zb2704Gth6IbusTqs5insGZDBlpfsyth+0FpUmSjGZIJv2lGQFJBIcEJJZkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fupNLuDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FD4C4CED3;
-	Tue, 17 Dec 2024 17:17:18 +0000 (UTC)
+	 MIME-Version; b=EuwR7GuSf+ckJuiwgspTpiMzy4amlRf1dilK6QCLiVKQ/SUCIk72AfQot7crj4Wk6wM1TedW0zi9WBRLrO5ehNYqIjfIrpK0pEGpRt0vlkXpDyr6nRtAu7hoU437PlVmS5naCKa2hx7Pey4NEmEipkV5/aQ5bs6mBzu0SLoByVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WczKGPXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA032C4CED7;
+	Tue, 17 Dec 2024 17:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455838;
-	bh=hOAP/W4+xOLbLzSrZDL7u08T+xcsYTuux/8TOrAQXm4=;
+	s=korg; t=1734455356;
+	bh=Iann/wFmLIj9xWof4Ztst2ntKja20OXa6BE3zEZslqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fupNLuDYXSl4hoZr8OBBG9yyX3L/UGftAi2zFQcPTRceMuOh9iE8hH9iChlKr1qN6
-	 j6iFp8n5qV+s2JwKmHGCoRSL06pHIxJK5j1gpaLQn/PU4HOBA/+FyexESePwxzNqeC
-	 G0xFyZHCKSroQGclkl9QRjVV8PRfgRfuh2vy0DV8=
+	b=WczKGPXMCsqSkvstZPvelNh9YkMmSaxKjWQDr6OgbjGmAWjTUvb0tgVGeNdWEcxUd
+	 QkDOqhlwTxDt/LcJ0Upa7xSOrpgi44LSdsthPV7R3fD0xQeHRQXHcXD3Fu9NSflF+5
+	 Oc35Q9CvFzO3V55p/62cmMkWORdvx96ITwHS1EZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.1 19/76] xfs: return from xfs_symlink_verify early on V4 filesystems
+	stable <stable@kernel.org>,
+	Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+Subject: [PATCH 5.4 01/24] usb: host: max3421-hcd: Correctly abort a USB request.
 Date: Tue, 17 Dec 2024 18:06:59 +0100
-Message-ID: <20241217170527.050878728@linuxfoundation.org>
+Message-ID: <20241217170519.070064694@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
 
-commit 7f8b718c58783f3ff0810b39e2f62f50ba2549f6 upstream.
+commit 0d2ada05227881f3d0722ca2364e3f7a860a301f upstream.
 
-V4 symlink blocks didn't have headers, so return early if this is a V4
-filesystem.
+If the current USB request was aborted, the spi thread would not respond
+to any further requests. This is because the "curr_urb" pointer would
+not become NULL, so no further requests would be taken off the queue.
+The solution here is to set the "urb_done" flag, as this will cause the
+correct handling of the URB. Also clear interrupts that should only be
+expected if an URB is in progress.
 
-Cc: <stable@vger.kernel.org> # v5.1
-Fixes: 39708c20ab5133 ("xfs: miscellaneous verifier magic value fixups")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Fixes: 2d53139f3162 ("Add support for using a MAX3421E chip as a host driver.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+Link: https://lore.kernel.org/r/20241124221430.1106080-1-mark.tomlinson@alliedtelesis.co.nz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_symlink_remote.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/max3421-hcd.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_symlink_remote.c
-+++ b/fs/xfs/libxfs/xfs_symlink_remote.c
-@@ -89,8 +89,10 @@ xfs_symlink_verify(
- 	struct xfs_mount	*mp = bp->b_mount;
- 	struct xfs_dsymlink_hdr	*dsl = bp->b_addr;
- 
-+	/* no verification of non-crc buffers */
- 	if (!xfs_has_crc(mp))
--		return __this_address;
-+		return NULL;
-+
- 	if (!xfs_verify_magic(bp, dsl->sl_magic))
- 		return __this_address;
- 	if (!uuid_equal(&dsl->sl_uuid, &mp->m_sb.sb_meta_uuid))
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -785,11 +785,17 @@ max3421_check_unlink(struct usb_hcd *hcd
+ 				retval = 1;
+ 				dev_dbg(&spi->dev, "%s: URB %p unlinked=%d",
+ 					__func__, urb, urb->unlinked);
+-				usb_hcd_unlink_urb_from_ep(hcd, urb);
+-				spin_unlock_irqrestore(&max3421_hcd->lock,
+-						       flags);
+-				usb_hcd_giveback_urb(hcd, urb, 0);
+-				spin_lock_irqsave(&max3421_hcd->lock, flags);
++				if (urb == max3421_hcd->curr_urb) {
++					max3421_hcd->urb_done = 1;
++					max3421_hcd->hien &= ~(BIT(MAX3421_HI_HXFRDN_BIT) |
++							       BIT(MAX3421_HI_RCVDAV_BIT));
++				} else {
++					usb_hcd_unlink_urb_from_ep(hcd, urb);
++					spin_unlock_irqrestore(&max3421_hcd->lock,
++							       flags);
++					usb_hcd_giveback_urb(hcd, urb, 0);
++					spin_lock_irqsave(&max3421_hcd->lock, flags);
++				}
+ 			}
+ 		}
+ 	}
 
 
 
