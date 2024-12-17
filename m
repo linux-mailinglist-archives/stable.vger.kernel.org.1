@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333229F5286
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 555279F523C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58FE91891E8B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D7501890F26
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9751F890A;
-	Tue, 17 Dec 2024 17:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C26A1F7582;
+	Tue, 17 Dec 2024 17:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBFVpdR6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntEiKhr4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98ED21F890C;
-	Tue, 17 Dec 2024 17:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ACF1F76B5;
+	Tue, 17 Dec 2024 17:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455813; cv=none; b=FJOEd+qswzXieiAhWRlz2yxvyaz+1SPMoyJuWj6ASvgsygvflT3Xd2pRkcX6+qYk1wvi3K6+799BPck85Q/NSaPMah5JzLcBf20RrBsaYWzueNJct3Xe43RwTQ6shXB38xmhwhZc40v6pfnccvXm8g7GTISxVmfvBwsy7IrIWCk=
+	t=1734455623; cv=none; b=pNLlwAHkfXN3yG54HlZDkZsv+1rzFVKkkhP8yDBq9MG/E0mpAHlCdOx/U9I2XSijnD/Q80Rd/KChgYkI+G8NZyaAfeOJ2g7qP8uuDsF+QU1Xk18THbNHNLG3EUqF7SAPSQHYXG5XpEvBnPm5VySqKyr9dthBAu0o6J54khgQkTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455813; c=relaxed/simple;
-	bh=Ujutyt4jXWS1U4KPWtN2WnXZM/yKtZE1P6S8drtl4tg=;
+	s=arc-20240116; t=1734455623; c=relaxed/simple;
+	bh=llGlQIw+otLO5/rFbqp5DsspE+/BTz2mZU7UdpjBPYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CH7vjwsaanFjia96i+6fUx6VMiNdKh5bGLXNOzfSo/4ObQmgl/QwRxSMLf6SXE0II8ZLOQE4QA2Oi2J6y44AK5ZHu32bemncQj3k9Wwp6pdZCsuyKDFOji5pMMBTMY9qHQ1BxidtXTQ+cwb9HuW0RJHzD4Y5hcEE+s8NfEFFcmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBFVpdR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203D1C4CED3;
-	Tue, 17 Dec 2024 17:16:52 +0000 (UTC)
+	 MIME-Version; b=Jq5Sz8ypiewJD06WdLmD7ANnx+XVn+9eVmleoegfnYFnEOmSPWzubT6VkXQQPmk1PNcbypolNQVTfp6GGSQdGveLn7m32lRgnSnhC46aq2GttOLehFZ1XZHTz1tXzZ4RsEW/f+dMP3gUYiLLSxbhObc+A6t9upFuxuU3nmpiIv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntEiKhr4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A349C4CED3;
+	Tue, 17 Dec 2024 17:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455813;
-	bh=Ujutyt4jXWS1U4KPWtN2WnXZM/yKtZE1P6S8drtl4tg=;
+	s=korg; t=1734455623;
+	bh=llGlQIw+otLO5/rFbqp5DsspE+/BTz2mZU7UdpjBPYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBFVpdR6WGk664Ll1UdHbMMgBQiZAfp6uNCP/PPhi++Kp/syuV/1eVnCiGJxtyEAo
-	 TVQsfH90pDntrVQ4hxIrNG+pAVe75JsaqFlJUwyfUx4f1kMs93vDhErfGK+YiSLMus
-	 C4a81wB5HZfT6T6ZX6KGk8KHGQ+06VsBalxV+48o=
+	b=ntEiKhr45jT0kJcPT6fYfACdycdfXkEYj+ID598FmyplMVI/Ieuw4NfQfX3d8RNcc
+	 UqZCUDPmEVszDanGM25AWKo32CaSiSxqwhKkaYJZQvVXnjjoy3UYjr0uER1syOV9tN
+	 2jQ554DcdItawp79OaZYf3QDxEMN3ilq/eiM3Zs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/76] ptp: kvm: x86: Return EOPNOTSUPP instead of ENODEV from kvm_arch_ptp_init()
-Date: Tue, 17 Dec 2024 18:07:21 +0100
-Message-ID: <20241217170527.972429938@linuxfoundation.org>
+Subject: [PATCH 5.15 29/51] net: sparx5: fix the maximum frame length register
+Date: Tue, 17 Dec 2024 18:07:22 +0100
+Message-ID: <20241217170521.482326018@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit 5e7aa97c7acf171275ac02a8bb018c31b8918d13 ]
+[ Upstream commit ddd7ba006078a2bef5971b2dc5f8383d47f96207 ]
 
-The caller, ptp_kvm_init(), emits a warning if kvm_arch_ptp_init() exits
-with any error which is not EOPNOTSUPP:
+On port initialization, we configure the maximum frame length accepted
+by the receive module associated with the port. This value is currently
+written to the MAX_LEN field of the DEV10G_MAC_ENA_CFG register, when in
+fact, it should be written to the DEV10G_MAC_MAXLEN_CFG register. Fix
+this.
 
-	"fail to initialize ptp_kvm"
-
-Replace ENODEV with EOPNOTSUPP to avoid this spurious warning,
-aligning with the ARM implementation.
-
-Fixes: a86ed2cfa13c ("ptp: Don't print an error if ptp_kvm is not supported")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20241203-kvm_ptp-eopnotsuppp-v2-1-d1d060f27aa6@weissschuh.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 946e7fd5053a ("net: sparx5: add port module support")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_kvm_x86.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_kvm_x86.c b/drivers/ptp/ptp_kvm_x86.c
-index 902844cc1a17..5e5b2ef78547 100644
---- a/drivers/ptp/ptp_kvm_x86.c
-+++ b/drivers/ptp/ptp_kvm_x86.c
-@@ -26,7 +26,7 @@ int kvm_arch_ptp_init(void)
- 	long ret;
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+index 8561a7bf53e1..0d9ff3db3144 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+@@ -1113,7 +1113,7 @@ int sparx5_port_init(struct sparx5 *sparx5,
+ 	spx5_inst_rmw(DEV10G_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
+ 		      DEV10G_MAC_MAXLEN_CFG_MAX_LEN,
+ 		      devinst,
+-		      DEV10G_MAC_ENA_CFG(0));
++		      DEV10G_MAC_MAXLEN_CFG(0));
  
- 	if (!kvm_para_available())
--		return -ENODEV;
-+		return -EOPNOTSUPP;
- 
- 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		p = alloc_page(GFP_KERNEL | __GFP_ZERO);
-@@ -46,14 +46,14 @@ int kvm_arch_ptp_init(void)
- 
- 	clock_pair_gpa = slow_virt_to_phys(clock_pair);
- 	if (!pvclock_get_pvti_cpu0_va()) {
--		ret = -ENODEV;
-+		ret = -EOPNOTSUPP;
- 		goto err;
- 	}
- 
- 	ret = kvm_hypercall2(KVM_HC_CLOCK_PAIRING, clock_pair_gpa,
- 			     KVM_CLOCK_PAIRING_WALLCLOCK);
- 	if (ret == -KVM_ENOSYS) {
--		ret = -ENODEV;
-+		ret = -EOPNOTSUPP;
- 		goto err;
- 	}
- 
+ 	/* Handle Signal Detect in 10G PCS */
+ 	spx5_inst_wr(PCS10G_BR_PCS_SD_CFG_SD_POL_SET(sd_pol) |
 -- 
 2.39.5
 
