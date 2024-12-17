@@ -1,204 +1,812 @@
-Return-Path: <stable+bounces-104537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F639F51B0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:08:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAE99F5363
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DFC016420F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:07:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2F816F88E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185571F757B;
-	Tue, 17 Dec 2024 17:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53FB11F8AFE;
+	Tue, 17 Dec 2024 17:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hammerspace.com header.i=@hammerspace.com header.b="RjVLB41g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImFZPdXR"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2096.outbound.protection.outlook.com [40.107.244.96])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ED01F6671;
-	Tue, 17 Dec 2024 17:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.96
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455233; cv=fail; b=tg7VMuqQMuyw25ByKn8UjMnIFee6VsRx/BsWVTPXUOr+fI0p+PdNJ40zcg0D6O3pxP3pxeT/l9Zu0W12VPvPdFMfhLQsozVpwmZqYxkutv3aZjWrikaLUAbGATBwChCSFJAq43No91MRZ8u0DDbyNGi4qxbkaC/l7/8Ic8ZAHhw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455233; c=relaxed/simple;
-	bh=7LcZuglu8nGz89XDsNWrhAu6dkMUugpLyDVN1L9hJag=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=f7bWJNkjRjV+chHJDresQsZvo+ZEQJ4O+3wSQ5BltGCUVWsH+Qb+Tgm8lHwXRrZYGFsOaUTvKOHMH9/TMEOcGEuFPrXJHWYJDQRRuq8cdMJVpAHXRg8cs6gVuTeIpm1YKHK6xs0obk0fMPaJnMJsH6rHazEVSahKox2+jiyzaSM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hammerspace.com; spf=pass smtp.mailfrom=hammerspace.com; dkim=pass (1024-bit key) header.d=hammerspace.com header.i=@hammerspace.com header.b=RjVLB41g; arc=fail smtp.client-ip=40.107.244.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hammerspace.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hammerspace.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CN3XzmjvLWWLtIdyDu+KwTsK9oumNvjSSFUvmmn3ciPAqaV/ZDrhM06UfL9VOPNqpKBdoIqWgZmPQPvgb+z1su2BpzlwRYK05L531ALPE9wNb8KRS+Guu3/7x27FzIDTo5dIn+IdHPR6iOAIhTAokoFx/LeTAouWxE9jzBhUBc9kwSDT1Hhfj/gMd8P+SkAhMclpGzLpT+qrajRbgMYURRPxVVJ00Vm03uTqDPjxDJsikgwACgtNGcXwIjaCbAPWHKAlGVbYgitJJDmlMWWbREvWcv4E0GAsY7dpRtN6Fef13hr1xLgEqoHUNwJksPhEOTRdXOw49XeNRcr8dsPp8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7LcZuglu8nGz89XDsNWrhAu6dkMUugpLyDVN1L9hJag=;
- b=WxAt7r0SK5w+yrzFjp3665ecx2+MSVTpJKOZkxsN/XGk/0Hn6B8SVQfkcIH7fszcdk7TfkHAT4o3Vou6SQFitq70oagOAtMkN2aqlcHH0TeYhZvB0REoTvr9XnNhQCOPtRE8heYsBcmbhtO/DPLu/3q8vaep28+/9h+BD2Lr4fDS/XaqxXZOuYSLu3jLErk4RNfTfTQtmgTqxH2l7WRe4jpzhu39ibX/aALZmH40yUuv8onFHefg0gItxfuqtZ3RkjxiwbbbOAy0fbqIGei0h0Xb6SIFHpNVBEjW6wisc1vbce2YDf6/+9ZggLGDbkAv9XFTjcETYIdHQ8NdGMIApA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hammerspace.com; dmarc=pass action=none
- header.from=hammerspace.com; dkim=pass header.d=hammerspace.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hammerspace.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7LcZuglu8nGz89XDsNWrhAu6dkMUugpLyDVN1L9hJag=;
- b=RjVLB41gCfcaHo33EOhLE6EMwaW35qeG6pCi2MifmZqmeelIQKXOLsjjQymJ5KiOCDfueu8bHrfq3pNy31v+IMcqRPKNnTbcYY7jEPh4MJ4ou5mwNGtOs4GuVLrdkD5fGahNoapyxcyrQLLluLheYK19UYvGlg4FaIliWTs4siA=
-Received: from CH0PR13MB5084.namprd13.prod.outlook.com (2603:10b6:610:111::7)
- by CH2PR13MB3880.namprd13.prod.outlook.com (2603:10b6:610:9a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.22; Tue, 17 Dec
- 2024 17:07:08 +0000
-Received: from CH0PR13MB5084.namprd13.prod.outlook.com
- ([fe80::67bb:bacd:2321:1ecb]) by CH0PR13MB5084.namprd13.prod.outlook.com
- ([fe80::67bb:bacd:2321:1ecb%4]) with mapi id 15.20.8272.005; Tue, 17 Dec 2024
- 17:07:08 +0000
-From: Trond Myklebust <trondmy@hammerspace.com>
-To: "anna@kernel.org" <anna@kernel.org>, "zichenxie0106@gmail.com"
-	<zichenxie0106@gmail.com>, "bcodding@redhat.com" <bcodding@redhat.com>
-CC: "zzjas98@gmail.com" <zzjas98@gmail.com>, "linux-nfs@vger.kernel.org"
-	<linux-nfs@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "chenyuan0y@gmail.com" <chenyuan0y@gmail.com>
-Subject: Re: [PATCH] NFS: Fix potential buffer overflowin
- nfs_sysfs_link_rpc_client()
-Thread-Topic: [PATCH] NFS: Fix potential buffer overflowin
- nfs_sysfs_link_rpc_client()
-Thread-Index: AQHbUJ+1kwLLMgq7iUmD2RyOCngpdLLqpoqAgAAEaoA=
-Date: Tue, 17 Dec 2024 17:07:08 +0000
-Message-ID: <299a43ab3a10317475fcd53f5d130fe3610ca07a.camel@hammerspace.com>
-References: <20241217161311.28640-1-zichenxie0106@gmail.com>
-	 <41572d6005dfb2042482f98177a9b295433c8a5f.camel@hammerspace.com>
-In-Reply-To: <41572d6005dfb2042482f98177a9b295433c8a5f.camel@hammerspace.com>
-Accept-Language: en-US, en-GB
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=hammerspace.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR13MB5084:EE_|CH2PR13MB3880:EE_
-x-ms-office365-filtering-correlation-id: e915edeb-3c14-4fd4-77c6-08dd1ebd3da0
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|10070799003|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?Yi9xanpPbnpkYXhoVjFJVHNiaG9sTEFEeFU2S3RVelZmNUpHN0dxWWw2VVcv?=
- =?utf-8?B?Z1VJYlRSQmZaelVZT0p2MisybEZaSGc0alVaVUcwY21pMzJEOTVPL21Jak9L?=
- =?utf-8?B?QzZwMnVpcVBVQTdOUnNZT1NWcVdTUktEY2pvK0xYSTI3MG9qcWVGbkQwRGVy?=
- =?utf-8?B?YVM4NEcxSkhqU043bmJUV1BiQTd0M2hXQkdiMlJKYURXaVVNU09VeUJOb29p?=
- =?utf-8?B?aHpYTUYzbUdOdzhBcHMzZlRLaXdZc3g0cDd3TlFBVEpuL1JjTkEwMjhaUWtm?=
- =?utf-8?B?QncrM1VsY3E5RFliYUlFMWJhbHN4QWJXa0plVFB4SEJJL0ZzNHBFclIvRHVH?=
- =?utf-8?B?dFRzQzJaaHBoeFpuaXVBNVJKU0JWV3FHQTlZaTBEMENnYk9tYXhvQVlwVTVh?=
- =?utf-8?B?OU5vR2FCN09xRktGZVJBKzVCeXF2YTE2N3d4ckdhZlpjWE5DVlpZcUlzZEp6?=
- =?utf-8?B?ZGZVaGlBdmMrbFNzcnAvL2dTdDlNbUtFa0dMenNFQzNwZG43ZzZvcVZ0R0Mw?=
- =?utf-8?B?dlQ2bTNoRjloaXpCbjYvZXc3b2gvMTNCV01zdFZZT3ZKWVhnbzNOOXUwL1kz?=
- =?utf-8?B?VXhGRzNZVHovWlVtSVVuandMZEpLeXhvaUsyL0dTOS9xUGxyb0hKUTgxS1ky?=
- =?utf-8?B?bDQrMDNZeU1ZaG9ERmo2RUp0b054aHdMeHhvWm5pS25nc2g4cWowZ1FRdGJC?=
- =?utf-8?B?bVJEbE9CNDNoNTFiaUI0VElYK0I5WldDcEhOV0ZleFZKSVBGS1RtN0gxVVBT?=
- =?utf-8?B?NmZ2Q210OEJYMTZQeHFvb0p6UHJ1bURKZ1MxVS84eW9rc2RObVZsTTVjK0px?=
- =?utf-8?B?TVYweG1SWm00QlhDMTBuVGhlS1dZd0NIeS9yU0lxaWNUZVliS1ZkQ3JKS0Nm?=
- =?utf-8?B?ekEvbzl0bVc3R1l6eCtXZWV5OVhyOWpLc0RVOEZtdnZVZS9hTi8zZVkzWURZ?=
- =?utf-8?B?RGkyUkRrUndpSXpFcFNWWUZkUncwcW5MbUd3Tk04UWJGZkF1VnZ1cVVYT0Ez?=
- =?utf-8?B?RHdFRy9wLytkUVhFYWcyVE83dFluckhNNlQ5MDhXWTFFZExYMFljQXp0RHI5?=
- =?utf-8?B?d1FkU2s3UTFXZXNwY0hPT3NVakRiNWM5Vi9YTjhnTlhXSTYwU29IRnB3WUNj?=
- =?utf-8?B?YXdRdUxDekZGdGdUU0hSQWUyNE1WVGVwaGNnbGEvUVJlV0FKbTlXcVFPVVpE?=
- =?utf-8?B?Qi9PMStZbHE2NG92Vi9yYnBuSlVRMmFSSlNFRTdBcjBTVnkrVWxXQXZmdWox?=
- =?utf-8?B?bDc5ckwxclYraXp5WERpeGpZZnF0Zm5VS09PcG5uZm1CQVNzYlRUWk92M2wr?=
- =?utf-8?B?UVArckUzR0NpSlh1RkM3by9LTHlMVC9WNDRVS3lhZmNqa01lYnZVaDMwNjZS?=
- =?utf-8?B?T0lNMWlWMkxYMnVGUTNZbEpIOFdwSml6T3IraytMamRKNmk2T2l0NlVyV05o?=
- =?utf-8?B?OFJuR1hQZlQ2R09vUXRkTGRCdEMwZGk1UlJ6OUlqZHpUVVZYUEJZVytuSlgv?=
- =?utf-8?B?dWFUd0hFNmNTZ2FWSE1oSisvYmlHdVZXZ0NrMWNJSEE2ekw4NDRDTW1QNlo0?=
- =?utf-8?B?UFU5Z0h0RDV1UmcyaXZUWkZPZHp2VTU3TlRYMWdMZ0I3UVlGZXk2Lzk4QUdX?=
- =?utf-8?B?WjdNaCtaWFdhV2lKcmU3Y0gwWk9kSllubDJwdVdCQjJnQktWaU9YYTcrL2lS?=
- =?utf-8?B?SWo5QjhZRmtIK0lhTWM1emJIYjBQRlVsRDZaSWdQcHlmN1hCekdPUmpDUkdU?=
- =?utf-8?B?UWRhOXpQUzNKa2tDcEU3cjJVbnZwWEFrRjkyek1FdzZDd3BaN1lrbzk4bDFI?=
- =?utf-8?B?ZTVtUm9yYUc4dVM0aFYyRE9JN0VIOTNYVGdhWWN0TWtsOUsyL1hLQ1U0cm1H?=
- =?utf-8?B?SW93NzMzTjRGQTZEV0xPV3hEQWlzZ2xxMHl5WTBNUFlUVEFPQ2FHQWZlc3pE?=
- =?utf-8?Q?bVF+UmREKjajX/mzv/L4OTm1cEJXYmgr?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR13MB5084.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(10070799003)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?ajg2OWx2UXUwR0JLajRUZFVLSHRudUZySXlIUFdra25wNTBkOUdxUHJFQTBz?=
- =?utf-8?B?Zklic05vWVhaY3hzd3lXTVNHY3pqaGk2UWQvMk5hTC9rQko5RXg5RHpXZWdM?=
- =?utf-8?B?K3B2bTRUc3RMTm9QYzBYb2RaRkVIMjVSbDBGQUxOR1k1TzVRV3VuVEIweUQx?=
- =?utf-8?B?MXZTbC9lYlRoeFVUZWJJSW5YZnI4WTVvRTgzRm5TSHFra2g0K2F4RXg0NENn?=
- =?utf-8?B?M0NOVXdnekZGRUIyQzVyekFub3Z1WDY0VHpOMkZYOEFvSkVEWGlSNkg4OEpH?=
- =?utf-8?B?cHhEejRxaXR6U2NuN1VHSVNnNm91Z0FSbDNtVDhmNTd2c1lyaUxZdFlocGh1?=
- =?utf-8?B?NkhUTVNJS0h6QkFiOFZrYmVDOTA5U2Q3SlNVT1dEdUtjdEgvdGorNnZGeVlF?=
- =?utf-8?B?NlpCQ093WmtSQ1pHREJ0ZGJzdUtVeWp0eVlsQVRJOU9qbGZ3clNaM2FxaVJY?=
- =?utf-8?B?eFA1YzF3OTVOUGFpdDRKVS8vNXpTQ3YyR3RFcUlESjd1NGV0SElrdmkrQng2?=
- =?utf-8?B?SGlUMjZwZFFBTi9oZGdQVlZWUjQvZnJxUE9tMmRnV21NT0xPYmRrS0xrSVZZ?=
- =?utf-8?B?azRjdFNkeHpDYm81MjlHTHl0Q09ocldQWW1nTHdlNmZIRnczZ0lpa3l3TXRW?=
- =?utf-8?B?d0hXTWk0cEZIWGFYNW1RYnFsbnhUUnN4NjBES0xZVkxCR1FqVGxhY3I0b1l4?=
- =?utf-8?B?RTRpdFAvYzZmWkRCWFMzSElNa0E4dUdnNmwvVVdFQWNCUTMxY2pBZ2JiR3ZX?=
- =?utf-8?B?akpRR2xqNUlwOU9VRCtvWXJWcFgwNTg2bXRMRjhEdXBNa3piVDdkK0tlQm5o?=
- =?utf-8?B?eWR0S25qT3JMbFRMRkFCMU91aWdGbWlvRndjQjNFd1lUUFNpNDJSc3ZQWGgx?=
- =?utf-8?B?RkV6YmVjV3Z5UU96OXViNW4vcDk5ZFBpLzQxOTV1WWh4WjhyRGpxSW13Vkdj?=
- =?utf-8?B?YlNXYmd2RU5LaWVPaGN2SWVJd1FkTWUwN2V1WHRXbDcrTHAxRGRpSzN0SDdK?=
- =?utf-8?B?WmdPN2pHNVNxU0FYdm9WZTZGWVFjMWRhYWducmZETk5lVTRKQkNOdFlITXR3?=
- =?utf-8?B?SXdLRm9DdWh1NU1rY2YwZUh4MnJwSzdrUGVMY1RtQW54ZzZScjNXWi94QUgz?=
- =?utf-8?B?NXpQNEhCMjI0Q3M4ditjU1BEbjNyUkVCdG5MNitrZEFJeFdDSWJ0Q0VEb0Ji?=
- =?utf-8?B?RVVwdGgrSG5QbEV1QWYzQmNYVTFJT3ZCUnV3VlNIM01hKzdwTDkvZlhzWHU2?=
- =?utf-8?B?OFUvdEpHMWN6Ymo3TjMxdUtGVm56SUtDWkhSQlEwWjFYU21sRnRWL2orek96?=
- =?utf-8?B?Z1JsQmE4ejYxQWRFT0VGSUdKdEtUb2M0b1B5dVBHMysyRStvUzZIWkNGWkNo?=
- =?utf-8?B?a2JFc3Z4bUlCM1pZdzVEYlUrVFMvc1NIQzEwRzM1RzBmYjF4OEI3UnRUOUNh?=
- =?utf-8?B?MWFCS0ttRlhDRi9DQTVjbi9oam44NjRmSWNXQ1MxWFo2dUt4NmdHVFNOSE9h?=
- =?utf-8?B?QVFpWFU2VWNEdy9qK3h5RkdPa2FHWEkzeXNURDRjUkxVSVZLQ0t2MUY2YzZq?=
- =?utf-8?B?b21ydnFNSEZrSHNYWjc2djZVSHV4RzV1cVJrYXNrNHJvSHNlMzYzSnd0cTBD?=
- =?utf-8?B?QkpLc2NOWi92NDNYZE5HVFVubHVQSFF3a0wvSXBIRFpzSlo3L3BQOEM0NmRB?=
- =?utf-8?B?ME52NmtmN2h2SnpsWkxFU3VBdk1vdzVGR3hZNkVqeEdxSDB0OUdLQ3ZhYUpD?=
- =?utf-8?B?N0QrTjM4c3kwRHZvdWZLcFNWdXc2UG93S1lLejd1UUw5UEFVY3B3bGdtaUJF?=
- =?utf-8?B?NitHM2VFaE5OenA4MVowVUZsUzlnaFhSd3Z4dGRDZ3djL1RWRzk2ZjBqNElz?=
- =?utf-8?B?b0pRTHlmbmhJTUhaanhQQllER2drci9oeXpvY0RIaXNjc0VycEY1RXlVWFBZ?=
- =?utf-8?B?ZkQ3NjQ3Yjl0dG5EdTR0cWFLR2lLRWFxQ3d1Y05PSDFYMS9Pekh0TnlQNy9H?=
- =?utf-8?B?VmwvbUZ0MXR5WlVTa2dsUlM0ditBRTI2OUUrcU5LRFhxRmVTUWt5SzAwVXM2?=
- =?utf-8?B?VW13RG04bHArUXRGNUxxYXh4ZjdmV1NpT3RXMnlMTWFneXlJUGdVSFZiSzJv?=
- =?utf-8?B?MmVnMmxiU01uMHVjMWRTaXRGdCtFbndZWUh2akFodWE4WEhwWWRldHk1b05Z?=
- =?utf-8?B?VHhVQ1dQWDQveEw4SGtRbFFhaFEvdHJUa3ZFVGd5ZUFtaHh2cUpyMHI5Y0xi?=
- =?utf-8?B?di8yRVJpQm56MnVJRmNVSm9wV1Z3PT0=?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3BBAF868C012E140A0944303C4CB5E2A@namprd13.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC991F76C3;
+	Tue, 17 Dec 2024 17:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734456314; cv=none; b=dW8hupEBKD2VidaQ4IhFnITxTD3XgPClNMq6/rlYsNpubdxzGvStBAzshN1n7uO5pL8QZTGhKLgoFlLaOcXxZAN6ZIKBWSEIVylnB1YTTa8UOEvVlTh1UjgWmgGYnkbJ9ogN2YrEjLICJZo3yHEbgz+4AqiZDqlycdm9uqD1KGY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734456314; c=relaxed/simple;
+	bh=H2TqaZKbakjrcIq817y6a2BY9q4hrZI7VRfQz7zMPUE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sI3Jm5Bk2Slc7YASa01kW4wdRn6kVDPDnsLjyr2SBO4dMoHpfDCtP2T7Tq/gpUPVF4lMTN57uVAp+4nD6NWjxcXVfB7xNKLfRk8y900kChS7YSa6kqLqUwCL/vhcOS7F7zDaRBSduMT1CT57gWwaVs79qKweLJ0Bic3vS4yf1HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImFZPdXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFD4C4CED3;
+	Tue, 17 Dec 2024 17:25:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734456313;
+	bh=H2TqaZKbakjrcIq817y6a2BY9q4hrZI7VRfQz7zMPUE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ImFZPdXR0F/pYsTOshm7X3ysVw3O17+nxt+KwonzX5kWSvnOaoiioBAM+mCbpKETG
+	 2p8GGb5e5lFe/7rT0+grj2RosXwEVi39XYflr/LLKxvADfmcN6c+4n8p/Q/jY2s4hL
+	 OH3vVwbfTMjA6jqfU4+JAnMbm8G1yW3qu2pZrVe4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org
+Subject: [PATCH 6.12 000/172] 6.12.6-rc1 review
+Date: Tue, 17 Dec 2024 18:05:56 +0100
+Message-ID: <20241217170546.209657098@linuxfoundation.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: hammerspace.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR13MB5084.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e915edeb-3c14-4fd4-77c6-08dd1ebd3da0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2024 17:07:08.7606
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0d4fed5c-3a70-46fe-9430-ece41741f59e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OlsZFmvu8+ygVIPDz2aIEyr7eR1P/bLkgUclu1MTP3L2BnOlRB1UQaKF63ZcTf8dMgUwAGH2FJ8EzjqsKKIWUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR13MB3880
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.6-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.12.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.12.6-rc1
+X-KernelTest-Deadline: 2024-12-19T17:05+00:00
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-T24gVHVlLCAyMDI0LTEyLTE3IGF0IDE2OjUxICswMDAwLCBUcm9uZCBNeWtsZWJ1c3Qgd3JvdGU6
-DQo+IE9uIFdlZCwgMjAyNC0xMi0xOCBhdCAwMDoxMyArMDgwMCwgR2F4LWMgd3JvdGU6DQo+ID4g
-RnJvbTogWmljaGVuIFhpZSA8emljaGVueGllMDEwNkBnbWFpbC5jb20+DQo+ID4gDQo+ID4gbmFt
-ZSBpcyBjaGFyWzY0XSB3aGVyZSB0aGUgc2l6ZSBvZiBjbG50LT5jbF9wcm9ncmFtLT5uYW1lIHJl
-bWFpbnMNCj4gPiB1bmtub3duLiBJbnZva2luZyBzdHJjYXQoKSBkaXJlY3RseSB3aWxsIGFsc28g
-bGVhZCB0byBwb3RlbnRpYWwNCj4gPiBidWZmZXINCj4gPiBvdmVyZmxvdy4gQ2hhbmdlIHRoZW0g
-dG8gc3Ryc2NweSgpIGFuZCBzdHJuY2F0KCkgdG8gZml4IHBvdGVudGlhbA0KPiA+IGlzc3Vlcy4N
-Cj4gDQo+IFdoYXQgbWFrZXMgeW91IHRoaW5rIHRoYXQgY2xudC0+Y2xfcHJvZ3JhbS0+bmFtZSBp
-cyB1bmtub3duPw0KPiANCj4gQWxsIGNhbGxzIHRvIG5mc19zeXNmc19saW5rX3JwY19jbGllbnQo
-KSB1c2Ugd2VsbCBrbm93biBSUEMgY2xpZW50cw0KPiBmb3INCj4gd2hpY2ggdGhlIGNsX3Byb2dy
-YW0gaXMgcG9pbnRpbmcgdG8gb25lIG9mIG5sbV9wcm9ncmFtLCBuZnNfcHJvZ3JhbQ0KPiBvcg0K
-PiBuZnNhY2xfcHJvZ3JhbS4gU28gd2Uga25vdyB2ZXJ5IHdlbGwgdGhlIHNpemVzIG9mIGNsbnQt
-PmNsX3Byb2dyYW0tDQo+ID4gbmFtZS4NCg0KSnVzdCB0byBjbGFyaWZ5OiBJJ20gbm90IHN0cm9u
-Z2x5IGFnYWluc3QgdGhlIHBhdGNoIGl0c2VsZi4gSG93ZXZlciBpdA0Kd291bGQgc2VlbSBwcmVt
-YXR1cmUgdG8gY29uc2lkZXIgdGhpcyBhIGJ1ZywgbGV0IGFsb25lIGEgc3RhYmxlIGZpeA0KY2Fu
-ZGlkYXRlLsKgDQoNCkhhcyBhbnlvbmUgZXZlciBzZWVuIGEgYnVmZmVyIG92ZXJmbG93IGhlcmU/
-IElmIHNvLCB1bmRlciB3aGljaA0KY2lyY3Vtc3RhbmNlcz8NCg0KLS0gDQpUcm9uZCBNeWtsZWJ1
-c3QNCkxpbnV4IE5GUyBjbGllbnQgbWFpbnRhaW5lciwgSGFtbWVyc3BhY2UNCnRyb25kLm15a2xl
-YnVzdEBoYW1tZXJzcGFjZS5jb20NCg0KDQo=
+This is the start of the stable review cycle for the 6.12.6 release.
+There are 172 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
+
+Responses should be made by Thu, 19 Dec 2024 17:05:03 +0000.
+Anything received after that time might be too late.
+
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.6-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+and the diffstat can be found below.
+
+thanks,
+
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.12.6-rc1
+
+Juergen Gross <jgross@suse.com>
+    x86/xen: remove hypercall page
+
+Juergen Gross <jgross@suse.com>
+    x86/xen: use new hypercall functions instead of hypercall page
+
+Juergen Gross <jgross@suse.com>
+    x86/xen: add central hypercall functions
+
+Juergen Gross <jgross@suse.com>
+    x86/xen: don't do PV iret hypercall through hypercall page
+
+Juergen Gross <jgross@suse.com>
+    x86/static-call: provide a way to do very early static-call updates
+
+Juergen Gross <jgross@suse.com>
+    objtool/x86: allow syscall instruction
+
+Juergen Gross <jgross@suse.com>
+    x86: make get_cpu_vendor() accessible from Xen code
+
+Juergen Gross <jgross@suse.com>
+    xen/netfront: fix crash when removing device
+
+James Morse <james.morse@arm.com>
+    KVM: arm64: Disable MPAM visibility by default and ignore VMM writes
+
+Miguel Ojeda <ojeda@kernel.org>
+    rust: kbuild: set `bindgen`'s Rust target version
+
+Nilay Shroff <nilay@linux.ibm.com>
+    block: Fix potential deadlock while freezing queue and acquiring sysfs_lock
+
+Ming Lei <ming.lei@redhat.com>
+    blk-mq: move cpuhp callback registering out of q->sysfs_lock
+
+Weizhao Ouyang <o451686892@gmail.com>
+    kselftest/arm64: abi: fix SVCR detection
+
+Nathan Chancellor <nathan@kernel.org>
+    blk-iocost: Avoid using clamp() on inuse in __propagate_weights()
+
+Lucas De Marchi <lucas.demarchi@intel.com>
+    drm/xe/reg_sr: Remove register pool
+
+Mirsad Todorovac <mtodorovac69@gmail.com>
+    drm/xe: fix the ERR_PTR() returned on failure to allocate tiny pt
+
+Robert Hodaszi <robert.hodaszi@digi.com>
+    net: dsa: tag_ocelot_8021q: fix broken reception
+
+Jesse Van Gavere <jesseevg@gmail.com>
+    net: dsa: microchip: KSZ9896 register regmap alignment to 32 bit boundaries
+
+Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+    net: renesas: rswitch: fix initial MPIC register setting
+
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+    Bluetooth: btmtk: avoid UAF in btmtk_process_coredump
+
+Iulia Tanasescu <iulia.tanasescu@nxp.com>
+    Bluetooth: iso: Fix circular lock in iso_conn_big_sync
+
+Iulia Tanasescu <iulia.tanasescu@nxp.com>
+    Bluetooth: iso: Fix circular lock in iso_listen_bis
+
+Frédéric Danis <frederic.danis@collabora.com>
+    Bluetooth: SCO: Add support for 16 bits transparent voice setting
+
+Iulia Tanasescu <iulia.tanasescu@nxp.com>
+    Bluetooth: iso: Fix recursive locking warning
+
+Iulia Tanasescu <iulia.tanasescu@nxp.com>
+    Bluetooth: iso: Always release hdev at the end of iso_listen_bis
+
+Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+    Bluetooth: hci_event: Fix using rcu_read_(un)lock while iterating
+
+Daniil Tatianin <d-tatianin@yandex-team.ru>
+    ACPICA: events/evxfregn: don't release the ContextMutex that was never acquired
+
+Charles Keepax <ckeepax@opensource.cirrus.com>
+    ASoC: Intel: sof_sdw: Add space for a terminator into DAIs array
+
+Daniel Borkmann <daniel@iogearbox.net>
+    team: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
+
+Daniel Borkmann <daniel@iogearbox.net>
+    team: Fix initial vlan_feature set in __team_compute_features
+
+Daniel Borkmann <daniel@iogearbox.net>
+    bonding: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
+
+Daniel Borkmann <daniel@iogearbox.net>
+    bonding: Fix initial {vlan,mpls}_feature set in bond_compute_features
+
+Daniel Borkmann <daniel@iogearbox.net>
+    net, team, bonding: Add netdev_base_features helper
+
+Martin Ottens <martin.ottens@fau.de>
+    net/sched: netem: account for backlog updates from child qdisc
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: dsa: felix: fix stuck CPU-injected packets with short taprio windows
+
+Maxim Levitsky <mlevitsk@redhat.com>
+    net: mana: Fix irq_contexts memory leak in mana_gd_setup_irqs
+
+Maxim Levitsky <mlevitsk@redhat.com>
+    net: mana: Fix memory leak in mana_gd_setup_irqs
+
+Florian Westphal <fw@strlen.de>
+    netfilter: nf_tables: do not defer rule destruction via call_rcu
+
+Phil Sutter <phil@nwl.cc>
+    netfilter: IDLETIMER: Fix for possible ABBA deadlock
+
+Phil Sutter <phil@nwl.cc>
+    selftests: netfilter: Stabilize rpath.sh
+
+Shengjiu Wang <shengjiu.wang@nxp.com>
+    ASoC: fsl_spdif: change IFACE_PCM to IFACE_MIXER
+
+Shengjiu Wang <shengjiu.wang@nxp.com>
+    ASoC: fsl_xcvr: change IFACE_PCM to IFACE_MIXER
+
+James Clark <james.clark@linaro.org>
+    libperf: evlist: Fix --cpu argument on hybrid platform
+
+Michal Luczaj <mhal@rbox.co>
+    Bluetooth: Improve setsockopt() handling of malformed user input
+
+Shenghao Ding <shenghao-ding@ti.com>
+    ASoC: tas2781: Fix calibration issue in stress test
+
+Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+    net: renesas: rswitch: handle stop vs interrupt race
+
+Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+    net: renesas: rswitch: avoid use-after-put for a device tree node
+
+Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+    net: renesas: rswitch: fix leaked pointer on error path
+
+Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+    net: renesas: rswitch: fix race window between tx start and complete
+
+Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+    net: renesas: rswitch: fix possible early skb release
+
+David Howells <dhowells@redhat.com>
+    cifs: Fix rmdir failure due to ongoing I/O on deleted file
+
+Petr Machata <petrm@nvidia.com>
+    Documentation: networking: Add a caveat to nexthop_compat_mode sysctl
+
+Michael Chan <michael.chan@broadcom.com>
+    bnxt_en: Fix aggregation ID mask to prevent oops on 5760X chips
+
+LongPing Wei <weilongping@oppo.com>
+    block: get wp_offset by bdev_offset_from_zone_start
+
+Paul Barker <paul.barker.ct@bp.renesas.com>
+    Documentation: PM: Clarify pm_runtime_resume_and_get() return value
+
+Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+    ASoC: amd: yc: Fix the wrong return value
+
+Takashi Iwai <tiwai@suse.de>
+    ALSA: control: Avoid WARN() for symlink errors
+
+Stefan Wahren <wahrenst@gmx.net>
+    qca_spi: Make driver probing reliable
+
+Stefan Wahren <wahrenst@gmx.net>
+    qca_spi: Fix clock speed for multiple QCA7000
+
+Anumula Murali Mohan Reddy <anumula@chelsio.com>
+    cxgb4: use port number to set mac addr
+
+Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+    ACPI: resource: Fix memory resource type union access
+
+Daniel Machon <daniel.machon@microchip.com>
+    net: sparx5: fix the maximum frame length register
+
+Daniel Machon <daniel.machon@microchip.com>
+    net: sparx5: fix FDMA performance issue
+
+Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+    spi: aspeed: Fix an error handling path in aspeed_spi_[read|write]_user()
+
+Philippe Simons <simons.philippe@gmail.com>
+    regulator: axp20x: AXP717: set ramp_delay
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: mscc: ocelot: perform error cleanup in ocelot_hwstamp_set()
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: mscc: ocelot: be resilient to loss of PTP packets during transmission
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: mscc: ocelot: ocelot->ts_id_lock and ocelot_port->tx_skbs.lock are IRQ-safe
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: mscc: ocelot: improve handling of TX timestamp for unknown skb
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: mscc: ocelot: fix memory leak on ocelot_port_add_txtstamp_skb()
+
+Eric Dumazet <edumazet@google.com>
+    net: defer final 'struct net' free in netns dismantle
+
+Eric Dumazet <edumazet@google.com>
+    net: lapb: increase LAPB_HEADER_LEN
+
+Michael Chan <michael.chan@broadcom.com>
+    bnxt_en: Fix GSO type for HW GRO packets on 5750X chips
+
+Thomas Weißschuh <linux@weissschuh.net>
+    ptp: kvm: x86: Return EOPNOTSUPP instead of ENODEV from kvm_arch_ptp_init()
+
+Danielle Ratson <danieller@nvidia.com>
+    selftests: mlxsw: sharedbuffer: Ensure no extra packets are counted
+
+Danielle Ratson <danieller@nvidia.com>
+    selftests: mlxsw: sharedbuffer: Remove duplicate test cases
+
+Danielle Ratson <danieller@nvidia.com>
+    selftests: mlxsw: sharedbuffer: Remove h1 ingress test case
+
+Haoyu Li <lihaoyu499@gmail.com>
+    wifi: cfg80211: sme: init n_channels before channels[] access
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    net/mlx5: DR, prevent potential error pointer dereference
+
+Eric Dumazet <edumazet@google.com>
+    tipc: fix NULL deref in cleanup_bearer()
+
+Remi Pommarel <repk@triplefau.lt>
+    batman-adv: Do not let TT changes list grows indefinitely
+
+Remi Pommarel <repk@triplefau.lt>
+    batman-adv: Remove uninitialized data in full table TT response
+
+Remi Pommarel <repk@triplefau.lt>
+    batman-adv: Do not send uninitialized TT changes
+
+David (Ming Qiang) Wu <David.Wu3@amd.com>
+    amdgpu/uvd: get ring reference from rq scheduler
+
+Suraj Sonawane <surajsonawane0215@gmail.com>
+    acpi: nfit: vmalloc-out-of-bounds Read in acpi_nfit_ctl
+
+Arnaldo Carvalho de Melo <acme@kernel.org>
+    perf machine: Initialize machine->env to address a segfault
+
+Benjamin Lin <benjamin-jw.lin@mediatek.com>
+    wifi: mac80211: fix station NSS capability initialization order
+
+Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+    wifi: mac80211: fix a queue stall in certain cases of CSA
+
+Haoyu Li <lihaoyu499@gmail.com>
+    wifi: mac80211: init cnt before accessing elem in ieee80211_copy_mbssid_beacon
+
+Lin Ma <linma@zju.edu.cn>
+    wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
+
+Namhyung Kim <namhyung@kernel.org>
+    perf tools: Fix build-id event recording
+
+Kumar Kartikeya Dwivedi <memxor@gmail.com>
+    bpf: Augment raw_tp arguments with PTR_MAYBE_NULL
+
+Michal Luczaj <mhal@rbox.co>
+    bpf, sockmap: Fix update element with same
+
+Michal Luczaj <mhal@rbox.co>
+    bpf, sockmap: Fix race between element replace and close()
+
+Jiri Olsa <jolsa@kernel.org>
+    bpf,perf: Fix invalid prog_array access in perf_event_detach_bpf_prog
+
+Jann Horn <jannh@google.com>
+    bpf: Fix theoretical prog_array UAF in __uprobe_perf_func()
+
+Kumar Kartikeya Dwivedi <memxor@gmail.com>
+    bpf: Check size for BTF-based ctx access of pointer members
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: unlock inodes when erroring out of xfs_trans_alloc_dir
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: only run precommits once per transaction object
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: fix scrub tracepoints when inode-rooted btrees are involved
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: return from xfs_symlink_verify early on V4 filesystems
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: fix null bno_hint handling in xfs_rtallocate_rtg
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: return a 64-bit block count from xfs_btree_count_blocks
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: don't drop errno values when we fail to ficlone the entire range
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: update btree keys correctly when _insrec splits an inode root block
+
+Darrick J. Wong <djwong@kernel.org>
+    xfs: set XFS_SICK_INO_SYMLINK_ZAPPED explicitly when zapping a symlink
+
+Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+    drm/amdkfd: hard-code MALL cacheline size for gfx11, gfx12
+
+Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+    drm/amdkfd: hard-code cacheline size for gfx11
+
+Andrew Martin <Andrew.Martin@amd.com>
+    drm/amdkfd: Dereference null return value
+
+Christian König <christian.koenig@amd.com>
+    drm/amdgpu: fix when the cleaner shader is emitted
+
+Kenneth Feng <kenneth.feng@amd.com>
+    drm/amd/pm: Set SMU v13.0.7 default workload type
+
+Christian König <christian.koenig@amd.com>
+    drm/amdgpu: fix UVD contiguous CS mapping problem
+
+Eugene Kobyak <eugene.kobyak@intel.com>
+    drm/i915: Fix NULL pointer dereference in capture_engine
+
+Ville Syrjälä <ville.syrjala@linux.intel.com>
+    drm/i915/color: Stop using non-posted DSB writes for legacy LUT
+
+Jiasheng Jiang <jiashengjiangcool@outlook.com>
+    drm/i915: Fix memory leak by correcting cache object name in error handler
+
+Jesse.zhang@amd.com <Jesse.zhang@amd.com>
+    drm/amdkfd: pause autosuspend when creating pdd
+
+Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+    drm/xe: Call invalidation_fence_fini for PT inval fences in error state
+
+Yi Liu <yi.l.liu@intel.com>
+    iommu/vt-d: Fix qi_batch NULL pointer with nested parent domain
+
+Lu Baolu <baolu.lu@linux.intel.com>
+    iommu/vt-d: Remove cache tags before disabling ATS
+
+Luis Claudio R. Goncalves <lgoncalv@redhat.com>
+    iommu/tegra241-cmdqv: do not use smp_processor_id in preemptible context
+
+Neal Frager <neal.frager@amd.com>
+    usb: dwc3: xilinx: make sure pipe clock is deselected in usb2 only mode
+
+Łukasz Bartosik <ukaszb@chromium.org>
+    usb: typec: ucsi: Fix completion notifications
+
+Lianqin Hu <hulianqin@vivo.com>
+    usb: gadget: u_serial: Fix the issue that gs_start_io crashed due to accessing null pointer
+
+Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+    usb: typec: anx7411: fix OF node reference leaks in anx7411_typec_switch_probe()
+
+Xu Yang <xu.yang_2@nxp.com>
+    usb: dwc3: imx8mp: fix software node kernel dump
+
+Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+    usb: typec: anx7411: fix fwnode_handle reference leak
+
+Vitalii Mordan <mordan@ispras.ru>
+    usb: ehci-hcd: fix call balance of clocks handling routines
+
+Takashi Iwai <tiwai@suse.de>
+    usb: gadget: midi2: Fix interpretation of is_midi1 bits
+
+liuderong <liuderong@oppo.com>
+    scsi: ufs: core: Update compl_time_stamp_local_clock after completing a cqe
+
+Stefan Wahren <wahrenst@gmx.net>
+    usb: dwc2: Fix HCD port connection race
+
+Stefan Wahren <wahrenst@gmx.net>
+    usb: dwc2: hcd: Fix GetPortStatus & SetPortFeature
+
+Stefan Wahren <wahrenst@gmx.net>
+    usb: dwc2: Fix HCD resume
+
+Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+    ata: sata_highbank: fix OF node reference leak in highbank_initialize_phys()
+
+Kumar Kartikeya Dwivedi <memxor@gmail.com>
+    bpf: Revert "bpf: Mark raw_tp arguments with PTR_MAYBE_NULL"
+
+Xu Yang <xu.yang_2@nxp.com>
+    usb: core: hcd: only check primary hcd skip_phy_initialization
+
+Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+    gpio: graniterapids: Check if GPIO line can be used for IRQs
+
+Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+    gpio: graniterapids: Determine if GPIO pad can be used by driver
+
+Shankar Bandal <shankar.bandal@intel.com>
+    gpio: graniterapids: Fix invalid RXEVCFG register bitmask
+
+Shankar Bandal <shankar.bandal@intel.com>
+    gpio: graniterapids: Fix invalid GPI_IS register offset
+
+Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+    gpio: graniterapids: Fix incorrect BAR assignment
+
+Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+    gpio: graniterapids: Fix vGPIO driver crash
+
+Damien Le Moal <dlemoal@kernel.org>
+    block: Ignore REQ_NOWAIT for zone reset and zone finish operations
+
+Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+    usb: host: max3421-hcd: Correctly abort a USB request.
+
+Miguel Ojeda <ojeda@kernel.org>
+    drm/panic: remove spurious empty line to clean warning
+
+Chenghai Huang <huangchenghai2@huawei.com>
+    crypto: hisilicon/debugfs - fix the struct pointer incorrectly offset problem
+
+Alexandre Ghiti <alexghiti@rivosinc.com>
+    riscv: Fix IPIs usage in kfence_protect_page()
+
+Hridesh MG <hridesh699@gmail.com>
+    ALSA: hda/realtek: Fix headset mic on Acer Nitro 5
+
+Jaakko Salo <jaakkos@gmail.com>
+    ALSA: usb-audio: Add implicit feedback quirk for Yamaha THR5
+
+Haoyu Li <lihaoyu499@gmail.com>
+    gpio: ljca: Initialize num before accessing item in ljca_gpio_config
+
+Christian Loehle <christian.loehle@arm.com>
+    spi: rockchip: Fix PM runtime count on no-op cs
+
+Shakeel Butt <shakeel.butt@linux.dev>
+    memcg: slub: fix SUnreclaim for post charged objects
+
+Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+    gpio: graniterapids: Fix GPIO Ack functionality
+
+Damien Le Moal <dlemoal@kernel.org>
+    block: Prevent potential deadlocks in zone write plug error recovery
+
+Damien Le Moal <dlemoal@kernel.org>
+    dm: Fix dm-zoned-reclaim zone write pointer alignment
+
+Damien Le Moal <dlemoal@kernel.org>
+    block: Use a zone write plug BIO work for REQ_NOWAIT BIOs
+
+Damien Le Moal <dlemoal@kernel.org>
+    block: Switch to using refcount_t for zone write plugs
+
+Tejun Heo <tj@kernel.org>
+    blk-cgroup: Fix UAF in blkcg_unpin_online()
+
+Alexandre Ghiti <alexghiti@rivosinc.com>
+    riscv: Fix wrong usage of __pa() on a fixmap address
+
+Björn Töpel <bjorn@rivosinc.com>
+    riscv: mm: Do not call pmd dtor on vmemmap page table teardown
+
+Koichiro Den <koichiro.den@canonical.com>
+    virtio_net: ensure netdev_tx_reset_queue is called on tx ring resize
+
+Koichiro Den <koichiro.den@canonical.com>
+    virtio_ring: add a func argument 'recycle_done' to virtqueue_resize()
+
+Koichiro Den <koichiro.den@canonical.com>
+    virtio_net: correct netdev_tx_reset_queue() invocation point
+
+Kuan-Wei Chiu <visitorckw@gmail.com>
+    perf ftrace: Fix undefined behavior in cmp_profile_data()
+
+MoYuanhao <moyuanhao3676@163.com>
+    tcp: check space before adding MPTCP SYN options
+
+Frederik Deweerdt <deweerdt.lkml@gmail.com>
+    splice: do not checksum AF_UNIX sockets
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: fix racy issue from session lookup and expire
+
+Christian Marangi <ansuelsmth@gmail.com>
+    clk: en7523: Fix wrong BUS clock for EN7581
+
+Kan Liang <kan.liang@linux.intel.com>
+    perf/x86/intel/ds: Unconditionally drain PEBS DS when changing PEBS_DATA_CFG
+
+Juri Lelli <juri.lelli@redhat.com>
+    sched/deadline: Fix replenish_dl_new_period dl_server condition
+
+Jann Horn <jannh@google.com>
+    bpf: Fix UAF via mismatching bpf_prog/attachment RCU flavors
+
+Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+    serial: sh-sci: Check if TX data was written to device in .tx_empty()
+
+Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+    usb: misc: onboard_usb_dev: skip suspend/resume sequence for USB5744 SMBus support
+
+
+-------------
+
+Diffstat:
+
+ Documentation/networking/ip-sysctl.rst             |   6 +
+ Documentation/power/runtime_pm.rst                 |   4 +-
+ Makefile                                           |   4 +-
+ arch/arm64/kvm/sys_regs.c                          |  55 ++-
+ arch/riscv/include/asm/kfence.h                    |   4 +-
+ arch/riscv/kernel/setup.c                          |   2 +-
+ arch/riscv/mm/init.c                               |   7 +-
+ arch/x86/events/intel/ds.c                         |   2 +-
+ arch/x86/include/asm/processor.h                   |   2 +
+ arch/x86/include/asm/static_call.h                 |  15 +
+ arch/x86/include/asm/sync_core.h                   |   6 +-
+ arch/x86/include/asm/xen/hypercall.h               |  36 +-
+ arch/x86/kernel/callthunks.c                       |   5 -
+ arch/x86/kernel/cpu/common.c                       |  38 +-
+ arch/x86/kernel/static_call.c                      |   9 +
+ arch/x86/xen/enlighten.c                           |  64 ++-
+ arch/x86/xen/enlighten_hvm.c                       |  13 +-
+ arch/x86/xen/enlighten_pv.c                        |   4 +-
+ arch/x86/xen/enlighten_pvh.c                       |   7 -
+ arch/x86/xen/xen-asm.S                             |  50 +-
+ arch/x86/xen/xen-head.S                            | 106 ++++-
+ arch/x86/xen/xen-ops.h                             |   9 +
+ block/blk-cgroup.c                                 |   6 +-
+ block/blk-iocost.c                                 |   9 +-
+ block/blk-mq-sysfs.c                               |  16 +-
+ block/blk-mq.c                                     | 127 ++++-
+ block/blk-sysfs.c                                  |   4 +-
+ block/blk-zoned.c                                  | 526 +++++++++------------
+ drivers/acpi/acpica/evxfregn.c                     |   2 -
+ drivers/acpi/nfit/core.c                           |   7 +-
+ drivers/acpi/resource.c                            |   6 +-
+ drivers/ata/sata_highbank.c                        |   1 +
+ drivers/bluetooth/btmtk.c                          |  20 +-
+ drivers/clk/clk-en7523.c                           |   5 +-
+ drivers/crypto/hisilicon/debugfs.c                 |   4 +-
+ drivers/gpio/gpio-graniterapids.c                  |  52 +-
+ drivers/gpio/gpio-ljca.c                           |   2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c             |  17 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c            |   2 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c             |  13 +-
+ drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c              |   2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.c              |  24 +-
+ .../gpu/drm/amd/amdkfd/kfd_device_queue_manager.c  |  15 +
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c           |  23 +-
+ .../gpu/drm/amd/amdkfd/kfd_process_queue_manager.c |  12 +-
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c   |   1 +
+ drivers/gpu/drm/drm_panic_qr.rs                    |   1 -
+ drivers/gpu/drm/i915/display/intel_color.c         |  30 +-
+ drivers/gpu/drm/i915/i915_gpu_error.c              |  18 +-
+ drivers/gpu/drm/i915/i915_scheduler.c              |   2 +-
+ drivers/gpu/drm/xe/tests/xe_migrate.c              |   4 +-
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c        |   8 +
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h        |   1 +
+ drivers/gpu/drm/xe/xe_pt.c                         |   3 +-
+ drivers/gpu/drm/xe/xe_reg_sr.c                     |  31 +-
+ drivers/gpu/drm/xe/xe_reg_sr_types.h               |   6 -
+ drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c     |   2 +-
+ drivers/iommu/intel/cache.c                        |  34 +-
+ drivers/iommu/intel/iommu.c                        |   4 +-
+ drivers/md/dm-zoned-reclaim.c                      |   6 +-
+ drivers/net/bonding/bond_main.c                    |  10 +-
+ drivers/net/dsa/microchip/ksz_common.c             |  42 +-
+ drivers/net/dsa/ocelot/felix_vsc9959.c             |  17 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c          |  14 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h          |   9 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h         |   2 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c    |   2 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c         |   5 +-
+ .../mellanox/mlx5/core/steering/dr_domain.c        |   4 +-
+ .../net/ethernet/microchip/sparx5/sparx5_main.c    |  11 +-
+ .../net/ethernet/microchip/sparx5/sparx5_port.c    |   2 +-
+ drivers/net/ethernet/microsoft/mana/gdma_main.c    |   6 +-
+ drivers/net/ethernet/mscc/ocelot_ptp.c             | 207 ++++----
+ drivers/net/ethernet/qualcomm/qca_spi.c            |  26 +-
+ drivers/net/ethernet/qualcomm/qca_spi.h            |   1 -
+ drivers/net/ethernet/renesas/rswitch.c             |  95 ++--
+ drivers/net/ethernet/renesas/rswitch.h             |  14 +-
+ drivers/net/team/team_core.c                       |  11 +-
+ drivers/net/virtio_net.c                           |  24 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c  |   2 +-
+ drivers/net/xen-netfront.c                         |   5 +-
+ drivers/ptp/ptp_kvm_x86.c                          |   6 +-
+ drivers/regulator/axp20x-regulator.c               |  36 +-
+ drivers/spi/spi-aspeed-smc.c                       |  10 +-
+ drivers/spi/spi-rockchip.c                         |  14 +
+ drivers/tty/serial/sh-sci.c                        |  29 ++
+ drivers/ufs/core/ufshcd.c                          |   1 +
+ drivers/usb/core/hcd.c                             |   8 +-
+ drivers/usb/dwc2/hcd.c                             |  19 +-
+ drivers/usb/dwc3/dwc3-imx8mp.c                     |  30 +-
+ drivers/usb/dwc3/dwc3-xilinx.c                     |   5 +-
+ drivers/usb/gadget/function/f_midi2.c              |   6 +-
+ drivers/usb/gadget/function/u_serial.c             |   9 +-
+ drivers/usb/host/ehci-sh.c                         |   9 +-
+ drivers/usb/host/max3421-hcd.c                     |  16 +-
+ drivers/usb/misc/onboard_usb_dev.c                 |   4 +-
+ drivers/usb/typec/anx7411.c                        |  66 ++-
+ drivers/usb/typec/ucsi/ucsi.c                      |   6 +-
+ drivers/virtio/virtio_ring.c                       |   6 +-
+ fs/smb/client/inode.c                              |   5 +-
+ fs/smb/server/auth.c                               |   2 +
+ fs/smb/server/mgmt/user_session.c                  |   6 +-
+ fs/smb/server/server.c                             |   4 +-
+ fs/smb/server/smb2pdu.c                            |  27 +-
+ fs/xfs/libxfs/xfs_btree.c                          |  33 +-
+ fs/xfs/libxfs/xfs_btree.h                          |   2 +-
+ fs/xfs/libxfs/xfs_ialloc_btree.c                   |   4 +-
+ fs/xfs/libxfs/xfs_symlink_remote.c                 |   4 +-
+ fs/xfs/scrub/agheader.c                            |   6 +-
+ fs/xfs/scrub/agheader_repair.c                     |   6 +-
+ fs/xfs/scrub/fscounters.c                          |   2 +-
+ fs/xfs/scrub/ialloc.c                              |   4 +-
+ fs/xfs/scrub/refcount.c                            |   2 +-
+ fs/xfs/scrub/symlink_repair.c                      |   3 +-
+ fs/xfs/scrub/trace.h                               |   2 +-
+ fs/xfs/xfs_bmap_util.c                             |   2 +-
+ fs/xfs/xfs_file.c                                  |   8 +
+ fs/xfs/xfs_rtalloc.c                               |   2 +-
+ fs/xfs/xfs_trans.c                                 |  19 +-
+ include/linux/blkdev.h                             |   5 +-
+ include/linux/bpf.h                                |  19 +-
+ include/linux/compiler.h                           |  39 +-
+ include/linux/dsa/ocelot.h                         |   1 +
+ include/linux/netdev_features.h                    |   7 +
+ include/linux/static_call.h                        |   1 +
+ include/linux/virtio.h                             |   3 +-
+ include/net/bluetooth/bluetooth.h                  |  10 +-
+ include/net/lapb.h                                 |   2 +-
+ include/net/mac80211.h                             |   4 +-
+ include/net/net_namespace.h                        |   1 +
+ include/net/netfilter/nf_tables.h                  |   4 -
+ include/soc/mscc/ocelot.h                          |   2 -
+ kernel/bpf/btf.c                                   | 149 +++++-
+ kernel/bpf/verifier.c                              |  79 +---
+ kernel/sched/deadline.c                            |   2 +-
+ kernel/static_call_inline.c                        |   2 +-
+ kernel/trace/bpf_trace.c                           |  11 +
+ kernel/trace/trace_uprobe.c                        |   6 +-
+ mm/slub.c                                          |  21 +-
+ net/batman-adv/translation-table.c                 |  58 ++-
+ net/bluetooth/hci_event.c                          |  33 +-
+ net/bluetooth/hci_sock.c                           |  14 +-
+ net/bluetooth/iso.c                                |  71 ++-
+ net/bluetooth/l2cap_sock.c                         |  20 +-
+ net/bluetooth/rfcomm/sock.c                        |   9 +-
+ net/bluetooth/sco.c                                |  40 +-
+ net/core/net_namespace.c                           |  20 +-
+ net/core/sock_map.c                                |   6 +-
+ net/dsa/tag_ocelot_8021q.c                         |   2 +-
+ net/ipv4/tcp_output.c                              |   6 +-
+ net/mac80211/cfg.c                                 |   9 +-
+ net/mac80211/ieee80211_i.h                         |  49 +-
+ net/mac80211/iface.c                               |  12 +-
+ net/mac80211/mlme.c                                |   2 -
+ net/mac80211/util.c                                |  23 +-
+ net/netfilter/nf_tables_api.c                      |  32 +-
+ net/netfilter/xt_IDLETIMER.c                       |  52 +-
+ net/sched/sch_netem.c                              |  22 +-
+ net/tipc/udp_media.c                               |   7 +-
+ net/unix/af_unix.c                                 |   1 +
+ net/wireless/nl80211.c                             |   2 +-
+ net/wireless/sme.c                                 |   1 +
+ rust/Makefile                                      |  15 +-
+ sound/core/control_led.c                           |  14 +-
+ sound/pci/hda/patch_realtek.c                      |   1 +
+ sound/soc/amd/yc/acp6x-mach.c                      |  13 +-
+ sound/soc/codecs/tas2781-i2c.c                     |   2 +-
+ sound/soc/fsl/fsl_spdif.c                          |   2 +-
+ sound/soc/fsl/fsl_xcvr.c                           |   2 +-
+ sound/soc/intel/boards/sof_sdw.c                   |   8 +-
+ sound/usb/quirks.c                                 |   2 +
+ tools/lib/perf/evlist.c                            |  18 +-
+ tools/objtool/check.c                              |   9 +-
+ tools/perf/builtin-ftrace.c                        |   3 +-
+ tools/perf/util/build-id.c                         |   4 +-
+ tools/perf/util/machine.c                          |   2 +
+ .../testing/selftests/arm64/abi/syscall-abi-asm.S  |  32 +-
+ .../selftests/bpf/progs/test_tp_btf_nullable.c     |   6 +-
+ .../selftests/bpf/progs/verifier_btf_ctx_access.c  |   4 +-
+ .../testing/selftests/bpf/progs/verifier_d_path.c  |   4 +-
+ .../selftests/drivers/net/mlxsw/sharedbuffer.sh    |  55 ++-
+ tools/testing/selftests/net/netfilter/rpath.sh     |  18 +-
+ 182 files changed, 2200 insertions(+), 1299 deletions(-)
+
+
 
