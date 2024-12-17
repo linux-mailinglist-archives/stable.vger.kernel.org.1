@@ -1,130 +1,161 @@
-Return-Path: <stable+bounces-104456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7EB9F460C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:28:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855719F460F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3099A163BF1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 08:28:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E13118876E6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 08:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3AC1DB363;
-	Tue, 17 Dec 2024 08:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9802A156227;
+	Tue, 17 Dec 2024 08:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4OeeuwG"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="WzHXEhen";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="3pE6EOsX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1471DA113;
-	Tue, 17 Dec 2024 08:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBC242AA1;
+	Tue, 17 Dec 2024 08:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734424102; cv=none; b=LcrfOloZLbNK1zVwmTbY45+CtDNX8ezS9e2K7y0H2xXlngyPat0gFXpeP+1lwnxuNLbtfFFfqvuB9mtJiSQ2GRbwnbKitopDVyA+u6YQcb1UJB8jqh2MbXL2N6HoZZy99NuzztIJ3PBN1GvkEYN9y30xV1bseBKC7Ys1K/1IJ0U=
+	t=1734424236; cv=none; b=j+hPKU5IkNLWC8pzhbOS5imsgTtwxiUVLhVjOKkt6yjHjexKSwfephpU7GgH4/6SQkc/V4vyYd6RqunEXUMhD+sF7p9DnYBUI7lPsyYT4drAAN+NjqkUup+OBlP0CXzRP2oKbyF5dpuKqE0CNpy/HKjbHA3E7NtJaaRw0x+M7tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734424102; c=relaxed/simple;
-	bh=SPmFEcKXpyPmdcnzipJn8Q/yWwafSU6dklD5P69XHH0=;
+	s=arc-20240116; t=1734424236; c=relaxed/simple;
+	bh=OSdBpx1Myr3O1zIZ3mp1iogM3ydizKDyYLvwjYyMACA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U2R49dFbuOMpmUtgK+grNr3JllaOqMoQRrdUZVsv0KPFvpcMf+uAbe6v1eyYxOukF5rqAjZtYlB8EiorVNq4dVcj+vO/qRML0m6djMaixBgouCelskqtPJAFiM1YsHR6WMVLN7XBRfL596CX1Wje1+W4d2dVaC+ged/Aqe6DIeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4OeeuwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E06C4CED3;
-	Tue, 17 Dec 2024 08:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734424102;
-	bh=SPmFEcKXpyPmdcnzipJn8Q/yWwafSU6dklD5P69XHH0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q4OeeuwGPzt5YMsCKvfDS+YbGt4LObn0W/QRHrkohzHbbyKstrMv0Czhyia2s7Xea
-	 nKjrnsN0lw1pC/VQOoNq5+iaPsHB0VwKRcOjaNnKoBd+yJgGnfWqMLVIvkLzL/JyNZ
-	 Cy1WASjCDMZVwIEd4pP1XwwC4GfhtLDYk/ijqRUg=
-Date: Tue, 17 Dec 2024 09:28:18 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Z qiang <qiang.zhang1211@gmail.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-	jslaby@suse.cz, rcu <rcu@vger.kernel.org>
-Subject: Re: Linux 6.1.120
-Message-ID: <2024121703-bobbed-paced-99a5@gregkh>
-References: <2024121411-multiple-activist-51a1@gregkh>
- <20241216-comic-handling-3bcf108cc465@wendy>
- <CALm+0cVd=yhCTXm4j+OcqiBQwwC=bf2ja7iQ87ypBb7KD2qbjA@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ey317A0YFipog3YlLmgpOGbNwmozxxyys6DrzjWPGuliLJk3/gjGMiQdlJkzft2Rjapgy6ZDHUGFcIFxao4UNfHtadN4YVDwQ5BBVNP5QVaV+tPmuGBYesJ02IonkaMvJciRsQ3lJ87vZ/TZP3SegJ4mFjDmo1Mq9D484CGP/sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=WzHXEhen; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=3pE6EOsX; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 7CE861140266;
+	Tue, 17 Dec 2024 03:30:33 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 17 Dec 2024 03:30:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1734424233;
+	 x=1734510633; bh=JHfFPC6NwoRI9bysS/KO6bTDlukpT1NYlNNLGP9kaZA=; b=
+	WzHXEhenDoG2A6wn5YhRuP6braZ5EkVUYqo2sPzdPZApotHEY5rp4qZH/WCDMbFT
+	WxFgQyzqNYw2N3nj859DUPw6zZDJA2zRZbte2BRrJIiKTy+43Mn9mLJsBB7xKCvK
+	9fdRftXvinhYUpzXjV8d5lIqUXOqCPUX0c4421MJ0oHGPUqMNV1wwhCXiYLE2qv5
+	VbSRF6bxf00dKM6MpyDkzVl049U+92GfzA7Ypk2GXzjeTrhjmLy+1MxXk7H48lFA
+	SkqrmXoseTce8f7APrAyMEA33SUxRWnHHF8BZXZDu6NkT4fd9T+zm7tvoShu7ii+
+	D8ReazVqgDNuNQwdRgmMxQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734424233; x=
+	1734510633; bh=JHfFPC6NwoRI9bysS/KO6bTDlukpT1NYlNNLGP9kaZA=; b=3
+	pE6EOsXRKAzmFdIF/x4oYHiexQrEzGBVOYyKhOA0qZPAdExv41x5goD/EdqgCmkl
+	F+ybEZmj7HhSGr/JjO/1XgV8hVekL+o90m0E+bEcG6KEv5TVtEACqPkZLy0X/gKV
+	D+V4vhVdBhK/mZV6ifhrKrPaAd1FnsLcn1PEQ2m/NvzGV5b6PBbcq1Cw0b5rlMcn
+	npVFve/JpriHP47+gEJdoRsveLwiJxQgR8iTyF7D43s3HAGHkv1bpvF9uAEORkGX
+	GWvAXbugSZbK45ivJ5rqpUWKg6WYGrnxqZlShIZ4BQb1q/hi5Z8nQhYCPJDCu/rf
+	RJoL/lNNWftxI5heSmj/w==
+X-ME-Sender: <xms:qTZhZwnaOUCqF877aI1cSpxqOLVwyPb8Oy4ehXSy0KPlB1agdi79vw>
+    <xme:qTZhZ_0HyGiIWWmDtMGkGWiXyEfTuo6GAf2dlOgr19NYdRcEudJGbFcnby8KlnDzt
+    fgZZokeXg-NAA>
+X-ME-Received: <xmr:qTZhZ-oM9Q5hCT08KURSGHky2SQ6TrQURf6vpFqXeTXYEgFv7QlTBUudgv4TfBsrQiQobRrKLy47kTJzLMxJXbDnUYIb5CftTv2lBg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleeggdduvddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddu
+    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeegveevtefgveejffffveeluefhjeefgeeuveeftedujedufeduteej
+    tddtheeuffenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+    pdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuh
+    drkhhlvghinhgvqdhkohgvnhhighessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslh
+    gvqdgtohhmmhhithhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfigs
+    gheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhushdrfigrlhhlvghijheslh
+    hinhgrrhhordhorhhgpdhrtghpthhtohepsghrghhlsegsghguvghvrdhplh
+X-ME-Proxy: <xmx:qTZhZ8knjKBwuF2GK2v8ywyIxnLl6yAVl6I0eYRFi5gSbr2kVPR1gA>
+    <xmx:qTZhZ-1K-354i1oeqa7iyZjCFtep983KUmBz8j2vECASAikJMKr47A>
+    <xmx:qTZhZztxsu9iC7XFdxjLutBnS-XwIMbOXWXKmXbVHL87TD9T_XO8jg>
+    <xmx:qTZhZ6XJtl-K4QvpYfG_spW4Bc9pL0FFXPZuCoDpC9PTSAQwo3zqCw>
+    <xmx:qTZhZ0N9bKCVdNZUSlrw4wr1Q6KSGShqAvzN4inVmmAgg-rMZFlLWJQy>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Dec 2024 03:30:32 -0500 (EST)
+Date: Tue, 17 Dec 2024 09:30:30 +0100
+From: Greg KH <greg@kroah.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	William Breathitt Gray <wbg@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: Patch "gpio: idio-16: Actually make use of the GPIO_IDIO_16
+ symbol namespace" has been added to the 6.12-stable tree
+Message-ID: <2024121701-giveaway-decibel-4af4@gregkh>
+References: <20241215165457.418999-1-sashal@kernel.org>
+ <2cjlh3rtjqyrxvqkeklzdqxv2shy5fqolflx3fa2itxig2y4kc@gvl3fecajwqr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CALm+0cVd=yhCTXm4j+OcqiBQwwC=bf2ja7iQ87ypBb7KD2qbjA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2cjlh3rtjqyrxvqkeklzdqxv2shy5fqolflx3fa2itxig2y4kc@gvl3fecajwqr>
 
-On Tue, Dec 17, 2024 at 04:11:21PM +0800, Z qiang wrote:
-> >
-> > On Sat, Dec 14, 2024 at 09:53:13PM +0100, Greg Kroah-Hartman wrote:
-> > > I'm announcing the release of the 6.1.120 kernel.
-> > >
-> > > All users of the 6.1 kernel series must upgrade.
-> > >
-> > > The updated 6.1.y git tree can be found at:
-> > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.1.y
-> > > and can be browsed at the normal kernel.org git web browser:
-> > >       https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > >
-> > > ------------
-> >
-> > > Zqiang (1):
-> > >       rcu-tasks: Fix access non-existent percpu rtpcp variable in rcu_tasks_need_gpcb()
-> >
-> > I was AFK last week so I missed reporting this, but on riscv this patch
-> > causes:
-> > [    0.145463] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:274
-> > [    0.155273] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
-> > [    0.164160] preempt_count: 1, expected: 0
-> > [    0.168716] RCU nest depth: 0, expected: 0
-> > [    0.173370] 1 lock held by swapper/0/1:
-> > [    0.177726]  #0: ffffffff81494d78 (rcu_tasks.cbs_gbl_lock){....}-{2:2}, at: cblist_init_generic+0x2e/0x374
-> > [    0.188768] irq event stamp: 718
-> > [    0.192439] hardirqs last  enabled at (717): [<ffffffff8098df90>] _raw_spin_unlock_irqrestore+0x34/0x5e
-> > [    0.203098] hardirqs last disabled at (718): [<ffffffff8098de32>] _raw_spin_lock_irqsave+0x24/0x60
-> > [    0.213254] softirqs last  enabled at (0): [<ffffffff800105d2>] copy_process+0x50c/0xdac
-> > [    0.222445] softirqs last disabled at (0): [<0000000000000000>] 0x0
-> > [    0.229551] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.119-00350-g224fd631c41b #1
-> > [    0.238330] Hardware name: Microchip PolarFire-SoC Icicle Kit (DT)
-> > [    0.245329] Call Trace:
-> > [    0.248113] [<ffffffff8000678c>] show_stack+0x2c/0x38
-> > [    0.253868] [<ffffffff80984e66>] dump_stack_lvl+0x5e/0x80
-> > [    0.260022] [<ffffffff80984e9c>] dump_stack+0x14/0x20
-> > [    0.265768] [<ffffffff800499b0>] __might_resched+0x200/0x20a
-> > [    0.272217] [<ffffffff80049784>] __might_sleep+0x3c/0x68
-> > [    0.278258] [<ffffffff802022aa>] __kmem_cache_alloc_node+0x64/0x240
-> > [    0.285385] [<ffffffff801b1760>] __kmalloc+0xc0/0x180
-> > [    0.291140] [<ffffffff8008c752>] cblist_init_generic+0x84/0x374
-> > [    0.297857] [<ffffffff80a0b212>] rcu_spawn_tasks_kthread+0x1c/0x72
-> > [    0.304888] [<ffffffff80a0b0e8>] rcu_init_tasks_generic+0x20/0x12e
-> > [    0.311902] [<ffffffff80a00eb8>] kernel_init_freeable+0x56/0xa8
-> > [    0.318638] [<ffffffff80985c10>] kernel_init+0x1a/0x18e
-> > [    0.324574] [<ffffffff80004124>] ret_from_exception+0x0/0x1a
-> >
+On Mon, Dec 16, 2024 at 09:32:27AM +0100, Uwe Kleine-König wrote:
+> On Sun, Dec 15, 2024 at 11:54:56AM -0500, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >     gpio: idio-16: Actually make use of the GPIO_IDIO_16 symbol namespace
+> > 
+> > to the 6.12-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >      gpio-idio-16-actually-make-use-of-the-gpio_idio_16-s.patch
+> > and it can be found in the queue-6.12 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> > 
+> > 
+> > 
+> > commit 8845b746c447c715080e448d62aeed25f73fb205
+> > Author: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> > Date:   Tue Dec 3 18:26:30 2024 +0100
+> > 
+> >     gpio: idio-16: Actually make use of the GPIO_IDIO_16 symbol namespace
+> >     
+> >     [ Upstream commit 9ac4b58fcef0f9fc03fa6e126a5f53c1c71ada8a ]
+> >     
+> >     DEFAULT_SYMBOL_NAMESPACE must already be defined when <linux/export.h>
+> >     is included. So move the define above the include block.
+> >     
+> >     Fixes: b9b1fc1ae119 ("gpio: idio-16: Introduce the ACCES IDIO-16 GPIO library module")
+> >     Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> >     Acked-by: William Breathitt Gray <wbg@kernel.org>
+> >     Link: https://lore.kernel.org/r/20241203172631.1647792-2-u.kleine-koenig@baylibre.com
+> >     Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >     Signed-off-by: Sasha Levin <sashal@kernel.org>
 > 
-> Hello, Xiangyu
-> 
-> For v6.1.x kernels, the cblist_init_generic() is invoke in init task context,
-> rtp->rtpcp_array is allocated use GFP_KERENL and in the critical section
-> holding rcu_tasks.cbs_gbl_lock spinlock.  so might_resched() trigger warnings.
-> You should perform the operation of allocating rtpcp_array memory outside
-> the spinlock.
-> Are you willing to resend the patch?
+> Hmm, I don't think the advantages here are very relevant. The only
+> problem fixed here is that the symbols provided by the driver are not in
+> the expected namespace. So this is nothing a user would wail about as
+> everything works as intended. The big upside of dropping this patch is
+> that you can (I think) also drop the backport of commit ceb8bf2ceaa7
+> ("module: Convert default symbol namespace to string literal").
 
-So should I revert this, or do you have a fixup patch somewhere?
-
-confused,
+Yes, as the previous commit that ceb8bf2ceaa7 fixes is not in the tree,
+ceb8bf2ceaa7 should be removed, I'll go do that now, and drop this one
+too, thanks.
 
 greg k-h
 
