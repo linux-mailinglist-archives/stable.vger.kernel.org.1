@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-104652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845E69F5261
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:18:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9A59F5271
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56E0F1894542
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9500F188F1A2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04031F893C;
-	Tue, 17 Dec 2024 17:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD101F8934;
+	Tue, 17 Dec 2024 17:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1w7imke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7BrVZck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7E11F75BE;
-	Tue, 17 Dec 2024 17:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD531F8697;
+	Tue, 17 Dec 2024 17:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455697; cv=none; b=Lz4lEI3qJJ6Jojmjj4IwGjbCdZZvYdMCk0l3U5jMRByJjb2olBVZdrEs46sJopdoXEwPQbtsSlJSZLhA0j036zxCl824wqG2T7IR97broRh4LTyu0dkGinp74eSQO8LUsothpRCmVbVmxqgH5Qqv+Nnl3Bc8l5DO4pbM0DKvhL0=
+	t=1734455766; cv=none; b=sZl7VvxhPlz8VzapFPtKj1ImcPAb67EYXdh/cNOgIvSP1tl1I9sjFB1bGpZpTeB+ecEaZSJdhJ8Iq+RH9q7cFcuT+F3S6yfxkezlDi78nCoBRKSoI6YnUWS65GiDNUXWc+NirGxoelrhBrwF9LvB5Tyz05h0yaHpcLIq+0a09B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455697; c=relaxed/simple;
-	bh=2PtQ1RMt1frEg+J5hgzJBkcBUjybBqVkNduvforxj3Y=;
+	s=arc-20240116; t=1734455766; c=relaxed/simple;
+	bh=HuUAIlXDU6Q7dykYoO4U2rcBAXNztwJOSxKUhVAfB8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGBBqE8Uq2WhjmiV7TMRZaIIqOsVPUMcVw/L6wbSUODZevFllPztlaGeFHllrihH2+WcRl/j3VzjTK+qWeJWUe/InBg+Z7zrijxC/ZglJMmqOilKQ48lLPkWzN9lrM6KVaOchFofsEAE7wxjNN2yjGgbRAPjKqhGOjy7/29/JD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1w7imke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BB8C4CED3;
-	Tue, 17 Dec 2024 17:14:56 +0000 (UTC)
+	 MIME-Version; b=KkGJeCziwhWjAjQ5/gA+Bo2nIPOFhB5FZINrZ+G8yYRBC/+JZYDdMMOVvq6WN1vgqIdWIEurGvYQ+KR/KlvGk+bQeeKwhIB3sYZHkMN1qPuvZ/n08Axc38mVGFLaWhDeAfi2WUo52BXJq32euNlIusquuoqV04Yg/PbCQZ9dFxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7BrVZck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435B4C4CED3;
+	Tue, 17 Dec 2024 17:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455697;
-	bh=2PtQ1RMt1frEg+J5hgzJBkcBUjybBqVkNduvforxj3Y=;
+	s=korg; t=1734455766;
+	bh=HuUAIlXDU6Q7dykYoO4U2rcBAXNztwJOSxKUhVAfB8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1w7imke5QWq/zrYPt1Es6cgmmbzx3fw82OjLufml70W9HUvaHIuajvUdrCeyvWHd
-	 H2oFcNwFo14GJTXzn8d2JhoWLOLOcbqtFpkhORERfP5833NLzDMxxlBm9ntDWxP/MQ
-	 5KEo/9EFrvQdxuqOhr7xmc9XBzHqSGpYQzChyeII=
+	b=W7BrVZckxkgfm11tRPUhM39spN0s7kmakGUxGyWooAlvRBNgjpwj7Qfmm08tAfJnC
+	 lRgG0eF/kVnOtH0r+5NxpKye+dWqtC2gI/zlw3b4W+NGU21FMAF9eiM87MN65kP2H2
+	 9MKsUS/Hi9Kd1vzf3hn/6dKfPeJsl0aRwiztWclY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 5.15 13/51] xfs: return from xfs_symlink_verify early on V4 filesystems
+	syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.1 26/76] exfat: fix potential deadlock on __exfat_get_dentry_set
 Date: Tue, 17 Dec 2024 18:07:06 +0100
-Message-ID: <20241217170520.849649167@linuxfoundation.org>
+Message-ID: <20241217170527.349247823@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-commit 7f8b718c58783f3ff0810b39e2f62f50ba2549f6 upstream.
+commit 89fc548767a2155231128cb98726d6d2ea1256c9 upstream.
 
-V4 symlink blocks didn't have headers, so return early if this is a V4
-filesystem.
+When accessing a file with more entries than ES_MAX_ENTRY_NUM, the bh-array
+is allocated in __exfat_get_entry_set. The problem is that the bh-array is
+allocated with GFP_KERNEL. It does not make sense. In the following cases,
+a deadlock for sbi->s_lock between the two processes may occur.
 
-Cc: <stable@vger.kernel.org> # v5.1
-Fixes: 39708c20ab5133 ("xfs: miscellaneous verifier magic value fixups")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+       CPU0                CPU1
+       ----                ----
+  kswapd
+   balance_pgdat
+    lock(fs_reclaim)
+                      exfat_iterate
+                       lock(&sbi->s_lock)
+                       exfat_readdir
+                        exfat_get_uniname_from_ext_entry
+                         exfat_get_dentry_set
+                          __exfat_get_dentry_set
+                           kmalloc_array
+                            ...
+                            lock(fs_reclaim)
+    ...
+    evict
+     exfat_evict_inode
+      lock(&sbi->s_lock)
+
+To fix this, let's allocate bh-array with GFP_NOFS.
+
+Fixes: a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
+Cc: stable@vger.kernel.org # v6.2+
+Reported-by: syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000fef47e0618c0327f@google.com
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_symlink_remote.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/exfat/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/libxfs/xfs_symlink_remote.c
-+++ b/fs/xfs/libxfs/xfs_symlink_remote.c
-@@ -89,8 +89,10 @@ xfs_symlink_verify(
- 	struct xfs_mount	*mp = bp->b_mount;
- 	struct xfs_dsymlink_hdr	*dsl = bp->b_addr;
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -870,7 +870,7 @@ struct exfat_entry_set_cache *exfat_get_
  
-+	/* no verification of non-crc buffers */
- 	if (!xfs_has_crc(mp))
--		return __this_address;
-+		return NULL;
-+
- 	if (!xfs_verify_magic(bp, dsl->sl_magic))
- 		return __this_address;
- 	if (!uuid_equal(&dsl->sl_uuid, &mp->m_sb.sb_meta_uuid))
+ 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
+ 	if (num_bh > ARRAY_SIZE(es->__bh)) {
+-		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
++		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_NOFS);
+ 		if (!es->bh) {
+ 			brelse(bh);
+ 			kfree(es);
 
 
 
