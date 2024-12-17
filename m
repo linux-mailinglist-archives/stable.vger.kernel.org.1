@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479689F51F5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD54F9F53A8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5466188E16B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D00891725A0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028681F76BE;
-	Tue, 17 Dec 2024 17:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C181F8910;
+	Tue, 17 Dec 2024 17:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4yfhlw2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXrw8YQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF93E1F75BC;
-	Tue, 17 Dec 2024 17:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36B614A4E7;
+	Tue, 17 Dec 2024 17:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455516; cv=none; b=kjPqwJJbhyk5M90O7J5g+iGGW1rEf8Z87kkS7ZfWQm5bJR4FdxkDgDr9c/IdzD3ncp/rPKM8FuaEXbOZc72I/10PCWQZlr3/gXFcQIfWZEuLRHpEotWSJsweTi0dBqzdjNyNVO9KgLNGtPYa7I4Vb+bcGQEkGVpyZVFkb5qc9bM=
+	t=1734456454; cv=none; b=JTike8l/weLR6qL7B7ESS26zXRE7HsnA8HdiHoW2w4/bvQBRJGc9yxX3I5uIip2Ak578i5d8rZtAiQ1ouudUe1ch1B6qwaupAsrePAz4d+HM8sXYiuqs0uecRsAc2MXu5fd+zFlrIyFkXa4sxGkP6w4ycp/AvptnjMgqhE9xI6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455516; c=relaxed/simple;
-	bh=73c3pb2qukl4dMPMbYXrwxugJic+6AQq541cGwnh6QE=;
+	s=arc-20240116; t=1734456454; c=relaxed/simple;
+	bh=JS03GM9u0cmm3ecdM8fqg9og9S/Z8giiFKhfw6V13P4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDNKow/ATIkNI3S+ONh3PmJjF0W7wpu9IhLz1ZgTwaoQEHs+UheXMU3BXI4HPscTXheL2YaImExtGcA71CNy3gpPeZs9z0Vnz2qKHZ/CiXKKeOez5i0/XxBbXi4DtFpxPzflPa1TALA9qT9azZ4h0Buj5b9FypiCVY8AgeNFmdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4yfhlw2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91C3C4CED3;
-	Tue, 17 Dec 2024 17:11:55 +0000 (UTC)
+	 MIME-Version; b=A4LrmzuMHSxpRyuADNxLjQvFnC4fPemPqjfeWnAU+sKaHYqgMWBqLKJ6BN2M3nX1l7S04SKljMM2W/qqAW0+ADQ5zKSARDJGrD2PChbC+a0mDarNPqeWI+Bv3Oq+suY5MMIsNs4mtQw6F+gNbHCjde61fs6qM4dMWjD3R2q6GTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXrw8YQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174D5C4CED7;
+	Tue, 17 Dec 2024 17:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455516;
-	bh=73c3pb2qukl4dMPMbYXrwxugJic+6AQq541cGwnh6QE=;
+	s=korg; t=1734456454;
+	bh=JS03GM9u0cmm3ecdM8fqg9og9S/Z8giiFKhfw6V13P4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4yfhlw2hn9iCeC1I+Rp12d6+AOp3X/bMhRO4+iZ3YkZ+7jT8MYPqqCEL3LMrTOIl
-	 CiBdra41zg/jzdHADHEnCKRzAafLrYbqHUFeI0Ws+qsjHd59Xd2MDrE1/uTkeOQ0DD
-	 S4rFhRtMJu72OibUTaXiwEOWo6m3XUpj1VbkLM9s=
+	b=bXrw8YQyb6w6XQ3mMM+xNb9yroOQSljary6QmAQgPxZ3K3uLenv96lPtXowvpGFjT
+	 p9Ck4PbsuDiUBO18/ZRZu2t6jc4x8XcEGkS7cZVp1Y0XCP9GnVA2ernH2a1uPUupmr
+	 yXHV0pwjyN3TVqV/IYXKfzB6GV4PzVcIUbS9uaPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH 5.10 09/43] bpf, sockmap: Fix update element with same
-Date: Tue, 17 Dec 2024 18:07:00 +0100
-Message-ID: <20241217170520.835246441@linuxfoundation.org>
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	David Belanger <david.belanger@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 065/172] drm/amdkfd: hard-code cacheline size for gfx11
+Date: Tue, 17 Dec 2024 18:07:01 +0100
+Message-ID: <20241217170548.976211477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 
-commit 75e072a390da9a22e7ae4a4e8434dfca5da499fb upstream.
+commit 321048c4a3e375416b51b4093978f9ce2aa4d391 upstream.
 
-Consider a sockmap entry being updated with the same socket:
+This information is not available in ip discovery table.
 
-	osk = stab->sks[idx];
-	sock_map_add_link(psock, link, map, &stab->sks[idx]);
-	stab->sks[idx] = sk;
-	if (osk)
-		sock_map_unref(osk, &stab->sks[idx]);
-
-Due to sock_map_unref(), which invokes sock_map_del_link(), all the
-psock's links for stab->sks[idx] are torn:
-
-	list_for_each_entry_safe(link, tmp, &psock->link, list) {
-		if (link->link_raw == link_raw) {
-			...
-			list_del(&link->list);
-			sk_psock_free_link(link);
-		}
-	}
-
-And that includes the new link sock_map_add_link() added just before
-the unref.
-
-This results in a sockmap holding a socket, but without the respective
-link. This in turn means that close(sock) won't trigger the cleanup,
-i.e. a closed socket will not be automatically removed from the sockmap.
-
-Stop tearing the links when a matching link_raw is found.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241202-sockmap-replace-v1-1-1e88579e7bd5@rbox.co
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Reviewed-by: David Belanger <david.belanger@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock_map.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -161,6 +161,7 @@ static void sock_map_del_link(struct soc
- 				verdict_stop = true;
- 			list_del(&link->list);
- 			sk_psock_free_link(link);
-+			break;
- 		}
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
+@@ -1422,6 +1422,7 @@ err:
+ 
+ 
+ static int kfd_fill_gpu_cache_info_from_gfx_config(struct kfd_dev *kdev,
++						   bool cache_line_size_missing,
+ 						   struct kfd_gpu_cache_info *pcache_info)
+ {
+ 	struct amdgpu_device *adev = kdev->adev;
+@@ -1436,6 +1437,8 @@ static int kfd_fill_gpu_cache_info_from_
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+ 		pcache_info[i].num_cu_shared = adev->gfx.config.gc_num_tcp_per_wpg / 2;
+ 		pcache_info[i].cache_line_size = adev->gfx.config.gc_tcp_cache_line_size;
++		if (cache_line_size_missing && !pcache_info[i].cache_line_size)
++			pcache_info[i].cache_line_size = 128;
+ 		i++;
  	}
- 	spin_unlock_bh(&psock->link_lock);
+ 	/* Scalar L1 Instruction Cache per SQC */
+@@ -1448,6 +1451,8 @@ static int kfd_fill_gpu_cache_info_from_
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+ 		pcache_info[i].num_cu_shared = adev->gfx.config.gc_num_sqc_per_wgp * 2;
+ 		pcache_info[i].cache_line_size = adev->gfx.config.gc_instruction_cache_line_size;
++		if (cache_line_size_missing && !pcache_info[i].cache_line_size)
++			pcache_info[i].cache_line_size = 128;
+ 		i++;
+ 	}
+ 	/* Scalar L1 Data Cache per SQC */
+@@ -1459,6 +1464,8 @@ static int kfd_fill_gpu_cache_info_from_
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+ 		pcache_info[i].num_cu_shared = adev->gfx.config.gc_num_sqc_per_wgp * 2;
+ 		pcache_info[i].cache_line_size = adev->gfx.config.gc_scalar_data_cache_line_size;
++		if (cache_line_size_missing && !pcache_info[i].cache_line_size)
++			pcache_info[i].cache_line_size = 64;
+ 		i++;
+ 	}
+ 	/* GL1 Data Cache per SA */
+@@ -1471,7 +1478,8 @@ static int kfd_fill_gpu_cache_info_from_
+ 					CRAT_CACHE_FLAGS_DATA_CACHE |
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+ 		pcache_info[i].num_cu_shared = adev->gfx.config.max_cu_per_sh;
+-		pcache_info[i].cache_line_size = 0;
++		if (cache_line_size_missing)
++			pcache_info[i].cache_line_size = 128;
+ 		i++;
+ 	}
+ 	/* L2 Data Cache per GPU (Total Tex Cache) */
+@@ -1483,6 +1491,8 @@ static int kfd_fill_gpu_cache_info_from_
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+ 		pcache_info[i].num_cu_shared = adev->gfx.config.max_cu_per_sh;
+ 		pcache_info[i].cache_line_size = adev->gfx.config.gc_tcc_cache_line_size;
++		if (cache_line_size_missing && !pcache_info[i].cache_line_size)
++			pcache_info[i].cache_line_size = 128;
+ 		i++;
+ 	}
+ 	/* L3 Data Cache per GPU */
+@@ -1568,6 +1578,7 @@ static int kfd_fill_gpu_cache_info_from_
+ int kfd_get_gpu_cache_info(struct kfd_node *kdev, struct kfd_gpu_cache_info **pcache_info)
+ {
+ 	int num_of_cache_types = 0;
++	bool cache_line_size_missing = false;
+ 
+ 	switch (kdev->adev->asic_type) {
+ 	case CHIP_KAVERI:
+@@ -1691,10 +1702,17 @@ int kfd_get_gpu_cache_info(struct kfd_no
+ 		case IP_VERSION(11, 5, 0):
+ 		case IP_VERSION(11, 5, 1):
+ 		case IP_VERSION(11, 5, 2):
++			/* Cacheline size not available in IP discovery for gc11.
++			 * kfd_fill_gpu_cache_info_from_gfx_config to hard code it
++			 */
++			cache_line_size_missing = true;
++			fallthrough;
+ 		case IP_VERSION(12, 0, 0):
+ 		case IP_VERSION(12, 0, 1):
+ 			num_of_cache_types =
+-				kfd_fill_gpu_cache_info_from_gfx_config(kdev->kfd, *pcache_info);
++				kfd_fill_gpu_cache_info_from_gfx_config(kdev->kfd,
++									cache_line_size_missing,
++									*pcache_info);
+ 			break;
+ 		default:
+ 			*pcache_info = dummy_cache_info;
 
 
 
