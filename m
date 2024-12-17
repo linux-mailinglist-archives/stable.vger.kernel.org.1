@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-104936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6AB79F53E0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E246A9F524A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7430C16D010
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AFD918922B9
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823141F8696;
-	Tue, 17 Dec 2024 17:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523E61F8688;
+	Tue, 17 Dec 2024 17:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKha7Lmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fecSbEyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0C11F7579;
-	Tue, 17 Dec 2024 17:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1062E1F7562;
+	Tue, 17 Dec 2024 17:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456563; cv=none; b=lTeayimUoIgkUHJ6HmCanzdnMlCwvF2KL4lQDuQ37QKZfBcskjkngJwO8MCLRu28iUgc6DMKBtHXKi24bc6X3082Awwq+N0p6lgA7wCFp+GxjDTOHMgqlYK3BLwDjs43XxK8TDx9roW7+9K+qHprFpKHVIFYTFqJO3lXdYIKkL8=
+	t=1734455661; cv=none; b=EwueftUVCxPw8ily6fVXwVYn6A2a3sXFoxY4PkZbcs+ISVxFWLyr/GLAkqi4sgOT03k7/3iMgyFhZJ1z0bx5+nIVjBJoVDoQoMlRHRMGOw2P52gPvW7CS0k7n35YyZfO+QkUbHNFxWTQHEq6ZJqR+pfeLD51W2jPpTIlbXqWrFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456563; c=relaxed/simple;
-	bh=yE/iYjhEpAL82McY1ekLBwexXhxldx141U/9XFMtj5Y=;
+	s=arc-20240116; t=1734455661; c=relaxed/simple;
+	bh=vOxECXJ63sNZxHg/V4gxxBzysmRZjFEAXn4t6KaiqcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7N67AQTGKGlnQC09SPnr8RNpO8ic2GHg88Ij8YC8gAvOIAKSy4hL85osjCiCPmFOqdN69VekLGHDbm7xb2YUnLtQlMbPbuhlHlj/wv//XeKtBWidGEzfJ9DRT+qrfbw26+kbGs22fTm80aREG3A47ks1pCppk1ynCFAlKDU8Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKha7Lmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1108C4CED3;
-	Tue, 17 Dec 2024 17:29:22 +0000 (UTC)
+	 MIME-Version; b=IR9eWQp4FztI1wQfVSxDcBLKwfLsIq+gNdfSvQWhZ+NtK8UeE/cyig0p9JcjPkqMKqGzBDnJS5MWYYjmINb1VDx8UDwUsuy7g7YB0TC5DzfFwgbAhtBbqSGJ6S8AR9M2qlwaoVKnzWVUN9uBxuJ+gT0BKPCmnPNkWO26mjYd/kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fecSbEyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE9BC4CED3;
+	Tue, 17 Dec 2024 17:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456563;
-	bh=yE/iYjhEpAL82McY1ekLBwexXhxldx141U/9XFMtj5Y=;
+	s=korg; t=1734455660;
+	bh=vOxECXJ63sNZxHg/V4gxxBzysmRZjFEAXn4t6KaiqcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKha7Lmv5Hkj/5dAyolqitBAxUkc3hOZYi4Iu+a/NMsMp4Nqjq5tygpu2yI/d6Qcj
-	 CYZXOeg/caXK+F+hfwGkLwcdwNjAK11/F61TEKImRtLF5Ob4KSJ7Ld+ug3GUnZRuf+
-	 ins8H/rgtUKJ4GmIDPgOI9Nd9Vb2j0RUgLl8nnww=
+	b=fecSbEyLNz76emTt+X0zSmH47fBb/+4nE2R93IW92teJhY0iltKL8/zOmEXpmjeVI
+	 QJZrbwXdI1fVt12O/I3BoxzsuvaTYp+aF8Qw++MnIWbO8Xcza9xTj/CUhBbLJ8AZtw
+	 P6I18Oe6NvcFW61KTA92q8/2bGrLkhvMU7AfeSPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/172] selftests: mlxsw: sharedbuffer: Ensure no extra packets are counted
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 5.15 41/51] tracing/kprobes: Skip symbol counting logic for module symbols in create_local_trace_kprobe()
 Date: Tue, 17 Dec 2024 18:07:34 +0100
-Message-ID: <20241217170550.364194540@linuxfoundation.org>
+Message-ID: <20241217170522.160047675@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit 5f2c7ab15fd806043db1a7d54b5ec36be0bd93b1 ]
+commit b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+avoids checking number_of_same_symbols() for module symbol in
+__trace_kprobe_create(), but create_local_trace_kprobe() should avoid this
+check too. Doing this check leads to ENOENT for module_name:symbol_name
+constructions passed over perf_event_open.
 
-The test assumes that the packet it is sending is the only packet being
-passed to the device.
+No bug in newer kernels as it was fixed more generally by
+commit 9d8616034f16 ("tracing/kprobes: Add symbol counting check when module loads")
 
-However, it is not the case and so other packets are filling the buffers
-as well. Therefore, the test sometimes fails because it is reading a
-maximum occupancy that is larger than expected.
-
-Add egress filters on $h1 and $h2 that will guarantee the above.
-
-Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/64c28bc9b1cc1d78c4a73feda7cedbe9526ccf8b.1733414773.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20240705161030.b3ddb33a8167013b9b1da202@kernel.org
+Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drivers/net/mlxsw/sharedbuffer.sh         | 40 +++++++++++++++++++
- 1 file changed, 40 insertions(+)
+v1 -> v2:
+ * Reword commit title and message
+ * Send for stable instead of mainline
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-index 21bebc5726f6..c068e6c2a580 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-@@ -22,20 +22,34 @@ SB_ITC=0
- h1_create()
- {
- 	simple_if_init $h1 192.0.1.1/24
-+	tc qdisc add dev $h1 clsact
-+
-+	# Add egress filter on $h1 that will guarantee that the packet sent,
-+	# will be the only packet being passed to the device.
-+	tc filter add dev $h1 egress pref 2 handle 102 matchall action drop
- }
- 
- h1_destroy()
- {
-+	tc filter del dev $h1 egress pref 2 handle 102 matchall action drop
-+	tc qdisc del dev $h1 clsact
- 	simple_if_fini $h1 192.0.1.1/24
- }
- 
- h2_create()
- {
- 	simple_if_init $h2 192.0.1.2/24
-+	tc qdisc add dev $h2 clsact
-+
-+	# Add egress filter on $h2 that will guarantee that the packet sent,
-+	# will be the only packet being passed to the device.
-+	tc filter add dev $h2 egress pref 1 handle 101 matchall action drop
- }
- 
- h2_destroy()
- {
-+	tc filter del dev $h2 egress pref 1 handle 101 matchall action drop
-+	tc qdisc del dev $h2 clsact
- 	simple_if_fini $h2 192.0.1.2/24
- }
- 
-@@ -101,6 +115,11 @@ port_pool_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -b $h2mac -A 192.0.1.1 -B 192.0.1.2 \
-@@ -117,6 +136,11 @@ port_pool_test()
- 	max_occ=$(sb_occ_pool_check $cpu_dl_port $SB_POOL_EGR_CPU $exp_max_occ)
- 	check_err $? "Expected ePool($SB_POOL_EGR_CPU) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress pool"
-+
-+	tc filter del dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
- }
- 
- port_tc_ip_test()
-@@ -124,6 +148,11 @@ port_tc_ip_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -b $h2mac -A 192.0.1.1 -B 192.0.1.2 \
-@@ -140,6 +169,11 @@ port_tc_ip_test()
- 	max_occ=$(sb_occ_etc_check $cpu_dl_port $SB_ITC_CPU_IP $exp_max_occ)
- 	check_err $? "Expected egress TC($SB_ITC_CPU_IP) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress TC - IP packet"
-+
-+	tc filter del dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
- }
- 
- port_tc_arp_test()
-@@ -147,6 +181,9 @@ port_tc_arp_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol arp pref 1 handle 101 flower \
-+		src_mac $h1mac action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -A 192.0.1.1 -t arp -q
-@@ -162,6 +199,9 @@ port_tc_arp_test()
- 	max_occ=$(sb_occ_etc_check $cpu_dl_port $SB_ITC_CPU_ARP $exp_max_occ)
- 	check_err $? "Expected egress TC($SB_ITC_IP2ME) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress TC - ARP packet"
-+
-+	tc filter del dev $h1 egress protocol arp pref 1 handle 101 flower \
-+		src_mac $h1mac action pass
- }
- 
- setup_prepare()
--- 
-2.39.5
+ kernel/trace/trace_kprobe.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1823,7 +1823,7 @@ create_local_trace_kprobe(char *func, vo
+ 	int ret;
+ 	char *event;
+ 
+-	if (func) {
++	if (func && !strchr(func, ':')) {
+ 		unsigned int count;
+ 
+ 		count = number_of_same_symbols(func);
 
 
 
