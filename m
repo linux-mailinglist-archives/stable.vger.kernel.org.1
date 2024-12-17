@@ -1,137 +1,130 @@
-Return-Path: <stable+bounces-104455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799C79F4609
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:27:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7EB9F460C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 726FB7A30AA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 08:27:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3099A163BF1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 08:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF22C1DB938;
-	Tue, 17 Dec 2024 08:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3AC1DB363;
+	Tue, 17 Dec 2024 08:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WtL3lBFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4OeeuwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A421DB37F;
-	Tue, 17 Dec 2024 08:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1471DA113;
+	Tue, 17 Dec 2024 08:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734424032; cv=none; b=ESR+QrwEOL/8FujZc8aL6Bf8tVXiUXx/RAvD5u2wcheFwMFnTrMOyjn7L+qRwxD+ZVP7+8Co50P0KSKjD3HxWf4gX9pvmznUJYprg817A+Ep1TkjlFfrETK2oR6hPF/lbhUAeg5NXzRh8/qK8LbuHZqrm1diXLBzkFOFfgcCJpo=
+	t=1734424102; cv=none; b=LcrfOloZLbNK1zVwmTbY45+CtDNX8ezS9e2K7y0H2xXlngyPat0gFXpeP+1lwnxuNLbtfFFfqvuB9mtJiSQ2GRbwnbKitopDVyA+u6YQcb1UJB8jqh2MbXL2N6HoZZy99NuzztIJ3PBN1GvkEYN9y30xV1bseBKC7Ys1K/1IJ0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734424032; c=relaxed/simple;
-	bh=j2ll6ZoLtO5dCF3DRciFEfrk8Jcl0N+PKw0EN5ykTsc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nb198LeDOvU/72qnxKxDKl7+mG/qo4nWs15e4t3xy9FVdBVGjIXaZkmHBtAwbYObAYma3f6HLFRnQwWsonSY6rPF+IdAwPH4GqvqTi2iu9amflfqoKbFzmpjbe9MBRLjAhDRPre32d39r9WreABnnN0NIy/W9Pa1UGEnz4L57YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WtL3lBFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1BDC4CED3;
-	Tue, 17 Dec 2024 08:27:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734424032;
-	bh=j2ll6ZoLtO5dCF3DRciFEfrk8Jcl0N+PKw0EN5ykTsc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WtL3lBFWvSp7ETcABRdNez3SaGOnQcpyrWYLzcAH08+LPP3KEjZspeF+l1464yuE0
-	 968ZJXWMoPSvADpCunue2ldmQLcEvNvOu8dtLkZ/ChlHgqczPKji6IPSOitSzT/kri
-	 lxRnhyRabv/Ir1YfkatNFUznnrm58wCc8nJd4w8FRqc3I07Ekkc3JZzM7p0zWAxy0B
-	 8jRKke/V42mGXrQ9kGcy499leaKtmdIytTKGhUE4SEGmvJZYBgZ+YWasXYPDIYzWOJ
-	 HBma3F6pXZhc0W7jW/5AvWnaVFtX4GnkrCbdi8Wmzz4RC44KLOvkIKLaai6PmQFCst
-	 h6gp6j52Tdscw==
-Received: from [82.132.185.145] (helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tNSv7-004TZx-P7;
-	Tue, 17 Dec 2024 08:27:09 +0000
-Date: Tue, 17 Dec 2024 08:27:07 +0000
-Message-ID: <877c7ysois.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Collingbourne <pcc@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64/sme: Move storage of reg_smidr to __cpuinfo_store_cpu()
-In-Reply-To: <20241216-arm64-fix-boot-cpu-smidr-v2-1-a99ffba2c37f@kernel.org>
-References: <20241216-arm64-fix-boot-cpu-smidr-v2-1-a99ffba2c37f@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1734424102; c=relaxed/simple;
+	bh=SPmFEcKXpyPmdcnzipJn8Q/yWwafSU6dklD5P69XHH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U2R49dFbuOMpmUtgK+grNr3JllaOqMoQRrdUZVsv0KPFvpcMf+uAbe6v1eyYxOukF5rqAjZtYlB8EiorVNq4dVcj+vO/qRML0m6djMaixBgouCelskqtPJAFiM1YsHR6WMVLN7XBRfL596CX1Wje1+W4d2dVaC+ged/Aqe6DIeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4OeeuwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E06C4CED3;
+	Tue, 17 Dec 2024 08:28:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734424102;
+	bh=SPmFEcKXpyPmdcnzipJn8Q/yWwafSU6dklD5P69XHH0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q4OeeuwGPzt5YMsCKvfDS+YbGt4LObn0W/QRHrkohzHbbyKstrMv0Czhyia2s7Xea
+	 nKjrnsN0lw1pC/VQOoNq5+iaPsHB0VwKRcOjaNnKoBd+yJgGnfWqMLVIvkLzL/JyNZ
+	 Cy1WASjCDMZVwIEd4pP1XwwC4GfhtLDYk/ijqRUg=
+Date: Tue, 17 Dec 2024 09:28:18 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Z qiang <qiang.zhang1211@gmail.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
+	jslaby@suse.cz, rcu <rcu@vger.kernel.org>
+Subject: Re: Linux 6.1.120
+Message-ID: <2024121703-bobbed-paced-99a5@gregkh>
+References: <2024121411-multiple-activist-51a1@gregkh>
+ <20241216-comic-handling-3bcf108cc465@wendy>
+ <CALm+0cVd=yhCTXm4j+OcqiBQwwC=bf2ja7iQ87ypBb7KD2qbjA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 82.132.185.145
-X-SA-Exim-Rcpt-To: broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org, pcc@google.com, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALm+0cVd=yhCTXm4j+OcqiBQwwC=bf2ja7iQ87ypBb7KD2qbjA@mail.gmail.com>
 
-On Mon, 16 Dec 2024 22:09:57 +0000,
-Mark Brown <broonie@kernel.org> wrote:
+On Tue, Dec 17, 2024 at 04:11:21PM +0800, Z qiang wrote:
+> >
+> > On Sat, Dec 14, 2024 at 09:53:13PM +0100, Greg Kroah-Hartman wrote:
+> > > I'm announcing the release of the 6.1.120 kernel.
+> > >
+> > > All users of the 6.1 kernel series must upgrade.
+> > >
+> > > The updated 6.1.y git tree can be found at:
+> > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.1.y
+> > > and can be browsed at the normal kernel.org git web browser:
+> > >       https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> > >
+> > > ------------
+> >
+> > > Zqiang (1):
+> > >       rcu-tasks: Fix access non-existent percpu rtpcp variable in rcu_tasks_need_gpcb()
+> >
+> > I was AFK last week so I missed reporting this, but on riscv this patch
+> > causes:
+> > [    0.145463] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:274
+> > [    0.155273] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
+> > [    0.164160] preempt_count: 1, expected: 0
+> > [    0.168716] RCU nest depth: 0, expected: 0
+> > [    0.173370] 1 lock held by swapper/0/1:
+> > [    0.177726]  #0: ffffffff81494d78 (rcu_tasks.cbs_gbl_lock){....}-{2:2}, at: cblist_init_generic+0x2e/0x374
+> > [    0.188768] irq event stamp: 718
+> > [    0.192439] hardirqs last  enabled at (717): [<ffffffff8098df90>] _raw_spin_unlock_irqrestore+0x34/0x5e
+> > [    0.203098] hardirqs last disabled at (718): [<ffffffff8098de32>] _raw_spin_lock_irqsave+0x24/0x60
+> > [    0.213254] softirqs last  enabled at (0): [<ffffffff800105d2>] copy_process+0x50c/0xdac
+> > [    0.222445] softirqs last disabled at (0): [<0000000000000000>] 0x0
+> > [    0.229551] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.119-00350-g224fd631c41b #1
+> > [    0.238330] Hardware name: Microchip PolarFire-SoC Icicle Kit (DT)
+> > [    0.245329] Call Trace:
+> > [    0.248113] [<ffffffff8000678c>] show_stack+0x2c/0x38
+> > [    0.253868] [<ffffffff80984e66>] dump_stack_lvl+0x5e/0x80
+> > [    0.260022] [<ffffffff80984e9c>] dump_stack+0x14/0x20
+> > [    0.265768] [<ffffffff800499b0>] __might_resched+0x200/0x20a
+> > [    0.272217] [<ffffffff80049784>] __might_sleep+0x3c/0x68
+> > [    0.278258] [<ffffffff802022aa>] __kmem_cache_alloc_node+0x64/0x240
+> > [    0.285385] [<ffffffff801b1760>] __kmalloc+0xc0/0x180
+> > [    0.291140] [<ffffffff8008c752>] cblist_init_generic+0x84/0x374
+> > [    0.297857] [<ffffffff80a0b212>] rcu_spawn_tasks_kthread+0x1c/0x72
+> > [    0.304888] [<ffffffff80a0b0e8>] rcu_init_tasks_generic+0x20/0x12e
+> > [    0.311902] [<ffffffff80a00eb8>] kernel_init_freeable+0x56/0xa8
+> > [    0.318638] [<ffffffff80985c10>] kernel_init+0x1a/0x18e
+> > [    0.324574] [<ffffffff80004124>] ret_from_exception+0x0/0x1a
+> >
 > 
-> In commit 892f7237b3ff ("arm64: Delay initialisation of
-> cpuinfo_arm64::reg_{zcr,smcr}") we moved access to ZCR, SMCR and SMIDR
-> later in the boot process in order to ensure that we don't attempt to
-> interact with them if SVE or SME is disabled on the command line.
-> Unfortunately when initialising the boot CPU in init_cpu_features() we work
-> on a copy of the struct cpuinfo_arm64 for the boot CPU used only during
-> boot, not the percpu copy used by the sysfs code. The expectation of the
-> feature identification code was that the ID registers would be read in
-> __cpuinfo_store_cpu() and the values not modified by init_cpu_features().
+> Hello, Xiangyu
 > 
-> The main reason for the original change was to avoid early accesses to
-> ZCR on practical systems that were seen shipping with SVE reported in ID
-> registers but traps enabled at EL3 and handled as fatal errors, SME was
-> rolled in due to the similarity with SVE. Since then we have removed the
-> early accesses to ZCR and SMCR in commits:
-> 
->   abef0695f9665c3d ("arm64/sve: Remove ZCR pseudo register from cpufeature code")
->   391208485c3ad50f ("arm64/sve: Remove SMCR pseudo register from cpufeature code")
-> 
-> so only the SMIDR_EL1 part of the change remains. Since SMIDR_EL1 is
-> only trapped via FEAT_IDST and not the SME trap it is less likely to be
-> affected by similar issues, and the factors that lead to issues with SVE
-> are less likely to apply to SME.
-> 
-> Since we have not yet seen practical SME systems that need to use a
-> command line override (and are only just beginning to see SME systems at
-> all) let's just remove the override and store SMIDR_EL1 along with all
-> the other ID register reads in __cpuinfo_store_cpu().
-> 
-> This issue wasn't apparent when testing on emulated platforms that do not
-> report values in SMIDR_EL1.
-> 
-> Fixes: 892f7237b3ff ("arm64: Delay initialisation of cpuinfo_arm64::reg_{zcr,smcr}")
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
-> Changes in v2:
-> - Move the ID register read back to __cpuinfo_store_cpu().
-> - Remove the command line option for SME ID register override.
-> - Link to v1: https://lore.kernel.org/r/20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org
+> For v6.1.x kernels, the cblist_init_generic() is invoke in init task context,
+> rtp->rtpcp_array is allocated use GFP_KERENL and in the critical section
+> holding rcu_tasks.cbs_gbl_lock spinlock.  so might_resched() trigger warnings.
+> You should perform the operation of allocating rtpcp_array memory outside
+> the spinlock.
+> Are you willing to resend the patch?
 
-My reading of the thread was that we don't need to kill the
-arm64.nosme option as SMIDR_EL1 wouldn't UNDEF, which is guaranteed if
-SME is implemented at all.
+So should I revert this, or do you have a fixup patch somewhere?
 
-What was needed in 6.0 is not there anymore, for all the reasons that
-Mark outlined and that you have pasted in the above commit message.
+confused,
 
-The removal of the arm64.nosme option is still a possibility, but
-that's absolutely distinct from fixing the problem at hand.
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+greg k-h
 
