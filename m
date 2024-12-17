@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1146F9F52B5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916F49F52FF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711DC189443A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD8E41707DB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC441F890D;
-	Tue, 17 Dec 2024 17:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5811F75BE;
+	Tue, 17 Dec 2024 17:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNB7cp27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngCwpaVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4211F76A1;
-	Tue, 17 Dec 2024 17:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4AD142E77;
+	Tue, 17 Dec 2024 17:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455876; cv=none; b=cvjcni0IBLHyu0ksvUR8OC0dnS8Gqf8Fozm+W/fPeNBmEwaCklkHfrR/d7sP1DDiWayt8JXaDCMD4SGQS8S46QJcj5PjKaf2TTSUOamDTWlSt2SJn2EPHONo9Rk6Cs4FKbXtNK/griqokrBc2aWyEyKgHTkSlcykelxZxH8/X8s=
+	t=1734456098; cv=none; b=oluNdMjuylq57P6J7PAlxrWXC66rQlVJ4xP7MPCo7rKo3Jh6fBsSDYphCZwuTYl0fAym5MIoW/1LNUfpXOzzN57vUZeku8MaQ8yOZ5L01VkJf6y6Du+K2HwWJN72npyHhUh7i5Ejt9Lp4KMqKZa7RHL2jnhplxz/f+SwSOWS//c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455876; c=relaxed/simple;
-	bh=5ox6/trHFNNNG7uwZ1QF+RlNHMx1ezwVafV2HrEPQVs=;
+	s=arc-20240116; t=1734456098; c=relaxed/simple;
+	bh=Y4F6B1jEAYT+0TquyFKFdlHIh5AzcHkz548gyUtMt1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQwayxTzaShtwXx9d6zUg6c7mGiijsWrHOIFAUCJr9LWU4iOO78urX2QLcQpq7fdsC1A4tK18uomCPkWhMy6IvQfwyFK4iifkN699cOLhsiHonoIk6AjuxyGXwX2fOO3NA9rLBypGNmnKHpzwGxbO7sMRCxmZ1Z1PEPyWAehIEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNB7cp27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25AD3C4CED3;
-	Tue, 17 Dec 2024 17:17:55 +0000 (UTC)
+	 MIME-Version; b=bid6iWfCBAhTMWlJfpp4PNuZluky3rSu/BmqNOakDN96KxaL3Egh6W8Q6BkYqTMbvs/f+KKu6mCHmtJ5N8ZT+lFcfd5Z3me1y3FxK3D6cVQ5hrwdFDeJtaGoQFw/RhH3rZJvHj0B/K3tDOn1ZXVhapqNi9Lw5j/XiAlJcT5hBUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngCwpaVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68536C4CED3;
+	Tue, 17 Dec 2024 17:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455876;
-	bh=5ox6/trHFNNNG7uwZ1QF+RlNHMx1ezwVafV2HrEPQVs=;
+	s=korg; t=1734456097;
+	bh=Y4F6B1jEAYT+0TquyFKFdlHIh5AzcHkz548gyUtMt1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNB7cp27WQVn0xDjnkMndjLGkaS6ix5bShHulagkIilwWXvUhLKj1VmIw4xW/nFuE
-	 bg4QAdfeMpKD+3n7f5Hb7dpx0fw05Ucs/FO3NQuljSbq0tw+KTdsZiVHWI7nKl/JTB
-	 yLJlN0/+OS4Sv+ZQq+vlDsqHKBvKzZtj1CmcFYzc=
+	b=ngCwpaVRfm0NsGo23dmkttzwnXWx/ghsT1sDKvd6kT9uZpvHF+Jrx6LcxMyGwvvxW
+	 PlBDj/GMhW+yhEGYK2dVsVRKe4PGV88uIkgWWQTH8m7vUEphZvaeAwVfXLsmUb9m6+
+	 TCv5zD/C/iduGFVuHW0YZLG/nXPsDGFNAm1BBDYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 63/76] Bluetooth: iso: Fix recursive locking warning
+Subject: [PATCH 6.6 059/109] net: sparx5: fix FDMA performance issue
 Date: Tue, 17 Dec 2024 18:07:43 +0100
-Message-ID: <20241217170528.910446324@linuxfoundation.org>
+Message-ID: <20241217170535.836831897@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit 9bde7c3b3ad0e1f39d6df93dd1c9caf63e19e50f ]
+[ Upstream commit f004f2e535e2b66ccbf5ac35f8eaadeac70ad7b7 ]
 
-This updates iso_sock_accept to use nested locking for the parent
-socket, to avoid lockdep warnings caused because the parent and
-child sockets are locked by the same thread:
+The FDMA handler is responsible for scheduling a NAPI poll, which will
+eventually fetch RX packets from the FDMA queue. Currently, the FDMA
+handler is run in a threaded context. For some reason, this kills
+performance.  Admittedly, I did not do a thorough investigation to see
+exactly what causes the issue, however, I noticed that in the other
+driver utilizing the same FDMA engine, we run the FDMA handler in hard
+IRQ context.
 
-[   41.585683] ============================================
-[   41.585688] WARNING: possible recursive locking detected
-[   41.585694] 6.12.0-rc6+ #22 Not tainted
-[   41.585701] --------------------------------------------
-[   41.585705] iso-tester/3139 is trying to acquire lock:
-[   41.585711] ffff988b29530a58 (sk_lock-AF_BLUETOOTH)
-               at: bt_accept_dequeue+0xe3/0x280 [bluetooth]
-[   41.585905]
-               but task is already holding lock:
-[   41.585909] ffff988b29533a58 (sk_lock-AF_BLUETOOTH)
-               at: iso_sock_accept+0x61/0x2d0 [bluetooth]
-[   41.586064]
-               other info that might help us debug this:
-[   41.586069]  Possible unsafe locking scenario:
+Fix this performance issue, by  running the FDMA handler in hard IRQ
+context, not deferring any work to a thread.
 
-[   41.586072]        CPU0
-[   41.586076]        ----
-[   41.586079]   lock(sk_lock-AF_BLUETOOTH);
-[   41.586086]   lock(sk_lock-AF_BLUETOOTH);
-[   41.586093]
-                *** DEADLOCK ***
+Prior to this change, the RX UDP performance was:
 
-[   41.586097]  May be due to missing lock nesting notation
+Interval           Transfer     Bitrate         Jitter
+0.00-10.20  sec    44.6 MBytes  36.7 Mbits/sec  0.027 ms
 
-[   41.586101] 1 lock held by iso-tester/3139:
-[   41.586107]  #0: ffff988b29533a58 (sk_lock-AF_BLUETOOTH)
-                at: iso_sock_accept+0x61/0x2d0 [bluetooth]
+After this change, the rx UDP performance is:
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Interval           Transfer     Bitrate         Jitter
+0.00-9.12   sec    1.01 GBytes  953 Mbits/sec   0.020 ms
+
+Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index ff15d5192768..437cbeaa9619 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -964,7 +964,11 @@ static int iso_sock_accept(struct socket *sock, struct socket *newsock,
- 	long timeo;
- 	int err = 0;
- 
--	lock_sock(sk);
-+	/* Use explicit nested locking to avoid lockdep warnings generated
-+	 * because the parent socket and the child socket are locked on the
-+	 * same thread.
-+	 */
-+	lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
- 
- 	timeo = sock_rcvtimeo(sk, flags & O_NONBLOCK);
- 
-@@ -995,7 +999,7 @@ static int iso_sock_accept(struct socket *sock, struct socket *newsock,
- 		release_sock(sk);
- 
- 		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
--		lock_sock(sk);
-+		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
- 	}
- 	remove_wait_queue(sk_sleep(sk), &wait);
- 
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index 8f116982c08a..98bee953234b 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -693,12 +693,11 @@ static int sparx5_start(struct sparx5 *sparx5)
+ 	err = -ENXIO;
+ 	if (sparx5->fdma_irq >= 0) {
+ 		if (GCB_CHIP_ID_REV_ID_GET(sparx5->chip_id) > 0)
+-			err = devm_request_threaded_irq(sparx5->dev,
+-							sparx5->fdma_irq,
+-							NULL,
+-							sparx5_fdma_handler,
+-							IRQF_ONESHOT,
+-							"sparx5-fdma", sparx5);
++			err = devm_request_irq(sparx5->dev,
++					       sparx5->fdma_irq,
++					       sparx5_fdma_handler,
++					       0,
++					       "sparx5-fdma", sparx5);
+ 		if (!err)
+ 			err = sparx5_fdma_start(sparx5);
+ 		if (err)
 -- 
 2.39.5
 
