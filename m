@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-104571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388CC9F51E2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F449F53B1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8760E1889A9C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EB70188A3C4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6151F7577;
-	Tue, 17 Dec 2024 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA6A1F8937;
+	Tue, 17 Dec 2024 17:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmPgW4QN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGAPIvFW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A71218D63A;
-	Tue, 17 Dec 2024 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6C31F7582;
+	Tue, 17 Dec 2024 17:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455456; cv=none; b=k2ZjoJ04GGRct5BbNRCBX/NqcTNgg3m2EQptQwtBgHpT+RCAarrxI8xRwRPGGZOHNJBBoU1DtMsfE8caJTiDMXO8RC9voZQ98IH73mqgnv8y9+TPwfinS1udkBjytINo8JnF+G/sLSOJLuesjMixonNO/vdLXGjW9DtQeg508Bs=
+	t=1734456477; cv=none; b=emz1Mlztu6LKV5zffsRJS2O7X7tJCxE0v4CYqle/9RE5Dg9rFt8K01bRbdqhrLZJZo8HZqCUxSOS0pwhDQ7HKd9xHNXfqlWrD8IBB6VDyGm9jpPqtQU+G/N8YPzmxicfY1tTu8fDhlV+qwlyINcO92cXkLWFKqhcUrK7eQhzvGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455456; c=relaxed/simple;
-	bh=MHyTaTMWp152/+NIPFMe+Bmn8UBdzU/mASMNDp7x1ZU=;
+	s=arc-20240116; t=1734456477; c=relaxed/simple;
+	bh=TaaSPIM91nOYMcRpHJER/lppiPfhmPBbNO+M5Yf+4Fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MK8Q3qfxm6MtIvENCrAQeAn5Wh8mNEQT8LK52RAwj/RdzR7t5taKxCFOtu8iHBH9JYXEATf2EwE/BMl1JL5zDyNvA9c1G1DO8UPzydzZg3n1kM2j63zsSrYfO3aywK1oNf8JN0SCRvrP1OAl1LJhdZtLyVZHrIh1yu+ehMhlwNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmPgW4QN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE646C4CED3;
-	Tue, 17 Dec 2024 17:10:55 +0000 (UTC)
+	 MIME-Version; b=L0o031DDkKpIXpIdNajCbf4DR0oIjVmBd8ganZuoNbSqBYo04dfgq/8asFPDC5eGSj8aUJ4pE2o0ApYqht8MPQyCRvrtiyXMxBeUNH2VZueUeE6laeRo5c699v7mRbObf0Gu/s+PI1f5cqf0JmL0a4a8JovajfqjCpr/G6Dom7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGAPIvFW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258E2C4CED3;
+	Tue, 17 Dec 2024 17:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455456;
-	bh=MHyTaTMWp152/+NIPFMe+Bmn8UBdzU/mASMNDp7x1ZU=;
+	s=korg; t=1734456477;
+	bh=TaaSPIM91nOYMcRpHJER/lppiPfhmPBbNO+M5Yf+4Fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmPgW4QNQM2NmVHJ6/gsq4t0LCYaEMPWvkmLKv1QC2RYPLgfwNJgaRDqZgRPPutmd
-	 caEucQvbLtzPUmlD4I6dCYLjgZISoO97Zdjh922ynwg0BGdAIOQNvrl4PUmXKmfLQF
-	 0/0WNjeA3hF3D6qfIgt9CbTTa5na92c2EC8mv/7o=
+	b=jGAPIvFWUWYBoxCL1fmsh5iN4DYafJArJSsjeFrRHVLw+m/whUvMOkGxbt5hfSRQ0
+	 +JFvfpN1iaDpOz6RgnGZ+oGRoHk/MSm6xxhPKd54Hb6yTvF4WHEwnk59cxzPjuyMuu
+	 5KOSuYvFFvQMAGrvco1WolE7NyMCsZQYF774VXQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 17/43] selftests: mlxsw: sharedbuffer: Remove h1 ingress test case
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 072/172] xfs: return from xfs_symlink_verify early on V4 filesystems
 Date: Tue, 17 Dec 2024 18:07:08 +0100
-Message-ID: <20241217170521.151655536@linuxfoundation.org>
+Message-ID: <20241217170549.271146465@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit cf3515c556907b4da290967a2a6cbbd9ee0ee723 ]
+commit 7f8b718c58783f3ff0810b39e2f62f50ba2549f6 upstream.
 
-The test is sending only one packet generated with mausezahn from $h1 to
-$h2. However, for some reason, it is testing for non-zero maximum occupancy
-in both the ingress pool of $h1 and $h2. The former only passes when $h2
-happens to send a packet.
+V4 symlink blocks didn't have headers, so return early if this is a V4
+filesystem.
 
-Avoid intermittent failures by removing unintentional test case
-regarding the ingress pool of $h1.
-
-Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/5b7344608d5e06f38209e48d8af8c92fa11b6742.1733414773.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.1
+Fixes: 39708c20ab5133 ("xfs: miscellaneous verifier magic value fixups")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh | 5 -----
- 1 file changed, 5 deletions(-)
+ fs/xfs/libxfs/xfs_symlink_remote.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-index 7d9e73a43a49..f6f5e2090891 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-@@ -108,11 +108,6 @@ port_pool_test()
+--- a/fs/xfs/libxfs/xfs_symlink_remote.c
++++ b/fs/xfs/libxfs/xfs_symlink_remote.c
+@@ -92,8 +92,10 @@ xfs_symlink_verify(
+ 	struct xfs_mount	*mp = bp->b_mount;
+ 	struct xfs_dsymlink_hdr	*dsl = bp->b_addr;
  
- 	devlink sb occupancy snapshot $DEVLINK_DEV
- 
--	RET=0
--	max_occ=$(sb_occ_pool_check $dl_port1 $SB_POOL_ING $exp_max_occ)
--	check_err $? "Expected iPool($SB_POOL_ING) max occupancy to be $exp_max_occ, but got $max_occ"
--	log_test "physical port's($h1) ingress pool"
--
- 	RET=0
- 	max_occ=$(sb_occ_pool_check $dl_port2 $SB_POOL_ING $exp_max_occ)
- 	check_err $? "Expected iPool($SB_POOL_ING) max occupancy to be $exp_max_occ, but got $max_occ"
--- 
-2.39.5
-
++	/* no verification of non-crc buffers */
+ 	if (!xfs_has_crc(mp))
+-		return __this_address;
++		return NULL;
++
+ 	if (!xfs_verify_magic(bp, dsl->sl_magic))
+ 		return __this_address;
+ 	if (!uuid_equal(&dsl->sl_uuid, &mp->m_sb.sb_meta_uuid))
 
 
 
