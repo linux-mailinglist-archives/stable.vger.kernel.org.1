@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-104679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3789F5273
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4039F5367
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C73188DF61
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1167C7A68EE
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2B81F758F;
-	Tue, 17 Dec 2024 17:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4BE1F869F;
+	Tue, 17 Dec 2024 17:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2E7CoHe+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp+0gqd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDB31F429B;
-	Tue, 17 Dec 2024 17:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4201F76A9;
+	Tue, 17 Dec 2024 17:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455776; cv=none; b=gR46bihx6HpYngXL8oMHlMbRMGLzgki/GAAVCDkEEh5Sye1pF0QFcLcW9yNgmDkNB6k3aAxcIT1cITHNaC8oDdfbir3axJGmU3kahfg7dk7FoOxlpnIifIy7NC0kA9ZkwHwtTgst9m21J9Ut17xn1XW3fCEwENOSrnBr+h7Fenc=
+	t=1734456481; cv=none; b=CwU0Ijcz2O8pGVDuOqHi3Ji0y6GOkpy7Z/QnkHFrBMOcoyZ1GrqMgqKD0/0pCtyMQ7V9F1Daz4ff6U+I1+uyWWq+v1xcBrCSFmp5wZ4OTN09OSqom759hC/VCXiVBZ5hABBO50wNDPj6I4gr1RCXGpG9X5P9oCfpQJVzKwhxdi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455776; c=relaxed/simple;
-	bh=Dv12o+yiKsMP9mzAWsx2ORSRX0UXz1r3anjPpjM5vXw=;
+	s=arc-20240116; t=1734456481; c=relaxed/simple;
+	bh=gBtHpZBqNwiJIfHknBkzaFLu1Qm7UTKRssRJiIDoGyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZiVqqAlmmZlwjYIdolZiBBQUpVB/RiiMwEmLMaiTr5eskmSCm5oUgLAFdjFl8v09Oud60h2VlS7ouQXEir8fGEyRP/1NH4GT8bNlAkx1TjxCeQsFhq5/HdOfigBTSOiTE6VJfw3O0oz3lHT5rjKymJydJpFYUiqY7yRUqUOJS1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2E7CoHe+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F22C4CED3;
-	Tue, 17 Dec 2024 17:16:15 +0000 (UTC)
+	 MIME-Version; b=UoUyksY+0Q63z7rkDjZ2stgkSlEv2LuNhYpXmqPUwTV1U7WnFVbtlYmbtrZQRaEVc4tsW+63jo4Q57JYZ2V7WftTCzBW7xETIzD5DDn2W/rUIYS2c2HZmlHAcaVKlL5l49hJjv/affvDQnW/ttBncOHaXlgkl6vfvBlT3Li/0Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp+0gqd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDB1C4CED3;
+	Tue, 17 Dec 2024 17:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455775;
-	bh=Dv12o+yiKsMP9mzAWsx2ORSRX0UXz1r3anjPpjM5vXw=;
+	s=korg; t=1734456480;
+	bh=gBtHpZBqNwiJIfHknBkzaFLu1Qm7UTKRssRJiIDoGyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2E7CoHe+l3LAtF8YPN7GlWHkwp5qFZkHZk3eFCh8qYARdVrq7MlTDw7dssMdf/LhT
-	 fh00RSkBNt2RZeo799xEhFCZ97zWh6EheXPFO4lBhmDETt0BMzN/GtJm6GNhJ7qw71
-	 KrOy71wkBI8DC5Nec5s5+EaFLfb/moEkO5tttvak=
+	b=Tp+0gqd1oMEvTEGx6+ECgvlwTnuJx8HQkNbDav7mW676qMVktXqZd9u2e/vEFvLEa
+	 weVMOuswVBcwts3Cyi7mT3OuaT5pqmoPhD5+NEJ138c7tZTZZP2YBSvdoAG769J4DQ
+	 Kuw6QVUqma+M73ZaO62e+ezwqYwkLhQNi6IP0g0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/76] wifi: mac80211: fix station NSS capability initialization order
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 073/172] xfs: fix scrub tracepoints when inode-rooted btrees are involved
 Date: Tue, 17 Dec 2024 18:07:09 +0100
-Message-ID: <20241217170527.476925601@linuxfoundation.org>
+Message-ID: <20241217170549.312780230@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 819e0f1e58e0ba3800cd9eb96b2a39e44e49df97 ]
+commit ffc3ea4f3c1cc83a86b7497b0c4b0aee7de5480d upstream.
 
-Station's spatial streaming capability should be initialized before
-handling VHT OMN, because the handling requires the capability information.
+Fix a minor mistakes in the scrub tracepoints that can manifest when
+inode-rooted btrees are enabled.  The existing code worked fine for bmap
+btrees, but we should tighten the code up to be less sloppy.
 
-Fixes: a8bca3e9371d ("wifi: mac80211: track capability/opmode NSS separately")
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Link: https://patch.msgid.link/20241118080722.9603-1-benjamin-jw.lin@mediatek.com
-[rewrite subject]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.7
+Fixes: 92219c292af8dd ("xfs: convert btree cursor inode-private member names")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/xfs/scrub/trace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index aa5daa2fad11..be48d3f7ffcd 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1767,6 +1767,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 						    params->eht_capa_len,
- 						    link_sta);
- 
-+	ieee80211_sta_init_nss(link_sta);
-+
- 	if (params->opmode_notif_used) {
- 		/* returned value is only needed for rc update, but the
- 		 * rc isn't initialized here yet, so ignore it
-@@ -1776,8 +1778,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 					      sband->band);
- 	}
- 
--	ieee80211_sta_init_nss(link_sta);
--
- 	return 0;
- }
- 
--- 
-2.39.5
-
+--- a/fs/xfs/scrub/trace.h
++++ b/fs/xfs/scrub/trace.h
+@@ -601,7 +601,7 @@ TRACE_EVENT(xchk_ifork_btree_op_error,
+ 	TP_fast_assign(
+ 		xfs_fsblock_t fsbno = xchk_btree_cur_fsbno(cur, level);
+ 		__entry->dev = sc->mp->m_super->s_dev;
+-		__entry->ino = sc->ip->i_ino;
++		__entry->ino = cur->bc_ino.ip->i_ino;
+ 		__entry->whichfork = cur->bc_ino.whichfork;
+ 		__entry->type = sc->sm->sm_type;
+ 		__assign_str(name);
 
 
 
