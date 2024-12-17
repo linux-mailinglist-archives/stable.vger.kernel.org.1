@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-104978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036E19F544E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:40:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB2F9F5342
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 819C018921F0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A5D8188A77C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9F21F8AE7;
-	Tue, 17 Dec 2024 17:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9F51F76CE;
+	Tue, 17 Dec 2024 17:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeN4JXvo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w5NBNxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1DD1F8AD4;
-	Tue, 17 Dec 2024 17:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0821140E38;
+	Tue, 17 Dec 2024 17:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456701; cv=none; b=jLdX7jItUSaKaxvXUBbFBtMAnwmA/wDZvxHUnS05vamVqdUZe2t8kanDVsTaCt3LMJE1m1ij9FpNgUHk4Tj1tNl7sQgVHe09+KcA4ynIHbvkF1OPoDVb0CG7b+FBNgs5uQ+Bqf5WLDxyDNd/sMt7vi98ucEQmsxEMTL4d7lAJrc=
+	t=1734456199; cv=none; b=aTGo9ZDaEDdPE8YbUaD/0eiANbdQneL6QL7o9Tt4Ieuf/PcBnZNMwF397dduvLZVolQ0C5YlFo1G/oqEejKxaPCtGFp/UWOYYgPGsmG6iXh/aHiBhToyaKd/ePy0v84SVnz0V5aG50RFqPF9Y0caXQ5I/2jKKVZdwWRns0WzVwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456701; c=relaxed/simple;
-	bh=K5z6YgM4UDap0tTYfGcTIe3/mbKLfa6NrGs6xnkVKdA=;
+	s=arc-20240116; t=1734456199; c=relaxed/simple;
+	bh=aJDrVryTonbKKRowdZt3r785ehrpR1NLhZz9ygbYFM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgAJRrVimmi2LyfyIV2+huB+IGK3H3+UBM2Nxu8+tFsRQRoayKxd8Wo2zyZ5iDdB1CzSBpj8mKDlY5Z+4GMXBdmwb3oEg9Fhe5YmqBNR+2CzCgnZ/ZbCYNfV34uXI1U9kZp+uxoTwuvWbVpXMxjtTiA//EGIALLPeokEsBBO8f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeN4JXvo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E377C4CED3;
-	Tue, 17 Dec 2024 17:31:40 +0000 (UTC)
+	 MIME-Version; b=lOVIR35bGE1PuvSpcmwDpWlyvEuJda2KsCviGiapfsJtfu7Wy9YllYwR0wccaed1QEvHSfGRy9fW9cPT6/GLblIi8BEdSRKka1kv0j57Jw9FvwByE99FWCd5IbmYY9O+Pmq+dRCjGrLCvecvKS5jjHJ+vMCv01/fXL5ccKVwZW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w5NBNxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F09C4CED3;
+	Tue, 17 Dec 2024 17:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456701;
-	bh=K5z6YgM4UDap0tTYfGcTIe3/mbKLfa6NrGs6xnkVKdA=;
+	s=korg; t=1734456199;
+	bh=aJDrVryTonbKKRowdZt3r785ehrpR1NLhZz9ygbYFM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeN4JXvobINuM9g3M2ZHv4OhS5HTNNgF0KXcORlF+GDFzLWliNl+bNWPSfOgfqkX9
-	 3zAG9znBuJFYXoy9YeqX+N7AWVPbE5ctCJ8yJmKDG1CGSJQ9sssYJn/PGihSADmpef
-	 0RWWb4Zc/8laYLFk59aCZ7s5j55nGr0pNpc8xFqc=
+	b=0w5NBNxMgrBsXlsqkSN9ZV+aczi/5jCRDUQGORGsMBzhFfEfWOmNNlyR7/Z+HrF+e
+	 zuXf9KVQ1JxAB28xQWl3OcUYPDNyCh84eIn0gQ9Z9pcW2eLx+HypllW4PZ/8cCtvLG
+	 V5vdp3e38zeXfMp0+1967xgMKs+gH9+eW1y516w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Ottens <martin.ottens@fau.de>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 139/172] net/sched: netem: account for backlog updates from child qdisc
+Subject: [PATCH 6.6 091/109] net: renesas: rswitch: fix initial MPIC register setting
 Date: Tue, 17 Dec 2024 18:08:15 +0100
-Message-ID: <20241217170552.103933128@linuxfoundation.org>
+Message-ID: <20241217170537.183918933@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Ottens <martin.ottens@fau.de>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit f8d4bc455047cf3903cd6f85f49978987dbb3027 ]
+[ Upstream commit fb9e6039c325cc205a368046dc03c56c87df2310 ]
 
-In general, 'qlen' of any classful qdisc should keep track of the
-number of packets that the qdisc itself and all of its children holds.
-In case of netem, 'qlen' only accounts for the packets in its internal
-tfifo. When netem is used with a child qdisc, the child qdisc can use
-'qdisc_tree_reduce_backlog' to inform its parent, netem, about created
-or dropped SKBs. This function updates 'qlen' and the backlog statistics
-of netem, but netem does not account for changes made by a child qdisc.
-'qlen' then indicates the wrong number of packets in the tfifo.
-If a child qdisc creates new SKBs during enqueue and informs its parent
-about this, netem's 'qlen' value is increased. When netem dequeues the
-newly created SKBs from the child, the 'qlen' in netem is not updated.
-If 'qlen' reaches the configured sch->limit, the enqueue function stops
-working, even though the tfifo is not full.
+MPIC.PIS must be set per phy interface type.
+MPIC.LSC must be set per speed.
 
-Reproduce the bug:
-Ensure that the sender machine has GSO enabled. Configure netem as root
-qdisc and tbf as its child on the outgoing interface of the machine
-as follows:
-$ tc qdisc add dev <oif> root handle 1: netem delay 100ms limit 100
-$ tc qdisc add dev <oif> parent 1:0 tbf rate 50Mbit burst 1542 latency 50ms
+Do that strictly per datasheet, instead of hardcoding MPIC.PIS to GMII.
 
-Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
-client on the machine. Check the qdisc statistics:
-$ tc -s qdisc show dev <oif>
-
-Statistics after 10s of iPerf3 TCP test before the fix (note that
-netem's backlog > limit, netem stopped accepting packets):
-qdisc netem 1: root refcnt 2 limit 1000 delay 100ms
- Sent 2767766 bytes 1848 pkt (dropped 652, overlimits 0 requeues 0)
- backlog 4294528236b 1155p requeues 0
-qdisc tbf 10: parent 1:1 rate 50Mbit burst 1537b lat 50ms
- Sent 2767766 bytes 1848 pkt (dropped 327, overlimits 7601 requeues 0)
- backlog 0b 0p requeues 0
-
-Statistics after the fix:
-qdisc netem 1: root refcnt 2 limit 1000 delay 100ms
- Sent 37766372 bytes 24974 pkt (dropped 9, overlimits 0 requeues 0)
- backlog 0b 0p requeues 0
-qdisc tbf 10: parent 1:1 rate 50Mbit burst 1537b lat 50ms
- Sent 37766372 bytes 24974 pkt (dropped 327, overlimits 96017 requeues 0)
- backlog 0b 0p requeues 0
-
-tbf segments the GSO SKBs (tbf_segment) and updates the netem's 'qlen'.
-The interface fully stops transferring packets and "locks". In this case,
-the child qdisc and tfifo are empty, but 'qlen' indicates the tfifo is at
-its limit and no more packets are accepted.
-
-This patch adds a counter for the entries in the tfifo. Netem's 'qlen' is
-only decreased when a packet is returned by its dequeue function, and not
-during enqueuing into the child qdisc. External updates to 'qlen' are thus
-accounted for and only the behavior of the backlog statistics changes. As
-in other qdiscs, 'qlen' then keeps track of  how many packets are held in
-netem and all of its children. As before, sch->limit remains as the
-maximum number of packets in the tfifo. The same applies to netem's
-backlog statistics.
-
-Fixes: 50612537e9ab ("netem: fix classful handling")
-Signed-off-by: Martin Ottens <martin.ottens@fau.de>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20241210131412.1837202-1-martin.ottens@fau.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20241211053012.368914-1-nikita.yoush@cogentembedded.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.c | 27 ++++++++++++++++++++------
+ drivers/net/ethernet/renesas/rswitch.h | 14 ++++++-------
+ 2 files changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 39382ee1e331..3b519adc0125 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -78,6 +78,8 @@ struct netem_sched_data {
- 	struct sk_buff	*t_head;
- 	struct sk_buff	*t_tail;
+diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
+index 4dd218b6f308..3665258cec31 100644
+--- a/drivers/net/ethernet/renesas/rswitch.c
++++ b/drivers/net/ethernet/renesas/rswitch.c
+@@ -1047,25 +1047,40 @@ static int rswitch_etha_wait_link_verification(struct rswitch_etha *etha)
  
-+	u32 t_len;
+ static void rswitch_rmac_setting(struct rswitch_etha *etha, const u8 *mac)
+ {
+-	u32 val;
++	u32 pis, lsc;
+ 
+ 	rswitch_etha_write_mac_address(etha, mac);
+ 
++	switch (etha->phy_interface) {
++	case PHY_INTERFACE_MODE_SGMII:
++		pis = MPIC_PIS_GMII;
++		break;
++	case PHY_INTERFACE_MODE_USXGMII:
++	case PHY_INTERFACE_MODE_5GBASER:
++		pis = MPIC_PIS_XGMII;
++		break;
++	default:
++		pis = FIELD_GET(MPIC_PIS, ioread32(etha->addr + MPIC));
++		break;
++	}
 +
- 	/* optional qdisc for classful handling (NULL at netem init) */
- 	struct Qdisc	*qdisc;
+ 	switch (etha->speed) {
+ 	case 100:
+-		val = MPIC_LSC_100M;
++		lsc = MPIC_LSC_100M;
+ 		break;
+ 	case 1000:
+-		val = MPIC_LSC_1G;
++		lsc = MPIC_LSC_1G;
+ 		break;
+ 	case 2500:
+-		val = MPIC_LSC_2_5G;
++		lsc = MPIC_LSC_2_5G;
+ 		break;
+ 	default:
+-		return;
++		lsc = FIELD_GET(MPIC_LSC, ioread32(etha->addr + MPIC));
++		break;
+ 	}
  
-@@ -382,6 +384,7 @@ static void tfifo_reset(struct Qdisc *sch)
- 	rtnl_kfree_skbs(q->t_head, q->t_tail);
- 	q->t_head = NULL;
- 	q->t_tail = NULL;
-+	q->t_len = 0;
+-	iowrite32(MPIC_PIS_GMII | val, etha->addr + MPIC);
++	rswitch_modify(etha->addr, MPIC, MPIC_PIS | MPIC_LSC,
++		       FIELD_PREP(MPIC_PIS, pis) | FIELD_PREP(MPIC_LSC, lsc));
  }
  
- static void tfifo_enqueue(struct sk_buff *nskb, struct Qdisc *sch)
-@@ -411,6 +414,7 @@ static void tfifo_enqueue(struct sk_buff *nskb, struct Qdisc *sch)
- 		rb_link_node(&nskb->rbnode, parent, p);
- 		rb_insert_color(&nskb->rbnode, &q->t_root);
- 	}
-+	q->t_len++;
- 	sch->q.qlen++;
- }
+ static void rswitch_etha_enable_mii(struct rswitch_etha *etha)
+diff --git a/drivers/net/ethernet/renesas/rswitch.h b/drivers/net/ethernet/renesas/rswitch.h
+index 327873b637d7..f2d1cd47187d 100644
+--- a/drivers/net/ethernet/renesas/rswitch.h
++++ b/drivers/net/ethernet/renesas/rswitch.h
+@@ -723,13 +723,13 @@ enum rswitch_etha_mode {
  
-@@ -517,7 +521,7 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			1<<get_random_u32_below(8);
- 	}
+ #define EAVCC_VEM_SC_TAG	(0x3 << 16)
  
--	if (unlikely(sch->q.qlen >= sch->limit)) {
-+	if (unlikely(q->t_len >= sch->limit)) {
- 		/* re-link segs, so that qdisc_drop_all() frees them all */
- 		skb->next = segs;
- 		qdisc_drop_all(skb, sch, to_free);
-@@ -701,8 +705,8 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
- tfifo_dequeue:
- 	skb = __qdisc_dequeue_head(&sch->q);
- 	if (skb) {
--		qdisc_qstats_backlog_dec(sch, skb);
- deliver:
-+		qdisc_qstats_backlog_dec(sch, skb);
- 		qdisc_bstats_update(sch, skb);
- 		return skb;
- 	}
-@@ -718,8 +722,7 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+-#define MPIC_PIS_MII		0x00
+-#define MPIC_PIS_GMII		0x02
+-#define MPIC_PIS_XGMII		0x04
+-#define MPIC_LSC_SHIFT		3
+-#define MPIC_LSC_100M		(1 << MPIC_LSC_SHIFT)
+-#define MPIC_LSC_1G		(2 << MPIC_LSC_SHIFT)
+-#define MPIC_LSC_2_5G		(3 << MPIC_LSC_SHIFT)
++#define MPIC_PIS		GENMASK(2, 0)
++#define MPIC_PIS_GMII		2
++#define MPIC_PIS_XGMII		4
++#define MPIC_LSC		GENMASK(5, 3)
++#define MPIC_LSC_100M		1
++#define MPIC_LSC_1G		2
++#define MPIC_LSC_2_5G		3
  
- 		if (time_to_send <= now && q->slot.slot_next <= now) {
- 			netem_erase_head(q, skb);
--			sch->q.qlen--;
--			qdisc_qstats_backlog_dec(sch, skb);
-+			q->t_len--;
- 			skb->next = NULL;
- 			skb->prev = NULL;
- 			/* skb->dev shares skb->rbnode area,
-@@ -746,16 +749,21 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
- 					if (net_xmit_drop_count(err))
- 						qdisc_qstats_drop(sch);
- 					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
-+					sch->qstats.backlog -= pkt_len;
-+					sch->q.qlen--;
- 				}
- 				goto tfifo_dequeue;
- 			}
-+			sch->q.qlen--;
- 			goto deliver;
- 		}
- 
- 		if (q->qdisc) {
- 			skb = q->qdisc->ops->dequeue(q->qdisc);
--			if (skb)
-+			if (skb) {
-+				sch->q.qlen--;
- 				goto deliver;
-+			}
- 		}
- 
- 		qdisc_watchdog_schedule_ns(&q->watchdog,
-@@ -765,8 +773,10 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
- 
- 	if (q->qdisc) {
- 		skb = q->qdisc->ops->dequeue(q->qdisc);
--		if (skb)
-+		if (skb) {
-+			sch->q.qlen--;
- 			goto deliver;
-+		}
- 	}
- 	return NULL;
- }
+ #define MDIO_READ_C45		0x03
+ #define MDIO_WRITE_C45		0x01
 -- 
 2.39.5
 
