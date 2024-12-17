@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD429F539B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AAA9F522F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:16:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F00377A585D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 745E016B106
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CD61F8913;
-	Tue, 17 Dec 2024 17:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1ED1F8ADA;
+	Tue, 17 Dec 2024 17:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCBDp33P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsHs6fFf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3891F76C3;
-	Tue, 17 Dec 2024 17:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971EC1F7582;
+	Tue, 17 Dec 2024 17:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456616; cv=none; b=R02WY11RAqf65bVq4k+2P5jHE4x2fPuYWBupI7h1VTNNbDzHmkDWRGzrkCANyF2v96TwwtfCAafTAGa+dkPrI/yUxk/Kj+vtAX8MEDZn0BhhvfyhDAyo2TSSsoVw7WtR3uT5O4/puzOl/lKvdpvkQU/GoODT53KrYu+mmG0ubiw=
+	t=1734455620; cv=none; b=Olj6tDtmKSxrhuUvlKG7T5gtm9nC6brFaF0Qn+Ta7LvUbZJPvcRpnDRggqu6DGpdDzr8aH6S+BgHPgq1vtAWzotuf5jfIW9+jTX6ztPN4YZ8ArSIzKPOO0dS1RxjU2Fw9O2EFp05dJI918Mnb20bpS3HFPoGQPIqGv0E2/uTTpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456616; c=relaxed/simple;
-	bh=hV2vwkCqK/5jiJQQP37Nj4byzqrhkuOyLYqzhRLkr3s=;
+	s=arc-20240116; t=1734455620; c=relaxed/simple;
+	bh=tB7a9Q5Sn0mSArZ+7BPfcJMc8dDHSFGVJoDXNwbYPaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrF4O+yUCWaUeCKBO3n/71Gcp0WyyXs1wDjniYf8CWC+iuZfxMuGit9ohFD7JaPsva5TREZ6ft2SJ5MPtJNpdoxq99YVozdOZSQzn7clXq95jzFUhBaZic4mCEvIy86mVP1sSMIuIMPHHHpcvo/jhta9QkSfHC22PcTSzxG0SuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCBDp33P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C02C4CEDD;
-	Tue, 17 Dec 2024 17:30:15 +0000 (UTC)
+	 MIME-Version; b=WjIVTbzAjiZpmAeBDdm4cxw2fqUntX1iF9mw12oqlmYJzHB6g5csqke/0MiM2NAVsjBdbewY101xpzhA7pnrnWDf51tiaD4J98Xq4Av0Fles8yuO3kW4fF/+IopBC6MfG7gQfBVZbGTXRG0r03sGEJF4HQ4RxkA3Hhd5Kb1Zoso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsHs6fFf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D3FC4CED3;
+	Tue, 17 Dec 2024 17:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456616;
-	bh=hV2vwkCqK/5jiJQQP37Nj4byzqrhkuOyLYqzhRLkr3s=;
+	s=korg; t=1734455620;
+	bh=tB7a9Q5Sn0mSArZ+7BPfcJMc8dDHSFGVJoDXNwbYPaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCBDp33PGMwF9ZQ65JlqzWYdMrLraaTDrG6S2CEKvCVVoMBqEQWycSrUU2+jwg6zK
-	 0p/nbYdstJwr2QC5IBL0c2VdsCw0Wd9AoY1BhVuEexfBEMvOu6tWYg2dMr3ZlHnp+q
-	 +i+5kQws9MvTnkkm9r/5iE1DosETSJ1L1aJ1Nik4=
+	b=gsHs6fFfj5v+Dob4SVm/019FtmCuh4aXZxPwaX1mdaNG68FNVmiPEqQq8LzXgunvu
+	 CU2pYLyDcJiTIPBNFaYHvJh0TOnaYRaa0LP6S5GDbDJ8zWsLm29+dPWLWm/a8utm3a
+	 ymAyHxMdTVVmDgfCDpM7pR5/RspZXTLUtbtLZ4XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoyu Li <lihaoyu499@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/172] wifi: mac80211: init cnt before accessing elem in ieee80211_copy_mbssid_beacon
-Date: Tue, 17 Dec 2024 18:07:20 +0100
-Message-ID: <20241217170549.773340400@linuxfoundation.org>
+Subject: [PATCH 5.15 28/51] net: sparx5: fix FDMA performance issue
+Date: Tue, 17 Dec 2024 18:07:21 +0100
+Message-ID: <20241217170521.444917128@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoyu Li <lihaoyu499@gmail.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit 496db69fd860570145f7c266b31f3af85fca5b00 ]
+[ Upstream commit f004f2e535e2b66ccbf5ac35f8eaadeac70ad7b7 ]
 
-With the new __counted_by annocation in cfg80211_mbssid_elems,
-the "cnt" struct member must be set before accessing the "elem"
-array. Failing to do so will trigger a runtime warning when enabling
-CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE.
+The FDMA handler is responsible for scheduling a NAPI poll, which will
+eventually fetch RX packets from the FDMA queue. Currently, the FDMA
+handler is run in a threaded context. For some reason, this kills
+performance.  Admittedly, I did not do a thorough investigation to see
+exactly what causes the issue, however, I noticed that in the other
+driver utilizing the same FDMA engine, we run the FDMA handler in hard
+IRQ context.
 
-Fixes: c14679d7005a ("wifi: cfg80211: Annotate struct cfg80211_mbssid_elems with __counted_by")
-Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
-Link: https://patch.msgid.link/20241123172500.311853-1-lihaoyu499@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix this performance issue, by  running the FDMA handler in hard IRQ
+context, not deferring any work to a thread.
+
+Prior to this change, the RX UDP performance was:
+
+Interval           Transfer     Bitrate         Jitter
+0.00-10.20  sec    44.6 MBytes  36.7 Mbits/sec  0.027 ms
+
+After this change, the rx UDP performance is:
+
+Interval           Transfer     Bitrate         Jitter
+0.00-9.12   sec    1.01 GBytes  953 Mbits/sec   0.020 ms
+
+Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 6dfc61a9acd4..242b718b1cd9 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1061,13 +1061,13 @@ ieee80211_copy_mbssid_beacon(u8 *pos, struct cfg80211_mbssid_elems *dst,
- {
- 	int i, offset = 0;
- 
-+	dst->cnt = src->cnt;
- 	for (i = 0; i < src->cnt; i++) {
- 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
- 		dst->elem[i].len = src->elem[i].len;
- 		dst->elem[i].data = pos + offset;
- 		offset += dst->elem[i].len;
- 	}
--	dst->cnt = src->cnt;
- 
- 	return offset;
- }
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index 174d89ee6374..ccfad6fba5b4 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -647,12 +647,11 @@ static int sparx5_start(struct sparx5 *sparx5)
+ 	err = -ENXIO;
+ 	if (sparx5->fdma_irq >= 0) {
+ 		if (GCB_CHIP_ID_REV_ID_GET(sparx5->chip_id) > 0)
+-			err = devm_request_threaded_irq(sparx5->dev,
+-							sparx5->fdma_irq,
+-							NULL,
+-							sparx5_fdma_handler,
+-							IRQF_ONESHOT,
+-							"sparx5-fdma", sparx5);
++			err = devm_request_irq(sparx5->dev,
++					       sparx5->fdma_irq,
++					       sparx5_fdma_handler,
++					       0,
++					       "sparx5-fdma", sparx5);
+ 		if (!err)
+ 			err = sparx5_fdma_start(sparx5);
+ 		if (err)
 -- 
 2.39.5
 
