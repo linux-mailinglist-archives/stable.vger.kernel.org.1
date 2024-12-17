@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-104895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8805F9F539E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F139F52BF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6504016EC57
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86CCC16867D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7A21F76B1;
-	Tue, 17 Dec 2024 17:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1894C1F76CE;
+	Tue, 17 Dec 2024 17:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/Cq60Uu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOwnL3nT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8B18615A;
-	Tue, 17 Dec 2024 17:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95321F7577;
+	Tue, 17 Dec 2024 17:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456430; cv=none; b=tLx3sWP9ofCSewh/QOUYZ/Y0K9TR0atGAQuzcUr3XJfRI9e+1r/INeVvJmAgXRredZGwu8DFigWhn9HXM+ckOKkEInyH4OhVaXuc3GhO68yASEVfsvGasCjGatDpXSyk8OcyfRy6C9Mf7Vl5bH67awn/h0zG9JfhCI4TbZLCqzg=
+	t=1734455949; cv=none; b=qwoSV4E9ASPlLGbZfjDuZdcRdFsyWYd+hj38F8AWd8ARsYLuSqqQY1QdKV73AD6CxVzqwulDsRK/RxG5wvwB2iRB6/D96IDVaH34BZIZFUKclODE+lGPT8UYLTBfgoSTj1vz28VkvV43hd9rF5kBznVH3wzub5FIx6xcQPvloQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456430; c=relaxed/simple;
-	bh=4zK36/APan3GGXaMDrlRt1vezDSIhPFxrtENWn42h+0=;
+	s=arc-20240116; t=1734455949; c=relaxed/simple;
+	bh=SZ35sFwWeAx5QqGV6l47DNMlB0Rv9yUkg2I1Kw+skeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hIg8S0Wf+fHWg11BQrPX3lGAo/X0nfgwd6icCHYKOo191ds/DWHxBwMhvNwapPicfWW1L47cui8gtJjMF272adt/ZUTqgAD3rA+Fpe4UCLv8ef+w1iWQzLDbJsTM/5Awy6fQcjIQ562HLWYHSYDVKfbwiVLUIPBuVVn/Y88f6Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/Cq60Uu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBE2C4CED3;
-	Tue, 17 Dec 2024 17:27:09 +0000 (UTC)
+	 MIME-Version; b=bPRwksI/DC+3pB2dMHPGH/VGeKKitigGGecKT+ytkOcGo7m6llhA1wFa8S1cbjXo5EUsi3j/50nGDoA2lirk+NCWKppcZtQgFAXS1lombqWJCQ0KSR8rDZp2Rnp/SXB1AndUNleRJMWJ1Kv2CnZMA7KkosDaa3kkBjFHwclnK0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOwnL3nT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECBAC4CED3;
+	Tue, 17 Dec 2024 17:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456430;
-	bh=4zK36/APan3GGXaMDrlRt1vezDSIhPFxrtENWn42h+0=;
+	s=korg; t=1734455949;
+	bh=SZ35sFwWeAx5QqGV6l47DNMlB0Rv9yUkg2I1Kw+skeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/Cq60UuCGjuJ/zDAuQlKBupiyuNnQZubvPdXt9sdE6Fe2PsmBEPk6XFXwIR2YX3r
-	 VUBSUBmwPpzGvzSleKxOCyhSwce81PZ7Tb8BA7Zkz/8jHjvd0+odVEETNk7cGzuIyV
-	 OTj5gzlnHdeKyg4z/1GDzfPTB7ud7YnHffYyghJE=
+	b=sOwnL3nTxTZ9tPaPNIqMBSk4FjZ5GxQN42kNL4bkrJZMgs7lMNRCL3EHe6D4wyMdP
+	 lox/DFkNybd7zySnGMxoybTkogL016RARRsNt0bKa7vDaXFF22sz+aH0Vd/vR/MTRl
+	 5ErRjsqJc4ekAPe/Z4InOiyrTSyOD+6ARx9kXfzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.12 058/172] drm/i915: Fix memory leak by correcting cache object name in error handler
+	stable <stable@kernel.org>,
+	Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+Subject: [PATCH 6.6 010/109] usb: host: max3421-hcd: Correctly abort a USB request.
 Date: Tue, 17 Dec 2024 18:06:54 +0100
-Message-ID: <20241217170548.679644757@linuxfoundation.org>
+Message-ID: <20241217170533.782226769@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+From: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
 
-commit 2828e5808bcd5aae7fdcd169cac1efa2701fa2dd upstream.
+commit 0d2ada05227881f3d0722ca2364e3f7a860a301f upstream.
 
-Replace "slab_priorities" with "slab_dependencies" in the error handler
-to avoid memory leak.
+If the current USB request was aborted, the spi thread would not respond
+to any further requests. This is because the "curr_urb" pointer would
+not become NULL, so no further requests would be taken off the queue.
+The solution here is to set the "urb_done" flag, as this will cause the
+correct handling of the URB. Also clear interrupts that should only be
+expected if an URB is in progress.
 
-Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241127201042.29620-1-jiashengjiangcool@gmail.com
-(cherry picked from commit 9bc5e7dc694d3112bbf0fa4c46ef0fa0f114937a)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Fixes: 2d53139f3162 ("Add support for using a MAX3421E chip as a host driver.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+Link: https://lore.kernel.org/r/20241124221430.1106080-1-mark.tomlinson@alliedtelesis.co.nz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_scheduler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/max3421-hcd.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/i915/i915_scheduler.c
-+++ b/drivers/gpu/drm/i915/i915_scheduler.c
-@@ -506,6 +506,6 @@ int __init i915_scheduler_module_init(vo
- 	return 0;
- 
- err_priorities:
--	kmem_cache_destroy(slab_priorities);
-+	kmem_cache_destroy(slab_dependencies);
- 	return -ENOMEM;
- }
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -779,11 +779,17 @@ max3421_check_unlink(struct usb_hcd *hcd
+ 				retval = 1;
+ 				dev_dbg(&spi->dev, "%s: URB %p unlinked=%d",
+ 					__func__, urb, urb->unlinked);
+-				usb_hcd_unlink_urb_from_ep(hcd, urb);
+-				spin_unlock_irqrestore(&max3421_hcd->lock,
+-						       flags);
+-				usb_hcd_giveback_urb(hcd, urb, 0);
+-				spin_lock_irqsave(&max3421_hcd->lock, flags);
++				if (urb == max3421_hcd->curr_urb) {
++					max3421_hcd->urb_done = 1;
++					max3421_hcd->hien &= ~(BIT(MAX3421_HI_HXFRDN_BIT) |
++							       BIT(MAX3421_HI_RCVDAV_BIT));
++				} else {
++					usb_hcd_unlink_urb_from_ep(hcd, urb);
++					spin_unlock_irqrestore(&max3421_hcd->lock,
++							       flags);
++					usb_hcd_giveback_urb(hcd, urb, 0);
++					spin_lock_irqsave(&max3421_hcd->lock, flags);
++				}
+ 			}
+ 		}
+ 	}
 
 
 
