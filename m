@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-104954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF179F53F3
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:34:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B719F51CA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCF2F173E95
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D1BD16328B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE51E1F6661;
-	Tue, 17 Dec 2024 17:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82F81F8660;
+	Tue, 17 Dec 2024 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVS3sY9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIQR1Ydl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0A71448DC;
-	Tue, 17 Dec 2024 17:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DB41F75BC;
+	Tue, 17 Dec 2024 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456628; cv=none; b=XSnr6jPrI7UP8TW7LLVKP3hZ/Dqx6g8adcAxuZbupDB9NKA46Re81lIF/Oj3RzysSgE9hGn2sYiVTVThbwyEzO84G4283RQGocmie0Yqz9LCU77uotfdHv4BGgW1e+AQYUMWYMWUmkjb5gIlux9/jntd0tDLsuVriX+z9acQ/68=
+	t=1734455429; cv=none; b=GuA7M9ySgl0iZLxhEp0JCCFrwiK4PSGqU9q/vpFMVtE6q3bJo0ABt5UsPDaYmO2MQSrznlksU1+iRZjp6ZjfIoRYSWZ7I0LSc3mNoYBnxCgwsBlU9II2cN35ApdF9XlF3/y0mOtOOCelqW+KYTAlfAYVXAM15vEAB3/OyhaO0Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456628; c=relaxed/simple;
-	bh=/zUQp37d/BTjwZgtDb48t3e0QqDpWeyAqpUh6iVgx/4=;
+	s=arc-20240116; t=1734455429; c=relaxed/simple;
+	bh=jB7QXOWmYp7jilID6xwlBWou2uSVSesqOaKpAv/gGTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWbn0Gb9Fh0T7161GR6wcAz+RjuJreEBGpVRDVpQTnTamnKCxpirmmEOnwT/qHsia7tv+DJ2aTnQwwfTt5weA8QQoEMmOd+NbWeoJWgzQ4DV9hSMPITy29jULgUDqze1pw/fzLEQ/PoNu+GlhyuKSaYLOWjMInRWfa2rpjbGuH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVS3sY9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54405C4CED3;
-	Tue, 17 Dec 2024 17:30:26 +0000 (UTC)
+	 MIME-Version; b=GqB9C1zX4J0/bbsrcS/MiG6QDVUpxQkSqaiwWewKTogXFswuYiJFkuFRTUALng4V88K2uHqdCW8kD/zWtENEIKoYGMNTjW5uaQg9FiaN3o8BPMNSkfmmaCkOd1PtC920UWJTmXsyyppMd0ogypB/fxUBMRi2mwA+ZVo164GP674=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIQR1Ydl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB44C4CED7;
+	Tue, 17 Dec 2024 17:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456628;
-	bh=/zUQp37d/BTjwZgtDb48t3e0QqDpWeyAqpUh6iVgx/4=;
+	s=korg; t=1734455429;
+	bh=jB7QXOWmYp7jilID6xwlBWou2uSVSesqOaKpAv/gGTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVS3sY9KHD42Y4800SAMHvnyyLJlMiK9Sh77DsX2IrkzIMsqbaIHzgiBscJ3CMMVy
-	 cA0byudFHh+sdNs3VwUBCcyLsxo7k8N4EWNLJK/D4GF6cri1nUAX+w5TKjPhZM7Ejh
-	 MLNpIxQLYhVK5A3QBf2LKadJ2flLJlY83FjXgZj0=
+	b=TIQR1YdlWZuB1vOUyIQXTMIfWffwYiuZX67zD9zHh5fopDYbsXs3FgquIVesOZvKl
+	 NZfeDu1FdRcygPZ331TtF3CCmSFaAmIcpwtkX21Umbdwpztj1b6n5cGRvUpqEq4/3w
+	 4xZ2n7dYaBpPKIzfQu2MR3qDEtPnNEgPmB80GHEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.12 077/172] bpf: Fix theoretical prog_array UAF in __uprobe_perf_func()
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 15/24] qca_spi: Make driver probing reliable
 Date: Tue, 17 Dec 2024 18:07:13 +0100
-Message-ID: <20241217170549.482299462@linuxfoundation.org>
+Message-ID: <20241217170519.631370817@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 7d0d673627e20cfa3b21a829a896ce03b58a4f1c upstream.
+[ Upstream commit becc6399ce3b724cffe9ccb7ef0bff440bb1b62b ]
 
-Currently, the pointer stored in call->prog_array is loaded in
-__uprobe_perf_func(), with no RCU annotation and no immediately visible
-RCU protection, so it looks as if the loaded pointer can immediately be
-dangling.
-Later, bpf_prog_run_array_uprobe() starts a RCU-trace read-side critical
-section, but this is too late. It then uses rcu_dereference_check(), but
-this use of rcu_dereference_check() does not actually dereference anything.
+The module parameter qcaspi_pluggable controls if QCA7000 signature
+should be checked at driver probe (current default) or not. Unfortunately
+this could fail in case the chip is temporary in reset, which isn't under
+total control by the Linux host. So disable this check per default
+in order to avoid unexpected probe failures.
 
-Fix it by aligning the semantics to bpf_prog_run_array(): Let the caller
-provide rcu_read_lock_trace() protection and then load call->prog_array
-with rcu_dereference_check().
-
-This issue seems to be theoretical: I don't know of any way to reach this
-code without having handle_swbp() further up the stack, which is already
-holding a rcu_read_lock_trace() lock, so where we take
-rcu_read_lock_trace() in __uprobe_perf_func()/bpf_prog_run_array_uprobe()
-doesn't actually have any effect.
-
-Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241210-bpf-fix-uprobe-uaf-v4-1-5fc8959b2b74@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20241206184643.123399-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h         |   13 +++++--------
- kernel/trace/trace_uprobe.c |    6 +++++-
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2157,26 +2157,25 @@ bpf_prog_run_array(const struct bpf_prog
-  * rcu-protected dynamically sized maps.
-  */
- static __always_inline u32
--bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array_rcu,
-+bpf_prog_run_array_uprobe(const struct bpf_prog_array *array,
- 			  const void *ctx, bpf_prog_run_fn run_prog)
- {
- 	const struct bpf_prog_array_item *item;
- 	const struct bpf_prog *prog;
--	const struct bpf_prog_array *array;
- 	struct bpf_run_ctx *old_run_ctx;
- 	struct bpf_trace_run_ctx run_ctx;
- 	u32 ret = 1;
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index ff477e27a3fe..f051086074a9 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -65,7 +65,7 @@ MODULE_PARM_DESC(qcaspi_burst_len, "Number of data bytes per burst. Use 1-5000."
  
- 	might_fault();
-+	RCU_LOCKDEP_WARN(!rcu_read_lock_trace_held(), "no rcu lock held");
-+
-+	if (unlikely(!array))
-+		return ret;
+ #define QCASPI_PLUGGABLE_MIN 0
+ #define QCASPI_PLUGGABLE_MAX 1
+-static int qcaspi_pluggable = QCASPI_PLUGGABLE_MIN;
++static int qcaspi_pluggable = QCASPI_PLUGGABLE_MAX;
+ module_param(qcaspi_pluggable, int, 0);
+ MODULE_PARM_DESC(qcaspi_pluggable, "Pluggable SPI connection (yes/no).");
  
--	rcu_read_lock_trace();
- 	migrate_disable();
- 
- 	run_ctx.is_uprobe = true;
- 
--	array = rcu_dereference_check(array_rcu, rcu_read_lock_trace_held());
--	if (unlikely(!array))
--		goto out;
- 	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
- 	item = &array->items[0];
- 	while ((prog = READ_ONCE(item->prog))) {
-@@ -2191,9 +2190,7 @@ bpf_prog_run_array_uprobe(const struct b
- 			rcu_read_unlock();
- 	}
- 	bpf_reset_run_ctx(old_run_ctx);
--out:
- 	migrate_enable();
--	rcu_read_unlock_trace();
- 	return ret;
- }
- 
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1400,9 +1400,13 @@ static void __uprobe_perf_func(struct tr
- 
- #ifdef CONFIG_BPF_EVENTS
- 	if (bpf_prog_array_valid(call)) {
-+		const struct bpf_prog_array *array;
- 		u32 ret;
- 
--		ret = bpf_prog_run_array_uprobe(call->prog_array, regs, bpf_prog_run);
-+		rcu_read_lock_trace();
-+		array = rcu_dereference_check(call->prog_array, rcu_read_lock_trace_held());
-+		ret = bpf_prog_run_array_uprobe(array, regs, bpf_prog_run);
-+		rcu_read_unlock_trace();
- 		if (!ret)
- 			return;
- 	}
+-- 
+2.39.5
+
 
 
 
