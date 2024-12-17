@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC259F523F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E13C79F527C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ABA5189129A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F026F16D6A5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12971F76BE;
-	Tue, 17 Dec 2024 17:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8E91DE2AC;
+	Tue, 17 Dec 2024 17:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ufBleuU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M49gNQd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3B01F7562;
-	Tue, 17 Dec 2024 17:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3171F7568;
+	Tue, 17 Dec 2024 17:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455629; cv=none; b=PNEFDdbgO3UvEm1qO0LEKeFOfuUTcgYROWeTzYqzLvhTeRDfT/XcDcmMq1ys9YaEsr9AoLPPewdKJTOLF+whoa8J97xdJ+ClDfZGIq0GKeBi63DbFWTA9BZ5qIuWF+3y3mZN2UkglofbkvM2qDVjiP6gLDJ2ci5Mllh+pup49q4=
+	t=1734455823; cv=none; b=rh8ItI5/D5cKBzaajLxYS+680BLGwyFr5g7l3iJXPBadGhG2Yfh0kjoN9MRGY11+9+TbH+2zGzQ+JrmeCVFNNuEWca/drTIMNV6zs0Deg6Qm5m59o5HJrZ9TBR+/YbKbm26QB5slHelVyWGTsNqvu9Dycfs8rIF4JguaDp7++mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455629; c=relaxed/simple;
-	bh=hc5d3YF0NKGRajZnVJjI+zNmfM+XsfsmG4W8gLfkI7g=;
+	s=arc-20240116; t=1734455823; c=relaxed/simple;
+	bh=F5YCH1pXhqRNbsNepJwR9e/JxZdZqpxoWsp35FR7iaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G74AyQP3qfODwCTijPWhtPr6zGvKxaj7mLQocBu3/HzCpdm+jyXE7OCEt1r2lpEGScgH4TzlkGvZ84vUCa0e2ZyJgQoNwztRsyiqbTVSguzNyY3zDObcnQaFUTcCZC/HfC56zCJRU6uLdfNgR3t0qUq90VdnFm8CsLUAp5UHRU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ufBleuU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F36C4CED3;
-	Tue, 17 Dec 2024 17:13:48 +0000 (UTC)
+	 MIME-Version; b=Wq+LiTXYadPWyTg96kR4nDU2Yx5GTs9ywdXdAKrhyLwfmHy3F9wNx5v3GM1MP8IjjofJMijfPyK3GMY1ZTaaEN2RmlKkrOI+7PpJDVUxJzpybkVXZdj6ru3FIRmeR9J4yMhMJjNk/OXjs5T1nc4t0XyavRAFIB7xVUp3nAbsTMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M49gNQd6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C788EC4CED3;
+	Tue, 17 Dec 2024 17:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455629;
-	bh=hc5d3YF0NKGRajZnVJjI+zNmfM+XsfsmG4W8gLfkI7g=;
+	s=korg; t=1734455823;
+	bh=F5YCH1pXhqRNbsNepJwR9e/JxZdZqpxoWsp35FR7iaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ufBleuUMQpWuEpI6szqjrJBA5rTOVNBo2l7yDsLuYZqGRD9tEWo6Np2Kdtb0R7lz
-	 /RHIvZU+HmGBdxf+u6eIyWdejXRLgY1y7gl/IAWIgdEr/jDY1l2ohzPAvU6kwJPGUY
-	 nX48ipZq70i/LlUrbN3GtrJ9BYJh2sZ+qvLl5huY=
+	b=M49gNQd6S7VV9G9wYgz898E+MEy/45b3Oh+JuxdEfrMJBiNQ76bKEnRGAN0iYJDEH
+	 2JMS0sH3TQbqP95C9oUpOSw6eMAPd1DufOlk9zBQ+/z8fHBRYuN98+KE3XQw2ZBUbR
+	 ouH5jWdXJWPNnMn50AkuYtb8CGWyYhJbth8Sx5yQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Simon Horman <horms@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/51] cxgb4: use port number to set mac addr
+Subject: [PATCH 6.1 44/76] net: mscc: ocelot: fix memory leak on ocelot_port_add_txtstamp_skb()
 Date: Tue, 17 Dec 2024 18:07:24 +0100
-Message-ID: <20241217170521.561162884@linuxfoundation.org>
+Message-ID: <20241217170528.093336111@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 356983f569c1f5991661fc0050aa263792f50616 ]
+[ Upstream commit 4b01bec25bef62544228bce06db6a3afa5d3d6bb ]
 
-t4_set_vf_mac_acl() uses pf to set mac addr, but t4vf_get_vf_mac_acl()
-uses port number to get mac addr, this leads to error when an attempt
-to set MAC address on VF's of PF2 and PF3.
-This patch fixes the issue by using port number to set mac address.
+If ocelot_port_add_txtstamp_skb() fails, for example due to a full PTP
+timestamp FIFO, we must undo the skb_clone_sk() call with kfree_skb().
+Otherwise, the reference to the skb clone is lost.
 
-Fixes: e0cdac65ba26 ("cxgb4vf: configure ports accessible by the VF")
-Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241206062014.49414-1-anumula@chelsio.com
+Fixes: 52849bcf0029 ("net: mscc: ocelot: avoid overflowing the PTP timestamp FIFO")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241205145519.1236778-2-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4.h      | 2 +-
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 2 +-
- drivers/net/ethernet/chelsio/cxgb4/t4_hw.c      | 5 +++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mscc/ocelot_ptp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-index ecea3cdd30b3..cceb1cbe0d6a 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-@@ -2084,7 +2084,7 @@ void t4_idma_monitor(struct adapter *adapter,
- 		     struct sge_idma_monitor_state *idma,
- 		     int hz, int ticks);
- int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
--		      unsigned int naddr, u8 *addr);
-+		      u8 start, unsigned int naddr, u8 *addr);
- void t4_tp_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
- 		    u32 start_index, bool sleep_ok);
- void t4_tp_tm_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-index 0d9cda4ab303..21afaa81697e 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-@@ -3247,7 +3247,7 @@ static int cxgb4_mgmt_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
+diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
+index cb32234a5bf1..3c22652879ac 100644
+--- a/drivers/net/ethernet/mscc/ocelot_ptp.c
++++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
+@@ -692,8 +692,10 @@ int ocelot_port_txtstamp_request(struct ocelot *ocelot, int port,
+ 			return -ENOMEM;
  
- 	dev_info(pi->adapter->pdev_dev,
- 		 "Setting MAC %pM on VF %d\n", mac, vf);
--	ret = t4_set_vf_mac_acl(adap, vf + 1, 1, mac);
-+	ret = t4_set_vf_mac_acl(adap, vf + 1, pi->lport, 1, mac);
- 	if (!ret)
- 		ether_addr_copy(adap->vfinfo[vf].vf_mac_addr, mac);
- 	return ret;
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-index c99f5920c957..94fd7d6a1109 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-@@ -10215,11 +10215,12 @@ int t4_load_cfg(struct adapter *adap, const u8 *cfg_data, unsigned int size)
-  *	t4_set_vf_mac_acl - Set MAC address for the specified VF
-  *	@adapter: The adapter
-  *	@vf: one of the VFs instantiated by the specified PF
-+ *	@start: The start port id associated with specified VF
-  *	@naddr: the number of MAC addresses
-  *	@addr: the MAC address(es) to be set to the specified VF
-  */
- int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
--		      unsigned int naddr, u8 *addr)
-+		      u8 start, unsigned int naddr, u8 *addr)
- {
- 	struct fw_acl_mac_cmd cmd;
+ 		err = ocelot_port_add_txtstamp_skb(ocelot, port, *clone);
+-		if (err)
++		if (err) {
++			kfree_skb(*clone);
+ 			return err;
++		}
  
-@@ -10234,7 +10235,7 @@ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
- 	cmd.en_to_len16 = cpu_to_be32((unsigned int)FW_LEN16(cmd));
- 	cmd.nmac = naddr;
- 
--	switch (adapter->pf) {
-+	switch (start) {
- 	case 3:
- 		memcpy(cmd.macaddr3, addr, sizeof(cmd.macaddr3));
- 		break;
+ 		OCELOT_SKB_CB(skb)->ptp_cmd = ptp_cmd;
+ 		OCELOT_SKB_CB(*clone)->ptp_class = ptp_class;
 -- 
 2.39.5
 
