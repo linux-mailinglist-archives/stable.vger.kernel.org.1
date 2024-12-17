@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916F49F52FF
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 647129F5251
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD8E41707DB
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 817EC16E144
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5811F75BE;
-	Tue, 17 Dec 2024 17:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5451F867B;
+	Tue, 17 Dec 2024 17:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngCwpaVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHAchOmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4AD142E77;
-	Tue, 17 Dec 2024 17:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAE81F7568;
+	Tue, 17 Dec 2024 17:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456098; cv=none; b=oluNdMjuylq57P6J7PAlxrWXC66rQlVJ4xP7MPCo7rKo3Jh6fBsSDYphCZwuTYl0fAym5MIoW/1LNUfpXOzzN57vUZeku8MaQ8yOZ5L01VkJf6y6Du+K2HwWJN72npyHhUh7i5Ejt9Lp4KMqKZa7RHL2jnhplxz/f+SwSOWS//c=
+	t=1734455709; cv=none; b=ALtEubXmiKhiGtkCqT3TRDB4M5kzlgk/aCqRytn9yxDt2sUsCecIh+0eFsm9vAcSbc3XOsZIlI54yr0Pp8jzDhfRLoU1bs4Vb0bk94tCkhr++mWHN5S7mrtaLxglFGvkkdgeqPQPU1xJuGifPWg66euPAzu+5aBjL6oQ40QMmrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456098; c=relaxed/simple;
-	bh=Y4F6B1jEAYT+0TquyFKFdlHIh5AzcHkz548gyUtMt1Q=;
+	s=arc-20240116; t=1734455709; c=relaxed/simple;
+	bh=rSez1/ZgvmwHE229zDyTOG3h/WIXDGRMBAZylU4KSc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bid6iWfCBAhTMWlJfpp4PNuZluky3rSu/BmqNOakDN96KxaL3Egh6W8Q6BkYqTMbvs/f+KKu6mCHmtJ5N8ZT+lFcfd5Z3me1y3FxK3D6cVQ5hrwdFDeJtaGoQFw/RhH3rZJvHj0B/K3tDOn1ZXVhapqNi9Lw5j/XiAlJcT5hBUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngCwpaVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68536C4CED3;
-	Tue, 17 Dec 2024 17:21:37 +0000 (UTC)
+	 MIME-Version; b=cX2IYflWogL9mdSrp9trOXRyfwRCKMs+HmZgAKW/BuquN8nxIMeKT1ieIYxY3q8sSiPqZ6GGfeBd/n8W2yU0AlFK+LnCk0daSOWy0MhgHG2CZRPqIdL9CzATqy+JXkOxcpsWpEhY7lqNSZJXn9Sfh3SCbb/citmq9N0vtzSCZz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHAchOmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AB9C4CED3;
+	Tue, 17 Dec 2024 17:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456097;
-	bh=Y4F6B1jEAYT+0TquyFKFdlHIh5AzcHkz548gyUtMt1Q=;
+	s=korg; t=1734455709;
+	bh=rSez1/ZgvmwHE229zDyTOG3h/WIXDGRMBAZylU4KSc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngCwpaVRfm0NsGo23dmkttzwnXWx/ghsT1sDKvd6kT9uZpvHF+Jrx6LcxMyGwvvxW
-	 PlBDj/GMhW+yhEGYK2dVsVRKe4PGV88uIkgWWQTH8m7vUEphZvaeAwVfXLsmUb9m6+
-	 TCv5zD/C/iduGFVuHW0YZLG/nXPsDGFNAm1BBDYg=
+	b=oHAchOmF4NV3iPh4KCI/SzSzRilxcU2htefKq6DTJynWQ/Wj2tVHtqvlYWhHrnt0U
+	 h8FpffTehlNi1ZH3d9A5hyfw1ld4W0jLS7QVOwQy+cK8sagDP6/9xIXQBLB3yZcQGU
+	 HcCh9ZxwX5YVUTEb7ItillJjV7Da7aoghBP7Qxhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/109] net: sparx5: fix FDMA performance issue
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
+	Jan Beulich <jbeulich@suse.com>
+Subject: [PATCH 5.15 50/51] x86/xen: remove hypercall page
 Date: Tue, 17 Dec 2024 18:07:43 +0100
-Message-ID: <20241217170535.836831897@linuxfoundation.org>
+Message-ID: <20241217170522.523398210@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit f004f2e535e2b66ccbf5ac35f8eaadeac70ad7b7 ]
+commit 7fa0da5373685e7ed249af3fa317ab1e1ba8b0a6 upstream.
 
-The FDMA handler is responsible for scheduling a NAPI poll, which will
-eventually fetch RX packets from the FDMA queue. Currently, the FDMA
-handler is run in a threaded context. For some reason, this kills
-performance.  Admittedly, I did not do a thorough investigation to see
-exactly what causes the issue, however, I noticed that in the other
-driver utilizing the same FDMA engine, we run the FDMA handler in hard
-IRQ context.
+The hypercall page is no longer needed. It can be removed, as from the
+Xen perspective it is optional.
 
-Fix this performance issue, by  running the FDMA handler in hard IRQ
-context, not deferring any work to a thread.
+But, from Linux's perspective, it removes naked RET instructions that
+escape the speculative protections that Call Depth Tracking and/or
+Untrain Ret are trying to achieve.
 
-Prior to this change, the RX UDP performance was:
+This is part of XSA-466 / CVE-2024-53241.
 
-Interval           Transfer     Bitrate         Jitter
-0.00-10.20  sec    44.6 MBytes  36.7 Mbits/sec  0.027 ms
-
-After this change, the rx UDP performance is:
-
-Interval           Transfer     Bitrate         Jitter
-0.00-9.12   sec    1.01 GBytes  953 Mbits/sec   0.020 ms
-
-Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/xen/hypercall.h |    2 --
+ arch/x86/xen/enlighten.c             |    2 --
+ arch/x86/xen/enlighten_hvm.c         |    9 +--------
+ arch/x86/xen/enlighten_pvh.c         |    7 -------
+ arch/x86/xen/xen-head.S              |   19 -------------------
+ 5 files changed, 1 insertion(+), 38 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-index 8f116982c08a..98bee953234b 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-@@ -693,12 +693,11 @@ static int sparx5_start(struct sparx5 *sparx5)
- 	err = -ENXIO;
- 	if (sparx5->fdma_irq >= 0) {
- 		if (GCB_CHIP_ID_REV_ID_GET(sparx5->chip_id) > 0)
--			err = devm_request_threaded_irq(sparx5->dev,
--							sparx5->fdma_irq,
--							NULL,
--							sparx5_fdma_handler,
--							IRQF_ONESHOT,
--							"sparx5-fdma", sparx5);
-+			err = devm_request_irq(sparx5->dev,
-+					       sparx5->fdma_irq,
-+					       sparx5_fdma_handler,
-+					       0,
-+					       "sparx5-fdma", sparx5);
- 		if (!err)
- 			err = sparx5_fdma_start(sparx5);
- 		if (err)
--- 
-2.39.5
-
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -88,8 +88,6 @@ struct xen_dm_op_buf;
+  * there aren't more than 5 arguments...)
+  */
+ 
+-extern struct { char _entry[32]; } hypercall_page[];
+-
+ void xen_hypercall_func(void);
+ DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
+ 
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -26,8 +26,6 @@
+ #include "smp.h"
+ #include "pmu.h"
+ 
+-EXPORT_SYMBOL_GPL(hypercall_page);
+-
+ DEFINE_STATIC_CALL(xen_hypercall, xen_hypercall_hvm);
+ EXPORT_STATIC_CALL_TRAMP(xen_hypercall);
+ 
+--- a/arch/x86/xen/enlighten_hvm.c
++++ b/arch/x86/xen/enlighten_hvm.c
+@@ -101,15 +101,8 @@ static void __init init_hvm_pv_info(void
+ 	/* PVH set up hypercall page in xen_prepare_pvh(). */
+ 	if (xen_pvh_domain())
+ 		pv_info.name = "Xen PVH";
+-	else {
+-		u64 pfn;
+-		uint32_t msr;
+-
++	else
+ 		pv_info.name = "Xen HVM";
+-		msr = cpuid_ebx(base + 2);
+-		pfn = __pa(hypercall_page);
+-		wrmsr_safe(msr, (u32)pfn, (u32)(pfn >> 32));
+-	}
+ 
+ 	xen_setup_features();
+ 
+--- a/arch/x86/xen/enlighten_pvh.c
++++ b/arch/x86/xen/enlighten_pvh.c
+@@ -27,17 +27,10 @@ EXPORT_SYMBOL_GPL(xen_pvh);
+ 
+ void __init xen_pvh_init(struct boot_params *boot_params)
+ {
+-	u32 msr;
+-	u64 pfn;
+-
+ 	xen_pvh = 1;
+ 	xen_domain_type = XEN_HVM_DOMAIN;
+ 	xen_start_flags = pvh_start_info.flags;
+ 
+-	msr = cpuid_ebx(xen_cpuid_base() + 2);
+-	pfn = __pa(hypercall_page);
+-	wrmsr_safe(msr, (u32)pfn, (u32)(pfn >> 32));
+-
+ 	if (xen_initial_domain())
+ 		x86_init.oem.arch_setup = xen_add_preferred_consoles;
+ 	x86_init.oem.banner = xen_banner;
+--- a/arch/x86/xen/xen-head.S
++++ b/arch/x86/xen/xen-head.S
+@@ -146,24 +146,6 @@ SYM_FUNC_START(xen_hypercall_intel)
+ SYM_FUNC_END(xen_hypercall_intel)
+ 	.popsection
+ 
+-.pushsection .text
+-	.balign PAGE_SIZE
+-SYM_CODE_START(hypercall_page)
+-	.rept (PAGE_SIZE / 32)
+-		UNWIND_HINT_FUNC
+-		ANNOTATE_UNRET_SAFE
+-		ret
+-		.skip 31, 0xcc
+-	.endr
+-
+-#define HYPERCALL(n) \
+-	.equ xen_hypercall_##n, hypercall_page + __HYPERVISOR_##n * 32; \
+-	.type xen_hypercall_##n, @function; .size xen_hypercall_##n, 32
+-#include <asm/xen-hypercalls.h>
+-#undef HYPERCALL
+-SYM_CODE_END(hypercall_page)
+-.popsection
+-
+ 	ELFNOTE(Xen, XEN_ELFNOTE_GUEST_OS,       .asciz "linux")
+ 	ELFNOTE(Xen, XEN_ELFNOTE_GUEST_VERSION,  .asciz "2.6")
+ 	ELFNOTE(Xen, XEN_ELFNOTE_XEN_VERSION,    .asciz "xen-3.0")
+@@ -177,7 +159,6 @@ SYM_CODE_END(hypercall_page)
+ #ifdef CONFIG_XEN_PV
+ 	ELFNOTE(Xen, XEN_ELFNOTE_ENTRY,          _ASM_PTR startup_xen)
+ #endif
+-	ELFNOTE(Xen, XEN_ELFNOTE_HYPERCALL_PAGE, _ASM_PTR hypercall_page)
+ 	ELFNOTE(Xen, XEN_ELFNOTE_FEATURES,
+ 		.ascii "!writable_page_tables|pae_pgdir_above_4gb")
+ 	ELFNOTE(Xen, XEN_ELFNOTE_SUPPORTED_FEATURES,
 
 
 
