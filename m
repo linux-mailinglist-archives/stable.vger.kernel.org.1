@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40789F5250
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D3C9F53D1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1037C169442
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 246A21881555
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9034D1F75BE;
-	Tue, 17 Dec 2024 17:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A371F8684;
+	Tue, 17 Dec 2024 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4e9Jdxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1eEigBE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3E014900B;
-	Tue, 17 Dec 2024 17:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E051F867C;
+	Tue, 17 Dec 2024 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455706; cv=none; b=V9NvEWY6PUn0aUiV33W9CSm2xxnZq7R79brBz4MIZQx22IOq4MGCjKHDT+1wHdMlm+VkNVEDYh08WpP72/3vhPKY1YdjYToWuCNFg4VxElgQBzD22D8J5h+1kdF76qZoyVOnDf6STvi/63yimtgVG6gWOS+cjlBkT6PKc7kNFhs=
+	t=1734456599; cv=none; b=fB3xft26XsDpgflYnyhxH6xoKDxFNMMtKkNenciQKHJgM39C7yk3AuJ7HZDU9FhipF4lH9obg7YP/PFHxDnH6cvddzRHykBNj/M/ohK6mDRYv1gjUWtV6GWzlRJhxKYguAR5sj/6HBeAGoVyycekfaJKkJeIhlI1ppyTbLR541Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455706; c=relaxed/simple;
-	bh=9vX56ZSsB7HBXy5nG1jtqOBQ4EinHOWBznY6UcDPSkY=;
+	s=arc-20240116; t=1734456599; c=relaxed/simple;
+	bh=5kKBIaWjW3xZmdFEbcEB6LjNCw2G62FaqIiKrgflLgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyXlT8bzEeWMWWEWraw/q8HbJQYy2KxS1s/Y0Szji8FGLMxY3rxjP/F3AQJiSDt6F7k113/CqsGkJ/UaiMvK2e9/WxZ8d1D59JI3fHPD5GmuJheGFXSEv6IInpYoUsIy1xdJOv4omBEgQfYlI1VvSPhzYPYjlVFp8M0yI2AhRSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4e9Jdxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD03C4CED3;
-	Tue, 17 Dec 2024 17:15:05 +0000 (UTC)
+	 MIME-Version; b=oLllo0IDrr61p5YHZDsDA117TnoOtuuSAo5N4PuMWyyGGgZo+T9iqSIvM1+7pU9pW5c/8WDwne5DQH4aPQ4HBBnmAZ1kRGnY+qD+Jsh5Nc1w3Amvyyz0zcZgkT8i9kIS1UVaKTMIgWob6xOJI+qUPG3KmB/TJNsKe5R4W/uQ85Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1eEigBE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3C1C4CED3;
+	Tue, 17 Dec 2024 17:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455706;
-	bh=9vX56ZSsB7HBXy5nG1jtqOBQ4EinHOWBznY6UcDPSkY=;
+	s=korg; t=1734456599;
+	bh=5kKBIaWjW3xZmdFEbcEB6LjNCw2G62FaqIiKrgflLgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4e9JdxltDbt28kiOZ9LihHk9rnOeYFTqdUebhZmaY6NMMu7+oXBOhYMME/ABF5fc
-	 WTWystUCy3cGLzL0gOlLkg/7PyEjv7mCw6i7kZDoGR/YqXAArdccM/aAh2cj45F4VA
-	 U14HC2RokD8ACdc8SrGNJOiyhtLN12G9vCQFLiEQ=
+	b=g1eEigBEH2dDdjdqH8kJ+CgMbxBRNVaHnfnBoLa9NP+oJRFhsmjWjPO0KnvWBLX+h
+	 UNWawkxbKHvCh0tQGArvoNfU7a1pGpNUdcZAwCFanSCOxhcJlWCaU2l7mVKvd+AJWB
+	 c9QTCGKe8Vyh06CQQr9KW67zmaUEgj7kt4/c+0Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: [PATCH 5.15 49/51] x86/xen: use new hypercall functions instead of hypercall page
-Date: Tue, 17 Dec 2024 18:07:42 +0100
-Message-ID: <20241217170522.482897927@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 107/172] net: mscc: ocelot: perform error cleanup in ocelot_hwstamp_set()
+Date: Tue, 17 Dec 2024 18:07:43 +0100
+Message-ID: <20241217170550.764085409@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit b1c2cb86f4a7861480ad54bb9a58df3cbebf8e92 upstream.
+[ Upstream commit 43a4166349a254446e7a3db65f721c6a30daccf3 ]
 
-Call the Xen hypervisor via the new xen_hypercall_func static-call
-instead of the hypercall page.
+An unsupported RX filter will leave the port with TX timestamping still
+applied as per the new request, rather than the old setting. When
+parsing the tx_type, don't apply it just yet, but delay that until after
+we've parsed the rx_filter as well (and potentially returned -ERANGE for
+that).
 
-This is part of XSA-466 / CVE-2024-53241.
+Similarly, copy_to_user() may fail, which is a rare occurrence, but
+should still be treated by unwinding what was done.
 
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Co-developed-by: Peter Zijlstra <peterz@infradead.org>
-Co-developed-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96ca08c05838 ("net: mscc: ocelot: set up traps for PTP packets")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241205145519.1236778-6-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/xen/hypercall.h |   33 ++++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/mscc/ocelot_ptp.c | 59 ++++++++++++++++++--------
+ 1 file changed, 42 insertions(+), 17 deletions(-)
 
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -39,9 +39,11 @@
- #include <linux/string.h>
- #include <linux/types.h>
- #include <linux/pgtable.h>
-+#include <linux/instrumentation.h>
+diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
+index 7eb01d1e1ecd..808ce8e68d39 100644
+--- a/drivers/net/ethernet/mscc/ocelot_ptp.c
++++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
+@@ -497,6 +497,28 @@ static int ocelot_traps_to_ptp_rx_filter(unsigned int proto)
+ 	return HWTSTAMP_FILTER_NONE;
+ }
  
- #include <trace/events/xen.h>
- 
-+#include <asm/alternative.h>
- #include <asm/page.h>
- #include <asm/smap.h>
- #include <asm/nospec-branch.h>
-@@ -91,9 +93,17 @@ extern struct { char _entry[32]; } hyper
- void xen_hypercall_func(void);
- DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
- 
--#define __HYPERCALL		"call hypercall_page+%c[offset]"
--#define __HYPERCALL_ENTRY(x)						\
--	[offset] "i" (__HYPERVISOR_##x * sizeof(hypercall_page[0]))
-+#ifdef MODULE
-+#define __ADDRESSABLE_xen_hypercall
-+#else
-+#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
-+#endif
++static int ocelot_ptp_tx_type_to_cmd(int tx_type, int *ptp_cmd)
++{
++	switch (tx_type) {
++	case HWTSTAMP_TX_ON:
++		*ptp_cmd = IFH_REW_OP_TWO_STEP_PTP;
++		break;
++	case HWTSTAMP_TX_ONESTEP_SYNC:
++		/* IFH_REW_OP_ONE_STEP_PTP updates the correctionField,
++		 * what we need to update is the originTimestamp.
++		 */
++		*ptp_cmd = IFH_REW_OP_ORIGIN_PTP;
++		break;
++	case HWTSTAMP_TX_OFF:
++		*ptp_cmd = 0;
++		break;
++	default:
++		return -ERANGE;
++	}
 +
-+#define __HYPERCALL					\
-+	__ADDRESSABLE_xen_hypercall			\
-+	"call __SCT__xen_hypercall"
++	return 0;
++}
 +
-+#define __HYPERCALL_ENTRY(x)	"a" (x)
+ int ocelot_hwstamp_get(struct ocelot *ocelot, int port, struct ifreq *ifr)
+ {
+ 	struct ocelot_port *ocelot_port = ocelot->ports[port];
+@@ -523,30 +545,19 @@ EXPORT_SYMBOL(ocelot_hwstamp_get);
+ int ocelot_hwstamp_set(struct ocelot *ocelot, int port, struct ifreq *ifr)
+ {
+ 	struct ocelot_port *ocelot_port = ocelot->ports[port];
++	int ptp_cmd, old_ptp_cmd = ocelot_port->ptp_cmd;
+ 	bool l2 = false, l4 = false;
+ 	struct hwtstamp_config cfg;
++	bool old_l2, old_l4;
+ 	int err;
  
- #ifdef CONFIG_X86_32
- #define __HYPERCALL_RETREG	"eax"
-@@ -151,7 +161,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_0ARG();						\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_0PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER0);				\
- 	(type)__res;							\
- })
-@@ -162,7 +172,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_1ARG(a1);						\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_1PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER1);				\
- 	(type)__res;							\
- })
-@@ -173,7 +183,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_2ARG(a1, a2);					\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_2PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER2);				\
- 	(type)__res;							\
- })
-@@ -184,7 +194,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_3ARG(a1, a2, a3);					\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_3PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER3);				\
- 	(type)__res;							\
- })
-@@ -195,7 +205,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_4ARG(a1, a2, a3, a4);				\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_4PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER4);				\
- 	(type)__res;							\
- })
-@@ -209,12 +219,9 @@ xen_single_call(unsigned int call,
- 	__HYPERCALL_DECLS;
- 	__HYPERCALL_5ARG(a1, a2, a3, a4, a5);
+ 	if (copy_from_user(&cfg, ifr->ifr_data, sizeof(cfg)))
+ 		return -EFAULT;
  
--	if (call >= PAGE_SIZE / sizeof(hypercall_page[0]))
--		return -EINVAL;
--
--	asm volatile(CALL_NOSPEC
-+	asm volatile(__HYPERCALL
- 		     : __HYPERCALL_5PARAM
--		     : [thunk_target] "a" (&hypercall_page[call])
-+		     : __HYPERCALL_ENTRY(call)
- 		     : __HYPERCALL_CLOBBER5);
+ 	/* Tx type sanity check */
+-	switch (cfg.tx_type) {
+-	case HWTSTAMP_TX_ON:
+-		ocelot_port->ptp_cmd = IFH_REW_OP_TWO_STEP_PTP;
+-		break;
+-	case HWTSTAMP_TX_ONESTEP_SYNC:
+-		/* IFH_REW_OP_ONE_STEP_PTP updates the correctional field, we
+-		 * need to update the origin time.
+-		 */
+-		ocelot_port->ptp_cmd = IFH_REW_OP_ORIGIN_PTP;
+-		break;
+-	case HWTSTAMP_TX_OFF:
+-		ocelot_port->ptp_cmd = 0;
+-		break;
+-	default:
+-		return -ERANGE;
+-	}
++	err = ocelot_ptp_tx_type_to_cmd(cfg.tx_type, &ptp_cmd);
++	if (err)
++		return err;
  
- 	return (long)__res;
+ 	switch (cfg.rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+@@ -571,13 +582,27 @@ int ocelot_hwstamp_set(struct ocelot *ocelot, int port, struct ifreq *ifr)
+ 		return -ERANGE;
+ 	}
+ 
++	old_l2 = ocelot_port->trap_proto & OCELOT_PROTO_PTP_L2;
++	old_l4 = ocelot_port->trap_proto & OCELOT_PROTO_PTP_L4;
++
+ 	err = ocelot_setup_ptp_traps(ocelot, port, l2, l4);
+ 	if (err)
+ 		return err;
+ 
++	ocelot_port->ptp_cmd = ptp_cmd;
++
+ 	cfg.rx_filter = ocelot_traps_to_ptp_rx_filter(ocelot_port->trap_proto);
+ 
+-	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
++	if (copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg))) {
++		err = -EFAULT;
++		goto out_restore_ptp_traps;
++	}
++
++	return 0;
++out_restore_ptp_traps:
++	ocelot_setup_ptp_traps(ocelot, port, old_l2, old_l4);
++	ocelot_port->ptp_cmd = old_ptp_cmd;
++	return err;
+ }
+ EXPORT_SYMBOL(ocelot_hwstamp_set);
+ 
+-- 
+2.39.5
+
 
 
 
