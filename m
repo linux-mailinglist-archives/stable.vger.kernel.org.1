@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0FAB9F52C3
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A269F5345
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8368B18820BC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E13A188CADC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D4C1F893A;
-	Tue, 17 Dec 2024 17:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C94F1F7577;
+	Tue, 17 Dec 2024 17:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZdJL1+k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUFzkcPl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452B11F8930;
-	Tue, 17 Dec 2024 17:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE93D140E38;
+	Tue, 17 Dec 2024 17:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455900; cv=none; b=ry7Tyz8tCkWVcVAu8BALw/nu2eq1KgJ1snDnT/+0ypxRs99pwkV9kyDGxn1N7XTiFQILzlF33qXKTUoms9rDjSjrDXHtSBLvyboUtQmW/3FYCzzzTvYrOtG/uHR7CIlgEFuVF6FESbKlUO3zOSxNn3Tz1ckKHHDamZwe3ixmqYE=
+	t=1734456205; cv=none; b=T5RDqdJ+P/TrpVarPddyIpkhUHArTP+5RABaZu05n3LVw1L33CYQO0PF4JO0k0FlhF31Oevv4iEctG2WoYTq2jjJ1rYyplvABHz/JjKZ3+/aiNGL2qVrLrkJzgRrtG/4ABd1Wj3YQ4v53UUZQyRqpsiopXZz+2pG403d7RHgGCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455900; c=relaxed/simple;
-	bh=+P/SBR7gEWXDDWryX4bAhNoIYApsZp8IWtWUjoAvXRs=;
+	s=arc-20240116; t=1734456205; c=relaxed/simple;
+	bh=bX2bwFcgCWsthRS0zLXlHDtQKBeSDq0VhD169FvxcU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHdJWu6X5ZKcepdREspxUlTJUpV+9FrZlZx+2SqbBmpMEpcKunBc3jZX4uRnZN3jMyYOU2LtPMtrVV5Cia/R/4S7jjJh8wecKCKQgIV/PKzFlrmAEC+mDHSygJFMSECli4mQd0SzMc3LeHDDC15etBhDKCdbhtUWbQIo0YdTc1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZdJL1+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5452C4CED7;
-	Tue, 17 Dec 2024 17:18:19 +0000 (UTC)
+	 MIME-Version; b=Ib5J1LuzuTGPTTD+PHYDwCOCA4MhRzi7vfDbk7T8QOIWv4DI0E3ZO/q/dZ4O+Kf18ctXaKWLIQTUvJvalfdZnQSgSsjV8E3a7T13jpDontpKCYA9hN69Cz+4Xxn9pU3WG7FieUwf7R3JXI1L8L4UtuNjzREqt3a/4wTF3YDtZS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUFzkcPl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4228EC4CED3;
+	Tue, 17 Dec 2024 17:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455900;
-	bh=+P/SBR7gEWXDDWryX4bAhNoIYApsZp8IWtWUjoAvXRs=;
+	s=korg; t=1734456205;
+	bh=bX2bwFcgCWsthRS0zLXlHDtQKBeSDq0VhD169FvxcU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZdJL1+krrxtKmG77blu/Faa6Bd/BB+yjUbd5L9PycRQ1uh+Wcl5r77rbsf/VYo1U
-	 4XqpUplgPd7jjpTkQo4IzxmVDwaC0NsHXqV7MO13f+F5P8Rwa9dS2JMIJzXZIqQHV9
-	 FhOrtq3gFvu/I8aMCnMUeQfSPARRB0FbzYux26uE=
+	b=VUFzkcPlAi92zMHx3Fxlgkjvaozef0irs9RpQ+k5Docuzpm95AOS04rksRJVkgm5T
+	 rb8yBKDRLWGVYC16wb45oyRiAXLjt8L0igVx3SK387f+7EpPzXO5mQsaAS1wYWGYh/
+	 HGIdqJykmSIk+gKW/5hOpYs3mK0dFCJR40fC5/Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.1 70/76] objtool/x86: allow syscall instruction
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 066/109] ASoC: amd: yc: Fix the wrong return value
 Date: Tue, 17 Dec 2024 18:07:50 +0100
-Message-ID: <20241217170529.399913551@linuxfoundation.org>
+Message-ID: <20241217170536.139408619@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
 
-commit dda014ba59331dee4f3b773a020e109932f4bd24 upstream.
+[ Upstream commit 984795e76def5c903724b8d6a8228e356bbdf2af ]
 
-The syscall instruction is used in Xen PV mode for doing hypercalls.
-Allow syscall to be used in the kernel in case it is tagged with an
-unwind hint for objtool.
+With the current implementation, when ACP driver fails to read
+ACPI _WOV entry then the DMI overrides code won't invoke,
+may cause regressions for some BIOS versions.
 
-This is part of XSA-466 / CVE-2024-53241.
+Add a condition check to jump to check the DMI entries incase of
+ACP driver fail to read ACPI _WOV method.
 
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Co-developed-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4095cf872084 (ASoC: amd: yc: Fix for enabling DMIC on acp6x via _DSD entry)
+
+Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Link: https://patch.msgid.link/20241210091026.996860-1-venkataprasad.potturu@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3521,10 +3521,13 @@ static int validate_branch(struct objtoo
- 			break;
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 39f151d073a6..f7fbde1bc2ed 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -578,14 +578,19 @@ static int acp6x_probe(struct platform_device *pdev)
  
- 		case INSN_CONTEXT_SWITCH:
--			if (func && (!next_insn || !next_insn->hint)) {
--				WARN_FUNC("unsupported instruction in callable function",
--					  sec, insn->offset);
--				return 1;
-+			if (func) {
-+				if (!next_insn || !next_insn->hint) {
-+					WARN_FUNC("unsupported instruction in callable function",
-+						  sec, insn->offset);
-+					return 1;
-+				}
-+				break;
- 			}
- 			return 0;
+ 	handle = ACPI_HANDLE(pdev->dev.parent);
+ 	ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
+-	if (!ACPI_FAILURE(ret))
++	if (!ACPI_FAILURE(ret)) {
+ 		wov_en = dmic_status;
++		if (!wov_en)
++			return -ENODEV;
++	} else {
++		/* Incase of ACPI method read failure then jump to check_dmi_entry */
++		goto check_dmi_entry;
++	}
  
+-	if (is_dmic_enable && wov_en)
++	if (is_dmic_enable)
+ 		platform_set_drvdata(pdev, &acp6x_card);
+-	else
+-		return 0;
+ 
++check_dmi_entry:
+ 	/* check for any DMI overrides */
+ 	dmi_id = dmi_first_match(yc_acp_quirk_table);
+ 	if (dmi_id)
+-- 
+2.39.5
+
 
 
 
