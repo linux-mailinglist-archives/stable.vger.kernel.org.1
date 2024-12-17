@@ -1,55 +1,45 @@
-Return-Path: <stable+bounces-104414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5719F4109
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 03:46:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC469F413C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 04:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6316189022F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 02:46:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C56B4164827
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 03:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AB428DD0;
-	Tue, 17 Dec 2024 02:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FCF12E1CD;
+	Tue, 17 Dec 2024 03:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="h1hB7HE7"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="mZFxNiac"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6466513D891
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 02:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B04A182CD;
+	Tue, 17 Dec 2024 03:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734403543; cv=none; b=JD7t3dyv9+6C0tTb9ZfmylLt/NvPi7daBHAvOaIJbEvpwhidiUpz0+4LwFWMCVLhfyK2KYLTotbsTW5knSdZjEm5LrLC7uQ+CfwAUCd5nPaK/eH78GqaAi4X9HXZoMdAJmbpoxQgkvq9K0CXhsDAPjx1lMfrgVBCS2U4PIvhT7c=
+	t=1734406405; cv=none; b=UJZK6bODfEafEig3dDsydSOOQ07kIYKunAweNnyRv9I/ksqbG/8/bfkVugTs3k5yHFoGnrsFWcOOY7ttBMdVVTQ4YYIzodUSENmh2rJj8Gjic+ci1F8L3ZpA3o1sR9N5njzbx2PQnQCfBj6sQwCsdpMLODpJSXGvyLsRooj5k20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734403543; c=relaxed/simple;
-	bh=+b2VZ7ITDnw5UBM7GqgaT6MwN8JvbH+qwhlurt7RSDQ=;
+	s=arc-20240116; t=1734406405; c=relaxed/simple;
+	bh=hD7lPTejmqYuPJFcXB+8pwN17kgBK5tZ84GafSwM11I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TBNC4jYdyM3z5hO6p0070O8nAO/I0/XTGx9lukfxuah/uFiuWGyZX2swTLQk6QRqP0cMpVt8gIR30p8/M60WLViBrJFkWusEqfc3Q+LYsOxM4Yn2MHmqBGKo4dcMxbZhB5gBD0fRS1uTomcWlvQk+XWfki0FdbCoSOJxYOnY7Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=h1hB7HE7; arc=none smtp.client-ip=185.125.188.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from [192.168.33.173] (unknown [220.197.230.205])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id D13C93F78E;
-	Tue, 17 Dec 2024 02:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1734403532;
-	bh=YeJBZ1TSOGlJXk0s8uXWBM59ZJnITryLYIalFVFCJLM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type;
-	b=h1hB7HE7ru5ORbF7nXWIrbSHoeO868Tqd0iZ0C364oWr28oRm3aPPsu6589HjfHGk
-	 2wI3dNQW6fRhn/Erul3Zju+YaN/B4ft6HQre/sfM5a3YS8hDFS1GFYbtK/iXomSD53
-	 oOd26w3Voz7+FyMb5OOYthOh/BZlkgL2dI539frVjv+6TSVFa+yHyimTvL4JrF8/ja
-	 +RL8K8aBfS5HhukA+W7UinAWE18ivkPfZjZz3grOGpfyTZmfGR8R5jYLlnj0qJE6Dd
-	 xjH/x1wZPsX8uKSa+h49DXnije8LoPcqXdycEBz20TYtxb+6rHBbGxUgA9UxDOD/eR
-	 mR/534awvMOVg==
-Message-ID: <0716be8a-8d7c-46d3-8b06-8dbd632e763a@canonical.com>
-Date: Tue, 17 Dec 2024 10:45:10 +0800
+	 In-Reply-To:Content-Type; b=UHDpbWnlS7P9VomNEDgCcXl4mmOJxY7bksSgGelFYacUneL2rlB/aUwS631tN/lxfPt8b+cRuy4oVDNxE+WfeKKXFH+cRssjhmol2ZUDA4tCDi3hwUNWhgquCS/Wx4mkqzT1fGVSvHXh2TlTqDvkOzNQjCfkbg2wzB+Hwq4nuYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=mZFxNiac; arc=none smtp.client-ip=117.135.210.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=ve1cdARtLaTM5vK1iPSn+RtSKdLG519mcJyi0I7S5BQ=;
+	b=mZFxNiaczaFlZrDztbPn5wt0+w2yGuYwTlxAnuqtpUe0JaHuG0888DZPUFajkr
+	iAPRNcfJS98qQaZYsBaX2napIHmEP8biNHpufWF8RfvVTIrAbqa9vZHM/OX07TLz
+	CkPPLc7vrNcM6qGhEGjOX36kHgrGa6U3FohHfFyUjcpCY=
+Received: from [172.21.22.210] (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3RzXk8GBnx6U4Ag--.41661S2;
+	Tue, 17 Dec 2024 11:32:53 +0800 (CST)
+Message-ID: <d70d670b-f5af-4f19-a547-6d0ca0bcee5b@126.com>
+Date: Tue, 17 Dec 2024 11:32:52 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,85 +47,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [stable-kernel][5.15.y][PATCH 0/5] Fix a regression on sc16is7xx
-To: Hugo Villeneuve <hugo@hugovil.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, sashal@kernel.org, hvilleneuve@dimonoff.com
-References: <20241211042545.202482-1-hui.wang@canonical.com>
- <2024121241-civil-diligence-dc09@gregkh>
- <900e507b-b3ec-4d2f-b210-8c06b2b64c26@canonical.com>
- <20241216133655.52691af8651bb8b25567327f@hugovil.com>
-Content-Language: en-US
-From: Hui Wang <hui.wang@canonical.com>
-In-Reply-To: <20241216133655.52691af8651bb8b25567327f@hugovil.com>
+Subject: Re: [PATCH V5] mm, compaction: don't use ALLOC_CMA in long term GUP
+ flow
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, david@redhat.com, vbabka@suse.cz, liuzixing@hygon.cn
+References: <1734350044-12928-1-git-send-email-yangge1116@126.com>
+ <78586900-a5bc-4377-8fb9-f322f2028310@linux.alibaba.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <78586900-a5bc-4377-8fb9-f322f2028310@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3RzXk8GBnx6U4Ag--.41661S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uF13CF4UCF4rJr1rJFy7Wrg_yoW8Kw1kpF
+	1xAasrtrs8XF9Fkws7t39Y9FWjvw48tFWUGr9Fvr1kuFnI9FnayFs7ta4jka4UXr15ta1Y
+	qFWkuasrJa17AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UqeHgUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbifhC4G2dg7uYnXgAAs7
 
 
-On 12/17/24 02:36, Hugo Villeneuve wrote:
-> On Thu, 12 Dec 2024 22:00:00 +0800
-> Hui Wang <hui.wang@canonical.com> wrote:
->
->> On 12/12/24 21:44, Greg KH wrote:
->>> On Wed, Dec 11, 2024 at 12:25:39PM +0800, Hui Wang wrote:
->>>> Recently we found the fifo_read() and fifo_write() are broken in our
->>>> 5.15 kernel after rebase to the latest 5.15.y, the 5.15.y integrated
->>>> the commit e635f652696e ("serial: sc16is7xx: convert from _raw_ to
->>>> _noinc_ regmap functions for FIFO"), but it forgot to integrate a
->>>> prerequisite commit 3837a0379533 ("serial: sc16is7xx: improve regmap
->>>> debugfs by using one regmap per port").
->>>>
->>>> And about the prerequisite commit, there are also 4 commits to fix it,
->>>> So in total, I backported 5 patches to 5.15.y to fix this regression.
->>>>
->>>> 0002-xxx and 0004-xxx could be cleanly applied to 5.15.y, the remaining
->>>> 3 patches need to resolve some conflict.
->>>>
->>>> Hugo Villeneuve (5):
->>>>     serial: sc16is7xx: improve regmap debugfs by using one regmap per port
->>>>     serial: sc16is7xx: remove wasteful static buffer in
->>>>       sc16is7xx_regmap_name()
->>>>     serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
->>>>     serial: sc16is7xx: remove unused line structure member
->>>>     serial: sc16is7xx: change EFR lock to operate on each channels
->>>>
->>>>    drivers/tty/serial/sc16is7xx.c | 185 +++++++++++++++++++--------------
->>>>    1 file changed, 107 insertions(+), 78 deletions(-)
->>> How well did you test this series?  It seems you forgot about commit
->>> 133f4c00b8b2 ("serial: sc16is7xx: fix TX fifo corruption"), right?
->>>
->>> Please do better testing and resend a working set of patches.
->> Okay, got it.
-> Hi Hui / Greg,
-> I am testing these changes on my RS-485 board, and I
-> found out that this patch is required:
->
-> commit b4a778303ea0 ("serial: sc16is7xx: add missing support for rs485
-> devicetree properties")
->
-> With it, it now works (basic loopback test) on 5.15 branch and with my
-> hardware.
->
-> As per Greg's suggestion, I have also tested (and reworked) commit
-> 133f4c00b8b2 ("serial: sc16is7xx: fix TX fifo corruption"), with a
-> prerequisite patch for it to apply more easily: 53a8c50802745 ("serial:
-> sc16is7xx: refactor FIFO access functions to increase commonality").
->
-> And finally I have added commit c41698d1a04cb ("serial: sc16is7xx: fix
-> invalid FIFO access with special register set").
->
-> I will submit these 4 patches to stable soon.
 
-Hi Hugo,
+在 2024/12/17 10:35, Baolin Wang 写道:
+> 
+> 
+> On 2024/12/16 19:54, yangge1116@126.com wrote:
+>> From: yangge <yangge1116@126.com>
+>>
+>> Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
+>> in __compaction_suitable()") allow compaction to proceed when free
+>> pages required for compaction reside in the CMA pageblocks, it's
+>> possible that __compaction_suitable() always returns true, and in
+>> some cases, it's not acceptable.
+>>
+>> There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
+>> of memory. I have configured 16GB of CMA memory on each NUMA node,
+>> and starting a 32GB virtual machine with device passthrough is
+>> extremely slow, taking almost an hour.
+>>
+>> During the start-up of the virtual machine, it will call
+>> pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
+>> Long term GUP cannot allocate memory from CMA area, so a maximum
+>> of 16 GB of no-CMA memory on a NUMA node can be used as virtual
+>> machine memory. Since there is 16G of free CMA memory on the NUMA
+>> node, watermark for order-0 always be met for compaction, so
+>> __compaction_suitable() always returns true, even if the node is
+>> unable to allocate non-CMA memory for the virtual machine.
+>>
+>> For costly allocations, because __compaction_suitable() always
+>> returns true, __alloc_pages_slowpath() can't exit at the appropriate
+>> place, resulting in excessively long virtual machine startup times.
+>> Call trace:
+>> __alloc_pages_slowpath
+>>      if (compact_result == COMPACT_SKIPPED ||
+>>          compact_result == COMPACT_DEFERRED)
+>>          goto nopage; // should exit __alloc_pages_slowpath() from here
+>>
+>> In order to quickly fall back to remote node, we should remove
+>> ALLOC_CMA both in __compaction_suitable() and __isolate_free_page()
+>> in long term GUP flow. After this fix, starting a 32GB virtual machine
+>> with device passthrough takes only a few seconds.
+>>
+>> Fixes: 984fdba6a32e ("mm, compaction: use proper alloc_flags in 
+>> __compaction_suitable()")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: yangge <yangge1116@126.com>
+>> ---
+> 
+> I sent a follow-up fix patch[1] to update the cc->alloc_flags, and with 
+> that, looks good to me.
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> 
+> [1] 
+> https://lore.kernel.org/all/20241217022955.141818-1-baolin.wang@linux.alibaba.com/
+Thanks
 
-Thanks for your help. I planned to do it, but It is blocked by 
-backporting the commit 133f4c00b8b2 ("serial: sc16is7xx: fix TX fifo 
-corruption"), it requires kfifo_out_linear_ptr() but this function is 
-not in 5.15.y. It is great you could help.
-
-Thanks,
-
-Hui.
-
->
 
