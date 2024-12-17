@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D229F5349
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C439F52C5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE4EF188FD0F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA289188F7BC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009AF142E77;
-	Tue, 17 Dec 2024 17:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3984B1F892F;
+	Tue, 17 Dec 2024 17:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zteVJ6UO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iatnAWLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE0E1DE2AC;
-	Tue, 17 Dec 2024 17:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94621F8691;
+	Tue, 17 Dec 2024 17:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456220; cv=none; b=Jlj/Kg46/hJ4kc7gPOR452VvjZ1FyeNp5Up18Xmf0bhJqSF8sT1K1mtkznJB5MFq5LzaAetDObTqE4rppsc9i7jcqq6dT4mX6tEJvEtKRgwD5VoFJIsrr8Oj8BU+l7fMtAF27tBHrOIWh3FZOLiD7i6HsrfLWzxd7tJ7+S808ik=
+	t=1734455910; cv=none; b=s2IhRj1eX0cJfDxh0wTeLscr/NTJrep/Y3UBHN2SrkxQSPeduoT5Oe9gFGzhfx1xD6+0bEuEto7jIzkjWO1yOB8scUjcnLKfACH/QmZEVKrUHAVaiWLH3NEive40zJ5/pzBjMEvGH2AdG5q3zzMhl1im0MUJN0xmFJpQoTBD9Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456220; c=relaxed/simple;
-	bh=tCXG5unJ7tP5HR5JAWHRRq3yY7ogDIkFFtRcJz8tumM=;
+	s=arc-20240116; t=1734455910; c=relaxed/simple;
+	bh=j1iraiDmB2PiKP5YdiXUKVv8AVN+mqLg74NMtB8ze+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaYYav48dH7oadvmPvWMzFDO45AsnIHC1jRg+NCEDjHaoqYU8Yy+Nuu100tS+q5+Gi77RB49Xn9OuXWplZOGcbzPabBUU7P9SZkpMDtMgVmRwMdLGeYH5DA+I+pv3LLWeJ9xzvUy3ly0sjfpUiKbe645P4zLK08ct/VxkSE6P0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zteVJ6UO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31649C4CED3;
-	Tue, 17 Dec 2024 17:23:40 +0000 (UTC)
+	 MIME-Version; b=axRH8/YbA2o8TeZnqsD0zMzdKEugqoVINNO/C62/ScZ62PTMOt2ZqGHzpVkp4XjRpduyi7npEIyhwNLgiW8kSX27oIMosBxa0e/Zm15ZMiYwX7FFG0kkjUl5brdfoUr2tjtMXuSjkERn5j59CqnlhGCou6At3EKhZ8Gsf7+vR/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iatnAWLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7279DC4CED3;
+	Tue, 17 Dec 2024 17:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456220;
-	bh=tCXG5unJ7tP5HR5JAWHRRq3yY7ogDIkFFtRcJz8tumM=;
+	s=korg; t=1734455909;
+	bh=j1iraiDmB2PiKP5YdiXUKVv8AVN+mqLg74NMtB8ze+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zteVJ6UO0o1yamzIu3hF7Cofp5hGQmISAO2uDAMUH8IIyu2jj4rPFbGUwsppE+neQ
-	 gQlgsmRRBDfsnn1JL3N+roIOMFKvizhrcpidBBm1SbyDgvovaXTYxqDqVPUuSz8zCJ
-	 t10V1q3ppF2E/VBl6uA8hYefR6hlA4FLtdjN//xw=
+	b=iatnAWLEYcPWIhwdqYnav6Yc/q/c3/dUD4P8CpbbMuKRY6R40rg0FTjEV2nqBOqpR
+	 14d9nog+E1cQhHPL3qGhDbuYZlY59Z9by6+UBdc3H+XN7UuR00O3aemXON1G+kZ73u
+	 PmUFSpKRTGDPksVk4AsT3cBEwHOmGFqQAswoUEoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/109] net: rswitch: Use unsigned int for desc related array index
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 6.1 73/76] x86/xen: add central hypercall functions
 Date: Tue, 17 Dec 2024 18:07:53 +0100
-Message-ID: <20241217170536.263723632@linuxfoundation.org>
+Message-ID: <20241217170529.580195940@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,406 +62,331 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 8857034184538ca92b0e029f6f56e5e04f518ad2 ]
+commit b4845bb6383821a9516ce30af3a27dc873e37fd4 upstream.
 
-Array index should not be negative, so use unsigned int for
-descriptors related array index.
+Add generic hypercall functions usable for all normal (i.e. not iret)
+hypercalls. Depending on the guest type and the processor vendor
+different functions need to be used due to the to be used instruction
+for entering the hypervisor:
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 0c9547e6ccf4 ("net: renesas: rswitch: fix race window between tx start and complete")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- PV guests need to use syscall
+- HVM/PVH guests on Intel need to use vmcall
+- HVM/PVH guests on AMD and Hygon need to use vmmcall
+
+As PVH guests need to issue hypercalls very early during boot, there
+is a 4th hypercall function needed for HVM/PVH which can be used on
+Intel and AMD processors. It will check the vendor type and then set
+the Intel or AMD specific function to use via static_call().
+
+This is part of XSA-466 / CVE-2024-53241.
+
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Co-developed-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/rswitch.c | 88 ++++++++++++++------------
- drivers/net/ethernet/renesas/rswitch.h | 14 ++--
- 2 files changed, 56 insertions(+), 46 deletions(-)
+ arch/x86/include/asm/xen/hypercall.h |    3 +
+ arch/x86/xen/enlighten.c             |   65 +++++++++++++++++++++++++++
+ arch/x86/xen/enlighten_hvm.c         |    4 +
+ arch/x86/xen/enlighten_pv.c          |    4 +
+ arch/x86/xen/xen-asm.S               |   23 +++++++++
+ arch/x86/xen/xen-head.S              |   83 +++++++++++++++++++++++++++++++++++
+ arch/x86/xen/xen-ops.h               |    9 +++
+ 7 files changed, 190 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-index b783516eb9e2..d10af779ee89 100644
---- a/drivers/net/ethernet/renesas/rswitch.c
-+++ b/drivers/net/ethernet/renesas/rswitch.c
-@@ -55,7 +55,8 @@ static void rswitch_clock_disable(struct rswitch_private *priv)
- 	iowrite32(RCDC_RCD, priv->addr + RCDC);
- }
+--- a/arch/x86/include/asm/xen/hypercall.h
++++ b/arch/x86/include/asm/xen/hypercall.h
+@@ -88,6 +88,9 @@ struct xen_dm_op_buf;
  
--static bool rswitch_agent_clock_is_enabled(void __iomem *coma_addr, int port)
-+static bool rswitch_agent_clock_is_enabled(void __iomem *coma_addr,
-+					   unsigned int port)
+ extern struct { char _entry[32]; } hypercall_page[];
+ 
++void xen_hypercall_func(void);
++DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
++
+ #define __HYPERCALL		"call hypercall_page+%c[offset]"
+ #define __HYPERCALL_ENTRY(x)						\
+ 	[offset] "i" (__HYPERVISOR_##x * sizeof(hypercall_page[0]))
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -5,6 +5,7 @@
+ #endif
+ #include <linux/console.h>
+ #include <linux/cpu.h>
++#include <linux/instrumentation.h>
+ #include <linux/kexec.h>
+ #include <linux/slab.h>
+ #include <linux/panic_notifier.h>
+@@ -27,6 +28,9 @@
+ 
+ EXPORT_SYMBOL_GPL(hypercall_page);
+ 
++DEFINE_STATIC_CALL(xen_hypercall, xen_hypercall_hvm);
++EXPORT_STATIC_CALL_TRAMP(xen_hypercall);
++
+ /*
+  * Pointer to the xen_vcpu_info structure or
+  * &HYPERVISOR_shared_info->vcpu_info[cpu]. See xen_hvm_init_shared_info
+@@ -72,6 +76,67 @@ EXPORT_SYMBOL(xen_start_flags);
+  */
+ struct shared_info *HYPERVISOR_shared_info = &xen_dummy_shared_info;
+ 
++static __ref void xen_get_vendor(void)
++{
++	init_cpu_devs();
++	cpu_detect(&boot_cpu_data);
++	get_cpu_vendor(&boot_cpu_data);
++}
++
++void xen_hypercall_setfunc(void)
++{
++	if (static_call_query(xen_hypercall) != xen_hypercall_hvm)
++		return;
++
++	if ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++	     boot_cpu_data.x86_vendor == X86_VENDOR_HYGON))
++		static_call_update(xen_hypercall, xen_hypercall_amd);
++	else
++		static_call_update(xen_hypercall, xen_hypercall_intel);
++}
++
++/*
++ * Evaluate processor vendor in order to select the correct hypercall
++ * function for HVM/PVH guests.
++ * Might be called very early in boot before vendor has been set by
++ * early_cpu_init().
++ */
++noinstr void *__xen_hypercall_setfunc(void)
++{
++	void (*func)(void);
++
++	/*
++	 * Xen is supported only on CPUs with CPUID, so testing for
++	 * X86_FEATURE_CPUID is a test for early_cpu_init() having been
++	 * run.
++	 *
++	 * Note that __xen_hypercall_setfunc() is noinstr only due to a nasty
++	 * dependency chain: it is being called via the xen_hypercall static
++	 * call when running as a PVH or HVM guest. Hypercalls need to be
++	 * noinstr due to PV guests using hypercalls in noinstr code. So we
++	 * can safely tag the function body as "instrumentation ok", since
++	 * the PV guest requirement is not of interest here (xen_get_vendor()
++	 * calls noinstr functions, and static_call_update_early() might do
++	 * so, too).
++	 */
++	instrumentation_begin();
++
++	if (!boot_cpu_has(X86_FEATURE_CPUID))
++		xen_get_vendor();
++
++	if ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++	     boot_cpu_data.x86_vendor == X86_VENDOR_HYGON))
++		func = xen_hypercall_amd;
++	else
++		func = xen_hypercall_intel;
++
++	static_call_update_early(xen_hypercall, func);
++
++	instrumentation_end();
++
++	return func;
++}
++
+ static int xen_cpu_up_online(unsigned int cpu)
  {
- 	u32 val = ioread32(coma_addr + RCEC);
+ 	xen_init_lock_cpu(cpu);
+--- a/arch/x86/xen/enlighten_hvm.c
++++ b/arch/x86/xen/enlighten_hvm.c
+@@ -299,6 +299,10 @@ static uint32_t __init xen_platform_hvm(
+ 	if (xen_pv_domain())
+ 		return 0;
  
-@@ -65,7 +66,8 @@ static bool rswitch_agent_clock_is_enabled(void __iomem *coma_addr, int port)
- 		return false;
- }
++	/* Set correct hypercall function. */
++	if (xen_domain)
++		xen_hypercall_setfunc();
++
+ 	if (xen_pvh_domain() && nopv) {
+ 		/* Guest booting via the Xen-PVH boot entry goes here */
+ 		pr_info("\"nopv\" parameter is ignored in PVH guest\n");
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -1248,6 +1248,9 @@ asmlinkage __visible void __init xen_sta
  
--static void rswitch_agent_clock_ctrl(void __iomem *coma_addr, int port, int enable)
-+static void rswitch_agent_clock_ctrl(void __iomem *coma_addr, unsigned int port,
-+				     int enable)
- {
- 	u32 val;
+ 	xen_domain_type = XEN_PV_DOMAIN;
+ 	xen_start_flags = xen_start_info->flags;
++	/* Interrupts are guaranteed to be off initially. */
++	early_boot_irqs_disabled = true;
++	static_call_update_early(xen_hypercall, xen_hypercall_pv);
  
-@@ -99,7 +101,7 @@ static void rswitch_coma_init(struct rswitch_private *priv)
- /* R-Switch-2 block (TOP) */
- static void rswitch_top_init(struct rswitch_private *priv)
- {
--	int i;
-+	unsigned int i;
+ 	xen_setup_features();
  
- 	for (i = 0; i < RSWITCH_MAX_NUM_QUEUES; i++)
- 		iowrite32((i / 16) << (GWCA_INDEX * 8), priv->addr + TPEMIMC7(i));
-@@ -108,7 +110,7 @@ static void rswitch_top_init(struct rswitch_private *priv)
- /* Forwarding engine block (MFWD) */
- static void rswitch_fwd_init(struct rswitch_private *priv)
- {
--	int i;
-+	unsigned int i;
+@@ -1340,7 +1343,6 @@ asmlinkage __visible void __init xen_sta
+ 	WARN_ON(xen_cpuhp_setup(xen_cpu_up_prepare_pv, xen_cpu_dead_pv));
  
- 	/* For ETHA */
- 	for (i = 0; i < RSWITCH_NUM_PORTS; i++) {
-@@ -165,7 +167,7 @@ static int rswitch_gwca_axi_ram_reset(struct rswitch_private *priv)
- static bool rswitch_is_any_data_irq(struct rswitch_private *priv, u32 *dis, bool tx)
- {
- 	u32 *mask = tx ? priv->gwca.tx_irq_bits : priv->gwca.rx_irq_bits;
--	int i;
-+	unsigned int i;
+ 	local_irq_disable();
+-	early_boot_irqs_disabled = true;
  
- 	for (i = 0; i < RSWITCH_NUM_IRQ_REGS; i++) {
- 		if (dis[i] & mask[i])
-@@ -177,7 +179,7 @@ static bool rswitch_is_any_data_irq(struct rswitch_private *priv, u32 *dis, bool
+ 	xen_raw_console_write("mapping kernel into physical memory\n");
+ 	xen_setup_kernel_pagetable((pgd_t *)xen_start_info->pt_base,
+--- a/arch/x86/xen/xen-asm.S
++++ b/arch/x86/xen/xen-asm.S
+@@ -20,10 +20,33 @@
  
- static void rswitch_get_data_irq_status(struct rswitch_private *priv, u32 *dis)
- {
--	int i;
-+	unsigned int i;
+ #include <linux/init.h>
+ #include <linux/linkage.h>
++#include <linux/objtool.h>
+ #include <../entry/calling.h>
  
- 	for (i = 0; i < RSWITCH_NUM_IRQ_REGS; i++) {
- 		dis[i] = ioread32(priv->addr + GWDIS(i));
-@@ -185,23 +187,26 @@ static void rswitch_get_data_irq_status(struct rswitch_private *priv, u32 *dis)
- 	}
- }
+ .pushsection .noinstr.text, "ax"
+ /*
++ * PV hypercall interface to the hypervisor.
++ *
++ * Called via inline asm(), so better preserve %rcx and %r11.
++ *
++ * Input:
++ *	%eax: hypercall number
++ *	%rdi, %rsi, %rdx, %r10, %r8: args 1..5 for the hypercall
++ * Output: %rax
++ */
++SYM_FUNC_START(xen_hypercall_pv)
++	ANNOTATE_NOENDBR
++	push %rcx
++	push %r11
++	UNWIND_HINT_SAVE
++	syscall
++	UNWIND_HINT_RESTORE
++	pop %r11
++	pop %rcx
++	RET
++SYM_FUNC_END(xen_hypercall_pv)
++
++/*
+  * Disabling events is simply a matter of making the event mask
+  * non-zero.
+  */
+--- a/arch/x86/xen/xen-head.S
++++ b/arch/x86/xen/xen-head.S
+@@ -6,9 +6,11 @@
  
--static void rswitch_enadis_data_irq(struct rswitch_private *priv, int index, bool enable)
-+static void rswitch_enadis_data_irq(struct rswitch_private *priv,
-+				    unsigned int index, bool enable)
- {
- 	u32 offs = enable ? GWDIE(index / 32) : GWDID(index / 32);
+ #include <linux/elfnote.h>
+ #include <linux/init.h>
++#include <linux/instrumentation.h>
  
- 	iowrite32(BIT(index % 32), priv->addr + offs);
- }
+ #include <asm/boot.h>
+ #include <asm/asm.h>
++#include <asm/frame.h>
+ #include <asm/msr.h>
+ #include <asm/page_types.h>
+ #include <asm/percpu.h>
+@@ -80,6 +82,87 @@ SYM_CODE_END(asm_cpu_bringup_and_idle)
+ #endif
+ #endif
  
--static void rswitch_ack_data_irq(struct rswitch_private *priv, int index)
-+static void rswitch_ack_data_irq(struct rswitch_private *priv,
-+				 unsigned int index)
- {
- 	u32 offs = GWDIS(index / 32);
++	.pushsection .noinstr.text, "ax"
++/*
++ * Xen hypercall interface to the hypervisor.
++ *
++ * Input:
++ *     %eax: hypercall number
++ *   32-bit:
++ *     %ebx, %ecx, %edx, %esi, %edi: args 1..5 for the hypercall
++ *   64-bit:
++ *     %rdi, %rsi, %rdx, %r10, %r8: args 1..5 for the hypercall
++ * Output: %[er]ax
++ */
++SYM_FUNC_START(xen_hypercall_hvm)
++	ENDBR
++	FRAME_BEGIN
++	/* Save all relevant registers (caller save and arguments). */
++#ifdef CONFIG_X86_32
++	push %eax
++	push %ebx
++	push %ecx
++	push %edx
++	push %esi
++	push %edi
++#else
++	push %rax
++	push %rcx
++	push %rdx
++	push %rdi
++	push %rsi
++	push %r11
++	push %r10
++	push %r9
++	push %r8
++#ifdef CONFIG_FRAME_POINTER
++	pushq $0	/* Dummy push for stack alignment. */
++#endif
++#endif
++	/* Set the vendor specific function. */
++	call __xen_hypercall_setfunc
++	/* Set ZF = 1 if AMD, Restore saved registers. */
++#ifdef CONFIG_X86_32
++	lea xen_hypercall_amd, %ebx
++	cmp %eax, %ebx
++	pop %edi
++	pop %esi
++	pop %edx
++	pop %ecx
++	pop %ebx
++	pop %eax
++#else
++	lea xen_hypercall_amd(%rip), %rbx
++	cmp %rax, %rbx
++#ifdef CONFIG_FRAME_POINTER
++	pop %rax	/* Dummy pop. */
++#endif
++	pop %r8
++	pop %r9
++	pop %r10
++	pop %r11
++	pop %rsi
++	pop %rdi
++	pop %rdx
++	pop %rcx
++	pop %rax
++#endif
++	/* Use correct hypercall function. */
++	jz xen_hypercall_amd
++	jmp xen_hypercall_intel
++SYM_FUNC_END(xen_hypercall_hvm)
++
++SYM_FUNC_START(xen_hypercall_amd)
++	vmmcall
++	RET
++SYM_FUNC_END(xen_hypercall_amd)
++
++SYM_FUNC_START(xen_hypercall_intel)
++	vmcall
++	RET
++SYM_FUNC_END(xen_hypercall_intel)
++	.popsection
++
+ 	ELFNOTE(Xen, XEN_ELFNOTE_GUEST_OS,       .asciz "linux")
+ 	ELFNOTE(Xen, XEN_ELFNOTE_GUEST_VERSION,  .asciz "2.6")
+ 	ELFNOTE(Xen, XEN_ELFNOTE_XEN_VERSION,    .asciz "xen-3.0")
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -162,4 +162,13 @@ void xen_hvm_post_suspend(int suspend_ca
+ static inline void xen_hvm_post_suspend(int suspend_cancelled) {}
+ #endif
  
- 	iowrite32(BIT(index % 32), priv->addr + offs);
- }
- 
--static int rswitch_next_queue_index(struct rswitch_gwca_queue *gq, bool cur, int num)
-+static unsigned int rswitch_next_queue_index(struct rswitch_gwca_queue *gq,
-+					     bool cur, unsigned int num)
- {
--	int index = cur ? gq->cur : gq->dirty;
-+	unsigned int index = cur ? gq->cur : gq->dirty;
- 
- 	if (index + num >= gq->ring_size)
- 		index = (index + num) % gq->ring_size;
-@@ -211,7 +216,7 @@ static int rswitch_next_queue_index(struct rswitch_gwca_queue *gq, bool cur, int
- 	return index;
- }
- 
--static int rswitch_get_num_cur_queues(struct rswitch_gwca_queue *gq)
-+static unsigned int rswitch_get_num_cur_queues(struct rswitch_gwca_queue *gq)
- {
- 	if (gq->cur >= gq->dirty)
- 		return gq->cur - gq->dirty;
-@@ -230,9 +235,10 @@ static bool rswitch_is_queue_rxed(struct rswitch_gwca_queue *gq)
- }
- 
- static int rswitch_gwca_queue_alloc_skb(struct rswitch_gwca_queue *gq,
--					int start_index, int num)
-+					unsigned int start_index,
-+					unsigned int num)
- {
--	int i, index;
-+	unsigned int i, index;
- 
- 	for (i = 0; i < num; i++) {
- 		index = (i + start_index) % gq->ring_size;
-@@ -247,7 +253,7 @@ static int rswitch_gwca_queue_alloc_skb(struct rswitch_gwca_queue *gq,
- 	return 0;
- 
- err:
--	for (i--; i >= 0; i--) {
-+	for (; i-- > 0; ) {
- 		index = (i + start_index) % gq->ring_size;
- 		dev_kfree_skb(gq->skbs[index]);
- 		gq->skbs[index] = NULL;
-@@ -259,7 +265,7 @@ static int rswitch_gwca_queue_alloc_skb(struct rswitch_gwca_queue *gq,
- static void rswitch_gwca_queue_free(struct net_device *ndev,
- 				    struct rswitch_gwca_queue *gq)
- {
--	int i;
-+	unsigned int i;
- 
- 	if (!gq->dir_tx) {
- 		dma_free_coherent(ndev->dev.parent,
-@@ -293,9 +299,9 @@ static void rswitch_gwca_ts_queue_free(struct rswitch_private *priv)
- static int rswitch_gwca_queue_alloc(struct net_device *ndev,
- 				    struct rswitch_private *priv,
- 				    struct rswitch_gwca_queue *gq,
--				    bool dir_tx, int ring_size)
-+				    bool dir_tx, unsigned int ring_size)
- {
--	int i, bit;
-+	unsigned int i, bit;
- 
- 	gq->dir_tx = dir_tx;
- 	gq->ring_size = ring_size;
-@@ -350,11 +356,11 @@ static int rswitch_gwca_queue_format(struct net_device *ndev,
- 				     struct rswitch_private *priv,
- 				     struct rswitch_gwca_queue *gq)
- {
--	int ring_size = sizeof(struct rswitch_ext_desc) * gq->ring_size;
-+	unsigned int ring_size = sizeof(struct rswitch_ext_desc) * gq->ring_size;
- 	struct rswitch_ext_desc *desc;
- 	struct rswitch_desc *linkfix;
- 	dma_addr_t dma_addr;
--	int i;
-+	unsigned int i;
- 
- 	memset(gq->tx_ring, 0, ring_size);
- 	for (i = 0, desc = gq->tx_ring; i < gq->ring_size; i++, desc++) {
-@@ -386,7 +392,7 @@ static int rswitch_gwca_queue_format(struct net_device *ndev,
- 
- err:
- 	if (!gq->dir_tx) {
--		for (i--, desc = gq->tx_ring; i >= 0; i--, desc++) {
-+		for (desc = gq->tx_ring; i-- > 0; desc++) {
- 			dma_addr = rswitch_desc_get_dptr(&desc->desc);
- 			dma_unmap_single(ndev->dev.parent, dma_addr, PKT_BUF_SZ,
- 					 DMA_FROM_DEVICE);
-@@ -397,11 +403,12 @@ static int rswitch_gwca_queue_format(struct net_device *ndev,
- }
- 
- static void rswitch_gwca_ts_queue_fill(struct rswitch_private *priv,
--				       int start_index, int num)
-+				       unsigned int start_index,
-+				       unsigned int num)
- {
- 	struct rswitch_gwca_queue *gq = &priv->gwca.ts_queue;
- 	struct rswitch_ts_desc *desc;
--	int i, index;
-+	unsigned int i, index;
- 
- 	for (i = 0; i < num; i++) {
- 		index = (i + start_index) % gq->ring_size;
-@@ -412,12 +419,13 @@ static void rswitch_gwca_ts_queue_fill(struct rswitch_private *priv,
- 
- static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
- 					  struct rswitch_gwca_queue *gq,
--					  int start_index, int num)
-+					  unsigned int start_index,
-+					  unsigned int num)
- {
- 	struct rswitch_device *rdev = netdev_priv(ndev);
- 	struct rswitch_ext_ts_desc *desc;
-+	unsigned int i, index;
- 	dma_addr_t dma_addr;
--	int i, index;
- 
- 	for (i = 0; i < num; i++) {
- 		index = (i + start_index) % gq->ring_size;
-@@ -443,7 +451,7 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
- 
- err:
- 	if (!gq->dir_tx) {
--		for (i--; i >= 0; i--) {
-+		for (; i-- > 0; ) {
- 			index = (i + start_index) % gq->ring_size;
- 			desc = &gq->rx_ring[index];
- 			dma_addr = rswitch_desc_get_dptr(&desc->desc);
-@@ -459,7 +467,7 @@ static int rswitch_gwca_queue_ext_ts_format(struct net_device *ndev,
- 					    struct rswitch_private *priv,
- 					    struct rswitch_gwca_queue *gq)
- {
--	int ring_size = sizeof(struct rswitch_ext_ts_desc) * gq->ring_size;
-+	unsigned int ring_size = sizeof(struct rswitch_ext_ts_desc) * gq->ring_size;
- 	struct rswitch_ext_ts_desc *desc;
- 	struct rswitch_desc *linkfix;
- 	int err;
-@@ -486,7 +494,7 @@ static int rswitch_gwca_queue_ext_ts_format(struct net_device *ndev,
- 
- static int rswitch_gwca_linkfix_alloc(struct rswitch_private *priv)
- {
--	int i, num_queues = priv->gwca.num_queues;
-+	unsigned int i, num_queues = priv->gwca.num_queues;
- 	struct rswitch_gwca *gwca = &priv->gwca;
- 	struct device *dev = &priv->pdev->dev;
- 
-@@ -536,7 +544,7 @@ static int rswitch_gwca_ts_queue_alloc(struct rswitch_private *priv)
- static struct rswitch_gwca_queue *rswitch_gwca_get(struct rswitch_private *priv)
- {
- 	struct rswitch_gwca_queue *gq;
--	int index;
-+	unsigned int index;
- 
- 	index = find_first_zero_bit(priv->gwca.used, priv->gwca.num_queues);
- 	if (index >= priv->gwca.num_queues)
-@@ -582,7 +590,7 @@ static void rswitch_txdmac_free(struct net_device *ndev)
- 	rswitch_gwca_put(rdev->priv, rdev->tx_queue);
- }
- 
--static int rswitch_txdmac_init(struct rswitch_private *priv, int index)
-+static int rswitch_txdmac_init(struct rswitch_private *priv, unsigned int index)
- {
- 	struct rswitch_device *rdev = priv->rdev[index];
- 
-@@ -616,7 +624,7 @@ static void rswitch_rxdmac_free(struct net_device *ndev)
- 	rswitch_gwca_put(rdev->priv, rdev->rx_queue);
- }
- 
--static int rswitch_rxdmac_init(struct rswitch_private *priv, int index)
-+static int rswitch_rxdmac_init(struct rswitch_private *priv, unsigned int index)
- {
- 	struct rswitch_device *rdev = priv->rdev[index];
- 	struct net_device *ndev = rdev->ndev;
-@@ -626,7 +634,8 @@ static int rswitch_rxdmac_init(struct rswitch_private *priv, int index)
- 
- static int rswitch_gwca_hw_init(struct rswitch_private *priv)
- {
--	int i, err;
-+	unsigned int i;
-+	int err;
- 
- 	err = rswitch_gwca_change_mode(priv, GWMC_OPC_DISABLE);
- 	if (err < 0)
-@@ -697,9 +706,10 @@ static bool rswitch_rx(struct net_device *ndev, int *quota)
- 	struct rswitch_device *rdev = netdev_priv(ndev);
- 	struct rswitch_gwca_queue *gq = rdev->rx_queue;
- 	struct rswitch_ext_ts_desc *desc;
--	int limit, boguscnt, num, ret;
-+	int limit, boguscnt, ret;
- 	struct sk_buff *skb;
- 	dma_addr_t dma_addr;
-+	unsigned int num;
- 	u16 pkt_len;
- 	u32 get_ts;
- 
-@@ -767,7 +777,7 @@ static void rswitch_tx_free(struct net_device *ndev)
- 	struct rswitch_ext_desc *desc;
- 	dma_addr_t dma_addr;
- 	struct sk_buff *skb;
--	int size;
-+	unsigned int size;
- 
- 	for (; rswitch_get_num_cur_queues(gq) > 0;
- 	     gq->dirty = rswitch_next_queue_index(gq, false, 1)) {
-@@ -846,7 +856,7 @@ static void rswitch_queue_interrupt(struct net_device *ndev)
- static irqreturn_t rswitch_data_irq(struct rswitch_private *priv, u32 *dis)
- {
- 	struct rswitch_gwca_queue *gq;
--	int i, index, bit;
-+	unsigned int i, index, bit;
- 
- 	for (i = 0; i < priv->gwca.num_queues; i++) {
- 		gq = &priv->gwca.queues[i];
-@@ -913,8 +923,8 @@ static void rswitch_ts(struct rswitch_private *priv)
- 	struct skb_shared_hwtstamps shhwtstamps;
- 	struct rswitch_ts_desc *desc;
- 	struct timespec64 ts;
-+	unsigned int num;
- 	u32 tag, port;
--	int num;
- 
- 	desc = &gq->ts_ring[gq->cur];
- 	while ((desc->desc.die_dt & DT_MASK) != DT_FEMPTY_ND) {
-@@ -1431,7 +1441,7 @@ static int rswitch_ether_port_init_all(struct rswitch_private *priv)
- 
- static void rswitch_ether_port_deinit_all(struct rswitch_private *priv)
- {
--	int i;
-+	unsigned int i;
- 
- 	for (i = 0; i < RSWITCH_NUM_PORTS; i++) {
- 		phy_exit(priv->rdev[i]->serdes);
-@@ -1686,7 +1696,7 @@ static const struct of_device_id renesas_eth_sw_of_table[] = {
- };
- MODULE_DEVICE_TABLE(of, renesas_eth_sw_of_table);
- 
--static void rswitch_etha_init(struct rswitch_private *priv, int index)
-+static void rswitch_etha_init(struct rswitch_private *priv, unsigned int index)
- {
- 	struct rswitch_etha *etha = &priv->etha[index];
- 
-@@ -1702,7 +1712,7 @@ static void rswitch_etha_init(struct rswitch_private *priv, int index)
- 	etha->psmcs = clk_get_rate(priv->clk) / 100000 / (25 * 2) - 1;
- }
- 
--static int rswitch_device_alloc(struct rswitch_private *priv, int index)
-+static int rswitch_device_alloc(struct rswitch_private *priv, unsigned int index)
- {
- 	struct platform_device *pdev = priv->pdev;
- 	struct rswitch_device *rdev;
-@@ -1773,7 +1783,7 @@ static int rswitch_device_alloc(struct rswitch_private *priv, int index)
- 	return err;
- }
- 
--static void rswitch_device_free(struct rswitch_private *priv, int index)
-+static void rswitch_device_free(struct rswitch_private *priv, unsigned int index)
- {
- 	struct rswitch_device *rdev = priv->rdev[index];
- 	struct net_device *ndev = rdev->ndev;
-diff --git a/drivers/net/ethernet/renesas/rswitch.h b/drivers/net/ethernet/renesas/rswitch.h
-index 04f49a7a5843..542328959530 100644
---- a/drivers/net/ethernet/renesas/rswitch.h
-+++ b/drivers/net/ethernet/renesas/rswitch.h
-@@ -909,7 +909,7 @@ struct rswitch_ext_ts_desc {
- } __packed;
- 
- struct rswitch_etha {
--	int index;
-+	unsigned int index;
- 	void __iomem *addr;
- 	void __iomem *coma_addr;
- 	bool external_phy;
-@@ -938,12 +938,12 @@ struct rswitch_gwca_queue {
- 
- 	/* Common */
- 	dma_addr_t ring_dma;
--	int ring_size;
--	int cur;
--	int dirty;
-+	unsigned int ring_size;
-+	unsigned int cur;
-+	unsigned int dirty;
- 
--	/* For [rt]_ring */
--	int index;
-+	/* For [rt]x_ring */
-+	unsigned int index;
- 	bool dir_tx;
- 	struct sk_buff **skbs;
- 	struct net_device *ndev;	/* queue to ndev for irq */
-@@ -959,7 +959,7 @@ struct rswitch_gwca_ts_info {
- 
- #define RSWITCH_NUM_IRQ_REGS	(RSWITCH_MAX_NUM_QUEUES / BITS_PER_TYPE(u32))
- struct rswitch_gwca {
--	int index;
-+	unsigned int index;
- 	struct rswitch_desc *linkfix_table;
- 	dma_addr_t linkfix_table_dma;
- 	u32 linkfix_table_size;
--- 
-2.39.5
-
++#ifdef CONFIG_XEN_PV
++void xen_hypercall_pv(void);
++#endif
++void xen_hypercall_hvm(void);
++void xen_hypercall_amd(void);
++void xen_hypercall_intel(void);
++void xen_hypercall_setfunc(void);
++void *__xen_hypercall_setfunc(void);
++
+ #endif /* XEN_OPS_H */
 
 
 
