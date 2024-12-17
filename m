@@ -1,166 +1,145 @@
-Return-Path: <stable+bounces-104500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36149F4C54
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:33:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747AC9F4C83
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC6C163339
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:25:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3BEA188CA7E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996021F3D47;
-	Tue, 17 Dec 2024 13:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85021F3D5D;
+	Tue, 17 Dec 2024 13:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fgaT1Tki"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="f/58Wh/2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAC71F2360
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 13:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7245C1F3D41;
+	Tue, 17 Dec 2024 13:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734441943; cv=none; b=jw49ZXmG4X4pkxUg+wQOgT2jYBf/grs4jg1JcB44cQb/jxPIM3dSn+zp7q7kx8EQOAqc7COIinFDEnqF7dWjIQ5F4Pq3Vv0usBOz3xPB9CcKhS7KjpSgQj0nq3CqYJmzyer/BZXpmiQ8XaIjW81xgHP/rh+VONqrhaMDNpCfwnI=
+	t=1734442427; cv=none; b=TMD3s9flZgG5+EOYGa89D0iqP48b35amd4XAxZOdNPKqPxXFm9ZA+1vrQxqPLFPKIhMwRT6bxGjPesXjQL6lKgVuTu4m+G6saDHQsvaeRfRlZxyZSiDbLReZi+ZVFnf7SRMyzCzaS2tJNLKbSOc6OaSESs0ST2cDH0lMobrz5zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734441943; c=relaxed/simple;
-	bh=H51U4YGf/B8HFpwpmbxRVfwUHVnxk/+GoC49FtzGj+E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fH6uwc4ctF82vcrwRnNTeVDmwELc0ZapAChiVeXhA3PWI4ham+xZML5/5s5bhHsQbvlStbVGmmHzmeNWE9D2toDMVi6iuKJE33IUWvnoxBgJ+8MHWpQQwJ7dJHGUmh2WtBJWPEc2eHukWfIv0ZozLqQL0e1k+t1sorjTRm28RDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=google.com; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=fgaT1Tki; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4679b5c66d0so203591cf.1
-        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 05:25:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1734441941; x=1735046741; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=H51U4YGf/B8HFpwpmbxRVfwUHVnxk/+GoC49FtzGj+E=;
-        b=fgaT1Tki7LfUtSCyzIDSO8O+up4yVeY2oBPpR/QJ8nebZZmEC8HGvVuoehcUOeQ/vM
-         UN1JLm5v05byaMo4IlcmJcbJusj4U/HJkOaa9ECXxUgk4UAyjEGmSCeekoJRn5+r2Cu4
-         N+N0m2bEGTVCGvmU/dE1IcRSFbxf8+wlM1YDM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734441941; x=1735046741;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H51U4YGf/B8HFpwpmbxRVfwUHVnxk/+GoC49FtzGj+E=;
-        b=JRFkL/ctUm0j/w4+qNYDdWCFrf3WKI4jv/Dx/332YrkzEIIR37Bl9XZFSYQXmm8xnT
-         kSeqcgKqWubaJVz6czFOL+KlrruHOxZru80k5AKPb+XgfwI7WH1c/IeU4YirKCS6w9A0
-         cXJRXM3YAOS+ecMWR7n9Raeefl2XuKigamaptu64B6u9tiHyJu50Ao7N5/dfMlqdWjI0
-         +OjDXxuHmxjMh5jcRV3rVy/1aPJYuWOE+FsqCoplHMxLav7kmZExeHuTakXRFpbr2kTF
-         mFq0ozTRByKDTuk/PiIH4uiETUlXFZeMr6xvl20jbNdrGJ9v7uy7mB0IAACEx/l9A0ry
-         KWyw==
-X-Forwarded-Encrypted: i=1; AJvYcCXMDpTKVr1/8U/xqX0rF08flbsGwtCRgf4Ni4OR8TSqpf96eFaF0mTpBF0Hx7DlC+j+szDYNMM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxXkxxwLPm42lE9dteOFxOVmnv8qzRTWyHNmQb+Sd0T5NrW1oT
-	8MC+8//oqHCi4qgBtRCFowfVkp/0vNKGojwUh3OvmSO8sw8dW0WUKWxIMrpPi4YHbRBn8U4+FT+
-	AZN969rhT447yn7tmNXHAXOl9DRnN2JMU8tBp
-X-Gm-Gg: ASbGncsD1RAcui+R3OgZLOm5pbA8i7LCejlJRPA+2n4PPUecLM6vD4EAjC2amVHGFoW
-	lLDyxgJPjrcTHKZqqvV8ZE96YShdwws3UhBwaaPGJmiriIXrwzw/kZdLzxh05W4ckC3PW
-X-Google-Smtp-Source: AGHT+IGJW+l9zXfMUaeo40XK+7bPUSnqauK+Az+lGUzluD+yQ/VlTXkwH2X6x8KUeaEMIrTECPFcD4EfU3yVGGK8l9A=
-X-Received: by 2002:a05:622a:20b:b0:466:8a29:9de7 with SMTP id
- d75a77b69052e-468f96fac57mr3950571cf.12.1734441940466; Tue, 17 Dec 2024
- 05:25:40 -0800 (PST)
+	s=arc-20240116; t=1734442427; c=relaxed/simple;
+	bh=YT3+ZFz9l1fk8kwTZgau3x62xAYstfOl9sQbSIveHI0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tUqWsydbxiZfN7lm5lFY8OKK8bfcwFdafVhkkJcRyS1C5fRkMKQulRIpvDfB8Ix4NT9sAgxdKlJWgnXJhmTMoz4emZ9E0P6eEmp6o+atLdd+h2pAyDTXSfK7RcqmGd35GEn8Y50tFGoZwzL61v/kVjv7BQUZcRbSY6Wpskapb6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=f/58Wh/2; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8C3284C7;
+	Tue, 17 Dec 2024 14:33:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1734442385;
+	bh=YT3+ZFz9l1fk8kwTZgau3x62xAYstfOl9sQbSIveHI0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f/58Wh/2eCMpGT5V8MWyxwDepQUft8sMLoMR9vrYC/sLtP1xEHAAgyviRqBqrv7d1
+	 bEWZsokzkVjFNg8VLMoGEfVa1ENX1cvS2T3ALrUNSJnMCC2T+dh92y40LQZn21579X
+	 3mwf4FVuz4Ky/QZFg+btD5AeNYvd7aJxl7heXtNs=
+Message-ID: <aa858619-56f6-4d3a-b27d-f38cbfa57d98@ideasonboard.com>
+Date: Tue, 17 Dec 2024 15:33:37 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241214005248.198803-1-dianders@chromium.org>
- <20241213165201.v2.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
- <CAODwPW_c+Ycu_zhiDOKN-fH2FEWf2pxr+FcugpqEjLX-nVjQrg@mail.gmail.com> <CAD=FV=UHBA7zXZEw3K6TRpZEN-ApOkmymhRCOkz7h+yrAkR_Dw@mail.gmail.com>
-In-Reply-To: <CAD=FV=UHBA7zXZEw3K6TRpZEN-ApOkmymhRCOkz7h+yrAkR_Dw@mail.gmail.com>
-From: Julius Werner <jwerner@chromium.org>
-Date: Tue, 17 Dec 2024 14:25:27 +0100
-Message-ID: <CAODwPW8s4GhWGuZMUbWVNLYw_EVJe=EeMDacy1hxDLmnthwoFg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] arm64: errata: Assume that unknown CPUs _are_
- vulnerable to Spectre BHB
-To: Doug Anderson <dianders@chromium.org>
-Cc: Julius Werner <jwerner@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, linux-arm-msm@vger.kernel.org, 
-	Jeffrey Hugo <quic_jhugo@quicinc.com>, linux-arm-kernel@lists.infradead.org, 
-	Roxana Bradescu <roxabee@google.com>, Trilok Soni <quic_tsoni@quicinc.com>, 
-	bjorn.andersson@oss.qualcomm.com, stable@vger.kernel.org, 
-	James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/7] drm: Add DSI/DP support for Renesas r8a779h0 V4M
+ and grey-hawk board
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, LUU HOAI <hoai.luu.ub@renesas.com>,
+ Jagan Teki <jagan@amarulasolutions.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Biju Das <biju.das.jz@bp.renesas.com>
+Cc: dri-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ linux-clk@vger.kernel.org, stable@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20241217-rcar-gh-dsi-v5-0-e77421093c05@ideasonboard.com>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <20241217-rcar-gh-dsi-v5-0-e77421093c05@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> > - Refactor max_bhb_k in spectre_bhb_loop_affected() to be a global
-> > instead, which starts out as zero, is updated by
-> > spectre_bhb_loop_affected(), and is directly read by
-> > spectre_bhb_patch_loop_iter() (could probably remove the `scope`
-> > argument from spectre_bhb_loop_affected() then).
->
-> Refactoring "max_bhb_k" would be a general cleanup and not related to
-> anything else here, right?
->
-> ...but the function is_spectre_bhb_affected() is called from
-> "cpu_errata.c" and has a scope. Can we guarantee that it's always
-> "SCOPE_LOCAL_CPU"? I tried reading through the code and it's
-> _probably_ SCOPE_LOCAL_CPU most of the time, but it doesn't seem worth
-> it to add an assumption here for a small cleanup.
->
-> I'm not going to do this, though I will move "max_bhb_k" to be a
-> global for the suggestion below.
+Hi all,
 
-If you make max_bhb_k a global, then whether you change all
-`spectre_bhb_loop_affected(SCOPE_SYSTEM)` calls to read the global
-directly or whether you keep it such that
-`spectre_bhb_loop_affected()` simply returns that global for
-SCOPE_SYSTEM makes no difference. I just think reading the global
-directly would look a bit cleaner. Calling a function that's called
-"...affected()" when you're really just trying to find out the K-value
-feels a bit odd.
+On 17/12/2024 07:31, Tomi Valkeinen wrote:
+> Add everything needed to support the DSI output on Renesas r8a779h0
+> (V4M) SoC, and the DP output (via sn65dsi86 DSI to DP bridge) on the
+> Renesas grey-hawk board.
+> 
+> Overall the DSI and the board design is almost identical to Renesas
+> r8a779g0 and white-hawk board.
+> 
+> Note: the v4 no longer has the dts and the clk patches, as those have
+> been merged to renesas-devel.
+> 
 
-For is_spectre_bhb_affected(), I was assuming the change below where
-you combine all the `return true` paths, so the scope question
-wouldn't matter there.
+I have pushed this to drm-misc-next. Thank you all for the reviews!
 
-> > - Change the `return false` into `return true` at the end of
-> > is_spectre_bhb_affected (in fact, you can probably take out some of
-> > the other calls that result in returning true as well then)
->
-> I'm not sure you can take out the other calls. Specifically, both
-> spectre_bhb_loop_affected() and is_spectre_bhb_fw_affected() _need_ to
-> be called for each CPU so that they update static globals, right?
-> Maybe we could get rid of the call to supports_clearbhb(), but that
-> _would_ change things in ways that are not obvious. Specifically I
-> could believe that someone could have backported "clear BHB" to their
-> core but their core is otherwise listed as "loop affected". That would
-> affect "max_bhb_k". Maybe (?) it doesn't matter in this case, but I'd
-> rather not mess with it unless someone really wants me to and is sure
-> it's safe.
+  Tomi
 
-Yes, but spectre_bhb_enable_mitigation() already calls all those
-functions on its own again anyway, so I'm pretty sure the "must be
-called once for each CPU" part of spectre_bhb_loop_affected() is
-covered by that. (Besides, it would be really awful if they had made a
-function whose name starts with is_... have critical side-effects that
-break things when it doesn't get called.)
-
-> > - In spectre_bhb_enable_mitigations(), at the end of the long if-else
-> > chain, put a last else block that prints your WARN_ONCE(), sets the
-> > max_bhb_k global to 32, and then does the same stuff that the `if
-> > (spectre_bhb_loop_affected())` block would have installed (maybe
-> > factoring that out into a helper function called from both cases).
->
-> ...or just reorder it so that the spectre_bhb_loop_affected() code is
-> last and it can be the "else". Then I can WARN_ONCE() if
-> spectre_bhb_loop_affected(). ...or I could just do the WARN_ONCE()
-> when I get to the end of is_spectre_bhb_affected() and set "max_bhb_k"
-> to 32 there. I'd actually rather do that so that "max_bhb_k" is
-> consistently set after is_spectre_bhb_affected() is called on all
-> cores regardless of whether or not some cores are unknown.
-
-Yeah, you can reorder the loops too. I don't feel like moving this
-into is_spectre_bhb_affected() would be a good idea. Functions with a
-predicate name like that really shouldn't have such side effects.
-Besides, I think is_spectre_bhb_affected() is probably called more
-often per CPU, both once from spectre_bhb_enable_mitigation() and by
-whatever calls the `matches` pointer in the cpu_errata struct.
-spectre_bhb_enable_mitigation() seems to be the function that's called
-once for each CPU on boot to install the correct mitigation, so that
-feels like the best spot to put the fallback logic to me.
 
