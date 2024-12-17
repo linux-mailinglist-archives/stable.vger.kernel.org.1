@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-104979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30FB9F545F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:41:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CD99F5343
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CDF9172126
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFD3A188BF03
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BE61F8AEB;
-	Tue, 17 Dec 2024 17:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D601F76C3;
+	Tue, 17 Dec 2024 17:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWyvfKyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6x8pRwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DDD1F8AE4;
-	Tue, 17 Dec 2024 17:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0517142E77;
+	Tue, 17 Dec 2024 17:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456705; cv=none; b=KU/4B7IZOTX2azDjNtdwR4otvBO1+ySvL2Dc6ygZSCCtNfcWr0kDx4ODnu6xSPVqyGchZA8nRLQX5uYaTj/o4XGfCIcmai6ZXCjBIjCuOMEfusN4SHMLIXuRV33BYfU0NLu1h/gbU0j/TCpSRncwmk1LCuhmNpXzSt/KcZmICDU=
+	t=1734456203; cv=none; b=uJthfy5z1pw7sIYUz/Va8wq/tn2YBCGiZtkPUl2LgFPoz67RSnqK+wihUwdzao3x0NrJ14QodnWsvLKnAVLh+tz0y4JAIh9HuY9E/IsjYW5IYzb0b52RGvAjxNSOc/QVt2mWnMcoToDI+t2WBffLgQXnDZdUnwsoqoCI4hfGB3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456705; c=relaxed/simple;
-	bh=LAy7dNM609o0hbROs+gQhf0tmAyZZpy/S/8fA9IhJbQ=;
+	s=arc-20240116; t=1734456203; c=relaxed/simple;
+	bh=0jJT6W6W8/rGR6bKL9khl757ZymMslBTunHJDh/aVH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn5vHeWJuKXAI+hu+/mkUD9cx5fOwRSaQtmjXajycEvKIOosVt28NABT/6j0p4vpJSVqXpjNJFpV+S7Evrqe0CiHn7NYr9VgstL/Kj87FW9lL72sUpvOfSibTuqU7WxF3PUD3dcQOpV9VRtHnh0Og8qaP0WOdzA5REUHveWT0aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWyvfKyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0713DC4CED3;
-	Tue, 17 Dec 2024 17:31:43 +0000 (UTC)
+	 MIME-Version; b=us9vdFPbLO0OydMmVnxkddoN/zYorpG+5o6Ks0S3oRI+vgIU3GkHUKz1cvExNzc1iGHHsk4949kyhvHoDe8xDpBtKqYnlwBTYl8C3h/7dT3FGEHK1ccy3wxGvU+H5tV9QoVmYDOLW7PUfE2Zz5voQa8k0jX65J4Fdyy1jpwqkGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6x8pRwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A51C4CED3;
+	Tue, 17 Dec 2024 17:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456704;
-	bh=LAy7dNM609o0hbROs+gQhf0tmAyZZpy/S/8fA9IhJbQ=;
+	s=korg; t=1734456202;
+	bh=0jJT6W6W8/rGR6bKL9khl757ZymMslBTunHJDh/aVH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWyvfKyrJglPYnCqUyZoc1OyUTLzucZ4YHkU01OdDkg8hNdoTct0fyy7BMz0r0o7K
-	 3/0IJ0e/FmDO1SRBwupaRFW0aTZaNDBa3pfozbntbq4MJp1tj7xJ7gbkss05DLKXzI
-	 1j6CdrPcwu4QKonZ/baA01egj8nEroQzfF0Smagw=
+	b=t6x8pRwWJDkx+kIZ77V2pAdpfhIryYaVtDrmJjBLyZBUKapruwJA5glv5rkuML+B5
+	 QrVxy5w7rbF0uMkHK/mF4e1Ek9Bv/NI1dkL5ggF5jWTZHd4HcPMMaiemqcXvnpXb0w
+	 1ZmTrtUNXad107opYH60j2Ew6son1C2Q8aSNY4L8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@idosch.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jesse Van Gavere <jesse.vangavere@scioteq.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 140/172] net, team, bonding: Add netdev_base_features helper
+Subject: [PATCH 6.6 092/109] net: dsa: microchip: KSZ9896 register regmap alignment to 32 bit boundaries
 Date: Tue, 17 Dec 2024 18:08:16 +0100
-Message-ID: <20241217170552.145444595@linuxfoundation.org>
+Message-ID: <20241217170537.235524249@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Jesse Van Gavere <jesseevg@gmail.com>
 
-[ Upstream commit d2516c3a53705f783bb6868df0f4a2b977898a71 ]
+[ Upstream commit 5af53577c64fa84da032d490b701127fe8d1a6aa ]
 
-Both bonding and team driver have logic to derive the base feature
-flags before iterating over their slave devices to refine the set
-via netdev_increment_features().
+Commit 8d7ae22ae9f8 ("net: dsa: microchip: KSZ9477 register regmap
+alignment to 32 bit boundaries") fixed an issue whereby regmap_reg_range
+did not allow writes as 32 bit words to KSZ9477 PHY registers, this fix
+for KSZ9896 is adapted from there as the same errata is present in
+KSZ9896C as "Module 5: Certain PHY registers must be written as pairs
+instead of singly" the explanation below is likewise taken from this
+commit.
 
-Add a small helper netdev_base_features() so this can be reused
-instead of having it open-coded multiple times.
+The commit provided code
+to apply "Module 6: Certain PHY registers must be written as pairs instead
+of singly" errata for KSZ9477 as this chip for certain PHY registers
+(0xN120 to 0xN13F, N=1,2,3,4,5) must be accessed as 32 bit words instead
+of 16 or 8 bit access.
+Otherwise, adjacent registers (no matter if reserved or not) are
+overwritten with 0x0.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Ido Schimmel <idosch@idosch.org>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20241210141245.327886-1-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: d064ea7fe2a2 ("bonding: Fix initial {vlan,mpls}_feature set in bond_compute_features")
+Without this patch some registers (e.g. 0x113c or 0x1134) required for 32
+bit access are out of valid regmap ranges.
+
+As a result, following error is observed and KSZ9896 is not properly
+configured:
+
+ksz-switch spi1.0: can't rmw 32bit reg 0x113c: -EIO
+ksz-switch spi1.0: can't rmw 32bit reg 0x1134: -EIO
+ksz-switch spi1.0 lan1 (uninitialized): failed to connect to PHY: -EIO
+ksz-switch spi1.0 lan1 (uninitialized): error -5 setting up PHY for tree 0, switch 0, port 0
+
+The solution is to modify regmap_reg_range to allow accesses with 4 bytes
+boundaries.
+
+Fixes: 5c844d57aa78 ("net: dsa: microchip: fix writes to phy registers >= 0x10")
+Signed-off-by: Jesse Van Gavere <jesse.vangavere@scioteq.com>
+Link: https://patch.msgid.link/20241211092932.26881-1-jesse.vangavere@scioteq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 4 +---
- drivers/net/team/team_core.c    | 3 +--
- include/linux/netdev_features.h | 7 +++++++
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c | 42 +++++++++++---------------
+ 1 file changed, 18 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 15e0f14d0d49..166910693fd7 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1520,9 +1520,7 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
- 	struct slave *slave;
- 
- 	mask = features;
--
--	features &= ~NETIF_F_ONE_FOR_ALL;
--	features |= NETIF_F_ALL_FOR_ALL;
-+	features = netdev_base_features(features);
- 
- 	bond_for_each_slave(bond, slave, iter) {
- 		features = netdev_increment_features(features,
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index 18191d5a8bd4..481c8df8842f 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -2012,8 +2012,7 @@ static netdev_features_t team_fix_features(struct net_device *dev,
- 	netdev_features_t mask;
- 
- 	mask = features;
--	features &= ~NETIF_F_ONE_FOR_ALL;
--	features |= NETIF_F_ALL_FOR_ALL;
-+	features = netdev_base_features(features);
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(port, &team->port_list, list) {
-diff --git a/include/linux/netdev_features.h b/include/linux/netdev_features.h
-index 66e7d26b70a4..11be70a7929f 100644
---- a/include/linux/netdev_features.h
-+++ b/include/linux/netdev_features.h
-@@ -253,4 +253,11 @@ static inline int find_next_netdev_feature(u64 feature, unsigned long start)
- 				 NETIF_F_GSO_UDP_TUNNEL |		\
- 				 NETIF_F_GSO_UDP_TUNNEL_CSUM)
- 
-+static inline netdev_features_t netdev_base_features(netdev_features_t features)
-+{
-+	features &= ~NETIF_F_ONE_FOR_ALL;
-+	features |= NETIF_F_ALL_FOR_ALL;
-+	return features;
-+}
-+
- #endif	/* _LINUX_NETDEV_FEATURES_H */
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 1c3f18649998..997c225dfba4 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -892,10 +892,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
+ 	regmap_reg_range(0x1030, 0x1030),
+ 	regmap_reg_range(0x1100, 0x1115),
+ 	regmap_reg_range(0x111a, 0x111f),
+-	regmap_reg_range(0x1122, 0x1127),
+-	regmap_reg_range(0x112a, 0x112b),
+-	regmap_reg_range(0x1136, 0x1139),
+-	regmap_reg_range(0x113e, 0x113f),
++	regmap_reg_range(0x1120, 0x112b),
++	regmap_reg_range(0x1134, 0x113b),
++	regmap_reg_range(0x113c, 0x113f),
+ 	regmap_reg_range(0x1400, 0x1401),
+ 	regmap_reg_range(0x1403, 0x1403),
+ 	regmap_reg_range(0x1410, 0x1417),
+@@ -922,10 +921,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
+ 	regmap_reg_range(0x2030, 0x2030),
+ 	regmap_reg_range(0x2100, 0x2115),
+ 	regmap_reg_range(0x211a, 0x211f),
+-	regmap_reg_range(0x2122, 0x2127),
+-	regmap_reg_range(0x212a, 0x212b),
+-	regmap_reg_range(0x2136, 0x2139),
+-	regmap_reg_range(0x213e, 0x213f),
++	regmap_reg_range(0x2120, 0x212b),
++	regmap_reg_range(0x2134, 0x213b),
++	regmap_reg_range(0x213c, 0x213f),
+ 	regmap_reg_range(0x2400, 0x2401),
+ 	regmap_reg_range(0x2403, 0x2403),
+ 	regmap_reg_range(0x2410, 0x2417),
+@@ -952,10 +950,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
+ 	regmap_reg_range(0x3030, 0x3030),
+ 	regmap_reg_range(0x3100, 0x3115),
+ 	regmap_reg_range(0x311a, 0x311f),
+-	regmap_reg_range(0x3122, 0x3127),
+-	regmap_reg_range(0x312a, 0x312b),
+-	regmap_reg_range(0x3136, 0x3139),
+-	regmap_reg_range(0x313e, 0x313f),
++	regmap_reg_range(0x3120, 0x312b),
++	regmap_reg_range(0x3134, 0x313b),
++	regmap_reg_range(0x313c, 0x313f),
+ 	regmap_reg_range(0x3400, 0x3401),
+ 	regmap_reg_range(0x3403, 0x3403),
+ 	regmap_reg_range(0x3410, 0x3417),
+@@ -982,10 +979,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
+ 	regmap_reg_range(0x4030, 0x4030),
+ 	regmap_reg_range(0x4100, 0x4115),
+ 	regmap_reg_range(0x411a, 0x411f),
+-	regmap_reg_range(0x4122, 0x4127),
+-	regmap_reg_range(0x412a, 0x412b),
+-	regmap_reg_range(0x4136, 0x4139),
+-	regmap_reg_range(0x413e, 0x413f),
++	regmap_reg_range(0x4120, 0x412b),
++	regmap_reg_range(0x4134, 0x413b),
++	regmap_reg_range(0x413c, 0x413f),
+ 	regmap_reg_range(0x4400, 0x4401),
+ 	regmap_reg_range(0x4403, 0x4403),
+ 	regmap_reg_range(0x4410, 0x4417),
+@@ -1012,10 +1008,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
+ 	regmap_reg_range(0x5030, 0x5030),
+ 	regmap_reg_range(0x5100, 0x5115),
+ 	regmap_reg_range(0x511a, 0x511f),
+-	regmap_reg_range(0x5122, 0x5127),
+-	regmap_reg_range(0x512a, 0x512b),
+-	regmap_reg_range(0x5136, 0x5139),
+-	regmap_reg_range(0x513e, 0x513f),
++	regmap_reg_range(0x5120, 0x512b),
++	regmap_reg_range(0x5134, 0x513b),
++	regmap_reg_range(0x513c, 0x513f),
+ 	regmap_reg_range(0x5400, 0x5401),
+ 	regmap_reg_range(0x5403, 0x5403),
+ 	regmap_reg_range(0x5410, 0x5417),
+@@ -1042,10 +1037,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
+ 	regmap_reg_range(0x6030, 0x6030),
+ 	regmap_reg_range(0x6100, 0x6115),
+ 	regmap_reg_range(0x611a, 0x611f),
+-	regmap_reg_range(0x6122, 0x6127),
+-	regmap_reg_range(0x612a, 0x612b),
+-	regmap_reg_range(0x6136, 0x6139),
+-	regmap_reg_range(0x613e, 0x613f),
++	regmap_reg_range(0x6120, 0x612b),
++	regmap_reg_range(0x6134, 0x613b),
++	regmap_reg_range(0x613c, 0x613f),
+ 	regmap_reg_range(0x6300, 0x6301),
+ 	regmap_reg_range(0x6400, 0x6401),
+ 	regmap_reg_range(0x6403, 0x6403),
 -- 
 2.39.5
 
