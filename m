@@ -1,100 +1,122 @@
-Return-Path: <stable+bounces-105074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CEB9F59DE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 23:53:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DE19F59E7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 23:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61F018935F1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 22:52:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16201189189D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 22:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CA51E009D;
-	Tue, 17 Dec 2024 22:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E231F8699;
+	Tue, 17 Dec 2024 22:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGyr2pMH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE819155CB3;
-	Tue, 17 Dec 2024 22:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A6E1D9A63
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 22:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734475947; cv=none; b=MR6/KdyhBEdzu+TB0U1RYZ+8ZlfdOUWbT+7sWBWoT4BSULdf0CCEkF9uSUcc5VxXVz22S8kZhBCv4QpxrIz9NviolMbIJrnVrNN7DRdWestXASSs+O4uU4npwZnOQ7fr66sKEs98fV6j6WnnCs2z7D5E4jlRHfNLYWbWKaHK0cQ=
+	t=1734476318; cv=none; b=DHbmWBkHfUGAxP5hpDGvX+Uas5pBos2UBtXuqo3xtzwCFgkkwLSEqQtOI+RO8sQgsLBK7l5B8kpQ1HxOFS2jlz8mo8bpsyp6PTKs2WgdhpaYBv74mcsFOnypSx0Woo+n2BRQr+IzSnc8koV5tHsVbhOWjIC7OdKm8CnCSkCe/Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734475947; c=relaxed/simple;
-	bh=Xyb0HXId3pOZNdVW9rcyiCOIr69ico/rvnIB22rWzJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r1jNZTHIseQ4KoTWzK0ueoFCT9bITmmPBaApJ3NSuQm0BklU6gkQCdb/f9+l79C4FL6gofFmIV/KaEYsMlc+W2j2lvkWazIDkh9S0T7rBcqyFbRL8Ihmqcrb2ITioCo5aMluTzaNc2MOVTHLdnD6KwL24Of8JhGfXfzmIXambiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A13BC4CED3;
-	Tue, 17 Dec 2024 22:52:25 +0000 (UTC)
-Date: Tue, 17 Dec 2024 17:53:01 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Masami
- Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton
- <akpm@linux-foundation.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] ring-buffer: Add uname to match criteria for
- persistent ring buffer
-Message-ID: <20241217175301.03d25799@gandalf.local.home>
-In-Reply-To: <CAHk-=whWfmZbwRmySSpOyYEZJgcKG3d-qheYidnwu+b+rk6THg@mail.gmail.com>
-References: <20241217173237.836878448@goodmis.org>
-	<20241217173520.314190793@goodmis.org>
-	<CAHk-=wg5Kcr=sBuZcWs90CSGbJuKy0QsLaCC5oD15gS+Hk8j1A@mail.gmail.com>
-	<20241217130454.5bb593e8@gandalf.local.home>
-	<CAHk-=whLJW1SWvJTHYmdVAL2yL=dh4RzMuxgT7rnksSpkfUVaA@mail.gmail.com>
-	<20241217133318.06f849c9@gandalf.local.home>
-	<CAHk-=wgi1z85Cs4VmxTqFiG75qzoS_h_nszg6qP1ennEpdokkw@mail.gmail.com>
-	<20241217140153.22ac28b0@gandalf.local.home>
-	<CAHk-=wgpjLhSv9_rnAGS1adekEHMHbjVFvmZEuEmVftuo2sJBw@mail.gmail.com>
-	<20241217144411.2165f73b@gandalf.local.home>
-	<CAHk-=whWfmZbwRmySSpOyYEZJgcKG3d-qheYidnwu+b+rk6THg@mail.gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1734476318; c=relaxed/simple;
+	bh=ezNdIKG5fex1vz/PMbs67WqFA9e2zxQBEQ/jnlZRIWU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CnVoojesvBamgkfhhOJgpB4FBHarVKJTMV8p7NN3YwUCIU8DyiKCri+6GALwHDeTLqMdExoXqmOLOOqllbQ5OlGodT1CJTTRJrVtEAecOShYthYkJdh+tLnk7VAnt+fbVE/9KXkhTe8oJaxmENWI93AIlNahSiL9LEUjxXVrioA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGyr2pMH; arc=none smtp.client-ip=209.85.166.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-844e61f3902so436323139f.0
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 14:58:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1734476315; x=1735081115; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VHLDHmFEFp8u1VKVXZNoakOoMfbmaJWuqMVHMF4IENY=;
+        b=XGyr2pMHKA0mJOIgd30/xpcuFIvOsYc4NOJMRebP2r5EvldfTVkkApbpM/1AajNxaz
+         w3LKvGr+ttrd3xp9422YK1WA40nnILBVF8vpfIEr3BoVSvJy6CEqfgOdAg2BcDiGtQtq
+         9DXT7sEOV1D804K3Kn8iYQSgwPwLRTNooOvgo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734476315; x=1735081115;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VHLDHmFEFp8u1VKVXZNoakOoMfbmaJWuqMVHMF4IENY=;
+        b=eZAf/f5zLy81J2jA0/OKGWATjUqx2l5lZTzbX70gfx7PlZCuwXRlNNtuv+FX3rPctp
+         qgPMm4xvIVEYQfs06TVWgUv1AmL2lC4zJAE589m2Tqt43Q7nOEMomtan++1ELfnm+uxx
+         lpwhrcrEjZoDOsMJmRK7Z1NFNkhbPAg7BdqVrqJbOhTTinbnott37ev72EQXRfsSC7sY
+         3AZTd1Mk/6xHv2JXTAmlxHX9Y+YPmSwD9mxnRF1K0BvMdCQkXj7cUiuoFUmJzwW9EKw/
+         dYGr+uSYVwDHUwigeiA2SQHY4VmlW9vUXwTY/YdHIXTqPd+yINhb5HsCdCFgQkP41PDe
+         Rodg==
+X-Forwarded-Encrypted: i=1; AJvYcCU/hcbIxp2uzA5q0vXjhOzV8VzSqgPG+McGozEjNVvNqY5dqPClI/W1+5Ne2HjNtliQ0hrIaJQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeQknN1wh3dD8hefBFZ+HQLJBllnoU+rYujCeM3tSEOF58CE+4
+	0nWymDN/kNl2nMk2o+TxfSsLLkX1FmAcvPXocx8e3If06jITzxy3m1nZ9l1S/EU=
+X-Gm-Gg: ASbGncswjALMRyro8IIuFmvgXXPIo7NauI4crQtU4A8kPpdgDzGoFvkpBmxvnljxHRS
+	QwWZeQZlnUHMhmWxxjpzGfH+kbzEbLoAojTdpFx9im70yUZ2O3SdXR6g+kwLz/sNoaee6o0kYWD
+	gzdLX0BoUTqma4SyYMNTVUM3tmpiRB+gVL/IuT8tAnBu8r5ZUwhD0uvm6zXGgQ1SIFXaOtfDQlc
+	zwrtvCRZFFvNyK/TqxbFQ+AsgmQ96tthN9JFszjmwdKb8izqhwpwkhNo3KaGIfqo+pl
+X-Google-Smtp-Source: AGHT+IFv77BQQLGIXsZCeXEiuFTtdJydsCE5cUHiEZjwmk1jeQkDKOeTOJE9aoC1yqn4HWLR4XEXrg==
+X-Received: by 2002:a05:6602:6c0a:b0:83d:e526:fde7 with SMTP id ca18e2360f4ac-847585086demr65850939f.6.1734476315338;
+        Tue, 17 Dec 2024 14:58:35 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-844f626ad4asm198570939f.16.2024.12.17.14.58.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Dec 2024 14:58:34 -0800 (PST)
+Message-ID: <02fc080e-467c-4f4f-b52e-b20ef722dbe6@linuxfoundation.org>
+Date: Tue, 17 Dec 2024 15:58:33 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/172] 6.12.6-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Tue, 17 Dec 2024 14:24:08 -0800
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On 12/17/24 10:05, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.6 release.
+> There are 172 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 19 Dec 2024 17:05:03 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.6-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-> (Aside: are those binary buffers actually exported to user space (that
-> "u32 *bin_buf, size_t size" thing), or could we fix the binary printf
-> code to really use a whole word for char/short values? The difference
-> between '%hhd' and '%d' should be how it's printed out, not how the
-> data is accessed)
+Compiled and booted on my test system. No dmesg regressions.
 
-libtraceevent is able to parse the raw trace_printk() events:
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-  https://git.kernel.org/pub/scm/libs/libtrace/libtraceevent.git/tree/src/event-parse.c#n5155
-
-The format it reads is from /sys/kernel/tracing/events/ftrace/bprint/format:
-
-name: bprint
-ID: 6
-format:
-	field:unsigned short common_type;	offset:0;	size:2;	signed:0;
-	field:unsigned char common_flags;	offset:2;	size:1;	signed:0;
-	field:unsigned char common_preempt_count;	offset:3;	size:1;	signed:0;
-	field:int common_pid;	offset:4;	size:4;	signed:1;
-
-	field:unsigned long ip;	offset:8;	size:8;	signed:0;
-	field:const char * fmt;	offset:16;	size:8;	signed:0;
-	field:u32 buf[];	offset:24;	size:0;	signed:0;
-
-print fmt: "%ps: %s", (void *)REC->ip, REC->fmt
-
-In this case, the "print fmt" is ignored.
-
-Where the buf value holds the binary storage from vbin_printf() and written
-in trace_vbprintk(). Yeah, it looks like it does depend on the arguments
-being word aligned.
-
--- Steve
+thanks,
+-- Shuah
 
