@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA1A9F5457
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0369F52B9
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85573188F6FF
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07C26188E747
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D71A1F8EF4;
-	Tue, 17 Dec 2024 17:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A5B1F867B;
+	Tue, 17 Dec 2024 17:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bai5BILm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ot7F4Eca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179581F8EE8;
-	Tue, 17 Dec 2024 17:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657A1E0493;
+	Tue, 17 Dec 2024 17:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456725; cv=none; b=huoD7igsFW/BQbKtmosW9eN5597FsPDbDU8PBMUwl2BzP+IgZ5wWNzs/k7qli82D0xFnNzhlNY0nWBMPZLgU/l/xgzZF+ZS2e0bzRa2lOLirOnhJ+RzV0pYbM4VTxs/APSTmTFsQcIjxPaK3CRUxZw3m9WhTx57QJ69/3rzBYxs=
+	t=1734455885; cv=none; b=DMhCAhbZ1KwzPJpghVvazPh4Wuy0h4aoIjdw6+3HW/z4UpGMbnAnA0/7BOk1BiWOC8jP8SEM1gO0KB4LcvdlujZqdqZUSNweBLMLqykylBiv9JY1f53y4s6q95yyk7p3RyycClWq/QByNNRJh5viXRC7J56cKStECVjpvuleSno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456725; c=relaxed/simple;
-	bh=xU78/m6yYehiIphW9PDlJNV3xbqnscOs7CCAffhcFzo=;
+	s=arc-20240116; t=1734455885; c=relaxed/simple;
+	bh=l0KHh19o9B+Y2FeQGnzP7v2XRwv34My/f0yTaur1H/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLXjQ+duPgZPJhC8wiiVco2reciHQldI9WPko7Y2KkPK58Ozbh0KKMYBcyvBYmbmbFaOHNFaXVgFlqIQNvfHUTCD0E1GjtkKxd+J/ut9n5kWwboyQoeDqLZaclWjrB2fvqZqe9y4LeLVAuaaLiLg2eA9+RmYVGu5cW/VVG8bMVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bai5BILm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B16C4CED3;
-	Tue, 17 Dec 2024 17:32:04 +0000 (UTC)
+	 MIME-Version; b=IFq1qeuqmCqCjiYjNocK2cFPuDxPNoT+Thk6rD5haDyNKO8WtUSaweYYOeY3U6ptrVLMmGT7MdZVEBzRB/fublE9uq0irUJZKVWMhCTkqmT3sonHbN9peAB5ZJkWe+2w3KriL+Z6doe9AbjWOwC/KDPeoSmiD6qtDh3S6Z2C1xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ot7F4Eca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF998C4CED3;
+	Tue, 17 Dec 2024 17:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456724;
-	bh=xU78/m6yYehiIphW9PDlJNV3xbqnscOs7CCAffhcFzo=;
+	s=korg; t=1734455885;
+	bh=l0KHh19o9B+Y2FeQGnzP7v2XRwv34My/f0yTaur1H/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bai5BILmLQFlyDUWKp8WPqr963qPD9NlBHqs5JYW+00hW7Rf11Z0shkyduOLSu8nf
-	 ccH+Laa2bvcye9J0E9iL1wGOuD89S6UVXV0dEJesQZVgsadbisq84wMxwxifQSMabm
-	 WSq2QlXyH3XzgHAqX0ecfDvr23OVTwT1hBKkSGAk=
+	b=ot7F4EcabcqORi/+6kgt5oyNeZ8TJqS+kIkr+a7XucN6Oav4kEjIyihhKruAQoson
+	 CyBYhHzhevmsEGzJKkq4oZNVYLp+EiccAYO0ZjUIdgkSjdCP5mtJVsYsPU0AAbIa53
+	 fFPg2Vuc3IrLwhyMHYLWsp6awqGULWyvCBSB9zec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/172] spi: aspeed: Fix an error handling path in aspeed_spi_[read|write]_user()
-Date: Tue, 17 Dec 2024 18:07:45 +0100
-Message-ID: <20241217170550.844947115@linuxfoundation.org>
+	Lonial Con <kongln9170@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.1 66/76] bpf: sync_linked_regs() must preserve subreg_def
+Date: Tue, 17 Dec 2024 18:07:46 +0100
+Message-ID: <20241217170529.119670094@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit c84dda3751e945a67d71cbe3af4474aad24a5794 ]
+commit e9bd9c498cb0f5843996dbe5cbce7a1836a83c70 upstream.
 
-A aspeed_spi_start_user() is not balanced by a corresponding
-aspeed_spi_stop_user().
-Add the missing call.
+Range propagation must not affect subreg_def marks, otherwise the
+following example is rewritten by verifier incorrectly when
+BPF_F_TEST_RND_HI32 flag is set:
 
-Fixes: e3228ed92893 ("spi: spi-mem: Convert Aspeed SMC driver to spi-mem")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/4052aa2f9a9ea342fa6af83fa991b55ce5d5819e.1732051814.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  0: call bpf_ktime_get_ns                   call bpf_ktime_get_ns
+  1: r0 &= 0x7fffffff       after verifier   r0 &= 0x7fffffff
+  2: w1 = w0                rewrites         w1 = w0
+  3: if w0 < 10 goto +0     -------------->  r11 = 0x2f5674a6     (r)
+  4: r1 >>= 32                               r11 <<= 32           (r)
+  5: r0 = r1                                 r1 |= r11            (r)
+  6: exit;                                   if w0 < 0xa goto pc+0
+                                             r1 >>= 32
+                                             r0 = r1
+                                             exit
+
+(or zero extension of w1 at (2) is missing for architectures that
+ require zero extension for upper register half).
+
+The following happens w/o this patch:
+- r0 is marked as not a subreg at (0);
+- w1 is marked as subreg at (2);
+- w1 subreg_def is overridden at (3) by copy_register_state();
+- w1 is read at (5) but mark_insn_zext() does not mark (2)
+  for zero extension, because w1 subreg_def is not set;
+- because of BPF_F_TEST_RND_HI32 flag verifier inserts random
+  value for hi32 bits of (2) (marked (r));
+- this random value is read at (5).
+
+Fixes: 75748837b7e5 ("bpf: Propagate scalar ranges through register assignments.")
+Reported-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Closes: https://lore.kernel.org/bpf/7e2aa30a62d740db182c170fdd8f81c596df280d.camel@gmail.com
+Link: https://lore.kernel.org/bpf/20240924210844.1758441-1-eddyz87@gmail.com
+[ shung-hsi.yu: sync_linked_regs() was called find_equal_scalars() before commit
+  4bf79f9be434 ("bpf: Track equal scalars history on per-instruction level"), and
+  modification is done because there is only a single call to
+  copy_register_state() before commit 98d7ca374ba4 ("bpf: Track delta between
+  "linked" registers."). ]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-aspeed-smc.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/bpf/verifier.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index bbd417c55e7f..b0e3f307b283 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -239,7 +239,7 @@ static ssize_t aspeed_spi_read_user(struct aspeed_spi_chip *chip,
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -10350,8 +10350,11 @@ static void find_equal_scalars(struct bp
+ 	struct bpf_reg_state *reg;
  
- 	ret = aspeed_spi_send_cmd_addr(chip, op->addr.nbytes, offset, op->cmd.opcode);
- 	if (ret < 0)
--		return ret;
-+		goto stop_user;
- 
- 	if (op->dummy.buswidth && op->dummy.nbytes) {
- 		for (i = 0; i < op->dummy.nbytes / op->dummy.buswidth; i++)
-@@ -249,8 +249,9 @@ static ssize_t aspeed_spi_read_user(struct aspeed_spi_chip *chip,
- 	aspeed_spi_set_io_mode(chip, io_mode);
- 
- 	aspeed_spi_read_from_ahb(buf, chip->ahb_base, len);
-+stop_user:
- 	aspeed_spi_stop_user(chip);
--	return 0;
-+	return ret;
+ 	bpf_for_each_reg_in_vstate(vstate, state, reg, ({
+-		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id)
++		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id) {
++			s32 saved_subreg_def = reg->subreg_def;
+ 			copy_register_state(reg, known_reg);
++			reg->subreg_def = saved_subreg_def;
++		}
+ 	}));
  }
  
- static ssize_t aspeed_spi_write_user(struct aspeed_spi_chip *chip,
-@@ -261,10 +262,11 @@ static ssize_t aspeed_spi_write_user(struct aspeed_spi_chip *chip,
- 	aspeed_spi_start_user(chip);
- 	ret = aspeed_spi_send_cmd_addr(chip, op->addr.nbytes, op->addr.val, op->cmd.opcode);
- 	if (ret < 0)
--		return ret;
-+		goto stop_user;
- 	aspeed_spi_write_to_ahb(chip->ahb_base, op->data.buf.out, op->data.nbytes);
-+stop_user:
- 	aspeed_spi_stop_user(chip);
--	return 0;
-+	return ret;
- }
- 
- /* support for 1-1-1, 1-1-2 or 1-1-4 */
--- 
-2.39.5
-
 
 
 
