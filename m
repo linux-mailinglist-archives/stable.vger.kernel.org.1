@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-104974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7377A9F544B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:40:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0DF9F533F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBC8018903E2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FCA51885DD4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272021F8ACD;
-	Tue, 17 Dec 2024 17:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51E41F7582;
+	Tue, 17 Dec 2024 17:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndw4axNF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I23rJjuw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83DB1F7545;
-	Tue, 17 Dec 2024 17:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D7714A4E7;
+	Tue, 17 Dec 2024 17:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456689; cv=none; b=Y/yYvpzvvtzwENMWo6MyTHK1gazTsEOWD/BpzIMxN6yyWyavxRmI1j6sXPkcgOOYM4UTz+OWo+LgDHsV00cOan+dQ9a9+PK3XGb9n80KCuB6hTJizoDXwja9SjuMNg0UHmp2uHzHuXB+R4aGLedpE0q/NDrut/A51fNtA7oTNHE=
+	t=1734456190; cv=none; b=hyPNWiye1bBhn4CLrr5EPlSmuvhqyLZJjqd9EUNATV6CtOfBkSjF7MMgUJZpFU7eJ5z7GsdULIcLrZ6uQRI4XEmjLLHva4PgokwjBwEIK7MfGpZVnPARiTDFu2vqeAnqWkE5331i2+ELOUvFe2yVXynzu7zG7n3s3PY8EBFhYWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456689; c=relaxed/simple;
-	bh=VHFeu48CeUqwwUuJ5xlHhJMTao7K/3eWVr6MC1njQEM=;
+	s=arc-20240116; t=1734456190; c=relaxed/simple;
+	bh=svQyhjUpjfpj7Py0iqBYFa9e65PSJRHxlpNbr/KKlLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPz/h0JfNPG8ICaSIQGjvWLwH78jwnKU5VLDR+IfyVd0nowFQ+fW9u51MxzUmxOtmZVfjGmIYy1atfpaTp1jd0wczyYAQ9AwXObMQcm2qQiXSDRWz51BB7w52Lv9DoWNXYcQrMd2dxhY8CCn+4gcMLUMQc5/G+KwYQ91twJM70A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndw4axNF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61602C4CED3;
-	Tue, 17 Dec 2024 17:31:29 +0000 (UTC)
+	 MIME-Version; b=HLn6bRY14GRJl/BPDB0iBtU9b8BIe+adWarO2xeEL19ciDXj3FNbnk71sFn8sAYoMQaIHvHFvZG8X+PtxOU4mGETNgLoxh8H67xMkZcLslYcuVag+BeXSl6YS9JF8kW061QhGXGWrZ5b10bnR3TTMAdHK7blpHk6lYe2iOF0lU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I23rJjuw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AC6C4CEE0;
+	Tue, 17 Dec 2024 17:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456689;
-	bh=VHFeu48CeUqwwUuJ5xlHhJMTao7K/3eWVr6MC1njQEM=;
+	s=korg; t=1734456190;
+	bh=svQyhjUpjfpj7Py0iqBYFa9e65PSJRHxlpNbr/KKlLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndw4axNF74Z/N9rBW2ZRpli4ZKBEkE3HUnxS1/2xwFqgsXv1FMSO0lKxhih25iozI
-	 m4HhIBX4GdXlcE9H0FKHxjUMapzM0ptysKjwmk0diGESkn3gOxDHpc/etFt0npXXQT
-	 1d/3OnFdogMQeY0DPmpfUjdJQW06RuGqhdp4j/s0=
+	b=I23rJjuwRviGCFtHsks6eEsQ0vC97l+uZFaC4oZaU96dUzXwxlL6OumoV/8LkCFwV
+	 TXjQCLqosrvb5x6bqTgpQjudTHSb1c4JSyM5jYGBHJpY3/CFyE2BrqutyOhxl4cSIq
+	 NA+BsUvReYcfHBuvM1om1/AJOX2l7S7uQihU78Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/172] net: mana: Fix memory leak in mana_gd_setup_irqs
+Subject: [PATCH 6.6 088/109] Bluetooth: iso: Fix recursive locking warning
 Date: Tue, 17 Dec 2024 18:08:12 +0100
-Message-ID: <20241217170551.979033749@linuxfoundation.org>
+Message-ID: <20241217170537.060330796@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
 
-[ Upstream commit bb1e3eb57d2cc38951f9a9f1b8c298ced175798f ]
+[ Upstream commit 9bde7c3b3ad0e1f39d6df93dd1c9caf63e19e50f ]
 
-Commit 8afefc361209 ("net: mana: Assigning IRQ affinity on HT cores")
-added memory allocation in mana_gd_setup_irqs of 'irqs' but the code
-doesn't free this temporary array in the success path.
+This updates iso_sock_accept to use nested locking for the parent
+socket, to avoid lockdep warnings caused because the parent and
+child sockets are locked by the same thread:
 
-This was caught by kmemleak.
+[   41.585683] ============================================
+[   41.585688] WARNING: possible recursive locking detected
+[   41.585694] 6.12.0-rc6+ #22 Not tainted
+[   41.585701] --------------------------------------------
+[   41.585705] iso-tester/3139 is trying to acquire lock:
+[   41.585711] ffff988b29530a58 (sk_lock-AF_BLUETOOTH)
+               at: bt_accept_dequeue+0xe3/0x280 [bluetooth]
+[   41.585905]
+               but task is already holding lock:
+[   41.585909] ffff988b29533a58 (sk_lock-AF_BLUETOOTH)
+               at: iso_sock_accept+0x61/0x2d0 [bluetooth]
+[   41.586064]
+               other info that might help us debug this:
+[   41.586069]  Possible unsafe locking scenario:
 
-Fixes: 8afefc361209 ("net: mana: Assigning IRQ affinity on HT cores")
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
-Link: https://patch.msgid.link/20241209175751.287738-2-mlevitsk@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[   41.586072]        CPU0
+[   41.586076]        ----
+[   41.586079]   lock(sk_lock-AF_BLUETOOTH);
+[   41.586086]   lock(sk_lock-AF_BLUETOOTH);
+[   41.586093]
+                *** DEADLOCK ***
+
+[   41.586097]  May be due to missing lock nesting notation
+
+[   41.586101] 1 lock held by iso-tester/3139:
+[   41.586107]  #0: ffff988b29533a58 (sk_lock-AF_BLUETOOTH)
+                at: iso_sock_accept+0x61/0x2d0 [bluetooth]
+
+Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/iso.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index ca4ed58f1206..42076c90ce87 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1372,6 +1372,7 @@ static int mana_gd_setup_irqs(struct pci_dev *pdev)
- 	gc->max_num_msix = nvec;
- 	gc->num_msix_usable = nvec;
- 	cpus_read_unlock();
-+	kfree(irqs);
- 	return 0;
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 83597b3c0a8d..b94d202bf374 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -1120,7 +1120,11 @@ static int iso_sock_accept(struct socket *sock, struct socket *newsock,
+ 	long timeo;
+ 	int err = 0;
  
- free_irq:
+-	lock_sock(sk);
++	/* Use explicit nested locking to avoid lockdep warnings generated
++	 * because the parent socket and the child socket are locked on the
++	 * same thread.
++	 */
++	lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
+ 
+ 	timeo = sock_rcvtimeo(sk, flags & O_NONBLOCK);
+ 
+@@ -1151,7 +1155,7 @@ static int iso_sock_accept(struct socket *sock, struct socket *newsock,
+ 		release_sock(sk);
+ 
+ 		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
+-		lock_sock(sk);
++		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
+ 	}
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+ 
 -- 
 2.39.5
 
