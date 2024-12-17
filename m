@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675169F53D9
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D2D9F531A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6452D1886CE5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACDBA188940E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619631F709A;
-	Tue, 17 Dec 2024 17:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21E01F75A6;
+	Tue, 17 Dec 2024 17:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+7KudjA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLpMKueJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1641448DC;
-	Tue, 17 Dec 2024 17:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6FF142E77;
+	Tue, 17 Dec 2024 17:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456631; cv=none; b=fEpu/g/KcGDgG7/1/AHodLVSmLJnFGiya4v6PS5Bf2oHTy0lb5qWBjZ04d5UQSxmVrFflkpzk7aMZyZJL3wwUsC7v55cgkkDziPt93eW4DSOSPSoTpDto4Fx+3oBPMJ0w1spaiWGoPzmoErvnuLPjqM6k3JjPXl+pOQmQ9AWdMk=
+	t=1734456110; cv=none; b=DDrFkYMQlzF4yylGPiOVLa18R4NSupRKTnpUOcoriU+xNw3IFgRz+W0BBY5YKA+lG4gw4jdaL1KQ4W8HIPn0ZqKKHoEh01x6Zs8zeUuuZNzDUaiARGu8ZT2Ujui7oDsnzqD82c7KdhpyvaGMTnWIWclZ0wyE54TX/aeOtAIJsGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456631; c=relaxed/simple;
-	bh=A5c5n31/GVaBsAvaI6thg35ZFLBwJRbSkNnS2t5SEwI=;
+	s=arc-20240116; t=1734456110; c=relaxed/simple;
+	bh=LIX3h2npBunTGs1LYbdqvCkQZFMyb43JRTWEHJ9h1bQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJN/Ujc5WOG9mxABAHJf51kMpWL0gzhwGcKjdJiLUBUX3x2Jy4ajxB6GF180Uyvxe5pLs9ilI8MyXQHHbWWg/uYYMA+6Oer9OmzhTmlDizbrbhRRVGTtWl9EngwhUEyu541/ki6MRtykPK3zi81hcOUpSmoyIUZo59DZa5DFStI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+7KudjA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2081C4CED3;
-	Tue, 17 Dec 2024 17:30:30 +0000 (UTC)
+	 MIME-Version; b=UPPecWR+4aNaPKgoMv2Oh5ayW4nnagd0WyabvdXzheC4kMCo16UGTOJINycTQzxJnUIlhzs1c0gCH3vLTiKe3awO3lMgGYzYgmx9pvcOPbzIR42wDk904L+e0ZLugkdspWiyCUYIT6loXUwSKB/zNcbTmNN8rxn8THSBWg0nkSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLpMKueJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6B0C4CED3;
+	Tue, 17 Dec 2024 17:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456631;
-	bh=A5c5n31/GVaBsAvaI6thg35ZFLBwJRbSkNnS2t5SEwI=;
+	s=korg; t=1734456110;
+	bh=LIX3h2npBunTGs1LYbdqvCkQZFMyb43JRTWEHJ9h1bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+7KudjA3SkJj/UKAqLq+uasjF+wKoZv4fI4EGSxsZOtnQ+AXY/2+AmmyyKK0vKeA
-	 wFcuZfqWo+X4jLonXRWTBa1SbeamLHOICSIrNPvhx+fWhThRIm/EmrYqlVzlxf7aTa
-	 Fs1FcgKhzgVE3bvauOFaRxF9DWfsPRo6lDIPtudM=
+	b=OLpMKueJY6ELHtCGy9yRKGWY3zKLS2bf71AOOvT8hV50zyxaMebEX31usToq/FIJG
+	 eMdUsKQvs+tuggmgKIeKwkLe4Im4HXX9vSK/gnISJSuMVMZ9OHq5GudEHtMBy+VQ72
+	 ZgC4grUUoudemqF/DWO+Zey7cGxzzAkP6e2qSfzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/172] net: sparx5: fix FDMA performance issue
+Subject: [PATCH 6.6 062/109] cxgb4: use port number to set mac addr
 Date: Tue, 17 Dec 2024 18:07:46 +0100
-Message-ID: <20241217170550.886881529@linuxfoundation.org>
+Message-ID: <20241217170535.970182375@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit f004f2e535e2b66ccbf5ac35f8eaadeac70ad7b7 ]
+[ Upstream commit 356983f569c1f5991661fc0050aa263792f50616 ]
 
-The FDMA handler is responsible for scheduling a NAPI poll, which will
-eventually fetch RX packets from the FDMA queue. Currently, the FDMA
-handler is run in a threaded context. For some reason, this kills
-performance.  Admittedly, I did not do a thorough investigation to see
-exactly what causes the issue, however, I noticed that in the other
-driver utilizing the same FDMA engine, we run the FDMA handler in hard
-IRQ context.
+t4_set_vf_mac_acl() uses pf to set mac addr, but t4vf_get_vf_mac_acl()
+uses port number to get mac addr, this leads to error when an attempt
+to set MAC address on VF's of PF2 and PF3.
+This patch fixes the issue by using port number to set mac address.
 
-Fix this performance issue, by  running the FDMA handler in hard IRQ
-context, not deferring any work to a thread.
-
-Prior to this change, the RX UDP performance was:
-
-Interval           Transfer     Bitrate         Jitter
-0.00-10.20  sec    44.6 MBytes  36.7 Mbits/sec  0.027 ms
-
-After this change, the rx UDP performance is:
-
-Interval           Transfer     Bitrate         Jitter
-0.00-9.12   sec    1.01 GBytes  953 Mbits/sec   0.020 ms
-
-Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e0cdac65ba26 ("cxgb4vf: configure ports accessible by the VF")
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241206062014.49414-1-anumula@chelsio.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h      | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c      | 5 +++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-index b64c814eac11..0c4c75b3682f 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-@@ -693,12 +693,11 @@ static int sparx5_start(struct sparx5 *sparx5)
- 	err = -ENXIO;
- 	if (sparx5->fdma_irq >= 0) {
- 		if (GCB_CHIP_ID_REV_ID_GET(sparx5->chip_id) > 0)
--			err = devm_request_threaded_irq(sparx5->dev,
--							sparx5->fdma_irq,
--							NULL,
--							sparx5_fdma_handler,
--							IRQF_ONESHOT,
--							"sparx5-fdma", sparx5);
-+			err = devm_request_irq(sparx5->dev,
-+					       sparx5->fdma_irq,
-+					       sparx5_fdma_handler,
-+					       0,
-+					       "sparx5-fdma", sparx5);
- 		if (!err)
- 			err = sparx5_fdma_start(sparx5);
- 		if (err)
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+index fca9533bc011..2ed72c3fab42 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+@@ -2082,7 +2082,7 @@ void t4_idma_monitor(struct adapter *adapter,
+ 		     struct sge_idma_monitor_state *idma,
+ 		     int hz, int ticks);
+ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+-		      unsigned int naddr, u8 *addr);
++		      u8 start, unsigned int naddr, u8 *addr);
+ void t4_tp_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
+ 		    u32 start_index, bool sleep_ok);
+ void t4_tp_tm_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index 2eb33a727bba..b215ff14da1b 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -3246,7 +3246,7 @@ static int cxgb4_mgmt_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
+ 
+ 	dev_info(pi->adapter->pdev_dev,
+ 		 "Setting MAC %pM on VF %d\n", mac, vf);
+-	ret = t4_set_vf_mac_acl(adap, vf + 1, 1, mac);
++	ret = t4_set_vf_mac_acl(adap, vf + 1, pi->lport, 1, mac);
+ 	if (!ret)
+ 		ether_addr_copy(adap->vfinfo[vf].vf_mac_addr, mac);
+ 	return ret;
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+index 76de55306c4d..175bf9b13058 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+@@ -10215,11 +10215,12 @@ int t4_load_cfg(struct adapter *adap, const u8 *cfg_data, unsigned int size)
+  *	t4_set_vf_mac_acl - Set MAC address for the specified VF
+  *	@adapter: The adapter
+  *	@vf: one of the VFs instantiated by the specified PF
++ *	@start: The start port id associated with specified VF
+  *	@naddr: the number of MAC addresses
+  *	@addr: the MAC address(es) to be set to the specified VF
+  */
+ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+-		      unsigned int naddr, u8 *addr)
++		      u8 start, unsigned int naddr, u8 *addr)
+ {
+ 	struct fw_acl_mac_cmd cmd;
+ 
+@@ -10234,7 +10235,7 @@ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+ 	cmd.en_to_len16 = cpu_to_be32((unsigned int)FW_LEN16(cmd));
+ 	cmd.nmac = naddr;
+ 
+-	switch (adapter->pf) {
++	switch (start) {
+ 	case 3:
+ 		memcpy(cmd.macaddr3, addr, sizeof(cmd.macaddr3));
+ 		break;
 -- 
 2.39.5
 
