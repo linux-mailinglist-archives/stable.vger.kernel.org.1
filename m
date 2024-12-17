@@ -1,265 +1,497 @@
-Return-Path: <stable+bounces-104433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83FF29F43A2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 07:25:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 468419F43B7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 07:31:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911B416BCCA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 06:25:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EC887A3676
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 06:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E12170A2C;
-	Tue, 17 Dec 2024 06:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB3814A095;
+	Tue, 17 Dec 2024 06:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="eT5X6Ln2";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="BZEVSQ0t"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zcy5FjdP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6517016F271;
-	Tue, 17 Dec 2024 06:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734416736; cv=fail; b=MKP1XLuPEr+ZHqc3ufqmkY9eQhk12QpCCxktScenjNCNxND42eZF78dHGBiaRTM+GmpXkuKtB6Cs2GZodynKaAHhDFzP5EVfRyJgHIGr2ty9zmF6w7AbxQivckFtQ1gHxMorwYvTaC1H4U1MPFA5cDl1wXzNnHdPX6MIOIoXqDA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734416736; c=relaxed/simple;
-	bh=x1UNZO4zoZBql/QuZ0tN+FEeLGmcvIfCJ0sYCNMPtIg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=W8OhFKw3TmVH6h8kBzG8VD+VILtc5ADtMfN4qXIh3362IoHBQkxIe+VL8Cnc3DUJ0qle+hTQMPmI0cZ5XFy9TLoNUS9HlVl99SMtaTBppuBjcrIJt+mDE5l3fkFgHYT+o620zLgeeOmt2zDHNDgMEdl8b2OEpL3xcnfNxkIpnSc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=eT5X6Ln2; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=BZEVSQ0t; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH1txY2001763;
-	Tue, 17 Dec 2024 06:25:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=x6r6BJxchHhiG2DRcyz6gYHmVI9Jy4RiRuDZ265s4/g=; b=
-	eT5X6Ln25Xa8Yetl0K4a4dksenv3GldU6EqKdYe4KhvLrEcCkJq75mnlPR2IW7rc
-	H/wnEUJGYCgvEbfCZcB9/HMOo1yW2R+RQ5/+f88NWlVJglHuwwfzN1WhJlYU8V+H
-	sfAxORRDrkDungOSzvQ4qQD+5FlJXA9koMiSChqnxiy+oOzQ70hK7/7MZ50uN7zw
-	YA4FE4PncCQFWtQIPLZM4edanh16bT7IGe9zRgYZ84+9tFZMgl9yjz8kq1BqD0Fm
-	DymDKKrraIaCPQdFrgoUA+LiaKbjiG4fEAXBL83EOGl+h0HZDn/vaxfpffaSrEr0
-	P7HV3CgtEcoIKm6MM8yzWQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43h1w9d8b7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Dec 2024 06:25:07 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH5ITud006638;
-	Tue, 17 Dec 2024 06:25:06 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2044.outbound.protection.outlook.com [104.47.66.44])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 43h0f8yqy7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Dec 2024 06:25:06 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D8auovXVTNdKvPNNhyXZauULh9ODdB+iqDueJ4INwcJxq8XcZiqxq5jZsh2Ru42Q+1dJSrzcysnYpBrNKcV27Oogo/WD/CIDRLLcC+2FGLFDZLB/IdO2DDRK5Sfb+HklTBOo5AeH4ZicToXv4dXQiGrru6W7QdDUbt6tavw0GQ3BsRI2RzxxAv3cM01CvCL/AdbDkoSA7VUpMfoF4zfVft5WIRdhYSvm+I+y/OboV4KeQmw0mhPVxzbyNxeDOiURZ8Ea0FDpVn5mrbui5/UMkkcs7BXziB0wZlpSxDh7zyj7aGYb4+IqCzaEdESTkLhPysSqBn5L87o2e+ie/fGYrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x6r6BJxchHhiG2DRcyz6gYHmVI9Jy4RiRuDZ265s4/g=;
- b=JFOEuNFspY2FOTHcvkoXY+SVEnvhcTwwiWgjo/LUHqWx/xh8AqwcHAlReg6EOBpmpDZ3nOxysFEeUeOwfMSAPyRN5W1dvJQgD5pojk3nGMUeBESpddo2OOj9Vj+ME+s3hJR/SGI2XpK723jiEjJdGYTk4jO8WPw6uOzLyOQIhNXlzVV/+sJD9T716qjAmurVQi2JQQTM17tZNp1EPdGi8q2uqYGCHPyRLqG0SJpLJNJtpjsgO4bToYnblMmnIvhv3TXMguWuIiriijiQ6N4VgzAR+g0u5Ak6hulzwGcvlYogBMSJvR32fDGXqY5tv6SEerCpEFsMcdQWNyNXARyv5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB5514C5AF;
+	Tue, 17 Dec 2024 06:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734417085; cv=none; b=G4NbGXxmMtbiT/brsw3LCtWDdOegUauydhuRBygJO1JzNk4G+wI+dnpoOeioeS5hp8YequuLQtqDlY59Lyvqs+UsFVUcmh5teiVqH7eG/QkzEQxDjydDiMa9LkK3uZbIIogtZTNbavt/ZdwIxXfU9x3F5SQBX5kjSHYXUrvqHuw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734417085; c=relaxed/simple;
+	bh=QIDdj1nT9kqB545uGMG+wjDSxqWfhaRe6OwGDdLXgq0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WIDccFqXnAC1gDdia0DTRtUbCMfWAUtdVgf5xuPRBYZAyridNQEPI9wZdZlro2jX3bPYXNrVIgez3VRQvHGfCLnk+kPL0jf6nDHwX1HtPiQgA7N6/3vNkNH74KGNaZlQrnlwHzS9douGz6dI4JJa4xIH3BmS3PCQbVHYs22Lr+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zcy5FjdP; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-85bc5d0509bso941715241.1;
+        Mon, 16 Dec 2024 22:31:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x6r6BJxchHhiG2DRcyz6gYHmVI9Jy4RiRuDZ265s4/g=;
- b=BZEVSQ0t0ECM4dqLA7ZnTd58JTbOXtnlMYQBgvFNprmfHNdiBwpa6m41MQkZcqB/6HZBacDWrdqrzPuuTr6e4byhvovFu6aNDlKdXDCVTfR0FIgiXw5O0t1M8qEHMAtyP9YDQv87a0fYfvjIdcr6pRju76RISd5bAATW/jW1bCo=
-Received: from DM4PR10MB6886.namprd10.prod.outlook.com (2603:10b6:8:102::10)
- by BY5PR10MB4306.namprd10.prod.outlook.com (2603:10b6:a03:211::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.16; Tue, 17 Dec
- 2024 06:25:04 +0000
-Received: from DM4PR10MB6886.namprd10.prod.outlook.com
- ([fe80::bdcc:98f5:ebd5:cd38]) by DM4PR10MB6886.namprd10.prod.outlook.com
- ([fe80::bdcc:98f5:ebd5:cd38%6]) with mapi id 15.20.8251.015; Tue, 17 Dec 2024
- 06:25:00 +0000
-Message-ID: <92eb4af2-8a38-4075-9353-21afe34d57d9@oracle.com>
-Date: Tue, 17 Dec 2024 11:54:49 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 5.15 13/13] ALSA: usb: Fix UBSAN warning in
- parse_audio_unit()
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-        syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com, perex@perex.cz,
-        tiwai@suse.com, kl@kl.wtf, peter.ujfalusi@linux.intel.com,
-        xristos.thes@gmail.com, linux-sound@vger.kernel.org,
-        Vegard Nossum <vegard.nossum@oracle.com>
-References: <20240728160907.2053634-1-sashal@kernel.org>
- <20240728160907.2053634-13-sashal@kernel.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20240728160907.2053634-13-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR04CA0016.apcprd04.prod.outlook.com
- (2603:1096:4:197::7) To DM4PR10MB6886.namprd10.prod.outlook.com
- (2603:10b6:8:102::10)
+        d=gmail.com; s=20230601; t=1734417082; x=1735021882; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eoCTw3yoTAAXZkQxzJABZOy7K2Bqpin/AmsPBfgbh/o=;
+        b=Zcy5FjdPMYiT/uD4b7BRxOa8BOW+BuLU+Ju66h2YDdxAw2hP9c4BulR5WbgWGipZsw
+         NXySftEdcWzr6gGZaOWUIsKkl+gmWAOU7gO0v2wGABdp1CZzfrDD9Ggue5U7uvk2k9hh
+         WQDHiX8wG8d/lwEiuSY6/3HW7EIJcDMeIK2LcZ2dmZvIy9Ps/Xdairg8Ip1J88UWPrrW
+         f57eHEY/GpZSn88En/AOIKNmj98WLW/xVI+kKYcBTdzfsCSjEqb57Gp4UKO9Xz1PygYb
+         u2ruA3Mg1DT+FVkko/x3KnVovcmz2uIUlLB6BS+fUgU7arDiCe9X2E9jiDEnKOVV8tT6
+         cy5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734417082; x=1735021882;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eoCTw3yoTAAXZkQxzJABZOy7K2Bqpin/AmsPBfgbh/o=;
+        b=rZzGHLf6mQ7c6dXdrw5TWaOlE/DzQx4PkqPrC/1YDiA38xGEzvt7ydwGhjpbSE+0l/
+         n716tkonScN1FgmtB1yyRA/JXK4L+rrREGgaHmaWWrwgo0ntt7KQCfpmzI5aZvB/KZcg
+         02YDBkqBhItay4qfrp3tEAcQosIa5ANerW93aIB8UmzQHet80YUJbk1B2L1pksJzumtA
+         sptxtmizRKoN+T0Vnynf0IquJs4gSxlFeSAKC7HNVXbL3Ew+bxt9oXsWDZCPuagqzFQr
+         W6BoytrfwXHuuqQdMjXhDMItos2yxMS59AS8eK0kFwcQl16S+lE6DHi1pSZg4KbdwjFj
+         Kg7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUi2UWiKWnWEk/QiZbK+e+6cZu4YDE+97NJshGR/TIKV+DZ1ylx3VpF5uJUzlCnIUw34gPWwfk5@vger.kernel.org, AJvYcCXeNmJywg+Qe5YZTmW1MAGbG7gOwdjEjJpGvuOo02NPzZk/MwsSjGoI0AD8G6flepE9R7Z/NXn2tzmyMCs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3O5m0r94sxtYr+WG81gb1Y9FQvusBg/0Idn13o4APd1JZVVJC
+	fsnk/75YlXM5ZWseNWlxapfrZj7By6F6HSFTrMqJOkRpHMDFgAM1p7veBAi6/rl/JFnc/fagx6e
+	JagzF7JSK6JCYQ8T6D0MbFiK75Ck=
+X-Gm-Gg: ASbGnctMFLDTak8Mw/SyjKdA4AqKKq4CVFDLwpJRZzq0wgmKk0MOnitoFfqkDTYBFty
+	AjF2x2B6q7iE3CkMs8bnkQEGf0wabMgS+oN9pXd42tmYGeRfa62pF2gozAxmTV4ST9hphQpR6
+X-Google-Smtp-Source: AGHT+IGAl8tplULeypePPjHpmYvjC519UM2O8ZbyPQCSK24sAFmGyUqANglZYGkF2rx/sAhGaOa+sl/d7GyQLL5aOD0=
+X-Received: by 2002:a05:6102:4425:b0:4b2:48cc:74f3 with SMTP id
+ ada2fe7eead31-4b25d9b2410mr14965754137.12.1734417082206; Mon, 16 Dec 2024
+ 22:31:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB6886:EE_|BY5PR10MB4306:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c785826-c45a-4abd-465f-08dd1e63870c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?S0RFZjhKNzdPZmdzYTdNbUxEMGxCUDhlQzFKeDZnUVo1YWRuV08vUUFURFU5?=
- =?utf-8?B?MFYzczRUQnlSR244NjRFeWFHSWxEdmhaclNLVks2Vyt4WHJRSWtJYVkxdU9F?=
- =?utf-8?B?NkdreVhqOWNLZTRPdUJ5L2ZlZDZsS2w3Y2VqWDBGd3Q5L013SHg4WTB5Mk1B?=
- =?utf-8?B?YWlkdXlpUi8vbXhiclE0TW0wRTNiVTNBVXN1L3pTM3NzbjNpN0lrZG9wb0tI?=
- =?utf-8?B?L3NkdmFLTjVTM21PY2tpV09BL05FSkRjOG54NVNGRmhFNk9lVUdZRWFYMVV5?=
- =?utf-8?B?UGd3RFlUS2Z2K2xmbVVCTXJ2NHpiU0dvcStUZ2oyb2hZYytYdzNqMmdlRVVv?=
- =?utf-8?B?Q3JsdDl6eXpITTNML1dBTXhoTWtNZE9VOGpVaXJUOGlNTXppNzNWaEYvSzVX?=
- =?utf-8?B?K2swVUxPMSt0RTVTZ0FDbkREY28wM3JxL2xqZWNSM2Y5UFl5clVFWTBQVVFl?=
- =?utf-8?B?K2JJcktWTjVCd2NEbko5VGxTeHRyYWNaUUdMRUQzZ3RuaHZmdGxhRVM3T1Vn?=
- =?utf-8?B?T0grR2lTUHoxdmcxWTJrKzhCUjRrNDd3YXd6UXpUMnM4ZWhnRGFMd3V3RVZQ?=
- =?utf-8?B?WGFJQW1PaGx5YWhWdkwwZHY4TzRmanVZZGFLUUlHT0tOYTBmbTN5RWx5SDB2?=
- =?utf-8?B?Vmg2VTVkZllFUVM3TVV5L1dWNHdldDQ3VElCU2xHZ21tWkdFa01WY21GcDg2?=
- =?utf-8?B?dGpTUVZaTWsydWltaWtQSHgwdURzdnB0QkhlTUVLeHNWN1dobUdHNnc4NTZx?=
- =?utf-8?B?TFMxditSS3cvRTVSMkhVRXFaUUs1eGlyRWpUcW5PQTczM2tET2taVWhUakNy?=
- =?utf-8?B?NUJpRFV1eW5EWVRlMWkrZE1aaXZvck80QVFGVkR1Q1hHWUFaK016ekZwbXgv?=
- =?utf-8?B?aEJpL0pTZ3c0bGJ6c2VSVXJwTjVWZU1acWlxc2xsaUI4QkJhSlJUQXc3Wlln?=
- =?utf-8?B?TDF4YU9OamlyTDVlVDJEcDZsWWxOWTd3TlZxRWlTRWk0OUJCdVRiWmlGVlll?=
- =?utf-8?B?R3hSd0xERlZ6ZHd1dFpmRVZ4S3pSVFlJb3pJb0JnRGJtOUl1VC94c1N4ZjNF?=
- =?utf-8?B?Tm54dmZvc3ZLTG1HRTRNakhvb0dKTk9qVko4UUxHZEhkOFJ2VGU4czd2S3Iw?=
- =?utf-8?B?QUVvNXhkakZxcW5IT21rdHJRTU9HVWtlcTlaeTN2TXN3Vm1FbmhBVCtmOVBO?=
- =?utf-8?B?VlNNZUdHWlBPWGpJTW81SlZNU2FmR1h1YUNMYzhsUWY4bTdzOEFyUS9USWlN?=
- =?utf-8?B?eFdTRkRqVWZURTQwUWVmRktLUkI3d212NjhXZ25IR1A1Qnh0TXlhdlBLVC9v?=
- =?utf-8?B?QUlDVlVHaFY0NUVzNjYzdHV0T0V4K3JuM0ZUYVJYbG91YzJibEt5MEJlL084?=
- =?utf-8?B?cXRnZE9COVdPcmJReS80U2I2UVp1Rkh6RXVFNEk5ZDNPbDQvY3ZsUGJVOTUz?=
- =?utf-8?B?WStOQmROem53dDE3R01TQUdJTnpNTzNmUDFsTnEyUndVZXluUGxKc3VVM3dh?=
- =?utf-8?B?cnhCWG9jWktJenJwNlFYYzZxU0dBb3M2L1o0ZnJ2YXoxd29TZERNU0diUngy?=
- =?utf-8?B?RWNCaExCK2oyNWZacy9MMVhmaDhUQXpJYkVSSHVPR0FNdkNnTGZhNjRmbVlQ?=
- =?utf-8?B?eFpDYS9Od2YrbjZwK05xVGdqZnpWZTBQTTZZdlhuK3ZwajI5bXZORGQ1SDZR?=
- =?utf-8?B?ancxejdiQkhwRUE2TjhZbS9PUGhuUkN0YlVXc1BDWmhRQTVLajAvVlZqSzBp?=
- =?utf-8?B?U0FaTVpHRWs1bzk0UXFXVGppYnpHdW9EWGlWZk5HTks1d3JxRVNDc21nK3Q0?=
- =?utf-8?B?REl0OU80RHZvKzVWTFF2QT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB6886.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RVdweVIrYU5sSmY3NDVqSnZrU3EyaTA3T3ZvbHU5ZlVvbzFscHRiN2wwTkhp?=
- =?utf-8?B?UU9DZVl2TmZIeVdKUWZHV1hvdU44bk1xcnpCTHlRclNucFphZS9sNHpwaity?=
- =?utf-8?B?WkVRdEVtZGxFVFVEeFo4NVk1dTg0azlrNW9ocjNCMzBSaTZ6RWl1QnRtK0JW?=
- =?utf-8?B?cG5ZK3FhVWtFM3kwUEJ5Umo3MTl4bEdlTXhacnVnSVBqdjBva2xTQVlFMm5J?=
- =?utf-8?B?T0ZCbzZWWVlOSzdMK0wzUzBuZUFSRDRwb09XSks4MnNONVhlTTFXMVBBa3py?=
- =?utf-8?B?QWlpTXV2T3dqN3pKQWhsT0pmQWNjQjJNRjB2bU1tT1E2ZHFxU0dJRzJ2Y3Az?=
- =?utf-8?B?TEdWM3E3SEtJekR2NGRYS2pocEh1OVFEdEV5SFcvdHVKbno3QWh2czVWZEVG?=
- =?utf-8?B?Rk9sMDZWUDBpb0J5VDFSV2V3bU5TOXNwNkMxaTQ0OUs2WnloRGxyeVBMZ244?=
- =?utf-8?B?STFwV1VlM0xYUkF4OEhoRWVuc04rS1A0aUJDTU4ycElDdzNPMEZSSkdNVWlz?=
- =?utf-8?B?ZmlsSGlFcWEzLzF5VWdueFZSaVl5b0loUkUzWVIxZklmaEJqNTlhUnozYU9I?=
- =?utf-8?B?U0RPWjNUUjVlN1ZnSVBvWDFrYkFuQkR2emt2ME1nU1hBMG9lbmVTRDRuRVpT?=
- =?utf-8?B?cVZocEJpSzUrRThCNWlyd0YyVFc5azZBNXBtSFdWeVdUZ0p0MDVjR1NtMkxa?=
- =?utf-8?B?eFV6OUdPSUpBNVhZR0taMklWcWNCKzFlWWMyZWY0cjc1enBxN0QySGo2ci9B?=
- =?utf-8?B?UUlkU2p1RFU4U0FxN05IOHZsa2JaY0d1Z0tJZnYxRVZ6L3dIKzAzZFJkV3N4?=
- =?utf-8?B?dittSjhERFFTc1NkSXg4OTAvQnZTRTV3UndGaDVNa2RuUnY5dllvK2Ruc0dy?=
- =?utf-8?B?bUJDNG9lUW92b2dyVnFta3Y4MDV3TWNISjRCRWRnd2xoMVhaclNhQ3hVUzZQ?=
- =?utf-8?B?WGhlaWExcDJpS3RxTGNwYlVabW0vQVlzQ1BDdEdLKzlLb0x6T3FHMXZzcEMx?=
- =?utf-8?B?b3RFd2h1NUo2bkp6VWVZVEg2VHlzMHZjdVZjRDJKNmVWemR3WmVlYXkycStI?=
- =?utf-8?B?T2J3cC9HQXhSUnBDREZLZlZoZ2JzelZFQnZGeW9lYjNYYUlHZGIyVE1ERTRI?=
- =?utf-8?B?MWQwdFUwcjNUZ2VuNms1QWZHMTdBOUZDWkREL3IyalVkcUVzem8yeGpXWEw1?=
- =?utf-8?B?Wlh4Q2x4UUdmaXJxUXNSR1F2V2ZWSlNISDhWMXM3c2NyaVpFazhWU0VFU2JC?=
- =?utf-8?B?RktqaWlVeTJETDB2N0FuUnlqYzFOZ2JQWTROSU1PdFR3ekFxd1RsUzRtc29T?=
- =?utf-8?B?aXdDc2VjZUFUTlZpSlI2Z1lXTUJoQzVxd0NGTEdna244UlZNYlF0OU1UQjZB?=
- =?utf-8?B?WXJ4SUNSVW5OM2FOMGd1MHVmNmtReFNXTXhBVzNRZWxRYU5IMXQ0ZHlrMXZD?=
- =?utf-8?B?QlYyZGxZNmNLTlBMbUNGTVRSUXpzd0hjMHlQZlJtRTNpM0Z6K3phMGtZU0NC?=
- =?utf-8?B?bXZDRytsK1I1ZmRnZHdwMWgxWTJXNTBHbzl1c0VtYUkwMWFWWlE0cUg4Um8r?=
- =?utf-8?B?bWMrdW1Rci9TeHgzK2hxMktTU3dpWHJHTXdYbFcrdmZpTXRQRTFwYWdTNnNn?=
- =?utf-8?B?akNoVG5uYUdDK3pHZFdhM0xSSHRIaitIcllZTkZveEFPaXE3R2dhdUlvNG00?=
- =?utf-8?B?c1NOb3RxeTFtTUpXaHhIMDVuckJ6YkdGeWRPWDRzYXBEaXd5SkZnM3kwWXYr?=
- =?utf-8?B?VE9aeHBhNlozMGxpZzlQZ2lWNDR3aVV0dUpMQkZWdkxaL0JJN2ZiZjd6ZkM1?=
- =?utf-8?B?SDU1Sk1vLytNaUUyNmduaktpcmdjSTBXQkZRUzhjVXFVeFVCWm45RGh1RU1q?=
- =?utf-8?B?UTRYQnNXL0hzL2E5MWpDb0NrNG9tT0piSzdzYnlpR3pIZnBrU29tWktGTFIw?=
- =?utf-8?B?dkloMjlxODh2bFRZSVVXdFdUL3UwUWNOaXFwemlvM2xvSXVKREI2bGVTYURp?=
- =?utf-8?B?SVBqbjlTcmNJcWZFZE9oeHlLT1ZDZkErSFJCamMwL2Z1YnVLTEc4RVVwTzlz?=
- =?utf-8?B?VkMydFBTbW5rSWYxdGdhNGhDd2NSY3gwVWMwQzFOaUU3cVRrck5hbFQvbGE2?=
- =?utf-8?B?OEZZUnliRkJxNHVaK2hJdGtHODBCR2t3MEFuOSs0aFVnaHJhT1hqUzBSY1A0?=
- =?utf-8?Q?VkW2Q3Da8zRJW9DIrbit71I=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	rmCnRkfycC2+rj9i5VOanYS0UN9+q9CG7TAnxeluBoxB/sTj3zgRfEkoshugOaPeOeVj3uWpWzJPds5z/A8dVm6yPP7za0bXLqX96Uz/rmhJNkjkwvUj2b1RaXWdF90VZlJNnhqoLiAo3OIXVionTDE4obHA/Jw52ZcecDylMIrHCGQKzQK/Gz6FYe1y8ZFOKzmH03N+NfVfeo3jCsiHy53ymiNIdGamFQZohVQoIlvTPBu+EDrrEvc+zMVMFala8kWmcQkqSwp5K7ELuoRfWQQdZO7sxRVnqw5qFOxG+TXdxrrxZjweJlCX2UmX3aMMSbv4rSxTr4RqXIxu6Ska8jv9Q5JAWdA/ODERpq6f2ghuiMyxeR8hvKgGXmmvCwUPlraY/FRn0QA0mHYCJ5VfV8K6bIcNtTFEfzIr3SQZ8LAe0CwIP4tA/swMe5EHqauH7GC389YBVjTeajbmgoixxIVk8OYZYf4wWkRmNP9hcc4P23CeN8CIldoyehPwU9ffpyv4dQxvshpK3KYDy1cy+ZswBF/Fw/0aSFnT1MvreBc/wh3WJXmTo93vrFkLHLhwEEgi3L7ALQHDO4ddIo139qXZIJj4xQbl/ahaOtU2mhE=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c785826-c45a-4abd-465f-08dd1e63870c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB6886.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2024 06:25:00.7640
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dlt+3UHcUp8N9x30LQ5ww+ut9LT9xGF9PAKYs68Mgh/1njHHr7EQrtqwLYqmq6g+m97WfB/tIX8Y1/EwK2F2jFG/YMVG4q+f0iuQIhEoWGMqWiYor2jilmuP1dVWvJvz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4306
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-17_03,2024-12-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0
- malwarescore=0 bulkscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2411120000 definitions=main-2412170051
-X-Proofpoint-GUID: nuP7ziyMtPQPrp_YYqZinZ85F2bzse78
-X-Proofpoint-ORIG-GUID: nuP7ziyMtPQPrp_YYqZinZ85F2bzse78
+References: <1734406405-25847-1-git-send-email-yangge1116@126.com> <CAGsJ_4xSbw7XDe1CWBAfYvMH35n0s1KaSze+wTUDOpwE-VrhfQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xSbw7XDe1CWBAfYvMH35n0s1KaSze+wTUDOpwE-VrhfQ@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 17 Dec 2024 19:31:11 +1300
+Message-ID: <CAGsJ_4zW9wmtGtTNZ4HowvL=suZAf-yAeqLBuKW_soOAEjmo3Q@mail.gmail.com>
+Subject: Re: [PATCH V6] mm, compaction: don't use ALLOC_CMA in long term GUP flow
+To: yangge1116@126.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, david@redhat.com, 
+	baolin.wang@linux.alibaba.com, vbabka@suse.cz, liuzixing@hygon.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sasha,
+On Tue, Dec 17, 2024 at 7:14=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Tue, Dec 17, 2024 at 4:33=E2=80=AFPM <yangge1116@126.com> wrote:
+> >
+> > From: yangge <yangge1116@126.com>
+> >
+> > Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
+> > in __compaction_suitable()") allow compaction to proceed when free
+> > pages required for compaction reside in the CMA pageblocks, it's
+> > possible that __compaction_suitable() always returns true, and in
+> > some cases, it's not acceptable.
+> >
+> > There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
+> > of memory. I have configured 16GB of CMA memory on each NUMA node,
+> > and starting a 32GB virtual machine with device passthrough is
+> > extremely slow, taking almost an hour.
+> >
+> > During the start-up of the virtual machine, it will call
+> > pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
+> > Long term GUP cannot allocate memory from CMA area, so a maximum
+> > of 16 GB of no-CMA memory on a NUMA node can be used as virtual
+> > machine memory. Since there is 16G of free CMA memory on the NUMA
+>
+> Other unmovable allocations, like dma_buf, which can be large in a
+> Linux system, are
+> also unable to allocate memory from CMA. My question is whether the issue=
+ you
+> described applies to these allocations as well.
+>
+> > node, watermark for order-0 always be met for compaction, so
+> > __compaction_suitable() always returns true, even if the node is
+> > unable to allocate non-CMA memory for the virtual machine.
+> >
+> > For costly allocations, because __compaction_suitable() always
+> > returns true, __alloc_pages_slowpath() can't exit at the appropriate
+> > place, resulting in excessively long virtual machine startup times.
+> > Call trace:
+> > __alloc_pages_slowpath
+> >     if (compact_result =3D=3D COMPACT_SKIPPED ||
+> >         compact_result =3D=3D COMPACT_DEFERRED)
+> >         goto nopage; // should exit __alloc_pages_slowpath() from here
+> >
+>
+> Do we face the same issue if we allocate dma-buf while CMA has plenty
+> of free memory, but non-CMA has none?
+>
+> > In order to quickly fall back to remote node, we should remove
+> > ALLOC_CMA both in __compaction_suitable() and __isolate_free_page()
+> > in long term GUP flow. After this fix, starting a 32GB virtual machine
+> > with device passthrough takes only a few seconds.
+> >
+> > Fixes: 984fdba6a32e ("mm, compaction: use proper alloc_flags in __compa=
+ction_suitable()")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: yangge <yangge1116@126.com>
+> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > ---
+> >
+> > V6:
+> > -- update cc->alloc_flags to keep the original loginc
+> >
+> > V5:
+> > - add 'alloc_flags' parameter for __isolate_free_page()
+> > - remove 'usa_cma' variable
+> >
+> > V4:
+> > - rich the commit log description
+> >
+> > V3:
+> > - fix build errors
+> > - add ALLOC_CMA both in should_continue_reclaim() and compaction_ready(=
+)
+> >
+> > V2:
+> > - using the 'cc->alloc_flags' to determin if 'ALLOC_CMA' is needed
+> > - rich the commit log description
+> >
+> >  include/linux/compaction.h |  6 ++++--
+> >  mm/compaction.c            | 26 +++++++++++++++-----------
+> >  mm/internal.h              |  3 ++-
+> >  mm/page_alloc.c            |  7 +++++--
+> >  mm/page_isolation.c        |  3 ++-
+> >  mm/page_reporting.c        |  2 +-
+> >  mm/vmscan.c                |  4 ++--
+> >  7 files changed, 31 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+> > index e947764..b4c3ac3 100644
+> > --- a/include/linux/compaction.h
+> > +++ b/include/linux/compaction.h
+> > @@ -90,7 +90,8 @@ extern enum compact_result try_to_compact_pages(gfp_t=
+ gfp_mask,
+> >                 struct page **page);
+> >  extern void reset_isolation_suitable(pg_data_t *pgdat);
+> >  extern bool compaction_suitable(struct zone *zone, int order,
+> > -                                              int highest_zoneidx);
+> > +                                              int highest_zoneidx,
+> > +                                              unsigned int alloc_flags=
+);
+> >
+> >  extern void compaction_defer_reset(struct zone *zone, int order,
+> >                                 bool alloc_success);
+> > @@ -108,7 +109,8 @@ static inline void reset_isolation_suitable(pg_data=
+_t *pgdat)
+> >  }
+> >
+> >  static inline bool compaction_suitable(struct zone *zone, int order,
+> > -                                                     int highest_zonei=
+dx)
+> > +                                                     int highest_zonei=
+dx,
+> > +                                                     unsigned int allo=
+c_flags)
+> >  {
+> >         return false;
+> >  }
+> > diff --git a/mm/compaction.c b/mm/compaction.c
+> > index 07bd227..d92ba6c 100644
+> > --- a/mm/compaction.c
+> > +++ b/mm/compaction.c
+> > @@ -655,7 +655,7 @@ static unsigned long isolate_freepages_block(struct=
+ compact_control *cc,
+> >
+> >                 /* Found a free page, will break it into order-0 pages =
+*/
+> >                 order =3D buddy_order(page);
+> > -               isolated =3D __isolate_free_page(page, order);
+> > +               isolated =3D __isolate_free_page(page, order, cc->alloc=
+_flags);
+> >                 if (!isolated)
+> >                         break;
+> >                 set_page_private(page, order);
+> > @@ -1634,7 +1634,7 @@ static void fast_isolate_freepages(struct compact=
+_control *cc)
+> >
+> >                 /* Isolate the page if available */
+> >                 if (page) {
+> > -                       if (__isolate_free_page(page, order)) {
+> > +                       if (__isolate_free_page(page, order, cc->alloc_=
+flags)) {
+> >                                 set_page_private(page, order);
+> >                                 nr_isolated =3D 1 << order;
+> >                                 nr_scanned +=3D nr_isolated - 1;
+> > @@ -2381,6 +2381,7 @@ static enum compact_result compact_finished(struc=
+t compact_control *cc)
+> >
+> >  static bool __compaction_suitable(struct zone *zone, int order,
+> >                                   int highest_zoneidx,
+> > +                                 unsigned int alloc_flags,
+> >                                   unsigned long wmark_target)
+> >  {
+> >         unsigned long watermark;
+> > @@ -2395,25 +2396,26 @@ static bool __compaction_suitable(struct zone *=
+zone, int order,
+> >          * even if compaction succeeds.
+> >          * For costly orders, we require low watermark instead of min f=
+or
+> >          * compaction to proceed to increase its chances.
+> > -        * ALLOC_CMA is used, as pages in CMA pageblocks are considered
+> > -        * suitable migration targets
+> > +        * In addition to long term GUP flow, ALLOC_CMA is used, as pag=
+es in
+> > +        * CMA pageblocks are considered suitable migration targets
+>
+> I'm not sure if this document is correct for cases other than GUP.
 
-On 28/07/24 21:38, Sasha Levin wrote:
-> From: Takashi Iwai <tiwai@suse.de>
-> 
-> [ Upstream commit 2f38cf730caedaeacdefb7ff35b0a3c1168117f9 ]
-> 
-> A malformed USB descriptor may pass the lengthy mixer description with
-> a lot of channels, and this may overflow the 32bit integer shift
-> size, as caught by syzbot UBSAN test.  Although this won't cause any
-> real trouble, it's better to address.
-> 
-> This patch introduces a sanity check of the number of channels to bail
-> out the parsing when too many channels are found.
-> 
-> Reported-by: syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/0000000000000adac5061d3c7355@google.com
-> Link: https://patch.msgid.link/20240715123619.26612-1-tiwai@suse.de
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hi yangge,
 
-FYI: This 13 patch series and similar AUTOSEL sets for other stable 
-kernels didn't go into stable yet.
+Could we please run the same test using dma-buf? The simplest approach is
+to use system_heap from drivers/dma-buf/heaps/system_heap.c.
 
-Thanks,
-Harshit
+Userspace programming it is quite straightforward:
+https://static.linaro.org/connect/lvc21/presentations/lvc21-120.pdf
 
-> ---
->   sound/usb/mixer.c | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-> index d818eee53c90a..f10634dc118d6 100644
-> --- a/sound/usb/mixer.c
-> +++ b/sound/usb/mixer.c
-> @@ -1985,6 +1985,13 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
->   		bmaControls = ftr->bmaControls;
->   	}
->   
-> +	if (channels > 32) {
-> +		usb_audio_info(state->chip,
-> +			       "usbmixer: too many channels (%d) in unit %d\n",
-> +			       channels, unitid);
-> +		return -EINVAL;
-> +	}
-> +
->   	/* parse the source unit */
->   	err = parse_audio_unit(state, hdr->bSourceID);
->   	if (err < 0)
+struct dma_heap_allocation_data heap_data =3D { .len =3D 1048576,  // 1meg
+    .fd_flags =3D O_RDWR | O_CLOEXEC, };
 
+fd =3D open(=E2=80=9C/dev/dma_heap/system=E2=80=9D, O_RDONLY | O_CLOEXEC);
+if (fd < 0)
+      return fd;
+ret =3D ioctl(fd, DMA_HEAP_IOCTL_ALLOC, &heap_data);
+
+There are two objectives:
+1. Whether we should fix the changelog and code documentation, then send
+another version.
+2. If there are issues elsewhere, we need to port the patch into the Androi=
+d
+common kernel, which heavily uses dma-buf.
+
+>
+> >          */
+> >         watermark =3D (order > PAGE_ALLOC_COSTLY_ORDER) ?
+> >                                 low_wmark_pages(zone) : min_wmark_pages=
+(zone);
+> >         watermark +=3D compact_gap(order);
+> >         return __zone_watermark_ok(zone, 0, watermark, highest_zoneidx,
+> > -                                  ALLOC_CMA, wmark_target);
+> > +                                  alloc_flags & ALLOC_CMA, wmark_targe=
+t);
+> >  }
+> >
+> >  /*
+> >   * compaction_suitable: Is this suitable to run compaction on this zon=
+e now?
+> >   */
+> > -bool compaction_suitable(struct zone *zone, int order, int highest_zon=
+eidx)
+> > +bool compaction_suitable(struct zone *zone, int order, int highest_zon=
+eidx,
+> > +                                  unsigned int alloc_flags)
+> >  {
+> >         enum compact_result compact_result;
+> >         bool suitable;
+> >
+> > -       suitable =3D __compaction_suitable(zone, order, highest_zoneidx=
+,
+> > +       suitable =3D __compaction_suitable(zone, order, highest_zoneidx=
+, alloc_flags,
+> >                                          zone_page_state(zone, NR_FREE_=
+PAGES));
+> >         /*
+> >          * fragmentation index determines if allocation failures are du=
+e to
+> > @@ -2474,7 +2476,7 @@ bool compaction_zonelist_suitable(struct alloc_co=
+ntext *ac, int order,
+> >                 available =3D zone_reclaimable_pages(zone) / order;
+> >                 available +=3D zone_page_state_snapshot(zone, NR_FREE_P=
+AGES);
+> >                 if (__compaction_suitable(zone, order, ac->highest_zone=
+idx,
+> > -                                         available))
+> > +                                         alloc_flags, available))
+> >                         return true;
+> >         }
+> >
+> > @@ -2499,7 +2501,7 @@ compaction_suit_allocation_order(struct zone *zon=
+e, unsigned int order,
+> >                               alloc_flags))
+> >                 return COMPACT_SUCCESS;
+> >
+> > -       if (!compaction_suitable(zone, order, highest_zoneidx))
+> > +       if (!compaction_suitable(zone, order, highest_zoneidx, alloc_fl=
+ags))
+> >                 return COMPACT_SKIPPED;
+> >
+> >         return COMPACT_CONTINUE;
+> > @@ -2893,6 +2895,7 @@ static int compact_node(pg_data_t *pgdat, bool pr=
+oactive)
+> >         struct compact_control cc =3D {
+> >                 .order =3D -1,
+> >                 .mode =3D proactive ? MIGRATE_SYNC_LIGHT : MIGRATE_SYNC=
+,
+> > +               .alloc_flags =3D ALLOC_CMA,
+> >                 .ignore_skip_hint =3D true,
+> >                 .whole_zone =3D true,
+> >                 .gfp_mask =3D GFP_KERNEL,
+> > @@ -3037,7 +3040,7 @@ static bool kcompactd_node_suitable(pg_data_t *pg=
+dat)
+> >
+> >                 ret =3D compaction_suit_allocation_order(zone,
+> >                                 pgdat->kcompactd_max_order,
+> > -                               highest_zoneidx, ALLOC_WMARK_MIN);
+> > +                               highest_zoneidx, ALLOC_CMA | ALLOC_WMAR=
+K_MIN);
+> >                 if (ret =3D=3D COMPACT_CONTINUE)
+> >                         return true;
+> >         }
+> > @@ -3058,6 +3061,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
+> >                 .search_order =3D pgdat->kcompactd_max_order,
+> >                 .highest_zoneidx =3D pgdat->kcompactd_highest_zoneidx,
+> >                 .mode =3D MIGRATE_SYNC_LIGHT,
+> > +               .alloc_flags =3D ALLOC_CMA | ALLOC_WMARK_MIN,
+> >                 .ignore_skip_hint =3D false,
+> >                 .gfp_mask =3D GFP_KERNEL,
+> >         };
+> > @@ -3078,7 +3082,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
+> >                         continue;
+> >
+> >                 ret =3D compaction_suit_allocation_order(zone,
+> > -                               cc.order, zoneid, ALLOC_WMARK_MIN);
+> > +                               cc.order, zoneid, cc.alloc_flags);
+> >                 if (ret !=3D COMPACT_CONTINUE)
+> >                         continue;
+> >
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index 3922788..6d257c8 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -662,7 +662,8 @@ static inline void clear_zone_contiguous(struct zon=
+e *zone)
+> >         zone->contiguous =3D false;
+> >  }
+> >
+> > -extern int __isolate_free_page(struct page *page, unsigned int order);
+> > +extern int __isolate_free_page(struct page *page, unsigned int order,
+> > +                                   unsigned int alloc_flags);
+> >  extern void __putback_isolated_page(struct page *page, unsigned int or=
+der,
+> >                                     int mt);
+> >  extern void memblock_free_pages(struct page *page, unsigned long pfn,
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index dde19db..1bfdca3 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -2809,7 +2809,8 @@ void split_page(struct page *page, unsigned int o=
+rder)
+> >  }
+> >  EXPORT_SYMBOL_GPL(split_page);
+> >
+> > -int __isolate_free_page(struct page *page, unsigned int order)
+> > +int __isolate_free_page(struct page *page, unsigned int order,
+> > +                                  unsigned int alloc_flags)
+> >  {
+> >         struct zone *zone =3D page_zone(page);
+> >         int mt =3D get_pageblock_migratetype(page);
+> > @@ -2823,7 +2824,8 @@ int __isolate_free_page(struct page *page, unsign=
+ed int order)
+> >                  * exists.
+> >                  */
+> >                 watermark =3D zone->_watermark[WMARK_MIN] + (1UL << ord=
+er);
+> > -               if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA=
+))
+> > +               if (!zone_watermark_ok(zone, 0, watermark, 0,
+> > +                           alloc_flags & ALLOC_CMA))
+> >                         return 0;
+> >         }
+> >
+> > @@ -6454,6 +6456,7 @@ int alloc_contig_range_noprof(unsigned long start=
+, unsigned long end,
+> >                 .order =3D -1,
+> >                 .zone =3D page_zone(pfn_to_page(start)),
+> >                 .mode =3D MIGRATE_SYNC,
+> > +               .alloc_flags =3D ALLOC_CMA,
+> >                 .ignore_skip_hint =3D true,
+> >                 .no_set_skip_hint =3D true,
+> >                 .alloc_contig =3D true,
+> > diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+> > index c608e9d..a1f2c79 100644
+> > --- a/mm/page_isolation.c
+> > +++ b/mm/page_isolation.c
+> > @@ -229,7 +229,8 @@ static void unset_migratetype_isolate(struct page *=
+page, int migratetype)
+> >                         buddy =3D find_buddy_page_pfn(page, page_to_pfn=
+(page),
+> >                                                     order, NULL);
+> >                         if (buddy && !is_migrate_isolate_page(buddy)) {
+> > -                               isolated_page =3D !!__isolate_free_page=
+(page, order);
+> > +                               isolated_page =3D !!__isolate_free_page=
+(page, order,
+> > +                                                   ALLOC_CMA);
+> >                                 /*
+> >                                  * Isolating a free page in an isolated=
+ pageblock
+> >                                  * is expected to always work as waterm=
+arks don't
+> > diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+> > index e4c428e..fd3813b 100644
+> > --- a/mm/page_reporting.c
+> > +++ b/mm/page_reporting.c
+> > @@ -198,7 +198,7 @@ page_reporting_cycle(struct page_reporting_dev_info=
+ *prdev, struct zone *zone,
+> >
+> >                 /* Attempt to pull page from list and place in scatterl=
+ist */
+> >                 if (*offset) {
+> > -                       if (!__isolate_free_page(page, order)) {
+> > +                       if (!__isolate_free_page(page, order, ALLOC_CMA=
+)) {
+> >                                 next =3D page;
+> >                                 break;
+> >                         }
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 5e03a61..33f5b46 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -5815,7 +5815,7 @@ static inline bool should_continue_reclaim(struct=
+ pglist_data *pgdat,
+> >                                       sc->reclaim_idx, 0))
+> >                         return false;
+> >
+> > -               if (compaction_suitable(zone, sc->order, sc->reclaim_id=
+x))
+> > +               if (compaction_suitable(zone, sc->order, sc->reclaim_id=
+x, ALLOC_CMA))
+> >                         return false;
+> >         }
+> >
+> > @@ -6043,7 +6043,7 @@ static inline bool compaction_ready(struct zone *=
+zone, struct scan_control *sc)
+> >                 return true;
+> >
+> >         /* Compaction cannot yet proceed. Do reclaim. */
+> > -       if (!compaction_suitable(zone, sc->order, sc->reclaim_idx))
+> > +       if (!compaction_suitable(zone, sc->order, sc->reclaim_idx, ALLO=
+C_CMA))
+> >                 return false;
+> >
+> >         /*
+> > --
+> > 2.7.4
+> >
+> >
+>
+Thanks
+Barry
 
