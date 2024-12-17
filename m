@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-104575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA729F51E8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 209F09F5249
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAE311883A45
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F05C16A2D1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D26F1F7562;
-	Tue, 17 Dec 2024 17:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE421F8AD6;
+	Tue, 17 Dec 2024 17:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7IC0PYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjiPn+Xp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C4F1F4735;
-	Tue, 17 Dec 2024 17:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4501F8697;
+	Tue, 17 Dec 2024 17:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455468; cv=none; b=X/q1Kn6VQmQOwl8SQ26l1OcmHxUMPY/sy0RxtGBhIK+m48CIyzWqol2jDujrq0u8iMCM5/Rss1VNinL6PJ2EEh0G1U3UIjMU1CYc5nviZ713bPJEjZ0uLguFx6bBc69wIhre7cw140I1IqzmxCzwbg2udyVaSrHDOWJiwl5rmRI=
+	t=1734455683; cv=none; b=sQBvhpWSQ/W6OH5yoFwqAUN8KTN86tI1o9vKey3VgjEHV35vTipXQubAx3ktY1JFICZ8149m0twyzeVT20gz2V+SXLwjad60jSWPUZn+lXlYuznfzIrf3YljQKyGhP0nbF0EOcuaMp9EwNcJvMgkz83je8g0zsJeelG/hvpWZ38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455468; c=relaxed/simple;
-	bh=rzh36FC+bp+AOUdreuCrO5YcMVaJxYVoL+6p6DyIJXw=;
+	s=arc-20240116; t=1734455683; c=relaxed/simple;
+	bh=L7BLg9OWlRO6WjSK45wUyCKkMFBUrWYAMd/DdknJ2+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K+6c+CYLCCXGh9uYmHHxWSDMxq2UdC+jEOlUNOWGxUg1dnvJqnbYBL8vkyjQJKNjS3YPUpQ+GEZpPHSTAiHon0yHys7TGXLw2nIqN/LjhGYy/uAdNLpZqPd0tmEz72AZVzVjvI7/qxwOyV27XsI6aoPRIkOYZMrDi1ADBIf9k4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7IC0PYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92164C4CED3;
-	Tue, 17 Dec 2024 17:11:07 +0000 (UTC)
+	 MIME-Version; b=eIvUzibBiYyfaXUXQKtwOc9xDvuJfA30841nQCT3X3bbYtFXdsyYWxTIzUiivzbzRgeZDq3OFk2LofWgB13vFnc7ZHcRYJrI8gpqWq8M9y3GQ3hlX2LaLdYAgjmdlWceI+FJ97D2k58yzML1kYXe+LU6pgnRXvZjMqyQyY1EffA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjiPn+Xp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3C6C4CED3;
+	Tue, 17 Dec 2024 17:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455468;
-	bh=rzh36FC+bp+AOUdreuCrO5YcMVaJxYVoL+6p6DyIJXw=;
+	s=korg; t=1734455682;
+	bh=L7BLg9OWlRO6WjSK45wUyCKkMFBUrWYAMd/DdknJ2+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7IC0PYAMjJ3PfTyxnOI9VnJk4q5miNpq8ft1pZuuxpCsJ7setqJSD+ESdS6fKGxA
-	 PLB/qNJ0oZ3eb2T4NDknrI1ps8eqyIweOmne6Dq2ha3Q+1wC9QSKWEYAmNNedmtD0H
-	 dMkPnzgbiSQHxbh1oQmHARUcfuxDiaVUV30bnyUA=
+	b=VjiPn+Xp8vouGKlfraa9xZq9EPCW4PNSF4a9OZHS3shwc38NhTlrBtAk10GHZjCY6
+	 cRGD0E4vvBwX4XghUp4jmcZ4QUFhzc1QBwTAlAdXntNqiY2D1E08t27gjwyYOtLikJ
+	 xkPGNlGrJu0DQLkZ8IF3VQrBHXYQJNFau7XScddM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 20/43] ACPI: resource: Fix memory resource type union access
+Subject: [PATCH 5.15 18/51] acpi: nfit: vmalloc-out-of-bounds Read in acpi_nfit_ctl
 Date: Tue, 17 Dec 2024 18:07:11 +0100
-Message-ID: <20241217170521.271528604@linuxfoundation.org>
+Message-ID: <20241217170521.046106964@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +63,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
 
-[ Upstream commit 7899ca9f3bd2b008e9a7c41f2a9f1986052d7e96 ]
+[ Upstream commit 265e98f72bac6c41a4492d3e30a8e5fd22fe0779 ]
 
-In acpi_decode_space() addr->info.mem.caching is checked on main level
-for any resource type but addr->info.mem is part of union and thus
-valid only if the resource type is memory range.
+Fix an issue detected by syzbot with KASAN:
 
-Move the check inside the preceeding switch/case to only execute it
-when the union is of correct type.
+BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
+core.c:416 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
+drivers/acpi/nfit/core.c:459
 
-Fixes: fcb29bbcd540 ("ACPI: Add prefetch decoding to the address space parser")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20241202100614.20731-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
+array is accessed without verifying that call_pkg points to a buffer
+that is appropriately sized as a struct nd_cmd_pkg. This can lead
+to out-of-bounds access and undefined behavior if the buffer does not
+have sufficient space.
+
+To address this, a check was added in acpi_nfit_ctl() to ensure that
+buf is not NULL and that buf_len is less than sizeof(*call_pkg)
+before accessing it. This ensures safe access to the members of
+call_pkg, including the nd_reserved2 array.
+
+Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
+Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241118162609.29063-1-surajsonawane0215@gmail.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/nfit/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 01e91a7451b0..fdb896be5a00 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -250,6 +250,9 @@ static bool acpi_decode_space(struct resource_win *win,
- 	switch (addr->resource_type) {
- 	case ACPI_MEMORY_RANGE:
- 		acpi_dev_memresource_flags(res, len, wp);
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 2575d6c51f89..9cc83df22de4 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -454,8 +454,13 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 	if (cmd_rc)
+ 		*cmd_rc = -EINVAL;
+ 
+-	if (cmd == ND_CMD_CALL)
++	if (cmd == ND_CMD_CALL) {
++		if (!buf || buf_len < sizeof(*call_pkg))
++			return -EINVAL;
 +
-+		if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
-+			res->flags |= IORESOURCE_PREFETCH;
- 		break;
- 	case ACPI_IO_RANGE:
- 		acpi_dev_ioresource_flags(res, len, iodec,
-@@ -265,9 +268,6 @@ static bool acpi_decode_space(struct resource_win *win,
- 	if (addr->producer_consumer == ACPI_PRODUCER)
- 		res->flags |= IORESOURCE_WINDOW;
- 
--	if (addr->info.mem.caching == ACPI_PREFETCHABLE_MEMORY)
--		res->flags |= IORESOURCE_PREFETCH;
--
- 	return !(res->flags & IORESOURCE_DISABLED);
- }
- 
+ 		call_pkg = buf;
++	}
++
+ 	func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
+ 	if (func < 0)
+ 		return func;
 -- 
 2.39.5
 
