@@ -1,378 +1,239 @@
-Return-Path: <stable+bounces-104475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6969F4A3E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 12:47:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A85C9F4A7E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C18B7A2A39
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 11:47:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 821F516E8AD
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 11:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E801EBA14;
-	Tue, 17 Dec 2024 11:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A034A1EF088;
+	Tue, 17 Dec 2024 11:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="aNYK47n6"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rbq/PfQK"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF741E885A;
-	Tue, 17 Dec 2024 11:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8931F130E
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 11:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734436044; cv=none; b=WvRhcMVghZarh66NgGRC0Dt/yv5zcak/lJoBKJo5Rdm2baKh59MTnU+aNRZXcPegyheQ7n/f0ia3DlZHbtnby4PrPlc/4CgqZgmN7csSuftNmqUg1H87pMPnDnLi/s3fMYVqhHZzj25NKbTQLnOcb4jA1WSFMvoxmMMTiVdFe3Q=
+	t=1734436747; cv=none; b=PK5NaXN+iE/M8cDzxD/ivdXRbSlCSdiSR1ReZdzn2ylcUhrivyTNSoTaf4VH0povVnucI0YEFPn52Nc5leZxrNFZ6hJIg5KVK2M4wRRvcGnEcUJ9ZvgrTluGI/PxUzKcCeDlbHHRHMfHq5JuS2Jqy6yyWpBisvNDHCMlfp2nKKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734436044; c=relaxed/simple;
-	bh=xhNBOu5KIheCLkpEWVbmn/Amv3CTLCdA8+O2/qKPJHw=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=QaN66mHyVqZKYkTYFtQwzVJ1qMxWY6zfq79LAUtCHGpyL4haeFcWdxHvPhcS+IhnKfPUclQbLbH4T1Xd4WQ5iT97JeEkdCMvY0JaMf8oZB0/0pHCR0LBjtaNjDNucPqQKtoNTHVNncLMKs/DTzmv8gOFmosWnB/4jmVNm5txePk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=aNYK47n6; arc=none smtp.client-ip=117.135.210.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id; bh=E4jWkQr31MIerYLkGp
-	G6t1bAgXwRkJB4Ua9JuDCiN0M=; b=aNYK47n6voKw4KDSKtfhBVUY5jcHj67vtN
-	4QQP5H7+MJ6+B6sMXCgsyOHMu7+1g5gIPZBIa62Y+nO4nJGYuKHmY/7acatGUD3E
-	+kGloBhJgtHRsBJgc+lfKSKkwqhVsLjbre37LDzqDXynttmBAz/HT8riHwuxS/Xy
-	vUL002pB0=
-Received: from hg-OptiPlex-7040.hygon.cn (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3j46lZGFnOsarAQ--.12517S2;
-	Tue, 17 Dec 2024 19:46:46 +0800 (CST)
-From: yangge1116@126.com
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	21cnbao@gmail.com,
-	david@redhat.com,
-	baolin.wang@linux.alibaba.com,
-	vbabka@suse.cz,
-	liuzixing@hygon.cn,
-	yangge <yangge1116@126.com>
-Subject: [PATCH V7] mm, compaction: don't use ALLOC_CMA for unmovable allocations
-Date: Tue, 17 Dec 2024 19:46:44 +0800
-Message-Id: <1734436004-1212-1-git-send-email-yangge1116@126.com>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID:_____wD3j46lZGFnOsarAQ--.12517S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Cr4rCFW8Jr18tFWUGr4DArb_yoWkZryfpF
-	48Wa4Iy3yrX3W3GFW8tF4vvF1Yqr48GF48AryIgw18Zw13KF9F9as7KFy3AFWrWr95AFWY
-	qFWqkrZ7GFsxAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zNAp5UUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOg64G2dhVmc+LQABsy
+	s=arc-20240116; t=1734436747; c=relaxed/simple;
+	bh=aNt2BwmLUct8rkd7o7tf0p+7iI751+elzouhI6CQ6cI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HNgyeXVFRuX9GFMh2VfoAete60dyNAuyHXu6/2TiJTBZjbKGoqfMOg2DeeQ7giYAAoeJtyEQenuTkoTs8QuZxba5UNp5hKoizqWhzXR8vVYPd4BkKKuPS2rEv4N1kJHZa/wZI5TMyyMYIz9EcPFyRK+D07D5JiCzdR6qoX9twTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rbq/PfQK; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-aa622312962so520513866b.2
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 03:59:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734436744; x=1735041544; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mFLG+Mz6+rXw/fKG095FB7K/CJc89nhaVW+lx+ctidE=;
+        b=rbq/PfQKYNK4yvXYD9GhE2WJAG0DOH6iuW11CaBK5tUux1xOyOS/jTNrFQIui95vat
+         XfQyO90tG5JIgD2bgqkPWwhF0itTNdsWbTQtpNbGBLdkEFpdYBN5cQzPvax6ayj8BOPI
+         I4oZOy3WqVb2Li20JT206pLn9i0MsB44/EO9x21ThxIAwfB9MMDNNsuwJqNh/x86JJny
+         UfowKpaqFKJkIggmlwm5goY7YtTRLUZamNcpD5DMrXhWGigItITGbrS9un7hlQs6wewx
+         KfKwXmxIP9VUK48gOOGA0cmlZtuGw6MPHv4oINVeVMp1gmudbc+ywwjjRI4RkvMoHlza
+         7yew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734436744; x=1735041544;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mFLG+Mz6+rXw/fKG095FB7K/CJc89nhaVW+lx+ctidE=;
+        b=blt6iory5iV6NteUgYHo3jLDEoNGY/R+iRihy846961zkatxsKmo3kJ1BVvy2KdKSj
+         s8XcJ6+tT/TS1pSODaIkFDj/M/sfqwb5dR8ghXPjE9EM/CjOJQUP2xtb8WIpiIT0ZEaH
+         3valRSW4jHhY4qNC/CZ5W9wUqQ3BbFMuOcvjsaJWGhdoVQjManC1QvzdDQUUh5t/ZxbO
+         LAvlp3QHHsjTyfQYJWGr/l9mDSyQ2H31gLZ/jxHr0OJD+cYy8blVS4nRz0/wI/C19rtB
+         ryy19npZViFIVeR6X1kl3uywMmOdlyPzP6pJTjcOcSPyuhP0FWzZeA9vUysfvist42Hk
+         fTug==
+X-Gm-Message-State: AOJu0YyP7+GRPUVKeBXZ6wlbCoTI77QHIiG1s3Camyqg5jRi1GsQoD5L
+	A+Mii0++ahi5K/WMKE3zSI1KFETWpXRlgqq0jFZt8myF+XqSWOLkV/9SxnKHodV+4r9DUGmM5GL
+	HOR3R/p/c4wIJJERrBlDLuJmbpt2gB0uqRlzn4rw0DFyTUHpeeYo+61yOhHafx+QZmr4sI3RNpX
+	278cGLy5RDMFTaTYRL3eRKbUApKwNIEAMufzpZRw==
+X-Google-Smtp-Source: AGHT+IHs4hV8oyjrG6TDx1HwTMFLjdWMXF76XDWhmn78+b2F2wxOFkxuvDiKfzzKYvmD6a3+eqx09JlAM+ke
+X-Received: from ejcla18.prod.google.com ([2002:a17:907:7812:b0:aa6:8676:3b2b])
+ (user=bsevens job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:3f23:b0:aa6:2a17:b54c
+ with SMTP id a640c23a62f3a-aab778c32fcmr1850852266b.6.1734436743908; Tue, 17
+ Dec 2024 03:59:03 -0800 (PST)
+Date: Tue, 17 Dec 2024 11:58:58 +0000
+In-Reply-To: <2024121038-scratch-explore-9597@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <2024121038-scratch-explore-9597@gregkh>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241217115858.688737-1-bsevens@google.com>
+Subject: [PATCH 6.6.y] ALSA: usb-audio: Fix a DMA to stack memory bug
+From: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
+To: stable@vger.kernel.org
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@kernel.org, 
+	Takashi Iwai <tiwai@suse.de>, "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: yangge <yangge1116@126.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
-in __compaction_suitable()") allow compaction to proceed when free
-pages required for compaction reside in the CMA pageblocks, it's
-possible that __compaction_suitable() always returns true, and in
-some cases, it's not acceptable.
+The usb_get_descriptor() function does DMA so we're not allowed
+to use a stack buffer for that.  Doing DMA to the stack is not portable
+all architectures.  Move the "new_device_descriptor" from being stored
+on the stack and allocate it with kmalloc() instead.
 
-There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
-of memory. I have configured 16GB of CMA memory on each NUMA node,
-and starting a 32GB virtual machine with device passthrough is
-extremely slow, taking almost an hour.
-
-During the start-up of the virtual machine, it will call
-pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
-Long term GUP cannot allocate memory from CMA area, so a maximum
-of 16 GB of no-CMA memory on a NUMA node can be used as virtual
-machine memory. Since there is 16G of free CMA memory on the NUMA
-node, watermark for order-0 always be met for compaction, so
-__compaction_suitable() always returns true, even if the node is
-unable to allocate non-CMA memory for the virtual machine.
-
-For costly allocations, because __compaction_suitable() always
-returns true, __alloc_pages_slowpath() can't exit at the appropriate
-place, resulting in excessively long virtual machine startup times.
-Call trace:
-__alloc_pages_slowpath
-    if (compact_result == COMPACT_SKIPPED ||
-        compact_result == COMPACT_DEFERRED)
-        goto nopage; // should exit __alloc_pages_slowpath() from here
-
-Other unmovable alloctions, like dma_buf, which can be large in a
-Linux system, are also unable to allocate memory from CMA, and these
-allocations suffer from the same problems described above. In order
-to quickly fall back to remote node, we should remove ALLOC_CMA both
-in __compaction_suitable() and __isolate_free_page() for unmovable
-alloctions. After this fix, starting a 32GB virtual machine with
-device passthrough takes only a few seconds.
-
-Fixes: 984fdba6a32e ("mm, compaction: use proper alloc_flags in __compaction_suitable()")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: yangge <yangge1116@126.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses =
+for Extigy and Mbox devices")
+Cc: stable@kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley=
+.mountain
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+(cherry picked from commit f7d306b47a24367302bd4fe846854e07752ffcd9)
+Signed-off-by: Beno=C3=AEt Sevens <bsevens@google.com>
 ---
+ sound/usb/quirks.c | 42 +++++++++++++++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
-V7:
--- fix the changelog and code documentation
-
-V6:
--- update cc->alloc_flags to keep the original loginc
-
-V5:
-- add 'alloc_flags' parameter for __isolate_free_page()
-- remove 'usa_cma' variable
-
-V4:
-- rich the commit log description
-
-V3:
-- fix build errors
-- add ALLOC_CMA both in should_continue_reclaim() and compaction_ready()
-
-V2:
-- using the 'cc->alloc_flags' to determin if 'ALLOC_CMA' is needed
-- rich the commit log description
-
- include/linux/compaction.h |  6 ++++--
- mm/compaction.c            | 26 +++++++++++++++-----------
- mm/internal.h              |  3 ++-
- mm/page_alloc.c            |  7 +++++--
- mm/page_isolation.c        |  3 ++-
- mm/page_reporting.c        |  2 +-
- mm/vmscan.c                |  4 ++--
- 7 files changed, 31 insertions(+), 20 deletions(-)
-
-diff --git a/include/linux/compaction.h b/include/linux/compaction.h
-index e947764..b4c3ac3 100644
---- a/include/linux/compaction.h
-+++ b/include/linux/compaction.h
-@@ -90,7 +90,8 @@ extern enum compact_result try_to_compact_pages(gfp_t gfp_mask,
- 		struct page **page);
- extern void reset_isolation_suitable(pg_data_t *pgdat);
- extern bool compaction_suitable(struct zone *zone, int order,
--					       int highest_zoneidx);
-+					       int highest_zoneidx,
-+					       unsigned int alloc_flags);
- 
- extern void compaction_defer_reset(struct zone *zone, int order,
- 				bool alloc_success);
-@@ -108,7 +109,8 @@ static inline void reset_isolation_suitable(pg_data_t *pgdat)
- }
- 
- static inline bool compaction_suitable(struct zone *zone, int order,
--						      int highest_zoneidx)
-+						      int highest_zoneidx,
-+						      unsigned int alloc_flags)
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 65c44649c067..6e970e61ce93 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -555,7 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_audio *chip,
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_in=
+terface *intf)
  {
- 	return false;
- }
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 07bd227..223f2da 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -655,7 +655,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
- 
- 		/* Found a free page, will break it into order-0 pages */
- 		order = buddy_order(page);
--		isolated = __isolate_free_page(page, order);
-+		isolated = __isolate_free_page(page, order, cc->alloc_flags);
- 		if (!isolated)
- 			break;
- 		set_page_private(page, order);
-@@ -1634,7 +1634,7 @@ static void fast_isolate_freepages(struct compact_control *cc)
- 
- 		/* Isolate the page if available */
- 		if (page) {
--			if (__isolate_free_page(page, order)) {
-+			if (__isolate_free_page(page, order, cc->alloc_flags)) {
- 				set_page_private(page, order);
- 				nr_isolated = 1 << order;
- 				nr_scanned += nr_isolated - 1;
-@@ -2381,6 +2381,7 @@ static enum compact_result compact_finished(struct compact_control *cc)
- 
- static bool __compaction_suitable(struct zone *zone, int order,
- 				  int highest_zoneidx,
-+				  unsigned int alloc_flags,
- 				  unsigned long wmark_target)
+ 	struct usb_host_config *config =3D dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) =3D NUL=
+L;
+ 	int err;
+=20
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) =3D=3D EXTIGY_FIRMWAR=
+E_SIZE_OLD ||
+@@ -566,15 +566,19 @@ static int snd_usb_extigy_boot_quirk(struct usb_devic=
+e *dev, struct usb_interfac
+ 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
++
++		new_device_descriptor =3D kmalloc(sizeof(*new_device_descriptor), GFP_KE=
+RNEL);
++		if (!new_device_descriptor)
++			return -ENOMEM;
+ 		err =3D usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&new_device_descriptor, sizeof(new_device_descriptor));
++				new_device_descriptor, sizeof(*new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfi=
+gurations)
++		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConf=
+igurations)
+ 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-				new_device_descriptor.bNumConfigurations);
++				new_device_descriptor->bNumConfigurations);
+ 		else
+-			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor=
+));
++			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor)=
+);
+ 		err =3D usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -906,7 +910,7 @@ static void mbox2_setup_48_24_magic(struct usb_device *=
+dev)
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
  {
- 	unsigned long watermark;
-@@ -2395,25 +2396,26 @@ static bool __compaction_suitable(struct zone *zone, int order,
- 	 * even if compaction succeeds.
- 	 * For costly orders, we require low watermark instead of min for
- 	 * compaction to proceed to increase its chances.
--	 * ALLOC_CMA is used, as pages in CMA pageblocks are considered
--	 * suitable migration targets
-+	 * In addition to unmovable allocations, ALLOC_CMA is used, as pages in
-+	 * CMA pageblocks are considered suitable migration targets
- 	 */
- 	watermark = (order > PAGE_ALLOC_COSTLY_ORDER) ?
- 				low_wmark_pages(zone) : min_wmark_pages(zone);
- 	watermark += compact_gap(order);
- 	return __zone_watermark_ok(zone, 0, watermark, highest_zoneidx,
--				   ALLOC_CMA, wmark_target);
-+				   alloc_flags & ALLOC_CMA, wmark_target);
- }
- 
- /*
-  * compaction_suitable: Is this suitable to run compaction on this zone now?
-  */
--bool compaction_suitable(struct zone *zone, int order, int highest_zoneidx)
-+bool compaction_suitable(struct zone *zone, int order, int highest_zoneidx,
-+				   unsigned int alloc_flags)
+ 	struct usb_host_config *config =3D dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) =3D NUL=
+L;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -941,15 +945,19 @@ static int snd_usb_mbox2_boot_quirk(struct usb_device=
+ *dev)
+=20
+ 	dev_dbg(&dev->dev, "device initialised!\n");
+=20
++	new_device_descriptor =3D kmalloc(sizeof(*new_device_descriptor), GFP_KER=
+NEL);
++	if (!new_device_descriptor)
++		return -ENOMEM;
++
+ 	err =3D usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&new_device_descriptor, sizeof(new_device_descriptor));
++		new_device_descriptor, sizeof(*new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfig=
+urations)
++	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfi=
+gurations)
+ 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-			new_device_descriptor.bNumConfigurations);
++			new_device_descriptor->bNumConfigurations);
+ 	else
+-		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor)=
+);
++		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor))=
+;
+=20
+ 	err =3D usb_reset_configuration(dev);
+ 	if (err < 0)
+@@ -1263,7 +1271,7 @@ static void mbox3_setup_48_24_magic(struct usb_device=
+ *dev)
+ static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
  {
- 	enum compact_result compact_result;
- 	bool suitable;
- 
--	suitable = __compaction_suitable(zone, order, highest_zoneidx,
-+	suitable = __compaction_suitable(zone, order, highest_zoneidx, alloc_flags,
- 					 zone_page_state(zone, NR_FREE_PAGES));
- 	/*
- 	 * fragmentation index determines if allocation failures are due to
-@@ -2474,7 +2476,7 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
- 		available = zone_reclaimable_pages(zone) / order;
- 		available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
- 		if (__compaction_suitable(zone, order, ac->highest_zoneidx,
--					  available))
-+					  alloc_flags, available))
- 			return true;
- 	}
- 
-@@ -2499,7 +2501,7 @@ compaction_suit_allocation_order(struct zone *zone, unsigned int order,
- 			      alloc_flags))
- 		return COMPACT_SUCCESS;
- 
--	if (!compaction_suitable(zone, order, highest_zoneidx))
-+	if (!compaction_suitable(zone, order, highest_zoneidx, alloc_flags))
- 		return COMPACT_SKIPPED;
- 
- 	return COMPACT_CONTINUE;
-@@ -2893,6 +2895,7 @@ static int compact_node(pg_data_t *pgdat, bool proactive)
- 	struct compact_control cc = {
- 		.order = -1,
- 		.mode = proactive ? MIGRATE_SYNC_LIGHT : MIGRATE_SYNC,
-+		.alloc_flags = ALLOC_CMA,
- 		.ignore_skip_hint = true,
- 		.whole_zone = true,
- 		.gfp_mask = GFP_KERNEL,
-@@ -3037,7 +3040,7 @@ static bool kcompactd_node_suitable(pg_data_t *pgdat)
- 
- 		ret = compaction_suit_allocation_order(zone,
- 				pgdat->kcompactd_max_order,
--				highest_zoneidx, ALLOC_WMARK_MIN);
-+				highest_zoneidx, ALLOC_CMA | ALLOC_WMARK_MIN);
- 		if (ret == COMPACT_CONTINUE)
- 			return true;
- 	}
-@@ -3058,6 +3061,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
- 		.search_order = pgdat->kcompactd_max_order,
- 		.highest_zoneidx = pgdat->kcompactd_highest_zoneidx,
- 		.mode = MIGRATE_SYNC_LIGHT,
-+		.alloc_flags = ALLOC_CMA | ALLOC_WMARK_MIN,
- 		.ignore_skip_hint = false,
- 		.gfp_mask = GFP_KERNEL,
- 	};
-@@ -3078,7 +3082,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
- 			continue;
- 
- 		ret = compaction_suit_allocation_order(zone,
--				cc.order, zoneid, ALLOC_WMARK_MIN);
-+				cc.order, zoneid, cc.alloc_flags);
- 		if (ret != COMPACT_CONTINUE)
- 			continue;
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index 3922788..6d257c8 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -662,7 +662,8 @@ static inline void clear_zone_contiguous(struct zone *zone)
- 	zone->contiguous = false;
- }
- 
--extern int __isolate_free_page(struct page *page, unsigned int order);
-+extern int __isolate_free_page(struct page *page, unsigned int order,
-+				    unsigned int alloc_flags);
- extern void __putback_isolated_page(struct page *page, unsigned int order,
- 				    int mt);
- extern void memblock_free_pages(struct page *page, unsigned long pfn,
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index dde19db..1bfdca3 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2809,7 +2809,8 @@ void split_page(struct page *page, unsigned int order)
- }
- EXPORT_SYMBOL_GPL(split_page);
- 
--int __isolate_free_page(struct page *page, unsigned int order)
-+int __isolate_free_page(struct page *page, unsigned int order,
-+				   unsigned int alloc_flags)
- {
- 	struct zone *zone = page_zone(page);
- 	int mt = get_pageblock_migratetype(page);
-@@ -2823,7 +2824,8 @@ int __isolate_free_page(struct page *page, unsigned int order)
- 		 * exists.
- 		 */
- 		watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
--		if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
-+		if (!zone_watermark_ok(zone, 0, watermark, 0,
-+			    alloc_flags & ALLOC_CMA))
- 			return 0;
- 	}
- 
-@@ -6454,6 +6456,7 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 		.order = -1,
- 		.zone = page_zone(pfn_to_page(start)),
- 		.mode = MIGRATE_SYNC,
-+		.alloc_flags = ALLOC_CMA,
- 		.ignore_skip_hint = true,
- 		.no_set_skip_hint = true,
- 		.alloc_contig = true,
-diff --git a/mm/page_isolation.c b/mm/page_isolation.c
-index c608e9d..a1f2c79 100644
---- a/mm/page_isolation.c
-+++ b/mm/page_isolation.c
-@@ -229,7 +229,8 @@ static void unset_migratetype_isolate(struct page *page, int migratetype)
- 			buddy = find_buddy_page_pfn(page, page_to_pfn(page),
- 						    order, NULL);
- 			if (buddy && !is_migrate_isolate_page(buddy)) {
--				isolated_page = !!__isolate_free_page(page, order);
-+				isolated_page = !!__isolate_free_page(page, order,
-+						    ALLOC_CMA);
- 				/*
- 				 * Isolating a free page in an isolated pageblock
- 				 * is expected to always work as watermarks don't
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index e4c428e..fd3813b 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -198,7 +198,7 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 
- 		/* Attempt to pull page from list and place in scatterlist */
- 		if (*offset) {
--			if (!__isolate_free_page(page, order)) {
-+			if (!__isolate_free_page(page, order, ALLOC_CMA)) {
- 				next = page;
- 				break;
- 			}
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 5e03a61..33f5b46 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5815,7 +5815,7 @@ static inline bool should_continue_reclaim(struct pglist_data *pgdat,
- 				      sc->reclaim_idx, 0))
- 			return false;
- 
--		if (compaction_suitable(zone, sc->order, sc->reclaim_idx))
-+		if (compaction_suitable(zone, sc->order, sc->reclaim_idx, ALLOC_CMA))
- 			return false;
- 	}
- 
-@@ -6043,7 +6043,7 @@ static inline bool compaction_ready(struct zone *zone, struct scan_control *sc)
- 		return true;
- 
- 	/* Compaction cannot yet proceed. Do reclaim. */
--	if (!compaction_suitable(zone, sc->order, sc->reclaim_idx))
-+	if (!compaction_suitable(zone, sc->order, sc->reclaim_idx, ALLOC_CMA))
- 		return false;
- 
- 	/*
--- 
-2.7.4
+ 	struct usb_host_config *config =3D dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) =3D NUL=
+L;
+ 	int err;
+ 	int descriptor_size;
+=20
+@@ -1276,15 +1284,19 @@ static int snd_usb_mbox3_boot_quirk(struct usb_devi=
+ce *dev)
+=20
+ 	dev_dbg(&dev->dev, "device initialised!\n");
+=20
++	new_device_descriptor =3D kmalloc(sizeof(*new_device_descriptor), GFP_KER=
+NEL);
++	if (!new_device_descriptor)
++		return -ENOMEM;
++
+ 	err =3D usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&new_device_descriptor, sizeof(new_device_descriptor));
++		new_device_descriptor, sizeof(*new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfig=
+urations)
++	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfi=
+gurations)
+ 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-			new_device_descriptor.bNumConfigurations);
++			new_device_descriptor->bNumConfigurations);
+ 	else
+-		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor)=
+);
++		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor))=
+;
+=20
+ 	err =3D usb_reset_configuration(dev);
+ 	if (err < 0)
+--=20
+2.47.1.613.gc27f4b7a9f-goog
 
 
