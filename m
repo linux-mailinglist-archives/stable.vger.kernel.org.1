@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79AE9F53D5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8F19F51E5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFFE718806B7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 779957A35A7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A591F7545;
-	Tue, 17 Dec 2024 17:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651101F75BE;
+	Tue, 17 Dec 2024 17:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0L2oe3wK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPvVtMr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425671F8913;
-	Tue, 17 Dec 2024 17:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4841F543C;
+	Tue, 17 Dec 2024 17:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456613; cv=none; b=MOcOhM/xnBsLbDe4TMxZ6ChyUJj8LCTfi7wqz4baLy9TwqsMrq13uv+RRMxUNGj9JzrrSQx6OGXzcL38PBgXURzEbei6wQ/o3GLXC4DG5UiJykk3NTjUgfRCXoBeVsNf+Tg2gq7i0Qj05HcsTLYBUwth9+KR6fmuLUOQ8x4rpZw=
+	t=1734455492; cv=none; b=pGOAiw1KbpSu4GszPfTiuTvF4TIuX+GHWCKjOyhsyebQPa2DKQ3NCU7bL8Jr9xdj/mVnCfxrMZ0dXgTl0YHmY3p6/Nr6NZdMgiCarKKzfkPwSSdbwipQ9FbwPr1oJkFvt3vW/Sdpg5iyhRXRm1gz9fqBKfO46e4SXqsNLiKmdtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456613; c=relaxed/simple;
-	bh=zIJQtW/BBaaQF4J/u3k8KVV7i2m16wDmcJDC+s7+Ia0=;
+	s=arc-20240116; t=1734455492; c=relaxed/simple;
+	bh=woxuRYY8bHPfxpHhZU7pwg3mUBvTiVhvJ3PLxFbcFQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvbMAYfpQ2AKIwn2kK9Obqe++Kk+e+5but60YjjfCh2rZ6kWkgWRhpgvPxhcMT0qahNL04xPaL9zCG8KDMHkIxKuAPqobXdKlkbMG4WUWaRSUaHhDHeZ1E+t3pkkO9/8HOjdP7nNThEiNRNGkcEoYn8v3v0DLFLQqP0RTmvnv7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0L2oe3wK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB57C4CED7;
-	Tue, 17 Dec 2024 17:30:12 +0000 (UTC)
+	 MIME-Version; b=vAM1tzge0tIsjaLjMCyTX4BkbbiHyKIcaDuAzOWmZiabgUbfDFTHSxVaUl1W9LgqEsUCQWKB0UG8aRFuPOnMXZn59LuyJXH0V5AE+/qEtg7RIgjaeTgLie9SZu30aR3+xsJ/fIvF0CXJwmUIhvn/a5yLA6T411C7g2b3P4JtZ+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPvVtMr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF8AC4CED3;
+	Tue, 17 Dec 2024 17:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456613;
-	bh=zIJQtW/BBaaQF4J/u3k8KVV7i2m16wDmcJDC+s7+Ia0=;
+	s=korg; t=1734455492;
+	bh=woxuRYY8bHPfxpHhZU7pwg3mUBvTiVhvJ3PLxFbcFQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0L2oe3wKPe33KeQDnQMewwWqev6nO0Vfb+zkmjHh7DbUDE8EtWb52DYxiH4eB/u53
-	 mfDWSDSI5ID3rjsUb3HV4BFDl0WvChQfgZggZVIcOktSuXnnm8ViIYjIxXqjFvz+AZ
-	 NbC6BWH2QjKJg/tqyIGgB22IqVd9IOl5MiYbAqjg=
+	b=LPvVtMr3nR4+aHQx8zaeiHngnRJ8kyv161DynEi11LeOZBgeujP2QanTp5NtkoNGQ
+	 NAw3JzWW/SPdSUfPUrUDJ2uyIB9CgOJE33WbistL7JnFNj6I1XHS3ZY+LTd/NLcRMy
+	 w7cfZU4JPbyJSHkXxSycw+RjVQi8h5vEWGUKLoxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Daniil Tatianin <d-tatianin@yandex-team.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/172] wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
+Subject: [PATCH 5.10 28/43] ACPICA: events/evxfregn: dont release the ContextMutex that was never acquired
 Date: Tue, 17 Dec 2024 18:07:19 +0100
-Message-ID: <20241217170549.731118286@linuxfoundation.org>
+Message-ID: <20241217170521.588026987@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 
-[ Upstream commit 2e3dbf938656986cce73ac4083500d0bcfbffe24 ]
+[ Upstream commit c53d96a4481f42a1635b96d2c1acbb0a126bfd54 ]
 
-Since the netlink attribute range validation provides inclusive
-checking, the *max* of attribute NL80211_ATTR_MLO_LINK_ID should be
-IEEE80211_MLD_MAX_NUM_LINKS - 1 otherwise causing an off-by-one.
+This bug was first introduced in c27f3d011b08, where the author of the
+patch probably meant to do DeleteMutex instead of ReleaseMutex. The
+mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
+MutexRelease line was never removed, so do it now.
 
-One crash stack for demonstration:
-==================================================================
-BUG: KASAN: wild-memory-access in ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
-Read of size 6 at addr 001102080000000c by task fuzzer.386/9508
-
-CPU: 1 PID: 9508 Comm: syz.1.386 Not tainted 6.1.70 #2
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
- print_report+0xe0/0x750 mm/kasan/report.c:398
- kasan_report+0x139/0x170 mm/kasan/report.c:495
- kasan_check_range+0x287/0x290 mm/kasan/generic.c:189
- memcpy+0x25/0x60 mm/kasan/shadow.c:65
- ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
- rdev_tx_control_port net/wireless/rdev-ops.h:761 [inline]
- nl80211_tx_control_port+0x7b3/0xc40 net/wireless/nl80211.c:15453
- genl_family_rcv_msg_doit+0x22e/0x320 net/netlink/genetlink.c:756
- genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
- genl_rcv_msg+0x539/0x740 net/netlink/genetlink.c:850
- netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
- netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
- netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
- netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
- sock_sendmsg_nosec net/socket.c:716 [inline]
- __sock_sendmsg net/socket.c:728 [inline]
- ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
- ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
- __sys_sendmsg net/socket.c:2582 [inline]
- __do_sys_sendmsg net/socket.c:2591 [inline]
- __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Update the policy to ensure correct validation.
-
-Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Suggested-by: Cengiz Can <cengiz.can@canonical.com>
-Link: https://patch.msgid.link/20241130170526.96698-1-linma@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://github.com/acpica/acpica/pull/982
+Fixes: c27f3d011b08 ("ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling")
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Link: https://patch.msgid.link/20241122082954.658356-1-d-tatianin@yandex-team.ru
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/evxfregn.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 9b1b9dc5a7eb..1e78f575fb56 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -814,7 +814,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_MLO_LINKS] =
- 		NLA_POLICY_NESTED_ARRAY(nl80211_policy),
- 	[NL80211_ATTR_MLO_LINK_ID] =
--		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS),
-+		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS - 1),
- 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
- 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
+diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
+index 3bb06f17a18b..da97fd0c6b51 100644
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -201,8 +201,6 @@ acpi_remove_address_space_handler(acpi_handle device,
+ 
+ 			/* Now we can delete the handler object */
+ 
+-			acpi_os_release_mutex(handler_obj->address_space.
+-					      context_mutex);
+ 			acpi_ut_remove_reference(handler_obj);
+ 			goto unlock_and_exit;
+ 		}
 -- 
 2.39.5
 
