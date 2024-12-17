@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-104577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4139F51E0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC789F5309
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A4A163AA2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43C2016AC11
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4343C1F75BE;
-	Tue, 17 Dec 2024 17:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5640C152787;
+	Tue, 17 Dec 2024 17:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFI5CmLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Db4DpOyA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BAD1F755F;
-	Tue, 17 Dec 2024 17:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128021F7577;
+	Tue, 17 Dec 2024 17:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455474; cv=none; b=OyMNO9d02Vmpt8DpxsMatPO9EfG00b3Pjh1zy6DB0qZ1cZ/dpQr/AvQW7ELg75uRjqczwP0tch9HoIRT4xVwAJDjiYrxTPUof9GRV+cYAmRqkm1tGidCLctzT/iKdZ7TCadQtz3KVXNe/XNMYGU7ZSXTy8XcmwySKYZIPXFkIZg=
+	t=1734456131; cv=none; b=AjRR/jlZ+osoHH2fNaWjqfWAxUo8aFlO2PshAUBuwG96NWnBgTeyY+T8nWevBWLlNaNKMq14s94YkJxDDOED4Fu9uGY8sC+imtJdKvizEupQCoxrtyoU1W4fO0/jPlIQyDBkp8rgwMcE10GGra6Na8JUT5VEYbO913wVlakN0yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455474; c=relaxed/simple;
-	bh=JQuifPrrJ+0JVyKcUyYUJ4ArXw5oK3a/+pTjibfmmts=;
+	s=arc-20240116; t=1734456131; c=relaxed/simple;
+	bh=fgrEIEaD+pc1gI4uMU4Plb1IlqsHZ/bqzm5vR9oNDjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJqBtkauNT26p6BMnqN1seOLBEjdn9Ka9O74u4a/fnP9sKDwj8SmnPOwTY98hO/OGlmVblAmENRjgmzPRMxLnivHU+edW5vUNhbKEgzLYiuXjIyJr008zDD5lsfM9pg4uTSUgHgmO/KXxNhic/aNNGT5HGlc71KNdB5TtIJ2ddo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFI5CmLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773FDC4CED3;
-	Tue, 17 Dec 2024 17:11:13 +0000 (UTC)
+	 MIME-Version; b=EqoN6BEoesE8zO/kRqPVq87WKwk2ur3zQOXyLiJEpd7MDGQ4a+fItg1ARxPDZNO78Rw+AlzeS2TRxbrRJWBRADKIkTRAJcMHbfs3ZYutxPgRJ+1c04qezCOijOqC/HYm4ryqB5lOILJ9ZUpTbnx3yt53DNCoZ0pBlzWUlxWclg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Db4DpOyA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE97C4CED3;
+	Tue, 17 Dec 2024 17:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455473;
-	bh=JQuifPrrJ+0JVyKcUyYUJ4ArXw5oK3a/+pTjibfmmts=;
+	s=korg; t=1734456130;
+	bh=fgrEIEaD+pc1gI4uMU4Plb1IlqsHZ/bqzm5vR9oNDjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFI5CmLqV2pRObysrxtuFklm1sRToH+BfrbFIf9l9/kd0n914yV39zy7x/vycuqZr
-	 mw8ZEj3ImTMcq5+jgkupGIC3qxKJxYuJQz664FgwGhGUmXhtCZxj5Y45rpJAp8+AXV
-	 cS5ZuqVXtDaYpG29bjw9osTXHm4mqahXsluW1gAI=
+	b=Db4DpOyAJE06WK5BdDh9JzMun9DFgHbTvPFabksd1vz1hu0aJbSM7aRUjfG3dbFSr
+	 LD6qcBqr6Lvbnw0pjKwrtbJhNcxeOgVdKGCjH5x+cJfSr681SraNuPih2e8N4SN7Cv
+	 mpKEjfxCYMG5Bt7CBKBEWsijWKncjubQXryblDaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 22/43] qca_spi: Fix clock speed for multiple QCA7000
-Date: Tue, 17 Dec 2024 18:07:13 +0100
-Message-ID: <20241217170521.349870684@linuxfoundation.org>
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.6 030/109] bpf: Fix theoretical prog_array UAF in __uprobe_perf_func()
+Date: Tue, 17 Dec 2024 18:07:14 +0100
+Message-ID: <20241217170534.639987921@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 4dba406fac06b009873fe7a28231b9b7e4288b09 ]
+commit 7d0d673627e20cfa3b21a829a896ce03b58a4f1c upstream.
 
-Storing the maximum clock speed in module parameter qcaspi_clkspeed
-has the unintended side effect that the first probed instance
-defines the value for all other instances. Fix this issue by storing
-it in max_speed_hz of the relevant SPI device.
+Currently, the pointer stored in call->prog_array is loaded in
+__uprobe_perf_func(), with no RCU annotation and no immediately visible
+RCU protection, so it looks as if the loaded pointer can immediately be
+dangling.
+Later, bpf_prog_run_array_uprobe() starts a RCU-trace read-side critical
+section, but this is too late. It then uses rcu_dereference_check(), but
+this use of rcu_dereference_check() does not actually dereference anything.
 
-This fix keeps the priority of the speed parameter (module parameter,
-device tree property, driver default). Btw this uses the opportunity
-to get the rid of the unused member clkspeed.
+Fix it by aligning the semantics to bpf_prog_run_array(): Let the caller
+provide rcu_read_lock_trace() protection and then load call->prog_array
+with rcu_dereference_check().
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://patch.msgid.link/20241206184643.123399-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue seems to be theoretical: I don't know of any way to reach this
+code without having handle_swbp() further up the stack, which is already
+holding a rcu_read_lock_trace() lock, so where we take
+rcu_read_lock_trace() in __uprobe_perf_func()/bpf_prog_run_array_uprobe()
+doesn't actually have any effect.
+
+Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241210-bpf-fix-uprobe-uaf-v4-1-5fc8959b2b74@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/qca_spi.c | 24 ++++++++++--------------
- drivers/net/ethernet/qualcomm/qca_spi.h |  1 -
- 2 files changed, 10 insertions(+), 15 deletions(-)
+ include/linux/bpf.h         |   13 +++++--------
+ kernel/trace/trace_uprobe.c |    6 +++++-
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index f6bc5a273477..d88138f4a4f4 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -823,7 +823,6 @@ qcaspi_netdev_init(struct net_device *dev)
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1988,26 +1988,25 @@ bpf_prog_run_array(const struct bpf_prog
+  * rcu-protected dynamically sized maps.
+  */
+ static __always_inline u32
+-bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array_rcu,
++bpf_prog_run_array_uprobe(const struct bpf_prog_array *array,
+ 			  const void *ctx, bpf_prog_run_fn run_prog)
+ {
+ 	const struct bpf_prog_array_item *item;
+ 	const struct bpf_prog *prog;
+-	const struct bpf_prog_array *array;
+ 	struct bpf_run_ctx *old_run_ctx;
+ 	struct bpf_trace_run_ctx run_ctx;
+ 	u32 ret = 1;
  
- 	dev->mtu = QCAFRM_MAX_MTU;
- 	dev->type = ARPHRD_ETHER;
--	qca->clkspeed = qcaspi_clkspeed;
- 	qca->burst_len = qcaspi_burst_len;
- 	qca->spi_thread = NULL;
- 	qca->buffer_size = (dev->mtu + VLAN_ETH_HLEN + QCAFRM_HEADER_LEN +
-@@ -912,17 +911,15 @@ qca_spi_probe(struct spi_device *spi)
- 	legacy_mode = of_property_read_bool(spi->dev.of_node,
- 					    "qca,legacy-mode");
+ 	might_fault();
++	RCU_LOCKDEP_WARN(!rcu_read_lock_trace_held(), "no rcu lock held");
++
++	if (unlikely(!array))
++		return ret;
  
--	if (qcaspi_clkspeed == 0) {
--		if (spi->max_speed_hz)
--			qcaspi_clkspeed = spi->max_speed_hz;
--		else
--			qcaspi_clkspeed = QCASPI_CLK_SPEED;
--	}
-+	if (qcaspi_clkspeed)
-+		spi->max_speed_hz = qcaspi_clkspeed;
-+	else if (!spi->max_speed_hz)
-+		spi->max_speed_hz = QCASPI_CLK_SPEED;
+-	rcu_read_lock_trace();
+ 	migrate_disable();
  
--	if ((qcaspi_clkspeed < QCASPI_CLK_SPEED_MIN) ||
--	    (qcaspi_clkspeed > QCASPI_CLK_SPEED_MAX)) {
--		dev_err(&spi->dev, "Invalid clkspeed: %d\n",
--			qcaspi_clkspeed);
-+	if (spi->max_speed_hz < QCASPI_CLK_SPEED_MIN ||
-+	    spi->max_speed_hz > QCASPI_CLK_SPEED_MAX) {
-+		dev_err(&spi->dev, "Invalid clkspeed: %u\n",
-+			spi->max_speed_hz);
- 		return -EINVAL;
+ 	run_ctx.is_uprobe = true;
+ 
+-	array = rcu_dereference_check(array_rcu, rcu_read_lock_trace_held());
+-	if (unlikely(!array))
+-		goto out;
+ 	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
+ 	item = &array->items[0];
+ 	while ((prog = READ_ONCE(item->prog))) {
+@@ -2022,9 +2021,7 @@ bpf_prog_run_array_uprobe(const struct b
+ 			rcu_read_unlock();
  	}
+ 	bpf_reset_run_ctx(old_run_ctx);
+-out:
+ 	migrate_enable();
+-	rcu_read_unlock_trace();
+ 	return ret;
+ }
  
-@@ -947,14 +944,13 @@ qca_spi_probe(struct spi_device *spi)
- 		return -EINVAL;
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -1383,9 +1383,13 @@ static void __uprobe_perf_func(struct tr
+ 
+ #ifdef CONFIG_BPF_EVENTS
+ 	if (bpf_prog_array_valid(call)) {
++		const struct bpf_prog_array *array;
+ 		u32 ret;
+ 
+-		ret = bpf_prog_run_array_uprobe(call->prog_array, regs, bpf_prog_run);
++		rcu_read_lock_trace();
++		array = rcu_dereference_check(call->prog_array, rcu_read_lock_trace_held());
++		ret = bpf_prog_run_array_uprobe(array, regs, bpf_prog_run);
++		rcu_read_unlock_trace();
+ 		if (!ret)
+ 			return;
  	}
- 
--	dev_info(&spi->dev, "ver=%s, clkspeed=%d, burst_len=%d, pluggable=%d\n",
-+	dev_info(&spi->dev, "ver=%s, clkspeed=%u, burst_len=%d, pluggable=%d\n",
- 		 QCASPI_DRV_VERSION,
--		 qcaspi_clkspeed,
-+		 spi->max_speed_hz,
- 		 qcaspi_burst_len,
- 		 qcaspi_pluggable);
- 
- 	spi->mode = SPI_MODE_3;
--	spi->max_speed_hz = qcaspi_clkspeed;
- 	if (spi_setup(spi) < 0) {
- 		dev_err(&spi->dev, "Unable to setup SPI device\n");
- 		return -EFAULT;
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.h b/drivers/net/ethernet/qualcomm/qca_spi.h
-index 8d4767e9b914..ab88910ed0d2 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.h
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.h
-@@ -100,7 +100,6 @@ struct qcaspi {
- #endif
- 
- 	/* user configurable options */
--	u32 clkspeed;
- 	u8 legacy_mode;
- 	u16 burst_len;
- };
--- 
-2.39.5
-
 
 
 
