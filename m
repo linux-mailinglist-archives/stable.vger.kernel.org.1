@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB42E9F53B3
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6379F51B9
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93E3A17288F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2740163088
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB50E1F76B1;
-	Tue, 17 Dec 2024 17:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179881F37BE;
+	Tue, 17 Dec 2024 17:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrycHGxF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szO11V3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8983D1EF085;
-	Tue, 17 Dec 2024 17:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C508C1F707D;
+	Tue, 17 Dec 2024 17:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456486; cv=none; b=VwVlZSrGzc6k2XB6CBFERGhvz3LuPKVEul+cf51nGNkRiIvaZa+Z9PJSlMqASlIcJzItk8G5mO4RPsfDNjmWAhBBZdNGKAXmnmnPnVahycoueiaN+29+QwR2pGbqBOq3X50VR7jvInbcrDikvq1Am6MDOqqlX6VyUpcp+GEYWJI=
+	t=1734455366; cv=none; b=gnzjRP3x1MdKJZfF9k+2obUKyWfoky12cc0E+bJNHxqqtJ5Tji/SMriyvBvz6NMh0i+RVWFnRZLlMHcVAFD1Si9rSM7U9e3GkRpyYSD0dUMs07AmdqWFb012g6tvFCiKRgEuB5G68EUmMj7/hyjU90pyaFflVzcPB+tmdNBypRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456486; c=relaxed/simple;
-	bh=mr3ZbEjnR0xmim4ZGdX6N3fh1qZvao6bHRJ6jw561TU=;
+	s=arc-20240116; t=1734455366; c=relaxed/simple;
+	bh=amcDGXYszIOwQmHWGV6Gb5n6P20iuytXRN1G1o4iW6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8FdCuWzU2mR8umeCwYIZmzY7Jm6OdpA0dl/WqEmvsIIcU6jkA3dtYlkZZLfXWJkQfHxszZyYYAziRKdlduJBHoXIVmilu7Cr7Pf0/Fsn401LoFQIxcQerLVoxpvmUE3TxvWIAeT1sayOsnWr6BL8U6GyM4Dc8gzdrueDKb+0Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrycHGxF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10343C4CED3;
-	Tue, 17 Dec 2024 17:28:05 +0000 (UTC)
+	 MIME-Version; b=qiiR4UFz98R6KV353/tUf8zjLNcsIsKAWhs5CtL3/hRVAWIcBhW8KGnf2oPO3L5D/fh9sIz9PNI1A8F+P+7Yd2tm8L4VVXVVPPloMgqZKWZAgvFZ4ZAGfTt9wg/IW7HtXghdBYClkrGZOmS/w0SFrwho9mLojzGdyNYdAgnP3uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szO11V3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E79BC4CED3;
+	Tue, 17 Dec 2024 17:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456486;
-	bh=mr3ZbEjnR0xmim4ZGdX6N3fh1qZvao6bHRJ6jw561TU=;
+	s=korg; t=1734455366;
+	bh=amcDGXYszIOwQmHWGV6Gb5n6P20iuytXRN1G1o4iW6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YrycHGxFNnhPDcXPDmYBwVfCjH57ha4+2Tf8RPT5qSKaLX7C8BmiGWr7cIxJlqBa1
-	 hcmfyDeprV/CCbsIjlVDE7AA7Uu9WLd0rTlgeWdmhq14FjPq5+s4x+K4q7vr4YTP46
-	 qr0+ier9Dyt58VfYXdblssEl5maqztfjqyflPflY=
+	b=szO11V3ZE+B05aFHM7MEtNS877na+uMkE5nGi5RAL7xjdRMlyTSVgUbQiV3EeARcC
+	 p4oEzGB2tdzrZO3fr2Xey8LXmDWaM4sNqkCmGre9C5kge49AQDi9bMNU2P6J2GXhPQ
+	 dXaSbU/hcO2y++ez+quE0YiQSPOFCeVZUvvLAW/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 074/172] xfs: only run precommits once per transaction object
+	syzbot+fb99d1b0c0f81d94a5e2@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 12/24] net: lapb: increase LAPB_HEADER_LEN
 Date: Tue, 17 Dec 2024 18:07:10 +0100
-Message-ID: <20241217170549.357524722@linuxfoundation.org>
+Message-ID: <20241217170519.507157352@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 44d9b07e52db25035680713c3428016cadcd2ea1 upstream.
+[ Upstream commit a6d75ecee2bf828ac6a1b52724aba0a977e4eaf4 ]
 
-Committing a transaction tx0 with a defer ops chain of (A, B, C)
-creates a chain of transactions that looks like this:
+It is unclear if net/lapb code is supposed to be ready for 8021q.
 
-tx0 -> txA -> txB -> txC
+We can at least avoid crashes like the following :
 
-Prior to commit cb042117488dbf, __xfs_trans_commit would run precommits
-on tx0, then call xfs_defer_finish_noroll to convert A-C to tx[A-C].
-Unfortunately, after the finish_noroll loop we forgot to run precommits
-on txC.  That was fixed by adding the second precommit call.
+skbuff: skb_under_panic: text:ffffffff8aabe1f6 len:24 put:20 head:ffff88802824a400 data:ffff88802824a3fe tail:0x16 end:0x140 dev:nr0.2
+------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:206 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 UID: 0 PID: 5508 Comm: dhcpcd Not tainted 6.12.0-rc7-syzkaller-00144-g66418447d27b #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
+ RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
+ RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
+Code: 0d 8d 48 c7 c6 2e 9e 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 1a 6f 37 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc90002ddf638 EFLAGS: 00010282
+RAX: 0000000000000086 RBX: dffffc0000000000 RCX: 7a24750e538ff600
+RDX: 0000000000000000 RSI: 0000000000000201 RDI: 0000000000000000
+RBP: ffff888034a86650 R08: ffffffff8174b13c R09: 1ffff920005bbe60
+R10: dffffc0000000000 R11: fffff520005bbe61 R12: 0000000000000140
+R13: ffff88802824a400 R14: ffff88802824a3fe R15: 0000000000000016
+FS:  00007f2a5990d740(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000110c2631fd CR3: 0000000029504000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_push+0xe5/0x100 net/core/skbuff.c:2636
+  nr_header+0x36/0x320 net/netrom/nr_dev.c:69
+  dev_hard_header include/linux/netdevice.h:3148 [inline]
+  vlan_dev_hard_header+0x359/0x480 net/8021q/vlan_dev.c:83
+  dev_hard_header include/linux/netdevice.h:3148 [inline]
+  lapbeth_data_transmit+0x1f6/0x2a0 drivers/net/wan/lapbether.c:257
+  lapb_data_transmit+0x91/0xb0 net/lapb/lapb_iface.c:447
+  lapb_transmit_buffer+0x168/0x1f0 net/lapb/lapb_out.c:149
+ lapb_establish_data_link+0x84/0xd0
+ lapb_device_event+0x4e0/0x670
+  notifier_call_chain+0x19f/0x3e0 kernel/notifier.c:93
+ __dev_notify_flags+0x207/0x400
+  dev_change_flags+0xf0/0x1a0 net/core/dev.c:8922
+  devinet_ioctl+0xa4e/0x1aa0 net/ipv4/devinet.c:1188
+  inet_ioctl+0x3d7/0x4f0 net/ipv4/af_inet.c:1003
+  sock_do_ioctl+0x158/0x460 net/socket.c:1227
+  sock_ioctl+0x626/0x8e0 net/socket.c:1346
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:907 [inline]
+  __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
 
-Unfortunately, none of us remembered that xfs_defer_finish_noroll
-calls __xfs_trans_commit a second time to commit tx0 before finishing
-work A in txA and committing that.  In other words, we run precommits
-twice on tx0:
-
-xfs_trans_commit(tx0)
-    __xfs_trans_commit(tx0, false)
-        xfs_trans_run_precommits(tx0)
-        xfs_defer_finish_noroll(tx0)
-            xfs_trans_roll(tx0)
-                txA = xfs_trans_dup(tx0)
-                __xfs_trans_commit(tx0, true)
-                xfs_trans_run_precommits(tx0)
-
-This currently isn't an issue because the inode item precommit is
-idempotent; the iunlink item precommit deletes itself so it can't be
-called again; and the buffer/dquot item precommits only check the incore
-objects for corruption.  However, it doesn't make sense to run
-precommits twice.
-
-Fix this situation by only running precommits after finish_noroll.
-
-Cc: <stable@vger.kernel.org> # v6.4
-Fixes: cb042117488dbf ("xfs: defered work could create precommits")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+fb99d1b0c0f81d94a5e2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67506220.050a0220.17bd51.006c.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241204141031.4030267-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_trans.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ include/net/lapb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_trans.c
-+++ b/fs/xfs/xfs_trans.c
-@@ -834,13 +834,6 @@ __xfs_trans_commit(
+diff --git a/include/net/lapb.h b/include/net/lapb.h
+index ccc3d1f020b0..c4417a631013 100644
+--- a/include/net/lapb.h
++++ b/include/net/lapb.h
+@@ -4,7 +4,7 @@
+ #include <linux/lapb.h>
+ #include <linux/refcount.h>
  
- 	trace_xfs_trans_commit(tp, _RET_IP_);
+-#define	LAPB_HEADER_LEN	20		/* LAPB over Ethernet + a bit more */
++#define	LAPB_HEADER_LEN MAX_HEADER		/* LAPB over Ethernet + a bit more */
  
--	error = xfs_trans_run_precommits(tp);
--	if (error) {
--		if (tp->t_flags & XFS_TRANS_PERM_LOG_RES)
--			xfs_defer_cancel(tp);
--		goto out_unreserve;
--	}
--
- 	/*
- 	 * Finish deferred items on final commit. Only permanent transactions
- 	 * should ever have deferred ops.
-@@ -851,13 +844,12 @@ __xfs_trans_commit(
- 		error = xfs_defer_finish_noroll(&tp);
- 		if (error)
- 			goto out_unreserve;
--
--		/* Run precommits from final tx in defer chain. */
--		error = xfs_trans_run_precommits(tp);
--		if (error)
--			goto out_unreserve;
- 	}
- 
-+	error = xfs_trans_run_precommits(tp);
-+	if (error)
-+		goto out_unreserve;
-+
- 	/*
- 	 * If there is nothing to be logged by the transaction,
- 	 * then unlock all of the items associated with the
+ #define	LAPB_ACK_PENDING_CONDITION	0x01
+ #define	LAPB_REJECT_CONDITION		0x02
+-- 
+2.39.5
+
 
 
 
