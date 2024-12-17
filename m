@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-104622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659229F5224
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:15:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D5C9F51F2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80FF016F9CB
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38C2316640E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542121F8696;
-	Tue, 17 Dec 2024 17:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD6A1F7562;
+	Tue, 17 Dec 2024 17:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arNr5o1S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/ak1hlo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117641E0493;
-	Tue, 17 Dec 2024 17:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2B41F543C;
+	Tue, 17 Dec 2024 17:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455608; cv=none; b=fa5HvUUBRBSMP01ELytsYzWfHk6P208haaxCHNseoCcGCtZus/TeFGFL49Nh1xa34JMazJhoShuq9sx+rpgVZmr2+WIK+qbQkhtFWPvlXtLe18GWPEBApsOpNTOZiNIuea5wzivRnPDWXxBy2/nJltz7th86JF2jJh2wuyiDLgA=
+	t=1734455485; cv=none; b=nKBxD4FII5psl++ktoOd5NHx+OA0ScjJyZj3AJDq1BqhNpxQ7fSkseprwaOGCnBKHiBbAPBzi8PBJYXWyc1HKA90mRhYZ+J1zNvnwevQ7FqnsppslMyE+tJ3PAu3MZAhTVbfZo0l2UrN9sWigT6ORvzz/Op/9Lk2w+ejMa4sU/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455608; c=relaxed/simple;
-	bh=xRk3+8/Aeml4H9JnRXiNkru7Oj9MajJvHUaeli5S+P8=;
+	s=arc-20240116; t=1734455485; c=relaxed/simple;
+	bh=O1FaPsNRx/dyP+F8D2LXUch60FeQXLrGo6TzFiUTlsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKVPhIc2IZXh0zMC3dMjAVDCquPbbUQ24kwtDvmXvUxBumR1hsK6ZBsp41haZu7pN0/+t6Tb70PWhh5/hET+E4SHbiFrWwiKtw1hXfradua8gX33x6Hmks/3hCqcPdo5cl107ckpTPENie7HOO3pAWLnAeyhCpqQIDMzeIFAKFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arNr5o1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D758C4CED3;
-	Tue, 17 Dec 2024 17:13:26 +0000 (UTC)
+	 MIME-Version; b=W8LfFna0RxUqnpOCsbC8O6uQldwSUAb5tVQudrKuWXC0iKGRXhLKXrbQMygLvGgCowFyFsj8Va7yS/EfTrN4xjFp7wYMnQ1LCPu/lRQXqdtK9ZcU9W1ZjA306/OXgf8EHSQ3iYvJmOnVPn+HDmlpEfEdpDzKWt6I5aIykx0aXD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/ak1hlo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E6FC4CED3;
+	Tue, 17 Dec 2024 17:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455607;
-	bh=xRk3+8/Aeml4H9JnRXiNkru7Oj9MajJvHUaeli5S+P8=;
+	s=korg; t=1734455485;
+	bh=O1FaPsNRx/dyP+F8D2LXUch60FeQXLrGo6TzFiUTlsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arNr5o1SGa5g5BJuvP0oeuQwd0fo7pZggGWozdQW/kUd0mRV1IMG9zg8JedJzXTiH
-	 y8wSwS/w2yGZH18HrqJ1aMbxGyreUPAN3LWefTCgMcyNoWRxg10XdD+o1iVwmI7Dip
-	 fN4ZUcgmLlubpI6s5FEe43bImKkOZu9wu+yNgDYY=
+	b=V/ak1hloIc4JNFe/7HxE8sTrQQeJH+86ROS/NWYFgchXF5hUdI0VFQEhSSJqzo5/1
+	 sYYIWeELvotuQdghGjzRzWwMtnC1NTNXbMtyVp0YsEYCk97kk7HAGtuMen4ioh7+eF
+	 lSQppW1Xr8pWCOzQilcTshRPZzH3Gckn6eL1vK9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@idosch.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 24/51] selftests: mlxsw: sharedbuffer: Remove duplicate test cases
+Subject: [PATCH 5.10 26/43] bonding: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
 Date: Tue, 17 Dec 2024 18:07:17 +0100
-Message-ID: <20241217170521.284483617@linuxfoundation.org>
+Message-ID: <20241217170521.508020266@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 6c46ad4d1bb2e8ec2265296e53765190f6e32f33 ]
+[ Upstream commit 77b11c8bf3a228d1c63464534c2dcc8d9c8bf7ff ]
 
-On both port_tc_ip_test() and port_tc_arp_test(), the max occupancy is
-checked on $h2 twice, when only the error message is different and does not
-match the check itself.
+Drivers like mlx5 expose NIC's vlan_features such as
+NETIF_F_GSO_UDP_TUNNEL & NETIF_F_GSO_UDP_TUNNEL_CSUM which are
+later not propagated when the underlying devices are bonded and
+a vlan device created on top of the bond.
 
-Remove the two duplicated test cases from the test.
+Right now, the more cumbersome workaround for this is to create
+the vlan on top of the mlx5 and then enslave the vlan devices
+to a bond.
 
-Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/d9eb26f6fc16a06a30b5c2c16ad80caf502bc561.1733414773.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To fix this, add NETIF_F_GSO_ENCAP_ALL to BOND_VLAN_FEATURES
+such that bond_compute_features() can probe and propagate the
+vlan_features from the slave devices up to the vlan device.
+
+Given the following bond:
+
+  # ethtool -i enp2s0f{0,1}np{0,1}
+  driver: mlx5_core
+  [...]
+
+  # ethtool -k enp2s0f0np0 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: on
+  rx-udp-gro-forwarding: off
+
+  # ethtool -k enp2s0f1np1 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: on
+  rx-udp-gro-forwarding: off
+
+  # ethtool -k bond0 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+Before:
+
+  # ethtool -k bond0.100 | grep udp
+  tx-udp_tnl-segmentation: off [requested on]
+  tx-udp_tnl-csum-segmentation: off [requested on]
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+After:
+
+  # ethtool -k bond0.100 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+Various users have run into this reporting performance issues when
+configuring Cilium in vxlan tunneling mode and having the combination
+of bond & vlan for the core devices connecting the Kubernetes cluster
+to the outside world.
+
+Fixes: a9b3ace44c7d ("bonding: fix vlan_features computing")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Ido Schimmel <idosch@idosch.org>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241210141245.327886-3-daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/drivers/net/mlxsw/sharedbuffer.sh        | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/net/bonding/bond_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-index f6f5e2090891..9c3c426197af 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-@@ -131,11 +131,6 @@ port_tc_ip_test()
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 88d031b0ec14..7caaf5b49c7b 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1343,6 +1343,7 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
  
- 	devlink sb occupancy snapshot $DEVLINK_DEV
+ #define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+ 				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
++				 NETIF_F_GSO_ENCAP_ALL | \
+ 				 NETIF_F_HIGHDMA | NETIF_F_LRO)
  
--	RET=0
--	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
--	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
--	log_test "physical port's($h1) ingress TC - IP packet"
--
- 	RET=0
- 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
- 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
-@@ -162,11 +157,6 @@ port_tc_arp_test()
- 
- 	devlink sb occupancy snapshot $DEVLINK_DEV
- 
--	RET=0
--	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
--	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
--	log_test "physical port's($h1) ingress TC - ARP packet"
--
- 	RET=0
- 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
- 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+ #define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
 -- 
 2.39.5
 
