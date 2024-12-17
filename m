@@ -1,212 +1,132 @@
-Return-Path: <stable+bounces-105011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3309F549B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:44:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B38F9F54B0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:45:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC9A41881618
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:40:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E112171EFA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AF71F9ED9;
-	Tue, 17 Dec 2024 17:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gljf1ke3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6BE1FA14B;
+	Tue, 17 Dec 2024 17:34:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D961F9A99;
-	Tue, 17 Dec 2024 17:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7121F9F77;
+	Tue, 17 Dec 2024 17:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456823; cv=none; b=nCpjUIvBI5vgEJowbBqdA7T8SPhnqUXg1tF57ZIhHBpaN821VYBLVmC+Icjh010fuIajZ9ngahQeSrm6wiku7j16XWGmj1TQeTlljvl31HZFo+tFxsKkOMdlfdWo6XdtXtxAtI4bU5M0FI3Y5+Uzu6o5zbVzncJljsyffvwhi8c=
+	t=1734456884; cv=none; b=CXxgeJ3zVEW9Fvn0CkZqC3d3caoRYDqV3fbfkgT3jtre9kGlxoZYxphS0duIFzEGZ0BpTvNFuNXDa9S/b9ePiviBLB3Ky1xfKxVE7sW8PIefWehga95sQUbHvUUD5Iyqg4zNuM4OfPzTAbEQGeCZRKNfowvrCoLcFyPfQTeeyTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456823; c=relaxed/simple;
-	bh=aRa0GHtJTkZD2/JTVJpzZuCoXr+ACWdd+MfJ1epCKZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpQzdhBBHioTVDEuRRdxIGL4/8qyTIMd3lEklAKRuoG1BwJ0X5UTjKKvfv+E+m5hVGBIr2QJiRxpnkPPZ2ghpqE1Z+7eBdWBqLLuNnbL4E9kkYkDNtwbdX9UsCWEDTaU99s0y9wqtz1N0mFcKcw22kFnJGn4NAYePUJRJJsmqrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gljf1ke3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D33C4CED3;
-	Tue, 17 Dec 2024 17:33:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456823;
-	bh=aRa0GHtJTkZD2/JTVJpzZuCoXr+ACWdd+MfJ1epCKZE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gljf1ke3vXZXPil8sBGU/Aa+rrlOoYf7VE6rNZvlwHiVXRKP5CRQkE2Aj3q2tTWUB
-	 eZrgR1hDNsFQpC4o3V/3ORyWHqPhBe6nLWepEQ3g6pi1DTKGcuEWSRZAYaOH8cIhiZ
-	 PBOR6Au3J7UBQTXw8fVOgQ+WR7CQwcMsDsa/gRDA=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>
-Subject: [PATCH 6.12 172/172] x86/xen: remove hypercall page
-Date: Tue, 17 Dec 2024 18:08:48 +0100
-Message-ID: <20241217170553.478653587@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1734456884; c=relaxed/simple;
+	bh=uyKcL51FMKCU+8NLO6bsbfavxaLmObUo8GS/mhDFluw=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=ZmWrNrO/WuDB2PBkFSd8RzlxJ7jQwn3IuFKTVpEvJ56ynnuDsoS1m+ZbLcyHXSwVrscPXSgVkdDesXCZuWI9KbJ16Lr6f3f9obUHcGdTdkDAXrHTRE3puiaWTlKxsmRaPh4v8X64IzPtJU2Uhc57ldtxNlRQv+e+ZoKYnMYSRhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262CDC4CED7;
+	Tue, 17 Dec 2024 17:34:44 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1tNbTc-00000008cuG-1wdH;
+	Tue, 17 Dec 2024 12:35:20 -0500
+Message-ID: <20241217173520.314190793@goodmis.org>
+User-Agent: quilt/0.68
+Date: Tue, 17 Dec 2024 12:32:38 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ stable@vger.kernel.org
+Subject: [PATCH 1/3] ring-buffer: Add uname to match criteria for persistent ring buffer
+References: <20241217173237.836878448@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+From: Steven Rostedt <rostedt@goodmis.org>
 
-------------------
+The persistent ring buffer can live across boots. It is expected that the
+content in the buffer can be translated to the current kernel with delta
+offsets even with KASLR enabled. But it can only guarantee this if the
+content of the ring buffer came from the same kernel as the one that is
+currently running.
 
-From: Juergen Gross <jgross@suse.com>
+Add uname into the meta data and if the uname in the meta data from the
+previous boot does not match the uname of the current boot, then clear the
+buffer and re-initialize it.
 
-commit 7fa0da5373685e7ed249af3fa317ab1e1ba8b0a6 upstream.
+This only handles the case of kernel versions. It does not clear the
+buffer for development. There's several mechanisms to keep bad data from
+crashing the kernel. The worse that can happen is some corrupt data may be
+displayed.
 
-The hypercall page is no longer needed. It can be removed, as from the
-Xen perspective it is optional.
-
-But, from Linux's perspective, it removes naked RET instructions that
-escape the speculative protections that Call Depth Tracking and/or
-Untrain Ret are trying to achieve.
-
-This is part of XSA-466 / CVE-2024-53241.
-
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 8f3e6659656e6 ("ring-buffer: Save text and data locations in mapped meta data")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- arch/x86/include/asm/xen/hypercall.h |    2 --
- arch/x86/kernel/callthunks.c         |    5 -----
- arch/x86/xen/enlighten.c             |    2 --
- arch/x86/xen/enlighten_hvm.c         |    9 +--------
- arch/x86/xen/enlighten_pvh.c         |    7 -------
- arch/x86/xen/xen-head.S              |   23 -----------------------
- 6 files changed, 1 insertion(+), 47 deletions(-)
+ kernel/trace/ring_buffer.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -88,8 +88,6 @@ struct xen_dm_op_buf;
-  * there aren't more than 5 arguments...)
-  */
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 7e257e855dd1..3c94c59d000c 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -17,6 +17,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/hardirq.h>
+ #include <linux/kthread.h>	/* for self test */
++#include <linux/utsname.h>
+ #include <linux/module.h>
+ #include <linux/percpu.h>
+ #include <linux/mutex.h>
+@@ -45,10 +46,13 @@
+ static void update_pages_handler(struct work_struct *work);
  
--extern struct { char _entry[32]; } hypercall_page[];
--
- void xen_hypercall_func(void);
- DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
+ #define RING_BUFFER_META_MAGIC	0xBADFEED
++#define UNAME_SZ 64
  
---- a/arch/x86/kernel/callthunks.c
-+++ b/arch/x86/kernel/callthunks.c
-@@ -143,11 +143,6 @@ static bool skip_addr(void *dest)
- 	    dest < (void*)relocate_kernel + KEXEC_CONTROL_CODE_MAX_SIZE)
- 		return true;
- #endif
--#ifdef CONFIG_XEN
--	if (dest >= (void *)hypercall_page &&
--	    dest < (void*)hypercall_page + PAGE_SIZE)
--		return true;
--#endif
- 	return false;
- }
+ struct ring_buffer_meta {
+ 	int		magic;
+ 	int		struct_size;
++	char		uname[UNAME_SZ];
++
+ 	unsigned long	text_addr;
+ 	unsigned long	data_addr;
+ 	unsigned long	first_buffer;
+@@ -1687,6 +1691,11 @@ static bool rb_meta_valid(struct ring_buffer_meta *meta, int cpu,
+ 		return false;
+ 	}
  
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -22,8 +22,6 @@
++	if (strncmp(init_utsname()->release, meta->uname, UNAME_SZ - 1)) {
++		pr_info("Ring buffer boot meta[%d] mismatch of uname\n", cpu);
++		return false;
++	}
++
+ 	/* The subbuffer's size and number of subbuffers must match */
+ 	if (meta->subbuf_size != subbuf_size ||
+ 	    meta->nr_subbufs != nr_pages + 1) {
+@@ -1920,6 +1929,7 @@ static void rb_range_meta_init(struct trace_buffer *buffer, int nr_pages)
  
- #include "xen-ops.h"
+ 		meta->magic = RING_BUFFER_META_MAGIC;
+ 		meta->struct_size = sizeof(*meta);
++		strscpy(meta->uname, init_utsname()->release, UNAME_SZ);
  
--EXPORT_SYMBOL_GPL(hypercall_page);
--
- DEFINE_STATIC_CALL(xen_hypercall, xen_hypercall_hvm);
- EXPORT_STATIC_CALL_TRAMP(xen_hypercall);
- 
---- a/arch/x86/xen/enlighten_hvm.c
-+++ b/arch/x86/xen/enlighten_hvm.c
-@@ -106,15 +106,8 @@ static void __init init_hvm_pv_info(void
- 	/* PVH set up hypercall page in xen_prepare_pvh(). */
- 	if (xen_pvh_domain())
- 		pv_info.name = "Xen PVH";
--	else {
--		u64 pfn;
--		uint32_t msr;
--
-+	else
- 		pv_info.name = "Xen HVM";
--		msr = cpuid_ebx(base + 2);
--		pfn = __pa(hypercall_page);
--		wrmsr_safe(msr, (u32)pfn, (u32)(pfn >> 32));
--	}
- 
- 	xen_setup_features();
- 
---- a/arch/x86/xen/enlighten_pvh.c
-+++ b/arch/x86/xen/enlighten_pvh.c
-@@ -129,17 +129,10 @@ static void __init pvh_arch_setup(void)
- 
- void __init xen_pvh_init(struct boot_params *boot_params)
- {
--	u32 msr;
--	u64 pfn;
--
- 	xen_pvh = 1;
- 	xen_domain_type = XEN_HVM_DOMAIN;
- 	xen_start_flags = pvh_start_info.flags;
- 
--	msr = cpuid_ebx(xen_cpuid_base() + 2);
--	pfn = __pa(hypercall_page);
--	wrmsr_safe(msr, (u32)pfn, (u32)(pfn >> 32));
--
- 	x86_init.oem.arch_setup = pvh_arch_setup;
- 	x86_init.oem.banner = xen_banner;
- 
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -22,28 +22,6 @@
- #include <xen/interface/xen-mca.h>
- #include <asm/xen/interface.h>
- 
--.pushsection .noinstr.text, "ax"
--	.balign PAGE_SIZE
--SYM_CODE_START(hypercall_page)
--	.rept (PAGE_SIZE / 32)
--		UNWIND_HINT_FUNC
--		ANNOTATE_NOENDBR
--		ANNOTATE_UNRET_SAFE
--		ret
--		/*
--		 * Xen will write the hypercall page, and sort out ENDBR.
--		 */
--		.skip 31, 0xcc
--	.endr
--
--#define HYPERCALL(n) \
--	.equ xen_hypercall_##n, hypercall_page + __HYPERVISOR_##n * 32; \
--	.type xen_hypercall_##n, @function; .size xen_hypercall_##n, 32
--#include <asm/xen-hypercalls.h>
--#undef HYPERCALL
--SYM_CODE_END(hypercall_page)
--.popsection
--
- #ifdef CONFIG_XEN_PV
- 	__INIT
- SYM_CODE_START(startup_xen)
-@@ -198,7 +176,6 @@ SYM_FUNC_END(xen_hypercall_intel)
- #else
- # define FEATURES_DOM0 0
- #endif
--	ELFNOTE(Xen, XEN_ELFNOTE_HYPERCALL_PAGE, _ASM_PTR hypercall_page)
- 	ELFNOTE(Xen, XEN_ELFNOTE_SUPPORTED_FEATURES,
- 		.long FEATURES_PV | FEATURES_PVH | FEATURES_DOM0)
- 	ELFNOTE(Xen, XEN_ELFNOTE_LOADER,         .asciz "generic")
+ 		meta->nr_subbufs = nr_pages + 1;
+ 		meta->subbuf_size = PAGE_SIZE;
+-- 
+2.45.2
 
 
 
