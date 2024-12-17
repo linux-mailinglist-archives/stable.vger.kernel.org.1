@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D8B9F52B0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1B49F53DB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C71716900D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 082A61888995
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8321F8691;
-	Tue, 17 Dec 2024 17:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89981F76B1;
+	Tue, 17 Dec 2024 17:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQg6auOi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+TfGFzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C961E1F8AC1;
-	Tue, 17 Dec 2024 17:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645841F7545;
+	Tue, 17 Dec 2024 17:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455915; cv=none; b=YqxzMtzLAktx5TbOX9CHtGqGMkVYsZQoPEDiU8Iu/nUk/b5OOOTu+Ee+pvoprSJSyRZFGjz8CVhQRU8j1a/PWNpz/SyP4Q5dHSdJTLSQN055qDYEh4YdGxVzG6OonINF8Lu1BxM9p1xBaVyyaP9r9gIp/5nOaGZGTcGPoex7J/8=
+	t=1734456634; cv=none; b=OQj/XT/qpr8TjaIW3oU8lvqVavUylizjeuB4On2RX5KP/a9IVte7ZH+yrKCZWr92STL3kLfcMdEpCSrlHMz7B/U+4BkoYVOovkw9NX2o/bsyxIX9rwtu7QyCR8PAFKVFLBrzSrmvOJiQEgIsxb0GymwtRFs176WEmYBb0gZtzuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455915; c=relaxed/simple;
-	bh=tMR4Og1Q4BHZj04H38/hW/uWPVBIu/uRsTYF0eA17ec=;
+	s=arc-20240116; t=1734456634; c=relaxed/simple;
+	bh=k+cH4aAVjSIHypf5KMqPyL0vO7g+okue7lJPfzmxpcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhR5N6mqPbbW432Dprt7eKVudUJd/IBCRXfpGLGWiXnoPPIdSp5HfwvnLYX8JUvOzM6g5bvApbr8trcITw+6ji4KZ2TTK8OdBthbsW04onPp2/1ztYHzAf4+yatkP8zpmDkjgKN/o8YIyR5DwtaEZ9c2hx7NydqYcEHiNcflbug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQg6auOi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528C0C4CED7;
-	Tue, 17 Dec 2024 17:18:35 +0000 (UTC)
+	 MIME-Version; b=L/K74y9RNz91zc8Ub0hmU7kYDJdMMxVqt+JFQlurjIVibpoa4zIL79QEr3DWCbLWhHgvXi73on2DUczO+tXsiZKevhge2Prkg1JzVRJo7mGzp6J3riu+m+3vYcbEfKhfhLahp+ZczWjP6xl32z0olTYMDgEwNQqkZBj19E1leUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+TfGFzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F99EC4CED3;
+	Tue, 17 Dec 2024 17:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455915;
-	bh=tMR4Og1Q4BHZj04H38/hW/uWPVBIu/uRsTYF0eA17ec=;
+	s=korg; t=1734456633;
+	bh=k+cH4aAVjSIHypf5KMqPyL0vO7g+okue7lJPfzmxpcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQg6auOiO31OhAxAFKQbxnTwlHW+4/+O0siV8W3V1ZGC2K9Un+KSyKENUhHMabwe4
-	 ii3psSwUq3sj8yad6EEq0mHD1BGXSmEE9+FvSzqd7hbCAw0r1wjotBi5fyBmTdjgBa
-	 yZFeAdVxUgJ8uFB5vB6h/DyUNjqI8gXnXm49fyn8=
+	b=B+TfGFzN3TCO3LBgt2F6On+T5gn7DvC1Rk0neOEen13gk56RiVtfzqx0y6qa9NseJ
+	 lSH1oau2VLcWgjqKq8CAEoxYAaFy1hNy7E41uBkRsy0T+Et7wQFIBiHcoMjL+Gnfuj
+	 /1ajkH8mcst397ESt51I85DA/dsmKZMyMxKxXEIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>
-Subject: [PATCH 6.1 75/76] x86/xen: remove hypercall page
+	LongPing Wei <weilongping@oppo.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 119/172] block: get wp_offset by bdev_offset_from_zone_start
 Date: Tue, 17 Dec 2024 18:07:55 +0100
-Message-ID: <20241217170529.714627972@linuxfoundation.org>
+Message-ID: <20241217170551.262260174@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: LongPing Wei <weilongping@oppo.com>
 
-commit 7fa0da5373685e7ed249af3fa317ab1e1ba8b0a6 upstream.
+[ Upstream commit 790eb09e59709a1ffc1c64fe4aae2789120851b0 ]
 
-The hypercall page is no longer needed. It can be removed, as from the
-Xen perspective it is optional.
+Call bdev_offset_from_zone_start() instead of open-coding it.
 
-But, from Linux's perspective, it removes naked RET instructions that
-escape the speculative protections that Call Depth Tracking and/or
-Untrain Ret are trying to achieve.
-
-This is part of XSA-466 / CVE-2024-53241.
-
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
+Signed-off-by: LongPing Wei <weilongping@oppo.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20241107020439.1644577-1-weilongping@oppo.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/xen/hypercall.h |    2 --
- arch/x86/xen/enlighten.c             |    2 --
- arch/x86/xen/enlighten_hvm.c         |    9 +--------
- arch/x86/xen/enlighten_pvh.c         |    7 -------
- arch/x86/xen/xen-head.S              |   23 -----------------------
- 5 files changed, 1 insertion(+), 42 deletions(-)
+ block/blk-zoned.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -88,8 +88,6 @@ struct xen_dm_op_buf;
-  * there aren't more than 5 arguments...)
-  */
- 
--extern struct { char _entry[32]; } hypercall_page[];
--
- void xen_hypercall_func(void);
- DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
- 
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -26,8 +26,6 @@
- #include "smp.h"
- #include "pmu.h"
- 
--EXPORT_SYMBOL_GPL(hypercall_page);
--
- DEFINE_STATIC_CALL(xen_hypercall, xen_hypercall_hvm);
- EXPORT_STATIC_CALL_TRAMP(xen_hypercall);
- 
---- a/arch/x86/xen/enlighten_hvm.c
-+++ b/arch/x86/xen/enlighten_hvm.c
-@@ -108,15 +108,8 @@ static void __init init_hvm_pv_info(void
- 	/* PVH set up hypercall page in xen_prepare_pvh(). */
- 	if (xen_pvh_domain())
- 		pv_info.name = "Xen PVH";
--	else {
--		u64 pfn;
--		uint32_t msr;
--
-+	else
- 		pv_info.name = "Xen HVM";
--		msr = cpuid_ebx(base + 2);
--		pfn = __pa(hypercall_page);
--		wrmsr_safe(msr, (u32)pfn, (u32)(pfn >> 32));
--	}
- 
- 	xen_setup_features();
- 
---- a/arch/x86/xen/enlighten_pvh.c
-+++ b/arch/x86/xen/enlighten_pvh.c
-@@ -27,17 +27,10 @@ EXPORT_SYMBOL_GPL(xen_pvh);
- 
- void __init xen_pvh_init(struct boot_params *boot_params)
- {
--	u32 msr;
--	u64 pfn;
--
- 	xen_pvh = 1;
- 	xen_domain_type = XEN_HVM_DOMAIN;
- 	xen_start_flags = pvh_start_info.flags;
- 
--	msr = cpuid_ebx(xen_cpuid_base() + 2);
--	pfn = __pa(hypercall_page);
--	wrmsr_safe(msr, (u32)pfn, (u32)(pfn >> 32));
--
- 	if (xen_initial_domain())
- 		x86_init.oem.arch_setup = xen_add_preferred_consoles;
- 	x86_init.oem.banner = xen_banner;
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -22,28 +22,6 @@
- #include <xen/interface/xen-mca.h>
- #include <asm/xen/interface.h>
- 
--.pushsection .noinstr.text, "ax"
--	.balign PAGE_SIZE
--SYM_CODE_START(hypercall_page)
--	.rept (PAGE_SIZE / 32)
--		UNWIND_HINT_FUNC
--		ANNOTATE_NOENDBR
--		ANNOTATE_UNRET_SAFE
--		ret
--		/*
--		 * Xen will write the hypercall page, and sort out ENDBR.
--		 */
--		.skip 31, 0xcc
--	.endr
--
--#define HYPERCALL(n) \
--	.equ xen_hypercall_##n, hypercall_page + __HYPERVISOR_##n * 32; \
--	.type xen_hypercall_##n, @function; .size xen_hypercall_##n, 32
--#include <asm/xen-hypercalls.h>
--#undef HYPERCALL
--SYM_CODE_END(hypercall_page)
--.popsection
--
- #ifdef CONFIG_XEN_PV
- 	__INIT
- SYM_CODE_START(startup_xen)
-@@ -176,7 +154,6 @@ SYM_FUNC_END(xen_hypercall_intel)
- #ifdef CONFIG_XEN_PV
- 	ELFNOTE(Xen, XEN_ELFNOTE_ENTRY,          _ASM_PTR startup_xen)
- #endif
--	ELFNOTE(Xen, XEN_ELFNOTE_HYPERCALL_PAGE, _ASM_PTR hypercall_page)
- 	ELFNOTE(Xen, XEN_ELFNOTE_FEATURES,
- 		.ascii "!writable_page_tables|pae_pgdir_above_4gb")
- 	ELFNOTE(Xen, XEN_ELFNOTE_SUPPORTED_FEATURES,
+diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+index 6d21693f39b7..767bcbce74fa 100644
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -568,7 +568,7 @@ static struct blk_zone_wplug *disk_get_and_lock_zone_wplug(struct gendisk *disk,
+ 	spin_lock_init(&zwplug->lock);
+ 	zwplug->flags = 0;
+ 	zwplug->zone_no = zno;
+-	zwplug->wp_offset = sector & (disk->queue->limits.chunk_sectors - 1);
++	zwplug->wp_offset = bdev_offset_from_zone_start(disk->part0, sector);
+ 	bio_list_init(&zwplug->bio_list);
+ 	INIT_WORK(&zwplug->bio_work, blk_zone_wplug_bio_work);
+ 	zwplug->disk = disk;
+-- 
+2.39.5
+
 
 
 
