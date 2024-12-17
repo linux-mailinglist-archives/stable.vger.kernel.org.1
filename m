@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0649F52D5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BF29F5264
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:18:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC3A16C18E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86837188BCCB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B2F1E0493;
-	Tue, 17 Dec 2024 17:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D3C14A4E7;
+	Tue, 17 Dec 2024 17:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lryucW7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KceYfqBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A5F8615A;
-	Tue, 17 Dec 2024 17:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7133E13DBB6;
+	Tue, 17 Dec 2024 17:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456028; cv=none; b=gJ9HOhVE6oVhyQA8cvsuQwEfVIp43XXaWsAP6zASwj//LO0TOZH8zLiGjOpdeJY3LyavnCbm3SnbY71oCeZrhpkc+fN5cR6JknLMWALxcG9IOEN3W0hhC/u1Bv0fJskfHerIes5YpXSd09TcA9Whs7Fz8rlI7eFTlinh4lAlOT4=
+	t=1734455729; cv=none; b=t2liJQdE0Fso8tfuPLSbZnPfn6gicZ9OmjJEQldSgRnZsPMdGzUxjpioWdlkoiwoJZ/w+WDBXjVKRU2XnYF8ad3h/GUEDZHoh2PrjJ8mTdHp1NtN3VXtO6OXe9JOn3iJXvFbNjXuyGZcK/BiYwshWsQTnP3AqTMJAAPV5abls4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456028; c=relaxed/simple;
-	bh=/Ag61MqbGhIvY860HbagBlzoUlCTJ/nnUatkZB2eKF8=;
+	s=arc-20240116; t=1734455729; c=relaxed/simple;
+	bh=CaaLCQO1cYbKtAcIm69rioDWGuzwQuPJwvyM7vjfxOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IUMMud4n93/aqI2c37s5DvwQwpvrh7W1hI5/1RqkpMOlTYv0RlksVfGI7MSuJL9JV7KURXf3JxfDZCVjJ6wuOuU1Rn7MnJuXLQZNm0knvpM2o9/iZ215Oe7nC7SlSqYWtf6YzTk8DxXRx+HTRw025rK++gflyjRPCR28kkQxXYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lryucW7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79D6C4CED3;
-	Tue, 17 Dec 2024 17:20:27 +0000 (UTC)
+	 MIME-Version; b=PH88kkcc8zHzZW8wG/uRlp9hz1XT0hX2uXVxLY9aFHm3mkMOgU+DrsX5AH5O/rH+uoMx0LD+QMgZ7XHom9bBqhGQ2wBnLchLuDURNHSU17aQIxcaZgAjDtgPm8zbJECft9IpsHXnnLG0+4whcp6jecC7qhtf6F0ribypr13yVUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KceYfqBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDC2C4CED3;
+	Tue, 17 Dec 2024 17:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456028;
-	bh=/Ag61MqbGhIvY860HbagBlzoUlCTJ/nnUatkZB2eKF8=;
+	s=korg; t=1734455729;
+	bh=CaaLCQO1cYbKtAcIm69rioDWGuzwQuPJwvyM7vjfxOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lryucW7GVeg4IBJo+U5FfdtRE39r4C0+D1e8FjsqwLAwddGBLKgVVQINVr3YUO684
-	 ffL7pbvVQzUAF8+joOLFTNRCANvN9ypghDe/ou+x2BB1g4gduzF4F7kZGynaApM10D
-	 ijf9H9g4FPqQMZ+D46LTFdQMPFDjYiD5p4q4LrRU=
+	b=KceYfqBxXAt/nVNIxI4/g2IDn/rOOzF/pFYftyLvwIWPSZ5PcD1e+Z8i2qI/u2YcW
+	 KbCgalOB4QRiC9Km+6CM0/c/1W5Nucqdx3EPSih/FsFmcmGOc85e6/OnsV51xd7mmx
+	 Cgc58NXRq9bAhttkv2oC+d1JfXnP7VaZcFCyhVCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 009/109] riscv: Fix IPIs usage in kfence_protect_page()
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 13/76] usb: typec: anx7411: fix OF node reference leaks in anx7411_typec_switch_probe()
 Date: Tue, 17 Dec 2024 18:06:53 +0100
-Message-ID: <20241217170533.741673767@linuxfoundation.org>
+Message-ID: <20241217170526.800671357@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit b3431a8bb336cece8adc452437befa7d4534b2fd upstream.
+commit ef42b906df5c57d0719b69419df9dfd25f25c161 upstream.
 
-flush_tlb_kernel_range() may use IPIs to flush the TLBs of all the
-cores, which triggers the following warning when the irqs are disabled:
+The refcounts of the OF nodes obtained by of_get_child_by_name() calls
+in anx7411_typec_switch_probe() are not decremented. Replace them with
+device_get_named_child_node() calls and store the return values to the
+newly created fwnode_handle fields in anx7411_data, and call
+fwnode_handle_put() on them in the error path and in the unregister
+functions.
 
-[    3.455330] WARNING: CPU: 1 PID: 0 at kernel/smp.c:815 smp_call_function_many_cond+0x452/0x520
-[    3.456647] Modules linked in:
-[    3.457218] CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.12.0-rc7-00010-g91d3de7240b8 #1
-[    3.457416] Hardware name: QEMU QEMU Virtual Machine, BIOS
-[    3.457633] epc : smp_call_function_many_cond+0x452/0x520
-[    3.457736]  ra : on_each_cpu_cond_mask+0x1e/0x30
-[    3.457786] epc : ffffffff800b669a ra : ffffffff800b67c2 sp : ff2000000000bb50
-[    3.457824]  gp : ffffffff815212b8 tp : ff6000008014f080 t0 : 000000000000003f
-[    3.457859]  t1 : ffffffff815221e0 t2 : 000000000000000f s0 : ff2000000000bc10
-[    3.457920]  s1 : 0000000000000040 a0 : ffffffff815221e0 a1 : 0000000000000001
-[    3.457953]  a2 : 0000000000010000 a3 : 0000000000000003 a4 : 0000000000000000
-[    3.458006]  a5 : 0000000000000000 a6 : ffffffffffffffff a7 : 0000000000000000
-[    3.458042]  s2 : ffffffff815223be s3 : 00fffffffffff000 s4 : ff600001ffe38fc0
-[    3.458076]  s5 : ff600001ff950d00 s6 : 0000000200000120 s7 : 0000000000000001
-[    3.458109]  s8 : 0000000000000001 s9 : ff60000080841ef0 s10: 0000000000000001
-[    3.458141]  s11: ffffffff81524812 t3 : 0000000000000001 t4 : ff60000080092bc0
-[    3.458172]  t5 : 0000000000000000 t6 : ff200000000236d0
-[    3.458203] status: 0000000200000100 badaddr: ffffffff800b669a cause: 0000000000000003
-[    3.458373] [<ffffffff800b669a>] smp_call_function_many_cond+0x452/0x520
-[    3.458593] [<ffffffff800b67c2>] on_each_cpu_cond_mask+0x1e/0x30
-[    3.458625] [<ffffffff8000e4ca>] __flush_tlb_range+0x118/0x1ca
-[    3.458656] [<ffffffff8000e6b2>] flush_tlb_kernel_range+0x1e/0x26
-[    3.458683] [<ffffffff801ea56a>] kfence_protect+0xc0/0xce
-[    3.458717] [<ffffffff801e9456>] kfence_guarded_free+0xc6/0x1c0
-[    3.458742] [<ffffffff801e9d6c>] __kfence_free+0x62/0xc6
-[    3.458764] [<ffffffff801c57d8>] kfree+0x106/0x32c
-[    3.458786] [<ffffffff80588cf2>] detach_buf_split+0x188/0x1a8
-[    3.458816] [<ffffffff8058708c>] virtqueue_get_buf_ctx+0xb6/0x1f6
-[    3.458839] [<ffffffff805871da>] virtqueue_get_buf+0xe/0x16
-[    3.458880] [<ffffffff80613d6a>] virtblk_done+0x5c/0xe2
-[    3.458908] [<ffffffff8058766e>] vring_interrupt+0x6a/0x74
-[    3.458930] [<ffffffff800747d8>] __handle_irq_event_percpu+0x7c/0xe2
-[    3.458956] [<ffffffff800748f0>] handle_irq_event+0x3c/0x86
-[    3.458978] [<ffffffff800786cc>] handle_simple_irq+0x9e/0xbe
-[    3.459004] [<ffffffff80073934>] generic_handle_domain_irq+0x1c/0x2a
-[    3.459027] [<ffffffff804bf87c>] imsic_handle_irq+0xba/0x120
-[    3.459056] [<ffffffff80073934>] generic_handle_domain_irq+0x1c/0x2a
-[    3.459080] [<ffffffff804bdb76>] riscv_intc_aia_irq+0x24/0x34
-[    3.459103] [<ffffffff809d0452>] handle_riscv_irq+0x2e/0x4c
-[    3.459133] [<ffffffff809d923e>] call_on_irq_stack+0x32/0x40
-
-So only flush the local TLB and let the lazy kfence page fault handling
-deal with the faults which could happen when a core has an old protected
-pte version cached in its TLB. That leads to potential inaccuracies which
-can be tolerated when using kfence.
-
-Fixes: 47513f243b45 ("riscv: Enable KFENCE for riscv64")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: e45d7337dc0e ("usb: typec: anx7411: Use of_get_child_by_name() instead of of_find_node_by_name()")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241209074125.52322-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20241126014909.3687917-1-joe@pf.is.s.u-tokyo.ac.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/kfence.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/typec/anx7411.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/arch/riscv/include/asm/kfence.h
-+++ b/arch/riscv/include/asm/kfence.h
-@@ -22,7 +22,9 @@ static inline bool kfence_protect_page(u
- 	else
- 		set_pte(pte, __pte(pte_val(ptep_get(pte)) | _PAGE_PRESENT));
+--- a/drivers/usb/typec/anx7411.c
++++ b/drivers/usb/typec/anx7411.c
+@@ -289,6 +289,8 @@ struct anx7411_data {
+ 	struct power_supply *psy;
+ 	struct power_supply_desc psy_desc;
+ 	struct device *dev;
++	struct fwnode_handle *switch_node;
++	struct fwnode_handle *mux_node;
+ };
  
--	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+	preempt_disable();
-+	local_flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-+	preempt_enable();
- 
- 	return true;
+ static u8 snk_identity[] = {
+@@ -1098,6 +1100,7 @@ static void anx7411_unregister_mux(struc
+ 	if (ctx->typec.typec_mux) {
+ 		typec_mux_unregister(ctx->typec.typec_mux);
+ 		ctx->typec.typec_mux = NULL;
++		fwnode_handle_put(ctx->mux_node);
+ 	}
  }
+ 
+@@ -1106,6 +1109,7 @@ static void anx7411_unregister_switch(st
+ 	if (ctx->typec.typec_switch) {
+ 		typec_switch_unregister(ctx->typec.typec_switch);
+ 		ctx->typec.typec_switch = NULL;
++		fwnode_handle_put(ctx->switch_node);
+ 	}
+ }
+ 
+@@ -1113,28 +1117,29 @@ static int anx7411_typec_switch_probe(st
+ 				      struct device *dev)
+ {
+ 	int ret;
+-	struct device_node *node;
+ 
+-	node = of_get_child_by_name(dev->of_node, "orientation_switch");
+-	if (!node)
++	ctx->switch_node = device_get_named_child_node(dev, "orientation_switch");
++	if (!ctx->switch_node)
+ 		return 0;
+ 
+-	ret = anx7411_register_switch(ctx, dev, &node->fwnode);
++	ret = anx7411_register_switch(ctx, dev, ctx->switch_node);
+ 	if (ret) {
+ 		dev_err(dev, "failed register switch");
++		fwnode_handle_put(ctx->switch_node);
+ 		return ret;
+ 	}
+ 
+-	node = of_get_child_by_name(dev->of_node, "mode_switch");
+-	if (!node) {
++	ctx->mux_node = device_get_named_child_node(dev, "mode_switch");
++	if (!ctx->mux_node) {
+ 		dev_err(dev, "no typec mux exist");
+ 		ret = -ENODEV;
+ 		goto unregister_switch;
+ 	}
+ 
+-	ret = anx7411_register_mux(ctx, dev, &node->fwnode);
++	ret = anx7411_register_mux(ctx, dev, ctx->mux_node);
+ 	if (ret) {
+ 		dev_err(dev, "failed register mode switch");
++		fwnode_handle_put(ctx->mux_node);
+ 		ret = -ENODEV;
+ 		goto unregister_switch;
+ 	}
 
 
 
