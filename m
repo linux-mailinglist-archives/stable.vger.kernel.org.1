@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262619F5440
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:39:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 368579F5327
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1D0170D3B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:36:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AFFD188F3C0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E551F8689;
-	Tue, 17 Dec 2024 17:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378341F7574;
+	Tue, 17 Dec 2024 17:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4Yy4AE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjvsQOLs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AB61F8919;
-	Tue, 17 Dec 2024 17:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D9B142E77;
+	Tue, 17 Dec 2024 17:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456663; cv=none; b=DsOH6sehbYAXbExQm0Tz6e8JENHiOktk6LdHoyFZ68vf2UCZ0TYzuk2BpDGCN3OM+8QHRxZEedsq1peZGQGcATCN8jZ/7ULVFXZuOuaMRrnA0FSLxE9B6F3RqAcWEz/9QA+e2DmPFvfAqBm9pb3+M2w3KX+srJaiMYJY7gyZNIQ=
+	t=1734456158; cv=none; b=Bmrk9706X/ar4IclkT6CB4qojz/UDj7gtQ++E7IbVVHZ+BIoTDjX5mZCNEHCHUtwPtA2WGsk22JVGE86ZmeyaaGWvPoxUAe2kjHhNNLlZ04zTOwNOoAhHICTN1Z92vRcvu73QhD3YJbTBOzj44Wtdp31hsX/oFgHQduBvr7yP0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456663; c=relaxed/simple;
-	bh=Y6dYUOL/6Wg/UNFBiNDQvWoLTENS14oBVizwTP+/RTE=;
+	s=arc-20240116; t=1734456158; c=relaxed/simple;
+	bh=8nZqrno8Kh0w94MZBpTtmYW9A8u+K+btNyFSWMvqsCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbRAFssq/FOlNOM1tnEJ0hO+i8U20IPWsyWNINXvBbTM0jligNkn6A00y4+Vf7maiTxnyhFieu/lco1wR8wxoZW0Cf4B/hvdzqwOyZnXyONKBtTwq65NmLXVODxeJKixNbbGmtyuYCX/fu5XKGcqIw3khX7Ce5MF//dy89pZb4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4Yy4AE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7060CC4CED3;
-	Tue, 17 Dec 2024 17:31:02 +0000 (UTC)
+	 MIME-Version; b=ljJiE5wsdGznppXoW4upjYWgi9ZG1Kj+bO2ONpKPKLfRjZQjvd1+75PdRmxuTguFIUTpq02eOSrFRX8MWZJufuXvqYTuC/7MYoon82SoTdzXrpzXpa/upiyjd0/xSYhL75euILIKkjAnLPGfcIjzEXMSxwewTsWtwZQ75GDPBOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjvsQOLs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD7EC4CED3;
+	Tue, 17 Dec 2024 17:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456662;
-	bh=Y6dYUOL/6Wg/UNFBiNDQvWoLTENS14oBVizwTP+/RTE=;
+	s=korg; t=1734456157;
+	bh=8nZqrno8Kh0w94MZBpTtmYW9A8u+K+btNyFSWMvqsCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4Yy4AE3gk9TvHxlPGBypT5jpjWoYoWh9fIzcs3UHH1tHHSQgKwVZZ2U20OgwTiGt
-	 /y171pgv85pndPW39cq3BNdIDlnZDukPBHAE9bp9zKreJlaWN2s29Afhukk9MBYhZs
-	 aZJeNO075ko180RiXWqOGLD/gQP7bFi41sDdzWLw=
+	b=TjvsQOLs9TWCtxKaRehm9y2yXfRoHkuQ+ZYi3f/NVM5sZSueoGMB4g/N8JV0xHU3s
+	 hz0meIPwXfvkktaSK910iQ4f0P9kt5SQtad2Eo9rquZsIfjXOGy/kHb2E1Cg37EghP
+	 UkWwN3cPoXabcwrBqY+l+QQOOl7s9BWR5XtJLhng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+b26935466701e56cfdc2@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 128/172] ASoC: tas2781: Fix calibration issue in stress test
+Subject: [PATCH 6.6 080/109] netfilter: nf_tables: do not defer rule destruction via call_rcu
 Date: Tue, 17 Dec 2024 18:08:04 +0100
-Message-ID: <20241217170551.649853027@linuxfoundation.org>
+Message-ID: <20241217170536.723596029@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 2aa13da97e2b92d20a8ad4ead10da89f880b64e7 ]
+[ Upstream commit b04df3da1b5c6f6dc7cdccc37941740c078c4043 ]
 
-One specific test condition: the default registers of p[j].reg ~
-p[j+3].reg are 0, TASDEVICE_REG(0x00, 0x14, 0x38)(PLT_FLAG_REG),
-TASDEVICE_REG(0x00, 0x14, 0x40)(SINEGAIN_REG), and
-TASDEVICE_REG(0x00, 0x14, 0x44)(SINEGAIN2_REG). After first calibration,
-they are freshed to TASDEVICE_REG(0x00, 0x1a, 0x20), TASDEVICE_REG(0x00,
-0x16, 0x58)(PLT_FLAG_REG), TASDEVICE_REG(0x00, 0x14, 0x44)(SINEGAIN_REG),
-and TASDEVICE_REG(0x00, 0x16, 0x64)(SINEGAIN2_REG) via "Calibration Start"
-kcontrol. In second calibration, the p[j].reg ~ p[j+3].reg have already
-become tas2781_cali_start_reg. However, p[j+2].reg, TASDEVICE_REG(0x00,
-0x14, 0x44)(SINEGAIN_REG), will be freshed to TASDEVICE_REG(0x00, 0x16,
-0x64), which is the third register in the input params of the kcontrol.
-This is why only first calibration can work, the second-time, third-time
-or more-time calibration always failed without reboot. Of course, if no
-p[j].reg is in the list of tas2781_cali_start_reg, this stress test can
-work well.
+nf_tables_chain_destroy can sleep, it can't be used from call_rcu
+callbacks.
 
-Fixes: 49e2e353fb0d ("ASoC: tas2781: Add Calibration Kcontrols for Chromebook")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20241211043859.1328-1-shenghao-ding@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Moreover, nf_tables_rule_release() is only safe for error unwinding,
+while transaction mutex is held and the to-be-desroyed rule was not
+exposed to either dataplane or dumps, as it deactives+frees without
+the required synchronize_rcu() in-between.
+
+nft_rule_expr_deactivate() callbacks will change ->use counters
+of other chains/sets, see e.g. nft_lookup .deactivate callback, these
+must be serialized via transaction mutex.
+
+Also add a few lockdep asserts to make this more explicit.
+
+Calling synchronize_rcu() isn't ideal, but fixing this without is hard
+and way more intrusive.  As-is, we can get:
+
+WARNING: .. net/netfilter/nf_tables_api.c:5515 nft_set_destroy+0x..
+Workqueue: events nf_tables_trans_destroy_work
+RIP: 0010:nft_set_destroy+0x3fe/0x5c0
+Call Trace:
+ <TASK>
+ nf_tables_trans_destroy_work+0x6b7/0xad0
+ process_one_work+0x64a/0xce0
+ worker_thread+0x613/0x10d0
+
+In case the synchronize_rcu becomes an issue, we can explore alternatives.
+
+One way would be to allocate nft_trans_rule objects + one nft_trans_chain
+object, deactivate the rules + the chain and then defer the freeing to the
+nft destroy workqueue.  We'd still need to keep the synchronize_rcu path as
+a fallback to handle -ENOMEM corner cases though.
+
+Reported-by: syzbot+b26935466701e56cfdc2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67478d92.050a0220.253251.0062.GAE@google.com/T/
+Fixes: c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2781-i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h |  4 ----
+ net/netfilter/nf_tables_api.c     | 32 +++++++++++++++----------------
+ 2 files changed, 15 insertions(+), 21 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
-index 12d093437ba9..1b2f55030c39 100644
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -370,7 +370,7 @@ static void sngl_calib_start(struct tasdevice_priv *tas_priv, int i,
- 			tasdevice_dev_read(tas_priv, i, p[j].reg,
- 				(int *)&p[j].val[0]);
- 		} else {
--			switch (p[j].reg) {
-+			switch (tas2781_cali_start_reg[j].reg) {
- 			case 0: {
- 				if (!reg[0])
- 					continue;
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 804dcd3a7d8f..b5f9ee5810a3 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1080,7 +1080,6 @@ struct nft_rule_blob {
+  *	@name: name of the chain
+  *	@udlen: user data length
+  *	@udata: user data in the chain
+- *	@rcu_head: rcu head for deferred release
+  *	@blob_next: rule blob pointer to the next in the chain
+  */
+ struct nft_chain {
+@@ -1098,7 +1097,6 @@ struct nft_chain {
+ 	char				*name;
+ 	u16				udlen;
+ 	u8				*udata;
+-	struct rcu_head			rcu_head;
+ 
+ 	/* Only used during control plane commit phase: */
+ 	struct nft_rule_blob		*blob_next;
+@@ -1242,7 +1240,6 @@ static inline void nft_use_inc_restore(u32 *use)
+  *	@sets: sets in the table
+  *	@objects: stateful objects in the table
+  *	@flowtables: flow tables in the table
+- *	@net: netnamespace this table belongs to
+  *	@hgenerator: handle generator state
+  *	@handle: table handle
+  *	@use: number of chain references to this table
+@@ -1259,7 +1256,6 @@ struct nft_table {
+ 	struct list_head		sets;
+ 	struct list_head		objects;
+ 	struct list_head		flowtables;
+-	possible_net_t			net;
+ 	u64				hgenerator;
+ 	u64				handle;
+ 	u32				use;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index eee7997048fb..a110aad45fe4 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1431,7 +1431,6 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
+ 	INIT_LIST_HEAD(&table->sets);
+ 	INIT_LIST_HEAD(&table->objects);
+ 	INIT_LIST_HEAD(&table->flowtables);
+-	write_pnet(&table->net, net);
+ 	table->family = family;
+ 	table->flags = flags;
+ 	table->handle = ++nft_net->table_handle;
+@@ -3784,8 +3783,11 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
+ 	kfree(rule);
+ }
+ 
++/* can only be used if rule is no longer visible to dumps */
+ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
+ {
++	lockdep_commit_lock_is_held(ctx->net);
++
+ 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
+ 	nf_tables_rule_destroy(ctx, rule);
+ }
+@@ -5561,6 +5563,8 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 			      struct nft_set_binding *binding,
+ 			      enum nft_trans_phase phase)
+ {
++	lockdep_commit_lock_is_held(ctx->net);
++
+ 	switch (phase) {
+ 	case NFT_TRANS_PREPARE_ERROR:
+ 		nft_set_trans_unbind(ctx, set);
+@@ -11182,19 +11186,6 @@ static void __nft_release_basechain_now(struct nft_ctx *ctx)
+ 	nf_tables_chain_destroy(ctx->chain);
+ }
+ 
+-static void nft_release_basechain_rcu(struct rcu_head *head)
+-{
+-	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
+-	struct nft_ctx ctx = {
+-		.family	= chain->table->family,
+-		.chain	= chain,
+-		.net	= read_pnet(&chain->table->net),
+-	};
+-
+-	__nft_release_basechain_now(&ctx);
+-	put_net(ctx.net);
+-}
+-
+ int __nft_release_basechain(struct nft_ctx *ctx)
+ {
+ 	struct nft_rule *rule;
+@@ -11209,11 +11200,18 @@ int __nft_release_basechain(struct nft_ctx *ctx)
+ 	nft_chain_del(ctx->chain);
+ 	nft_use_dec(&ctx->table->use);
+ 
+-	if (maybe_get_net(ctx->net))
+-		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
+-	else
++	if (!maybe_get_net(ctx->net)) {
+ 		__nft_release_basechain_now(ctx);
++		return 0;
++	}
++
++	/* wait for ruleset dumps to complete.  Owning chain is no longer in
++	 * lists, so new dumps can't find any of these rules anymore.
++	 */
++	synchronize_rcu();
+ 
++	__nft_release_basechain_now(ctx);
++	put_net(ctx->net);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(__nft_release_basechain);
 -- 
 2.39.5
 
