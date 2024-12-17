@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-104743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67A29F52DE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 867459F51BB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12EEA1892334
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF0F6162F25
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAF01F8662;
-	Tue, 17 Dec 2024 17:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AD21F757B;
+	Tue, 17 Dec 2024 17:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn2q3tB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsRdlWKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7BB1E0493;
-	Tue, 17 Dec 2024 17:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28DB1F4735;
+	Tue, 17 Dec 2024 17:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455967; cv=none; b=TJ+lwVHbjIQyTx7m7WIvZVNs923eNb7/hlPKF4Pcp2VnmPaPca8TuJk/Jh+7HFvMp0Dpq0Qn8BEL2Z/a60J1zbIbNLDUzt5RcGsBn+czQTKfvpYfacFSMB9djJWRiz1ugN1TdL+L6M2WW0eiEa3104UEzQ6AfDwCFrsT3YM1qbU=
+	t=1734455375; cv=none; b=IgQkhRVGk3aL+CsJlrrd42gP2XXmvyqxLwab5KPQ0hnH5GHvKXqcV2haJu4ldMkT/WIkUr1S97HI5JRjDP860SduxzEiXu7S5g/s0sEXG+ckRoHYJ26tkmtsbZopMeeFldxUOb6Bx4xFQPoaVPijGGwo0Irk00Ur0p6pO2/w0R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455967; c=relaxed/simple;
-	bh=FlllF0p7PZ7hPjskBP826RrMVA6qwiv/jhxB35i6eSQ=;
+	s=arc-20240116; t=1734455375; c=relaxed/simple;
+	bh=ReG75ygnHQkDyCF3DuJDwCNva0VU9aYF9HAMrSFZxcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCrDADFsWjDj0/jE1IFsI6pFAUFqSeFyxUXJuvPkvGpM1nxZHen14426jBCFQDXJzD9K/UN/+UzJjdo0XBQPoDlTaCHH+eYtcrzYB0u6O2RPvlvK3ZCQPX5GxlQ484Kn0CJ9d76ae2lnDiHehISTfKj6zxEQqIJi/jf4hRPL8MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn2q3tB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8120C4CED3;
-	Tue, 17 Dec 2024 17:19:26 +0000 (UTC)
+	 MIME-Version; b=RqN5Ag/Jjg24AE9u+w81EWPJXwfBF/QGIVoizpzQ9tX11S0HqYscZAr5XmQior+0bT7Zng04IqtIQ6w+1HnCVIcapjsBF2Lo1FYhuAMjCpfpwe9wWoNcXbqERVsksmPM2QQuf6yr2YUh5P/FUdlhjFBtRgxKsm9SV5k6pVv69J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsRdlWKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC83C4CED3;
+	Tue, 17 Dec 2024 17:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455967;
-	bh=FlllF0p7PZ7hPjskBP826RrMVA6qwiv/jhxB35i6eSQ=;
+	s=korg; t=1734455375;
+	bh=ReG75ygnHQkDyCF3DuJDwCNva0VU9aYF9HAMrSFZxcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn2q3tB7G0rwbN9jdJv5LkREOZZgmf+MXbWRPrEJuo0rxFdERxVdrjypbGLyt0/1O
-	 6dsGK4Q9hojz61WCOi/PMTliScxExGiJ4BCFnY++zY6o9+hgFMSunBCH4ASqEhXLcJ
-	 1lPJy4g9yKaNFPlDy51vQnsROI1xOhaUornxYpoI=
+	b=jsRdlWKRdqB6FakKcNqHvuN8D8bLEYhMFvMXhw3ZP0Yg6b2Pg1b3RSTY1vnKpNGi9
+	 U5haxSXIskjHHiROJP//eTd7Qva8hVpcoFvl/efLx+oEjbZvQZpf+XcbKQCcpkkt/5
+	 ecNFdLkiPUi1a9byllOHup7gVeuhMEdOWyN3iLRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 016/109] usb: gadget: midi2: Fix interpretation of is_midi1 bits
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.4 02/24] ata: sata_highbank: fix OF node reference leak in highbank_initialize_phys()
 Date: Tue, 17 Dec 2024 18:07:00 +0100
-Message-ID: <20241217170534.039626313@linuxfoundation.org>
+Message-ID: <20241217170519.109248253@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit 82937056967da052cbc04b4435c13db84192dc52 upstream.
+commit 676fe1f6f74db988191dab5df3bf256908177072 upstream.
 
-The UMP Function Block info m1.0 field (represented by is_midi1 sysfs
-entry) is an enumeration from 0 to 2, while the midi2 gadget driver
-incorrectly copies it to the corresponding snd_ump_block_info.flags
-bits as-is.  This made the wrong bit flags set when m1.0 = 2.
+The OF node reference obtained by of_parse_phandle_with_args() is not
+released on early return. Add a of_node_put() call before returning.
 
-This patch corrects the wrong interpretation of is_midi1 bits.
-
-Fixes: 29ee7a4dddd5 ("usb: gadget: midi2: Add configfs support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20241127070213.8232-1-tiwai@suse.de
+Fixes: 8996b89d6bc9 ("ata: add platform driver for Calxeda AHCI controller")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_midi2.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/ata/sata_highbank.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -1593,7 +1593,11 @@ static int f_midi2_create_card(struct f_
- 			fb->info.midi_ci_version = b->midi_ci_version;
- 			fb->info.ui_hint = reverse_dir(b->ui_hint);
- 			fb->info.sysex8_streams = b->sysex8_streams;
--			fb->info.flags |= b->is_midi1;
-+			if (b->is_midi1 < 2)
-+				fb->info.flags |= b->is_midi1;
-+			else
-+				fb->info.flags |= SNDRV_UMP_BLOCK_IS_MIDI1 |
-+					SNDRV_UMP_BLOCK_IS_LOWSPEED;
- 			strscpy(fb->info.name, ump_fb_name(b),
- 				sizeof(fb->info.name));
- 		}
+--- a/drivers/ata/sata_highbank.c
++++ b/drivers/ata/sata_highbank.c
+@@ -348,6 +348,7 @@ static int highbank_initialize_phys(stru
+ 			phy_nodes[phy] = phy_data.np;
+ 			cphy_base[phy] = of_iomap(phy_nodes[phy], 0);
+ 			if (cphy_base[phy] == NULL) {
++				of_node_put(phy_data.np);
+ 				return 0;
+ 			}
+ 			phy_count += 1;
 
 
 
