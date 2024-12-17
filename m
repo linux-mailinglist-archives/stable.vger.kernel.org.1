@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-104872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE829F5383
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:29:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D999F534B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77C04188560A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D7997A532A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC581F866E;
-	Tue, 17 Dec 2024 17:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2F81F8678;
+	Tue, 17 Dec 2024 17:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbDEf8uf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMnSKl/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF91E140E38;
-	Tue, 17 Dec 2024 17:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577C51F76CE;
+	Tue, 17 Dec 2024 17:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456360; cv=none; b=iYTWAE3GtJZWS6jlsaAxWzXKlzzb0WPGaRBVF+ErmZ6eEMdbdkREgsfPolilQz9SmEoSSCtEfeRLzNOnOOT9JxdY56h4qrlRkUCWISEKxslzvk2aoRBtfW+Jg3+3fJrewpu4P2GksiUxnkf29G7DWShgBWXGo5aMtgoKG4QB2AE=
+	t=1734456363; cv=none; b=ifUgDPUaV4gwcJY+2H8PjuJT8EjXHSFj0gfw9leEq4Ck+Etlf8peP7d6wFHfolrOH0keGcJyLiY3GxZYrNq7EGmSnb7+p8iGdQdv8OWMkbLIwoN8KTEgNxsrDOkIuLmHEqdi7Ir/jaw4OQ6zC7r9srBxjTaaiFRpAbLupY7a0+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456360; c=relaxed/simple;
-	bh=kue0l2nIgBvwhCjT2HgpXxtz8jWB9YWWXr1Af+uGniQ=;
+	s=arc-20240116; t=1734456363; c=relaxed/simple;
+	bh=FuHYmZ75+uDF5yQcbDOJLuIq89cS5K0tjneQdPgYCYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYA5hosm1f3dCA+1nDF5TRmCUPzN4ARydle5PRaMMqxBsYSMP0UiSjzxX3rN60ch4P4OcPb95xgSplNP01p9zKPC6FR7Xtb8uDwbK4ce9MXhN7MP1vawkhmI9U6yWMkRuN6upEHxxHIG/ho24vg6Ei7mF/AxtHy31g7v7jsvVN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbDEf8uf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0671EC4CED3;
-	Tue, 17 Dec 2024 17:25:59 +0000 (UTC)
+	 MIME-Version; b=oa5ir+NhOSEGXeT3ey5Qr+q/4co86Kvb0WwtgGAECIuKg2tBoGXqdvpHTaL3uCU3+aJQ4C8Vv9NxyNW2natmG7bKnxLkzvIkSwiDimtpkCSrKxbEC9j0AUwXe3af8BuWiNbLxSQOoi0Urwsrg5rJ9kT40iLddf+tEj7r0FSgE4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMnSKl/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3512C4CED3;
+	Tue, 17 Dec 2024 17:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456360;
-	bh=kue0l2nIgBvwhCjT2HgpXxtz8jWB9YWWXr1Af+uGniQ=;
+	s=korg; t=1734456363;
+	bh=FuHYmZ75+uDF5yQcbDOJLuIq89cS5K0tjneQdPgYCYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbDEf8uf41no/c5ZAiYRx33N4N7nLmXNKdXea7mpvoWQ2NmztsRxI49AjPYmuGts/
-	 PzNN8LZ3/8WvRrn+Gn2++ZTTcEghQ3UdVs3MU7UE3FQfkJipXwBAfr0q6i0/riW718
-	 zB4pciFrUnlWQbgJnNM9GNvRCJ7y+mvjb5yKqUis=
+	b=qMnSKl/Bsnn1ZMJiVJK38auo7xXpXnXGOmcCDJdL4s1PQR8YYslr0TOjoz1zXQd23
+	 fetNVFxefDaznWWoWucxKwfmdUE4JViMDaUcXAvng7HEF+VGBaO5mfQ5vtvml80OvM
+	 ywgpRSEPkpGN6/w8BNbYqYvezg1qAsXnsmtM81cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Andy Shevchenko <andy@kernel.org>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 034/172] gpio: graniterapids: Fix invalid GPI_IS register offset
-Date: Tue, 17 Dec 2024 18:06:30 +0100
-Message-ID: <20241217170547.676884107@linuxfoundation.org>
+Subject: [PATCH 6.12 035/172] gpio: graniterapids: Fix invalid RXEVCFG register bitmask
+Date: Tue, 17 Dec 2024 18:06:31 +0100
+Message-ID: <20241217170547.717785747@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
 References: <20241217170546.209657098@linuxfoundation.org>
@@ -70,16 +70,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Shankar Bandal <shankar.bandal@intel.com>
 
-commit 0fe329b55231cca489f9bed1db0e778d077fdaf9 upstream.
+commit 15636b00a055474033426b94b6372728b2163a1e upstream.
 
-Update GPI Interrupt Status register offset to correct value.
+Correct RX Level/Edge Configuration register (RXEVCFG) bitmask.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Shankar Bandal <shankar.bandal@intel.com>
 Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Acked-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20241204070415.1034449-4-mika.westerberg@linux.intel.com
+Link: https://lore.kernel.org/r/20241204070415.1034449-5-mika.westerberg@linux.intel.com
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -87,18 +87,18 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/gpio/gpio-graniterapids.c b/drivers/gpio/gpio-graniterapids.c
-index d2b542b536b6..be907784ccdb 100644
+index be907784ccdb..ec2931a65723 100644
 --- a/drivers/gpio/gpio-graniterapids.c
 +++ b/drivers/gpio/gpio-graniterapids.c
-@@ -34,7 +34,7 @@
- 
- #define GNR_CFG_PADBAR		0x00
- #define GNR_CFG_LOCK_OFFSET	0x04
--#define GNR_GPI_STATUS_OFFSET	0x20
-+#define GNR_GPI_STATUS_OFFSET	0x14
+@@ -37,7 +37,7 @@
+ #define GNR_GPI_STATUS_OFFSET	0x14
  #define GNR_GPI_ENABLE_OFFSET	0x24
  
- #define GNR_CFG_DW_RX_MASK	GENMASK(25, 22)
+-#define GNR_CFG_DW_RX_MASK	GENMASK(25, 22)
++#define GNR_CFG_DW_RX_MASK	GENMASK(23, 22)
+ #define GNR_CFG_DW_RX_DISABLE	FIELD_PREP(GNR_CFG_DW_RX_MASK, 2)
+ #define GNR_CFG_DW_RX_EDGE	FIELD_PREP(GNR_CFG_DW_RX_MASK, 1)
+ #define GNR_CFG_DW_RX_LEVEL	FIELD_PREP(GNR_CFG_DW_RX_MASK, 0)
 -- 
 2.47.1
 
