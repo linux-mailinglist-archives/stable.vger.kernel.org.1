@@ -1,126 +1,77 @@
-Return-Path: <stable+bounces-104519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E4B9F4F89
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:34:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 791689F4F8D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:35:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCA7D1885680
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:34:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFEF91634E3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D20B1F7096;
-	Tue, 17 Dec 2024 15:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00DB1F7096;
+	Tue, 17 Dec 2024 15:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgxMTbsQ"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ySobKkmo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE451F63C4;
-	Tue, 17 Dec 2024 15:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47389EAC6;
+	Tue, 17 Dec 2024 15:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734449651; cv=none; b=ctMDSzvrcAfpRlXaluV5S4Z+5xhDt4HjOASDs3LQrwhppcszEVxXQPG0HowjTXHgSzmRT3uYobiavkd28p0sGMTMPLNs0dsIAEIaieGnDSA1+eDz4NN/HwL+wVG1XNRJaOQJKU9pUqj58UY6xpY0AkPJEqAxSSKeaWLWBCYBgB8=
+	t=1734449738; cv=none; b=I0WEACB/w5PykSyEg2T7GGnhCDhnv7BsyBHIpRViLn9eqQnnpVcLHrqvpvRH6uBIX/aC2CPgjNJwnx93AYR1wDSZ/jqp4HU+O460QCjq2EOaQtGTsb7GmuFUJceJDuqkR5cL+gATRiRJHNarUGgAGqBg6cJ3d509AygxXaGLZ6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734449651; c=relaxed/simple;
-	bh=PBoHMl/vjbrkDJJdW06HoXGpU5J3Rsz5cWS1b6kINrg=;
+	s=arc-20240116; t=1734449738; c=relaxed/simple;
+	bh=1tdqeGsFmdHNAI6f39ONvPeEUyfkHgn6nA/KOeVxMgk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ccMX2tgEKSPD13zkM4OE4F1A6dM9uCM5lUm5eV1XksJ2Fmsv2hfrPY9hPqCNkLDGN+7VKtZCwiaLRg7Aa8Py6HqhyjxXLLlwftwLqaYrhFHajNmH1pIuRrYAWYTQpMnslFJ2eVFLed57wISYu8T/TgowiNfVGm+YpkP5A2K4Urk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgxMTbsQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88250C4CED6;
-	Tue, 17 Dec 2024 15:34:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734449651;
-	bh=PBoHMl/vjbrkDJJdW06HoXGpU5J3Rsz5cWS1b6kINrg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PgxMTbsQ+h5iOtpVU533vBud9w8343J2e+egHvICld0hUFr7LqxFtVeYlLphnKieJ
-	 N78IZnvUhMe1HsMoT2itUg4Q7eUWthMde7Xa9fG2Tx2SDp3YnYHMNcpXsEYq1zItU+
-	 BrU3612buMIwn28Ei1PSJ4/stU+D7LUZN8ad01wg=
-Date: Tue, 17 Dec 2024 16:34:08 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Brian Geffon <bgeffon@google.com>
-Cc: "# v4 . 10+" <stable@vger.kernel.org>,
-	Xuewen Yan <xuewen.yan@unisoc.com>,
-	Christian Brauner <brauner@kernel.org>, jack@suse.cz,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
-	cmllamas@google.com, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ke.wang@unisoc.com,
-	jing.xia@unisoc.com, xuewen.yan94@gmail.com,
-	viro@zeniv.linux.org.uk, mingo@redhat.com, peterz@infradead.org,
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, lizeb@google.com
-Subject: Re: [RFC PATCH] epoll: Add synchronous wakeup support for
- ep_poll_callback
-Message-ID: <2024121705-unrigged-sanitary-7b19@gregkh>
-References: <20240426080548.8203-1-xuewen.yan@unisoc.com>
- <20241016-kurieren-intellektuell-50bd02f377e4@brauner>
- <ZxAOgj9RWm4NTl9d@google.com>
- <Z1saBPCh_oVzbPQy@google.com>
- <CADyq12y=MGzcvemZTVVGN4yhzr2ihr96OB-Vpg0yvrtrewnFDg@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ByoPhBev7QxXUyJDgzmwv/5tEXTFoKMi/Vspv9XiTfQRaaaTxt4Kb6S3Mtx74OsMQITEgmXzFU0XC5gAq46dWdUKfiQbJ4HpwP9n552EZcq5FelOI/zz+CcNDYSVXdTV9pGy9mVBxnPUXw5AIIXXhHFwo0N0B5k/ErBDTD7CV4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ySobKkmo; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=3Va9FT6Zm8diLy1g5Ee5uh/4gUxg81QV8kpRvkYFt+c=; b=ySobKkmoZCRR0BpnTGZO/VuPHJ
+	5v53ql6euasM5l0zkRtn1g5DgoT+Mo/wbsppSCix11mYy2fA4pCLkb6G2fJKTHqQHLzMNt5u+C7hQ
+	iJ7zUZpdB8J5hc4zKhHWltlfamq/8QN4T41+cB23yrUWiRflVK95NMdS8SjOr9vGiurw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tNZbj-000zWl-8C; Tue, 17 Dec 2024 16:35:35 +0100
+Date: Tue, 17 Dec 2024 16:35:35 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Da Shi Cao <dscao999@hotmail.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: TI Ethernet Driver TI_K3_AM65_CPSW_NUSS
+Message-ID: <417fd70e-e44d-4122-ae36-14e550e89a64@lunn.ch>
+References: <CY5PR10MB59880DDECD5D282B7665085B8C042@CY5PR10MB5988.namprd10.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADyq12y=MGzcvemZTVVGN4yhzr2ihr96OB-Vpg0yvrtrewnFDg@mail.gmail.com>
+In-Reply-To: <CY5PR10MB59880DDECD5D282B7665085B8C042@CY5PR10MB5988.namprd10.prod.outlook.com>
 
-On Tue, Dec 17, 2024 at 09:30:51AM -0500, Brian Geffon wrote:
-> On Thu, Dec 12, 2024 at 12:14 PM Brian Geffon <bgeffon@google.com> wrote:
-> >
-> > On Wed, Oct 16, 2024 at 03:05:38PM -0400, Brian Geffon wrote:
-> > > On Wed, Oct 16, 2024 at 03:10:34PM +0200, Christian Brauner wrote:
-> > > > On Fri, 26 Apr 2024 16:05:48 +0800, Xuewen Yan wrote:
-> > > > > Now, the epoll only use wake_up() interface to wake up task.
-> > > > > However, sometimes, there are epoll users which want to use
-> > > > > the synchronous wakeup flag to hint the scheduler, such as
-> > > > > Android binder driver.
-> > > > > So add a wake_up_sync() define, and use the wake_up_sync()
-> > > > > when the sync is true in ep_poll_callback().
-> > > > >
-> > > > > [...]
-> > > >
-> > > > Applied to the vfs.misc branch of the vfs/vfs.git tree.
-> > > > Patches in the vfs.misc branch should appear in linux-next soon.
-> > > >
-> > > > Please report any outstanding bugs that were missed during review in a
-> > > > new review to the original patch series allowing us to drop it.
-> > > >
-> > > > It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> > > > patch has now been applied. If possible patch trailers will be updated.
-> > > >
-> > > > Note that commit hashes shown below are subject to change due to rebase,
-> > > > trailer updates or similar. If in doubt, please check the listed branch.
-> > > >
-> > > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> > > > branch: vfs.misc
-> > >
-> > > This is a bug that's been present for all of time, so I think we should:
-> > >
-> > > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > > Cc: stable@vger.kernel.org
-> >
-> > This is in as 900bbaae ("epoll: Add synchronous wakeup support for
-> > ep_poll_callback"). How do maintainers feel about:
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Cc: stable@vger.kernel.org
-> 
-> Dear stable maintainers, this fixes a bug goes all the way back and
-> beyond Linux 2.6.12-rc2. Can you please add this commit to the stable
-> releases?
-> 
-> commit 900bbaae67e980945dec74d36f8afe0de7556d5a upstream.
+On Tue, Dec 17, 2024 at 01:40:12PM +0000, Da Shi Cao wrote:
+> The driver of TI K3 ethernet port depends on PAGE_POOL configuration option. There should be a select PAGE_POOL under it configuration.
 
-How is this a bugfix?  It looks like it is just a new feature being
-added to epoll, what bug does it "fix"?
+Please wrap the commit message to around 75 characters.
 
-confused,
+Please take a read of:
 
-greg k-h
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+You need a Fixes: tag, please use the correct networking tree, etc.
+
+	Andrew
 
