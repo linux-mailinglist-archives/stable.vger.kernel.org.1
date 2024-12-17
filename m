@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A959F52A4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:21:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14A39F5301
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A2191889C1A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:18:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E80BE1885723
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60190140E38;
-	Tue, 17 Dec 2024 17:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6C11F75BC;
+	Tue, 17 Dec 2024 17:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDZxN29/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5Q5xqrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E04A1DE2AC;
-	Tue, 17 Dec 2024 17:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB8D1F4735;
+	Tue, 17 Dec 2024 17:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455859; cv=none; b=ewMWff3Y8W1V8Clb9iXZgG269HczTcoFpE5zTnoDsfF1Dfo1SOFC9+gEf4doAN4QU25/W3uwHQ/MbdyuOx6LRmtMPJrwAHmqi4m/apvHrqeEQcNn5uHBMxk6k49xSzscEY28rxTHayWdp/SnMR3yB98F7Y4E7UWYojjGRjCKgUs=
+	t=1734456052; cv=none; b=hs7oWjTFEQCp+8X7/d6mu08T2geYc3ykCP68RjFXjd99uA0HzebTF0z9IqlFv1Kd96xlZM8KxaMzBfogbSP25RTKU5DJMQUgApWcRzqEcFDuZ14zDfAGPLWTAIBKLe/RY4/Qwv+bQLUb82wPLknggO/r7QBjegQBCGIXXZVh4Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455859; c=relaxed/simple;
-	bh=1eMJYr5w/USfbaK7dwD2VOrKyow9IaB7lniFRuPD7Es=;
+	s=arc-20240116; t=1734456052; c=relaxed/simple;
+	bh=nPBLcMzwlPoDF++2IdX8/WzIPRYDLLuzTyfxlwZqpEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbP8M8osGfAL/gBcGUA3mZjShuVAmdRcC5G0llrkXIUu2iW5pS5FMtTuw9WJZcpIYr7Hy/EvWrWlko8IrhBtL3gnMgDjQxBqJhjwd0mRj1NHB+iD1ydKkHlTWUwziWLjzMSUN1CMBeemVWRmP9ei2vF4BblFnRrDjUPr+J7cWjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDZxN29/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A953C4CED3;
-	Tue, 17 Dec 2024 17:17:38 +0000 (UTC)
+	 MIME-Version; b=gUz2oT4jTM8vmQ13x3ZV3izGgWZ2aUQKtYQVUEaCoApM/ROorldkylitNeXwHHGJThAZvPAgbCK4Jm3vU6uBp1iFVj9glyvD3MwxtIkzgGjBwU/VCVNrYOe6a3Ymg3Gf0v+vMqL0DtNW9StkEk4gOWSKvTuYlVyGWhfUI3yIc2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5Q5xqrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9B6C4CED3;
+	Tue, 17 Dec 2024 17:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455859;
-	bh=1eMJYr5w/USfbaK7dwD2VOrKyow9IaB7lniFRuPD7Es=;
+	s=korg; t=1734456051;
+	bh=nPBLcMzwlPoDF++2IdX8/WzIPRYDLLuzTyfxlwZqpEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDZxN29/OibAD6o1nAH2PkHBzwvTWJ8DsdhtqvkbIcrDW1n3Mdlsq9w6CgjC2Z5qs
-	 VFgL5dhpWjLRwSqTlAy1xWeYMDpyW2JM4McgHJinEPJjmF7HprZpU0yw53cQH+t9rv
-	 TNXHsFqpLWl6N+1xznOWp6BBjEZGYPmUtdQDLEyA=
+	b=h5Q5xqrRsEB/5m3raTYbybONOqtRfi6rcnI3BicO8umAJbKmz8Xd++W+JvoUrNoTF
+	 dfFy4EQPzLzb3qSB2LbPsi7eYn6WGNTlm0PV7iHkvfLbsrNh4QbjYHNnIL/WK3harR
+	 ZM+vf85EIwQbRAUFOPhRubR6yVNjnJ4tCncp2Sjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Mark Brown <broonie@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 49/76] spi: aspeed: Fix an error handling path in aspeed_spi_[read|write]_user()
+Subject: [PATCH 6.6 045/109] net/mlx5: DR, prevent potential error pointer dereference
 Date: Tue, 17 Dec 2024 18:07:29 +0100
-Message-ID: <20241217170528.304392161@linuxfoundation.org>
+Message-ID: <20241217170535.257007684@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c84dda3751e945a67d71cbe3af4474aad24a5794 ]
+[ Upstream commit 11776cff0b563c8b8a4fa76cab620bfb633a8cb8 ]
 
-A aspeed_spi_start_user() is not balanced by a corresponding
-aspeed_spi_stop_user().
-Add the missing call.
+The dr_domain_add_vport_cap() function generally returns NULL on error
+but sometimes we want it to return ERR_PTR(-EBUSY) so the caller can
+retry.  The problem here is that "ret" can be either -EBUSY or -ENOMEM
+and if it's and -ENOMEM then the error pointer is propogated back and
+eventually dereferenced in dr_ste_v0_build_src_gvmi_qpn_tag().
 
-Fixes: e3228ed92893 ("spi: spi-mem: Convert Aspeed SMC driver to spi-mem")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/4052aa2f9a9ea342fa6af83fa991b55ce5d5819e.1732051814.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 11a45def2e19 ("net/mlx5: DR, Add support for SF vports")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/07477254-e179-43e2-b1b3-3b9db4674195@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-aspeed-smc.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index b90571396a60..5015c2f6fd9f 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -239,7 +239,7 @@ static ssize_t aspeed_spi_read_user(struct aspeed_spi_chip *chip,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
+index 3d74109f8230..49f22cad92bf 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
+@@ -297,7 +297,9 @@ dr_domain_add_vport_cap(struct mlx5dr_domain *dmn, u16 vport)
+ 	if (ret) {
+ 		mlx5dr_dbg(dmn, "Couldn't insert new vport into xarray (%d)\n", ret);
+ 		kvfree(vport_caps);
+-		return ERR_PTR(ret);
++		if (ret == -EBUSY)
++			return ERR_PTR(-EBUSY);
++		return NULL;
+ 	}
  
- 	ret = aspeed_spi_send_cmd_addr(chip, op->addr.nbytes, offset, op->cmd.opcode);
- 	if (ret < 0)
--		return ret;
-+		goto stop_user;
- 
- 	if (op->dummy.buswidth && op->dummy.nbytes) {
- 		for (i = 0; i < op->dummy.nbytes / op->dummy.buswidth; i++)
-@@ -249,8 +249,9 @@ static ssize_t aspeed_spi_read_user(struct aspeed_spi_chip *chip,
- 	aspeed_spi_set_io_mode(chip, io_mode);
- 
- 	aspeed_spi_read_from_ahb(buf, chip->ahb_base, len);
-+stop_user:
- 	aspeed_spi_stop_user(chip);
--	return 0;
-+	return ret;
- }
- 
- static ssize_t aspeed_spi_write_user(struct aspeed_spi_chip *chip,
-@@ -261,10 +262,11 @@ static ssize_t aspeed_spi_write_user(struct aspeed_spi_chip *chip,
- 	aspeed_spi_start_user(chip);
- 	ret = aspeed_spi_send_cmd_addr(chip, op->addr.nbytes, op->addr.val, op->cmd.opcode);
- 	if (ret < 0)
--		return ret;
-+		goto stop_user;
- 	aspeed_spi_write_to_ahb(chip->ahb_base, op->data.buf.out, op->data.nbytes);
-+stop_user:
- 	aspeed_spi_stop_user(chip);
--	return 0;
-+	return ret;
- }
- 
- /* support for 1-1-1, 1-1-2 or 1-1-4 */
+ 	return vport_caps;
 -- 
 2.39.5
 
