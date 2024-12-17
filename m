@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-104796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11719F5307
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2149F53F2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22C9716DBEB
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F489173E64
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892C28615A;
-	Tue, 17 Dec 2024 17:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BF21F867D;
+	Tue, 17 Dec 2024 17:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep5LZGtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzB8LjuA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CEB1F7574;
-	Tue, 17 Dec 2024 17:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FA41F76DA;
+	Tue, 17 Dec 2024 17:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456125; cv=none; b=Itd0rxVTT7M/ETAxnC0DijIThWEx76ogn2Yrxs9v7oF37xOUvUb1bOwNdxcfENub/2RcxVN87qrblXgb65RKZpApza/BxNk8LsQ9jxy7TN1dFWt7HCfUITgO4YaV0iQ8nVGgf6xFER/GcVxUcRGuT2oWK38KP9MiSw/z5I7Ohjw=
+	t=1734456621; cv=none; b=pV9c5E8r32y3m6Z1oFBli/W5hi2V0g1weMD8rtS/hz7+2LvjFV5aoiZE0uJ36Qokn8nrMlfcahRLw4fZ39reG1lFEUGZiCneViI3LMYx3dxwN5xHIExcL+vBokpzpM6lpV9hJaHjenfo2mDDoTxV916Y6nygLs0VQb2kQ7oxv0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456125; c=relaxed/simple;
-	bh=XRD+xlUTndTdbeIhIBqF9v7cdn/7joRQCABBAhsfDWE=;
+	s=arc-20240116; t=1734456621; c=relaxed/simple;
+	bh=6WJSTnsWsnn4ILtB7MIL3lR8xpH9FrxYQ4CzMxlitsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEGN9JkjPQurh82bohDDE6wupbu00DyKZo7ySUIJc+BWvNi3cugF/efB6j2Y409WVX40fWkH/IrdQrJdixraBYn1mZIEMToAsMc9J8u4tboh/hgoW0ARftWFg/d3S0p+ukWYOcn5+wSk8yAdfbKIB1xPj9ogu6m/lehCxWIfZfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep5LZGtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DDEC4CED3;
-	Tue, 17 Dec 2024 17:22:04 +0000 (UTC)
+	 MIME-Version; b=fY6i4dLt7BPglYJL7j2skkulmAAWCnG8TAGgTanop8FoCSe8NAXYC/p/Mr3qw3FfffBOTq+tVREc+yF/LapBEftGp8hw3P4yzCaM/rPuJ07lBT0EMHU3pGU9k32ebJ28nOXY/YqNqtu8yTI9pEwUbF822U9PxW05KVGZhiI51LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzB8LjuA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F2DC4CED3;
+	Tue, 17 Dec 2024 17:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456125;
-	bh=XRD+xlUTndTdbeIhIBqF9v7cdn/7joRQCABBAhsfDWE=;
+	s=korg; t=1734456621;
+	bh=6WJSTnsWsnn4ILtB7MIL3lR8xpH9FrxYQ4CzMxlitsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ep5LZGtDOcyRzaDYhpacaWZl2N2+TEyLvuBUQAyr5t98O4OTUTUUGMoi0bAhG51Pg
-	 Jk54YWA5+PlSItXW61woYYwlCXps5lsUUQWW4EhfSX+OZJXPseZ+L5OnGsetJcJGji
-	 +nf6cp9nOblW2aRXviZsys2+n+GRLx1YkW3Ig0aY=
+	b=wzB8LjuAmRVDiOrE/Jo2R+f3KLhSfe3blt6QQ263N8k1qNdV3ISDOrILaHlvyKrvv
+	 z6qb/unGMVY5Mgp90XYq+G19M+CCFYL1xJyh4ZIYg2SM90mU2IrbWGW6WIIUOveS1P
+	 Mrz1ukI4bLRLTullop6Vxb3XDwuJ5itq0B8+UPpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/109] wifi: mac80211: fix station NSS capability initialization order
+Subject: [PATCH 6.12 086/172] wifi: mac80211: fix station NSS capability initialization order
 Date: Tue, 17 Dec 2024 18:07:22 +0100
-Message-ID: <20241217170534.966315982@linuxfoundation.org>
+Message-ID: <20241217170549.854519813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -84,10 +84,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index f9395cd80051..a3c5d4d995db 100644
+index 16d47123a73c..1b1bf044378d 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -1879,6 +1879,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+@@ -1911,6 +1911,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
  						    params->eht_capa_len,
  						    link_sta);
  
@@ -96,7 +96,7 @@ index f9395cd80051..a3c5d4d995db 100644
  	if (params->opmode_notif_used) {
  		/* returned value is only needed for rc update, but the
  		 * rc isn't initialized here yet, so ignore it
-@@ -1888,8 +1890,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+@@ -1920,8 +1922,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
  					      sband->band);
  	}
  
