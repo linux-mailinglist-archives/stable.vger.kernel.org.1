@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-104744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF469F528A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F61E9F529F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:21:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 092A77A2C12
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324BA1884806
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFA81F867B;
-	Tue, 17 Dec 2024 17:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB27D1F8AF9;
+	Tue, 17 Dec 2024 17:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTTAhZYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boW3j7zv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AECC1F867E;
-	Tue, 17 Dec 2024 17:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D981F8697;
+	Tue, 17 Dec 2024 17:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455970; cv=none; b=PT56zAZrBxtrqqbzU3VuQR/Xdt38FD3OxegVPjkQlnQzWgTg7bAqCgSvQZng/7Qs4pcmsFLQQhsuGGcwJI5iEEJosPPlijgtX06vPHN5sUkYbYq8m4WrcoTU6/9zpCqiVUQLQMCmZwy6qMVaSmZ5IBki5FbCuplCkNFZA/J4cEM=
+	t=1734455847; cv=none; b=F+ne3ghdUJBs6JnMD9pRmwXyrGQ2w6cWcSUiLKDrY/7lgFTOTn8IoY/1z6zYLcYBf3CwnCvqQDZWm55VoUDvw6JQm04Tr5qSJ42RtOCS9S41aoJvMWV89dRdx+3gSQysdxOMUmI//bBAFu9QJAWgAUnD7Ni6NKl/O1zGY7I5Smg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455970; c=relaxed/simple;
-	bh=vQaR7CX3jcChKkithcyMaCl6zR3cQGk5MZFoplh/ilo=;
+	s=arc-20240116; t=1734455847; c=relaxed/simple;
+	bh=usTuaXtWzKR0I+Ph6tTOD512XnpE7+Tz6dVtwAtat68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eryW9f7uvW2whjAVLsqEVDrx36y1bhxxJfuRwLU5oYNK9BYxTmZjsVDIOhqX2cPWM0EqSPixRbx39mC5Qr2F8vfp9obdOVq0yJOoShqnS/P2D+riAnogqmZTIhaTq+er9MboMRXi0Vk+2yajFydFsRKERHQRBHyJ9+N+hF3Knak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTTAhZYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851F3C4CED3;
-	Tue, 17 Dec 2024 17:19:29 +0000 (UTC)
+	 MIME-Version; b=H3qY1/LWL0/B6ioSjmBw0Ra0F0c0n7EEPrM8ecNVGjzMaP5HN49Cl5KdaxIcvz1q6BrLwvyb6lObdf/NvngKdSdz84pLHUtaae3hmWf/nfedIOW6uGk5U2UKinSObueOzbp56eqdsw7gKgTMnwpusU4EVH/T9cN5j/vM7XqojI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boW3j7zv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE01C4CEDF;
+	Tue, 17 Dec 2024 17:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455969;
-	bh=vQaR7CX3jcChKkithcyMaCl6zR3cQGk5MZFoplh/ilo=;
+	s=korg; t=1734455847;
+	bh=usTuaXtWzKR0I+Ph6tTOD512XnpE7+Tz6dVtwAtat68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTTAhZYCNmit2Eay8TvASSPn6VYSdyB7cZXmsNKpdN2IPJ39cruicX+TtYOhmH50D
-	 65MYwrSKMG7bglyMuETXzkAKFJTBj6p/t06x+0A4sLm7zYn9vA22U0y4QBdrauHF+k
-	 BGoo+mxxKDZHf+ZOMTz0yfGBb67R3c69kfCa7g1I=
+	b=boW3j7zvoDWASpv5fHC+/oRAzsGdtL+4iGdHGYIJfIjHsE90XeLTeZaYb+YUsDHcv
+	 OmVx/fd86Fx7IFiN6ghlHiz7Ps9RGR58QR0IK1KDC3Xp6x/8tqh7yKKvfUjOyV/Y2X
+	 3chEPrF7bwyg76EJ+qg8GHiND5CHXfemeAj0pmlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 017/109] usb: ehci-hcd: fix call balance of clocks handling routines
-Date: Tue, 17 Dec 2024 18:07:01 +0100
-Message-ID: <20241217170534.078381234@linuxfoundation.org>
+	syzbot+2e0d2840414ce817aaac@syzkaller.appspotmail.com,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: [PATCH 6.1 22/76] bpf,perf: Fix invalid prog_array access in perf_event_detach_bpf_prog
+Date: Tue, 17 Dec 2024 18:07:02 +0100
+Message-ID: <20241217170527.177279973@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit 97264eaaba0122a5b7e8ddd7bf4ff3ac57c2b170 upstream.
+commit 978c4486cca5c7b9253d3ab98a88c8e769cb9bbd upstream.
 
-If the clocks priv->iclk and priv->fclk were not enabled in ehci_hcd_sh_probe,
-they should not be disabled in any path.
+Syzbot reported [1] crash that happens for following tracing scenario:
 
-Conversely, if they was enabled in ehci_hcd_sh_probe, they must be disabled
-in all error paths to ensure proper cleanup.
+  - create tracepoint perf event with attr.inherit=1, attach it to the
+    process and set bpf program to it
+  - attached process forks -> chid creates inherited event
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
+    the new child event shares the parent's bpf program and tp_event
+    (hence prog_array) which is global for tracepoint
 
-Fixes: 63c845522263 ("usb: ehci-hcd: Add support for SuperH EHCI.")
-Cc: stable@vger.kernel.org # ff30bd6a6618: sh: clk: Fix clk_enable() to return 0 on NULL clk
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241121114700.2100520-1-mordan@ispras.ru
+  - exit both process and its child -> release both events
+  - first perf_event_detach_bpf_prog call will release tp_event->prog_array
+    and second perf_event_detach_bpf_prog will crash, because
+    tp_event->prog_array is NULL
+
+The fix makes sure the perf_event_detach_bpf_prog checks prog_array
+is valid before it tries to remove the bpf program from it.
+
+[1] https://lore.kernel.org/bpf/Z1MR6dCIKajNS6nU@krava/T/#m91dbf0688221ec7a7fc95e896a7ef9ff93b0b8ad
+
+Fixes: 0ee288e69d03 ("bpf,perf: Fix perf_event_detach_bpf_prog error handling")
+Reported-by: syzbot+2e0d2840414ce817aaac@syzkaller.appspotmail.com
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241208142507.1207698-1-jolsa@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ehci-sh.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/trace/bpf_trace.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/host/ehci-sh.c
-+++ b/drivers/usb/host/ehci-sh.c
-@@ -119,8 +119,12 @@ static int ehci_hcd_sh_probe(struct plat
- 	if (IS_ERR(priv->iclk))
- 		priv->iclk = NULL;
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2180,6 +2180,9 @@ void perf_event_detach_bpf_prog(struct p
+ 		goto unlock;
  
--	clk_enable(priv->fclk);
--	clk_enable(priv->iclk);
-+	ret = clk_enable(priv->fclk);
-+	if (ret)
-+		goto fail_request_resource;
-+	ret = clk_enable(priv->iclk);
-+	if (ret)
-+		goto fail_iclk;
+ 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
++	if (!old_array)
++		goto put;
++
+ 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
+ 	if (ret < 0) {
+ 		bpf_prog_array_delete_safe(old_array, event->prog);
+@@ -2188,6 +2191,7 @@ void perf_event_detach_bpf_prog(struct p
+ 		bpf_prog_array_free_sleepable(old_array);
+ 	}
  
- 	ret = usb_add_hcd(hcd, irq, IRQF_SHARED);
- 	if (ret != 0) {
-@@ -136,6 +140,7 @@ static int ehci_hcd_sh_probe(struct plat
- 
- fail_add_hcd:
- 	clk_disable(priv->iclk);
-+fail_iclk:
- 	clk_disable(priv->fclk);
- 
- fail_request_resource:
++put:
+ 	/*
+ 	 * It could be that the bpf_prog is not sleepable (and will be freed
+ 	 * via normal RCU), but is called from a point that supports sleepable
 
 
 
