@@ -1,125 +1,225 @@
-Return-Path: <stable+bounces-105023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A529F54E1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:49:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A013A9F552D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 157E01882762
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:46:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26F86164E95
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3773F1F8F0F;
-	Tue, 17 Dec 2024 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A181FCFD4;
+	Tue, 17 Dec 2024 17:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Ci9V3/1a"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="i1UODlnJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184E01F9EAD;
-	Tue, 17 Dec 2024 17:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FF71F8ACA
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 17:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734457315; cv=none; b=bXGrYgF/PjldnDVLzUbpmNuvPgJwUEXd4XsuLjK+Kp8L+6uxyIymrNqIuDxFBXsK/xgEQkw4oz6MvZJUbYNyLBfXFu6edUsrwjOhX2iUNO+V2hOdex2pqRrrzG6BWFS7O+ijS58VQJE1YYkMGDzXm0h6mi9HPB8o5BijEC5dmV0=
+	t=1734457475; cv=none; b=Kf/HcyEhNgdX6cLqCs4YugTWoL1UtrWxG3syH5ou2B/GmVDIgzfMY4r7PznuYmJKpjtqebXjZHhR2EV1QrVsCAdYkS2NFMyD6cE0smLHvWlHDJADEkuWEdUMB7Vtj9t+9PpdzLYtkQrnBcIwOKoL67Prx7UqSikOKZ0mBrC4rPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734457315; c=relaxed/simple;
-	bh=F1aA4riXIv0Q9S4y2DrfhZV5JLe5bLPLHXIsUombDoU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=j4Y5gJZB1h40Xo17TL9ZuJEB1lrDznJTz2OjxD2QZ6eReTopkTIWFNJfVaBsrb5KRdFhV+yOvxMTaraohBzsc0VdOOkZM42inuUZsR/V0bidmL51hf3ILd9YvVL1RnZ/6MIaGEprVM9PDeHXNx2fr2hZryIuIG5gkvPXlqygB1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Ci9V3/1a; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BHD9qtK008410;
-	Tue, 17 Dec 2024 18:41:40 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	MFkZT8NHU7DNuo+LKqsiFwQWUamjVt47LLzELPbysck=; b=Ci9V3/1aAsAA7aIj
-	aWxu5NZz8bLqUhpLOMlv5gk9mHTFYpWke9jxnLqKeQbRb46rDQdXB8cwfon2gcnz
-	SS9iSoJvO+8bEsAbMyIlZ2gTw3PVt0Tz1pd2vTTEPwlzlVWh9sCxf88sTqDTJ+BW
-	dnD/6yAbSqdULOvlPj2URfdeRsERpjKG9nIhrunq2WlEVBhPUDeoSvu5D3uM2Vgk
-	v8TqKL37eObGhJm30Hiw8L29oLNgLGJDRSGSeBt4FwchJ7lQ5qOI/WcSPlolkDwM
-	u4s4u3LWuLFEv5APdy93NRWm3JzUmID4hn2XOzI/rom/Azvsj1iz4zEjk6rsYqJx
-	msNmvA==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 43k5h9jwaj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Dec 2024 18:41:40 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id D403A4004B;
-	Tue, 17 Dec 2024 18:40:18 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2CC8E284780;
-	Tue, 17 Dec 2024 18:39:25 +0100 (CET)
-Received: from localhost (10.252.23.235) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Tue, 17 Dec
- 2024 18:39:24 +0100
-From: Alain Volmat <alain.volmat@foss.st.com>
-Date: Tue, 17 Dec 2024 18:39:18 +0100
-Subject: [PATCH 1/9] media: stm32: dcmipp: correct ret type in
- dcmipp_graph_notify_bound
+	s=arc-20240116; t=1734457475; c=relaxed/simple;
+	bh=JLQtj3Z+YBvoe66gPP5jwG3nfGAR0rbHbfqZsmiV4Zk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kNBvkyKPlOiIowki/F9lnyhiD2AHGDvNKYmuWV0xWpKNjT7oo6H5q0r/ZR9cnCawiC2sHr954RtHmcXhB7oHjezlidOFiEeHfEvTRn8SgHDkY7VnFg2imITtpFYYlM99ZEKpdHWMueA7zOhMghgqaKUyzytjtkK9U+QithOobWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=i1UODlnJ; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ffd6b7d77aso67424831fa.0
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 09:44:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1734457469; x=1735062269; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JLQtj3Z+YBvoe66gPP5jwG3nfGAR0rbHbfqZsmiV4Zk=;
+        b=i1UODlnJ0KIsogvPyL4C1wg95eOJ2EanpTavhmVjTQBTUQUwTa2xeTt487NUhnmJd1
+         NGXDYO7Nw1UAkkQo9kwFzw9OUtXS1k6AGBjDUBqhc4oAKk6eM8O/nZ6YJr4rUOqChabu
+         BAlQ8jvN4Ir1FufryAd2iYBZNm6bAdCQEpr+c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734457469; x=1735062269;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JLQtj3Z+YBvoe66gPP5jwG3nfGAR0rbHbfqZsmiV4Zk=;
+        b=YCP9Tu6hDgqEd/U1X9IiHqSdjVNJu1r4RPEt/20l7/9gWSPJNTN0z/6mZBmzj3Ey0S
+         bcRZ/84kOvhIdKifEc1pJefR06/KXaQJVnAwTvbmq/UNZEZx5EAWiUpbGDMplA3L+onM
+         dkcRbqJeouKk+e596sxyQqSBA0iPnV+fSX5Iv4lmCOsyxyiNSadZIH21waGacOA7em9F
+         cceM2gGNsqc2cM/4GWP6fWUyyRDuigsoairz2WCUFZMMXpxy3QXXowEDwTYCnhA4tIqc
+         aG/t9XMvo7/agTzAd7l5k1brADAGZh5QMw5Pq9aN9V5ISaD9lR5f/s0WY1wq05OJU0eu
+         dF1g==
+X-Forwarded-Encrypted: i=1; AJvYcCWQM2oqxsMM1SXReGeVUPcyIFfoj3KXr692YmQOcG815bviKb5SnFokX97bOlA1ix9Lbn0csAQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGhc72JUegHUgk+eg0kIUK5fRWSP/WuNWXmODgBZvyC08SIB+T
+	61Q8wJMVEYhSi2maWDzUTBID5uJ4ZOxfbysvmG83HC7k2cymywGPv38fikl66NgsKDBYfy3X2Jj
+	tPQ==
+X-Gm-Gg: ASbGncsbJWYskcn8gckbeIBgXn2xRZ78MstaI0LvQOc9ZuN+5TB81LDl2Zg4SMgV25D
+	ukrLsBjk1c8eAaIyelO2Iy+bF+Z73Cb06eZAlMZXeJm0A7oYhjZbqUMr4OLZZbtK2ygaFfjC+hn
+	kN7vyHEWyDAuMRnF//w8nAbmAKp68Bz1B1xaiEknDS5FagZSrzsm8g4U9mMvbd/kljGfOcyC/jD
+	dHIvRJ2QJkdPOTnDBrPAEN5sVNSFKyOa/o3sOkf1C6y3pf83HVWwZmkfhP981Dh5ORIFOfoxW2e
+	amPsTFLQ4Xgp/IGLYfgJ3p5J
+X-Google-Smtp-Source: AGHT+IFd2AZ8/CB3szYaeJbTmdzqogY5VHG6bB3c9vvIfBproDN0yZdlBtqvFrkA4Ibp+p9DMN002Q==
+X-Received: by 2002:a05:651c:210d:b0:2fb:4b0d:9092 with SMTP id 38308e7fff4ca-302545669ddmr66794131fa.1.1734457468977;
+        Tue, 17 Dec 2024 09:44:28 -0800 (PST)
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3034401d546sm13151091fa.11.2024.12.17.09.44.25
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Dec 2024 09:44:26 -0800 (PST)
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ffd6b7d77aso67423731fa.0
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 09:44:25 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUU5B8D+P6AQXHu3hybc/h0yft9Tj7eF9Kfu/uUypzjURJ7rsPIMflLLwUdXK15kXzKshTb76c=@vger.kernel.org
+X-Received: by 2002:a05:651c:2108:b0:302:3de5:b039 with SMTP id
+ 38308e7fff4ca-30254566a55mr66069711fa.8.1734457465327; Tue, 17 Dec 2024
+ 09:44:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20241217-csi_dcmipp_mp25_enhancements-v1-1-2b432805d17d@foss.st.com>
-References: <20241217-csi_dcmipp_mp25_enhancements-v1-0-2b432805d17d@foss.st.com>
-In-Reply-To: <20241217-csi_dcmipp_mp25_enhancements-v1-0-2b432805d17d@foss.st.com>
-To: Hugues Fruchet <hugues.fruchet@foss.st.com>,
-        Mauro Carvalho Chehab
-	<mchehab@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre
- Torgue <alexandre.torgue@foss.st.com>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-CC: <linux-media@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Alain Volmat <alain.volmat@foss.st.com>,
-        <stable@vger.kernel.org>
-X-Mailer: b4 0.14.1
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+References: <20241214005248.198803-1-dianders@chromium.org>
+ <20241213165201.v2.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+ <CAODwPW_c+Ycu_zhiDOKN-fH2FEWf2pxr+FcugpqEjLX-nVjQrg@mail.gmail.com>
+ <CAD=FV=UHBA7zXZEw3K6TRpZEN-ApOkmymhRCOkz7h+yrAkR_Dw@mail.gmail.com> <CAODwPW8s4GhWGuZMUbWVNLYw_EVJe=EeMDacy1hxDLmnthwoFg@mail.gmail.com>
+In-Reply-To: <CAODwPW8s4GhWGuZMUbWVNLYw_EVJe=EeMDacy1hxDLmnthwoFg@mail.gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Tue, 17 Dec 2024 09:44:13 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=X61y+RmbWCiZut_HHVS4jPdv_ZB8F+_Hs0R-1aKHdK4w@mail.gmail.com>
+X-Gm-Features: AbW1kvbAgvCz7vA_yFdhIVykkakAa4L6Lz2IE9DR-f5ZjOd70MgEn8kxRtbYbd0
+Message-ID: <CAD=FV=X61y+RmbWCiZut_HHVS4jPdv_ZB8F+_Hs0R-1aKHdK4w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] arm64: errata: Assume that unknown CPUs _are_
+ vulnerable to Spectre BHB
+To: Julius Werner <jwerner@chromium.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, linux-arm-msm@vger.kernel.org, 
+	Jeffrey Hugo <quic_jhugo@quicinc.com>, linux-arm-kernel@lists.infradead.org, 
+	Roxana Bradescu <roxabee@google.com>, Trilok Soni <quic_tsoni@quicinc.com>, 
+	bjorn.andersson@oss.qualcomm.com, stable@vger.kernel.org, 
+	James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The ret variable used within the function dcmipp_graph_notify_bound is
-wrongly defined as unsigned int while it can also be signed.
+Hi,
 
-Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
----
- drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Dec 17, 2024 at 5:25=E2=80=AFAM Julius Werner <jwerner@chromium.org=
+> wrote:
+>
+> > > - Refactor max_bhb_k in spectre_bhb_loop_affected() to be a global
+> > > instead, which starts out as zero, is updated by
+> > > spectre_bhb_loop_affected(), and is directly read by
+> > > spectre_bhb_patch_loop_iter() (could probably remove the `scope`
+> > > argument from spectre_bhb_loop_affected() then).
+> >
+> > Refactoring "max_bhb_k" would be a general cleanup and not related to
+> > anything else here, right?
+> >
+> > ...but the function is_spectre_bhb_affected() is called from
+> > "cpu_errata.c" and has a scope. Can we guarantee that it's always
+> > "SCOPE_LOCAL_CPU"? I tried reading through the code and it's
+> > _probably_ SCOPE_LOCAL_CPU most of the time, but it doesn't seem worth
+> > it to add an assumption here for a small cleanup.
+> >
+> > I'm not going to do this, though I will move "max_bhb_k" to be a
+> > global for the suggestion below.
+>
+> If you make max_bhb_k a global, then whether you change all
+> `spectre_bhb_loop_affected(SCOPE_SYSTEM)` calls to read the global
+> directly or whether you keep it such that
+> `spectre_bhb_loop_affected()` simply returns that global for
+> SCOPE_SYSTEM makes no difference. I just think reading the global
+> directly would look a bit cleaner. Calling a function that's called
+> "...affected()" when you're really just trying to find out the K-value
+> feels a bit odd.
+>
+> For is_spectre_bhb_affected(), I was assuming the change below where
+> you combine all the `return true` paths, so the scope question
+> wouldn't matter there.
 
-diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-index 71acf539e1f3..5a04018a6a9d 100644
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-@@ -296,7 +296,7 @@ static int dcmipp_graph_notify_bound(struct v4l2_async_notifier *notifier,
- 				     struct v4l2_async_connection *asd)
- {
- 	struct dcmipp_device *dcmipp = notifier_to_dcmipp(notifier);
--	unsigned int ret;
-+	int ret;
- 	int src_pad, i;
- 	struct dcmipp_ent_device *sink;
- 	struct v4l2_fwnode_endpoint vep = { 0 };
+Ah, right. OK.
 
--- 
-2.34.1
 
+> > > - Change the `return false` into `return true` at the end of
+> > > is_spectre_bhb_affected (in fact, you can probably take out some of
+> > > the other calls that result in returning true as well then)
+> >
+> > I'm not sure you can take out the other calls. Specifically, both
+> > spectre_bhb_loop_affected() and is_spectre_bhb_fw_affected() _need_ to
+> > be called for each CPU so that they update static globals, right?
+> > Maybe we could get rid of the call to supports_clearbhb(), but that
+> > _would_ change things in ways that are not obvious. Specifically I
+> > could believe that someone could have backported "clear BHB" to their
+> > core but their core is otherwise listed as "loop affected". That would
+> > affect "max_bhb_k". Maybe (?) it doesn't matter in this case, but I'd
+> > rather not mess with it unless someone really wants me to and is sure
+> > it's safe.
+>
+> Yes, but spectre_bhb_enable_mitigation() already calls all those
+> functions on its own again anyway, so I'm pretty sure the "must be
+> called once for each CPU" part of spectre_bhb_loop_affected() is
+> covered by that. (Besides, it would be really awful if they had made a
+> function whose name starts with is_... have critical side-effects that
+> break things when it doesn't get called.)
+
+The existing predicates already do change globals before my patch and
+changing that is outside of the scope of what I'm willing to entertain
+with my patchset
+
+Given that I'm not going to change the way the existing predicates
+work, if I move the "fallback" setting `max_bhb_k` to 32 to
+spectre_bhb_enable_mitigation() then when we set `max_bhb_k` becomes
+inconsistent between recognized and unrecognized CPUs. One gets set in
+the predicate and one doesn't. Even if it works, this inconsistency
+feels like bad design to me. Also, setting `max_bhb_k` to the max at
+the end of is_spectre_bhb_affected() would perhaps _help_ someone
+realize that the predicate has side effects because they'd see it in
+the function itself and not have to dig down.
+
+I would also say that having `max_bhb_k` get set in an inconsistent
+place opens us up for bugs in the future. Even if it works today, I
+imagine someone could change things in the future such that
+spectre_bhb_enable_mitigation() reads `max_bhb_k` and essentially
+caches it (maybe it constructs an instruction based on it). If that
+happened things could be subtly broken for the "unrecognized CPU" case
+because the first CPU would "cache" the value without it having been
+called on all CPUs.
+
+In case you can't tell, I'm still not convinced and will plan to keep
+setting `max_bhb_k =3D 32` in is_spectre_bhb_affected().
+
+
+> > > - In spectre_bhb_enable_mitigations(), at the end of the long if-else
+> > > chain, put a last else block that prints your WARN_ONCE(), sets the
+> > > max_bhb_k global to 32, and then does the same stuff that the `if
+> > > (spectre_bhb_loop_affected())` block would have installed (maybe
+> > > factoring that out into a helper function called from both cases).
+> >
+> > ...or just reorder it so that the spectre_bhb_loop_affected() code is
+> > last and it can be the "else". Then I can WARN_ONCE() if
+> > spectre_bhb_loop_affected(). ...or I could just do the WARN_ONCE()
+> > when I get to the end of is_spectre_bhb_affected() and set "max_bhb_k"
+> > to 32 there. I'd actually rather do that so that "max_bhb_k" is
+> > consistently set after is_spectre_bhb_affected() is called on all
+> > cores regardless of whether or not some cores are unknown.
+>
+> Yeah, you can reorder the loops too. I don't feel like moving this
+> into is_spectre_bhb_affected() would be a good idea. Functions with a
+> predicate name like that really shouldn't have such side effects.
+> Besides, I think is_spectre_bhb_affected() is probably called more
+> often per CPU, both once from spectre_bhb_enable_mitigation() and by
+> whatever calls the `matches` pointer in the cpu_errata struct.
+> spectre_bhb_enable_mitigation() seems to be the function that's called
+> once for each CPU on boot to install the correct mitigation, so that
+> feels like the best spot to put the fallback logic to me.
+
+As per above, while I agree that having predicate functions w/ side
+effects is not ideal, that predates my patch series and I'd rather
+things work consistently.
+
+-Doug
 
