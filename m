@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5359F53D2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A959F52A4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D8C616AE78
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A2191889C1A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D67F8615A;
-	Tue, 17 Dec 2024 17:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60190140E38;
+	Tue, 17 Dec 2024 17:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7Y9xz8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDZxN29/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA541F8901;
-	Tue, 17 Dec 2024 17:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E04A1DE2AC;
+	Tue, 17 Dec 2024 17:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456545; cv=none; b=hTnCbF5DedM/2Q33diLq5ZNa+bqesaBbtb4smc0B9Dx3bWSA+oJwE/hdn0dncrgr1Gz0lUWNn4EZPszPUvnbukcuQuB1m8R40E8Wb9uQQgW/EEEjDXQHkwQxIe2exeFYjXZot9vAd+NLbBdMv+PSSoLiqBIUyjs2CQZUpjkeyMw=
+	t=1734455859; cv=none; b=ewMWff3Y8W1V8Clb9iXZgG269HczTcoFpE5zTnoDsfF1Dfo1SOFC9+gEf4doAN4QU25/W3uwHQ/MbdyuOx6LRmtMPJrwAHmqi4m/apvHrqeEQcNn5uHBMxk6k49xSzscEY28rxTHayWdp/SnMR3yB98F7Y4E7UWYojjGRjCKgUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456545; c=relaxed/simple;
-	bh=ryVyTfYA0qiI3bn31EHMaVJQhc4gPvFgf4sqr9hvZEU=;
+	s=arc-20240116; t=1734455859; c=relaxed/simple;
+	bh=1eMJYr5w/USfbaK7dwD2VOrKyow9IaB7lniFRuPD7Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWhujHIrpg6jp1QhKLKTyvgsbts3OuV2Cit/jDuBxe1frGMuhTLL69siD7lEpUWk4p866mchlfNTNLZHJLOJ4QFfi2J2IXSbE/wmcCkQexH0FoSxuSKKxn/ddP1B0H5jSkSuzFKP/3D77sF/7n4bkAfZ0pR71cISHHD1JykW/+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7Y9xz8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4889EC4CED3;
-	Tue, 17 Dec 2024 17:29:05 +0000 (UTC)
+	 MIME-Version; b=IbP8M8osGfAL/gBcGUA3mZjShuVAmdRcC5G0llrkXIUu2iW5pS5FMtTuw9WJZcpIYr7Hy/EvWrWlko8IrhBtL3gnMgDjQxBqJhjwd0mRj1NHB+iD1ydKkHlTWUwziWLjzMSUN1CMBeemVWRmP9ei2vF4BblFnRrDjUPr+J7cWjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDZxN29/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A953C4CED3;
+	Tue, 17 Dec 2024 17:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456545;
-	bh=ryVyTfYA0qiI3bn31EHMaVJQhc4gPvFgf4sqr9hvZEU=;
+	s=korg; t=1734455859;
+	bh=1eMJYr5w/USfbaK7dwD2VOrKyow9IaB7lniFRuPD7Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7Y9xz8QwxM4fx3g/4VVw9zo4zEAoe+OzntlNdltKdOYY8+/JgRE4ZyiIrEjuDmN3
-	 MGvH/dIuVTCy8uA9c/IOsE8uuqJIx18iU12lEXuyH9PXQWXZdN0M2LZQ3oNlR5c2zS
-	 g2HYGQng/lRA05G5V6UL6QCsMxZbfqJClSZhHulk=
+	b=GDZxN29/OibAD6o1nAH2PkHBzwvTWJ8DsdhtqvkbIcrDW1n3Mdlsq9w6CgjC2Z5qs
+	 VFgL5dhpWjLRwSqTlAy1xWeYMDpyW2JM4McgHJinEPJjmF7HprZpU0yw53cQH+t9rv
+	 TNXHsFqpLWl6N+1xznOWp6BBjEZGYPmUtdQDLEyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/172] tipc: fix NULL deref in cleanup_bearer()
+Subject: [PATCH 6.1 49/76] spi: aspeed: Fix an error handling path in aspeed_spi_[read|write]_user()
 Date: Tue, 17 Dec 2024 18:07:29 +0100
-Message-ID: <20241217170550.152371626@linuxfoundation.org>
+Message-ID: <20241217170528.304392161@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit b04d86fff66b15c07505d226431f808c15b1703c ]
+[ Upstream commit c84dda3751e945a67d71cbe3af4474aad24a5794 ]
 
-syzbot found [1] that after blamed commit, ub->ubsock->sk
-was NULL when attempting the atomic_dec() :
+A aspeed_spi_start_user() is not balanced by a corresponding
+aspeed_spi_stop_user().
+Add the missing call.
 
-atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
-
-Fix this by caching the tipc_net pointer.
-
-[1]
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-CPU: 0 UID: 0 PID: 5896 Comm: kworker/0:3 Not tainted 6.13.0-rc1-next-20241203-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events cleanup_bearer
- RIP: 0010:read_pnet include/net/net_namespace.h:387 [inline]
- RIP: 0010:sock_net include/net/sock.h:655 [inline]
- RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
-Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 3c f7 99 f6 48 8b 1b 48 83 c3 30 e8 f0 e4 60 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 1a f7 99 f6 49 83 c7 e8 48 8b 1b
-RSP: 0018:ffffc9000410fb70 EFLAGS: 00010206
-RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88802fe45a00
-RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffc9000410f900
-RBP: ffff88807e1f0908 R08: ffffc9000410f907 R09: 1ffff92000821f20
-R10: dffffc0000000000 R11: fffff52000821f21 R12: ffff888031d19980
-R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff88807e1f0918
-FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556ca050b000 CR3: 0000000031c0c000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-Fixes: 6a2fa13312e5 ("tipc: Fix use-after-free of kernel socket in cleanup_bearer().")
-Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67508b5f.050a0220.17bd51.0070.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241204170548.4152658-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e3228ed92893 ("spi: spi-mem: Convert Aspeed SMC driver to spi-mem")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/4052aa2f9a9ea342fa6af83fa991b55ce5d5819e.1732051814.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/udp_media.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-aspeed-smc.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index b7e25e7e9933..108a4cc2e001 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -807,6 +807,7 @@ static void cleanup_bearer(struct work_struct *work)
- {
- 	struct udp_bearer *ub = container_of(work, struct udp_bearer, work);
- 	struct udp_replicast *rcast, *tmp;
-+	struct tipc_net *tn;
+diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
+index b90571396a60..5015c2f6fd9f 100644
+--- a/drivers/spi/spi-aspeed-smc.c
++++ b/drivers/spi/spi-aspeed-smc.c
+@@ -239,7 +239,7 @@ static ssize_t aspeed_spi_read_user(struct aspeed_spi_chip *chip,
  
- 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
- 		dst_cache_destroy(&rcast->dst_cache);
-@@ -814,10 +815,14 @@ static void cleanup_bearer(struct work_struct *work)
- 		kfree_rcu(rcast, rcu);
- 	}
+ 	ret = aspeed_spi_send_cmd_addr(chip, op->addr.nbytes, offset, op->cmd.opcode);
+ 	if (ret < 0)
+-		return ret;
++		goto stop_user;
  
-+	tn = tipc_net(sock_net(ub->ubsock->sk));
-+
- 	dst_cache_destroy(&ub->rcast.dst_cache);
- 	udp_tunnel_sock_release(ub->ubsock);
-+
-+	/* Note: could use a call_rcu() to avoid another synchronize_net() */
- 	synchronize_net();
--	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
-+	atomic_dec(&tn->wq_count);
- 	kfree(ub);
+ 	if (op->dummy.buswidth && op->dummy.nbytes) {
+ 		for (i = 0; i < op->dummy.nbytes / op->dummy.buswidth; i++)
+@@ -249,8 +249,9 @@ static ssize_t aspeed_spi_read_user(struct aspeed_spi_chip *chip,
+ 	aspeed_spi_set_io_mode(chip, io_mode);
+ 
+ 	aspeed_spi_read_from_ahb(buf, chip->ahb_base, len);
++stop_user:
+ 	aspeed_spi_stop_user(chip);
+-	return 0;
++	return ret;
  }
  
+ static ssize_t aspeed_spi_write_user(struct aspeed_spi_chip *chip,
+@@ -261,10 +262,11 @@ static ssize_t aspeed_spi_write_user(struct aspeed_spi_chip *chip,
+ 	aspeed_spi_start_user(chip);
+ 	ret = aspeed_spi_send_cmd_addr(chip, op->addr.nbytes, op->addr.val, op->cmd.opcode);
+ 	if (ret < 0)
+-		return ret;
++		goto stop_user;
+ 	aspeed_spi_write_to_ahb(chip->ahb_base, op->data.buf.out, op->data.nbytes);
++stop_user:
+ 	aspeed_spi_stop_user(chip);
+-	return 0;
++	return ret;
+ }
+ 
+ /* support for 1-1-1, 1-1-2 or 1-1-4 */
 -- 
 2.39.5
 
