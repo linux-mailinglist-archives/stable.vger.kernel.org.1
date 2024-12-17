@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-104595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03009F5208
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5220C9F5386
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9A216C5CA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F9B97A706B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5C31F76BC;
-	Tue, 17 Dec 2024 17:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C451F8911;
+	Tue, 17 Dec 2024 17:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNK5bWk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSp/edja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4711E1F757B;
-	Tue, 17 Dec 2024 17:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9AF1F8662;
+	Tue, 17 Dec 2024 17:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455529; cv=none; b=LdfqVMLPLWFDqdhczST/OqcrUhwIYQ6iP/vacw/TDDuiASkWVgX4uZmgI3PeS9o9lsJVmLgfaPBglwNFyujJkFwKRgEbkvqQqD4brBhfPzp5yDXU9cU5seoY55mG92386V91s+aaUwCRIUOy/lv47JEWG7ceSwfEoaqoNlxevQs=
+	t=1734456560; cv=none; b=Ae0av251DwpH8DYRn08oVFcwrMuGZ3hIOEUaTpDHk6sqvnMhEIzD88cnml4dnTf1QaG3y8iKLMjyY4MPQL7MzfBi1Lrv1e0v0o8Q2vGimKBwW0CygkB/gAwlciysxBLfTGWLtbZ8lBogQkyxYrencwIviF17GH+Is/7uqd3pRCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455529; c=relaxed/simple;
-	bh=URQJipKLqKVnr5SgMGNyl0ZDnPnH6QNiq0klOpI8O10=;
+	s=arc-20240116; t=1734456560; c=relaxed/simple;
+	bh=UmZq1fuZp4jqKd1F5CFhoQUlGw1U8GRu0ohV2sn1gbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/mpzt2ixXwxHwxJYrQfLGuSBr1sGInhpdzc9ByVpVOqa3b5tMJtGObgPNbVkndUaU5duG6uO5xAhzsJKI5y+qh26iDUDnLSF++DrqkzbadjBcbv726VsHX7AYNxI6X4sUeFRxZ+HguCcj4n8YrlGL1SyonbA+7sq+6dHKmyQu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNK5bWk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DB5C4CED3;
-	Tue, 17 Dec 2024 17:12:08 +0000 (UTC)
+	 MIME-Version; b=qk1IgtdlCleB/fwlmIengQjGKTYimo/eZKD0qtTEowBmwsF8yA2ItvRj6NKf2OgWWk4ev+royYpZEjAjeTAyfsIAbshNPINgzP/MVvau3XEVVSq6KuWWxfQJNcuTfrA7Qgq8rtZUStlLj5MYjqF7E3aui8MlD7s0tdVNUEE4yEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSp/edja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E763EC4CED3;
+	Tue, 17 Dec 2024 17:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455529;
-	bh=URQJipKLqKVnr5SgMGNyl0ZDnPnH6QNiq0klOpI8O10=;
+	s=korg; t=1734456560;
+	bh=UmZq1fuZp4jqKd1F5CFhoQUlGw1U8GRu0ohV2sn1gbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNK5bWk20BO4AE66c1bRHO3DnSQOEzlRDbVqeA1x3A38YrGKi+04fwIheNZ4WUuQu
-	 k5DXP+nM0r/C1VsHVCLEHXmUrzRVJSElfns+dyqrwu2F0mYo9SlHTOHPdZg+WAUHtD
-	 4maE97BLUVwZFo64A38nPfxHWcRC1jgSIFxNPm+o=
+	b=YSp/edja74NUGVmffOJ0kitLAr2iLK+ApvQq/hdM2FbrAAqPHRQizY4PyMFeXwlpv
+	 zmM7Pd80J+f/R7gufPteirVLRSRFcBLebfLi/QVHEc8KpI7QoKZPswVexapIohTkxy
+	 yxtWeARmOwDIOw4QdvMtwjmZPk+NDn21RRKCKnq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: [PATCH 5.10 41/43] x86/xen: use new hypercall functions instead of hypercall page
-Date: Tue, 17 Dec 2024 18:07:32 +0100
-Message-ID: <20241217170522.361993995@linuxfoundation.org>
+	Danielle Ratson <danieller@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 097/172] selftests: mlxsw: sharedbuffer: Remove duplicate test cases
+Date: Tue, 17 Dec 2024 18:07:33 +0100
+Message-ID: <20241217170550.319154331@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Danielle Ratson <danieller@nvidia.com>
 
-commit b1c2cb86f4a7861480ad54bb9a58df3cbebf8e92 upstream.
+[ Upstream commit 6c46ad4d1bb2e8ec2265296e53765190f6e32f33 ]
 
-Call the Xen hypervisor via the new xen_hypercall_func static-call
-instead of the hypercall page.
+On both port_tc_ip_test() and port_tc_arp_test(), the max occupancy is
+checked on $h2 twice, when only the error message is different and does not
+match the check itself.
 
-This is part of XSA-466 / CVE-2024-53241.
+Remove the two duplicated test cases from the test.
 
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Co-developed-by: Peter Zijlstra <peterz@infradead.org>
-Co-developed-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/d9eb26f6fc16a06a30b5c2c16ad80caf502bc561.1733414773.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/xen/hypercall.h |   33 ++++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+ .../selftests/drivers/net/mlxsw/sharedbuffer.sh        | 10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -39,9 +39,11 @@
- #include <linux/string.h>
- #include <linux/types.h>
- #include <linux/pgtable.h>
-+#include <linux/instrumentation.h>
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+index a7b3d6cf3185..21bebc5726f6 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+@@ -131,11 +131,6 @@ port_tc_ip_test()
  
- #include <trace/events/xen.h>
+ 	devlink sb occupancy snapshot $DEVLINK_DEV
  
-+#include <asm/alternative.h>
- #include <asm/page.h>
- #include <asm/smap.h>
- #include <asm/nospec-branch.h>
-@@ -91,9 +93,17 @@ extern struct { char _entry[32]; } hyper
- void xen_hypercall_func(void);
- DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
- 
--#define __HYPERCALL		"call hypercall_page+%c[offset]"
--#define __HYPERCALL_ENTRY(x)						\
--	[offset] "i" (__HYPERVISOR_##x * sizeof(hypercall_page[0]))
-+#ifdef MODULE
-+#define __ADDRESSABLE_xen_hypercall
-+#else
-+#define __ADDRESSABLE_xen_hypercall __ADDRESSABLE_ASM_STR(__SCK__xen_hypercall)
-+#endif
-+
-+#define __HYPERCALL					\
-+	__ADDRESSABLE_xen_hypercall			\
-+	"call __SCT__xen_hypercall"
-+
-+#define __HYPERCALL_ENTRY(x)	"a" (x)
- 
- #ifdef CONFIG_X86_32
- #define __HYPERCALL_RETREG	"eax"
-@@ -151,7 +161,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_0ARG();						\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_0PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER0);				\
- 	(type)__res;							\
- })
-@@ -162,7 +172,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_1ARG(a1);						\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_1PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER1);				\
- 	(type)__res;							\
- })
-@@ -173,7 +183,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_2ARG(a1, a2);					\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_2PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER2);				\
- 	(type)__res;							\
- })
-@@ -184,7 +194,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_3ARG(a1, a2, a3);					\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_3PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER3);				\
- 	(type)__res;							\
- })
-@@ -195,7 +205,7 @@ DECLARE_STATIC_CALL(xen_hypercall, xen_h
- 	__HYPERCALL_4ARG(a1, a2, a3, a4);				\
- 	asm volatile (__HYPERCALL					\
- 		      : __HYPERCALL_4PARAM				\
--		      : __HYPERCALL_ENTRY(name)				\
-+		      : __HYPERCALL_ENTRY(__HYPERVISOR_ ## name)	\
- 		      : __HYPERCALL_CLOBBER4);				\
- 	(type)__res;							\
- })
-@@ -209,12 +219,9 @@ xen_single_call(unsigned int call,
- 	__HYPERCALL_DECLS;
- 	__HYPERCALL_5ARG(a1, a2, a3, a4, a5);
- 
--	if (call >= PAGE_SIZE / sizeof(hypercall_page[0]))
--		return -EINVAL;
+-	RET=0
+-	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+-	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+-	log_test "physical port's($h1) ingress TC - IP packet"
 -
--	asm volatile(CALL_NOSPEC
-+	asm volatile(__HYPERCALL
- 		     : __HYPERCALL_5PARAM
--		     : [thunk_target] "a" (&hypercall_page[call])
-+		     : __HYPERCALL_ENTRY(call)
- 		     : __HYPERCALL_CLOBBER5);
+ 	RET=0
+ 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+ 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+@@ -158,11 +153,6 @@ port_tc_arp_test()
  
- 	return (long)__res;
+ 	devlink sb occupancy snapshot $DEVLINK_DEV
+ 
+-	RET=0
+-	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+-	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+-	log_test "physical port's($h1) ingress TC - ARP packet"
+-
+ 	RET=0
+ 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+ 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+-- 
+2.39.5
+
 
 
 
