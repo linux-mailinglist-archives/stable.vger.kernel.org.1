@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC789F5309
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CF19F524C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43C2016AC11
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82FCB16F2A4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5640C152787;
-	Tue, 17 Dec 2024 17:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB011F890A;
+	Tue, 17 Dec 2024 17:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Db4DpOyA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0m/TAXe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128021F7577;
-	Tue, 17 Dec 2024 17:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1131F8679;
+	Tue, 17 Dec 2024 17:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456131; cv=none; b=AjRR/jlZ+osoHH2fNaWjqfWAxUo8aFlO2PshAUBuwG96NWnBgTeyY+T8nWevBWLlNaNKMq14s94YkJxDDOED4Fu9uGY8sC+imtJdKvizEupQCoxrtyoU1W4fO0/jPlIQyDBkp8rgwMcE10GGra6Na8JUT5VEYbO913wVlakN0yA=
+	t=1734455691; cv=none; b=jk3peLyXaIzxORpatTrGfOuex13qCNZ3uLzw+fk6l8nLxXbmETYARof+mqzKaD5wFkoAVpIU3UWC7JOYIgDokWIBBr4jwSOI+rzhxKb3hronkLEU+WV5jfDarTI2/9bnnmbtZiGCZhSmxuWu1JaICUyoglslhxhzDxYNKQPke9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456131; c=relaxed/simple;
-	bh=fgrEIEaD+pc1gI4uMU4Plb1IlqsHZ/bqzm5vR9oNDjU=;
+	s=arc-20240116; t=1734455691; c=relaxed/simple;
+	bh=FexHeb5H4548fh+HkHDZ7YGJUqD7UfgpDepinA63GAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqoN6BEoesE8zO/kRqPVq87WKwk2ur3zQOXyLiJEpd7MDGQ4a+fItg1ARxPDZNO78Rw+AlzeS2TRxbrRJWBRADKIkTRAJcMHbfs3ZYutxPgRJ+1c04qezCOijOqC/HYm4ryqB5lOILJ9ZUpTbnx3yt53DNCoZ0pBlzWUlxWclg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Db4DpOyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE97C4CED3;
-	Tue, 17 Dec 2024 17:22:10 +0000 (UTC)
+	 MIME-Version; b=JlbGEolgy86zxTXZyjVHacSlrvt/DyichS4Yjzmk4xPPWAdbsaWjrbddUKxOusl+W9009VQegk/KwxvjkKqSupIfrGlzRvxHmssRw86n442ou5yS23LCfHPKGhXkaeY2EbPrB/hWnJC2XBio6lV1ta3/KJpysEHuwqVAxXfxuVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0m/TAXe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2CAC4CED3;
+	Tue, 17 Dec 2024 17:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456130;
-	bh=fgrEIEaD+pc1gI4uMU4Plb1IlqsHZ/bqzm5vR9oNDjU=;
+	s=korg; t=1734455691;
+	bh=FexHeb5H4548fh+HkHDZ7YGJUqD7UfgpDepinA63GAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Db4DpOyAJE06WK5BdDh9JzMun9DFgHbTvPFabksd1vz1hu0aJbSM7aRUjfG3dbFSr
-	 LD6qcBqr6Lvbnw0pjKwrtbJhNcxeOgVdKGCjH5x+cJfSr681SraNuPih2e8N4SN7Cv
-	 mpKEjfxCYMG5Bt7CBKBEWsijWKncjubQXryblDaE=
+	b=R0m/TAXe+pq5af2QuyfAG/6df6bOz0ew89ZxIeBoam3STOmn9nfE5Q2cXbPZBUopw
+	 T5XGFtphI7KEv0wlkkjWM9RBHlYOmnIoUdK3xj7VVdku21TWp7dJyYSowH9q3INL1B
+	 WQje6wg6D5rmf3V+0IdSIxihSyOEMVd7d7m3+jNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.6 030/109] bpf: Fix theoretical prog_array UAF in __uprobe_perf_func()
+	Remi Pommarel <repk@triplefau.lt>,
+	Antonio Quartulli <Antonio@mandelbit.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 21/51] batman-adv: Do not let TT changes list grows indefinitely
 Date: Tue, 17 Dec 2024 18:07:14 +0100
-Message-ID: <20241217170534.639987921@linuxfoundation.org>
+Message-ID: <20241217170521.163567305@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit 7d0d673627e20cfa3b21a829a896ce03b58a4f1c upstream.
+[ Upstream commit fff8f17c1a6fc802ca23bbd3a276abfde8cc58e6 ]
 
-Currently, the pointer stored in call->prog_array is loaded in
-__uprobe_perf_func(), with no RCU annotation and no immediately visible
-RCU protection, so it looks as if the loaded pointer can immediately be
-dangling.
-Later, bpf_prog_run_array_uprobe() starts a RCU-trace read-side critical
-section, but this is too late. It then uses rcu_dereference_check(), but
-this use of rcu_dereference_check() does not actually dereference anything.
+When TT changes list is too big to fit in packet due to MTU size, an
+empty OGM is sent expected other node to send TT request to get the
+changes. The issue is that tt.last_changeset was not built thus the
+originator was responding with previous changes to those TT requests
+(see batadv_send_my_tt_response). Also the changes list was never
+cleaned up effectively never ending growing from this point onwards,
+repeatedly sending the same TT response changes over and over, and
+creating a new empty OGM every OGM interval expecting for the local
+changes to be purged.
 
-Fix it by aligning the semantics to bpf_prog_run_array(): Let the caller
-provide rcu_read_lock_trace() protection and then load call->prog_array
-with rcu_dereference_check().
+When there is more TT changes that can fit in packet, drop all changes,
+send empty OGM and wait for TT request so we can respond with a full
+table instead.
 
-This issue seems to be theoretical: I don't know of any way to reach this
-code without having handle_swbp() further up the stack, which is already
-holding a rcu_read_lock_trace() lock, so where we take
-rcu_read_lock_trace() in __uprobe_perf_func()/bpf_prog_run_array_uprobe()
-doesn't actually have any effect.
-
-Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241210-bpf-fix-uprobe-uaf-v4-1-5fc8959b2b74@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Acked-by: Antonio Quartulli <Antonio@mandelbit.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h         |   13 +++++--------
- kernel/trace/trace_uprobe.c |    6 +++++-
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ net/batman-adv/translation-table.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1988,26 +1988,25 @@ bpf_prog_run_array(const struct bpf_prog
-  * rcu-protected dynamically sized maps.
-  */
- static __always_inline u32
--bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array_rcu,
-+bpf_prog_run_array_uprobe(const struct bpf_prog_array *array,
- 			  const void *ctx, bpf_prog_run_fn run_prog)
- {
- 	const struct bpf_prog_array_item *item;
- 	const struct bpf_prog *prog;
--	const struct bpf_prog_array *array;
- 	struct bpf_run_ctx *old_run_ctx;
- 	struct bpf_trace_run_ctx run_ctx;
- 	u32 ret = 1;
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 5700a9eaa49a..6be14f9e071a 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -990,6 +990,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	int tt_diff_len, tt_change_len = 0;
+ 	int tt_diff_entries_num = 0;
+ 	int tt_diff_entries_count = 0;
++	bool drop_changes = false;
+ 	size_t tt_extra_len = 0;
+ 	u16 tvlv_len;
  
- 	might_fault();
-+	RCU_LOCKDEP_WARN(!rcu_read_lock_trace_held(), "no rcu lock held");
-+
-+	if (unlikely(!array))
-+		return ret;
+@@ -997,10 +998,17 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	tt_diff_len = batadv_tt_len(tt_diff_entries_num);
  
--	rcu_read_lock_trace();
- 	migrate_disable();
+ 	/* if we have too many changes for one packet don't send any
+-	 * and wait for the tt table request which will be fragmented
++	 * and wait for the tt table request so we can reply with the full
++	 * (fragmented) table.
++	 *
++	 * The local change history should still be cleaned up so the next
++	 * TT round can start again with a clean state.
+ 	 */
+-	if (tt_diff_len > bat_priv->soft_iface->mtu)
++	if (tt_diff_len > bat_priv->soft_iface->mtu) {
+ 		tt_diff_len = 0;
++		tt_diff_entries_num = 0;
++		drop_changes = true;
++	}
  
- 	run_ctx.is_uprobe = true;
+ 	tvlv_len = batadv_tt_prepare_tvlv_local_data(bat_priv, &tt_data,
+ 						     &tt_change, &tt_diff_len);
+@@ -1009,7 +1017,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
  
--	array = rcu_dereference_check(array_rcu, rcu_read_lock_trace_held());
--	if (unlikely(!array))
--		goto out;
- 	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
- 	item = &array->items[0];
- 	while ((prog = READ_ONCE(item->prog))) {
-@@ -2022,9 +2021,7 @@ bpf_prog_run_array_uprobe(const struct b
- 			rcu_read_unlock();
- 	}
- 	bpf_reset_run_ctx(old_run_ctx);
--out:
- 	migrate_enable();
--	rcu_read_unlock_trace();
- 	return ret;
- }
+ 	tt_data->flags = BATADV_TT_OGM_DIFF;
  
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1383,9 +1383,13 @@ static void __uprobe_perf_func(struct tr
+-	if (tt_diff_len == 0)
++	if (!drop_changes && tt_diff_len == 0)
+ 		goto container_register;
  
- #ifdef CONFIG_BPF_EVENTS
- 	if (bpf_prog_array_valid(call)) {
-+		const struct bpf_prog_array *array;
- 		u32 ret;
- 
--		ret = bpf_prog_run_array_uprobe(call->prog_array, regs, bpf_prog_run);
-+		rcu_read_lock_trace();
-+		array = rcu_dereference_check(call->prog_array, rcu_read_lock_trace_held());
-+		ret = bpf_prog_run_array_uprobe(array, regs, bpf_prog_run);
-+		rcu_read_unlock_trace();
- 		if (!ret)
- 			return;
- 	}
+ 	spin_lock_bh(&bat_priv->tt.changes_list_lock);
+-- 
+2.39.5
+
 
 
 
