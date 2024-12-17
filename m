@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-104836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC309F534F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB609F547B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F40E1888D06
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB3781883A92
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F568615A;
-	Tue, 17 Dec 2024 17:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC041F9431;
+	Tue, 17 Dec 2024 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUOd5tsT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxAh6Uu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9744D140E38;
-	Tue, 17 Dec 2024 17:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7D91F76C3;
+	Tue, 17 Dec 2024 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456250; cv=none; b=UzvrBAUks7dmuu45xIw89/0FIUUrLGy9J1zr/rBpQ1kLwk04uV6tsRzaE8pCRKmzHxYEzQ9LoP0ULRrFnTxeYBw5L7SjVyGddjVstcuw28Us0V5JKcSgXaDBxC4STOK6Y5oDGjtaPzuDxCLXHTQK4l9NUU16vmYjFKxHtDBUC4Q=
+	t=1734456764; cv=none; b=UrnQqpm2V7r3wKmVAYR9cb5byzBoBYbjpAji8Mv9T6glFyganmtoGFXogjIsmfHHw7mqxjodDClzK3omqkblnfFPCjsCu02FHa8qLUAWhEu0HpKtCk88rMJ2XGr4/fTvWRw6OeM2uL+KlsHsoHcuuBqtrIRQ/jAvM/6/V0OEC8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456250; c=relaxed/simple;
-	bh=Od9O0/ehmiARj+m7oMSubhiGEi7O6+ODCLA1cKOpDeY=;
+	s=arc-20240116; t=1734456764; c=relaxed/simple;
+	bh=YiS44/WhuLyoIh6L1FSImBbp9sUN63GAzWdowCLLc0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mSRgyddoHxjFEKfosxisXs1b1Pk1E5oc6rHv4SSJDIqkbibn4yyAQTK4SnYnfGlZQK3KEnVFBuhVCUolcv/Jn2cgo2ECYjcAr5XgCRpKyOJHnfgdprneeNNUDcGO6lNYkGR3+cHRO55TfkW5dsQ1hOtWBkYUrHwa/h2nVsrexwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUOd5tsT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFACBC4CED3;
-	Tue, 17 Dec 2024 17:24:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V3Asb2dKtXflm2QiDmF8nREVi30jyoJRhYi3cZ43OULwaiB/MtUc2h2J9c9XdbIRMs04HORbhP0ElSb1zwTP4ddWaUmksup4oD59+vRnUEEvNIKpdzt+5aXHorZr12zrO/lZQut6YEvAKgPknD7OLKIo4YQY7Y+MXEiiTCQtLiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxAh6Uu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C360DC4CED3;
+	Tue, 17 Dec 2024 17:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456250;
-	bh=Od9O0/ehmiARj+m7oMSubhiGEi7O6+ODCLA1cKOpDeY=;
+	s=korg; t=1734456764;
+	bh=YiS44/WhuLyoIh6L1FSImBbp9sUN63GAzWdowCLLc0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUOd5tsT9JJiOjgPxrE+/Gt+Qrnn7PEsq2DNkjVMiNyu34u1l1ubYFmUNHQR4LL8a
-	 Gdm1fb+T5+2yz9RNjj9EcGFZ7khtGRpwO4flmZjox/n/wpbfJvtJAWN4ZyklF7mLfp
-	 WI+iC9JvuNKj0vIEz/NUj5Pp0yRLwvgFITXFPjT4=
+	b=KxAh6Uu+ENH6JKam5Zrn82BZqErlessyCmjxEDvmEhv4UuONiqra0WQCkh3VVji3+
+	 a1WGNPClzVbBd2RuR7j8d5nlvwmQC2yR4HT2iTQWdlMZ74bhyq87y77/1iDw79QfFt
+	 92rZtQFcrP2bdIIIglfr1yAyhW1Lkd/lGiISSPfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>
-Subject: [PATCH 6.6 109/109] ALSA: usb-audio: Fix a DMA to stack memory bug
-Date: Tue, 17 Dec 2024 18:08:33 +0100
-Message-ID: <20241217170537.953744082@linuxfoundation.org>
+	Matt Roper <matthew.d.roper@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 158/172] drm/xe/reg_sr: Remove register pool
+Date: Tue, 17 Dec 2024 18:08:34 +0100
+Message-ID: <20241217170552.886739762@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +64,129 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit f7d306b47a24367302bd4fe846854e07752ffcd9 upstream.
+[ Upstream commit d7b028656c29b22fcde1c6ee1df5b28fbba987b5 ]
 
-The usb_get_descriptor() function does DMA so we're not allowed
-to use a stack buffer for that.  Doing DMA to the stack is not portable
-all architectures.  Move the "new_device_descriptor" from being stored
-on the stack and allocate it with kmalloc() instead.
+That pool implementation doesn't really work: if the krealloc happens to
+move the memory and return another address, the entries in the xarray
+become invalid, leading to use-after-free later:
 
-Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices")
-Cc: stable@kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	BUG: KASAN: slab-use-after-free in xe_reg_sr_apply_mmio+0x570/0x760 [xe]
+	Read of size 4 at addr ffff8881244b2590 by task modprobe/2753
+
+	Allocated by task 2753:
+	 kasan_save_stack+0x39/0x70
+	 kasan_save_track+0x14/0x40
+	 kasan_save_alloc_info+0x37/0x60
+	 __kasan_kmalloc+0xc3/0xd0
+	 __kmalloc_node_track_caller_noprof+0x200/0x6d0
+	 krealloc_noprof+0x229/0x380
+
+Simplify the code to fix the bug. A better pooling strategy may be added
+back later if needed.
+
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241209232739.147417-2-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit e5283bd4dfecbd3335f43b62a68e24dae23f59e4)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |   42 +++++++++++++++++++++++++++---------------
- 1 file changed, 27 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/xe/xe_reg_sr.c       | 31 ++++++----------------------
+ drivers/gpu/drm/xe/xe_reg_sr_types.h |  6 ------
+ 2 files changed, 6 insertions(+), 31 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -555,7 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
+diff --git a/drivers/gpu/drm/xe/xe_reg_sr.c b/drivers/gpu/drm/xe/xe_reg_sr.c
+index 440ac572f6e5..52969c090965 100644
+--- a/drivers/gpu/drm/xe/xe_reg_sr.c
++++ b/drivers/gpu/drm/xe/xe_reg_sr.c
+@@ -26,46 +26,27 @@
+ #include "xe_reg_whitelist.h"
+ #include "xe_rtp_types.h"
+ 
+-#define XE_REG_SR_GROW_STEP_DEFAULT	16
+-
+ static void reg_sr_fini(struct drm_device *drm, void *arg)
  {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
- 
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -566,15 +566,19 @@ static int snd_usb_extigy_boot_quirk(str
- 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
+ 	struct xe_reg_sr *sr = arg;
++	struct xe_reg_sr_entry *entry;
++	unsigned long reg;
 +
-+		new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+		if (!new_device_descriptor)
-+			return -ENOMEM;
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&new_device_descriptor, sizeof(new_device_descriptor));
-+				new_device_descriptor, sizeof(*new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--				new_device_descriptor.bNumConfigurations);
-+				new_device_descriptor->bNumConfigurations);
- 		else
--			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -906,7 +910,7 @@ static void mbox2_setup_48_24_magic(stru
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
++	xa_for_each(&sr->xa, reg, entry)
++		kfree(entry);
+ 
+ 	xa_destroy(&sr->xa);
+-	kfree(sr->pool.arr);
+-	memset(&sr->pool, 0, sizeof(sr->pool));
+ }
+ 
+ int xe_reg_sr_init(struct xe_reg_sr *sr, const char *name, struct xe_device *xe)
  {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -941,15 +945,19 @@ static int snd_usb_mbox2_boot_quirk(stru
+ 	xa_init(&sr->xa);
+-	memset(&sr->pool, 0, sizeof(sr->pool));
+-	sr->pool.grow_step = XE_REG_SR_GROW_STEP_DEFAULT;
+ 	sr->name = name;
  
- 	dev_dbg(&dev->dev, "device initialised!\n");
+ 	return drmm_add_action_or_reset(&xe->drm, reg_sr_fini, sr);
+ }
+ EXPORT_SYMBOL_IF_KUNIT(xe_reg_sr_init);
  
-+	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
-+
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
- 	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
-@@ -1263,7 +1271,7 @@ static void mbox3_setup_48_24_magic(stru
- static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
+-static struct xe_reg_sr_entry *alloc_entry(struct xe_reg_sr *sr)
+-{
+-	if (sr->pool.used == sr->pool.allocated) {
+-		struct xe_reg_sr_entry *arr;
+-
+-		arr = krealloc_array(sr->pool.arr,
+-				     ALIGN(sr->pool.allocated + 1, sr->pool.grow_step),
+-				     sizeof(*arr), GFP_KERNEL);
+-		if (!arr)
+-			return NULL;
+-
+-		sr->pool.arr = arr;
+-		sr->pool.allocated += sr->pool.grow_step;
+-	}
+-
+-	return &sr->pool.arr[sr->pool.used++];
+-}
+-
+ static bool compatible_entries(const struct xe_reg_sr_entry *e1,
+ 			       const struct xe_reg_sr_entry *e2)
  {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
- 	int descriptor_size;
+@@ -111,7 +92,7 @@ int xe_reg_sr_add(struct xe_reg_sr *sr,
+ 		return 0;
+ 	}
  
-@@ -1276,15 +1284,19 @@ static int snd_usb_mbox3_boot_quirk(stru
+-	pentry = alloc_entry(sr);
++	pentry = kmalloc(sizeof(*pentry), GFP_KERNEL);
+ 	if (!pentry) {
+ 		ret = -ENOMEM;
+ 		goto fail;
+diff --git a/drivers/gpu/drm/xe/xe_reg_sr_types.h b/drivers/gpu/drm/xe/xe_reg_sr_types.h
+index ad48a52b824a..ebe11f237fa2 100644
+--- a/drivers/gpu/drm/xe/xe_reg_sr_types.h
++++ b/drivers/gpu/drm/xe/xe_reg_sr_types.h
+@@ -20,12 +20,6 @@ struct xe_reg_sr_entry {
+ };
  
- 	dev_dbg(&dev->dev, "device initialised!\n");
+ struct xe_reg_sr {
+-	struct {
+-		struct xe_reg_sr_entry *arr;
+-		unsigned int used;
+-		unsigned int allocated;
+-		unsigned int grow_step;
+-	} pool;
+ 	struct xarray xa;
+ 	const char *name;
  
-+	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
-+
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
- 	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
+-- 
+2.39.5
+
 
 
 
