@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D33B9F5207
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333229F5286
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECD94188B729
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58FE91891E8B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2FD1F76B5;
-	Tue, 17 Dec 2024 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9751F890A;
+	Tue, 17 Dec 2024 17:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Du38a+hj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBFVpdR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444C7149DFA;
-	Tue, 17 Dec 2024 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98ED21F890C;
+	Tue, 17 Dec 2024 17:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455561; cv=none; b=rkq8cKZdVxIsYNbFbh33AkAZoc/2Bjre/azvusDzvHpFm+R4HcA/Pz+8dm6VLp5yCniA4yIicqt/8XnYM8VoGc78JQROQTB9BBJ9lt0AyPHHiZtdNjbZnbzlRAIEZGkRQ81uIOg+ciFJqYWoDRtFQU6Ldu0vFmx7cClQGRBvBRg=
+	t=1734455813; cv=none; b=FJOEd+qswzXieiAhWRlz2yxvyaz+1SPMoyJuWj6ASvgsygvflT3Xd2pRkcX6+qYk1wvi3K6+799BPck85Q/NSaPMah5JzLcBf20RrBsaYWzueNJct3Xe43RwTQ6shXB38xmhwhZc40v6pfnccvXm8g7GTISxVmfvBwsy7IrIWCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455561; c=relaxed/simple;
-	bh=CLgZs1KvKkymlTokGZDanRvPhBOuSEE6nVBZnxYSYlI=;
+	s=arc-20240116; t=1734455813; c=relaxed/simple;
+	bh=Ujutyt4jXWS1U4KPWtN2WnXZM/yKtZE1P6S8drtl4tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5nBHPogv1yr1Z1701+Om9cnl0ZIJRSF/1IEyqH4ldnQgey3o3A2FE2X+4Q7nnUErmacwHgr9WCGci2gI/DGH9cp9IxrwJGkep6fOwpUlFCPJ4KuOny6omRqSAo3In4QD39Wycun0HeLDk0HXx8rj8+MejZnItTounDn1Y9TmIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Du38a+hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961D5C4CED3;
-	Tue, 17 Dec 2024 17:12:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CH7vjwsaanFjia96i+6fUx6VMiNdKh5bGLXNOzfSo/4ObQmgl/QwRxSMLf6SXE0II8ZLOQE4QA2Oi2J6y44AK5ZHu32bemncQj3k9Wwp6pdZCsuyKDFOji5pMMBTMY9qHQ1BxidtXTQ+cwb9HuW0RJHzD4Y5hcEE+s8NfEFFcmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBFVpdR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203D1C4CED3;
+	Tue, 17 Dec 2024 17:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455561;
-	bh=CLgZs1KvKkymlTokGZDanRvPhBOuSEE6nVBZnxYSYlI=;
+	s=korg; t=1734455813;
+	bh=Ujutyt4jXWS1U4KPWtN2WnXZM/yKtZE1P6S8drtl4tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Du38a+hjhRegj5xEjTpUN3fz9i7XqbIhwuCuSqhKjNDGZZFOG0loT54vCscZJ9+YS
-	 kkoOb8UYFCi3iC8zRvotZOw6fGynqY/AHyTJ9kQTb9cKwdImmRYFhZHWr91g7447ZV
-	 Dy6PUack+QCg0sBKwgrVfiVmnMJpZbySQP1nox7A=
+	b=dBFVpdR6WGk664Ll1UdHbMMgBQiZAfp6uNCP/PPhi++Kp/syuV/1eVnCiGJxtyEAo
+	 TVQsfH90pDntrVQ4hxIrNG+pAVe75JsaqFlJUwyfUx4f1kMs93vDhErfGK+YiSLMus
+	 C4a81wB5HZfT6T6ZX6KGk8KHGQ+06VsBalxV+48o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lonial Con <kongln9170@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 5.10 30/43] bpf: sync_linked_regs() must preserve subreg_def
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 41/76] ptp: kvm: x86: Return EOPNOTSUPP instead of ENODEV from kvm_arch_ptp_init()
 Date: Tue, 17 Dec 2024 18:07:21 +0100
-Message-ID: <20241217170521.666678246@linuxfoundation.org>
+Message-ID: <20241217170527.972429938@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit e9bd9c498cb0f5843996dbe5cbce7a1836a83c70 upstream.
+[ Upstream commit 5e7aa97c7acf171275ac02a8bb018c31b8918d13 ]
 
-Range propagation must not affect subreg_def marks, otherwise the
-following example is rewritten by verifier incorrectly when
-BPF_F_TEST_RND_HI32 flag is set:
+The caller, ptp_kvm_init(), emits a warning if kvm_arch_ptp_init() exits
+with any error which is not EOPNOTSUPP:
 
-  0: call bpf_ktime_get_ns                   call bpf_ktime_get_ns
-  1: r0 &= 0x7fffffff       after verifier   r0 &= 0x7fffffff
-  2: w1 = w0                rewrites         w1 = w0
-  3: if w0 < 10 goto +0     -------------->  r11 = 0x2f5674a6     (r)
-  4: r1 >>= 32                               r11 <<= 32           (r)
-  5: r0 = r1                                 r1 |= r11            (r)
-  6: exit;                                   if w0 < 0xa goto pc+0
-                                             r1 >>= 32
-                                             r0 = r1
-                                             exit
+	"fail to initialize ptp_kvm"
 
-(or zero extension of w1 at (2) is missing for architectures that
- require zero extension for upper register half).
+Replace ENODEV with EOPNOTSUPP to avoid this spurious warning,
+aligning with the ARM implementation.
 
-The following happens w/o this patch:
-- r0 is marked as not a subreg at (0);
-- w1 is marked as subreg at (2);
-- w1 subreg_def is overridden at (3) by copy_register_state();
-- w1 is read at (5) but mark_insn_zext() does not mark (2)
-  for zero extension, because w1 subreg_def is not set;
-- because of BPF_F_TEST_RND_HI32 flag verifier inserts random
-  value for hi32 bits of (2) (marked (r));
-- this random value is read at (5).
-
-Fixes: 75748837b7e5 ("bpf: Propagate scalar ranges through register assignments.")
-Reported-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://lore.kernel.org/bpf/7e2aa30a62d740db182c170fdd8f81c596df280d.camel@gmail.com
-Link: https://lore.kernel.org/bpf/20240924210844.1758441-1-eddyz87@gmail.com
-[ shung-hsi.yu: sync_linked_regs() was called find_equal_scalars() before commit
-  4bf79f9be434 ("bpf: Track equal scalars history on per-instruction level"), and
-  modification is done because there is only a single call to
-  copy_register_state() before commit 98d7ca374ba4 ("bpf: Track delta between
-  "linked" registers."). ]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a86ed2cfa13c ("ptp: Don't print an error if ptp_kvm is not supported")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20241203-kvm_ptp-eopnotsuppp-v2-1-d1d060f27aa6@weissschuh.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ptp/ptp_kvm_x86.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -8168,8 +8168,11 @@ static void find_equal_scalars(struct bp
- 	struct bpf_reg_state *reg;
+diff --git a/drivers/ptp/ptp_kvm_x86.c b/drivers/ptp/ptp_kvm_x86.c
+index 902844cc1a17..5e5b2ef78547 100644
+--- a/drivers/ptp/ptp_kvm_x86.c
++++ b/drivers/ptp/ptp_kvm_x86.c
+@@ -26,7 +26,7 @@ int kvm_arch_ptp_init(void)
+ 	long ret;
  
- 	bpf_for_each_reg_in_vstate(vstate, state, reg, ({
--		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id)
-+		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id) {
-+			s32 saved_subreg_def = reg->subreg_def;
- 			copy_register_state(reg, known_reg);
-+			reg->subreg_def = saved_subreg_def;
-+		}
- 	}));
- }
+ 	if (!kvm_para_available())
+-		return -ENODEV;
++		return -EOPNOTSUPP;
  
+ 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
+ 		p = alloc_page(GFP_KERNEL | __GFP_ZERO);
+@@ -46,14 +46,14 @@ int kvm_arch_ptp_init(void)
+ 
+ 	clock_pair_gpa = slow_virt_to_phys(clock_pair);
+ 	if (!pvclock_get_pvti_cpu0_va()) {
+-		ret = -ENODEV;
++		ret = -EOPNOTSUPP;
+ 		goto err;
+ 	}
+ 
+ 	ret = kvm_hypercall2(KVM_HC_CLOCK_PAIRING, clock_pair_gpa,
+ 			     KVM_CLOCK_PAIRING_WALLCLOCK);
+ 	if (ret == -KVM_ENOSYS) {
+-		ret = -ENODEV;
++		ret = -EOPNOTSUPP;
+ 		goto err;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
