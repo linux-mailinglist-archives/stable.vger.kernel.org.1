@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A269F5345
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1F29F52AD
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:21:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E13A188CADC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2710A1721F4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C94F1F7577;
-	Tue, 17 Dec 2024 17:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3AA1F8933;
+	Tue, 17 Dec 2024 17:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUFzkcPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrgap2GU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE93D140E38;
-	Tue, 17 Dec 2024 17:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071891F37BE;
+	Tue, 17 Dec 2024 17:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456205; cv=none; b=T5RDqdJ+P/TrpVarPddyIpkhUHArTP+5RABaZu05n3LVw1L33CYQO0PF4JO0k0FlhF31Oevv4iEctG2WoYTq2jjJ1rYyplvABHz/JjKZ3+/aiNGL2qVrLrkJzgRrtG/4ABd1Wj3YQ4v53UUZQyRqpsiopXZz+2pG403d7RHgGCE=
+	t=1734455904; cv=none; b=JNCABpRn7/Ed4Ao14DhZGw0APixgN0GxiDS6TYnkOR/QILiPUK1hIu6pMpBqFVrf/hvknlnLalIQlyvlZvQsjyv7XM8PLyGkfTSOPLFNWpI/QwOhHSCs84yrvaj+9SJ8TPkvOVbmctZtkly0bQ6QvbsIrlLe1Mr63TYyBXl1cIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456205; c=relaxed/simple;
-	bh=bX2bwFcgCWsthRS0zLXlHDtQKBeSDq0VhD169FvxcU4=;
+	s=arc-20240116; t=1734455904; c=relaxed/simple;
+	bh=IHh/oLeES8T/bK3A2LsJqoEiY2prXuIOUidSRYFuqaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ib5J1LuzuTGPTTD+PHYDwCOCA4MhRzi7vfDbk7T8QOIWv4DI0E3ZO/q/dZ4O+Kf18ctXaKWLIQTUvJvalfdZnQSgSsjV8E3a7T13jpDontpKCYA9hN69Cz+4Xxn9pU3WG7FieUwf7R3JXI1L8L4UtuNjzREqt3a/4wTF3YDtZS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUFzkcPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4228EC4CED3;
-	Tue, 17 Dec 2024 17:23:25 +0000 (UTC)
+	 MIME-Version; b=s8On3x2iSUb7CFQVhns0UYUwCRQH5x3kVndupcVWj1EpRLNsOX53PkXoZj+2ET4OBiVKGNbaq5aIAtUYFdIguiN+vxUSGTxFNCzsUsS1wMn/PJ6QkcgNaGuVyIWbiGDAOYa9RoG/DKfi5hHx4tEKnIOItq96XCG95xazVrILccU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrgap2GU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F346C4CED3;
+	Tue, 17 Dec 2024 17:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456205;
-	bh=bX2bwFcgCWsthRS0zLXlHDtQKBeSDq0VhD169FvxcU4=;
+	s=korg; t=1734455903;
+	bh=IHh/oLeES8T/bK3A2LsJqoEiY2prXuIOUidSRYFuqaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUFzkcPlAi92zMHx3Fxlgkjvaozef0irs9RpQ+k5Docuzpm95AOS04rksRJVkgm5T
-	 rb8yBKDRLWGVYC16wb45oyRiAXLjt8L0igVx3SK387f+7EpPzXO5mQsaAS1wYWGYh/
-	 HGIdqJykmSIk+gKW/5hOpYs3mK0dFCJR40fC5/Vc=
+	b=yrgap2GUCUEmcLn9Hqapb72RxmlRXF98JYR8tILwDl+GU9xVPeq4G8lyQpxtIu/th
+	 Yu+oT4pW2M2WS7xU7lXpbN31E1lAyi7hFLfU8s7JeC/XYrznydL8vIkkHXxeq+IA4T
+	 G9MuQQ2UJnDwz3H+iD9RPyrL9X+O10r0LZIZbnwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/109] ASoC: amd: yc: Fix the wrong return value
-Date: Tue, 17 Dec 2024 18:07:50 +0100
-Message-ID: <20241217170536.139408619@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>
+Subject: [PATCH 6.1 71/76] x86/static-call: provide a way to do very early static-call updates
+Date: Tue, 17 Dec 2024 18:07:51 +0100
+Message-ID: <20241217170529.443343190@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 984795e76def5c903724b8d6a8228e356bbdf2af ]
+commit 0ef8047b737d7480a5d4c46d956e97c190f13050 upstream.
 
-With the current implementation, when ACP driver fails to read
-ACPI _WOV entry then the DMI overrides code won't invoke,
-may cause regressions for some BIOS versions.
+Add static_call_update_early() for updating static-call targets in
+very early boot.
 
-Add a condition check to jump to check the DMI entries incase of
-ACP driver fail to read ACPI _WOV method.
+This will be needed for support of Xen guest type specific hypercall
+functions.
 
-Fixes: 4095cf872084 (ASoC: amd: yc: Fix for enabling DMIC on acp6x via _DSD entry)
+This is part of XSA-466 / CVE-2024-53241.
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Link: https://patch.msgid.link/20241210091026.996860-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Co-developed-by: Peter Zijlstra <peterz@infradead.org>
+Co-developed-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/static_call.h |   15 +++++++++++++++
+ arch/x86/include/asm/sync_core.h   |    6 +++---
+ arch/x86/kernel/static_call.c      |    9 +++++++++
+ include/linux/compiler.h           |   37 ++++++++++++++++++++++++++-----------
+ include/linux/static_call.h        |    1 +
+ kernel/static_call_inline.c        |    2 +-
+ 6 files changed, 55 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 39f151d073a6..f7fbde1bc2ed 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -578,14 +578,19 @@ static int acp6x_probe(struct platform_device *pdev)
+--- a/arch/x86/include/asm/static_call.h
++++ b/arch/x86/include/asm/static_call.h
+@@ -65,4 +65,19 @@
  
- 	handle = ACPI_HANDLE(pdev->dev.parent);
- 	ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
--	if (!ACPI_FAILURE(ret))
-+	if (!ACPI_FAILURE(ret)) {
- 		wov_en = dmic_status;
-+		if (!wov_en)
-+			return -ENODEV;
-+	} else {
-+		/* Incase of ACPI method read failure then jump to check_dmi_entry */
-+		goto check_dmi_entry;
-+	}
+ extern bool __static_call_fixup(void *tramp, u8 op, void *dest);
  
--	if (is_dmic_enable && wov_en)
-+	if (is_dmic_enable)
- 		platform_set_drvdata(pdev, &acp6x_card);
--	else
--		return 0;
++extern void __static_call_update_early(void *tramp, void *func);
++
++#define static_call_update_early(name, _func)				\
++({									\
++	typeof(&STATIC_CALL_TRAMP(name)) __F = (_func);			\
++	if (static_call_initialized) {					\
++		__static_call_update(&STATIC_CALL_KEY(name),		\
++				     STATIC_CALL_TRAMP_ADDR(name), __F);\
++	} else {							\
++		WRITE_ONCE(STATIC_CALL_KEY(name).func, _func);		\
++		__static_call_update_early(STATIC_CALL_TRAMP_ADDR(name),\
++					   __F);			\
++	}								\
++})
++
+ #endif /* _ASM_STATIC_CALL_H */
+--- a/arch/x86/include/asm/sync_core.h
++++ b/arch/x86/include/asm/sync_core.h
+@@ -8,7 +8,7 @@
+ #include <asm/special_insns.h>
  
-+check_dmi_entry:
- 	/* check for any DMI overrides */
- 	dmi_id = dmi_first_match(yc_acp_quirk_table);
- 	if (dmi_id)
--- 
-2.39.5
-
+ #ifdef CONFIG_X86_32
+-static inline void iret_to_self(void)
++static __always_inline void iret_to_self(void)
+ {
+ 	asm volatile (
+ 		"pushfl\n\t"
+@@ -19,7 +19,7 @@ static inline void iret_to_self(void)
+ 		: ASM_CALL_CONSTRAINT : : "memory");
+ }
+ #else
+-static inline void iret_to_self(void)
++static __always_inline void iret_to_self(void)
+ {
+ 	unsigned int tmp;
+ 
+@@ -55,7 +55,7 @@ static inline void iret_to_self(void)
+  * Like all of Linux's memory ordering operations, this is a
+  * compiler barrier as well.
+  */
+-static inline void sync_core(void)
++static __always_inline void sync_core(void)
+ {
+ 	/*
+ 	 * The SERIALIZE instruction is the most straightforward way to
+--- a/arch/x86/kernel/static_call.c
++++ b/arch/x86/kernel/static_call.c
+@@ -170,6 +170,15 @@ void arch_static_call_transform(void *si
+ }
+ EXPORT_SYMBOL_GPL(arch_static_call_transform);
+ 
++noinstr void __static_call_update_early(void *tramp, void *func)
++{
++	BUG_ON(system_state != SYSTEM_BOOTING);
++	BUG_ON(!early_boot_irqs_disabled);
++	BUG_ON(static_call_initialized);
++	__text_gen_insn(tramp, JMP32_INSN_OPCODE, tramp, func, JMP32_INSN_SIZE);
++	sync_core();
++}
++
+ #ifdef CONFIG_RETHUNK
+ /*
+  * This is called by apply_returns() to fix up static call trampolines,
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -205,28 +205,43 @@ void ftrace_likely_update(struct ftrace_
+ 
+ #endif /* __KERNEL__ */
+ 
++/**
++ * offset_to_ptr - convert a relative memory offset to an absolute pointer
++ * @off:	the address of the 32-bit offset value
++ */
++static inline void *offset_to_ptr(const int *off)
++{
++	return (void *)((unsigned long)off + *off);
++}
++
++#endif /* __ASSEMBLY__ */
++
++#ifdef CONFIG_64BIT
++#define ARCH_SEL(a,b) a
++#else
++#define ARCH_SEL(a,b) b
++#endif
++
+ /*
+  * Force the compiler to emit 'sym' as a symbol, so that we can reference
+  * it from inline assembler. Necessary in case 'sym' could be inlined
+  * otherwise, or eliminated entirely due to lack of references that are
+  * visible to the compiler.
+  */
+-#define ___ADDRESSABLE(sym, __attrs) \
+-	static void * __used __attrs \
++#define ___ADDRESSABLE(sym, __attrs)						\
++	static void * __used __attrs						\
+ 		__UNIQUE_ID(__PASTE(__addressable_,sym)) = (void *)&sym;
++
+ #define __ADDRESSABLE(sym) \
+ 	___ADDRESSABLE(sym, __section(".discard.addressable"))
+ 
+-/**
+- * offset_to_ptr - convert a relative memory offset to an absolute pointer
+- * @off:	the address of the 32-bit offset value
+- */
+-static inline void *offset_to_ptr(const int *off)
+-{
+-	return (void *)((unsigned long)off + *off);
+-}
++#define __ADDRESSABLE_ASM(sym)						\
++	.pushsection .discard.addressable,"aw";				\
++	.align ARCH_SEL(8,4);						\
++	ARCH_SEL(.quad, .long) __stringify(sym);			\
++	.popsection;
+ 
+-#endif /* __ASSEMBLY__ */
++#define __ADDRESSABLE_ASM_STR(sym) __stringify(__ADDRESSABLE_ASM(sym))
+ 
+ /* &a[0] degrades to a pointer: a different type from an array */
+ #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+--- a/include/linux/static_call.h
++++ b/include/linux/static_call.h
+@@ -138,6 +138,7 @@
+ #ifdef CONFIG_HAVE_STATIC_CALL
+ #include <asm/static_call.h>
+ 
++extern bool static_call_initialized;
+ /*
+  * Either @site or @tramp can be NULL.
+  */
+--- a/kernel/static_call_inline.c
++++ b/kernel/static_call_inline.c
+@@ -15,7 +15,7 @@ extern struct static_call_site __start_s
+ extern struct static_call_tramp_key __start_static_call_tramp_key[],
+ 				    __stop_static_call_tramp_key[];
+ 
+-static bool static_call_initialized;
++bool static_call_initialized;
+ 
+ /* mutex to protect key modules/sites */
+ static DEFINE_MUTEX(static_call_mutex);
 
 
 
