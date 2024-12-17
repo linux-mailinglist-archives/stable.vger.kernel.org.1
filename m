@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-104968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D911F9F5458
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:40:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 343CA9F5338
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6FD1706D1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A077A1884D2B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1411F8918;
-	Tue, 17 Dec 2024 17:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C3F1F76C3;
+	Tue, 17 Dec 2024 17:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcTnxyxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDGnBIpG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3B31FC0EC;
-	Tue, 17 Dec 2024 17:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9888140E38;
+	Tue, 17 Dec 2024 17:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456672; cv=none; b=AHcMU+KqPghbMfks05vCSwu6RivDnjrKqxFia53u49v4vjputSkIdXBt0G+TqL14IKPnAbVaME/ch2o4DM8oFviSGB2Obw8UH5uIlhZzqS9yrFiPpTAogwUvsJsvrU0BTmBljE0r3DZIh0pT3wjOoMKfmOEgBAHUpbyzZ4kImyw=
+	t=1734456174; cv=none; b=uRUnSalw+mn7yY0BNp8qRiyNfBtOrOgUFtNGIqbrLtdJQT3DsHHTkbijwRiq0gWcPX4ihO1jwJmBBnS8SaMd1ZIaXfAF+1vxAnRLP0KYG9J81UM3Sk9aGXCvtosccBGtdMmReKBMv00r8YtBdxjyIMlRXk3VdKyYWdqPqGoTfU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456672; c=relaxed/simple;
-	bh=W36Wk2kzdUdAvcDBjKJg76WHbYxY13jvOb3bTOA+6Uw=;
+	s=arc-20240116; t=1734456174; c=relaxed/simple;
+	bh=0DUwQB8ZWjG3bLR7b9f66oATNbw3meR176SykuYK6Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqK8gjISI1n2T95FlzqKohs4YRPzYXC9tVtvO5wSXu928ZD/fIWJv+lcr2cAqY0YKSuodOJjAGRqlOmUAJzzIJchmCHxt9jsJn2lVqwaUEo90fiHBHPEUYgiWC00hKLTlGU/xG3uKrJp1CDzuB/rZkb1sO3umdv3vZVLMLQw754=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcTnxyxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60EAC4CED3;
-	Tue, 17 Dec 2024 17:31:11 +0000 (UTC)
+	 MIME-Version; b=NlFQsEMZERiEXNwVXVVrJlBKQOYtD5q6Iby1BlB9HZ33UbL7SzZTDQEJnxkjUhdJd8kLbDVHJvSlZl64BANHEqASR40KmT+erNuvB7TcQ+t+tYig9gQydWGMBb7B+vNVPD4lMNI/rUl/I3sRbUNEGcxgS4DIZxkynhnqIPrKQyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDGnBIpG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC0FC4CED7;
+	Tue, 17 Dec 2024 17:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456672;
-	bh=W36Wk2kzdUdAvcDBjKJg76WHbYxY13jvOb3bTOA+6Uw=;
+	s=korg; t=1734456174;
+	bh=0DUwQB8ZWjG3bLR7b9f66oATNbw3meR176SykuYK6Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FcTnxyxlEhEAHhyK98ryueupvSN+q0PCwx+okyyQtrXddoKfSvFyzi9QHRtE3uvKp
-	 9JB568t+sr0uonUlYb9x2h5PksyQe1/km4oMZZfuJ+kLAsn4D05gNmQ8UI1IAD1CGM
-	 tNmajVhDiVSPhqW3bBQ9secpqGcwSfbFgRFV+SJo=
+	b=kDGnBIpGQWEXYdicMH9hiHDb6wP3yZZjCCg9lQPl4BqNOl5NKcAZj61Tjf13eCtJc
+	 9D1a8sdY85fAL4xirdTCyTLgzafH8X+ha1Aq2nSlkIpgtPwwiEGOLbHHnnsGnGXWtT
+	 L85EpTacWfXwbxk4eWsFH+KdERLOS94Y8HD1ey54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Thomas Falcon <thomas.falcon@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@idosch.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 130/172] libperf: evlist: Fix --cpu argument on hybrid platform
-Date: Tue, 17 Dec 2024 18:08:06 +0100
-Message-ID: <20241217170551.730535063@linuxfoundation.org>
+Subject: [PATCH 6.6 083/109] bonding: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
+Date: Tue, 17 Dec 2024 18:08:07 +0100
+Message-ID: <20241217170536.847025507@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit f7e36d02d771ee14acae1482091718460cffb321 ]
+[ Upstream commit 77b11c8bf3a228d1c63464534c2dcc8d9c8bf7ff ]
 
-Since the linked fixes: commit, specifying a CPU on hybrid platforms
-results in an error because Perf tries to open an extended type event
-on "any" CPU which isn't valid. Extended type events can only be opened
-on CPUs that match the type.
+Drivers like mlx5 expose NIC's vlan_features such as
+NETIF_F_GSO_UDP_TUNNEL & NETIF_F_GSO_UDP_TUNNEL_CSUM which are
+later not propagated when the underlying devices are bonded and
+a vlan device created on top of the bond.
 
-Before (working):
+Right now, the more cumbersome workaround for this is to create
+the vlan on top of the mlx5 and then enslave the vlan devices
+to a bond.
 
-  $ perf record --cpu 1 -- true
-  [ perf record: Woken up 1 times to write data ]
-  [ perf record: Captured and wrote 2.385 MB perf.data (7 samples) ]
+To fix this, add NETIF_F_GSO_ENCAP_ALL to BOND_VLAN_FEATURES
+such that bond_compute_features() can probe and propagate the
+vlan_features from the slave devices up to the vlan device.
 
-After (not working):
+Given the following bond:
 
-  $ perf record -C 1 -- true
-  WARNING: A requested CPU in '1' is not supported by PMU 'cpu_atom' (CPUs 16-27) for event 'cycles:P'
-  Error:
-  The sys_perf_event_open() syscall returned with 22 (Invalid argument) for event (cpu_atom/cycles:P/).
-  /bin/dmesg | grep -i perf may provide additional information.
+  # ethtool -i enp2s0f{0,1}np{0,1}
+  driver: mlx5_core
+  [...]
 
-(Ignore the warning message, that's expected and not particularly
-relevant to this issue).
+  # ethtool -k enp2s0f0np0 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: on
+  rx-udp-gro-forwarding: off
 
-This is because perf_cpu_map__intersect() of the user specified CPU (1)
-and one of the PMU's CPUs (16-27) correctly results in an empty (NULL)
-CPU map. However for the purposes of opening an event, libperf converts
-empty CPU maps into an any CPU (-1) which the kernel rejects.
+  # ethtool -k enp2s0f1np1 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: on
+  rx-udp-gro-forwarding: off
 
-Fix it by deleting evsels with empty CPU maps in the specific case where
-user requested CPU maps are evaluated.
+  # ethtool -k bond0 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
 
-Fixes: 251aa040244a ("perf parse-events: Wildcard most "numeric" events")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Thomas Falcon <thomas.falcon@intel.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20241114160450.295844-2-james.clark@linaro.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Before:
+
+  # ethtool -k bond0.100 | grep udp
+  tx-udp_tnl-segmentation: off [requested on]
+  tx-udp_tnl-csum-segmentation: off [requested on]
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+After:
+
+  # ethtool -k bond0.100 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+Various users have run into this reporting performance issues when
+configuring Cilium in vxlan tunneling mode and having the combination
+of bond & vlan for the core devices connecting the Kubernetes cluster
+to the outside world.
+
+Fixes: a9b3ace44c7d ("bonding: fix vlan_features computing")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Ido Schimmel <idosch@idosch.org>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241210141245.327886-3-daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/perf/evlist.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/lib/perf/evlist.c b/tools/lib/perf/evlist.c
-index c6d67fc9e57e..83c43dc13313 100644
---- a/tools/lib/perf/evlist.c
-+++ b/tools/lib/perf/evlist.c
-@@ -47,6 +47,20 @@ static void __perf_evlist__propagate_maps(struct perf_evlist *evlist,
- 		 */
- 		perf_cpu_map__put(evsel->cpus);
- 		evsel->cpus = perf_cpu_map__intersect(evlist->user_requested_cpus, evsel->own_cpus);
-+
-+		/*
-+		 * Empty cpu lists would eventually get opened as "any" so remove
-+		 * genuinely empty ones before they're opened in the wrong place.
-+		 */
-+		if (perf_cpu_map__is_empty(evsel->cpus)) {
-+			struct perf_evsel *next = perf_evlist__next(evlist, evsel);
-+
-+			perf_evlist__remove(evlist, evsel);
-+			/* Keep idx contiguous */
-+			if (next)
-+				list_for_each_entry_from(next, &evlist->entries, node)
-+					next->idx--;
-+		}
- 	} else if (!evsel->own_cpus || evlist->has_user_cpus ||
- 		(!evsel->requires_cpu && perf_cpu_map__has_any_cpu(evlist->user_requested_cpus))) {
- 		/*
-@@ -80,11 +94,11 @@ static void __perf_evlist__propagate_maps(struct perf_evlist *evlist,
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index bee93a437f99..7eb62fe55947 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1462,6 +1462,7 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
  
- static void perf_evlist__propagate_maps(struct perf_evlist *evlist)
- {
--	struct perf_evsel *evsel;
-+	struct perf_evsel *evsel, *n;
+ #define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+ 				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
++				 NETIF_F_GSO_ENCAP_ALL | \
+ 				 NETIF_F_HIGHDMA | NETIF_F_LRO)
  
- 	evlist->needs_map_propagation = true;
- 
--	perf_evlist__for_each_evsel(evlist, evsel)
-+	list_for_each_entry_safe(evsel, n, &evlist->entries, node)
- 		__perf_evlist__propagate_maps(evlist, evsel);
- }
- 
+ #define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
 -- 
 2.39.5
 
