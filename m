@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C369F5276
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB55F9F53B7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3BA188F978
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FEB6188E496
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188061F76D5;
-	Tue, 17 Dec 2024 17:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74791F6661;
+	Tue, 17 Dec 2024 17:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2yA4fSQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGze18Qi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CBB1527B1;
-	Tue, 17 Dec 2024 17:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24171F757B;
+	Tue, 17 Dec 2024 17:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455784; cv=none; b=os2SnLCKwGMDn67uzOinW5MvZyKyWSl+kxGB8hjGdI9wWaJvP40v9jXk0HAB4tlpGckp8/bUdWQKEnPEPcRJdkMJ+2x+7VgJrZXH0nRtfLT9G4491AdEbfivKdbQk34Qi3lEafmwxs0xOuAkqe8BbDTPdIr7tXWj9ukVQlDJ8f4=
+	t=1734456495; cv=none; b=hUVQL5xN8K+w5QuiBxFgv8V6EL2yt49zj92FJnay+0sO6qdgO7lXnJoDnDNXK9gVskIT3V9P8JA93oudSDv7gIz05h3rLMWvLh3cHN1stsK9rsQrxleBUCPzCB2xNqyE/kreYFN333fJrfl0xlLkWOovn+/yOli+wlZNeMMXzXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455784; c=relaxed/simple;
-	bh=GK03mYDeaoy4CWqYN17Ea5heXsmH7QX8hvVIxAXDwc8=;
+	s=arc-20240116; t=1734456495; c=relaxed/simple;
+	bh=v8fooYekdOnDpuktoxxQ15CZTXeCoMeTiAvp+HP/ghE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfzitbA18XFRxTZ2b41lQ178A2/JqgL3DvYCEo6oIc7NcXN8kbmvTkrMtChdUeGHVvQKuWpRnmMt4UuHZC0lbSUmD0j7sktJ/WG/1rUovL9OMqTZqzqdVdu4/Zqbqm1elboW0v6PeGLEbQQSSvNSsFjCYZLPEZpCVaX8of71BQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2yA4fSQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067F6C4CED3;
-	Tue, 17 Dec 2024 17:16:23 +0000 (UTC)
+	 MIME-Version; b=Q0fSkU0aTKezC1Ud0c3nvnoD2wcmXXAkD1+OaHmd00oDF+WfDY83B+UMC0Gxm543EiWua57k8SIOIcguOhrHx2xDFSKaQ9NnfsGk4xeWz+MLrF8vHzDhRaz7oA0l4L/qMvlteyxaeq+dDLNd2fGWzf+yeNQOnr3PvUQs6HPmfPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGze18Qi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEACC4CED3;
+	Tue, 17 Dec 2024 17:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455784;
-	bh=GK03mYDeaoy4CWqYN17Ea5heXsmH7QX8hvVIxAXDwc8=;
+	s=korg; t=1734456495;
+	bh=v8fooYekdOnDpuktoxxQ15CZTXeCoMeTiAvp+HP/ghE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2yA4fSQxyEJPQjMUuB641+ovRBn8wm1DirugExe584hnz8IZQ5FgGpIV/ZPp23Z1
-	 QjT2hSx9EohZSzdLLF4J4SQuYpHZqyl3H++ELI6Mf5aSnwkZev6QQ6SOj/Ia/bTJbr
-	 baXVH+PlKpbQ5hV8ECakcgbQ1J0lmz/EfXB2z13c=
+	b=FGze18Qi9kCQKvmJKlB/ImcWEuWeAWTOLoWyGfOJ8ZMHeUnXzpaAZX9lV8eAANgVP
+	 kk0Xd772A90JT94hgJVvZjNLt5GqwDA9slQr/B9PrEwOHKkBhdKEESAeC/pq5G9txh
+	 oAg+ftA7oXWh07Q+tVY5wQWO5SxXu0oLvBA7Iot0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 32/76] batman-adv: Do not send uninitialized TT changes
+	Robert Morris <rtm@mit.edu>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.12 076/172] bpf: Check size for BTF-based ctx access of pointer members
 Date: Tue, 17 Dec 2024 18:07:12 +0100
-Message-ID: <20241217170527.598832499@linuxfoundation.org>
+Message-ID: <20241217170549.439469551@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit f2f7358c3890e7366cbcb7512b4bc8b4394b2d61 ]
+commit 659b9ba7cb2d7adb64618b87ddfaa528a143766e upstream.
 
-The number of TT changes can be less than initially expected in
-batadv_tt_tvlv_container_update() (changes can be removed by
-batadv_tt_local_event() in ADD+DEL sequence between reading
-tt_diff_entries_num and actually iterating the change list under lock).
+Robert Morris reported the following program type which passes the
+verifier in [0]:
 
-Thus tt_diff_len could be bigger than the actual changes size that need
-to be sent. Because batadv_send_my_tt_response sends the whole
-packet, uninitialized data can be interpreted as TT changes on other
-nodes leading to weird TT global entries on those nodes such as:
+SEC("struct_ops/bpf_cubic_init")
+void BPF_PROG(bpf_cubic_init, struct sock *sk)
+{
+	asm volatile("r2 = *(u16*)(r1 + 0)");     // verifier should demand u64
+	asm volatile("*(u32 *)(r2 +1504) = 0");   // 1280 in some configs
+}
 
- * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
- * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
+The second line may or may not work, but the first instruction shouldn't
+pass, as it's a narrow load into the context structure of the struct ops
+callback. The code falls back to btf_ctx_access to ensure correctness
+and obtaining the types of pointers. Ensure that the size of the access
+is correctly checked to be 8 bytes, otherwise the verifier thinks the
+narrow load obtained a trusted BTF pointer and will permit loads/stores
+as it sees fit.
 
-All of the above also applies to OGM tvlv container buffer's tvlv_len.
+Perform the check on size after we've verified that the load is for a
+pointer field, as for scalar values narrow loads are fine. Access to
+structs passed as arguments to a BPF program are also treated as
+scalars, therefore no adjustment is needed in their case.
 
-Remove the extra allocated space to avoid sending uninitialized TT
-changes in batadv_send_my_tt_response() and batadv_v_ogm_send_softif().
+Existing verifier selftests are broken by this change, but because they
+were incorrect. Verifier tests for d_path were performing narrow load
+into context to obtain path pointer, had this program actually run it
+would cause a crash. The same holds for verifier_btf_ctx_access tests.
 
-Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [0]: https://lore.kernel.org/bpf/51338.1732985814@localhost
+
+Fixes: 9e15db66136a ("bpf: Implement accurate raw_tp context access via BTF")
+Reported-by: Robert Morris <rtm@mit.edu>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20241212092050.3204165-2-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/bpf/btf.c                                            |    6 ++++++
+ tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c |    4 ++--
+ tools/testing/selftests/bpf/progs/verifier_d_path.c         |    4 ++--
+ 3 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 4fc66cd95dc4..7711f87397d5 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -990,6 +990,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 	int tt_diff_len, tt_change_len = 0;
- 	int tt_diff_entries_num = 0;
- 	int tt_diff_entries_count = 0;
-+	size_t tt_extra_len = 0;
- 	u16 tvlv_len;
- 
- 	tt_diff_entries_num = atomic_read(&bat_priv->tt.local_changes);
-@@ -1027,6 +1028,9 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6519,6 +6519,12 @@ bool btf_ctx_access(int off, int size, e
+ 		return false;
  	}
- 	spin_unlock_bh(&bat_priv->tt.changes_list_lock);
  
-+	tt_extra_len = batadv_tt_len(tt_diff_entries_num -
-+				     tt_diff_entries_count);
++	if (size != sizeof(u64)) {
++		bpf_log(log, "func '%s' size %d must be 8\n",
++			tname, size);
++		return false;
++	}
 +
- 	/* Keep the buffer for possible tt_request */
- 	spin_lock_bh(&bat_priv->tt.last_changeset_lock);
- 	kfree(bat_priv->tt.last_changeset);
-@@ -1035,6 +1039,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 	tt_change_len = batadv_tt_len(tt_diff_entries_count);
- 	/* check whether this new OGM has no changes due to size problems */
- 	if (tt_diff_entries_count > 0) {
-+		tt_diff_len -= tt_extra_len;
- 		/* if kmalloc() fails we will reply with the full table
- 		 * instead of providing the diff
- 		 */
-@@ -1047,6 +1052,8 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 	}
- 	spin_unlock_bh(&bat_priv->tt.last_changeset_lock);
- 
-+	/* Remove extra packet space for OGM */
-+	tvlv_len -= tt_extra_len;
- container_register:
- 	batadv_tvlv_container_register(bat_priv, BATADV_TVLV_TT, 1, tt_data,
- 				       tvlv_len);
--- 
-2.39.5
-
+ 	/* check for PTR_TO_RDONLY_BUF_OR_NULL or PTR_TO_RDWR_BUF_OR_NULL */
+ 	for (i = 0; i < prog->aux->ctx_arg_info_size; i++) {
+ 		const struct bpf_ctx_arg_aux *ctx_arg_info = &prog->aux->ctx_arg_info[i];
+--- a/tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c
++++ b/tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c
+@@ -11,7 +11,7 @@ __success __retval(0)
+ __naked void btf_ctx_access_accept(void)
+ {
+ 	asm volatile ("					\
+-	r2 = *(u32*)(r1 + 8);		/* load 2nd argument value (int pointer) */\
++	r2 = *(u64 *)(r1 + 8);		/* load 2nd argument value (int pointer) */\
+ 	r0 = 0;						\
+ 	exit;						\
+ "	::: __clobber_all);
+@@ -23,7 +23,7 @@ __success __retval(0)
+ __naked void ctx_access_u32_pointer_accept(void)
+ {
+ 	asm volatile ("					\
+-	r2 = *(u32*)(r1 + 0);		/* load 1nd argument value (u32 pointer) */\
++	r2 = *(u64 *)(r1 + 0);		/* load 1nd argument value (u32 pointer) */\
+ 	r0 = 0;						\
+ 	exit;						\
+ "	::: __clobber_all);
+--- a/tools/testing/selftests/bpf/progs/verifier_d_path.c
++++ b/tools/testing/selftests/bpf/progs/verifier_d_path.c
+@@ -11,7 +11,7 @@ __success __retval(0)
+ __naked void d_path_accept(void)
+ {
+ 	asm volatile ("					\
+-	r1 = *(u32*)(r1 + 0);				\
++	r1 = *(u64 *)(r1 + 0);				\
+ 	r2 = r10;					\
+ 	r2 += -8;					\
+ 	r6 = 0;						\
+@@ -31,7 +31,7 @@ __failure __msg("helper call is not allo
+ __naked void d_path_reject(void)
+ {
+ 	asm volatile ("					\
+-	r1 = *(u32*)(r1 + 0);				\
++	r1 = *(u64 *)(r1 + 0);				\
+ 	r2 = r10;					\
+ 	r2 += -8;					\
+ 	r6 = 0;						\
 
 
 
