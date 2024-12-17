@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-104636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508579F5246
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E059F53CA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 611981891D31
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D57C1892858
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CB21F76D6;
-	Tue, 17 Dec 2024 17:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9801F8906;
+	Tue, 17 Dec 2024 17:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mb3s0tbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWdaZfH2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24451F7562;
-	Tue, 17 Dec 2024 17:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE57E1F8923;
+	Tue, 17 Dec 2024 17:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455651; cv=none; b=CvEljqND2gQ4Lcz0xEy7H4PgotJNlbXUxSpYmYQ9Ce36vMyHyvNEQSExAr04UBu2kRbcBmd1q7skbei7lAmk5BdfUVYXCQRJnCkaW4ppwn0cuJZ1YKQLUcHmiqu05cyZ+GT7QrCXabG6SxaUFdnYfgPAx0R5dqd6PYt231T8KiA=
+	t=1734456550; cv=none; b=TUT7Wfr78XZC2oQEmWIYB03RpSrYGOM5AXM/v1RRgAHwvlQe0LQAQpSSqnsqx4oVEjp9Z69D4/mM75jz4Dy+L5cg7jbb5Rd3xfYEjvv3glKpzVpFLTedv8ISc2z3uOcLLPsgp12EB+s5SI+YZqU5HWL6AD016E4HS4DrACAYY9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455651; c=relaxed/simple;
-	bh=USf4Ky6Ll0xxEWnIzxu3mMoWSWwVQmi9TrUwkl0D4R4=;
+	s=arc-20240116; t=1734456550; c=relaxed/simple;
+	bh=YNNTmUMn+cKLsvx7qeLrOhOw1PqnqY7PYkO+uEYEBpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBBKbPtxmvF1dl65ChjZV+3z55R3hNVbeuXANCPD1/uphVo07VJMAroo9NVVDxf/UYESWAefkDCsIj5awRGDFNBmWdyBFWLwOZctkLDwiAky7lnEyIC81rWxv8/TXqeQaNYkQJGDjLQ8GPwH92DIjfm7C5wPXk9FF4nz6G3LXfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mb3s0tbA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F4CC4CED7;
-	Tue, 17 Dec 2024 17:14:08 +0000 (UTC)
+	 MIME-Version; b=PpxbfOv9XrXoAu6HeskhxvjL5XpiK2Zxz43LNj1qKSrVkcf5MB5j+1DEjGZDb8Wp7//twbbQgekfhLKQsyybEFDyUOZ7wGTDgnenZ7Q4Eo+3OD0WglkJPKiN27oRGZCjp68WQNruWfocJ5ynB/a1/QajHpG6SBpUf+9iWVRgSxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWdaZfH2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A8AC4CED3;
+	Tue, 17 Dec 2024 17:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455649;
-	bh=USf4Ky6Ll0xxEWnIzxu3mMoWSWwVQmi9TrUwkl0D4R4=;
+	s=korg; t=1734456548;
+	bh=YNNTmUMn+cKLsvx7qeLrOhOw1PqnqY7PYkO+uEYEBpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mb3s0tbAM+qExC3FjsjsoHUihLnR98QbVMiEU3l9rIHSQqq8zCnYYwb9RDFgZTl7W
-	 /Sns/9hwuXyV05SVIzbyS/ciaHu7UbsIoVTwdU8F111sotZ0JtTY+YCaHMHQ8eWwRx
-	 jNsYgdKItjDnRciegpffFPdoIGVVWAcuuYmyikhI=
+	b=UWdaZfH2vp8qAwRpf11uDo33/8aT3NJtumk+H1asuBBdr5ELntC+CooAZVtOpipIp
+	 b2cGcS2y+6OhbGfUnBwjlJgV14ih6iXQBErYIHxdSfsn6QrVFov5QH+BHE9b7rUO0u
+	 VdSu3bm0Dp9dmDFSE/t4NQfTMSSFEsxCSGaph3JQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@idosch.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/51] team: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
+Subject: [PATCH 6.12 094/172] net/mlx5: DR, prevent potential error pointer dereference
 Date: Tue, 17 Dec 2024 18:07:30 +0100
-Message-ID: <20241217170521.938088199@linuxfoundation.org>
+Message-ID: <20241217170550.192259041@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 98712844589e06d9aa305b5077169942139fd75c ]
+[ Upstream commit 11776cff0b563c8b8a4fa76cab620bfb633a8cb8 ]
 
-Similar to bonding driver, add NETIF_F_GSO_ENCAP_ALL to TEAM_VLAN_FEATURES
-in order to support slave devices which propagate NETIF_F_GSO_UDP_TUNNEL &
-NETIF_F_GSO_UDP_TUNNEL_CSUM as vlan_features.
+The dr_domain_add_vport_cap() function generally returns NULL on error
+but sometimes we want it to return ERR_PTR(-EBUSY) so the caller can
+retry.  The problem here is that "ret" can be either -EBUSY or -ENOMEM
+and if it's and -ENOMEM then the error pointer is propogated back and
+eventually dereferenced in dr_ste_v0_build_src_gvmi_qpn_tag().
 
-Fixes: 3625920b62c3 ("teaming: fix vlan_features computing")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Ido Schimmel <idosch@idosch.org>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20241210141245.327886-5-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 11a45def2e19 ("net/mlx5: DR, Add support for SF vports")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/07477254-e179-43e2-b1b3-3b9db4674195@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index 8edfc8984e2c..5e5af71a85ac 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -979,7 +979,8 @@ static void team_port_disable(struct team *team,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
+index 3d74109f8230..49f22cad92bf 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
+@@ -297,7 +297,9 @@ dr_domain_add_vport_cap(struct mlx5dr_domain *dmn, u16 vport)
+ 	if (ret) {
+ 		mlx5dr_dbg(dmn, "Couldn't insert new vport into xarray (%d)\n", ret);
+ 		kvfree(vport_caps);
+-		return ERR_PTR(ret);
++		if (ret == -EBUSY)
++			return ERR_PTR(-EBUSY);
++		return NULL;
+ 	}
  
- #define TEAM_VLAN_FEATURES (NETIF_F_HW_CSUM | NETIF_F_SG | \
- 			    NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
--			    NETIF_F_HIGHDMA | NETIF_F_LRO)
-+			    NETIF_F_HIGHDMA | NETIF_F_LRO | \
-+			    NETIF_F_GSO_ENCAP_ALL)
- 
- #define TEAM_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
- 				 NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE)
+ 	return vport_caps;
 -- 
 2.39.5
 
