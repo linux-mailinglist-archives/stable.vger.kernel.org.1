@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-104839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991539F5353
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEFE9F549E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:44:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8E41892352
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590F4188FCB6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC581F709A;
-	Tue, 17 Dec 2024 17:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A881F9F4B;
+	Tue, 17 Dec 2024 17:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Lk1d50S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es6NA0sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5348615A;
-	Tue, 17 Dec 2024 17:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AAB1F9F45;
+	Tue, 17 Dec 2024 17:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456259; cv=none; b=g8BbkzfUsnaKUeGvC9jsfcybNs9DRSvKH7mJtu6FiDdvfZzlZWdoqdIBRzKFN0w2cNHJ1hIFHoeT4zBCJR5Jx1+EDpZQGTo+40es2zaOyi2g1TjHA7qu6N3N/GlSLERSXKlnuqySdLUWqcSRFCmHaqP8U/tAsqBeWoXoz72Ll1o=
+	t=1734456832; cv=none; b=ZNUQ65KPtBYINJDR5A4K6rqwDL1qRrsjZQfVI+9IeyDJtAWQPzwbJmgK+p8dJYotp27KtnCHd196djx+xcfmHveL5UDXdxt4tajNsFPhlE5cSwgXPis6NLGtUtUGIyO3a/eX7jeOuk+2q0mL88RwuC/VpX9BJ7H56LlDwiVoXPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456259; c=relaxed/simple;
-	bh=X6WMRdyizDCDzs/xFtI0hHucoTuCVA2dNQP2DC+vzuQ=;
+	s=arc-20240116; t=1734456832; c=relaxed/simple;
+	bh=/ypJ+wwfgvUHEV5Zm5UmHvzCkXabmA90xn+AY1S5dbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTP+/ygRACMtmRv9NJd7fu3ANcdnxOTq4Yuvxs1UXas2QW5HQHWbqWLfNrDrJwV1ztPDzGLwPC17AiwPQyYISkwT47so9zKtstshz5T28oUr1moMFFnlSCNwzIfLvHlQjgEoU1GUEZcwccoaqDStjzE6Qcl0qoiB/j1I5FnvQnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Lk1d50S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855A2C4CEDD;
-	Tue, 17 Dec 2024 17:24:18 +0000 (UTC)
+	 MIME-Version; b=sgu7FZjCJm2r7iw15s3i5l+6mN1yr3CdyVPSsgUMtyrkP7E9+CuU7oAeR0iKty9sbb2Vgdm6feSo5W0z/eEuLRpCHvYiMnY94sWaoG1+BM34+lrM/Q23sv7Gens6qXbZ1OUnLUJDMPSva8Ll+BWfc0c3JkWBy6P6rvJehDCnouk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es6NA0sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C222EC4CED3;
+	Tue, 17 Dec 2024 17:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456258;
-	bh=X6WMRdyizDCDzs/xFtI0hHucoTuCVA2dNQP2DC+vzuQ=;
+	s=korg; t=1734456832;
+	bh=/ypJ+wwfgvUHEV5Zm5UmHvzCkXabmA90xn+AY1S5dbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Lk1d50SbsVc2BW8IOqdNwJxs5B2WAPFIiXF7Z5b+lus9y76N3tr/H0HHnrEBn13/
-	 Xt7Ah2wrBBR8Na9F64svLQrAxX4dMnrlNl+eyj+ri1DihcWpAAniFDvuCGiml1OnYu
-	 3xB3ev/bFPaRVwYtemocnNw/D0taLXoNYqBodFZ8=
+	b=es6NA0sjCH4FukT3wjKaUD/lLrSulu1g9x8NIQ5204pSkPJ4bp/aYmt4IGMxBMg9H
+	 atMNljl7+ZAKIMF0HzYVjE3c6NpSm7EPwwsFlWuLz/HxCQsNA/XSpmP206+sr9Mnlk
+	 qp3YE/3w9Tp0swAJDvzgT0sp6/mXNKrv7vFcdlF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 099/109] selftests/bpf: remove use of __xlated()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 147/172] Bluetooth: hci_event: Fix using rcu_read_(un)lock while iterating
 Date: Tue, 17 Dec 2024 18:08:23 +0100
-Message-ID: <20241217170537.522869858@linuxfoundation.org>
+Message-ID: <20241217170552.427851486@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-Commit 68ec5395bc24, backport of mainline commit a41b3828ec05 ("selftests/bpf:
-Verify that sync_linked_regs preserves subreg_def") uses the __xlated() that
-wasn't in the v6.6 code-base, and causes BPF selftests to fail compilation.
+[ Upstream commit 581dd2dc168fe0ed2a7a5534a724f0d3751c93ae ]
 
-Remove the use of the __xlated() macro in
-tools/testing/selftests/bpf/progs/verifier_scalar_ids.c to fix compilation
-failure. Without the __xlated() checks the coverage is reduced, however the
-test case still functions just fine.
+The usage of rcu_read_(un)lock while inside list_for_each_entry_rcu is
+not safe since for the most part entries fetched this way shall be
+treated as rcu_dereference:
 
-Fixes: 68ec5395bc24 ("selftests/bpf: Verify that sync_linked_regs preserves subreg_def")
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	Note that the value returned by rcu_dereference() is valid
+	only within the enclosing RCU read-side critical section [1]_.
+	For example, the following is **not** legal::
+
+		rcu_read_lock();
+		p = rcu_dereference(head.next);
+		rcu_read_unlock();
+		x = p->address;	/* BUG!!! */
+		rcu_read_lock();
+		y = p->data;	/* BUG!!! */
+		rcu_read_unlock();
+
+Fixes: a0bfde167b50 ("Bluetooth: ISO: Add support for connecting multiple BISes")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/verifier_scalar_ids.c |   16 ----------------
- 1 file changed, 16 deletions(-)
+ net/bluetooth/hci_event.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
---- a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
-@@ -682,22 +682,6 @@ __msg("from 3 to 4")
- __msg("4: (77) r1 >>= 32                     ; R1_w=0")
- __msg("5: (bf) r0 = r1                       ; R0_w=0 R1_w=0")
- __msg("6: (95) exit")
--/* Verify that statements to randomize upper half of r1 had not been
-- * generated.
-- */
--__xlated("call unknown")
--__xlated("r0 &= 2147483647")
--__xlated("w1 = w0")
--/* This is how disasm.c prints BPF_ZEXT_REG at the moment, x86 and arm
-- * are the only CI archs that do not need zero extension for subregs.
-- */
--#if !defined(__TARGET_ARCH_x86) && !defined(__TARGET_ARCH_arm64)
--__xlated("w1 = w1")
--#endif
--__xlated("if w0 < 0xa goto pc+0")
--__xlated("r1 >>= 32")
--__xlated("r0 = r1")
--__xlated("exit")
- __naked void linked_regs_and_subreg_def(void)
- {
- 	asm volatile (
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 2b5ba8acd1d8..388d46c6a043 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6872,38 +6872,27 @@ static void hci_le_create_big_complete_evt(struct hci_dev *hdev, void *data,
+ 		return;
+ 
+ 	hci_dev_lock(hdev);
+-	rcu_read_lock();
+ 
+ 	/* Connect all BISes that are bound to the BIG */
+-	list_for_each_entry_rcu(conn, &hdev->conn_hash.list, list) {
+-		if (bacmp(&conn->dst, BDADDR_ANY) ||
+-		    conn->type != ISO_LINK ||
+-		    conn->iso_qos.bcast.big != ev->handle)
++	while ((conn = hci_conn_hash_lookup_big_state(hdev, ev->handle,
++						      BT_BOUND))) {
++		if (ev->status) {
++			hci_connect_cfm(conn, ev->status);
++			hci_conn_del(conn);
+ 			continue;
++		}
+ 
+ 		if (hci_conn_set_handle(conn,
+ 					__le16_to_cpu(ev->bis_handle[i++])))
+ 			continue;
+ 
+-		if (!ev->status) {
+-			conn->state = BT_CONNECTED;
+-			set_bit(HCI_CONN_BIG_CREATED, &conn->flags);
+-			rcu_read_unlock();
+-			hci_debugfs_create_conn(conn);
+-			hci_conn_add_sysfs(conn);
+-			hci_iso_setup_path(conn);
+-			rcu_read_lock();
+-			continue;
+-		}
+-
+-		hci_connect_cfm(conn, ev->status);
+-		rcu_read_unlock();
+-		hci_conn_del(conn);
+-		rcu_read_lock();
++		conn->state = BT_CONNECTED;
++		set_bit(HCI_CONN_BIG_CREATED, &conn->flags);
++		hci_debugfs_create_conn(conn);
++		hci_conn_add_sysfs(conn);
++		hci_iso_setup_path(conn);
+ 	}
+ 
+-	rcu_read_unlock();
+-
+ 	if (!ev->status && !i)
+ 		/* If no BISes have been connected for the BIG,
+ 		 * terminate. This is in case all bound connections
+-- 
+2.39.5
+
 
 
 
