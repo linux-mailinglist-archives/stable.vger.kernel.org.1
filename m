@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-104599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DB99F5204
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC259F523F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0975D188DF75
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ABA5189129A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6441F8664;
-	Tue, 17 Dec 2024 17:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12971F76BE;
+	Tue, 17 Dec 2024 17:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9ME+Dpn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ufBleuU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC911F76B2;
-	Tue, 17 Dec 2024 17:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3B01F7562;
+	Tue, 17 Dec 2024 17:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455540; cv=none; b=BmNS/V/ruBuTBpHcfC2F23xJo8UfhwRZa8LM50JJSD66izwu0ILd4cvR553FkkXGO9Eo9P+f/X3f/j5KAdfhIMYt05rMLyFCveCEVU+/tHGZdd3d9PFNhGIwHcnefppAANVSUnFX+pjQuN5gf8m3vOE+0V/+3NaIt0FQre7H0Sw=
+	t=1734455629; cv=none; b=PNEFDdbgO3UvEm1qO0LEKeFOfuUTcgYROWeTzYqzLvhTeRDfT/XcDcmMq1ys9YaEsr9AoLPPewdKJTOLF+whoa8J97xdJ+ClDfZGIq0GKeBi63DbFWTA9BZ5qIuWF+3y3mZN2UkglofbkvM2qDVjiP6gLDJ2ci5Mllh+pup49q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455540; c=relaxed/simple;
-	bh=AUnvHAAxKZbBmn5xz29+/XGTrzBV5C4TUE7JWLtKtAc=;
+	s=arc-20240116; t=1734455629; c=relaxed/simple;
+	bh=hc5d3YF0NKGRajZnVJjI+zNmfM+XsfsmG4W8gLfkI7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yb7/BQs9PTIf+QvghMaIU/1/p1PLAGPHE+dLoUehyR/ob/0gyFJ8hsEOcYQdIQs1sBWojaRy4I2D8NCK/2WktB2j5WkkNamlQEuLvak9kft2h8WhjeiZE863mpq55F7osD+AY6yKVJsCK8h2NrFegzeMemOr0SvIe/jrQs0ZPEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9ME+Dpn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62888C4CED3;
-	Tue, 17 Dec 2024 17:12:20 +0000 (UTC)
+	 MIME-Version; b=G74AyQP3qfODwCTijPWhtPr6zGvKxaj7mLQocBu3/HzCpdm+jyXE7OCEt1r2lpEGScgH4TzlkGvZ84vUCa0e2ZyJgQoNwztRsyiqbTVSguzNyY3zDObcnQaFUTcCZC/HfC56zCJRU6uLdfNgR3t0qUq90VdnFm8CsLUAp5UHRU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ufBleuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F36C4CED3;
+	Tue, 17 Dec 2024 17:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455540;
-	bh=AUnvHAAxKZbBmn5xz29+/XGTrzBV5C4TUE7JWLtKtAc=;
+	s=korg; t=1734455629;
+	bh=hc5d3YF0NKGRajZnVJjI+zNmfM+XsfsmG4W8gLfkI7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9ME+DpnhcZni7kHySwh/VyYIvg22I3NxG2odjmSMwEDjAfNTc2PE5RoEzZg7NoFh
-	 WtZ0p1O4Z5GpDLKsdAiP4NxnjzoBX9tn35Laq3UyqBs1URUirQA5Esm+X9HVUyamj5
-	 0t1GXjhskoS9DplHdiUkLsY3ID3GdRI0y2uUxQ7w=
+	b=2ufBleuUMQpWuEpI6szqjrJBA5rTOVNBo2l7yDsLuYZqGRD9tEWo6Np2Kdtb0R7lz
+	 /RHIvZU+HmGBdxf+u6eIyWdejXRLgY1y7gl/IAWIgdEr/jDY1l2ohzPAvU6kwJPGUY
+	 nX48ipZq70i/LlUrbN3GtrJ9BYJh2sZ+qvLl5huY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Ross Burton <ross.burton@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 33/43] Revert "clocksource/drivers:sp804: Make user selectable"
+Subject: [PATCH 5.15 31/51] cxgb4: use port number to set mac addr
 Date: Tue, 17 Dec 2024 18:07:24 +0100
-Message-ID: <20241217170521.951579331@linuxfoundation.org>
+Message-ID: <20241217170521.561162884@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,42 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-This reverts commit ef1db3d1d2bf which is
-commit 0309f714a0908e947af1c902cf6a330cb593e75e upstream.
+[ Upstream commit 356983f569c1f5991661fc0050aa263792f50616 ]
 
-It is reported to cause build errors in m68k, so revert it.
+t4_set_vf_mac_acl() uses pf to set mac addr, but t4vf_get_vf_mac_acl()
+uses port number to get mac addr, this leads to error when an attempt
+to set MAC address on VF's of PF2 and PF3.
+This patch fixes the issue by using port number to set mac address.
 
-Link: https://lore.kernel.org/r/68b0559e-47e8-4756-b3de-67d59242756e@roeck-us.net
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Cc: Ross Burton <ross.burton@arm.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0cdac65ba26 ("cxgb4vf: configure ports accessible by the VF")
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241206062014.49414-1-anumula@chelsio.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/Kconfig |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h      | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c      | 5 +++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -398,8 +398,7 @@ config ARM_GLOBAL_TIMER
- 	  This option enables support for the ARM global timer unit.
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+index ecea3cdd30b3..cceb1cbe0d6a 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+@@ -2084,7 +2084,7 @@ void t4_idma_monitor(struct adapter *adapter,
+ 		     struct sge_idma_monitor_state *idma,
+ 		     int hz, int ticks);
+ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+-		      unsigned int naddr, u8 *addr);
++		      u8 start, unsigned int naddr, u8 *addr);
+ void t4_tp_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
+ 		    u32 start_index, bool sleep_ok);
+ void t4_tp_tm_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index 0d9cda4ab303..21afaa81697e 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -3247,7 +3247,7 @@ static int cxgb4_mgmt_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
  
- config ARM_TIMER_SP804
--	bool "Support for Dual Timer SP804 module"
--	depends on ARM || ARM64 || COMPILE_TEST
-+	bool "Support for Dual Timer SP804 module" if COMPILE_TEST
- 	depends on GENERIC_SCHED_CLOCK && HAVE_CLK
- 	select CLKSRC_MMIO
- 	select TIMER_OF if OF
+ 	dev_info(pi->adapter->pdev_dev,
+ 		 "Setting MAC %pM on VF %d\n", mac, vf);
+-	ret = t4_set_vf_mac_acl(adap, vf + 1, 1, mac);
++	ret = t4_set_vf_mac_acl(adap, vf + 1, pi->lport, 1, mac);
+ 	if (!ret)
+ 		ether_addr_copy(adap->vfinfo[vf].vf_mac_addr, mac);
+ 	return ret;
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+index c99f5920c957..94fd7d6a1109 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+@@ -10215,11 +10215,12 @@ int t4_load_cfg(struct adapter *adap, const u8 *cfg_data, unsigned int size)
+  *	t4_set_vf_mac_acl - Set MAC address for the specified VF
+  *	@adapter: The adapter
+  *	@vf: one of the VFs instantiated by the specified PF
++ *	@start: The start port id associated with specified VF
+  *	@naddr: the number of MAC addresses
+  *	@addr: the MAC address(es) to be set to the specified VF
+  */
+ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+-		      unsigned int naddr, u8 *addr)
++		      u8 start, unsigned int naddr, u8 *addr)
+ {
+ 	struct fw_acl_mac_cmd cmd;
+ 
+@@ -10234,7 +10235,7 @@ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+ 	cmd.en_to_len16 = cpu_to_be32((unsigned int)FW_LEN16(cmd));
+ 	cmd.nmac = naddr;
+ 
+-	switch (adapter->pf) {
++	switch (start) {
+ 	case 3:
+ 		memcpy(cmd.macaddr3, addr, sizeof(cmd.macaddr3));
+ 		break;
+-- 
+2.39.5
+
 
 
 
