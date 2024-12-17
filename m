@@ -1,112 +1,126 @@
-Return-Path: <stable+bounces-105068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BC29F57EC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 21:40:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013249F584F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 22:01:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D45CE7A1E22
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 20:40:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C063018927A3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 21:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A63A17BEA2;
-	Tue, 17 Dec 2024 20:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EED1F2395;
+	Tue, 17 Dec 2024 21:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GoUNqTF0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9CIGdUV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5047D1EC017
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 20:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD9F1FA16B
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 21:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734468047; cv=none; b=aS0WPhMzUsuRDTA9x90iGl6bspO1ueInTZ1770gyXyVokPr5RRF3XR3qQ9o8dnJgBWvrCP7HzWRY+s9G5n7ZP/rSg+VOyImQQbKoWoWupyhavZIUVqSX5EyLCtsc5Gj+uV9PPTC5CrXgBXh8C4ULWX/U66pP6jvDEaQpcuzxNL8=
+	t=1734469256; cv=none; b=WUkwTF7h2b822ExytiX/7L1niY15KRORQo4Jjix72IpMJraDyMCsk9i11WFMq7WynSLBQyD5U6o1SHysQo8JVglMBWD1Omt4SOrXkAJ2Z+w6Z4PNroszCI2Urm9AGM9056SSUghmC1QjfaqYhNCxgnszBK38P/kY96A+2v8cdAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734468047; c=relaxed/simple;
-	bh=arhloySYvj0YNXV/9Ls0b839evIgS/1OVzPCdQHlq3k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c7M4827rKXQsKKhphhC4flnhOWSz0xSYNhOx60LF9ahlUt/K+KpkfzzmAvmERvgoPdOgZpt5BydVT2J4KFlJjHh16T0BjzZobNvgtkjdxP2Y/PVqP7HNHwuDCZDZbtPngkV5cwRWUZVUzGd29kEtWrc9AvlRrpFNpNcyss2MI94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GoUNqTF0; arc=none smtp.client-ip=209.85.160.178
+	s=arc-20240116; t=1734469256; c=relaxed/simple;
+	bh=cSWNN9VrTD09qCfOY4bp3i+YZjJu+E56L5vWaiaypNM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GZcbFwdr4QlJynRXBodks0JLrJFWjuv0+coofJGVg0ZuVnEYmVQzfpfcu2s0oRsmth/q6Pb/OiqXEKGnyBIUb6Lo4Nt5FAfsQN9hZKmf6GTI/Jpe0PcLTTV1yJWoBIYSpkaR+HXLTpzsABVen0qMCE87pZC+eOCIh9J7IZmKg3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9CIGdUV; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-46741855f9bso49834131cf.2
-        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 12:40:46 -0800 (PST)
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7b6f75f61f9so786764385a.0
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 13:00:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734468045; x=1735072845; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1734469254; x=1735074054; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=arhloySYvj0YNXV/9Ls0b839evIgS/1OVzPCdQHlq3k=;
-        b=GoUNqTF0ZcF9JFLX9U27/DmF8+QKIJOWEF3PCudxI5DdT3EFbVCyS+HJAC43eU/h9l
-         GIqWgCw9auzpUpWViyDlrsaG1lUvj8hzqOqpNLpe5BhaofYqHBwFPhUkozihn9MXsVHw
-         wnS53+fO/dcxEr+ZPiEUdgdngrcMAaO3nya58l07eacz/+Ym9DHzq8MeXsi31kznQpa4
-         wU8LjYxyDvgVY3n+U9aqU6rWJxwF4xtbzP95807xZeilCjwOfXmJeW7eEXkhQMq2IGaG
-         Tbp76Uwf2feAm9e8v/LohP+GtG/aIQL106Pk4fPaQbzVy9joQ1cMQZrmzkIFk+2TYT9Y
-         0qmA==
+        bh=4kirC6G46K69lwuH2+97a6770PtGhwjmor7gYJX1+8c=;
+        b=N9CIGdUVgav/JTMk/K2C1To9weAnodaeF7+2KV6h+OpnfenxTPEOTKXs7EoOdA7wkb
+         K7XgkkB8q683D6TlKVdmqjqiMrfXF5oHZjEa/Gc2iPY8eK2EJh5ZRynZPowQ9h5gfeMQ
+         JXnAbjqDnQc86qAMwg0/qc9itCpLEVAWtRWTSd93Yp31fLnMEJJmpsAm7geWs64+U6Xv
+         UJZOODUSfvhyJzhjRCBQykb2jxT11BJEHEiuS9We9Nw0etPHAc6pVD8o0kBGrMo4ckjo
+         t1izXtW56PC1Yb1+D/CKVp3Jif/Hy410jq7Atd/Qqnz9yPakNVhOCtQhtvj5S06AxVdz
+         8D2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734468045; x=1735072845;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1734469254; x=1735074054;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=arhloySYvj0YNXV/9Ls0b839evIgS/1OVzPCdQHlq3k=;
-        b=wPItL9o4MLQ8BytKi9O3ZhnhzCmIqM+TjYP0ugWiOK7kI1UOSwWCq8mqpGZq9+3cum
-         DTsiOSvz6w6zatYSbg517dGmzcXUn5okpF+lumsD9dQauD/6dKN6/RiG5Zml5AdMUcKc
-         +ZIkbD1FmpeQLZffJ3m49ETrcNFOMe6uJsCLbvJItiT/8WcvC+Wpkq8bz0DH8WkbaqP0
-         S3FCE3i38JRVt8RvoUA1egUEkc8Te/KIZTj9SGsIWyODmGoKc34qKOxBQI/i/u7Uj+NU
-         Q2VLLioYFU/r/w3Y9SbNeqKKVl2urERZhOaJSWObAy3q2yjTiB5yT3BCbWpkFomjdNvo
-         RuMA==
-X-Gm-Message-State: AOJu0YzxUfTzPtamfV3GFkSVwu0CoCL61c+5Tt2MgNg+0XvMp16fgkoY
-	PqFViWBsIGrrz8+fgsPeVkA93iAL8e/YsbnS1GQaRnFmqZ9hQBDDWCa4N12csJpPih5G0DaOoUj
-	szxygbewAhtiBCVd2MA1B432iW4T9ig==
-X-Gm-Gg: ASbGncsU7f0Zj9KgW7IEQaccc5EuSq/i3Mngel5ZbfGZeA1u44E4vOSMXdfI2VYPSQH
-	YbbF6MaseU3E9AuKvX8xTlvfdlvfVuSlU4b9B5V0=
-X-Google-Smtp-Source: AGHT+IEzn1NO6NhhfGxj2JEI4SNTGnwfuRgOKqdCwwdpAH7hT9QTK5g3603Y7rTqAwHoTeMEvVND81xgGmTpFmyt7QM=
-X-Received: by 2002:a05:622a:1a09:b0:467:6c61:b706 with SMTP id
- d75a77b69052e-46908dbf247mr5708051cf.7.1734468045371; Tue, 17 Dec 2024
- 12:40:45 -0800 (PST)
+        bh=4kirC6G46K69lwuH2+97a6770PtGhwjmor7gYJX1+8c=;
+        b=dmEtVUhVhjYjtT7g60gfNvu904nmHNW9eExImI+2HhYa7/9QRCaSiyDDb7VuSF49PJ
+         F1TCt7oz7QOJpnrA+eiGwAgoqEVIXfBwJ9R62ofRRWhlarA2jbCet8wC1wU+nvVy7n5k
+         TCO0qAn5occP0mIs8xG7G5RFgR4U+McnBAGw4NkE4os10V5AljdOow0zVZfxCG+RliWa
+         qSPk+0fMTNqHbunV6bcW9/+2G74DmncrFvmP24Osu+UO4FcGQSoMozSN4dTyXjfxeIgO
+         L6cEdqeJ7JjB9pbIsAAiRznBprRU5SZYl4O4+ATUuqqTolir2Twr8RwuH0cHaRKEwH06
+         PcUg==
+X-Gm-Message-State: AOJu0Yx6DjdeEc9DSLwMiiTFPtXYStKKfs/AFaVC9f7GuaKx8q2heem4
+	4d1wXw60kFafLtglN4KBsHydBfGZ/HKA69I0buhr6rii8JHSQWMCWzohNA==
+X-Gm-Gg: ASbGncs8esb/uFincHJ0dEmSxSVTA+h1nVXiNENeZ1fqnneoBbKZM3viIXhgPKxSTRd
+	rWmBrx2fuJri3QUEVJHzpWYdnwnPkPgplD7HsML+KAguMa/jk2WnNLZ0ORN9Y4luheaE+3ZAk+1
+	iiY//tcuYuRsEpL8Q6nfzXqKvMkQVnh2qQYcN6YC7O9cOF5mPru8IfBu0WNvFDAuwftfR6KQdCS
+	ne8tfmLf2OmNqH9eatsz9rOXfuxQsTUbDUxV92YqxraJp/atZyvd+W1V76U74BWDfBXQlMpglA0
+	5QQ=
+X-Google-Smtp-Source: AGHT+IG4bCWTpi2478suyibcMBl5i/jmQO5vUYcLskQ1WhPI9SJPEZiu25lu5OWjewF3zm5xMjl+kw==
+X-Received: by 2002:a05:620a:1727:b0:7b6:773f:4bd9 with SMTP id af79cd13be357-7b8637b5933mr38828885a.42.1734469253932;
+        Tue, 17 Dec 2024 13:00:53 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b7047ad1e2sm353314885a.26.2024.12.17.13.00.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2024 13:00:53 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: stable@vger.kernel.org
+Cc: Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 5.4.y] drm/i915: Fix memory leak by correcting cache object name in error handler
+Date: Tue, 17 Dec 2024 21:00:51 +0000
+Message-Id: <20241217210051.36137-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2024121518-unspoken-ladle-1d6a@gregkh>
+References: <2024121518-unspoken-ladle-1d6a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024121517-deserve-wharf-c2d0@gregkh> <20241216161840.4815-1-jiashengjiangcool@gmail.com>
- <2024121749-errant-existing-a587@gregkh>
-In-Reply-To: <2024121749-errant-existing-a587@gregkh>
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Date: Tue, 17 Dec 2024 15:40:34 -0500
-Message-ID: <CANeGvZW0Aptvqbb3ZtGu6P5G_9By8h99Ot6tRdpfOLP0OxWpSA@mail.gmail.com>
-Subject: Re: [PATCH 5.10.y] drm/i915: Fix memory leak by correcting cache
- object name in error handler
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+Replace "slab_priorities" with "slab_dependencies" in the error handler
+to avoid memory leak.
 
-On Tue, Dec 17, 2024 at 4:01=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Mon, Dec 16, 2024 at 04:18:40PM +0000, Jiasheng Jiang wrote:
-> > Replace "slab_priorities" with "slab_dependencies" in the error handler
-> > to avoid memory leak.
-> >
-> > Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
-> > Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
->
-> You also forgot to keep all the original signed-off-by lines, and cc:
-> them :(
->
-> I've fixed it up, but next time be more careful please.
->
-> thanks,
->
-> greg k-h
+Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241127201042.29620-1-jiashengjiangcool@gmail.com
+(cherry picked from commit 9bc5e7dc694d3112bbf0fa4c46ef0fa0f114937a)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+---
+ drivers/gpu/drm/i915/i915_scheduler.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sorry for that. I will add these lines in the patch for 5.4.
+diff --git a/drivers/gpu/drm/i915/i915_scheduler.c b/drivers/gpu/drm/i915/i915_scheduler.c
+index 0ef205fe5e29..7ef068dcc48b 100644
+--- a/drivers/gpu/drm/i915/i915_scheduler.c
++++ b/drivers/gpu/drm/i915/i915_scheduler.c
+@@ -533,6 +533,6 @@ int __init i915_global_scheduler_init(void)
+ 	return 0;
+ 
+ err_priorities:
+-	kmem_cache_destroy(global.slab_priorities);
++	kmem_cache_destroy(global.slab_dependencies);
+ 	return -ENOMEM;
+ }
+-- 
+2.25.1
 
--Jiasheng
 
