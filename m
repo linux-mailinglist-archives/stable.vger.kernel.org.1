@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-104802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C41F9F530C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9159F5312
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42A1E164CAE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7A60169594
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C1F1E0493;
-	Tue, 17 Dec 2024 17:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458901F76B5;
+	Tue, 17 Dec 2024 17:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1I4XgXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjB4J6an"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F76B8615A;
-	Tue, 17 Dec 2024 17:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FC51F7582;
+	Tue, 17 Dec 2024 17:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456142; cv=none; b=Cq4mJxn9Q7zRTojYvk7ZRlEWLG6S6eSMLzseYQJCU+0xkAmJw5Xb+VPPjoGgqSEJ4uP0Me/EWFIVfO7N3Jw8WjmrUR5+0kTJGA+pdGjzDuwSKBBhCIWry6G6Jr4ND/dpyJcUzhHlchGWOwFftb6AMe84X6X+QrfGbJO9lGCIJtE=
+	t=1734456149; cv=none; b=S4Sf5aMNn0UhTj2tzK/ZECn1fz4DS71hmrtW+fdXtP8XqhSSkJTEv129cuQysVVc4VmlG82OVdWxEyRmNuEfDM/ZcxDOL7oMzJXB4P9IpjOxYuXFIhps9LyGKKrEkoC/MHOxyrQy86dkcjCX/ycbDop/o2t7g6QGu5EtD8mArV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456142; c=relaxed/simple;
-	bh=O2olsEdDpWj/40ywc6hk6Ggizhh0OqOyK6Z6Xxfec2E=;
+	s=arc-20240116; t=1734456149; c=relaxed/simple;
+	bh=+ocTHulKz9ccnPYBvAxsObeEqEjVmrDalSYuh3gCzwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSSZUESVZ2RIJgdOC5Ycw6Dkw2L0i5Ti2fztv3s8F7dwjG4WMnNizWN9tIU41SBp6oCrHeDbNCEYJbnTzu2XyqeYYZxCTWSej7qEH26Osjj4n9LUOZAHDdFgN7mL0+5FGAGXusEKYZDhWnyPe4X9Ts0+KYQ4ziRcD5hLQ50wD2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1I4XgXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26224C4CED3;
-	Tue, 17 Dec 2024 17:22:21 +0000 (UTC)
+	 MIME-Version; b=uqwQQcGBkthVqj92i4tkFTPPbjOqqk9boxShIJPqeCoLFk5S4qBwDNdmc6Ln/Bc1ldxNT5Mgcz0hBEg4TvtJMh7NeCmUA8f3ahIQhAeJggx0o/OhRNFVqurFVMe+CjXwyegecx3n1z9YdiHdde+4cz4O250p1XN/kdg0hCa+tSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjB4J6an; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D857C4CED7;
+	Tue, 17 Dec 2024 17:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456142;
-	bh=O2olsEdDpWj/40ywc6hk6Ggizhh0OqOyK6Z6Xxfec2E=;
+	s=korg; t=1734456145;
+	bh=+ocTHulKz9ccnPYBvAxsObeEqEjVmrDalSYuh3gCzwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q1I4XgXvfiiCvasgEVXTRaL/qdcLF20JvowRpD30pUrkL2bQXYOq/Agj/0U4LklzK
-	 PPtX1iI4jKRyLAQE572LQU4nL4LuLK807Ab0LiU7qZg/gQ5Q5odj7c5gOvlJt37ekw
-	 8BOIZfpbkrFMM+GYZe9jt8q8oHjDVjxDQE44MbVw=
+	b=pjB4J6anhbZn9zfHpUClr4pmLP72ee/9lrTYNa2i6Vd2MXrScdlNgJewQVAm/UMeL
+	 WbBr8ujzVOPEgjomlDZRraM7hMzSgwu3dem47Xyz3HETlaB6fhQe0kUb8RBueka50e
+	 kLcSFaq+5dNxfadK3tAKXcpmvEJaVBxq9PdVCdXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/109] net: renesas: rswitch: fix leaked pointer on error path
-Date: Tue, 17 Dec 2024 18:07:59 +0100
-Message-ID: <20241217170536.514943937@linuxfoundation.org>
+Subject: [PATCH 6.6 076/109] net: renesas: rswitch: avoid use-after-put for a device tree node
+Date: Tue, 17 Dec 2024 18:08:00 +0100
+Message-ID: <20241217170536.559728427@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
 References: <20241217170533.329523616@linuxfoundation.org>
@@ -69,40 +69,52 @@ Content-Transfer-Encoding: 8bit
 
 From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit bb617328bafa1023d8e9c25a25345a564c66c14f ]
+[ Upstream commit 66b7e9f85b8459c823b11e9af69dbf4be5eb6be8 ]
 
-If error path is taken while filling descriptor for a frame, skb
-pointer is left in the entry. Later, on the ring entry reuse, the
-same entry could be used as a part of a multi-descriptor frame,
-and skb for that new frame could be stored in a different entry.
+The device tree node saved in the rswitch_device structure is used at
+several driver locations. So passing this node to of_node_put() after
+the first use is wrong.
 
-Then, the stale pointer will reach the completion routine, and passed
-to the release operation.
+Move of_node_put() for this node to exit paths.
 
-Fix that by clearing the saved skb pointer at the error path.
-
-Fixes: d2c96b9d5f83 ("net: rswitch: Add jumbo frames handling for TX")
+Fixes: b46f1e579329 ("net: renesas: rswitch: Simplify struct phy * handling")
 Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://patch.msgid.link/20241208095004.69468-4-nikita.yoush@cogentembedded.com
+Link: https://patch.msgid.link/20241208095004.69468-5-nikita.yoush@cogentembedded.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rswitch.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/renesas/rswitch.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-index 13577fe2c7ec..b1432ca79f1e 100644
+index b1432ca79f1e..d04a79ece698 100644
 --- a/drivers/net/ethernet/renesas/rswitch.c
 +++ b/drivers/net/ethernet/renesas/rswitch.c
-@@ -1631,6 +1631,7 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 	return ret;
+@@ -1819,7 +1819,6 @@ static int rswitch_device_alloc(struct rswitch_private *priv, unsigned int index
+ 	rdev->np_port = rswitch_get_port_node(rdev);
+ 	rdev->disabled = !rdev->np_port;
+ 	err = of_get_ethdev_address(rdev->np_port, ndev);
+-	of_node_put(rdev->np_port);
+ 	if (err) {
+ 		if (is_valid_ether_addr(rdev->etha->mac_addr))
+ 			eth_hw_addr_set(ndev, rdev->etha->mac_addr);
+@@ -1849,6 +1848,7 @@ static int rswitch_device_alloc(struct rswitch_private *priv, unsigned int index
  
- err_unmap:
-+	gq->skbs[(gq->cur + nr_desc - 1) % gq->ring_size] = NULL;
- 	dma_unmap_single(ndev->dev.parent, dma_addr_orig, skb->len, DMA_TO_DEVICE);
+ out_rxdmac:
+ out_get_params:
++	of_node_put(rdev->np_port);
+ 	netif_napi_del(&rdev->napi);
+ 	free_netdev(ndev);
  
- err_kfree:
+@@ -1862,6 +1862,7 @@ static void rswitch_device_free(struct rswitch_private *priv, unsigned int index
+ 
+ 	rswitch_txdmac_free(ndev);
+ 	rswitch_rxdmac_free(ndev);
++	of_node_put(rdev->np_port);
+ 	netif_napi_del(&rdev->napi);
+ 	free_netdev(ndev);
+ }
 -- 
 2.39.5
 
