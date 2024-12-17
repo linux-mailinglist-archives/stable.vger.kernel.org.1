@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B539F52B4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9BD9F52AA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC0A17A3D37
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BFB3188B35A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7031F8688;
-	Tue, 17 Dec 2024 17:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECFB1F76B2;
+	Tue, 17 Dec 2024 17:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9SOmUaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yT5/DMws"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26096140E38;
-	Tue, 17 Dec 2024 17:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A08F1F7577;
+	Tue, 17 Dec 2024 17:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456086; cv=none; b=Th+qj5tldUrTxe33R6Q2vWJcS4Ri6y9LYfPwIfQ5HU/47zA+aVkm0C98D0og8VokeNJQ32iORXy3Ncj6oQWTFatrNsYo19lhxIe1TV6xIHp9TC+eeFL6iZbvA24KUTVYzG6pIjUnII7ZWH10JA7wAFUdlJMzrJt5V8fS16b2/KI=
+	t=1734455865; cv=none; b=tvR0pPc3ikDEPywOcJg0dgrqVU+QakD3bnuu+DcRE6JSy16I2aBxGH3KUbkcQ6lVzTooLy3wgmsx8BrwjawCZJMiBFxBQgYpfEO9cDoWbQNdyoctKRpugiI7wjpcEEzWMUMkNGtN+LIwQ+5FbwdFVHPaj2apJbRnLCFP6+L+GVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456086; c=relaxed/simple;
-	bh=1Vek2rnqwb5XGiPL+o8SNIRaBlViQNU73OmT9BLFJqA=;
+	s=arc-20240116; t=1734455865; c=relaxed/simple;
+	bh=WL0nFuTi1ASP2qXUJCEX0371RyYtbTWnOG+PwLi9hTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kEtibNoMxqT+p6fiBU0loA5NswHb+PB/sAQDDwB/wx7GqYqo8lGoeVKuY3URNm9gEEqn+4mTgoZHXX3RejAttsxlBd/B7CDM0svgjAynVa/YnvTqII/LFTU2kR4Gno1q33p5aH4nm03pm57vtFmrZLU5M0skFvvsSpdnXH5LyE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9SOmUaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1677C4CED3;
-	Tue, 17 Dec 2024 17:21:25 +0000 (UTC)
+	 MIME-Version; b=C0XEkkq6XFw8ZESdhAjnY/7PY8U3rTGlthtjLB74LS1uiEU+SaPCmpPt9EJs9uXRGIrR+itCEHJlNxCC6JUx/HjyzI01mK+LCuMtjQA6k0hdpFiAM8jKAHALnfqPiP4ucyn+nRy7YAlxjiWB3xSuD+I2EhXOqanZm3kzxVF6OH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yT5/DMws; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6B5C4CED3;
+	Tue, 17 Dec 2024 17:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456086;
-	bh=1Vek2rnqwb5XGiPL+o8SNIRaBlViQNU73OmT9BLFJqA=;
+	s=korg; t=1734455864;
+	bh=WL0nFuTi1ASP2qXUJCEX0371RyYtbTWnOG+PwLi9hTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9SOmUaKepbuaOH4Id37/PxOQUFn4/gC9uZj+muogBTSEIo0v0K1E8dKVx1iprW7n
-	 nW0HPapVjI2qigewkj0V+sez2/GYXh1Pbhryil7UEdtR7pTTbgblSR6A3dWvQsQsK8
-	 d19rDhOYQRGZF79f+cK9EOEcn5CPEmbXLO6n4FsI=
+	b=yT5/DMws6An+zIjnjsQZhehspFYz/cvxkgVQi+alPMV8d+NmFPCUQF8uWfs4H5j0V
+	 l3OY7WmJt032GX5g+wj0X19yudMzXlP24KxW+S9Rf4PsSRli/Mx8xdG+HEDm4Sdt14
+	 cH3SAK5dSSM5KivQmzNfyTSUMwRYxl4SnL7WrnLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Martin Ottens <martin.ottens@fau.de>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/109] net: mscc: ocelot: ocelot->ts_id_lock and ocelot_port->tx_skbs.lock are IRQ-safe
+Subject: [PATCH 6.1 59/76] net/sched: netem: account for backlog updates from child qdisc
 Date: Tue, 17 Dec 2024 18:07:39 +0100
-Message-ID: <20241217170535.666739437@linuxfoundation.org>
+Message-ID: <20241217170528.720423835@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +63,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Martin Ottens <martin.ottens@fau.de>
 
-[ Upstream commit 0c53cdb95eb4a604062e326636971d96dd9b1b26 ]
+[ Upstream commit f8d4bc455047cf3903cd6f85f49978987dbb3027 ]
 
-ocelot_get_txtstamp() is a threaded IRQ handler, requested explicitly as
-such by both ocelot_ptp_rdy_irq_handler() and vsc9959_irq_handler().
+In general, 'qlen' of any classful qdisc should keep track of the
+number of packets that the qdisc itself and all of its children holds.
+In case of netem, 'qlen' only accounts for the packets in its internal
+tfifo. When netem is used with a child qdisc, the child qdisc can use
+'qdisc_tree_reduce_backlog' to inform its parent, netem, about created
+or dropped SKBs. This function updates 'qlen' and the backlog statistics
+of netem, but netem does not account for changes made by a child qdisc.
+'qlen' then indicates the wrong number of packets in the tfifo.
+If a child qdisc creates new SKBs during enqueue and informs its parent
+about this, netem's 'qlen' value is increased. When netem dequeues the
+newly created SKBs from the child, the 'qlen' in netem is not updated.
+If 'qlen' reaches the configured sch->limit, the enqueue function stops
+working, even though the tfifo is not full.
 
-As such, it runs with IRQs enabled, and not in hardirq context. Thus,
-ocelot_port_add_txtstamp_skb() has no reason to turn off IRQs, it cannot
-be preempted by ocelot_get_txtstamp(). For the same reason,
-dev_kfree_skb_any_reason() will always evaluate as kfree_skb_reason() in
-this calling context, so just simplify the dev_kfree_skb_any() call to
-kfree_skb().
+Reproduce the bug:
+Ensure that the sender machine has GSO enabled. Configure netem as root
+qdisc and tbf as its child on the outgoing interface of the machine
+as follows:
+$ tc qdisc add dev <oif> root handle 1: netem delay 100ms limit 100
+$ tc qdisc add dev <oif> parent 1:0 tbf rate 50Mbit burst 1542 latency 50ms
 
-Also, ocelot_port_txtstamp_request() runs from NET_TX softirq context,
-not with hardirqs enabled. Thus, ocelot_get_txtstamp() which shares the
-ocelot_port->tx_skbs.lock lock with it, has no reason to disable hardirqs.
+Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
+client on the machine. Check the qdisc statistics:
+$ tc -s qdisc show dev <oif>
 
-This is part of a larger rework of the TX timestamping procedure.
-A logical subportion of the rework has been split into a separate
-change.
+Statistics after 10s of iPerf3 TCP test before the fix (note that
+netem's backlog > limit, netem stopped accepting packets):
+qdisc netem 1: root refcnt 2 limit 1000 delay 100ms
+ Sent 2767766 bytes 1848 pkt (dropped 652, overlimits 0 requeues 0)
+ backlog 4294528236b 1155p requeues 0
+qdisc tbf 10: parent 1:1 rate 50Mbit burst 1537b lat 50ms
+ Sent 2767766 bytes 1848 pkt (dropped 327, overlimits 7601 requeues 0)
+ backlog 0b 0p requeues 0
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241205145519.1236778-4-vladimir.oltean@nxp.com
+Statistics after the fix:
+qdisc netem 1: root refcnt 2 limit 1000 delay 100ms
+ Sent 37766372 bytes 24974 pkt (dropped 9, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+qdisc tbf 10: parent 1:1 rate 50Mbit burst 1537b lat 50ms
+ Sent 37766372 bytes 24974 pkt (dropped 327, overlimits 96017 requeues 0)
+ backlog 0b 0p requeues 0
+
+tbf segments the GSO SKBs (tbf_segment) and updates the netem's 'qlen'.
+The interface fully stops transferring packets and "locks". In this case,
+the child qdisc and tfifo are empty, but 'qlen' indicates the tfifo is at
+its limit and no more packets are accepted.
+
+This patch adds a counter for the entries in the tfifo. Netem's 'qlen' is
+only decreased when a packet is returned by its dequeue function, and not
+during enqueuing into the child qdisc. External updates to 'qlen' are thus
+accounted for and only the behavior of the backlog statistics changes. As
+in other qdiscs, 'qlen' then keeps track of  how many packets are held in
+netem and all of its children. As before, sch->limit remains as the
+maximum number of packets in the tfifo. The same applies to netem's
+backlog statistics.
+
+Fixes: 50612537e9ab ("netem: fix classful handling")
+Signed-off-by: Martin Ottens <martin.ottens@fau.de>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20241210131412.1837202-1-martin.ottens@fau.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: b454abfab525 ("net: mscc: ocelot: be resilient to loss of PTP packets during transmission")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/ocelot_ptp.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ net/sched/sch_netem.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
-index 1386fb2ff4a9..c54e96ff3976 100644
---- a/drivers/net/ethernet/mscc/ocelot_ptp.c
-+++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
-@@ -611,13 +611,12 @@ static int ocelot_port_add_txtstamp_skb(struct ocelot *ocelot, int port,
- 					struct sk_buff *clone)
- {
- 	struct ocelot_port *ocelot_port = ocelot->ports[port];
--	unsigned long flags;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 0eba06613dcd..f47ab622399f 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -77,6 +77,8 @@ struct netem_sched_data {
+ 	struct sk_buff	*t_head;
+ 	struct sk_buff	*t_tail;
  
--	spin_lock_irqsave(&ocelot->ts_id_lock, flags);
-+	spin_lock(&ocelot->ts_id_lock);
++	u32 t_len;
++
+ 	/* optional qdisc for classful handling (NULL at netem init) */
+ 	struct Qdisc	*qdisc;
  
- 	if (ocelot_port->ptp_skbs_in_flight == OCELOT_MAX_PTP_ID ||
- 	    ocelot->ptp_skbs_in_flight == OCELOT_PTP_FIFO_SIZE) {
--		spin_unlock_irqrestore(&ocelot->ts_id_lock, flags);
-+		spin_unlock(&ocelot->ts_id_lock);
- 		return -EBUSY;
+@@ -373,6 +375,7 @@ static void tfifo_reset(struct Qdisc *sch)
+ 	rtnl_kfree_skbs(q->t_head, q->t_tail);
+ 	q->t_head = NULL;
+ 	q->t_tail = NULL;
++	q->t_len = 0;
+ }
+ 
+ static void tfifo_enqueue(struct sk_buff *nskb, struct Qdisc *sch)
+@@ -402,6 +405,7 @@ static void tfifo_enqueue(struct sk_buff *nskb, struct Qdisc *sch)
+ 		rb_link_node(&nskb->rbnode, parent, p);
+ 		rb_insert_color(&nskb->rbnode, &q->t_root);
+ 	}
++	q->t_len++;
+ 	sch->q.qlen++;
+ }
+ 
+@@ -508,7 +512,7 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			1<<prandom_u32_max(8);
  	}
  
-@@ -634,7 +633,7 @@ static int ocelot_port_add_txtstamp_skb(struct ocelot *ocelot, int port,
+-	if (unlikely(sch->q.qlen >= sch->limit)) {
++	if (unlikely(q->t_len >= sch->limit)) {
+ 		/* re-link segs, so that qdisc_drop_all() frees them all */
+ 		skb->next = segs;
+ 		qdisc_drop_all(skb, sch, to_free);
+@@ -692,8 +696,8 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ tfifo_dequeue:
+ 	skb = __qdisc_dequeue_head(&sch->q);
+ 	if (skb) {
+-		qdisc_qstats_backlog_dec(sch, skb);
+ deliver:
++		qdisc_qstats_backlog_dec(sch, skb);
+ 		qdisc_bstats_update(sch, skb);
+ 		return skb;
+ 	}
+@@ -709,8 +713,7 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
  
- 	skb_queue_tail(&ocelot_port->tx_skbs, clone);
+ 		if (time_to_send <= now && q->slot.slot_next <= now) {
+ 			netem_erase_head(q, skb);
+-			sch->q.qlen--;
+-			qdisc_qstats_backlog_dec(sch, skb);
++			q->t_len--;
+ 			skb->next = NULL;
+ 			skb->prev = NULL;
+ 			/* skb->dev shares skb->rbnode area,
+@@ -737,16 +740,21 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 					if (net_xmit_drop_count(err))
+ 						qdisc_qstats_drop(sch);
+ 					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
++					sch->qstats.backlog -= pkt_len;
++					sch->q.qlen--;
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
++			sch->q.qlen--;
+ 			goto deliver;
+ 		}
  
--	spin_unlock_irqrestore(&ocelot->ts_id_lock, flags);
-+	spin_unlock(&ocelot->ts_id_lock);
+ 		if (q->qdisc) {
+ 			skb = q->qdisc->ops->dequeue(q->qdisc);
+-			if (skb)
++			if (skb) {
++				sch->q.qlen--;
+ 				goto deliver;
++			}
+ 		}
  
- 	return 0;
+ 		qdisc_watchdog_schedule_ns(&q->watchdog,
+@@ -756,8 +764,10 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 
+ 	if (q->qdisc) {
+ 		skb = q->qdisc->ops->dequeue(q->qdisc);
+-		if (skb)
++		if (skb) {
++			sch->q.qlen--;
+ 			goto deliver;
++		}
+ 	}
+ 	return NULL;
  }
-@@ -753,7 +752,6 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 		u32 val, id, seqid, txport;
- 		struct ocelot_port *port;
- 		struct timespec64 ts;
--		unsigned long flags;
- 
- 		val = ocelot_read(ocelot, SYS_PTP_STATUS);
- 
-@@ -777,7 +775,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 
- 		/* Retrieve its associated skb */
- try_again:
--		spin_lock_irqsave(&port->tx_skbs.lock, flags);
-+		spin_lock(&port->tx_skbs.lock);
- 
- 		skb_queue_walk_safe(&port->tx_skbs, skb, skb_tmp) {
- 			if (OCELOT_SKB_CB(skb)->ts_id != id)
-@@ -787,7 +785,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 			break;
- 		}
- 
--		spin_unlock_irqrestore(&port->tx_skbs.lock, flags);
-+		spin_unlock(&port->tx_skbs.lock);
- 
- 		if (WARN_ON(!skb_match))
- 			goto next_ts;
-@@ -796,7 +794,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 			dev_err_ratelimited(ocelot->dev,
- 					    "port %d received stale TX timestamp for seqid %d, discarding\n",
- 					    txport, seqid);
--			dev_kfree_skb_any(skb);
-+			kfree_skb(skb);
- 			goto try_again;
- 		}
- 
 -- 
 2.39.5
 
