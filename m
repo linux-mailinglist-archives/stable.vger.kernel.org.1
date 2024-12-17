@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-104898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144489F53A0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F589F521E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A114A16EC13
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B57F91885363
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2B41F76CB;
-	Tue, 17 Dec 2024 17:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37DE1F76B5;
+	Tue, 17 Dec 2024 17:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgxjSZfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzTQE4PS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD13E1F755B;
-	Tue, 17 Dec 2024 17:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBDF1F75B5;
+	Tue, 17 Dec 2024 17:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456439; cv=none; b=jPl5xb2tKxBWWydRA7tafoh7lhY1D5k/NY2zCVwhKmChQBlJgdRWQA+/JRa3+cMYaRtYYqtL0nitBjl+fk0ES5HftnEFyAxdJtEF4AXZioP0FQxsjWQ1ioE3NNS9ECOMz6hGihUpL6fUtD+NGZvx0CVPdVN2nQMLaypa/Rf+Dso=
+	t=1734455581; cv=none; b=Lp5juOLus3pjm2/meQ6L87gAMyAeeUsyKiEEwcPMQkt04KAdwkW/1ue59kIAbSESnqqOK7fhu7P0ItHclOLAHkWxFZUp6FNJJ0MgkZ2fbAK9QjyBnXNcLjSRYrBdeK9tg95nPZuXx5ersxlcz/Tnih4VKR/Q/nnTHXwc4o9dgXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456439; c=relaxed/simple;
-	bh=TzWhIK9mazOQLGbVOX2N2SEfysuRMBpT+u/leVTVNp4=;
+	s=arc-20240116; t=1734455581; c=relaxed/simple;
+	bh=y45GwhKh4xq8LZipiW3enAqHkACy2rug2UpuqLHyIBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sL+2DVomTyampukmCNk/Yb4w6LR/bBC2cYJyLQbuZ0TTLKIBG0/emuWdUd6NT+LLFtLnADZfXgl0xX4dPM4FMDK5i8otScGpciDy9pBkxDuWEydIRoglDQU9lc0Zqbj/HAewkfLkjvlJt6bB7ObnnO5N9ywZ4Hd7CXUPqPbz6j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgxjSZfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E418C4CED3;
-	Tue, 17 Dec 2024 17:27:18 +0000 (UTC)
+	 MIME-Version; b=Nm31Fvu/D8FbxEI8pEwlxtGdOptqp0JJj0TzEoBSLCAAokTlon/k5cYtEMuxV9bxmJf5P0PeAau76j4uCbMH8qC0wegzBBc1Z5Oa/aGBCLb55DQdaO+EYaTlQyM1mmkXd9J1GmRJF7k8XAwuSzs5/KTeaZuiuT7rekefVbwloIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzTQE4PS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F5CC4CED3;
+	Tue, 17 Dec 2024 17:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456438;
-	bh=TzWhIK9mazOQLGbVOX2N2SEfysuRMBpT+u/leVTVNp4=;
+	s=korg; t=1734455581;
+	bh=y45GwhKh4xq8LZipiW3enAqHkACy2rug2UpuqLHyIBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgxjSZfyqWR/6uNSUaYLaOB4rnamTp5zNW1GVP7gEfTphz//VI0lPsz9DsaBR1mL4
-	 d+hbR7hySqX6i5fLiHk6mwdgb0UHsuF1vNDYjmdvYBWWPEa7Zsi4EurqkoBJBsq9do
-	 Sj6z6XxpY3uK9uwONenrcom3BlZo+0MJWtrTNSnw=
+	b=lzTQE4PSpDptrPgltlEqb9Od46kJ+B640gTdCGEwexZbbWnmqrrkZJucQcWyFqedN
+	 n9SIGVarh2OTnffHgWBQF7TQxGxwZOpcTjWMBIQCnxJM3NFdsdeKuPEFxnkCMwJ2zL
+	 tviQxcQLRoPaosnAQtw7eosS/Q5rdw1OUyysyNQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 061/172] drm/amdgpu: fix UVD contiguous CS mapping problem
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.15 04/51] ata: sata_highbank: fix OF node reference leak in highbank_initialize_phys()
 Date: Tue, 17 Dec 2024 18:06:57 +0100
-Message-ID: <20241217170548.807885550@linuxfoundation.org>
+Message-ID: <20241217170520.488992459@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +59,37 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit 12f325bcd2411e571dbb500bf6862c812c479735 upstream.
+commit 676fe1f6f74db988191dab5df3bf256908177072 upstream.
 
-When starting the mpv player, Radeon R9 users are observing
-the below error in dmesg.
+The OF node reference obtained by of_parse_phandle_with_args() is not
+released on early return. Add a of_node_put() call before returning.
 
-[drm:amdgpu_uvd_cs_pass2 [amdgpu]]
-*ERROR* msg/fb buffer ff00f7c000-ff00f7e000 out of 256MB segment!
-
-The patch tries to set the TTM_PL_FLAG_CONTIGUOUS for both user
-flag(AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS) set and not set cases.
-
-v2: Make the TTM_PL_FLAG_CONTIGUOUS mandatory for user BO's.
-v3: revert back to v1, but fix the check instead (chk).
-
-Closes:https://gitlab.freedesktop.org/drm/amd/-/issues/3599
-Closes:https://gitlab.freedesktop.org/drm/amd/-/issues/3501
-Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.10+
+Fixes: 8996b89d6bc9 ("ata: add platform driver for Calxeda AHCI controller")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c  | 17 +++++++++++------
- drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c |  2 ++
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/ata/sata_highbank.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index d891ab779ca7..5df21529b3b1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -1801,13 +1801,18 @@ int amdgpu_cs_find_mapping(struct amdgpu_cs_parser *parser,
- 	if (dma_resv_locking_ctx((*bo)->tbo.base.resv) != &parser->exec.ticket)
- 		return -EINVAL;
- 
-+	/* Make sure VRAM is allocated contigiously */
- 	(*bo)->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
--	amdgpu_bo_placement_from_domain(*bo, (*bo)->allowed_domains);
--	for (i = 0; i < (*bo)->placement.num_placement; i++)
--		(*bo)->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
--	r = ttm_bo_validate(&(*bo)->tbo, &(*bo)->placement, &ctx);
--	if (r)
--		return r;
-+	if ((*bo)->tbo.resource->mem_type == TTM_PL_VRAM &&
-+	    !((*bo)->tbo.resource->placement & TTM_PL_FLAG_CONTIGUOUS)) {
-+
-+		amdgpu_bo_placement_from_domain(*bo, (*bo)->allowed_domains);
-+		for (i = 0; i < (*bo)->placement.num_placement; i++)
-+			(*bo)->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
-+		r = ttm_bo_validate(&(*bo)->tbo, &(*bo)->placement, &ctx);
-+		if (r)
-+			return r;
-+	}
- 
- 	return amdgpu_ttm_alloc_gart(&(*bo)->tbo);
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c
-index 31fd30dcd593..65bb26215e86 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_uvd.c
-@@ -551,6 +551,8 @@ static void amdgpu_uvd_force_into_uvd_segment(struct amdgpu_bo *abo)
- 	for (i = 0; i < abo->placement.num_placement; ++i) {
- 		abo->placements[i].fpfn = 0 >> PAGE_SHIFT;
- 		abo->placements[i].lpfn = (256 * 1024 * 1024) >> PAGE_SHIFT;
-+		if (abo->placements[i].mem_type == TTM_PL_VRAM)
-+			abo->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
- 	}
- }
- 
--- 
-2.47.1
-
+--- a/drivers/ata/sata_highbank.c
++++ b/drivers/ata/sata_highbank.c
+@@ -348,6 +348,7 @@ static int highbank_initialize_phys(stru
+ 			phy_nodes[phy] = phy_data.np;
+ 			cphy_base[phy] = of_iomap(phy_nodes[phy], 0);
+ 			if (cphy_base[phy] == NULL) {
++				of_node_put(phy_data.np);
+ 				return 0;
+ 			}
+ 			phy_count += 1;
 
 
 
