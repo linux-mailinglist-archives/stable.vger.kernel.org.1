@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-104574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2239F51E7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C628A9F539C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43CF51883C6D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F92A16EB73
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704871F866E;
-	Tue, 17 Dec 2024 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A971F76DA;
+	Tue, 17 Dec 2024 17:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPdQLzFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb/SZAKE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2EF1F8664;
-	Tue, 17 Dec 2024 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBC01F75BE;
+	Tue, 17 Dec 2024 17:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455465; cv=none; b=F1T9KrmsKBY88zjiBsEAvnGXVADimS6vACLgkAPyj5gzWD9/9+pPHs9jHHvNXg0nPLGhAFX9mC0XBEcsSlOYpJXHL/8GkEnGqOPgmce6V0nx0uJGu3Jnnl4pfM7VJMqcbp10Li62FSQko3549aZX5Dbiq78bxZyl+NN8aFNSiq0=
+	t=1734456427; cv=none; b=gMiooQdDgYyvLTLKnMqIAahw2iLBXOSMh7PcehY6eTgvgaUU9XlbgZuNktBvqsRYUmNqel2bM1elSO2osIJLJW6kIrA2NQydNTK8XJpNr/DONgNU1Pw9YsQ1rAeJzOXnKZd1kfmNuTXuMuFCnzy9Se1UQ4IRrbKWIiPr7Hd9fOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455465; c=relaxed/simple;
-	bh=5yW1egmc6D7rXaFcgZokCdQv5eixc1JgnO9bkD/mTP0=;
+	s=arc-20240116; t=1734456427; c=relaxed/simple;
+	bh=FSGCHCu3T0oPaPSuSXo3p1WqKY+cGqugUT3s121V++k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HW2Vw3pVuqCEUb0nCYv6Nd9J7lBII6/YktGD4Hw3XK0mdac4nDoQ0UWO0rafcZMvuWMB3Z/Okg/n3LiHs4MDq/BXykcklaWsL3Hi9T4lYJd0ZzgGnFTq9C52j3okYmgFpUGGs3ZaxnK13ZUCQmQojuhspU4IOJb4Q9PhjUl513Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPdQLzFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AFEC4CEDD;
-	Tue, 17 Dec 2024 17:11:04 +0000 (UTC)
+	 MIME-Version; b=n5aNZ7b+vfaoHV73wcm3D2XPTp9C4upmNZBAytIij21Wjzo+Y4i6TCUrHhFkfsnDRIGa0+tjBm83pRpLiXB59qrmzEUZq1GLXgvqXUipL5P0XXS3sSphIM+98Eb1p71yHSc1PyZLiqcF04paZcxwTsiB0XGrKTS7ZDbJSx0Vzfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb/SZAKE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC60FC4CED3;
+	Tue, 17 Dec 2024 17:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455465;
-	bh=5yW1egmc6D7rXaFcgZokCdQv5eixc1JgnO9bkD/mTP0=;
+	s=korg; t=1734456427;
+	bh=FSGCHCu3T0oPaPSuSXo3p1WqKY+cGqugUT3s121V++k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QPdQLzFjIG2eEhZfp9ua7+f4gYWRZAAaW2aEBIXOEMWNg6F334CF3u3Ih/QmCWDkF
-	 Uo8zutTKTJ/IMMMWV1lt3WJ1c+APqLg3TpNxcCEkhX64cagRgdLdG9QZ+FeCT376XV
-	 rQmrKcfjFvrhaqnh8fHmC28hmO/X5uNjc07buwb4=
+	b=Xb/SZAKE3sCYZd7jcScu28hcndZvkIlC2roIjkb9Zux509WYzhAF/amjjc61t4Rtl
+	 8TrO7rQvmaJFWPmyDVIOII5m6+wknpYcYVRjFwSgIboEphhcao/+yiZQIc6Vn7NU0J
+	 nO4/gNKLpUgXJZ2tSpPk70pgJlL8lEDzv+PrVQDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
-Subject: [PATCH 5.10 02/43] usb: host: max3421-hcd: Correctly abort a USB request.
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Yunxiang Li <Yunxiang.Li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 057/172] drm/amdkfd: pause autosuspend when creating pdd
 Date: Tue, 17 Dec 2024 18:06:53 +0100
-Message-ID: <20241217170520.562435535@linuxfoundation.org>
+Message-ID: <20241217170548.640013540@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
+From: Jesse.zhang@amd.com <Jesse.zhang@amd.com>
 
-commit 0d2ada05227881f3d0722ca2364e3f7a860a301f upstream.
+commit 438b39ac74e2a9dc0a5c9d653b7d8066877e86b1 upstream.
 
-If the current USB request was aborted, the spi thread would not respond
-to any further requests. This is because the "curr_urb" pointer would
-not become NULL, so no further requests would be taken off the queue.
-The solution here is to set the "urb_done" flag, as this will cause the
-correct handling of the URB. Also clear interrupts that should only be
-expected if an URB is in progress.
+When using MES creating a pdd will require talking to the GPU to
+setup the relevant context. The code here forgot to wake up the GPU
+in case it was in suspend, this causes KVM to EFAULT for passthrough
+GPU for example. This issue can be masked if the GPU was woken up by
+other things (e.g. opening the KMS node) first and have not yet gone to sleep.
 
-Fixes: 2d53139f3162 ("Add support for using a MAX3421E chip as a host driver.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
-Link: https://lore.kernel.org/r/20241124221430.1106080-1-mark.tomlinson@alliedtelesis.co.nz
+v4: do the allocation of proc_ctx_bo in a lazy fashion
+when the first queue is created in a process (Felix)
+
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Reviewed-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/max3421-hcd.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |   15 +++++++++++
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c              |   23 +-----------------
+ 2 files changed, 17 insertions(+), 21 deletions(-)
 
---- a/drivers/usb/host/max3421-hcd.c
-+++ b/drivers/usb/host/max3421-hcd.c
-@@ -785,11 +785,17 @@ max3421_check_unlink(struct usb_hcd *hcd
- 				retval = 1;
- 				dev_dbg(&spi->dev, "%s: URB %p unlinked=%d",
- 					__func__, urb, urb->unlinked);
--				usb_hcd_unlink_urb_from_ep(hcd, urb);
--				spin_unlock_irqrestore(&max3421_hcd->lock,
--						       flags);
--				usb_hcd_giveback_urb(hcd, urb, 0);
--				spin_lock_irqsave(&max3421_hcd->lock, flags);
-+				if (urb == max3421_hcd->curr_urb) {
-+					max3421_hcd->urb_done = 1;
-+					max3421_hcd->hien &= ~(BIT(MAX3421_HI_HXFRDN_BIT) |
-+							       BIT(MAX3421_HI_RCVDAV_BIT));
-+				} else {
-+					usb_hcd_unlink_urb_from_ep(hcd, urb);
-+					spin_unlock_irqrestore(&max3421_hcd->lock,
-+							       flags);
-+					usb_hcd_giveback_urb(hcd, urb, 0);
-+					spin_lock_irqsave(&max3421_hcd->lock, flags);
-+				}
- 			}
- 		}
- 	}
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -205,6 +205,21 @@ static int add_queue_mes(struct device_q
+ 	if (!down_read_trylock(&adev->reset_domain->sem))
+ 		return -EIO;
+ 
++	if (!pdd->proc_ctx_cpu_ptr) {
++		r = amdgpu_amdkfd_alloc_gtt_mem(adev,
++				AMDGPU_MES_PROC_CTX_SIZE,
++				&pdd->proc_ctx_bo,
++				&pdd->proc_ctx_gpu_addr,
++				&pdd->proc_ctx_cpu_ptr,
++				false);
++		if (r) {
++			dev_err(adev->dev,
++				"failed to allocate process context bo\n");
++			return r;
++		}
++		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
++	}
++
+ 	memset(&queue_input, 0x0, sizeof(struct mes_add_queue_input));
+ 	queue_input.process_id = qpd->pqm->process->pasid;
+ 	queue_input.page_table_base_addr =  qpd->page_table_base;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -1076,7 +1076,8 @@ static void kfd_process_destroy_pdds(str
+ 
+ 		kfd_free_process_doorbells(pdd->dev->kfd, pdd);
+ 
+-		if (pdd->dev->kfd->shared_resources.enable_mes)
++		if (pdd->dev->kfd->shared_resources.enable_mes &&
++			pdd->proc_ctx_cpu_ptr)
+ 			amdgpu_amdkfd_free_gtt_mem(pdd->dev->adev,
+ 						   &pdd->proc_ctx_bo);
+ 		/*
+@@ -1610,7 +1611,6 @@ struct kfd_process_device *kfd_create_pr
+ 							struct kfd_process *p)
+ {
+ 	struct kfd_process_device *pdd = NULL;
+-	int retval = 0;
+ 
+ 	if (WARN_ON_ONCE(p->n_pdds >= MAX_GPU_INSTANCE))
+ 		return NULL;
+@@ -1634,21 +1634,6 @@ struct kfd_process_device *kfd_create_pr
+ 	pdd->user_gpu_id = dev->id;
+ 	atomic64_set(&pdd->evict_duration_counter, 0);
+ 
+-	if (dev->kfd->shared_resources.enable_mes) {
+-		retval = amdgpu_amdkfd_alloc_gtt_mem(dev->adev,
+-						AMDGPU_MES_PROC_CTX_SIZE,
+-						&pdd->proc_ctx_bo,
+-						&pdd->proc_ctx_gpu_addr,
+-						&pdd->proc_ctx_cpu_ptr,
+-						false);
+-		if (retval) {
+-			dev_err(dev->adev->dev,
+-				"failed to allocate process context bo\n");
+-			goto err_free_pdd;
+-		}
+-		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
+-	}
+-
+ 	p->pdds[p->n_pdds++] = pdd;
+ 	if (kfd_dbg_is_per_vmid_supported(pdd->dev))
+ 		pdd->spi_dbg_override = pdd->dev->kfd2kgd->disable_debug_trap(
+@@ -1660,10 +1645,6 @@ struct kfd_process_device *kfd_create_pr
+ 	idr_init(&pdd->alloc_idr);
+ 
+ 	return pdd;
+-
+-err_free_pdd:
+-	kfree(pdd);
+-	return NULL;
+ }
+ 
+ /**
 
 
 
