@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-104845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183169F533D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7279F549A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E66E916CFB8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3E3B188EF46
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA521F6661;
-	Tue, 17 Dec 2024 17:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155CB1F9EC8;
+	Tue, 17 Dec 2024 17:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LY14fcFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emui6svX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683BA140E38;
-	Tue, 17 Dec 2024 17:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82941F9ECC;
+	Tue, 17 Dec 2024 17:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456276; cv=none; b=JnGeR/HW9P92JwboYt+J1qEKCTXiJA2PRq19tkfwmvfOk7kog8MiHVGw63sOCSlwxfg+XWWkDljucDtW/dlExL+GCHgphp0y0N+iJqOerOGgTVaPECaHJen+EZGCuKJARgF0fcNhBE6Ecep3aNH/4jmEamOr7CTL8kp1IxF1DCo=
+	t=1734456817; cv=none; b=e1GarOz13VVO621uTLN7aucE5kg7Vk6P19c+fMOLEjMXL6GYjdAutgn3ff/AooC84DYlCPLSRLZmU56PI4xNFx8bRY5ExO52Rz3V4wjtcSWQs5o1I/mlim461DN8tXRtBMpKI9+F2uSAcf4cln1e/xoxLqF6JTgrzPLt1D6hSr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456276; c=relaxed/simple;
-	bh=Hr+yb+nQDjZrIWsNxiDc2egF7yVS2oqUqKTqFpHQhyQ=;
+	s=arc-20240116; t=1734456817; c=relaxed/simple;
+	bh=8rreOfCQSGrEKCA2gnmlZfn8O7b8z7WbGF13qsmFT1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3x5xwpxABnkRBH8BjZ1HJa4YDt5eNbe4kD/cLn/3sUWHnENLcAM+CcW/kLAl34Xo/+oJjtMBIZ7uVqkC3isB3rZ3WOlkwQxDFj78hy7rHFNuFKBMys5cuidTCi6dtuAbhqDfKPGauLiyNEL2Z7jzF8fM6FG6yJhbJkuBBFxv3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LY14fcFL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E50C4CED3;
-	Tue, 17 Dec 2024 17:24:35 +0000 (UTC)
+	 MIME-Version; b=AlYKdg+g3YTLm92mOUhNtQWWUHU+4O/AVIY5GksE442IuPs5uwtAUtCP4z8LssOj7OD0NKj5EyYCMQx/12wqsaoEkquEefDUj9y1aI5ZzsnLe1CwyZchAzrVLuzJiK3Xm+DkhhYfUdRcW+G5J/5cuXai0iGVbXhhO2sYU3ZMe+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emui6svX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5DAC4CED7;
+	Tue, 17 Dec 2024 17:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456276;
-	bh=Hr+yb+nQDjZrIWsNxiDc2egF7yVS2oqUqKTqFpHQhyQ=;
+	s=korg; t=1734456817;
+	bh=8rreOfCQSGrEKCA2gnmlZfn8O7b8z7WbGF13qsmFT1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LY14fcFLH9cykkhF685EGb3N62kFfu5fBrjg8X6Gu0uc9qNZCYzClWyHrVf90jhSP
-	 pCMoVg2j7B/m6Her4BVDEGqyaV2Ra3MswhagQ+bPsBNMBlcxZmDFPVrqAGpAR+8TJt
-	 0ejWa8em6QmXXMoKxvtaUirgn3wxMZsDxFz4FjHo=
+	b=emui6svXEmkWDl9BPoURCSIdjmkv1Q++i4NjbUsJP9+PEY7E9wou5U3m6Te01f2kN
+	 GEmuN8agQ+NIjtCa+jRSzu/vqMDUv6Dvww+My6WsxWSP6Af7oOsbNNTEYczUHgg0/T
+	 qUQWovegqBG1PV2e+TlxSpb7PXnoQ5+c9Z4M81iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.6 095/109] KVM: arm64: Disable MPAM visibility by default and ignore VMM writes
-Date: Tue, 17 Dec 2024 18:08:19 +0100
-Message-ID: <20241217170537.356830188@linuxfoundation.org>
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@idosch.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 144/172] team: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
+Date: Tue, 17 Dec 2024 18:08:20 +0100
+Message-ID: <20241217170552.304443740@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +66,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 6685f5d572c22e1003e7c0d089afe1c64340ab1f upstream.
+[ Upstream commit 98712844589e06d9aa305b5077169942139fd75c ]
 
-commit 011e5f5bf529f ("arm64/cpufeature: Add remaining feature bits in
-ID_AA64PFR0 register") exposed the MPAM field of AA64PFR0_EL1 to guests,
-but didn't add trap handling. A previous patch supplied the missing trap
-handling.
+Similar to bonding driver, add NETIF_F_GSO_ENCAP_ALL to TEAM_VLAN_FEATURES
+in order to support slave devices which propagate NETIF_F_GSO_UDP_TUNNEL &
+NETIF_F_GSO_UDP_TUNNEL_CSUM as vlan_features.
 
-Existing VMs that have the MPAM field of ID_AA64PFR0_EL1 set need to
-be migratable, but there is little point enabling the MPAM CPU
-interface on new VMs until there is something a guest can do with it.
-
-Clear the MPAM field from the guest's ID_AA64PFR0_EL1 and on hardware
-that supports MPAM, politely ignore the VMMs attempts to set this bit.
-
-Guests exposed to this bug have the sanitised value of the MPAM field,
-so only the correct value needs to be ignored. This means the field
-can continue to be used to block migration to incompatible hardware
-(between MPAM=1 and MPAM=5), and the VMM can't rely on the field
-being ignored.
-
-Signed-off-by: James Morse <james.morse@arm.com>
-Co-developed-by: Joey Gouly <joey.gouly@arm.com>
-Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20241030160317.2528209-7-joey.gouly@arm.com
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3625920b62c3 ("teaming: fix vlan_features computing")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Ido Schimmel <idosch@idosch.org>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241210141245.327886-5-daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/sys_regs.c |   52 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 50 insertions(+), 2 deletions(-)
+ drivers/net/team/team_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1330,6 +1330,7 @@ static u64 __kvm_read_sanitised_id_reg(c
- 			val &= ~ARM64_FEATURE_MASK(ID_AA64PFR1_EL1_MTE);
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index ddd9ae7085c7..6ace5a74cddb 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -983,7 +983,8 @@ static void team_port_disable(struct team *team,
  
- 		val &= ~ARM64_FEATURE_MASK(ID_AA64PFR1_EL1_SME);
-+		val &= ~ARM64_FEATURE_MASK(ID_AA64PFR1_EL1_MPAM_frac);
- 		break;
- 	case SYS_ID_AA64ISAR1_EL1:
- 		if (!vcpu_has_ptrauth(vcpu))
-@@ -1472,6 +1473,13 @@ static u64 read_sanitised_id_aa64pfr0_el
+ #define TEAM_VLAN_FEATURES (NETIF_F_HW_CSUM | NETIF_F_SG | \
+ 			    NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
+-			    NETIF_F_HIGHDMA | NETIF_F_LRO)
++			    NETIF_F_HIGHDMA | NETIF_F_LRO | \
++			    NETIF_F_GSO_ENCAP_ALL)
  
- 	val &= ~ID_AA64PFR0_EL1_AMU_MASK;
- 
-+	/*
-+	 * MPAM is disabled by default as KVM also needs a set of PARTID to
-+	 * program the MPAMVPMx_EL2 PARTID remapping registers with. But some
-+	 * older kernels let the guest see the ID bit.
-+	 */
-+	val &= ~ID_AA64PFR0_EL1_MPAM_MASK;
-+
- 	return val;
- }
- 
-@@ -1560,6 +1568,42 @@ static int set_id_dfr0_el1(struct kvm_vc
- 	return set_id_reg(vcpu, rd, val);
- }
- 
-+static int set_id_aa64pfr0_el1(struct kvm_vcpu *vcpu,
-+			       const struct sys_reg_desc *rd, u64 user_val)
-+{
-+	u64 hw_val = read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1);
-+	u64 mpam_mask = ID_AA64PFR0_EL1_MPAM_MASK;
-+
-+	/*
-+	 * Commit 011e5f5bf529f ("arm64/cpufeature: Add remaining feature bits
-+	 * in ID_AA64PFR0 register") exposed the MPAM field of AA64PFR0_EL1 to
-+	 * guests, but didn't add trap handling. KVM doesn't support MPAM and
-+	 * always returns an UNDEF for these registers. The guest must see 0
-+	 * for this field.
-+	 *
-+	 * But KVM must also accept values from user-space that were provided
-+	 * by KVM. On CPUs that support MPAM, permit user-space to write
-+	 * the sanitizied value to ID_AA64PFR0_EL1.MPAM, but ignore this field.
-+	 */
-+	if ((hw_val & mpam_mask) == (user_val & mpam_mask))
-+		user_val &= ~ID_AA64PFR0_EL1_MPAM_MASK;
-+
-+	return set_id_reg(vcpu, rd, user_val);
-+}
-+
-+static int set_id_aa64pfr1_el1(struct kvm_vcpu *vcpu,
-+			       const struct sys_reg_desc *rd, u64 user_val)
-+{
-+	u64 hw_val = read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1);
-+	u64 mpam_mask = ID_AA64PFR1_EL1_MPAM_frac_MASK;
-+
-+	/* See set_id_aa64pfr0_el1 for comment about MPAM */
-+	if ((hw_val & mpam_mask) == (user_val & mpam_mask))
-+		user_val &= ~ID_AA64PFR1_EL1_MPAM_frac_MASK;
-+
-+	return set_id_reg(vcpu, rd, user_val);
-+}
-+
- /*
-  * cpufeature ID register user accessors
-  *
-@@ -2018,10 +2062,14 @@ static const struct sys_reg_desc sys_reg
- 	{ SYS_DESC(SYS_ID_AA64PFR0_EL1),
- 	  .access = access_id_reg,
- 	  .get_user = get_id_reg,
--	  .set_user = set_id_reg,
-+	  .set_user = set_id_aa64pfr0_el1,
- 	  .reset = read_sanitised_id_aa64pfr0_el1,
- 	  .val = ID_AA64PFR0_EL1_CSV2_MASK | ID_AA64PFR0_EL1_CSV3_MASK, },
--	ID_SANITISED(ID_AA64PFR1_EL1),
-+	{ SYS_DESC(SYS_ID_AA64PFR1_EL1),
-+	  .access = access_id_reg,
-+	  .get_user = get_id_reg,
-+	  .set_user = set_id_aa64pfr1_el1,
-+	  .reset = kvm_read_sanitised_id_reg, },
- 	ID_UNALLOCATED(4,2),
- 	ID_UNALLOCATED(4,3),
- 	ID_SANITISED(ID_AA64ZFR0_EL1),
+ #define TEAM_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+ 				 NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE)
+-- 
+2.39.5
+
 
 
 
