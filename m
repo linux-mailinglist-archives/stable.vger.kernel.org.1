@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBBA9F52C9
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B359F51DE
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06D4F16C82F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01BEA188576F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20991F868B;
-	Tue, 17 Dec 2024 17:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66F31F757B;
+	Tue, 17 Dec 2024 17:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZm78Qc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfKxg9tz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E53F1F76A1;
-	Tue, 17 Dec 2024 17:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6114F1F37BE;
+	Tue, 17 Dec 2024 17:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455984; cv=none; b=szAqy7DoWu1VOKb2gaJPt9PVQOcx5nVtavJXK554JrdkUgy1Lj4wp4A+qEZ4SPlTC9JTb3XEgmOyvWstjcpDtvt4l+ICdABCwVIRdJq35KoM96xxK8EpaHlOT4ybvmQ3w45WRhykExL/vcTy4SeZhWeDzMrzDl71ZgJMcIpAFaA=
+	t=1734455447; cv=none; b=ozw5KmecV71ddJeK84WzcaC8hcYJl0kbRo9R8QBKZl6HpcQbgoHZWJz3856xh9Af75tkeRpV6gkpGeJ9QhJT8JqRqCzQlOu1xGMtCx6TSEkY2iWk9GDTNHcCwP6CuDY4/QPJv90eHTGSyNfLvgxhV1E2Tj5aWpXjwxg0BK59AwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455984; c=relaxed/simple;
-	bh=A+8b1x9nWRv5Zg8NTr5aRbtu10/QfqdgdqJbI5AIf6o=;
+	s=arc-20240116; t=1734455447; c=relaxed/simple;
+	bh=g8iB+wUsghGy+QQ/UyaUz70FRjP2IjzWnetWm3gqYiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSuX1IY9LUMwrHUuco7IueQPmdj0lzqTLccpEnd40ie9b4arST1doc51SSALjDLZO5A8J4MMlTdovUXbyfyE84kKh7h9u3VccWDQImR9Dd1+/keS1Vx+T6a/c8c1GTVg5gRZHYO/zpX5/Z90Mc4OOPB4BKARlpBVb0f25rHHU8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZm78Qc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4B5C4CED7;
-	Tue, 17 Dec 2024 17:19:43 +0000 (UTC)
+	 MIME-Version; b=cGg/wFEHVebmh8rk0tswhubcAFFMkSWS4nXsFvFXYzSJbLtr7tap0kJ0AlfEMKtUI7fzNqCtS7kJs7Db46Cdr4s6M+zn7+9fvUcOwXo0tui9uvgjf6eox7bHaHHaGXlDeRxozuKckjNwW93PdsF7nQwvj+u6F70C1PXZg7geKr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfKxg9tz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6F8C4CED3;
+	Tue, 17 Dec 2024 17:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455984;
-	bh=A+8b1x9nWRv5Zg8NTr5aRbtu10/QfqdgdqJbI5AIf6o=;
+	s=korg; t=1734455447;
+	bh=g8iB+wUsghGy+QQ/UyaUz70FRjP2IjzWnetWm3gqYiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZm78Qc7XiQiSWGt4isvEUh0DhDDA9POUfb9RvunJnMXLi0mUQovMMg2PssO84jy1
-	 VmDOzLlxcpTRWC9IJtgyzxKTArUjs2AImKuQ4/7S5ZmbbClUDuHp0gJprSm+FG/mQZ
-	 h8u/QYg16Z70uQKlCFgChawfFBPFUcvm1rMILYp8=
+	b=rfKxg9tzh63MijQ1pTwVjrqqqdruRfg/vD6NxLMdznN3x4aabNm/swaGGoKNAShlc
+	 GZ0L6fI0TkP8pjG7EbN8hzWhgG765/uQCyuMvO7tfYpd1yfaGfRWGZHrYCaiNMcA2t
+	 SYV9FyJzFAEFy4aQcjwRWfpHAZGoiGhI4JW70BOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Frager <neal.frager@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Peter Korsgaard <peter@korsgaard.com>
-Subject: [PATCH 6.6 021/109] usb: dwc3: xilinx: make sure pipe clock is deselected in usb2 only mode
+	Remi Pommarel <repk@triplefau.lt>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 14/43] batman-adv: Remove uninitialized data in full table TT response
 Date: Tue, 17 Dec 2024 18:07:05 +0100
-Message-ID: <20241217170534.250374414@linuxfoundation.org>
+Message-ID: <20241217170521.032894752@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Frager <neal.frager@amd.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit a48f744bef9ee74814a9eccb030b02223e48c76c upstream.
+[ Upstream commit 8038806db64da15721775d6b834990cacbfcf0b2 ]
 
-When the USB3 PHY is not defined in the Linux device tree, there could
-still be a case where there is a USB3 PHY active on the board and enabled
-by the first stage bootloader. If serdes clock is being used then the USB
-will fail to enumerate devices in 2.0 only mode.
+The number of entries filled by batadv_tt_tvlv_generate() can be less
+than initially expected in batadv_tt_prepare_tvlv_{global,local}_data()
+(changes can be removed by batadv_tt_local_event() in ADD+DEL sequence
+in the meantime as the lock held during the whole tvlv global/local data
+generation).
 
-To solve this, make sure that the PIPE clock is deselected whenever the
-USB3 PHY is not defined and guarantees that the USB2 only mode will work
-in all cases.
+Thus tvlv_len could be bigger than the actual TT entry size that need
+to be sent so full table TT_RESPONSE could hold invalid TT entries such
+as below.
 
-Fixes: 9678f3361afc ("usb: dwc3: xilinx: Skip resets and USB3 register settings for USB2.0 mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Neal Frager <neal.frager@amd.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Acked-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/1733163111-1414816-1-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
+ * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
+
+Remove the extra allocated space to avoid sending uninitialized entries
+for full table TT_RESPONSE in both batadv_send_other_tt_response() and
+batadv_send_my_tt_response().
+
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-xilinx.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/batman-adv/translation-table.c | 37 ++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -121,8 +121,11 @@ static int dwc3_xlnx_init_zynqmp(struct
- 	 * in use but the usb3-phy entry is missing from the device tree.
- 	 * Therefore, skip these operations in this case.
- 	 */
--	if (!priv_data->usb3_phy)
-+	if (!priv_data->usb3_phy) {
-+		/* Deselect the PIPE Clock Select bit in FPD PIPE Clock register */
-+		writel(PIPE_CLK_DESELECT, priv_data->regs + XLNX_USB_FPD_PIPE_CLK);
- 		goto skip_usb3_phy;
-+	}
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 1eb3562259be..4eba6c8b04a8 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -2984,14 +2984,16 @@ static bool batadv_tt_global_valid(const void *entry_ptr,
+  *
+  * Fills the tvlv buff with the tt entries from the specified hash. If valid_cb
+  * is not provided then this becomes a no-op.
++ *
++ * Return: Remaining unused length in tvlv_buff.
+  */
+-static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
+-				    struct batadv_hashtable *hash,
+-				    void *tvlv_buff, u16 tt_len,
+-				    bool (*valid_cb)(const void *,
+-						     const void *,
+-						     u8 *flags),
+-				    void *cb_data)
++static u16 batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
++				   struct batadv_hashtable *hash,
++				   void *tvlv_buff, u16 tt_len,
++				   bool (*valid_cb)(const void *,
++						    const void *,
++						    u8 *flags),
++				   void *cb_data)
+ {
+ 	struct batadv_tt_common_entry *tt_common_entry;
+ 	struct batadv_tvlv_tt_change *tt_change;
+@@ -3005,7 +3007,7 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
+ 	tt_change = (struct batadv_tvlv_tt_change *)tvlv_buff;
  
- 	crst = devm_reset_control_get_exclusive(dev, "usb_crst");
- 	if (IS_ERR(crst)) {
+ 	if (!valid_cb)
+-		return;
++		return tt_len;
+ 
+ 	rcu_read_lock();
+ 	for (i = 0; i < hash->size; i++) {
+@@ -3031,6 +3033,8 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
+ 		}
+ 	}
+ 	rcu_read_unlock();
++
++	return batadv_tt_len(tt_tot - tt_num_entries);
+ }
+ 
+ /**
+@@ -3308,10 +3312,11 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
+ 			goto out;
+ 
+ 		/* fill the rest of the tvlv with the real TT entries */
+-		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.global_hash,
+-					tt_change, tt_len,
+-					batadv_tt_global_valid,
+-					req_dst_orig_node);
++		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
++						    bat_priv->tt.global_hash,
++						    tt_change, tt_len,
++						    batadv_tt_global_valid,
++						    req_dst_orig_node);
+ 	}
+ 
+ 	/* Don't send the response, if larger than fragmented packet. */
+@@ -3437,9 +3442,11 @@ static bool batadv_send_my_tt_response(struct batadv_priv *bat_priv,
+ 			goto out;
+ 
+ 		/* fill the rest of the tvlv with the real TT entries */
+-		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.local_hash,
+-					tt_change, tt_len,
+-					batadv_tt_local_valid, NULL);
++		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
++						    bat_priv->tt.local_hash,
++						    tt_change, tt_len,
++						    batadv_tt_local_valid,
++						    NULL);
+ 	}
+ 
+ 	tvlv_tt_data->flags = BATADV_TT_RESPONSE;
+-- 
+2.39.5
+
 
 
 
