@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-104584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E91D9F51EE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 923999F527A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B55C188E956
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB0CC16D585
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709CD149DFA;
-	Tue, 17 Dec 2024 17:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC3D1F8693;
+	Tue, 17 Dec 2024 17:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDklNfss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcZ++XZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2BF1F755F;
-	Tue, 17 Dec 2024 17:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDCB8615A;
+	Tue, 17 Dec 2024 17:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455495; cv=none; b=N4rsKqx8dnt8A1bKxYiu/VZ75KJUkvk3EdAFgyKsReTmyyU+8IpW5ucKsdpU775MFZCCCDvfC475NualE8OsgNk5yV4SZF3XeAefDv5t09O8btElryFSS9ry/ze01LxmhdXi68xDPGcqvTWYWRWmYK/+sDrNWvNimG1R+A+YbUg=
+	t=1734455810; cv=none; b=qpUkoV8dlG6EHXXkZURDee7sVlvkpnowabESZthwTgWG8GuMh6FweQpLMt3khE5EBhh5jgwgJF//ebYa8Hi2DNiRf6aR3hNvJ5EaeYlhmrvO1JSiimA2xM+togk1EaxGwzlSEykWIxZFicJKBcse4YVcnzlRWScRF80QWylHX1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455495; c=relaxed/simple;
-	bh=VkmHj5bzo/pWRxFNeR81MeCDtNgJmZDISewEK7kQ5yM=;
+	s=arc-20240116; t=1734455810; c=relaxed/simple;
+	bh=zLZPaUYW8unGQF7amhDycN3vUutEymZdk7RT2JWC56E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4QX2gtBdLja06tStqDAbPYIqtk6nKCmU5iuUQB/Vt9vYK45U034VEbWpFGFfTkQ471hoEU527DiJCxC6JESreC+P848kI+tCIElxn+AMnDMBw2zUIHPZ58FK13VYfMumUGnLQXX2DeGnYs9hIRejwbYP2GwA+24vVJ8Audwjn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDklNfss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C26CC4CED3;
-	Tue, 17 Dec 2024 17:11:34 +0000 (UTC)
+	 MIME-Version; b=JAtAp4y1dZ4hjxAR23LjCM2mTS2garUSxSl9vLqqh6BwlWdpxBIu+DUwe9MDyemGvOOY2bCuA/Vj/pBk5RonMpCLOX1zKdGkyjRbV0/Rf4JYYJ2qTlkj44HMtVASbwNVC+dKndbqkGJAO69K7wtgMl9ZfoMLjkxCsfeiHzktnDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcZ++XZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A11AC4CED3;
+	Tue, 17 Dec 2024 17:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455495;
-	bh=VkmHj5bzo/pWRxFNeR81MeCDtNgJmZDISewEK7kQ5yM=;
+	s=korg; t=1734455810;
+	bh=zLZPaUYW8unGQF7amhDycN3vUutEymZdk7RT2JWC56E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VDklNfssgpMJF2atrFHipc41ypG+8W3NQkUGpHD3AJcp48nfmWlAdR6udOc1Xh+bw
-	 bU5RXOrG5ZDGhTElp/p/labsD6/+8fKdc0f33OhEFdZboGMX+YQgcBWVWB48aHUjzL
-	 OoSLo+9YK1pcXm2iGHY6wkKt9qTbWfBmHHUyO51U=
+	b=LcZ++XZRoR7KYLBytyx9PGMZ7+ejl/HZRZ0hZUagSN1SY+Q8XDfViitCwGZqv7J1W
+	 dW/8AOWtDIrnZduZXd8qrUV9SPxb4x2tpmVGCX7sxG3Fono2/yEy/6U9wm+TA6VmUM
+	 z2sIqLI0N40PCSPDYZVKqy6+vxdGR1zrqoZtvWvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	kernel test robot <lkp@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 29/43] blk-iocost: Avoid using clamp() on inuse in __propagate_weights()
+Subject: [PATCH 6.1 40/76] ptp: kvm: Use decrypted memory in confidential guest on x86
 Date: Tue, 17 Dec 2024 18:07:20 +0100
-Message-ID: <20241217170521.627762025@linuxfoundation.org>
+Message-ID: <20241217170527.931749107@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
 
-[ Upstream commit 57e420c84f9ab55ba4c5e2ae9c5f6c8e1ea834d2 ]
+[ Upstream commit 6365ba64b4dbe8b59ddaeaa724b281f3787715d5 ]
 
-After a recent change to clamp() and its variants [1] that increases the
-coverage of the check that high is greater than low because it can be
-done through inlining, certain build configurations (such as s390
-defconfig) fail to build with clang with:
+KVM_HC_CLOCK_PAIRING currently fails inside SEV-SNP guests because the
+guest passes an address to static data to the host. In confidential
+computing the host can't access arbitrary guest memory so handling the
+hypercall runs into an "rmpfault". To make the hypercall work, the guest
+needs to explicitly mark the memory as decrypted. Do that in
+kvm_arch_ptp_init(), but retain the previous behavior for
+non-confidential guests to save us from having to allocate memory.
 
-  block/blk-iocost.c:1101:11: error: call to '__compiletime_assert_557' declared with 'error' attribute: clamp() low limit 1 greater than high limit active
-   1101 |                 inuse = clamp_t(u32, inuse, 1, active);
-        |                         ^
-  include/linux/minmax.h:218:36: note: expanded from macro 'clamp_t'
-    218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-        |                                    ^
-  include/linux/minmax.h:195:2: note: expanded from macro '__careful_clamp'
-    195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-        |         ^
-  include/linux/minmax.h:188:2: note: expanded from macro '__clamp_once'
-    188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
-        |         ^
+Add a new arch-specific function (kvm_arch_ptp_exit()) to free the
+allocation and mark the memory as encrypted again.
 
-__propagate_weights() is called with an active value of zero in
-ioc_check_iocgs(), which results in the high value being less than the
-low value, which is undefined because the value returned depends on the
-order of the comparisons.
-
-The purpose of this expression is to ensure inuse is not more than
-active and at least 1. This could be written more simply with a ternary
-expression that uses min(inuse, active) as the condition so that the
-value of that condition can be used if it is not zero and one if it is.
-Do this conversion to resolve the error and add a comment to deter
-people from turning this back into clamp().
-
-Fixes: 7caa47151ab2 ("blkcg: implement blk-iocost")
-Link: https://lore.kernel.org/r/34d53778977747f19cce2abb287bb3e6@AcuMS.aculab.com/ [1]
-Suggested-by: David Laight <david.laight@aculab.com>
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/llvm/CA+G9fYsD7mw13wredcZn0L-KBA3yeoVSTuxnss-AEWMN3ha0cA@mail.gmail.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412120322.3GfVe3vF-lkp@intel.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20230308150531.477741-1-jpiotrowski@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 5e7aa97c7acf ("ptp: kvm: x86: Return EOPNOTSUPP instead of ENODEV from kvm_arch_ptp_init()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/ptp/ptp_kvm_arm.c    |  4 +++
+ drivers/ptp/ptp_kvm_common.c |  1 +
+ drivers/ptp/ptp_kvm_x86.c    | 59 +++++++++++++++++++++++++++++-------
+ include/linux/ptp_kvm.h      |  1 +
+ 4 files changed, 54 insertions(+), 11 deletions(-)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index 7d56506eb8ff..20b51868cf5a 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1041,7 +1041,14 @@ static void __propagate_weights(struct ioc_gq *iocg, u32 active, u32 inuse,
- 		inuse = DIV64_U64_ROUND_UP(active * iocg->child_inuse_sum,
- 					   iocg->child_active_sum);
- 	} else {
--		inuse = clamp_t(u32, inuse, 1, active);
-+		/*
-+		 * It may be tempting to turn this into a clamp expression with
-+		 * a lower limit of 1 but active may be 0, which cannot be used
-+		 * as an upper limit in that situation. This expression allows
-+		 * active to clamp inuse unless it is 0, in which case inuse
-+		 * becomes 1.
-+		 */
-+		inuse = min(inuse, active) ?: 1;
+diff --git a/drivers/ptp/ptp_kvm_arm.c b/drivers/ptp/ptp_kvm_arm.c
+index b7d28c8dfb84..e68e6943167b 100644
+--- a/drivers/ptp/ptp_kvm_arm.c
++++ b/drivers/ptp/ptp_kvm_arm.c
+@@ -22,6 +22,10 @@ int kvm_arch_ptp_init(void)
+ 	return 0;
+ }
+ 
++void kvm_arch_ptp_exit(void)
++{
++}
++
+ int kvm_arch_ptp_get_clock(struct timespec64 *ts)
+ {
+ 	return kvm_arch_ptp_get_crosststamp(NULL, ts, NULL);
+diff --git a/drivers/ptp/ptp_kvm_common.c b/drivers/ptp/ptp_kvm_common.c
+index fcae32f56f25..051114a59286 100644
+--- a/drivers/ptp/ptp_kvm_common.c
++++ b/drivers/ptp/ptp_kvm_common.c
+@@ -130,6 +130,7 @@ static struct kvm_ptp_clock kvm_ptp_clock;
+ static void __exit ptp_kvm_exit(void)
+ {
+ 	ptp_clock_unregister(kvm_ptp_clock.ptp_clock);
++	kvm_arch_ptp_exit();
+ }
+ 
+ static int __init ptp_kvm_init(void)
+diff --git a/drivers/ptp/ptp_kvm_x86.c b/drivers/ptp/ptp_kvm_x86.c
+index 4991054a2135..902844cc1a17 100644
+--- a/drivers/ptp/ptp_kvm_x86.c
++++ b/drivers/ptp/ptp_kvm_x86.c
+@@ -14,27 +14,64 @@
+ #include <uapi/linux/kvm_para.h>
+ #include <linux/ptp_clock_kernel.h>
+ #include <linux/ptp_kvm.h>
++#include <linux/set_memory.h>
+ 
+ static phys_addr_t clock_pair_gpa;
+-static struct kvm_clock_pairing clock_pair;
++static struct kvm_clock_pairing clock_pair_glbl;
++static struct kvm_clock_pairing *clock_pair;
+ 
+ int kvm_arch_ptp_init(void)
+ {
++	struct page *p;
+ 	long ret;
+ 
+ 	if (!kvm_para_available())
+ 		return -ENODEV;
+ 
+-	clock_pair_gpa = slow_virt_to_phys(&clock_pair);
+-	if (!pvclock_get_pvti_cpu0_va())
+-		return -ENODEV;
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
++		p = alloc_page(GFP_KERNEL | __GFP_ZERO);
++		if (!p)
++			return -ENOMEM;
++
++		clock_pair = page_address(p);
++		ret = set_memory_decrypted((unsigned long)clock_pair, 1);
++		if (ret) {
++			__free_page(p);
++			clock_pair = NULL;
++			goto nofree;
++		}
++	} else {
++		clock_pair = &clock_pair_glbl;
++	}
++
++	clock_pair_gpa = slow_virt_to_phys(clock_pair);
++	if (!pvclock_get_pvti_cpu0_va()) {
++		ret = -ENODEV;
++		goto err;
++	}
+ 
+ 	ret = kvm_hypercall2(KVM_HC_CLOCK_PAIRING, clock_pair_gpa,
+ 			     KVM_CLOCK_PAIRING_WALLCLOCK);
+-	if (ret == -KVM_ENOSYS)
+-		return -ENODEV;
++	if (ret == -KVM_ENOSYS) {
++		ret = -ENODEV;
++		goto err;
++	}
+ 
+ 	return ret;
++
++err:
++	kvm_arch_ptp_exit();
++nofree:
++	return ret;
++}
++
++void kvm_arch_ptp_exit(void)
++{
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
++		WARN_ON(set_memory_encrypted((unsigned long)clock_pair, 1));
++		free_page((unsigned long)clock_pair);
++		clock_pair = NULL;
++	}
+ }
+ 
+ int kvm_arch_ptp_get_clock(struct timespec64 *ts)
+@@ -49,8 +86,8 @@ int kvm_arch_ptp_get_clock(struct timespec64 *ts)
+ 		return -EOPNOTSUPP;
  	}
  
- 	iocg->last_inuse = iocg->inuse;
+-	ts->tv_sec = clock_pair.sec;
+-	ts->tv_nsec = clock_pair.nsec;
++	ts->tv_sec = clock_pair->sec;
++	ts->tv_nsec = clock_pair->nsec;
+ 
+ 	return 0;
+ }
+@@ -81,9 +118,9 @@ int kvm_arch_ptp_get_crosststamp(u64 *cycle, struct timespec64 *tspec,
+ 			pr_err_ratelimited("clock pairing hypercall ret %lu\n", ret);
+ 			return -EOPNOTSUPP;
+ 		}
+-		tspec->tv_sec = clock_pair.sec;
+-		tspec->tv_nsec = clock_pair.nsec;
+-		*cycle = __pvclock_read_cycles(src, clock_pair.tsc);
++		tspec->tv_sec = clock_pair->sec;
++		tspec->tv_nsec = clock_pair->nsec;
++		*cycle = __pvclock_read_cycles(src, clock_pair->tsc);
+ 	} while (pvclock_read_retry(src, version));
+ 
+ 	*cs = &kvm_clock;
+diff --git a/include/linux/ptp_kvm.h b/include/linux/ptp_kvm.h
+index c2e28deef33a..746fd67c3480 100644
+--- a/include/linux/ptp_kvm.h
++++ b/include/linux/ptp_kvm.h
+@@ -14,6 +14,7 @@ struct timespec64;
+ struct clocksource;
+ 
+ int kvm_arch_ptp_init(void);
++void kvm_arch_ptp_exit(void);
+ int kvm_arch_ptp_get_clock(struct timespec64 *ts);
+ int kvm_arch_ptp_get_crosststamp(u64 *cycle,
+ 		struct timespec64 *tspec, struct clocksource **cs);
 -- 
 2.39.5
 
