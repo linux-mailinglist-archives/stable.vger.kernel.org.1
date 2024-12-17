@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE85A9F5330
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DAA9F5490
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:43:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 114F216F03E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46BAE16B451
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590B11F429B;
-	Tue, 17 Dec 2024 17:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A47B1F941F;
+	Tue, 17 Dec 2024 17:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9NehNyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVzih6BI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BB3140E38;
-	Tue, 17 Dec 2024 17:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5F41F8F0F;
+	Tue, 17 Dec 2024 17:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456239; cv=none; b=QS8PVCBt4CiGrZkJu2gnJ3NOgTfsAfoLJfR3zJbFK8Y/V4gMTR+ob+rJMb8Va38ybndxICrBmKxF1/QffAIwydH+llW5XNm9jAfsDChSYxa0KwUN55c9N3CgMTkD3QVvxuLqUIfWe6+MVRZ4GV3jprOw+bmVmpCY4qmHfafb8II=
+	t=1734456753; cv=none; b=uBOoWR1GTJt50SkAx3BhpfU5ysWYezjQvEN6IL82tz8DZhngmq6USI1cJoS0dgdfZr8P024hdpa/5DZRm2OAbO2NhgBeSEAVAJoRa2adnbdgUIjXOJrU0ODWms3lct2M1GtzrBFf55WswaVEq6Hl16PBSz3iuZWGUH4Qo55trCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456239; c=relaxed/simple;
-	bh=pR4ZSJ7b4kkqjyxlxqyyr/zvNjk6kB5t0unoVioTBs4=;
+	s=arc-20240116; t=1734456753; c=relaxed/simple;
+	bh=7ohaL5/g1H/nyWNqoUmUWBZYZlmcZEjgkAXzQNzn6UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwVvwrlwH8IP5JGW+7KsuVwP8EmOHnIqDtVrL2K6xQjwRQiopVK8uhNhApdmVt5rE9L0eshbqvKQI4HAIUVsDgxZeQmNh9D2fu+cANqsEjdj+ABjnlAI5bYylihU0asOJAJv24bN72yi2G5ix/y4ioo+vtKlHdDmdo9ZGYPB3wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9NehNyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434E1C4CED7;
-	Tue, 17 Dec 2024 17:23:58 +0000 (UTC)
+	 MIME-Version; b=crwDnA7bkk/epYGwzPBziKWFSJh3/poJjfr4HiR0FHZYqC3ryJDqLIcOHH59qeON9Dg95/rWCP6cPxiEvg4WP2ETGwRi+XjDORp7ieu2yJWIN/bXxJHrNCiSLq2rUSw399l+exLldKHcou9b/CXZZs9srHQKIRuRlGKyVqnroVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVzih6BI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D682C4CEDD;
+	Tue, 17 Dec 2024 17:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456238;
-	bh=pR4ZSJ7b4kkqjyxlxqyyr/zvNjk6kB5t0unoVioTBs4=;
+	s=korg; t=1734456752;
+	bh=7ohaL5/g1H/nyWNqoUmUWBZYZlmcZEjgkAXzQNzn6UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9NehNyF6IJEbJ9DsUVLps773tj8VhwvPsZ+OHqEgOt8xl5OGKj3Z8Qc+/moe8a2z
-	 o0u+shcumnUIMdgy/3kMSC/Q0e9FuidcnIXAZeu2ct1Bhm9XQffbM3NzemzwIONQeC
-	 iS2qy2nyy4PGu88eOUP8CipFPHlgsxFrJfsDT86U=
+	b=cVzih6BIjkCF1N2Qh0v8GWCEQZlWWWmsadkg3JgvgMOqr1ZO5B5hrI6EQ/m8rFJHt
+	 eDkc/PuHPPoP7H1nECQ01cY7S1aCKdjMVYMzgwL/du+g6x/IEmak9YPYYRgsU4O+Vr
+	 6ppfETyLrpLBiri9fiau7u6N6CP2ekdgb2BVsCtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>
-Subject: [PATCH 6.6 105/109] x86/xen: dont do PV iret hypercall through hypercall page
-Date: Tue, 17 Dec 2024 18:08:29 +0100
-Message-ID: <20241217170537.788609438@linuxfoundation.org>
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 154/172] net: renesas: rswitch: fix initial MPIC register setting
+Date: Tue, 17 Dec 2024 18:08:30 +0100
+Message-ID: <20241217170552.713478181@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-commit a2796dff62d6c6bfc5fbebdf2bee0d5ac0438906 upstream.
+[ Upstream commit fb9e6039c325cc205a368046dc03c56c87df2310 ]
 
-Instead of jumping to the Xen hypercall page for doing the iret
-hypercall, directly code the required sequence in xen-asm.S.
+MPIC.PIS must be set per phy interface type.
+MPIC.LSC must be set per speed.
 
-This is done in preparation of no longer using hypercall page at all,
-as it has shown to cause problems with speculation mitigations.
+Do that strictly per datasheet, instead of hardcoding MPIC.PIS to GMII.
 
-This is part of XSA-466 / CVE-2024-53241.
-
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20241211053012.368914-1-nikita.yoush@cogentembedded.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/xen-asm.S |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.c | 27 ++++++++++++++++++++------
+ drivers/net/ethernet/renesas/rswitch.h | 14 ++++++-------
+ 2 files changed, 28 insertions(+), 13 deletions(-)
 
---- a/arch/x86/xen/xen-asm.S
-+++ b/arch/x86/xen/xen-asm.S
-@@ -176,7 +176,6 @@ SYM_CODE_START(xen_early_idt_handler_arr
- SYM_CODE_END(xen_early_idt_handler_array)
- 	__FINIT
+diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
+index 9dffb7cf1254..09117110e3dd 100644
+--- a/drivers/net/ethernet/renesas/rswitch.c
++++ b/drivers/net/ethernet/renesas/rswitch.c
+@@ -1116,25 +1116,40 @@ static int rswitch_etha_wait_link_verification(struct rswitch_etha *etha)
  
--hypercall_iret = hypercall_page + __HYPERVISOR_iret * 32
- /*
-  * Xen64 iret frame:
-  *
-@@ -186,17 +185,28 @@ hypercall_iret = hypercall_page + __HYPE
-  *	cs
-  *	rip		<-- standard iret frame
-  *
-- *	flags
-+ *	flags		<-- xen_iret must push from here on
-  *
-- *	rcx		}
-- *	r11		}<-- pushed by hypercall page
-- * rsp->rax		}
-+ *	rcx
-+ *	r11
-+ * rsp->rax
-  */
-+.macro xen_hypercall_iret
-+	pushq $0	/* Flags */
-+	push %rcx
-+	push %r11
-+	push %rax
-+	mov  $__HYPERVISOR_iret, %eax
-+	syscall		/* Do the IRET. */
-+#ifdef CONFIG_MITIGATION_SLS
-+	int3
-+#endif
-+.endm
+ static void rswitch_rmac_setting(struct rswitch_etha *etha, const u8 *mac)
+ {
+-	u32 val;
++	u32 pis, lsc;
+ 
+ 	rswitch_etha_write_mac_address(etha, mac);
+ 
++	switch (etha->phy_interface) {
++	case PHY_INTERFACE_MODE_SGMII:
++		pis = MPIC_PIS_GMII;
++		break;
++	case PHY_INTERFACE_MODE_USXGMII:
++	case PHY_INTERFACE_MODE_5GBASER:
++		pis = MPIC_PIS_XGMII;
++		break;
++	default:
++		pis = FIELD_GET(MPIC_PIS, ioread32(etha->addr + MPIC));
++		break;
++	}
 +
- SYM_CODE_START(xen_iret)
- 	UNWIND_HINT_UNDEFINED
- 	ANNOTATE_NOENDBR
--	pushq $0
--	jmp hypercall_iret
-+	xen_hypercall_iret
- SYM_CODE_END(xen_iret)
+ 	switch (etha->speed) {
+ 	case 100:
+-		val = MPIC_LSC_100M;
++		lsc = MPIC_LSC_100M;
+ 		break;
+ 	case 1000:
+-		val = MPIC_LSC_1G;
++		lsc = MPIC_LSC_1G;
+ 		break;
+ 	case 2500:
+-		val = MPIC_LSC_2_5G;
++		lsc = MPIC_LSC_2_5G;
+ 		break;
+ 	default:
+-		return;
++		lsc = FIELD_GET(MPIC_LSC, ioread32(etha->addr + MPIC));
++		break;
+ 	}
  
- /*
-@@ -301,8 +311,7 @@ SYM_CODE_START(xen_entry_SYSENTER_compat
- 	ENDBR
- 	lea 16(%rsp), %rsp	/* strip %rcx, %r11 */
- 	mov $-ENOSYS, %rax
--	pushq $0
--	jmp hypercall_iret
-+	xen_hypercall_iret
- SYM_CODE_END(xen_entry_SYSENTER_compat)
- SYM_CODE_END(xen_entry_SYSCALL_compat)
+-	iowrite32(MPIC_PIS_GMII | val, etha->addr + MPIC);
++	rswitch_modify(etha->addr, MPIC, MPIC_PIS | MPIC_LSC,
++		       FIELD_PREP(MPIC_PIS, pis) | FIELD_PREP(MPIC_LSC, lsc));
+ }
  
+ static void rswitch_etha_enable_mii(struct rswitch_etha *etha)
+diff --git a/drivers/net/ethernet/renesas/rswitch.h b/drivers/net/ethernet/renesas/rswitch.h
+index 72e3ff596d31..e020800dcc57 100644
+--- a/drivers/net/ethernet/renesas/rswitch.h
++++ b/drivers/net/ethernet/renesas/rswitch.h
+@@ -724,13 +724,13 @@ enum rswitch_etha_mode {
+ 
+ #define EAVCC_VEM_SC_TAG	(0x3 << 16)
+ 
+-#define MPIC_PIS_MII		0x00
+-#define MPIC_PIS_GMII		0x02
+-#define MPIC_PIS_XGMII		0x04
+-#define MPIC_LSC_SHIFT		3
+-#define MPIC_LSC_100M		(1 << MPIC_LSC_SHIFT)
+-#define MPIC_LSC_1G		(2 << MPIC_LSC_SHIFT)
+-#define MPIC_LSC_2_5G		(3 << MPIC_LSC_SHIFT)
++#define MPIC_PIS		GENMASK(2, 0)
++#define MPIC_PIS_GMII		2
++#define MPIC_PIS_XGMII		4
++#define MPIC_LSC		GENMASK(5, 3)
++#define MPIC_LSC_100M		1
++#define MPIC_LSC_1G		2
++#define MPIC_LSC_2_5G		3
+ 
+ #define MDIO_READ_C45		0x03
+ #define MDIO_WRITE_C45		0x01
+-- 
+2.39.5
+
 
 
 
