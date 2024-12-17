@@ -1,115 +1,127 @@
-Return-Path: <stable+bounces-104448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D79F9F4593
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 08:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758D19F459D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECE36188D60C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 07:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7EA188EF03
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 08:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B81818A6AE;
-	Tue, 17 Dec 2024 07:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6D5126C08;
+	Tue, 17 Dec 2024 08:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="eQLsPrGs"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="XQVCjOmz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F1DA29
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 07:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD61EEB2
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 08:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734422275; cv=none; b=qWpBlJwH9GGmT5YDddEeBHKcNOQ8xqQXY8xW8GCqBEMIIc1yzsox/6v7EsGcXhi12kemftZnU9O71GyFCe9XmS0FgGVdMSf854vPjsHxaa9ipqdcHWbiflMCqrN4s/qG7U/KLzvWq3EuGU7WIMvGRVFqySI+WJ1SqiY243n+zqA=
+	t=1734422569; cv=none; b=kbEnpumNfvPRrJgLkeaX7lOHo4DTuVG4RuIcva3Qa0L+/R6cyiB2nicUXny+r0a9ojEanfpCsasndFnpYAyuKuajQWZ8NCQeOY+vdzZiXGfL6BKkjN9Xe1yHBlNEUM7WYLGU6ilqKO2W+bEJdqzkEekDMGNbb5RzVviMU7j+onE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734422275; c=relaxed/simple;
-	bh=CZ83kjIEEtR1Mz2hEz2qgiBm4NyV4NnWYt7mVajPp+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CeDm/Jlxft4HB/QhzoPwGaMAZvDMQyXE0tcHPF5+K0YNF3Cfm7J0ohRPuMMm94nZYmKbvVCs2JtYEWzIQrXUi8PXFo6sHFVdFwR5boZNWN8iHsMJhKpeK1ZNtMRvgSqZtfiW1Q3+fLzC+VitAZu4Tndnx8Co8/owhAdnO58qspQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=eQLsPrGs; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1734422569; c=relaxed/simple;
+	bh=Uz9IQf/PCc3hEgWuULewTHn5ujlRuonTH5DlWF7MJ58=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LndmInj3Jav4NKJpukEisjUZbH2FH1LCWWGzBJOraQjrXkttx3PuflpVfLDUhx9qN4ewpf/TUTUGCgY/p+0Q1Xgopaj0PG1Rmcq1YI1QLF2YzJ9OQgsT5vansKXXR3N5HDeqLNi7emnHE7dVk8A4YAsZlymFPAeuoaw1lPFfhjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=XQVCjOmz; arc=none smtp.client-ip=209.85.221.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-382610c7116so2481288f8f.0
-        for <stable@vger.kernel.org>; Mon, 16 Dec 2024 23:57:52 -0800 (PST)
+Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-3863494591bso2664251f8f.1
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 00:02:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1734422271; x=1735027071; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AJiojS7FHbvuQIVPd4Apv6tEaVVGpEOgN03/VsXjZt0=;
-        b=eQLsPrGs4mGS7zzWodRuDcQQQ92sKFfQOyOOm9sWytKeolDEwBB/0V6H84Fd1Mn6uY
-         MxGoW65xFRB3uJGJOKClfXHj46zbpRpyrjuRnsSqtxgcZeG9QaBMZfXgh6ZL2A4Xeaz0
-         4doaB0QtwzBuUJciRb/k8np6Qlu5STFesRvBIc8Z0DIgY3GUzTN9irMHT0pqhQU/ou9p
-         mfvHDd664VUNvThoJ83tiHg463hAwKoLuAY2aMsMspP1yfi3ndzaUBtXhWnfT1kJrk4h
-         PO50n+jGcB81maeDeaygipVkm5gzXJH/h4Uw+b+QHT8I/Uf8pGjYiNs3NBJnjiOb0Xjl
-         wiiw==
+        d=suse.com; s=google; t=1734422566; x=1735027366; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X4ircQ6YWhUysMQKxFbMbB345zp18ppnDe0j92eUF1I=;
+        b=XQVCjOmzwokS9TUUT4YnbaJM3LK3JWmhQUsxOKJ63yQTvJ8YBDshJSHChwQOSR1gvN
+         8+ZbcQkz+Xece+9pR7s1lghEzPXZgEEOLtp1DwCWxv7mTavYMctBTFmX0To34LmefFNe
+         4yaGZ0I/d0JXY/8JgLi4PS8u65FYIc9F4wJhpDSoZdD3aBd1mDULksR+hkcRjEZ3ttef
+         tggs0Vpm6Z6Nu1Y5RggQgenv6oVF1FIvPQlLD0Yst9nODzjOqjISG15N7jUzJBYMzUag
+         +opeX6lW3HGU60NQifRi7B/QtbZmvdNSZnV81so7rAk3nZiYpUYX1JCVJKJ8poq4lmza
+         XkeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734422271; x=1735027071;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AJiojS7FHbvuQIVPd4Apv6tEaVVGpEOgN03/VsXjZt0=;
-        b=nEOMDHtthkV1+pGuFqVtroSSmyRmjSHkoYjKwatVoVpnEqc7286pQIyPj8po5S0gUm
-         JuXZnvwMWRKNdAmAkL07Ela7lxFWlawbLqu5HSh1adMi5/Tsovl2xUu07rZPR+nqudAz
-         8uq1Mvu55jANg4zPRpepFvDdoZodDUKxkAk+vm+KschublsQW7fxo07caqpP2GBZ7dE+
-         K0JnVdNuYmljdWtfmWJ3Bn3fBHjv+agboagqWawr8TDJ1sGoNEqGkjkbOJwc8FxpizNM
-         JPidUNXHvV+7NeqzhkKnN6YGyiu25vM6y+93ThNXONMMjvFJbIl1UkrLMs7dqMMV2MYl
-         BOAw==
-X-Gm-Message-State: AOJu0Yzi2UcPvn5sSsKb4hDMgYFJ31hwEt+sFL3XvyqeAUtm3EHrqEji
-	bk3cKrvj9jUK4CaB02/5tvGJ56iFgPI35rzvRYatEVPt6nwSwWq6PEujHKz1uIY=
-X-Gm-Gg: ASbGncsT2o5d9/fOTnFe4U8RdqhWI1Bgbhr2qGf6DpOimJjYPSoscO4kEXoewcskwL8
-	I3aHp/Nx858IXSWPFx/O+IR2bfef/+pGXTx+cARlRQwwYvjqoXKCePvdVEb/gNSTfi5FN5iLpdR
-	ogZe50AwFZVXpqs2n3wCqkiDYpvrJHdEiHFye2udXAh+fRtIWQmSYdp9xVCTajcYUtqcOObI9KD
-	YAw4w8yKMd3vdVJV0mP6gAtQlFLcv5Vkfhjik1PABrjpcOXz+76
-X-Google-Smtp-Source: AGHT+IFrs1ALETn1ASdv/KVKauug6ccS4pr+rJLBDrwVAY5wkpqumgRdmu2XrBvmUj7SduqVU9F8Ug==
-X-Received: by 2002:a5d:5849:0:b0:385:f69a:7e5f with SMTP id ffacd0b85a97d-3888e0b8e63mr13594510f8f.38.1734422271629;
-        Mon, 16 Dec 2024 23:57:51 -0800 (PST)
-Received: from u94a ([2401:e180:8862:6db6:63ae:a60b:ac30:803a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e5d7c5sm53724445ad.199.2024.12.16.23.57.49
+        d=1e100.net; s=20230601; t=1734422566; x=1735027366;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X4ircQ6YWhUysMQKxFbMbB345zp18ppnDe0j92eUF1I=;
+        b=HJYNGx5w8IeSJNPxExtBzaf6FK/S/yNTvAFp4UW0+YC3cT1vA0ZqM55aZnVpayNzZ1
+         WAuLog3bWN4PcZf22AXrG1dneP93rXKuKhsF0jEWjw3qNXGI8PXmFlsW2h1E4lrASuwj
+         XyUDVDdNvUSpUjzNhD5TKX/4pCa5/rVyT04pFmfR+sIk3GZn5DBcg4/BGO+EOvrP4teL
+         V3pRkZ0OA8RXT7GQAVcT3HKyDt6c3e8g3n2Aoxw2Tw3RCxtnRJnOca2PS21IfxedVUF6
+         AOW2ZzKLYRsQN83uW8IulheJt8yBoa0F6XBfzsSJ1O3b3kDcEq1qTycBI7/NHxYNUo3b
+         hgcg==
+X-Gm-Message-State: AOJu0YwTdHAJ0QfiZC7bLXLOQiVWhQ+URWZBDBToCo7RNy+WBA9uSNFC
+	31l5p1iTMd+9Tnutf4JTrEdxdVmtCQmyT4x5829AGq3fubM0nstjGBU3RYhEBYIIfNBGU0OxIlF
+	pEcb59w==
+X-Gm-Gg: ASbGncuGSubs/T9iejHLFSSQEHmD8ALMkZy0C4vIC40jSIKekJ8sXquO76/nMYj4dTL
+	WCbzlsDawgqmbQzcw18mK1AHbArHjbzgiRalem6NGpsjkUR1D6/cAcn5P0iTYyoeggQx2bpebLW
+	XMvnmnYXetbvp2kpkr5JILJ8Vtk7Af0wbr+EYQUya3nFPTsrkyjJC1i8kfvU4R2DHdRg88MzyWf
+	CaFwiDpIIIG3H/fM/lEsomuXLmSOH4OzxPQkpn3qb9hi8MaP2OFFR2V5Vc=
+X-Google-Smtp-Source: AGHT+IHGxB1fhPDi4FtQRIxvaBXZcKeyhJ1xluNyX17iKD9YQeL6rW1L+5YnmzHrJLFLs+Ate0I2gA==
+X-Received: by 2002:a05:6000:1885:b0:386:4112:fc7c with SMTP id ffacd0b85a97d-3888e0c04bcmr11902278f8f.56.1734422565506;
+        Tue, 17 Dec 2024 00:02:45 -0800 (PST)
+Received: from localhost ([2401:e180:8862:6db6:63ae:a60b:ac30:803a])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72918bad6b5sm6033588b3a.155.2024.12.17.00.02.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Dec 2024 23:57:51 -0800 (PST)
-Date: Tue, 17 Dec 2024 15:57:45 +0800
+        Tue, 17 Dec 2024 00:02:44 -0800 (PST)
 From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: Re: [PATCH stable 6.6 v2 2/2] selftests/bpf: remove use of __xlated()
-Message-ID: <zl3u573akymhd3onhqqypufbp6lijj744q5az36gzovpxufolm@wp6jbzggbx5i>
-References: <20241217072821.43545-1-shung-hsi.yu@suse.com>
- <20241217072821.43545-3-shung-hsi.yu@suse.com>
- <2024121700-mystified-hush-72d8@gregkh>
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Cc: Eduard Zingerman <eddyz87@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH stable 6.6 v3 0/2] Fix BPF selftests compilation error
+Date: Tue, 17 Dec 2024 16:02:37 +0800
+Message-ID: <20241217080240.46699-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024121700-mystified-hush-72d8@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 17, 2024 at 08:41:40AM +0100, Greg KH wrote:
-> On Tue, Dec 17, 2024 at 03:28:19PM +0800, Shung-Hsi Yu wrote:
-> > [ Downstream commit for stable/linux-6.6.y ]
-> 
-> What does this mean?
+Currently the BPF selftests in fails to compile due to use of test
+helpers that were not backported, namely:
+- netlink_helpers.h
+- __xlated()
 
-Trying to make stable-only patch more obvious, at least I thought it was
-the preferred thing to do. But judging from your reply that it isn't, so
-scratching that.
+The 1st patch adds netlink helper files, and the 2nd patch removes the
+use of __xlated() helper.
 
-[...]
+Note this series simply fix the compilation failure. Even with this
+series is applied the BPF selftests fails to run to completion due to
+kernel panic in the dummy_st_ops tests.
 
-> So this is just a fixup of a commit in a stable tree?  Can you properly
-> set the Fixes: tag then?
+Changes since v2 <https://lore.kernel.org/all/20241217072821.43545-1-shung-hsi.yu@suse.com>:
+- minor reword of patch 2, dropping the "downstream patch" line and add a Fixes
+  tag
 
-Yes. Will do.
+Changes since v1 <https://lore.kernel.org/all/20241126072137.823699-1-shung-hsi.yu@suse.com>:
+- drop dependencies of __xlated() helper, and opt to remove its use instead.
 
-Sending v3 soon.
+Daniel Borkmann (1):
+  selftests/bpf: Add netlink helper library
 
-Shung-Hsi
+Shung-Hsi Yu (1):
+  selftests/bpf: remove use of __xlated()
 
-> greg k-h
+ tools/testing/selftests/bpf/Makefile          |  19 +-
+ tools/testing/selftests/bpf/netlink_helpers.c | 358 ++++++++++++++++++
+ tools/testing/selftests/bpf/netlink_helpers.h |  46 +++
+ .../selftests/bpf/progs/verifier_scalar_ids.c |  16 -
+ 4 files changed, 418 insertions(+), 21 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/netlink_helpers.c
+ create mode 100644 tools/testing/selftests/bpf/netlink_helpers.h
+
+-- 
+2.47.1
+
 
