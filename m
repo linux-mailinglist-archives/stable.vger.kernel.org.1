@@ -1,145 +1,157 @@
-Return-Path: <stable+bounces-104501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747AC9F4C83
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:38:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBAED9F4C94
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:42:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3BEA188CA7E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:33:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A767B1883975
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85021F3D5D;
-	Tue, 17 Dec 2024 13:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E041F4263;
+	Tue, 17 Dec 2024 13:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="f/58Wh/2"
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="Ly3P/Dqf"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04olkn2025.outbound.protection.outlook.com [40.92.46.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7245C1F3D41;
-	Tue, 17 Dec 2024 13:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734442427; cv=none; b=TMD3s9flZgG5+EOYGa89D0iqP48b35amd4XAxZOdNPKqPxXFm9ZA+1vrQxqPLFPKIhMwRT6bxGjPesXjQL6lKgVuTu4m+G6saDHQsvaeRfRlZxyZSiDbLReZi+ZVFnf7SRMyzCzaS2tJNLKbSOc6OaSESs0ST2cDH0lMobrz5zQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734442427; c=relaxed/simple;
-	bh=YT3+ZFz9l1fk8kwTZgau3x62xAYstfOl9sQbSIveHI0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tUqWsydbxiZfN7lm5lFY8OKK8bfcwFdafVhkkJcRyS1C5fRkMKQulRIpvDfB8Ix4NT9sAgxdKlJWgnXJhmTMoz4emZ9E0P6eEmp6o+atLdd+h2pAyDTXSfK7RcqmGd35GEn8Y50tFGoZwzL61v/kVjv7BQUZcRbSY6Wpskapb6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=f/58Wh/2; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8C3284C7;
-	Tue, 17 Dec 2024 14:33:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1734442385;
-	bh=YT3+ZFz9l1fk8kwTZgau3x62xAYstfOl9sQbSIveHI0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f/58Wh/2eCMpGT5V8MWyxwDepQUft8sMLoMR9vrYC/sLtP1xEHAAgyviRqBqrv7d1
-	 bEWZsokzkVjFNg8VLMoGEfVa1ENX1cvS2T3ALrUNSJnMCC2T+dh92y40LQZn21579X
-	 3mwf4FVuz4Ky/QZFg+btD5AeNYvd7aJxl7heXtNs=
-Message-ID: <aa858619-56f6-4d3a-b27d-f38cbfa57d98@ideasonboard.com>
-Date: Tue, 17 Dec 2024 15:33:37 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D281F3D57;
+	Tue, 17 Dec 2024 13:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.46.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734442816; cv=fail; b=b44R5bPklDNWv/6Hi/XukiHNIKE2vrBJ0+Ec2fyOdOtc4/w4Jt9PkWQ1ZkNLz7Sftyd7aqLLKh22xjQGGrneGWZ2zjNj5Ds21NPNr8xAvGAWY2wIf7r1dqKr9t4bVXIfTpzLC9oX740CvuwAcWYsT6AevF+FZ0f+7+VfJxH6jzM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734442816; c=relaxed/simple;
+	bh=T0uSoL/AGORnR7BBYpibEcGKujPoejHlnQb3sKQ49zA=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=TPDzkNpqX+MrCE1EJXxPvtGzQdhzN9aNl7eQx+SECCLH6js4KlI1H+kMLOuYCvqjhaiz/14An6+LIun6GPzRMAINe1ehTyKCk4R3y13jVosjBURs0fvUA5qj2xyLjgC/SdkkwP6GP64ePPGBSgs5hGUt6Lfs+zOP+Lkt+erJnuo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=Ly3P/Dqf; arc=fail smtp.client-ip=40.92.46.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Fe2t9H0hcgype1tlcQI7MMs7L7Lcj2hLqEhD/ALsi8nPNtgvnw7W13AhGYaoQJMrq2F6LG9oQYQDOwSUVTa7bo3SsVC5OXXd0LI2eYQzETHbeJ9r4AU9Uvp4dqDnNoO0jeeEC7jwhUDVj+HkWUJnIuqt4GRIwpBIUsX8IqCirKNDfY/ys27UXlrQv4HdmnnaEfGVFoD7jbU/5KtS8pu3GMj0B+HTHZdjT10ZtjZ2brkmVXKXjmkrdjyFlYeQ7xrBRNKq0tC9o3ocS7I31GTQDk4up6/vy/JELAi1DortelQjCm4qvpbwOcqQM23b8rGW2YOzgjOuQM9Ycm8XyIwE8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nkRwVNTe7AEQcR2AFj9hF6StfnuR+OViEMHJNZ45zUA=;
+ b=d0ms/LId9BSXzKqC3cNyAXSkE8JO7V4jQxgCNEbhBMo3UEx5kiWqiadwD8URiqTRCZUaglfRU5z3+h/ifpzDOJiyCl40USELTIKAAwo9WZD8LpCymscnl1IQJIZf0UOT2v/erPrqhNdzWW248/0SmzWGhWcSV9KN430vQxxWlHQQkk5qFJuB1x7O1lzCvhRwvb/SAFliNMGqkokPIO5/7vTqwSCbzrn5SIq9ThgWnTe/mazynDtN4HYm5dPSbjSkSK3UENpncC/Hi6Ko8M2KqUH7h2AcNQHknx47OiKK1q/+HsWz0UnmGrfRyqbu4au4vTNUHWYaNhLY1ponKJW1OQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nkRwVNTe7AEQcR2AFj9hF6StfnuR+OViEMHJNZ45zUA=;
+ b=Ly3P/DqfL0AYpdjTWMVzH8BxrqNkJLC5ginuIhSLQKhlGLQSZ2JrIBJ2DXHZ0uwaCJbUvLMZ3jmbXpdFLqxLsbM3yRUJcLjldYE6lpNlQt7ASs4uwZqpM3v94wW8zH6CGTAG1t7M3VHXQgZMw83UBUOES0B1sfOdZF7Cz/d4ilgEdZAWjz2t0A4eHLTxeGwK2ZeXsU5sfNhOQ8DwwmRBpwLxhju0n6eB//0knPWWuPQX/h65PICv1noFHgdSB1pNu+DR+ujgSCWORs+W4YshFG26VGkD3IRElzpKJQpcu4MbOk8dTiArmuIcqmHtw+gLSifZFsBnH1Ix5cBIN3th3g==
+Received: from CY5PR10MB5988.namprd10.prod.outlook.com (2603:10b6:930:28::9)
+ by MN2PR10MB4221.namprd10.prod.outlook.com (2603:10b6:208:1d7::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.22; Tue, 17 Dec
+ 2024 13:40:12 +0000
+Received: from CY5PR10MB5988.namprd10.prod.outlook.com
+ ([fe80::40b0:91eb:984a:1c11]) by CY5PR10MB5988.namprd10.prod.outlook.com
+ ([fe80::40b0:91eb:984a:1c11%6]) with mapi id 15.20.8251.015; Tue, 17 Dec 2024
+ 13:40:12 +0000
+From: Da Shi Cao <dscao999@hotmail.com>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: TI Ethernet Driver TI_K3_AM65_CPSW_NUSS
+Thread-Topic: TI Ethernet Driver TI_K3_AM65_CPSW_NUSS
+Thread-Index: AQHbUIcZhyVIDHAvZkWvGpkWBtlq2Q==
+Date: Tue, 17 Dec 2024 13:40:12 +0000
+Message-ID:
+ <CY5PR10MB59880DDECD5D282B7665085B8C042@CY5PR10MB5988.namprd10.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR10MB5988:EE_|MN2PR10MB4221:EE_
+x-ms-office365-filtering-correlation-id: dfcfc5b8-36b0-47a4-5705-08dd1ea05502
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|15030799003|19110799003|15080799006|8060799006|7092599003|461199028|8062599003|3412199025|440099028|102099032;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?83TTAGk5UMVa5OXDUVzSSuOhv56SNhqOx+UUf3Kd8vvpSBF8jgtzb9kpf3?=
+ =?iso-8859-1?Q?zX4sjDfKZ2T5RwaiwnQXqhcAxrRgKzgjtiea0tHcG+JbL1FYE67VlUuLYr?=
+ =?iso-8859-1?Q?ZpFgkFAK2RtRsYgOfVieB+0DU8M6PeTeazqqzAJQgyRsWxuCpCRyQs5ZZb?=
+ =?iso-8859-1?Q?jwK7muIf0jaIr9bnYfzKHiISEuHfwoJa5XcYBaBmJaztPM9RJFBD/Y+Zkf?=
+ =?iso-8859-1?Q?ICaLzTlbdN120YfvM7cEiY346sKNgW5hd0eJDjjkl5h59sbBkYgtATvpeY?=
+ =?iso-8859-1?Q?AOfGYmePdaq4cGI/M9JbW3hCwD0IBOaFaiO74r4Irs1QyjJKKKWUtczGSK?=
+ =?iso-8859-1?Q?L4NFY3zbph58IUN4s7wUzpoNOkONC7wnkdWZ48sBbj0vXGZMP0Nv2Lb8ft?=
+ =?iso-8859-1?Q?9ln5P/IWuOA55d+MNJTSQ0Uk/4jEGHQ1iotDHBCbhejU4slU4s+lRGyKZ1?=
+ =?iso-8859-1?Q?s6MhJNV5ph6x/P9/HEl/w4Pw0b4fwkDorWpauYaPoW9ROz8JiMLvc/u1qQ?=
+ =?iso-8859-1?Q?kYZCRH3I8BwMSBq173LgUi0NfHmDFaKZ6YEv5KqKA/7FAjF6+7qqgwchp9?=
+ =?iso-8859-1?Q?oDr0X0cTnJRug19RHcJtebEvqh8nor5SyqJadknsiz4LQvpzkF5meWKMYN?=
+ =?iso-8859-1?Q?KdyN1ZxJ40SUiAl56rftUF96btzKhbZcArkW1YFqdM9kPXlQUs+ZMFoMVr?=
+ =?iso-8859-1?Q?gHi1XHdHohDO4NnnR6Kq5bGdVN2EOgm9pR++UuvDW4Uf2JV/Iid9QpCWau?=
+ =?iso-8859-1?Q?qfXlyWvIL5lAbXAr6zrZWy/NnTiB7FRXNhLVTH47DyhMgUEN0bJ2He5/4D?=
+ =?iso-8859-1?Q?mzPhowkk5eoW+hYVkbJkjX0nhhWVZDqjsUxw+HaczlgJ4T8STOM7J0Ya00?=
+ =?iso-8859-1?Q?yjJndOitCU+WX/qlRs3/1ngB69+94si/JVUDJd99hqq+RjrtkN68Bil1xb?=
+ =?iso-8859-1?Q?rZoK21ZLo1wlyd+4XDZ3/CPALYzzUe+eyru3BrtCYS8MHIcB7BxOaqaxyE?=
+ =?iso-8859-1?Q?VDNFz8SMtwY9ZYYUDWcHW8Ry3FOxf0Xot7n2VQwZAXzebVipSoXZ1MIOQz?=
+ =?iso-8859-1?Q?SrSs472TETQu4xSmJnDMtG6qA9RS/RlsxhuiI3uxLVJD?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?bIJd++dz8cvdqcr+tXWcT/uhjX3shYeZ9Owr/aIAihJKpLJXP25ZM7Y1NO?=
+ =?iso-8859-1?Q?or1MJB1za/bG3giBIFsDEjfW++gKduvBBLQ9VHbwv0rxeHeUaxhOWm9EF6?=
+ =?iso-8859-1?Q?NzL/w2toZsHu2I9FHweIMlS0F4ZDiOAdIg2V8DeCmM21D6vqS9mKlWss2V?=
+ =?iso-8859-1?Q?a7mKz4LuJX2nu6ZLYY50ioUrR+TkxuyyN5fjec9RV+XK4+NSfpPcI49lhy?=
+ =?iso-8859-1?Q?GQqo46/6fqfTr+JAC74ikBXJFW6yGC3QOeIzv+QJgKI/znwsGVzRvWJuwC?=
+ =?iso-8859-1?Q?gUgDFnqHx5NZNubMANzQXlCkATtXpDfOtoyafF5I7NhFLFJGL+msx+5i2D?=
+ =?iso-8859-1?Q?W4Z0b9NAhkdXAoHSFJrCVMyL2HxUsLOLgeujQpljMOFguImuJMQw48IaNg?=
+ =?iso-8859-1?Q?KhJ3aVnOIny4qATWavf8JaIehRG8mlLY68FdSQga0DJonvruWu+a7tD2DV?=
+ =?iso-8859-1?Q?ED2oq9c/Sf3TURpcUKr0Po0RRvnrhYkLyRozy+j+RP3KYVZCRRGXHde715?=
+ =?iso-8859-1?Q?X52uSxztM5W+Qu8psvPHAay9f0kApKm8DdBSZxMSQ7Jr8Ud4IMyvXIseB8?=
+ =?iso-8859-1?Q?eqH4/zSQf5yelsfYe+t/kc9P8k+9RDwao4KZHoLRKH7vr5FTpKTwbXZ9nt?=
+ =?iso-8859-1?Q?/tcVOpxniiwHU2vLah37MrGYsikbNMt1NYWgx1C+QhfDv75wuayyLSO6RQ?=
+ =?iso-8859-1?Q?bW0R/rgg4aKi671V0AsjLjdhbcc3IsqPKe18X+pqr0gUdezdg+hIxBaT0j?=
+ =?iso-8859-1?Q?DDynL+3OlUgCrNzllzIT76RdhIkzFF4H7sNOpYB3vvwQQfpaEBTDoVVnDU?=
+ =?iso-8859-1?Q?kSI8k3gzg492pNmpkRaIAgPcgLK9FT65pxwKOkw04+apri41Kg4Ap/YRHB?=
+ =?iso-8859-1?Q?OZO4O3vCua16e/BxW5yH7owUbYk9biOl/LMSFScRGDjUfd6qOyUJVGgUdJ?=
+ =?iso-8859-1?Q?TBRzos8iRh9KxjQq6J1cht9RqXH7VDPVv2DQNH3AMdCdqKzXW8Uz9Iq17Y?=
+ =?iso-8859-1?Q?HqYHt6rxmYvw16zRJCkztjGru8n7sGlzfC1FT1K7Uy+vFbnoIRXmihvQGd?=
+ =?iso-8859-1?Q?UWYD2jT+ZesYXQsHYh7F8+rWdQ3Y0MHepRw/q0ttyb7F4c3QzRDgfD96bS?=
+ =?iso-8859-1?Q?97Apr/D+7xKhDD0+uOc6LnkWLVaMT8oe65y8lQaf74uJCKRxQunN4d++Fu?=
+ =?iso-8859-1?Q?NwygOSY2o3xyCANgmo6apfRFX0hAnekDyn4nXPJlfLOH+FwlqwbMTx11Y1?=
+ =?iso-8859-1?Q?zD5AtAZ1lutcXzHnu97g=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/7] drm: Add DSI/DP support for Renesas r8a779h0 V4M
- and grey-hawk board
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, LUU HOAI <hoai.luu.ub@renesas.com>,
- Jagan Teki <jagan@amarulasolutions.com>, Sam Ravnborg <sam@ravnborg.org>,
- Biju Das <biju.das.jz@bp.renesas.com>
-Cc: dri-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- linux-clk@vger.kernel.org, stable@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20241217-rcar-gh-dsi-v5-0-e77421093c05@ideasonboard.com>
-Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <20241217-rcar-gh-dsi-v5-0-e77421093c05@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-28291.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR10MB5988.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfcfc5b8-36b0-47a4-5705-08dd1ea05502
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2024 13:40:12.6214
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB4221
 
-Hi all,
-
-On 17/12/2024 07:31, Tomi Valkeinen wrote:
-> Add everything needed to support the DSI output on Renesas r8a779h0
-> (V4M) SoC, and the DP output (via sn65dsi86 DSI to DP bridge) on the
-> Renesas grey-hawk board.
-> 
-> Overall the DSI and the board design is almost identical to Renesas
-> r8a779g0 and white-hawk board.
-> 
-> Note: the v4 no longer has the dts and the clk patches, as those have
-> been merged to renesas-devel.
-> 
-
-I have pushed this to drm-misc-next. Thank you all for the reviews!
-
-  Tomi
-
+The driver of TI K3 ethernet port depends on PAGE_POOL configuration option=
+. There should be a select PAGE_POOL under it configuration.=0A=
+=0A=
+--- a/drivers/net/ethernet/ti/Kconfig=0A=
++++ b/drivers/net/ethernet/ti/Kconfig=0A=
+@@ -114,6 +114,7 @@ config TI_K3_AM65_CPSW_NUSS=0A=
+        select TI_DAVINCI_MDIO=0A=
+        select PHYLINK=0A=
+        select TI_K3_CPPI_DESC_POOL=0A=
++       select PAGE_POOL=0A=
+        imply PHY_TI_GMII_SEL=0A=
+        depends on TI_K3_AM65_CPTS || !TI_K3_AM65_CPTS=0A=
+        help=0A=
+=0A=
+Dashi Cao=
 
