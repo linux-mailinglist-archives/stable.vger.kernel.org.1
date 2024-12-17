@@ -1,434 +1,390 @@
-Return-Path: <stable+bounces-104464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05F59F46F4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 10:13:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25AB19F47A3
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 10:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BEFC16D050
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:13:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E55CE188D0D6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8690C1DE8A2;
-	Tue, 17 Dec 2024 09:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CDE1DF252;
+	Tue, 17 Dec 2024 09:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="UlaMyHc7"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="K0mMaxz7"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDC64D8D1;
-	Tue, 17 Dec 2024 09:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734426775; cv=none; b=cwgf4LIrPTYnhuoLc3Sl9CqX9WK7FO0a3NaDnbQM2uwckzRoXd3x8hEz25XBigqfY48J1funBPRaOeFTSQd5NH1shKEQfuDFUia0KUSq/CpLosVjk0LDHvP6+hfwtUIxtKpA64JKArHn262iiScSiperKHv7agC5QSc/NN21OEw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734426775; c=relaxed/simple;
-	bh=DlOVz3JhA2Xl+r9xjcMRqA0C8Uqgwa8Bey6qyRQ8m8A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ca1tGZbWdlBLT1fGc8VWOFEz4ZBIXYgEIdgGKx5W1Wb+FH815+CQQVdV/unKWfRJ8ZvMv6xDAA6jTiXZ+qjBTHaHSe/7ErPo59EO4CbqZHnDExWkc09cwnTL9DDKjL44Eqtwn5epdV5yT13yjcg/3pNzXW7xKFRQV2IUvFWFdOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=UlaMyHc7; arc=none smtp.client-ip=220.197.31.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=j5ZcaYEQBih9LWEPhvco1fEqBe5VAvM2x1NrNn/xDfI=;
-	b=UlaMyHc702aXuxkoBY+4d2MnCSnBOJxvSI6MHZNuqtrlqC2QbSO7h6XeuL4Yhi
-	7q/2SUvBv455fDAaq85Zqrl1IfxDFdSWROcMD+gRGJ9WeB9zfOAwaHbZy8e6wyws
-	IK1xGcLi0pNRYv/xNyan/ME2BwC0lzCP1zjnuxaM9xJEY=
-Received: from [172.21.22.210] (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3b4Z3QGFnuHGgAQ--.30639S2;
-	Tue, 17 Dec 2024 17:12:24 +0800 (CST)
-Message-ID: <0b25fceb-f38d-4464-a649-d8294addf69f@126.com>
-Date: Tue, 17 Dec 2024 17:12:23 +0800
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2068.outbound.protection.outlook.com [40.107.96.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3C91DF251
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 09:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734428022; cv=fail; b=sFv2E7UGawbUfGF8hJNoSK812hzXgMESbHYqC3Ad2s6aNl1c9d83940YGHNXXlA1mIYk2AiS+QstriVC4pGRKV1oAL1mktDJdwALJvUzjly1Lvub/99/3cdbFJZpNxgNOtF5U+2XMOfniGqU5f5Pctd7vQgNqBm8E+C4fJkQpEo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734428022; c=relaxed/simple;
+	bh=wTXG2AGGvZm1rJFLWxDjSChimz2WqLKx+2SHhFQRKiM=;
+	h=Message-ID:Date:Subject:References:To:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lZIQ+q7OSa1yZUxLTM09GJbHyulKo4duTVta9TaAcGGrzSkH1CAUrWNTVSJpRcfXtd2hy7EvLPaqbHOPLUg3n6zuKAkJwM4kj2H4NsMTKpK44hK7C6zVvTj5txZN5bHdZaWSihgpo2QF3cI6b1vZI43De6hf4vPelyClwcAYsbY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=K0mMaxz7; arc=fail smtp.client-ip=40.107.96.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UeiktXRAo4+mtQSPgiTA6K/09erwgIWMm6xScttMT9xym7/PEwexPpVNgZcVnxlIYNpgFE4bVeYw+Hph/34ZQ+5JQE3s/bqMlptRY8RfyAltgFJprStuI2dklKbIMZt8Od3vuLg3JE4d1RbEhfCVMVeAD0ExJXEAWNPlk8PewaWOZOrHWJz4OYuurgVCLjHr2OICuD1lvkLNZQ//V+7GTQ4cWCdW5Bn+VMgrDb85XTUwPqABUoDAb6LV4Ya3clfw6f4pDaY5LKYSBZrmbQ51W4Nj4HZNjKobZ1TXg5krK3WGcWeE2lVfvJxBnL31nVNuFrzy0XmUcXgAPBqzWe4Qag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UhYTXPFojQmZ9zZZ354AJ/jCl6rzM0UmBxspiaI7YeE=;
+ b=TBVR9Gbjoh9uyqH3vyLQq/1bLX69cV73LQ3PH+wObh71ZbNVaFN9/Dg44aRRivBrCNyEVMFR4PV5q9umnMObrhtKthyXhY5ZrVebyb3jauOEfFYdLtGgdS6H5MSVMjc6FXBdkvHnuiNSpItNQF+EQvWLSphZgF8U+M3WoFYEV7IOgRlVzTf2vp1wmn/ZbQ3Yi4U4RefWGUne7kf6I5lhLEAezqMeDcg+kRoiUUZPq5pmPKinQKL00ln2pwkBJ/UI2bZVd1ZiqiDC89fYzcTV3rxnhNpFGynjhkjTtY77CC7PeVk2TZK+MJaSJmukDlaE8mydrXB8qHJQcxj00SPtsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UhYTXPFojQmZ9zZZ354AJ/jCl6rzM0UmBxspiaI7YeE=;
+ b=K0mMaxz7Ngo2VkalN6Zza1NLS3tKGL/yWABqlvnh0zHgJ8pebZPYoCzz1GSBiluHSoiQB7Mt4T6Hhiotqeqy/r1qwW+z2hDr+PbUumZeeQVi9ByrO9aNpErg6SFU4lhy/LmLaND/E/Hwwjbfdt6aOGm9wNDuXM4f6WgOZcmo5jY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ0PR12MB5673.namprd12.prod.outlook.com (2603:10b6:a03:42b::13)
+ by CH2PR12MB4117.namprd12.prod.outlook.com (2603:10b6:610:ae::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.22; Tue, 17 Dec
+ 2024 09:33:38 +0000
+Received: from SJ0PR12MB5673.namprd12.prod.outlook.com
+ ([fe80::ec7a:dd71:9d6c:3062]) by SJ0PR12MB5673.namprd12.prod.outlook.com
+ ([fe80::ec7a:dd71:9d6c:3062%4]) with mapi id 15.20.8251.015; Tue, 17 Dec 2024
+ 09:33:38 +0000
+Message-ID: <a4a5a851-ecfa-47f0-b1cf-b34f620e76ac@amd.com>
+Date: Tue, 17 Dec 2024 10:33:31 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Fwd: [PATCH] drm/amdgpu: Make the submission path memory reclaim safe
+Content-Language: en-US
+References: <b0498534-0aa6-40eb-ad2c-fcac01df828f@amd.com>
+To: amd-gfx list <amd-gfx@lists.freedesktop.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
+ stable <stable@vger.kernel.org>
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <b0498534-0aa6-40eb-ad2c-fcac01df828f@amd.com>
+X-Forwarded-Message-Id: <b0498534-0aa6-40eb-ad2c-fcac01df828f@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0213.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ac::7) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V6] mm, compaction: don't use ALLOC_CMA in long term GUP
- flow
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, david@redhat.com,
- baolin.wang@linux.alibaba.com, vbabka@suse.cz, liuzixing@hygon.cn
-References: <1734406405-25847-1-git-send-email-yangge1116@126.com>
- <CAGsJ_4xSbw7XDe1CWBAfYvMH35n0s1KaSze+wTUDOpwE-VrhfQ@mail.gmail.com>
- <e6d3ef92-762a-414b-89ce-6f53f01f8df3@126.com>
- <CAGsJ_4ymXJOxTv8JKFVbzNMyfD52UdR6gwSWTdwUWV6ARGWfwQ@mail.gmail.com>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <CAGsJ_4ymXJOxTv8JKFVbzNMyfD52UdR6gwSWTdwUWV6ARGWfwQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3b4Z3QGFnuHGgAQ--.30639S2
-X-Coremail-Antispam: 1Uf129KBjvAXoWfJFWkXFW5JrWUWF1rtFW5Jrb_yoW8Gw4fJo
-	W3GFnrCFn5Wry3Zr4rG3srKa47Z34kGw4xGFyUAw1DGFyqva4aya9rKw13AFW7GFy5tF4x
-	G34xta1S9FWSvFn3n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU54SoDUUUU
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbifhe4G2dhL5LeswABsd
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR12MB5673:EE_|CH2PR12MB4117:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2b7291ab-1f44-4662-b1ee-08dd1e7de23b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UmdTVFlPUmZpcVVvc0g1bkZDTzFtUlk5Q0p4eTBUK1c2SmlIQ1AweTVvdERo?=
+ =?utf-8?B?d2dRTGdRcmw0REQrczlEUXE0OU9SdW9scTRGTUU0c2k0MHNuOGVFdThPYmJ0?=
+ =?utf-8?B?NEgxREdsU2RibTgvZ0dsSnA3d0xmWXBiUEpNNnVtOWlaZkNOQ2VrWFBTRUZP?=
+ =?utf-8?B?YUtnMHJ2M0N6MGlHUU43UHd3TnRSbG1IYUI1VEFBaTI3RjMxbTdxZGFoTkMw?=
+ =?utf-8?B?NUFBNXBBdVhISmtMSDl4STE0OGFqWjdSMHlZTG8wOU0rVGd4djJENEx1cmE4?=
+ =?utf-8?B?Zmk4VmdLVXlIZ1N2dndLcnZZQWN2VzlML3dlblEyUjZQeXh2R1BZQzJ5dito?=
+ =?utf-8?B?MjVGMG9xN0p2UU42dWRLeGo2TU93QjluQXMzdGxqMml2M0pDS2U1dU1qQ3p4?=
+ =?utf-8?B?amVCNnlXZG51b0Vjb2J1ZUJlTkxHc05zQ0xJaGttL2FoQmw3Q2xIQzZvckFK?=
+ =?utf-8?B?ZE9GaEZQQ2w5UEs1WXNjRHF6M2hwWDg5VGRHK2dKVnNqMHdZQ0w3V3N1dXJ5?=
+ =?utf-8?B?OWhaRFN3OGU1bGgrbnRZL3JDVUcyYUgvNnBZVmJZeEdpV1JtaGtGWXo1YitM?=
+ =?utf-8?B?OWJvQlZWZldBTjMxWEFIcUx6SWhCS2o1eUVKZzdUcTdCaGw0dHZXRGwwOUFG?=
+ =?utf-8?B?RU1wR1JwTEtTUEpyamxyYURMaG1VTWpwRjZpWHdGc0ZjSE5QM085bmNwMHhX?=
+ =?utf-8?B?aVluZWNVTHE4UVFzWWQzNVh3RUIxMWtxVkJTbmxVaU1JeWNGeVVZYTVlcDBT?=
+ =?utf-8?B?S3RrdWliMENQbTVTZFg4dXo3WkNDVjR2MmhVYWNNV29UcDA0WTIwbmx4QnBM?=
+ =?utf-8?B?TnZZSXBKajgrTkF3Z3Y3S1FTOGppYlcyNDBlaTVyZGdFQmlrRmk3WWFxTTJi?=
+ =?utf-8?B?Y056MWZEVE1KV3ZGQi9pS2h4Q095Z1ByWENFS1pGaEVoUDBrQXdtQXAxTktE?=
+ =?utf-8?B?VGN5aTVQdmk3UUdwQ1JVQXJHWUtudWk2amR5aitBR09MdEZTZGMxUW9NeWtr?=
+ =?utf-8?B?NlVaQXJDZ3NxVTdNbmN1eTRYSDdIVGQrUEpqVnIrUy9RWVNJSVM0NkJFTjNC?=
+ =?utf-8?B?WTdxVkhDR21SbUhSZHJaTXRQSm00R01qMms1RDh2TXpHZ0hQdUpuMHVYU0V3?=
+ =?utf-8?B?dFBET0ZBckxNanlQdk81WWtXbWdZYnozR0pxdkF5SDJTMjMrc0N4KytwdkhU?=
+ =?utf-8?B?V1JZd0pVUEF6MFJVQ0J4aktJTUlkMHdxMnUyTzRldVU4eTJ3bnJEbk02Zlpx?=
+ =?utf-8?B?dktMMERveXJXUXRjeEcwejRyMjdZd0tGZjgxSU8zbWc5TXhjMmpzcEJmQWhK?=
+ =?utf-8?B?SHFoN2JPSHZXL2V4ZVBSUlZIdmh0blNmNG1FK0o0Y1hsL0FpRTdIUHd4b01W?=
+ =?utf-8?B?MzFKQTlNMGNhVnVGZDdaVkRva2ZtaWkzMHZ4VkFrc2J2Vk96bmxhcFBIWk9y?=
+ =?utf-8?B?aC9oZU9rM2xPQ0JZZGJJZ0hHdmp6ZFY5czArdjg3YWdDRXQralFPVzZkT2NY?=
+ =?utf-8?B?WGJaWFo2MzZBQVExSTF5a3lFblQwdk1lNUxwbU5mZHpxRUxUN2VzWGxqRzZB?=
+ =?utf-8?B?dHYrbDNIQi95UHhWSmx1SkpHK1AvMURlTTh5TGYvMEZnSDA1WnFJRWlFY2U2?=
+ =?utf-8?B?dVBkY3cxdDBtTDlNZmcvN21TMkJpcW1UUkMyc1JIVzI3RWNQMTI3QjkrUjZC?=
+ =?utf-8?B?NWZYUDBBTExNbGRiR0pNWjhDamFrbzRtUU5uY0h2SE9telprRGxWbzdOZVMz?=
+ =?utf-8?B?d281YmQwL1RUU3pWekFYL0RXZjlDZHpUVHVWOXRPRVVSYnlYMzRKZ1ZzVE9j?=
+ =?utf-8?B?UWJ1eHZpTG5pa2gwMEZVR2lEQVJ4MVJqdGRoSXU2Z0REdHFUVXlQVTBFTnUz?=
+ =?utf-8?Q?1xIRHRlek9Qx/?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR12MB5673.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TFdYUWxLOGRUcytSWStPdmF1Q0c5Y2dlbElJUVgrdEZzcVM1QmRQaEhERjYx?=
+ =?utf-8?B?cjJEWDJkNjVuMFFZLzdCK2RVOCs4Sm9neENTU09LRXd5UGUyMDN5Wi9oeWpw?=
+ =?utf-8?B?aUEyMW9CVVBLWUFGdTYrN0NDd0t6eWxza3F0WGhUWlovWnJBd20zMEgva2VO?=
+ =?utf-8?B?UzcyaTdKT3ZpWVIzZEpkWlE3dlF6NWhOWE95VWhUMm5IL2E1cHJlSEYvdWVP?=
+ =?utf-8?B?THAvSmpQVlQwU0NsOE0zc25PSWJkc3JPQm05NExHTWRONmRlS3lNUUFtWktz?=
+ =?utf-8?B?b1p1Q2gwMEQwN05JNjRDTkM3c2JiQXlGcWlVSGlXWFNRNTVmaDFFOVZ6ZXhk?=
+ =?utf-8?B?SWtybVNYVXhNcmlWN0V0WVZac0ZxYlo4Q0xVT2tjR0RkWmlkMGU4KzBtdThW?=
+ =?utf-8?B?d0FScVN5UXkvM2lHbnFlWVloRVBTbGZ2cml6NGlVODAxQjJISkpuV2xOVlR0?=
+ =?utf-8?B?ZmF3OEs2dkdEaWx4OENSY1dCdFhNamFqNnJVZElnamVPK1dSNjY3azhhUS9v?=
+ =?utf-8?B?OSt4WncxZUlWN05iY2gxOGtsdDlMZSsxYjRjVk1HSlp4WWIyNVloYnpxdXRK?=
+ =?utf-8?B?UzVVUzFrOW03YUduUFFKeWFJdUh5dGIxRjFtbnBXMnpJWTJ4NmhyTkVPUmdl?=
+ =?utf-8?B?NnV0WFBic2MrY01YTCs3OVN3dHpMRUdHLzMxQU1hTzQ1d2JUMC82U05OTDBK?=
+ =?utf-8?B?QmE4QSs2L0IwTG1uSk1xSkhVVjNUUS9BUTdLQ0xjS08vcjJDRDBlREdwQkIr?=
+ =?utf-8?B?c2hXVW9kcHV6SHA0bC9CQTAxNFVYRkpJSGRkSHZ0bEJ4c2JseG1IZlhka3BS?=
+ =?utf-8?B?WWo3M0MvTlpQYmczYnpzOWE5Uys3Q0ZBcCtERkVycFpyWWRxWXpodHlPNSta?=
+ =?utf-8?B?em5GR04rSG4zWDFuV2ViUHlDUjVLbk80K2hoK0JqbnRCbUI5cjlCak55VTgw?=
+ =?utf-8?B?eitxamtrZWVMWHdsVWJZOEZxL2tlRjVseDYvUGVhRWtjVWVpcUxsaEZ6ZUpO?=
+ =?utf-8?B?V1cyVjlyRGtkbVJXNXNsOUF4Qmo0dGl6K3Q5UWFUTTQzRVd3UVZ3VG0rUWlK?=
+ =?utf-8?B?SkIydk5YT3o4NXVhMDVjbVpRa01wRlBZOHhxMjRtRU0yb1Zsd29CQXdQWHpu?=
+ =?utf-8?B?SW5yR05semVPdE8rMndHOFJicTZtQWpLSGJRVWdhVVJNMGt1QXYwVGF0RnFY?=
+ =?utf-8?B?RDVLZ0dhbkJUNlMwV2JzOTg4dm9vOTlreDhUeGovQzJoc3ZpV0hkU2t2VWpa?=
+ =?utf-8?B?Z0NONGFGTGtVSE11T2Y1T2xia1JGSkVEdEo0bFZlbUFvVmdVKzFHZlNQdnJN?=
+ =?utf-8?B?eEdsSTA4MUZuQVo3TDc5M0FHOHZGSEtIcDV2aDBaMHViTG1wdDk5R1F0ZDVQ?=
+ =?utf-8?B?ajJsK25KN1N6akFRRWJTaEF4OHRHM3VISFNSNHpaTlVlQUVTdnpacDhSb1gw?=
+ =?utf-8?B?Ukp4OXllT0xyNVJtOEM0NFg0YjVOcTR5UDY5MlVlMkNrUVZESzFWSzFZTDQw?=
+ =?utf-8?B?UlFTZHc4U2wyWU9hYnRFSkRXSVJHd1p5bHZtRUtHU1oyTU9oT1RaZGJoQ1Z2?=
+ =?utf-8?B?TnRVVG0rWnRJUXk0dUxGazdDSm8yVHdZZ2Z3SHliYmN2cG1QaUt4ejlEQUhm?=
+ =?utf-8?B?S3lJK3ZEYjh1UXVaRzBqS2Qxb3FvS0tNYUlzUHM5RlhtY0NseTVGbHZqYnpk?=
+ =?utf-8?B?aTZZcDc4citwQ0hzc1EyMHE0MW14WXVHa0NvekVEU0MzWDBwM29jVmhnb1RR?=
+ =?utf-8?B?NzY5WXhEZG5HZk5udCs4OXd0eDF2b3ZaeXlZcFdzRUJMTWZTUUxTbmxETlkw?=
+ =?utf-8?B?dE9FU1lCampOMW1PUVRKb0NjdXlnaUVQbE5FcG00dDl3ZHR2azdqK0FkdC9B?=
+ =?utf-8?B?b1ZoeWY3czV2YUR4SmhReW1KVks0MFJub2NZNHpkRWZTNWNCeXQ0Lzc3TmFk?=
+ =?utf-8?B?V3JrOHQrTkRVMHp5Z1VDTlhUZ1dwenZScy83WE5nTlY2dWFkRFBsbDUzMzds?=
+ =?utf-8?B?V21JU21JeFNZOEFuOFptSlFlTDIrU0xtTEsyb0tVNzNGR0NZR0RLRHlMcFFn?=
+ =?utf-8?B?SGVQQ2htdmZleFN4UzdJdFRPdkthV0JFVkRFRk1vUjdoRlgreHdZWHp1QmtC?=
+ =?utf-8?Q?B60VGIjM3Fq/NpDmOtAtDMYxO?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b7291ab-1f44-4662-b1ee-08dd1e7de23b
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2024 09:33:38.2014
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HQ9e//Xyt+o48lflUvVVW5dmwZVJMzP/HF+4kknHV34WxVPZ1kXvIYRQ9b5/z79V
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4117
 
+Sending it out to the mailing lists once more because AMD mail servers 
+tried to convert it to HTML :(
 
+Am 17.12.24 um 01:26 schrieb Matthew Brost:
+> On Fri, Nov 22, 2024 at 02:36:59PM +0000, Tvrtko Ursulin wrote:
+>> [SNIP]
+>>>>>> Do we have system wide workqueues for that? It seems a bit
+>>>>>> overkill that amdgpu has to allocate one on his own.
+>>>>> I wondered the same but did not find any. Only ones I am aware
+>>>>> of are system_wq&co created in workqueue_init_early().
+>>>> Gentle ping on this. I don't have any better ideas that creating a
+>>>> new wq.
+>>> It took me a moment to realize, but I now think this warning message is
+>>> a false positive.
+>>>
+>>> What happens is that the code calls cancel_delayed_work_sync().
+>>>
+>>> If the work item never run because of lack of memory then it can just be
+>>> canceled.
+>>>
+>>> If the work item is running then we will block for it to finish.
+>>>
+> Apologies for the late reply. Alex responded to another thread and CC'd
+> me, which reminded me to reply here.
+>
+> The execution of the non-reclaim worker could have led to a few scenarios:
+>
+> - It might have triggered reclaim through its own memory allocation.
 
-在 2024/12/17 16:49, Barry Song 写道:
-> On Tue, Dec 17, 2024 at 8:12 PM Ge Yang <yangge1116@126.com> wrote:
->>
->>
->>
->> 在 2024/12/17 14:14, Barry Song 写道:
->>> On Tue, Dec 17, 2024 at 4:33 PM <yangge1116@126.com> wrote:
->>>>
->>>> From: yangge <yangge1116@126.com>
->>>>
->>>> Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
->>>> in __compaction_suitable()") allow compaction to proceed when free
->>>> pages required for compaction reside in the CMA pageblocks, it's
->>>> possible that __compaction_suitable() always returns true, and in
->>>> some cases, it's not acceptable.
->>>>
->>>> There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
->>>> of memory. I have configured 16GB of CMA memory on each NUMA node,
->>>> and starting a 32GB virtual machine with device passthrough is
->>>> extremely slow, taking almost an hour.
->>>>
->>>> During the start-up of the virtual machine, it will call
->>>> pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
->>>> Long term GUP cannot allocate memory from CMA area, so a maximum
->>>> of 16 GB of no-CMA memory on a NUMA node can be used as virtual
->>>> machine memory. Since there is 16G of free CMA memory on the NUMA
->>>
->>> Other unmovable allocations, like dma_buf, which can be large in a
->>> Linux system, are
->>> also unable to allocate memory from CMA. My question is whether the issue you
->>> described applies to these allocations as well.
->> pin_user_pages_remote(..., FOLL_LONGTERM, ...) first attemps to allocate
->> THP only on local node, and then fall back to remote NUMA nodes if the
->> local allocation fail. For detail, see alloc_pages_mpol().
->>
->> static struct page *alloc_pages_mpol()
->> {
->>       page = __alloc_frozen_pages_noprof(__GFP_THISNODE,...); // 1, try
->> to allocate THP only on local node
->>
->>       if (page || !(gpf & __GFP_DIRECT_RECLAIM))
->>           return page;
->>
->>       page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);//2,
->> fall back to remote NUMA nodes
->> }
->>
->> If dma_buf also uses the same way to allocate memory，dma_buf will also
->> have this problem.
-> 
-> Imagine we have only one NUMA node and no remote nodes to 'borrow'
-> memory from. What would happen as a result of this bug?
+That is unrelated and has nothing todo with WQ_MEM_RECLAIM.
 
-__alloc_pages_slowpath() can't exit at the appropriate
-place, it will continue to perform meaningless memory reclaim and 
-compaction.
+What we should do is to make sure that the lockdep annotation covers all 
+workers who play a role in fence signaling.
 
-> 
+> - It could have been running and then context-switched out, with reclaim
+>    being triggered elsewhere in the mean time, pausing the execution of
+>    the non-reclaim worker.
+
+As far as I know non-reclaim workers are not paused because a reclaim 
+worker is running, that would be really new to me.
+
+What happens is that here (from workqueue.c):
+
+* Workqueue rescuer thread function. There's one rescuer for each * 
+workqueue which has WQ_MEM_RECLAIM set. * * Regular work processing on a 
+pool may block trying to create a new * worker which uses GFP_KERNEL 
+allocation which has slight chance of * developing into deadlock if some 
+works currently on the same queue * need to be processed to satisfy the 
+GFP_KERNEL allocation. This is * the problem rescuer solves.
+
+> In either case, during reclaim, if you wait on a DMA fence that depends
+> on the DRM scheduler worker,and that worker attempts to flush the above
+> non-reclaim worker, it will result in a deadlock.
+
+Well that is only partially correct.
+
+It's true that the worker we wait for can't wait for DMA-fence or do 
+memory allocations who wait for DMA-fences. But WQ_MEM_RECLAIM is not 
+related to any DMA fence annotation.
+
+What happens instead is that the kernel always keeps a kernel thread 
+pre-allocated so that it can guarantee that the worker can start without 
+allocating memory.
+
+As soon as the worker runs there shouldn't be any difference in the 
+handling as far as I know.
+
+> The annotation appears correct to me, and I believe Tvrtko's patch is
+> indeed accurate. For what it's worth, we encountered several similar
+> bugs in Xe that emerged once we added the correct work queue
+> annotations.
+
+I think you mean something different. This is the lockdep annotation for 
+the workers and not WQ_MEM_RECLAIM.
+
+Regards,
+Christian.
+
+>>> There is no need to use WQ_MEM_RECLAIM for the workqueue or do I miss
+>>> something?
+>>>
+>>> If I'm not completely mistaken you stumbled over a bug in the warning
+>>> code instead :)
+>> Hmm your thinking sounds convincing.
 >>
->>>
->>>> node, watermark for order-0 always be met for compaction, so
->>>> __compaction_suitable() always returns true, even if the node is
->>>> unable to allocate non-CMA memory for the virtual machine.
->>>>
->>>> For costly allocations, because __compaction_suitable() always
->>>> returns true, __alloc_pages_slowpath() can't exit at the appropriate
->>>> place, resulting in excessively long virtual machine startup times.
->>>> Call trace:
->>>> __alloc_pages_slowpath
->>>>       if (compact_result == COMPACT_SKIPPED ||
->>>>           compact_result == COMPACT_DEFERRED)
->>>>           goto nopage; // should exit __alloc_pages_slowpath() from here
->>>>
->>>
->>> Do we face the same issue if we allocate dma-buf while CMA has plenty
->>> of free memory, but non-CMA has none?
->>>
->>>> In order to quickly fall back to remote node, we should remove
->>>> ALLOC_CMA both in __compaction_suitable() and __isolate_free_page()
->>>> in long term GUP flow. After this fix, starting a 32GB virtual machine
->>>> with device passthrough takes only a few seconds.
->>>>
->>>> Fixes: 984fdba6a32e ("mm, compaction: use proper alloc_flags in __compaction_suitable()")
->>>> Cc: <stable@vger.kernel.org>
->>>> Signed-off-by: yangge <yangge1116@126.com>
->>>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> ---
->>>>
->>>> V6:
->>>> -- update cc->alloc_flags to keep the original loginc
->>>>
->>>> V5:
->>>> - add 'alloc_flags' parameter for __isolate_free_page()
->>>> - remove 'usa_cma' variable
->>>>
->>>> V4:
->>>> - rich the commit log description
->>>>
->>>> V3:
->>>> - fix build errors
->>>> - add ALLOC_CMA both in should_continue_reclaim() and compaction_ready()
->>>>
->>>> V2:
->>>> - using the 'cc->alloc_flags' to determin if 'ALLOC_CMA' is needed
->>>> - rich the commit log description
->>>>
->>>>    include/linux/compaction.h |  6 ++++--
->>>>    mm/compaction.c            | 26 +++++++++++++++-----------
->>>>    mm/internal.h              |  3 ++-
->>>>    mm/page_alloc.c            |  7 +++++--
->>>>    mm/page_isolation.c        |  3 ++-
->>>>    mm/page_reporting.c        |  2 +-
->>>>    mm/vmscan.c                |  4 ++--
->>>>    7 files changed, 31 insertions(+), 20 deletions(-)
->>>>
->>>> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
->>>> index e947764..b4c3ac3 100644
->>>> --- a/include/linux/compaction.h
->>>> +++ b/include/linux/compaction.h
->>>> @@ -90,7 +90,8 @@ extern enum compact_result try_to_compact_pages(gfp_t gfp_mask,
->>>>                   struct page **page);
->>>>    extern void reset_isolation_suitable(pg_data_t *pgdat);
->>>>    extern bool compaction_suitable(struct zone *zone, int order,
->>>> -                                              int highest_zoneidx);
->>>> +                                              int highest_zoneidx,
->>>> +                                              unsigned int alloc_flags);
->>>>
->>>>    extern void compaction_defer_reset(struct zone *zone, int order,
->>>>                                   bool alloc_success);
->>>> @@ -108,7 +109,8 @@ static inline void reset_isolation_suitable(pg_data_t *pgdat)
->>>>    }
->>>>
->>>>    static inline bool compaction_suitable(struct zone *zone, int order,
->>>> -                                                     int highest_zoneidx)
->>>> +                                                     int highest_zoneidx,
->>>> +                                                     unsigned int alloc_flags)
->>>>    {
->>>>           return false;
->>>>    }
->>>> diff --git a/mm/compaction.c b/mm/compaction.c
->>>> index 07bd227..d92ba6c 100644
->>>> --- a/mm/compaction.c
->>>> +++ b/mm/compaction.c
->>>> @@ -655,7 +655,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
->>>>
->>>>                   /* Found a free page, will break it into order-0 pages */
->>>>                   order = buddy_order(page);
->>>> -               isolated = __isolate_free_page(page, order);
->>>> +               isolated = __isolate_free_page(page, order, cc->alloc_flags);
->>>>                   if (!isolated)
->>>>                           break;
->>>>                   set_page_private(page, order);
->>>> @@ -1634,7 +1634,7 @@ static void fast_isolate_freepages(struct compact_control *cc)
->>>>
->>>>                   /* Isolate the page if available */
->>>>                   if (page) {
->>>> -                       if (__isolate_free_page(page, order)) {
->>>> +                       if (__isolate_free_page(page, order, cc->alloc_flags)) {
->>>>                                   set_page_private(page, order);
->>>>                                   nr_isolated = 1 << order;
->>>>                                   nr_scanned += nr_isolated - 1;
->>>> @@ -2381,6 +2381,7 @@ static enum compact_result compact_finished(struct compact_control *cc)
->>>>
->>>>    static bool __compaction_suitable(struct zone *zone, int order,
->>>>                                     int highest_zoneidx,
->>>> +                                 unsigned int alloc_flags,
->>>>                                     unsigned long wmark_target)
->>>>    {
->>>>           unsigned long watermark;
->>>> @@ -2395,25 +2396,26 @@ static bool __compaction_suitable(struct zone *zone, int order,
->>>>            * even if compaction succeeds.
->>>>            * For costly orders, we require low watermark instead of min for
->>>>            * compaction to proceed to increase its chances.
->>>> -        * ALLOC_CMA is used, as pages in CMA pageblocks are considered
->>>> -        * suitable migration targets
->>>> +        * In addition to long term GUP flow, ALLOC_CMA is used, as pages in
->>>> +        * CMA pageblocks are considered suitable migration targets
->>>
->>> I'm not sure if this document is correct for cases other than GUP.
->>>
->>>>            */
->>>>           watermark = (order > PAGE_ALLOC_COSTLY_ORDER) ?
->>>>                                   low_wmark_pages(zone) : min_wmark_pages(zone);
->>>>           watermark += compact_gap(order);
->>>>           return __zone_watermark_ok(zone, 0, watermark, highest_zoneidx,
->>>> -                                  ALLOC_CMA, wmark_target);
->>>> +                                  alloc_flags & ALLOC_CMA, wmark_target);
->>>>    }
->>>>
->>>>    /*
->>>>     * compaction_suitable: Is this suitable to run compaction on this zone now?
->>>>     */
->>>> -bool compaction_suitable(struct zone *zone, int order, int highest_zoneidx)
->>>> +bool compaction_suitable(struct zone *zone, int order, int highest_zoneidx,
->>>> +                                  unsigned int alloc_flags)
->>>>    {
->>>>           enum compact_result compact_result;
->>>>           bool suitable;
->>>>
->>>> -       suitable = __compaction_suitable(zone, order, highest_zoneidx,
->>>> +       suitable = __compaction_suitable(zone, order, highest_zoneidx, alloc_flags,
->>>>                                            zone_page_state(zone, NR_FREE_PAGES));
->>>>           /*
->>>>            * fragmentation index determines if allocation failures are due to
->>>> @@ -2474,7 +2476,7 @@ bool compaction_zonelist_suitable(struct alloc_context *ac, int order,
->>>>                   available = zone_reclaimable_pages(zone) / order;
->>>>                   available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
->>>>                   if (__compaction_suitable(zone, order, ac->highest_zoneidx,
->>>> -                                         available))
->>>> +                                         alloc_flags, available))
->>>>                           return true;
->>>>           }
->>>>
->>>> @@ -2499,7 +2501,7 @@ compaction_suit_allocation_order(struct zone *zone, unsigned int order,
->>>>                                 alloc_flags))
->>>>                   return COMPACT_SUCCESS;
->>>>
->>>> -       if (!compaction_suitable(zone, order, highest_zoneidx))
->>>> +       if (!compaction_suitable(zone, order, highest_zoneidx, alloc_flags))
->>>>                   return COMPACT_SKIPPED;
->>>>
->>>>           return COMPACT_CONTINUE;
->>>> @@ -2893,6 +2895,7 @@ static int compact_node(pg_data_t *pgdat, bool proactive)
->>>>           struct compact_control cc = {
->>>>                   .order = -1,
->>>>                   .mode = proactive ? MIGRATE_SYNC_LIGHT : MIGRATE_SYNC,
->>>> +               .alloc_flags = ALLOC_CMA,
->>>>                   .ignore_skip_hint = true,
->>>>                   .whole_zone = true,
->>>>                   .gfp_mask = GFP_KERNEL,
->>>> @@ -3037,7 +3040,7 @@ static bool kcompactd_node_suitable(pg_data_t *pgdat)
->>>>
->>>>                   ret = compaction_suit_allocation_order(zone,
->>>>                                   pgdat->kcompactd_max_order,
->>>> -                               highest_zoneidx, ALLOC_WMARK_MIN);
->>>> +                               highest_zoneidx, ALLOC_CMA | ALLOC_WMARK_MIN);
->>>>                   if (ret == COMPACT_CONTINUE)
->>>>                           return true;
->>>>           }
->>>> @@ -3058,6 +3061,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
->>>>                   .search_order = pgdat->kcompactd_max_order,
->>>>                   .highest_zoneidx = pgdat->kcompactd_highest_zoneidx,
->>>>                   .mode = MIGRATE_SYNC_LIGHT,
->>>> +               .alloc_flags = ALLOC_CMA | ALLOC_WMARK_MIN,
->>>>                   .ignore_skip_hint = false,
->>>>                   .gfp_mask = GFP_KERNEL,
->>>>           };
->>>> @@ -3078,7 +3082,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
->>>>                           continue;
->>>>
->>>>                   ret = compaction_suit_allocation_order(zone,
->>>> -                               cc.order, zoneid, ALLOC_WMARK_MIN);
->>>> +                               cc.order, zoneid, cc.alloc_flags);
->>>>                   if (ret != COMPACT_CONTINUE)
->>>>                           continue;
->>>>
->>>> diff --git a/mm/internal.h b/mm/internal.h
->>>> index 3922788..6d257c8 100644
->>>> --- a/mm/internal.h
->>>> +++ b/mm/internal.h
->>>> @@ -662,7 +662,8 @@ static inline void clear_zone_contiguous(struct zone *zone)
->>>>           zone->contiguous = false;
->>>>    }
->>>>
->>>> -extern int __isolate_free_page(struct page *page, unsigned int order);
->>>> +extern int __isolate_free_page(struct page *page, unsigned int order,
->>>> +                                   unsigned int alloc_flags);
->>>>    extern void __putback_isolated_page(struct page *page, unsigned int order,
->>>>                                       int mt);
->>>>    extern void memblock_free_pages(struct page *page, unsigned long pfn,
->>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>> index dde19db..1bfdca3 100644
->>>> --- a/mm/page_alloc.c
->>>> +++ b/mm/page_alloc.c
->>>> @@ -2809,7 +2809,8 @@ void split_page(struct page *page, unsigned int order)
->>>>    }
->>>>    EXPORT_SYMBOL_GPL(split_page);
->>>>
->>>> -int __isolate_free_page(struct page *page, unsigned int order)
->>>> +int __isolate_free_page(struct page *page, unsigned int order,
->>>> +                                  unsigned int alloc_flags)
->>>>    {
->>>>           struct zone *zone = page_zone(page);
->>>>           int mt = get_pageblock_migratetype(page);
->>>> @@ -2823,7 +2824,8 @@ int __isolate_free_page(struct page *page, unsigned int order)
->>>>                    * exists.
->>>>                    */
->>>>                   watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
->>>> -               if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
->>>> +               if (!zone_watermark_ok(zone, 0, watermark, 0,
->>>> +                           alloc_flags & ALLOC_CMA))
->>>>                           return 0;
->>>>           }
->>>>
->>>> @@ -6454,6 +6456,7 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
->>>>                   .order = -1,
->>>>                   .zone = page_zone(pfn_to_page(start)),
->>>>                   .mode = MIGRATE_SYNC,
->>>> +               .alloc_flags = ALLOC_CMA,
->>>>                   .ignore_skip_hint = true,
->>>>                   .no_set_skip_hint = true,
->>>>                   .alloc_contig = true,
->>>> diff --git a/mm/page_isolation.c b/mm/page_isolation.c
->>>> index c608e9d..a1f2c79 100644
->>>> --- a/mm/page_isolation.c
->>>> +++ b/mm/page_isolation.c
->>>> @@ -229,7 +229,8 @@ static void unset_migratetype_isolate(struct page *page, int migratetype)
->>>>                           buddy = find_buddy_page_pfn(page, page_to_pfn(page),
->>>>                                                       order, NULL);
->>>>                           if (buddy && !is_migrate_isolate_page(buddy)) {
->>>> -                               isolated_page = !!__isolate_free_page(page, order);
->>>> +                               isolated_page = !!__isolate_free_page(page, order,
->>>> +                                                   ALLOC_CMA);
->>>>                                   /*
->>>>                                    * Isolating a free page in an isolated pageblock
->>>>                                    * is expected to always work as watermarks don't
->>>> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
->>>> index e4c428e..fd3813b 100644
->>>> --- a/mm/page_reporting.c
->>>> +++ b/mm/page_reporting.c
->>>> @@ -198,7 +198,7 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
->>>>
->>>>                   /* Attempt to pull page from list and place in scatterlist */
->>>>                   if (*offset) {
->>>> -                       if (!__isolate_free_page(page, order)) {
->>>> +                       if (!__isolate_free_page(page, order, ALLOC_CMA)) {
->>>>                                   next = page;
->>>>                                   break;
->>>>                           }
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 5e03a61..33f5b46 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -5815,7 +5815,7 @@ static inline bool should_continue_reclaim(struct pglist_data *pgdat,
->>>>                                         sc->reclaim_idx, 0))
->>>>                           return false;
->>>>
->>>> -               if (compaction_suitable(zone, sc->order, sc->reclaim_idx))
->>>> +               if (compaction_suitable(zone, sc->order, sc->reclaim_idx, ALLOC_CMA))
->>>>                           return false;
->>>>           }
->>>>
->>>> @@ -6043,7 +6043,7 @@ static inline bool compaction_ready(struct zone *zone, struct scan_control *sc)
->>>>                   return true;
->>>>
->>>>           /* Compaction cannot yet proceed. Do reclaim. */
->>>> -       if (!compaction_suitable(zone, sc->order, sc->reclaim_idx))
->>>> +       if (!compaction_suitable(zone, sc->order, sc->reclaim_idx, ALLOC_CMA))
->>>>                   return false;
->>>>
->>>>           /*
->>>> --
->>>> 2.7.4
->>>>
->>>>
->>>
->>> Thanks
->>> Barry
+>> Adding Tejun if he has time to help brainstorm this.
 >>
+> Tejun could likely provide insight into whether my above assessment is
+> correct.
+> Matt
+>
+>> Question is - does check_flush_dependency() need to skip the !WQ_MEM_RECLAIM
+>> flushing WQ_MEM_RECLAIM warning *if* the work is already running *and* it
+>> was called from cancel_delayed_work_sync()?
 >>
+>> Regards,
+>>
+>> Tvrtko
+>>
+>>>>>> Apart from that looks good to me.
+>>>>>>
+>>>>>> Regards,
+>>>>>> Christian.
+>>>>>>
+>>>>>>> Signed-off-by: Tvrtko Ursulin<tvrtko.ursulin@igalia.com>
+>>>>>>> References: 746ae46c1113 ("drm/sched: Mark scheduler
+>>>>>>> work queues with WQ_MEM_RECLAIM")
+>>>>>>> Fixes: a6149f039369 ("drm/sched: Convert drm scheduler
+>>>>>>> to use a work queue rather than kthread")
+>>>>>>> Cc:stable@vger.kernel.org
+>>>>>>> Cc: Matthew Brost<matthew.brost@intel.com>
+>>>>>>> Cc: Danilo Krummrich<dakr@kernel.org>
+>>>>>>> Cc: Philipp Stanner<pstanner@redhat.com>
+>>>>>>> Cc: Alex Deucher<alexander.deucher@amd.com>
+>>>>>>> Cc: Christian König<christian.koenig@amd.com>
+>>>>>>> ---
+>>>>>>>    drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  2 ++
+>>>>>>>    drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 25
+>>>>>>> +++++++++++++++++++++++++
+>>>>>>>    drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c |  5 +++--
+>>>>>>>    3 files changed, 30 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>>>>>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>>>>>>> index 7645e498faa4..a6aad687537e 100644
+>>>>>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>>>>>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>>>>>>> @@ -268,6 +268,8 @@ extern int amdgpu_agp;
+>>>>>>>    extern int amdgpu_wbrf;
+>>>>>>> +extern struct workqueue_struct *amdgpu_reclaim_wq;
+>>>>>>> +
+>>>>>>>    #define AMDGPU_VM_MAX_NUM_CTX            4096
+>>>>>>>    #define AMDGPU_SG_THRESHOLD            (256*1024*1024)
+>>>>>>>    #define AMDGPU_WAIT_IDLE_TIMEOUT_IN_MS            3000
+>>>>>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>>>>>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>>>>>>> index 38686203bea6..f5b7172e8042 100644
+>>>>>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>>>>>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>>>>>>> @@ -255,6 +255,8 @@ struct amdgpu_watchdog_timer
+>>>>>>> amdgpu_watchdog_timer = {
+>>>>>>>        .period = 0x0, /* default to 0x0 (timeout disable) */
+>>>>>>>    };
+>>>>>>> +struct workqueue_struct *amdgpu_reclaim_wq;
+>>>>>>> +
+>>>>>>>    /**
+>>>>>>>     * DOC: vramlimit (int)
+>>>>>>>     * Restrict the total amount of VRAM in MiB for
+>>>>>>> testing. The default is 0 (Use full VRAM).
+>>>>>>> @@ -2971,6 +2973,21 @@ static struct pci_driver
+>>>>>>> amdgpu_kms_pci_driver = {
+>>>>>>>        .dev_groups = amdgpu_sysfs_groups,
+>>>>>>>    };
+>>>>>>> +static int amdgpu_wq_init(void)
+>>>>>>> +{
+>>>>>>> +    amdgpu_reclaim_wq =
+>>>>>>> +        alloc_workqueue("amdgpu-reclaim", WQ_MEM_RECLAIM, 0);
+>>>>>>> +    if (!amdgpu_reclaim_wq)
+>>>>>>> +        return -ENOMEM;
+>>>>>>> +
+>>>>>>> +    return 0;
+>>>>>>> +}
+>>>>>>> +
+>>>>>>> +static void amdgpu_wq_fini(void)
+>>>>>>> +{
+>>>>>>> +    destroy_workqueue(amdgpu_reclaim_wq);
+>>>>>>> +}
+>>>>>>> +
+>>>>>>>    static int __init amdgpu_init(void)
+>>>>>>>    {
+>>>>>>>        int r;
+>>>>>>> @@ -2978,6 +2995,10 @@ static int __init amdgpu_init(void)
+>>>>>>>        if (drm_firmware_drivers_only())
+>>>>>>>            return -EINVAL;
+>>>>>>> +    r = amdgpu_wq_init();
+>>>>>>> +    if (r)
+>>>>>>> +        goto error_wq;
+>>>>>>> +
+>>>>>>>        r = amdgpu_sync_init();
+>>>>>>>        if (r)
+>>>>>>>            goto error_sync;
+>>>>>>> @@ -3006,6 +3027,9 @@ static int __init amdgpu_init(void)
+>>>>>>>        amdgpu_sync_fini();
+>>>>>>>    error_sync:
+>>>>>>> +    amdgpu_wq_fini();
+>>>>>>> +
+>>>>>>> +error_wq:
+>>>>>>>        return r;
+>>>>>>>    }
+>>>>>>> @@ -3017,6 +3041,7 @@ static void __exit amdgpu_exit(void)
+>>>>>>>        amdgpu_acpi_release();
+>>>>>>>        amdgpu_sync_fini();
+>>>>>>>        amdgpu_fence_slab_fini();
+>>>>>>> +    amdgpu_wq_fini();
+>>>>>>>        mmu_notifier_synchronize();
+>>>>>>>        amdgpu_xcp_drv_release();
+>>>>>>>    }
+>>>>>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>>>>>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>>>>>>> index 2f3f09dfb1fd..f8fd71d9382f 100644
+>>>>>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>>>>>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>>>>>>> @@ -790,8 +790,9 @@ void amdgpu_gfx_off_ctrl(struct
+>>>>>>> amdgpu_device *adev, bool enable)
+>>>>>>>                            AMD_IP_BLOCK_TYPE_GFX, true))
+>>>>>>>                        adev->gfx.gfx_off_state = true;
+>>>>>>>                } else {
+>>>>>>> - schedule_delayed_work(&adev->gfx.gfx_off_delay_work,
+>>>>>>> -                          delay);
+>>>>>>> +                queue_delayed_work(amdgpu_reclaim_wq,
+>>>>>>> + &adev->gfx.gfx_off_delay_work,
+>>>>>>> +                           delay);
+>>>>>>>                }
+>>>>>>>            }
+>>>>>>>        } else {
 
 
