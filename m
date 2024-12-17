@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-104551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8371A9F51CC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F247D9F52CB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D623818803D5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5947A16CFA2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED9E1F757B;
-	Tue, 17 Dec 2024 17:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA4F1F869D;
+	Tue, 17 Dec 2024 17:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBIPfPu2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15NprSBM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7751F6671;
-	Tue, 17 Dec 2024 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B90E1F37BE;
+	Tue, 17 Dec 2024 17:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455396; cv=none; b=G1sR4cJB4uzhU1Mvg6rSQ3TZhau79t1TZM/YPnbbcJ/foYzAJ5P/2c8/6bF2W+ETW/q0lKVqcnwIWJ5C1cQ5te92lSvHEa8n8rd1t5PvMZNZ29qn2VSusnYSjJXjS/CWo7PKXzn/n9dp36OpHKT0uyp3qVOn++lyT6dYW0JlDmo=
+	t=1734455993; cv=none; b=A0UL93nzVtzqoAHBqcJng22yosaI9WgTW7uohj45pGu7spfTHBtDvsxlIEzbXEBs8JzZcZCdlULA5gU7jtjewtHVOOSmWLCyzFo0heNsdFCu0+ZVe43vz+3/h5Iv5o/4BnCdfn+6W80sLMRA/YxtkFW5pKozS7/d2ZVpkGHL3W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455396; c=relaxed/simple;
-	bh=YOWU2oSqTBrdGMHZxERmRH5T6+y+Q9/NJ57ipIYl+RQ=;
+	s=arc-20240116; t=1734455993; c=relaxed/simple;
+	bh=wyPWCV69bP/GAMJGxgkPHRIvj6+W3RZfhy8E/9ET9Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8wvfoRv0NQ0DO6bJ71mm0d+BCvOY6/kakf+CQHdpBaRZS4v2lnXdDekT+8ua0F3rkOa1wHfVAKFIA/gppsuKNAcNiiZKonQHqw4MVE+XSDBnEG4qLMsKde4P2isfuflREjkCARR1Tuzaf2i61ixWAt/vZYZpvg1AtzFzkqZYjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBIPfPu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11969C4CED3;
-	Tue, 17 Dec 2024 17:09:55 +0000 (UTC)
+	 MIME-Version; b=dtZFG5YYNrmYKNXFAuN69amq27hHqH5buu4yn5hYUGGAX0+9XqZ0D+nLL03UmFBGma2ri/Nh1Al4yYRjnrRA+TnECCf9erY+03F4WaShUnljdjQkHBVSfIJ+8zutACFpTNMZhRHaY0V5pWwIPnKO62imizi58TwdYjXeoEYRy3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15NprSBM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BB0C4CED3;
+	Tue, 17 Dec 2024 17:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455396;
-	bh=YOWU2oSqTBrdGMHZxERmRH5T6+y+Q9/NJ57ipIYl+RQ=;
+	s=korg; t=1734455993;
+	bh=wyPWCV69bP/GAMJGxgkPHRIvj6+W3RZfhy8E/9ET9Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KBIPfPu2AUtFwDvQPZCvSmtxRi8wRenG7gtn7m+7uZPxI8Uic4ZWKlY9p/dPzStpQ
-	 439TxQDel7jM0f5vJ8Lc3uPanFPKSvvZN83KkLgYp63PlV7JdWIylxru4nyNYBD53o
-	 fOtgT9EMWDNnsrtCBAQHIaqJZjq+lTagQmJqKgK4=
+	b=15NprSBMJzALbXDca9KHT0rU6rDwG5Sc1qzhAwhEReUFC3gTdBkNsrhyAIWV0Da18
+	 zn8LWnOtp5Ih8nCvPmxpbwWmyLseJ8LZ6GANEgFqxrn5iUeqvZKipkdvBobQKOFkK3
+	 ctPiSgjHnbyp8+Xf2XRuoHdQIwkANYnZANUhFOtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 09/24] batman-adv: Remove uninitialized data in full table TT response
-Date: Tue, 17 Dec 2024 18:07:07 +0100
-Message-ID: <20241217170519.388067921@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.6 024/109] xfs: update btree keys correctly when _insrec splits an inode root block
+Date: Tue, 17 Dec 2024 18:07:08 +0100
+Message-ID: <20241217170534.378093911@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
-References: <20241217170519.006786596@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 8038806db64da15721775d6b834990cacbfcf0b2 ]
+commit 6d7b4bc1c3e00b1a25b7a05141a64337b4629337 upstream.
 
-The number of entries filled by batadv_tt_tvlv_generate() can be less
-than initially expected in batadv_tt_prepare_tvlv_{global,local}_data()
-(changes can be removed by batadv_tt_local_event() in ADD+DEL sequence
-in the meantime as the lock held during the whole tvlv global/local data
-generation).
+In commit 2c813ad66a72, I partially fixed a bug wherein xfs_btree_insrec
+would erroneously try to update the parent's key for a block that had
+been split if we decided to insert the new record into the new block.
+The solution was to detect this situation and update the in-core key
+value that we pass up to the caller so that the caller will (eventually)
+add the new block to the parent level of the tree with the correct key.
 
-Thus tvlv_len could be bigger than the actual TT entry size that need
-to be sent so full table TT_RESPONSE could hold invalid TT entries such
-as below.
+However, I missed a subtlety about the way inode-rooted btrees work.  If
+the full block was a maximally sized inode root block, we'll solve that
+fullness by moving the root block's records to a new block, resizing the
+root block, and updating the root to point to the new block.  We don't
+pass a pointer to the new block to the caller because that work has
+already been done.  The new record will /always/ land in the new block,
+so in this case we need to use xfs_btree_update_keys to update the keys.
 
- * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
- * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
+This bug can theoretically manifest itself in the very rare case that we
+split a bmbt root block and the new record lands in the very first slot
+of the new block, though I've never managed to trigger it in practice.
+However, it is very easy to reproduce by running generic/522 with the
+realtime rmapbt patchset if rtinherit=1.
 
-Remove the extra allocated space to avoid sending uninitialized entries
-for full table TT_RESPONSE in both batadv_send_other_tt_response() and
-batadv_send_my_tt_response().
-
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v4.8
+Fixes: 2c813ad66a7218 ("xfs: support btrees with overlapping intervals for keys")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c | 37 ++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ fs/xfs/libxfs/xfs_btree.c |   29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 0653ae49efd4..e6d51d5070aa 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -2986,14 +2986,16 @@ static bool batadv_tt_global_valid(const void *entry_ptr,
-  *
-  * Fills the tvlv buff with the tt entries from the specified hash. If valid_cb
-  * is not provided then this becomes a no-op.
-+ *
-+ * Return: Remaining unused length in tvlv_buff.
-  */
--static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
--				    struct batadv_hashtable *hash,
--				    void *tvlv_buff, u16 tt_len,
--				    bool (*valid_cb)(const void *,
--						     const void *,
--						     u8 *flags),
--				    void *cb_data)
-+static u16 batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
-+				   struct batadv_hashtable *hash,
-+				   void *tvlv_buff, u16 tt_len,
-+				   bool (*valid_cb)(const void *,
-+						    const void *,
-+						    u8 *flags),
-+				   void *cb_data)
- {
- 	struct batadv_tt_common_entry *tt_common_entry;
- 	struct batadv_tvlv_tt_change *tt_change;
-@@ -3007,7 +3009,7 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 	tt_change = (struct batadv_tvlv_tt_change *)tvlv_buff;
+--- a/fs/xfs/libxfs/xfs_btree.c
++++ b/fs/xfs/libxfs/xfs_btree.c
+@@ -3429,14 +3429,31 @@ xfs_btree_insrec(
+ 	xfs_btree_log_block(cur, bp, XFS_BB_NUMRECS);
  
- 	if (!valid_cb)
--		return;
-+		return tt_len;
- 
- 	rcu_read_lock();
- 	for (i = 0; i < hash->size; i++) {
-@@ -3033,6 +3035,8 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 		}
- 	}
- 	rcu_read_unlock();
-+
-+	return batadv_tt_len(tt_tot - tt_num_entries);
- }
- 
- /**
-@@ -3310,10 +3314,11 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
- 			goto out;
- 
- 		/* fill the rest of the tvlv with the real TT entries */
--		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.global_hash,
--					tt_change, tt_len,
--					batadv_tt_global_valid,
--					req_dst_orig_node);
-+		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
-+						    bat_priv->tt.global_hash,
-+						    tt_change, tt_len,
-+						    batadv_tt_global_valid,
-+						    req_dst_orig_node);
- 	}
- 
- 	/* Don't send the response, if larger than fragmented packet. */
-@@ -3439,9 +3444,11 @@ static bool batadv_send_my_tt_response(struct batadv_priv *bat_priv,
- 			goto out;
- 
- 		/* fill the rest of the tvlv with the real TT entries */
--		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.local_hash,
--					tt_change, tt_len,
--					batadv_tt_local_valid, NULL);
-+		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
-+						    bat_priv->tt.local_hash,
-+						    tt_change, tt_len,
-+						    batadv_tt_local_valid,
-+						    NULL);
- 	}
- 
- 	tvlv_tt_data->flags = BATADV_TT_RESPONSE;
--- 
-2.39.5
-
+ 	/*
+-	 * If we just inserted into a new tree block, we have to
+-	 * recalculate nkey here because nkey is out of date.
++	 * Update btree keys to reflect the newly added record or keyptr.
++	 * There are three cases here to be aware of.  Normally, all we have to
++	 * do is walk towards the root, updating keys as necessary.
+ 	 *
+-	 * Otherwise we're just updating an existing block (having shoved
+-	 * some records into the new tree block), so use the regular key
+-	 * update mechanism.
++	 * If the caller had us target a full block for the insertion, we dealt
++	 * with that by calling the _make_block_unfull function.  If the
++	 * "make unfull" function splits the block, it'll hand us back the key
++	 * and pointer of the new block.  We haven't yet added the new block to
++	 * the next level up, so if we decide to add the new record to the new
++	 * block (bp->b_bn != old_bn), we have to update the caller's pointer
++	 * so that the caller adds the new block with the correct key.
++	 *
++	 * However, there is a third possibility-- if the selected block is the
++	 * root block of an inode-rooted btree and cannot be expanded further,
++	 * the "make unfull" function moves the root block contents to a new
++	 * block and updates the root block to point to the new block.  In this
++	 * case, no block pointer is passed back because the block has already
++	 * been added to the btree.  In this case, we need to use the regular
++	 * key update function, just like the first case.  This is critical for
++	 * overlapping btrees, because the high key must be updated to reflect
++	 * the entire tree, not just the subtree accessible through the first
++	 * child of the root (which is now two levels down from the root).
+ 	 */
+-	if (bp && xfs_buf_daddr(bp) != old_bn) {
++	if (!xfs_btree_ptr_is_null(cur, &nptr) &&
++	    bp && xfs_buf_daddr(bp) != old_bn) {
+ 		xfs_btree_get_keys(cur, block, lkey);
+ 	} else if (xfs_btree_needs_key_update(cur, optr)) {
+ 		error = xfs_btree_update_keys(cur, level);
 
 
 
