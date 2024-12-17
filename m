@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-104803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4A49F5321
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331B69F5426
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38E34188E119
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D2C6188D8A0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1021F63D5;
-	Tue, 17 Dec 2024 17:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1AE1FA256;
+	Tue, 17 Dec 2024 17:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4j0cKP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hs6nFBF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480CE142E77;
-	Tue, 17 Dec 2024 17:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BB31FA24A;
+	Tue, 17 Dec 2024 17:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456148; cv=none; b=S8hycrU90pZXiUsyt8tIFGYULXK+wz3cmNtdIXnQVqfbasKhwXRgdP156qn783cYU8fetppvkTV7cdaJffgwVixqmvSDbmu18n9lkq5iMqOuYcQizQC7BuAQmyCpH2+UJxj8Ejg8GjV2G4PUu2SrL/adOA1PJto+xfiwfUiSMjo=
+	t=1734456651; cv=none; b=SGD9dTbrramlNhvK/bGoIC+x63bHMHrr8nKyDn7k/kJRSuLhCma0Sx80ttsDYXHc3YUuj295jCgdr7vQHIDTJzs8WP/sIA3W4m2K2C2tM50xLgycBywxeRX8/POeT2VsXtsGBC6vUzdlz3Xck6ydDjGsYqnprEv2jvB46+NuIfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456148; c=relaxed/simple;
-	bh=V7H/+lg2VJq2/ksJ9tAsOAKrjCEwpJpsC1DbfKb7gRo=;
+	s=arc-20240116; t=1734456651; c=relaxed/simple;
+	bh=vJQTn2eotknXEYMM/KLywWO90eW2TYtjS3qDr4cEX+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YqwxvAMLkWi22+Lagc9mJYTIqBMfYS/sJ4m4bLFIn3CQBbys5giA4VqutnLPqC3NgJgDxW4jNWSZI+oYVvEtYPilpGNNrBP/aRhM/wqk7+00Wg05C87FsZzImwMe3hYyYO7H0YoafS/IEDYHFiZPSBOhsObFyJufevmldVMchw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4j0cKP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA75EC4CED3;
-	Tue, 17 Dec 2024 17:22:27 +0000 (UTC)
+	 MIME-Version; b=FL2F+FnGo/Nm0psXXuGk2/yHZ1s8tn9+sAxzq325j4DTjG3Ym5ATsig6xjYVtJOafEhcdq6u8JNAaM2MelGN+dqqlaAwMuv/VJgSf3+5zKPC2a9nbxWX8sVFKD408ZgdDS5WL7Qro8jXgj0ejgRHIrQCs4zqkV9Hv6PdskciPzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hs6nFBF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47044C4CED3;
+	Tue, 17 Dec 2024 17:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456148;
-	bh=V7H/+lg2VJq2/ksJ9tAsOAKrjCEwpJpsC1DbfKb7gRo=;
+	s=korg; t=1734456651;
+	bh=vJQTn2eotknXEYMM/KLywWO90eW2TYtjS3qDr4cEX+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4j0cKP3XqPjyFOUTrNp+w8f6PdZVID5n304dd0AkMlt73WXmxM6QLw2uKrLYsTuF
-	 AIESYmHHnAUrKfUH3NsaV8pjuVyZ3p9Msi42fgSaYIBJyu3xbyE5txDCKdVyvMuTkA
-	 Fsg9FtbyhPV46IOLo09KvnL17DJJ9Kh60bBLhtwo=
+	b=Hs6nFBF2r9fruv1ccRw3es5KF5wTojWvBSZisYiE+mNa3dtL98PN7lkuCkKJYoLhI
+	 G+hemO7o0Eyh1uDPaNMoLkvfZDd5oYmmSxft0PHhjNHedj1sRGP/yK6d5COdVyITZe
+	 1gyTXUeqb4++zNn9G1VF8ZllvM+WHRh6AjJged9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/109] net: renesas: rswitch: handle stop vs interrupt race
+Subject: [PATCH 6.12 125/172] net: renesas: rswitch: fix leaked pointer on error path
 Date: Tue, 17 Dec 2024 18:08:01 +0100
-Message-ID: <20241217170536.599560553@linuxfoundation.org>
+Message-ID: <20241217170551.526549059@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit 3dd002f20098b9569f8fd7f8703f364571e2e975 ]
+[ Upstream commit bb617328bafa1023d8e9c25a25345a564c66c14f ]
 
-Currently the stop routine of rswitch driver does not immediately
-prevent hardware from continuing to update descriptors and requesting
-interrupts.
+If error path is taken while filling descriptor for a frame, skb
+pointer is left in the entry. Later, on the ring entry reuse, the
+same entry could be used as a part of a multi-descriptor frame,
+and skb for that new frame could be stored in a different entry.
 
-It can happen that when rswitch_stop() executes the masking of
-interrupts from the queues of the port being closed, napi poll for
-that port is already scheduled or running on a different CPU. When
-execution of this napi poll completes, it will unmask the interrupts.
-And unmasked interrupt can fire after rswitch_stop() returns from
-napi_disable() call. Then, the handler won't mask it, because
-napi_schedule_prep() will return false, and interrupt storm will
-happen.
+Then, the stale pointer will reach the completion routine, and passed
+to the release operation.
 
-This can't be fixed by making rswitch_stop() call napi_disable() before
-masking interrupts. In this case, the interrupt storm will happen if
-interrupt fires between napi_disable() and masking.
+Fix that by clearing the saved skb pointer at the error path.
 
-Fix this by checking for priv->opened_ports bit when unmasking
-interrupts after napi poll. For that to be consistent, move
-priv->opened_ports changes into spinlock-protected areas, and reorder
-other operations in rswitch_open() and rswitch_stop() accordingly.
-
+Fixes: d2c96b9d5f83 ("net: rswitch: Add jumbo frames handling for TX")
 Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
-Link: https://patch.msgid.link/20241209113204.175015-1-nikita.yoush@cogentembedded.com
+Link: https://patch.msgid.link/20241208095004.69468-4-nikita.yoush@cogentembedded.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rswitch.c | 33 ++++++++++++++------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-index d04a79ece698..4dd218b6f308 100644
+index c251becef6f8..af0bc95ad6ae 100644
 --- a/drivers/net/ethernet/renesas/rswitch.c
 +++ b/drivers/net/ethernet/renesas/rswitch.c
-@@ -839,8 +839,10 @@ static int rswitch_poll(struct napi_struct *napi, int budget)
+@@ -1703,6 +1703,7 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
+ 	return ret;
  
- 	if (napi_complete_done(napi, budget - quota)) {
- 		spin_lock_irqsave(&priv->lock, flags);
--		rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
--		rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
-+		if (test_bit(rdev->port, priv->opened_ports)) {
-+			rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
-+			rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
-+		}
- 		spin_unlock_irqrestore(&priv->lock, flags);
- 	}
+ err_unmap:
++	gq->skbs[(gq->cur + nr_desc - 1) % gq->ring_size] = NULL;
+ 	dma_unmap_single(ndev->dev.parent, dma_addr_orig, skb->len, DMA_TO_DEVICE);
  
-@@ -1467,20 +1469,20 @@ static int rswitch_open(struct net_device *ndev)
- 	struct rswitch_device *rdev = netdev_priv(ndev);
- 	unsigned long flags;
- 
--	phy_start(ndev->phydev);
-+	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
-+		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
- 
- 	napi_enable(&rdev->napi);
--	netif_start_queue(ndev);
- 
- 	spin_lock_irqsave(&rdev->priv->lock, flags);
-+	bitmap_set(rdev->priv->opened_ports, rdev->port, 1);
- 	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, true);
- 	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, true);
- 	spin_unlock_irqrestore(&rdev->priv->lock, flags);
- 
--	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
--		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
-+	phy_start(ndev->phydev);
- 
--	bitmap_set(rdev->priv->opened_ports, rdev->port, 1);
-+	netif_start_queue(ndev);
- 
- 	return 0;
- };
-@@ -1492,7 +1494,16 @@ static int rswitch_stop(struct net_device *ndev)
- 	unsigned long flags;
- 
- 	netif_tx_stop_all_queues(ndev);
-+
-+	phy_stop(ndev->phydev);
-+
-+	spin_lock_irqsave(&rdev->priv->lock, flags);
-+	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
-+	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
- 	bitmap_clear(rdev->priv->opened_ports, rdev->port, 1);
-+	spin_unlock_irqrestore(&rdev->priv->lock, flags);
-+
-+	napi_disable(&rdev->napi);
- 
- 	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
- 		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDID);
-@@ -1505,14 +1516,6 @@ static int rswitch_stop(struct net_device *ndev)
- 		kfree(ts_info);
- 	}
- 
--	spin_lock_irqsave(&rdev->priv->lock, flags);
--	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
--	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
--	spin_unlock_irqrestore(&rdev->priv->lock, flags);
--
--	phy_stop(ndev->phydev);
--	napi_disable(&rdev->napi);
--
- 	return 0;
- };
- 
+ err_kfree:
 -- 
 2.39.5
 
