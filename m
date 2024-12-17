@@ -1,161 +1,170 @@
-Return-Path: <stable+bounces-104426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064CF9F41DF
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 06:00:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8859F42DB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 06:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99FAC188C27A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:00:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14109188732D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF9C15533F;
-	Tue, 17 Dec 2024 05:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC42E156644;
+	Tue, 17 Dec 2024 05:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gkps6dHi"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="aWnuJW76"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444A9155A30
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 05:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECA18F77;
+	Tue, 17 Dec 2024 05:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734411623; cv=none; b=OE/Hha6D5Vj2zoIr4Cgro62vPxL6HcdPrmBJ0Ikjw17YvmsGQ2QTuNuVb4NeQK+PFwQ+k6JJppVDGbiGLkGpZ8QKS8L/GBiY2DHHTBZlyGahVWbv2N0v3EIUKbubS5Fn2q3o3uCXabP3G+/czn6rC3udW2B5svB5J6LLKgm6hLQ=
+	t=1734413550; cv=none; b=TLRjXA2856IVfHYu4osylN2fY9ZoDcqo1TADYT/O39wL8CwaQYVWQxsCgShbgMAqIiwyuPwKJthcXtR35sPHKye1oA1qx6CEpZweRqp2u49Nr/8NALFbQCCNqS8NjXaw8VWatvObyaZ05YN4ykg9+/em8K+zEzESWRnyDIBExCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734411623; c=relaxed/simple;
-	bh=sXr55O7+VrwSmdzqpu9DqbaHrugZJPrvbnP67L8sbZs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tOOVDJcKfeZT3zvq/W/IW4DWK6BEkjqgQ13eX551NF6F+Af5OHQRXPwwAIj6Zbj9Ze6Fo0r/iSG7XmEHCq3/01WsZ20LJIpeWg8llPb7HaHG8IyV5MlDzRzTYzh8vcKH8sEMQZnY1tSiWk35ZqUv0qy2Wz48RFVeqOUU4RD5XQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gkps6dHi; arc=none smtp.client-ip=209.85.221.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-3863c36a731so3469864f8f.1
-        for <stable@vger.kernel.org>; Mon, 16 Dec 2024 21:00:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1734411619; x=1735016419; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MdPLGP20ShGmqTBZSio9WvX6t8pN8HosL8dCIPo6zx0=;
-        b=gkps6dHit8Bpt/HXWZgf1YAmhLUaYQ+qsyvOHk4Zf/ssm1aV9w4RFDTwp4IY43sU+z
-         oB7ukTBJfQ53q7SEqSGKgQWDS65qQjBrENKQeo79iUH9809kWxc47waqUuldt+4Xf0cp
-         aTbGaREjYn3vpZaH2fktpr+L4H/tMW/PM46KhAJt4ibhjW+wulFLL4DRlmIRN6fH1Uzl
-         ckHZiWIWQP8oM25pKG+/fzOdo3A4X1nnr6lPy3hLL0xozJpVr3LCxa94Q9xU3bYM7DSc
-         bOYKefPc/RiGodEyJ/OwJoEycAO3/5VVXpt9tQ0fCubxGNUjsz5cNyNfuA/D9N0+Vv9U
-         ykww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734411619; x=1735016419;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MdPLGP20ShGmqTBZSio9WvX6t8pN8HosL8dCIPo6zx0=;
-        b=fMW1iharYJhKjbSfX3YYB+uAd5GTtN9koc38qqEBpYtmOl9vWuSyuH03J2cgA+jmk/
-         Qman4me50IoiCzN7CFhxFhBbWU9bvWCINmwnfv2vV05XRw+HQsJp5GDhM12rSQQp471t
-         P/mCZ9JqipoZ3n+3igwHKtqODe6ZqmKSniTKoH4Ts90riErbvDTHQWBqcaGTz4meqgD3
-         DRljgMK3faEuxQ+39LP5ATKh0Zy/+1ShQzpXk3hFIcNYL8hyRWRSP4VqUcieByJhoyh1
-         jkGn86t694Yxf3ZejCrTeBlwF1WCygQ+MeqaKVQcBKqthSvvc0WxNVBvF/Za3DnSEeIR
-         jxyA==
-X-Gm-Message-State: AOJu0YxHTPC+Xrlu0LPwQuzBO+NvUeyictbIEEpQ1o7vHQSBh811BxkQ
-	pU2NqY5Z+cno/paZn+YlWnVi6zTPsEhc+uBJHxH9wiR0pQjuIc6fWy/CQJ+QcNuBbZuO2tzKDCj
-	pU4xfvA==
-X-Gm-Gg: ASbGncsXYb0GaGpFABoiaO9Mz2hItZJK9dl6orjzMNCH6PS+JvBDEcliIXscsVnpB1s
-	oASgOtOD6TZ1Bsk7mMKivRChr1N2fiDj9rMZsJj8vB/gsZ4q8eB9Zo5hDemm1VorsfqRBLxP2l5
-	Akzip3hRAscwCzHtDb2F/DBR8MSjAm/sfP/bPNMM+SDsOsvyfw5XNpYKQ4ThsQxmarFmQL8lhIW
-	tW30giN46HmdI3cIO8iiiPiHe3UKnCD4d8587C0JOyugn80DsiofDRLQZw=
-X-Google-Smtp-Source: AGHT+IEtuWv0FHIApdcs3cOQekrj4Z3uN4axoUKzoRdeFUtNXF/HsQfhXqnHq4side54nCTWN5D3aQ==
-X-Received: by 2002:a05:6000:4615:b0:385:de8d:c0f5 with SMTP id ffacd0b85a97d-38880acd81fmr12358021f8f.16.1734411619210;
-        Mon, 16 Dec 2024 21:00:19 -0800 (PST)
-Received: from localhost ([2401:e180:8862:6db6:63ae:a60b:ac30:803a])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b7048d1338sm285485285a.124.2024.12.16.21.00.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Dec 2024 21:00:17 -0800 (PST)
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org
-Cc: Eduard Zingerman <eddyz87@gmail.com>,
-	Lonial Con <kongln9170@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 6.6 6.1 5.15 5.10] bpf: sync_linked_regs() must preserve subreg_def
-Date: Tue, 17 Dec 2024 13:00:03 +0800
-Message-ID: <20241217050005.33680-1-shung-hsi.yu@suse.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1734413550; c=relaxed/simple;
+	bh=HdtBvsbTGHsxmfWL54oA5X/bE+Zp9SwVPyMQpH8+GGQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GGhEIyC/N+4Vo9Cp2LxGig5clLG8uV5KXt0nPAjITYuSvMXKu/OEXxUMBp6j/01B9+IOU81hsSqYD6ZIoynUZq1Sk9wHI6/JaCPjl7p2EyPZuBtnJvD7V9QpOR5nlgaDdSrY/QlGnfNqsv3SWMSTbAO/qtEX4n8Q5WZ0FxwHjjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=aWnuJW76; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C2AC03E;
+	Tue, 17 Dec 2024 06:31:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1734413506;
+	bh=HdtBvsbTGHsxmfWL54oA5X/bE+Zp9SwVPyMQpH8+GGQ=;
+	h=From:Subject:Date:To:Cc:From;
+	b=aWnuJW76Bslpm0CRI9Puy8pOfeOIFU9AICsC1IrjHHiKcd8d9/RG3FZ3LDiS81frU
+	 Uf8WYTSDsGyfUL9iuW8qqfvflrGEIlt3/iSBAXc8torPfMufGjiq8BcP40mPFW+eIP
+	 uKtDBXH1zUCxAMeFB56kzIvJhAByV38SC42NjXkQ=
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH v5 0/7] drm: Add DSI/DP support for Renesas r8a779h0 V4M
+ and grey-hawk board
+Date: Tue, 17 Dec 2024 07:31:34 +0200
+Message-Id: <20241217-rcar-gh-dsi-v5-0-e77421093c05@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALcMYWcC/3XPQW7DIBCF4atErEPFjMEmWfUeVRcTGGIWMRFEV
+ ivLdy9xN3YUL/8nzSfNJArnyEWcD5PIPMYS01DDHA/C9TRcWUZfW6BCDUpZmR1lee2lL1GenIJ
+ gPDM5K+rFPXOIP4v29V27j+WR8u+Cj/Bc/x1UzcYZQSrZNZYY6GQ80mf0TCUNl0TZf7h0E09ux
+ DVhtgRWQqPuwBrwwbY7RLMm2i3RVMJ32iG0bSAwO4ReEfDyiK5EsKxBo0HVXd4Q8zz/ARNwzt1
+ 2AQAA
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, LUU HOAI <hoai.luu.ub@renesas.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Biju Das <biju.das.jz@bp.renesas.com>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ dri-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ linux-clk@vger.kernel.org, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ stable@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2782;
+ i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
+ bh=HdtBvsbTGHsxmfWL54oA5X/bE+Zp9SwVPyMQpH8+GGQ=;
+ b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnYQze8lHfUWPEkg55zHzELzk2Y+Kopngu3clvr
+ BGx5RyS2IWJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ2EM3gAKCRD6PaqMvJYe
+ 9TcvD/9IWDTL0RawT8b8w4CDfMh2GBDFPB6y9Dv0SJZeXO0+Mjg7x43rOKzHK+UdlGyjIXvPzZn
+ LZL4NmlaqIABCQWcA0lo4BZG3GH19FUxLLCTLuDsQ0nn4m9HNYUlm7HPATcblCF91fdD7yU3Khs
+ X7hgvlVOvqc1Ktt5k0IeysjfOp5bBMcrak4+HhYCSJlMiTo4UoFKiXOzdVi4NZyOegOYx6ikM+7
+ PgGUkucTma3HwsaKF+MvHE8Wkvl9LpCoiuB2y58QqO5AgP9J6Dsdhdvspvpd3rY5vOUjuhoH/7m
+ DpGKmMG6AX4tyX3Ol5WRKC555A2o0tHQawcpWT1Hd3+KxpvMgtzG0Hj2GNxds2b9fNrmdx2nqQB
+ w3vGBI1VHL3RBu736tOpg0qrSxCOwBbLXf08Su6dq+Ad0eezYkmeSRcvqvOxuUlL4ocyyyvs9zg
+ CU4sNKb/QKjwxdcUFmQwlqPIT0+JxSL9RAWCvHDxp8/D0BTQmKsbZe8F8gz3w89yeSUKLzDcuCA
+ KOhfWTcMLsktR7X0Ni2jru5BP/FaoHs2Y9ize+lG1tuJG2dWE7qOnEllrTIXdpejetlMTITqX5i
+ w22UmWZB9Uokpc2zNJymaOo8Dwxm0XC/0usNSNwqdH5UKWEzZmFUVXccr5ICn5JNi9sYdHCwNiH
+ WCUj6pI5kLm58VQ==
+X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
+ fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+Add everything needed to support the DSI output on Renesas r8a779h0
+(V4M) SoC, and the DP output (via sn65dsi86 DSI to DP bridge) on the
+Renesas grey-hawk board.
 
-[ Upstream commit e9bd9c498cb0f5843996dbe5cbce7a1836a83c70 ]
+Overall the DSI and the board design is almost identical to Renesas
+r8a779g0 and white-hawk board.
 
-Range propagation must not affect subreg_def marks, otherwise the
-following example is rewritten by verifier incorrectly when
-BPF_F_TEST_RND_HI32 flag is set:
+Note: the v4 no longer has the dts and the clk patches, as those have
+been merged to renesas-devel.
 
-  0: call bpf_ktime_get_ns                   call bpf_ktime_get_ns
-  1: r0 &= 0x7fffffff       after verifier   r0 &= 0x7fffffff
-  2: w1 = w0                rewrites         w1 = w0
-  3: if w0 < 10 goto +0     -------------->  r11 = 0x2f5674a6     (r)
-  4: r1 >>= 32                               r11 <<= 32           (r)
-  5: r0 = r1                                 r1 |= r11            (r)
-  6: exit;                                   if w0 < 0xa goto pc+0
-                                             r1 >>= 32 r0 = r1
-                                             exit
-
-(or zero extension of w1 at (2) is missing for architectures that
- require zero extension for upper register half).
-
-The following happens w/o this patch:
-- r0 is marked as not a subreg at (0);
-- w1 is marked as subreg at (2);
-- w1 subreg_def is overridden at (3) by copy_register_state();
-- w1 is read at (5) but mark_insn_zext() does not mark (2)
-  for zero extension, because w1 subreg_def is not set;
-- because of BPF_F_TEST_RND_HI32 flag verifier inserts random
-  value for hi32 bits of (2) (marked (r));
-- this random value is read at (5).
-
-Fixes: 75748837b7e5 ("bpf: Propagate scalar ranges through register assignments.")
-Reported-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://lore.kernel.org/bpf/7e2aa30a62d740db182c170fdd8f81c596df280d.camel@gmail.com
-Link: https://lore.kernel.org/bpf/20240924210844.1758441-1-eddyz87@gmail.com
-shung-hsi.yu: sync_linked_regs() was called find_equal_scalars() before commit
-4bf79f9be434 ("bpf: Track equal scalars history on per-instruction level"), and
-modification is done because there is only a single call to
-copy_register_state() before commit 98d7ca374ba4 ("bpf: Track delta between
-"linked" registers.").
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
 ---
- kernel/bpf/verifier.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Changes in v5:
+- Add minItems/maxItems to the top level cmms & vsps properties
+- Drop "minItems: 1" when not needed
+- Link to v4: https://lore.kernel.org/r/20241213-rcar-gh-dsi-v4-0-f8e41425207b@ideasonboard.com
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 3f47cfa17141..a3c3c66ca047 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -14497,8 +14497,11 @@ static void find_equal_scalars(struct bpf_verifier_state *vstate,
- 	struct bpf_reg_state *reg;
- 
- 	bpf_for_each_reg_in_vstate(vstate, state, reg, ({
--		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id)
-+		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id) {
-+			s32 saved_subreg_def = reg->subreg_def;
- 			copy_register_state(reg, known_reg);
-+			reg->subreg_def = saved_subreg_def;
-+		}
- 	}));
- }
- 
+Changes in v4:
+- Dropped patches merged to renesas-devel
+- Added new patch "dt-bindings: display: renesas,du: Add missing
+  maxItems" to fix the bindings
+- Add the missing maxItems to "dt-bindings: display: renesas,du: Add
+  r8a779h0"
+- Link to v3: https://lore.kernel.org/r/20241206-rcar-gh-dsi-v3-0-d74c2166fa15@ideasonboard.com
+
+Changes in v3:
+- Update "Write DPTSR only if there are more than one crtc" patch to
+  "Write DPTSR only if the second source exists"
+- Add Laurent's Rb
+- Link to v2: https://lore.kernel.org/r/20241205-rcar-gh-dsi-v2-0-42471851df86@ideasonboard.com
+
+Changes in v2:
+- Add the DT binding with a new conditional block, so that we can set
+  only the port@0 as required
+- Drop port@1 from r8a779h0.dtsi (there's no port@1)
+- Add a new patch to write DPTSR only if num_crtcs > 1
+- Drop RCAR_DU_FEATURE_NO_DPTSR (not needed anymore)
+- Add Cc: stable to the fix, and move it as first patch
+- Added the tags from reviews
+- Link to v1: https://lore.kernel.org/r/20241203-rcar-gh-dsi-v1-0-738ae1a95d2a@ideasonboard.com
+
+---
+Tomi Valkeinen (7):
+      drm/rcar-du: dsi: Fix PHY lock bit check
+      drm/rcar-du: Write DPTSR only if the second source exists
+      dt-bindings: display: renesas,du: Add missing constraints
+      dt-bindings: display: renesas,du: Add r8a779h0
+      dt-bindings: display: bridge: renesas,dsi-csi2-tx: Add r8a779h0
+      drm/rcar-du: dsi: Add r8a779h0 support
+      drm/rcar-du: Add support for r8a779h0
+
+ .../display/bridge/renesas,dsi-csi2-tx.yaml        |  1 +
+ .../devicetree/bindings/display/renesas,du.yaml    | 67 ++++++++++++++++++++--
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_drv.c      | 18 ++++++
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_group.c    | 24 ++++++--
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c    |  4 +-
+ .../gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h   |  1 -
+ 6 files changed, 102 insertions(+), 13 deletions(-)
+---
+base-commit: adc218676eef25575469234709c2d87185ca223a
+change-id: 20241008-rcar-gh-dsi-9c01f5deeac8
+
+Best regards,
 -- 
-2.47.1
+Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
 
