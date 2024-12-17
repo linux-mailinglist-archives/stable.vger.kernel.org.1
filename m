@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266259F52E3
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547FD9F520E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A73E1894942
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36026188E90E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24B41F429B;
-	Tue, 17 Dec 2024 17:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD5D1F8662;
+	Tue, 17 Dec 2024 17:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qG8q4F41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iX1+BF3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1E41E0493;
-	Tue, 17 Dec 2024 17:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3E21F707D;
+	Tue, 17 Dec 2024 17:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455981; cv=none; b=HXIX+XMOfFgYbIAB4m4OFsv6V1kW3FgLWh2JZps02qYiEldLNe5A6ivMzbIgFhdPcOroZWAHkWtAlJMujy/B13e/FzJPlNEhXS22/Rw7FuCW2J3CzB/WGhlrxAvzn04SZj2E3cYdKY6uAsWFAeBU3z3+ueqd3ciZ0PnWCz076u0=
+	t=1734455569; cv=none; b=aTLobWrwYmIvFdZixj1f1d3L7J+t8nJYmz+awYqo9vHMmvCrREdnbHk22WkRkPST6lTVpcv7OVj5QdkJmmEWHGVTRrVXfjq/+9L4xIfnItGub+QszfKLeIPLRE2QMSeYZnfUcZRN/9eyx4Slff4uppvkbahrJw/Y3BNI0upOBDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455981; c=relaxed/simple;
-	bh=YvgkGSOIUPZPAjVAmVTLneCpn60v/ecP/DjsdePH8B0=;
+	s=arc-20240116; t=1734455569; c=relaxed/simple;
+	bh=FSAmj5UU6hnR++sXBdz0jBb/vaMDXpFbia5+SJEEakM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLqWKSDIOFE3YJRioFGNXaIAiJP99URr5Jml8ykK4H1NjY08lYTOz5Bzi9SX4XpISKgLi4ILRIBANNBZOSSUDy1Izjuyj96FI3J5bQI70aoYLXD/fL5+KszoUgJqDtWxg5jX1GZcpnMpi6z1hMyZWNKFXL2Ew5A3mvOb9MpPWVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qG8q4F41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F3CC4CED3;
-	Tue, 17 Dec 2024 17:19:40 +0000 (UTC)
+	 MIME-Version; b=RTycfV/3cZTYtofAQAvn5zDNPQ8Z6sWz86CQFzIQr/kStgVadRGu9Vud7DljjjjWyYxaHQ/HBYS0XZVtNOpcF7tlM69W9Au/cW8IFuW3G/kx5CuqLspWOeGutukgP7DsI5cEKqGtMNrUi3ufmA9ZwUnIKlmAnJgmU1mXWawwCNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iX1+BF3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481D2C4CED3;
+	Tue, 17 Dec 2024 17:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455981;
-	bh=YvgkGSOIUPZPAjVAmVTLneCpn60v/ecP/DjsdePH8B0=;
+	s=korg; t=1734455569;
+	bh=FSAmj5UU6hnR++sXBdz0jBb/vaMDXpFbia5+SJEEakM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qG8q4F41L32PZhZC3ps5Eeik+OgxUOsScY47blII9oAP1OIbeQqD4A1TEXA72W8B9
-	 sm25W5DD9kdIWUSwMYbJcZLukoDNRHjomnku8m73Ol85n52KcAfKkxog03o2SCG0oy
-	 bLaNADAoQJPWp4Jbf9J2Ro9dvEbW0+csnHhyUH5E=
+	b=iX1+BF3d0elpBilXMUVQ2GAG9w2iGKMDvF6p2G7TCF3dME+kqAtxgujBzpAsjk6FU
+	 4TOAJPHfhvh1Vm5GtEl+uJVf2Dq5kb2oFxIpCIj2JEmJLXvB3/yKSA/zMBBFNYY+cU
+	 xpdWz/Mv0VxvIPcLYyOlXkD3gl+5ubltDhAUy7/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashanth K <quic_prashk@quicinc.com>,
-	Lianqin Hu <hulianqin@vivo.com>
-Subject: [PATCH 6.6 020/109] usb: gadget: u_serial: Fix the issue that gs_start_io crashed due to accessing null pointer
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 5.15 11/51] xfs: update btree keys correctly when _insrec splits an inode root block
 Date: Tue, 17 Dec 2024 18:07:04 +0100
-Message-ID: <20241217170534.204374960@linuxfoundation.org>
+Message-ID: <20241217170520.769603667@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 4cfbca86f6a8b801f3254e0e3c8f2b1d2d64be2b upstream.
+commit 6d7b4bc1c3e00b1a25b7a05141a64337b4629337 upstream.
 
-Considering that in some extreme cases,
-when u_serial driver is accessed by multiple threads,
-Thread A is executing the open operation and calling the gs_open,
-Thread B is executing the disconnect operation and calling the
-gserial_disconnect function,The port->port_usb pointer will be set to NULL.
+In commit 2c813ad66a72, I partially fixed a bug wherein xfs_btree_insrec
+would erroneously try to update the parent's key for a block that had
+been split if we decided to insert the new record into the new block.
+The solution was to detect this situation and update the in-core key
+value that we pass up to the caller so that the caller will (eventually)
+add the new block to the parent level of the tree with the correct key.
 
-E.g.
-    Thread A                                 Thread B
-    gs_open()                                gadget_unbind_driver()
-    gs_start_io()                            composite_disconnect()
-    gs_start_rx()                            gserial_disconnect()
-    ...                                      ...
-    spin_unlock(&port->port_lock)
-    status = usb_ep_queue()                  spin_lock(&port->port_lock)
-    spin_lock(&port->port_lock)              port->port_usb = NULL
-    gs_free_requests(port->port_usb->in)     spin_unlock(&port->port_lock)
-    Crash
+However, I missed a subtlety about the way inode-rooted btrees work.  If
+the full block was a maximally sized inode root block, we'll solve that
+fullness by moving the root block's records to a new block, resizing the
+root block, and updating the root to point to the new block.  We don't
+pass a pointer to the new block to the caller because that work has
+already been done.  The new record will /always/ land in the new block,
+so in this case we need to use xfs_btree_update_keys to update the keys.
 
-This causes thread A to access a null pointer (port->port_usb is null)
-when calling the gs_free_requests function, causing a crash.
+This bug can theoretically manifest itself in the very rare case that we
+split a bmbt root block and the new record lands in the very first slot
+of the new block, though I've never managed to trigger it in practice.
+However, it is very easy to reproduce by running generic/522 with the
+realtime rmapbt patchset if rtinherit=1.
 
-If port_usb is NULL, the release request will be skipped as it
-will be done by gserial_disconnect.
-
-So add a null pointer check to gs_start_io before attempting
-to access the value of the pointer port->port_usb.
-
-Call trace:
- gs_start_io+0x164/0x25c
- gs_open+0x108/0x13c
- tty_open+0x314/0x638
- chrdev_open+0x1b8/0x258
- do_dentry_open+0x2c4/0x700
- vfs_open+0x2c/0x3c
- path_openat+0xa64/0xc60
- do_filp_open+0xb8/0x164
- do_sys_openat2+0x84/0xf0
- __arm64_sys_openat+0x70/0x9c
- invoke_syscall+0x58/0x114
- el0_svc_common+0x80/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x38/0x68
-
-Fixes: c1dca562be8a ("usb gadget: split out serial core")
-Cc: stable@vger.kernel.org
-Suggested-by: Prashanth K <quic_prashk@quicinc.com>
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Acked-by: Prashanth K <quic_prashk@quicinc.com>
-Link: https://lore.kernel.org/r/TYUPR06MB62178DC3473F9E1A537DCD02D2362@TYUPR06MB6217.apcprd06.prod.outlook.com
+Cc: <stable@vger.kernel.org> # v4.8
+Fixes: 2c813ad66a7218 ("xfs: support btrees with overlapping intervals for keys")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/xfs/libxfs/xfs_btree.c |   29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -575,9 +575,12 @@ static int gs_start_io(struct gs_port *p
- 		 * we didn't in gs_start_tx() */
- 		tty_wakeup(port->port.tty);
- 	} else {
--		gs_free_requests(ep, head, &port->read_allocated);
--		gs_free_requests(port->port_usb->in, &port->write_pool,
--			&port->write_allocated);
-+		/* Free reqs only if we are still connected */
-+		if (port->port_usb) {
-+			gs_free_requests(ep, head, &port->read_allocated);
-+			gs_free_requests(port->port_usb->in, &port->write_pool,
-+				&port->write_allocated);
-+		}
- 		status = -EIO;
- 	}
+--- a/fs/xfs/libxfs/xfs_btree.c
++++ b/fs/xfs/libxfs/xfs_btree.c
+@@ -3413,14 +3413,31 @@ xfs_btree_insrec(
+ 	xfs_btree_log_block(cur, bp, XFS_BB_NUMRECS);
  
+ 	/*
+-	 * If we just inserted into a new tree block, we have to
+-	 * recalculate nkey here because nkey is out of date.
++	 * Update btree keys to reflect the newly added record or keyptr.
++	 * There are three cases here to be aware of.  Normally, all we have to
++	 * do is walk towards the root, updating keys as necessary.
+ 	 *
+-	 * Otherwise we're just updating an existing block (having shoved
+-	 * some records into the new tree block), so use the regular key
+-	 * update mechanism.
++	 * If the caller had us target a full block for the insertion, we dealt
++	 * with that by calling the _make_block_unfull function.  If the
++	 * "make unfull" function splits the block, it'll hand us back the key
++	 * and pointer of the new block.  We haven't yet added the new block to
++	 * the next level up, so if we decide to add the new record to the new
++	 * block (bp->b_bn != old_bn), we have to update the caller's pointer
++	 * so that the caller adds the new block with the correct key.
++	 *
++	 * However, there is a third possibility-- if the selected block is the
++	 * root block of an inode-rooted btree and cannot be expanded further,
++	 * the "make unfull" function moves the root block contents to a new
++	 * block and updates the root block to point to the new block.  In this
++	 * case, no block pointer is passed back because the block has already
++	 * been added to the btree.  In this case, we need to use the regular
++	 * key update function, just like the first case.  This is critical for
++	 * overlapping btrees, because the high key must be updated to reflect
++	 * the entire tree, not just the subtree accessible through the first
++	 * child of the root (which is now two levels down from the root).
+ 	 */
+-	if (bp && xfs_buf_daddr(bp) != old_bn) {
++	if (!xfs_btree_ptr_is_null(cur, &nptr) &&
++	    bp && xfs_buf_daddr(bp) != old_bn) {
+ 		xfs_btree_get_keys(cur, block, lkey);
+ 	} else if (xfs_btree_needs_key_update(cur, optr)) {
+ 		error = xfs_btree_update_keys(cur, level);
 
 
 
