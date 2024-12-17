@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F429F51F8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5359F53D2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72D887A2151
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D8C616AE78
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC7B1F8679;
-	Tue, 17 Dec 2024 17:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D67F8615A;
+	Tue, 17 Dec 2024 17:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ei86El//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7Y9xz8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C971F7562;
-	Tue, 17 Dec 2024 17:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA541F8901;
+	Tue, 17 Dec 2024 17:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455552; cv=none; b=uHgkCkjXbFFobRr/g/7IhRPTmHHE1x83NnB3gQEZCB7FEFIHpg4bmCmr8uLFpjmpgtwC1ABHDngV6fWvJ9uhSkOd60g39B2XWUJvx0NVlQ1waWGwfd5GLmix8VVDvrHn/XpPftDfKRoHJPpez6jqzpxLsYpm7hRLOzp2yV6yyL0=
+	t=1734456545; cv=none; b=hTnCbF5DedM/2Q33diLq5ZNa+bqesaBbtb4smc0B9Dx3bWSA+oJwE/hdn0dncrgr1Gz0lUWNn4EZPszPUvnbukcuQuB1m8R40E8Wb9uQQgW/EEEjDXQHkwQxIe2exeFYjXZot9vAd+NLbBdMv+PSSoLiqBIUyjs2CQZUpjkeyMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455552; c=relaxed/simple;
-	bh=D9NSRIs2WhMqoKpsPTmPDhvjFIAaxLrhJEFSHwezOb0=;
+	s=arc-20240116; t=1734456545; c=relaxed/simple;
+	bh=ryVyTfYA0qiI3bn31EHMaVJQhc4gPvFgf4sqr9hvZEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAuxL+y/EIDMbpgf+swc5CJG3APy1K2+kTvXFRP0yks2DLm/I1UOzs+IbNCdj13iAuNDIyvGAckX7Ju4g5fZqjmzHXDErQ0t58RmesGuw+hvD6cddOppvpdJKL2jtTtsC7LD+t06Idct9lHB8o7RD2XPCl2/zXtUSbPFO+cpW1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ei86El//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDF2C4CEE2;
-	Tue, 17 Dec 2024 17:12:31 +0000 (UTC)
+	 MIME-Version; b=qWhujHIrpg6jp1QhKLKTyvgsbts3OuV2Cit/jDuBxe1frGMuhTLL69siD7lEpUWk4p866mchlfNTNLZHJLOJ4QFfi2J2IXSbE/wmcCkQexH0FoSxuSKKxn/ddP1B0H5jSkSuzFKP/3D77sF/7n4bkAfZ0pR71cISHHD1JykW/+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7Y9xz8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4889EC4CED3;
+	Tue, 17 Dec 2024 17:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455552;
-	bh=D9NSRIs2WhMqoKpsPTmPDhvjFIAaxLrhJEFSHwezOb0=;
+	s=korg; t=1734456545;
+	bh=ryVyTfYA0qiI3bn31EHMaVJQhc4gPvFgf4sqr9hvZEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ei86El//9U3/W6PixpyamwuZP6wytiB8JFMMw57/A0QjoNCiSJ9i8z3cCZIKLRkTk
-	 SGaOTlJ4Q4xkPCKQXay/pmr7w2UatGk/T39jLcqM8gIRMCUSAUK9f8ZvLf7oskNu16
-	 Ho8ieqaE3ffrPMHzBG9KfJERhZJf79ihd1R7vIIU=
+	b=K7Y9xz8QwxM4fx3g/4VVw9zo4zEAoe+OzntlNdltKdOYY8+/JgRE4ZyiIrEjuDmN3
+	 MGvH/dIuVTCy8uA9c/IOsE8uuqJIx18iU12lEXuyH9PXQWXZdN0M2LZQ3oNlR5c2zS
+	 g2HYGQng/lRA05G5V6UL6QCsMxZbfqJClSZhHulk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 5.10 37/43] objtool/x86: allow syscall instruction
-Date: Tue, 17 Dec 2024 18:07:28 +0100
-Message-ID: <20241217170522.203874032@linuxfoundation.org>
+	syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 093/172] tipc: fix NULL deref in cleanup_bearer()
+Date: Tue, 17 Dec 2024 18:07:29 +0100
+Message-ID: <20241217170550.152371626@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit dda014ba59331dee4f3b773a020e109932f4bd24 upstream.
+[ Upstream commit b04d86fff66b15c07505d226431f808c15b1703c ]
 
-The syscall instruction is used in Xen PV mode for doing hypercalls.
-Allow syscall to be used in the kernel in case it is tagged with an
-unwind hint for objtool.
+syzbot found [1] that after blamed commit, ub->ubsock->sk
+was NULL when attempting the atomic_dec() :
 
-This is part of XSA-466 / CVE-2024-53241.
+atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
 
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Co-developed-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by caching the tipc_net pointer.
+
+[1]
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+CPU: 0 UID: 0 PID: 5896 Comm: kworker/0:3 Not tainted 6.13.0-rc1-next-20241203-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events cleanup_bearer
+ RIP: 0010:read_pnet include/net/net_namespace.h:387 [inline]
+ RIP: 0010:sock_net include/net/sock.h:655 [inline]
+ RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
+Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 3c f7 99 f6 48 8b 1b 48 83 c3 30 e8 f0 e4 60 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 1a f7 99 f6 49 83 c7 e8 48 8b 1b
+RSP: 0018:ffffc9000410fb70 EFLAGS: 00010206
+RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88802fe45a00
+RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffc9000410f900
+RBP: ffff88807e1f0908 R08: ffffc9000410f907 R09: 1ffff92000821f20
+R10: dffffc0000000000 R11: fffff52000821f21 R12: ffff888031d19980
+R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff88807e1f0918
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556ca050b000 CR3: 0000000031c0c000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Fixes: 6a2fa13312e5 ("tipc: Fix use-after-free of kernel socket in cleanup_bearer().")
+Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67508b5f.050a0220.17bd51.0070.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20241204170548.4152658-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/tipc/udp_media.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3039,10 +3039,13 @@ static int validate_branch(struct objtoo
- 			break;
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index b7e25e7e9933..108a4cc2e001 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -807,6 +807,7 @@ static void cleanup_bearer(struct work_struct *work)
+ {
+ 	struct udp_bearer *ub = container_of(work, struct udp_bearer, work);
+ 	struct udp_replicast *rcast, *tmp;
++	struct tipc_net *tn;
  
- 		case INSN_CONTEXT_SWITCH:
--			if (func && (!next_insn || !next_insn->hint)) {
--				WARN_FUNC("unsupported instruction in callable function",
--					  sec, insn->offset);
--				return 1;
-+			if (func) {
-+				if (!next_insn || !next_insn->hint) {
-+					WARN_FUNC("unsupported instruction in callable function",
-+						  sec, insn->offset);
-+					return 1;
-+				}
-+				break;
- 			}
- 			return 0;
+ 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
+ 		dst_cache_destroy(&rcast->dst_cache);
+@@ -814,10 +815,14 @@ static void cleanup_bearer(struct work_struct *work)
+ 		kfree_rcu(rcast, rcu);
+ 	}
  
++	tn = tipc_net(sock_net(ub->ubsock->sk));
++
+ 	dst_cache_destroy(&ub->rcast.dst_cache);
+ 	udp_tunnel_sock_release(ub->ubsock);
++
++	/* Note: could use a call_rcu() to avoid another synchronize_net() */
+ 	synchronize_net();
+-	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
++	atomic_dec(&tn->wq_count);
+ 	kfree(ub);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
