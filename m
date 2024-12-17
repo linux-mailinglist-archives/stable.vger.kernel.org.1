@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B0F9F5256
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:18:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5F29F535D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:28:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BC3B16A91D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E36C97A645C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2D01F5408;
-	Tue, 17 Dec 2024 17:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A981F869D;
+	Tue, 17 Dec 2024 17:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seX/z5lr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQEDNzwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8861E1527B1;
-	Tue, 17 Dec 2024 17:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01161F75BE;
+	Tue, 17 Dec 2024 17:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455726; cv=none; b=Ailu3bk5V62s0+xkxLWms7VDKqQwnPhrSgbWnFYr+/vKAE6hrco4LfGNkMfMEXmGqn7UDg3AKBhewyN4XIIsSgKBz1yG4GFL7WomPd9HhKk0aQ1BxN0wBK3gY5ebfIGl9RJmtF0itfFhMjRW6CACXXc5sNQD7enYw+4oQIZGlRA=
+	t=1734456425; cv=none; b=elH8liOnkQcmaCRn4F9yX0ZtA/BCo5Kgek3bqL6gZf/mqqP95S715N+NWPXko1m/ZNNL8g1s8oQu2JrAsFc3UZkrYT0KjxHKvePB3ZqrO4h1vdnHe/3Suc2IgSsBTHBY8LD7rDkBIDx64rrjR5CPcCXoZbK/iBOCBWiX2x3DkbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455726; c=relaxed/simple;
-	bh=+fN627a0NtWEk3vJhF62AghK2cQ0Q73RTuCVppaMNq4=;
+	s=arc-20240116; t=1734456425; c=relaxed/simple;
+	bh=2bLrqFuNh5pDdoJux/BmQv7dxxrqN0A1elkAFlIhRD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcwA2u4KPIkMA/DgBz4tUR4v2fLytkikJRCMeD7nt32vBwp+Zy+dcu2+1VhAh9/jmBYsfczzUpA10KNRxPikz3hK4988O4c1V94fFri0AUHzorHW9PraCWUYZWmFpCHAhUhnuSdm10hPXz5sNKLpq8YEaBCcLvDNBaTAJbZWcBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seX/z5lr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11910C4CED3;
-	Tue, 17 Dec 2024 17:15:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N2f/jOTckO4VNopkZLKVAmWCxtm1e64DG3hkL5G9H2utn5VAYpIpLTLEvMchWogLbikEym+r3gs95LtwJ1TJIHAoL3Un59XYzwRt+UsD0R8Hi/A9SAQM7XdG+LO7Q1PMTRMmie95yf8DPVX5+2g1oLGmS0mR/T1QLQTVM3+0S/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQEDNzwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DA2C4CED3;
+	Tue, 17 Dec 2024 17:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455726;
-	bh=+fN627a0NtWEk3vJhF62AghK2cQ0Q73RTuCVppaMNq4=;
+	s=korg; t=1734456424;
+	bh=2bLrqFuNh5pDdoJux/BmQv7dxxrqN0A1elkAFlIhRD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=seX/z5lrmLHALS0ooG1wezeuXXYsE2n/kkML1Bg3zZQsaIx4C+rjAU4KMGHusaQ4N
-	 Qg5jWn8ycH+eHRL0ffpT3hRvlLKVudPtJKd93UTrlLpdmrgKS1J0JW2/OFVDkbp0s7
-	 Q7XYmqaEMH2UyBtuTFcu7+DJiyTlvn1ECRcKkn/M=
+	b=kQEDNzwgBnPZIXsg4P8wgzneYx64uk7LrH9tkSXf6lphiAzusc19SyxqwKwxluekj
+	 diM2BrhPL85ec4kzMfdUkoJVbt3g7rajAON0FFKvgxta0qC705DXH2vA1VxCDsEScF
+	 ZUXFiCmUZiajqN60KRzPHEf+eum5wVpWiihPauic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 12/76] usb: typec: anx7411: fix fwnode_handle reference leak
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.12 056/172] drm/xe: Call invalidation_fence_fini for PT inval fences in error state
 Date: Tue, 17 Dec 2024 18:06:52 +0100
-Message-ID: <20241217170526.760238484@linuxfoundation.org>
+Message-ID: <20241217170548.592954561@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,162 +62,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-commit 645d56e4cc74e953284809d096532c1955918a28 upstream.
+commit cefade70f346160f47cc24776160329e2ee63653 upstream.
 
-An fwnode_handle and usb_role_switch are obtained with an incremented
-refcount in anx7411_typec_port_probe(), however the refcounts are not
-decremented in the error path. The fwnode_handle is also not decremented
-in the .remove() function. Therefore, call fwnode_handle_put() and
-usb_role_switch_put() accordingly.
+Invalidation_fence_init takes a PM reference, which is released in its
+_fini counterpart, so we need to make sure that the latter is called,
+even if the fence is in an error state.
 
-Fixes: fe6d8a9c8e64 ("usb: typec: anx7411: Add Analogix PD ANX7411 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20241121023429.962848-1-joe@pf.is.s.u-tokyo.ac.jp
+Since we already have a function that calls _fini() and signals the
+fence in the tlb inval code, we can expose that and call it from the PT
+code.
+
+Fixes: f002702290fc ("drm/xe: Hold a PM ref when GT TLB invalidations are inflight")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: <stable@vger.kernel.org> # v6.11+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206015022.1567113-1-daniele.ceraolospurio@intel.com
+(cherry picked from commit 65338639b79ce88aef5263cd518cde570a3c7c8e)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/anx7411.c |   47 +++++++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c | 8 ++++++++
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h | 1 +
+ drivers/gpu/drm/xe/xe_pt.c                  | 3 +--
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/anx7411.c
-+++ b/drivers/usb/typec/anx7411.c
-@@ -1020,6 +1020,16 @@ static void anx7411_port_unregister_altm
- 		}
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+index 3cb228c773cd..6146d1776bda 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+@@ -65,6 +65,14 @@ invalidation_fence_signal(struct xe_device *xe, struct xe_gt_tlb_invalidation_fe
+ 	__invalidation_fence_signal(xe, fence);
  }
  
-+static void anx7411_port_unregister(struct typec_params *typecp)
++void xe_gt_tlb_invalidation_fence_signal(struct xe_gt_tlb_invalidation_fence *fence)
 +{
-+	fwnode_handle_put(typecp->caps.fwnode);
-+	anx7411_port_unregister_altmodes(typecp->port_amode);
-+	if (typecp->port)
-+		typec_unregister_port(typecp->port);
-+	if (typecp->role_sw)
-+		usb_role_switch_put(typecp->role_sw);
++	if (WARN_ON_ONCE(!fence->gt))
++		return;
++
++	__invalidation_fence_signal(gt_to_xe(fence->gt), fence);
 +}
 +
- static int anx7411_usb_mux_set(struct typec_mux_dev *mux,
- 			       struct typec_mux_state *state)
+ static void xe_gt_tlb_fence_timeout(struct work_struct *work)
  {
-@@ -1153,34 +1163,34 @@ static int anx7411_typec_port_probe(stru
- 	ret = fwnode_property_read_string(fwnode, "power-role", &buf);
- 	if (ret) {
- 		dev_err(dev, "power-role not found: %d\n", ret);
--		return ret;
-+		goto put_fwnode;
+ 	struct xe_gt *gt = container_of(work, struct xe_gt,
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+index f430d5797af7..00b1c6c01e8d 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+@@ -28,6 +28,7 @@ int xe_guc_tlb_invalidation_done_handler(struct xe_guc *guc, u32 *msg, u32 len);
+ void xe_gt_tlb_invalidation_fence_init(struct xe_gt *gt,
+ 				       struct xe_gt_tlb_invalidation_fence *fence,
+ 				       bool stack);
++void xe_gt_tlb_invalidation_fence_signal(struct xe_gt_tlb_invalidation_fence *fence);
+ 
+ static inline void
+ xe_gt_tlb_invalidation_fence_wait(struct xe_gt_tlb_invalidation_fence *fence)
+diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
+index f27f579f4d85..797576690356 100644
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -1333,8 +1333,7 @@ static void invalidation_fence_cb(struct dma_fence *fence,
+ 		queue_work(system_wq, &ifence->work);
+ 	} else {
+ 		ifence->base.base.error = ifence->fence->error;
+-		dma_fence_signal(&ifence->base.base);
+-		dma_fence_put(&ifence->base.base);
++		xe_gt_tlb_invalidation_fence_signal(&ifence->base);
  	}
- 
- 	ret = typec_find_port_power_role(buf);
- 	if (ret < 0)
--		return ret;
-+		goto put_fwnode;
- 	cap->type = ret;
- 
- 	ret = fwnode_property_read_string(fwnode, "data-role", &buf);
- 	if (ret) {
- 		dev_err(dev, "data-role not found: %d\n", ret);
--		return ret;
-+		goto put_fwnode;
- 	}
- 
- 	ret = typec_find_port_data_role(buf);
- 	if (ret < 0)
--		return ret;
-+		goto put_fwnode;
- 	cap->data = ret;
- 
- 	ret = fwnode_property_read_string(fwnode, "try-power-role", &buf);
- 	if (ret) {
- 		dev_err(dev, "try-power-role not found: %d\n", ret);
--		return ret;
-+		goto put_fwnode;
- 	}
- 
- 	ret = typec_find_power_role(buf);
- 	if (ret < 0)
--		return ret;
-+		goto put_fwnode;
- 	cap->prefer_role = ret;
- 
- 	/* Get source pdos */
-@@ -1192,7 +1202,7 @@ static int anx7411_typec_port_probe(stru
- 						     typecp->src_pdo_nr);
- 		if (ret < 0) {
- 			dev_err(dev, "source cap validate failed: %d\n", ret);
--			return -EINVAL;
-+			goto put_fwnode;
- 		}
- 
- 		typecp->caps_flags |= HAS_SOURCE_CAP;
-@@ -1206,7 +1216,7 @@ static int anx7411_typec_port_probe(stru
- 						     typecp->sink_pdo_nr);
- 		if (ret < 0) {
- 			dev_err(dev, "sink cap validate failed: %d\n", ret);
--			return -EINVAL;
-+			goto put_fwnode;
- 		}
- 
- 		for (i = 0; i < typecp->sink_pdo_nr; i++) {
-@@ -1250,13 +1260,21 @@ static int anx7411_typec_port_probe(stru
- 		ret = PTR_ERR(ctx->typec.port);
- 		ctx->typec.port = NULL;
- 		dev_err(dev, "Failed to register type c port %d\n", ret);
--		return ret;
-+		goto put_usb_role_switch;
- 	}
- 
- 	typec_port_register_altmodes(ctx->typec.port, NULL, ctx,
- 				     ctx->typec.port_amode,
- 				     MAX_ALTMODE);
- 	return 0;
-+
-+put_usb_role_switch:
-+	if (ctx->typec.role_sw)
-+		usb_role_switch_put(ctx->typec.role_sw);
-+put_fwnode:
-+	fwnode_handle_put(fwnode);
-+
-+	return ret;
+ 	dma_fence_put(ifence->fence);
  }
- 
- static int anx7411_typec_check_connection(struct anx7411_data *ctx)
-@@ -1528,8 +1546,7 @@ free_wq:
- 	destroy_workqueue(plat->workqueue);
- 
- free_typec_port:
--	typec_unregister_port(plat->typec.port);
--	anx7411_port_unregister_altmodes(plat->typec.port_amode);
-+	anx7411_port_unregister(&plat->typec);
- 
- free_typec_switch:
- 	anx7411_unregister_switch(plat);
-@@ -1554,17 +1571,11 @@ static void anx7411_i2c_remove(struct i2
- 	if (plat->spi_client)
- 		i2c_unregister_device(plat->spi_client);
- 
--	if (plat->typec.role_sw)
--		usb_role_switch_put(plat->typec.role_sw);
--
- 	anx7411_unregister_mux(plat);
- 
- 	anx7411_unregister_switch(plat);
- 
--	if (plat->typec.port)
--		typec_unregister_port(plat->typec.port);
--
--	anx7411_port_unregister_altmodes(plat->typec.port_amode);
-+	anx7411_port_unregister(&plat->typec);
- }
- 
- static const struct i2c_device_id anx7411_id[] = {
+-- 
+2.47.1
+
 
 
 
