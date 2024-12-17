@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C439F52C5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EC29F532D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA289188F7BC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB606168AF2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3984B1F892F;
-	Tue, 17 Dec 2024 17:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD891F63D5;
+	Tue, 17 Dec 2024 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iatnAWLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4Muq8a1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94621F8691;
-	Tue, 17 Dec 2024 17:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD24214A4E7;
+	Tue, 17 Dec 2024 17:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455910; cv=none; b=s2IhRj1eX0cJfDxh0wTeLscr/NTJrep/Y3UBHN2SrkxQSPeduoT5Oe9gFGzhfx1xD6+0bEuEto7jIzkjWO1yOB8scUjcnLKfACH/QmZEVKrUHAVaiWLH3NEive40zJ5/pzBjMEvGH2AdG5q3zzMhl1im0MUJN0xmFJpQoTBD9Uk=
+	t=1734456224; cv=none; b=MVuU75qv3OH4fSQHFNbGf4E4dFYklILRwsdSO1kGG0Q0YygTXfnOF0t3jFYAjJILyz65QiVArblCkNY2JzsHCgtCuePbBPyWNyPGoYCFnHJkFtSuARpqvJ3/BhFF6qm6JLzJpvapdhY9BRw1R0AV8MxYVcBrJ/DFIJU5/VVA094=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455910; c=relaxed/simple;
-	bh=j1iraiDmB2PiKP5YdiXUKVv8AVN+mqLg74NMtB8ze+c=;
+	s=arc-20240116; t=1734456224; c=relaxed/simple;
+	bh=fHatg3Czbaws4tiWwrUqPMdXUfppGgf5bkcwcFFsQv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axRH8/YbA2o8TeZnqsD0zMzdKEugqoVINNO/C62/ScZ62PTMOt2ZqGHzpVkp4XjRpduyi7npEIyhwNLgiW8kSX27oIMosBxa0e/Zm15ZMiYwX7FFG0kkjUl5brdfoUr2tjtMXuSjkERn5j59CqnlhGCou6At3EKhZ8Gsf7+vR/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iatnAWLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7279DC4CED3;
-	Tue, 17 Dec 2024 17:18:29 +0000 (UTC)
+	 MIME-Version; b=klmdP2qn9itBvzyxip2aL/sE+tdL1LewDDPKz/wI/Fh080E+6rH6wXUKFGqHSNYoYZwY5QxdoiP00YVOKH7WBy73dvt2TWhVPHu+++Wqn+RqFa4VnYcsiGTseV/U/ZKIAebAofdl178Xun5/Yz7kYsQ8rLu87tf7sjips3Gk4Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4Muq8a1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF08C4CED3;
+	Tue, 17 Dec 2024 17:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455909;
-	bh=j1iraiDmB2PiKP5YdiXUKVv8AVN+mqLg74NMtB8ze+c=;
+	s=korg; t=1734456224;
+	bh=fHatg3Czbaws4tiWwrUqPMdXUfppGgf5bkcwcFFsQv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iatnAWLEYcPWIhwdqYnav6Yc/q/c3/dUD4P8CpbbMuKRY6R40rg0FTjEV2nqBOqpR
-	 14d9nog+E1cQhHPL3qGhDbuYZlY59Z9by6+UBdc3H+XN7UuR00O3aemXON1G+kZ73u
-	 PmUFSpKRTGDPksVk4AsT3cBEwHOmGFqQAswoUEoY=
+	b=b4Muq8a1YXPQJC6Qs48sod6+ZFM+rPibG4HsRlpKrtYVHwABGIm5f58U/69O2Esw6
+	 zNDUjFTeVV6+uJv+m3olRVlm0hphvA5K3mCkUF6RRpRHwENW3lCX79IjdudBtzQEim
+	 kl9FtdGv+J61MhEWoJbYnsNTyoxtRqougpzzCHWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 6.1 73/76] x86/xen: add central hypercall functions
-Date: Tue, 17 Dec 2024 18:07:53 +0100
-Message-ID: <20241217170529.580195940@linuxfoundation.org>
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 070/109] net: rswitch: Use build_skb() for RX
+Date: Tue, 17 Dec 2024 18:07:54 +0100
+Message-ID: <20241217170536.306393834@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,331 +62,255 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-commit b4845bb6383821a9516ce30af3a27dc873e37fd4 upstream.
+[ Upstream commit 6a203cb5165d2257e8d54193b69afdb480a17f6f ]
 
-Add generic hypercall functions usable for all normal (i.e. not iret)
-hypercalls. Depending on the guest type and the processor vendor
-different functions need to be used due to the to be used instruction
-for entering the hypervisor:
+If this hardware receives a jumbo frame like 2KiB or more, it will be
+split into multiple queues. In the near future, to support this, use
+build_skb() instead of netdev_alloc_skb_ip_align().
 
-- PV guests need to use syscall
-- HVM/PVH guests on Intel need to use vmcall
-- HVM/PVH guests on AMD and Hygon need to use vmmcall
-
-As PVH guests need to issue hypercalls very early during boot, there
-is a 4th hypercall function needed for HVM/PVH which can be used on
-Intel and AMD processors. It will check the vendor type and then set
-the Intel or AMD specific function to use via static_call().
-
-This is part of XSA-466 / CVE-2024-53241.
-
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Co-developed-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 0c9547e6ccf4 ("net: renesas: rswitch: fix race window between tx start and complete")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/xen/hypercall.h |    3 +
- arch/x86/xen/enlighten.c             |   65 +++++++++++++++++++++++++++
- arch/x86/xen/enlighten_hvm.c         |    4 +
- arch/x86/xen/enlighten_pv.c          |    4 +
- arch/x86/xen/xen-asm.S               |   23 +++++++++
- arch/x86/xen/xen-head.S              |   83 +++++++++++++++++++++++++++++++++++
- arch/x86/xen/xen-ops.h               |    9 +++
- 7 files changed, 190 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/rswitch.c | 73 +++++++++++++++-----------
+ drivers/net/ethernet/renesas/rswitch.h | 19 ++++++-
+ 2 files changed, 59 insertions(+), 33 deletions(-)
 
---- a/arch/x86/include/asm/xen/hypercall.h
-+++ b/arch/x86/include/asm/xen/hypercall.h
-@@ -88,6 +88,9 @@ struct xen_dm_op_buf;
+diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
+index d10af779ee89..989cfc86098f 100644
+--- a/drivers/net/ethernet/renesas/rswitch.c
++++ b/drivers/net/ethernet/renesas/rswitch.c
+@@ -234,19 +234,18 @@ static bool rswitch_is_queue_rxed(struct rswitch_gwca_queue *gq)
+ 	return false;
+ }
  
- extern struct { char _entry[32]; } hypercall_page[];
- 
-+void xen_hypercall_func(void);
-+DECLARE_STATIC_CALL(xen_hypercall, xen_hypercall_func);
-+
- #define __HYPERCALL		"call hypercall_page+%c[offset]"
- #define __HYPERCALL_ENTRY(x)						\
- 	[offset] "i" (__HYPERVISOR_##x * sizeof(hypercall_page[0]))
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -5,6 +5,7 @@
- #endif
- #include <linux/console.h>
- #include <linux/cpu.h>
-+#include <linux/instrumentation.h>
- #include <linux/kexec.h>
- #include <linux/slab.h>
- #include <linux/panic_notifier.h>
-@@ -27,6 +28,9 @@
- 
- EXPORT_SYMBOL_GPL(hypercall_page);
- 
-+DEFINE_STATIC_CALL(xen_hypercall, xen_hypercall_hvm);
-+EXPORT_STATIC_CALL_TRAMP(xen_hypercall);
-+
- /*
-  * Pointer to the xen_vcpu_info structure or
-  * &HYPERVISOR_shared_info->vcpu_info[cpu]. See xen_hvm_init_shared_info
-@@ -72,6 +76,67 @@ EXPORT_SYMBOL(xen_start_flags);
-  */
- struct shared_info *HYPERVISOR_shared_info = &xen_dummy_shared_info;
- 
-+static __ref void xen_get_vendor(void)
-+{
-+	init_cpu_devs();
-+	cpu_detect(&boot_cpu_data);
-+	get_cpu_vendor(&boot_cpu_data);
-+}
-+
-+void xen_hypercall_setfunc(void)
-+{
-+	if (static_call_query(xen_hypercall) != xen_hypercall_hvm)
-+		return;
-+
-+	if ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-+	     boot_cpu_data.x86_vendor == X86_VENDOR_HYGON))
-+		static_call_update(xen_hypercall, xen_hypercall_amd);
-+	else
-+		static_call_update(xen_hypercall, xen_hypercall_intel);
-+}
-+
-+/*
-+ * Evaluate processor vendor in order to select the correct hypercall
-+ * function for HVM/PVH guests.
-+ * Might be called very early in boot before vendor has been set by
-+ * early_cpu_init().
-+ */
-+noinstr void *__xen_hypercall_setfunc(void)
-+{
-+	void (*func)(void);
-+
-+	/*
-+	 * Xen is supported only on CPUs with CPUID, so testing for
-+	 * X86_FEATURE_CPUID is a test for early_cpu_init() having been
-+	 * run.
-+	 *
-+	 * Note that __xen_hypercall_setfunc() is noinstr only due to a nasty
-+	 * dependency chain: it is being called via the xen_hypercall static
-+	 * call when running as a PVH or HVM guest. Hypercalls need to be
-+	 * noinstr due to PV guests using hypercalls in noinstr code. So we
-+	 * can safely tag the function body as "instrumentation ok", since
-+	 * the PV guest requirement is not of interest here (xen_get_vendor()
-+	 * calls noinstr functions, and static_call_update_early() might do
-+	 * so, too).
-+	 */
-+	instrumentation_begin();
-+
-+	if (!boot_cpu_has(X86_FEATURE_CPUID))
-+		xen_get_vendor();
-+
-+	if ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-+	     boot_cpu_data.x86_vendor == X86_VENDOR_HYGON))
-+		func = xen_hypercall_amd;
-+	else
-+		func = xen_hypercall_intel;
-+
-+	static_call_update_early(xen_hypercall, func);
-+
-+	instrumentation_end();
-+
-+	return func;
-+}
-+
- static int xen_cpu_up_online(unsigned int cpu)
+-static int rswitch_gwca_queue_alloc_skb(struct rswitch_gwca_queue *gq,
+-					unsigned int start_index,
+-					unsigned int num)
++static int rswitch_gwca_queue_alloc_rx_buf(struct rswitch_gwca_queue *gq,
++					   unsigned int start_index,
++					   unsigned int num)
  {
- 	xen_init_lock_cpu(cpu);
---- a/arch/x86/xen/enlighten_hvm.c
-+++ b/arch/x86/xen/enlighten_hvm.c
-@@ -299,6 +299,10 @@ static uint32_t __init xen_platform_hvm(
- 	if (xen_pv_domain())
- 		return 0;
+ 	unsigned int i, index;
  
-+	/* Set correct hypercall function. */
-+	if (xen_domain)
-+		xen_hypercall_setfunc();
+ 	for (i = 0; i < num; i++) {
+ 		index = (i + start_index) % gq->ring_size;
+-		if (gq->skbs[index])
++		if (gq->rx_bufs[index])
+ 			continue;
+-		gq->skbs[index] = netdev_alloc_skb_ip_align(gq->ndev,
+-							    PKT_BUF_SZ + RSWITCH_ALIGN - 1);
+-		if (!gq->skbs[index])
++		gq->rx_bufs[index] = netdev_alloc_frag(RSWITCH_BUF_SIZE);
++		if (!gq->rx_bufs[index])
+ 			goto err;
+ 	}
+ 
+@@ -255,8 +254,8 @@ static int rswitch_gwca_queue_alloc_skb(struct rswitch_gwca_queue *gq,
+ err:
+ 	for (; i-- > 0; ) {
+ 		index = (i + start_index) % gq->ring_size;
+-		dev_kfree_skb(gq->skbs[index]);
+-		gq->skbs[index] = NULL;
++		skb_free_frag(gq->rx_bufs[index]);
++		gq->rx_bufs[index] = NULL;
+ 	}
+ 
+ 	return -ENOMEM;
+@@ -274,16 +273,17 @@ static void rswitch_gwca_queue_free(struct net_device *ndev,
+ 		gq->rx_ring = NULL;
+ 
+ 		for (i = 0; i < gq->ring_size; i++)
+-			dev_kfree_skb(gq->skbs[i]);
++			skb_free_frag(gq->rx_bufs[i]);
++		kfree(gq->rx_bufs);
++		gq->rx_bufs = NULL;
+ 	} else {
+ 		dma_free_coherent(ndev->dev.parent,
+ 				  sizeof(struct rswitch_ext_desc) *
+ 				  (gq->ring_size + 1), gq->tx_ring, gq->ring_dma);
+ 		gq->tx_ring = NULL;
++		kfree(gq->skbs);
++		gq->skbs = NULL;
+ 	}
+-
+-	kfree(gq->skbs);
+-	gq->skbs = NULL;
+ }
+ 
+ static void rswitch_gwca_ts_queue_free(struct rswitch_private *priv)
+@@ -307,17 +307,20 @@ static int rswitch_gwca_queue_alloc(struct net_device *ndev,
+ 	gq->ring_size = ring_size;
+ 	gq->ndev = ndev;
+ 
+-	gq->skbs = kcalloc(gq->ring_size, sizeof(*gq->skbs), GFP_KERNEL);
+-	if (!gq->skbs)
+-		return -ENOMEM;
+-
+ 	if (!dir_tx) {
+-		rswitch_gwca_queue_alloc_skb(gq, 0, gq->ring_size);
++		gq->rx_bufs = kcalloc(gq->ring_size, sizeof(*gq->rx_bufs), GFP_KERNEL);
++		if (!gq->rx_bufs)
++			return -ENOMEM;
++		if (rswitch_gwca_queue_alloc_rx_buf(gq, 0, gq->ring_size) < 0)
++			goto out;
+ 
+ 		gq->rx_ring = dma_alloc_coherent(ndev->dev.parent,
+ 						 sizeof(struct rswitch_ext_ts_desc) *
+ 						 (gq->ring_size + 1), &gq->ring_dma, GFP_KERNEL);
+ 	} else {
++		gq->skbs = kcalloc(gq->ring_size, sizeof(*gq->skbs), GFP_KERNEL);
++		if (!gq->skbs)
++			return -ENOMEM;
+ 		gq->tx_ring = dma_alloc_coherent(ndev->dev.parent,
+ 						 sizeof(struct rswitch_ext_desc) *
+ 						 (gq->ring_size + 1), &gq->ring_dma, GFP_KERNEL);
+@@ -366,12 +369,13 @@ static int rswitch_gwca_queue_format(struct net_device *ndev,
+ 	for (i = 0, desc = gq->tx_ring; i < gq->ring_size; i++, desc++) {
+ 		if (!gq->dir_tx) {
+ 			dma_addr = dma_map_single(ndev->dev.parent,
+-						  gq->skbs[i]->data, PKT_BUF_SZ,
++						  gq->rx_bufs[i] + RSWITCH_HEADROOM,
++						  RSWITCH_MAP_BUF_SIZE,
+ 						  DMA_FROM_DEVICE);
+ 			if (dma_mapping_error(ndev->dev.parent, dma_addr))
+ 				goto err;
+ 
+-			desc->desc.info_ds = cpu_to_le16(PKT_BUF_SZ);
++			desc->desc.info_ds = cpu_to_le16(RSWITCH_DESC_BUF_SIZE);
+ 			rswitch_desc_set_dptr(&desc->desc, dma_addr);
+ 			desc->desc.die_dt = DT_FEMPTY | DIE;
+ 		} else {
+@@ -394,8 +398,8 @@ static int rswitch_gwca_queue_format(struct net_device *ndev,
+ 	if (!gq->dir_tx) {
+ 		for (desc = gq->tx_ring; i-- > 0; desc++) {
+ 			dma_addr = rswitch_desc_get_dptr(&desc->desc);
+-			dma_unmap_single(ndev->dev.parent, dma_addr, PKT_BUF_SZ,
+-					 DMA_FROM_DEVICE);
++			dma_unmap_single(ndev->dev.parent, dma_addr,
++					 RSWITCH_MAP_BUF_SIZE, DMA_FROM_DEVICE);
+ 		}
+ 	}
+ 
+@@ -432,12 +436,13 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
+ 		desc = &gq->rx_ring[index];
+ 		if (!gq->dir_tx) {
+ 			dma_addr = dma_map_single(ndev->dev.parent,
+-						  gq->skbs[index]->data, PKT_BUF_SZ,
++						  gq->rx_bufs[index] + RSWITCH_HEADROOM,
++						  RSWITCH_MAP_BUF_SIZE,
+ 						  DMA_FROM_DEVICE);
+ 			if (dma_mapping_error(ndev->dev.parent, dma_addr))
+ 				goto err;
+ 
+-			desc->desc.info_ds = cpu_to_le16(PKT_BUF_SZ);
++			desc->desc.info_ds = cpu_to_le16(RSWITCH_DESC_BUF_SIZE);
+ 			rswitch_desc_set_dptr(&desc->desc, dma_addr);
+ 			dma_wmb();
+ 			desc->desc.die_dt = DT_FEMPTY | DIE;
+@@ -455,8 +460,8 @@ static int rswitch_gwca_queue_ext_ts_fill(struct net_device *ndev,
+ 			index = (i + start_index) % gq->ring_size;
+ 			desc = &gq->rx_ring[index];
+ 			dma_addr = rswitch_desc_get_dptr(&desc->desc);
+-			dma_unmap_single(ndev->dev.parent, dma_addr, PKT_BUF_SZ,
+-					 DMA_FROM_DEVICE);
++			dma_unmap_single(ndev->dev.parent, dma_addr,
++					 RSWITCH_MAP_BUF_SIZE, DMA_FROM_DEVICE);
+ 		}
+ 	}
+ 
+@@ -723,10 +728,15 @@ static bool rswitch_rx(struct net_device *ndev, int *quota)
+ 	while ((desc->desc.die_dt & DT_MASK) != DT_FEMPTY) {
+ 		dma_rmb();
+ 		pkt_len = le16_to_cpu(desc->desc.info_ds) & RX_DS;
+-		skb = gq->skbs[gq->cur];
+-		gq->skbs[gq->cur] = NULL;
+ 		dma_addr = rswitch_desc_get_dptr(&desc->desc);
+-		dma_unmap_single(ndev->dev.parent, dma_addr, PKT_BUF_SZ, DMA_FROM_DEVICE);
++		dma_unmap_single(ndev->dev.parent, dma_addr,
++				 RSWITCH_MAP_BUF_SIZE, DMA_FROM_DEVICE);
++		skb = build_skb(gq->rx_bufs[gq->cur], RSWITCH_BUF_SIZE);
++		if (!skb)
++			goto out;
++		skb_reserve(skb, RSWITCH_HEADROOM);
++		skb_put(skb, pkt_len);
 +
- 	if (xen_pvh_domain() && nopv) {
- 		/* Guest booting via the Xen-PVH boot entry goes here */
- 		pr_info("\"nopv\" parameter is ignored in PVH guest\n");
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -1248,6 +1248,9 @@ asmlinkage __visible void __init xen_sta
+ 		get_ts = rdev->priv->ptp_priv->tstamp_rx_ctrl & RCAR_GEN4_RXTSTAMP_TYPE_V2_L2_EVENT;
+ 		if (get_ts) {
+ 			struct skb_shared_hwtstamps *shhwtstamps;
+@@ -738,12 +748,13 @@ static bool rswitch_rx(struct net_device *ndev, int *quota)
+ 			ts.tv_nsec = __le32_to_cpu(desc->ts_nsec & cpu_to_le32(0x3fffffff));
+ 			shhwtstamps->hwtstamp = timespec64_to_ktime(ts);
+ 		}
+-		skb_put(skb, pkt_len);
+ 		skb->protocol = eth_type_trans(skb, ndev);
+ 		napi_gro_receive(&rdev->napi, skb);
+ 		rdev->ndev->stats.rx_packets++;
+ 		rdev->ndev->stats.rx_bytes += pkt_len;
  
- 	xen_domain_type = XEN_PV_DOMAIN;
- 	xen_start_flags = xen_start_info->flags;
-+	/* Interrupts are guaranteed to be off initially. */
-+	early_boot_irqs_disabled = true;
-+	static_call_update_early(xen_hypercall, xen_hypercall_pv);
++out:
++		gq->rx_bufs[gq->cur] = NULL;
+ 		gq->cur = rswitch_next_queue_index(gq, true, 1);
+ 		desc = &gq->rx_ring[gq->cur];
  
- 	xen_setup_features();
+@@ -752,7 +763,7 @@ static bool rswitch_rx(struct net_device *ndev, int *quota)
+ 	}
  
-@@ -1340,7 +1343,6 @@ asmlinkage __visible void __init xen_sta
- 	WARN_ON(xen_cpuhp_setup(xen_cpu_up_prepare_pv, xen_cpu_dead_pv));
+ 	num = rswitch_get_num_cur_queues(gq);
+-	ret = rswitch_gwca_queue_alloc_skb(gq, gq->dirty, num);
++	ret = rswitch_gwca_queue_alloc_rx_buf(gq, gq->dirty, num);
+ 	if (ret < 0)
+ 		goto err;
+ 	ret = rswitch_gwca_queue_ext_ts_fill(ndev, gq, gq->dirty, num);
+diff --git a/drivers/net/ethernet/renesas/rswitch.h b/drivers/net/ethernet/renesas/rswitch.h
+index 542328959530..e62c28a442b9 100644
+--- a/drivers/net/ethernet/renesas/rswitch.h
++++ b/drivers/net/ethernet/renesas/rswitch.h
+@@ -29,8 +29,13 @@
+ #define RX_RING_SIZE		1024
+ #define TS_RING_SIZE		(TX_RING_SIZE * RSWITCH_NUM_PORTS)
  
- 	local_irq_disable();
--	early_boot_irqs_disabled = true;
+-#define PKT_BUF_SZ		1584
++#define RSWITCH_HEADROOM	(NET_SKB_PAD + NET_IP_ALIGN)
++#define RSWITCH_DESC_BUF_SIZE	2048
++#define RSWITCH_TAILROOM	SKB_DATA_ALIGN(sizeof(struct skb_shared_info))
+ #define RSWITCH_ALIGN		128
++#define RSWITCH_BUF_SIZE	(RSWITCH_HEADROOM + RSWITCH_DESC_BUF_SIZE + \
++				 RSWITCH_TAILROOM + RSWITCH_ALIGN)
++#define RSWITCH_MAP_BUF_SIZE	(RSWITCH_BUF_SIZE - RSWITCH_HEADROOM)
+ #define RSWITCH_MAX_CTAG_PCP	7
  
- 	xen_raw_console_write("mapping kernel into physical memory\n");
- 	xen_setup_kernel_pagetable((pgd_t *)xen_start_info->pt_base,
---- a/arch/x86/xen/xen-asm.S
-+++ b/arch/x86/xen/xen-asm.S
-@@ -20,10 +20,33 @@
- 
- #include <linux/init.h>
- #include <linux/linkage.h>
-+#include <linux/objtool.h>
- #include <../entry/calling.h>
- 
- .pushsection .noinstr.text, "ax"
- /*
-+ * PV hypercall interface to the hypervisor.
-+ *
-+ * Called via inline asm(), so better preserve %rcx and %r11.
-+ *
-+ * Input:
-+ *	%eax: hypercall number
-+ *	%rdi, %rsi, %rdx, %r10, %r8: args 1..5 for the hypercall
-+ * Output: %rax
-+ */
-+SYM_FUNC_START(xen_hypercall_pv)
-+	ANNOTATE_NOENDBR
-+	push %rcx
-+	push %r11
-+	UNWIND_HINT_SAVE
-+	syscall
-+	UNWIND_HINT_RESTORE
-+	pop %r11
-+	pop %rcx
-+	RET
-+SYM_FUNC_END(xen_hypercall_pv)
+ #define RSWITCH_TIMEOUT_US	100000
+@@ -945,8 +950,18 @@ struct rswitch_gwca_queue {
+ 	/* For [rt]x_ring */
+ 	unsigned int index;
+ 	bool dir_tx;
+-	struct sk_buff **skbs;
+ 	struct net_device *ndev;	/* queue to ndev for irq */
 +
-+/*
-  * Disabling events is simply a matter of making the event mask
-  * non-zero.
-  */
---- a/arch/x86/xen/xen-head.S
-+++ b/arch/x86/xen/xen-head.S
-@@ -6,9 +6,11 @@
++	union {
++		/* For TX */
++		struct {
++			struct sk_buff **skbs;
++		};
++		/* For RX */
++		struct {
++			void **rx_bufs;
++		};
++	};
+ };
  
- #include <linux/elfnote.h>
- #include <linux/init.h>
-+#include <linux/instrumentation.h>
- 
- #include <asm/boot.h>
- #include <asm/asm.h>
-+#include <asm/frame.h>
- #include <asm/msr.h>
- #include <asm/page_types.h>
- #include <asm/percpu.h>
-@@ -80,6 +82,87 @@ SYM_CODE_END(asm_cpu_bringup_and_idle)
- #endif
- #endif
- 
-+	.pushsection .noinstr.text, "ax"
-+/*
-+ * Xen hypercall interface to the hypervisor.
-+ *
-+ * Input:
-+ *     %eax: hypercall number
-+ *   32-bit:
-+ *     %ebx, %ecx, %edx, %esi, %edi: args 1..5 for the hypercall
-+ *   64-bit:
-+ *     %rdi, %rsi, %rdx, %r10, %r8: args 1..5 for the hypercall
-+ * Output: %[er]ax
-+ */
-+SYM_FUNC_START(xen_hypercall_hvm)
-+	ENDBR
-+	FRAME_BEGIN
-+	/* Save all relevant registers (caller save and arguments). */
-+#ifdef CONFIG_X86_32
-+	push %eax
-+	push %ebx
-+	push %ecx
-+	push %edx
-+	push %esi
-+	push %edi
-+#else
-+	push %rax
-+	push %rcx
-+	push %rdx
-+	push %rdi
-+	push %rsi
-+	push %r11
-+	push %r10
-+	push %r9
-+	push %r8
-+#ifdef CONFIG_FRAME_POINTER
-+	pushq $0	/* Dummy push for stack alignment. */
-+#endif
-+#endif
-+	/* Set the vendor specific function. */
-+	call __xen_hypercall_setfunc
-+	/* Set ZF = 1 if AMD, Restore saved registers. */
-+#ifdef CONFIG_X86_32
-+	lea xen_hypercall_amd, %ebx
-+	cmp %eax, %ebx
-+	pop %edi
-+	pop %esi
-+	pop %edx
-+	pop %ecx
-+	pop %ebx
-+	pop %eax
-+#else
-+	lea xen_hypercall_amd(%rip), %rbx
-+	cmp %rax, %rbx
-+#ifdef CONFIG_FRAME_POINTER
-+	pop %rax	/* Dummy pop. */
-+#endif
-+	pop %r8
-+	pop %r9
-+	pop %r10
-+	pop %r11
-+	pop %rsi
-+	pop %rdi
-+	pop %rdx
-+	pop %rcx
-+	pop %rax
-+#endif
-+	/* Use correct hypercall function. */
-+	jz xen_hypercall_amd
-+	jmp xen_hypercall_intel
-+SYM_FUNC_END(xen_hypercall_hvm)
-+
-+SYM_FUNC_START(xen_hypercall_amd)
-+	vmmcall
-+	RET
-+SYM_FUNC_END(xen_hypercall_amd)
-+
-+SYM_FUNC_START(xen_hypercall_intel)
-+	vmcall
-+	RET
-+SYM_FUNC_END(xen_hypercall_intel)
-+	.popsection
-+
- 	ELFNOTE(Xen, XEN_ELFNOTE_GUEST_OS,       .asciz "linux")
- 	ELFNOTE(Xen, XEN_ELFNOTE_GUEST_VERSION,  .asciz "2.6")
- 	ELFNOTE(Xen, XEN_ELFNOTE_XEN_VERSION,    .asciz "xen-3.0")
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -162,4 +162,13 @@ void xen_hvm_post_suspend(int suspend_ca
- static inline void xen_hvm_post_suspend(int suspend_cancelled) {}
- #endif
- 
-+#ifdef CONFIG_XEN_PV
-+void xen_hypercall_pv(void);
-+#endif
-+void xen_hypercall_hvm(void);
-+void xen_hypercall_amd(void);
-+void xen_hypercall_intel(void);
-+void xen_hypercall_setfunc(void);
-+void *__xen_hypercall_setfunc(void);
-+
- #endif /* XEN_OPS_H */
+ struct rswitch_gwca_ts_info {
+-- 
+2.39.5
+
 
 
 
