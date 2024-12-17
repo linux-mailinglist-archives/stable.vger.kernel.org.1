@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-104822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4205F9F5346
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 006659F54A2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:44:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48BB188D521
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5583D188F778
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0481F757B;
-	Tue, 17 Dec 2024 17:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEF91F76DF;
+	Tue, 17 Dec 2024 17:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFnOBFTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DD4ZKf0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3287142E77;
-	Tue, 17 Dec 2024 17:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890951F8660;
+	Tue, 17 Dec 2024 17:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456209; cv=none; b=Pxf69yPAEQwVW9hqphnvR/W2wm0qq3ufeSTfuqC7r9oJFX+h5Pqv9RKpAAyV3qVCCh37/7G96T13y/JKmCdeAOMB6O3vwZgOOMxKmlZpyt0C+Gt0MXnVQrNyVk36/a/tggapMu+45seueFEvISfreOXddiLAdvm+Bei+V1XTsyI=
+	t=1734456847; cv=none; b=lW7IYLgQHHzIHEZqhPnRlbSD6VG9aQhB1OTKgs2ljdUnGMS0QgkZwnATyYABX1PyeLbyrlXXCdZTryC9eFH4TF00PHRrBgZFFNW8OhaM9Vj7FmuOCjXHW6p5oe8QW22/72t99WHFRAera0BDTXuZATfurH8oZI3sPC1zX4PmIaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456209; c=relaxed/simple;
-	bh=Js9aHD8CwdfhY25GF6JUHtKE0gtm+DvjZLw6y7B3ql0=;
+	s=arc-20240116; t=1734456847; c=relaxed/simple;
+	bh=LrBWuFpWS2fAF3ybZIkfCkZGt7+HuXYgZRXjWb4k+N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpMuki9aq4oY+nARjyEBPSOS2Bytv+E8nJDt5rA88DBbo7lIbdZiRJnCQvnpqc+IEwAkizQgobst4TwtzEDwAIjhDpE8yFdp5iMyhI36gQ1SL2VpikCHnrfDq6w2xvyaK4p2iGC+cBrwQF79eFax+LcA3HjA+mtFynOhRYyFDXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFnOBFTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26928C4CED3;
-	Tue, 17 Dec 2024 17:23:27 +0000 (UTC)
+	 MIME-Version; b=PpQOeN0h82RV+X5JThwU2QowFGjTmA0oHLUG9AamtQsQdyjsD69F9lX0jBYP/DPT2FJC6lTX2xq0mwABybG2V+3jKGlf8WAVhGMBDJmrhNXTNraTbjgpH1h6t2g2CdouNOKCnwUCgzyO9SZUQc8mhSxrmPWB0a9HW3rW5pBHG/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DD4ZKf0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9F5C4CED3;
+	Tue, 17 Dec 2024 17:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456208;
-	bh=Js9aHD8CwdfhY25GF6JUHtKE0gtm+DvjZLw6y7B3ql0=;
+	s=korg; t=1734456847;
+	bh=LrBWuFpWS2fAF3ybZIkfCkZGt7+HuXYgZRXjWb4k+N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFnOBFTXB1QngMgzPJcot2AQY970A1ecfe2CudXWjRhvmtDBX0a+/KZ0uxC49zza9
-	 t5SgwY1i6JYx6Y2TA9RA8mhgY3j18TvdqV+FCtN0s+rysgwxkIrErYmvsaxLximjDE
-	 0vWIiMrIRnGqmvJzzI4jIRWr4aYZDG7PkCBlTOqA=
+	b=DD4ZKf0cE07WqTQzvudPtj6WWmQVEw06L7z1m1ob8EQcRQsVEGMmXOwxEg7XDL8yt
+	 8Ilymm+2uwxQKxRmselo915KaFY3DGucW745fQD22WUpYhDQbEcHTIpO+GMcwq0AmZ
+	 6RVo8uYpkqLNiRXvIPA8roi15vmNZFXW2I0h6ydc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	kernel test robot <lkp@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@idosch.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/109] blk-iocost: Avoid using clamp() on inuse in __propagate_weights()
+Subject: [PATCH 6.12 141/172] bonding: Fix initial {vlan,mpls}_feature set in bond_compute_features
 Date: Tue, 17 Dec 2024 18:08:17 +0100
-Message-ID: <20241217170537.276060261@linuxfoundation.org>
+Message-ID: <20241217170552.186094737@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 57e420c84f9ab55ba4c5e2ae9c5f6c8e1ea834d2 ]
+[ Upstream commit d064ea7fe2a24938997b5e88e6b61cbb0a4bb906 ]
 
-After a recent change to clamp() and its variants [1] that increases the
-coverage of the check that high is greater than low because it can be
-done through inlining, certain build configurations (such as s390
-defconfig) fail to build with clang with:
+If a bonding device has slave devices, then the current logic to derive
+the feature set for the master bond device is limited in that flags which
+are fully supported by the underlying slave devices cannot be propagated
+up to vlan devices which sit on top of bond devices. Instead, these get
+blindly masked out via current NETIF_F_ALL_FOR_ALL logic.
 
-  block/blk-iocost.c:1101:11: error: call to '__compiletime_assert_557' declared with 'error' attribute: clamp() low limit 1 greater than high limit active
-   1101 |                 inuse = clamp_t(u32, inuse, 1, active);
-        |                         ^
-  include/linux/minmax.h:218:36: note: expanded from macro 'clamp_t'
-    218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
-        |                                    ^
-  include/linux/minmax.h:195:2: note: expanded from macro '__careful_clamp'
-    195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
-        |         ^
-  include/linux/minmax.h:188:2: note: expanded from macro '__clamp_once'
-    188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
-        |         ^
+vlan_features and mpls_features should reuse netdev_base_features() in
+order derive the set in the same way as ndo_fix_features before iterating
+through the slave devices to refine the feature set.
 
-__propagate_weights() is called with an active value of zero in
-ioc_check_iocgs(), which results in the high value being less than the
-low value, which is undefined because the value returned depends on the
-order of the comparisons.
-
-The purpose of this expression is to ensure inuse is not more than
-active and at least 1. This could be written more simply with a ternary
-expression that uses min(inuse, active) as the condition so that the
-value of that condition can be used if it is not zero and one if it is.
-Do this conversion to resolve the error and add a comment to deter
-people from turning this back into clamp().
-
-Fixes: 7caa47151ab2 ("blkcg: implement blk-iocost")
-Link: https://lore.kernel.org/r/34d53778977747f19cce2abb287bb3e6@AcuMS.aculab.com/ [1]
-Suggested-by: David Laight <david.laight@aculab.com>
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/llvm/CA+G9fYsD7mw13wredcZn0L-KBA3yeoVSTuxnss-AEWMN3ha0cA@mail.gmail.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412120322.3GfVe3vF-lkp@intel.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: a9b3ace44c7d ("bonding: fix vlan_features computing")
+Fixes: 2e770b507ccd ("net: bonding: Inherit MPLS features from slave devices")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Ido Schimmel <idosch@idosch.org>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241210141245.327886-2-daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index c3cb9c20b306..129732a8d0dd 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1098,7 +1098,14 @@ static void __propagate_weights(struct ioc_gq *iocg, u32 active, u32 inuse,
- 		inuse = DIV64_U64_ROUND_UP(active * iocg->child_inuse_sum,
- 					   iocg->child_active_sum);
- 	} else {
--		inuse = clamp_t(u32, inuse, 1, active);
-+		/*
-+		 * It may be tempting to turn this into a clamp expression with
-+		 * a lower limit of 1 but active may be 0, which cannot be used
-+		 * as an upper limit in that situation. This expression allows
-+		 * active to clamp inuse unless it is 0, in which case inuse
-+		 * becomes 1.
-+		 */
-+		inuse = min(inuse, active) ?: 1;
- 	}
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 166910693fd7..dfad7b6f9f35 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1562,8 +1562,9 @@ static void bond_compute_features(struct bonding *bond)
  
- 	iocg->last_inuse = iocg->inuse;
+ 	if (!bond_has_slaves(bond))
+ 		goto done;
+-	vlan_features &= NETIF_F_ALL_FOR_ALL;
+-	mpls_features &= NETIF_F_ALL_FOR_ALL;
++
++	vlan_features = netdev_base_features(vlan_features);
++	mpls_features = netdev_base_features(mpls_features);
+ 
+ 	bond_for_each_slave(bond, slave, iter) {
+ 		vlan_features = netdev_increment_features(vlan_features,
 -- 
 2.39.5
 
