@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-104914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1979F53B4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0804C9F5269
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE89A17101B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E64D164DB7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F3E1F7574;
-	Tue, 17 Dec 2024 17:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60021F429B;
+	Tue, 17 Dec 2024 17:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py1X/pO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cu5BEkUJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8655A1EF085;
-	Tue, 17 Dec 2024 17:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9444714A4E7;
+	Tue, 17 Dec 2024 17:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456489; cv=none; b=htXjVz2deavHNBUJpzldhCPQjq6yHYiXAT7qplc9QiWr0z4jTr0Xzak7IPQOtiy40U7peY8VUzN45I+pE8lHyF54ayahxPMPpgBXQnt+HmubPyZvpUK/iQl4+1nABadL4uYGeIaqzyp7Rqu5e4wRFN+c5RMd2idOXjf+Z+pPts0=
+	t=1734455781; cv=none; b=dvvrypKIS1oDewReSJkN24Fz1Wcfmzuwb8Jf1PuGhlwDP2ixI1SIeuiVeUD5uHzBKcKZ7IZbjM2qVn+bahLuEvVML+Hh0Yyp8zVs2rbqQ2Sibl1iwAg+0R94lCUkT3x7JPBaphNVSP4JtoGxmuJAIv0zsY14qfdxSulABgcOAV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456489; c=relaxed/simple;
-	bh=ZhvhM+57g5lAfUG46HRebv2jBC7SFWJrDsX154Wy504=;
+	s=arc-20240116; t=1734455781; c=relaxed/simple;
+	bh=ZToC6hT4o0srGvftp1Pc2GkauFnY+c4XQv7vXaiG9Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7SLi/HiHEpLgfPVpNZeH0HlAiAui/IB/7RYqwd38bfbSqajhKGtXtteMEg10EgTZ/AgqcKgu4QlQmHS0fPcGSTEF8/mZknRibOEBjjM5B5n2+VWcIoipWRSciZvT8XhT+R3T9yktvVE9bNasf6l091YXLj5WT9b/Te74gq8q6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py1X/pO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091DDC4CED7;
-	Tue, 17 Dec 2024 17:28:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uwzZQXByf/F9g/y8UfsOGI9kSvDBlYeauyRtfvUfqQad0/n6bP2F+0JZL5HapdwrAV4uFyuDOepEHbI5x85bAk60AqOnSHx/dIsJIeNpBB+4MtLfYNr6rf5mkie0P61NtoeMMSOtc2Wg67qeBxTSdB7/A+BHHOF8MIJbkh+jAg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cu5BEkUJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF98C4CED3;
+	Tue, 17 Dec 2024 17:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456489;
-	bh=ZhvhM+57g5lAfUG46HRebv2jBC7SFWJrDsX154Wy504=;
+	s=korg; t=1734455781;
+	bh=ZToC6hT4o0srGvftp1Pc2GkauFnY+c4XQv7vXaiG9Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py1X/pO8i3GKkwC+1FkQAbiuSZd53JX126d85b3a3e1WWX7L8RXStdlIJzzF2ZxzQ
-	 /HOO5nMQ529YgZYn6XUf8vuDcwLzKi4u/oDq1KKhsOaiwYnBym1EM7RnNoSEXj49eT
-	 32PhujsZADzY6noK9g1/wIv5F+o3Hr8LCJcuBRvc=
+	b=cu5BEkUJoISx2oqblRT9Mt0pzorAKsp9zJ+o6VqwBt77ojXd9eC8jDdw7Gmm2ijch
+	 frJuJjitSSpvFktSgmHQtj1pEek4OM6rLGmLdm/cJ3e9DRbwZbNFKn9gWChvTBoM8I
+	 VLRF7+1ANQr5BWfLw6AGOQTiT0SBbiJ7D+WnF1pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 075/172] xfs: unlock inodes when erroring out of xfs_trans_alloc_dir
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 31/76] amdgpu/uvd: get ring reference from rq scheduler
 Date: Tue, 17 Dec 2024 18:07:11 +0100
-Message-ID: <20241217170549.397904854@linuxfoundation.org>
+Message-ID: <20241217170527.557636449@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: David (Ming Qiang) Wu <David.Wu3@amd.com>
 
-commit 53b001a21c9dff73b64e8c909c41991f01d5d00f upstream.
+[ Upstream commit 47f402a3e08113e0f5d8e1e6fcc197667a16022f ]
 
-Debugging a filesystem patch with generic/475 caused the system to hang
-after observing the following sequences in dmesg:
+base.sched may not be set for each instance and should not
+be used for cases such as non-IB tests.
 
- XFS (dm-0): metadata I/O error in "xfs_imap_to_bp+0x61/0xe0 [xfs]" at daddr 0x491520 len 32 error 5
- XFS (dm-0): metadata I/O error in "xfs_btree_read_buf_block+0xba/0x160 [xfs]" at daddr 0x3445608 len 8 error 5
- XFS (dm-0): metadata I/O error in "xfs_imap_to_bp+0x61/0xe0 [xfs]" at daddr 0x138e1c0 len 32 error 5
- XFS (dm-0): log I/O error -5
- XFS (dm-0): Metadata I/O Error (0x1) detected at xfs_trans_read_buf_map+0x1ea/0x4b0 [xfs] (fs/xfs/xfs_trans_buf.c:311).  Shutting down filesystem.
- XFS (dm-0): Please unmount the filesystem and rectify the problem(s)
- XFS (dm-0): Internal error dqp->q_ino.reserved < dqp->q_ino.count at line 869 of file fs/xfs/xfs_trans_dquot.c.  Caller xfs_trans_dqresv+0x236/0x440 [xfs]
- XFS (dm-0): Corruption detected. Unmount and run xfs_repair
- XFS (dm-0): Unmounting Filesystem be6bcbcc-9921-4deb-8d16-7cc94e335fa7
-
-The system is stuck in unmount trying to lock a couple of inodes so that
-they can be purged.  The dquot corruption notice above is a clue to what
-happened -- a link() call tried to set up a transaction to link a child
-into a directory.  Quota reservation for the transaction failed after IO
-errors shut down the filesystem, but then we forgot to unlock the inodes
-on our way out.  Fix that.
-
-Cc: <stable@vger.kernel.org> # v6.10
-Fixes: bd5562111d5839 ("xfs: Hold inode locks in xfs_trans_alloc_dir")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_trans.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_trans.c
-+++ b/fs/xfs/xfs_trans.c
-@@ -1374,5 +1374,8 @@ done:
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c b/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
+index e668b3baa8c6..1c5d79528ca7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v7_0.c
+@@ -1284,7 +1284,7 @@ static int uvd_v7_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,
+ 					   struct amdgpu_job *job,
+ 					   struct amdgpu_ib *ib)
+ {
+-	struct amdgpu_ring *ring = to_amdgpu_ring(job->base.sched);
++	struct amdgpu_ring *ring = amdgpu_job_ring(job);
+ 	unsigned i;
  
- out_cancel:
- 	xfs_trans_cancel(tp);
-+	xfs_iunlock(dp, XFS_ILOCK_EXCL);
-+	if (dp != ip)
-+		xfs_iunlock(ip, XFS_ILOCK_EXCL);
- 	return error;
- }
+ 	/* No patching necessary for the first instance */
+-- 
+2.39.5
+
 
 
 
