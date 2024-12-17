@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-104948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DD29F5398
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 555779F5316
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1EC77A4060
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219C1188869E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA391F8909;
-	Tue, 17 Dec 2024 17:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17ABD1EF085;
+	Tue, 17 Dec 2024 17:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+ItfhRn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNuLhoWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389751F869F;
-	Tue, 17 Dec 2024 17:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA419142E77;
+	Tue, 17 Dec 2024 17:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456605; cv=none; b=GIvcR0q4/qe1h+LdHobB/HKyzw0IJvHpLwYE0sxj8onHelgFTpc09JF9Pwcnoqr0LZ5i96hA2/brG3XNv47u8H5PzoSrw9yTCQ+cM70YAVB8NEkcE4BIOgjHmODIxbU2tgkjs7m+wqaO8lee+utM+psqfxvn4m3pjSMYPCJxbus=
+	t=1734456100; cv=none; b=SKzmMV+vOqiTow4YbQgpuKtGpcHUKC+piIEoYXp0mlWh5oapmPfschyh13wLcvg1MBs2BPPhcTeXhxFr66lUDfEvZA8MxOYgfM2SUBLiW4hyzfFKajNfQE1YaUqUWmnHk/0jjQQY7iHDjvoBVA7bN6fZO+fp66oYDuKuwRjQIok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456605; c=relaxed/simple;
-	bh=gCj2yY9hV3b9a3q9p6d+pcKeYCLjHroyalQgwodX5rQ=;
+	s=arc-20240116; t=1734456100; c=relaxed/simple;
+	bh=LEFXJg2sJPe8+m/AXUcaTytlHUwI6oaknsU6y1OQS00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oj58YpVtirpCryOeAzwVliscXv64XLqmf5nFFoTZSoe+57DvuKbzx5828eWalscLJfh/rpdMuucVbapUnk07zFWWbsu4C0qm4STfTU6ymiog5ANhZG/9UkwrYpx4QNii8S84/BlMNuV/dtjhutymlVw6sGp1WHN0eEJtLQb0rGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+ItfhRn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7924C4CED3;
-	Tue, 17 Dec 2024 17:30:04 +0000 (UTC)
+	 MIME-Version; b=NebO8c6Lr5X9GylxD62o6KKiSzXAkkm6yIZOAByYbcHabk4tM2HintgEVdJTg+U95T6oKXzj/2NvDtK09JTdDA3IHxb4vv4NzRLAGQdYrFy8t3VpJS8W/VNcMGEuh5mQE30+4PpiHItYGlSOwdTu6XDKNM3H2WmiBJMsNclonAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNuLhoWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E8DC4CED3;
+	Tue, 17 Dec 2024 17:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456605;
-	bh=gCj2yY9hV3b9a3q9p6d+pcKeYCLjHroyalQgwodX5rQ=;
+	s=korg; t=1734456100;
+	bh=LEFXJg2sJPe8+m/AXUcaTytlHUwI6oaknsU6y1OQS00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+ItfhRnQ2X/exn0yPymz5LvVFLHjgVhGjkh0iFZf62huNQK/HVOp9Az+b68wggEF
-	 PMWMa+Gdp3RbIVPtlymBaCEDlRYpHwtzIt6XDGOEeqC2LB5PJQQHoRD7Q5szmx/sGj
-	 +X16k73ASMvimsCMrVVOYa2MYLDLgfKsLp3eehWM=
+	b=VNuLhoWjZiyl8V9m46nVGQWGnYmOECjKZQdSGAhY0f1hwGDiTAJoibpmVIRhBNvIR
+	 T9f78rQHJQZxX+4D7orO85Q1fLxjZENKxPPGQyhpGNWEL4OW0d7R2z/tjgBkUgCMR4
+	 pHn9yRgncRmSFg5QCn7Pbp/xkY8BNx6xmYzOjyG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Manu Bretelle <chantra@meta.com>
-Subject: [PATCH 6.12 081/172] bpf: Augment raw_tp arguments with PTR_MAYBE_NULL
+	Michal Luczaj <mhal@rbox.co>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>
+Subject: [PATCH 6.6 033/109] bpf, sockmap: Fix update element with same
 Date: Tue, 17 Dec 2024 18:07:17 +0100
-Message-ID: <20241217170549.646884318@linuxfoundation.org>
+Message-ID: <20241217170534.761207881@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,253 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit 838a10bd2ebfe11a60dd67687533a7cfc220cc86 upstream.
+commit 75e072a390da9a22e7ae4a4e8434dfca5da499fb upstream.
 
-Arguments to a raw tracepoint are tagged as trusted, which carries the
-semantics that the pointer will be non-NULL.  However, in certain cases,
-a raw tracepoint argument may end up being NULL. More context about this
-issue is available in [0].
+Consider a sockmap entry being updated with the same socket:
 
-Thus, there is a discrepancy between the reality, that raw_tp arguments can
-actually be NULL, and the verifier's knowledge, that they are never NULL,
-causing explicit NULL check branch to be dead code eliminated.
+	osk = stab->sks[idx];
+	sock_map_add_link(psock, link, map, &stab->sks[idx]);
+	stab->sks[idx] = sk;
+	if (osk)
+		sock_map_unref(osk, &stab->sks[idx]);
 
-A previous attempt [1], i.e. the second fixed commit, was made to
-simulate symbolic execution as if in most accesses, the argument is a
-non-NULL raw_tp, except for conditional jumps.  This tried to suppress
-branch prediction while preserving compatibility, but surfaced issues
-with production programs that were difficult to solve without increasing
-verifier complexity. A more complete discussion of issues and fixes is
-available at [2].
+Due to sock_map_unref(), which invokes sock_map_del_link(), all the
+psock's links for stab->sks[idx] are torn:
 
-Fix this by maintaining an explicit list of tracepoints where the
-arguments are known to be NULL, and mark the positional arguments as
-PTR_MAYBE_NULL. Additionally, capture the tracepoints where arguments
-are known to be ERR_PTR, and mark these arguments as scalar values to
-prevent potential dereference.
+	list_for_each_entry_safe(link, tmp, &psock->link, list) {
+		if (link->link_raw == link_raw) {
+			...
+			list_del(&link->list);
+			sk_psock_free_link(link);
+		}
+	}
 
-Each hex digit is used to encode NULL-ness (0x1) or ERR_PTR-ness (0x2),
-shifted by the zero-indexed argument number x 4. This can be represented
-as follows:
-1st arg: 0x1
-2nd arg: 0x10
-3rd arg: 0x100
-... and so on (likewise for ERR_PTR case).
+And that includes the new link sock_map_add_link() added just before
+the unref.
 
-In the future, an automated pass will be used to produce such a list, or
-insert __nullable annotations automatically for tracepoints. Each
-compilation unit will be analyzed and results will be collated to find
-whether a tracepoint pointer is definitely not null, maybe null, or an
-unknown state where verifier conservatively marks it PTR_MAYBE_NULL.
-A proof of concept of this tool from Eduard is available at [3].
+This results in a sockmap holding a socket, but without the respective
+link. This in turn means that close(sock) won't trigger the cleanup,
+i.e. a closed socket will not be automatically removed from the sockmap.
 
-Note that in case we don't find a specification in the raw_tp_null_args
-array and the tracepoint belongs to a kernel module, we will
-conservatively mark the arguments as PTR_MAYBE_NULL. This is because
-unlike for in-tree modules, out-of-tree module tracepoints may pass NULL
-freely to the tracepoint. We don't protect against such tracepoints
-passing ERR_PTR (which is uncommon anyway), lest we mark all such
-arguments as SCALAR_VALUE.
+Stop tearing the links when a matching link_raw is found.
 
-While we are it, let's adjust the test raw_tp_null to not perform
-dereference of the skb->mark, as that won't be allowed anymore, and make
-it more robust by using inline assembly to test the dead code
-elimination behavior, which should still stay the same.
-
-  [0]: https://lore.kernel.org/bpf/ZrCZS6nisraEqehw@jlelli-thinkpadt14gen4.remote.csb
-  [1]: https://lore.kernel.org/all/20241104171959.2938862-1-memxor@gmail.com
-  [2]: https://lore.kernel.org/bpf/20241206161053.809580-1-memxor@gmail.com
-  [3]: https://github.com/eddyz87/llvm-project/tree/nullness-for-tracepoint-params
-
-Reported-by: Juri Lelli <juri.lelli@redhat.com> # original bug
-Reported-by: Manu Bretelle <chantra@meta.com> # bugs in masking fix
-Fixes: 3f00c5239344 ("bpf: Allow trusted pointers to be passed to KF_TRUSTED_ARGS kfuncs")
-Fixes: cb4158ce8ec8 ("bpf: Mark raw_tp arguments with PTR_MAYBE_NULL")
-Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
-Co-developed-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241213221929.3495062-3-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241202-sockmap-replace-v1-1-1e88579e7bd5@rbox.co
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/btf.c |  138 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 138 insertions(+)
+ net/core/sock_map.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -6415,6 +6415,101 @@ int btf_ctx_arg_offset(const struct btf
- 	return off;
- }
- 
-+struct bpf_raw_tp_null_args {
-+	const char *func;
-+	u64 mask;
-+};
-+
-+static const struct bpf_raw_tp_null_args raw_tp_null_args[] = {
-+	/* sched */
-+	{ "sched_pi_setprio", 0x10 },
-+	/* ... from sched_numa_pair_template event class */
-+	{ "sched_stick_numa", 0x100 },
-+	{ "sched_swap_numa", 0x100 },
-+	/* afs */
-+	{ "afs_make_fs_call", 0x10 },
-+	{ "afs_make_fs_calli", 0x10 },
-+	{ "afs_make_fs_call1", 0x10 },
-+	{ "afs_make_fs_call2", 0x10 },
-+	{ "afs_protocol_error", 0x1 },
-+	{ "afs_flock_ev", 0x10 },
-+	/* cachefiles */
-+	{ "cachefiles_lookup", 0x1 | 0x200 },
-+	{ "cachefiles_unlink", 0x1 },
-+	{ "cachefiles_rename", 0x1 },
-+	{ "cachefiles_prep_read", 0x1 },
-+	{ "cachefiles_mark_active", 0x1 },
-+	{ "cachefiles_mark_failed", 0x1 },
-+	{ "cachefiles_mark_inactive", 0x1 },
-+	{ "cachefiles_vfs_error", 0x1 },
-+	{ "cachefiles_io_error", 0x1 },
-+	{ "cachefiles_ondemand_open", 0x1 },
-+	{ "cachefiles_ondemand_copen", 0x1 },
-+	{ "cachefiles_ondemand_close", 0x1 },
-+	{ "cachefiles_ondemand_read", 0x1 },
-+	{ "cachefiles_ondemand_cread", 0x1 },
-+	{ "cachefiles_ondemand_fd_write", 0x1 },
-+	{ "cachefiles_ondemand_fd_release", 0x1 },
-+	/* ext4, from ext4__mballoc event class */
-+	{ "ext4_mballoc_discard", 0x10 },
-+	{ "ext4_mballoc_free", 0x10 },
-+	/* fib */
-+	{ "fib_table_lookup", 0x100 },
-+	/* filelock */
-+	/* ... from filelock_lock event class */
-+	{ "posix_lock_inode", 0x10 },
-+	{ "fcntl_setlk", 0x10 },
-+	{ "locks_remove_posix", 0x10 },
-+	{ "flock_lock_inode", 0x10 },
-+	/* ... from filelock_lease event class */
-+	{ "break_lease_noblock", 0x10 },
-+	{ "break_lease_block", 0x10 },
-+	{ "break_lease_unblock", 0x10 },
-+	{ "generic_delete_lease", 0x10 },
-+	{ "time_out_leases", 0x10 },
-+	/* host1x */
-+	{ "host1x_cdma_push_gather", 0x10000 },
-+	/* huge_memory */
-+	{ "mm_khugepaged_scan_pmd", 0x10 },
-+	{ "mm_collapse_huge_page_isolate", 0x1 },
-+	{ "mm_khugepaged_scan_file", 0x10 },
-+	{ "mm_khugepaged_collapse_file", 0x10 },
-+	/* kmem */
-+	{ "mm_page_alloc", 0x1 },
-+	{ "mm_page_pcpu_drain", 0x1 },
-+	/* .. from mm_page event class */
-+	{ "mm_page_alloc_zone_locked", 0x1 },
-+	/* netfs */
-+	{ "netfs_failure", 0x10 },
-+	/* power */
-+	{ "device_pm_callback_start", 0x10 },
-+	/* qdisc */
-+	{ "qdisc_dequeue", 0x1000 },
-+	/* rxrpc */
-+	{ "rxrpc_recvdata", 0x1 },
-+	{ "rxrpc_resend", 0x10 },
-+	/* sunrpc */
-+	{ "xs_stream_read_data", 0x1 },
-+	/* ... from xprt_cong_event event class */
-+	{ "xprt_reserve_cong", 0x10 },
-+	{ "xprt_release_cong", 0x10 },
-+	{ "xprt_get_cong", 0x10 },
-+	{ "xprt_put_cong", 0x10 },
-+	/* tcp */
-+	{ "tcp_send_reset", 0x11 },
-+	/* tegra_apb_dma */
-+	{ "tegra_dma_tx_status", 0x100 },
-+	/* timer_migration */
-+	{ "tmigr_update_events", 0x1 },
-+	/* writeback, from writeback_folio_template event class */
-+	{ "writeback_dirty_folio", 0x10 },
-+	{ "folio_wait_writeback", 0x10 },
-+	/* rdma */
-+	{ "mr_integ_alloc", 0x2000 },
-+	/* bpf_testmod */
-+	{ "bpf_testmod_test_read", 0x0 },
-+};
-+
- bool btf_ctx_access(int off, int size, enum bpf_access_type type,
- 		    const struct bpf_prog *prog,
- 		    struct bpf_insn_access_aux *info)
-@@ -6425,6 +6520,7 @@ bool btf_ctx_access(int off, int size, e
- 	const char *tname = prog->aux->attach_func_name;
- 	struct bpf_verifier_log *log = info->log;
- 	const struct btf_param *args;
-+	bool ptr_err_raw_tp = false;
- 	const char *tag_value;
- 	u32 nr_args, arg;
- 	int i, ret;
-@@ -6573,6 +6669,39 @@ bool btf_ctx_access(int off, int size, e
- 	if (btf_param_match_suffix(btf, &args[arg], "__nullable"))
- 		info->reg_type |= PTR_MAYBE_NULL;
- 
-+	if (prog->expected_attach_type == BPF_TRACE_RAW_TP) {
-+		struct btf *btf = prog->aux->attach_btf;
-+		const struct btf_type *t;
-+		const char *tname;
-+
-+		/* BTF lookups cannot fail, return false on error */
-+		t = btf_type_by_id(btf, prog->aux->attach_btf_id);
-+		if (!t)
-+			return false;
-+		tname = btf_name_by_offset(btf, t->name_off);
-+		if (!tname)
-+			return false;
-+		/* Checked by bpf_check_attach_target */
-+		tname += sizeof("btf_trace_") - 1;
-+		for (i = 0; i < ARRAY_SIZE(raw_tp_null_args); i++) {
-+			/* Is this a func with potential NULL args? */
-+			if (strcmp(tname, raw_tp_null_args[i].func))
-+				continue;
-+			if (raw_tp_null_args[i].mask & (0x1 << (arg * 4)))
-+				info->reg_type |= PTR_MAYBE_NULL;
-+			/* Is the current arg IS_ERR? */
-+			if (raw_tp_null_args[i].mask & (0x2 << (arg * 4)))
-+				ptr_err_raw_tp = true;
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -156,6 +156,7 @@ static void sock_map_del_link(struct soc
+ 				verdict_stop = true;
+ 			list_del(&link->list);
+ 			sk_psock_free_link(link);
 +			break;
-+		}
-+		/* If we don't know NULL-ness specification and the tracepoint
-+		 * is coming from a loadable module, be conservative and mark
-+		 * argument as PTR_MAYBE_NULL.
-+		 */
-+		if (i == ARRAY_SIZE(raw_tp_null_args) && btf_is_module(btf))
-+			info->reg_type |= PTR_MAYBE_NULL;
-+	}
-+
- 	if (tgt_prog) {
- 		enum bpf_prog_type tgt_type;
- 
-@@ -6617,6 +6746,15 @@ bool btf_ctx_access(int off, int size, e
- 	bpf_log(log, "func '%s' arg%d has btf_id %d type %s '%s'\n",
- 		tname, arg, info->btf_id, btf_type_str(t),
- 		__btf_name_by_offset(btf, t->name_off));
-+
-+	/* Perform all checks on the validity of type for this argument, but if
-+	 * we know it can be IS_ERR at runtime, scrub pointer type and mark as
-+	 * scalar.
-+	 */
-+	if (ptr_err_raw_tp) {
-+		bpf_log(log, "marking pointer arg%d as scalar as it may encode error", arg);
-+		info->reg_type = SCALAR_VALUE;
-+	}
- 	return true;
- }
- EXPORT_SYMBOL_GPL(btf_ctx_access);
+ 		}
+ 	}
+ 	spin_unlock_bh(&psock->link_lock);
 
 
 
