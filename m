@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F139F5315
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C259F5437
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:38:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C571D16E2D7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9AB1890EF8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C88A1DE2AC;
-	Tue, 17 Dec 2024 17:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B5A1FAC53;
+	Tue, 17 Dec 2024 17:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1xMf43A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iv1g35xs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085758615A;
-	Tue, 17 Dec 2024 17:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA9E1FAC4B;
+	Tue, 17 Dec 2024 17:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456155; cv=none; b=Q6AF0v0vkSKpzafsVc9YYsq9Pap5iPYAbOHaFQXRBdPWxuw6ze1xqQ48iP6YctNSFwRMV2BB0Bs/gHW7sAqkXsNmBaBsQLYHjf55t02UcwbY0Ig3k4oG6d2bOZdSjjs5kg36eqzOwhCKPzfS1CLKJm40S5GDRxIZyOCFeaDqPkE=
+	t=1734456660; cv=none; b=Sx6nthRBuYQZ9dJ5FwVnffp3GfFkmmUAkGEHsML+4uRwCWulPVxnbxLx2KfkBrVHf8cEuVnCJ2XDlwJVwk9kICpApZYNoiiZ9Qj/kvZap9/TDRcHhQ6Gk/IWivZ0HLSLJw0uKWwIeLaVJg+52VYLc/DCv/JZ5duFDcT4GeFzrEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456155; c=relaxed/simple;
-	bh=SoIzgga6POdT4kqmPjWGRxLDbra8w+MNVw+EDF0XGzQ=;
+	s=arc-20240116; t=1734456660; c=relaxed/simple;
+	bh=ttOUpmat1H0xQOPFdjMAZ2f0jhVdCbuuKTc9tDiTkns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6WaeAb0mypptx/elOxBLHk8VJ1N2Q67SJrGyiaRkDLgo0pSRBUuS4tSV9G7w+z25GoDO5H1Autz+6UCpaQQD1ERn5CxtPGlN20nKU8oLLkntKNRLFU1eWflwZn9lAW4TokoLQ0sLHg+tOTyR4ZlxRMeokyCfzGbLCDYxacpepE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1xMf43A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8227FC4CED3;
-	Tue, 17 Dec 2024 17:22:34 +0000 (UTC)
+	 MIME-Version; b=Eo3veqZKfnRYUoaJIFaC8bDwThPx7UDuUqS1PLQLu5o7AkypenFTf4wIMh6cir+gsYNoyAywZFUtBvB7Fir6IBYbuRc+mHXao0Kt91PpZop8j1szcUwY+geXWC+8PUDPhl3rQmlD+3SE3ZKFBXVP8OBo5Rtg0HQ2DMd6Vsrqe7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iv1g35xs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89834C4CED7;
+	Tue, 17 Dec 2024 17:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456154;
-	bh=SoIzgga6POdT4kqmPjWGRxLDbra8w+MNVw+EDF0XGzQ=;
+	s=korg; t=1734456659;
+	bh=ttOUpmat1H0xQOPFdjMAZ2f0jhVdCbuuKTc9tDiTkns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1xMf43ATcM6mkDTIhw2TMXJr6Cu7xvsilJHRtjOvPvgfqJ1BIImD9moFa3OXtFkg
-	 UUxgTVMcGRovR38gP90lCryFc0sUlOlVtz2giitUMxFus6KoWXhZhFzljUMHud6xTA
-	 m4mn5NE1WBrnYZIzMvvTBwJkj71NuoN5ZUCi+11o=
+	b=iv1g35xsLDJLLt/yeBDYwzHe0C7UOAxCH21Pn71H0AAELmEeyGTgctNd6mmiFQNQu
+	 dLGreUa2jlAn+zyYjlrkaE+9YcumK/jz8sApZ87JHCmKDTllGuoZqjYdWr9gf5QK+i
+	 XgKPJ6xt8/4LgzOqWFKBazdXrZGExrPA2itCWXbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/109] netfilter: IDLETIMER: Fix for possible ABBA deadlock
+Subject: [PATCH 6.12 127/172] net: renesas: rswitch: handle stop vs interrupt race
 Date: Tue, 17 Dec 2024 18:08:03 +0100
-Message-ID: <20241217170536.682639359@linuxfoundation.org>
+Message-ID: <20241217170551.608925216@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit f36b01994d68ffc253c8296e2228dfe6e6431c03 ]
+[ Upstream commit 3dd002f20098b9569f8fd7f8703f364571e2e975 ]
 
-Deletion of the last rule referencing a given idletimer may happen at
-the same time as a read of its file in sysfs:
+Currently the stop routine of rswitch driver does not immediately
+prevent hardware from continuing to update descriptors and requesting
+interrupts.
 
-| ======================================================
-| WARNING: possible circular locking dependency detected
-| 6.12.0-rc7-01692-g5e9a28f41134-dirty #594 Not tainted
-| ------------------------------------------------------
-| iptables/3303 is trying to acquire lock:
-| ffff8881057e04b8 (kn->active#48){++++}-{0:0}, at: __kernfs_remove+0x20
-|
-| but task is already holding lock:
-| ffffffffa0249068 (list_mutex){+.+.}-{3:3}, at: idletimer_tg_destroy_v]
-|
-| which lock already depends on the new lock.
+It can happen that when rswitch_stop() executes the masking of
+interrupts from the queues of the port being closed, napi poll for
+that port is already scheduled or running on a different CPU. When
+execution of this napi poll completes, it will unmask the interrupts.
+And unmasked interrupt can fire after rswitch_stop() returns from
+napi_disable() call. Then, the handler won't mask it, because
+napi_schedule_prep() will return false, and interrupt storm will
+happen.
 
-A simple reproducer is:
+This can't be fixed by making rswitch_stop() call napi_disable() before
+masking interrupts. In this case, the interrupt storm will happen if
+interrupt fires between napi_disable() and masking.
 
-| #!/bin/bash
-|
-| while true; do
-|         iptables -A INPUT -i foo -j IDLETIMER --timeout 10 --label "testme"
-|         iptables -D INPUT -i foo -j IDLETIMER --timeout 10 --label "testme"
-| done &
-| while true; do
-|         cat /sys/class/xt_idletimer/timers/testme >/dev/null
-| done
+Fix this by checking for priv->opened_ports bit when unmasking
+interrupts after napi poll. For that to be consistent, move
+priv->opened_ports changes into spinlock-protected areas, and reorder
+other operations in rswitch_open() and rswitch_stop() accordingly.
 
-Avoid this by freeing list_mutex right after deleting the element from
-the list, then continuing with the teardown.
-
-Fixes: 0902b469bd25 ("netfilter: xtables: idletimer target implementation")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Link: https://patch.msgid.link/20241209113204.175015-1-nikita.yoush@cogentembedded.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_IDLETIMER.c | 52 +++++++++++++++++++-----------------
- 1 file changed, 28 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.c | 33 ++++++++++++++------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/net/netfilter/xt_IDLETIMER.c b/net/netfilter/xt_IDLETIMER.c
-index f8b25b6f5da7..9869ef3c2ab3 100644
---- a/net/netfilter/xt_IDLETIMER.c
-+++ b/net/netfilter/xt_IDLETIMER.c
-@@ -409,21 +409,23 @@ static void idletimer_tg_destroy(const struct xt_tgdtor_param *par)
+diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
+index 3b57abada200..9dffb7cf1254 100644
+--- a/drivers/net/ethernet/renesas/rswitch.c
++++ b/drivers/net/ethernet/renesas/rswitch.c
+@@ -908,8 +908,10 @@ static int rswitch_poll(struct napi_struct *napi, int budget)
  
- 	mutex_lock(&list_mutex);
- 
--	if (--info->timer->refcnt == 0) {
--		pr_debug("deleting timer %s\n", info->label);
--
--		list_del(&info->timer->entry);
--		timer_shutdown_sync(&info->timer->timer);
--		cancel_work_sync(&info->timer->work);
--		sysfs_remove_file(idletimer_tg_kobj, &info->timer->attr.attr);
--		kfree(info->timer->attr.attr.name);
--		kfree(info->timer);
--	} else {
-+	if (--info->timer->refcnt > 0) {
- 		pr_debug("decreased refcnt of timer %s to %u\n",
- 			 info->label, info->timer->refcnt);
-+		mutex_unlock(&list_mutex);
-+		return;
+ 	if (napi_complete_done(napi, budget - quota)) {
+ 		spin_lock_irqsave(&priv->lock, flags);
+-		rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
+-		rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
++		if (test_bit(rdev->port, priv->opened_ports)) {
++			rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
++			rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
++		}
+ 		spin_unlock_irqrestore(&priv->lock, flags);
  	}
  
-+	pr_debug("deleting timer %s\n", info->label);
+@@ -1538,20 +1540,20 @@ static int rswitch_open(struct net_device *ndev)
+ 	struct rswitch_device *rdev = netdev_priv(ndev);
+ 	unsigned long flags;
+ 
+-	phy_start(ndev->phydev);
++	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
++		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
+ 
+ 	napi_enable(&rdev->napi);
+-	netif_start_queue(ndev);
+ 
+ 	spin_lock_irqsave(&rdev->priv->lock, flags);
++	bitmap_set(rdev->priv->opened_ports, rdev->port, 1);
+ 	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, true);
+ 	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, true);
+ 	spin_unlock_irqrestore(&rdev->priv->lock, flags);
+ 
+-	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
+-		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
++	phy_start(ndev->phydev);
+ 
+-	bitmap_set(rdev->priv->opened_ports, rdev->port, 1);
++	netif_start_queue(ndev);
+ 
+ 	return 0;
+ };
+@@ -1563,7 +1565,16 @@ static int rswitch_stop(struct net_device *ndev)
+ 	unsigned long flags;
+ 
+ 	netif_tx_stop_all_queues(ndev);
 +
-+	list_del(&info->timer->entry);
- 	mutex_unlock(&list_mutex);
++	phy_stop(ndev->phydev);
 +
-+	timer_shutdown_sync(&info->timer->timer);
-+	cancel_work_sync(&info->timer->work);
-+	sysfs_remove_file(idletimer_tg_kobj, &info->timer->attr.attr);
-+	kfree(info->timer->attr.attr.name);
-+	kfree(info->timer);
- }
++	spin_lock_irqsave(&rdev->priv->lock, flags);
++	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
++	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
+ 	bitmap_clear(rdev->priv->opened_ports, rdev->port, 1);
++	spin_unlock_irqrestore(&rdev->priv->lock, flags);
++
++	napi_disable(&rdev->napi);
  
- static void idletimer_tg_destroy_v1(const struct xt_tgdtor_param *par)
-@@ -434,25 +436,27 @@ static void idletimer_tg_destroy_v1(const struct xt_tgdtor_param *par)
- 
- 	mutex_lock(&list_mutex);
- 
--	if (--info->timer->refcnt == 0) {
--		pr_debug("deleting timer %s\n", info->label);
--
--		list_del(&info->timer->entry);
--		if (info->timer->timer_type & XT_IDLETIMER_ALARM) {
--			alarm_cancel(&info->timer->alarm);
--		} else {
--			timer_shutdown_sync(&info->timer->timer);
--		}
--		cancel_work_sync(&info->timer->work);
--		sysfs_remove_file(idletimer_tg_kobj, &info->timer->attr.attr);
--		kfree(info->timer->attr.attr.name);
--		kfree(info->timer);
--	} else {
-+	if (--info->timer->refcnt > 0) {
- 		pr_debug("decreased refcnt of timer %s to %u\n",
- 			 info->label, info->timer->refcnt);
-+		mutex_unlock(&list_mutex);
-+		return;
+ 	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
+ 		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDID);
+@@ -1576,14 +1587,6 @@ static int rswitch_stop(struct net_device *ndev)
+ 		kfree(ts_info);
  	}
  
-+	pr_debug("deleting timer %s\n", info->label);
-+
-+	list_del(&info->timer->entry);
- 	mutex_unlock(&list_mutex);
-+
-+	if (info->timer->timer_type & XT_IDLETIMER_ALARM) {
-+		alarm_cancel(&info->timer->alarm);
-+	} else {
-+		timer_shutdown_sync(&info->timer->timer);
-+	}
-+	cancel_work_sync(&info->timer->work);
-+	sysfs_remove_file(idletimer_tg_kobj, &info->timer->attr.attr);
-+	kfree(info->timer->attr.attr.name);
-+	kfree(info->timer);
- }
- 
+-	spin_lock_irqsave(&rdev->priv->lock, flags);
+-	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
+-	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
+-	spin_unlock_irqrestore(&rdev->priv->lock, flags);
+-
+-	phy_stop(ndev->phydev);
+-	napi_disable(&rdev->napi);
+-
+ 	return 0;
+ };
  
 -- 
 2.39.5
