@@ -1,207 +1,126 @@
-Return-Path: <stable+bounces-104552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4E59F51CE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0729F51FA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2BA01884EE5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C6B168B21
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0491F758F;
-	Tue, 17 Dec 2024 17:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE97B1F707D;
+	Tue, 17 Dec 2024 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHmGl2n9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tug+78dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68E01F6671;
-	Tue, 17 Dec 2024 17:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCE21F6671;
+	Tue, 17 Dec 2024 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455400; cv=none; b=A8EjObxxsFmACSvZylmprr3GkOxxS2SLqv+HvJAiBdrTSv0yuX6XbeIU06I3vjPCJ/uttPIkzSknO7nCmpjM8k0tvYOy0hIkbSufb+c/gD8RQq/JGIiEWNHDBO0dgPv2qTvGxUUZHly8WS7mgbkKyMxTMWpnzFaEZjZ8RHdfQGM=
+	t=1734455510; cv=none; b=U+io1hL/TnZV9NsWF0B7BEWuZAquTALAER7Wier2Oh9TSMB+4+fZxE6WMqT/yYklFqaGsJuUp/7mbnYmECiN/8/KbSYCrJNVHbsjW8SEd3OgY9NM2hSPrKqj+eN1mg5IhhBdnh2++tqvaQMYsRZFlUPrHEiDQHKxje8vIus4bFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455400; c=relaxed/simple;
-	bh=acxSIiL8ZpYu93GiwGA08to7fI7SRuWd4yGeCHGn/B8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C2hx4SET0dVLot2SUR+WvEhGbPmzHj/cKfkW5tylCI8aBnvKbMk41SNcz53se+Vv0hpHitRk20IFn8Nx4UQBavYIIuOzwByh2xzOaoN90wmmq73nmie9j5+Ib2Kcpxaz+vE/OhyoxqZjs/+IxHy+vYsj2TlVIiCz0Srcguta6fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHmGl2n9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC29DC4CED3;
-	Tue, 17 Dec 2024 17:09:58 +0000 (UTC)
+	s=arc-20240116; t=1734455510; c=relaxed/simple;
+	bh=VvO7ZKi1mkRzVvaLIBgbPrFBTkmUnFxD5d4w5ISFeTQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MKQOg9V524lCdoQ9lh2PDXyAVrHSBRLl557By148hy8bTpZxRIdUQTT2cZ5WoX/rPzrYELwSjYV5MvwMkklJ4urpKdr4/T1c+94TlBfZQuTc099TPMwjYl8AcRZhLtxR1xNYHTq7Sm9cz9M2NARScpWbKCfgzlP9SSVQGoZARPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tug+78dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270FBC4CED3;
+	Tue, 17 Dec 2024 17:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455399;
-	bh=acxSIiL8ZpYu93GiwGA08to7fI7SRuWd4yGeCHGn/B8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iHmGl2n9uHy7ngCMcoVmWPA2wTU5Ha2cu1k2gk/skctpyrU5JcSdmCMyQ6DLenUHo
-	 NwRDsgBPQtvhP58DAnrwalecGVviSAt4bmDVbXU/PHjaUrJ0CGw0VvEeWlZXgZ5DeW
-	 JYJKWIGgUTdcXMzYPjIjmy7exNIe2XAnJF8ut9hk=
+	s=korg; t=1734455510;
+	bh=VvO7ZKi1mkRzVvaLIBgbPrFBTkmUnFxD5d4w5ISFeTQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tug+78dvRrg51Cs1+p18VEQlvsIL/8tAtO21hxIX3yAUzkhxuym4G4cX9fCZnfNuW
+	 HVL6aetLXNWQxbh9I4/B5lXQRGym0Ja1TF+LTiu1/eNdKeYVx3k6dgekq4sSupQIgx
+	 H63seDMBqTOw7mC9YhUmbdgblk4G1h/GEFmdfPCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org
-Subject: [PATCH 5.4 00/24] 5.4.288-rc1 review
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 5.10 07/43] xfs: dont drop errno values when we fail to ficlone the entire range
 Date: Tue, 17 Dec 2024 18:06:58 +0100
-Message-ID: <20241217170519.006786596@linuxfoundation.org>
+Message-ID: <20241217170520.757002181@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.288-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.4.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.4.288-rc1
-X-KernelTest-Deadline: 2024-12-19T17:05+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 5.4.288 release.
-There are 24 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Thu, 19 Dec 2024 17:05:03 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.288-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-and the diffstat can be found below.
+From: Darrick J. Wong <djwong@kernel.org>
 
-thanks,
+commit 7ce31f20a0771d71779c3b0ec9cdf474cc3c8e9a upstream.
 
-greg k-h
+Way back when we first implemented FICLONE for XFS, life was simple --
+either the the entire remapping completed, or something happened and we
+had to return an errno explaining what happened.  Neither of those
+ioctls support returning partial results, so it's all or nothing.
 
--------------
-Pseudo-Shortlog of commits:
+Then things got complicated when copy_file_range came along, because it
+actually can return the number of bytes copied, so commit 3f68c1f562f1e4
+tried to make it so that we could return a partial result if the
+REMAP_FILE_CAN_SHORTEN flag is set.  This is also how FIDEDUPERANGE can
+indicate that the kernel performed a partial deduplication.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.4.288-rc1
+Unfortunately, the logic is wrong if an error stops the remapping and
+CAN_SHORTEN is not set.  Because those callers cannot return partial
+results, it is an error for ->remap_file_range to return a positive
+quantity that is less than the @len passed in.  Implementations really
+should be returning a negative errno in this case, because that's what
+btrfs (which introduced FICLONE{,RANGE}) did.
 
-Dan Carpenter <dan.carpenter@linaro.org>
-    ALSA: usb-audio: Fix a DMA to stack memory bug
+Therefore, ->remap_range implementations cannot silently drop an errno
+that they might have when the number of bytes remapped is less than the
+number of bytes requested and CAN_SHORTEN is not set.
 
-Juergen Gross <jgross@suse.com>
-    xen/netfront: fix crash when removing device
+Found by running generic/562 on a 64k fsblock filesystem and wondering
+why it reported corrupt files.
 
-Nikolay Kuratov <kniv@yandex-team.ru>
-    tracing/kprobes: Skip symbol counting logic for module symbols in create_local_trace_kprobe()
+Cc: <stable@vger.kernel.org> # v4.20
+Fixes: 3fc9f5e409319e ("xfs: remove xfs_reflink_remap_range")
+Really-Fixes: 3f68c1f562f1e4 ("xfs: support returning partial reflink results")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/xfs/xfs_file.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Raghavendra Rao Ananta <rananta@google.com>
-    KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
-
-Nathan Chancellor <nathan@kernel.org>
-    blk-iocost: Avoid using clamp() on inuse in __propagate_weights()
-
-Tejun Heo <tj@kernel.org>
-    blk-iocost: fix weight updates of inner active iocgs
-
-Tejun Heo <tj@kernel.org>
-    blk-iocost: clamp inuse and skip noops in __propagate_weights()
-
-Daniil Tatianin <d-tatianin@yandex-team.ru>
-    ACPICA: events/evxfregn: don't release the ContextMutex that was never acquired
-
-Martin Ottens <martin.ottens@fau.de>
-    net/sched: netem: account for backlog updates from child qdisc
-
-Stefan Wahren <wahrenst@gmx.net>
-    qca_spi: Make driver probing reliable
-
-Stefan Wahren <wahrenst@gmx.net>
-    qca_spi: Fix clock speed for multiple QCA7000
-
-Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-    ACPI: resource: Fix memory resource type union access
-
-Eric Dumazet <edumazet@google.com>
-    net: lapb: increase LAPB_HEADER_LEN
-
-Eric Dumazet <edumazet@google.com>
-    tipc: fix NULL deref in cleanup_bearer()
-
-Remi Pommarel <repk@triplefau.lt>
-    batman-adv: Do not let TT changes list grows indefinitely
-
-Remi Pommarel <repk@triplefau.lt>
-    batman-adv: Remove uninitialized data in full table TT response
-
-Remi Pommarel <repk@triplefau.lt>
-    batman-adv: Do not send uninitialized TT changes
-
-Michal Luczaj <mhal@rbox.co>
-    bpf, sockmap: Fix update element with same
-
-Darrick J. Wong <djwong@kernel.org>
-    xfs: don't drop errno values when we fail to ficlone the entire range
-
-Lianqin Hu <hulianqin@vivo.com>
-    usb: gadget: u_serial: Fix the issue that gs_start_io crashed due to accessing null pointer
-
-Vitalii Mordan <mordan@ispras.ru>
-    usb: ehci-hcd: fix call balance of clocks handling routines
-
-Stefan Wahren <wahrenst@gmx.net>
-    usb: dwc2: hcd: Fix GetPortStatus & SetPortFeature
-
-Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-    ata: sata_highbank: fix OF node reference leak in highbank_initialize_phys()
-
-Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
-    usb: host: max3421-hcd: Correctly abort a USB request.
-
-
--------------
-
-Diffstat:
-
- Makefile                                |  4 +--
- block/blk-iocost.c                      | 24 ++++++++++++--
- drivers/acpi/acpica/evxfregn.c          |  2 --
- drivers/acpi/resource.c                 |  6 ++--
- drivers/ata/sata_highbank.c             |  1 +
- drivers/net/ethernet/qualcomm/qca_spi.c | 26 +++++++--------
- drivers/net/ethernet/qualcomm/qca_spi.h |  1 -
- drivers/net/xen-netfront.c              |  5 ++-
- drivers/usb/dwc2/hcd.c                  | 16 ++++-----
- drivers/usb/gadget/function/u_serial.c  |  9 +++--
- drivers/usb/host/ehci-sh.c              |  9 +++--
- drivers/usb/host/max3421-hcd.c          | 16 ++++++---
- fs/xfs/xfs_file.c                       |  8 +++++
- include/net/lapb.h                      |  2 +-
- kernel/trace/trace_kprobe.c             |  2 +-
- net/batman-adv/translation-table.c      | 58 +++++++++++++++++++++++----------
- net/core/sock_map.c                     |  1 +
- net/sched/sch_netem.c                   | 22 +++++++++----
- net/tipc/udp_media.c                    |  7 +++-
- sound/usb/quirks.c                      | 31 ++++++++++++------
- virt/kvm/arm/pmu.c                      |  1 -
- 21 files changed, 167 insertions(+), 84 deletions(-)
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -1133,6 +1133,14 @@ out_unlock:
+ 	xfs_iunlock2_io_mmap(src, dest);
+ 	if (ret)
+ 		trace_xfs_reflink_remap_range_error(dest, ret, _RET_IP_);
++	/*
++	 * If the caller did not set CAN_SHORTEN, then it is not prepared to
++	 * handle partial results -- either the whole remap succeeds, or we
++	 * must say why it did not.  In this case, any error should be returned
++	 * to the caller.
++	 */
++	if (ret && remapped < len && !(remap_flags & REMAP_FILE_CAN_SHORTEN))
++		return ret;
+ 	return remapped > 0 ? remapped : ret;
+ }
+ 
 
 
 
