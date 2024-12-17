@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-104746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836E29F52E1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C425C9F51CD
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80E4D18927AD
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45BAB16399D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152E61F8699;
-	Tue, 17 Dec 2024 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703751F7577;
+	Tue, 17 Dec 2024 17:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPvxBAJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTiAJkKZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F211F8689;
-	Tue, 17 Dec 2024 17:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCB51F4735;
+	Tue, 17 Dec 2024 17:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455975; cv=none; b=TJuV9BjojY/DlPJC6actNralLETFyNNZi0fW68arftjfwydl5b28ZDXsYH5OR4hOKPm3jEEYjJ8CvcwmQvo+Dg5AqsVzfzlcufViLJT4kV/mNJMhe2Abq/+d9gx8APPaHiDatwMv8ZxwqlU7lzgliWJ7lBIpFZN5BJxL+L58/g8=
+	t=1734455441; cv=none; b=KkuY3InX8ViUP6VAdhXuqQjsa9X8r5EEJD5R1n7iJvcdO/iC5DgaUC/CFS+IpiVos9zxDBgIFzvQXDG/BWRuIFNirK0RE5TJNIzGzDQVJwzjpW5F1VSym5hVmjTpqo3rp00oetBykprSTFTlxVj7eE2bba9cbtwagjQWs0wssZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455975; c=relaxed/simple;
-	bh=+M58HiKhEo+wdLId+jYMYD6YcODFRTpYmZW1kFeN4pY=;
+	s=arc-20240116; t=1734455441; c=relaxed/simple;
+	bh=BtEaeUW0oQN3IQ7hC/1rSeQHymYtGAuByRswySH5isE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1k1iowLV6Pm4O8Z5qWsZkbOcDd6uHmSfxfIEPSAIZuyc4QkjOrLnbEKk/MCCDEKCBAzoRPop6Gyzf6dUp8vUEe7K5NPCKLrWGq0YyFDLNSs/kfZbNgQNKBVKapFy6hfD1DHzu1Pub8Ttaf1014Kar6uVxfFbfjRPzhRtK6g6rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPvxBAJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E98CC4CED3;
-	Tue, 17 Dec 2024 17:19:35 +0000 (UTC)
+	 MIME-Version; b=sVvXvzgeYhUcrcalkxmXTt/Tlt1B2kRCaYGOJPDkJA7ObhoJP6kKSJ9rY4ZP7ptAFiaU+fBFvoNUVZrJxi/zscqh/1siadI76cYtbCwAtHOGwziTs+uxcgpN0EnoUlJKjSmc34y9EY4N0l42Lt+jvJ0DGmINUwl4MrAkxqLIKyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTiAJkKZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83C0C4CED3;
+	Tue, 17 Dec 2024 17:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455975;
-	bh=+M58HiKhEo+wdLId+jYMYD6YcODFRTpYmZW1kFeN4pY=;
+	s=korg; t=1734455441;
+	bh=BtEaeUW0oQN3IQ7hC/1rSeQHymYtGAuByRswySH5isE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPvxBAJbUc1snXZNW68bB9B9bQyKze1510DQV5Ao4qU29S2dQNpMuLnJzCm+e1g+o
-	 PBzVsNQRgWCaYR6bDZCtGv7VHm3EzU83TtUKstMyQLcxnch0fwJ9YAdd1SUM6vlkGi
-	 cb2cTqWatWY+O21eLb4msJluEdpMM6Z4+33HyB60=
+	b=TTiAJkKZbtbGJVBCH+0RxmyO7qN475qippszxwWBUyYxW4HJCDH2cMbcru6SuZGa0
+	 qswAt0VGymr8AT5X7fY8wqxvP5fyvR2DHuKQyeYSsmO1JnKJnJJvRgaBjzWGZozser
+	 /S+Ql/9Hx+VMYXNxQ3hIEN9wW0imzecD+i3HP4yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 019/109] usb: typec: anx7411: fix OF node reference leaks in anx7411_typec_switch_probe()
+	syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 12/43] acpi: nfit: vmalloc-out-of-bounds Read in acpi_nfit_ctl
 Date: Tue, 17 Dec 2024 18:07:03 +0100
-Message-ID: <20241217170534.159552129@linuxfoundation.org>
+Message-ID: <20241217170520.953349738@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
 
-commit ef42b906df5c57d0719b69419df9dfd25f25c161 upstream.
+[ Upstream commit 265e98f72bac6c41a4492d3e30a8e5fd22fe0779 ]
 
-The refcounts of the OF nodes obtained by of_get_child_by_name() calls
-in anx7411_typec_switch_probe() are not decremented. Replace them with
-device_get_named_child_node() calls and store the return values to the
-newly created fwnode_handle fields in anx7411_data, and call
-fwnode_handle_put() on them in the error path and in the unregister
-functions.
+Fix an issue detected by syzbot with KASAN:
 
-Fixes: e45d7337dc0e ("usb: typec: anx7411: Use of_get_child_by_name() instead of of_find_node_by_name()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20241126014909.3687917-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
+core.c:416 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
+drivers/acpi/nfit/core.c:459
+
+The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
+array is accessed without verifying that call_pkg points to a buffer
+that is appropriately sized as a struct nd_cmd_pkg. This can lead
+to out-of-bounds access and undefined behavior if the buffer does not
+have sufficient space.
+
+To address this, a check was added in acpi_nfit_ctl() to ensure that
+buf is not NULL and that buf_len is less than sizeof(*call_pkg)
+before accessing it. This ensures safe access to the members of
+call_pkg, including the nd_reserved2 array.
+
+Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
+Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241118162609.29063-1-surajsonawane0215@gmail.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/anx7411.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/acpi/nfit/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/anx7411.c
-+++ b/drivers/usb/typec/anx7411.c
-@@ -289,6 +289,8 @@ struct anx7411_data {
- 	struct power_supply *psy;
- 	struct power_supply_desc psy_desc;
- 	struct device *dev;
-+	struct fwnode_handle *switch_node;
-+	struct fwnode_handle *mux_node;
- };
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 2306abb09f7f..16857612103e 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -453,8 +453,13 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 	if (cmd_rc)
+ 		*cmd_rc = -EINVAL;
  
- static u8 snk_identity[] = {
-@@ -1098,6 +1100,7 @@ static void anx7411_unregister_mux(struc
- 	if (ctx->typec.typec_mux) {
- 		typec_mux_unregister(ctx->typec.typec_mux);
- 		ctx->typec.typec_mux = NULL;
-+		fwnode_handle_put(ctx->mux_node);
- 	}
- }
- 
-@@ -1106,6 +1109,7 @@ static void anx7411_unregister_switch(st
- 	if (ctx->typec.typec_switch) {
- 		typec_switch_unregister(ctx->typec.typec_switch);
- 		ctx->typec.typec_switch = NULL;
-+		fwnode_handle_put(ctx->switch_node);
- 	}
- }
- 
-@@ -1113,28 +1117,29 @@ static int anx7411_typec_switch_probe(st
- 				      struct device *dev)
- {
- 	int ret;
--	struct device_node *node;
- 
--	node = of_get_child_by_name(dev->of_node, "orientation_switch");
--	if (!node)
-+	ctx->switch_node = device_get_named_child_node(dev, "orientation_switch");
-+	if (!ctx->switch_node)
- 		return 0;
- 
--	ret = anx7411_register_switch(ctx, dev, &node->fwnode);
-+	ret = anx7411_register_switch(ctx, dev, ctx->switch_node);
- 	if (ret) {
- 		dev_err(dev, "failed register switch");
-+		fwnode_handle_put(ctx->switch_node);
- 		return ret;
- 	}
- 
--	node = of_get_child_by_name(dev->of_node, "mode_switch");
--	if (!node) {
-+	ctx->mux_node = device_get_named_child_node(dev, "mode_switch");
-+	if (!ctx->mux_node) {
- 		dev_err(dev, "no typec mux exist");
- 		ret = -ENODEV;
- 		goto unregister_switch;
- 	}
- 
--	ret = anx7411_register_mux(ctx, dev, &node->fwnode);
-+	ret = anx7411_register_mux(ctx, dev, ctx->mux_node);
- 	if (ret) {
- 		dev_err(dev, "failed register mode switch");
-+		fwnode_handle_put(ctx->mux_node);
- 		ret = -ENODEV;
- 		goto unregister_switch;
- 	}
+-	if (cmd == ND_CMD_CALL)
++	if (cmd == ND_CMD_CALL) {
++		if (!buf || buf_len < sizeof(*call_pkg))
++			return -EINVAL;
++
+ 		call_pkg = buf;
++	}
++
+ 	func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
+ 	if (func < 0)
+ 		return func;
+-- 
+2.39.5
+
 
 
 
