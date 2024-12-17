@@ -1,203 +1,166 @@
-Return-Path: <stable+bounces-104499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FE59F4C1F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:27:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36149F4C54
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 265D21790A6
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:19:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC6C163339
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B0D1F4721;
-	Tue, 17 Dec 2024 13:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996021F3D47;
+	Tue, 17 Dec 2024 13:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qm84QJbG"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fgaT1Tki"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D411F1917
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 13:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAC71F2360
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 13:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734441233; cv=none; b=myQtNvV9RkxBtJO1VPHhv79IRqXXy6wzxJj35wlF5oZ0eIr8ryVR7DGXfIlS+4iFEFR9YL2ETZNZsRBh+ZsmlmA9xpEbMhbARFp+KOxuHWUa14Gc3CZyRGhpJWUrXKkS5DCLAJSbfaWmaAnjTs0z9qIKNMrLffFnwZ2XEzEf7l0=
+	t=1734441943; cv=none; b=jw49ZXmG4X4pkxUg+wQOgT2jYBf/grs4jg1JcB44cQb/jxPIM3dSn+zp7q7kx8EQOAqc7COIinFDEnqF7dWjIQ5F4Pq3Vv0usBOz3xPB9CcKhS7KjpSgQj0nq3CqYJmzyer/BZXpmiQ8XaIjW81xgHP/rh+VONqrhaMDNpCfwnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734441233; c=relaxed/simple;
-	bh=3l5fUmecd2rvQLPwn9lMIiuCS2xYl7anCxCVXOzjJQw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Wri6IEPwkR/WGuqX9hEObuefk69DNK89ULiLW5j03Bnnz94kG+CfHAGACyGF2KRuQQT15+GV10L8rI3DBrABMdojZ/vo8R3NIayKwz55gkrExiWjSerRNPkSmfYtNKKbYQVzCfAYuUt/q2oB6czQpFCXm3UK1FXG803BQe3LMX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qm84QJbG; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-5d3d6d924c1so2286775a12.2
-        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 05:13:51 -0800 (PST)
+	s=arc-20240116; t=1734441943; c=relaxed/simple;
+	bh=H51U4YGf/B8HFpwpmbxRVfwUHVnxk/+GoC49FtzGj+E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fH6uwc4ctF82vcrwRnNTeVDmwELc0ZapAChiVeXhA3PWI4ham+xZML5/5s5bhHsQbvlStbVGmmHzmeNWE9D2toDMVi6iuKJE33IUWvnoxBgJ+8MHWpQQwJ7dJHGUmh2WtBJWPEc2eHukWfIv0ZozLqQL0e1k+t1sorjTRm28RDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=google.com; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=fgaT1Tki; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4679b5c66d0so203591cf.1
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 05:25:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734441230; x=1735046030; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QX1nkQV8Jjpe9LnApgX2X54HXTwzsLxsNfd9yFCpkac=;
-        b=Qm84QJbGob7fIe+zIGXdZcj1HbDSPoRHBh3TXx5wrPZj7P2j/aXLpOi0rMEQ38RI49
-         mYlZYWfbp4zQGIkVLaFbwlPKGFttAzq71Omt9IPyn8A7nRLsahdLJWqTilYZDqjEQAx7
-         HkQZ0qBK3qYrT7WcV4/iu7HCOB5JCicZ4u9oCcprvDPpS0bSdieV4TCpN1zyPx7993sc
-         51zDLkfRox/5fqlPcTZNk/6xl9EMkVS+jYMgZSvsys0RfMpxZ4c7lwD3Cwwpr4KOvV/u
-         rSOhO9XLkJ3DoxHtYrV2yUU9ueOlAkfSycKB83pTOzX9eXmzdp3tBbde7BfamMr05ybS
-         VtIQ==
+        d=chromium.org; s=google; t=1734441941; x=1735046741; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=H51U4YGf/B8HFpwpmbxRVfwUHVnxk/+GoC49FtzGj+E=;
+        b=fgaT1Tki7LfUtSCyzIDSO8O+up4yVeY2oBPpR/QJ8nebZZmEC8HGvVuoehcUOeQ/vM
+         UN1JLm5v05byaMo4IlcmJcbJusj4U/HJkOaa9ECXxUgk4UAyjEGmSCeekoJRn5+r2Cu4
+         N+N0m2bEGTVCGvmU/dE1IcRSFbxf8+wlM1YDM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734441230; x=1735046030;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QX1nkQV8Jjpe9LnApgX2X54HXTwzsLxsNfd9yFCpkac=;
-        b=Pl8ICJrRImfk5UQCHOcNENV4FkbOJimgJKIq5+QdxEuwn+1Y5/T+1gj8o+UAh7t+Mr
-         YzExE3EcLDQ5tqHUOlwuF7kcWnZcmDVG0fVeeaSS0XuUVB3HCfj6YN1Brp8NpI0gfHUe
-         iSpGCTTNEvOrZ0ONhYtDiSfEeIKPlVJ3m6lfcTydkO5f/KU6hTtY1dLem5RawgfENoXw
-         APDLmW+jL6rJ0NoeWHYnP5641xrdh5flxs7goLXuJs+7mCZjTNhVZ6cdjbzW+ioe1/+t
-         eUUR4XZEicfXQoCYF/9cN8OYRgIdXADLMSt4mujxUgkHZgz56XEXy7+NROEizUPytIpj
-         Qb4w==
-X-Gm-Message-State: AOJu0YzK3Dndf8z/6uja5cJbn47HSlTBtpu7qX9Yd5BH1+wzOz5wHH/E
-	+QOO9A5ugX8RSVVrclkVKX90i7wbCQMtTiViTAw0o+/LkvQDJKjFPlwW5z3rMsJ1BRmtRpanTDQ
-	9i1jZdx98m8ofmYLysxCRz+O3pqgE2PST9oCHhBf7dekY0AuK29uIwVJfy8Lc/96D+uUH+7tbqq
-	Hv9/8kGaYi13zJ8ZXgf9SlV5xq+HueTNIZ9+h4QA==
-X-Google-Smtp-Source: AGHT+IFcoPckbiaibhRmAG+hYB5ocH/tteuPQhuXu7Ut108uKcEShfQFDHGgcU3EjRsJDWJVLyTNox9g8XMc
-X-Received: from eda15.prod.google.com ([2002:a05:6402:a00f:b0:5c9:4adc:9cf8])
- (user=bsevens job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:354f:b0:5d0:d9e6:fea1
- with SMTP id 4fb4d7f45d1cf-5d63c33b6b1mr17001445a12.19.1734441229810; Tue, 17
- Dec 2024 05:13:49 -0800 (PST)
-Date: Tue, 17 Dec 2024 13:13:39 +0000
-In-Reply-To: <2024121040-distant-throng-b534@gregkh>
+        d=1e100.net; s=20230601; t=1734441941; x=1735046741;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H51U4YGf/B8HFpwpmbxRVfwUHVnxk/+GoC49FtzGj+E=;
+        b=JRFkL/ctUm0j/w4+qNYDdWCFrf3WKI4jv/Dx/332YrkzEIIR37Bl9XZFSYQXmm8xnT
+         kSeqcgKqWubaJVz6czFOL+KlrruHOxZru80k5AKPb+XgfwI7WH1c/IeU4YirKCS6w9A0
+         cXJRXM3YAOS+ecMWR7n9Raeefl2XuKigamaptu64B6u9tiHyJu50Ao7N5/dfMlqdWjI0
+         +OjDXxuHmxjMh5jcRV3rVy/1aPJYuWOE+FsqCoplHMxLav7kmZExeHuTakXRFpbr2kTF
+         mFq0ozTRByKDTuk/PiIH4uiETUlXFZeMr6xvl20jbNdrGJ9v7uy7mB0IAACEx/l9A0ry
+         KWyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXMDpTKVr1/8U/xqX0rF08flbsGwtCRgf4Ni4OR8TSqpf96eFaF0mTpBF0Hx7DlC+j+szDYNMM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxXkxxwLPm42lE9dteOFxOVmnv8qzRTWyHNmQb+Sd0T5NrW1oT
+	8MC+8//oqHCi4qgBtRCFowfVkp/0vNKGojwUh3OvmSO8sw8dW0WUKWxIMrpPi4YHbRBn8U4+FT+
+	AZN969rhT447yn7tmNXHAXOl9DRnN2JMU8tBp
+X-Gm-Gg: ASbGncsD1RAcui+R3OgZLOm5pbA8i7LCejlJRPA+2n4PPUecLM6vD4EAjC2amVHGFoW
+	lLDyxgJPjrcTHKZqqvV8ZE96YShdwws3UhBwaaPGJmiriIXrwzw/kZdLzxh05W4ckC3PW
+X-Google-Smtp-Source: AGHT+IGJW+l9zXfMUaeo40XK+7bPUSnqauK+Az+lGUzluD+yQ/VlTXkwH2X6x8KUeaEMIrTECPFcD4EfU3yVGGK8l9A=
+X-Received: by 2002:a05:622a:20b:b0:466:8a29:9de7 with SMTP id
+ d75a77b69052e-468f96fac57mr3950571cf.12.1734441940466; Tue, 17 Dec 2024
+ 05:25:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2024121040-distant-throng-b534@gregkh>
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241217131343.763822-1-bsevens@google.com>
-Subject: [PATCH 5.15.y v2] ALSA: usb-audio: Fix a DMA to stack memory bug
-From: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
-To: stable@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@kernel.org, 
-	Takashi Iwai <tiwai@suse.de>, "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
+MIME-Version: 1.0
+References: <20241214005248.198803-1-dianders@chromium.org>
+ <20241213165201.v2.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+ <CAODwPW_c+Ycu_zhiDOKN-fH2FEWf2pxr+FcugpqEjLX-nVjQrg@mail.gmail.com> <CAD=FV=UHBA7zXZEw3K6TRpZEN-ApOkmymhRCOkz7h+yrAkR_Dw@mail.gmail.com>
+In-Reply-To: <CAD=FV=UHBA7zXZEw3K6TRpZEN-ApOkmymhRCOkz7h+yrAkR_Dw@mail.gmail.com>
+From: Julius Werner <jwerner@chromium.org>
+Date: Tue, 17 Dec 2024 14:25:27 +0100
+Message-ID: <CAODwPW8s4GhWGuZMUbWVNLYw_EVJe=EeMDacy1hxDLmnthwoFg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] arm64: errata: Assume that unknown CPUs _are_
+ vulnerable to Spectre BHB
+To: Doug Anderson <dianders@chromium.org>
+Cc: Julius Werner <jwerner@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, linux-arm-msm@vger.kernel.org, 
+	Jeffrey Hugo <quic_jhugo@quicinc.com>, linux-arm-kernel@lists.infradead.org, 
+	Roxana Bradescu <roxabee@google.com>, Trilok Soni <quic_tsoni@quicinc.com>, 
+	bjorn.andersson@oss.qualcomm.com, stable@vger.kernel.org, 
+	James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+> > - Refactor max_bhb_k in spectre_bhb_loop_affected() to be a global
+> > instead, which starts out as zero, is updated by
+> > spectre_bhb_loop_affected(), and is directly read by
+> > spectre_bhb_patch_loop_iter() (could probably remove the `scope`
+> > argument from spectre_bhb_loop_affected() then).
+>
+> Refactoring "max_bhb_k" would be a general cleanup and not related to
+> anything else here, right?
+>
+> ...but the function is_spectre_bhb_affected() is called from
+> "cpu_errata.c" and has a scope. Can we guarantee that it's always
+> "SCOPE_LOCAL_CPU"? I tried reading through the code and it's
+> _probably_ SCOPE_LOCAL_CPU most of the time, but it doesn't seem worth
+> it to add an assumption here for a small cleanup.
+>
+> I'm not going to do this, though I will move "max_bhb_k" to be a
+> global for the suggestion below.
 
-The usb_get_descriptor() function does DMA so we're not allowed
-to use a stack buffer for that.  Doing DMA to the stack is not portable
-all architectures.  Move the "new_device_descriptor" from being stored
-on the stack and allocate it with kmalloc() instead.
+If you make max_bhb_k a global, then whether you change all
+`spectre_bhb_loop_affected(SCOPE_SYSTEM)` calls to read the global
+directly or whether you keep it such that
+`spectre_bhb_loop_affected()` simply returns that global for
+SCOPE_SYSTEM makes no difference. I just think reading the global
+directly would look a bit cleaner. Calling a function that's called
+"...affected()" when you're really just trying to find out the K-value
+feels a bit odd.
 
-Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses =
-for Extigy and Mbox devices")
-Cc: stable@kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley=
-.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-(cherry picked from commit f7d306b47a24367302bd4fe846854e07752ffcd9)
-[Beno=C3=AEt: there is no mbox3 suppport and no __free macro in 5.15]
-Signed-off-by: Beno=C3=AEt Sevens <bsevens@google.com>
----
-Changes:
-- v2: Remove usage of __free macro which is not yet available in 5.15
+For is_spectre_bhb_affected(), I was assuming the change below where
+you combine all the `return true` paths, so the scope question
+wouldn't matter there.
 
- sound/usb/quirks.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+> > - Change the `return false` into `return true` at the end of
+> > is_spectre_bhb_affected (in fact, you can probably take out some of
+> > the other calls that result in returning true as well then)
+>
+> I'm not sure you can take out the other calls. Specifically, both
+> spectre_bhb_loop_affected() and is_spectre_bhb_fw_affected() _need_ to
+> be called for each CPU so that they update static globals, right?
+> Maybe we could get rid of the call to supports_clearbhb(), but that
+> _would_ change things in ways that are not obvious. Specifically I
+> could believe that someone could have backported "clear BHB" to their
+> core but their core is otherwise listed as "loop affected". That would
+> affect "max_bhb_k". Maybe (?) it doesn't matter in this case, but I'd
+> rather not mess with it unless someone really wants me to and is sure
+> it's safe.
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 9d98a0e6a9f4..9f182c448d04 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -591,7 +591,7 @@ int snd_usb_create_quirk(struct snd_usb_audio *chip,
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_in=
-terface *intf)
- {
- 	struct usb_host_config *config =3D dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor =3D NULL;
- 	int err;
-=20
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) =3D=3D EXTIGY_FIRMWAR=
-E_SIZE_OLD ||
-@@ -602,15 +602,20 @@ static int snd_usb_extigy_boot_quirk(struct usb_devic=
-e *dev, struct usb_interfac
- 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
-+
-+		new_device_descriptor =3D kmalloc(sizeof(*new_device_descriptor), GFP_KE=
-RNEL);
-+		if (!new_device_descriptor)
-+			return -ENOMEM;
- 		err =3D usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&new_device_descriptor, sizeof(new_device_descriptor));
-+				new_device_descriptor, sizeof(*new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfi=
-gurations)
-+		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConf=
-igurations)
- 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--				new_device_descriptor.bNumConfigurations);
-+				new_device_descriptor->bNumConfigurations);
- 		else
--			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor=
-));
-+			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor)=
-);
-+		kfree(new_device_descriptor);
- 		err =3D usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -942,7 +947,7 @@ static void mbox2_setup_48_24_magic(struct usb_device *=
-dev)
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config =3D dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor =3D NULL;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -977,15 +982,21 @@ static int snd_usb_mbox2_boot_quirk(struct usb_device=
- *dev)
-=20
- 	dev_dbg(&dev->dev, "device initialised!\n");
-=20
-+	new_device_descriptor =3D kmalloc(sizeof(*new_device_descriptor), GFP_KER=
-NEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
-+
- 	err =3D usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfig=
-urations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfi=
-gurations)
- 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
- 	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor)=
-);
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor))=
-;
-+
-+	kfree(new_device_descriptor);
-=20
- 	err =3D usb_reset_configuration(dev);
- 	if (err < 0)
---=20
-2.47.1.613.gc27f4b7a9f-goog
+Yes, but spectre_bhb_enable_mitigation() already calls all those
+functions on its own again anyway, so I'm pretty sure the "must be
+called once for each CPU" part of spectre_bhb_loop_affected() is
+covered by that. (Besides, it would be really awful if they had made a
+function whose name starts with is_... have critical side-effects that
+break things when it doesn't get called.)
 
+> > - In spectre_bhb_enable_mitigations(), at the end of the long if-else
+> > chain, put a last else block that prints your WARN_ONCE(), sets the
+> > max_bhb_k global to 32, and then does the same stuff that the `if
+> > (spectre_bhb_loop_affected())` block would have installed (maybe
+> > factoring that out into a helper function called from both cases).
+>
+> ...or just reorder it so that the spectre_bhb_loop_affected() code is
+> last and it can be the "else". Then I can WARN_ONCE() if
+> spectre_bhb_loop_affected(). ...or I could just do the WARN_ONCE()
+> when I get to the end of is_spectre_bhb_affected() and set "max_bhb_k"
+> to 32 there. I'd actually rather do that so that "max_bhb_k" is
+> consistently set after is_spectre_bhb_affected() is called on all
+> cores regardless of whether or not some cores are unknown.
+
+Yeah, you can reorder the loops too. I don't feel like moving this
+into is_spectre_bhb_affected() would be a good idea. Functions with a
+predicate name like that really shouldn't have such side effects.
+Besides, I think is_spectre_bhb_affected() is probably called more
+often per CPU, both once from spectre_bhb_enable_mitigation() and by
+whatever calls the `matches` pointer in the cpu_errata struct.
+spectre_bhb_enable_mitigation() seems to be the function that's called
+once for each CPU on boot to install the correct mitigation, so that
+feels like the best spot to put the fallback logic to me.
 
