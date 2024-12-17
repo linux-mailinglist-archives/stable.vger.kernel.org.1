@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-104959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA479F5412
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:36:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565EE9F531F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C9A417088A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:32:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9228D188CC11
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0651F9412;
-	Tue, 17 Dec 2024 17:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F220E1F75B5;
+	Tue, 17 Dec 2024 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dguw94iC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NU4tQyHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501931F8F17;
-	Tue, 17 Dec 2024 17:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE95514A4E7;
+	Tue, 17 Dec 2024 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456643; cv=none; b=cGgi0WTzSslhJPPVo7W0kJbTDxvXoBwl2FD8cbevv2DnZE+sxx27bkX4ughpQ9WjC+Ndvw7KoVuQ6wWgYpb3k1X2URJhK3/EG2DGzgDxxDwqeE5hFczONNYkDf+6lFY5h90hu+2EOnG0S3CZ1IOIivCU8SBVXxb9Fc/4hycFqK4=
+	t=1734456139; cv=none; b=a5DNX2+fgJn9LKUd9B0ccpZnV3aorMxYbapWEb+3fI9L52FB0eLnP9IgtJejNv2jYXfwTKBP5iYw11hDdHCyTwX4eEbG7LUpFgyXupEMs/119Yj8MZzCc8+wyzOKZTYp3W3oa0SyLP9pYNTxZ07F4TrBrAPMq3AcfWJCJhOVfGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456643; c=relaxed/simple;
-	bh=tTve6jmv6a7QTCCQ45wocrrPtqChJHiXIX15NyGbte0=;
+	s=arc-20240116; t=1734456139; c=relaxed/simple;
+	bh=AWQbQwR7RRuZimNouD2LDUBgl5juxLwQWN1uWiRHDzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWcA62e+7WpI9BFkJ2QWY3CT1D+5p2nM4WNhzD3jxE37fUe7SiAQJO/yQou1opMJB8Pd89g0k37a7K+6OuPpI6v4u1R2PgCizvMJ2GJQC6Chzh+7Se4FfkAIlmCF5RISr3HW5/KOIOFVeBvk8zn27yLmmmNdlsbCP2ICTE/gpe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dguw94iC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538DDC4CEEC;
-	Tue, 17 Dec 2024 17:30:42 +0000 (UTC)
+	 MIME-Version; b=T0rRtPYfMGrRtRImwAvZQAPft6IYNjAuuI4CyipQWBwi/b4ulkh14DPsZa8PnCvOs+7/WkfZpxVRzYUhR6wXIrP2BoaorSdrP/cfmSa4qTD3/apclL4jobSG/3/CwewZeDrD3R+PTzkKb61dQZhjIaK0pZsWhPTGJgfeV2ku5Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NU4tQyHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3439EC4CED3;
+	Tue, 17 Dec 2024 17:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456642;
-	bh=tTve6jmv6a7QTCCQ45wocrrPtqChJHiXIX15NyGbte0=;
+	s=korg; t=1734456139;
+	bh=AWQbQwR7RRuZimNouD2LDUBgl5juxLwQWN1uWiRHDzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dguw94iCkuly+aE2ahi87SdbbWRG1Zfk49bDOSmBMIOWlGpyV8wfkRRwJwR7lo5Mn
-	 03QT2h8PjU92AQ3m/tvtCcAti5YyCgQpstAIkNe6fmzbrfs1vtUfecX4AqspWndhT3
-	 HzR/AWdLNxDoc+HFGiu6uTNk4KhwwCZw0rjSE4wg=
+	b=NU4tQyHJ4fdAOD33VlR++Dyf9yX2lU5jSGMlaZASHyhtuPqgIn3gGwnGHBRLrAqHd
+	 BlliKR+MpZKBL7oMon3Jd5HoU0fTRQWgzI6XaSiUVZDo4S7HCLtrJF9KZQtOGkR0iL
+	 ssBoOEZPbIEi6GlCLog2TTVnkP1Xs2ECxBsXVrYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/172] cifs: Fix rmdir failure due to ongoing I/O on deleted file
+Subject: [PATCH 6.6 074/109] net: renesas: rswitch: fix race window between tx start and complete
 Date: Tue, 17 Dec 2024 18:07:58 +0100
-Message-ID: <20241217170551.394460766@linuxfoundation.org>
+Message-ID: <20241217170536.474291355@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,72 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit bb57c81e97e0082abfb0406ed6f67c615c3d206c ]
+[ Upstream commit 0c9547e6ccf40455b0574cf589be3b152a3edf5b ]
 
-The cifs_io_request struct (a wrapper around netfs_io_request) holds open
-the file on the server, even beyond the local Linux file being closed.
-This can cause problems with Windows-based filesystems as the file's name
-still exists after deletion until the file is closed, preventing the parent
-directory from being removed and causing spurious test failures in xfstests
-due to inability to remove a directory.  The symptom looks something like
-this in the test output:
+If hardware is already transmitting, it can start handling the
+descriptor being written to immediately after it observes updated DT
+field, before the queue is kicked by a write to GWTRC.
 
-   rm: cannot remove '/mnt/scratch/test/p0/d3': Directory not empty
-   rm: cannot remove '/mnt/scratch/test/p1/dc/dae': Directory not empty
+If the start_xmit() execution is preempted at unfortunate moment, this
+transmission can complete, and interrupt handled, before gq->cur gets
+updated. With the current implementation of completion, this will cause
+the last entry not completed.
 
-Fix this by waiting in unlink and rename for any outstanding I/O requests
-to be completed on the target file before removing that file.
+Fix that by changing completion loop to check DT values directly, instead
+of depending on gq->cur.
 
-Note that this doesn't prevent Linux from trying to start new requests
-after deletion if it still has the file open locally - something that's
-perfectly acceptable on a UNIX system.
-
-Note also that whilst I've marked this as fixing the commit to make cifs
-use netfslib, I don't know that it won't occur before that.
-
-Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://patch.msgid.link/20241208095004.69468-3-nikita.yoush@cogentembedded.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/inode.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/rswitch.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index b35fe1075503..fafc07e38663 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1925,6 +1925,7 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
- 		goto unlink_out;
+diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
+index 17be2479654a..13577fe2c7ec 100644
+--- a/drivers/net/ethernet/renesas/rswitch.c
++++ b/drivers/net/ethernet/renesas/rswitch.c
+@@ -793,13 +793,10 @@ static void rswitch_tx_free(struct net_device *ndev)
+ 	struct rswitch_ext_desc *desc;
+ 	struct sk_buff *skb;
+ 
+-	for (; rswitch_get_num_cur_queues(gq) > 0;
+-	     gq->dirty = rswitch_next_queue_index(gq, false, 1)) {
+-		desc = &gq->tx_ring[gq->dirty];
+-		if ((desc->desc.die_dt & DT_MASK) != DT_FEMPTY)
+-			break;
+-
++	desc = &gq->tx_ring[gq->dirty];
++	while ((desc->desc.die_dt & DT_MASK) == DT_FEMPTY) {
+ 		dma_rmb();
++
+ 		skb = gq->skbs[gq->dirty];
+ 		if (skb) {
+ 			dma_unmap_single(ndev->dev.parent,
+@@ -810,7 +807,10 @@ static void rswitch_tx_free(struct net_device *ndev)
+ 			rdev->ndev->stats.tx_packets++;
+ 			rdev->ndev->stats.tx_bytes += skb->len;
+ 		}
++
+ 		desc->desc.die_dt = DT_EEMPTY;
++		gq->dirty = rswitch_next_queue_index(gq, false, 1);
++		desc = &gq->tx_ring[gq->dirty];
+ 	}
+ }
+ 
+@@ -1613,6 +1613,8 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
+ 	gq->skbs[gq->cur] = skb;
+ 	gq->unmap_addrs[gq->cur] = dma_addr_orig;
+ 
++	dma_wmb();
++
+ 	/* DT_FSTART should be set at last. So, this is reverse order. */
+ 	for (i = nr_desc; i-- > 0; ) {
+ 		desc = &gq->tx_ring[rswitch_next_queue_index(gq, true, i)];
+@@ -1623,8 +1625,6 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
+ 			goto err_unmap;
  	}
  
-+	netfs_wait_for_outstanding_io(inode);
- 	cifs_close_deferred_file_under_dentry(tcon, full_path);
- #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
- 	if (cap_unix(tcon->ses) && (CIFS_UNIX_POSIX_PATH_OPS_CAP &
-@@ -2442,8 +2443,10 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 	}
+-	wmb();	/* gq->cur must be incremented after die_dt was set */
+-
+ 	gq->cur = rswitch_next_queue_index(gq, true, nr_desc);
+ 	rswitch_modify(rdev->addr, GWTRC(gq->index), 0, BIT(gq->index % 32));
  
- 	cifs_close_deferred_file_under_dentry(tcon, from_name);
--	if (d_inode(target_dentry) != NULL)
-+	if (d_inode(target_dentry) != NULL) {
-+		netfs_wait_for_outstanding_io(d_inode(target_dentry));
- 		cifs_close_deferred_file_under_dentry(tcon, to_name);
-+	}
- 
- 	rc = cifs_do_rename(xid, source_dentry, from_name, target_dentry,
- 			    to_name);
 -- 
 2.39.5
 
