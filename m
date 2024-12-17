@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1689F5247
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7289F5303
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB4801891ED7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D2518952C4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0199D1F75B5;
-	Tue, 17 Dec 2024 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CE41F76BF;
+	Tue, 17 Dec 2024 17:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q8Sy1sF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8dSlrqL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42C01F866C;
-	Tue, 17 Dec 2024 17:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01668615A;
+	Tue, 17 Dec 2024 17:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455653; cv=none; b=SP7EiwVydG4mPVs4oLgcoe1x895o9qi+SeuaFe3hCr/Kr/dXUWqi2MP94K9qmBbfnzD/3GOemIu5ydQdVvYmo4F07zdsGfJt5VBaRkCWqZo9ok3XDnvACEGkObSdGd5LQ+BtQRbvuttkQot85OFhyicpELuCHWUEn7GGfRIMkdg=
+	t=1734456060; cv=none; b=QDCKCInBSko02vqLbQ5T3LARg54cOVPuLpDxVOZaL6DL7n5iFicUzVy89xCiXPN76jzyZrQe6Q8aG5QTj0k/cI/gV7e6/Cl6cXN6ljk8pVzRJmKs1NuVL/x3f8lsF1ptrpCV2bbkg6I9lLqkODZ/aqRvBwqEnnbx/sVvtTEul58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455653; c=relaxed/simple;
-	bh=+yel2INbR3+9kJNB2wWjkylhx6oTlT26YhFF2cV3g68=;
+	s=arc-20240116; t=1734456060; c=relaxed/simple;
+	bh=ubyjvrUgIh/xuH5dUoxvjSpC5jdRbMVXONaTRkEB2Uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1uthAjFIt5RLdd1vaOnoQWmwol7b3YUEzd7CxcADNuem2FOLp5je/srHZ5nsOS8PpnBeAJZTQftatVZWbbnvgCFDuZQ+z53RLVlPyTRSLDh7929MJXo4g1TgUc9oOz/DVQta6KCVo/vQ6oFWWzx2W7jTp40QBbbMRV5tXKLtlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q8Sy1sF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C33C4CED3;
-	Tue, 17 Dec 2024 17:14:11 +0000 (UTC)
+	 MIME-Version; b=Bamg0SE03zbeM9hX/4yq25p//8llqeOthuobHnKcQ7c9JrQVuQ5lispJTMaIx60QsxCjTV3dCbYOOOMUAqf9nleH6pRN+Hwi1YcirwpwxZ5lu+JXxz8fLnNE6xt+HRdaGswQa7xrIZv64Tmbc5qjeO78rA8Mx+LZur8/v3VOlVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8dSlrqL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44ABFC4CED7;
+	Tue, 17 Dec 2024 17:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455652;
-	bh=+yel2INbR3+9kJNB2wWjkylhx6oTlT26YhFF2cV3g68=;
+	s=korg; t=1734456060;
+	bh=ubyjvrUgIh/xuH5dUoxvjSpC5jdRbMVXONaTRkEB2Uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1q8Sy1sF7EWwLtgFLUkaAcX+CIan/sa8VRwnVyoZnn+2T0/DOVrokhTmXlksR+bqJ
-	 ns8vdfjHuRukpIWO1B+whJBUsV0N5YDZnLaj0r9eLCjcuyW89NUiTQ2wYTss+1j7jH
-	 p9QHXv5K80zKYf8bRGi17RFZ8ITYc9U1jnWsFAfI=
+	b=r8dSlrqLH7NZxqxTHaiREydP/W/nSCbiE+gY3MUZbfNaOKh2YP9+sEo0IkOPBSM9H
+	 ZgPW2Vy7zd9syVIorKdg2y7B8NwEZKMvxUnIaLQMs+R76QKI5mpXJlDQ+XbsFwxh7i
+	 TGkObgFOJgCoh3xYniv+e5cinsVpXXjmZeYt/3DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/51] ACPICA: events/evxfregn: dont release the ContextMutex that was never acquired
-Date: Tue, 17 Dec 2024 18:07:31 +0100
-Message-ID: <20241217170521.983384828@linuxfoundation.org>
+Subject: [PATCH 6.6 048/109] selftests: mlxsw: sharedbuffer: Remove duplicate test cases
+Date: Tue, 17 Dec 2024 18:07:32 +0100
+Message-ID: <20241217170535.382138784@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: Danielle Ratson <danieller@nvidia.com>
 
-[ Upstream commit c53d96a4481f42a1635b96d2c1acbb0a126bfd54 ]
+[ Upstream commit 6c46ad4d1bb2e8ec2265296e53765190f6e32f33 ]
 
-This bug was first introduced in c27f3d011b08, where the author of the
-patch probably meant to do DeleteMutex instead of ReleaseMutex. The
-mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
-MutexRelease line was never removed, so do it now.
+On both port_tc_ip_test() and port_tc_arp_test(), the max occupancy is
+checked on $h2 twice, when only the error message is different and does not
+match the check itself.
 
-Link: https://github.com/acpica/acpica/pull/982
-Fixes: c27f3d011b08 ("ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling")
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Link: https://patch.msgid.link/20241122082954.658356-1-d-tatianin@yandex-team.ru
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Remove the two duplicated test cases from the test.
+
+Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/d9eb26f6fc16a06a30b5c2c16ad80caf502bc561.1733414773.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/evxfregn.c | 2 --
- 1 file changed, 2 deletions(-)
+ .../selftests/drivers/net/mlxsw/sharedbuffer.sh        | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
-index b1ff0a8f9c14..7672d70da850 100644
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -201,8 +201,6 @@ acpi_remove_address_space_handler(acpi_handle device,
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+index a7b3d6cf3185..21bebc5726f6 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+@@ -131,11 +131,6 @@ port_tc_ip_test()
  
- 			/* Now we can delete the handler object */
+ 	devlink sb occupancy snapshot $DEVLINK_DEV
  
--			acpi_os_release_mutex(handler_obj->address_space.
--					      context_mutex);
- 			acpi_ut_remove_reference(handler_obj);
- 			goto unlock_and_exit;
- 		}
+-	RET=0
+-	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+-	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+-	log_test "physical port's($h1) ingress TC - IP packet"
+-
+ 	RET=0
+ 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+ 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+@@ -158,11 +153,6 @@ port_tc_arp_test()
+ 
+ 	devlink sb occupancy snapshot $DEVLINK_DEV
+ 
+-	RET=0
+-	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+-	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+-	log_test "physical port's($h1) ingress TC - ARP packet"
+-
+ 	RET=0
+ 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+ 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
 -- 
 2.39.5
 
