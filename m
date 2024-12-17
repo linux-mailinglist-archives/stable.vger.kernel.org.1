@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-104811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343CA9F5338
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 646009F5459
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A077A1884D2B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B27EA171581
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C3F1F76C3;
-	Tue, 17 Dec 2024 17:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F6E1FC0F0;
+	Tue, 17 Dec 2024 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDGnBIpG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekCu73ig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9888140E38;
-	Tue, 17 Dec 2024 17:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385751FBCB8;
+	Tue, 17 Dec 2024 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456174; cv=none; b=uRUnSalw+mn7yY0BNp8qRiyNfBtOrOgUFtNGIqbrLtdJQT3DsHHTkbijwRiq0gWcPX4ihO1jwJmBBnS8SaMd1ZIaXfAF+1vxAnRLP0KYG9J81UM3Sk9aGXCvtosccBGtdMmReKBMv00r8YtBdxjyIMlRXk3VdKyYWdqPqGoTfU4=
+	t=1734456675; cv=none; b=XhEGnfMwQevKzXjBeXLQAagfo5IOYqvajn19tXtlAhZBAGl2zyn5obZ9HlXEoc9HlfYoKOOSeeJLFXDC5HY5Nd30cQlTIw5F0W+44EUzMy+ajd/WVoaOTPbxytbyvXQI8HgWfniFOdpkMwz9PzilU8IiGpl0jZ9ej2wGYmZxrTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456174; c=relaxed/simple;
-	bh=0DUwQB8ZWjG3bLR7b9f66oATNbw3meR176SykuYK6Oo=;
+	s=arc-20240116; t=1734456675; c=relaxed/simple;
+	bh=LjW2CBRogzRiVu5NBUemnJRxeygiwI5jSYZD8iMTh50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NlFQsEMZERiEXNwVXVVrJlBKQOYtD5q6Iby1BlB9HZ33UbL7SzZTDQEJnxkjUhdJd8kLbDVHJvSlZl64BANHEqASR40KmT+erNuvB7TcQ+t+tYig9gQydWGMBb7B+vNVPD4lMNI/rUl/I3sRbUNEGcxgS4DIZxkynhnqIPrKQyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDGnBIpG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC0FC4CED7;
-	Tue, 17 Dec 2024 17:22:54 +0000 (UTC)
+	 MIME-Version; b=gFUeESVXu/3bRdcF1aSOA5gX7fWfU0ea1REyV4Ne4Sh87OSLp6vbdfgNDfkI5woJqXxyv8NU7pHDE3oP4NZnLo4QryVNZa62VK8APvmkMqAFhnahO3Xo2M0XuUYgEzWO7Tr+1tZF5W+j6IXg4wI4yNigNzap91W31nGO4haf+mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekCu73ig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CD7C4CED3;
+	Tue, 17 Dec 2024 17:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456174;
-	bh=0DUwQB8ZWjG3bLR7b9f66oATNbw3meR176SykuYK6Oo=;
+	s=korg; t=1734456675;
+	bh=LjW2CBRogzRiVu5NBUemnJRxeygiwI5jSYZD8iMTh50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDGnBIpGQWEXYdicMH9hiHDb6wP3yZZjCCg9lQPl4BqNOl5NKcAZj61Tjf13eCtJc
-	 9D1a8sdY85fAL4xirdTCyTLgzafH8X+ha1Aq2nSlkIpgtPwwiEGOLbHHnnsGnGXWtT
-	 L85EpTacWfXwbxk4eWsFH+KdERLOS94Y8HD1ey54=
+	b=ekCu73igb/KbtonQ+BjN2wSCOTnj+9Qa8ONF3X3wSn2orEXGJ4okNL+HkUB6l281s
+	 vvmuH/vspZx+1/hAgNg/vMkLohbnYvRdoPX6AMJsuBDD1KhCC8iQMTWPjQTO7kDejN
+	 4se/RwQhmye8tv3/hysL+Byk+p1e154D0uoGoZtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@idosch.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/109] bonding: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
+Subject: [PATCH 6.12 131/172] ASoC: fsl_xcvr: change IFACE_PCM to IFACE_MIXER
 Date: Tue, 17 Dec 2024 18:08:07 +0100
-Message-ID: <20241217170536.847025507@linuxfoundation.org>
+Message-ID: <20241217170551.774586888@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 77b11c8bf3a228d1c63464534c2dcc8d9c8bf7ff ]
+[ Upstream commit 7c17f7780a48b5ed36b6d13a06004fac993e75af ]
 
-Drivers like mlx5 expose NIC's vlan_features such as
-NETIF_F_GSO_UDP_TUNNEL & NETIF_F_GSO_UDP_TUNNEL_CSUM which are
-later not propagated when the underlying devices are bonded and
-a vlan device created on top of the bond.
+As the snd_soc_card_get_kcontrol() is updated to use
+snd_ctl_find_id_mixer() in
+commit 897cc72b0837 ("ASoC: soc-card: Use
+snd_ctl_find_id_mixer() instead of open-coding")
+which make the iface fix to be IFACE_MIXER.
 
-Right now, the more cumbersome workaround for this is to create
-the vlan on top of the mlx5 and then enslave the vlan devices
-to a bond.
-
-To fix this, add NETIF_F_GSO_ENCAP_ALL to BOND_VLAN_FEATURES
-such that bond_compute_features() can probe and propagate the
-vlan_features from the slave devices up to the vlan device.
-
-Given the following bond:
-
-  # ethtool -i enp2s0f{0,1}np{0,1}
-  driver: mlx5_core
-  [...]
-
-  # ethtool -k enp2s0f0np0 | grep udp
-  tx-udp_tnl-segmentation: on
-  tx-udp_tnl-csum-segmentation: on
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: on
-  rx-udp-gro-forwarding: off
-
-  # ethtool -k enp2s0f1np1 | grep udp
-  tx-udp_tnl-segmentation: on
-  tx-udp_tnl-csum-segmentation: on
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: on
-  rx-udp-gro-forwarding: off
-
-  # ethtool -k bond0 | grep udp
-  tx-udp_tnl-segmentation: on
-  tx-udp_tnl-csum-segmentation: on
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: off [fixed]
-  rx-udp-gro-forwarding: off
-
-Before:
-
-  # ethtool -k bond0.100 | grep udp
-  tx-udp_tnl-segmentation: off [requested on]
-  tx-udp_tnl-csum-segmentation: off [requested on]
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: off [fixed]
-  rx-udp-gro-forwarding: off
-
-After:
-
-  # ethtool -k bond0.100 | grep udp
-  tx-udp_tnl-segmentation: on
-  tx-udp_tnl-csum-segmentation: on
-  tx-udp-segmentation: on
-  rx-udp_tunnel-port-offload: off [fixed]
-  rx-udp-gro-forwarding: off
-
-Various users have run into this reporting performance issues when
-configuring Cilium in vxlan tunneling mode and having the combination
-of bond & vlan for the core devices connecting the Kubernetes cluster
-to the outside world.
-
-Fixes: a9b3ace44c7d ("bonding: fix vlan_features computing")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Ido Schimmel <idosch@idosch.org>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20241210141245.327886-3-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 897cc72b0837 ("ASoC: soc-card: Use snd_ctl_find_id_mixer() instead of open-coding")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20241126053254.3657344-2-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/fsl/fsl_xcvr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index bee93a437f99..7eb62fe55947 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1462,6 +1462,7 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index beede7344efd..4341269eb977 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -169,7 +169,7 @@ static int fsl_xcvr_capds_put(struct snd_kcontrol *kcontrol,
+ }
  
- #define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
- 				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
-+				 NETIF_F_GSO_ENCAP_ALL | \
- 				 NETIF_F_HIGHDMA | NETIF_F_LRO)
- 
- #define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+ static struct snd_kcontrol_new fsl_xcvr_earc_capds_kctl = {
+-	.iface = SNDRV_CTL_ELEM_IFACE_PCM,
++	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
+ 	.name = "Capabilities Data Structure",
+ 	.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
+ 	.info = fsl_xcvr_type_capds_bytes_info,
 -- 
 2.39.5
 
