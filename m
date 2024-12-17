@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46299F52EB
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191339F5212
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:14:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A183E161BAD
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8097E16D23E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01931F76CE;
-	Tue, 17 Dec 2024 17:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5D21F76AE;
+	Tue, 17 Dec 2024 17:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgPLpFSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkVpxqHQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95C1F63D5;
-	Tue, 17 Dec 2024 17:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498A51F867A;
+	Tue, 17 Dec 2024 17:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456054; cv=none; b=tuTaEdSIW18sutazfJ5uMndjVTw0UMB33RTQHDN2uD49PmpAYpkVTWEIIVy39ntPnE0QKIFTR/mcXoOCDk0e1UHMa+CTcl0V3NMymbm1pFZXysZJWBBHs2FOkzBKKF6MzFqzQ6UT+n9XhjeLDzvo2tgZP8mgbe58mpJD7bXxLy8=
+	t=1734455558; cv=none; b=j8DkcEKYXsEQEJSx6HeTkoqC3JGJPHQs8S+RBMrXUD3BFQNLWV+93aBj745BRna2zcC+DbVtm8UEXXpMzXDeUKwLZ3SkPfahbFHaook8ugzM0x/Y/PL0/h8P7Tkj9gAGhOWD3MA5IE3jgVpmL+muzgHvvuNtXfZZd1wUSQchSio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456054; c=relaxed/simple;
-	bh=8dUcsO5a+tWCIX7y7fCeDP9Z/31kiXx8UxGrJyQppY0=;
+	s=arc-20240116; t=1734455558; c=relaxed/simple;
+	bh=1wIRhgv/v4j2qVUCUHe/5lnk1sfEqeMJJCRUAyON0Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZxPbTFqmEaPJ22OE/0d/bYojDrY8nm8agHtpSX/BgkyqZ1rUT3GgxZXL9gzvTPdVHB2JAjf1ETQdvV30jcl3QC4Bt3OBu3mYroxWOqPLfHBlXZ59S2zwQrhlCE29jU71nfPc3xM3KbMHct7D3i6cgu3wZAI3P3JQzmXB1Mdouw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgPLpFSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181E8C4CED3;
-	Tue, 17 Dec 2024 17:20:53 +0000 (UTC)
+	 MIME-Version; b=uZXAMq8xVm/lvpJNy9gWwtulyc9ckSX0n2rQntIPgry8OGwaVAAzabrR4J75z0K9HJWi8Kcfof7lEPJ4daqmJNwgjClpXXx5K6pLocLdrtR9P3K/lZ+XmGjIfUv78u3U3hl07N4LnKTCVzNTBn+woCltstB4DuyrFEA6EsqS7TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkVpxqHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7374C4CED3;
+	Tue, 17 Dec 2024 17:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456054;
-	bh=8dUcsO5a+tWCIX7y7fCeDP9Z/31kiXx8UxGrJyQppY0=;
+	s=korg; t=1734455558;
+	bh=1wIRhgv/v4j2qVUCUHe/5lnk1sfEqeMJJCRUAyON0Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgPLpFSM2oobl49ejtrjKBMsKcW+lGBwTQeNfp5NkrsAryUaaNhGfKYuB1YvMUG++
-	 KBjLuRZOmoYY8++c2RkgcqCboRZy25a4qv7y9bhXqAMi7PaYg9oeitmyEqV/a5HokY
-	 FFZnMA+hhjS1H0k11k6rM5TaUOf2AENd38HVEPRw=
+	b=TkVpxqHQx5xUMXuHFceBiX9fU6qkEYcwOlQlnZBlxWyclDLls2zpuGQn+4pXV7Q/p
+	 0ehmKbqicJw1tlcUF6+b9/RlqzKcagvq9+JE9LMoF/IY79gm4HJTe3hAXjfoeGkog2
+	 TpMvWsr6gAKc3HZvtqfbNPyqV98Yh4eFV73+Gp9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoyu Li <lihaoyu499@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/109] wifi: cfg80211: sme: init n_channels before channels[] access
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
+	Jan Beulich <jbeulich@suse.com>
+Subject: [PATCH 5.10 39/43] x86/xen: dont do PV iret hypercall through hypercall page
 Date: Tue, 17 Dec 2024 18:07:30 +0100
-Message-ID: <20241217170535.299140448@linuxfoundation.org>
+Message-ID: <20241217170522.282595470@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoyu Li <lihaoyu499@gmail.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit f1d3334d604cc32db63f6e2b3283011e02294e54 ]
+commit a2796dff62d6c6bfc5fbebdf2bee0d5ac0438906 upstream.
 
-With the __counted_by annocation in cfg80211_scan_request struct,
-the "n_channels" struct member must be set before accessing the
-"channels" array. Failing to do so will trigger a runtime warning
-when enabling CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE.
+Instead of jumping to the Xen hypercall page for doing the iret
+hypercall, directly code the required sequence in xen-asm.S.
 
-Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
-Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
-Link: https://patch.msgid.link/20241203152049.348806-1-lihaoyu499@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is done in preparation of no longer using hypercall page at all,
+as it has shown to cause problems with speculation mitigations.
+
+This is part of XSA-466 / CVE-2024-53241.
+
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/sme.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/xen/xen-asm.S |   27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 591cda99d72f..70881782c25c 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -83,6 +83,7 @@ static int cfg80211_conn_scan(struct wireless_dev *wdev)
- 	if (!request)
- 		return -ENOMEM;
+--- a/arch/x86/xen/xen-asm.S
++++ b/arch/x86/xen/xen-asm.S
+@@ -198,7 +198,6 @@ SYM_CODE_START(xen_early_idt_handler_arr
+ SYM_CODE_END(xen_early_idt_handler_array)
+ 	__FINIT
  
-+	request->n_channels = n_channels;
- 	if (wdev->conn->params.channel) {
- 		enum nl80211_band band = wdev->conn->params.channel->band;
- 		struct ieee80211_supported_band *sband =
--- 
-2.39.5
-
+-hypercall_iret = hypercall_page + __HYPERVISOR_iret * 32
+ /*
+  * Xen64 iret frame:
+  *
+@@ -208,16 +207,27 @@ hypercall_iret = hypercall_page + __HYPE
+  *	cs
+  *	rip		<-- standard iret frame
+  *
+- *	flags
++ *	flags		<-- xen_iret must push from here on
+  *
+- *	rcx		}
+- *	r11		}<-- pushed by hypercall page
+- * rsp->rax		}
++ *	rcx
++ *	r11
++ * rsp->rax
+  */
++.macro xen_hypercall_iret
++	pushq $0	/* Flags */
++	push %rcx
++	push %r11
++	push %rax
++	mov  $__HYPERVISOR_iret, %eax
++	syscall		/* Do the IRET. */
++#ifdef CONFIG_MITIGATION_SLS
++	int3
++#endif
++.endm
++
+ SYM_CODE_START(xen_iret)
+ 	UNWIND_HINT_EMPTY
+-	pushq $0
+-	jmp hypercall_iret
++	xen_hypercall_iret
+ SYM_CODE_END(xen_iret)
+ 
+ /*
+@@ -318,8 +328,7 @@ SYM_CODE_START(xen_entry_SYSENTER_compat
+ 	UNWIND_HINT_ENTRY
+ 	lea 16(%rsp), %rsp	/* strip %rcx, %r11 */
+ 	mov $-ENOSYS, %rax
+-	pushq $0
+-	jmp hypercall_iret
++	xen_hypercall_iret
+ SYM_CODE_END(xen_entry_SYSENTER_compat)
+ SYM_CODE_END(xen_entry_SYSCALL_compat)
+ 
 
 
 
