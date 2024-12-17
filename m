@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-104942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89A29F53E8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:34:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FAE9F52A5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:21:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D900516B818
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B3C4170FC0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED24E1F76B5;
-	Tue, 17 Dec 2024 17:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D891F8EF5;
+	Tue, 17 Dec 2024 17:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRSCtvCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2rBTHKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A860B1F709A;
-	Tue, 17 Dec 2024 17:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CDD1F8EED;
+	Tue, 17 Dec 2024 17:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456585; cv=none; b=eUDBaOnmgdQzxudRJV6E1jhI5pH5QRmZAOH88QPcis1slBFJIg1XDbt4QBYa/kciaex20agDz6uy2goRynaGKXy+BzGUo6+RjVTxY1/YpRozrRik2iYFQyvi9VZxvyhfnC4nOS3hSgR75gfM5VvrtNtyJG1nvhNcND959a4Y8CA=
+	t=1734455868; cv=none; b=VbhsvVcke6Ke17yEtykfFC0vS52CJw2CTpszdkw/KV6wieno1QcWayPtpBlO+LlYQgDekC44WcQHwi4E+tMgGIfvDdRFmw/Vo4iK+5D8/CdK+xYjMSgrf18Z4vKcH6vpgf44p0jdzE5Zrrxdva/e0pZtQnb9anKDslQ/mWv8qlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456585; c=relaxed/simple;
-	bh=gxX1NCJ9X0myvvRUV0+OsI9ivLx8o2+c+7oA39SNe30=;
+	s=arc-20240116; t=1734455868; c=relaxed/simple;
+	bh=cNOMwHjDNZGM/1nhHppeWGlfBj2iRaePYWA4kN1cgcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnYSWMsleBS4GyDSXgXrcvVpqKwWL0miPGtChRZjzd71wD3SBayoSkBS4dqucYF6u2i6N7bbrR3FN2CEVwUWo0gajVJ7dzNvCjAZ0CY7xhP4uNy8U+JjJIUVVQgAkyinBGkE4aT3uVCgQTlioFvQ+Mrg9vej26Otr3IWpdXuDdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRSCtvCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7DFC4CED3;
-	Tue, 17 Dec 2024 17:29:44 +0000 (UTC)
+	 MIME-Version; b=kvEMpDL8juelkLPCsYYNVW43bNf8rhFLHjkaKEmWurbi2avJszfyefZkIiX0ZZVkMhGnP2kl3KWn2DCFMt1oeI7xVEyFt//yErvisRXH5cw4aveDVwOIwaiZ0wQWH+a6LMaAsvuBfsRNdEZuxJGb4wdF/v56IJ7UqbsXeRe80cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2rBTHKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79389C4CED7;
+	Tue, 17 Dec 2024 17:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456585;
-	bh=gxX1NCJ9X0myvvRUV0+OsI9ivLx8o2+c+7oA39SNe30=;
+	s=korg; t=1734455867;
+	bh=cNOMwHjDNZGM/1nhHppeWGlfBj2iRaePYWA4kN1cgcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MRSCtvChNEt2QIX7wD78CbxciVesK5J7NAag8pFyYKaMyxUsHIp6BIaZfyfu1ybra
-	 aYuoR4mOi/MxXMPKh1p1bxhvs3ydfokfN7ry00FjI5SvhF7/PMyLT6rmwh8kQfJmGL
-	 BpHj2JweXo8hDmHYpGqcuDXD7lRHpRmcrCBzdePU=
+	b=k2rBTHKN/MitCkqdxLON5BC6jELQsnzauwESWQl03G/f2zUrfgyjQSTG3M35SEWDU
+	 dr9cndhTtYuOzm5EGQQCgHV/LG6arZ4fdb7Ad2ySU2CPv1V34D24qpjQ/Wh6OL9yZK
+	 xUirAtsrpiUG4wI+ThoUA8Geuij7djbIPO5jSsxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@idosch.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/172] net: mscc: ocelot: improve handling of TX timestamp for unknown skb
+Subject: [PATCH 6.1 60/76] bonding: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
 Date: Tue, 17 Dec 2024 18:07:40 +0100
-Message-ID: <20241217170550.637730478@linuxfoundation.org>
+Message-ID: <20241217170528.759990543@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit b6fba4b3f0becb794e274430f3a0839d8ba31262 ]
+[ Upstream commit 77b11c8bf3a228d1c63464534c2dcc8d9c8bf7ff ]
 
-This condition, theoretically impossible to trigger, is not really
-handled well. By "continuing", we are skipping the write to SYS_PTP_NXT
-which advances the timestamp FIFO to the next entry. So we are reading
-the same FIFO entry all over again, printing stack traces and eventually
-killing the kernel.
+Drivers like mlx5 expose NIC's vlan_features such as
+NETIF_F_GSO_UDP_TUNNEL & NETIF_F_GSO_UDP_TUNNEL_CSUM which are
+later not propagated when the underlying devices are bonded and
+a vlan device created on top of the bond.
 
-No real problem has been observed here. This is part of a larger rework
-of the timestamp IRQ procedure, with this logical change split out into
-a patch of its own. We will need to "goto next_ts" for other conditions
-as well.
+Right now, the more cumbersome workaround for this is to create
+the vlan on top of the mlx5 and then enslave the vlan devices
+to a bond.
 
-Fixes: 9fde506e0c53 ("net: mscc: ocelot: warn when a PTP IRQ is raised for an unknown skb")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241205145519.1236778-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To fix this, add NETIF_F_GSO_ENCAP_ALL to BOND_VLAN_FEATURES
+such that bond_compute_features() can probe and propagate the
+vlan_features from the slave devices up to the vlan device.
+
+Given the following bond:
+
+  # ethtool -i enp2s0f{0,1}np{0,1}
+  driver: mlx5_core
+  [...]
+
+  # ethtool -k enp2s0f0np0 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: on
+  rx-udp-gro-forwarding: off
+
+  # ethtool -k enp2s0f1np1 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: on
+  rx-udp-gro-forwarding: off
+
+  # ethtool -k bond0 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+Before:
+
+  # ethtool -k bond0.100 | grep udp
+  tx-udp_tnl-segmentation: off [requested on]
+  tx-udp_tnl-csum-segmentation: off [requested on]
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+After:
+
+  # ethtool -k bond0.100 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+Various users have run into this reporting performance issues when
+configuring Cilium in vxlan tunneling mode and having the combination
+of bond & vlan for the core devices connecting the Kubernetes cluster
+to the outside world.
+
+Fixes: a9b3ace44c7d ("bonding: fix vlan_features computing")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Ido Schimmel <idosch@idosch.org>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241210141245.327886-3-daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/ocelot_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
-index db00a51a7430..95a5267bc9ce 100644
---- a/drivers/net/ethernet/mscc/ocelot_ptp.c
-+++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
-@@ -786,7 +786,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 		spin_unlock_irqrestore(&port->tx_skbs.lock, flags);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 26a9f99882e6..ded9e369e403 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1454,6 +1454,7 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
  
- 		if (WARN_ON(!skb_match))
--			continue;
-+			goto next_ts;
+ #define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+ 				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
++				 NETIF_F_GSO_ENCAP_ALL | \
+ 				 NETIF_F_HIGHDMA | NETIF_F_LRO)
  
- 		if (!ocelot_validate_ptp_skb(skb_match, seqid)) {
- 			dev_err_ratelimited(ocelot->dev,
-@@ -804,7 +804,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
- 		shhwtstamps.hwtstamp = ktime_set(ts.tv_sec, ts.tv_nsec);
- 		skb_complete_tx_timestamp(skb_match, &shhwtstamps);
- 
--		/* Next ts */
-+next_ts:
- 		ocelot_write(ocelot, SYS_PTP_NXT_PTP_NXT, SYS_PTP_NXT);
- 	}
- }
+ #define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
 -- 
 2.39.5
 
