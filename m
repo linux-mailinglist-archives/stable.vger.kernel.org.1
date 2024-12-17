@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-104889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1799F5396
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5F49F5377
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B356118803C2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27D1618922E2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAB91F8ACD;
-	Tue, 17 Dec 2024 17:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F27E1F8F08;
+	Tue, 17 Dec 2024 17:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EcBXxL7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atb+PxC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F66E1F8ACE;
-	Tue, 17 Dec 2024 17:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFD21F8F01;
+	Tue, 17 Dec 2024 17:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456412; cv=none; b=qP5SJrmGA8btO0JHYGDNQ4g+rlna0DOuG4srQfzjwI4ulvfpZ8ntA8JU6fibHBwTMpQ2vot/a/+5aixg3Ph6aWpSeUGbWbVPbAsE80SBkjqmYdge04br1lGcSwqwCHWhkI+ejTIOjUPkhRkfaKd+z5L0MofqUOIhTn/52UwK9Ow=
+	t=1734456317; cv=none; b=nP7Rch+Mppo5AvZJwGSfiD/+2fQuVfOWFul0WciVQ06bfsJgOexdRYrRrTuWOZh3M6PncumwS38zWE/FChhTx537u3CdCrcoMZl5H39d4QsNM7Oeb+XmQrDD5QvY63CC4xXNtCIDba4ZBHpBemvg43uBagOCRchYLSPcIb0QYak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456412; c=relaxed/simple;
-	bh=w2VYmqVQJIkPS1I/+C1TmKdEetm26WY5AI4q85iFVUU=;
+	s=arc-20240116; t=1734456317; c=relaxed/simple;
+	bh=LERhelHl9LCBWi/p6QCO9+cYCOUDeTUcI2AHvVnbCKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ziar4tiQjCImK7zrTy05C3xwfUwi0l5VJQvU7a9ylY/+/YU0huotmrAJvvdnb+FaGtbT3/GCP4qEb1ud3iGgDUTrtnyZE8QJct06lR0VPfynHownP05Llt3otL/vxORJnLyyi1HyzOwHBkvF4h2XwOZQXPMGcO9UdWic5LVCblE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EcBXxL7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BF0C4CED3;
-	Tue, 17 Dec 2024 17:26:51 +0000 (UTC)
+	 MIME-Version; b=nDZZR+8Ml/M8SlvIdW/NYRrfWyKnjeRQnj1/psTEve7/US/YOZ5ceizih4RqZ3TJ4qV7yk43GKotbf8/5it3PoKSW53ZTCUx23nRpo7mZ5lC5etKPieisrblAxc/1KxjElbrhI+RiCJf+9+agAcaq03WZfMrQt3bLL5GWwjNupw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atb+PxC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FADC4CED3;
+	Tue, 17 Dec 2024 17:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456412;
-	bh=w2VYmqVQJIkPS1I/+C1TmKdEetm26WY5AI4q85iFVUU=;
+	s=korg; t=1734456316;
+	bh=LERhelHl9LCBWi/p6QCO9+cYCOUDeTUcI2AHvVnbCKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EcBXxL7cY3v9M/ZauLZ9xbFd60oNDK9vPClZQnhIg0rD3HWOA1DKXjhIwQr86geFy
-	 ZXjaj0fxQSJbZuv5fYXgFCnfWm6JmLKWn7CRTm7aP3mh68kxtKRo4QLJdA439aoY2B
-	 KnKLxuOrUVtmDGlbambJiJwj+6NTzatwpiWg608Y=
+	b=atb+PxC4CmdJG9WLtP3+i1rIKoTXJiDEBjohep43aSaBmkdGX3cPzslH8FybTo6Hq
+	 Prq5KGIT1Ku2v8fBYXOiNyscSnbT+XLpccvI2n0Se8WVOy6+EQQMcwCbu0Ku3zCZWg
+	 WEMTp1ya9JyEvqKQUHO8DO53A0Z5RAvQFCxfJptI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jason Wang <jasowang@redhat.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 012/172] virtio_ring: add a func argument recycle_done to virtqueue_resize()
-Date: Tue, 17 Dec 2024 18:06:08 +0100
-Message-ID: <20241217170546.758116437@linuxfoundation.org>
+Subject: [PATCH 6.12 013/172] virtio_net: ensure netdev_tx_reset_queue is called on tx ring resize
+Date: Tue, 17 Dec 2024 18:06:09 +0100
+Message-ID: <20241217170546.800796677@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
 References: <20241217170546.209657098@linuxfoundation.org>
@@ -69,13 +69,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Koichiro Den <koichiro.den@canonical.com>
 
-commit 8d6712c892019b9b9dc5c7039edd3c9d770b510b upstream.
+commit 1480f0f61b675567ca5d0943d6ef2e39172dcafd upstream.
 
-When virtqueue_resize() has actually recycled all unused buffers,
-additional work may be required in some cases. Relying solely on its
-return status is fragile, so introduce a new function argument
-'recycle_done', which is invoked when the recycle really occurs.
+virtnet_tx_resize() flushes remaining tx skbs, requiring DQL counters to
+be reset when flushing has actually occurred. Add
+virtnet_sq_free_unused_buf_done() as a callback for virtqueue_reset() to
+handle this.
 
+Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
 Cc: <stable@vger.kernel.org> # v6.11+
 Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
@@ -83,72 +84,44 @@ Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c     |    4 ++--
- drivers/virtio/virtio_ring.c |    6 +++++-
- include/linux/virtio.h       |    3 ++-
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/virtio_net.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -3165,7 +3165,7 @@ static int virtnet_rx_resize(struct virt
+@@ -502,6 +502,7 @@ struct virtio_net_common_hdr {
+ };
  
- 	virtnet_rx_pause(vi, rq);
- 
--	err = virtqueue_resize(rq->vq, ring_num, virtnet_rq_unmap_free_buf);
-+	err = virtqueue_resize(rq->vq, ring_num, virtnet_rq_unmap_free_buf, NULL);
- 	if (err)
- 		netdev_err(vi->dev, "resize rx fail: rx queue index: %d err: %d\n", qindex, err);
- 
-@@ -3228,7 +3228,7 @@ static int virtnet_tx_resize(struct virt
+ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf);
++static void virtnet_sq_free_unused_buf_done(struct virtqueue *vq);
+ static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
+ 			       struct net_device *dev,
+ 			       unsigned int *xdp_xmit,
+@@ -3228,7 +3229,8 @@ static int virtnet_tx_resize(struct virt
  
  	virtnet_tx_pause(vi, sq);
  
--	err = virtqueue_resize(sq->vq, ring_num, virtnet_sq_free_unused_buf);
-+	err = virtqueue_resize(sq->vq, ring_num, virtnet_sq_free_unused_buf, NULL);
+-	err = virtqueue_resize(sq->vq, ring_num, virtnet_sq_free_unused_buf, NULL);
++	err = virtqueue_resize(sq->vq, ring_num, virtnet_sq_free_unused_buf,
++			       virtnet_sq_free_unused_buf_done);
  	if (err)
  		netdev_err(vi->dev, "resize tx fail: tx queue index: %d err: %d\n", qindex, err);
  
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -2716,6 +2716,7 @@ EXPORT_SYMBOL_GPL(vring_create_virtqueue
-  * @_vq: the struct virtqueue we're talking about.
-  * @num: new ring num
-  * @recycle: callback to recycle unused buffers
-+ * @recycle_done: callback to be invoked when recycle for all unused buffers done
-  *
-  * When it is really necessary to create a new vring, it will set the current vq
-  * into the reset state. Then call the passed callback to recycle the buffer
-@@ -2736,7 +2737,8 @@ EXPORT_SYMBOL_GPL(vring_create_virtqueue
-  *
-  */
- int virtqueue_resize(struct virtqueue *_vq, u32 num,
--		     void (*recycle)(struct virtqueue *vq, void *buf))
-+		     void (*recycle)(struct virtqueue *vq, void *buf),
-+		     void (*recycle_done)(struct virtqueue *vq))
+@@ -5996,6 +5998,14 @@ static void virtnet_sq_free_unused_buf(s
+ 		xdp_return_frame(ptr_to_xdp(buf));
+ }
+ 
++static void virtnet_sq_free_unused_buf_done(struct virtqueue *vq)
++{
++	struct virtnet_info *vi = vq->vdev->priv;
++	int i = vq2txq(vq);
++
++	netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, i));
++}
++
+ static void free_unused_bufs(struct virtnet_info *vi)
  {
- 	struct vring_virtqueue *vq = to_vvq(_vq);
- 	int err;
-@@ -2753,6 +2755,8 @@ int virtqueue_resize(struct virtqueue *_
- 	err = virtqueue_disable_and_recycle(_vq, recycle);
- 	if (err)
- 		return err;
-+	if (recycle_done)
-+		recycle_done(_vq);
- 
- 	if (vq->packed_ring)
- 		err = virtqueue_resize_packed(_vq, num);
---- a/include/linux/virtio.h
-+++ b/include/linux/virtio.h
-@@ -100,7 +100,8 @@ dma_addr_t virtqueue_get_avail_addr(cons
- dma_addr_t virtqueue_get_used_addr(const struct virtqueue *vq);
- 
- int virtqueue_resize(struct virtqueue *vq, u32 num,
--		     void (*recycle)(struct virtqueue *vq, void *buf));
-+		     void (*recycle)(struct virtqueue *vq, void *buf),
-+		     void (*recycle_done)(struct virtqueue *vq));
- int virtqueue_reset(struct virtqueue *vq,
- 		    void (*recycle)(struct virtqueue *vq, void *buf));
- 
+ 	void *buf;
 
 
 
