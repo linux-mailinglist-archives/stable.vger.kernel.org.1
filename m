@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-104820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CD99F5343
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4205F9F5346
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFD3A188BF03
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48BB188D521
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D601F76C3;
-	Tue, 17 Dec 2024 17:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0481F757B;
+	Tue, 17 Dec 2024 17:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6x8pRwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFnOBFTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0517142E77;
-	Tue, 17 Dec 2024 17:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3287142E77;
+	Tue, 17 Dec 2024 17:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456203; cv=none; b=uJthfy5z1pw7sIYUz/Va8wq/tn2YBCGiZtkPUl2LgFPoz67RSnqK+wihUwdzao3x0NrJ14QodnWsvLKnAVLh+tz0y4JAIh9HuY9E/IsjYW5IYzb0b52RGvAjxNSOc/QVt2mWnMcoToDI+t2WBffLgQXnDZdUnwsoqoCI4hfGB3I=
+	t=1734456209; cv=none; b=Pxf69yPAEQwVW9hqphnvR/W2wm0qq3ufeSTfuqC7r9oJFX+h5Pqv9RKpAAyV3qVCCh37/7G96T13y/JKmCdeAOMB6O3vwZgOOMxKmlZpyt0C+Gt0MXnVQrNyVk36/a/tggapMu+45seueFEvISfreOXddiLAdvm+Bei+V1XTsyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456203; c=relaxed/simple;
-	bh=0jJT6W6W8/rGR6bKL9khl757ZymMslBTunHJDh/aVH4=;
+	s=arc-20240116; t=1734456209; c=relaxed/simple;
+	bh=Js9aHD8CwdfhY25GF6JUHtKE0gtm+DvjZLw6y7B3ql0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=us9vdFPbLO0OydMmVnxkddoN/zYorpG+5o6Ks0S3oRI+vgIU3GkHUKz1cvExNzc1iGHHsk4949kyhvHoDe8xDpBtKqYnlwBTYl8C3h/7dT3FGEHK1ccy3wxGvU+H5tV9QoVmYDOLW7PUfE2Zz5voQa8k0jX65J4Fdyy1jpwqkGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6x8pRwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A51C4CED3;
-	Tue, 17 Dec 2024 17:23:22 +0000 (UTC)
+	 MIME-Version; b=OpMuki9aq4oY+nARjyEBPSOS2Bytv+E8nJDt5rA88DBbo7lIbdZiRJnCQvnpqc+IEwAkizQgobst4TwtzEDwAIjhDpE8yFdp5iMyhI36gQ1SL2VpikCHnrfDq6w2xvyaK4p2iGC+cBrwQF79eFax+LcA3HjA+mtFynOhRYyFDXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFnOBFTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26928C4CED3;
+	Tue, 17 Dec 2024 17:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456202;
-	bh=0jJT6W6W8/rGR6bKL9khl757ZymMslBTunHJDh/aVH4=;
+	s=korg; t=1734456208;
+	bh=Js9aHD8CwdfhY25GF6JUHtKE0gtm+DvjZLw6y7B3ql0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6x8pRwWJDkx+kIZ77V2pAdpfhIryYaVtDrmJjBLyZBUKapruwJA5glv5rkuML+B5
-	 QrVxy5w7rbF0uMkHK/mF4e1Ek9Bv/NI1dkL5ggF5jWTZHd4HcPMMaiemqcXvnpXb0w
-	 1ZmTrtUNXad107opYH60j2Ew6son1C2Q8aSNY4L8=
+	b=JFnOBFTXB1QngMgzPJcot2AQY970A1ecfe2CudXWjRhvmtDBX0a+/KZ0uxC49zza9
+	 t5SgwY1i6JYx6Y2TA9RA8mhgY3j18TvdqV+FCtN0s+rysgwxkIrErYmvsaxLximjDE
+	 0vWIiMrIRnGqmvJzzI4jIRWr4aYZDG7PkCBlTOqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Van Gavere <jesse.vangavere@scioteq.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Laight <david.laight@aculab.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/109] net: dsa: microchip: KSZ9896 register regmap alignment to 32 bit boundaries
-Date: Tue, 17 Dec 2024 18:08:16 +0100
-Message-ID: <20241217170537.235524249@linuxfoundation.org>
+Subject: [PATCH 6.6 093/109] blk-iocost: Avoid using clamp() on inuse in __propagate_weights()
+Date: Tue, 17 Dec 2024 18:08:17 +0100
+Message-ID: <20241217170537.276060261@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
 References: <20241217170533.329523616@linuxfoundation.org>
@@ -66,137 +70,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jesse Van Gavere <jesseevg@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 5af53577c64fa84da032d490b701127fe8d1a6aa ]
+[ Upstream commit 57e420c84f9ab55ba4c5e2ae9c5f6c8e1ea834d2 ]
 
-Commit 8d7ae22ae9f8 ("net: dsa: microchip: KSZ9477 register regmap
-alignment to 32 bit boundaries") fixed an issue whereby regmap_reg_range
-did not allow writes as 32 bit words to KSZ9477 PHY registers, this fix
-for KSZ9896 is adapted from there as the same errata is present in
-KSZ9896C as "Module 5: Certain PHY registers must be written as pairs
-instead of singly" the explanation below is likewise taken from this
-commit.
+After a recent change to clamp() and its variants [1] that increases the
+coverage of the check that high is greater than low because it can be
+done through inlining, certain build configurations (such as s390
+defconfig) fail to build with clang with:
 
-The commit provided code
-to apply "Module 6: Certain PHY registers must be written as pairs instead
-of singly" errata for KSZ9477 as this chip for certain PHY registers
-(0xN120 to 0xN13F, N=1,2,3,4,5) must be accessed as 32 bit words instead
-of 16 or 8 bit access.
-Otherwise, adjacent registers (no matter if reserved or not) are
-overwritten with 0x0.
+  block/blk-iocost.c:1101:11: error: call to '__compiletime_assert_557' declared with 'error' attribute: clamp() low limit 1 greater than high limit active
+   1101 |                 inuse = clamp_t(u32, inuse, 1, active);
+        |                         ^
+  include/linux/minmax.h:218:36: note: expanded from macro 'clamp_t'
+    218 | #define clamp_t(type, val, lo, hi) __careful_clamp(type, val, lo, hi)
+        |                                    ^
+  include/linux/minmax.h:195:2: note: expanded from macro '__careful_clamp'
+    195 |         __clamp_once(type, val, lo, hi, __UNIQUE_ID(v_), __UNIQUE_ID(l_), __UNIQUE_ID(h_))
+        |         ^
+  include/linux/minmax.h:188:2: note: expanded from macro '__clamp_once'
+    188 |         BUILD_BUG_ON_MSG(statically_true(ulo > uhi),                            \
+        |         ^
 
-Without this patch some registers (e.g. 0x113c or 0x1134) required for 32
-bit access are out of valid regmap ranges.
+__propagate_weights() is called with an active value of zero in
+ioc_check_iocgs(), which results in the high value being less than the
+low value, which is undefined because the value returned depends on the
+order of the comparisons.
 
-As a result, following error is observed and KSZ9896 is not properly
-configured:
+The purpose of this expression is to ensure inuse is not more than
+active and at least 1. This could be written more simply with a ternary
+expression that uses min(inuse, active) as the condition so that the
+value of that condition can be used if it is not zero and one if it is.
+Do this conversion to resolve the error and add a comment to deter
+people from turning this back into clamp().
 
-ksz-switch spi1.0: can't rmw 32bit reg 0x113c: -EIO
-ksz-switch spi1.0: can't rmw 32bit reg 0x1134: -EIO
-ksz-switch spi1.0 lan1 (uninitialized): failed to connect to PHY: -EIO
-ksz-switch spi1.0 lan1 (uninitialized): error -5 setting up PHY for tree 0, switch 0, port 0
-
-The solution is to modify regmap_reg_range to allow accesses with 4 bytes
-boundaries.
-
-Fixes: 5c844d57aa78 ("net: dsa: microchip: fix writes to phy registers >= 0x10")
-Signed-off-by: Jesse Van Gavere <jesse.vangavere@scioteq.com>
-Link: https://patch.msgid.link/20241211092932.26881-1-jesse.vangavere@scioteq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7caa47151ab2 ("blkcg: implement blk-iocost")
+Link: https://lore.kernel.org/r/34d53778977747f19cce2abb287bb3e6@AcuMS.aculab.com/ [1]
+Suggested-by: David Laight <david.laight@aculab.com>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/llvm/CA+G9fYsD7mw13wredcZn0L-KBA3yeoVSTuxnss-AEWMN3ha0cA@mail.gmail.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412120322.3GfVe3vF-lkp@intel.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 42 +++++++++++---------------
- 1 file changed, 18 insertions(+), 24 deletions(-)
+ block/blk-iocost.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 1c3f18649998..997c225dfba4 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -892,10 +892,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
- 	regmap_reg_range(0x1030, 0x1030),
- 	regmap_reg_range(0x1100, 0x1115),
- 	regmap_reg_range(0x111a, 0x111f),
--	regmap_reg_range(0x1122, 0x1127),
--	regmap_reg_range(0x112a, 0x112b),
--	regmap_reg_range(0x1136, 0x1139),
--	regmap_reg_range(0x113e, 0x113f),
-+	regmap_reg_range(0x1120, 0x112b),
-+	regmap_reg_range(0x1134, 0x113b),
-+	regmap_reg_range(0x113c, 0x113f),
- 	regmap_reg_range(0x1400, 0x1401),
- 	regmap_reg_range(0x1403, 0x1403),
- 	regmap_reg_range(0x1410, 0x1417),
-@@ -922,10 +921,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
- 	regmap_reg_range(0x2030, 0x2030),
- 	regmap_reg_range(0x2100, 0x2115),
- 	regmap_reg_range(0x211a, 0x211f),
--	regmap_reg_range(0x2122, 0x2127),
--	regmap_reg_range(0x212a, 0x212b),
--	regmap_reg_range(0x2136, 0x2139),
--	regmap_reg_range(0x213e, 0x213f),
-+	regmap_reg_range(0x2120, 0x212b),
-+	regmap_reg_range(0x2134, 0x213b),
-+	regmap_reg_range(0x213c, 0x213f),
- 	regmap_reg_range(0x2400, 0x2401),
- 	regmap_reg_range(0x2403, 0x2403),
- 	regmap_reg_range(0x2410, 0x2417),
-@@ -952,10 +950,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
- 	regmap_reg_range(0x3030, 0x3030),
- 	regmap_reg_range(0x3100, 0x3115),
- 	regmap_reg_range(0x311a, 0x311f),
--	regmap_reg_range(0x3122, 0x3127),
--	regmap_reg_range(0x312a, 0x312b),
--	regmap_reg_range(0x3136, 0x3139),
--	regmap_reg_range(0x313e, 0x313f),
-+	regmap_reg_range(0x3120, 0x312b),
-+	regmap_reg_range(0x3134, 0x313b),
-+	regmap_reg_range(0x313c, 0x313f),
- 	regmap_reg_range(0x3400, 0x3401),
- 	regmap_reg_range(0x3403, 0x3403),
- 	regmap_reg_range(0x3410, 0x3417),
-@@ -982,10 +979,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
- 	regmap_reg_range(0x4030, 0x4030),
- 	regmap_reg_range(0x4100, 0x4115),
- 	regmap_reg_range(0x411a, 0x411f),
--	regmap_reg_range(0x4122, 0x4127),
--	regmap_reg_range(0x412a, 0x412b),
--	regmap_reg_range(0x4136, 0x4139),
--	regmap_reg_range(0x413e, 0x413f),
-+	regmap_reg_range(0x4120, 0x412b),
-+	regmap_reg_range(0x4134, 0x413b),
-+	regmap_reg_range(0x413c, 0x413f),
- 	regmap_reg_range(0x4400, 0x4401),
- 	regmap_reg_range(0x4403, 0x4403),
- 	regmap_reg_range(0x4410, 0x4417),
-@@ -1012,10 +1008,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
- 	regmap_reg_range(0x5030, 0x5030),
- 	regmap_reg_range(0x5100, 0x5115),
- 	regmap_reg_range(0x511a, 0x511f),
--	regmap_reg_range(0x5122, 0x5127),
--	regmap_reg_range(0x512a, 0x512b),
--	regmap_reg_range(0x5136, 0x5139),
--	regmap_reg_range(0x513e, 0x513f),
-+	regmap_reg_range(0x5120, 0x512b),
-+	regmap_reg_range(0x5134, 0x513b),
-+	regmap_reg_range(0x513c, 0x513f),
- 	regmap_reg_range(0x5400, 0x5401),
- 	regmap_reg_range(0x5403, 0x5403),
- 	regmap_reg_range(0x5410, 0x5417),
-@@ -1042,10 +1037,9 @@ static const struct regmap_range ksz9896_valid_regs[] = {
- 	regmap_reg_range(0x6030, 0x6030),
- 	regmap_reg_range(0x6100, 0x6115),
- 	regmap_reg_range(0x611a, 0x611f),
--	regmap_reg_range(0x6122, 0x6127),
--	regmap_reg_range(0x612a, 0x612b),
--	regmap_reg_range(0x6136, 0x6139),
--	regmap_reg_range(0x613e, 0x613f),
-+	regmap_reg_range(0x6120, 0x612b),
-+	regmap_reg_range(0x6134, 0x613b),
-+	regmap_reg_range(0x613c, 0x613f),
- 	regmap_reg_range(0x6300, 0x6301),
- 	regmap_reg_range(0x6400, 0x6401),
- 	regmap_reg_range(0x6403, 0x6403),
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index c3cb9c20b306..129732a8d0dd 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1098,7 +1098,14 @@ static void __propagate_weights(struct ioc_gq *iocg, u32 active, u32 inuse,
+ 		inuse = DIV64_U64_ROUND_UP(active * iocg->child_inuse_sum,
+ 					   iocg->child_active_sum);
+ 	} else {
+-		inuse = clamp_t(u32, inuse, 1, active);
++		/*
++		 * It may be tempting to turn this into a clamp expression with
++		 * a lower limit of 1 but active may be 0, which cannot be used
++		 * as an upper limit in that situation. This expression allows
++		 * active to clamp inuse unless it is 0, in which case inuse
++		 * becomes 1.
++		 */
++		inuse = min(inuse, active) ?: 1;
+ 	}
+ 
+ 	iocg->last_inuse = iocg->inuse;
 -- 
 2.39.5
 
