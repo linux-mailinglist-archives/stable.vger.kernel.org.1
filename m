@@ -1,128 +1,100 @@
-Return-Path: <stable+bounces-104411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4689F40C0
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 03:30:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C58C9F40CF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 03:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D14162956
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 02:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8077A166B3A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 02:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3921142E77;
-	Tue, 17 Dec 2024 02:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AB34644E;
+	Tue, 17 Dec 2024 02:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="AmgMalE5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YXRyHpf6"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13957145335;
-	Tue, 17 Dec 2024 02:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208C424B28
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 02:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734402611; cv=none; b=TUMpaAN0/R8lapDpQ+X+GXSlXXgi35wq9ytabB7M3os3GoJCEVXhyRnvMGqqo8Dw2VX4UYgXk4vT0KsYX9K9a9RVOEgKjYhI3emKvNigEG8Lly82ZHFYMzstxDzjWFir73hZ3/M1Fs5U28QrMelsBcMkC68nEhkRkaiv44adOkQ=
+	t=1734402712; cv=none; b=rVcodWFvULHxvT0iAX28Dtvx9sQKGB6HN6EJuXQV1uKSLwMEvR1rHF+qIBdJvYIaYDSjCM6sMLTMzdhCIB84UptvRKZ5ipeieQcQ4AGVyJHF8s5WLNva0cOJRDzjFRjL1a/bVdCDAViw7v15S6EXGiUSfY/7dXb6MjaKb10foRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734402611; c=relaxed/simple;
-	bh=KvSHcgGfj5fVpbu4sV7uw540x5cmriVxQ9T+i6eEZbY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tvVgsJDcnTnn0B20UawDt5BjAiuuA01NyiRKpAV8MzgJjUVC3OTwWhh2S6Y93Hv0A2fJE8algRwbTL5IgIocILMhC5c4OZsera3o7hi5Mv6ddkXWriET4BeJoiVfkyg5thEB9/qDNzbxzxpvrWfvxHboYd25mZrpFBFLo0bamwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=AmgMalE5; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1734402600; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=QCiwhXfJ2Z0HlTT5Ug0kalY1OtMxy3tJMQ6EtfaFoZg=;
-	b=AmgMalE5QJrV980BE6thr25qt6e+OL7tX64Fxvv7aeMohY22AkRDbBOb02OKJ8NwRdE3sYLqvhUBlQfe7nhvYFz3NpK0iVti1UjvOKxmjbbPzKIR/tBJ+nK9r/ja23V5yrRI8DgB9UXdVoWYqd35R1Ua6Ce7QejM+3Mz7CV2PF4=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WLguG8A_1734402598 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 17 Dec 2024 10:29:59 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: yangge1116@126.com
-Cc: 21cnbao@gmail.com,
-	akpm@linux-foundation.org,
-	baolin.wang@linux.alibaba.com,
-	david@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	liuzixing@hygon.cn,
-	stable@vger.kernel.org,
-	vbabka@suse.cz
-Subject: [PATCH] mm: compaction: fix don't use ALLOC_CMA in long term GUP flow
-Date: Tue, 17 Dec 2024 10:29:55 +0800
-Message-Id: <20241217022955.141818-1-baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <1734350044-12928-1-git-send-email-yangge1116@126.com>
-References: <1734350044-12928-1-git-send-email-yangge1116@126.com>
+	s=arc-20240116; t=1734402712; c=relaxed/simple;
+	bh=nbqMtWyeYG4rVYb1vtsQcvffTHPmH72DuHVjeOHkvs8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=DRh5M9yTuVbCI5/IK+ZcGNLIcYds567ufDhFAezGkxO8rkLFnaQx3FZsn6EmejFIdisW8CKmIY3YV/zGwLoHCWyybfUwFHJdPLE95jM2BkkvxYgD9BXDO8qIabrdRyWqVEk1U51OHZbrhfQfkcSBG1j10QINcWfBmzd6B4TRr/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YXRyHpf6; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734402710; x=1765938710;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=nbqMtWyeYG4rVYb1vtsQcvffTHPmH72DuHVjeOHkvs8=;
+  b=YXRyHpf66Yo4pw/jHE4gEnLpj9HfrYfLTW4cGpyek8GCsM4V9N84Cmwi
+   9a+qUoJofrKZnS7mRBB5vAeKkDWkgBPZyNw2vdJDSvbvmocutGzfmGW8Q
+   m4Par9mPfTvhn/xkyvMEo8Db7f8SOK41RvyQBK9N1JFmd0LzfMhYaNs2r
+   RgqWX+SE3E5dOC7BqPbRjiK42/EVG1oXz7sEvI1vCFnt6gFr77MYwvBgK
+   XdMLLxRSXAYVWJtYoKIZVqAAo+acfB2sku4brBa1HMumvx3o+K3I1XAXO
+   e/GqyfrmPCtX2i1G9e3b21Edd2NtsDQM2HOYQ4x4JcLlDSrG+P1T8zpZ9
+   g==;
+X-CSE-ConnectionGUID: tTxqpMZXRWOlPcUyJSsn5A==
+X-CSE-MsgGUID: pTpJ7OoNRteJFNAq9TvdxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="38589522"
+X-IronPort-AV: E=Sophos;i="6.12,240,1728975600"; 
+   d="scan'208";a="38589522"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 18:31:50 -0800
+X-CSE-ConnectionGUID: IplhZCn2TAe1c5bkg2062A==
+X-CSE-MsgGUID: dmZw2pEcTk6hrXq3cbgvvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,240,1728975600"; 
+   d="scan'208";a="102245869"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 16 Dec 2024 18:31:49 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tNNNC-000Eei-21;
+	Tue, 17 Dec 2024 02:31:46 +0000
+Date: Tue, 17 Dec 2024 10:31:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] mm: compaction: fix don't use ALLOC_CMA in long term GUP
+ flow
+Message-ID: <Z2DiiODXOk_m78Rs@0d54cbd93456>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217022955.141818-1-baolin.wang@linux.alibaba.com>
 
-Need update cc->alloc_flags to keep the original logic.
+Hi,
 
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- mm/compaction.c | 6 ++++--
- mm/page_alloc.c | 1 +
- 2 files changed, 5 insertions(+), 2 deletions(-)
+Thanks for your patch.
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index b10d921c237b..d92ba6c4708c 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -2895,6 +2895,7 @@ static int compact_node(pg_data_t *pgdat, bool proactive)
- 	struct compact_control cc = {
- 		.order = -1,
- 		.mode = proactive ? MIGRATE_SYNC_LIGHT : MIGRATE_SYNC,
-+		.alloc_flags = ALLOC_CMA,
- 		.ignore_skip_hint = true,
- 		.whole_zone = true,
- 		.gfp_mask = GFP_KERNEL,
-@@ -3039,7 +3040,7 @@ static bool kcompactd_node_suitable(pg_data_t *pgdat)
- 
- 		ret = compaction_suit_allocation_order(zone,
- 				pgdat->kcompactd_max_order,
--				highest_zoneidx, ALLOC_WMARK_MIN);
-+				highest_zoneidx, ALLOC_CMA | ALLOC_WMARK_MIN);
- 		if (ret == COMPACT_CONTINUE)
- 			return true;
- 	}
-@@ -3060,6 +3061,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
- 		.search_order = pgdat->kcompactd_max_order,
- 		.highest_zoneidx = pgdat->kcompactd_highest_zoneidx,
- 		.mode = MIGRATE_SYNC_LIGHT,
-+		.alloc_flags = ALLOC_CMA | ALLOC_WMARK_MIN,
- 		.ignore_skip_hint = false,
- 		.gfp_mask = GFP_KERNEL,
- 	};
-@@ -3080,7 +3082,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
- 			continue;
- 
- 		ret = compaction_suit_allocation_order(zone,
--				cc.order, zoneid, ALLOC_WMARK_MIN);
-+				cc.order, zoneid, cc.alloc_flags);
- 		if (ret != COMPACT_CONTINUE)
- 			continue;
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ecb2fd770387..1bfdca3f47b3 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6456,6 +6456,7 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 		.order = -1,
- 		.zone = page_zone(pfn_to_page(start)),
- 		.mode = MIGRATE_SYNC,
-+		.alloc_flags = ALLOC_CMA,
- 		.ignore_skip_hint = true,
- 		.no_set_skip_hint = true,
- 		.alloc_contig = true,
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] mm: compaction: fix don't use ALLOC_CMA in long term GUP flow
+Link: https://lore.kernel.org/stable/20241217022955.141818-1-baolin.wang%40linux.alibaba.com
+
 -- 
-2.39.3
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
