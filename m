@@ -1,116 +1,200 @@
-Return-Path: <stable+bounces-104480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09CE9F4B25
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:41:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3699F4B2E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E48337A41CC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 12:41:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C63116F17F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 12:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE381F2C23;
-	Tue, 17 Dec 2024 12:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857781F37BF;
+	Tue, 17 Dec 2024 12:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vHV8utAr"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0FLYgymr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCADA1F131A
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 12:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3C51F2C23
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 12:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734439263; cv=none; b=W9QnTfsaEDDUt5ElR7YePnRsz0ACifOMN8RygCRvfgIlNygL739DSSOMo4gVbEuxCeqdTV+c/pNGz9cM+cjEkgJhcWrJ0i+Jlpaa/RUVF+4girPZs+7sAnfIgVgYA3doo+tbQwOB9v5TviC1QRRSDIJVn/tW3GkHIsG5ZzE8wcw=
+	t=1734439407; cv=none; b=qcXjQiylxOh4XrfIvmetJ4IVIJNgrpMfzWLHwqhR0DUVTHp0IE1qosp8vgaQinoAT8rJHMtWnq0aT3GSCnpP7YEXJLowE8QywfoqCwbanxTq0iolQUjaaYZKqSHXjxPlESXjFmFvBosYEWVovTx+SOApmilW6AOUNNoo2T95EpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734439263; c=relaxed/simple;
-	bh=zktOsVkVxxQOGMhkfdhIaNBA4MeCVA4pyULsaxoa5BU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=no2hWg3F4Qpytkwctpx9pzELxyJ7EmV93JF2VkYSzwczYvSzDcx0bUayqPFwa/QWDvp4hVV/LX6X3w2j8rfmOv5vCVt9CgU8TY9jryhE/xaDjm3zq49hkRQLrwtln5FGBpwQRe5Kk+zBfttKVl1XUhe3cU/zOR3AvLKWYa4ewaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vHV8utAr; arc=none smtp.client-ip=209.85.208.45
+	s=arc-20240116; t=1734439407; c=relaxed/simple;
+	bh=raFTyJlHNr0tFW1uld1VtwSUKqXpLi2xg/yVMVHoFuQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SiTUGSqJIDJZFBOPfE0eHZkq2+AHQYUKcoopK1VK/1hROS8k0RQmf4MMaZGkaDyXI6Fjnii7sgg8r2J9WU67xZQBnCHjd7eiX2qozwK5JrCuNyY/3KYuP6/TZfEcGbAgZGnuVImWB69wC4STt3LQfL750rAXiQ+uNvNilu/qDjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0FLYgymr; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5d3d14336f0so9511824a12.3
-        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 04:41:01 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-aa68b4b957fso55927866b.3
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 04:43:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734439260; x=1735044060; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zktOsVkVxxQOGMhkfdhIaNBA4MeCVA4pyULsaxoa5BU=;
-        b=vHV8utAr2ZI75QvSNUfVCuVmaBkEyDqsTYZ7eFQGZpu1w3Peey8HR7g0sk2NLAQavU
-         BPfVX+OHbELO9oF6J/qb66qA4QGhTQZbA3yD4459MwGUC0PSr6XKzFcQXeI40qdi+wpI
-         K62xWySC+dvmtWu7ZiV/7TWw3WtOPe+YSLIXAnoDPChuZQrbE8NIKQ53Ikt3eNP96iCz
-         cGZayxOR0AcMf8CbIyja2Ux8A6mmFi3nsq2PvO9mKEcEt6bGwPoq/nald5Jhw04p3BZh
-         ebhKWNKZR2rD4D5787GBRyrGAxQ4iK8hk8wndIZtVv+lVdcqfN7i3X27pJD63NsiM0rW
-         o1Wg==
+        d=google.com; s=20230601; t=1734439404; x=1735044204; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7CvH5yGVU8Hklsh/ZTDiMWlBPiLTi9uMIocC/SzJMXg=;
+        b=0FLYgymrgu8DQ/iZp+QKFbopF9VnKfa/gjxYCiOoSjFqubL4r5DeOKyIBNPcRtL1bH
+         4kjgls7YZoVKBy25FEGxvP+IjPx54ju+A16Q5fsLS72+f6o8rbI/DGIKL+sqvGbjzNyI
+         GBthv0M6Qra1+n4Hg0WcRptp0w8oJhH7iSKJvxvqqpGpyNwETf/rcOyzVnmBvKt6GuZz
+         2Z8/BXPM3tmHxZ2tMyf2iGYb3VkrO9J4Up7yyj5rJCZQbyzWsv9JUjRgwbAYK4AZU/KI
+         rB0TUV+2NEHscwuroz20hGL7GyVWVX9mbzcvV3PyWJjAqfmE21FLqlck2J97b4zGUvRR
+         V9TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734439260; x=1735044060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zktOsVkVxxQOGMhkfdhIaNBA4MeCVA4pyULsaxoa5BU=;
-        b=DQICcN9gcVZ/kayu2rYaUG4tJEvMJ7xHOpulB/iZBM2s9U3G10DBTCql26CpGOiLMM
-         j7m1hwxC9f+hQviYvB75KvUQ+TMAP9vPYGP6CAL1XCcj3a12E10xSf/3+U970cmFAyPb
-         A1CWL0jEt9x9PixAx++s78iav0lKKJz9JwDsEFZsA56OKcVFSg2Ot2wEG7gvOu9fgMt0
-         f1ocg03m9MVwGnTxsgzfFabz8BE5nHaS+rzIRYEFoZZy8Cb2S3iSGRFPFjqM4WdNY9ks
-         A+67j4JhcNXPvWrpn6GvF5US3jXKTQgT2piMq8t0r0EATWgMn+texwsZRef9l/iUzC5e
-         7RTg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSwWLy1ujUa28D8x1DSL60bEmcoNxu4ITaVIB1XHxmy0esofX8PuWYGLb4XWOziPoiSTewmgM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPfrkrk/rnqlSTU+1B1UMimA7wKjjTC6SOzhzMETzHgrLDKER2
-	SpbW8Ldge0Vxd4Feha+G1ZM5fudDRdIPt6PxWm57G2XzzWHR88cOTtOgCkpTlDbDtsd+sANFkzX
-	5hF9o01GJceO7iEKN393fhUj4TT5i6OmkzsRh
-X-Gm-Gg: ASbGncvQFc3xYhdEQYXkDfVAzS5Gu8pBZH/dFlOVrbFYK0l45Qak0JxwyxltG+EvscW
-	3bVaOKncSvfn5YObnVJg/PQJYD6A3kaYBuLVZHl6z+Hl7vlGd6goqYYOIJSj5O+bSs0JYQtH+
-X-Google-Smtp-Source: AGHT+IH3mnMSz1W9u8JOiuZGydso9Cjd9kGw8eKTwmdRl9f7Hcj7+iXrFyrilZSWhlLyhDwpWe8u2Ky8DmHErNw/FlI=
-X-Received: by 2002:a05:6402:34cb:b0:5d2:6993:ad91 with SMTP id
- 4fb4d7f45d1cf-5d63c3da9a9mr13515477a12.32.1734439259961; Tue, 17 Dec 2024
- 04:40:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734439404; x=1735044204;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7CvH5yGVU8Hklsh/ZTDiMWlBPiLTi9uMIocC/SzJMXg=;
+        b=RtFxvptL6LYP1kpqQnxkq9r95o9Z3MegvnuH7JZqzxghgxjiVRPW85Y3ZjTUTrdJh4
+         rZm6gUNFXbpP6BS0c/GUdYdI84gVb+GNGlBaMzIB+4oVt94vizQZEUS7ZpbSiwYs1YV2
+         uznm/0pEmaX5eNWJNpy+frzH6obgYdcZomAD+GOrtT/ubf73QYr9XEqiVkVoZV1xKH3b
+         rhpvpTpKEdYc+EXQACK2JEef7n4AsUKV0O4r3/03ksgkw2m3Q4AgdYnyVQ5tLqeEIVKl
+         Y9ZIV1PkJ+J1a6JSnd6Eni1mIpyHzSut4jNAwdGEt/kQGWmjaVNosKrEhow2rTwsjJyi
+         42hQ==
+X-Gm-Message-State: AOJu0YyRweSo0L0OsRvrstBIX1h2wg8/RJ3Lhaot3yT6+fgDng3peVxo
+	tvW4RXm8DhtzO6+BlAeY+vU4BRXVBfZuEh+ocpRmOJfTEA317o2Wk2fplypzRQj+9CpJ4Rzv3TA
+	kyXDDaO42P65LqfZCKz3wi0rzt/U/jUBwCIFfoqOKrr/y8BAWimavAaaklHrcD47nBOUwmq+Nw7
+	M9iSImtZX9HT4IDdzNw9OmbSUdsCJ75//aUV4IgQ==
+X-Google-Smtp-Source: AGHT+IE1ulpLvq4irs47ZqGF0pOzKxlh1OY0sNSqgJQgqfb5yWWvtN41/DVjRsksqpH9xtS+vxJg7ZH9nmTJ
+X-Received: from ejbsi6.prod.google.com ([2002:a17:906:cec6:b0:aa8:75c2:8c3])
+ (user=bsevens job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:6d0d:b0:aa6:a572:49fd
+ with SMTP id a640c23a62f3a-aab77ebca50mr1487117666b.54.1734439403668; Tue, 17
+ Dec 2024 04:43:23 -0800 (PST)
+Date: Tue, 17 Dec 2024 12:43:18 +0000
+In-Reply-To: <2024121040-distant-throng-b534@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241217110731.2925254-1-make_ruc2021@163.com>
-In-Reply-To: <20241217110731.2925254-1-make_ruc2021@163.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 17 Dec 2024 13:40:49 +0100
-Message-ID: <CANn89iJEE69y=Vi2c_2uE6k2Sb4bM+k+D+4KVfrR4QjMFK-7=A@mail.gmail.com>
-Subject: Re: [PATCH v2] net: ethernet: fix NULL dereference in nixge_recv()
-To: Ma Ke <make_ruc2021@163.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, u.kleine-koenig@baylibre.com, horms@kernel.org, 
-	mdf@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+Mime-Version: 1.0
+References: <2024121040-distant-throng-b534@gregkh>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241217124318.734250-1-bsevens@google.com>
+Subject: [PATCH 5.15.y] ALSA: usb-audio: Fix a DMA to stack memory bug
+From: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
+To: stable@vger.kernel.org
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@kernel.org, 
+	Takashi Iwai <tiwai@suse.de>, "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 17, 2024 at 12:25=E2=80=AFPM Ma Ke <make_ruc2021@163.com> wrote=
-:
->
-> Due to the failure of allocating the variable 'priv' in
-> netdev_priv(ndev), this could result in 'priv->rx_bd_v' not being set
-> during the allocation process of netdev_priv(ndev), which could lead
-> to a null pointer dereference.
->
-> Move while() loop with 'priv->rx_bd_v' dereference after the check
-> for its validity.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 492caffa8a1a ("net: ethernet: nixge: Add support for National Inst=
-ruments XGE netdev")
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> ---
-> Changes in v2:
-> - modified the bug description as suggestions;
-> - modified the patch as the code style suggested.
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-I really do not understand this patch.
+The usb_get_descriptor() function does DMA so we're not allowed
+to use a stack buffer for that.  Doing DMA to the stack is not portable
+all architectures.  Move the "new_device_descriptor" from being stored
+on the stack and allocate it with kmalloc() instead.
 
-if priv->rx_bd_v allocation failed, surely the device is not
-operational, because nixge_hw_dma_bd_init() returns -ENOMEM
+Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses =
+for Extigy and Mbox devices")
+Cc: stable@kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley=
+.mountain
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+(cherry picked from commit f7d306b47a24367302bd4fe846854e07752ffcd9)
+[Beno=C3=AEt: there is no mbox3 suppport and no __free macro in 5.15]
+Signed-off-by: Beno=C3=AEt Sevens <bsevens@google.com>
+---
+ sound/usb/quirks.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
+
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 9d98a0e6a9f4..9f182c448d04 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -591,7 +591,7 @@ int snd_usb_create_quirk(struct snd_usb_audio *chip,
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_in=
+terface *intf)
+ {
+ 	struct usb_host_config *config =3D dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor =3D NULL;
+ 	int err;
+=20
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) =3D=3D EXTIGY_FIRMWAR=
+E_SIZE_OLD ||
+@@ -602,15 +602,20 @@ static int snd_usb_extigy_boot_quirk(struct usb_devic=
+e *dev, struct usb_interfac
+ 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
++
++		new_device_descriptor =3D kmalloc(sizeof(*new_device_descriptor), GFP_KE=
+RNEL);
++		if (!new_device_descriptor)
++			return -ENOMEM;
+ 		err =3D usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&new_device_descriptor, sizeof(new_device_descriptor));
++				new_device_descriptor, sizeof(*new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfi=
+gurations)
++		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConf=
+igurations)
+ 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-				new_device_descriptor.bNumConfigurations);
++				new_device_descriptor->bNumConfigurations);
+ 		else
+-			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor=
+));
++			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor)=
+);
++		kfree(new_device_descriptor);
+ 		err =3D usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -942,7 +947,7 @@ static void mbox2_setup_48_24_magic(struct usb_device *=
+dev)
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config =3D dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor =3D NULL;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -977,15 +982,21 @@ static int snd_usb_mbox2_boot_quirk(struct usb_device=
+ *dev)
+=20
+ 	dev_dbg(&dev->dev, "device initialised!\n");
+=20
++	new_device_descriptor =3D kmalloc(sizeof(*new_device_descriptor), GFP_KER=
+NEL);
++	if (!new_device_descriptor)
++		return -ENOMEM;
++
+ 	err =3D usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&new_device_descriptor, sizeof(new_device_descriptor));
++		new_device_descriptor, sizeof(*new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfig=
+urations)
++	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfi=
+gurations)
+ 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-			new_device_descriptor.bNumConfigurations);
++			new_device_descriptor->bNumConfigurations);
+ 	else
+-		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor)=
+);
++		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor))=
+;
++
++	kfree(new_device_descriptor);
+=20
+ 	err =3D usb_reset_configuration(dev);
+ 	if (err < 0)
+--=20
+2.47.1.613.gc27f4b7a9f-goog
+
 
