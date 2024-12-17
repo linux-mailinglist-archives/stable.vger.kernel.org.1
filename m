@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-104841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6450F9F5337
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:26:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CD29F54AA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB9F16C10E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 804BC170C7F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526231F429B;
-	Tue, 17 Dec 2024 17:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3522F1F9F51;
+	Tue, 17 Dec 2024 17:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzAQdDmN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6AOUx+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F48D8615A;
-	Tue, 17 Dec 2024 17:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DE31F8900;
+	Tue, 17 Dec 2024 17:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456265; cv=none; b=el2ufDMkjbMEjBWkGLL8Zxf5LyOs16f7846K6pF4tfEZMj21HnMVU1MyrTcB44NCb60FvibOLBgX8xrZjPenpsd1DtPdjXE/XSYWahChIuRAfIA0Iu2XuF11ZSjFfQXPZQqg03p4j/XydZ7exsTfjQz2jJMLiORp53vbhrJpEyE=
+	t=1734456842; cv=none; b=IzkIp1Sgy0L9SlawN3sAo+5vFuZjDGvmguJ0q8z7vSVAsRP5vbk5SAUkxPNqPlWC3ZF7w4AAswuFMCrYp0i5uaj5zUs3SNRd1hqP1Yjxksit+4+AzBqk0vWK0gFFJ/7K4CD8RL2uLuQ1QDUIZGJ8aAld0GRX5fxDbMiZKP1RS2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456265; c=relaxed/simple;
-	bh=aggI1TBr+9rM2SXlxeflJ2ruZxwyKXItqVOvS0ypfhw=;
+	s=arc-20240116; t=1734456842; c=relaxed/simple;
+	bh=8jS8WTj+R1sb5yTJAVxeMdouCGo1PJnCqgsnPrTNsjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TIqimQFvaUMk0pnt4DycfNfWttvOxb5guhcXzE+OKgJX0qv9QDpqzDieEKV4DiZKIzoKKNpCEy3ASgRRfX+R9Krfe419BFUrVEQhmh54CL6WXnUBrHEiP1Y7PZjSCc3ZoaK1+m1wHi1oIxKoWGU6I1CwrbIaracrkQS+gC24ZBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzAQdDmN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB31C4CED3;
-	Tue, 17 Dec 2024 17:24:24 +0000 (UTC)
+	 MIME-Version; b=OEGYay+MDZeRQwUeLLpkWisMaSkAc5UumrnygN73yjzCTCk/AcdYdYKJVQMQVaW1h/c65NtzH0FqKTR/SzkYDqsowqEueoRoD9hdHJJYaTFiUYlqOM17l892z/mNz91WezLxCm9u2eDJv3avDqKbWAA92ipYHLejCL1PzCdVm8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6AOUx+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81BFC4CED3;
+	Tue, 17 Dec 2024 17:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456264;
-	bh=aggI1TBr+9rM2SXlxeflJ2ruZxwyKXItqVOvS0ypfhw=;
+	s=korg; t=1734456841;
+	bh=8jS8WTj+R1sb5yTJAVxeMdouCGo1PJnCqgsnPrTNsjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AzAQdDmNeikyv03f59/RuRx4w4OXBzPpOEyBDNmapv98tjZXGu+fqY10zk5sjITVJ
-	 H+MFyK9GU32InNiBGuycAdLJECtXDSPa1crWhvbcL+/TfSnNYX6Lb/4UU08oNsDChz
-	 8+ZvEP4tCkJfQ65IVIBKKsaB9PONINDAf/4WjpCs=
+	b=V6AOUx+E1+OSdiHJzkytHFgIszXmau4JJRcqI+8sKdF3ElnVjTxO48pmYwKAlOpLI
+	 q+2dWlC1i9z0U+jlSxIfLswY5Jd3l9h2qfCn2Eg+J0F+gj0nhDHs87EhKTt+M2ylcL
+	 om1j75N9DG3ImsHf2avyTWls67MWfjMlItfUpOH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.6 101/109] xen/netfront: fix crash when removing device
+	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 149/172] Bluetooth: iso: Fix recursive locking warning
 Date: Tue, 17 Dec 2024 18:08:25 +0100
-Message-ID: <20241217170537.618324069@linuxfoundation.org>
+Message-ID: <20241217170552.512076264@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
 
-commit f9244fb55f37356f75c739c57323d9422d7aa0f8 upstream.
+[ Upstream commit 9bde7c3b3ad0e1f39d6df93dd1c9caf63e19e50f ]
 
-When removing a netfront device directly after a suspend/resume cycle
-it might happen that the queues have not been setup again, causing a
-crash during the attempt to stop the queues another time.
+This updates iso_sock_accept to use nested locking for the parent
+socket, to avoid lockdep warnings caused because the parent and
+child sockets are locked by the same thread:
 
-Fix that by checking the queues are existing before trying to stop
-them.
+[   41.585683] ============================================
+[   41.585688] WARNING: possible recursive locking detected
+[   41.585694] 6.12.0-rc6+ #22 Not tainted
+[   41.585701] --------------------------------------------
+[   41.585705] iso-tester/3139 is trying to acquire lock:
+[   41.585711] ffff988b29530a58 (sk_lock-AF_BLUETOOTH)
+               at: bt_accept_dequeue+0xe3/0x280 [bluetooth]
+[   41.585905]
+               but task is already holding lock:
+[   41.585909] ffff988b29533a58 (sk_lock-AF_BLUETOOTH)
+               at: iso_sock_accept+0x61/0x2d0 [bluetooth]
+[   41.586064]
+               other info that might help us debug this:
+[   41.586069]  Possible unsafe locking scenario:
 
-This is XSA-465 / CVE-2024-53240.
+[   41.586072]        CPU0
+[   41.586076]        ----
+[   41.586079]   lock(sk_lock-AF_BLUETOOTH);
+[   41.586086]   lock(sk_lock-AF_BLUETOOTH);
+[   41.586093]
+                *** DEADLOCK ***
 
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Fixes: d50b7914fae0 ("xen-netfront: Fix NULL sring after live migration")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[   41.586097]  May be due to missing lock nesting notation
+
+[   41.586101] 1 lock held by iso-tester/3139:
+[   41.586107]  #0: ffff988b29533a58 (sk_lock-AF_BLUETOOTH)
+                at: iso_sock_accept+0x61/0x2d0 [bluetooth]
+
+Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bluetooth/iso.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -867,7 +867,7 @@ static netdev_tx_t xennet_start_xmit(str
- static int xennet_close(struct net_device *dev)
- {
- 	struct netfront_info *np = netdev_priv(dev);
--	unsigned int num_queues = dev->real_num_tx_queues;
-+	unsigned int num_queues = np->queues ? dev->real_num_tx_queues : 0;
- 	unsigned int i;
- 	struct netfront_queue *queue;
- 	netif_tx_stop_all_queues(np->netdev);
-@@ -882,6 +882,9 @@ static void xennet_destroy_queues(struct
- {
- 	unsigned int i;
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 34eade4b0587..269ce0bb73a1 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -1225,7 +1225,11 @@ static int iso_sock_accept(struct socket *sock, struct socket *newsock,
+ 	long timeo;
+ 	int err = 0;
  
-+	if (!info->queues)
-+		return;
-+
- 	for (i = 0; i < info->netdev->real_num_tx_queues; i++) {
- 		struct netfront_queue *queue = &info->queues[i];
+-	lock_sock(sk);
++	/* Use explicit nested locking to avoid lockdep warnings generated
++	 * because the parent socket and the child socket are locked on the
++	 * same thread.
++	 */
++	lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
  
+ 	timeo = sock_rcvtimeo(sk, arg->flags & O_NONBLOCK);
+ 
+@@ -1256,7 +1260,7 @@ static int iso_sock_accept(struct socket *sock, struct socket *newsock,
+ 		release_sock(sk);
+ 
+ 		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
+-		lock_sock(sk);
++		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
+ 	}
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+ 
+-- 
+2.39.5
+
 
 
 
