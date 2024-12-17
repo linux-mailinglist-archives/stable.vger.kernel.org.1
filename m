@@ -1,97 +1,108 @@
-Return-Path: <stable+bounces-104516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F279F4F56
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:25:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E11679F4F61
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:25:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A663F188B33B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:24:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D95C47A62BF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89C41F756A;
-	Tue, 17 Dec 2024 15:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A981F708B;
+	Tue, 17 Dec 2024 15:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJMpVIRp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQvUqy9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3564174A;
-	Tue, 17 Dec 2024 15:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22418148850;
+	Tue, 17 Dec 2024 15:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734449015; cv=none; b=kNyNQisM5rfdHR67OYCyn5YzPzBwjrMPBkg0QVXFsfKEbeldG7ld5UEMGmjSAJxgcvtdaLSLqNqorUVim8oskh5otj9kX0TAvHVFpADqvdQOvlRj9kCwMcmHQFLjpP38mWQKry4NWSOSHlAy2NNAF88MXbuBCoWhi+d8MtVGYas=
+	t=1734449136; cv=none; b=R4Yslsy7OMyeX+K/apewiClpNzdkV1MnTMSuj9uK/4la0iY+XPP7OHLXVNfLPYmcm/nrHAbM4ywZWWMO0rhOgcccIt72uftCpCCmWWesSGeaZkznbKXV419Ev3CsFDnrdxvr/870xTvfF6EL01hEbotswCnis5ucECxEtLFE5lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734449015; c=relaxed/simple;
-	bh=SQM3pWI2fvHAG1Oru52325VVqEwN5LXRnhmqFH7vCfU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KWq9FmArKkHDJYi2Zwc20XmZ5hubbM/I/MMlFxeejgBYoz1m/gYdA6arYQMeVOZhpeaPwYPN0x8NNDdjUtFavCVflCay5nQ+NG9Qxpv/ERueJvLtrY8qghotR1Vjh5O+BGvZ2ujeLYTMgd5AKd/vDgqHOQbs0tn8N21ZW/8aMZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJMpVIRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F31C4CED3;
-	Tue, 17 Dec 2024 15:23:33 +0000 (UTC)
+	s=arc-20240116; t=1734449136; c=relaxed/simple;
+	bh=n59nbDdqjazWBSEs+6H0xYs7GJ7Na4HGlhRT4smb0+A=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=WB23+nJ8t00C2ZO6/GCFcxYkkLLFJGE2jjphYCXohmyGD8LAhc8OcGZUMc+qz+frSNtITnDnMl1BUgTarQd9+p2+4pidRHAa4Dr85/3LzMR9T60aOs1kW063IXwHbzVOVTEN2Aujtb9UXeKRcnVjgsA2dfTd16GkicwS8E/iS+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQvUqy9q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E2EC4CED3;
+	Tue, 17 Dec 2024 15:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734449015;
-	bh=SQM3pWI2fvHAG1Oru52325VVqEwN5LXRnhmqFH7vCfU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rJMpVIRp+pFyUWESTz+5Qipovcww7eaHihkWBbjXzE1BBmc0dOtsKyXSp1d6D+3J+
-	 yvTGRDHYQMoJi9esXzFANIUNxKt2CV2x6HN236W1Gm7oX3PapV/7Xn5Ci54tK9XTZG
-	 ivGa6xztcEmEash9mOtCtSe9LHIBz7JGTUvrSJZjKNqglBR0yNj+kHJqXzoH08w/PA
-	 ivC89WOOp+0bPwdLawQaHC2Aj/c8DPKo+bKudlj1Pn4hkM5wUjsjQJzZdaD/pG/Esx
-	 I7WVp0OyKs6Plx6gga3PVzzVEawc1XYe566sa97rJOBjdrFAvxEIOjCD8BWVJ+luka
-	 dq9aUAHO5Psrg==
-Date: Tue, 17 Dec 2024 15:23:30 +0000
+	s=k20201202; t=1734449136;
+	bh=n59nbDdqjazWBSEs+6H0xYs7GJ7Na4HGlhRT4smb0+A=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=MQvUqy9q2HOh9O3oU7OjSHWlcI+o823pZYwBpBi7uH9bSAgGJLXY/krOYVOzkgBR/
+	 bqgwBvze5GYu4x9/+BGN+MuhYOP958bm+Xl7yKj4HJEvQVwGNkWQg7rDSz+7un60dr
+	 HglD3OhxEh2s3YHneDBZ3KIpLFt3GYUgp55vgvTxOF7+MwGkQd2vP2xdz3SNqz3F6N
+	 SckXLXmodBJNrf1ovOF5dF+t368p5AfC64s0YeT0gaOZqGv1KTQmQ1d7gACz1Q27Ik
+	 SloPEFZQs7q7Lum+UchXAI552LgmgyJpW34qKOza+QVABXXMs2KdamlI/wF1uDa3NB
+	 5ZcZBEtr99w/A==
 From: Mark Brown <broonie@kernel.org>
-To: Ma Ke <make_ruc2021@163.com>
-Cc: aaro.koskinen@nokia.com, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] spi: fix reference leak in spi_register_controller()
-Message-ID: <a8de1fd5-7eaf-46f8-804a-8b241a3e6448@sirena.org.uk>
-References: <20241217073133.2908052-1-make_ruc2021@163.com>
+To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
+ ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
+ pierre-louis.bossart@linux.dev, liam.r.girdwood@intel.com, 
+ stable@vger.kernel.org
+In-Reply-To: <20241217091019.31798-1-peter.ujfalusi@linux.intel.com>
+References: <20241217091019.31798-1-peter.ujfalusi@linux.intel.com>
+Subject: Re: [PATCH for v6.13-rc] ASoC: SOF: Intel: hda-dai: Do not release
+ the link DMA on STOP
+Message-Id: <173444913362.64908.13186494458287422900.b4-ty@kernel.org>
+Date: Tue, 17 Dec 2024 15:25:33 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jhA3jEBVEeVKRUv2"
-Content-Disposition: inline
-In-Reply-To: <20241217073133.2908052-1-make_ruc2021@163.com>
-X-Cookie: The sum of the Universe is zero.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-9b746
 
+On Tue, 17 Dec 2024 11:10:19 +0200, Peter Ujfalusi wrote:
+> The linkDMA should not be released on stop trigger since a stream re-start
+> might happen without closing of the stream. This leaves a short time for
+> other streams to 'steal' the linkDMA since it has been released.
+> 
+> This issue is not easy to reproduce under normal conditions as usually
+> after stop the stream is closed, or the same stream is restarted, but if
+> another stream got in between the stop and start, like this:
+> aplay -Dhw:0,3 -c2 -r48000 -fS32_LE /dev/zero -d 120
+> CTRL+z
+> aplay -Dhw:0,0 -c2 -r48000 -fS32_LE /dev/zero -d 120
+> 
+> [...]
 
---jhA3jEBVEeVKRUv2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Tue, Dec 17, 2024 at 03:31:33PM +0800, Ma Ke wrote:
-> Once device_add() failed, we should call put_device() to decrement
-> reference count for cleanup. Or it could cause memory leak.
->=20
-> Found by code review.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-This isn't clear to me, spi_register_controller() is analogous to
-device_add() and __spi_alloc_controller() is analogous to (and wraps)
-device_initialize() so I'd expect the _put() to be done by the caller
-calling spi_controller_put() either directly or more usually via devm.
+Thanks!
 
---jhA3jEBVEeVKRUv2
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] ASoC: SOF: Intel: hda-dai: Do not release the link DMA on STOP
+      commit: e8d0ba147d901022bcb69da8d8fd817f84e9f3ca
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdhl3EACgkQJNaLcl1U
-h9D7cAgAhqB7KUEudxUgOs9vV137sCySYAo27XuUHkRqCVxSFiQoN+OcMT4vojPV
-rC7HB1rUMIDRLeTqHbpFWNiFjMebSC0X7dpT5JXGVr1ehGDZ19dkI1jiQjCG3FWd
-YMFU4wIRGq+WLqdUFoxhI0TGTdyzmTu3zkx7DNzr0Z2RnLiRujM9U7EHHRxCuRcN
-IceiBSu33zf7BefltQiuGCfOAe5JPnB6lxgOEQoIhuqaMsx2LhS93fM1m/zFTxx3
-Co3SB6QWe8rORsu3M8JsO5u1NzIwTgwt4CzSpxv6eEfPGGAPwCvPSVB9p8A3m8v0
-gNXP+aDJJUtVdw9pTPx9zMEA3VEv4A==
-=dgEN
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---jhA3jEBVEeVKRUv2--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
