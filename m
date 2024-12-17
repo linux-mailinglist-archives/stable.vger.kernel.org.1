@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-104572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22ADD9F51D8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 560F69F523D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EBA77A1DE7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD37616796E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D821F755F;
-	Tue, 17 Dec 2024 17:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093A21F8923;
+	Tue, 17 Dec 2024 17:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAge8qeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXwxioT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE71149DFA;
-	Tue, 17 Dec 2024 17:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21241F8902;
+	Tue, 17 Dec 2024 17:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455459; cv=none; b=m76Rt74xqktShhflar1e9ewDGBLl6Cd4UyY1Cy7qLUf1kwug5FIb+dvpVZZk305GXeSKIta6FjmSNJB97BbqfvhtmRJslfnLmUnGMk73NyxzhBM+fThx6ZKdVmUAgJ3LDmTn7+N6CPNIRg1F5ZYMG57GPhlpmUm962nmzk64UdY=
+	t=1734455667; cv=none; b=t8zuUqq4xD/4ZOtBCnDrDt8kg9QxjGEHUBD+1nK4PFY0Rpz9YtZVuMZcsb7eDCX4qwmT+CWvoyy469iMVzNmg6dT6zBX6fQNKTyHRD8Bx2YY/GKSMBj5mY9wFL1Po+iZjnzZ3/88/Y5qpHJiNlRucIpiQ5eIGh343ekK2udlqac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455459; c=relaxed/simple;
-	bh=OZbKu4UfZg7CkF+T/61RybizChr5zeAi8PDotAiU/GA=;
+	s=arc-20240116; t=1734455667; c=relaxed/simple;
+	bh=PZ6sCghGX3IUN4tEsjrJmQR39Ng+EC4PLuMmocI1MUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHMtgUP+8aQlrMK2qMaq8fFbo+YFwremFHnBi6s8H473A7D4oen0741oxLsbv0eQV4nGvZHkA41LdfQaHy0x+rEixO2zOqSOV6ass8xUOxPZjrTo9FJ0FV5P2RaTtmBTsa47DeZsTesOicffeWQa07mirILBgCIG0GtPfTxoAVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAge8qeK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA00EC4CED3;
-	Tue, 17 Dec 2024 17:10:58 +0000 (UTC)
+	 MIME-Version; b=aLyEiti/WC3U/h3WCa9q84IHxbdLNVwwxnRdKXANM4ueyG73+tO5TxWsjF1PdziS68NhRaciqOymXO9htI/1Aatl2WKiynnL77db5/YogaaJ0r9icu5oru7AKAt4/lP6i0M3DgBaZ0uWLmdhuFO1Z58wlIhoUpM1LNlUnsiPK2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXwxioT5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C93C4CEDE;
+	Tue, 17 Dec 2024 17:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455459;
-	bh=OZbKu4UfZg7CkF+T/61RybizChr5zeAi8PDotAiU/GA=;
+	s=korg; t=1734455667;
+	bh=PZ6sCghGX3IUN4tEsjrJmQR39Ng+EC4PLuMmocI1MUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAge8qeKiYuofnBIJVgvKDG3t4g0V2AHfckJ2x7CrZTkP5JVhCldXj0g8Q6e0rsv7
-	 nMM/56md9sWZ7cA4O443X51HtA8N3uhBF6/GwjhVKYX2KSRRe9E1SEZggXDNnI31wb
-	 7KbkOE3w80MPumalPQkC6ya6kOHYIhYMEAVZjXb8=
+	b=CXwxioT5WRnFB2KNKxoeieDzO2Jf57PWRBtOBoKOqq40C2tHSGTvOICHDyBv6Puz6
+	 XwgA+xwbdnhkvCT9qV0m/xVy2uEV3VZ8mvVb3SZqDxtTrZGl2AbZNZSJMhZcWms9vg
+	 w6O5XTn4KPu8tw1Mb/LHEASJz9eON2V9rnqFvkMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/43] selftests: mlxsw: sharedbuffer: Remove duplicate test cases
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Tomas Krcka <krckatom@amazon.de>
+Subject: [PATCH 5.15 16/51] virtio/vsock: Fix accept_queue memory leak
 Date: Tue, 17 Dec 2024 18:07:09 +0100
-Message-ID: <20241217170521.193247523@linuxfoundation.org>
+Message-ID: <20241217170520.968739469@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 6c46ad4d1bb2e8ec2265296e53765190f6e32f33 ]
+commit d7b0ff5a866724c3ad21f2628c22a63336deec3f upstream.
 
-On both port_tc_ip_test() and port_tc_arp_test(), the max occupancy is
-checked on $h2 twice, when only the error message is different and does not
-match the check itself.
+As the final stages of socket destruction may be delayed, it is possible
+that virtio_transport_recv_listen() will be called after the accept_queue
+has been flushed, but before the SOCK_DONE flag has been set. As a result,
+sockets enqueued after the flush would remain unremoved, leading to a
+memory leak.
 
-Remove the two duplicated test cases from the test.
+vsock_release
+  __vsock_release
+    lock
+    virtio_transport_release
+      virtio_transport_close
+        schedule_delayed_work(close_work)
+    sk_shutdown = SHUTDOWN_MASK
+(!) flush accept_queue
+    release
+                                        virtio_transport_recv_pkt
+                                          vsock_find_bound_socket
+                                          lock
+                                          if flag(SOCK_DONE) return
+                                          virtio_transport_recv_listen
+                                            child = vsock_create_connected
+                                      (!)   vsock_enqueue_accept(child)
+                                          release
+close_work
+  lock
+  virtio_transport_do_close
+    set_flag(SOCK_DONE)
+    virtio_transport_remove_sock
+      vsock_remove_sock
+        vsock_remove_bound
+  release
 
-Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/d9eb26f6fc16a06a30b5c2c16ad80caf502bc561.1733414773.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Introduce a sk_shutdown check to disallow vsock_enqueue_accept() during
+socket destruction.
+
+unreferenced object 0xffff888109e3f800 (size 2040):
+  comm "kworker/5:2", pid 371, jiffies 4294940105
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    28 00 0b 40 00 00 00 00 00 00 00 00 00 00 00 00  (..@............
+  backtrace (crc 9e5f4e84):
+    [<ffffffff81418ff1>] kmem_cache_alloc_noprof+0x2c1/0x360
+    [<ffffffff81d27aa0>] sk_prot_alloc+0x30/0x120
+    [<ffffffff81d2b54c>] sk_alloc+0x2c/0x4b0
+    [<ffffffff81fe049a>] __vsock_create.constprop.0+0x2a/0x310
+    [<ffffffff81fe6d6c>] virtio_transport_recv_pkt+0x4dc/0x9a0
+    [<ffffffff81fe745d>] vsock_loopback_work+0xfd/0x140
+    [<ffffffff810fc6ac>] process_one_work+0x20c/0x570
+    [<ffffffff810fce3f>] worker_thread+0x1bf/0x3a0
+    [<ffffffff811070dd>] kthread+0xdd/0x110
+    [<ffffffff81044fdd>] ret_from_fork+0x2d/0x50
+    [<ffffffff8100785a>] ret_from_fork_asm+0x1a/0x30
+
+Fixes: 3fe356d58efa ("vsock/virtio: discard packets only when socket is really closed")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Adapted due to missing commit 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff") ]
+Signed-off-by: Tomas Krcka <krckatom@amazon.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/drivers/net/mlxsw/sharedbuffer.sh        | 10 ----------
- 1 file changed, 10 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-index f6f5e2090891..9c3c426197af 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-@@ -131,11 +131,6 @@ port_tc_ip_test()
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1196,6 +1196,14 @@ virtio_transport_recv_listen(struct sock
+ 		return -ENOMEM;
+ 	}
  
- 	devlink sb occupancy snapshot $DEVLINK_DEV
- 
--	RET=0
--	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
--	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
--	log_test "physical port's($h1) ingress TC - IP packet"
--
- 	RET=0
- 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
- 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
-@@ -162,11 +157,6 @@ port_tc_arp_test()
- 
- 	devlink sb occupancy snapshot $DEVLINK_DEV
- 
--	RET=0
--	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
--	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
--	log_test "physical port's($h1) ingress TC - ARP packet"
--
- 	RET=0
- 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
- 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
--- 
-2.39.5
-
++	/* __vsock_release() might have already flushed accept_queue.
++	 * Subsequent enqueues would lead to a memory leak.
++	 */
++	if (sk->sk_shutdown == SHUTDOWN_MASK) {
++		virtio_transport_reset_no_sock(t, pkt);
++		return -ESHUTDOWN;
++	}
++
+ 	child = vsock_create_connected(sk);
+ 	if (!child) {
+ 		virtio_transport_reset_no_sock(t, pkt);
 
 
 
