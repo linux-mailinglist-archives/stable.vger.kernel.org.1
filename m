@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-104590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4012F9F51F3
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5E79F528C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4822D1882B13
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71F616EBFE
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB77D1F7577;
-	Tue, 17 Dec 2024 17:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE121F866E;
+	Tue, 17 Dec 2024 17:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmsY1xXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fupNLuDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E0B149DFA;
-	Tue, 17 Dec 2024 17:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7921F7582;
+	Tue, 17 Dec 2024 17:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455513; cv=none; b=FqLONh5PSL+q2ZLGAo4lNg/Pn7O1TVgYcsC93QXXqK4LOX0SxFBBCFwS5Fm5Jd3CnJ7QjqTp4okN+ZWR4M0vW6ZojUdZ9gU6LZtWc2H2iilmBIx7AbwC17rzIde3T0yVKLMyBwPivHgFUUYo44RHsu8oYEI5qLUpltNJWEH6Pf4=
+	t=1734455839; cv=none; b=cfMCiN1aZi3rsW1aek+JKwybfq0FzG5zTDknVcI7K0tE+hsf0c8XVNpQGXUHl47d5CWrx4b97xzUVcNZ+2UtF/fzA7/IwMnJ2goLUQ+evzfbi4TDomjE1bVb98rAgm4IQNXmfwm7NqJYuF3o1TjlhyoCcw8QZTd9gQl5CNNMDGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455513; c=relaxed/simple;
-	bh=6tPE9WjwPKot8zTtAVed5a8br6mdcpSCL6EE9Qo11sM=;
+	s=arc-20240116; t=1734455839; c=relaxed/simple;
+	bh=hOAP/W4+xOLbLzSrZDL7u08T+xcsYTuux/8TOrAQXm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsnIHpUT7W1trM3adyTy8hvnXbkckbpTzXmRA6sQfzkX7ux9+/2wdduOGCSWZZCwTlBJwlNJaZsHVBZeEi6XZ+1fZ4yktdeH3dhtJv7picEHiRzGiU3/+BlOu2usoPv/J4zDYajVRSKRiWgvzp9LEyJi3B18Klh1LGlTxRfK2fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmsY1xXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16730C4CED3;
-	Tue, 17 Dec 2024 17:11:52 +0000 (UTC)
+	 MIME-Version; b=tIVjv83p8idk/mI9K6KeOYrzffpbPlpoXgOfwvo+GaJWa9kshRRgEkze8R+Gns7X3rrVH78nzWXZx5hO2tgoi47y8DqezwO3G9FiHXmELYAVsI+Zb2704Gth6IbusTqs5insGZDBlpfsyth+0FpUmSjGZIJv2lGQFJBIcEJJZkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fupNLuDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FD4C4CED3;
+	Tue, 17 Dec 2024 17:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455513;
-	bh=6tPE9WjwPKot8zTtAVed5a8br6mdcpSCL6EE9Qo11sM=;
+	s=korg; t=1734455838;
+	bh=hOAP/W4+xOLbLzSrZDL7u08T+xcsYTuux/8TOrAQXm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zmsY1xXFIqeF7u1Un6U/fkBPbi7zPHelp+RHJu2cjgd5Dih+nnZ9SQIbqVo4qKdDN
-	 YRmCSe0ynT22HIG9MIgXJM27eNHlk7s2CQawEdvFrND7nDWb1aL6+JRmhhMLc09f+1
-	 f/oAt1cpXQDJtStTpwW+usrjyFtneS3YC1UVUKD4=
+	b=fupNLuDYXSl4hoZr8OBBG9yyX3L/UGftAi2zFQcPTRceMuOh9iE8hH9iChlKr1qN6
+	 j6iFp8n5qV+s2JwKmHGCoRSL06pHIxJK5j1gpaLQn/PU4HOBA/+FyexESePwxzNqeC
+	 G0xFyZHCKSroQGclkl9QRjVV8PRfgRfuh2vy0DV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 5.10 08/43] xfs: fix scrub tracepoints when inode-rooted btrees are involved
+Subject: [PATCH 6.1 19/76] xfs: return from xfs_symlink_verify early on V4 filesystems
 Date: Tue, 17 Dec 2024 18:06:59 +0100
-Message-ID: <20241217170520.796148961@linuxfoundation.org>
+Message-ID: <20241217170527.050878728@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-commit ffc3ea4f3c1cc83a86b7497b0c4b0aee7de5480d upstream.
+commit 7f8b718c58783f3ff0810b39e2f62f50ba2549f6 upstream.
 
-Fix a minor mistakes in the scrub tracepoints that can manifest when
-inode-rooted btrees are enabled.  The existing code worked fine for bmap
-btrees, but we should tighten the code up to be less sloppy.
+V4 symlink blocks didn't have headers, so return early if this is a V4
+filesystem.
 
-Cc: <stable@vger.kernel.org> # v5.7
-Fixes: 92219c292af8dd ("xfs: convert btree cursor inode-private member names")
+Cc: <stable@vger.kernel.org> # v5.1
+Fixes: 39708c20ab5133 ("xfs: miscellaneous verifier magic value fixups")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/trace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_symlink_remote.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/scrub/trace.h
-+++ b/fs/xfs/scrub/trace.h
-@@ -458,7 +458,7 @@ TRACE_EVENT(xchk_ifork_btree_error,
- 	TP_fast_assign(
- 		xfs_fsblock_t fsbno = xchk_btree_cur_fsbno(cur, level);
- 		__entry->dev = sc->mp->m_super->s_dev;
--		__entry->ino = sc->ip->i_ino;
-+		__entry->ino = cur->bc_ino.ip->i_ino;
- 		__entry->whichfork = cur->bc_ino.whichfork;
- 		__entry->type = sc->sm->sm_type;
- 		__entry->btnum = cur->bc_btnum;
+--- a/fs/xfs/libxfs/xfs_symlink_remote.c
++++ b/fs/xfs/libxfs/xfs_symlink_remote.c
+@@ -89,8 +89,10 @@ xfs_symlink_verify(
+ 	struct xfs_mount	*mp = bp->b_mount;
+ 	struct xfs_dsymlink_hdr	*dsl = bp->b_addr;
+ 
++	/* no verification of non-crc buffers */
+ 	if (!xfs_has_crc(mp))
+-		return __this_address;
++		return NULL;
++
+ 	if (!xfs_verify_magic(bp, dsl->sl_magic))
+ 		return __this_address;
+ 	if (!uuid_equal(&dsl->sl_uuid, &mp->m_sb.sb_meta_uuid))
 
 
 
