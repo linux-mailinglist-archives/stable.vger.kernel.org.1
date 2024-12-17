@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-104736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34EF9F52BE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773C59F53BB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:32:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1305D16B291
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF70717051F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0044E1F76B5;
-	Tue, 17 Dec 2024 17:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBA81F893A;
+	Tue, 17 Dec 2024 17:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMpafJeU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1V3h+DC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34581F7577;
-	Tue, 17 Dec 2024 17:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994A71F868E;
+	Tue, 17 Dec 2024 17:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455946; cv=none; b=F7/wplM18au8GfrJ+NW5Ene0676F2Vzftp0KnqLuCJIifYjdQwiO6gsUs8YbVkLfrFU4iVX8DDMU7C/oTOtREEl/+OliSij9UhpkHwcH01HLMdhwlU2A0l3YMYmKUyu31y6TMr3tUnGcyh3ZaC9CeohVjBzQuAPKP06CgwNlIek=
+	t=1734456501; cv=none; b=tfvo1sfbbUGxTEGnAL4SYuBOqAcStMi7CqcQ8qO49ly6ZfvR4DMtndxkEKu6jMNOiCU+v7wixUkf9239QKEPTVe3zg/iygL5q5PtKlOfqjiTp7YjQogDad67bmICRQ8LSzAn2zTuDmdxNt0IyG9+5z6HvT/lWzlFri9VabkYU+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455946; c=relaxed/simple;
-	bh=OPoFM9v7srdb0U7u7f0oUpc45M293FkfL1Cg07iNx0Q=;
+	s=arc-20240116; t=1734456501; c=relaxed/simple;
+	bh=FSYK5fT9/9qtb1izu4KDeCalibAm9d65b/A/8P4x3JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lk0TXJBQd3nT7rxNVfbAyCUHjeLivffotKoHTTwNQputzbmz51RftqEnAFz8+9ptn9BUry/1EUhnc7YSh4ZQx8GC85zLG/GQ7Xm6oUky9o4RkE4O00NzifGL3Xc2CqPLyuR29W0kLG1nrWgxyJN2njdlXhP64bNLpW5KvHH6EYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMpafJeU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16083C4CED3;
-	Tue, 17 Dec 2024 17:19:05 +0000 (UTC)
+	 MIME-Version; b=ETkXaQbqqhIGfCYet63uW/2uJ78oXOnp4wVsiELzeeqYS2r/dQM4N6Z7TekvAnDzrPbQ4dd+7/T5/87T4+Bl76ga/Sp4HUpEGm4IDTmyBGUDYNKgeLM4LGopVBXMY2fk3xbaXQsmq6zDZi7SAWRycc57OFuBcRSLvWTSLDt8uUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1V3h+DC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEE4C4CED7;
+	Tue, 17 Dec 2024 17:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455946;
-	bh=OPoFM9v7srdb0U7u7f0oUpc45M293FkfL1Cg07iNx0Q=;
+	s=korg; t=1734456501;
+	bh=FSYK5fT9/9qtb1izu4KDeCalibAm9d65b/A/8P4x3JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OMpafJeUWrVsUQnj/m1fQ3Nbuo60f0gluHJtwNfySPH4bU50ThJItr82lvxvUNL2K
-	 pSQGf9EmZm2dbwj9rEawSF32MTZOLYKK71Ch815YMzeJCCbPFT76ySJxWxuhC5UefY
-	 REyFeg7X0utbzfi2ICPBZ0Cjy1vl6ifqbLByAoaI=
+	b=g1V3h+DCQLIPt3bA3PwJHEYIzqfM1p1uaV2xuhuEXlLhcerdIoBJbZAmDjjVwerVQ
+	 dhZ9ctswVPJ+X1S+Lx72ipIEI/wTC2uMG50ojnNibeQLNw3IS5FWVthbJCYHCYH2Qh
+	 +x80LVkvghCj4e0xIuPY1JnaK6UqZlthQzkczC/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.6 001/109] bpf: Fix UAF via mismatching bpf_prog/attachment RCU flavors
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 049/172] usb: typec: anx7411: fix OF node reference leaks in anx7411_typec_switch_probe()
 Date: Tue, 17 Dec 2024 18:06:45 +0100
-Message-ID: <20241217170533.395054721@linuxfoundation.org>
+Message-ID: <20241217170548.300534131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit ef1b808e3b7c98612feceedf985c2fbbeb28f956 upstream.
+commit ef42b906df5c57d0719b69419df9dfd25f25c161 upstream.
 
-Uprobes always use bpf_prog_run_array_uprobe() under tasks-trace-RCU
-protection. But it is possible to attach a non-sleepable BPF program to a
-uprobe, and non-sleepable BPF programs are freed via normal RCU (see
-__bpf_prog_put_noref()). This leads to UAF of the bpf_prog because a normal
-RCU grace period does not imply a tasks-trace-RCU grace period.
+The refcounts of the OF nodes obtained by of_get_child_by_name() calls
+in anx7411_typec_switch_probe() are not decremented. Replace them with
+device_get_named_child_node() calls and store the return values to the
+newly created fwnode_handle fields in anx7411_data, and call
+fwnode_handle_put() on them in the error path and in the unregister
+functions.
 
-Fix it by explicitly waiting for a tasks-trace-RCU grace period after
-removing the attachment of a bpf_prog to a perf_event.
-
-Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Fixes: e45d7337dc0e ("usb: typec: anx7411: Use of_get_child_by_name() instead of of_find_node_by_name()")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/bpf/20241210-bpf-fix-actual-uprobe-uaf-v1-1-19439849dd44@google.com
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20241126014909.3687917-1-joe@pf.is.s.u-tokyo.ac.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/bpf_trace.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/typec/anx7411.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2224,6 +2224,13 @@ void perf_event_detach_bpf_prog(struct p
- 		bpf_prog_array_free_sleepable(old_array);
+--- a/drivers/usb/typec/anx7411.c
++++ b/drivers/usb/typec/anx7411.c
+@@ -290,6 +290,8 @@ struct anx7411_data {
+ 	struct power_supply *psy;
+ 	struct power_supply_desc psy_desc;
+ 	struct device *dev;
++	struct fwnode_handle *switch_node;
++	struct fwnode_handle *mux_node;
+ };
+ 
+ static u8 snk_identity[] = {
+@@ -1099,6 +1101,7 @@ static void anx7411_unregister_mux(struc
+ 	if (ctx->typec.typec_mux) {
+ 		typec_mux_unregister(ctx->typec.typec_mux);
+ 		ctx->typec.typec_mux = NULL;
++		fwnode_handle_put(ctx->mux_node);
+ 	}
+ }
+ 
+@@ -1107,6 +1110,7 @@ static void anx7411_unregister_switch(st
+ 	if (ctx->typec.typec_switch) {
+ 		typec_switch_unregister(ctx->typec.typec_switch);
+ 		ctx->typec.typec_switch = NULL;
++		fwnode_handle_put(ctx->switch_node);
+ 	}
+ }
+ 
+@@ -1114,28 +1118,29 @@ static int anx7411_typec_switch_probe(st
+ 				      struct device *dev)
+ {
+ 	int ret;
+-	struct device_node *node;
+ 
+-	node = of_get_child_by_name(dev->of_node, "orientation_switch");
+-	if (!node)
++	ctx->switch_node = device_get_named_child_node(dev, "orientation_switch");
++	if (!ctx->switch_node)
+ 		return 0;
+ 
+-	ret = anx7411_register_switch(ctx, dev, &node->fwnode);
++	ret = anx7411_register_switch(ctx, dev, ctx->switch_node);
+ 	if (ret) {
+ 		dev_err(dev, "failed register switch");
++		fwnode_handle_put(ctx->switch_node);
+ 		return ret;
  	}
  
-+	/*
-+	 * It could be that the bpf_prog is not sleepable (and will be freed
-+	 * via normal RCU), but is called from a point that supports sleepable
-+	 * programs and uses tasks-trace-RCU.
-+	 */
-+	synchronize_rcu_tasks_trace();
-+
- 	bpf_prog_put(event->prog);
- 	event->prog = NULL;
+-	node = of_get_child_by_name(dev->of_node, "mode_switch");
+-	if (!node) {
++	ctx->mux_node = device_get_named_child_node(dev, "mode_switch");
++	if (!ctx->mux_node) {
+ 		dev_err(dev, "no typec mux exist");
+ 		ret = -ENODEV;
+ 		goto unregister_switch;
+ 	}
  
+-	ret = anx7411_register_mux(ctx, dev, &node->fwnode);
++	ret = anx7411_register_mux(ctx, dev, ctx->mux_node);
+ 	if (ret) {
+ 		dev_err(dev, "failed register mode switch");
++		fwnode_handle_put(ctx->mux_node);
+ 		ret = -ENODEV;
+ 		goto unregister_switch;
+ 	}
 
 
 
