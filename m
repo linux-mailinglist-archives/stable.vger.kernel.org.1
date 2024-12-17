@@ -1,140 +1,110 @@
-Return-Path: <stable+bounces-105066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7305F9F57DE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 21:37:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE49C9F57E1
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 21:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01F2E7A1A29
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 20:37:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFD72165647
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 20:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F371F9431;
-	Tue, 17 Dec 2024 20:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46F91F9A81;
+	Tue, 17 Dec 2024 20:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xVpqZAUU"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="XpcTgMZN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156A415DBBA;
-	Tue, 17 Dec 2024 20:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B93C15DBBA;
+	Tue, 17 Dec 2024 20:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734467832; cv=none; b=QdRWt8eEEfT8B+73YARLAJ/wQibV4Ig3P7bjZq4Mo5aukiuKA4HnC1Dz7yqKlx6NSQ7m47euBJUk7tfdVsGUAEFZLguPh6DN0DtbOkyKeLYQ8Wmb0gqBLjo3TKAnsLj0o6SkGiD+cTCiOW6pextIYAk1NS8xfGTeVZL0zMuVu+8=
+	t=1734467873; cv=none; b=kvYg8IUMgwjx3romaZEI5s8KEEmm9s7pPSrF7fuySEPPvAiy4XTxqEh6y5XYSOmK0nmWGYVbAleJSU1c9Hpjw+C3txHUCTTNIxC28sj3f2dOESB7U64sBBXRaockC69Gkw+hMWuJrA71Lx6zdMMlXxJozLHhN/lZBmQR56MozWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734467832; c=relaxed/simple;
-	bh=y1eeSKNn6kD196/09klKeNET65/9qzrZ8icfje31jJ4=;
-	h=Date:To:From:Subject:Message-Id; b=AamxA1c/Y49lRPk9/nj41XgF4ErOzrYdSy3W6ZN9Ah7+BTCl344W9g2wX+47i81xKdB4SqDnKbWE/DyoJJoxse6Uhq+sR4lJJXBuavtT3OrCPK+KUPKf96sO13zlq6clptI00LUKBl0ggFys3PKd85E5AWB/PjrXEdq8HrZ6VRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xVpqZAUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786DCC4CED3;
-	Tue, 17 Dec 2024 20:37:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1734467831;
-	bh=y1eeSKNn6kD196/09klKeNET65/9qzrZ8icfje31jJ4=;
-	h=Date:To:From:Subject:From;
-	b=xVpqZAUUNUmUKGNqtEt2W7AQme12X4oU6PYk0VkCXnU9h+/jzX0rXZWVwAPXnTug1
-	 eXgnFUGegdc8G1bmaKnboAL7ieIWkVaIATpeVpG+XkNGPZNMozsvc2HOHBHUlrO8Ss
-	 Tr8RK+kKKiOvoqC8ABHGwK3DqpcwbzAiqZEh5KNk=
-Date: Tue, 17 Dec 2024 12:37:10 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,david@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fs-proc-task_mmu-fix-pagemap-flags-with-pmd-thp-entries-on-32bit.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241217203711.786DCC4CED3@smtp.kernel.org>
+	s=arc-20240116; t=1734467873; c=relaxed/simple;
+	bh=5dwmYoI1ksowilAAFiYhcrL+N1EqqDZxMYb0oMrBjjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tcVeNOhk51wYbszua6Oo+3SU2WHEtbsj2X2ehQoujLc6KeDxuBqFqQn2NjCXzGodKdDlEszEPYxmjf+nlXY2y4/WaIRaLZBh66Bmt66i/bEYoZixHmPHC2pAcg2JYJWDDAoYy+wUHeD6O+brFJDahfF1rUYmCyCcf4ujt5VHchU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=XpcTgMZN; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2A7DB1047DC0C;
+	Tue, 17 Dec 2024 21:37:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1734467862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kSDlZnHY/aVlvWPRiGV0ECJ7U4fPHV0GIBM5MTGF+7E=;
+	b=XpcTgMZNrp8+WnuTe1ZIH9tsQik1kM8A2AP5Rd1FGWVtS138Ls2bv4xeG9W2f6g6DvYgGa
+	/pZtggXgEqQdgWP4DAkTVRgaNwHoy+kpQTaU4W14PlHKa+rqCclbeyM76MtHEa+P3ZxQSb
+	OkAKZu7t16jHO5JdeI+xMEDfV6IGJMiag+zyuOyCPMG0xbObSnONBGgL8qfZCVXY5y2MR8
+	U32M2Vun0AVLguR7vuKgXwEuqRgkg+g1M10TxEZX2s1Hp4vmG7K/pEyX0QYMCmNFNejtoY
+	54JPPxwpVkRiaoRDO5m5kXmSHfO+FepL4KeB4lxtWiNhSKr4m3owEnIn6nms/Q==
+Date: Tue, 17 Dec 2024 21:37:37 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 00/43] 5.10.232-rc1 review
+Message-ID: <Z2HhEXJ8D2P8aJQ6@duo.ucw.cz>
+References: <20241217170520.459491270@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="p21Tvcdg6sb3RhWd"
+Content-Disposition: inline
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
-The patch titled
-     Subject: fs/proc/task_mmu: fix pagemap flags with PMD THP entries on 32bit
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fs-proc-task_mmu-fix-pagemap-flags-with-pmd-thp-entries-on-32bit.patch
+--p21Tvcdg6sb3RhWd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-fix-pagemap-flags-with-pmd-thp-entries-on-32bit.patch
+Hi!
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> This is the start of the stable review cycle for the 5.10.232 release.
+> There are 43 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+CIP testing did not find any problems here:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+5.10.y
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: fs/proc/task_mmu: fix pagemap flags with PMD THP entries on 32bit
-Date: Tue, 17 Dec 2024 20:50:00 +0100
+Best regards,
+                                                                Pavel
 
-Entries (including flags) are u64, even on 32bit.  So right now we are
-cutting of the flags on 32bit.  This way, for example the cow selftest
-complains about:
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-  # ./cow
-  ...
-  Bail Out! read and ioctl return unmatched results for populated: 0 1
+--p21Tvcdg6sb3RhWd
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Link: https://lkml.kernel.org/r/20241217195000.1734039-1-david@redhat.com
-Fixes: 2c1f057e5be6 ("fs/proc/task_mmu: properly detect PM_MMAP_EXCLUSIVE per page of PMD-mapped THPs")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+-----BEGIN PGP SIGNATURE-----
 
- fs/proc/task_mmu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ2HhEAAKCRAw5/Bqldv6
+8uTdAKDCv5+sNld68enYYO2zxw4E/GXfPgCgnflAkxud6+/AjeuiTlwGRyk4nQQ=
+=gaQq
+-----END PGP SIGNATURE-----
 
---- a/fs/proc/task_mmu.c~fs-proc-task_mmu-fix-pagemap-flags-with-pmd-thp-entries-on-32bit
-+++ a/fs/proc/task_mmu.c
-@@ -1810,7 +1810,7 @@ static int pagemap_pmd_range(pmd_t *pmdp
- 		}
- 
- 		for (; addr != end; addr += PAGE_SIZE, idx++) {
--			unsigned long cur_flags = flags;
-+			u64 cur_flags = flags;
- 			pagemap_entry_t pme;
- 
- 			if (folio && (flags & PM_PRESENT) &&
-_
-
-Patches currently in -mm which might be from david@redhat.com are
-
-mm-page_alloc-dont-call-pfn_to_page-on-possibly-non-existent-pfn-in-split_large_buddy.patch
-fs-proc-task_mmu-fix-pagemap-flags-with-pmd-thp-entries-on-32bit.patch
-docs-tmpfs-update-the-large-folios-policy-for-tmpfs-and-shmem.patch
-mm-memory_hotplug-move-debug_pagealloc_map_pages-into-online_pages_range.patch
-mm-page_isolation-dont-pass-gfp-flags-to-isolate_single_pageblock.patch
-mm-page_isolation-dont-pass-gfp-flags-to-start_isolate_page_range.patch
-mm-page_alloc-make-__alloc_contig_migrate_range-static.patch
-mm-page_alloc-sort-out-the-alloc_contig_range-gfp-flags-mess.patch
-mm-page_alloc-forward-the-gfp-flags-from-alloc_contig_range-to-post_alloc_hook.patch
-powernv-memtrace-use-__gfp_zero-with-alloc_contig_pages.patch
-mm-hugetlb-dont-map-folios-writable-without-vm_write-when-copying-during-fork.patch
-fs-proc-vmcore-convert-vmcore_cb_lock-into-vmcore_mutex.patch
-fs-proc-vmcore-replace-vmcoredd_mutex-by-vmcore_mutex.patch
-fs-proc-vmcore-disallow-vmcore-modifications-while-the-vmcore-is-open.patch
-fs-proc-vmcore-prefix-all-pr_-with-vmcore.patch
-fs-proc-vmcore-move-vmcore-definitions-out-of-kcoreh.patch
-fs-proc-vmcore-factor-out-allocating-a-vmcore-range-and-adding-it-to-a-list.patch
-fs-proc-vmcore-factor-out-freeing-a-list-of-vmcore-ranges.patch
-fs-proc-vmcore-introduce-proc_vmcore_device_ram-to-detect-device-ram-ranges-in-2nd-kernel.patch
-virtio-mem-mark-device-ready-before-registering-callbacks-in-kdump-mode.patch
-virtio-mem-remember-usable-region-size.patch
-virtio-mem-support-config_proc_vmcore_device_ram.patch
-s390-kdump-virtio-mem-kdump-support-config_proc_vmcore_device_ram.patch
-mm-page_alloc-dont-use-__gfp_hardwall-when-migrating-pages-via-alloc_contig.patch
-mm-memory_hotplug-dont-use-__gfp_hardwall-when-migrating-pages-via-memory-offlining.patch
-
+--p21Tvcdg6sb3RhWd--
 
