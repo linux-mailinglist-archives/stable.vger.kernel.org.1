@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1FF9F5260
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:18:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBDA9F52F6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7CD01894473
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEEC9188873C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55261F8AD9;
-	Tue, 17 Dec 2024 17:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644E51F76D5;
+	Tue, 17 Dec 2024 17:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbcbKfbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acTlV9QL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD581F8ADA;
-	Tue, 17 Dec 2024 17:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B4D1F76A1;
+	Tue, 17 Dec 2024 17:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455694; cv=none; b=C9Y19n1Nu0EnpHda8SmTW2H9+EHMNwmWU6AYFoUuJMlnsHuTUnUVU3aInutgI1Mv6M/mgaz9C2ytT827QHpca32repqg5Rxam3XXveo7S9bqEpX0bwa7avhY3jiGczpdb+peH55JYxBDV+LoCjRQYj9y7oQEcPRIPy1iL5TiKgA=
+	t=1734456034; cv=none; b=SM4T+Xpad/mn5wPVWIThfakiXzsxFma/Z/GC2/6d2HyXxRV/GuLF3eqkoXWrqme9KGuURmv7ycdyuhUtJmcsArPcDCfKogQETbmnguF+Fq8+Zf/G0Tx978TyF7ERYOyq5yD6vwDBW4jOAsudi/sUMg2sPakxhpqfg7Ruux2N5Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455694; c=relaxed/simple;
-	bh=jXVHZVdKrsnU3V5+W2sNNraEaIgHqqxegrfAMErZ064=;
+	s=arc-20240116; t=1734456034; c=relaxed/simple;
+	bh=N0rkq1QuDz0gvcBy3mdmGE/Zz7zc+owe3g6fPZD4zFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZQTb/4M9YiLKg0asi/3Xp2dOVSTianE9Od5paRvNnWJ5nYXc6lcPBAf2RMhJiGZPJTQKxqLgerJJBpbK+masTkfIxfsc9tRztzLlgYyZAiB0foBx9tEC0iyRq8rsupXI67cD5GMwhA80hmvdA6He+LH6TFyWuVbsZxcxUCl+xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbcbKfbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28619C4CED3;
-	Tue, 17 Dec 2024 17:14:53 +0000 (UTC)
+	 MIME-Version; b=fa8AHbiEfv+as2HTTVhT0niNM4dhdgbTw3iYlfh3RAe46qGMhTV+GIivcOmc5S+EqC5OisYT4KUUud3cGPSMRxUb1+ajZQWI+xPvsFtP2MU51cY7TH/t+j+p9H1Wo0C+tfmX5bEIGbu0tCI6XF+9IpPFL5NAcS57MjVFmq5a24A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acTlV9QL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF92C4CED3;
+	Tue, 17 Dec 2024 17:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455694;
-	bh=jXVHZVdKrsnU3V5+W2sNNraEaIgHqqxegrfAMErZ064=;
+	s=korg; t=1734456033;
+	bh=N0rkq1QuDz0gvcBy3mdmGE/Zz7zc+owe3g6fPZD4zFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbcbKfbqRE82k1nqA1XjdETQ6cR4UqgAwxkL5+nTN9DIAqk7ujGkAhL+/PYN7plIN
-	 c5PtCCYxac2tIS8riWZqruTEFysSkBWQBy22NU5/ItVvJucO9n3JErydgZ6d0YCFvw
-	 7EpXnfnAnyc50ZLs+a12npKzH5JxE7lS20t77DnY=
+	b=acTlV9QLfJp0OaS9WKq8a3AmUxZbfJLLTN14F6lIZHlHn9szsev2Hqk8z0le33TUo
+	 XrbgjcBGnHiAbz66m3ooqBgew46MPlhwhIHKzseJwev1F+pMaXt6DlHaKh/QcaKY3E
+	 IxQXIdnFqqe++VDHvJ/u0qyI/LFVWq6G1uiGkBKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 22/51] tipc: fix NULL deref in cleanup_bearer()
+	syzbot+2e0d2840414ce817aaac@syzkaller.appspotmail.com,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: [PATCH 6.6 031/109] bpf,perf: Fix invalid prog_array access in perf_event_detach_bpf_prog
 Date: Tue, 17 Dec 2024 18:07:15 +0100
-Message-ID: <20241217170521.204160057@linuxfoundation.org>
+Message-ID: <20241217170534.680636263@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit b04d86fff66b15c07505d226431f808c15b1703c ]
+commit 978c4486cca5c7b9253d3ab98a88c8e769cb9bbd upstream.
 
-syzbot found [1] that after blamed commit, ub->ubsock->sk
-was NULL when attempting the atomic_dec() :
+Syzbot reported [1] crash that happens for following tracing scenario:
 
-atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
+  - create tracepoint perf event with attr.inherit=1, attach it to the
+    process and set bpf program to it
+  - attached process forks -> chid creates inherited event
 
-Fix this by caching the tipc_net pointer.
+    the new child event shares the parent's bpf program and tp_event
+    (hence prog_array) which is global for tracepoint
 
-[1]
+  - exit both process and its child -> release both events
+  - first perf_event_detach_bpf_prog call will release tp_event->prog_array
+    and second perf_event_detach_bpf_prog will crash, because
+    tp_event->prog_array is NULL
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-CPU: 0 UID: 0 PID: 5896 Comm: kworker/0:3 Not tainted 6.13.0-rc1-next-20241203-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events cleanup_bearer
- RIP: 0010:read_pnet include/net/net_namespace.h:387 [inline]
- RIP: 0010:sock_net include/net/sock.h:655 [inline]
- RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
-Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 3c f7 99 f6 48 8b 1b 48 83 c3 30 e8 f0 e4 60 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 1a f7 99 f6 49 83 c7 e8 48 8b 1b
-RSP: 0018:ffffc9000410fb70 EFLAGS: 00010206
-RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88802fe45a00
-RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffc9000410f900
-RBP: ffff88807e1f0908 R08: ffffc9000410f907 R09: 1ffff92000821f20
-R10: dffffc0000000000 R11: fffff52000821f21 R12: ffff888031d19980
-R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff88807e1f0918
-FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556ca050b000 CR3: 0000000031c0c000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+The fix makes sure the perf_event_detach_bpf_prog checks prog_array
+is valid before it tries to remove the bpf program from it.
 
-Fixes: 6a2fa13312e5 ("tipc: Fix use-after-free of kernel socket in cleanup_bearer().")
-Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67508b5f.050a0220.17bd51.0070.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241204170548.4152658-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://lore.kernel.org/bpf/Z1MR6dCIKajNS6nU@krava/T/#m91dbf0688221ec7a7fc95e896a7ef9ff93b0b8ad
+
+Fixes: 0ee288e69d03 ("bpf,perf: Fix perf_event_detach_bpf_prog error handling")
+Reported-by: syzbot+2e0d2840414ce817aaac@syzkaller.appspotmail.com
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241208142507.1207698-1-jolsa@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/udp_media.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/trace/bpf_trace.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 3f5a12b85b2d..f5bd75d931c1 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -811,6 +811,7 @@ static void cleanup_bearer(struct work_struct *work)
- {
- 	struct udp_bearer *ub = container_of(work, struct udp_bearer, work);
- 	struct udp_replicast *rcast, *tmp;
-+	struct tipc_net *tn;
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2216,6 +2216,9 @@ void perf_event_detach_bpf_prog(struct p
+ 		goto unlock;
  
- 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
- 		dst_cache_destroy(&rcast->dst_cache);
-@@ -818,10 +819,14 @@ static void cleanup_bearer(struct work_struct *work)
- 		kfree_rcu(rcast, rcu);
+ 	old_array = bpf_event_rcu_dereference(event->tp_event->prog_array);
++	if (!old_array)
++		goto put;
++
+ 	ret = bpf_prog_array_copy(old_array, event->prog, NULL, 0, &new_array);
+ 	if (ret < 0) {
+ 		bpf_prog_array_delete_safe(old_array, event->prog);
+@@ -2224,6 +2227,7 @@ void perf_event_detach_bpf_prog(struct p
+ 		bpf_prog_array_free_sleepable(old_array);
  	}
  
-+	tn = tipc_net(sock_net(ub->ubsock->sk));
-+
- 	dst_cache_destroy(&ub->rcast.dst_cache);
- 	udp_tunnel_sock_release(ub->ubsock);
-+
-+	/* Note: could use a call_rcu() to avoid another synchronize_net() */
- 	synchronize_net();
--	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
-+	atomic_dec(&tn->wq_count);
- 	kfree(ub);
- }
- 
--- 
-2.39.5
-
++put:
+ 	/*
+ 	 * It could be that the bpf_prog is not sleepable (and will be freed
+ 	 * via normal RCU), but is called from a point that supports sleepable
 
 
 
