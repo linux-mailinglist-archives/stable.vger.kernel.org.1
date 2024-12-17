@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8D69F52FA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5769F5289
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A8D1894DEA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4263A16E796
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398AF1527B1;
-	Tue, 17 Dec 2024 17:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCD11F8678;
+	Tue, 17 Dec 2024 17:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scO3q1eM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWVz8fEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADD11DE2AC;
-	Tue, 17 Dec 2024 17:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB2213DBB6;
+	Tue, 17 Dec 2024 17:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456043; cv=none; b=iY91Fd70bu/stA48Hny8sJboFEs9JO4MO/SxAB+wz+L4+2F+vUXvwS3A289v661ctJEJNIrR3VFqDMmnamsOY5r591Xc84PNh5rFM9o0GGbHOrMY/RnyCACzRA/AQSau1vvFTjtU+2PMMya7drz9hCGqaEEMCDljXP4+5yDkc70=
+	t=1734455833; cv=none; b=SCrQmZaU+GHFYJEmy2ScKnQcnMlXJsGM9wIcgCwCHGdQLadS1pTEVhwyTCI8UMV4ARYXabOM4XT1++fv6wRlcEjNwe2HWtkqCo/cwIjCAXQOc0X1U4NONzELR3nk44vEgxzEoL4/j0Vgfn4SE1nk7oTz+su9aCKHiYPwS/pWncU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456043; c=relaxed/simple;
-	bh=fVnVjHGiv9eGnBK0M7fdeTnD/UON0LwSygc9MSRaxNY=;
+	s=arc-20240116; t=1734455833; c=relaxed/simple;
+	bh=HXpb+J3NVcr0tM+q73owg4DIaUSpny/Xpu96mM7FlZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMXNn5uP1lKAaMZzirN8CetmvoKnamfV7dNFN33G/i8RywU0LW+HG9tdaSKK9BvmAdZxQXNZhYn21DaUpwozMmi+sazq2EINlKXdn4wcCYk9Y8BUD5HeS3oCR21F/HZPCpLR/2GVL8+8t9+wYnPndtYuw5rC3sY5RFX7b2o1vAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scO3q1eM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6813FC4CED3;
-	Tue, 17 Dec 2024 17:20:42 +0000 (UTC)
+	 MIME-Version; b=rG4/smnntMj7w+q5Nrf1IUNVKuWZ4n0zAZKboQWQCmTHS8BFk9MzjJUVPWeTQEn5Db7TAoMSApQ14eqG6lbCBGGhXgfx5SYTEsTgRDAdcfUzzqSmVJBkgiEZthFjHtQuxxQ/H3sT1ZoJg5FAP6lE5d1K8q3DHgaluDZEgizah4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWVz8fEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980E5C4CED3;
+	Tue, 17 Dec 2024 17:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456042;
-	bh=fVnVjHGiv9eGnBK0M7fdeTnD/UON0LwSygc9MSRaxNY=;
+	s=korg; t=1734455833;
+	bh=HXpb+J3NVcr0tM+q73owg4DIaUSpny/Xpu96mM7FlZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scO3q1eMTUxbYqctKOx3aV/zDIIQGnzaVBwETpL+1uIicxW9flda3CHgYIEmKHd34
-	 MfOeqYKFUpDKkszkQnZ4voVnZQtyb4m24om42+MQpJepcyISnpoNYuM2PukTy6MBk5
-	 Y2Xy3rqF7/hRAnSIDG1f3yLlBf3s7IURAjzRNx4o=
+	b=fWVz8fEyrDG9wU/tBoY9ioe/V6pZO2tA+FpHEhfaEDwS+mqorkn0nE0DzR84gpoL1
+	 2+PUMqEqOoSmXNF6EvQOnmbMDswHrvqAtcN8239O/5wywo0Cp9neW8o1zigxpZbyFg
+	 R4ctqt4hNqJlIVsTcy/qIzdsxcrKRr0e4T6rrLH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/109] batman-adv: Remove uninitialized data in full table TT response
+Subject: [PATCH 6.1 46/76] net: mscc: ocelot: ocelot->ts_id_lock and ocelot_port->tx_skbs.lock are IRQ-safe
 Date: Tue, 17 Dec 2024 18:07:26 +0100
-Message-ID: <20241217170535.130045944@linuxfoundation.org>
+Message-ID: <20241217170528.176045418@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 8038806db64da15721775d6b834990cacbfcf0b2 ]
+[ Upstream commit 0c53cdb95eb4a604062e326636971d96dd9b1b26 ]
 
-The number of entries filled by batadv_tt_tvlv_generate() can be less
-than initially expected in batadv_tt_prepare_tvlv_{global,local}_data()
-(changes can be removed by batadv_tt_local_event() in ADD+DEL sequence
-in the meantime as the lock held during the whole tvlv global/local data
-generation).
+ocelot_get_txtstamp() is a threaded IRQ handler, requested explicitly as
+such by both ocelot_ptp_rdy_irq_handler() and vsc9959_irq_handler().
 
-Thus tvlv_len could be bigger than the actual TT entry size that need
-to be sent so full table TT_RESPONSE could hold invalid TT entries such
-as below.
+As such, it runs with IRQs enabled, and not in hardirq context. Thus,
+ocelot_port_add_txtstamp_skb() has no reason to turn off IRQs, it cannot
+be preempted by ocelot_get_txtstamp(). For the same reason,
+dev_kfree_skb_any_reason() will always evaluate as kfree_skb_reason() in
+this calling context, so just simplify the dev_kfree_skb_any() call to
+kfree_skb().
 
- * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
- * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
+Also, ocelot_port_txtstamp_request() runs from NET_TX softirq context,
+not with hardirqs enabled. Thus, ocelot_get_txtstamp() which shares the
+ocelot_port->tx_skbs.lock lock with it, has no reason to disable hardirqs.
 
-Remove the extra allocated space to avoid sending uninitialized entries
-for full table TT_RESPONSE in both batadv_send_other_tt_response() and
-batadv_send_my_tt_response().
+This is part of a larger rework of the TX timestamping procedure.
+A logical subportion of the rework has been split into a separate
+change.
 
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20241205145519.1236778-4-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: b454abfab525 ("net: mscc: ocelot: be resilient to loss of PTP packets during transmission")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c | 37 ++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/mscc/ocelot_ptp.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index f0590f9bc2b1..bbab7491c83f 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -2754,14 +2754,16 @@ static bool batadv_tt_global_valid(const void *entry_ptr,
-  *
-  * Fills the tvlv buff with the tt entries from the specified hash. If valid_cb
-  * is not provided then this becomes a no-op.
-+ *
-+ * Return: Remaining unused length in tvlv_buff.
-  */
--static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
--				    struct batadv_hashtable *hash,
--				    void *tvlv_buff, u16 tt_len,
--				    bool (*valid_cb)(const void *,
--						     const void *,
--						     u8 *flags),
--				    void *cb_data)
-+static u16 batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
-+				   struct batadv_hashtable *hash,
-+				   void *tvlv_buff, u16 tt_len,
-+				   bool (*valid_cb)(const void *,
-+						    const void *,
-+						    u8 *flags),
-+				   void *cb_data)
+diff --git a/drivers/net/ethernet/mscc/ocelot_ptp.c b/drivers/net/ethernet/mscc/ocelot_ptp.c
+index 1386fb2ff4a9..c54e96ff3976 100644
+--- a/drivers/net/ethernet/mscc/ocelot_ptp.c
++++ b/drivers/net/ethernet/mscc/ocelot_ptp.c
+@@ -611,13 +611,12 @@ static int ocelot_port_add_txtstamp_skb(struct ocelot *ocelot, int port,
+ 					struct sk_buff *clone)
  {
- 	struct batadv_tt_common_entry *tt_common_entry;
- 	struct batadv_tvlv_tt_change *tt_change;
-@@ -2775,7 +2777,7 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 	tt_change = tvlv_buff;
+ 	struct ocelot_port *ocelot_port = ocelot->ports[port];
+-	unsigned long flags;
  
- 	if (!valid_cb)
--		return;
-+		return tt_len;
+-	spin_lock_irqsave(&ocelot->ts_id_lock, flags);
++	spin_lock(&ocelot->ts_id_lock);
  
- 	rcu_read_lock();
- 	for (i = 0; i < hash->size; i++) {
-@@ -2801,6 +2803,8 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 		}
+ 	if (ocelot_port->ptp_skbs_in_flight == OCELOT_MAX_PTP_ID ||
+ 	    ocelot->ptp_skbs_in_flight == OCELOT_PTP_FIFO_SIZE) {
+-		spin_unlock_irqrestore(&ocelot->ts_id_lock, flags);
++		spin_unlock(&ocelot->ts_id_lock);
+ 		return -EBUSY;
  	}
- 	rcu_read_unlock();
-+
-+	return batadv_tt_len(tt_tot - tt_num_entries);
+ 
+@@ -634,7 +633,7 @@ static int ocelot_port_add_txtstamp_skb(struct ocelot *ocelot, int port,
+ 
+ 	skb_queue_tail(&ocelot_port->tx_skbs, clone);
+ 
+-	spin_unlock_irqrestore(&ocelot->ts_id_lock, flags);
++	spin_unlock(&ocelot->ts_id_lock);
+ 
+ 	return 0;
  }
+@@ -753,7 +752,6 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
+ 		u32 val, id, seqid, txport;
+ 		struct ocelot_port *port;
+ 		struct timespec64 ts;
+-		unsigned long flags;
  
- /**
-@@ -3076,10 +3080,11 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
- 			goto out;
+ 		val = ocelot_read(ocelot, SYS_PTP_STATUS);
  
- 		/* fill the rest of the tvlv with the real TT entries */
--		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.global_hash,
--					tt_change, tt_len,
--					batadv_tt_global_valid,
--					req_dst_orig_node);
-+		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
-+						    bat_priv->tt.global_hash,
-+						    tt_change, tt_len,
-+						    batadv_tt_global_valid,
-+						    req_dst_orig_node);
- 	}
+@@ -777,7 +775,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
  
- 	/* Don't send the response, if larger than fragmented packet. */
-@@ -3203,9 +3208,11 @@ static bool batadv_send_my_tt_response(struct batadv_priv *bat_priv,
- 			goto out;
+ 		/* Retrieve its associated skb */
+ try_again:
+-		spin_lock_irqsave(&port->tx_skbs.lock, flags);
++		spin_lock(&port->tx_skbs.lock);
  
- 		/* fill the rest of the tvlv with the real TT entries */
--		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.local_hash,
--					tt_change, tt_len,
--					batadv_tt_local_valid, NULL);
-+		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
-+						    bat_priv->tt.local_hash,
-+						    tt_change, tt_len,
-+						    batadv_tt_local_valid,
-+						    NULL);
- 	}
+ 		skb_queue_walk_safe(&port->tx_skbs, skb, skb_tmp) {
+ 			if (OCELOT_SKB_CB(skb)->ts_id != id)
+@@ -787,7 +785,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
+ 			break;
+ 		}
  
- 	tvlv_tt_data->flags = BATADV_TT_RESPONSE;
+-		spin_unlock_irqrestore(&port->tx_skbs.lock, flags);
++		spin_unlock(&port->tx_skbs.lock);
+ 
+ 		if (WARN_ON(!skb_match))
+ 			goto next_ts;
+@@ -796,7 +794,7 @@ void ocelot_get_txtstamp(struct ocelot *ocelot)
+ 			dev_err_ratelimited(ocelot->dev,
+ 					    "port %d received stale TX timestamp for seqid %d, discarding\n",
+ 					    txport, seqid);
+-			dev_kfree_skb_any(skb);
++			kfree_skb(skb);
+ 			goto try_again;
+ 		}
+ 
 -- 
 2.39.5
 
