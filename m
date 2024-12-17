@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB55F9F53B7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930F19F51C0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FEB6188E496
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 075A01882743
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74791F6661;
-	Tue, 17 Dec 2024 17:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194F61F543C;
+	Tue, 17 Dec 2024 17:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGze18Qi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2B2txM2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24171F757B;
-	Tue, 17 Dec 2024 17:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DDB1F4735;
+	Tue, 17 Dec 2024 17:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456495; cv=none; b=hUVQL5xN8K+w5QuiBxFgv8V6EL2yt49zj92FJnay+0sO6qdgO7lXnJoDnDNXK9gVskIT3V9P8JA93oudSDv7gIz05h3rLMWvLh3cHN1stsK9rsQrxleBUCPzCB2xNqyE/kreYFN333fJrfl0xlLkWOovn+/yOli+wlZNeMMXzXw=
+	t=1734455372; cv=none; b=aMaAX9lYfXA8+n9tjv6n+HPvMDUo2A5cebA8knn1PGfg0E1tslHJdiNjMWoBPncJtWzn2mUmP2CZZXgYW8NrpIsjoT+hmYTF/TVAwIlqgrk7FhVgwQc9BtPynUkA9jhhGVbvjshnej+BVZx2FlVShaBHd67HY2thPmWp373Fymc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456495; c=relaxed/simple;
-	bh=v8fooYekdOnDpuktoxxQ15CZTXeCoMeTiAvp+HP/ghE=;
+	s=arc-20240116; t=1734455372; c=relaxed/simple;
+	bh=vne1xcTUYr7WQ83MyLa98w+RDH/L6D6bR+xWMpgcVxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0fSkU0aTKezC1Ud0c3nvnoD2wcmXXAkD1+OaHmd00oDF+WfDY83B+UMC0Gxm543EiWua57k8SIOIcguOhrHx2xDFSKaQ9NnfsGk4xeWz+MLrF8vHzDhRaz7oA0l4L/qMvlteyxaeq+dDLNd2fGWzf+yeNQOnr3PvUQs6HPmfPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGze18Qi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEACC4CED3;
-	Tue, 17 Dec 2024 17:28:14 +0000 (UTC)
+	 MIME-Version; b=onEwRAxxHEyULdpIGMrlYMIVqN1H/AwRSbgQmiHDtMiBWAIMVe3HqHijJPH5PiYlbe56rPF6Gv4Ysf+Cl0fk/G2LUu56PnBl1ynvef0SvUsFEKriLDXt87YEhNt3W+O8OkIvWYMyXQACAL+csHlk3pwIuCCGKXxi6TRkrUKx1ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2B2txM2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA8BC4CED3;
+	Tue, 17 Dec 2024 17:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456495;
-	bh=v8fooYekdOnDpuktoxxQ15CZTXeCoMeTiAvp+HP/ghE=;
+	s=korg; t=1734455372;
+	bh=vne1xcTUYr7WQ83MyLa98w+RDH/L6D6bR+xWMpgcVxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGze18Qi9kCQKvmJKlB/ImcWEuWeAWTOLoWyGfOJ8ZMHeUnXzpaAZX9lV8eAANgVP
-	 kk0Xd772A90JT94hgJVvZjNLt5GqwDA9slQr/B9PrEwOHKkBhdKEESAeC/pq5G9txh
-	 oAg+ftA7oXWh07Q+tVY5wQWO5SxXu0oLvBA7Iot0=
+	b=2B2txM2UNpecvaBdkygptl1eF329oXxXu+n4ja0f/OjKWCDBoeTV2cvyiJ5+/9kAL
+	 7wbm4/JWRzNM8fMmKOWxNy65CTNbd1sF1+EuNEpD0lpSh08VNWOZ9vilsxvawEAA1T
+	 QSVYP4wpF5Vfbfhc5juBNbISeknrQfiACCVCRg0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@mit.edu>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.12 076/172] bpf: Check size for BTF-based ctx access of pointer members
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 14/24] qca_spi: Fix clock speed for multiple QCA7000
 Date: Tue, 17 Dec 2024 18:07:12 +0100
-Message-ID: <20241217170549.439469551@linuxfoundation.org>
+Message-ID: <20241217170519.589655211@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 659b9ba7cb2d7adb64618b87ddfaa528a143766e upstream.
+[ Upstream commit 4dba406fac06b009873fe7a28231b9b7e4288b09 ]
 
-Robert Morris reported the following program type which passes the
-verifier in [0]:
+Storing the maximum clock speed in module parameter qcaspi_clkspeed
+has the unintended side effect that the first probed instance
+defines the value for all other instances. Fix this issue by storing
+it in max_speed_hz of the relevant SPI device.
 
-SEC("struct_ops/bpf_cubic_init")
-void BPF_PROG(bpf_cubic_init, struct sock *sk)
-{
-	asm volatile("r2 = *(u16*)(r1 + 0)");     // verifier should demand u64
-	asm volatile("*(u32 *)(r2 +1504) = 0");   // 1280 in some configs
-}
+This fix keeps the priority of the speed parameter (module parameter,
+device tree property, driver default). Btw this uses the opportunity
+to get the rid of the unused member clkspeed.
 
-The second line may or may not work, but the first instruction shouldn't
-pass, as it's a narrow load into the context structure of the struct ops
-callback. The code falls back to btf_ctx_access to ensure correctness
-and obtaining the types of pointers. Ensure that the size of the access
-is correctly checked to be 8 bytes, otherwise the verifier thinks the
-narrow load obtained a trusted BTF pointer and will permit loads/stores
-as it sees fit.
-
-Perform the check on size after we've verified that the load is for a
-pointer field, as for scalar values narrow loads are fine. Access to
-structs passed as arguments to a BPF program are also treated as
-scalars, therefore no adjustment is needed in their case.
-
-Existing verifier selftests are broken by this change, but because they
-were incorrect. Verifier tests for d_path were performing narrow load
-into context to obtain path pointer, had this program actually run it
-would cause a crash. The same holds for verifier_btf_ctx_access tests.
-
-  [0]: https://lore.kernel.org/bpf/51338.1732985814@localhost
-
-Fixes: 9e15db66136a ("bpf: Implement accurate raw_tp context access via BTF")
-Reported-by: Robert Morris <rtm@mit.edu>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241212092050.3204165-2-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20241206184643.123399-2-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c                                            |    6 ++++++
- tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c |    4 ++--
- tools/testing/selftests/bpf/progs/verifier_d_path.c         |    4 ++--
- 3 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_spi.c | 24 ++++++++++--------------
+ drivers/net/ethernet/qualcomm/qca_spi.h |  1 -
+ 2 files changed, 10 insertions(+), 15 deletions(-)
 
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -6519,6 +6519,12 @@ bool btf_ctx_access(int off, int size, e
- 		return false;
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index 036ab9dfe7fc..ff477e27a3fe 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -823,7 +823,6 @@ qcaspi_netdev_init(struct net_device *dev)
+ 
+ 	dev->mtu = QCAFRM_MAX_MTU;
+ 	dev->type = ARPHRD_ETHER;
+-	qca->clkspeed = qcaspi_clkspeed;
+ 	qca->burst_len = qcaspi_burst_len;
+ 	qca->spi_thread = NULL;
+ 	qca->buffer_size = (dev->mtu + VLAN_ETH_HLEN + QCAFRM_HEADER_LEN +
+@@ -912,17 +911,15 @@ qca_spi_probe(struct spi_device *spi)
+ 	legacy_mode = of_property_read_bool(spi->dev.of_node,
+ 					    "qca,legacy-mode");
+ 
+-	if (qcaspi_clkspeed == 0) {
+-		if (spi->max_speed_hz)
+-			qcaspi_clkspeed = spi->max_speed_hz;
+-		else
+-			qcaspi_clkspeed = QCASPI_CLK_SPEED;
+-	}
++	if (qcaspi_clkspeed)
++		spi->max_speed_hz = qcaspi_clkspeed;
++	else if (!spi->max_speed_hz)
++		spi->max_speed_hz = QCASPI_CLK_SPEED;
+ 
+-	if ((qcaspi_clkspeed < QCASPI_CLK_SPEED_MIN) ||
+-	    (qcaspi_clkspeed > QCASPI_CLK_SPEED_MAX)) {
+-		dev_err(&spi->dev, "Invalid clkspeed: %d\n",
+-			qcaspi_clkspeed);
++	if (spi->max_speed_hz < QCASPI_CLK_SPEED_MIN ||
++	    spi->max_speed_hz > QCASPI_CLK_SPEED_MAX) {
++		dev_err(&spi->dev, "Invalid clkspeed: %u\n",
++			spi->max_speed_hz);
+ 		return -EINVAL;
  	}
  
-+	if (size != sizeof(u64)) {
-+		bpf_log(log, "func '%s' size %d must be 8\n",
-+			tname, size);
-+		return false;
-+	}
-+
- 	/* check for PTR_TO_RDONLY_BUF_OR_NULL or PTR_TO_RDWR_BUF_OR_NULL */
- 	for (i = 0; i < prog->aux->ctx_arg_info_size; i++) {
- 		const struct bpf_ctx_arg_aux *ctx_arg_info = &prog->aux->ctx_arg_info[i];
---- a/tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_btf_ctx_access.c
-@@ -11,7 +11,7 @@ __success __retval(0)
- __naked void btf_ctx_access_accept(void)
- {
- 	asm volatile ("					\
--	r2 = *(u32*)(r1 + 8);		/* load 2nd argument value (int pointer) */\
-+	r2 = *(u64 *)(r1 + 8);		/* load 2nd argument value (int pointer) */\
- 	r0 = 0;						\
- 	exit;						\
- "	::: __clobber_all);
-@@ -23,7 +23,7 @@ __success __retval(0)
- __naked void ctx_access_u32_pointer_accept(void)
- {
- 	asm volatile ("					\
--	r2 = *(u32*)(r1 + 0);		/* load 1nd argument value (u32 pointer) */\
-+	r2 = *(u64 *)(r1 + 0);		/* load 1nd argument value (u32 pointer) */\
- 	r0 = 0;						\
- 	exit;						\
- "	::: __clobber_all);
---- a/tools/testing/selftests/bpf/progs/verifier_d_path.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_d_path.c
-@@ -11,7 +11,7 @@ __success __retval(0)
- __naked void d_path_accept(void)
- {
- 	asm volatile ("					\
--	r1 = *(u32*)(r1 + 0);				\
-+	r1 = *(u64 *)(r1 + 0);				\
- 	r2 = r10;					\
- 	r2 += -8;					\
- 	r6 = 0;						\
-@@ -31,7 +31,7 @@ __failure __msg("helper call is not allo
- __naked void d_path_reject(void)
- {
- 	asm volatile ("					\
--	r1 = *(u32*)(r1 + 0);				\
-+	r1 = *(u64 *)(r1 + 0);				\
- 	r2 = r10;					\
- 	r2 += -8;					\
- 	r6 = 0;						\
+@@ -947,14 +944,13 @@ qca_spi_probe(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
+ 
+-	dev_info(&spi->dev, "ver=%s, clkspeed=%d, burst_len=%d, pluggable=%d\n",
++	dev_info(&spi->dev, "ver=%s, clkspeed=%u, burst_len=%d, pluggable=%d\n",
+ 		 QCASPI_DRV_VERSION,
+-		 qcaspi_clkspeed,
++		 spi->max_speed_hz,
+ 		 qcaspi_burst_len,
+ 		 qcaspi_pluggable);
+ 
+ 	spi->mode = SPI_MODE_3;
+-	spi->max_speed_hz = qcaspi_clkspeed;
+ 	if (spi_setup(spi) < 0) {
+ 		dev_err(&spi->dev, "Unable to setup SPI device\n");
+ 		return -EFAULT;
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.h b/drivers/net/ethernet/qualcomm/qca_spi.h
+index d13a67e20d65..203941d5d72a 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.h
++++ b/drivers/net/ethernet/qualcomm/qca_spi.h
+@@ -101,7 +101,6 @@ struct qcaspi {
+ #endif
+ 
+ 	/* user configurable options */
+-	u32 clkspeed;
+ 	u8 legacy_mode;
+ 	u16 burst_len;
+ };
+-- 
+2.39.5
+
 
 
 
