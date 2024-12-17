@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-105018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006659F54A2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:44:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3EBA9F5475
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5583D188F778
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:40:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 737F216E639
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEF91F76DF;
-	Tue, 17 Dec 2024 17:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446CA1FC11F;
+	Tue, 17 Dec 2024 17:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DD4ZKf0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDc8llaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890951F8660;
-	Tue, 17 Dec 2024 17:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F316F1F8F0C;
+	Tue, 17 Dec 2024 17:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456847; cv=none; b=lW7IYLgQHHzIHEZqhPnRlbSD6VG9aQhB1OTKgs2ljdUnGMS0QgkZwnATyYABX1PyeLbyrlXXCdZTryC9eFH4TF00PHRrBgZFFNW8OhaM9Vj7FmuOCjXHW6p5oe8QW22/72t99WHFRAera0BDTXuZATfurH8oZI3sPC1zX4PmIaw=
+	t=1734456728; cv=none; b=poiGGKwCQxgcZA82T13tdqV/59Kot8MSxIM7yaLiIVGVImArOujbi6ZLY36w/lHUK103VkZUTlbN+9rkg8HL6HZEJd7m7Um7I+mAbGQ6SoXfMJlFKYW9hd/7dVLQU5fCwc/0NwVsrP00qNkl/CTqBY/R5jFY8PEuoLwNfP2l9dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456847; c=relaxed/simple;
-	bh=LrBWuFpWS2fAF3ybZIkfCkZGt7+HuXYgZRXjWb4k+N8=;
+	s=arc-20240116; t=1734456728; c=relaxed/simple;
+	bh=XMgx/Ga+ivC7bhYF2eVO6LMViIKLIFDGprLp1moXitI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpQOeN0h82RV+X5JThwU2QowFGjTmA0oHLUG9AamtQsQdyjsD69F9lX0jBYP/DPT2FJC6lTX2xq0mwABybG2V+3jKGlf8WAVhGMBDJmrhNXTNraTbjgpH1h6t2g2CdouNOKCnwUCgzyO9SZUQc8mhSxrmPWB0a9HW3rW5pBHG/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DD4ZKf0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9F5C4CED3;
-	Tue, 17 Dec 2024 17:34:06 +0000 (UTC)
+	 MIME-Version; b=ktwu1tFOQQIYzE2JqzWxtCjwZqwa2hK9F13ECO3qwR0IZyEfOVB7S2Pp1UmlW7gOYKzLBGbkvOqHUJVrYMPzuAbVRwsT78yPnjkFS/zX3F+d65mlHQ3Gl2yoOnwCFzJw9tAjYhDlbZxSUl1l581HQMTaajx+eO+Z5syKWOqxIvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDc8llaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788ADC4CEF4;
+	Tue, 17 Dec 2024 17:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456847;
-	bh=LrBWuFpWS2fAF3ybZIkfCkZGt7+HuXYgZRXjWb4k+N8=;
+	s=korg; t=1734456727;
+	bh=XMgx/Ga+ivC7bhYF2eVO6LMViIKLIFDGprLp1moXitI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DD4ZKf0cE07WqTQzvudPtj6WWmQVEw06L7z1m1ob8EQcRQsVEGMmXOwxEg7XDL8yt
-	 8Ilymm+2uwxQKxRmselo915KaFY3DGucW745fQD22WUpYhDQbEcHTIpO+GMcwq0AmZ
-	 6RVo8uYpkqLNiRXvIPA8roi15vmNZFXW2I0h6ydc=
+	b=XDc8llaS0dQ03e/wc4ojZzjVQd03BtoXd8RILZrGtoTVuO368N+3+lJ/kf1wMf2mw
+	 uEKZig5ZlnxXBlBz3vsBKdunMPlsRg+JEvD02/Wiqwzm7VUmuLz4vmWUGFdIMKRfmw
+	 vP2fTtGD8bBm2lS9RPpMp+viGKI0lKGmuq8WaEMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hangbin Liu <liuhangbin@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 141/172] bonding: Fix initial {vlan,mpls}_feature set in bond_compute_features
-Date: Tue, 17 Dec 2024 18:08:17 +0100
-Message-ID: <20241217170552.186094737@linuxfoundation.org>
+Subject: [PATCH 6.12 142/172] bonding: Fix feature propagation of NETIF_F_GSO_ENCAP_ALL
+Date: Tue, 17 Dec 2024 18:08:18 +0100
+Message-ID: <20241217170552.225423484@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
 References: <20241217170546.209657098@linuxfoundation.org>
@@ -72,49 +72,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit d064ea7fe2a24938997b5e88e6b61cbb0a4bb906 ]
+[ Upstream commit 77b11c8bf3a228d1c63464534c2dcc8d9c8bf7ff ]
 
-If a bonding device has slave devices, then the current logic to derive
-the feature set for the master bond device is limited in that flags which
-are fully supported by the underlying slave devices cannot be propagated
-up to vlan devices which sit on top of bond devices. Instead, these get
-blindly masked out via current NETIF_F_ALL_FOR_ALL logic.
+Drivers like mlx5 expose NIC's vlan_features such as
+NETIF_F_GSO_UDP_TUNNEL & NETIF_F_GSO_UDP_TUNNEL_CSUM which are
+later not propagated when the underlying devices are bonded and
+a vlan device created on top of the bond.
 
-vlan_features and mpls_features should reuse netdev_base_features() in
-order derive the set in the same way as ndo_fix_features before iterating
-through the slave devices to refine the feature set.
+Right now, the more cumbersome workaround for this is to create
+the vlan on top of the mlx5 and then enslave the vlan devices
+to a bond.
+
+To fix this, add NETIF_F_GSO_ENCAP_ALL to BOND_VLAN_FEATURES
+such that bond_compute_features() can probe and propagate the
+vlan_features from the slave devices up to the vlan device.
+
+Given the following bond:
+
+  # ethtool -i enp2s0f{0,1}np{0,1}
+  driver: mlx5_core
+  [...]
+
+  # ethtool -k enp2s0f0np0 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: on
+  rx-udp-gro-forwarding: off
+
+  # ethtool -k enp2s0f1np1 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: on
+  rx-udp-gro-forwarding: off
+
+  # ethtool -k bond0 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+Before:
+
+  # ethtool -k bond0.100 | grep udp
+  tx-udp_tnl-segmentation: off [requested on]
+  tx-udp_tnl-csum-segmentation: off [requested on]
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+After:
+
+  # ethtool -k bond0.100 | grep udp
+  tx-udp_tnl-segmentation: on
+  tx-udp_tnl-csum-segmentation: on
+  tx-udp-segmentation: on
+  rx-udp_tunnel-port-offload: off [fixed]
+  rx-udp-gro-forwarding: off
+
+Various users have run into this reporting performance issues when
+configuring Cilium in vxlan tunneling mode and having the combination
+of bond & vlan for the core devices connecting the Kubernetes cluster
+to the outside world.
 
 Fixes: a9b3ace44c7d ("bonding: fix vlan_features computing")
-Fixes: 2e770b507ccd ("net: bonding: Inherit MPLS features from slave devices")
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Cc: Nikolay Aleksandrov <razor@blackwall.org>
 Cc: Ido Schimmel <idosch@idosch.org>
 Cc: Jiri Pirko <jiri@nvidia.com>
 Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20241210141245.327886-2-daniel@iogearbox.net
+Link: https://patch.msgid.link/20241210141245.327886-3-daniel@iogearbox.net
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 166910693fd7..dfad7b6f9f35 100644
+index dfad7b6f9f35..4d73abae503d 100644
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -1562,8 +1562,9 @@ static void bond_compute_features(struct bonding *bond)
+@@ -1534,6 +1534,7 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
  
- 	if (!bond_has_slaves(bond))
- 		goto done;
--	vlan_features &= NETIF_F_ALL_FOR_ALL;
--	mpls_features &= NETIF_F_ALL_FOR_ALL;
-+
-+	vlan_features = netdev_base_features(vlan_features);
-+	mpls_features = netdev_base_features(mpls_features);
+ #define BOND_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+ 				 NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
++				 NETIF_F_GSO_ENCAP_ALL | \
+ 				 NETIF_F_HIGHDMA | NETIF_F_LRO)
  
- 	bond_for_each_slave(bond, slave, iter) {
- 		vlan_features = netdev_increment_features(vlan_features,
+ #define BOND_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
 -- 
 2.39.5
 
