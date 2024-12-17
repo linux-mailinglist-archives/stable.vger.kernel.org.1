@@ -1,72 +1,100 @@
-Return-Path: <stable+bounces-104452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA89B9F45A8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:04:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D05099F45B8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 09:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87264188C815
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 08:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 907C5188E205
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 08:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E811D5CFE;
-	Tue, 17 Dec 2024 08:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690831DAC93;
+	Tue, 17 Dec 2024 08:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtjEdEHp"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EMM+MPKT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4255E143723;
-	Tue, 17 Dec 2024 08:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC2F1DA113;
+	Tue, 17 Dec 2024 08:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734422679; cv=none; b=cLRSrXCW0D1Q4DODKzTzWR0CTXMBvelOChhPQFuT+6MSFYMK3XJitCInMChH4iAMuONDnr6azCU4FRDsqrP2aEz3Oh5CQ4GfbUaRJIIHyKYM8xxAcA22vLp/K2befqJnZZCHqt20OBBwefi/mcBDJU/y+xkoK5ORjoCOy+oS6K0=
+	t=1734423076; cv=none; b=dH76veBoLu5kGsVKgET9hmzayKFiFuFEmv3Y5pQivyU9HEWYembb0IM51HTqS9UK994IT+BcrjI/WEbPfgDt/DYMUaVPUQfgfC1P4BYTbOWvAJHsFDs8O4srO7Otl7xaxqFJzmGFsfY6lIOMHoK0NL2VtqFDuidjeOEXMMXIgsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734422679; c=relaxed/simple;
-	bh=0WNFZcCRtxdzdcKZD2RUn0ShHxYFlVtMrenesMJ0Ris=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eVQUSPx77QqC9FVCn0prgOuhkLdHLBOBNSMDbtYVkE2e33bYO0648wShpLd33dmifiYFqOFy3LJcXLA0+VmHvrqi0CPOddg53JG12tlp3mW95C3m4g92bzsSPKQnwpIJfmooMiF/vesWBJfa9/Nc0Lm8afbbbKuC415r9QcB3Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtjEdEHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D4EC4CED3;
-	Tue, 17 Dec 2024 08:04:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734422678;
-	bh=0WNFZcCRtxdzdcKZD2RUn0ShHxYFlVtMrenesMJ0Ris=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EtjEdEHpqN1dt6vNsb6hCfdIKbUolRK1rw9QWI1BCHT07CbuuFxID8KusPM/qqfyZ
-	 tS0zRaFWWYpypegD/e7Y10HA3bcfNhm10j0z0+opE4UyN83DI6cY5xGdBtU00xzbni
-	 ESx4kKOw8H50Qwhk4V7t//3s8nbNlHbUnZBy97gs=
-Date: Tue, 17 Dec 2024 09:04:34 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ma Ke <make_ruc2021@163.com>
-Cc: bvanassche@acm.org, jgg@ziepe.ca, leon@kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1734423076; c=relaxed/simple;
+	bh=+tmVQNDbPLLjALMas9jkB+FitqvhPC+w92rzlYHAmaQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Psnv2tw+bj5L/tRCab12jOHpR77ubQaRXN27tKYJH+LslMiFsvgqOVHf8oJlx+slL0osMdDExz5Vfp/8lpGfIz5bNfieUD7Vdhnx1LCynO8bfopNzyAE5Qm2ldJKlyfBJ5DgcARp1uOUb9F0ZKB7z0dohvnyoi91QQV81zHxzHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EMM+MPKT; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=rv8l9
+	YFNfbS2Fc/AUsV3HzdcDIM3qTrTB46nCaLjGlg=; b=EMM+MPKTqMV6xOv8zQ/ot
+	lvv10XN/krfZkJ1c5IJ/KCZ1k/hBOXfm4yTbgpHXRJPUWznI/kTQCxX/pCbZcmtC
+	MKPz8fzTIcdoQ5DBOnxDas7bWM5Uts/LdXu4Wbtpe47pjbY/24zcCakXZIEiqkSb
+	MIB90AawKLUfsyBd7GSphg=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDXb4kGMmFn2IKJBA--.19125S4;
+	Tue, 17 Dec 2024 16:10:49 +0800 (CST)
+From: Ma Ke <make_ruc2021@163.com>
+To: jejb@linux.ibm.com,
+	martin.petersen@oracle.com,
+	jeff@garzik.org,
+	James.Bottomley@SteelEye.com
+Cc: linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make_ruc2021@163.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] RDMA/srp: Fix error handling in srp_add_port
-Message-ID: <2024121717-trustful-opulently-c386@gregkh>
-References: <20241217075538.2909996-1-make_ruc2021@163.com>
+Subject: [PATCH] [SCSI] raid class: Fix error handling in raid_component_add
+Date: Tue, 17 Dec 2024 16:10:39 +0800
+Message-Id: <20241217081039.2911399-1-make_ruc2021@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241217075538.2909996-1-make_ruc2021@163.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXb4kGMmFn2IKJBA--.19125S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Gr15JF48GrWrAw48ZFW3GFg_yoWkAFg_GF
+	40vryIgr1Ikrs7XasxtanxZr1vgFsF93yfuFWIvFn3Zay3XFZFqr1DWrs0vryUW3yUXw17
+	J3W5tr40vr409jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRZnYFUUUUUU==
+X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBFQC4C2dhLpU15wABsI
 
-On Tue, Dec 17, 2024 at 03:55:38PM +0800, Ma Ke wrote:
-> The reference count of the device incremented in device_initialize() is
-> not decremented when device_add() fails. Add a put_device() call before
-> returning from the function to decrement reference count for cleanup.
-> Or it could cause memory leak.
+The reference count of the device incremented in device_initialize() is
+not decremented when device_add() fails. Add a put_device() call before
+returning from the function to decrement reference count for cleanup.
+Or it could cause memory leak.
 
-That is not what you did here.  Please be more careful when sending out
-"bugfixes" like this.
+As comment of device_add() says, if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count.
 
-thanks,
+Found by code review.
 
-greg k-h
+Cc: stable@vger.kernel.org
+Fixes: ed542bed126c ("[SCSI] raid class: handle component-add errors")
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+---
+ drivers/scsi/raid_class.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/scsi/raid_class.c b/drivers/scsi/raid_class.c
+index 898a0bdf8df6..2cb2949a78c6 100644
+--- a/drivers/scsi/raid_class.c
++++ b/drivers/scsi/raid_class.c
+@@ -251,6 +251,7 @@ int raid_component_add(struct raid_template *r,struct device *raid_dev,
+ 	list_del(&rc->node);
+ 	rd->component_count--;
+ 	put_device(component_dev);
++	put_device(&rc->dev);
+ 	kfree(rc);
+ 	return err;
+ }
+-- 
+2.25.1
+
 
