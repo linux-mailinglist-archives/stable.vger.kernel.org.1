@@ -1,100 +1,119 @@
-Return-Path: <stable+bounces-104531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83EF39F50E9
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC4D9F5101
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15F71735D4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:21:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE995188A286
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6E01FBEAE;
-	Tue, 17 Dec 2024 16:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="INbn1SEl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90431F7072;
+	Tue, 17 Dec 2024 16:29:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0531FBE92;
-	Tue, 17 Dec 2024 16:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E050142E77;
+	Tue, 17 Dec 2024 16:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734452061; cv=none; b=O637h3y8XJJJEFVYuSr1ziAv8cGPVKY97qEo+V0aeY4azwVqeYl9cPCUtoOuD/NnhzMr3q7h7c5DadNpiZLwlTx0xfOfZjrmoeNWxPuTbTlPtPyfBDCeMg/H8pF+9+bW2b9bRWvDzHcg1oxuPUoWOJpL+1HR93YdTAKoWDgQ9zY=
+	t=1734452989; cv=none; b=YNq8fObKpHN2u5IvBzT+QSOSk+68Fgr1W8qD9CjtkHkN7qvFU0o5ZrGV0wK4EeeCB+QjWOPIDNQlSNfXZiMS/xnGbC1d6z8YpYi3FBEx643v1HIkP5Q0ydBX5HpvR1QTIJXO50feQpnEXE2hSzRJo1ReobSWGCD094GhYbkOs3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734452061; c=relaxed/simple;
-	bh=fn68lkIztwJWNwmzR+5z/QDQZTwctfhLrQRP2KLsDn4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AGwgIRAW9OuTKs6lXqDUbiqJAKr9L6o9lYvF+UhIO/CW9esYuG/Uxvm5hawkbKkBfgoAv45YLlngxoXNH+fhoXURPjUsuvA/rK+uP4/SMjkrKO+vXvsFiyZgDFbAB31KtVBfVGfP3fP7NM+vGsrFX/B7qsvYuwvDUZGIlKaLNi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=INbn1SEl; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4YCMMG6tHFzlff0K;
-	Tue, 17 Dec 2024 16:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1734452056; x=1737044057; bh=xonCYOGgFAUqAOKqQpY+RP9M
-	Z4FcCRSgpfbBid5J3/w=; b=INbn1SElovgX1I3KV0qrmVmwli/WkJMkTGdNPI2H
-	xbiz06gAejUNO3CKrS+MK8EcifypZpgfMBq2fw2ivMD4AIP1P6lNGrB+wcrdKjk0
-	vT8s0CUmjfU1ISQYL2aYnNLPv0/rxY4O+snzIiQ67q3tYQlvtYC3jO6dJO99UGNs
-	Pf5jr+Fu0WwKDUkTCGVboYZaiQeLem0IxMrqwcX3cDh99BZ57Vn3yYQE5H25xWEn
-	/tWB0pbOTBRabi3pThZci37sLiSyfXVM01lpEBPrXOJnzhq2u/JLtK6dCrcIh+jp
-	tDhxtrzmJSqzXiL8k5s0IT2p15qGxXJTsMlNk7qHeedJlQ==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id KtVd_4J9W6lY; Tue, 17 Dec 2024 16:14:16 +0000 (UTC)
-Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4YCMMB3LsZzlff0H;
-	Tue, 17 Dec 2024 16:14:13 +0000 (UTC)
-Message-ID: <2f74036c-7942-4e8b-8c71-6c413d722262@acm.org>
-Date: Tue, 17 Dec 2024 08:14:13 -0800
+	s=arc-20240116; t=1734452989; c=relaxed/simple;
+	bh=qDsAmNXR5n51iXB16Y3+OxPTekINrODSuNbEbMHwiJg=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=RiHeOe5yT/YgSWBaz0iBfdzxnocz3WdZ3w0XA3zcuIhOkebcZfmDf9CiplH6HVToNXlkfPzJj4Q1RNCg/7duzsGhSkkxJfsFqRiqKD5Tbz00d19nB4XLYPi2iqXnb+cWC85iiJKXHhMY8i0Z1gPrJqXAViP/nHQdad9hoHzkk3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F84C4CED7;
+	Tue, 17 Dec 2024 16:29:49 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1tNaSn-00000008aeg-1psR;
+	Tue, 17 Dec 2024 11:30:25 -0500
+Message-ID: <20241217163025.288022517@goodmis.org>
+User-Agent: quilt/0.68
+Date: Tue, 17 Dec 2024 11:18:41 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Al Viro <viro@ZenIV.linux.org.uk>,
+ Michal Simek <monstr@monstr.eu>,
+ stable@vger.kernel.org,
+ Linus Walleij <linus.walleij@linaro.org>
+Subject: [for-linus v2][PATCH 1/2] fgraph: Still initialize idle shadow stacks when starting
+References: <20241217161840.069495339@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] RDMA/srp: Fix error handling in srp_add_port
-To: Ma Ke <make_ruc2021@163.com>, jgg@ziepe.ca, leon@kernel.org
-Cc: linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241217104605.2924666-1-make_ruc2021@163.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20241217104605.2924666-1-make_ruc2021@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
 
-On 12/17/24 2:46 AM, Ma Ke wrote:
-> Once device_add() failed, we should call only put_device() to
-> decrement reference count for cleanup. We should not call device_del()
-> before put_device().
-> 
-> As comment of device_add() says, 'if device_add() succeeds, you should
-> call device_del() when you want to get rid of it. If device_add() has
-> not succeeded, use only put_device() to drop the reference count'.
-> 
-> Found by code review.
-> Cc: stable@vger.kernel.org
-> Fixes: c8e4c2397655 ("RDMA/srp: Rework the srp_add_port() error path")
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-Patch descriptions should be in the imperative mood.
+A bug was discovered where the idle shadow stacks were not initialized
+for offline CPUs when starting function graph tracer, and when they came
+online they were not traced due to the missing shadow stack. To fix
+this, the idle task shadow stack initialization was moved to using the
+CPU hotplug callbacks. But it removed the initialization when the
+function graph was enabled. The problem here is that the hotplug
+callbacks are called when the CPUs come online, but the idle shadow
+stack initialization only happens if function graph is currently
+active. This caused the online CPUs to not get their shadow stack
+initialized.
 
-A blank line should separate the description and the tags.
+The idle shadow stack initialization still needs to be done when the
+function graph is registered, as they will not be allocated if function
+graph is not registered.
 
-Otherwise this patch looks good to me. Hence:
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241211135335.094ba282@batman.local.home
+Fixes: 2c02f7375e65 ("fgraph: Use CPU hotplug mechanism to initialize idle shadow stacks")
+Reported-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
+Closes: https://lore.kernel.org/all/CACRpkdaTBrHwRbbrphVy-=SeDz6MSsXhTKypOtLrTQ+DgGAOcQ@mail.gmail.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/fgraph.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index 0bf78517b5d4..ddedcb50917f 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -1215,7 +1215,7 @@ void fgraph_update_pid_func(void)
+ static int start_graph_tracing(void)
+ {
+ 	unsigned long **ret_stack_list;
+-	int ret;
++	int ret, cpu;
+ 
+ 	ret_stack_list = kcalloc(FTRACE_RETSTACK_ALLOC_SIZE,
+ 				 sizeof(*ret_stack_list), GFP_KERNEL);
+@@ -1223,6 +1223,12 @@ static int start_graph_tracing(void)
+ 	if (!ret_stack_list)
+ 		return -ENOMEM;
+ 
++	/* The cpu_boot init_task->ret_stack will never be freed */
++	for_each_online_cpu(cpu) {
++		if (!idle_task(cpu)->ret_stack)
++			ftrace_graph_init_idle_task(idle_task(cpu), cpu);
++	}
++
+ 	do {
+ 		ret = alloc_retstack_tasklist(ret_stack_list);
+ 	} while (ret == -EAGAIN);
+-- 
+2.45.2
+
+
 
