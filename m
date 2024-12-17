@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660149F51D2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86839F527E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18A3D188CD9D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951831891107
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51521F76B5;
-	Tue, 17 Dec 2024 17:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62131F868E;
+	Tue, 17 Dec 2024 17:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSf4zbvu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuaAkonu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F46C1F868D;
-	Tue, 17 Dec 2024 17:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B071F8688;
+	Tue, 17 Dec 2024 17:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455405; cv=none; b=VA5oqwVqbRhfQk6KXvMSsKppFjdjJJZwXCDEUN/9tBxaddOKKgi0Ti0JkaTsXhKPsIHaRy339JxlXrnVddVgCn8Y43yhHoADtSo1Hp3Id2+z29y9rqz6M9YdMOutZw2g1yAWAX2e67u7LQFy57wtj+WpwdjOHOsPAn5pADN6AgY=
+	t=1734455799; cv=none; b=OYkBdMbQqr2IOGrccx6dEhpYjPZTXQiD0OO+pNA/aYdPKbzAVtGNbTYOhtMEaShxxK2zKOu9C02pKwG8E2rVJpCv2BIcyU3DwGM96uBh+fisayxv3Y6C8rq/OqRo7aR6PUscce8AsP0iNX7mBYczh9N+uuYYLsmrjfCdlB+Mqw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455405; c=relaxed/simple;
-	bh=IGHlFQodvhRaKdz2CHqLemRGi41pGXb6w99ExZeKj9E=;
+	s=arc-20240116; t=1734455799; c=relaxed/simple;
+	bh=irvoz/QY1ACwgb1Nv/2o37VN42VE2hGB+3z1LaJCfUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dsor26oDFW9wzqs0PIKojuAMUuZ2W0iIbeo5uAgqJ/2V2S5z9umYm2KlEerxOkMAGWvVRv4CFHI+0qDDne1PZvBtgs4n20xvbNlV3HaB1goO/d7T8JiEpK+PRYzDzpNF+nOeMlcujgXzuxioiM3k9dcwWy6Bo8b06KkojMwPTSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSf4zbvu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E0DC4CED3;
-	Tue, 17 Dec 2024 17:10:04 +0000 (UTC)
+	 MIME-Version; b=CA6dGRIahdFsj5Sz/S4xBeLyJOBqGd6IvS4u7Q1Xz1hbcxQU+EOx13CdmeQ9NA8X2W+EnpFMnIsDtYVzsUiw73naM8hwIT13GWwBLXHwlA1cKqllHQ0L/F4f0qplSbEqFekEqtJNovzXj9D2PRUUFGt7453BjDVKKaaUf62Hjbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuaAkonu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17A2C4CED7;
+	Tue, 17 Dec 2024 17:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455405;
-	bh=IGHlFQodvhRaKdz2CHqLemRGi41pGXb6w99ExZeKj9E=;
+	s=korg; t=1734455799;
+	bh=irvoz/QY1ACwgb1Nv/2o37VN42VE2hGB+3z1LaJCfUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSf4zbvuqtyR3eRp4NoNFhw6fOvTRZ15AYFFsmumj6M4yLGHmgVN/y6Gpyqe+G42E
-	 2+tj++B+RoajqKXubc7ZH0m5eS86l45MIiciJYJpVcNTrgUM1+I7h/brHMozChDXxK
-	 eQ5lI6pqANT2qe9qYlDUzLHObYIRTrrLKeJAglyU=
+	b=HuaAkonuphdFBRg5mZylxctMGOf4yENuDf+qwybuqgUU79BP2AC7vk67H5ZnLPDJm
+	 /BQqfq6UBWk+xqbn9tOXCO1JTtJIF7+EaZJbn1IFHslmAIUpTKrhaZtkwwPnyhvfgL
+	 5tCEqdPHQjJcTOpnbgTnjf+Zq3LnAAojGl9XHe7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 17/24] ACPICA: events/evxfregn: dont release the ContextMutex that was never acquired
-Date: Tue, 17 Dec 2024 18:07:15 +0100
-Message-ID: <20241217170519.713777558@linuxfoundation.org>
+Subject: [PATCH 6.1 36/76] net/mlx5: DR, prevent potential error pointer dereference
+Date: Tue, 17 Dec 2024 18:07:16 +0100
+Message-ID: <20241217170527.760465572@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
-References: <20241217170519.006786596@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c53d96a4481f42a1635b96d2c1acbb0a126bfd54 ]
+[ Upstream commit 11776cff0b563c8b8a4fa76cab620bfb633a8cb8 ]
 
-This bug was first introduced in c27f3d011b08, where the author of the
-patch probably meant to do DeleteMutex instead of ReleaseMutex. The
-mutex leak was noticed later on and fixed in e4dfe108371, but the bogus
-MutexRelease line was never removed, so do it now.
+The dr_domain_add_vport_cap() function generally returns NULL on error
+but sometimes we want it to return ERR_PTR(-EBUSY) so the caller can
+retry.  The problem here is that "ret" can be either -EBUSY or -ENOMEM
+and if it's and -ENOMEM then the error pointer is propogated back and
+eventually dereferenced in dr_ste_v0_build_src_gvmi_qpn_tag().
 
-Link: https://github.com/acpica/acpica/pull/982
-Fixes: c27f3d011b08 ("ACPICA: Fix race in generic_serial_bus (I2C) and GPIO op_region parameter handling")
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Link: https://patch.msgid.link/20241122082954.658356-1-d-tatianin@yandex-team.ru
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 11a45def2e19 ("net/mlx5: DR, Add support for SF vports")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/07477254-e179-43e2-b1b3-3b9db4674195@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/evxfregn.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/evxfregn.c b/drivers/acpi/acpica/evxfregn.c
-index 6e0d2a98c4ad..47265b073e6f 100644
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -201,8 +201,6 @@ acpi_remove_address_space_handler(acpi_handle device,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
+index fc6ae49b5ecc..d462017c6a95 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_domain.c
+@@ -195,7 +195,9 @@ dr_domain_add_vport_cap(struct mlx5dr_domain *dmn, u16 vport)
+ 	if (ret) {
+ 		mlx5dr_dbg(dmn, "Couldn't insert new vport into xarray (%d)\n", ret);
+ 		kvfree(vport_caps);
+-		return ERR_PTR(ret);
++		if (ret == -EBUSY)
++			return ERR_PTR(-EBUSY);
++		return NULL;
+ 	}
  
- 			/* Now we can delete the handler object */
- 
--			acpi_os_release_mutex(handler_obj->address_space.
--					      context_mutex);
- 			acpi_ut_remove_reference(handler_obj);
- 			goto unlock_and_exit;
- 		}
+ 	return vport_caps;
 -- 
 2.39.5
 
