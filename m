@@ -1,96 +1,146 @@
-Return-Path: <stable+bounces-104421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A5C9F4157
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 04:55:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66FF9F419C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 05:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B68187A2B30
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 03:55:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB36416C983
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 04:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C5412CD96;
-	Tue, 17 Dec 2024 03:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F5614F9F9;
+	Tue, 17 Dec 2024 04:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cn5USNwK"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TnM3iiaH"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4453FD4;
-	Tue, 17 Dec 2024 03:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22FB14D456;
+	Tue, 17 Dec 2024 04:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734407739; cv=none; b=Kw4Qz66h01wf3rVKYQox3xKSvSvJDHm5dzGnn4Lvey7gGLiKdWz+106y3FfT+Y7FdCar/3Yf77dfwYjeP4yzCLrPy6DpiVcC28aDuzmUPmAeh9iFdVh6iVOgDWApgfqA9rR0y1Hu6BzVXDphA92B1d76nOflClQd/dfBOOZl2i4=
+	t=1734409041; cv=none; b=ShOGPbXiApmvqp927koMHiUvuTuxuq4MPeuNs/fVB7s0583b8ImUQvLcNfeeqs/+jF694MDmCw9Byi+h8dolztvA5j9rcelUAsz+cmd91Bpc35L1XTnPzyNtTqzZI5CwkkBbEEaxdqLqLmWwTjq1wj0URqwBNEcScq49y6sTK2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734407739; c=relaxed/simple;
-	bh=PBIqoh0+ItZyIgHirEJhgwbzuTx438a3eeqecHpANFI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Oih+frTd64Eul9nX91jEAZOgAPe/0xPHNaJggbLPLxTDzCT/sGBKyhZv63TrZMK0nwwm+C5degXuGnSJcU85UQn8VPBph7XQt55N3FwFU/WJGYKFjpAWNncblq0H28jHtDxYLRuSeHDZ0cM/GiGzLQ4OUSiIZBwhTnGO1QcVF58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cn5USNwK; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=ap3cS
-	3JlynQ5mnXUthOMr7ekp9nV+5QCIucFh5o9xqw=; b=cn5USNwK+JTQUrMSOojQt
-	SsJkf9GD+MdjrB2jnTGq9IJeCf5UoH/OY0hJ7yJfxXaGOsYjparv8S4Ku9BJb3WF
-	nhB4mzox+yw9kGGy+CD6IKJMmnqgPKQIJcgI7LPS8L1q9APm1X+z6WsWa9EjJVuP
-	xg4v/A/gHBv1lL02oWTQIg=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3l_P89WBnqKpaBA--.3706S4;
-	Tue, 17 Dec 2024 11:54:39 +0800 (CST)
-From: Ma Ke <make_ruc2021@163.com>
-To: mst@redhat.com,
-	jasowang@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com,
-	arnd@arndb.de,
-	viresh.kumar@linaro.org
-Cc: virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make_ruc2021@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] virtio: fix reference leak in register_virtio_device()
-Date: Tue, 17 Dec 2024 11:54:32 +0800
-Message-Id: <20241217035432.2892059-1-make_ruc2021@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1734409041; c=relaxed/simple;
+	bh=wbI0mKMWdKJTpHoGI+h2MBkSNibVAgdQ8V1iBKzfkQE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=c58aChuyGMH347g6mfSRqKqrSsMgVRbRRWOwKjoRFmBzzyqeonbcWCXr88kczH73P7P8x5eD/w3+xT7J4Tj2Kj5drSfe6u8eL0XuUgJp701CRoID7izuh17XW/0GeUJCYb/x64M+1DKL0e9/cJEJbhkr8AyCmpPVwzNJA0oLUoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TnM3iiaH; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 63230204720E; Mon, 16 Dec 2024 20:17:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 63230204720E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1734409039;
+	bh=rohi30jQued/musal8jVbkH2QFLeJasEFrkrbds2La4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TnM3iiaHo7K6UE6HpBYOL6z9JRnTJrJmB6bvFlL44sb+TTPgoU4J2WYJobgIlGRgw
+	 bIlda3ThmedYRWVkwyAWQk0ur+gGzCDPZjBSVbqmSkrjru+oiazGhiHI6VqnapKMsf
+	 QKd2Dfau95SHALpUSGdzZfYvzlZNuXm8L6T/YTxs=
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	dmitry.torokhov@gmail.com,
+	linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	stable@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>
+Subject: [PATCH v4 1/3] Drivers: hv: vmbus: Disable Suspend-to-Idle for VMBus
+Date: Mon, 16 Dec 2024 20:17:07 -0800
+Message-Id: <1734409029-10419-2-git-send-email-ernis@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1734409029-10419-1-git-send-email-ernis@linux.microsoft.com>
+References: <1734409029-10419-1-git-send-email-ernis@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3l_P89WBnqKpaBA--.3706S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZFWxCF1rXr47Ar43Zr4kCrg_yoW3urgEka
-	109rZ2qF1UGF40yrW5Ar4Svrnaka4qqFs5ZF45tFyfA343ArsrXr17Xrn8WF15uw17Cr4D
-	AFs5Krs5Zw1fujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRMbyCDUUUUU==
-X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBXw24C2dg7nnCZQAAsW
 
-When device_add(&dev->dev) failed, calling put_device() to explicitly
-release dev->dev. Otherwise, it could cause double free problem.
+This change is specific to Hyper-V VM user.
+If the Virtual Machine Connection window is focused,
+a Hyper-V VM user can unintentionally touch the keyboard/mouse
+when the VM is hibernating or resuming, and consequently the
+hibernation or resume operation can be aborted unexpectedly.
+Fix the issue by no longer registering the keyboard/mouse as
+wakeup devices (see the other two patches for the
+changes to drivers/input/serio/hyperv-keyboard.c and
+drivers/hid/hid-hyperv.c).
 
-Found by code review.
+The keyboard/mouse were registered as wakeup devices because the
+VM needs to be woken up from the Suspend-to-Idle state after
+a user runs "echo freeze > /sys/power/state". It seems like
+the Suspend-to-Idle feature has no real users in practice, so
+let's no longer support that by returning -EOPNOTSUPP if a
+user tries to use that.
 
+Fixes: 1a06d017fb3f ("Drivers: hv: vmbus: Fix Suspend-to-Idle for Generation-2 VM")
 Cc: stable@vger.kernel.org
-Fixes: 694a1116b405 ("virtio: Bind virtio device to device-tree node")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>>
 ---
- drivers/virtio/virtio.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v4:
+* No change
 
-diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-index b9095751e43b..ac721b5597e8 100644
---- a/drivers/virtio/virtio.c
-+++ b/drivers/virtio/virtio.c
-@@ -503,6 +503,7 @@ int register_virtio_device(struct virtio_device *dev)
+Changes in v3:
+* Add "Cc: stable@vger.kernel.org" in sign-off area.
+
+Changes in v2:
+* Add "#define vmbus_freeze NULL" when CONFIG_PM_SLEEP is not 
+  enabled.
+---
+ drivers/hv/vmbus_drv.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 6d89d37b069a..4df6b12bf6a1 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -900,6 +900,19 @@ static void vmbus_shutdown(struct device *child_device)
+ }
  
- out_of_node_put:
- 	of_node_put(dev->dev.of_node);
-+	put_device(&dev->dev);
- out_ida_remove:
- 	ida_free(&virtio_index_ida, dev->index);
- out:
+ #ifdef CONFIG_PM_SLEEP
++/*
++ * vmbus_freeze - Suspend-to-Idle
++ */
++static int vmbus_freeze(struct device *child_device)
++{
++/*
++ * Do not support Suspend-to-Idle ("echo freeze > /sys/power/state") as
++ * that would require registering the Hyper-V synthetic mouse/keyboard
++ * devices as wakeup devices, which can abort hibernation/resume unexpectedly.
++ */
++	return -EOPNOTSUPP;
++}
++
+ /*
+  * vmbus_suspend - Suspend a vmbus device
+  */
+@@ -938,6 +951,7 @@ static int vmbus_resume(struct device *child_device)
+ 	return drv->resume(dev);
+ }
+ #else
++#define vmbus_freeze NULL
+ #define vmbus_suspend NULL
+ #define vmbus_resume NULL
+ #endif /* CONFIG_PM_SLEEP */
+@@ -969,7 +983,7 @@ static void vmbus_device_release(struct device *device)
+  */
+ 
+ static const struct dev_pm_ops vmbus_pm = {
+-	.suspend_noirq	= NULL,
++	.suspend_noirq  = vmbus_freeze,
+ 	.resume_noirq	= NULL,
+ 	.freeze_noirq	= vmbus_suspend,
+ 	.thaw_noirq	= vmbus_resume,
 -- 
-2.25.1
+2.34.1
 
 
