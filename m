@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-104750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2719F52CA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845E69F5261
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77F2916E7EC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56E0F1894542
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900811F8691;
-	Tue, 17 Dec 2024 17:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04031F893C;
+	Tue, 17 Dec 2024 17:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpqTTGZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1w7imke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDAE1E0493;
-	Tue, 17 Dec 2024 17:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7E11F75BE;
+	Tue, 17 Dec 2024 17:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455987; cv=none; b=CtkI7CXX8455mAMcEtBOHl1NnuK+KbSHTe4CH1ubLDZPLk85IPZvqGIxyAyqYhqii2ZPOxvMdUiv98aqL6SjMk48YI+sicAurlh7SMEc2WzQ069IXvl4sv2vjkjmv7xmblEFYl5oeDURDZgbZPf+YlBWHOHbNswXGM6cWU+SSfg=
+	t=1734455697; cv=none; b=Lz4lEI3qJJ6Jojmjj4IwGjbCdZZvYdMCk0l3U5jMRByJjb2olBVZdrEs46sJopdoXEwPQbtsSlJSZLhA0j036zxCl824wqG2T7IR97broRh4LTyu0dkGinp74eSQO8LUsothpRCmVbVmxqgH5Qqv+Nnl3Bc8l5DO4pbM0DKvhL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455987; c=relaxed/simple;
-	bh=zoECW1UQTrRUx9LLcmcQ3tLwL7biJVjk+ri9voJAu88=;
+	s=arc-20240116; t=1734455697; c=relaxed/simple;
+	bh=2PtQ1RMt1frEg+J5hgzJBkcBUjybBqVkNduvforxj3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5C0H1qPAxfkr0uJBRx6CwNZNn3Q3lsGo4BI7pnAdsCy/8nSWcuKl/3lyica7y0/dFpu8XKz1aBWUbrDTaMGfrn14qjqh23nBaKM/AwOFNP4HWMSYXumpR8eEYcRzpV5nrXFjKVDB95hKpJhR0/8cjYkBa/KV569zzWw9kfZG5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpqTTGZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CCBC4CED3;
-	Tue, 17 Dec 2024 17:19:46 +0000 (UTC)
+	 MIME-Version; b=gGBBqE8Uq2WhjmiV7TMRZaIIqOsVPUMcVw/L6wbSUODZevFllPztlaGeFHllrihH2+WcRl/j3VzjTK+qWeJWUe/InBg+Z7zrijxC/ZglJMmqOilKQ48lLPkWzN9lrM6KVaOchFofsEAE7wxjNN2yjGgbRAPjKqhGOjy7/29/JD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1w7imke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BB8C4CED3;
+	Tue, 17 Dec 2024 17:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455987;
-	bh=zoECW1UQTrRUx9LLcmcQ3tLwL7biJVjk+ri9voJAu88=;
+	s=korg; t=1734455697;
+	bh=2PtQ1RMt1frEg+J5hgzJBkcBUjybBqVkNduvforxj3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PpqTTGZhLuy4UeVgD9KetAoJwT8zHusfPtuT8s0wo32mEszrnvvfgWC+IcR+vj+on
-	 eL6/WnDoq84vdz3rFciq5ynumpOnsDh/AxJVsA8+RWZgORLrO8o8W3F5ACJWrJRN7l
-	 qeJukht480lChM9bQc0Zs8hAcLzbBZXkfawyzewc=
+	b=D1w7imke5QWq/zrYPt1Es6cgmmbzx3fw82OjLufml70W9HUvaHIuajvUdrCeyvWHd
+	 H2oFcNwFo14GJTXzn8d2JhoWLOLOcbqtFpkhORERfP5833NLzDMxxlBm9ntDWxP/MQ
+	 5KEo/9EFrvQdxuqOhr7xmc9XBzHqSGpYQzChyeII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.6 022/109] drm/i915: Fix memory leak by correcting cache object name in error handler
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 5.15 13/51] xfs: return from xfs_symlink_verify early on V4 filesystems
 Date: Tue, 17 Dec 2024 18:07:06 +0100
-Message-ID: <20241217170534.292909377@linuxfoundation.org>
+Message-ID: <20241217170520.849649167@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 2828e5808bcd5aae7fdcd169cac1efa2701fa2dd upstream.
+commit 7f8b718c58783f3ff0810b39e2f62f50ba2549f6 upstream.
 
-Replace "slab_priorities" with "slab_dependencies" in the error handler
-to avoid memory leak.
+V4 symlink blocks didn't have headers, so return early if this is a V4
+filesystem.
 
-Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241127201042.29620-1-jiashengjiangcool@gmail.com
-(cherry picked from commit 9bc5e7dc694d3112bbf0fa4c46ef0fa0f114937a)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: <stable@vger.kernel.org> # v5.1
+Fixes: 39708c20ab5133 ("xfs: miscellaneous verifier magic value fixups")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_scheduler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_symlink_remote.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/i915_scheduler.c
-+++ b/drivers/gpu/drm/i915/i915_scheduler.c
-@@ -506,6 +506,6 @@ int __init i915_scheduler_module_init(vo
- 	return 0;
+--- a/fs/xfs/libxfs/xfs_symlink_remote.c
++++ b/fs/xfs/libxfs/xfs_symlink_remote.c
+@@ -89,8 +89,10 @@ xfs_symlink_verify(
+ 	struct xfs_mount	*mp = bp->b_mount;
+ 	struct xfs_dsymlink_hdr	*dsl = bp->b_addr;
  
- err_priorities:
--	kmem_cache_destroy(slab_priorities);
-+	kmem_cache_destroy(slab_dependencies);
- 	return -ENOMEM;
- }
++	/* no verification of non-crc buffers */
+ 	if (!xfs_has_crc(mp))
+-		return __this_address;
++		return NULL;
++
+ 	if (!xfs_verify_magic(bp, dsl->sl_magic))
+ 		return __this_address;
+ 	if (!uuid_equal(&dsl->sl_uuid, &mp->m_sb.sb_meta_uuid))
 
 
 
