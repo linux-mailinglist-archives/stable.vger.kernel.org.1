@@ -1,124 +1,127 @@
-Return-Path: <stable+bounces-105039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A2A9F5611
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 19:25:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42ED69F5659
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 19:34:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E2C41888968
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D21C7A3DEC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D55F1F892B;
-	Tue, 17 Dec 2024 18:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YeKhcdq2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4FE1F9A8D;
+	Tue, 17 Dec 2024 18:32:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111891F8911
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 18:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B291F9439;
+	Tue, 17 Dec 2024 18:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734459904; cv=none; b=AzDp+02h5oy54j/7c7qHQQAPTxWm4J05GOCnFL0lXoL7k7O5/T3I4Crfgh38rGo9IqH9WtShVJ0YWvU0zM1gD3rlvah2ccLOIEzpJ/xpLbMtttsMmEToEMNmk5wFDmvPVfErk8xPmOtuduqDXXl4B36WB0FtcsVvZe6egowgXXY=
+	t=1734460364; cv=none; b=WsYLf1Bx6v9FRzj72OrAznFxAIoyP9VjpTy/PigVO8/VOtGbDJkyzVaDao/A/emtfvbMcK6Oj93QdLlBdlTUp/EiO/e8HpMT5mXMF2ptXa9EZUSiZBL7JWUGNVS3xmG4PsaovFDdN+m8Mmk/N9XLSnGTH0DAp8Sqxd8wHIAF69I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734459904; c=relaxed/simple;
-	bh=N8eTVIG15b8Txm2GjUbLWrnQoyTPsXqcDWfT1rBo99A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b0D31VCD8+Dp/vD2NdfClx4Iz7WrDRXuISgXDNyYgFsO4v0JeiKf+kr8bQqHp+imumdy8blN3aSP1G2Nbedi2P60TvJDJUiPBYZHEJxfY/W1g2T97j/Su0Qqimy7l6HzWuHifkhLshR5L5Kf3KvftwXxunc9MK3UA8IKFlhrKZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YeKhcdq2; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d41848901bso9916250a12.0
-        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 10:25:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1734459900; x=1735064700; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=chiV2kyNC2VPSeaz4uEiEuPCz6nVVRZHgOxSESSDtEU=;
-        b=YeKhcdq2FaSB/oB5ivaoT83mYkCEVG7xqWVxmDsx+fBp8+QK9TMC/D5nRpZ4ZfLe+f
-         yAGHKI7bWDL90PqsvpXX5pfl/DdGBFDp9QOC3nYJT8O45UJng9iUnBBpyW2x1eKEYsoH
-         PjlNOF3Fb33rbZ5pbQboB+VjoYx51B9oQ7C84=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734459900; x=1735064700;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=chiV2kyNC2VPSeaz4uEiEuPCz6nVVRZHgOxSESSDtEU=;
-        b=J0Kv0qludMwuXCQ0vJ1DPW6UYD5EAKX/PpiorLyMxXaNFpuikZlD89NEBn5fz0PitN
-         7YH8exSESA8EmigHQV7QsOPogrdFe1mRWXWJUE9Sh73BN0te3uucf3OEJRHx38koRATa
-         P5a77qhtDO6spC5VYa+lfSGhEOfXwmve7SUFLsurGzCZjT0AGjR7329OTUwFbTEm9mEg
-         sqlFVGAO82eTaMAOXDKYxaYhPyyGN9POOI/epi1Bz64DQkJNoAid5wel9GXxLTro+Xzs
-         ZD3qS7dhshw5dbuYbm4P+TYb90wJRtbSf3eAGWkK8W5kNk4dl7Sps0a2/CcwdnL69aNQ
-         oD2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVUcSG+DbgOpTHXzcBJTfRUoVawMkzYYl1wzWGklLk2rzUPiV/r+Q3XzP7vFdUnXsuGZdZFxt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXsk1WxlmgGvnRq078BqwA8rh6a06YLylVgePWHxziXQf2EDNa
-	Ty5x7t7AqKM8wzcKEV2zrLWMirQvt1JlxU9TX0DlpTjVW7yGx49+Rs+M/wt9HH9bxsUxgbq+Bg6
-	Dj1Q=
-X-Gm-Gg: ASbGncsghnTXcMg4zLXnFeyvuN3rFi+zyQLu4LHJbD1T+G7UOGL1rO9RP4hA+WoPv21
-	UsK2NnAzWySmTVVc+7+8cbDdovjnZ7kzz8s07caRLRjt0uVrX+hElxsE+MQUQRRbk8Dq94vDZfb
-	QDaiSstJDtqVfLNYM7AG0wQmmdtsb1O/NVFKfiyQKMjyGUPS80z8fZ2RnXBqwH8IoBi2Xvwt/Hj
-	+DUtigByJzozpaNZHd5WeC5G+32TBlIm9OJ+xFnvI0e4IVN7cHW2AIJ2P63LwNgRkxHgb77OEhx
-	ZpHzQP6tf8rZeEBvn6t1cH1egwKca8o=
-X-Google-Smtp-Source: AGHT+IHGBafOQH75TuyFQfmNasaxl31oISkDTVMSml+5lMQhETkgQ3u8TREA/kRMJSxCfX9pdpxTXA==
-X-Received: by 2002:a05:6402:26c5:b0:5d0:96a:aa90 with SMTP id 4fb4d7f45d1cf-5d7d55e7578mr4620116a12.17.1734459900204;
-        Tue, 17 Dec 2024 10:25:00 -0800 (PST)
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d652ad1a7esm4561463a12.32.2024.12.17.10.24.59
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Dec 2024 10:24:59 -0800 (PST)
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-aa679ad4265so1216177666b.0
-        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 10:24:59 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXl8YVcncOx6Z1AJBe/ropbIP+nVEjlT3FgbEqXUATBOvbyiepXUGBCZ2ytO5o64wsKBocvbBQ=@vger.kernel.org
-X-Received: by 2002:a17:906:eec7:b0:aa6:841e:ec40 with SMTP id
- a640c23a62f3a-aabdca5bf6cmr338877266b.26.1734459899304; Tue, 17 Dec 2024
- 10:24:59 -0800 (PST)
+	s=arc-20240116; t=1734460364; c=relaxed/simple;
+	bh=LzxOMt9OHgu0yiPI0bkh+oIBORYFJHQLEZVw+6EU00s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a9HHsC6io7pLgpG9v4lBSaixnR37WIvnHimHT78BtGSwMcWfHqR4HcYfPIqyMC37vciuy4zXPLNV62PLS9viVL0n16SsQQV7k6snxpqf/o+nqzWnSEABQGJeV1Vf4PvIyO21+KTfDnTYSKvBZ/O71QLzu7hI9Qlaq5nixbA7hqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FAAC4CED3;
+	Tue, 17 Dec 2024 18:32:42 +0000 (UTC)
+Date: Tue, 17 Dec 2024 13:33:18 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton
+ <akpm@linux-foundation.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] ring-buffer: Add uname to match criteria for
+ persistent ring buffer
+Message-ID: <20241217133318.06f849c9@gandalf.local.home>
+In-Reply-To: <CAHk-=whLJW1SWvJTHYmdVAL2yL=dh4RzMuxgT7rnksSpkfUVaA@mail.gmail.com>
+References: <20241217173237.836878448@goodmis.org>
+	<20241217173520.314190793@goodmis.org>
+	<CAHk-=wg5Kcr=sBuZcWs90CSGbJuKy0QsLaCC5oD15gS+Hk8j1A@mail.gmail.com>
+	<20241217130454.5bb593e8@gandalf.local.home>
+	<CAHk-=whLJW1SWvJTHYmdVAL2yL=dh4RzMuxgT7rnksSpkfUVaA@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241217173237.836878448@goodmis.org> <20241217173520.314190793@goodmis.org>
- <CAHk-=wg5Kcr=sBuZcWs90CSGbJuKy0QsLaCC5oD15gS+Hk8j1A@mail.gmail.com>
- <20241217130454.5bb593e8@gandalf.local.home> <CAHk-=whLJW1SWvJTHYmdVAL2yL=dh4RzMuxgT7rnksSpkfUVaA@mail.gmail.com>
-In-Reply-To: <CAHk-=whLJW1SWvJTHYmdVAL2yL=dh4RzMuxgT7rnksSpkfUVaA@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 17 Dec 2024 10:24:42 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjThke2-HB_Zi35xHe9ayTPk=zB_kjd0Hr-Yn1oV0ZSsg@mail.gmail.com>
-Message-ID: <CAHk-=wjThke2-HB_Zi35xHe9ayTPk=zB_kjd0Hr-Yn1oV0ZSsg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ring-buffer: Add uname to match criteria for
- persistent ring buffer
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 17 Dec 2024 at 10:19, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
+On Tue, 17 Dec 2024 10:19:45 -0800
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
+
+> On Tue, 17 Dec 2024 at 10:04, Steven Rostedt <rostedt@goodmis.org> wrote:
+> >
+> > I'm not sure what you mean. If the kernels are the same, then the pointers
+> > should also be the same, as KASLR just shifts them. This no longer uses
+> > module code. It only traces core kernel code which should always have the
+> > same offsets.  
+> 
+>  (a) the shifting is what caused problems with you having to hack
+> round the format string and %pS.
+
+How else do I get the function name?
+
+> 
+>  (b) the data addresses are more than shifted, so that "data_delta" is
+> *completely* bogus
+
+The data_delta and text_delta are equal, and I could get rid of delta_data,
+as I haven't used it. I only used the text_delta as they are always the
+same.
+
+> 
+>  (c) neither of them are AT ALL valid for modules regardless
+
+I can make sure that it only works for core kernel code, and print the raw
+address if it isn't.
+
+> 
+> Stop using the delta fields. They are broken. Even for the same
+> kernel. It's literally a "I made sh*t up and it sometimes works"
+> situation.
+> 
+> That "sometimes works" is not how we do kernel development. Stop it.
+
+For core kernel code it *always works*. I haven't seen it fail yet.
+
+This is the point of this patch series, is to remove the cases where it can
+fail. That is, if the kernel isn't the same, or the use of modules and
+dynamic events that are not stable across reboots.
+
+But for the core kernel code, I have not seen it fail once!
+
+> 
 > What *woiuld* have been an acceptable model is to actually modify the
 > boot-time buffers in place, using actual real heuristics that look at
 > whether a pointer was IN THE CODE SECTION OR THE STATIC DATA section
 > of the previous boot.
->
+
+So basically, you want a full parser of the trace event code that reads the
+boot time buffer and makes it match the current kernel?
+
+> 
 > But you never did that. All this delta code has always been complete
 > and utter garbage, and complete hacks.
+> 
+> Remove it.
+> 
+> Then, if at some point you can do it *right* (see above), maybe you
+> can try to re-introduce it. But the current delta code is pure and
+> utter garbage and needs to die. No more of this "hacking shit up to
+> make it sometimes work".
 
-Actually, I think the proper model isn't even that "modify boot time
-buffers in place" thing.
+As I said. It doesn't "sometimes work" it "always works", at least for the
+core kernel. And I agree that it shouldn't "sometimes work" which is why
+this patch series sets out to remove those cases that do not work.
 
-The proper model was probably always to just do the "give the raw
-data, and analyze the previous boot data in user mode". Don't do
-"delta between old and new kernel", print out the actual KASLR base of
-the old kernel, and let user mode figure it out. Because user mode may
-actually have the old and different vmlinux image too - something that
-kernel mode *never* has.
-
-                   Linus
+-- Steve
 
