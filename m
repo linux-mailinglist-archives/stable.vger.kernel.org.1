@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C35B9F51E3
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701409F5278
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96D94163C53
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61142188FC49
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC5A1F867B;
-	Tue, 17 Dec 2024 17:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367221E0493;
+	Tue, 17 Dec 2024 17:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WME/ym5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k959zYe8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C311F76D4;
-	Tue, 17 Dec 2024 17:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74C914A4E7;
+	Tue, 17 Dec 2024 17:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455477; cv=none; b=r+hnnGCuiTThzK3A7GrKsgvZ9ztjF9eZHr6mwOCuULERgWs2XLb7dDNTxpzIicX04oC65uu1gTTGONdfx4+xRIe3RWnxcViZPMzDgRu2Xj6Eo+hLd8mNcyUI9898bdIkIkTQo+2MLvaP9EUVyVytI2flVctEnBDQAmP7N5E9+NQ=
+	t=1734455791; cv=none; b=JkxGIpAteXZME6cJSJ0D+ELt4qPP2tvfJ7siVY8NvYszyi5616rBMfQBNwGxbHo2EtTkjIMwLPz1YUvKjc4RYSJP7UhQsIi87ClVPHoeWMPUOS0vyetEm2pNhCfoyJCXg/nNt6VlgeD/6kvHPmz8Q46w1ZejIF1peNdE4LBM2EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455477; c=relaxed/simple;
-	bh=rTOMuKCCHoeFgRkkwzDrSaMnex6vr6T1txgAupJQt4o=;
+	s=arc-20240116; t=1734455791; c=relaxed/simple;
+	bh=QLTaWLU4/K8VdXOzY2Q4WawzWrGmXT2grzqintEIKFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htueOXN0swlRll3NZpl8vanfZ6XgEYrpkcOE4ZyjIpo139rL9C9kM6+AMwfC37Ob0iIlZQ/EfOsXV41OtLWB0mzk7Fs11NwzhnwjAhMv9dRiZuWj/JTv5E6N1BX7cRrWz6W1VAqEKSSCtc3rMnGoftqe7cvCtzWZpPgXgsVhLqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WME/ym5H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63627C4CEDD;
-	Tue, 17 Dec 2024 17:11:16 +0000 (UTC)
+	 MIME-Version; b=tDrW6b+Ly0Y/pGyAdl+APSkCdzU2joZ4dGo8PX2qbQYYwJhsSs8GXodNSoMaEM5+rjdBv7sm/YUmxNvWNZx4NhDt42q4/hEZIaxF5PRrC9xkAzHhaiFOA+HNkU9NylwoH2fkX5OEXmnzokVeCXlm6p/gH1YzWllJ79fM2dzkfbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k959zYe8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1B1C4CED3;
+	Tue, 17 Dec 2024 17:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455476;
-	bh=rTOMuKCCHoeFgRkkwzDrSaMnex6vr6T1txgAupJQt4o=;
+	s=korg; t=1734455790;
+	bh=QLTaWLU4/K8VdXOzY2Q4WawzWrGmXT2grzqintEIKFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WME/ym5HReHxgeUiDgIhdSpi2XQqRXLoBbtOTYfgTOlCTcyGz4+YIl0+Ab9k1X82E
-	 IX/lA6maSo5cgi9gfLY+vHSwhvbDIQLbhS/DI/X5CQImtbUfIlCdx4RbNpsMnwRuM3
-	 etUswF3txRFXWXciqJC0Ub0w+sRwLiPUCV8aLccA=
+	b=k959zYe82WVOGPtePd+Dh4gJnR3oXNLgDweOC8l839x08d+GehJOmVCtio5TgHE+4
+	 x1sLolbb10ov+0A1fdI+mmupLqvN583MiA9xoub0AYrB/UtcXe+o9uPr1af8CYxLEP
+	 jRrPPweZBLbLKiFMfix/rWVnGpQCUx5fU8WwP0dI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Antonio Quartulli <Antonio@mandelbit.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 23/43] qca_spi: Make driver probing reliable
+Subject: [PATCH 6.1 34/76] batman-adv: Do not let TT changes list grows indefinitely
 Date: Tue, 17 Dec 2024 18:07:14 +0100
-Message-ID: <20241217170521.389722550@linuxfoundation.org>
+Message-ID: <20241217170527.679527546@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit becc6399ce3b724cffe9ccb7ef0bff440bb1b62b ]
+[ Upstream commit fff8f17c1a6fc802ca23bbd3a276abfde8cc58e6 ]
 
-The module parameter qcaspi_pluggable controls if QCA7000 signature
-should be checked at driver probe (current default) or not. Unfortunately
-this could fail in case the chip is temporary in reset, which isn't under
-total control by the Linux host. So disable this check per default
-in order to avoid unexpected probe failures.
+When TT changes list is too big to fit in packet due to MTU size, an
+empty OGM is sent expected other node to send TT request to get the
+changes. The issue is that tt.last_changeset was not built thus the
+originator was responding with previous changes to those TT requests
+(see batadv_send_my_tt_response). Also the changes list was never
+cleaned up effectively never ending growing from this point onwards,
+repeatedly sending the same TT response changes over and over, and
+creating a new empty OGM every OGM interval expecting for the local
+changes to be purged.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://patch.msgid.link/20241206184643.123399-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+When there is more TT changes that can fit in packet, drop all changes,
+send empty OGM and wait for TT request so we can respond with a full
+table instead.
+
+Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Acked-by: Antonio Quartulli <Antonio@mandelbit.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/translation-table.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index d88138f4a4f4..b2805e856a7a 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -67,7 +67,7 @@ MODULE_PARM_DESC(qcaspi_burst_len, "Number of data bytes per burst. Use 1-5000."
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index d7f874ff1a70..2b5453801bf0 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -990,6 +990,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	int tt_diff_len, tt_change_len = 0;
+ 	int tt_diff_entries_num = 0;
+ 	int tt_diff_entries_count = 0;
++	bool drop_changes = false;
+ 	size_t tt_extra_len = 0;
+ 	u16 tvlv_len;
  
- #define QCASPI_PLUGGABLE_MIN 0
- #define QCASPI_PLUGGABLE_MAX 1
--static int qcaspi_pluggable = QCASPI_PLUGGABLE_MIN;
-+static int qcaspi_pluggable = QCASPI_PLUGGABLE_MAX;
- module_param(qcaspi_pluggable, int, 0);
- MODULE_PARM_DESC(qcaspi_pluggable, "Pluggable SPI connection (yes/no).");
+@@ -997,10 +998,17 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	tt_diff_len = batadv_tt_len(tt_diff_entries_num);
  
+ 	/* if we have too many changes for one packet don't send any
+-	 * and wait for the tt table request which will be fragmented
++	 * and wait for the tt table request so we can reply with the full
++	 * (fragmented) table.
++	 *
++	 * The local change history should still be cleaned up so the next
++	 * TT round can start again with a clean state.
+ 	 */
+-	if (tt_diff_len > bat_priv->soft_iface->mtu)
++	if (tt_diff_len > bat_priv->soft_iface->mtu) {
+ 		tt_diff_len = 0;
++		tt_diff_entries_num = 0;
++		drop_changes = true;
++	}
+ 
+ 	tvlv_len = batadv_tt_prepare_tvlv_local_data(bat_priv, &tt_data,
+ 						     &tt_change, &tt_diff_len);
+@@ -1009,7 +1017,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 
+ 	tt_data->flags = BATADV_TT_OGM_DIFF;
+ 
+-	if (tt_diff_len == 0)
++	if (!drop_changes && tt_diff_len == 0)
+ 		goto container_register;
+ 
+ 	spin_lock_bh(&bat_priv->tt.changes_list_lock);
 -- 
 2.39.5
 
