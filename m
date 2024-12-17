@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4540A9F53DA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6069F51ED
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9349416C954
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF721188D0D6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AC71F891F;
-	Tue, 17 Dec 2024 17:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF721F8679;
+	Tue, 17 Dec 2024 17:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdkI4zZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7KR/Gfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8138F1F8696;
-	Tue, 17 Dec 2024 17:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4D71F4735;
+	Tue, 17 Dec 2024 17:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456557; cv=none; b=aq60TJouCCV90RTP3jOwfeu3wR3bab+ufejIl8aREu7fsuEN86xFAWneXQGxyzBSsgS1oz27fSuREP5xq9HTAdnFwWotF9wz8DDq2qAHhk/yoKaVSxLUUuUy8NpI8zyWTgCFs8Xu4MT9Zq97FQnDLqdpYfGCG6z7odf2F0mhuYw=
+	t=1734455479; cv=none; b=HESY9QhWUqxqzsaXu6tanCjURbwpxn0x6EneStpoX1N+Y3w1XWYJOrJ6KZv/+Q3eNAM88yqEQiRrVSi/YgWtSJdf1sdpgobBKRSxRaa3+0mP2CW18xMoR6MO/tnI5+eerCzMIPZflPxOwtRESHonyyrC4cghwg7R6sND1TVbPX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456557; c=relaxed/simple;
-	bh=t2v4HlRJrTZTAaV3gZ1L/vUUByB+B2dUubomwNaSebE=;
+	s=arc-20240116; t=1734455479; c=relaxed/simple;
+	bh=hckc3Tw83fWCB7NHL2R5IDJ+cxblsWlHjFPYfk4KjEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZl2hnejPxjwhJBw5eL14DhcMLcWDKJxT5NPLGNN2CwS/GQ492bZrtXqXxcwbZwa4M43qUkzeMrcvPYbMsUqcd53aRPCGi3aW/jQhAyfGbz5OLwWkN6atHYQHzN+rcCjXJlymZIn1jfcHcgJYx1K8bjTuOD4qt6g89gkxB4LaRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdkI4zZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7A6C4CED3;
-	Tue, 17 Dec 2024 17:29:16 +0000 (UTC)
+	 MIME-Version; b=gu13ERrkIYVT7nFYI1CsgG1Rf4hFclsVgK21Sd/lgDcTBKnBGkmQKNlC5/NP+kT68wegRKLPIfdcHe07lhWfbIboUKoNPaBO45Gy8XdDy7AaZJUCC1I4HBIFbi0ShkiSC7gSrag093pzdrPZK4hf89gJO9R2nk+xIB+s6+Wkyto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7KR/Gfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460D0C4CED3;
+	Tue, 17 Dec 2024 17:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456557;
-	bh=t2v4HlRJrTZTAaV3gZ1L/vUUByB+B2dUubomwNaSebE=;
+	s=korg; t=1734455479;
+	bh=hckc3Tw83fWCB7NHL2R5IDJ+cxblsWlHjFPYfk4KjEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdkI4zZTR3qN/NbYEV5eXLpSDDszrOz5OwEnxl3Zoq7lCVi8gRxxHoA/obc/fKdVO
-	 h4Ow5lZZxnsiH3Qmv0VaqpTWhhODizS0NeMaw+xnpfvoy8YHTjkI1eMBnRS09mlXpZ
-	 Rmr3w1AVdzyp/aoHHF4f011nWdOdbsN9WNmb7apc=
+	b=y7KR/GfdxTWZ54dyYolhjbhIReosFfUPGPsnSQXOQfScvwRd7LfVNYPH0ZFF+nDpt
+	 o3+O7O5apes7oT1kxGoCeEOzVNFOowwVNAN6HkM8bTpQ+UbaqvujqQ7Mtk6JgJtaXt
+	 Tu7S9ZOT8ScyrZ7HeEzRTxk/FWrsCDACcgu5fGk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>
-Subject: [PATCH 6.12 079/172] bpf, sockmap: Fix race between element replace and close()
+	Martin Ottens <martin.ottens@fau.de>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 24/43] net/sched: netem: account for backlog updates from child qdisc
 Date: Tue, 17 Dec 2024 18:07:15 +0100
-Message-ID: <20241217170549.564497711@linuxfoundation.org>
+Message-ID: <20241217170521.429015129@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,253 +63,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Martin Ottens <martin.ottens@fau.de>
 
-commit ed1fc5d76b81a4d681211333c026202cad4d5649 upstream.
+[ Upstream commit f8d4bc455047cf3903cd6f85f49978987dbb3027 ]
 
-Element replace (with a socket different from the one stored) may race
-with socket's close() link popping & unlinking. __sock_map_delete()
-unconditionally unrefs the (wrong) element:
+In general, 'qlen' of any classful qdisc should keep track of the
+number of packets that the qdisc itself and all of its children holds.
+In case of netem, 'qlen' only accounts for the packets in its internal
+tfifo. When netem is used with a child qdisc, the child qdisc can use
+'qdisc_tree_reduce_backlog' to inform its parent, netem, about created
+or dropped SKBs. This function updates 'qlen' and the backlog statistics
+of netem, but netem does not account for changes made by a child qdisc.
+'qlen' then indicates the wrong number of packets in the tfifo.
+If a child qdisc creates new SKBs during enqueue and informs its parent
+about this, netem's 'qlen' value is increased. When netem dequeues the
+newly created SKBs from the child, the 'qlen' in netem is not updated.
+If 'qlen' reaches the configured sch->limit, the enqueue function stops
+working, even though the tfifo is not full.
 
-// set map[0] = s0
-map_update_elem(map, 0, s0)
+Reproduce the bug:
+Ensure that the sender machine has GSO enabled. Configure netem as root
+qdisc and tbf as its child on the outgoing interface of the machine
+as follows:
+$ tc qdisc add dev <oif> root handle 1: netem delay 100ms limit 100
+$ tc qdisc add dev <oif> parent 1:0 tbf rate 50Mbit burst 1542 latency 50ms
 
-// drop fd of s0
-close(s0)
-  sock_map_close()
-    lock_sock(sk)               (s0!)
-    sock_map_remove_links(sk)
-      link = sk_psock_link_pop()
-      sock_map_unlink(sk, link)
-        sock_map_delete_from_link
-                                        // replace map[0] with s1
-                                        map_update_elem(map, 0, s1)
-                                          sock_map_update_elem
-                                (s1!)       lock_sock(sk)
-                                            sock_map_update_common
-                                              psock = sk_psock(sk)
-                                              spin_lock(&stab->lock)
-                                              osk = stab->sks[idx]
-                                              sock_map_add_link(..., &stab->sks[idx])
-                                              sock_map_unref(osk, &stab->sks[idx])
-                                                psock = sk_psock(osk)
-                                                sk_psock_put(sk, psock)
-                                                  if (refcount_dec_and_test(&psock))
-                                                    sk_psock_drop(sk, psock)
-                                              spin_unlock(&stab->lock)
-                                            unlock_sock(sk)
-          __sock_map_delete
-            spin_lock(&stab->lock)
-            sk = *psk                        // s1 replaced s0; sk == s1
-            if (!sk_test || sk_test == sk)   // sk_test (s0) != sk (s1); no branch
-              sk = xchg(psk, NULL)
-            if (sk)
-              sock_map_unref(sk, psk)        // unref s1; sks[idx] will dangle
-                psock = sk_psock(sk)
-                sk_psock_put(sk, psock)
-                  if (refcount_dec_and_test())
-                    sk_psock_drop(sk, psock)
-            spin_unlock(&stab->lock)
-    release_sock(sk)
+Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
+client on the machine. Check the qdisc statistics:
+$ tc -s qdisc show dev <oif>
 
-Then close(map) enqueues bpf_map_free_deferred, which finally calls
-sock_map_free(). This results in some refcount_t warnings along with
-a KASAN splat [1].
+Statistics after 10s of iPerf3 TCP test before the fix (note that
+netem's backlog > limit, netem stopped accepting packets):
+qdisc netem 1: root refcnt 2 limit 1000 delay 100ms
+ Sent 2767766 bytes 1848 pkt (dropped 652, overlimits 0 requeues 0)
+ backlog 4294528236b 1155p requeues 0
+qdisc tbf 10: parent 1:1 rate 50Mbit burst 1537b lat 50ms
+ Sent 2767766 bytes 1848 pkt (dropped 327, overlimits 7601 requeues 0)
+ backlog 0b 0p requeues 0
 
-Fix __sock_map_delete(), do not allow sock_map_unref() on elements that
-may have been replaced.
+Statistics after the fix:
+qdisc netem 1: root refcnt 2 limit 1000 delay 100ms
+ Sent 37766372 bytes 24974 pkt (dropped 9, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+qdisc tbf 10: parent 1:1 rate 50Mbit burst 1537b lat 50ms
+ Sent 37766372 bytes 24974 pkt (dropped 327, overlimits 96017 requeues 0)
+ backlog 0b 0p requeues 0
 
-[1]:
-BUG: KASAN: slab-use-after-free in sock_map_free+0x10e/0x330
-Write of size 4 at addr ffff88811f5b9100 by task kworker/u64:12/1063
+tbf segments the GSO SKBs (tbf_segment) and updates the netem's 'qlen'.
+The interface fully stops transferring packets and "locks". In this case,
+the child qdisc and tfifo are empty, but 'qlen' indicates the tfifo is at
+its limit and no more packets are accepted.
 
-CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Not tainted 6.12.0+ #125
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-Workqueue: events_unbound bpf_map_free_deferred
-Call Trace:
- <TASK>
- dump_stack_lvl+0x68/0x90
- print_report+0x174/0x4f6
- kasan_report+0xb9/0x190
- kasan_check_range+0x10f/0x1e0
- sock_map_free+0x10e/0x330
- bpf_map_free_deferred+0x173/0x320
- process_one_work+0x846/0x1420
- worker_thread+0x5b3/0xf80
- kthread+0x29e/0x360
- ret_from_fork+0x2d/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+This patch adds a counter for the entries in the tfifo. Netem's 'qlen' is
+only decreased when a packet is returned by its dequeue function, and not
+during enqueuing into the child qdisc. External updates to 'qlen' are thus
+accounted for and only the behavior of the backlog statistics changes. As
+in other qdiscs, 'qlen' then keeps track of  how many packets are held in
+netem and all of its children. As before, sch->limit remains as the
+maximum number of packets in the tfifo. The same applies to netem's
+backlog statistics.
 
-Allocated by task 1202:
- kasan_save_stack+0x1e/0x40
- kasan_save_track+0x10/0x30
- __kasan_slab_alloc+0x85/0x90
- kmem_cache_alloc_noprof+0x131/0x450
- sk_prot_alloc+0x5b/0x220
- sk_alloc+0x2c/0x870
- unix_create1+0x88/0x8a0
- unix_create+0xc5/0x180
- __sock_create+0x241/0x650
- __sys_socketpair+0x1ce/0x420
- __x64_sys_socketpair+0x92/0x100
- do_syscall_64+0x93/0x180
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Freed by task 46:
- kasan_save_stack+0x1e/0x40
- kasan_save_track+0x10/0x30
- kasan_save_free_info+0x37/0x60
- __kasan_slab_free+0x4b/0x70
- kmem_cache_free+0x1a1/0x590
- __sk_destruct+0x388/0x5a0
- sk_psock_destroy+0x73e/0xa50
- process_one_work+0x846/0x1420
- worker_thread+0x5b3/0xf80
- kthread+0x29e/0x360
- ret_from_fork+0x2d/0x70
- ret_from_fork_asm+0x1a/0x30
-
-The buggy address belongs to the object at ffff88811f5b9080
- which belongs to the cache UNIX-STREAM of size 1984
-The buggy address is located 128 bytes inside of
- freed 1984-byte region [ffff88811f5b9080, ffff88811f5b9840)
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x11f5b8
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-memcg:ffff888127d49401
-flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
-page_type: f5(slab)
-raw: 0017ffffc0000040 ffff8881042e4500 dead000000000122 0000000000000000
-raw: 0000000000000000 00000000800f000f 00000001f5000000 ffff888127d49401
-head: 0017ffffc0000040 ffff8881042e4500 dead000000000122 0000000000000000
-head: 0000000000000000 00000000800f000f 00000001f5000000 ffff888127d49401
-head: 0017ffffc0000003 ffffea00047d6e01 ffffffffffffffff 0000000000000000
-head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff88811f5b9000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88811f5b9080: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                   ^
- ffff88811f5b9180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff88811f5b9200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-Disabling lock debugging due to kernel taint
-
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 14 PID: 1063 at lib/refcount.c:25 refcount_warn_saturate+0xce/0x150
-CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Tainted: G    B              6.12.0+ #125
-Tainted: [B]=BAD_PAGE
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-Workqueue: events_unbound bpf_map_free_deferred
-RIP: 0010:refcount_warn_saturate+0xce/0x150
-Code: 34 73 eb 03 01 e8 82 53 ad fe 0f 0b eb b1 80 3d 27 73 eb 03 00 75 a8 48 c7 c7 80 bd 95 84 c6 05 17 73 eb 03 01 e8 62 53 ad fe <0f> 0b eb 91 80 3d 06 73 eb 03 00 75 88 48 c7 c7 e0 bd 95 84 c6 05
-RSP: 0018:ffff88815c49fc70 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff88811f5b9100 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
-RBP: 0000000000000002 R08: 0000000000000001 R09: ffffed10bcde6349
-R10: ffff8885e6f31a4b R11: 0000000000000000 R12: ffff88813be0b000
-R13: ffff88811f5b9100 R14: ffff88811f5b9080 R15: ffff88813be0b024
-FS:  0000000000000000(0000) GS:ffff8885e6f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055dda99b0250 CR3: 000000015dbac000 CR4: 0000000000752ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn.cold+0x5f/0x1ff
- ? refcount_warn_saturate+0xce/0x150
- ? report_bug+0x1ec/0x390
- ? handle_bug+0x58/0x90
- ? exc_invalid_op+0x13/0x40
- ? asm_exc_invalid_op+0x16/0x20
- ? refcount_warn_saturate+0xce/0x150
- sock_map_free+0x2e5/0x330
- bpf_map_free_deferred+0x173/0x320
- process_one_work+0x846/0x1420
- worker_thread+0x5b3/0xf80
- kthread+0x29e/0x360
- ret_from_fork+0x2d/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-irq event stamp: 10741
-hardirqs last  enabled at (10741): [<ffffffff84400ec6>] asm_sysvec_apic_timer_interrupt+0x16/0x20
-hardirqs last disabled at (10740): [<ffffffff811e532d>] handle_softirqs+0x60d/0x770
-softirqs last  enabled at (10506): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
-softirqs last disabled at (10301): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
-
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 14 PID: 1063 at lib/refcount.c:28 refcount_warn_saturate+0xee/0x150
-CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Tainted: G    B   W          6.12.0+ #125
-Tainted: [B]=BAD_PAGE, [W]=WARN
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-Workqueue: events_unbound bpf_map_free_deferred
-RIP: 0010:refcount_warn_saturate+0xee/0x150
-Code: 17 73 eb 03 01 e8 62 53 ad fe 0f 0b eb 91 80 3d 06 73 eb 03 00 75 88 48 c7 c7 e0 bd 95 84 c6 05 f6 72 eb 03 01 e8 42 53 ad fe <0f> 0b e9 6e ff ff ff 80 3d e6 72 eb 03 00 0f 85 61 ff ff ff 48 c7
-RSP: 0018:ffff88815c49fc70 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff88811f5b9100 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
-RBP: 0000000000000003 R08: 0000000000000001 R09: ffffed10bcde6349
-R10: ffff8885e6f31a4b R11: 0000000000000000 R12: ffff88813be0b000
-R13: ffff88811f5b9100 R14: ffff88811f5b9080 R15: ffff88813be0b024
-FS:  0000000000000000(0000) GS:ffff8885e6f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055dda99b0250 CR3: 000000015dbac000 CR4: 0000000000752ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn.cold+0x5f/0x1ff
- ? refcount_warn_saturate+0xee/0x150
- ? report_bug+0x1ec/0x390
- ? handle_bug+0x58/0x90
- ? exc_invalid_op+0x13/0x40
- ? asm_exc_invalid_op+0x16/0x20
- ? refcount_warn_saturate+0xee/0x150
- sock_map_free+0x2d3/0x330
- bpf_map_free_deferred+0x173/0x320
- process_one_work+0x846/0x1420
- worker_thread+0x5b3/0xf80
- kthread+0x29e/0x360
- ret_from_fork+0x2d/0x70
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-irq event stamp: 10741
-hardirqs last  enabled at (10741): [<ffffffff84400ec6>] asm_sysvec_apic_timer_interrupt+0x16/0x20
-hardirqs last disabled at (10740): [<ffffffff811e532d>] handle_softirqs+0x60d/0x770
-softirqs last  enabled at (10506): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
-softirqs last disabled at (10301): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241202-sockmap-replace-v1-3-1e88579e7bd5@rbox.co
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 50612537e9ab ("netem: fix classful handling")
+Signed-off-by: Martin Ottens <martin.ottens@fau.de>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20241210131412.1837202-1-martin.ottens@fau.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/sched/sch_netem.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -411,12 +411,11 @@ static void *sock_map_lookup_sys(struct
- static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
- 			     struct sock **psk)
- {
--	struct sock *sk;
-+	struct sock *sk = NULL;
- 	int err = 0;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 93ed7bac9ee6..f459e34684ad 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -77,6 +77,8 @@ struct netem_sched_data {
+ 	struct sk_buff	*t_head;
+ 	struct sk_buff	*t_tail;
  
- 	spin_lock_bh(&stab->lock);
--	sk = *psk;
--	if (!sk_test || sk_test == sk)
-+	if (!sk_test || sk_test == *psk)
- 		sk = xchg(psk, NULL);
++	u32 t_len;
++
+ 	/* optional qdisc for classful handling (NULL at netem init) */
+ 	struct Qdisc	*qdisc;
  
- 	if (likely(sk))
+@@ -373,6 +375,7 @@ static void tfifo_reset(struct Qdisc *sch)
+ 	rtnl_kfree_skbs(q->t_head, q->t_tail);
+ 	q->t_head = NULL;
+ 	q->t_tail = NULL;
++	q->t_len = 0;
+ }
+ 
+ static void tfifo_enqueue(struct sk_buff *nskb, struct Qdisc *sch)
+@@ -402,6 +405,7 @@ static void tfifo_enqueue(struct sk_buff *nskb, struct Qdisc *sch)
+ 		rb_link_node(&nskb->rbnode, parent, p);
+ 		rb_insert_color(&nskb->rbnode, &q->t_root);
+ 	}
++	q->t_len++;
+ 	sch->q.qlen++;
+ }
+ 
+@@ -508,7 +512,7 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			1<<(prandom_u32() % 8);
+ 	}
+ 
+-	if (unlikely(sch->q.qlen >= sch->limit)) {
++	if (unlikely(q->t_len >= sch->limit)) {
+ 		/* re-link segs, so that qdisc_drop_all() frees them all */
+ 		skb->next = segs;
+ 		qdisc_drop_all(skb, sch, to_free);
+@@ -692,8 +696,8 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ tfifo_dequeue:
+ 	skb = __qdisc_dequeue_head(&sch->q);
+ 	if (skb) {
+-		qdisc_qstats_backlog_dec(sch, skb);
+ deliver:
++		qdisc_qstats_backlog_dec(sch, skb);
+ 		qdisc_bstats_update(sch, skb);
+ 		return skb;
+ 	}
+@@ -709,8 +713,7 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 
+ 		if (time_to_send <= now && q->slot.slot_next <= now) {
+ 			netem_erase_head(q, skb);
+-			sch->q.qlen--;
+-			qdisc_qstats_backlog_dec(sch, skb);
++			q->t_len--;
+ 			skb->next = NULL;
+ 			skb->prev = NULL;
+ 			/* skb->dev shares skb->rbnode area,
+@@ -737,16 +740,21 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 					if (net_xmit_drop_count(err))
+ 						qdisc_qstats_drop(sch);
+ 					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
++					sch->qstats.backlog -= pkt_len;
++					sch->q.qlen--;
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
++			sch->q.qlen--;
+ 			goto deliver;
+ 		}
+ 
+ 		if (q->qdisc) {
+ 			skb = q->qdisc->ops->dequeue(q->qdisc);
+-			if (skb)
++			if (skb) {
++				sch->q.qlen--;
+ 				goto deliver;
++			}
+ 		}
+ 
+ 		qdisc_watchdog_schedule_ns(&q->watchdog,
+@@ -756,8 +764,10 @@ static struct sk_buff *netem_dequeue(struct Qdisc *sch)
+ 
+ 	if (q->qdisc) {
+ 		skb = q->qdisc->ops->dequeue(q->qdisc);
+-		if (skb)
++		if (skb) {
++			sch->q.qlen--;
+ 			goto deliver;
++		}
+ 	}
+ 	return NULL;
+ }
+-- 
+2.39.5
+
 
 
 
