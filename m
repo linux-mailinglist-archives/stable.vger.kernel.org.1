@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-104776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1369F52ED
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFF49F52BA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31EA116FF19
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49B16172C1B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032871EF085;
-	Tue, 17 Dec 2024 17:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E241F8ACE;
+	Tue, 17 Dec 2024 17:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNW+qvcm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXGFaYWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB96B1F76A4;
-	Tue, 17 Dec 2024 17:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E211F890F;
+	Tue, 17 Dec 2024 17:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456063; cv=none; b=ElaEWDErxLmlKQBt29oaM1OTg9tEy2FLD9nMZJYgB1aatu8Np+crI+roI/U9Gx4JBcpQnaFs9Mlt769g0EEnwCOZKbBYV2ZbUebeQPZENIzG1jqx6auqyUlXvqwu3JEV7sgsrd2RfiE9S73i0z+fl11GtFc0T9puD2YlLtfkQ6g=
+	t=1734455927; cv=none; b=pfQQpS/NBtqxsY0PQ+gA6UkrFxrsukA6fC1EWebdR9Rb3BV36lnYmpPL95lvpbyhgRiFaO2xoQBreE49u7XpVnVO22O9ZmpVlM+A3EfFmw+guEcs25yVOzEN8Ion09kQ0SBg8+jTH5VzDl6AQgv9cmQagQ2L2GJFZons7HKm+qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456063; c=relaxed/simple;
-	bh=NfwrCEiZzmiLOUVSv65U6WgvQ1wCC0JvmLCua4sy2No=;
+	s=arc-20240116; t=1734455927; c=relaxed/simple;
+	bh=LlEat2Tn00UW7PyQcDCof5cdtljLCkKdB61y8phWzVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kybNeX03Uopc3hEenJhCXaBbc4EeWPJSI9XE1kmvRIbGInjtT0cSiZImtc3cSIOnix/LWAZLSjmV578NmpoH4A8Q97A23AlCncYL+GATsFOeo6MfB104rYbuamg4An034rHkBmtT7tKqxj6QL19oiCAweVJoUA4bGy8LYNZMUUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNW+qvcm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F99BC4CED3;
-	Tue, 17 Dec 2024 17:21:03 +0000 (UTC)
+	 MIME-Version; b=HBI5sn36G+53vOy2taa+lAFULfA0tYV6c/v8edY08exDmr9Ow5T0Ak5wxRnTC6p8WvVjS2bia1P6VQNXdM2v8JhCThcEGb10PWBYxI/YWCClBkkMaHES16TrhKYToQrp8H+q48KrOZ2WwKKVL0Kq2DWzjHEPoxo9b4uKMrMvvGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXGFaYWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0DDC4CED7;
+	Tue, 17 Dec 2024 17:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456063;
-	bh=NfwrCEiZzmiLOUVSv65U6WgvQ1wCC0JvmLCua4sy2No=;
+	s=korg; t=1734455927;
+	bh=LlEat2Tn00UW7PyQcDCof5cdtljLCkKdB61y8phWzVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sNW+qvcmfyn7TL1pBmceRuiEmsdMTM7/Jg7MJiJX/v7uYRoLSWXrintfHLtI/yu6X
-	 y4HsJ+taJRZPPAO9JaYNcM15wtyB5uGISgQkauoPc8wQU7USYWHYVLyQa4wjF9Q5zs
-	 u6w3h7Rk1+ybc2nMfls68Kde1S6ol4U4Dc7Vwqoo=
+	b=hXGFaYWYlDJYH4RiJCL1hxNHqDab257HGk+hfvAfydv9aib/57aXu3X1YXQrz0rJH
+	 iO8hnu9lqNOTqatMCMTn2KZUDGwhq9XccYfqpTcNicZDYtdLw9yKBUZgiluztY/htA
+	 jfOgpWpDwUDrLzdxqBqXCEZKEeLvsZyx0wcx9yNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/109] selftests: mlxsw: sharedbuffer: Ensure no extra packets are counted
+Subject: [PATCH 6.1 53/76] cxgb4: use port number to set mac addr
 Date: Tue, 17 Dec 2024 18:07:33 +0100
-Message-ID: <20241217170535.422956275@linuxfoundation.org>
+Message-ID: <20241217170528.468330074@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,142 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit 5f2c7ab15fd806043db1a7d54b5ec36be0bd93b1 ]
+[ Upstream commit 356983f569c1f5991661fc0050aa263792f50616 ]
 
-The test assumes that the packet it is sending is the only packet being
-passed to the device.
+t4_set_vf_mac_acl() uses pf to set mac addr, but t4vf_get_vf_mac_acl()
+uses port number to get mac addr, this leads to error when an attempt
+to set MAC address on VF's of PF2 and PF3.
+This patch fixes the issue by using port number to set mac address.
 
-However, it is not the case and so other packets are filling the buffers
-as well. Therefore, the test sometimes fails because it is reading a
-maximum occupancy that is larger than expected.
-
-Add egress filters on $h1 and $h2 that will guarantee the above.
-
-Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/64c28bc9b1cc1d78c4a73feda7cedbe9526ccf8b.1733414773.git.petrm@nvidia.com
+Fixes: e0cdac65ba26 ("cxgb4vf: configure ports accessible by the VF")
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241206062014.49414-1-anumula@chelsio.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drivers/net/mlxsw/sharedbuffer.sh         | 40 +++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h      | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c      | 5 +++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-index 21bebc5726f6..c068e6c2a580 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-@@ -22,20 +22,34 @@ SB_ITC=0
- h1_create()
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+index 5657ac8cfca0..f1a8ae047821 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+@@ -2084,7 +2084,7 @@ void t4_idma_monitor(struct adapter *adapter,
+ 		     struct sge_idma_monitor_state *idma,
+ 		     int hz, int ticks);
+ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+-		      unsigned int naddr, u8 *addr);
++		      u8 start, unsigned int naddr, u8 *addr);
+ void t4_tp_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
+ 		    u32 start_index, bool sleep_ok);
+ void t4_tp_tm_pio_read(struct adapter *adap, u32 *buff, u32 nregs,
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index 9cbce1faab26..7ce112b95b62 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -3247,7 +3247,7 @@ static int cxgb4_mgmt_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
+ 
+ 	dev_info(pi->adapter->pdev_dev,
+ 		 "Setting MAC %pM on VF %d\n", mac, vf);
+-	ret = t4_set_vf_mac_acl(adap, vf + 1, 1, mac);
++	ret = t4_set_vf_mac_acl(adap, vf + 1, pi->lport, 1, mac);
+ 	if (!ret)
+ 		ether_addr_copy(adap->vfinfo[vf].vf_mac_addr, mac);
+ 	return ret;
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+index 76de55306c4d..175bf9b13058 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+@@ -10215,11 +10215,12 @@ int t4_load_cfg(struct adapter *adap, const u8 *cfg_data, unsigned int size)
+  *	t4_set_vf_mac_acl - Set MAC address for the specified VF
+  *	@adapter: The adapter
+  *	@vf: one of the VFs instantiated by the specified PF
++ *	@start: The start port id associated with specified VF
+  *	@naddr: the number of MAC addresses
+  *	@addr: the MAC address(es) to be set to the specified VF
+  */
+ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+-		      unsigned int naddr, u8 *addr)
++		      u8 start, unsigned int naddr, u8 *addr)
  {
- 	simple_if_init $h1 192.0.1.1/24
-+	tc qdisc add dev $h1 clsact
-+
-+	# Add egress filter on $h1 that will guarantee that the packet sent,
-+	# will be the only packet being passed to the device.
-+	tc filter add dev $h1 egress pref 2 handle 102 matchall action drop
- }
+ 	struct fw_acl_mac_cmd cmd;
  
- h1_destroy()
- {
-+	tc filter del dev $h1 egress pref 2 handle 102 matchall action drop
-+	tc qdisc del dev $h1 clsact
- 	simple_if_fini $h1 192.0.1.1/24
- }
+@@ -10234,7 +10235,7 @@ int t4_set_vf_mac_acl(struct adapter *adapter, unsigned int vf,
+ 	cmd.en_to_len16 = cpu_to_be32((unsigned int)FW_LEN16(cmd));
+ 	cmd.nmac = naddr;
  
- h2_create()
- {
- 	simple_if_init $h2 192.0.1.2/24
-+	tc qdisc add dev $h2 clsact
-+
-+	# Add egress filter on $h2 that will guarantee that the packet sent,
-+	# will be the only packet being passed to the device.
-+	tc filter add dev $h2 egress pref 1 handle 101 matchall action drop
- }
- 
- h2_destroy()
- {
-+	tc filter del dev $h2 egress pref 1 handle 101 matchall action drop
-+	tc qdisc del dev $h2 clsact
- 	simple_if_fini $h2 192.0.1.2/24
- }
- 
-@@ -101,6 +115,11 @@ port_pool_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -b $h2mac -A 192.0.1.1 -B 192.0.1.2 \
-@@ -117,6 +136,11 @@ port_pool_test()
- 	max_occ=$(sb_occ_pool_check $cpu_dl_port $SB_POOL_EGR_CPU $exp_max_occ)
- 	check_err $? "Expected ePool($SB_POOL_EGR_CPU) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress pool"
-+
-+	tc filter del dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
- }
- 
- port_tc_ip_test()
-@@ -124,6 +148,11 @@ port_tc_ip_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -b $h2mac -A 192.0.1.1 -B 192.0.1.2 \
-@@ -140,6 +169,11 @@ port_tc_ip_test()
- 	max_occ=$(sb_occ_etc_check $cpu_dl_port $SB_ITC_CPU_IP $exp_max_occ)
- 	check_err $? "Expected egress TC($SB_ITC_CPU_IP) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress TC - IP packet"
-+
-+	tc filter del dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
- }
- 
- port_tc_arp_test()
-@@ -147,6 +181,9 @@ port_tc_arp_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol arp pref 1 handle 101 flower \
-+		src_mac $h1mac action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -A 192.0.1.1 -t arp -q
-@@ -162,6 +199,9 @@ port_tc_arp_test()
- 	max_occ=$(sb_occ_etc_check $cpu_dl_port $SB_ITC_CPU_ARP $exp_max_occ)
- 	check_err $? "Expected egress TC($SB_ITC_IP2ME) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress TC - ARP packet"
-+
-+	tc filter del dev $h1 egress protocol arp pref 1 handle 101 flower \
-+		src_mac $h1mac action pass
- }
- 
- setup_prepare()
+-	switch (adapter->pf) {
++	switch (start) {
+ 	case 3:
+ 		memcpy(cmd.macaddr3, addr, sizeof(cmd.macaddr3));
+ 		break;
 -- 
 2.39.5
 
