@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-104909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A5A9F53AE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:31:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDD09F5272
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCC6B1888C6D
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13EDE188D52A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33021F8699;
-	Tue, 17 Dec 2024 17:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BECA1F76B5;
+	Tue, 17 Dec 2024 17:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stM7bbsm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aImStsVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00BA1F7582;
-	Tue, 17 Dec 2024 17:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F741F7582;
+	Tue, 17 Dec 2024 17:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456474; cv=none; b=A87Dv+q8CaF8Uomg38F6FVEESdDJd1+0XETdEyIluhJGgO7GVvIfE60RuWKvOy5uH4JqVX4ycH6/pG4agCKyOzFBsTZ3wVAs6Oehm7U+1CQZgEpj/ifiPln8UlF+5olmjoBbq4+Z/U/No+SZkCeOqDt2xLa21dp+F165oT/0NYA=
+	t=1734455770; cv=none; b=aX/rVcjCpz5kI5sBj3sQIm3Xb1SA7+Dbl+iKnKFCvMKGXcXpH0CYRkyJa2PKw7o80ocTTdVgBSAq7yJDwvrwBBcUmQAo8udCoRZij4mgiJioQmdnmFRzYp68QcBoIkI0dlYI0xNrpeGAt1deqbAWn9DN25phvfIuPCJILioKMK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456474; c=relaxed/simple;
-	bh=3+r9Dy6zkyqgK+3xZTUQwCOCZZtD3DRIt8k/WZ8IWDg=;
+	s=arc-20240116; t=1734455770; c=relaxed/simple;
+	bh=4F1rZBUW5R9N3K+oUd7GmDpSeAk0QZcZUu4O5FxAl0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRWi8B5IGv8cAgs8zR4a9UScVrfN/7RAJZdFmxKqS3Zg4p9pywrX2mjen5WG9oXN2iVYKZrdeRNigo4OuQFjPUKI4RBFqb98PxRo97ayrZP8o3HqSp4uKkp59IcMFoTbQPDcTxehoGVniI7e5+tHC9EX6yaX543axCUczmkzn9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stM7bbsm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1317C4CED3;
-	Tue, 17 Dec 2024 17:27:53 +0000 (UTC)
+	 MIME-Version; b=jwUIXSbLYanyZ7Chv1gJ+owh5Td6wvZJNimAxxa+Toby6Q1RNhqKfAArg5EtJZi/2mem3JRkfa/PSkkn9Sp0g/e3l+GIcGTV4zaP1tLp6pa7msoa4s7V8VAJeTi728ARRypr38iNMAtFGm1MusKOFXmK0yjJyDdYPYhK2vVtMDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aImStsVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3417EC4CED3;
+	Tue, 17 Dec 2024 17:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456474;
-	bh=3+r9Dy6zkyqgK+3xZTUQwCOCZZtD3DRIt8k/WZ8IWDg=;
+	s=korg; t=1734455769;
+	bh=4F1rZBUW5R9N3K+oUd7GmDpSeAk0QZcZUu4O5FxAl0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stM7bbsm08Upi9TowW5k/JsQ7jH6YOcxqBwpsw31BUB98q1RrsVIHFNx1Qw2tPcE5
-	 O1JxrdnA2s0JxXuKO0cOAd+tUsi4s00nBpcTjUI82RC0xppJnYAYBKCicbMRoI/LPy
-	 +1w3rk9WkqDeGWkgRI6ipSAoCu+hOXlqGxUyx7E4=
+	b=aImStsVDAdpiF66iZVF8GDtfVdU81iTX1n3BwfpgVIBOi5cCOR4zUNKQzDuHdLa0R
+	 dF5Cb1dnQ2IPLWo5ze5pwBcNwJvisUH9WDIj2I7xs3sCie4D+o2W73/ODDE1/ltArh
+	 +NrM+f2aNVIShJkRDOGbgTdHEXy/rnT0ytxfTi6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 071/172] xfs: fix null bno_hint handling in xfs_rtallocate_rtg
+	Lin Ma <linma@zju.edu.cn>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 27/76] wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
 Date: Tue, 17 Dec 2024 18:07:07 +0100
-Message-ID: <20241217170549.229695447@linuxfoundation.org>
+Message-ID: <20241217170527.389786197@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit af9f02457f461b23307fe826a37be61ba6e32c92 upstream.
+[ Upstream commit 2e3dbf938656986cce73ac4083500d0bcfbffe24 ]
 
-xfs_bmap_rtalloc initializes the bno_hint variable to NULLRTBLOCK (aka
-NULLFSBLOCK).  If the allocation request is for a file range that's
-adjacent to an existing mapping, it will then change bno_hint to the
-blkno hint in the bmalloca structure.
+Since the netlink attribute range validation provides inclusive
+checking, the *max* of attribute NL80211_ATTR_MLO_LINK_ID should be
+IEEE80211_MLD_MAX_NUM_LINKS - 1 otherwise causing an off-by-one.
 
-In other words, bno_hint is either a rt block number, or it's all 1s.
-Unfortunately, commit ec12f97f1b8a8f didn't take the NULLRTBLOCK state
-into account, which means that it tries to translate that into a
-realtime extent number.  We then end up with an obnoxiously high rtx
-number and pointlessly feed that to the near allocator.  This often
-fails and falls back to the by-size allocator.  Seeing as we had no
-locality hint anyway, this is a waste of time.
+One crash stack for demonstration:
+==================================================================
+BUG: KASAN: wild-memory-access in ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
+Read of size 6 at addr 001102080000000c by task fuzzer.386/9508
 
-Fix the code to detect a lack of bno_hint correctly.  This was detected
-by running xfs/009 with metadir enabled and a 28k rt extent size.
+CPU: 1 PID: 9508 Comm: syz.1.386 Not tainted 6.1.70 #2
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
+ print_report+0xe0/0x750 mm/kasan/report.c:398
+ kasan_report+0x139/0x170 mm/kasan/report.c:495
+ kasan_check_range+0x287/0x290 mm/kasan/generic.c:189
+ memcpy+0x25/0x60 mm/kasan/shadow.c:65
+ ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
+ rdev_tx_control_port net/wireless/rdev-ops.h:761 [inline]
+ nl80211_tx_control_port+0x7b3/0xc40 net/wireless/nl80211.c:15453
+ genl_family_rcv_msg_doit+0x22e/0x320 net/netlink/genetlink.c:756
+ genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
+ genl_rcv_msg+0x539/0x740 net/netlink/genetlink.c:850
+ netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
+ netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
+ netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
+ netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
+ sock_sendmsg_nosec net/socket.c:716 [inline]
+ __sock_sendmsg net/socket.c:728 [inline]
+ ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
+ ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
+ __sys_sendmsg net/socket.c:2582 [inline]
+ __do_sys_sendmsg net/socket.c:2591 [inline]
+ __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Cc: <stable@vger.kernel.org> # v6.12
-Fixes: ec12f97f1b8a8f ("xfs: make the rtalloc start hint a xfs_rtblock_t")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Update the policy to ensure correct validation.
+
+Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Suggested-by: Cengiz Can <cengiz.can@canonical.com>
+Link: https://patch.msgid.link/20241130170526.96698-1-linma@zju.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c |    2 +-
+ net/wireless/nl80211.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -1295,7 +1295,7 @@ xfs_rtallocate(
- 	 * For an allocation to an empty file at offset 0, pick an extent that
- 	 * will space things out in the rt area.
- 	 */
--	if (bno_hint)
-+	if (bno_hint != NULLFSBLOCK)
- 		start = xfs_rtb_to_rtx(args.mp, bno_hint);
- 	else if (initial_user_data)
- 		start = xfs_rtpick_extent(args.mp, tp, maxlen);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 3e1c4e23484d..0ba824c3fd1b 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -806,7 +806,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MLO_LINKS] =
+ 		NLA_POLICY_NESTED_ARRAY(nl80211_policy),
+ 	[NL80211_ATTR_MLO_LINK_ID] =
+-		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS),
++		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS - 1),
+ 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
+ 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
+-- 
+2.39.5
+
 
 
 
