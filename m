@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0369F52B9
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 675169F53D9
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07C26188E747
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6452D1886CE5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A5B1F867B;
-	Tue, 17 Dec 2024 17:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619631F709A;
+	Tue, 17 Dec 2024 17:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ot7F4Eca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+7KudjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657A1E0493;
-	Tue, 17 Dec 2024 17:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1641448DC;
+	Tue, 17 Dec 2024 17:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455885; cv=none; b=DMhCAhbZ1KwzPJpghVvazPh4Wuy0h4aoIjdw6+3HW/z4UpGMbnAnA0/7BOk1BiWOC8jP8SEM1gO0KB4LcvdlujZqdqZUSNweBLMLqykylBiv9JY1f53y4s6q95yyk7p3RyycClWq/QByNNRJh5viXRC7J56cKStECVjpvuleSno=
+	t=1734456631; cv=none; b=fEpu/g/KcGDgG7/1/AHodLVSmLJnFGiya4v6PS5Bf2oHTy0lb5qWBjZ04d5UQSxmVrFflkpzk7aMZyZJL3wwUsC7v55cgkkDziPt93eW4DSOSPSoTpDto4Fx+3oBPMJ0w1spaiWGoPzmoErvnuLPjqM6k3JjPXl+pOQmQ9AWdMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455885; c=relaxed/simple;
-	bh=l0KHh19o9B+Y2FeQGnzP7v2XRwv34My/f0yTaur1H/g=;
+	s=arc-20240116; t=1734456631; c=relaxed/simple;
+	bh=A5c5n31/GVaBsAvaI6thg35ZFLBwJRbSkNnS2t5SEwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFq1qeuqmCqCjiYjNocK2cFPuDxPNoT+Thk6rD5haDyNKO8WtUSaweYYOeY3U6ptrVLMmGT7MdZVEBzRB/fublE9uq0irUJZKVWMhCTkqmT3sonHbN9peAB5ZJkWe+2w3KriL+Z6doe9AbjWOwC/KDPeoSmiD6qtDh3S6Z2C1xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ot7F4Eca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF998C4CED3;
-	Tue, 17 Dec 2024 17:18:04 +0000 (UTC)
+	 MIME-Version; b=CJN/Ujc5WOG9mxABAHJf51kMpWL0gzhwGcKjdJiLUBUX3x2Jy4ajxB6GF180Uyvxe5pLs9ilI8MyXQHHbWWg/uYYMA+6Oer9OmzhTmlDizbrbhRRVGTtWl9EngwhUEyu541/ki6MRtykPK3zi81hcOUpSmoyIUZo59DZa5DFStI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+7KudjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2081C4CED3;
+	Tue, 17 Dec 2024 17:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455885;
-	bh=l0KHh19o9B+Y2FeQGnzP7v2XRwv34My/f0yTaur1H/g=;
+	s=korg; t=1734456631;
+	bh=A5c5n31/GVaBsAvaI6thg35ZFLBwJRbSkNnS2t5SEwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ot7F4EcabcqORi/+6kgt5oyNeZ8TJqS+kIkr+a7XucN6Oav4kEjIyihhKruAQoson
-	 CyBYhHzhevmsEGzJKkq4oZNVYLp+EiccAYO0ZjUIdgkSjdCP5mtJVsYsPU0AAbIa53
-	 fFPg2Vuc3IrLwhyMHYLWsp6awqGULWyvCBSB9zec=
+	b=T+7KudjA3SkJj/UKAqLq+uasjF+wKoZv4fI4EGSxsZOtnQ+AXY/2+AmmyyKK0vKeA
+	 wFcuZfqWo+X4jLonXRWTBa1SbeamLHOICSIrNPvhx+fWhThRIm/EmrYqlVzlxf7aTa
+	 Fs1FcgKhzgVE3bvauOFaRxF9DWfsPRo6lDIPtudM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lonial Con <kongln9170@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.1 66/76] bpf: sync_linked_regs() must preserve subreg_def
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 110/172] net: sparx5: fix FDMA performance issue
 Date: Tue, 17 Dec 2024 18:07:46 +0100
-Message-ID: <20241217170529.119670094@linuxfoundation.org>
+Message-ID: <20241217170550.886881529@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-commit e9bd9c498cb0f5843996dbe5cbce7a1836a83c70 upstream.
+[ Upstream commit f004f2e535e2b66ccbf5ac35f8eaadeac70ad7b7 ]
 
-Range propagation must not affect subreg_def marks, otherwise the
-following example is rewritten by verifier incorrectly when
-BPF_F_TEST_RND_HI32 flag is set:
+The FDMA handler is responsible for scheduling a NAPI poll, which will
+eventually fetch RX packets from the FDMA queue. Currently, the FDMA
+handler is run in a threaded context. For some reason, this kills
+performance.  Admittedly, I did not do a thorough investigation to see
+exactly what causes the issue, however, I noticed that in the other
+driver utilizing the same FDMA engine, we run the FDMA handler in hard
+IRQ context.
 
-  0: call bpf_ktime_get_ns                   call bpf_ktime_get_ns
-  1: r0 &= 0x7fffffff       after verifier   r0 &= 0x7fffffff
-  2: w1 = w0                rewrites         w1 = w0
-  3: if w0 < 10 goto +0     -------------->  r11 = 0x2f5674a6     (r)
-  4: r1 >>= 32                               r11 <<= 32           (r)
-  5: r0 = r1                                 r1 |= r11            (r)
-  6: exit;                                   if w0 < 0xa goto pc+0
-                                             r1 >>= 32
-                                             r0 = r1
-                                             exit
+Fix this performance issue, by  running the FDMA handler in hard IRQ
+context, not deferring any work to a thread.
 
-(or zero extension of w1 at (2) is missing for architectures that
- require zero extension for upper register half).
+Prior to this change, the RX UDP performance was:
 
-The following happens w/o this patch:
-- r0 is marked as not a subreg at (0);
-- w1 is marked as subreg at (2);
-- w1 subreg_def is overridden at (3) by copy_register_state();
-- w1 is read at (5) but mark_insn_zext() does not mark (2)
-  for zero extension, because w1 subreg_def is not set;
-- because of BPF_F_TEST_RND_HI32 flag verifier inserts random
-  value for hi32 bits of (2) (marked (r));
-- this random value is read at (5).
+Interval           Transfer     Bitrate         Jitter
+0.00-10.20  sec    44.6 MBytes  36.7 Mbits/sec  0.027 ms
 
-Fixes: 75748837b7e5 ("bpf: Propagate scalar ranges through register assignments.")
-Reported-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://lore.kernel.org/bpf/7e2aa30a62d740db182c170fdd8f81c596df280d.camel@gmail.com
-Link: https://lore.kernel.org/bpf/20240924210844.1758441-1-eddyz87@gmail.com
-[ shung-hsi.yu: sync_linked_regs() was called find_equal_scalars() before commit
-  4bf79f9be434 ("bpf: Track equal scalars history on per-instruction level"), and
-  modification is done because there is only a single call to
-  copy_register_state() before commit 98d7ca374ba4 ("bpf: Track delta between
-  "linked" registers."). ]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After this change, the rx UDP performance is:
+
+Interval           Transfer     Bitrate         Jitter
+0.00-9.12   sec    1.01 GBytes  953 Mbits/sec   0.020 ms
+
+Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -10350,8 +10350,11 @@ static void find_equal_scalars(struct bp
- 	struct bpf_reg_state *reg;
- 
- 	bpf_for_each_reg_in_vstate(vstate, state, reg, ({
--		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id)
-+		if (reg->type == SCALAR_VALUE && reg->id == known_reg->id) {
-+			s32 saved_subreg_def = reg->subreg_def;
- 			copy_register_state(reg, known_reg);
-+			reg->subreg_def = saved_subreg_def;
-+		}
- 	}));
- }
- 
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index b64c814eac11..0c4c75b3682f 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -693,12 +693,11 @@ static int sparx5_start(struct sparx5 *sparx5)
+ 	err = -ENXIO;
+ 	if (sparx5->fdma_irq >= 0) {
+ 		if (GCB_CHIP_ID_REV_ID_GET(sparx5->chip_id) > 0)
+-			err = devm_request_threaded_irq(sparx5->dev,
+-							sparx5->fdma_irq,
+-							NULL,
+-							sparx5_fdma_handler,
+-							IRQF_ONESHOT,
+-							"sparx5-fdma", sparx5);
++			err = devm_request_irq(sparx5->dev,
++					       sparx5->fdma_irq,
++					       sparx5_fdma_handler,
++					       0,
++					       "sparx5-fdma", sparx5);
+ 		if (!err)
+ 			err = sparx5_fdma_start(sparx5);
+ 		if (err)
+-- 
+2.39.5
+
 
 
 
