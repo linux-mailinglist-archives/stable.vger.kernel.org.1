@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-104672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842249F526A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0ED9F53C6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACBF41886D34
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B5917365A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C1E1F869F;
-	Tue, 17 Dec 2024 17:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F4C1F8910;
+	Tue, 17 Dec 2024 17:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXwWSwS0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqKSq1oH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E8D1F868C;
-	Tue, 17 Dec 2024 17:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8338B14A4E7;
+	Tue, 17 Dec 2024 17:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455755; cv=none; b=r3W02bsPPu7Sr8X4KE31MSST82RJ6CSb8MmFw2Gj9xb+AkZ0S2LtOGJ8w6x72WW13AH6zC/k/6KHivTZloeJa0d84C311JzXrVibXT2HGn+mvofbPbb5rq5fXpzEpuSlOb2HXTq+qySEzeIPVTYMEt7HiuDfPGz36jUnDudLGKQ=
+	t=1734456516; cv=none; b=HFEC33dxOvazehJLlHFly2z/2GEUgtWblmQnjs6RT5ptjxWISTcnkqerwYdFtDktnMLX0lArox4UbHqYDeGS3d/OhofD5W6bAVD1e2VzeUfhKexQAbUqwLaKMzkgSalT7i/o/PFLPZ7D932YeCcvzrRntJviZXFLCcgOThBf4rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455755; c=relaxed/simple;
-	bh=2rBn/hlLt5HpqDm5wvqZYUVsw7ydmJPywX+aW0HZpsA=;
+	s=arc-20240116; t=1734456516; c=relaxed/simple;
+	bh=G/kSGlkRXvMo1cb6Tc7oMDI8qZbkYUb1NC9SDl115QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKZHT75EQXT5ZJieB8enIy5XvEjYlcgoRv9RuBROG1podf8dUCp36aWTLgAeVO1IkfGCK84U2iq8WpV169tg3nJX8BtcZ5OiG3BHg6m64c8V/SXT3RrCoBz0saVJ+7aIYPqe4WCUi/BH/sWHtBQezdflTMxVPQgqmudBBG1a9A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXwWSwS0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B76EC4CED3;
-	Tue, 17 Dec 2024 17:15:54 +0000 (UTC)
+	 MIME-Version; b=YA1Gh4HL/t8Hc51zAgIi+ubXxH23/glMf31levqU6NVUyvpdW7K290SlarMb7lordadjg9DfROuz4hPG+0u8kOtKqslxK9sst/hQTHx1JmPQKUchrYHEwiYosusuJ9s77G8rTCMCDTKxzlla7nU4hBySUg9DDhq6kMcDmV5nqlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqKSq1oH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEDAC4CED3;
+	Tue, 17 Dec 2024 17:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455754;
-	bh=2rBn/hlLt5HpqDm5wvqZYUVsw7ydmJPywX+aW0HZpsA=;
+	s=korg; t=1734456516;
+	bh=G/kSGlkRXvMo1cb6Tc7oMDI8qZbkYUb1NC9SDl115QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uXwWSwS0//GWLvx1QuGMmdul+TJaXknTtAEXKtqClpU2/GLZX+MRuD+HNQ2xliQCC
-	 nI61esbZL8Fc0L4079wre6GnCUJeeWTYh+aCnMCl6nk3byC4MxygRXo5/Mc0753+cD
-	 LKV+8AUmAEQas5WSgs52TbUW4aya77nEfxYx4tEM=
+	b=dqKSq1oHS8zmMrq55An2LW93bedccir16nr/ozTAGEfHGGl8woJiDnQLvjO7uMdHC
+	 +N3MmIMn9h33lH5hr4Mq4KLnDrx94h8oy5nkzjdSOrSsZoxXP1tJ3+LA5yrxvnY5Nl
+	 j+nUodRAV5i9/bExenOuzUFz5g+dLaTnFjuyfcSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 6.1 09/76] usb: dwc2: hcd: Fix GetPortStatus & SetPortFeature
+	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 053/172] iommu/tegra241-cmdqv: do not use smp_processor_id in preemptible context
 Date: Tue, 17 Dec 2024 18:06:49 +0100
-Message-ID: <20241217170526.635347863@linuxfoundation.org>
+Message-ID: <20241217170548.470697178@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
 
-commit a8d3e4a734599c7d0f6735f8db8a812e503395dd upstream.
+commit 1f806218164d1bb93f3db21eaf61254b08acdf03 upstream.
 
-On Rasperry Pis without onboard USB hub the power cycle during
-power connect init only disable the port but never enabled it again:
+During boot some of the calls to tegra241_cmdqv_get_cmdq() will happen
+in preemptible context. As this function calls smp_processor_id(), if
+CONFIG_DEBUG_PREEMPT is enabled, these calls will trigger a series of
+"BUG: using smp_processor_id() in preemptible" backtraces.
 
-  usb usb1-port1: attempt power cycle
+As tegra241_cmdqv_get_cmdq() only calls smp_processor_id() to use the
+CPU number as a factor to balance out traffic on cmdq usage, it is safe
+to use raw_smp_processor_id() here.
 
-The port relevant part in dwc2_hcd_hub_control() is skipped in case
-port_connect_status = 0 under the assumption the core is or will be soon
-in device mode. But this assumption is wrong, because after ClearPortFeature
-USB_PORT_FEAT_POWER the port_connect_status will also be 0 and
-SetPortFeature (incl. USB_PORT_FEAT_POWER) will be a no-op.
-
-Fix the behavior of dwc2_hcd_hub_control() by replacing the
-port_connect_status check with dwc2_is_device_mode().
-
-Link: https://github.com/raspberrypi/linux/issues/6247
-Fixes: 7359d482eb4d ("staging: HCD files for the DWC2 driver")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20241202001631.75473-3-wahrenst@gmx.net
+Cc: <stable@vger.kernel.org>
+Fixes: 918eb5c856f6 ("iommu/arm-smmu-v3: Add in-kernel support for NVIDIA Tegra241 (Grace) CMDQV")
+Signed-off-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://lore.kernel.org/r/Z1L1mja3nXzsJ0Pk@uudg.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -3546,11 +3546,9 @@ static int dwc2_hcd_hub_control(struct d
- 			port_status |= USB_PORT_STAT_C_OVERCURRENT << 16;
- 		}
- 
--		if (!hsotg->flags.b.port_connect_status) {
-+		if (dwc2_is_device_mode(hsotg)) {
- 			/*
--			 * The port is disconnected, which means the core is
--			 * either in device mode or it soon will be. Just
--			 * return 0's for the remainder of the port status
-+			 * Just return 0's for the remainder of the port status
- 			 * since the port register can't be read if the core
- 			 * is in device mode.
- 			 */
-@@ -3620,13 +3618,11 @@ static int dwc2_hcd_hub_control(struct d
- 		if (wvalue != USB_PORT_FEAT_TEST && (!windex || windex > 1))
- 			goto error;
- 
--		if (!hsotg->flags.b.port_connect_status) {
-+		if (dwc2_is_device_mode(hsotg)) {
- 			/*
--			 * The port is disconnected, which means the core is
--			 * either in device mode or it soon will be. Just
--			 * return without doing anything since the port
--			 * register can't be written if the core is in device
--			 * mode.
-+			 * Just return 0's for the remainder of the port status
-+			 * since the port register can't be read if the core
-+			 * is in device mode.
- 			 */
- 			break;
- 		}
+diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+index c8ec74f089f3..6e41ddaa24d6 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
++++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+@@ -339,7 +339,7 @@ tegra241_cmdqv_get_cmdq(struct arm_smmu_device *smmu,
+ 	 * one CPU at a time can enter the process, while the others
+ 	 * will be spinning at the same lock.
+ 	 */
+-	lidx = smp_processor_id() % cmdqv->num_lvcmdqs_per_vintf;
++	lidx = raw_smp_processor_id() % cmdqv->num_lvcmdqs_per_vintf;
+ 	vcmdq = vintf->lvcmdqs[lidx];
+ 	if (!vcmdq || !READ_ONCE(vcmdq->enabled))
+ 		return NULL;
+-- 
+2.47.1
+
 
 
 
