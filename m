@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-104751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10E09F52E5
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C48F9F5220
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F4D1892AE4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A92716F6D8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC6F1F8696;
-	Tue, 17 Dec 2024 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED971F8695;
+	Tue, 17 Dec 2024 17:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFLfuuQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9KTgx6Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F541F76AC;
-	Tue, 17 Dec 2024 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3F01F7577;
+	Tue, 17 Dec 2024 17:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455990; cv=none; b=BCdigXXL5ZB3sCwu8mgNFScCJ7f0zf0X6xY8cWJFhoy5Z37RxJ9em8EUhGcqwJ2MWFMZXDt6xPSL/kIpY8zRyfhu5HgkhCoTEOrufUmLpUYUKOTpbac4FEjjmFDewjhbc14H6W+BfhMigOs5uOpjTP9FPU8n2uIAophe5lGa62I=
+	t=1734455602; cv=none; b=pPnVTmFytjebPkJHnfbGTzRujKWEzjS4F6XSlbN+cxHK60xVJiQqcmdKIdIiNhfZSTMJr+TJkGli5N69urKBUnXM1WwkNqFhX0GELfVKeTI/KJRUbX1HL+GklS7PSeAdYYDAU1u5Y6+Z0SdcFpacTheXipN+0Zu+fWCAlG6BGtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455990; c=relaxed/simple;
-	bh=tS3kBuKeFeGDUU9OYgkdFAoLviy+hFvNs7J0O/Daa0c=;
+	s=arc-20240116; t=1734455602; c=relaxed/simple;
+	bh=vlo23bj0Bbqvg7lzEqxgyxOnvYhRjOHBG93xLUpY2Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRPKPAxglk4nxQaiI90NKg2Q4XN43W2vD801jgeALCeg86XQV495JHJNx1RKCdVoem/9IjkJiM0y+MzRMZdKeDtg0KcrESbUbiVKCgnxzHI12dH4nnRCx9MfBdY/hA6UIWHlhhtlMawrMsmnIcOylAijLGM/H7rOzESzgpESypM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFLfuuQH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31EDC4CED3;
-	Tue, 17 Dec 2024 17:19:49 +0000 (UTC)
+	 MIME-Version; b=IeVp0Krzj9YRtmdUha3i4C0K6vpzAjzMwW2PJ7mCuAQ8gjXCZjsolYORlQ/2Lq2244d6UrX1FRe9iUJ1cJh/6DhIY6Y+1p3KSLwFCQboMVsY+RihEAolus/8i7vh9nlcOtjbvVkhBnWbL1rc+j8BHSTjG0HWABSaaJVgvE152aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9KTgx6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45275C4CED3;
+	Tue, 17 Dec 2024 17:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455990;
-	bh=tS3kBuKeFeGDUU9OYgkdFAoLviy+hFvNs7J0O/Daa0c=;
+	s=korg; t=1734455601;
+	bh=vlo23bj0Bbqvg7lzEqxgyxOnvYhRjOHBG93xLUpY2Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFLfuuQHm+YeOGSwlWui5aWfc4us0rxYsz9fYua1Wc+/chQXNY5sEzWGb4JGG/Zzj
-	 olXf/UY8UOpFFOd1eimVKUppF9drNHEt+30yHX/FFYJU/nIdRBiUbWl5fsnm+IFxEr
-	 HgtUQaSJ2gHkw3KKRPz7BKlS7cOFTyrt9KKIFlqI=
+	b=K9KTgx6QAG/VF4TD1yxh9HLHNw9t51Oh5HlNMOhHC0G0zSBFXytLqVSRvSQPW0MYj
+	 Tke05IYu1Oq7+Q5zPobmhq4S9hu7U2nzZPDqBLveSa4sdYrmo5zs+wa52O1uWvSgOQ
+	 rEcBN0g+U2xOnffde+xTLnVxvr/VQZ63bSYMpTY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Eugene Kobyak <eugene.kobyak@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.6 023/109] drm/i915: Fix NULL pointer dereference in capture_engine
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 5.15 14/51] xfs: fix scrub tracepoints when inode-rooted btrees are involved
 Date: Tue, 17 Dec 2024 18:07:07 +0100
-Message-ID: <20241217170534.335512649@linuxfoundation.org>
+Message-ID: <20241217170520.888915508@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Kobyak <eugene.kobyak@intel.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit da0b986256ae9a78b0215214ff44f271bfe237c1 upstream.
+commit ffc3ea4f3c1cc83a86b7497b0c4b0aee7de5480d upstream.
 
-When the intel_context structure contains NULL,
-it raises a NULL pointer dereference error in drm_info().
+Fix a minor mistakes in the scrub tracepoints that can manifest when
+inode-rooted btrees are enabled.  The existing code worked fine for bmap
+btrees, but we should tighten the code up to be less sloppy.
 
-Fixes: e8a3319c31a1 ("drm/i915: Allow error capture without a request")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12309
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: <stable@vger.kernel.org> # v6.3+
-Signed-off-by: Eugene Kobyak <eugene.kobyak@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/xmsgfynkhycw3cf56akp4he2ffg44vuratocsysaowbsnhutzi@augnqbm777at
-(cherry picked from commit 754302a5bc1bd8fd3b7d85c168b0a1af6d4bba4d)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: <stable@vger.kernel.org> # v5.7
+Fixes: 92219c292af8dd ("xfs: convert btree cursor inode-private member names")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_gpu_error.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/xfs/scrub/trace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/i915_gpu_error.c
-+++ b/drivers/gpu/drm/i915/i915_gpu_error.c
-@@ -1638,9 +1638,21 @@ capture_engine(struct intel_engine_cs *e
- 		return NULL;
- 
- 	intel_engine_get_hung_entity(engine, &ce, &rq);
--	if (rq && !i915_request_started(rq))
--		drm_info(&engine->gt->i915->drm, "Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
--			 engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
-+	if (rq && !i915_request_started(rq)) {
-+		/*
-+		 * We want to know also what is the guc_id of the context,
-+		 * but if we don't have the context reference, then skip
-+		 * printing it.
-+		 */
-+		if (ce)
-+			drm_info(&engine->gt->i915->drm,
-+				 "Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
-+				 engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
-+		else
-+			drm_info(&engine->gt->i915->drm,
-+				 "Got hung context on %s with active request %lld:%lld not yet started\n",
-+				 engine->name, rq->fence.context, rq->fence.seqno);
-+	}
- 
- 	if (rq) {
- 		capture = intel_engine_coredump_add_request(ee, rq, ATOMIC_MAYFAIL);
+--- a/fs/xfs/scrub/trace.h
++++ b/fs/xfs/scrub/trace.h
+@@ -464,7 +464,7 @@ TRACE_EVENT(xchk_ifork_btree_error,
+ 	TP_fast_assign(
+ 		xfs_fsblock_t fsbno = xchk_btree_cur_fsbno(cur, level);
+ 		__entry->dev = sc->mp->m_super->s_dev;
+-		__entry->ino = sc->ip->i_ino;
++		__entry->ino = cur->bc_ino.ip->i_ino;
+ 		__entry->whichfork = cur->bc_ino.whichfork;
+ 		__entry->type = sc->sm->sm_type;
+ 		__entry->btnum = cur->bc_btnum;
 
 
 
