@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-104753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4869F52CC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22ADD9F51D8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B67E516E938
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EBA77A1DE7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F7E1F757B;
-	Tue, 17 Dec 2024 17:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D821F755F;
+	Tue, 17 Dec 2024 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoQ0iW1K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAge8qeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614071EF085;
-	Tue, 17 Dec 2024 17:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE71149DFA;
+	Tue, 17 Dec 2024 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455996; cv=none; b=D2XJ5zt3JgL2tnxENoi/i5yI5nByMNWxs0bM4v/t4Jndr9fzaytaF+15+7uUBIfVdsUyzz6o7jN7QFVBNCJgtdc8uB4w77iLzkLMk2UTOBOW0uar8bEwaimisLMMsHo0Tpph6sgauTd1VSb+M1jkMaIPgfubSvlUZq05hwsH5Sc=
+	t=1734455459; cv=none; b=m76Rt74xqktShhflar1e9ewDGBLl6Cd4UyY1Cy7qLUf1kwug5FIb+dvpVZZk305GXeSKIta6FjmSNJB97BbqfvhtmRJslfnLmUnGMk73NyxzhBM+fThx6ZKdVmUAgJ3LDmTn7+N6CPNIRg1F5ZYMG57GPhlpmUm962nmzk64UdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455996; c=relaxed/simple;
-	bh=IbCNB+1A+aTe5UQ/zGhn6B6QkKXv0bcGZ8fsLSNKq+M=;
+	s=arc-20240116; t=1734455459; c=relaxed/simple;
+	bh=OZbKu4UfZg7CkF+T/61RybizChr5zeAi8PDotAiU/GA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nb20umg91grPMxXIlR7qHYpwyxgWqpIeIRy7g3o+jzp9zJZqkCcIu6MYwVCuVFwHlSyk7t1hgrPKOaiiX0ERTTPouEPJ3UkSArx38nDNp3SVDGpvHq5yuN5KfAH4XsOgdjmQ43BBHLuvx0UDLHp+LY7tTL+qeWoNZQN/M1FVJLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoQ0iW1K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFD4C4CED3;
-	Tue, 17 Dec 2024 17:19:55 +0000 (UTC)
+	 MIME-Version; b=kHMtgUP+8aQlrMK2qMaq8fFbo+YFwremFHnBi6s8H473A7D4oen0741oxLsbv0eQV4nGvZHkA41LdfQaHy0x+rEixO2zOqSOV6ass8xUOxPZjrTo9FJ0FV5P2RaTtmBTsa47DeZsTesOicffeWQa07mirILBgCIG0GtPfTxoAVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAge8qeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA00EC4CED3;
+	Tue, 17 Dec 2024 17:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455996;
-	bh=IbCNB+1A+aTe5UQ/zGhn6B6QkKXv0bcGZ8fsLSNKq+M=;
+	s=korg; t=1734455459;
+	bh=OZbKu4UfZg7CkF+T/61RybizChr5zeAi8PDotAiU/GA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eoQ0iW1K6vo6lGOI5pUdldHkPHo7+LCNpHFmos4TxP8b0UfduMIQ3ECCVUf8r/Dcy
-	 eJqLTcQ0Y99A9fnG8bHITEEnMMZ0ZHQabHRv+TvPpXxH7H4Vv5aOVt4vKV474G78j+
-	 6cwImzpOUOEQdXi1stXPpRk0Q8SdjzUIdHAQGcCU=
+	b=UAge8qeKiYuofnBIJVgvKDG3t4g0V2AHfckJ2x7CrZTkP5JVhCldXj0g8Q6e0rsv7
+	 nMM/56md9sWZ7cA4O443X51HtA8N3uhBF6/GwjhVKYX2KSRRe9E1SEZggXDNnI31wb
+	 7KbkOE3w80MPumalPQkC6ya6kOHYIhYMEAVZjXb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.6 025/109] xfs: dont drop errno values when we fail to ficlone the entire range
+	Danielle Ratson <danieller@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 18/43] selftests: mlxsw: sharedbuffer: Remove duplicate test cases
 Date: Tue, 17 Dec 2024 18:07:09 +0100
-Message-ID: <20241217170534.423695068@linuxfoundation.org>
+Message-ID: <20241217170521.193247523@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Danielle Ratson <danieller@nvidia.com>
 
-commit 7ce31f20a0771d71779c3b0ec9cdf474cc3c8e9a upstream.
+[ Upstream commit 6c46ad4d1bb2e8ec2265296e53765190f6e32f33 ]
 
-Way back when we first implemented FICLONE for XFS, life was simple --
-either the the entire remapping completed, or something happened and we
-had to return an errno explaining what happened.  Neither of those
-ioctls support returning partial results, so it's all or nothing.
+On both port_tc_ip_test() and port_tc_arp_test(), the max occupancy is
+checked on $h2 twice, when only the error message is different and does not
+match the check itself.
 
-Then things got complicated when copy_file_range came along, because it
-actually can return the number of bytes copied, so commit 3f68c1f562f1e4
-tried to make it so that we could return a partial result if the
-REMAP_FILE_CAN_SHORTEN flag is set.  This is also how FIDEDUPERANGE can
-indicate that the kernel performed a partial deduplication.
+Remove the two duplicated test cases from the test.
 
-Unfortunately, the logic is wrong if an error stops the remapping and
-CAN_SHORTEN is not set.  Because those callers cannot return partial
-results, it is an error for ->remap_file_range to return a positive
-quantity that is less than the @len passed in.  Implementations really
-should be returning a negative errno in this case, because that's what
-btrfs (which introduced FICLONE{,RANGE}) did.
-
-Therefore, ->remap_range implementations cannot silently drop an errno
-that they might have when the number of bytes remapped is less than the
-number of bytes requested and CAN_SHORTEN is not set.
-
-Found by running generic/562 on a 64k fsblock filesystem and wondering
-why it reported corrupt files.
-
-Cc: <stable@vger.kernel.org> # v4.20
-Fixes: 3fc9f5e409319e ("xfs: remove xfs_reflink_remap_range")
-Really-Fixes: 3f68c1f562f1e4 ("xfs: support returning partial reflink results")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/d9eb26f6fc16a06a30b5c2c16ad80caf502bc561.1733414773.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_file.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../selftests/drivers/net/mlxsw/sharedbuffer.sh        | 10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -1220,6 +1220,14 @@ out_unlock:
- 	xfs_iunlock2_remapping(src, dest);
- 	if (ret)
- 		trace_xfs_reflink_remap_range_error(dest, ret, _RET_IP_);
-+	/*
-+	 * If the caller did not set CAN_SHORTEN, then it is not prepared to
-+	 * handle partial results -- either the whole remap succeeds, or we
-+	 * must say why it did not.  In this case, any error should be returned
-+	 * to the caller.
-+	 */
-+	if (ret && remapped < len && !(remap_flags & REMAP_FILE_CAN_SHORTEN))
-+		return ret;
- 	return remapped > 0 ? remapped : ret;
- }
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+index f6f5e2090891..9c3c426197af 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
+@@ -131,11 +131,6 @@ port_tc_ip_test()
  
+ 	devlink sb occupancy snapshot $DEVLINK_DEV
+ 
+-	RET=0
+-	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+-	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+-	log_test "physical port's($h1) ingress TC - IP packet"
+-
+ 	RET=0
+ 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+ 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+@@ -162,11 +157,6 @@ port_tc_arp_test()
+ 
+ 	devlink sb occupancy snapshot $DEVLINK_DEV
+ 
+-	RET=0
+-	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+-	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+-	log_test "physical port's($h1) ingress TC - ARP packet"
+-
+ 	RET=0
+ 	max_occ=$(sb_occ_itc_check $dl_port2 $SB_ITC $exp_max_occ)
+ 	check_err $? "Expected ingress TC($SB_ITC) max occupancy to be $exp_max_occ, but got $max_occ"
+-- 
+2.39.5
+
 
 
 
