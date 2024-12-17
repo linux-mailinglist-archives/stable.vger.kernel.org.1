@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C628A9F539C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D3C9F5213
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:14:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F92A16EB73
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90DAB16D3C4
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A971F76DA;
-	Tue, 17 Dec 2024 17:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D841F867D;
+	Tue, 17 Dec 2024 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb/SZAKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNDFbqkb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBC01F75BE;
-	Tue, 17 Dec 2024 17:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F16B1F755F;
+	Tue, 17 Dec 2024 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456427; cv=none; b=gMiooQdDgYyvLTLKnMqIAahw2iLBXOSMh7PcehY6eTgvgaUU9XlbgZuNktBvqsRYUmNqel2bM1elSO2osIJLJW6kIrA2NQydNTK8XJpNr/DONgNU1Pw9YsQ1rAeJzOXnKZd1kfmNuTXuMuFCnzy9Se1UQ4IRrbKWIiPr7Hd9fOg=
+	t=1734455564; cv=none; b=HvshBHM2bDoZSoGy+9JBcCZ91M5S9NbYoimE4D/pS0O8ORIc23wz3AbCuDYdEnWsKVOFv2jzjhij28fAwFsgA7kw6gZfBsd3h/IcpDdX2je7TeaxkVTMRjx4BBgSdW8AGfmnsCEJH5RYJcz26F8L5uNiwKkeSQMYX8e0kdtPe4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456427; c=relaxed/simple;
-	bh=FSGCHCu3T0oPaPSuSXo3p1WqKY+cGqugUT3s121V++k=;
+	s=arc-20240116; t=1734455564; c=relaxed/simple;
+	bh=YgdPfSqCw5b6pqiiAJ9VU3dv7Ea2irDV6WdhwwLC1+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5aNZ7b+vfaoHV73wcm3D2XPTp9C4upmNZBAytIij21Wjzo+Y4i6TCUrHhFkfsnDRIGa0+tjBm83pRpLiXB59qrmzEUZq1GLXgvqXUipL5P0XXS3sSphIM+98Eb1p71yHSc1PyZLiqcF04paZcxwTsiB0XGrKTS7ZDbJSx0Vzfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb/SZAKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC60FC4CED3;
-	Tue, 17 Dec 2024 17:27:06 +0000 (UTC)
+	 MIME-Version; b=LrVOnSxkBWyateJCC+DbEUju8JvIJWdvcL+YQbYCq+9SDNyZujyJnHv9cxSHyhwvcaJFgrSJa/gQMWRK0RmEjE7CG3uU3ebMjqRPVdwqKGD0cXSdhCJKjL1EbpWTgnvKPUabySa0XGh08hVlofDDEp+XdmItVoXFbsSvYbLZzvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNDFbqkb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B10AC4CED3;
+	Tue, 17 Dec 2024 17:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456427;
-	bh=FSGCHCu3T0oPaPSuSXo3p1WqKY+cGqugUT3s121V++k=;
+	s=korg; t=1734455564;
+	bh=YgdPfSqCw5b6pqiiAJ9VU3dv7Ea2irDV6WdhwwLC1+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xb/SZAKE3sCYZd7jcScu28hcndZvkIlC2roIjkb9Zux509WYzhAF/amjjc61t4Rtl
-	 8TrO7rQvmaJFWPmyDVIOII5m6+wknpYcYVRjFwSgIboEphhcao/+yiZQIc6Vn7NU0J
-	 nO4/gNKLpUgXJZ2tSpPk70pgJlL8lEDzv+PrVQDc=
+	b=RNDFbqkbxZj2dSxkXN3kXdCt9Zm+nwUSVcbznim8JI8Wetw/nAcsEcc3EO10Ikh8k
+	 tVWEDVE93FLforQySSR16X61ztd2svh7HoEMPR1cdMVMjDcGPBpOlxvSf5Zc74wYyx
+	 PtI7q0xj56tdVALDEHLYwqIx2swM4yQNpph0mVto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Yunxiang Li <Yunxiang.Li@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 057/172] drm/amdkfd: pause autosuspend when creating pdd
-Date: Tue, 17 Dec 2024 18:06:53 +0100
-Message-ID: <20241217170548.640013540@linuxfoundation.org>
+	MoYuanhao <moyuanhao3676@163.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 01/51] tcp: check space before adding MPTCP SYN options
+Date: Tue, 17 Dec 2024 18:06:54 +0100
+Message-ID: <20241217170520.365840428@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.zhang@amd.com <Jesse.zhang@amd.com>
+From: MoYuanhao <moyuanhao3676@163.com>
 
-commit 438b39ac74e2a9dc0a5c9d653b7d8066877e86b1 upstream.
+commit 06d64ab46f19ac12f59a1d2aa8cd196b2e4edb5b upstream.
 
-When using MES creating a pdd will require talking to the GPU to
-setup the relevant context. The code here forgot to wake up the GPU
-in case it was in suspend, this causes KVM to EFAULT for passthrough
-GPU for example. This issue can be masked if the GPU was woken up by
-other things (e.g. opening the KMS node) first and have not yet gone to sleep.
+Ensure there is enough space before adding MPTCP options in
+tcp_syn_options().
 
-v4: do the allocation of proc_ctx_bo in a lazy fashion
-when the first queue is created in a process (Felix)
+Without this check, 'remaining' could underflow, and causes issues. If
+there is not enough space, MPTCP should not be used.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Reviewed-by: Yunxiang Li <Yunxiang.Li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: MoYuanhao <moyuanhao3676@163.com>
+Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
 Cc: stable@vger.kernel.org
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+[ Matt: Add Fixes, cc Stable, update Description ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241209-net-mptcp-check-space-syn-v1-1-2da992bb6f74@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |   15 +++++++++++
- drivers/gpu/drm/amd/amdkfd/kfd_process.c              |   23 +-----------------
- 2 files changed, 17 insertions(+), 21 deletions(-)
+ net/ipv4/tcp_output.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -205,6 +205,21 @@ static int add_queue_mes(struct device_q
- 	if (!down_read_trylock(&adev->reset_domain->sem))
- 		return -EIO;
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -824,8 +824,10 @@ static unsigned int tcp_syn_options(stru
+ 		unsigned int size;
  
-+	if (!pdd->proc_ctx_cpu_ptr) {
-+		r = amdgpu_amdkfd_alloc_gtt_mem(adev,
-+				AMDGPU_MES_PROC_CTX_SIZE,
-+				&pdd->proc_ctx_bo,
-+				&pdd->proc_ctx_gpu_addr,
-+				&pdd->proc_ctx_cpu_ptr,
-+				false);
-+		if (r) {
-+			dev_err(adev->dev,
-+				"failed to allocate process context bo\n");
-+			return r;
-+		}
-+		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
-+	}
-+
- 	memset(&queue_input, 0x0, sizeof(struct mes_add_queue_input));
- 	queue_input.process_id = qpd->pqm->process->pasid;
- 	queue_input.page_table_base_addr =  qpd->page_table_base;
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -1076,7 +1076,8 @@ static void kfd_process_destroy_pdds(str
+ 		if (mptcp_syn_options(sk, skb, &size, &opts->mptcp)) {
+-			opts->options |= OPTION_MPTCP;
+-			remaining -= size;
++			if (remaining >= size) {
++				opts->options |= OPTION_MPTCP;
++				remaining -= size;
++			}
+ 		}
+ 	}
  
- 		kfd_free_process_doorbells(pdd->dev->kfd, pdd);
- 
--		if (pdd->dev->kfd->shared_resources.enable_mes)
-+		if (pdd->dev->kfd->shared_resources.enable_mes &&
-+			pdd->proc_ctx_cpu_ptr)
- 			amdgpu_amdkfd_free_gtt_mem(pdd->dev->adev,
- 						   &pdd->proc_ctx_bo);
- 		/*
-@@ -1610,7 +1611,6 @@ struct kfd_process_device *kfd_create_pr
- 							struct kfd_process *p)
- {
- 	struct kfd_process_device *pdd = NULL;
--	int retval = 0;
- 
- 	if (WARN_ON_ONCE(p->n_pdds >= MAX_GPU_INSTANCE))
- 		return NULL;
-@@ -1634,21 +1634,6 @@ struct kfd_process_device *kfd_create_pr
- 	pdd->user_gpu_id = dev->id;
- 	atomic64_set(&pdd->evict_duration_counter, 0);
- 
--	if (dev->kfd->shared_resources.enable_mes) {
--		retval = amdgpu_amdkfd_alloc_gtt_mem(dev->adev,
--						AMDGPU_MES_PROC_CTX_SIZE,
--						&pdd->proc_ctx_bo,
--						&pdd->proc_ctx_gpu_addr,
--						&pdd->proc_ctx_cpu_ptr,
--						false);
--		if (retval) {
--			dev_err(dev->adev->dev,
--				"failed to allocate process context bo\n");
--			goto err_free_pdd;
--		}
--		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
--	}
--
- 	p->pdds[p->n_pdds++] = pdd;
- 	if (kfd_dbg_is_per_vmid_supported(pdd->dev))
- 		pdd->spi_dbg_override = pdd->dev->kfd2kgd->disable_debug_trap(
-@@ -1660,10 +1645,6 @@ struct kfd_process_device *kfd_create_pr
- 	idr_init(&pdd->alloc_idr);
- 
- 	return pdd;
--
--err_free_pdd:
--	kfree(pdd);
--	return NULL;
- }
- 
- /**
 
 
 
