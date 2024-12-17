@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-104953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2149F53F2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:34:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC589F51D7
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F489173E64
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2DB4188658A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BF21F867D;
-	Tue, 17 Dec 2024 17:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518271F755F;
+	Tue, 17 Dec 2024 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzB8LjuA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEw/YDnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FA41F76DA;
-	Tue, 17 Dec 2024 17:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2631F758F;
+	Tue, 17 Dec 2024 17:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456621; cv=none; b=pV9c5E8r32y3m6Z1oFBli/W5hi2V0g1weMD8rtS/hz7+2LvjFV5aoiZE0uJ36Qokn8nrMlfcahRLw4fZ39reG1lFEUGZiCneViI3LMYx3dxwN5xHIExcL+vBokpzpM6lpV9hJaHjenfo2mDDoTxV916Y6nygLs0VQb2kQ7oxv0Y=
+	t=1734455429; cv=none; b=t6CwvUpdasHG154vkOxWTY/pcu55IBonuhH5S8kcx2NWwTcDv+ZlUMkLGsejpqxrIEtfJYPUp1/vm6iOtsBirhVNSHTYO2XxF0sVcmltUBGTZPi/NN4lz0ERmvZxAt9CRDvy4O0EjaszOYCAe3fs9WFFslPrRnCQrOW6zKPn8j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456621; c=relaxed/simple;
-	bh=6WJSTnsWsnn4ILtB7MIL3lR8xpH9FrxYQ4CzMxlitsc=;
+	s=arc-20240116; t=1734455429; c=relaxed/simple;
+	bh=LV9MS8uEQvUGP15oX98Rwdv7fx3h41OiiEWNoGY0q1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fY6i4dLt7BPglYJL7j2skkulmAAWCnG8TAGgTanop8FoCSe8NAXYC/p/Mr3qw3FfffBOTq+tVREc+yF/LapBEftGp8hw3P4yzCaM/rPuJ07lBT0EMHU3pGU9k32ebJ28nOXY/YqNqtu8yTI9pEwUbF822U9PxW05KVGZhiI51LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzB8LjuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F2DC4CED3;
-	Tue, 17 Dec 2024 17:30:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GF/IfvcXxnydZc1V4dw63gvNKmRSSpo8aRo8fuPwFEVOqlwtkGRU/aI5qbliiiVDaRXbDdgYGdU50ozgDweNLdnW2tv3V4+aQUibnA1gyQCw4fraNb1DNprf7R6KwZXoOGESP0ooesif65mYNq6BMA+3b4yPiZxCDc8gNmKR3lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEw/YDnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145BAC4CED3;
+	Tue, 17 Dec 2024 17:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456621;
-	bh=6WJSTnsWsnn4ILtB7MIL3lR8xpH9FrxYQ4CzMxlitsc=;
+	s=korg; t=1734455426;
+	bh=LV9MS8uEQvUGP15oX98Rwdv7fx3h41OiiEWNoGY0q1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzB8LjuAmRVDiOrE/Jo2R+f3KLhSfe3blt6QQ263N8k1qNdV3ISDOrILaHlvyKrvv
-	 z6qb/unGMVY5Mgp90XYq+G19M+CCFYL1xJyh4ZIYg2SM90mU2IrbWGW6WIIUOveS1P
-	 Mrz1ukI4bLRLTullop6Vxb3XDwuJ5itq0B8+UPpY=
+	b=SEw/YDnTGayDtoX3PxtyykmNMOcwY8k1OH6y+T/ZGLrg/KvUSEduNkx4gp7zNLQf8
+	 LGBQPubJi+XCxZ+q6BZ1jZ2hkAGE7xaLvtSdYlKLn0KXHNxyi1RZXHyIRYkKti+mJz
+	 r0fdDSaLsxFnkjairJXNXx31CCunlbrISVDSYzw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/172] wifi: mac80211: fix station NSS capability initialization order
+	stable@kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>
+Subject: [PATCH 5.4 24/24] ALSA: usb-audio: Fix a DMA to stack memory bug
 Date: Tue, 17 Dec 2024 18:07:22 +0100
-Message-ID: <20241217170549.854519813@linuxfoundation.org>
+Message-ID: <20241217170519.990243495@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 819e0f1e58e0ba3800cd9eb96b2a39e44e49df97 ]
+commit f7d306b47a24367302bd4fe846854e07752ffcd9 upstream.
 
-Station's spatial streaming capability should be initialized before
-handling VHT OMN, because the handling requires the capability information.
+The usb_get_descriptor() function does DMA so we're not allowed
+to use a stack buffer for that.  Doing DMA to the stack is not portable
+all architectures.  Move the "new_device_descriptor" from being stored
+on the stack and allocate it with kmalloc() instead.
 
-Fixes: a8bca3e9371d ("wifi: mac80211: track capability/opmode NSS separately")
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Link: https://patch.msgid.link/20241118080722.9603-1-benjamin-jw.lin@mediatek.com
-[rewrite subject]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices")
+Cc: stable@kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Benoît Sevens <bsevens@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/quirks.c |   31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 16d47123a73c..1b1bf044378d 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1911,6 +1911,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 						    params->eht_capa_len,
- 						    link_sta);
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -585,7 +585,7 @@ int snd_usb_create_quirk(struct snd_usb_
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor = NULL;
+ 	int err;
  
-+	ieee80211_sta_init_nss(link_sta);
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
+@@ -596,15 +596,20 @@ static int snd_usb_extigy_boot_quirk(str
+ 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
 +
- 	if (params->opmode_notif_used) {
- 		/* returned value is only needed for rc update, but the
- 		 * rc isn't initialized here yet, so ignore it
-@@ -1920,8 +1922,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 					      sband->band);
- 	}
++		new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
++		if (!new_device_descriptor)
++			return -ENOMEM;
+ 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&new_device_descriptor, sizeof(new_device_descriptor));
++				new_device_descriptor, sizeof(*new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
+ 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-				new_device_descriptor.bNumConfigurations);
++				new_device_descriptor->bNumConfigurations);
+ 		else
+-			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
++			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
++		kfree(new_device_descriptor);
+ 		err = usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -938,7 +943,7 @@ static void mbox2_setup_48_24_magic(stru
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor = NULL;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -973,15 +978,21 @@ static int snd_usb_mbox2_boot_quirk(stru
  
--	ieee80211_sta_init_nss(link_sta);
--
- 	return 0;
- }
+ 	dev_dbg(&dev->dev, "device initialised!\n");
  
--- 
-2.39.5
-
++	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
++	if (!new_device_descriptor)
++		return -ENOMEM;
++
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&new_device_descriptor, sizeof(new_device_descriptor));
++		new_device_descriptor, sizeof(*new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
+ 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-			new_device_descriptor.bNumConfigurations);
++			new_device_descriptor->bNumConfigurations);
+ 	else
+-		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
++		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
++
++	kfree(new_device_descriptor);
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
 
 
 
