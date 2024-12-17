@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-104801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565EE9F531F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 749C89F5409
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9228D188CC11
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04BFB18922F8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F220E1F75B5;
-	Tue, 17 Dec 2024 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B801F9EB0;
+	Tue, 17 Dec 2024 17:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NU4tQyHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mymD5x/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE95514A4E7;
-	Tue, 17 Dec 2024 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5291F9EA6;
+	Tue, 17 Dec 2024 17:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456139; cv=none; b=a5DNX2+fgJn9LKUd9B0ccpZnV3aorMxYbapWEb+3fI9L52FB0eLnP9IgtJejNv2jYXfwTKBP5iYw11hDdHCyTwX4eEbG7LUpFgyXupEMs/119Yj8MZzCc8+wyzOKZTYp3W3oa0SyLP9pYNTxZ07F4TrBrAPMq3AcfWJCJhOVfGo=
+	t=1734456646; cv=none; b=D6pu0SClfHgARDMY/CakI554kNsVKNFr541AulWCs56sGETZbYEKIcDvT1pXTN1vtWBWAdvN6qWm8FQayKT1orqebmojl7l6YiftM21eoZGm3v0N6oBjb2oBsUaLId29T2kWTN/qAWbU0uNsNc/Izete97f6WULV4os93g9fwNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456139; c=relaxed/simple;
-	bh=AWQbQwR7RRuZimNouD2LDUBgl5juxLwQWN1uWiRHDzU=;
+	s=arc-20240116; t=1734456646; c=relaxed/simple;
+	bh=nUdM9ia1Ea0pcPwjTJlmW6nIcckpzyuAuYK4q0i78Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0rRtPYfMGrRtRImwAvZQAPft6IYNjAuuI4CyipQWBwi/b4ulkh14DPsZa8PnCvOs+7/WkfZpxVRzYUhR6wXIrP2BoaorSdrP/cfmSa4qTD3/apclL4jobSG/3/CwewZeDrD3R+PTzkKb61dQZhjIaK0pZsWhPTGJgfeV2ku5Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NU4tQyHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3439EC4CED3;
-	Tue, 17 Dec 2024 17:22:19 +0000 (UTC)
+	 MIME-Version; b=B1t5jFKi8SMTb63p1A9eXvZWnxOuTp+oAAiR/QZ0ihLniQ5FE89ezvbu4B7oSc93asMawKdHOOg2f4qM5M882YGfARGYOE0NYT4P1pA862bxX7nSAR0BqiH7StTsazY4+6DYVNtM62xVq7YSzfCAVEMOA37F1xZbK00BOJ5IzbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mymD5x/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58833C4CED3;
+	Tue, 17 Dec 2024 17:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456139;
-	bh=AWQbQwR7RRuZimNouD2LDUBgl5juxLwQWN1uWiRHDzU=;
+	s=korg; t=1734456645;
+	bh=nUdM9ia1Ea0pcPwjTJlmW6nIcckpzyuAuYK4q0i78Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NU4tQyHJ4fdAOD33VlR++Dyf9yX2lU5jSGMlaZASHyhtuPqgIn3gGwnGHBRLrAqHd
-	 BlliKR+MpZKBL7oMon3Jd5HoU0fTRQWgzI6XaSiUVZDo4S7HCLtrJF9KZQtOGkR0iL
-	 ssBoOEZPbIEi6GlCLog2TTVnkP1Xs2ECxBsXVrYw=
+	b=mymD5x/3V4F0pFCBktKac8fukem6/SuV+g0ZRjM/tQz9AIdwkDA1NRgTwdJS7inN+
+	 B36niIarPVuUZqcnehMGrmzHchhoIS2l4QHJxBdQY9/f3wOMYnIQZYUappuvky6oRZ
+	 Dl8vMfetzvZu1MKIxtxFfWhOSD9UeDn35a1O/x2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/109] net: renesas: rswitch: fix race window between tx start and complete
-Date: Tue, 17 Dec 2024 18:07:58 +0100
-Message-ID: <20241217170536.474291355@linuxfoundation.org>
+Subject: [PATCH 6.12 123/172] net: renesas: rswitch: fix possible early skb release
+Date: Tue, 17 Dec 2024 18:07:59 +0100
+Message-ID: <20241217170551.443154267@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
+References: <20241217170546.209657098@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit 0c9547e6ccf40455b0574cf589be3b152a3edf5b ]
+[ Upstream commit 5cb099902b6b6292b3a85ffa1bb844e0ba195945 ]
 
-If hardware is already transmitting, it can start handling the
-descriptor being written to immediately after it observes updated DT
-field, before the queue is kicked by a write to GWTRC.
+When sending frame split into multiple descriptors, hardware processes
+descriptors one by one, including writing back DT values. The first
+descriptor could be already marked as completed when processing of
+next descriptors for the same frame is still in progress.
 
-If the start_xmit() execution is preempted at unfortunate moment, this
-transmission can complete, and interrupt handled, before gq->cur gets
-updated. With the current implementation of completion, this will cause
-the last entry not completed.
+Although only the last descriptor is configured to generate interrupt,
+completion of the first descriptor could be noticed by the driver when
+handling interrupt for the previous frame.
 
-Fix that by changing completion loop to check DT values directly, instead
-of depending on gq->cur.
+Currently, driver stores skb in the entry that corresponds to the first
+descriptor. This results into skb could be unmapped and freed when
+hardware did not complete the send yet. This opens a window for
+corrupting the data being sent.
 
-Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Fix this by saving skb in the entry that corresponds to the last
+descriptor used to send the frame.
+
+Fixes: d2c96b9d5f83 ("net: rswitch: Add jumbo frames handling for TX")
 Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://patch.msgid.link/20241208095004.69468-3-nikita.yoush@cogentembedded.com
+Link: https://patch.msgid.link/20241208095004.69468-2-nikita.yoush@cogentembedded.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rswitch.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-index 17be2479654a..13577fe2c7ec 100644
+index b80aa27a7214..32b32aa7e01f 100644
 --- a/drivers/net/ethernet/renesas/rswitch.c
 +++ b/drivers/net/ethernet/renesas/rswitch.c
-@@ -793,13 +793,10 @@ static void rswitch_tx_free(struct net_device *ndev)
- 	struct rswitch_ext_desc *desc;
- 	struct sk_buff *skb;
+@@ -1681,8 +1681,9 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
+ 	if (dma_mapping_error(ndev->dev.parent, dma_addr_orig))
+ 		goto err_kfree;
  
--	for (; rswitch_get_num_cur_queues(gq) > 0;
--	     gq->dirty = rswitch_next_queue_index(gq, false, 1)) {
--		desc = &gq->tx_ring[gq->dirty];
--		if ((desc->desc.die_dt & DT_MASK) != DT_FEMPTY)
--			break;
--
-+	desc = &gq->tx_ring[gq->dirty];
-+	while ((desc->desc.die_dt & DT_MASK) == DT_FEMPTY) {
- 		dma_rmb();
-+
- 		skb = gq->skbs[gq->dirty];
- 		if (skb) {
- 			dma_unmap_single(ndev->dev.parent,
-@@ -810,7 +807,10 @@ static void rswitch_tx_free(struct net_device *ndev)
- 			rdev->ndev->stats.tx_packets++;
- 			rdev->ndev->stats.tx_bytes += skb->len;
- 		}
-+
- 		desc->desc.die_dt = DT_EEMPTY;
-+		gq->dirty = rswitch_next_queue_index(gq, false, 1);
-+		desc = &gq->tx_ring[gq->dirty];
- 	}
- }
+-	gq->skbs[gq->cur] = skb;
+-	gq->unmap_addrs[gq->cur] = dma_addr_orig;
++	/* Stored the skb at the last descriptor to avoid skb free before hardware completes send */
++	gq->skbs[(gq->cur + nr_desc - 1) % gq->ring_size] = skb;
++	gq->unmap_addrs[(gq->cur + nr_desc - 1) % gq->ring_size] = dma_addr_orig;
  
-@@ -1613,6 +1613,8 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 	gq->skbs[gq->cur] = skb;
- 	gq->unmap_addrs[gq->cur] = dma_addr_orig;
- 
-+	dma_wmb();
-+
  	/* DT_FSTART should be set at last. So, this is reverse order. */
  	for (i = nr_desc; i-- > 0; ) {
- 		desc = &gq->tx_ring[rswitch_next_queue_index(gq, true, i)];
-@@ -1623,8 +1625,6 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 			goto err_unmap;
- 	}
- 
--	wmb();	/* gq->cur must be incremented after die_dt was set */
--
- 	gq->cur = rswitch_next_queue_index(gq, true, nr_desc);
- 	rswitch_modify(rdev->addr, GWTRC(gq->index), 0, BIT(gq->index % 32));
- 
 -- 
 2.39.5
 
