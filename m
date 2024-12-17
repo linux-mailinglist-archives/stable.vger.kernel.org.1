@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-104892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07FE9F539A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3AF9F52F0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9911884D4B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4194F1893A06
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784241F869B;
-	Tue, 17 Dec 2024 17:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FB21F757B;
+	Tue, 17 Dec 2024 17:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKEsxTvk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ5FxVQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348A91F869D;
-	Tue, 17 Dec 2024 17:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6226814A4E7;
+	Tue, 17 Dec 2024 17:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456421; cv=none; b=GoxMBCRpfOxu7uV9ya3xMAaslyHGHkeyka6dQ2Q6bmcM4/FHooQmlBQL9fi5Y1wC4pxAhELl4zSMDcpkQ0y3nZqQFC7ed8vloZwdskcvJoqmV92nwWUre0TWT/AnhKU56NwYpr925TFlLQcD7Ah9P8K+XGC6GZ9GLf8T74vSgMw=
+	t=1734456025; cv=none; b=NB+AgOpS12JCHKvXU2c2c6S//nEXUqJpgFdneqoRrvCn7Gs0Kw5PjPMB2jFzJtogvhr2qWg5NS/aJODSqxETanH+8OhRG4G2Azd0wDpzoaGW+DO3NSRzQSKNgZt+GR0bPevtsqZsAiKLvGKs4fAoe7CdeFnuhf34KbzB8i5g+f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456421; c=relaxed/simple;
-	bh=4hoX+sbETs0Ai6bv5M3wEtbwtTbMjOFXeIrVifKLK/c=;
+	s=arc-20240116; t=1734456025; c=relaxed/simple;
+	bh=QDWlfXNB7+9uC6bGGutk4vJ8F34B7aG/Sg27rAID8/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J4YpU18no9zB2b/x72sdmuuxQNsAO03Ey8K1DuRGrsAaNoS/g+TBO8gVoYKhFdoCwXo0z7Fr/fqMeT+TGQch/DWhQFCvOIsZ3yhsl7G164Hs4DGGnTfMGf1Iokiq3UtcZHcC5oeLegiJFFmrLyy35CsUpvFSKY8hyN7vTBfYAIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKEsxTvk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B78C4CED3;
-	Tue, 17 Dec 2024 17:27:00 +0000 (UTC)
+	 MIME-Version; b=ejZKlNiEjf4A+VFicURUIGdLPIfrO1w0FK1GthoUJ4P9P7nvNep1j7LSL7ismOUfBN1BjXqusinRH3WfPyU0vDLPEQmUaLLTddpj24gPOKPPe2OKMFT8a678iPIDkeZwFbq+zFJeKMJ9QgJSwQkcuS/LLoZYelTJBVfLBkW0pbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ5FxVQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A87C4CED3;
+	Tue, 17 Dec 2024 17:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456421;
-	bh=4hoX+sbETs0Ai6bv5M3wEtbwtTbMjOFXeIrVifKLK/c=;
+	s=korg; t=1734456025;
+	bh=QDWlfXNB7+9uC6bGGutk4vJ8F34B7aG/Sg27rAID8/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKEsxTvkPZJ33d3RBoZP3NCNC4QjyaVLGaqnq6q8cJaogU8oM1tzKzf9JaHsdlt2K
-	 FjWNdT4oYryfxeMeeuVGrcPpFYFs9yNKN8JxhoZsz66yFGocKLdNtwghRBhWJogBSZ
-	 4TIQrVySxxRI4VAI6x6wOoo8oh7aTbJpfchhBErQ=
+	b=JZ5FxVQOTPiEbQaPWz9Q+0qCSTw4r224uop2tcRPgtXhANqxV2sWIA26CwNDgOQZz
+	 AmRjqk78Y/87Ri04+ygbXlYAzwyRhZ3sc4YQUDFZGMMha7oJegrsrhCRc4kY0QNyZ0
+	 kDj58mc/sS0/VDq+d5lXd0/iJEfdZw7GGJYlHWl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.12 055/172] iommu/vt-d: Fix qi_batch NULL pointer with nested parent domain
-Date: Tue, 17 Dec 2024 18:06:51 +0100
-Message-ID: <20241217170548.553090365@linuxfoundation.org>
+	Jaakko Salo <jaakkos@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 008/109] ALSA: usb-audio: Add implicit feedback quirk for Yamaha THR5
+Date: Tue, 17 Dec 2024 18:06:52 +0100
+Message-ID: <20241217170533.702486768@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Jaakko Salo <jaakkos@gmail.com>
 
-commit 74536f91962d5f6af0a42414773ce61e653c10ee upstream.
+commit 82fdcf9b518b205da040046fbe7747fb3fd18657 upstream.
 
-The qi_batch is allocated when assigning cache tag for a domain. While
-for nested parent domain, it is missed. Hence, when trying to map pages
-to the nested parent, NULL dereference occurred. Also, there is potential
-memleak since there is no lock around domain->qi_batch allocation.
+Use implicit feedback from the capture endpoint to fix popping
+sounds during playback.
 
-To solve it, add a helper for qi_batch allocation, and call it in both
-the __cache_tag_assign_domain() and __cache_tag_assign_parent_domain().
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000200
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 8104795067 P4D 0
-  Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 223 UID: 0 PID: 4357 Comm: qemu-system-x86 Not tainted 6.13.0-rc1-00028-g4b50c3c3b998-dirty #2632
-  Call Trace:
-   ? __die+0x24/0x70
-   ? page_fault_oops+0x80/0x150
-   ? do_user_addr_fault+0x63/0x7b0
-   ? exc_page_fault+0x7c/0x220
-   ? asm_exc_page_fault+0x26/0x30
-   ? cache_tag_flush_range_np+0x13c/0x260
-   intel_iommu_iotlb_sync_map+0x1a/0x30
-   iommu_map+0x61/0xf0
-   batch_to_domain+0x188/0x250
-   iopt_area_fill_domains+0x125/0x320
-   ? rcu_is_watching+0x11/0x50
-   iopt_map_pages+0x63/0x100
-   iopt_map_common.isra.0+0xa7/0x190
-   iopt_map_user_pages+0x6a/0x80
-   iommufd_ioas_map+0xcd/0x1d0
-   iommufd_fops_ioctl+0x118/0x1c0
-   __x64_sys_ioctl+0x93/0xc0
-   do_syscall_64+0x71/0x140
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 705c1cdf1e73 ("iommu/vt-d: Introduce batched cache invalidation")
-Cc: stable@vger.kernel.org
-Co-developed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20241210130322.17175-1-yi.l.liu@intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219567
+Signed-off-by: Jaakko Salo <jaakkos@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241206164448.8136-1-jaakkos@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/cache.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/intel/cache.c b/drivers/iommu/intel/cache.c
-index e5b89f728ad3..09694cca8752 100644
---- a/drivers/iommu/intel/cache.c
-+++ b/drivers/iommu/intel/cache.c
-@@ -105,12 +105,35 @@ static void cache_tag_unassign(struct dmar_domain *domain, u16 did,
- 	spin_unlock_irqrestore(&domain->cache_lock, flags);
- }
- 
-+/* domain->qi_batch will be freed in iommu_free_domain() path. */
-+static int domain_qi_batch_alloc(struct dmar_domain *domain)
-+{
-+	unsigned long flags;
-+	int ret = 0;
-+
-+	spin_lock_irqsave(&domain->cache_lock, flags);
-+	if (domain->qi_batch)
-+		goto out_unlock;
-+
-+	domain->qi_batch = kzalloc(sizeof(*domain->qi_batch), GFP_ATOMIC);
-+	if (!domain->qi_batch)
-+		ret = -ENOMEM;
-+out_unlock:
-+	spin_unlock_irqrestore(&domain->cache_lock, flags);
-+
-+	return ret;
-+}
-+
- static int __cache_tag_assign_domain(struct dmar_domain *domain, u16 did,
- 				     struct device *dev, ioasid_t pasid)
- {
- 	struct device_domain_info *info = dev_iommu_priv_get(dev);
- 	int ret;
- 
-+	ret = domain_qi_batch_alloc(domain);
-+	if (ret)
-+		return ret;
-+
- 	ret = cache_tag_assign(domain, did, dev, pasid, CACHE_TAG_IOTLB);
- 	if (ret || !info->ats_enabled)
- 		return ret;
-@@ -139,6 +162,10 @@ static int __cache_tag_assign_parent_domain(struct dmar_domain *domain, u16 did,
- 	struct device_domain_info *info = dev_iommu_priv_get(dev);
- 	int ret;
- 
-+	ret = domain_qi_batch_alloc(domain);
-+	if (ret)
-+		return ret;
-+
- 	ret = cache_tag_assign(domain, did, dev, pasid, CACHE_TAG_NESTING_IOTLB);
- 	if (ret || !info->ats_enabled)
- 		return ret;
-@@ -190,13 +217,6 @@ int cache_tag_assign_domain(struct dmar_domain *domain,
- 	u16 did = domain_get_id_for_dev(domain, dev);
- 	int ret;
- 
--	/* domain->qi_bach will be freed in iommu_free_domain() path. */
--	if (!domain->qi_batch) {
--		domain->qi_batch = kzalloc(sizeof(*domain->qi_batch), GFP_KERNEL);
--		if (!domain->qi_batch)
--			return -ENOMEM;
--	}
--
- 	ret = __cache_tag_assign_domain(domain, did, dev, pasid);
- 	if (ret || domain->domain.type != IOMMU_DOMAIN_NESTED)
- 		return ret;
--- 
-2.47.1
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2067,6 +2067,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
+ 	DEVICE_FLG(0x046d, 0x09a4, /* Logitech QuickCam E 3500 */
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_IGNORE_CTL_ERROR),
++	DEVICE_FLG(0x0499, 0x1506, /* Yamaha THR5 */
++		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x0499, 0x1509, /* Steinberg UR22 */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x0499, 0x3108, /* Yamaha YIT-W12TX */
 
 
 
