@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-104598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E259F5209
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845899F531C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C353F16CADE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80B21188A7A5
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CCE1F76D5;
-	Tue, 17 Dec 2024 17:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9521F7574;
+	Tue, 17 Dec 2024 17:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUzLKilq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5gkz+r4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009801F757B;
-	Tue, 17 Dec 2024 17:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E131E0493;
+	Tue, 17 Dec 2024 17:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455538; cv=none; b=CDbFgUJlbT5J/p7exSiQ3muxyJ50Z8/6L/u9MrK3rD3Xrb645KwJ2GaOKkXBIlHfW2Qt8nhNT+lc5OXWHhiCrzzty3yXYpt0SvgTKFWR6EUp5qN+W4UOipubROzVO5chE8a6WfCEFMGtzkoEpEmQnU8wrvMUikxQYIb2q7y8k9M=
+	t=1734456128; cv=none; b=DAyFxVbd4/ihEbuzqQgBDGpTmfsT8dY4Mjgula5lbBoLgDbjAXsvQtbxI/yoW+QuNv1pxl4otxnrDpzL8kemwJvdmj7xl3EmT4PKiSK8EtyfUnHXytt42KeDxbqZKImVAW4/qfIZannyaCBzKrltCMWhJk5SmSCPPRhkMbX2EQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455538; c=relaxed/simple;
-	bh=ulzlLvXXoA6cVYAEdBL38xkgb+FO71TYasKPQEZaB6A=;
+	s=arc-20240116; t=1734456128; c=relaxed/simple;
+	bh=RfG76ZPFFzy9X0ZJ0mNYBn6wQ/ngg8LhUJoUNcefcO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhRLdSr7Qe187I/20TbN8PsBmL+LcSAPwrQAg5sacYV6c9UYhDcWN8A7V2DwgRDJ6/FW4dO+hWMpiTqNUbn+u7neEl/V3aL9XQPdvNYePT4FUmd0AA3GP1hIy1XKQhV9mOeD+QuV0knUlN2xN1ByLCcbsYPaha2/StN7WKfi1zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUzLKilq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7782AC4CED3;
-	Tue, 17 Dec 2024 17:12:17 +0000 (UTC)
+	 MIME-Version; b=J2UHlaeJONCDlhGB7NsDTy7OKD5SwsDDJb5RF9KXGZ+CERJ3y+UFhJLEbxYtV8tU5F6WRoJ/qiwQbIF1RxmZXXe+nspF/xXYHU5P2Rvfn5ElniHJfr+hcjD7WlRNW6g05XfL6VILelHZFKuXy52QEmTb+dj2vs+rwmBF3nSZcuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5gkz+r4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DE6C4CED3;
+	Tue, 17 Dec 2024 17:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455537;
-	bh=ulzlLvXXoA6cVYAEdBL38xkgb+FO71TYasKPQEZaB6A=;
+	s=korg; t=1734456128;
+	bh=RfG76ZPFFzy9X0ZJ0mNYBn6wQ/ngg8LhUJoUNcefcO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUzLKilq9cZ+tk8Zqt1KVtmoNc0nMIzbrVfDcySjBwwQLQSF78SUb/w/YzfkanZVF
-	 uQvnCopWXtTCF8gMaLv675gt8do64+RVaf0AOzI5rqTjWYiZ3pGKfvi4DR8XNIdE2p
-	 U7ccW0MIOZbVneKaAJRhruarRmDm11z4P+vFpbmc=
+	b=m5gkz+r4S+Nb4pUQMZeBAq0EbeFhLOLV4dKp6GtRTRDKQWo6V8eQHL6NTkZvTOlEo
+	 jZ9ii6wAVDsFsnC1c5CaKPBjuTQLNKQ7ZTce7Hx+GiquUD2Qcr0DkBsHOYH4wnjLHA
+	 gPgnElWxBjGjRSJV/noUYBe9BN/AOpvrImGcNnPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 5.10 32/43] drm/i915: Fix memory leak by correcting cache object name in error handler
+	syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 039/109] acpi: nfit: vmalloc-out-of-bounds Read in acpi_nfit_ctl
 Date: Tue, 17 Dec 2024 18:07:23 +0100
-Message-ID: <20241217170521.816591290@linuxfoundation.org>
+Message-ID: <20241217170535.005426341@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
 
-commit 2828e5808bcd5aae7fdcd169cac1efa2701fa2dd upstream.
+[ Upstream commit 265e98f72bac6c41a4492d3e30a8e5fd22fe0779 ]
 
-Replace "slab_priorities" with "slab_dependencies" in the error handler
-to avoid memory leak.
+Fix an issue detected by syzbot with KASAN:
 
-Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241127201042.29620-1-jiashengjiangcool@gmail.com
-(cherry picked from commit 9bc5e7dc694d3112bbf0fa4c46ef0fa0f114937a)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KASAN: vmalloc-out-of-bounds in cmd_to_func drivers/acpi/nfit/
+core.c:416 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in acpi_nfit_ctl+0x20e8/0x24a0
+drivers/acpi/nfit/core.c:459
+
+The issue occurs in cmd_to_func when the call_pkg->nd_reserved2
+array is accessed without verifying that call_pkg points to a buffer
+that is appropriately sized as a struct nd_cmd_pkg. This can lead
+to out-of-bounds access and undefined behavior if the buffer does not
+have sufficient space.
+
+To address this, a check was added in acpi_nfit_ctl() to ensure that
+buf is not NULL and that buf_len is less than sizeof(*call_pkg)
+before accessing it. This ensures safe access to the members of
+call_pkg, including the nd_reserved2 array.
+
+Reported-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7534f060ebda6b8b51b3
+Tested-by: syzbot+7534f060ebda6b8b51b3@syzkaller.appspotmail.com
+Fixes: ebe9f6f19d80 ("acpi/nfit: Fix bus command validation")
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241118162609.29063-1-surajsonawane0215@gmail.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_scheduler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/nfit/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/i915_scheduler.c
-+++ b/drivers/gpu/drm/i915/i915_scheduler.c
-@@ -538,6 +538,6 @@ int __init i915_global_scheduler_init(vo
- 	return 0;
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 7d88db451cfb..7918923e3b74 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -454,8 +454,13 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 	if (cmd_rc)
+ 		*cmd_rc = -EINVAL;
  
- err_priorities:
--	kmem_cache_destroy(global.slab_priorities);
-+	kmem_cache_destroy(global.slab_dependencies);
- 	return -ENOMEM;
- }
+-	if (cmd == ND_CMD_CALL)
++	if (cmd == ND_CMD_CALL) {
++		if (!buf || buf_len < sizeof(*call_pkg))
++			return -EINVAL;
++
+ 		call_pkg = buf;
++	}
++
+ 	func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
+ 	if (func < 0)
+ 		return func;
+-- 
+2.39.5
+
 
 
 
