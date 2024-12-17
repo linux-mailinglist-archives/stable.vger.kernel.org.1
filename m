@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB6F9F5285
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2573B9F51D0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:10:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6461891B98
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 795647A318A
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5091F76AC;
-	Tue, 17 Dec 2024 17:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6371F75B5;
+	Tue, 17 Dec 2024 17:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TejBFpyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swxHfi4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED10B1F8910;
-	Tue, 17 Dec 2024 17:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BE01F758F;
+	Tue, 17 Dec 2024 17:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455808; cv=none; b=jWuyUYdXtWzbt+0sowYuaA7p3XJpuO3PEZaWoZFmc/+eDbQFHzy1xVzHenvKWX13wrVHx6tntzXAQXReSVRk5x6ZH80pWyePzLh8LH3n8XIr9q0RmQDQiqyrif4YzT8VF6wFtBuWKfavSShQNdtcB1qtOFOceLAHvgt+Ed637UM=
+	t=1734455420; cv=none; b=NkaNKvJZwozcOtyfQUvbGpdI273J4Ueus+6dBXdm5jrA0TExG7lCDL5p4ooJVxM+KLH76uRVLgP4LDZDfFiLYvzl6WBI6w0ZPRSzYvclMBbh2Ltn6xZgX8AIXaRPDbB8EkdxZPihlm+yJzFNjQp9qrCbu4xiS933eB2qVylLun8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455808; c=relaxed/simple;
-	bh=AkykeuV0K8KB23c/9sOjoDwS7f3U4yrMcffr01UPDDU=;
+	s=arc-20240116; t=1734455420; c=relaxed/simple;
+	bh=o5yViNZgxRJrGNTD0U/QjxyEd41CJ58aCFsNkmPqazY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b+MBbc1Kd0DgiqY8RgCxJ+pAiS74XL4FooUpOFk/pP5seowLE1X3uVxUciTaiMvqvpK3ULfTNgFYfmNEvLXLRUAFAUFM/7Pxqlws0/5HdeprHofvPmBvNK8DIxMFf2LavNyym9cyx9PLmjh4/wg70u9cTX4pifQk/Js91dWg8UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TejBFpyy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B02C4CED3;
-	Tue, 17 Dec 2024 17:16:47 +0000 (UTC)
+	 MIME-Version; b=TULqwpInd5gWMzG2Houm+Nq0pXUhlldFWke/W0CDPXm2+WzazWLBelhlD/5TbTVDNNGt5GI5iG7RNOi7CIMmvnigbsEVdqGLyghZh6/r3w4VSuZlU70spN/Ah+NQ/OoOBJ693jUCIc1OIwsVUPmkx128Wmh+eNUVoiDjfgHshaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swxHfi4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6657AC4CED3;
+	Tue, 17 Dec 2024 17:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455807;
-	bh=AkykeuV0K8KB23c/9sOjoDwS7f3U4yrMcffr01UPDDU=;
+	s=korg; t=1734455417;
+	bh=o5yViNZgxRJrGNTD0U/QjxyEd41CJ58aCFsNkmPqazY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TejBFpyyR3DwzSAhfEE3wsF+jYEVv8czltKruuJe7Dvu9F6O/4oJnFTnFVNhg6kIJ
-	 jXE27ol+y45enDAw24Vwf6rRSn0XUEflv/qbk24KssiiQKIZ6OJPuaw1I/bFvvzGGn
-	 I3GgAsSjNHfWiRJHctk4Fdqmnip2/imPuVl6dSls=
+	b=swxHfi4zt8PQB6cr42LBuGNUL5RgNxC6/8AqbCuk1E0e2F5hZmKGaHbiFK0ipb323
+	 QalLAZHhe4xVCt0geNh8u84uENSrJ30qDNFIqQnc7fp3rDk/owHaz5vTsFUthZ/Fs9
+	 bj99Gwo2h3YDR+EKSxNv4qYwi3qS5xG9F0gOB9qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/76] selftests: mlxsw: sharedbuffer: Ensure no extra packets are counted
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 5.4 21/24] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
 Date: Tue, 17 Dec 2024 18:07:19 +0100
-Message-ID: <20241217170527.890400158@linuxfoundation.org>
+Message-ID: <20241217170519.871417632@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Raghavendra Rao Ananta <rananta@google.com>
 
-[ Upstream commit 5f2c7ab15fd806043db1a7d54b5ec36be0bd93b1 ]
+commit 54bbee190d42166209185d89070c58a343bf514b upstream.
 
-The test assumes that the packet it is sending is the only packet being
-passed to the device.
+DDI0487K.a D13.3.1 describes the PMU overflow condition, which evaluates
+to true if any counter's global enable (PMCR_EL0.E), overflow flag
+(PMOVSSET_EL0[n]), and interrupt enable (PMINTENSET_EL1[n]) are all 1.
+Of note, this does not require a counter to be enabled
+(i.e. PMCNTENSET_EL0[n] = 1) to generate an overflow.
 
-However, it is not the case and so other packets are filling the buffers
-as well. Therefore, the test sometimes fails because it is reading a
-maximum occupancy that is larger than expected.
+Align kvm_pmu_overflow_status() with the reality of the architecture
+and stop using PMCNTENSET_EL0 as part of the overflow condition. The
+bug was discovered while running an SBSA PMU test [*], which only sets
+PMCR.E, PMOVSSET<0>, PMINTENSET<0>, and expects an overflow interrupt.
 
-Add egress filters on $h1 and $h2 that will guarantee the above.
-
-Fixes: a865ad999603 ("selftests: mlxsw: Add shared buffer traffic test")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/64c28bc9b1cc1d78c4a73feda7cedbe9526ccf8b.1733414773.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 76d883c4e640 ("arm64: KVM: Add access handler for PMOVSSET and PMOVSCLR register")
+Link: https://github.com/ARM-software/sbsa-acs/blob/master/test_pool/pmu/operating_system/test_pmu001.c
+Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+[ oliver: massaged changelog ]
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241120005230.2335682-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drivers/net/mlxsw/sharedbuffer.sh         | 40 +++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ virt/kvm/arm/pmu.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-index 21bebc5726f6..c068e6c2a580 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/sharedbuffer.sh
-@@ -22,20 +22,34 @@ SB_ITC=0
- h1_create()
- {
- 	simple_if_init $h1 192.0.1.1/24
-+	tc qdisc add dev $h1 clsact
-+
-+	# Add egress filter on $h1 that will guarantee that the packet sent,
-+	# will be the only packet being passed to the device.
-+	tc filter add dev $h1 egress pref 2 handle 102 matchall action drop
- }
+--- a/virt/kvm/arm/pmu.c
++++ b/virt/kvm/arm/pmu.c
+@@ -357,7 +357,6 @@ static u64 kvm_pmu_overflow_status(struc
  
- h1_destroy()
- {
-+	tc filter del dev $h1 egress pref 2 handle 102 matchall action drop
-+	tc qdisc del dev $h1 clsact
- 	simple_if_fini $h1 192.0.1.1/24
- }
- 
- h2_create()
- {
- 	simple_if_init $h2 192.0.1.2/24
-+	tc qdisc add dev $h2 clsact
-+
-+	# Add egress filter on $h2 that will guarantee that the packet sent,
-+	# will be the only packet being passed to the device.
-+	tc filter add dev $h2 egress pref 1 handle 101 matchall action drop
- }
- 
- h2_destroy()
- {
-+	tc filter del dev $h2 egress pref 1 handle 101 matchall action drop
-+	tc qdisc del dev $h2 clsact
- 	simple_if_fini $h2 192.0.1.2/24
- }
- 
-@@ -101,6 +115,11 @@ port_pool_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -b $h2mac -A 192.0.1.1 -B 192.0.1.2 \
-@@ -117,6 +136,11 @@ port_pool_test()
- 	max_occ=$(sb_occ_pool_check $cpu_dl_port $SB_POOL_EGR_CPU $exp_max_occ)
- 	check_err $? "Expected ePool($SB_POOL_EGR_CPU) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress pool"
-+
-+	tc filter del dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
- }
- 
- port_tc_ip_test()
-@@ -124,6 +148,11 @@ port_tc_ip_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -b $h2mac -A 192.0.1.1 -B 192.0.1.2 \
-@@ -140,6 +169,11 @@ port_tc_ip_test()
- 	max_occ=$(sb_occ_etc_check $cpu_dl_port $SB_ITC_CPU_IP $exp_max_occ)
- 	check_err $? "Expected egress TC($SB_ITC_CPU_IP) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress TC - IP packet"
-+
-+	tc filter del dev $h1 egress protocol ip pref 1 handle 101 flower \
-+		src_mac $h1mac dst_mac $h2mac \
-+		src_ip 192.0.1.1 dst_ip 192.0.1.2 \
-+		action pass
- }
- 
- port_tc_arp_test()
-@@ -147,6 +181,9 @@ port_tc_arp_test()
- 	local exp_max_occ=$(devlink_cell_size_get)
- 	local max_occ
- 
-+	tc filter add dev $h1 egress protocol arp pref 1 handle 101 flower \
-+		src_mac $h1mac action pass
-+
- 	devlink sb occupancy clearmax $DEVLINK_DEV
- 
- 	$MZ $h1 -c 1 -p 10 -a $h1mac -A 192.0.1.1 -t arp -q
-@@ -162,6 +199,9 @@ port_tc_arp_test()
- 	max_occ=$(sb_occ_etc_check $cpu_dl_port $SB_ITC_CPU_ARP $exp_max_occ)
- 	check_err $? "Expected egress TC($SB_ITC_IP2ME) max occupancy to be $exp_max_occ, but got $max_occ"
- 	log_test "CPU port's egress TC - ARP packet"
-+
-+	tc filter del dev $h1 egress protocol arp pref 1 handle 101 flower \
-+		src_mac $h1mac action pass
- }
- 
- setup_prepare()
--- 
-2.39.5
-
+ 	if ((__vcpu_sys_reg(vcpu, PMCR_EL0) & ARMV8_PMU_PMCR_E)) {
+ 		reg = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
+-		reg &= __vcpu_sys_reg(vcpu, PMCNTENSET_EL0);
+ 		reg &= __vcpu_sys_reg(vcpu, PMINTENSET_EL1);
+ 		reg &= kvm_pmu_valid_counter_mask(vcpu);
+ 	}
 
 
 
