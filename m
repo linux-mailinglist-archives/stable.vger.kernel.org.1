@@ -1,143 +1,113 @@
-Return-Path: <stable+bounces-104513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AE79F4EEA
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:10:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B9D9F4F29
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 16:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 167D5164FA6
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:10:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36CC716D378
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFAD1F7574;
-	Tue, 17 Dec 2024 15:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A353E1F76C9;
+	Tue, 17 Dec 2024 15:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FW/9P3Fd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lKPvaHD2"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FE41482E7
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 15:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526DB1F76C6;
+	Tue, 17 Dec 2024 15:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734448192; cv=none; b=r3aMLSX7V6VekThY0ur9YnTEnbqZsgcGc4/Taa41+feHNnuFxN0dcYrewXJY61OTjyICeGFrqEX+zsWda6Ak2AZD76vd8Y16ceSPGBRQdw2XAxxUdBM3EzMlqWf7/LRRFzrhEfMPK5UDxjA6fEEs98ic5dXGuO0d4PkY153i39Q=
+	t=1734448523; cv=none; b=C6LJekvdDLN2UQBZkNVnn3nJqjXB/HuvlHspFZPPvc6d+vFjkkxasMGS58qXD/fg4v+cXAh+mDcpfrsT0LW8Z0lnQfjL1H1HS42wz1QjUxAxwZkJUb19/hSwYWeVaC3n8xEv/jqRSHibDho14CwXUGXUg/kHwBrW1B76NcNTgoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734448192; c=relaxed/simple;
-	bh=4eP60qs48KatjV27oK9VXq50Pn4jVK8V8NN5JyN3p3Q=;
+	s=arc-20240116; t=1734448523; c=relaxed/simple;
+	bh=XyBzWyFm+Oa6HFn+tgcvi4bYVxPgriTe6d6a2vwq+BM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gir8sRuVT4Plhtl/dSJvk6nfJ3huTEYT6kK2Q6s0RNXx3yMc5n2hvpK+rR4SywblJ7S0VVl8jQTEhz6z0A0oyG+rDM/0QlTuuT0XdZF0TJw6RT0fH9kj07/9744dl7tsj3KFHANWyQyRg6XwZKXXzVK+m/9jWOJP5tYDJpKb7tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FW/9P3Fd; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734448188;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MqetoIFcgXu59rkxSpWYfsgYEfKFRQrtPQ/2cVt2LjY=;
-	b=FW/9P3FdMLR0PDLT4GXWL/3NaUwrQmoZBCmLqBp0ApISiiaHwL+awj7rth2xlmhIIjOZVh
-	SlvtFGET9Om4b2bSI725wP0KjENr5DeI2zrWSnqGsUS0OnN04Ukf2Do/DY74g2YrMQtSIS
-	Luk3SJxHw4H7ceZpj5nx5UDK+4RaWA8=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-dFrx-ed-Ot-DGKWnwgWqEA-1; Tue,
- 17 Dec 2024 10:09:45 -0500
-X-MC-Unique: dFrx-ed-Ot-DGKWnwgWqEA-1
-X-Mimecast-MFC-AGG-ID: dFrx-ed-Ot-DGKWnwgWqEA
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 77CC119560BE;
-	Tue, 17 Dec 2024 15:09:43 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.190])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 7BE8419560A2;
-	Tue, 17 Dec 2024 15:09:39 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue, 17 Dec 2024 16:09:19 +0100 (CET)
-Date: Tue, 17 Dec 2024 16:09:14 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Nam Cao <namcao@linutronix.de>
-Cc: Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dylan Hatch <dylanbhatch@google.com>,
-	"Eric W . Biederman" <ebiederm@xmission.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] fs/proc: do_task_stat: Fix ESP not readable during
- coredump
-Message-ID: <20241217150913.GB29091@redhat.com>
-References: <cover.1730883229.git.namcao@linutronix.de>
- <11e1777296b7d06085c9fd341bafc4b9d82e6e4e.1730883229.git.namcao@linutronix.de>
- <20241217145923.GA29091@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=c279B+dzzTDOB3UJWun2LzAvwMwGhXvFdjIHhEEnrNBqd2yK2ZtWkhAjsXljPO7zk23Oxny5R3TAVxAzqe//BDaMzp6znLTqekiAc/ArKV2lUqb/utcC0qgZZWJalNcW2YRzuJcWDPtCW72YuE3gn2fyECG3qqcucOZE9Ou8NHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lKPvaHD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C81C4CED3;
+	Tue, 17 Dec 2024 15:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734448522;
+	bh=XyBzWyFm+Oa6HFn+tgcvi4bYVxPgriTe6d6a2vwq+BM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lKPvaHD236KF4bUZyabK77+kri+7LiLeKMKmDk0v8zu5kDHsid6CaSKCC4X+Piq6y
+	 kIur1y7Y+7qHTOEo9i/bmQyampISRa+ESBdlR/F+wXfiS9L+NW90ZBodJbExdwcHxl
+	 IzKvSszXES41xRybyJ43Y1UIju6peUeAlPwPSMSJDZpKRdT95SinI7GautUnhDuy+9
+	 pAkQsKQ9yE3CT1ZhobfymEfgD9iT78lyT8rVZDcEjT+wm78qGuo8smE9X14e0+r5rD
+	 nGdXRuMkLk3BA8CXKUhKwnPkphcoCiAjZDUQYhZC4y1wLY0ebD4C5b8i6xBv9gmp+F
+	 nQR2cT4BRKHAg==
+Date: Tue, 17 Dec 2024 15:15:15 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Gustavo Padovan <gus@collabora.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, sashal <sashal@kernel.org>,
+	"kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
+	stable <stable@vger.kernel.org>,
+	Engineering - Kernel <kernel@collabora.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: Re: add 'X-KernelTest-Commit' in the stable-rc mail header
+Message-ID: <eed95c94-a85c-4b4e-918b-ae57b04d2953@sirena.org.uk>
+References: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
+ <2024121731-famine-vacate-c548@gregkh>
+ <193d506e75f.b285743e1543989.3693511477622845098@collabora.com>
+ <2024121700-spotless-alike-5455@gregkh>
+ <193d5237a65.c96d8ccf1557906.2641695653454944180@collabora.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IG0JiZSJllwxcGz1"
+Content-Disposition: inline
+In-Reply-To: <193d5237a65.c96d8ccf1557906.2641695653454944180@collabora.com>
+X-Cookie: The sum of the Universe is zero.
+
+
+--IG0JiZSJllwxcGz1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241217145923.GA29091@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: quoted-printable
 
-On 12/17, Oleg Nesterov wrote:
->
-> On 11/06, Nam Cao wrote:
-> >
-> > @@ -534,6 +517,23 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
-> >  		ppid = task_tgid_nr_ns(task->real_parent, ns);
-> >  		pgid = task_pgrp_nr_ns(task, ns);
-> >
-> > +		/*
-> > +		 * esp and eip are intentionally zeroed out.  There is no
-> > +		 * non-racy way to read them without freezing the task.
-> > +		 * Programs that need reliable values can use ptrace(2).
->
-> OK,
->
-> but then:
->
-> > +		 * The only exception is if the task is core dumping because
-> > +		 * a program is not able to use ptrace(2) in that case. It is
-> > +		 * safe because the task has stopped executing permanently.
-> > +		 */
-> > +		if (permitted && task->signal->core_state) {
-> > +			if (try_get_task_stack(task)) {
-> > +				eip = KSTK_EIP(task);
-> > +				esp = KSTK_ESP(task);
-> > +				put_task_stack(task);
->
-> How can the task->signal->core_state check help ?
->
-> Suppose we have a task T1 with T1-pid == 100 and you read /proc/100/stat.
-> It is possible that the T1's sub-thread T2 starts the coredumping and sets
-> signal->core_state != NULL.
->
-> But read(/proc/100/stat) can run before T1 gets SIGKILL from T2 and enters
-> the kernel mode?
+On Tue, Dec 17, 2024 at 12:01:32PM -0300, Gustavo Padovan wrote:
 
-Can't the trivial patch below fix the problem?
+>  > Ok, in digging, I think I can save off the git id, as I do have it rig=
+ht=20
+>  > _before_ I create the email.  If you don't do anything with quilt, I=
+=20
+>  > can try to add it, but for some reason I thought kernelci was handling=
+=20
+>  > quilt trees in the past.  Did this change?=20
 
-Oleg.
+> If you can save the git id that would help us tremoundously right now!
+> We understand it is ephemeral, but it helps during the rc test window.
 
+> I don't believe our legacy KernelCI supported quilt either, unless this=
+=20
+> happened in a remote past. We basically pull git trees and are now
+> opening the path to receive patchsets from Patchwork et al.
 
---- xfs/proc/array.c
-+++ x/fs/proc/array.c
-@@ -500,7 +500,7 @@
- 		 * a program is not able to use ptrace(2) in that case. It is
- 		 * safe because the task has stopped executing permanently.
- 		 */
--		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE))) {
-+		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE|PF_POSTCOREDUMP))) {
- 			if (try_get_task_stack(task)) {
- 				eip = KSTK_EIP(task);
- 				esp = KSTK_ESP(task);
+Yeah, I don't recall us ever supporting qulit.
 
+--IG0JiZSJllwxcGz1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdhlYIACgkQJNaLcl1U
+h9CRzgf/SM/P8DMDyq9misDeVCTdYFYwAX42P9MvrFhYBkxbS3lAVwrLm1Y1MFRA
+5u9I91nvmfrEokQZyn9xAWmZy2FR8NEj9EoP3sE64SOCpiZDkCQxCbCJNd3RMG5J
+Llm3YSxE2DgRn1cDyEgaJqfzso/kCVJKuQCKBavoHo1fJHynWg0ztLRP+0Qgrmwm
+aXwsfjI9EO96VikwLxYrLzMtz0rrH+4cQKa2S85wN0Sgb6B6ruEEBB7YhiPSQFse
+dl2kZ81TFVu6FZzqVi/sv06/Aq0oFHdzvvRirkgIU7ZAONn/NA8MpyTCZK7gmbzu
+/dkzssUSqRswZo5QUJQJigVl/TI+9w==
+=SEfN
+-----END PGP SIGNATURE-----
+
+--IG0JiZSJllwxcGz1--
 
