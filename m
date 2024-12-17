@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-104408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE5C9F3F4C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 01:46:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15699F4042
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 02:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAE6D188B069
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 00:45:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4AA116CD3D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 01:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23ECE60DCF;
-	Tue, 17 Dec 2024 00:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fi9wleDw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F5656446;
+	Tue, 17 Dec 2024 01:54:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D667315AF6
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 00:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.nfschina.com (unknown [42.101.60.213])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id D331B2595;
+	Tue, 17 Dec 2024 01:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734396141; cv=none; b=c4tWm2GaBhQu7G5wwsKnidrtnViZhWYL+UGYZaem5P3nOiUjvRPScQdmfKziFEIHosVPy/woyWXd1ybkYknCXwjKpr4w4SVAmpgvxx3qd6qlxacJtJ8J2WoH4x4GUUrU1cX6sQVT64JyCeydL7yB5JmRBu9ffgKBc8k24OTkVDs=
+	t=1734400467; cv=none; b=N/1C1RjH3YLHmJhSvRYk1hXSlV78Nn3Wa+PgXCycMBp8vZlxZcKE5gTfLFHuksccGmM7HP/uL26o1yle/0EPeX75nD4O0Fg3AzA0RIScMzK3TrP9Abrscr67NbG/VSTfwNEjaRbyRLIXQa0KbXA1k2C+OF1/ZPcSZ1DRtRMCkGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734396141; c=relaxed/simple;
-	bh=eYJFII38oZBQUhf5tziYQZnFgMyIj0JHn6lnWr5TVaM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=r+c2rpij2YQ3zbXc23POr3Gs2dU9i/Gf16L8NC7ftDehOAPo/+dQEy1dzH2jx9jnEvJbUCodc8HACBFWPoUjzXdjK+lNkTkQ4BbJzq+6J8A1zJ2tPan4/3Yu+i8Iw7tps97z+X9+z4xG8F7dFNe6mJcZpQB8WGLrvef1FK6ukeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fi9wleDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C47C4CED0;
-	Tue, 17 Dec 2024 00:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734396141;
-	bh=eYJFII38oZBQUhf5tziYQZnFgMyIj0JHn6lnWr5TVaM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fi9wleDwbpCO58V6CTuGaejb1Pu7iMZ6AePf8pM/DnGqO/MO8KTPBu0takCP4D2ox
-	 ip7cplWDutawe8p9C9bIGK6q8OSppw8zR6pH2T74NWr8PxVTL09VogLX+hJJFUcUyz
-	 O3zoA1Cc8n19+phdsjpid734MPWbQ4KoC4HdIBIjxEUB3OQ2T5CTn7OQ+fiSGz8oae
-	 HvNoBrUqm7jV/Wah9+bIu4gjQjYsl6Lh+NoaTNK4MRViDSbxjh5u8UNQ2Ev8d/WpGo
-	 9SQ3wfHSRJk/NjcZxyx1BzmdEKhbX+e1hEIsZR/udHD0i/c/n01h8PRvdbg7d7x51n
-	 NfDnSzfHb2vkg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Hugo Villeneuve <hugo@hugovil.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 1/4] serial: sc16is7xx: add missing support for rs485 devicetree properties
-Date: Mon, 16 Dec 2024 19:42:19 -0500
-Message-Id: <20241216192550-2a2ffb95b5a28b13@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20241216191818.1553557-2-hugo@hugovil.com>
-References: 
+	s=arc-20240116; t=1734400467; c=relaxed/simple;
+	bh=AKnwrjfurYTExrdozB+/U9GlNZVTFyPpKBCJhqXDLbo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version; b=TnMd6nijTmMq0YUIV/ju/tZsw1/rgJUJGDMv6HF/uhyYSqpM08p9rJTJXhRrcqhunrKt+J5ZwYthUcj/lu0P1aCl+ZrpJsoS1bMcGi7Vzfu286ILCCBcUhptmsqKRKSYIUwz0OMUd/oZt6+/7VutpEP5msR88a2k8bYfnhkOUIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from localhost.localdomain (unknown [103.163.180.3])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 566BE6017097D;
+	Tue, 17 Dec 2024 09:54:09 +0800 (CST)
+X-MD-Sfrom: zhanxin@nfschina.com
+X-MD-SrcIP: 103.163.180.3
+From: Zhanxin Qi <zhanxin@nfschina.com>
+To: kherbst@redhat.com,
+	lyude@redhat.com,
+	dakr@redhat.com,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Zhanxin Qi <zhanxin@nfschina.com>,
+	Duanjun Li <duanjun@nfschina.com>
+Subject: [PATCH v2] drm/nouveau: Fix memory leak in nvbios_iccsense_parse
+Date: Tue, 17 Dec 2024 09:53:02 +0800
+Message-Id: <20241217015302.281769-1-zhanxin@nfschina.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <Z2A0CuGRJD-asF3y@cassiopeiae>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,37 +56,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+The nvbios_iccsense_parse function allocates memory for sensor data
+but fails to free it when the function exits, leading to a memory
+leak. Add proper cleanup to free the allocated memory.
 
-Hi,
+Fixes: b71c0892631a ("drm/nouveau/iccsense: implement for ina209, ina219 and ina3221")
 
-Found matching upstream commit: b4a778303ea0fcabcaff974721477a5743e1f8ec
-
-WARNING: Author mismatch between patch and found commit:
-Backport author: Hugo Villeneuve <hugo@hugovil.com>
-Commit author: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-
-
-Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-
-Note: The patch differs from the upstream commit:
+Cc: stable@vger.kernel.org
+Co-developed-by: Duanjun Li <duanjun@nfschina.com>
+Signed-off-by: Zhanxin Qi <zhanxin@nfschina.com>
 ---
-Failed to apply patch cleanly, falling back to interdiff...
+ .../include/nvkm/subdev/bios/iccsense.h       |  2 ++
+ .../drm/nouveau/nvkm/subdev/bios/iccsense.c   | 20 +++++++++++++++++++
+ .../drm/nouveau/nvkm/subdev/iccsense/base.c   |  3 +++
+ 3 files changed, 25 insertions(+)
 
-interdiff error output:
-/home/sasha/stable/mailbot.sh: line 525: interdiff: command not found
-interdiff failed, falling back to standard diff...
----
+diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/iccsense.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/iccsense.h
+index 4c108fd2c805..8bfc28c3f7a7 100644
+--- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/iccsense.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/iccsense.h
+@@ -20,4 +20,6 @@ struct nvbios_iccsense {
+ };
+ 
+ int nvbios_iccsense_parse(struct nvkm_bios *, struct nvbios_iccsense *);
++
++void nvbios_iccsense_cleanup(struct nvbios_iccsense *iccsense);
+ #endif
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/iccsense.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/iccsense.c
+index dea444d48f94..ca7c27b92f16 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/iccsense.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/iccsense.c
+@@ -56,6 +56,19 @@ nvbios_iccsense_table(struct nvkm_bios *bios, u8 *ver, u8 *hdr, u8 *cnt,
+ 	return 0;
+ }
+ 
++/**
++ * nvbios_iccsense_parse - Parse ICCSENSE table from VBIOS
++ * @bios: VBIOS base pointer
++ * @iccsense: ICCSENSE table structure to fill
++ *
++ * Parses the ICCSENSE table from VBIOS and fills the provided structure.
++ * The caller must invoke nvbios_iccsense_cleanup() after successful parsing
++ * to free the allocated rail resources.
++ *
++ * Returns:
++ *   0        - Success
++ *   -EINVAL  - Table not found
++ */
+ int
+ nvbios_iccsense_parse(struct nvkm_bios *bios, struct nvbios_iccsense *iccsense)
+ {
+@@ -127,3 +140,10 @@ nvbios_iccsense_parse(struct nvkm_bios *bios, struct nvbios_iccsense *iccsense)
+ 
+ 	return 0;
+ }
++
++void
++nvbios_iccsense_cleanup(struct nvbios_iccsense *iccsense)
++{
++	kfree(iccsense->rail);
++	iccsense->rail = NULL;
++}
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/iccsense/base.c b/drivers/gpu/drm/nouveau/nvkm/subdev/iccsense/base.c
+index 8f0ccd3664eb..4c1759ecce38 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/iccsense/base.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/iccsense/base.c
+@@ -291,6 +291,9 @@ nvkm_iccsense_oneinit(struct nvkm_subdev *subdev)
+ 			list_add_tail(&rail->head, &iccsense->rails);
+ 		}
+ 	}
++
++	nvbios_iccsense_cleanup(&stbl);
++
+ 	return 0;
+ }
+ 
+-- 
+2.30.2
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Failed     |  N/A       |
-| stable/linux-6.6.y        |  Failed     |  N/A       |
-| stable/linux-6.1.y        |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
 
