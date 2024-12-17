@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191339F5212
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:14:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C34499F52B6
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8097E16D23E
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17A95172771
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5D21F76AE;
-	Tue, 17 Dec 2024 17:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98361F869D;
+	Tue, 17 Dec 2024 17:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkVpxqHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLcRBJkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498A51F867A;
-	Tue, 17 Dec 2024 17:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BF91F37BE;
+	Tue, 17 Dec 2024 17:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455558; cv=none; b=j8DkcEKYXsEQEJSx6HeTkoqC3JGJPHQs8S+RBMrXUD3BFQNLWV+93aBj745BRna2zcC+DbVtm8UEXXpMzXDeUKwLZ3SkPfahbFHaook8ugzM0x/Y/PL0/h8P7Tkj9gAGhOWD3MA5IE3jgVpmL+muzgHvvuNtXfZZd1wUSQchSio=
+	t=1734455921; cv=none; b=ZiWoHS39e48UVaiiWd/nzL5L0rRHZQ8I9WUSFNfiefilgjFHOBgS41UHzgs44c38RsLl8izmZbErnvkT+VisbzThjiBLIby/Mrb/y0GLohPZj4Ur0goQGoyuGYbYI2TbekURuJm0wupSILfTqmLMVSDm32FcDfRqLdprjGT7cak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455558; c=relaxed/simple;
-	bh=1wIRhgv/v4j2qVUCUHe/5lnk1sfEqeMJJCRUAyON0Lg=;
+	s=arc-20240116; t=1734455921; c=relaxed/simple;
+	bh=n3OL7BDUDmJVb4cDJF+hruyKd/Iq3v5Phi5eKH8iqhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZXAMq8xVm/lvpJNy9gWwtulyc9ckSX0n2rQntIPgry8OGwaVAAzabrR4J75z0K9HJWi8Kcfof7lEPJ4daqmJNwgjClpXXx5K6pLocLdrtR9P3K/lZ+XmGjIfUv78u3U3hl07N4LnKTCVzNTBn+woCltstB4DuyrFEA6EsqS7TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkVpxqHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7374C4CED3;
-	Tue, 17 Dec 2024 17:12:37 +0000 (UTC)
+	 MIME-Version; b=rdWrVo+C3Rn6qj61VOFximtOy8K1Qp42GUyzqB+8hXGjRGAFWErTJN+zLfz2Ug7GqYnpDtFiR1WfvDej9U6N0NcPwU35Mj6lGeyoPPl/5eMcJWt8+vH8VRIQ5Pc0eLZecwXJAklgFZQLS18KOHG7qqpq+iyjvrD2QScAPyCYqio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLcRBJkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E74C4CED3;
+	Tue, 17 Dec 2024 17:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455558;
-	bh=1wIRhgv/v4j2qVUCUHe/5lnk1sfEqeMJJCRUAyON0Lg=;
+	s=korg; t=1734455921;
+	bh=n3OL7BDUDmJVb4cDJF+hruyKd/Iq3v5Phi5eKH8iqhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TkVpxqHQx5xUMXuHFceBiX9fU6qkEYcwOlQlnZBlxWyclDLls2zpuGQn+4pXV7Q/p
-	 0ehmKbqicJw1tlcUF6+b9/RlqzKcagvq9+JE9LMoF/IY79gm4HJTe3hAXjfoeGkog2
-	 TpMvWsr6gAKc3HZvtqfbNPyqV98Yh4eFV73+Gp9A=
+	b=iLcRBJkhN04132oFBoDQtsfFfS2h+fJKUQRRDFZvhZ5L/OdD/9CI2nPg63T0GLxoV
+	 owHCxHoU/sTrRX67KtCWYYJULOetJ9cztq6ikrN5/1RqcVo4i3qdNG9qx+YoYt0Qzi
+	 /lwclnoijTh7PCa4zBhOzxrRkgyvpjM7dvGM3KoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>
-Subject: [PATCH 5.10 39/43] x86/xen: dont do PV iret hypercall through hypercall page
-Date: Tue, 17 Dec 2024 18:07:30 +0100
-Message-ID: <20241217170522.282595470@linuxfoundation.org>
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 51/76] net: sparx5: fix the maximum frame length register
+Date: Tue, 17 Dec 2024 18:07:31 +0100
+Message-ID: <20241217170528.386409093@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-commit a2796dff62d6c6bfc5fbebdf2bee0d5ac0438906 upstream.
+[ Upstream commit ddd7ba006078a2bef5971b2dc5f8383d47f96207 ]
 
-Instead of jumping to the Xen hypercall page for doing the iret
-hypercall, directly code the required sequence in xen-asm.S.
+On port initialization, we configure the maximum frame length accepted
+by the receive module associated with the port. This value is currently
+written to the MAX_LEN field of the DEV10G_MAC_ENA_CFG register, when in
+fact, it should be written to the DEV10G_MAC_MAXLEN_CFG register. Fix
+this.
 
-This is done in preparation of no longer using hypercall page at all,
-as it has shown to cause problems with speculation mitigations.
-
-This is part of XSA-466 / CVE-2024-53241.
-
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 946e7fd5053a ("net: sparx5: add port module support")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/xen-asm.S |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_port.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/xen/xen-asm.S
-+++ b/arch/x86/xen/xen-asm.S
-@@ -198,7 +198,6 @@ SYM_CODE_START(xen_early_idt_handler_arr
- SYM_CODE_END(xen_early_idt_handler_array)
- 	__FINIT
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+index 212bf6f4ed72..e1df6bc86949 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_port.c
+@@ -1113,7 +1113,7 @@ int sparx5_port_init(struct sparx5 *sparx5,
+ 	spx5_inst_rmw(DEV10G_MAC_MAXLEN_CFG_MAX_LEN_SET(ETH_MAXLEN),
+ 		      DEV10G_MAC_MAXLEN_CFG_MAX_LEN,
+ 		      devinst,
+-		      DEV10G_MAC_ENA_CFG(0));
++		      DEV10G_MAC_MAXLEN_CFG(0));
  
--hypercall_iret = hypercall_page + __HYPERVISOR_iret * 32
- /*
-  * Xen64 iret frame:
-  *
-@@ -208,16 +207,27 @@ hypercall_iret = hypercall_page + __HYPE
-  *	cs
-  *	rip		<-- standard iret frame
-  *
-- *	flags
-+ *	flags		<-- xen_iret must push from here on
-  *
-- *	rcx		}
-- *	r11		}<-- pushed by hypercall page
-- * rsp->rax		}
-+ *	rcx
-+ *	r11
-+ * rsp->rax
-  */
-+.macro xen_hypercall_iret
-+	pushq $0	/* Flags */
-+	push %rcx
-+	push %r11
-+	push %rax
-+	mov  $__HYPERVISOR_iret, %eax
-+	syscall		/* Do the IRET. */
-+#ifdef CONFIG_MITIGATION_SLS
-+	int3
-+#endif
-+.endm
-+
- SYM_CODE_START(xen_iret)
- 	UNWIND_HINT_EMPTY
--	pushq $0
--	jmp hypercall_iret
-+	xen_hypercall_iret
- SYM_CODE_END(xen_iret)
- 
- /*
-@@ -318,8 +328,7 @@ SYM_CODE_START(xen_entry_SYSENTER_compat
- 	UNWIND_HINT_ENTRY
- 	lea 16(%rsp), %rsp	/* strip %rcx, %r11 */
- 	mov $-ENOSYS, %rax
--	pushq $0
--	jmp hypercall_iret
-+	xen_hypercall_iret
- SYM_CODE_END(xen_entry_SYSENTER_compat)
- SYM_CODE_END(xen_entry_SYSCALL_compat)
- 
+ 	/* Handle Signal Detect in 10G PCS */
+ 	spx5_inst_wr(PCS10G_BR_PCS_SD_CFG_SD_POL_SET(sd_pol) |
+-- 
+2.39.5
+
 
 
 
