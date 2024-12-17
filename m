@@ -1,124 +1,100 @@
-Return-Path: <stable+bounces-104503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7666C9F4CF2
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:57:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDAB9F4D38
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 15:10:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B192188B163
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:57:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232B11668EA
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319D31F4734;
-	Tue, 17 Dec 2024 13:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EAC1F4732;
+	Tue, 17 Dec 2024 14:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fU/TBeIj"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="POc1JBuD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2B51F4715;
-	Tue, 17 Dec 2024 13:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734443840; cv=none; b=Ie4x0B24W0FfSTKYOt5v9mEmj/1B4HRiYgrkqjSPoGPSJgviAAtUga6PrSXeuYAOezHonGJhJWyMDB02VfrCYUq3c2GS7IAw1UaMfdGyRkcsZXbHxk46y17RxbdGzu+Net4U/5xoxLt6NAq3zVNbyRNEPz7z2J3/Qz7tw0yLs7E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734443840; c=relaxed/simple;
-	bh=8jhuuUsFhgIcpU5CNdxOmgUs9ECyvrSHIBwbvAp6G2A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ndCYMZQFrejKvSoK6QlDgFqheLXadHvhwRd0n1paagM4Xg+0PLeSiR9Bg+b/Du1mUEgpm6wtPy6hrRLkmabs0rNhV+YZUtxt9daoBS4LrdVUZJivPFgnyzfWhg/mxbihFQJQIWlMenglfxZ9EOjteGb4WngCoZ1uJnktEVWW06w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fU/TBeIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE888C4CED3;
-	Tue, 17 Dec 2024 13:57:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734443839;
-	bh=8jhuuUsFhgIcpU5CNdxOmgUs9ECyvrSHIBwbvAp6G2A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fU/TBeIj6nl2eN6uNis3tw9dAcMeB7KgKc2w/LZQJNKrIcoGTCJJo5AVtjxwTixlP
-	 r7qytg1cY2GERc2e8N44mAi9cNRjf4dnLv5SL0o7dQG3URiY61e1BqVkF3xSo0NdYy
-	 fAoNDBJZ33o5WimoYZwVnlCQQai9cOplujo0DC4I=
-Date: Tue, 17 Dec 2024 14:57:16 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Da Shi Cao <dscao999@hotmail.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: TI Ethernet Driver TI_K3_AM65_CPSW_NUSS
-Message-ID: <2024121749-kerchief-treachery-aae6@gregkh>
-References: <CY5PR10MB59880DDECD5D282B7665085B8C042@CY5PR10MB5988.namprd10.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F7570827
+	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 14:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734444511; cv=pass; b=ctjUA0Yl69XoskJ4s/uwUOaCGWZXzKTTBu0EvggRVIWM8dqZvpCfn5ZBKcHPC5feuL0Etf7uRwgyRQphiG2LCT22PJCKv2ZC2Y3wiZprq/xq9oZqlIDOsdLLVH+0ZrNKPmCUyQ0njxzwLSm4FAszp6j+FfKUhsb7GioyOEeH7qA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734444511; c=relaxed/simple;
+	bh=L0XnB6EJi+nNovvdJoJO59VE1gdBcDhCSpNfZg3jzCY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:Subject:MIME-Version:
+	 Content-Type; b=P2MEC/f4ITuobYtIA3hi0/0Gby5z5H5SLHjkzsZ5+0lY57i1atXp/W7pk3xnybAiltCmTS27SGbqk0+1KGH/hmdDHl5x51toXAjbWxrgTzf4FnF6nvn4mC0r2VrXx13Aj9TKenU99HeCLAfKG2LKgdh7SCQ5/nLcz+dKBUIQp+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=POc1JBuD; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1734444500; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LbR4IuhSwf3Htazv4hDSp+bs1yUuORvmKQj46j9g7cdbNocPJmaGNTk0WKzQswIMluPKTCdJ02azWTGGkbLbKBAWyYTPlTSRuYxwCEjBYeB7Jsx688Diy1CDCFG+PHIUbCnfVPlYx9ToS5SnbCSeFTk2mzoMlGDHBtyo6ZsBoFY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1734444500; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=27onBpfwPQscUayYyf8i/13GQ97yM6ax8/0ligUSl+c=; 
+	b=TFuRRKYVtu365E25wlDpHMX2WWMu0znHk2BG/mczfG2G3fkjpfYzBCuf8o7UFUUhnOMAGPI3QXF5KVf6X8I4i2uqQOH2Zj1Mb54pVptEQ+C4j0vs9NvUJkTGG995sAcYV5BGk1168YVzzKp8SVCY9X1d+jOhZDeZK7PeEoStzjE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=gus@collabora.com;
+	dmarc=pass header.from=<gus@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1734444500;
+	s=zohomail; d=collabora.com; i=gus@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=27onBpfwPQscUayYyf8i/13GQ97yM6ax8/0ligUSl+c=;
+	b=POc1JBuDq5S0+BrwPG1lf8jH3NGo7QbWIXRP0r9pdcfetOvGzRi5LijBbKU3BlmN
+	w0wG/KFkUlV3DICDmWm0w3vK1SsHj+NrHPKWIiT/K5xqCUYsttS2L9dNdcAIC2mZGzQ
+	jII//lN5YOUamkntIF1UfsJaAITzG/W7cfTrivU0=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1734444497446468.1782248982976; Tue, 17 Dec 2024 06:08:17 -0800 (PST)
+Date: Tue, 17 Dec 2024 11:08:17 -0300
+From: Gustavo Padovan <gus@collabora.com>
+To: "Greg KH" <gregkh@linuxfoundation.org>, "sashal" <sashal@kernel.org>
+Cc: "kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
+	"stable" <stable@vger.kernel.org>,
+	"Engineering - Kernel" <kernel@collabora.com>,
+	"Muhammad Usama Anjum" <usama.anjum@collabora.com>
+Message-ID: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
+In-Reply-To: 
+Subject: add 'X-KernelTest-Commit' in the stable-rc mail header
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CY5PR10MB59880DDECD5D282B7665085B8C042@CY5PR10MB5988.namprd10.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-On Tue, Dec 17, 2024 at 01:40:12PM +0000, Da Shi Cao wrote:
-> The driver of TI K3 ethernet port depends on PAGE_POOL configuration option. There should be a select PAGE_POOL under it configuration.
-> 
-> --- a/drivers/net/ethernet/ti/Kconfig
-> +++ b/drivers/net/ethernet/ti/Kconfig
-> @@ -114,6 +114,7 @@ config TI_K3_AM65_CPSW_NUSS
->         select TI_DAVINCI_MDIO
->         select PHYLINK
->         select TI_K3_CPPI_DESC_POOL
-> +       select PAGE_POOL
->         imply PHY_TI_GMII_SEL
->         depends on TI_K3_AM65_CPTS || !TI_K3_AM65_CPTS
->         help
-> 
-> Dashi Cao
+Hey Greg, Sasha,
 
 
-Hi,
+We are doing some work to further automate stable-rc testing, triage, validation and reporting of stable-rc branches in the new KernelCI system. As part of that, we want to start relying on the X-KernelTest-* mail header parameters, however there is no parameter with the git commit hash of the brach head.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Today, there is only information about the tree and branch, but no tags or commits. Essentially, we want to parse the email headers and immediately be able to request results from the KernelCI Dashboard API passing the head commit being tested.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Is it possible to add 'X-KernelTest-Commit'?
 
-- Your patch contains warnings and/or errors noticed by the
-  scripts/checkpatch.pl tool.
+Thank you.
 
-- Your patch is malformed (tabs converted to spaces, linewrapped, etc.)
-  and can not be applied.  Please read the file,
-  Documentation/process/email-clients.rst in order to fix this.
+- Gus
 
-- Your patch does not have a Signed-off-by: line.  Please read the
-  kernel file, Documentation/process/submitting-patches.rst and resend
-  it after adding that line.  Note, the line needs to be in the body of
-  the email, before the patch, not at the bottom of the patch or in the
-  email signature.
 
-- You did not specify a description of why the patch is needed, or
-  possibly, any description at all, in the email body.  Please read the
-  section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what is needed in
-  order to properly describe the change.
+--
+Gustavo Padovan
+Kernel Lead 
 
-- You did not write a descriptive Subject: for the patch, allowing Greg,
-  and everyone else, to know what this patch is all about.  Please read
-  the section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what a proper
-  Subject: line should look like.
+Collabora Ltd. 
+Platinum Building, St John's Innovation Park 
+Cambridge CB4 0DS, UK 
+Registered in England & Wales, no. 5513718
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
 
-thanks,
-
-greg k-h's patch email bot
 
