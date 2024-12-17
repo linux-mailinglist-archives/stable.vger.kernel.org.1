@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-104693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC689F5287
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:20:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DCE9F51FC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1A531891FEC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7CDB188D99C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FA71F76B1;
-	Tue, 17 Dec 2024 17:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E371F8695;
+	Tue, 17 Dec 2024 17:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLCbzxlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtlErNnP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864B01F890C;
-	Tue, 17 Dec 2024 17:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FE91F868E;
+	Tue, 17 Dec 2024 17:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455816; cv=none; b=Ex3aRG0LU7mXjtkrk7PIZGMdGeLyHZd7FrU18bWOmCFWgYoYbSCOKYe1rWZYWJHA9MOGwAacOY4csoeNsuum5UeFy0sbqnVLkwLfDOUYF0xkL/h/JVzMxkzEYLN4nkd1LW6oz38uCe0SJor1hGtt2RC7TlzfUdeK0boGjQtA0qY=
+	t=1734455523; cv=none; b=HiyIoKcgndB2caUq1q15C1ANLOmW9ksZvq9Yujl+zQbUyY9Gkow63YRomDVD4aZSFwzZPTpIjU/go7z7KD7EzAWPHdVk+3E+a+b08ofXdNmnby4SD6FEzouUS/NkkRq9d6FeU1r+eWhf6cRylcp7ihBJrgAQLpOIgrgAMZBUhs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455816; c=relaxed/simple;
-	bh=AWLuye/emfZ2EcOss/E5j3gnscBc8HRxdxUV9Mzojic=;
+	s=arc-20240116; t=1734455523; c=relaxed/simple;
+	bh=B/x0HD4Wd0Ow+EJb6mlTlWiykoj/NCNnUq6IbBQjcuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nx6zUZcJeP0v0gtPDINDae4my5CHGrMvP88G01qHL15kQRZJ6DFZtAD/SiGvXtM9jiHuLZVJKhc8vclJ1RY1iemCgJ6pN2bhsK2u6HcnOM6L11pfKTuT5PKcN45MnMpOZ6QaFZYzUieeD6vKOoX1PkEH16e0o0l379/sw9gB+NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLCbzxlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFB3C4CED3;
-	Tue, 17 Dec 2024 17:16:55 +0000 (UTC)
+	 MIME-Version; b=THVyN0VyBqgSVd/zyU7cwqzoxNegrNk6fRsY6Nu18JC+RFCJYRiFmk9FAOuzgQ/9dVPNIj1IXevGaDrLX+2Cdq1iakdPoQZTIF3sO9EACGq+zSmgyN+44ITxjqnNaYl0FQ3Z68Fwn+5guoMiJVDZFsHPsNDvY/xYI6YySt+I9UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtlErNnP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACBCC4CEDD;
+	Tue, 17 Dec 2024 17:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455816;
-	bh=AWLuye/emfZ2EcOss/E5j3gnscBc8HRxdxUV9Mzojic=;
+	s=korg; t=1734455523;
+	bh=B/x0HD4Wd0Ow+EJb6mlTlWiykoj/NCNnUq6IbBQjcuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLCbzxlhWk5OrGBtigBFoIAyTdvX0EEpituB/VZQe02NR+t+Oj1nZgg0xG/qyHHfm
-	 s7A7cRKwU8W47nCH5At/66DGhg5ztV7LnYqi3go4LXs5nhRo4k4PVF73Z0BHI4zVdO
-	 cw/InXS50YzFdyeSbQr20ih1aikxgZvGBvcn2glo=
+	b=jtlErNnP+fcGWXulsnpp6qjzty10RGH6gsxyxquQ+V55pETeDgZsp+MU98ypAbxp8
+	 g+T1nOsyvc9AGlHQZcRNM+2DjIV+CSKR0640DkG08ckun8e9dm/CsMjc/3D0t7+m67
+	 h5p/xr1aiAB+Wtu97iTzqmA7/YPLdpYMlu64DDas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+fb99d1b0c0f81d94a5e2@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 42/76] net: lapb: increase LAPB_HEADER_LEN
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 5.10 31/43] tracing/kprobes: Skip symbol counting logic for module symbols in create_local_trace_kprobe()
 Date: Tue, 17 Dec 2024 18:07:22 +0100
-Message-ID: <20241217170528.012989881@linuxfoundation.org>
+Message-ID: <20241217170521.705892175@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit a6d75ecee2bf828ac6a1b52724aba0a977e4eaf4 ]
+commit b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+avoids checking number_of_same_symbols() for module symbol in
+__trace_kprobe_create(), but create_local_trace_kprobe() should avoid this
+check too. Doing this check leads to ENOENT for module_name:symbol_name
+constructions passed over perf_event_open.
 
-It is unclear if net/lapb code is supposed to be ready for 8021q.
+No bug in newer kernels as it was fixed more generally by
+commit 9d8616034f16 ("tracing/kprobes: Add symbol counting check when module loads")
 
-We can at least avoid crashes like the following :
-
-skbuff: skb_under_panic: text:ffffffff8aabe1f6 len:24 put:20 head:ffff88802824a400 data:ffff88802824a3fe tail:0x16 end:0x140 dev:nr0.2
-------------[ cut here ]------------
- kernel BUG at net/core/skbuff.c:206 !
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 5508 Comm: dhcpcd Not tainted 6.12.0-rc7-syzkaller-00144-g66418447d27b #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
- RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
- RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
-Code: 0d 8d 48 c7 c6 2e 9e 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 1a 6f 37 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
-RSP: 0018:ffffc90002ddf638 EFLAGS: 00010282
-RAX: 0000000000000086 RBX: dffffc0000000000 RCX: 7a24750e538ff600
-RDX: 0000000000000000 RSI: 0000000000000201 RDI: 0000000000000000
-RBP: ffff888034a86650 R08: ffffffff8174b13c R09: 1ffff920005bbe60
-R10: dffffc0000000000 R11: fffff520005bbe61 R12: 0000000000000140
-R13: ffff88802824a400 R14: ffff88802824a3fe R15: 0000000000000016
-FS:  00007f2a5990d740(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000110c2631fd CR3: 0000000029504000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  skb_push+0xe5/0x100 net/core/skbuff.c:2636
-  nr_header+0x36/0x320 net/netrom/nr_dev.c:69
-  dev_hard_header include/linux/netdevice.h:3148 [inline]
-  vlan_dev_hard_header+0x359/0x480 net/8021q/vlan_dev.c:83
-  dev_hard_header include/linux/netdevice.h:3148 [inline]
-  lapbeth_data_transmit+0x1f6/0x2a0 drivers/net/wan/lapbether.c:257
-  lapb_data_transmit+0x91/0xb0 net/lapb/lapb_iface.c:447
-  lapb_transmit_buffer+0x168/0x1f0 net/lapb/lapb_out.c:149
- lapb_establish_data_link+0x84/0xd0
- lapb_device_event+0x4e0/0x670
-  notifier_call_chain+0x19f/0x3e0 kernel/notifier.c:93
- __dev_notify_flags+0x207/0x400
-  dev_change_flags+0xf0/0x1a0 net/core/dev.c:8922
-  devinet_ioctl+0xa4e/0x1aa0 net/ipv4/devinet.c:1188
-  inet_ioctl+0x3d7/0x4f0 net/ipv4/af_inet.c:1003
-  sock_do_ioctl+0x158/0x460 net/socket.c:1227
-  sock_ioctl+0x626/0x8e0 net/socket.c:1346
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+fb99d1b0c0f81d94a5e2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67506220.050a0220.17bd51.006c.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241204141031.4030267-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20240705161030.b3ddb33a8167013b9b1da202@kernel.org
+Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/lapb.h | 2 +-
+v1 -> v2:
+ * Reword commit title and message
+ * Send for stable instead of mainline
+
+ kernel/trace/trace_kprobe.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/lapb.h b/include/net/lapb.h
-index 124ee122f2c8..6c07420644e4 100644
---- a/include/net/lapb.h
-+++ b/include/net/lapb.h
-@@ -4,7 +4,7 @@
- #include <linux/lapb.h>
- #include <linux/refcount.h>
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1872,7 +1872,7 @@ create_local_trace_kprobe(char *func, vo
+ 	int ret;
+ 	char *event;
  
--#define	LAPB_HEADER_LEN	20		/* LAPB over Ethernet + a bit more */
-+#define	LAPB_HEADER_LEN MAX_HEADER		/* LAPB over Ethernet + a bit more */
+-	if (func) {
++	if (func && !strchr(func, ':')) {
+ 		unsigned int count;
  
- #define	LAPB_ACK_PENDING_CONDITION	0x01
- #define	LAPB_REJECT_CONDITION		0x02
--- 
-2.39.5
-
+ 		count = number_of_same_symbols(func);
 
 
 
