@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-104597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1701A9F5201
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:13:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653E09F521D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:15:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267DD188DFA8
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 882C77A122F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663BB1F76DF;
-	Tue, 17 Dec 2024 17:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D5F1F76B2;
+	Tue, 17 Dec 2024 17:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q49gdoMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7F3YWa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C5D1F757B;
-	Tue, 17 Dec 2024 17:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20D51F758F;
+	Tue, 17 Dec 2024 17:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455535; cv=none; b=J6vjDz3NN2inSBQuJEQYTXYG163HVLj0NlIDTilD+inhj7zCkANzXqU1AhU5JXs9TPP1Y4JHTQiv2X3ZHnO5k2+wf7G7AmoBZzHYXiuAklq6nNBchpGAF9skc05+kZd8o3xoyZE/yVkyCutFL3PB3BU4Oi+iplg2ynMsClTBLs8=
+	t=1734455664; cv=none; b=HM3sZq8Q+vTvesENiAUE9G2mwRzYcmUlxT3FYabAHRJVU0ZubL6OfYiyZg8xoNTA8vqdoxJbQq/IVhSZjG4/7U+n3ztKI19vhQE4ns+Ptqu5md3YH+iKnIKjXXyMKkQh6zvcV0LaQFym2+noYn3vgZGMcrEA4SZCuTK+n+9KlXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455535; c=relaxed/simple;
-	bh=/1jSJMLg5sopGyGswydeZAEKPXb4q0WA6u9eg4e1S3c=;
+	s=arc-20240116; t=1734455664; c=relaxed/simple;
+	bh=/Qv02c7o02ijGudfL8p0i2GrWzwcBJDR5Jjgoh5Zoec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kfzp9kdNRqeu1nw2/axxze0h3PqnyBHKhkEqNeqr/ZqnLrUF80ujQlB4AEoYKgU+Inm/yQ+lDRjNMRahKJzzCrEdaLSgOe+nnSwYCmsIgQegEx57JxqABEA105gFAVFGS6o1m5YkvBTtQd0CPI0zF0B/fDg6gXy4/En52e7tM6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q49gdoMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1705C4CED3;
-	Tue, 17 Dec 2024 17:12:14 +0000 (UTC)
+	 MIME-Version; b=i9yn5pfkUKORVQOi/+3gGFWWKAmsV6Z7IX/0kqo3upSOZ3XxQPJb4eqLRUus+IWZQXkc+GeucB8t5N61TuN1ztjb8UsSmEnzGyYBzpaK04xBXuf2/dGc14cNb5CIQwv7Lt2Lqe2NFSywDeowls905r1m/+bc3TI9H3TJeR/INgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7F3YWa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CDDC4CEDD;
+	Tue, 17 Dec 2024 17:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455535;
-	bh=/1jSJMLg5sopGyGswydeZAEKPXb4q0WA6u9eg4e1S3c=;
+	s=korg; t=1734455664;
+	bh=/Qv02c7o02ijGudfL8p0i2GrWzwcBJDR5Jjgoh5Zoec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q49gdoMNJ65+2DMbx5OBEFNfUgzVQUjjkfjuDYFPlJCVDQDt5Cd3drHob7rKuZLZy
-	 kMWvJHG9wCnZiUgkDoC6aziB6qE57xQqrhiAZxmX6iQvh52zhwoftyud35Gdnb2cxY
-	 xBdy/lOuzU1VnEvE5cSPHcvUfJCoBz4zWzHvo+uQ=
+	b=w7F3YWa0afKsDaiTWrfc5ufuwWV7xLY5o+kumxhnQyx2Cnb3rd8hOjIz5scZGZNcC
+	 Y7sjnfD3JmCVMrDbBamOySPdovztcjTXzFrnaDFS/XaNCVtTJjJZ6124F/C9LFpEIF
+	 1QKVJCSkACweO7XHB58zQAV0doRp4C7Bowx0uL30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>
-Subject: [PATCH 5.10 43/43] ALSA: usb-audio: Fix a DMA to stack memory bug
-Date: Tue, 17 Dec 2024 18:07:34 +0100
-Message-ID: <20241217170522.440866202@linuxfoundation.org>
+	Guenter Roeck <linux@roeck-us.net>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Helge Deller <deller@gmx.de>,
+	Mingli Yu <mingli.yu@windriver.com>
+Subject: [PATCH 5.15 42/51] Revert "parisc: fix a possible DMA corruption"
+Date: Tue, 17 Dec 2024 18:07:35 +0100
+Message-ID: <20241217170522.202198961@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit f7d306b47a24367302bd4fe846854e07752ffcd9 upstream.
+This reverts commit dadac97f066a67334268132c1e2d0fd599fbcbec which is
+commit 7ae04ba36b381bffe2471eff3a93edced843240f upstream.
 
-The usb_get_descriptor() function does DMA so we're not allowed
-to use a stack buffer for that.  Doing DMA to the stack is not portable
-all architectures.  Move the "new_device_descriptor" from being stored
-on the stack and allocate it with kmalloc() instead.
+It is reported to cause build failures.
 
-Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices")
-Cc: stable@kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Benoît Sevens <bsevens@google.com>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/436a575b-4ec0-43a2-b4e9-7eb00d9bbbeb@roeck-us.net
+Cc: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Mingli Yu <mingli.yu@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |   31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ arch/parisc/Kconfig             |    1 -
+ arch/parisc/include/asm/cache.h |   11 +----------
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -595,7 +595,7 @@ int snd_usb_create_quirk(struct snd_usb_
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor = NULL;
- 	int err;
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -15,7 +15,6 @@ config PARISC
+ 	select ARCH_SPLIT_ARG64 if !64BIT
+ 	select ARCH_SUPPORTS_HUGETLBFS if PA20
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+-	select ARCH_HAS_CACHE_LINE_SIZE
+ 	select DMA_OPS
+ 	select RTC_CLASS
+ 	select RTC_DRV_GENERIC
+--- a/arch/parisc/include/asm/cache.h
++++ b/arch/parisc/include/asm/cache.h
+@@ -20,16 +20,7 @@
  
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -606,15 +606,20 @@ static int snd_usb_extigy_boot_quirk(str
- 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
-+
-+		new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+		if (!new_device_descriptor)
-+			return -ENOMEM;
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&new_device_descriptor, sizeof(new_device_descriptor));
-+				new_device_descriptor, sizeof(*new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--				new_device_descriptor.bNumConfigurations);
-+				new_device_descriptor->bNumConfigurations);
- 		else
--			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
-+		kfree(new_device_descriptor);
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -946,7 +951,7 @@ static void mbox2_setup_48_24_magic(stru
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor = NULL;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -981,15 +986,21 @@ static int snd_usb_mbox2_boot_quirk(stru
+ #define SMP_CACHE_BYTES L1_CACHE_BYTES
  
- 	dev_dbg(&dev->dev, "device initialised!\n");
+-#ifdef CONFIG_PA20
+-#define ARCH_DMA_MINALIGN	128
+-#else
+-#define ARCH_DMA_MINALIGN	32
+-#endif
+-#define ARCH_KMALLOC_MINALIGN	16	/* ldcw requires 16-byte alignment */
+-
+-#define arch_slab_minalign()	((unsigned)dcache_stride)
+-#define cache_line_size()	dcache_stride
+-#define dma_get_cache_alignment cache_line_size
++#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
  
-+	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
-+
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
- 	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
-+
-+	kfree(new_device_descriptor);
+ #define __read_mostly __section(".data..read_mostly")
  
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
 
 
 
