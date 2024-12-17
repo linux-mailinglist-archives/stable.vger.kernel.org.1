@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B419F53EF
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:34:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C76B9F5228
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:15:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DC1416C8EC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:30:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A30F170271
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926B31F890B;
-	Tue, 17 Dec 2024 17:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2403F1F893A;
+	Tue, 17 Dec 2024 17:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuK/r92t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s180QRSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458D71F76A9;
-	Tue, 17 Dec 2024 17:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E9A1F893C;
+	Tue, 17 Dec 2024 17:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456610; cv=none; b=dLPOtfvlEjWtBiseksd4vi2Dh8fHVVPShc1teLB2Jt5+Z2bQBf28w71gM2gLVQNn0oVUrJLQ0A0WTC3Euf/pOYx2g23EjMkwAMLbSE9QxXDceri+74cZJkH7SZNTPbtf6048yVP5H0b3s0R1T+I7qFZcgfpDj8koMsVB0XzgKPQ=
+	t=1734455613; cv=none; b=FsPUNTUXOXWbSkA/on5EkakuuccASpPNbhe/9jVQfQWnhVwTB0dj83b+i/mq/NSL5WC1kEcdkvzk4wZc2Mqgc+kbiwgAmfpAqFEoIB/QvW88ZnYKIztnq1/LuFrlfefft+Ov5XSeTQF7rVVEgKNZ6W18ao62hkoig5ukDm17n5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456610; c=relaxed/simple;
-	bh=hM5ygfvErfAFKo2X4nJd+y1l+MIB2FltWmk6kpz2opk=;
+	s=arc-20240116; t=1734455613; c=relaxed/simple;
+	bh=1ukvaR2B7jyaXrxZDTsZMncDWS0rZXMvYSX2oA7jRtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jd5LwzocXmPpC+ybSimgFUbzNyIz5bOxh1PtIzyoxWGACWmlFoB26jm5OctyAGbzZC6O5lC+dTZSLFCSg9MsyuUC6aBvjxvOUwCe9u5jauE62PdKI06uBDTzncrj1ZfZsLwSFpqmmmJvTq235O+23xf/W75TzvpMmHoNrayfe9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuK/r92t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836C8C4CED3;
-	Tue, 17 Dec 2024 17:30:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tR9HtMtfm7ire7PRJ33Ber1gdkddFO40MR0FhKyA3Xa5Q9wT7+KbMZCW5nLZPclC/7rfv447W13ZJOBFkxaX+KueGgHwwobKDz1jJdT/444ft51hpxi94tyNqXDA5C2KjjOVq9omQeaLtBN5KVwXzKRdl27K1NAckG7enNis0YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s180QRSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D942C4CED3;
+	Tue, 17 Dec 2024 17:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456610;
-	bh=hM5ygfvErfAFKo2X4nJd+y1l+MIB2FltWmk6kpz2opk=;
+	s=korg; t=1734455613;
+	bh=1ukvaR2B7jyaXrxZDTsZMncDWS0rZXMvYSX2oA7jRtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uuK/r92t2x9mMVbsspdoTRcl8jx7hw9dTRk/OHTojhYRiscUn51MQ+3qyyv0QGZCY
-	 L+22+XGu2GQKgrGS9A8Uk4OM8xtgRWv3z++OTIXiSyUryRxOQ35BkWBVwqFecJYHIA
-	 uP8tJQvOVKedk0LNMm1RXbv9hbGpZq5baYNH4O0M=
+	b=s180QRSfld2t2krYWtkGSvz8IPxAs42CmMZEzyiuG2dz7FMe+fK/XDUy01Yb/EgX0
+	 uTliqaRkAke3Lf3p0nCAGDAIpsCcYJkxkKFFNEtN0aBRuG+Ynl3iLzx1KovwYYMMeP
+	 zmCuVFrc8XmYBiD6BS8eYt8aBDcLm4N44H9LaR1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/172] perf tools: Fix build-id event recording
-Date: Tue, 17 Dec 2024 18:07:18 +0100
-Message-ID: <20241217170549.689222381@linuxfoundation.org>
+Subject: [PATCH 5.15 26/51] ptp: kvm: x86: Return EOPNOTSUPP instead of ENODEV from kvm_arch_ptp_init()
+Date: Tue, 17 Dec 2024 18:07:19 +0100
+Message-ID: <20241217170521.365279054@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 23c44f6c83257923b179461694edcf62749bedd5 ]
+[ Upstream commit 5e7aa97c7acf171275ac02a8bb018c31b8918d13 ]
 
-The build-id events written at the end of the record session are broken
-due to unexpected data.  The write_buildid() writes the fixed length
-event first and then variable length filename.
+The caller, ptp_kvm_init(), emits a warning if kvm_arch_ptp_init() exits
+with any error which is not EOPNOTSUPP:
 
-But a recent change made it write more data in the padding area
-accidentally.  So readers of the event see zero-filled data for the
-next entry and treat it incorrectly.  This resulted in wrong kernel
-symbols because the kernel DSO loaded a random vmlinux image in the
-path as it didn't have a valid build-id.
+	"fail to initialize ptp_kvm"
 
-Fixes: ae39ba16554e ("perf inject: Fix build ID injection")
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/Z0aRFFW9xMh3mqKB@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Replace ENODEV with EOPNOTSUPP to avoid this spurious warning,
+aligning with the ARM implementation.
+
+Fixes: a86ed2cfa13c ("ptp: Don't print an error if ptp_kvm is not supported")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20241203-kvm_ptp-eopnotsuppp-v2-1-d1d060f27aa6@weissschuh.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/build-id.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ptp/ptp_kvm_x86.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/build-id.c b/tools/perf/util/build-id.c
-index 8982f68e7230..e763e8d99a43 100644
---- a/tools/perf/util/build-id.c
-+++ b/tools/perf/util/build-id.c
-@@ -277,7 +277,7 @@ static int write_buildid(const char *name, size_t name_len, struct build_id *bid
- 	struct perf_record_header_build_id b;
- 	size_t len;
+diff --git a/drivers/ptp/ptp_kvm_x86.c b/drivers/ptp/ptp_kvm_x86.c
+index 902844cc1a17..5e5b2ef78547 100644
+--- a/drivers/ptp/ptp_kvm_x86.c
++++ b/drivers/ptp/ptp_kvm_x86.c
+@@ -26,7 +26,7 @@ int kvm_arch_ptp_init(void)
+ 	long ret;
  
--	len = sizeof(b) + name_len + 1;
-+	len = name_len + 1;
- 	len = PERF_ALIGN(len, sizeof(u64));
+ 	if (!kvm_para_available())
+-		return -ENODEV;
++		return -EOPNOTSUPP;
  
- 	memset(&b, 0, sizeof(b));
-@@ -286,7 +286,7 @@ static int write_buildid(const char *name, size_t name_len, struct build_id *bid
- 	misc |= PERF_RECORD_MISC_BUILD_ID_SIZE;
- 	b.pid = pid;
- 	b.header.misc = misc;
--	b.header.size = len;
-+	b.header.size = sizeof(b) + len;
+ 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
+ 		p = alloc_page(GFP_KERNEL | __GFP_ZERO);
+@@ -46,14 +46,14 @@ int kvm_arch_ptp_init(void)
  
- 	err = do_write(fd, &b, sizeof(b));
- 	if (err < 0)
+ 	clock_pair_gpa = slow_virt_to_phys(clock_pair);
+ 	if (!pvclock_get_pvti_cpu0_va()) {
+-		ret = -ENODEV;
++		ret = -EOPNOTSUPP;
+ 		goto err;
+ 	}
+ 
+ 	ret = kvm_hypercall2(KVM_HC_CLOCK_PAIRING, clock_pair_gpa,
+ 			     KVM_CLOCK_PAIRING_WALLCLOCK);
+ 	if (ret == -KVM_ENOSYS) {
+-		ret = -ENODEV;
++		ret = -EOPNOTSUPP;
+ 		goto err;
+ 	}
+ 
 -- 
 2.39.5
 
