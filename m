@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-104856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DBA9F5361
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:28:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067979F5347
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89F31171B0C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C6A91716EF
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8B31F8AE7;
-	Tue, 17 Dec 2024 17:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E6A1F868F;
+	Tue, 17 Dec 2024 17:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUqXXE2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0qmR8BX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA8B1F8AD7;
-	Tue, 17 Dec 2024 17:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227071F7574;
+	Tue, 17 Dec 2024 17:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456310; cv=none; b=bsIesZQ9NfDC/Y8QAA2CCfZZgujd9dNgJuhI3r8Uz4oXx28I5GMxtcRwoA+8pKTNycYacDXk3EQ/BYD1rcuWbwGJ3Ce7ikLdq/aCmiXC7S6/hVKpkSMvvdOKFHOOD0F9aR5o0RkrUFbYLHClJ2CtrVl0cAUMyW7jnYs5BeK7hmA=
+	t=1734456283; cv=none; b=HSmCJE8u9EqrIiPdyDbQiOJW2nPzPW7mGUgKSmbQDuZ/VmJz5lpkKmBmqxDo6w00Cmj7PZc69o20DJiJxTdIFWTmEu3vzxZN/BQ/XkZygRRoED0PnnIq99/QV4LFBwVSZdoAySEfgMqK7caGunGCqeZQbMF9Ohu08H3h65lgjYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456310; c=relaxed/simple;
-	bh=RcVmwwCq/Gf3IJiNk6Wq1d8EEqT4PXEMBIN7d1OU9L8=;
+	s=arc-20240116; t=1734456283; c=relaxed/simple;
+	bh=GRwTU/SS9mylYrBxHsCMVm1e9so/tKOB3pMSPvJdtaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtLyxr6+Jm2WDTq7TvwzerkM9WqLhVgl+NR/JE+KNI6LCzs3EiC5AncrXCDfI4NGxi6W+dbZ0+am/BsdlposnDg9m6yGpf8nSpQcOpTzDSeqKlItWVbVBLlm3k9ipWid4+UFgydWDtGgPaGi6fXqE/OTNGtoFgh8a0QxtUPY9TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUqXXE2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15742C4CED7;
-	Tue, 17 Dec 2024 17:25:09 +0000 (UTC)
+	 MIME-Version; b=kZZj3I+7TyyL9gaDw05VwLalEg2DAn/8ZIsrq9852GeuoT0VKwq5znkCzF7FSJ/hyumaA9/kXLKL/YRc8Ql/oneaDG1JJr7bdXE3K/HOdw0tF1G2CNch+EgbSgr66luj7aMSJ1ms21GGngzXrgHPxsy3C4kMXCV/e8RaPtaclxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0qmR8BX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E1FC4CED7;
+	Tue, 17 Dec 2024 17:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456310;
-	bh=RcVmwwCq/Gf3IJiNk6Wq1d8EEqT4PXEMBIN7d1OU9L8=;
+	s=korg; t=1734456283;
+	bh=GRwTU/SS9mylYrBxHsCMVm1e9so/tKOB3pMSPvJdtaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUqXXE2TZzTtTilks4QUAupmZh16yGtUr4YTk49aECsHyqhPYcHW/5p6sD/ogdKq/
-	 L9yczFkStQ12rB+uBArrYNueLsg97B3tTid1yx2WMAJrYrbhD5IP9HzLgYV77xPfUB
-	 sGtsMsHdrVaTxnxPwRUpnVTHlbVvZpwoRVaA5c1k=
+	b=F0qmR8BXWIRHSyaJEl6A2RCmUmE5+yGGRCFAGvc3e5nGbWpEWJeD1x6/wy4UO6EoG
+	 +JEmM4cEJdV/i57LtbSDgnaD2Ycpcszp0jUSIoceMYileN/w8Aoq7U2j6KUTkdLlZn
+	 y5lo/qSMOWJyzbY5QrZL0BdXNWAEUiZBp4olR4As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MoYuanhao <moyuanhao3676@163.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 009/172] tcp: check space before adding MPTCP SYN options
-Date: Tue, 17 Dec 2024 18:06:05 +0100
-Message-ID: <20241217170546.632815079@linuxfoundation.org>
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	jserv@ccns.ncku.edu.tw,
+	chuang@cs.nycu.edu.tw
+Subject: [PATCH 6.12 010/172] perf ftrace: Fix undefined behavior in cmp_profile_data()
+Date: Tue, 17 Dec 2024 18:06:06 +0100
+Message-ID: <20241217170546.676307365@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
 References: <20241217170546.209657098@linuxfoundation.org>
@@ -67,45 +68,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: MoYuanhao <moyuanhao3676@163.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit 06d64ab46f19ac12f59a1d2aa8cd196b2e4edb5b upstream.
+commit 246dfe3dc199246bd64635163115f2691623fc53 upstream.
 
-Ensure there is enough space before adding MPTCP options in
-tcp_syn_options().
+The comparison function cmp_profile_data() violates the C standard's
+requirements for qsort() comparison functions, which mandate symmetry
+and transitivity:
 
-Without this check, 'remaining' could underflow, and causes issues. If
-there is not enough space, MPTCP should not be used.
+* Symmetry: If x < y, then y > x.
+* Transitivity: If x < y and y < z, then x < z.
 
-Signed-off-by: MoYuanhao <moyuanhao3676@163.com>
-Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
+When v1 and v2 are equal, the function incorrectly returns 1, breaking
+symmetry and transitivity. This causes undefined behavior, which can
+lead to memory corruption in certain versions of glibc [1].
+
+Fix the issue by returning 0 when v1 and v2 are equal, ensuring
+compliance with the C standard and preventing undefined behavior.
+
+Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+Fixes: 0f223813edd0 ("perf ftrace: Add 'profile' command")
+Fixes: 74ae366c37b7 ("perf ftrace profile: Add -s/--sort option")
 Cc: stable@vger.kernel.org
-Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-[ Matt: Add Fixes, cc Stable, update Description ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241209-net-mptcp-check-space-syn-v1-1-2da992bb6f74@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: jserv@ccns.ncku.edu.tw
+Cc: chuang@cs.nycu.edu.tw
+Link: https://lore.kernel.org/r/20241209134226.1939163-1-visitorckw@gmail.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_output.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/perf/builtin-ftrace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -883,8 +883,10 @@ static unsigned int tcp_syn_options(stru
- 		unsigned int size;
+diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
+index 272d3c70810e..a56cf8b0a7d4 100644
+--- a/tools/perf/builtin-ftrace.c
++++ b/tools/perf/builtin-ftrace.c
+@@ -1151,8 +1151,9 @@ static int cmp_profile_data(const void *a, const void *b)
  
- 		if (mptcp_syn_options(sk, skb, &size, &opts->mptcp)) {
--			opts->options |= OPTION_MPTCP;
--			remaining -= size;
-+			if (remaining >= size) {
-+				opts->options |= OPTION_MPTCP;
-+				remaining -= size;
-+			}
- 		}
- 	}
+ 	if (v1 > v2)
+ 		return -1;
+-	else
++	if (v1 < v2)
+ 		return 1;
++	return 0;
+ }
  
+ static void print_profile_result(struct perf_ftrace *ftrace)
+-- 
+2.47.1
+
 
 
 
