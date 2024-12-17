@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-104928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55979F53C4
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:32:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61FFD9F5233
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01F7E18925AC
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:29:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D57D7167F8F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8191F76CB;
-	Tue, 17 Dec 2024 17:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5EA1F76DF;
+	Tue, 17 Dec 2024 17:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8MHzWld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2l+RnNK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0911F1F6661;
-	Tue, 17 Dec 2024 17:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6D91F757B;
+	Tue, 17 Dec 2024 17:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456540; cv=none; b=O/3h3kwDqrx07k3XrkDUE4/7UoUeHKDAVdB/YcCy7itYO4IFcfoTu/09KTPnymFD7qfe83s5JpJdqnmRapVlL+r7OlPTpfBFEvU5psoTOw4UmNEBQrmdR+iFoPnPBoH2D3iZUXXct7voCG8eyaazen4DD3+WJRqcsz/VkVXRynw=
+	t=1734455640; cv=none; b=Tv9wuOwbajS6MyuEby840ctrVIAwX/eNjyJvpcrTs+t08Cgs3tFj445S5eETaZoXqfoDjJW+enxai7gDE4gLOEtu/oxJgDdbN7+izwb14od7Ah2gXyp6n9DuGfQ7oKWb06/IRlX8Tn6qsxLFkUhGdnOzWB+lNNSJhQfWYcR8lCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456540; c=relaxed/simple;
-	bh=3d2TWROIxMj/epBPtSmou2WdqqWSM31JB44BELmTT18=;
+	s=arc-20240116; t=1734455640; c=relaxed/simple;
+	bh=buICyUsYdv8MYmC4iQ2V+2Q3EAmTwd2BDSaO3A2sb7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Efj1Sk478KBSsBEOHFD7le9rZFXghTc3cMALJYjztDtWuM73TAMH80VSjnHHtyCah1BlU/43uq2epD+FIVDRSl/Q4hFkVk8XMFGaIMfAZKMVKKpTFn/jqP6x3dwIgbaBwi09QbEXcfDDEUmKNdbY6PBNxCx8wsXcD+48atYcMNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8MHzWld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AB7C4CED3;
-	Tue, 17 Dec 2024 17:28:59 +0000 (UTC)
+	 MIME-Version; b=US1KUzuiNu9Fb2QGllUsfkZDvFDUcE06musnOaQbvzKFmF6JGkyZPMI4fd7EHoUan5nPDjxGPMRLUM2v4js0l/ZCHWW9DDAN/uK2T421xExVYGmGoIAG9bdHeyd0e5A+PVahAXH8MdlvLIpL0S7yitwEf9LXzkyMSVnpwV3xRD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2l+RnNK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4582CC4CEDD;
+	Tue, 17 Dec 2024 17:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456539;
-	bh=3d2TWROIxMj/epBPtSmou2WdqqWSM31JB44BELmTT18=;
+	s=korg; t=1734455640;
+	bh=buICyUsYdv8MYmC4iQ2V+2Q3EAmTwd2BDSaO3A2sb7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8MHzWldu/CM/S9tCl9SRygkg3qE4c4ZHWi13fssIvW3JrqSHuudZp9jQ//56TIKE
-	 W9NJb3kQCRO6zK0Z82fosvkkJPQj7Lu7mbaV7v8qurd6DH6PetpR1F/z9S6czeBJlZ
-	 q3Z7CESAC+Qrq8jz0OlZUH/BkcdR5l8a6/pLmLfE=
+	b=V2l+RnNK4S26niuZIg/xB0oSJuYaN9YYuDrdrJ7kcTU1B932O/amm2snD2KyPMN/v
+	 IDWdHAyAFZhGtC0M249jqX/d+oXXLZnG6WZfq9+i8jxNM8XNzmjzUTGZzAH3XfyprB
+	 UojWluu5apr51DN778H2s75bCEY0LG8x5ESfwyAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/172] batman-adv: Remove uninitialized data in full table TT response
+Subject: [PATCH 5.15 34/51] Documentation: PM: Clarify pm_runtime_resume_and_get() return value
 Date: Tue, 17 Dec 2024 18:07:27 +0100
-Message-ID: <20241217170550.068700626@linuxfoundation.org>
+Message-ID: <20241217170521.679574110@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
+References: <20241217170520.301972474@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Paul Barker <paul.barker.ct@bp.renesas.com>
 
-[ Upstream commit 8038806db64da15721775d6b834990cacbfcf0b2 ]
+[ Upstream commit ccb84dc8f4a02e7d30ffd388522996546b4d00e1 ]
 
-The number of entries filled by batadv_tt_tvlv_generate() can be less
-than initially expected in batadv_tt_prepare_tvlv_{global,local}_data()
-(changes can be removed by batadv_tt_local_event() in ADD+DEL sequence
-in the meantime as the lock held during the whole tvlv global/local data
-generation).
+Update the documentation to match the behaviour of the code.
 
-Thus tvlv_len could be bigger than the actual TT entry size that need
-to be sent so full table TT_RESPONSE could hold invalid TT entries such
-as below.
+pm_runtime_resume_and_get() always returns 0 on success, even if
+__pm_runtime_resume() returns 1.
 
- * 00:00:00:00:00:00   -1 [....] (  0) 88:12:4e:ad:7e:ba (179) (0x45845380)
- * 00:00:00:00:78:79 4092 [.W..] (  0) 88:12:4e:ad:7e:3c (145) (0x8ebadb8b)
-
-Remove the extra allocated space to avoid sending uninitialized entries
-for full table TT_RESPONSE in both batadv_send_other_tt_response() and
-batadv_send_my_tt_response().
-
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Fixes: 2c412337cfe6 ("PM: runtime: Add documentation for pm_runtime_resume_and_get()")
+Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Link: https://patch.msgid.link/20241203143729.478-1-paul.barker.ct@bp.renesas.com
+[ rjw: Subject and changelog edits, adjusted new comment formatting ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c | 37 ++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ Documentation/power/runtime_pm.rst | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index f0590f9bc2b1..bbab7491c83f 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -2754,14 +2754,16 @@ static bool batadv_tt_global_valid(const void *entry_ptr,
-  *
-  * Fills the tvlv buff with the tt entries from the specified hash. If valid_cb
-  * is not provided then this becomes a no-op.
-+ *
-+ * Return: Remaining unused length in tvlv_buff.
-  */
--static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
--				    struct batadv_hashtable *hash,
--				    void *tvlv_buff, u16 tt_len,
--				    bool (*valid_cb)(const void *,
--						     const void *,
--						     u8 *flags),
--				    void *cb_data)
-+static u16 batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
-+				   struct batadv_hashtable *hash,
-+				   void *tvlv_buff, u16 tt_len,
-+				   bool (*valid_cb)(const void *,
-+						    const void *,
-+						    u8 *flags),
-+				   void *cb_data)
- {
- 	struct batadv_tt_common_entry *tt_common_entry;
- 	struct batadv_tvlv_tt_change *tt_change;
-@@ -2775,7 +2777,7 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 	tt_change = tvlv_buff;
+diff --git a/Documentation/power/runtime_pm.rst b/Documentation/power/runtime_pm.rst
+index d6bf84f061f4..921f56dffea7 100644
+--- a/Documentation/power/runtime_pm.rst
++++ b/Documentation/power/runtime_pm.rst
+@@ -341,7 +341,9 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
  
- 	if (!valid_cb)
--		return;
-+		return tt_len;
+   `int pm_runtime_resume_and_get(struct device *dev);`
+     - run pm_runtime_resume(dev) and if successful, increment the device's
+-      usage counter; return the result of pm_runtime_resume
++      usage counter; returns 0 on success (whether or not the device's
++      runtime PM status was already 'active') or the error code from
++      pm_runtime_resume() on failure.
  
- 	rcu_read_lock();
- 	for (i = 0; i < hash->size; i++) {
-@@ -2801,6 +2803,8 @@ static void batadv_tt_tvlv_generate(struct batadv_priv *bat_priv,
- 		}
- 	}
- 	rcu_read_unlock();
-+
-+	return batadv_tt_len(tt_tot - tt_num_entries);
- }
- 
- /**
-@@ -3076,10 +3080,11 @@ static bool batadv_send_other_tt_response(struct batadv_priv *bat_priv,
- 			goto out;
- 
- 		/* fill the rest of the tvlv with the real TT entries */
--		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.global_hash,
--					tt_change, tt_len,
--					batadv_tt_global_valid,
--					req_dst_orig_node);
-+		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
-+						    bat_priv->tt.global_hash,
-+						    tt_change, tt_len,
-+						    batadv_tt_global_valid,
-+						    req_dst_orig_node);
- 	}
- 
- 	/* Don't send the response, if larger than fragmented packet. */
-@@ -3203,9 +3208,11 @@ static bool batadv_send_my_tt_response(struct batadv_priv *bat_priv,
- 			goto out;
- 
- 		/* fill the rest of the tvlv with the real TT entries */
--		batadv_tt_tvlv_generate(bat_priv, bat_priv->tt.local_hash,
--					tt_change, tt_len,
--					batadv_tt_local_valid, NULL);
-+		tvlv_len -= batadv_tt_tvlv_generate(bat_priv,
-+						    bat_priv->tt.local_hash,
-+						    tt_change, tt_len,
-+						    batadv_tt_local_valid,
-+						    NULL);
- 	}
- 
- 	tvlv_tt_data->flags = BATADV_TT_RESPONSE;
+   `int pm_request_idle(struct device *dev);`
+     - submit a request to execute the subsystem-level idle callback for the
 -- 
 2.39.5
 
