@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3A19F52F1
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503229F5280
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08F631700CE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70E297A57CC
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D3C1E0493;
-	Tue, 17 Dec 2024 17:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DC41F757B;
+	Tue, 17 Dec 2024 17:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsdX2VmA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENR1JiAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80565148850;
-	Tue, 17 Dec 2024 17:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548478615A;
+	Tue, 17 Dec 2024 17:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456073; cv=none; b=r5nlupWKxksmfDpeyd9NEkvSWGdwSrWCRd0QDslLvrPkywM0coBLIwdDOT4cS/FsEWMXDYEafoEzBe3dcLiEJPVfhwFyuNRDeETyebk8JpI0/Tju1jRPtF24Gpv6nMfN8nYfGA/UEU8wdK16BEWBRCP+UNOl1TaYF5NgbQP3Ja4=
+	t=1734455934; cv=none; b=BVGn4N7sGTjqdNQ3HhsUCWVzbJ9UnQIegKQCzIkdwyRs2OMaL9DM9dw0zNHJae9GtMFXQYlGyV47B+iPdH/FNcgymOmUzudohbYpimaeXn8PSSZInOeBt99GwC8sondUiddxRXlxdx90TTeP3OYlT5P9Rb0bAXLnEs1Nrehz/LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456073; c=relaxed/simple;
-	bh=/J9MMjZOmRG0AA+KKjp9xnh6QfBUYez5/cr54GGZR3A=;
+	s=arc-20240116; t=1734455934; c=relaxed/simple;
+	bh=QC9DbPRl3icZYCfy83rSD3uMayi3J5tPKyYrmvXdFck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWzRL1R0nbZaWFZrLmp4DT6/JSf3iWeeQZB5Ec6Yhqk4rOn0h4U0QkvMLWKJ7kNpd1o5c24PLruqmhNQbShBXYvcjWUZVM+wDNAW/SzjEmJ2pgU8/aJvyEzMDTe9FqbFyBAA+zPqjknJ8GtWbCPKyYprApa3bE0tc3BsTE7ZeDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsdX2VmA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2464C4CEE0;
-	Tue, 17 Dec 2024 17:21:12 +0000 (UTC)
+	 MIME-Version; b=p0DcYFHPHiabj/qKGZ9qd4tvGxjFXMtH4dT1Z1SWlTpPluqtm+Ed4icqkMofdXJpCHgct06j9ZJ0VTvDsAaWmanCs0tytoMk/WNqpkaFIpdgJrt0LSHtXSQXIzuXmf/H81CUu3TOQLXkbd4MI8Wl/asUrI+eMMWLhilZuspbKj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENR1JiAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCA8C4CED3;
+	Tue, 17 Dec 2024 17:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456073;
-	bh=/J9MMjZOmRG0AA+KKjp9xnh6QfBUYez5/cr54GGZR3A=;
+	s=korg; t=1734455934;
+	bh=QC9DbPRl3icZYCfy83rSD3uMayi3J5tPKyYrmvXdFck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BsdX2VmA+09lA6UtxKJcQFSne7UESUvBqr7fSsyq8/gvKQnDVB1X920PKPmkW7FIB
-	 22rC3o+V9sD+kAxYuwetzX0iXVHA7f8I3KSJkysOJ3le6jb7ob7DyxHchBCd1Z/Cx0
-	 MS6T/w3SHNLw1ue4lI3grBVrnfx0mv6hUOA/Y/z0=
+	b=ENR1JiAaZqXYPX1gWn+VysTJAeBPIYuV2RSlza/OKDPUQr1HV2iIAk6v4hOleDva/
+	 flW/QrNMVBw/agcKwM4rlhZ9J++AcZ5vRqGNHCMnsIvJTTqhp6Ks87oV8gsohEjkMi
+	 97AdO3MBIUKZSH0Oi0wduwm3BKR5CKW50plfvbSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+fb99d1b0c0f81d94a5e2@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/109] net: lapb: increase LAPB_HEADER_LEN
+Subject: [PATCH 6.1 55/76] qca_spi: Make driver probing reliable
 Date: Tue, 17 Dec 2024 18:07:35 +0100
-Message-ID: <20241217170535.504090550@linuxfoundation.org>
+Message-ID: <20241217170528.550471334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
-References: <20241217170533.329523616@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit a6d75ecee2bf828ac6a1b52724aba0a977e4eaf4 ]
+[ Upstream commit becc6399ce3b724cffe9ccb7ef0bff440bb1b62b ]
 
-It is unclear if net/lapb code is supposed to be ready for 8021q.
+The module parameter qcaspi_pluggable controls if QCA7000 signature
+should be checked at driver probe (current default) or not. Unfortunately
+this could fail in case the chip is temporary in reset, which isn't under
+total control by the Linux host. So disable this check per default
+in order to avoid unexpected probe failures.
 
-We can at least avoid crashes like the following :
-
-skbuff: skb_under_panic: text:ffffffff8aabe1f6 len:24 put:20 head:ffff88802824a400 data:ffff88802824a3fe tail:0x16 end:0x140 dev:nr0.2
-------------[ cut here ]------------
- kernel BUG at net/core/skbuff.c:206 !
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 5508 Comm: dhcpcd Not tainted 6.12.0-rc7-syzkaller-00144-g66418447d27b #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
- RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
- RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
-Code: 0d 8d 48 c7 c6 2e 9e 29 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 1a 6f 37 02 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
-RSP: 0018:ffffc90002ddf638 EFLAGS: 00010282
-RAX: 0000000000000086 RBX: dffffc0000000000 RCX: 7a24750e538ff600
-RDX: 0000000000000000 RSI: 0000000000000201 RDI: 0000000000000000
-RBP: ffff888034a86650 R08: ffffffff8174b13c R09: 1ffff920005bbe60
-R10: dffffc0000000000 R11: fffff520005bbe61 R12: 0000000000000140
-R13: ffff88802824a400 R14: ffff88802824a3fe R15: 0000000000000016
-FS:  00007f2a5990d740(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000110c2631fd CR3: 0000000029504000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  skb_push+0xe5/0x100 net/core/skbuff.c:2636
-  nr_header+0x36/0x320 net/netrom/nr_dev.c:69
-  dev_hard_header include/linux/netdevice.h:3148 [inline]
-  vlan_dev_hard_header+0x359/0x480 net/8021q/vlan_dev.c:83
-  dev_hard_header include/linux/netdevice.h:3148 [inline]
-  lapbeth_data_transmit+0x1f6/0x2a0 drivers/net/wan/lapbether.c:257
-  lapb_data_transmit+0x91/0xb0 net/lapb/lapb_iface.c:447
-  lapb_transmit_buffer+0x168/0x1f0 net/lapb/lapb_out.c:149
- lapb_establish_data_link+0x84/0xd0
- lapb_device_event+0x4e0/0x670
-  notifier_call_chain+0x19f/0x3e0 kernel/notifier.c:93
- __dev_notify_flags+0x207/0x400
-  dev_change_flags+0xf0/0x1a0 net/core/dev.c:8922
-  devinet_ioctl+0xa4e/0x1aa0 net/ipv4/devinet.c:1188
-  inet_ioctl+0x3d7/0x4f0 net/ipv4/af_inet.c:1003
-  sock_do_ioctl+0x158/0x460 net/socket.c:1227
-  sock_ioctl+0x626/0x8e0 net/socket.c:1346
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+fb99d1b0c0f81d94a5e2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67506220.050a0220.17bd51.006c.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241204141031.4030267-1-edumazet@google.com
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20241206184643.123399-3-wahrenst@gmx.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/lapb.h | 2 +-
+ drivers/net/ethernet/qualcomm/qca_spi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/lapb.h b/include/net/lapb.h
-index 124ee122f2c8..6c07420644e4 100644
---- a/include/net/lapb.h
-+++ b/include/net/lapb.h
-@@ -4,7 +4,7 @@
- #include <linux/lapb.h>
- #include <linux/refcount.h>
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index 95e0a5237359..b7af824116ea 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -67,7 +67,7 @@ MODULE_PARM_DESC(qcaspi_burst_len, "Number of data bytes per burst. Use 1-5000."
  
--#define	LAPB_HEADER_LEN	20		/* LAPB over Ethernet + a bit more */
-+#define	LAPB_HEADER_LEN MAX_HEADER		/* LAPB over Ethernet + a bit more */
+ #define QCASPI_PLUGGABLE_MIN 0
+ #define QCASPI_PLUGGABLE_MAX 1
+-static int qcaspi_pluggable = QCASPI_PLUGGABLE_MIN;
++static int qcaspi_pluggable = QCASPI_PLUGGABLE_MAX;
+ module_param(qcaspi_pluggable, int, 0);
+ MODULE_PARM_DESC(qcaspi_pluggable, "Pluggable SPI connection (yes/no).");
  
- #define	LAPB_ACK_PENDING_CONDITION	0x01
- #define	LAPB_REJECT_CONDITION		0x02
 -- 
 2.39.5
 
