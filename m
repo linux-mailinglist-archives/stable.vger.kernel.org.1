@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-104632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209619F5243
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:17:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E33F9F520C
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 381A5189179A
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45D0216CE56
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467711F76D4;
-	Tue, 17 Dec 2024 17:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E6D1F866C;
+	Tue, 17 Dec 2024 17:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4RR0x1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVRiMYNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028E21F76C4;
-	Tue, 17 Dec 2024 17:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58EE149DFA;
+	Tue, 17 Dec 2024 17:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455638; cv=none; b=tnohuGQYIcdPVV+hJI7MTVMrjsmZSluBmT/Sbkct6zeA1G3RmYjf0igbSd94JLBV7BylKc0I//hnyzDPy7e4Ia/FFMAZ9C4Jd+mUDgp4kigwaXQr/Vo5pEpB4QDCCkw5D7R1Sm92N+QnsCGG3zSGnAnWLBRAdvPfHAHPwNf12Js=
+	t=1734455546; cv=none; b=cWpv/Nx0gdn30+941/JpC/YEfe/lT48iE867NZnzq2YUyC1JGXI5WW2rNzOtIcHGnt8dq3m5XUQOIAGRQXNU4HcD+LDN6pub8byJt+Up4QU23G8cLWzZ6i9kGYbrZ3XAimasv9RH83+0mcK5ampZJ+t/kM/mzvKzjPTTVD5dSDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455638; c=relaxed/simple;
-	bh=AMd7FrWCFkfOFliIx87HGzSgvPLosATbTrY1UUJFTu4=;
+	s=arc-20240116; t=1734455546; c=relaxed/simple;
+	bh=dH1gzPKo6eR7XwYhrfWpuMU5A0+Bq8kFKZKHH7o8Bhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WupexQ3t0SoBawhdbVApuZSsEfABvPf/EpQei1brbqqwrSvKgV+rFVsNvpTJlWb7NTtXHq9q0LHm7fhMwUCcLi1GvTn0hIGhkoi4dMqDu3WegvY6s+hjbydkiLk2RFPcR+1XcgsJQiZ+Ol4m8nibyumVkFjHg45aR3XJX/ZJKpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4RR0x1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AD6C4CED3;
-	Tue, 17 Dec 2024 17:13:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bU/zrjluQ1YdLmUwyDpCTNvr4ASpp0BXCgsKIeQa/DdLFEyvZojmgs4C+4L46hU7qlTRatkOJDFDELHTEDiaTaIEhs+zNPLU0dBgWViJe0UauwlXk0nW0MLwtl9vK4ytHCFAR/3KS0V4aZIbB4TvooDb4prGBLeKSwkKuovtJhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVRiMYNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E33FC4CED3;
+	Tue, 17 Dec 2024 17:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455637;
-	bh=AMd7FrWCFkfOFliIx87HGzSgvPLosATbTrY1UUJFTu4=;
+	s=korg; t=1734455546;
+	bh=dH1gzPKo6eR7XwYhrfWpuMU5A0+Bq8kFKZKHH7o8Bhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4RR0x1HKnKGIJqRgJXW03IVYtO0y/XFO8CAHU7THRKnUi6ZWsxVHYf90XjjUjvc+
-	 KUmWRbSodNZMtB+y9HPk4oAM5YIabmduMJOPilP97P5sznzTZFnhWXObnoDim+qxKO
-	 H7xw6/qd2ylJ5J/UVQqDnknVk+s2aSZMIFNos/qY=
+	b=YVRiMYNTP7YVVrrkJULVc45jXGnq8paCSHsEWowgVhiR3f/oozo71dQKgiU3Pxz+i
+	 V5ryQPViws+jL0mYZRbQ6y6ekEcyyWJ65o5ZOwmHBMblIiczaDgECxdh6lsqh4VPc5
+	 +eqieuKjyubTVUn1BZTgKGEyXSyW1t7dMaVGoIEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/51] qca_spi: Make driver probing reliable
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 5.10 35/43] xen/netfront: fix crash when removing device
 Date: Tue, 17 Dec 2024 18:07:26 +0100
-Message-ID: <20241217170521.641267386@linuxfoundation.org>
+Message-ID: <20241217170522.126029310@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+References: <20241217170520.459491270@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit becc6399ce3b724cffe9ccb7ef0bff440bb1b62b ]
+commit f9244fb55f37356f75c739c57323d9422d7aa0f8 upstream.
 
-The module parameter qcaspi_pluggable controls if QCA7000 signature
-should be checked at driver probe (current default) or not. Unfortunately
-this could fail in case the chip is temporary in reset, which isn't under
-total control by the Linux host. So disable this check per default
-in order to avoid unexpected probe failures.
+When removing a netfront device directly after a suspend/resume cycle
+it might happen that the queues have not been setup again, causing a
+crash during the attempt to stop the queues another time.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://patch.msgid.link/20241206184643.123399-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix that by checking the queues are existing before trying to stop
+them.
+
+This is XSA-465 / CVE-2024-53240.
+
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Fixes: d50b7914fae0 ("xen-netfront: Fix NULL sring after live migration")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/qca_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/xen-netfront.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index 926eec0a9532..9b34ab547840 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -67,7 +67,7 @@ MODULE_PARM_DESC(qcaspi_burst_len, "Number of data bytes per burst. Use 1-5000."
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -870,7 +870,7 @@ static netdev_tx_t xennet_start_xmit(str
+ static int xennet_close(struct net_device *dev)
+ {
+ 	struct netfront_info *np = netdev_priv(dev);
+-	unsigned int num_queues = dev->real_num_tx_queues;
++	unsigned int num_queues = np->queues ? dev->real_num_tx_queues : 0;
+ 	unsigned int i;
+ 	struct netfront_queue *queue;
+ 	netif_tx_stop_all_queues(np->netdev);
+@@ -885,6 +885,9 @@ static void xennet_destroy_queues(struct
+ {
+ 	unsigned int i;
  
- #define QCASPI_PLUGGABLE_MIN 0
- #define QCASPI_PLUGGABLE_MAX 1
--static int qcaspi_pluggable = QCASPI_PLUGGABLE_MIN;
-+static int qcaspi_pluggable = QCASPI_PLUGGABLE_MAX;
- module_param(qcaspi_pluggable, int, 0);
- MODULE_PARM_DESC(qcaspi_pluggable, "Pluggable SPI connection (yes/no).");
++	if (!info->queues)
++		return;
++
+ 	for (i = 0; i < info->netdev->real_num_tx_queues; i++) {
+ 		struct netfront_queue *queue = &info->queues[i];
  
--- 
-2.39.5
-
 
 
 
