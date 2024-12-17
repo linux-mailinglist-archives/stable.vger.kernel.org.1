@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-104994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686C59F5493
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:43:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC309F534F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1DD16EF32
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:39:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F40E1888D06
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A071F9427;
-	Tue, 17 Dec 2024 17:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F568615A;
+	Tue, 17 Dec 2024 17:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQPSofmt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUOd5tsT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD521F76C3;
-	Tue, 17 Dec 2024 17:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9744D140E38;
+	Tue, 17 Dec 2024 17:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456761; cv=none; b=COnPTOH3eVmoX0n87GTS4bfbLJJ4k84VKp8vUKkPwegzXSna7agVNJ+ckMLhVAJLHcSW0MyzhKr2Mxw6pZZMbRrgdJxL876gHBKiqnRpS/dMFRGriEeJARVUPZL/0bxY5OzXOkPx0lVj2+bqLm9zgg+uw8s/dfnMbRlxkS8mdak=
+	t=1734456250; cv=none; b=UzvrBAUks7dmuu45xIw89/0FIUUrLGy9J1zr/rBpQ1kLwk04uV6tsRzaE8pCRKmzHxYEzQ9LoP0ULRrFnTxeYBw5L7SjVyGddjVstcuw28Us0V5JKcSgXaDBxC4STOK6Y5oDGjtaPzuDxCLXHTQK4l9NUU16vmYjFKxHtDBUC4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456761; c=relaxed/simple;
-	bh=0/0gQf4lRUsEZGk1uj2SqM2H8ipgEs1YzZO7C4isX2g=;
+	s=arc-20240116; t=1734456250; c=relaxed/simple;
+	bh=Od9O0/ehmiARj+m7oMSubhiGEi7O6+ODCLA1cKOpDeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h19IIfdtO9w1G/gh8fFp5f0z2aUh8LB/FKbWfaBkNzKsLsAQDElr1P2+dpTYHlNRuD6BvnAvpE9Y6oWyMtyQyCUv776iZOTAIXq58EyflcTP3IGz+/RV/lcyvn1Q47n2ZP3Hcdo3UStMwEJzwpRVwZH8OTP+9qLdDOQoxEa9QtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQPSofmt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69B7C4CED7;
-	Tue, 17 Dec 2024 17:32:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mSRgyddoHxjFEKfosxisXs1b1Pk1E5oc6rHv4SSJDIqkbibn4yyAQTK4SnYnfGlZQK3KEnVFBuhVCUolcv/Jn2cgo2ECYjcAr5XgCRpKyOJHnfgdprneeNNUDcGO6lNYkGR3+cHRO55TfkW5dsQ1hOtWBkYUrHwa/h2nVsrexwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUOd5tsT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFACBC4CED3;
+	Tue, 17 Dec 2024 17:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456761;
-	bh=0/0gQf4lRUsEZGk1uj2SqM2H8ipgEs1YzZO7C4isX2g=;
+	s=korg; t=1734456250;
+	bh=Od9O0/ehmiARj+m7oMSubhiGEi7O6+ODCLA1cKOpDeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQPSofmtAQBJ0p+Xwvlz5KBR0ci3y03KCxte2FgRxCAKD0K30FpNZZhTk8ddLVPOO
-	 HFhulgFMlGNb6kXHxcAwxDn6IobO442+aXltgdtvRGYWIl3uemS5n0b0yZKhNy4vVQ
-	 vpjVLBH1Yf/ONWvLEmg5OAy2JEt7gVo+yh+5ExnU=
+	b=mUOd5tsT9JJiOjgPxrE+/Gt+Qrnn7PEsq2DNkjVMiNyu34u1l1ubYFmUNHQR4LL8a
+	 Gdm1fb+T5+2yz9RNjj9EcGFZ7khtGRpwO4flmZjox/n/wpbfJvtJAWN4ZyklF7mLfp
+	 WI+iC9JvuNKj0vIEz/NUj5Pp0yRLwvgFITXFPjT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/172] drm/xe: fix the ERR_PTR() returned on failure to allocate tiny pt
+	stable@kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>
+Subject: [PATCH 6.6 109/109] ALSA: usb-audio: Fix a DMA to stack memory bug
 Date: Tue, 17 Dec 2024 18:08:33 +0100
-Message-ID: <20241217170552.844833508@linuxfoundation.org>
+Message-ID: <20241217170537.953744082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,131 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ed69b28b3a5e39871ba5599992f80562d6ee59db ]
+commit f7d306b47a24367302bd4fe846854e07752ffcd9 upstream.
 
-Running coccinelle spatch gave the following warning:
+The usb_get_descriptor() function does DMA so we're not allowed
+to use a stack buffer for that.  Doing DMA to the stack is not portable
+all architectures.  Move the "new_device_descriptor" from being stored
+on the stack and allocate it with kmalloc() instead.
 
-./drivers/gpu/drm/xe/tests/xe_migrate.c:226:5-11: inconsistent IS_ERR
-and PTR_ERR on line 228.
-
-The code reports PTR_ERR(pt) when IS_ERR(tiny) is checked:
-
-→ 211  pt = xe_bo_create_pin_map(xe, tile, m->q->vm, XE_PAGE_SIZE,
-  212                            ttm_bo_type_kernel,
-  213                            XE_BO_FLAG_VRAM_IF_DGFX(tile) |
-  214                            XE_BO_FLAG_PINNED);
-  215  if (IS_ERR(pt)) {
-  216          KUNIT_FAIL(test, "Failed to allocate fake pt: %li\n",
-  217                     PTR_ERR(pt));
-  218          goto free_big;
-  219  }
-  220
-  221  tiny = xe_bo_create_pin_map(xe, tile, m->q->vm,
-→ 222                              2 * SZ_4K,
-  223                              ttm_bo_type_kernel,
-  224                              XE_BO_FLAG_VRAM_IF_DGFX(tile) |
-  225                              XE_BO_FLAG_PINNED);
-→ 226  if (IS_ERR(tiny)) {
-→ 227          KUNIT_FAIL(test, "Failed to allocate fake pt: %li\n",
-→ 228                     PTR_ERR(pt));
-  229          goto free_pt;
-  230  }
-
-Now, the IS_ERR(tiny) and the corresponding PTR_ERR(pt) do not match.
-
-Returning PTR_ERR(tiny), as the last failed function call, seems logical.
-
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241121212057.1526634-2-mtodorovac69@gmail.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit cb57c75098c1c449a007ba301f9073f96febaaa9)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices")
+Cc: stable@kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Benoît Sevens <bsevens@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/tests/xe_migrate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/quirks.c |   42 +++++++++++++++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/tests/xe_migrate.c b/drivers/gpu/drm/xe/tests/xe_migrate.c
-index 1a192a2a941b..3bbdb362d6f0 100644
---- a/drivers/gpu/drm/xe/tests/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/tests/xe_migrate.c
-@@ -224,8 +224,8 @@ static void xe_migrate_sanity_test(struct xe_migrate *m, struct kunit *test)
- 				    XE_BO_FLAG_VRAM_IF_DGFX(tile) |
- 				    XE_BO_FLAG_PINNED);
- 	if (IS_ERR(tiny)) {
--		KUNIT_FAIL(test, "Failed to allocate fake pt: %li\n",
--			   PTR_ERR(pt));
-+		KUNIT_FAIL(test, "Failed to allocate tiny fake pt: %li\n",
-+			   PTR_ERR(tiny));
- 		goto free_pt;
- 	}
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -555,7 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
+ 	int err;
  
--- 
-2.39.5
-
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
+@@ -566,15 +566,19 @@ static int snd_usb_extigy_boot_quirk(str
+ 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
++
++		new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
++		if (!new_device_descriptor)
++			return -ENOMEM;
+ 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&new_device_descriptor, sizeof(new_device_descriptor));
++				new_device_descriptor, sizeof(*new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
+ 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-				new_device_descriptor.bNumConfigurations);
++				new_device_descriptor->bNumConfigurations);
+ 		else
+-			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
++			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
+ 		err = usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -906,7 +910,7 @@ static void mbox2_setup_48_24_magic(stru
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -941,15 +945,19 @@ static int snd_usb_mbox2_boot_quirk(stru
+ 
+ 	dev_dbg(&dev->dev, "device initialised!\n");
+ 
++	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
++	if (!new_device_descriptor)
++		return -ENOMEM;
++
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&new_device_descriptor, sizeof(new_device_descriptor));
++		new_device_descriptor, sizeof(*new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
+ 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-			new_device_descriptor.bNumConfigurations);
++			new_device_descriptor->bNumConfigurations);
+ 	else
+-		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
++		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
+@@ -1263,7 +1271,7 @@ static void mbox3_setup_48_24_magic(stru
+ static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
+ 	int err;
+ 	int descriptor_size;
+ 
+@@ -1276,15 +1284,19 @@ static int snd_usb_mbox3_boot_quirk(stru
+ 
+ 	dev_dbg(&dev->dev, "device initialised!\n");
+ 
++	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
++	if (!new_device_descriptor)
++		return -ENOMEM;
++
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&new_device_descriptor, sizeof(new_device_descriptor));
++		new_device_descriptor, sizeof(*new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
+ 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-			new_device_descriptor.bNumConfigurations);
++			new_device_descriptor->bNumConfigurations);
+ 	else
+-		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
++		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
 
 
 
