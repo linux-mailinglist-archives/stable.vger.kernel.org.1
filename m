@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-104540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70379F51B7
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:09:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3789F5273
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B489162F21
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:09:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C73188DF61
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B309149DFA;
-	Tue, 17 Dec 2024 17:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2B81F758F;
+	Tue, 17 Dec 2024 17:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaS057pW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2E7CoHe+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6731F37BE;
-	Tue, 17 Dec 2024 17:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDB31F429B;
+	Tue, 17 Dec 2024 17:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455363; cv=none; b=fws+pn8eFP4zO2VH6jhO0otYGAqs9tfQJhtBw/nqOyBks8qWMDNHcYWT7fAbdGHU8+6YHxzNBbRQGD7ZoGtwBz4kGfU2KKVf+aPaz+UQigNyPI6pZjOJYmSVdvqxIFGvW5wXuh03mPafVHZB+wV481wmboh9VqAEJIxmiesgfDU=
+	t=1734455776; cv=none; b=gR46bihx6HpYngXL8oMHlMbRMGLzgki/GAAVCDkEEh5Sye1pF0QFcLcW9yNgmDkNB6k3aAxcIT1cITHNaC8oDdfbir3axJGmU3kahfg7dk7FoOxlpnIifIy7NC0kA9ZkwHwtTgst9m21J9Ut17xn1XW3fCEwENOSrnBr+h7Fenc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455363; c=relaxed/simple;
-	bh=SycOf8asPKFt/ZTQk+lv1FmsNrGa+qZdpXOOYZ32/kk=;
+	s=arc-20240116; t=1734455776; c=relaxed/simple;
+	bh=Dv12o+yiKsMP9mzAWsx2ORSRX0UXz1r3anjPpjM5vXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fiUqdWvFYRIc3Ag7yUG08hTfxZKOf/m20X4R5xmoAHKt1Ct2m65DDh9bGXwVS3xX/8zxOn1EhNHkZHN0pVN4Id6z3SURtD9NKn7VwVoixaWK1Dv0UfQQcpsLk8HgLMMW3iuOC3o9vVVmy2NhuP40cXnw+7Io19m9ExXzeOHbrHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaS057pW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46251C4CED3;
-	Tue, 17 Dec 2024 17:09:22 +0000 (UTC)
+	 MIME-Version; b=ZiVqqAlmmZlwjYIdolZiBBQUpVB/RiiMwEmLMaiTr5eskmSCm5oUgLAFdjFl8v09Oud60h2VlS7ouQXEir8fGEyRP/1NH4GT8bNlAkx1TjxCeQsFhq5/HdOfigBTSOiTE6VJfw3O0oz3lHT5rjKymJydJpFYUiqY7yRUqUOJS1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2E7CoHe+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F22C4CED3;
+	Tue, 17 Dec 2024 17:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455362;
-	bh=SycOf8asPKFt/ZTQk+lv1FmsNrGa+qZdpXOOYZ32/kk=;
+	s=korg; t=1734455775;
+	bh=Dv12o+yiKsMP9mzAWsx2ORSRX0UXz1r3anjPpjM5vXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaS057pWOO7dzJ3hjsb3e2zHieMOZsKyAdNZROQZo2hUH2VQxk08OLm0M2XdHgVYq
-	 MfgYfkTg2yWmkpd0ykDlDZRPk2FW8Q3vZD+IOW+oTrcnUHgQczodf0Un/RHO1uy059
-	 Qugq3vqrOLTX0t6kSFVqQ0VwLd59LY/acBLC131s=
+	b=2E7CoHe+l3LAtF8YPN7GlWHkwp5qFZkHZk3eFCh8qYARdVrq7MlTDw7dssMdf/LhT
+	 fh00RSkBNt2RZeo799xEhFCZ97zWh6EheXPFO4lBhmDETt0BMzN/GtJm6GNhJ7qw71
+	 KrOy71wkBI8DC5Nec5s5+EaFLfb/moEkO5tttvak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 11/24] tipc: fix NULL deref in cleanup_bearer()
+Subject: [PATCH 6.1 29/76] wifi: mac80211: fix station NSS capability initialization order
 Date: Tue, 17 Dec 2024 18:07:09 +0100
-Message-ID: <20241217170519.469107476@linuxfoundation.org>
+Message-ID: <20241217170527.476925601@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
-References: <20241217170519.006786596@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-[ Upstream commit b04d86fff66b15c07505d226431f808c15b1703c ]
+[ Upstream commit 819e0f1e58e0ba3800cd9eb96b2a39e44e49df97 ]
 
-syzbot found [1] that after blamed commit, ub->ubsock->sk
-was NULL when attempting the atomic_dec() :
+Station's spatial streaming capability should be initialized before
+handling VHT OMN, because the handling requires the capability information.
 
-atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
-
-Fix this by caching the tipc_net pointer.
-
-[1]
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-CPU: 0 UID: 0 PID: 5896 Comm: kworker/0:3 Not tainted 6.13.0-rc1-next-20241203-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events cleanup_bearer
- RIP: 0010:read_pnet include/net/net_namespace.h:387 [inline]
- RIP: 0010:sock_net include/net/sock.h:655 [inline]
- RIP: 0010:cleanup_bearer+0x1f7/0x280 net/tipc/udp_media.c:820
-Code: 18 48 89 d8 48 c1 e8 03 42 80 3c 28 00 74 08 48 89 df e8 3c f7 99 f6 48 8b 1b 48 83 c3 30 e8 f0 e4 60 00 48 89 d8 48 c1 e8 03 <42> 80 3c 28 00 74 08 48 89 df e8 1a f7 99 f6 49 83 c7 e8 48 8b 1b
-RSP: 0018:ffffc9000410fb70 EFLAGS: 00010206
-RAX: 0000000000000006 RBX: 0000000000000030 RCX: ffff88802fe45a00
-RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffc9000410f900
-RBP: ffff88807e1f0908 R08: ffffc9000410f907 R09: 1ffff92000821f20
-R10: dffffc0000000000 R11: fffff52000821f21 R12: ffff888031d19980
-R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff88807e1f0918
-FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556ca050b000 CR3: 0000000031c0c000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-Fixes: 6a2fa13312e5 ("tipc: Fix use-after-free of kernel socket in cleanup_bearer().")
-Reported-by: syzbot+46aa5474f179dacd1a3b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/67508b5f.050a0220.17bd51.0070.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241204170548.4152658-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a8bca3e9371d ("wifi: mac80211: track capability/opmode NSS separately")
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Link: https://patch.msgid.link/20241118080722.9603-1-benjamin-jw.lin@mediatek.com
+[rewrite subject]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/udp_media.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/mac80211/cfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 696a21208b24..5f278c25462e 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -798,6 +798,7 @@ static void cleanup_bearer(struct work_struct *work)
- {
- 	struct udp_bearer *ub = container_of(work, struct udp_bearer, work);
- 	struct udp_replicast *rcast, *tmp;
-+	struct tipc_net *tn;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index aa5daa2fad11..be48d3f7ffcd 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1767,6 +1767,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 						    params->eht_capa_len,
+ 						    link_sta);
  
- 	list_for_each_entry_safe(rcast, tmp, &ub->rcast.list, list) {
- 		dst_cache_destroy(&rcast->dst_cache);
-@@ -805,10 +806,14 @@ static void cleanup_bearer(struct work_struct *work)
- 		kfree_rcu(rcast, rcu);
++	ieee80211_sta_init_nss(link_sta);
++
+ 	if (params->opmode_notif_used) {
+ 		/* returned value is only needed for rc update, but the
+ 		 * rc isn't initialized here yet, so ignore it
+@@ -1776,8 +1778,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 					      sband->band);
  	}
  
-+	tn = tipc_net(sock_net(ub->ubsock->sk));
-+
- 	dst_cache_destroy(&ub->rcast.dst_cache);
- 	udp_tunnel_sock_release(ub->ubsock);
-+
-+	/* Note: could use a call_rcu() to avoid another synchronize_net() */
- 	synchronize_net();
--	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
-+	atomic_dec(&tn->wq_count);
- 	kfree(ub);
+-	ieee80211_sta_init_nss(link_sta);
+-
+ 	return 0;
  }
  
 -- 
