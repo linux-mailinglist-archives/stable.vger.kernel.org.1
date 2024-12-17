@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-104890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CE09F5395
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:30:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2317C9F522D
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:16:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80A81721F6
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:27:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 202E57A39A2
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40A41F8AD7;
-	Tue, 17 Dec 2024 17:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475EC1F8666;
+	Tue, 17 Dec 2024 17:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9YILZZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VW9oNwTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705FC1F8AD2;
-	Tue, 17 Dec 2024 17:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E3E13DBB6;
+	Tue, 17 Dec 2024 17:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456415; cv=none; b=DR5t5//tabqFXWHsSllMb9njY0hRPzH79FUF6iywkHwreRhaRyGIAy+lHX8qkYm/gfIWaS/rtAHoUK3UieLYrczqXHguzL4QIWzGUXRpLSfQZjpqJX8DaqP3ADWfIKSL/skq8Rrx4pDypOixncb5bpANZqD9b89nivA5+8fh5tg=
+	t=1734455718; cv=none; b=uvoXNx9KdrRBwYC9qG9GuBqRoXw8e0DkkhXjgQ2EPP7u4vWvuGueXSLMUpNrrRjl6eHYfBxgIETI27j0JZelSs17HEVFBeAWzLomw3igOpAAPAxusHTVO6ly64VwCGH11LngmE/UEbi+VV0poCVHAD+YtzBH0Sq30tbL8eHD2FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456415; c=relaxed/simple;
-	bh=PzSSTBFKJwhXq6/PgnA61TEJxI1BtPmgtm2lMSPyItg=;
+	s=arc-20240116; t=1734455718; c=relaxed/simple;
+	bh=GlXmCNPnSCjVJ2DlMLbEDJ0pmce8P3Q9kvOb+py1lNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dgk7h45XgqVu2ewDQGB8Rr2Y/2NTe2nPar1QA4qWzfiCsrwFt0ImYVY+x4sDmU4k66oJVMPDXsvFYEU9Sfc7nmSdAmHFq9RKLzHbT/v6A7Y7vyLWF212hKrFvOoHtPec3FiKwAzWjtCav1Bo0h8+ZJb4VzSbXbzH/12hAmWECWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9YILZZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB790C4CEDD;
-	Tue, 17 Dec 2024 17:26:54 +0000 (UTC)
+	 MIME-Version; b=DHj8JOEEq+iPJeO7554t+NT6oS0f67rsg91mkE53T4oIgG85YmwBwPtmJM8KzZly5C4LvxMO5c5Kp7VwV66ixMPKOulErPB8v283sv9DMYJGX3xY6lX3pm7DGk0m1gbI5f6o+ZQpmqwk/Mn98oz7SmVqnrJvxWR4+Bq4XjLUPB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VW9oNwTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5EAC4CED3;
+	Tue, 17 Dec 2024 17:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456415;
-	bh=PzSSTBFKJwhXq6/PgnA61TEJxI1BtPmgtm2lMSPyItg=;
+	s=korg; t=1734455717;
+	bh=GlXmCNPnSCjVJ2DlMLbEDJ0pmce8P3Q9kvOb+py1lNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9YILZZI5PqPJmCrmqDD76e2prbzIqZWjlJpquoVnXldRUdmUY3bk3SWWFJOfLDXV
-	 S+VjAsoJqEjjUWfORpxzsDwRKhvBSpvfmoN83DpXlrd0BWSL6MD+fzZ9+Wc9IHxCBS
-	 pYP31kNIQSlD82Ivt4f7ArLV1nJHOIdgYyErnkfw=
+	b=VW9oNwTXfPXYXSVohsb2uJ7LQ14HscpWx2n+suYoVmOXRuu30E1xmZmjzTnnLEX40
+	 z68p69SdL00Im5bfHXzTOz6VQrF1mzpfX/EpSxdqsc3NfPugtBzJPqoJ3R09vmvPSS
+	 7Q5ISNxUdHaqec3sNYkImx9KRMig8/1LmWgh2img=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 045/172] usb: gadget: midi2: Fix interpretation of is_midi1 bits
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.1 01/76] bpf: Fix UAF via mismatching bpf_prog/attachment RCU flavors
 Date: Tue, 17 Dec 2024 18:06:41 +0100
-Message-ID: <20241217170548.133114509@linuxfoundation.org>
+Message-ID: <20241217170526.300150475@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
+References: <20241217170526.232803729@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jann Horn <jannh@google.com>
 
-commit 82937056967da052cbc04b4435c13db84192dc52 upstream.
+commit ef1b808e3b7c98612feceedf985c2fbbeb28f956 upstream.
 
-The UMP Function Block info m1.0 field (represented by is_midi1 sysfs
-entry) is an enumeration from 0 to 2, while the midi2 gadget driver
-incorrectly copies it to the corresponding snd_ump_block_info.flags
-bits as-is.  This made the wrong bit flags set when m1.0 = 2.
+Uprobes always use bpf_prog_run_array_uprobe() under tasks-trace-RCU
+protection. But it is possible to attach a non-sleepable BPF program to a
+uprobe, and non-sleepable BPF programs are freed via normal RCU (see
+__bpf_prog_put_noref()). This leads to UAF of the bpf_prog because a normal
+RCU grace period does not imply a tasks-trace-RCU grace period.
 
-This patch corrects the wrong interpretation of is_midi1 bits.
+Fix it by explicitly waiting for a tasks-trace-RCU grace period after
+removing the attachment of a bpf_prog to a perf_event.
 
-Fixes: 29ee7a4dddd5 ("usb: gadget: midi2: Add configfs support")
+Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20241127070213.8232-1-tiwai@suse.de
+Link: https://lore.kernel.org/bpf/20241210-bpf-fix-actual-uprobe-uaf-v1-1-19439849dd44@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_midi2.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/trace/bpf_trace.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -1593,7 +1593,11 @@ static int f_midi2_create_card(struct f_
- 			fb->info.midi_ci_version = b->midi_ci_version;
- 			fb->info.ui_hint = reverse_dir(b->ui_hint);
- 			fb->info.sysex8_streams = b->sysex8_streams;
--			fb->info.flags |= b->is_midi1;
-+			if (b->is_midi1 < 2)
-+				fb->info.flags |= b->is_midi1;
-+			else
-+				fb->info.flags |= SNDRV_UMP_BLOCK_IS_MIDI1 |
-+					SNDRV_UMP_BLOCK_IS_LOWSPEED;
- 			strscpy(fb->info.name, ump_fb_name(b),
- 				sizeof(fb->info.name));
- 		}
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2188,6 +2188,13 @@ void perf_event_detach_bpf_prog(struct p
+ 		bpf_prog_array_free_sleepable(old_array);
+ 	}
+ 
++	/*
++	 * It could be that the bpf_prog is not sleepable (and will be freed
++	 * via normal RCU), but is called from a point that supports sleepable
++	 * programs and uses tasks-trace-RCU.
++	 */
++	synchronize_rcu_tasks_trace();
++
+ 	bpf_prog_put(event->prog);
+ 	event->prog = NULL;
+ 
 
 
 
