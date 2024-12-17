@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-104718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805F79F5274
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:19:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D46299F52EB
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C6A97A557B
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:19:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A183E161BAD
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFA21F892B;
-	Tue, 17 Dec 2024 17:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01931F76CE;
+	Tue, 17 Dec 2024 17:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTWCLTQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgPLpFSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC3F1F8925;
-	Tue, 17 Dec 2024 17:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95C1F63D5;
+	Tue, 17 Dec 2024 17:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455891; cv=none; b=jaJUe3mfGHlg8LB60YsLz9LLMZgzcOJLapGRodyOcDSMpgu6dKeGCZtEpGzHZ+TtlLny0VEXYOSzrxmLBX2KaMoDONidRcYmJpTvEOewMEh+ClHkeanx2fDdAdVcik4L47M258oBxugfAQIhoKPI437Ad/2tValVXlrlpfYiJs4=
+	t=1734456054; cv=none; b=tuTaEdSIW18sutazfJ5uMndjVTw0UMB33RTQHDN2uD49PmpAYpkVTWEIIVy39ntPnE0QKIFTR/mcXoOCDk0e1UHMa+CTcl0V3NMymbm1pFZXysZJWBBHs2FOkzBKKF6MzFqzQ6UT+n9XhjeLDzvo2tgZP8mgbe58mpJD7bXxLy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455891; c=relaxed/simple;
-	bh=xa01LEecnjssHj4DKZGUOhP1KMvs1U/rNRvmRxV1da4=;
+	s=arc-20240116; t=1734456054; c=relaxed/simple;
+	bh=8dUcsO5a+tWCIX7y7fCeDP9Z/31kiXx8UxGrJyQppY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INXJyn7+imZEy1y/7c+nhLfik8lyjR/alqHEV8ueXBAO8a+zL8N/RSqJnECVPvP9lrgDp0xZr0hdnuDbFXzb6rU3r9s/dhiPNq+dgv7Bv7LqvaXVnmxuniUnok+BIw4aDqrcE7NKtgyMK+/l4MVBRBjWOUv3b41/1B2yRDxZLzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTWCLTQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C860EC4CED3;
-	Tue, 17 Dec 2024 17:18:10 +0000 (UTC)
+	 MIME-Version; b=uZxPbTFqmEaPJ22OE/0d/bYojDrY8nm8agHtpSX/BgkyqZ1rUT3GgxZXL9gzvTPdVHB2JAjf1ETQdvV30jcl3QC4Bt3OBu3mYroxWOqPLfHBlXZ59S2zwQrhlCE29jU71nfPc3xM3KbMHct7D3i6cgu3wZAI3P3JQzmXB1Mdouw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgPLpFSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181E8C4CED3;
+	Tue, 17 Dec 2024 17:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455891;
-	bh=xa01LEecnjssHj4DKZGUOhP1KMvs1U/rNRvmRxV1da4=;
+	s=korg; t=1734456054;
+	bh=8dUcsO5a+tWCIX7y7fCeDP9Z/31kiXx8UxGrJyQppY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTWCLTQtgwAMQ5YUrjjZskAS9q6qFjwbmyLzz6OVWf0X+hFDA+QSP6SrzOS0gj7p1
-	 n7Mo0keoHo/S6+Aw/zLP1o8Zij0hmQiO6wIzGIxH43EQHQW/4d4V/rAIBvi6LVkQyD
-	 DoBVaolbgJMtI1E7q1MLV8qEAqJIO4acEr182As4=
+	b=cgPLpFSM2oobl49ejtrjKBMsKcW+lGBwTQeNfp5NkrsAryUaaNhGfKYuB1YvMUG++
+	 KBjLuRZOmoYY8++c2RkgcqCboRZy25a4qv7y9bhXqAMi7PaYg9oeitmyEqV/a5HokY
+	 FFZnMA+hhjS1H0k11k6rM5TaUOf2AENd38HVEPRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Haoyu Li <lihaoyu499@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 50/76] net: sparx5: fix FDMA performance issue
+Subject: [PATCH 6.6 046/109] wifi: cfg80211: sme: init n_channels before channels[] access
 Date: Tue, 17 Dec 2024 18:07:30 +0100
-Message-ID: <20241217170528.345587492@linuxfoundation.org>
+Message-ID: <20241217170535.299140448@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170526.232803729@linuxfoundation.org>
-References: <20241217170526.232803729@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Haoyu Li <lihaoyu499@gmail.com>
 
-[ Upstream commit f004f2e535e2b66ccbf5ac35f8eaadeac70ad7b7 ]
+[ Upstream commit f1d3334d604cc32db63f6e2b3283011e02294e54 ]
 
-The FDMA handler is responsible for scheduling a NAPI poll, which will
-eventually fetch RX packets from the FDMA queue. Currently, the FDMA
-handler is run in a threaded context. For some reason, this kills
-performance.  Admittedly, I did not do a thorough investigation to see
-exactly what causes the issue, however, I noticed that in the other
-driver utilizing the same FDMA engine, we run the FDMA handler in hard
-IRQ context.
+With the __counted_by annocation in cfg80211_scan_request struct,
+the "n_channels" struct member must be set before accessing the
+"channels" array. Failing to do so will trigger a runtime warning
+when enabling CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE.
 
-Fix this performance issue, by  running the FDMA handler in hard IRQ
-context, not deferring any work to a thread.
-
-Prior to this change, the RX UDP performance was:
-
-Interval           Transfer     Bitrate         Jitter
-0.00-10.20  sec    44.6 MBytes  36.7 Mbits/sec  0.027 ms
-
-After this change, the rx UDP performance is:
-
-Interval           Transfer     Bitrate         Jitter
-0.00-9.12   sec    1.01 GBytes  953 Mbits/sec   0.020 ms
-
-Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
+Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
+Link: https://patch.msgid.link/20241203152049.348806-1-lihaoyu499@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ net/wireless/sme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-index 7031f41287e0..1ed69e77b895 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-@@ -680,12 +680,11 @@ static int sparx5_start(struct sparx5 *sparx5)
- 	err = -ENXIO;
- 	if (sparx5->fdma_irq >= 0) {
- 		if (GCB_CHIP_ID_REV_ID_GET(sparx5->chip_id) > 0)
--			err = devm_request_threaded_irq(sparx5->dev,
--							sparx5->fdma_irq,
--							NULL,
--							sparx5_fdma_handler,
--							IRQF_ONESHOT,
--							"sparx5-fdma", sparx5);
-+			err = devm_request_irq(sparx5->dev,
-+					       sparx5->fdma_irq,
-+					       sparx5_fdma_handler,
-+					       0,
-+					       "sparx5-fdma", sparx5);
- 		if (!err)
- 			err = sparx5_fdma_start(sparx5);
- 		if (err)
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 591cda99d72f..70881782c25c 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -83,6 +83,7 @@ static int cfg80211_conn_scan(struct wireless_dev *wdev)
+ 	if (!request)
+ 		return -ENOMEM;
+ 
++	request->n_channels = n_channels;
+ 	if (wdev->conn->params.channel) {
+ 		enum nl80211_band band = wdev->conn->params.channel->band;
+ 		struct ieee80211_supported_band *sband =
 -- 
 2.39.5
 
