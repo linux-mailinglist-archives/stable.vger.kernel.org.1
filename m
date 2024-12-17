@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-104633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61FFD9F5233
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:16:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1129F52FD
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D57D7167F8F
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:15:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55EBD189512E
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5EA1F76DF;
-	Tue, 17 Dec 2024 17:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A091F867E;
+	Tue, 17 Dec 2024 17:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2l+RnNK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAfvLlBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6D91F757B;
-	Tue, 17 Dec 2024 17:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7AF1F75A6;
+	Tue, 17 Dec 2024 17:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455640; cv=none; b=Tv9wuOwbajS6MyuEby840ctrVIAwX/eNjyJvpcrTs+t08Cgs3tFj445S5eETaZoXqfoDjJW+enxai7gDE4gLOEtu/oxJgDdbN7+izwb14od7Ah2gXyp6n9DuGfQ7oKWb06/IRlX8Tn6qsxLFkUhGdnOzWB+lNNSJhQfWYcR8lCI=
+	t=1734456046; cv=none; b=d6NHEYfpXYj79l6/qgX6ltdNSx38KgQd0y2FBnRo+SLvIiTXqkvb1ZiKPdDqrPcgS/3Tnxf3N3asWco532iIZeZwy/UEWgLFLNJQ6cqNLDI9Q9J9h7+Y/dYXw0CYXgSOMIUdPT8aK1PNRSbhmQ6XYVODe8qXg81O5qTmDT/iWU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455640; c=relaxed/simple;
-	bh=buICyUsYdv8MYmC4iQ2V+2Q3EAmTwd2BDSaO3A2sb7Y=;
+	s=arc-20240116; t=1734456046; c=relaxed/simple;
+	bh=07jKcgJaMlCOLKJWV7xUz2vjQwduq7xlyebDIu1DejE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=US1KUzuiNu9Fb2QGllUsfkZDvFDUcE06musnOaQbvzKFmF6JGkyZPMI4fd7EHoUan5nPDjxGPMRLUM2v4js0l/ZCHWW9DDAN/uK2T421xExVYGmGoIAG9bdHeyd0e5A+PVahAXH8MdlvLIpL0S7yitwEf9LXzkyMSVnpwV3xRD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2l+RnNK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4582CC4CEDD;
-	Tue, 17 Dec 2024 17:14:00 +0000 (UTC)
+	 MIME-Version; b=KPIt0dyCN8MKn1oPCdv5zYhUkpg29ZuYSRGROOs/hwBwuxZ6ojwyPC+hicgQ9hGAVTYee7PEHhxgGxnwQFeul8fNmjRwi2rPgqIT90r7iKoMt8v2zkv65kucQE4pp2SZEiY9VKIBPQFk/EADq/TlIZ9dmVXsO+oicqox5+ZByXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAfvLlBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8EBC4CEE0;
+	Tue, 17 Dec 2024 17:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455640;
-	bh=buICyUsYdv8MYmC4iQ2V+2Q3EAmTwd2BDSaO3A2sb7Y=;
+	s=korg; t=1734456045;
+	bh=07jKcgJaMlCOLKJWV7xUz2vjQwduq7xlyebDIu1DejE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2l+RnNK4S26niuZIg/xB0oSJuYaN9YYuDrdrJ7kcTU1B932O/amm2snD2KyPMN/v
-	 IDWdHAyAFZhGtC0M249jqX/d+oXXLZnG6WZfq9+i8jxNM8XNzmjzUTGZzAH3XfyprB
-	 UojWluu5apr51DN778H2s75bCEY0LG8x5ESfwyAs=
+	b=YAfvLlBR6JH9MHueNkKPfTcRNMHoDuVmle4my/EDoQ6hoB6B9HNceBSyiDXGcX7C1
+	 DLqk1INmDFgEKAiOOhF9fdqVi//058yzuayUPpAwiHl4AQU3NTuNdTAd+AhrV/UdgQ
+	 gzoUp/KuFWcBrpzZaqHE9eApy9rMcH0ZJdKB+ayQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Antonio Quartulli <Antonio@mandelbit.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/51] Documentation: PM: Clarify pm_runtime_resume_and_get() return value
+Subject: [PATCH 6.6 043/109] batman-adv: Do not let TT changes list grows indefinitely
 Date: Tue, 17 Dec 2024 18:07:27 +0100
-Message-ID: <20241217170521.679574110@linuxfoundation.org>
+Message-ID: <20241217170535.171283743@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-References: <20241217170520.301972474@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit ccb84dc8f4a02e7d30ffd388522996546b4d00e1 ]
+[ Upstream commit fff8f17c1a6fc802ca23bbd3a276abfde8cc58e6 ]
 
-Update the documentation to match the behaviour of the code.
+When TT changes list is too big to fit in packet due to MTU size, an
+empty OGM is sent expected other node to send TT request to get the
+changes. The issue is that tt.last_changeset was not built thus the
+originator was responding with previous changes to those TT requests
+(see batadv_send_my_tt_response). Also the changes list was never
+cleaned up effectively never ending growing from this point onwards,
+repeatedly sending the same TT response changes over and over, and
+creating a new empty OGM every OGM interval expecting for the local
+changes to be purged.
 
-pm_runtime_resume_and_get() always returns 0 on success, even if
-__pm_runtime_resume() returns 1.
+When there is more TT changes that can fit in packet, drop all changes,
+send empty OGM and wait for TT request so we can respond with a full
+table instead.
 
-Fixes: 2c412337cfe6 ("PM: runtime: Add documentation for pm_runtime_resume_and_get()")
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Link: https://patch.msgid.link/20241203143729.478-1-paul.barker.ct@bp.renesas.com
-[ rjw: Subject and changelog edits, adjusted new comment formatting ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: e1bf0c14096f ("batman-adv: tvlv - convert tt data sent within OGMs")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Acked-by: Antonio Quartulli <Antonio@mandelbit.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/power/runtime_pm.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/batman-adv/translation-table.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/power/runtime_pm.rst b/Documentation/power/runtime_pm.rst
-index d6bf84f061f4..921f56dffea7 100644
---- a/Documentation/power/runtime_pm.rst
-+++ b/Documentation/power/runtime_pm.rst
-@@ -341,7 +341,9 @@ drivers/base/power/runtime.c and include/linux/pm_runtime.h:
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index bbab7491c83f..53dea8ae96e4 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -990,6 +990,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	int tt_diff_len, tt_change_len = 0;
+ 	int tt_diff_entries_num = 0;
+ 	int tt_diff_entries_count = 0;
++	bool drop_changes = false;
+ 	size_t tt_extra_len = 0;
+ 	u16 tvlv_len;
  
-   `int pm_runtime_resume_and_get(struct device *dev);`
-     - run pm_runtime_resume(dev) and if successful, increment the device's
--      usage counter; return the result of pm_runtime_resume
-+      usage counter; returns 0 on success (whether or not the device's
-+      runtime PM status was already 'active') or the error code from
-+      pm_runtime_resume() on failure.
+@@ -997,10 +998,17 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 	tt_diff_len = batadv_tt_len(tt_diff_entries_num);
  
-   `int pm_request_idle(struct device *dev);`
-     - submit a request to execute the subsystem-level idle callback for the
+ 	/* if we have too many changes for one packet don't send any
+-	 * and wait for the tt table request which will be fragmented
++	 * and wait for the tt table request so we can reply with the full
++	 * (fragmented) table.
++	 *
++	 * The local change history should still be cleaned up so the next
++	 * TT round can start again with a clean state.
+ 	 */
+-	if (tt_diff_len > bat_priv->soft_iface->mtu)
++	if (tt_diff_len > bat_priv->soft_iface->mtu) {
+ 		tt_diff_len = 0;
++		tt_diff_entries_num = 0;
++		drop_changes = true;
++	}
+ 
+ 	tvlv_len = batadv_tt_prepare_tvlv_local_data(bat_priv, &tt_data,
+ 						     &tt_change, &tt_diff_len);
+@@ -1009,7 +1017,7 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+ 
+ 	tt_data->flags = BATADV_TT_OGM_DIFF;
+ 
+-	if (tt_diff_len == 0)
++	if (!drop_changes && tt_diff_len == 0)
+ 		goto container_register;
+ 
+ 	spin_lock_bh(&bat_priv->tt.changes_list_lock);
 -- 
 2.39.5
 
