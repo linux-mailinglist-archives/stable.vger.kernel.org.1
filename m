@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-104586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C3E9F51E6
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:11:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4B19F52C0
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD4A47A2E78
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:11:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1283F16974B
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D591F76BE;
-	Tue, 17 Dec 2024 17:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6351F7577;
+	Tue, 17 Dec 2024 17:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xi7gNN8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZLZlctN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EC41F4735;
-	Tue, 17 Dec 2024 17:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB3C14A4E7;
+	Tue, 17 Dec 2024 17:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734455501; cv=none; b=SrZNvxuZxaPsKJJBRKsS2rMe+chKN0mpmsIboWEzBIkqDg66UJ+hTljobnftil0NkimqsloCflfK50pS2IB30YIb+i8Nj7ZvKkcrrNIxHqUQba42GIXKaPnuQIAO9fDaHdyPgpdIHcrRgssIqg3hDixxrzKQku11pLvjq3v2tO8=
+	t=1734455952; cv=none; b=KIQJ761OiYwhjXlJB98UbQZMFFVUGG5bCzgcg0XNJErKG3U3Cxfw7xOaamJ+IarNgj4T5gZN7VlP/tzYxihDfOd9KKmjCM9CoCmJPcCSyCqiySbXeWvwG0j2SqUMrwbkRD4QHL3Lg46OD8fz1lShMvVOulkwLSn1ZH50UwwNwx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734455501; c=relaxed/simple;
-	bh=LpWd2WuODAAHxE27T32cOk4Eg+cu2dk2rEagRPT7o8A=;
+	s=arc-20240116; t=1734455952; c=relaxed/simple;
+	bh=BV2BEor9/zGHC/zk+XAKOUBajCxN30vfmmqVe/VIcx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNRdHLGnHT7VtGRbaDelBSn4qxWdzQsltjYNPzxyd69yN/b7IRR1gHcF0ILEjSz6IrgpvRmS+tUdtNZNKHdoyZ48l2u8elHPGobRwMtlWLg9s/tJNyNheqwoMxrKMKbudJrZ92YOLCIg+P2KX4+gXybSM8k7yJZg7o+zdEPjRZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xi7gNN8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9BEC4CED3;
-	Tue, 17 Dec 2024 17:11:40 +0000 (UTC)
+	 MIME-Version; b=sAqAtubhgYg/aTlAesx4yfsl3bpH0qHWlA84QE8te9hPZqZGDbxZ/Z4/I0kyrpN/pYBedfDtjcuxO2zR6+2hZYyZKB62/C1MghSgZzgQe9ISWdUmZfSb4dN59bgd6BxFSTYcXNWNQkpkyC9dmzgEw+0cY+aqir187vJXocyOlZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZLZlctN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AD2C4CED3;
+	Tue, 17 Dec 2024 17:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734455500;
-	bh=LpWd2WuODAAHxE27T32cOk4Eg+cu2dk2rEagRPT7o8A=;
+	s=korg; t=1734455952;
+	bh=BV2BEor9/zGHC/zk+XAKOUBajCxN30vfmmqVe/VIcx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xi7gNN8M8pHUKsGQYLdL01FZVw4z1jJgL8ywueBoGnGW/uuHvZ5y3VJ11cLZ/sQiQ
-	 HFaV3Cz/KOYJoeDvfvN58CXReKNcZqTa5v9r+v0A3aTsUpoEylgH6VrRoZnQAclJl7
-	 FbOHwBPikIsEqbRz+RU4odA8IGdgt0ANM1wBQ/j0=
+	b=mZLZlctN/28v5RNuYzPofqHXyCjE7Ed0Bl3VhvISN8RoMYPBmU6svY0DlLqLQGrHR
+	 +J35l96wulnKIv0crQ5CgPVfpXsOIM/tJlwef4gSsho1iZGbmJmBPi0fJGVrjofWFe
+	 Btl2n4FMgVbgmzuHNhYsuL4QIAfuui/vSTsvrzdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 5.10 04/43] usb: dwc2: hcd: Fix GetPortStatus & SetPortFeature
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.6 011/109] ata: sata_highbank: fix OF node reference leak in highbank_initialize_phys()
 Date: Tue, 17 Dec 2024 18:06:55 +0100
-Message-ID: <20241217170520.640302597@linuxfoundation.org>
+Message-ID: <20241217170533.825420889@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit a8d3e4a734599c7d0f6735f8db8a812e503395dd upstream.
+commit 676fe1f6f74db988191dab5df3bf256908177072 upstream.
 
-On Rasperry Pis without onboard USB hub the power cycle during
-power connect init only disable the port but never enabled it again:
+The OF node reference obtained by of_parse_phandle_with_args() is not
+released on early return. Add a of_node_put() call before returning.
 
-  usb usb1-port1: attempt power cycle
-
-The port relevant part in dwc2_hcd_hub_control() is skipped in case
-port_connect_status = 0 under the assumption the core is or will be soon
-in device mode. But this assumption is wrong, because after ClearPortFeature
-USB_PORT_FEAT_POWER the port_connect_status will also be 0 and
-SetPortFeature (incl. USB_PORT_FEAT_POWER) will be a no-op.
-
-Fix the behavior of dwc2_hcd_hub_control() by replacing the
-port_connect_status check with dwc2_is_device_mode().
-
-Link: https://github.com/raspberrypi/linux/issues/6247
-Fixes: 7359d482eb4d ("staging: HCD files for the DWC2 driver")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20241202001631.75473-3-wahrenst@gmx.net
+Fixes: 8996b89d6bc9 ("ata: add platform driver for Calxeda AHCI controller")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/ata/sata_highbank.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -3544,11 +3544,9 @@ static int dwc2_hcd_hub_control(struct d
- 			port_status |= USB_PORT_STAT_C_OVERCURRENT << 16;
- 		}
- 
--		if (!hsotg->flags.b.port_connect_status) {
-+		if (dwc2_is_device_mode(hsotg)) {
- 			/*
--			 * The port is disconnected, which means the core is
--			 * either in device mode or it soon will be. Just
--			 * return 0's for the remainder of the port status
-+			 * Just return 0's for the remainder of the port status
- 			 * since the port register can't be read if the core
- 			 * is in device mode.
- 			 */
-@@ -3618,13 +3616,11 @@ static int dwc2_hcd_hub_control(struct d
- 		if (wvalue != USB_PORT_FEAT_TEST && (!windex || windex > 1))
- 			goto error;
- 
--		if (!hsotg->flags.b.port_connect_status) {
-+		if (dwc2_is_device_mode(hsotg)) {
- 			/*
--			 * The port is disconnected, which means the core is
--			 * either in device mode or it soon will be. Just
--			 * return without doing anything since the port
--			 * register can't be written if the core is in device
--			 * mode.
-+			 * Just return 0's for the remainder of the port status
-+			 * since the port register can't be read if the core
-+			 * is in device mode.
- 			 */
- 			break;
- 		}
+--- a/drivers/ata/sata_highbank.c
++++ b/drivers/ata/sata_highbank.c
+@@ -348,6 +348,7 @@ static int highbank_initialize_phys(stru
+ 			phy_nodes[phy] = phy_data.np;
+ 			cphy_base[phy] = of_iomap(phy_nodes[phy], 0);
+ 			if (cphy_base[phy] == NULL) {
++				of_node_put(phy_data.np);
+ 				return 0;
+ 			}
+ 			phy_count += 1;
 
 
 
