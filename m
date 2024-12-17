@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-105012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF2A9F549C
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:44:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC539F52F8
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 18:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676231892FCE
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:40:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B46D07A5C0F
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 17:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B681F9EDB;
-	Tue, 17 Dec 2024 17:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBF71F63D5;
+	Tue, 17 Dec 2024 17:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMovYu0p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Coje1XSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7496C1F76DF;
-	Tue, 17 Dec 2024 17:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297AA140E38;
+	Tue, 17 Dec 2024 17:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456826; cv=none; b=NJNoQ2jCRuOCuj5pb5954cw2woU54CgSN2IjE2JFV82pGfKP8vHWwixbmXkr/huYLOW3U7JiKnCxknnm19vhfphOTdYq1KaUA2jT4awHy74PuYn+d5XPzEwkboht8E9t39/cKvohAxEmB6U0glbWgVX91jBTaMeKZDQJwe8mzZY=
+	t=1734456253; cv=none; b=TVEq43SadrkqBFD4OWTEXQJPyDQ5JoKWYimO7bCmrqIEURJvNQmbcSIVu5pvx5NtAYDh63ZhgkouyRmQFP93tqR7TEaFxAie3dyy/xVGu9TPxGL4pcX8xCHZrsB/EMXR6okhewhPCQRB5MMou7Qgx2nj+jFIHkbUlk75wbEGdZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456826; c=relaxed/simple;
-	bh=tCtLnYBs1Uxewu1ky2znIcdzi4MQn+sJ448eKI+SKh8=;
+	s=arc-20240116; t=1734456253; c=relaxed/simple;
+	bh=pt8LnnEZCCMjDfFk8Ja9Gmt1JQjJsVTQTmxoWD9yYWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dqJJBdOe4PcIQXAHyl5DDPSqb3SoE2Mu4XXQskegzUSV7DmUoy9oBRGov7e7tjaLL0E+q+S+fTw/tJ2B8EyEqY1uWGZUujzqOiP8JhRWwdF5jl67bdk8TSG15sUTZ/e2qXZ1hXKrOOdLWyp4L2/VbsmZpar+ACLRqAxa+RZ+Ga8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMovYu0p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6BFC4CED3;
-	Tue, 17 Dec 2024 17:33:45 +0000 (UTC)
+	 MIME-Version; b=WXoOtltsjgpK/5PP9s12Ty0j+gKUQuKvbriCMf7b6ItBsyvs3c9fI+dP5HNEegTLfFvxtG9jSkqZUMWoKuOgm6LRkcSRUPkwuQdDXEEY4n9dDb/V1ozrGf4Z35vgRWIBH6LeFf+2G8VuEiK+hJqXDdBfcJ0+lWh3L4qVgia0uJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Coje1XSj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4978C4CEDE;
+	Tue, 17 Dec 2024 17:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456826;
-	bh=tCtLnYBs1Uxewu1ky2znIcdzi4MQn+sJ448eKI+SKh8=;
+	s=korg; t=1734456253;
+	bh=pt8LnnEZCCMjDfFk8Ja9Gmt1JQjJsVTQTmxoWD9yYWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMovYu0pp3ysvGORp54gxYKO8oDq+BWJSaO8/gsV2oPNqBAkOzJQdZj6bx6J6Owo1
-	 uA+zlIJqBKu/WQT3P0dSN16On33smDAaG/Y9YEhaBOSHHxPUVR73hJGkYdkmQpFr/v
-	 zfOesQm4M0GjCNXVNzOOLOeRbADfc/6gnDReW29g=
+	b=Coje1XSjeNcqLSTRZGhb1W+KgnHc7IYJgQKL8r0lnjcBfoYtebeSkGd/Qw8mfFDp5
+	 sqRoYeknrAFkK1Kgg9HNCLD86DG4APHXuZ2stzFvsToIQ3jvFDX2H22U3MQC+mBZm1
+	 xNewn/7PFCFF65NzX0k6JjERitRnk4MzcQi7iEkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/172] ASoC: Intel: sof_sdw: Add space for a terminator into DAIs array
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.6 097/109] tracing/kprobes: Skip symbol counting logic for module symbols in create_local_trace_kprobe()
 Date: Tue, 17 Dec 2024 18:08:21 +0100
-Message-ID: <20241217170552.346897612@linuxfoundation.org>
+Message-ID: <20241217170537.441528614@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
+In-Reply-To: <20241217170533.329523616@linuxfoundation.org>
+References: <20241217170533.329523616@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +58,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit 255cc582e6e16191a20d54bcdbca6c91d3e90c5e ]
+commit b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+avoids checking number_of_same_symbols() for module symbol in
+__trace_kprobe_create(), but create_local_trace_kprobe() should avoid this
+check too. Doing this check leads to ENOENT for module_name:symbol_name
+constructions passed over perf_event_open.
 
-The code uses the initialised member of the asoc_sdw_dailink struct to
-determine if a member of the array is in use. However in the case the
-array is completely full this will lead to an access 1 past the end of
-the array, expand the array by one entry to include a space for a
-terminator.
+No bug in newer kernels as it was fixed more generally by
+commit 9d8616034f16 ("tracing/kprobes: Add symbol counting check when module loads")
 
-Fixes: 27fd36aefa00 ("ASoC: Intel: sof-sdw: Add new code for parsing the snd_soc_acpi structs")
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20241212105742.1508574-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20240705161030.b3ddb33a8167013b9b1da202@kernel.org
+Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+v1 -> v2:
+ * Reword commit title and message
+ * Send for stable instead of mainline
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index a58842a8c8a6..db57292c00ca 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -1003,8 +1003,12 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
- 		return ret;
- 	}
- 
--	/* One per DAI link, worst case is a DAI link for every endpoint */
--	sof_dais = kcalloc(num_ends, sizeof(*sof_dais), GFP_KERNEL);
-+	/*
-+	 * One per DAI link, worst case is a DAI link for every endpoint, also
-+	 * add one additional to act as a terminator such that code can iterate
-+	 * until it hits an uninitialised DAI.
-+	 */
-+	sof_dais = kcalloc(num_ends + 1, sizeof(*sof_dais), GFP_KERNEL);
- 	if (!sof_dais)
- 		return -ENOMEM;
- 
--- 
-2.39.5
+ kernel/trace/trace_kprobe.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1814,7 +1814,7 @@ create_local_trace_kprobe(char *func, vo
+ 	int ret;
+ 	char *event;
+ 
+-	if (func) {
++	if (func && !strchr(func, ':')) {
+ 		unsigned int count;
+ 
+ 		count = number_of_same_symbols(func);
 
 
 
