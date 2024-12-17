@@ -1,127 +1,163 @@
-Return-Path: <stable+bounces-104496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72FC9F4BF6
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:23:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4119F4C40
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 14:30:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5378E175608
-	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:13:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC49F1898C07
+	for <lists+stable@lfdr.de>; Tue, 17 Dec 2024 13:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2621F63F4;
-	Tue, 17 Dec 2024 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0931F8902;
+	Tue, 17 Dec 2024 13:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="aeIDAQFI"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jJ9xYACH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dmyzs601"
 X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-ztdg06011201.me.com (mr85p00im-ztdg06011201.me.com [17.58.23.181])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A62B1F63DA
-	for <stable@vger.kernel.org>; Tue, 17 Dec 2024 13:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845051F868D;
+	Tue, 17 Dec 2024 13:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734440873; cv=none; b=jRu1VM4V6sWI78CG981e7z/vgymwBlHq+Gv73rw8h0k4ydWxaCjQf+Lf0FCtyR3dlNQfomJebP11YtZ0wcdQgCto7fYLMi9VOzERrJ2ZReOSrgkfmPNbGVPT+biCtRBK3jd7FJX7nEaie86r8tLQb7foiGEAxzOUicSpPSj6bAo=
+	t=1734440914; cv=none; b=ro3X/IXi7zsiG7eYZPJUOY3Q6EeBcSaOSHEqSJIpgKe0WRjmUrTdjsiKgikaw5F8CxK0VqjZLI1Ey/5kwVUixvJ/JJHPOQYwzdv6qHvFJR5zJQpHjghRQkzNn/VMqtai4BoKyK7z7OebVXOrIvUhY8ngo80ZE5IbFLdFLQcP7n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734440873; c=relaxed/simple;
-	bh=F7VAazrVJ3p7QlbMjlcZ0vd+3ltdvGaw1yJxrtSHdRM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Rkzf7kt2iWJ3QrU4QqqkVLhSVbluVVUE9cN7dFYrlPxW5K1+QB9et8vRZB+rW9bewhHoGvDnJhFIO9QX41fPkMb1iz1ymV/lanJL7/GikGM7Ej9Cr5FDa97uFuKlzDO3MzNEoRxJX23qscVkIfWU55eq2TpMIYBNH2inX80NKH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=aeIDAQFI; arc=none smtp.client-ip=17.58.23.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1734440871;
-	bh=1qAwxeqobZh1wxnxdDloQZW9DdsopGVNulsZoYj9sn8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=aeIDAQFILvCLmhmo5TYzU1vl+CC1YfeH4lc91AkyjCEu4SUGtlLHuOvM7mIpwYohe
-	 SwLce3Y9RPiOOsNJC4U2KKL8FxWenQVjOILiCI+iPX/7pkvpTRbvuYZAqH1a3t/LFf
-	 pfh2YRQAtj+VqGsoSuPmtCMovxOPG7eQ7E/TdXfBvx3j47s3zMrOboInlfc8gIZPpw
-	 sQPx4cq7uZZuwTYDb5kneZaZZAK4D2pUEHfb8Lwqpa0kaNtiVM9tGlXBWZqdaILvQm
-	 +0yJY8SYeenVjLaS1UXRd7gcCfNVtrFbEr1ZmYrceaXxPrQkOYAix4q1ZDyV05iRrs
-	 3r/FUBTnz06Mg==
-Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06011201.me.com (Postfix) with ESMTPSA id 865F796010C;
-	Tue, 17 Dec 2024 13:07:48 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Tue, 17 Dec 2024 21:07:25 +0800
-Subject: [PATCH v3 1/7] of: Correct child specifier used as input of the
- 2nd nexus node
+	s=arc-20240116; t=1734440914; c=relaxed/simple;
+	bh=dGXIbMmmBZgtDVplErt/7CpxLPGtgb3MmIDDevW6Efk=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=bNFhlxgEkOZSK9ng3V0jzs07XTTOiFnAamoAHPHTm4H26Sq5sbVhjgtHsSf8gKi0j+vYYGjJhRLtjvzr1Enm9FquFtyWhPM38gDHW4H1k4/hLcmxynnZIA+hvRCsj+7nIR2DK5zXzMfxrtht4lEEUDjhEFy3Nb6nndZgV4x862I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jJ9xYACH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dmyzs601; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 17 Dec 2024 13:08:27 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1734440909;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OJkBce2wFh03Iy3adZzbcFqirjJB5sUIbEJpggojnPE=;
+	b=jJ9xYACHaLBoWdDLSJlR3STGlJRcjLWZuHySQxlr26xu+L+N+Ui2wsLwh2hw8mDJtYBVyu
+	kX/+Lji9ENTQZFVHVSbEXbac215B20HYs8hlPo+SbxvGkZLfwc7t5z2/ut0WL/Zy7q260P
+	EofXdkgGsDENSFKwcvmw74x5IUcsUe9XRQUOLs8Wn07nqyKB58fwORvvzwfoqkbltQvZih
+	t5Ri7K8jlEKGZlImDVZOddu2/kkhXu9A1GgFHRl+vr1BBNgj/G4136ShGZDdboKiKBRFlI
+	0HocOPXvrC0RuGS+Kq4x3Z1mLn1i9qafCsI/R2xDIZcb6M5arsyhGye0tFelbg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1734440909;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OJkBce2wFh03Iy3adZzbcFqirjJB5sUIbEJpggojnPE=;
+	b=dmyzs6012yLl9BV1W1hiKvOR8QeP4S2SDYCHsf2pdgbHXoV+11B8Fl6E/RWMLB6WXrGkMv
+	MCu/W/o/lTL+cRBQ==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] PCI/MSI: Handle lack of irqdomain gracefully
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <87ed2a8ow5.ffs@tglx>
+References: <87ed2a8ow5.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-ID: <173444090844.7135.5807329520776936894.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241217-of_core_fix-v3-1-3bc49a2e8bda@quicinc.com>
-References: <20241217-of_core_fix-v3-0-3bc49a2e8bda@quicinc.com>
-In-Reply-To: <20241217-of_core_fix-v3-0-3bc49a2e8bda@quicinc.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Maxime Ripard <mripard@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
- Grant Likely <grant.likely@secretlab.ca>
-Cc: Zijun Hu <zijun_hu@icloud.com>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: mcreafzY2S92rpbezCZ1gMuaiFrnMRjF
-X-Proofpoint-ORIG-GUID: mcreafzY2S92rpbezCZ1gMuaiFrnMRjF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-17_07,2024-12-17_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 clxscore=1015
- malwarescore=0 suspectscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
- spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412170105
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+The following commit has been merged into the irq/urgent branch of tip:
 
-API of_parse_phandle_with_args_map() will use wrong input for nexus node
-Nexus_2 as shown below:
+Commit-ID:     a60b990798eb17433d0283788280422b1bd94b18
+Gitweb:        https://git.kernel.org/tip/a60b990798eb17433d0283788280422b1bd94b18
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sat, 14 Dec 2024 12:50:18 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 16 Dec 2024 10:59:47 +01:00
 
-    Node_1		Nexus_1                              Nexus_2
-&Nexus_1,arg_1 -> arg_1,&Nexus_2,arg_2' -> &Nexus_2,arg_2 -> arg_2,...
-		  map-pass-thru=<...>
+PCI/MSI: Handle lack of irqdomain gracefully
 
-Nexus_1's output arg_2 should be used as input of Nexus_2, but the API
-wrongly uses arg_2' instead which != arg_2 due to Nexus_1's map-pass-thru.
+Alexandre observed a warning emitted from pci_msi_setup_msi_irqs() on a
+RISCV platform which does not provide PCI/MSI support:
 
-Fix by always making @match_array point to @initial_match_array into
-which to store nexus output.
+ WARNING: CPU: 1 PID: 1 at drivers/pci/msi/msi.h:121 pci_msi_setup_msi_irqs+0x2c/0x32
+ __pci_enable_msix_range+0x30c/0x596
+ pci_msi_setup_msi_irqs+0x2c/0x32
+ pci_alloc_irq_vectors_affinity+0xb8/0xe2
 
-Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
+RISCV uses hierarchical interrupt domains and correctly does not implement
+the legacy fallback. The warning triggers from the legacy fallback stub.
+
+That warning is bogus as the PCI/MSI layer knows whether a PCI/MSI parent
+domain is associated with the device or not. There is a check for MSI-X,
+which has a legacy assumption. But that legacy fallback assumption is only
+valid when legacy support is enabled, but otherwise the check should simply
+return -ENOTSUPP.
+
+Loongarch tripped over the same problem and blindly enabled legacy support
+without implementing the legacy fallbacks. There are weak implementations
+which return an error, so the problem was papered over.
+
+Correct pci_msi_domain_supports() to evaluate the legacy mode and add
+the missing supported check into the MSI enable path to complete it.
+
+Fixes: d2a463b29741 ("PCI/MSI: Reject multi-MSI early")
+Reported-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/all/87ed2a8ow5.ffs@tglx
+
 ---
- drivers/of/base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/msi/irqdomain.c | 7 +++++--
+ drivers/pci/msi/msi.c       | 4 ++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index bf18d5997770eb81e47e749198dd505a35203d10..969b99838655534915882abe358814d505c6f748 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1536,7 +1536,6 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
- 		 * specifier into the out_args structure, keeping the
- 		 * bits specified in <list>-map-pass-thru.
- 		 */
--		match_array = map - new_size;
- 		for (i = 0; i < new_size; i++) {
- 			__be32 val = *(map - new_size + i);
+diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
+index 5691257..d7ba879 100644
+--- a/drivers/pci/msi/irqdomain.c
++++ b/drivers/pci/msi/irqdomain.c
+@@ -350,8 +350,11 @@ bool pci_msi_domain_supports(struct pci_dev *pdev, unsigned int feature_mask,
  
-@@ -1545,6 +1544,7 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
- 				val |= cpu_to_be32(out_args->args[i]) & pass[i];
- 			}
+ 	domain = dev_get_msi_domain(&pdev->dev);
  
-+			initial_match_array[i] = val;
- 			out_args->args[i] = be32_to_cpu(val);
- 		}
- 		out_args->args_count = list_size = new_size;
-
--- 
-2.34.1
-
+-	if (!domain || !irq_domain_is_hierarchy(domain))
+-		return mode == ALLOW_LEGACY;
++	if (!domain || !irq_domain_is_hierarchy(domain)) {
++		if (IS_ENABLED(CONFIG_PCI_MSI_ARCH_FALLBACKS))
++			return mode == ALLOW_LEGACY;
++		return false;
++	}
+ 
+ 	if (!irq_domain_is_msi_parent(domain)) {
+ 		/*
+diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
+index 3a45879..2f647ca 100644
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -433,6 +433,10 @@ int __pci_enable_msi_range(struct pci_dev *dev, int minvec, int maxvec,
+ 	if (WARN_ON_ONCE(dev->msi_enabled))
+ 		return -EINVAL;
+ 
++	/* Test for the availability of MSI support */
++	if (!pci_msi_domain_supports(dev, 0, ALLOW_LEGACY))
++		return -ENOTSUPP;
++
+ 	nvec = pci_msi_vec_count(dev);
+ 	if (nvec < 0)
+ 		return nvec;
 
