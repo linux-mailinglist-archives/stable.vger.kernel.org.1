@@ -1,123 +1,139 @@
-Return-Path: <stable+bounces-105169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC07E9F6872
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 15:28:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F9F9F689A
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 15:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF1977A3899
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 14:28:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 743C31896618
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 14:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0221B041B;
-	Wed, 18 Dec 2024 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40F91F2C27;
+	Wed, 18 Dec 2024 14:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gP6DaQ+D"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M+Yyk9kx"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DEE7F477
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 14:28:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD2A1F12FE
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 14:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734532116; cv=none; b=Wk8KuGuvx8OZ4hfPIVFdCjA1bZ52a2SYfAgG4JPhIV6PrsFhOiutVptajwo38A21PCz7i8xEbY6S6Yvo1K+06JgvSgNMvMnGKnr4hChGZNaTwYpC8bFoqaG0Iki4lvTy+HQDDxC/nTsm1czWVCGTujGv1zbeslxpxpFWUSGrMWA=
+	t=1734532427; cv=none; b=SiZqLKvGAxAEieqZRY3F2jMGsTK+LlzARSZmqfACWV2jpChX3w7E+0eNy3NnNLGu3kOJ8NpFoF/GxM+FfWFdYOV6Ddofde8v/BE4DHUVpaCJJ/Cx4O2RbOtoUmAPbX9Hv2OAV0O4dSGEj42tPG6qRm/DU1/w/JO119i5Oq9LXjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734532116; c=relaxed/simple;
-	bh=gROJY2ljwX6Mp1YX+wR8sSOd+J9BLPfNQ5KxrXqquRs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MqPfV5FaER4u7duMTrCZzmcY7/becJAJDPC7zCTvrS1PGYwnBZWA85v+aJLtZGNhucmlwUIUG7yBI+lzf5MMLp9oG/Ox8/wTSoaM0E9q6FL/O0lcaPq4QAKh4xzMnSLysoERWG653O0RGnwCsQy43GJBhzdAeWG4Ny5mJl1WbcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gP6DaQ+D; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734532114;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bkuiz4Qgqt3Oq/7IFt71ZMAizrbOQcCyggtbM/Jj6uw=;
-	b=gP6DaQ+DO5nm/rwbml8HyJlMzT/XDdKCX9TwCCv5R+puCHKumuJ9V6dX9gOlMqlTKQC946
-	hXZsvHos1mvhyDJcAU7ikdZ7JW2nuFt+dddykFhI+3hzjOxIF1s4naAbIt7ps/iPzO4O1s
-	vx8x2VbjbFFWKP5JcRnpl56ZCk0bMgQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-373-qzqu4jwPPsqaCqNaohPoFw-1; Wed,
- 18 Dec 2024 09:28:27 -0500
-X-MC-Unique: qzqu4jwPPsqaCqNaohPoFw-1
-X-Mimecast-MFC-AGG-ID: qzqu4jwPPsqaCqNaohPoFw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CFA071956057;
-	Wed, 18 Dec 2024 14:28:25 +0000 (UTC)
-Received: from [192.168.37.1] (unknown [10.22.58.13])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5E3061956053;
-	Wed, 18 Dec 2024 14:28:24 +0000 (UTC)
-From: Benjamin Coddington <bcodding@redhat.com>
-To: Trond Myklebust <trondmy@hammerspace.com>
-Cc: anna@kernel.org, zichenxie0106@gmail.com, zzjas98@gmail.com,
- linux-nfs@vger.kernel.org, stable@vger.kernel.org, chenyuan0y@gmail.com
-Subject: Re: [PATCH] NFS: Fix potential buffer overflowin
- nfs_sysfs_link_rpc_client()
-Date: Wed, 18 Dec 2024 09:28:21 -0500
-Message-ID: <90DF7D11-B6A9-4715-823C-CE1E33DBB9FC@redhat.com>
-In-Reply-To: <299a43ab3a10317475fcd53f5d130fe3610ca07a.camel@hammerspace.com>
-References: <20241217161311.28640-1-zichenxie0106@gmail.com>
- <41572d6005dfb2042482f98177a9b295433c8a5f.camel@hammerspace.com>
- <299a43ab3a10317475fcd53f5d130fe3610ca07a.camel@hammerspace.com>
+	s=arc-20240116; t=1734532427; c=relaxed/simple;
+	bh=RHQS28DewYvPrfKfUtYt9opzdVXkf+mdojI6I2d9kGM=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=HvyO9cPP6tq4aqbhAOuCGyghZSpDV6k+TYKL5AcLPrOCJLqOF0xla6aJG1cWYLaYSbCKwP6jmXxC2gXIjoy5FT9FFR+HWsjpF8yS9Nj5PM4nLyoWmMrlLeTgiW0o9BKN5YmcQRzBcOssxYlfL6kXrnzHntbWuGGpbumF/BjfirY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M+Yyk9kx; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-801c27e67a6so7145618a12.2
+        for <stable@vger.kernel.org>; Wed, 18 Dec 2024 06:33:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734532425; x=1735137225; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8/xJoyb6w1jlu83wNixggt1n56YUBqKQLkNI4Qu0JN0=;
+        b=M+Yyk9kxIccWc6sqWYYxXT/3LjgsaaMi1Hwm/pZSn9pClKOaI+9CGPXPxC9hEJ4d4x
+         oA74LGmGrt16wg+MY1VUdQDyDrYmtmmOoqmUQkBA9+HfTnsW0z0JXYSHQt2Kjw1lRR39
+         RlyLBFyaiQZQoe7pDjxTSZziebR2pTXNOzFvc5W5Z+xvlH1oEKUpLt6U7qhy76bSS1eI
+         VtgaRxE9kt1Hg7YaSeelwMgSt++qjFr2PB6HUkfiqTRwFuSs+8sTIz2fzDQkDAMEyzrM
+         P7cMCGhGiQc1NOwNAunMFsUAiBxF+FEjlRYycLnoStb8mDvmrq9pJypfDvXGWHEJcdgN
+         +9Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734532425; x=1735137225;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8/xJoyb6w1jlu83wNixggt1n56YUBqKQLkNI4Qu0JN0=;
+        b=HK9K5N+6SiWvQYxicZn7rrdUPOvGZXbIuPRhE3lgr2klOGFlpIzHZ4mHbGtvbPhuhY
+         I1tBgR9j5w2xZ+y+Sc102GOjjAalSDTTa/WI9o3vG8R4SvuZDZgVHlReVySXoj3SiKnx
+         Pz27TfRtbr4R+5jm8zxNxbwwnCPzfdol87GWupTpBZINEQV1XUTM+mLyx7igK4jw9uCh
+         5ow9UMPMBs1wo4BlWRrkc7d7ZFjIJ5XupSfWWqlyCqhALk6Kbbo+5hsulUD3iS9Uxhcx
+         IcBSLTQ61gcFM5mMSf8RZy0KllpJ+nROzdqIRhD38UQWLiVYJHtM6PMEm5BSkKkiSmlV
+         l+sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVItlIh6qziJL8+eyjJ4QCI4o2jf1iurGRgO2vesB+rQLgM+4vSpffAQQXGRno3KvrGqDDKtqE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWUUaQF62WaOoWwBcYYDI/dS3o3+jALWVnzeRbJTpcO+QA2XDE
+	FyunReUy1gQWeQFTFh1Bxd7CjH1B/0agNlVvSbiFH489Re52apvg1OxFR3fXYyIAijb5C/o7t9/
+	LvezinQmIfGYLQ7fsqPOGUA==
+X-Google-Smtp-Source: AGHT+IHUufAPpS8l99EymNtFz8RildaHB41w/vA8gIWEPkTGuh9C6vPrLPov88ikvfsgvPhCy2mT/3z8ZivBiOEJVw==
+X-Received: from pfbeb1.prod.google.com ([2002:a05:6a00:4c81:b0:725:ceac:b47e])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:a104:b0:1e1:3970:d75a with SMTP id adf61e73a8af0-1e5b45f9e04mr4817391637.9.1734532425565;
+ Wed, 18 Dec 2024 06:33:45 -0800 (PST)
+Date: Wed, 18 Dec 2024 14:33:43 +0000
+In-Reply-To: <20241201212240.533824-2-peterx@redhat.com> (message from Peter
+ Xu on Sun,  1 Dec 2024 16:22:34 -0500)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Mime-Version: 1.0
+Message-ID: <diqzwmfxrrg8.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH 1/7] mm/hugetlb: Fix avoid_reserve to allow taking folio
+ from subpool
+From: Ackerley Tng <ackerleytng@google.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, riel@surriel.com, 
+	leitao@debian.org, akpm@linux-foundation.org, peterx@redhat.com, 
+	muchun.song@linux.dev, osalvador@suse.de, roman.gushchin@linux.dev, 
+	nao.horiguchi@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 17 Dec 2024, at 12:07, Trond Myklebust wrote:
+Peter Xu <peterx@redhat.com> writes:
 
-> On Tue, 2024-12-17 at 16:51 +0000, Trond Myklebust wrote:
->> On Wed, 2024-12-18 at 00:13 +0800, Gax-c wrote:
->>> From: Zichen Xie <zichenxie0106@gmail.com>
->>>
->>> name is char[64] where the size of clnt->cl_program->name remains
->>> unknown. Invoking strcat() directly will also lead to potential
->>> buffer
->>> overflow. Change them to strscpy() and strncat() to fix potential
->>> issues.
->>
->> What makes you think that clnt->cl_program->name is unknown?
->>
->> All calls to nfs_sysfs_link_rpc_client() use well known RPC clients
->> for
->> which the cl_program is pointing to one of nlm_program, nfs_program
->> or
->> nfsacl_program. So we know very well the sizes of clnt->cl_program-
->>> name.
+> Since commit 04f2cbe35699 ("hugetlb: guarantee that COW faults for a
+> process that called mmap(MAP_PRIVATE) on hugetlbfs will succeed"),
+> avoid_reserve was introduced for a special case of CoW on hugetlb private
+> mappings, and only if the owner VMA is trying to allocate yet another
+> hugetlb folio that is not reserved within the private vma reserved map.
 >
-> Just to clarify: I'm not strongly against the patch itself. However it
-> would seem premature to consider this a bug, let alone a stable fix
-> candidate. 
+> Later on, in commit d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle areas
+> hole punched by fallocate"), alloc_huge_page() enforced to not consume any
+> global reservation as long as avoid_reserve=true.  This operation doesn't
+> look correct, because even if it will enforce the allocation to not use
+> global reservation at all, it will still try to take one reservation from
+> the spool (if the subpool existed).  Then since the spool reserved pages
+> take from global reservation, it'll also take one reservation globally.
 >
-> Has anyone ever seen a buffer overflow here? If so, under which
-> circumstances?
+> Logically it can cause global reservation to go wrong.
+>
+> I wrote a reproducer below
 
-No, there's no way in the current kernel, but I suppose both
-nfs_sysfs_link_rpc_client() as well as rpc_create() are exported, so we
-could end up having some other part of the kernel send a long "uniq" or
-create a client with a long cl_program->name.  That change might escape our
-review.
+Thank you so much for looking into this!
 
-Probably not a bad idea to send it back to stable IMO, since a change like
-that could get back there too.
+> <snip>
 
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+I was able to reproduce this using your
+reproducer. /sys/kernel/mm/hugepages/hugepages-2048kB/resv_hugepages
+is not decremented even after the reproducer exits.
 
-Ben
+  # sysctl vm.nr_hugepages=16 
+  vm.nr_hugepages = 16
+  # mkdir ./hugetlb-pool
+  # mount -t hugetlbfs -o min_size=8M,pagesize=2M none ./hugetlb-pool
+  # for i in $(seq 16); do ./a.out hugetlb-pool/test; cat /sys/kernel/mm/hugepages/hugepages-2048kB/resv_hugepages; done
+  5
+  6
+  7
+  8
+  9
+  10
+  11
+  12
+  13
+  14
+  15
+  16
+  16
+  16
+  16
+  16
+  # 
 
+I'll go over the rest of your patches and dig into the meaning of `avoid_reserve`.
 
