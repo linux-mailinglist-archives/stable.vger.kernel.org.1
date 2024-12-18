@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-105108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1ECF9F5DA9
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 04:58:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8735F9F5DB0
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 05:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78F416E85D
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 03:58:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3138F1890840
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 04:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D0014AD19;
-	Wed, 18 Dec 2024 03:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E3614A4C1;
+	Wed, 18 Dec 2024 04:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="iWVhY2br"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="MmLL7YOl"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABBD35963;
-	Wed, 18 Dec 2024 03:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE6717741;
+	Wed, 18 Dec 2024 04:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734494290; cv=none; b=KgT86xOmYJKD6A0BWm8AQOMoO+p4NY3lrO6A+kew21NYMFl4QjWGNggbqNqMCH3/obGTCzNmQjEy5p8WglOonEFXRzXygwi09JWyw3pDj3o/u1CL3IMyEr+YERB8XbZm+3BlZ+in+cEvMdO5YN5a3g5yTECpWuvnA4NRWy9r9kE=
+	t=1734494546; cv=none; b=fNoOgmB2JGDSfqcoosY9vm8XRLEq+XJYDRTrOQdVyBd+KjqAlMtgruMn4GQ04UMcKY/PQNqHIV0uwXZl1YN5GyOVG7L3QFDD5RqJhJN7ng6c3863MQKTrrmrNoP0Om2u2whRyDbICUPiXHgpNHe6BnOVn7FlY9shfq6NDwOj0UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734494290; c=relaxed/simple;
-	bh=r6YWsxT/NFC00nyD2nQaRrogopwLKEBi/LPyO8xZtmg=;
+	s=arc-20240116; t=1734494546; c=relaxed/simple;
+	bh=PoMn7NYvVl9asWIk2B61j8cZHmpVJyGdTI9PjJlJE3A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ey0AElWY063RdRUYOKF2AoPDbEfQFlVJjAvF0jOOEfVhTHFDLSl+9PQ7mBCqWb+VfD/MoRwKbDTWIucs29qlw8DMmWLM0NOm8+Yfi+LjX0plRdSbRFa38yXckkwiBZOWVk46XR42jHEoAJoBzvxdTxONw+bWAARDPfaLzT8yrkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=iWVhY2br; arc=none smtp.client-ip=220.197.31.6
+	 In-Reply-To:Content-Type; b=EzG2IdxRnAHbFz4Qr6b1d8H9pMO7KZzpya2zl4NhaiS7ovLoNRo0Rh/zPgtKBFGB+BoeYMvfWT+OmrdtaXzVxXail9HOxChuyuTAcpGRtr97RDcN5gBns9wenNFCJ7E1mtezjkc270g91wztwCRkTHbrT3OeOeCzFdCc41QBLwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=MmLL7YOl; arc=none smtp.client-ip=117.135.210.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
 	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=H0rV7nOqP7RCz5IRGPZCsWDOEEA7MaqTNZrDyQCLXDU=;
-	b=iWVhY2br4gav4iLHbubC30fUr7QSorZDno/KyHUR85mzrjmP7LjWoSbSX5CelD
-	LbUU/G65lcuAASAGVu9rgsJvfxxKGTN+55vGsvvEFQQ8/2wyEIkvodEeoSnhxU7I
-	gXaVuGdsmR4aUZkC6wIUSxjpQQqUEb6LcYFMuSJC77L48=
-Received: from [172.21.22.210] (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3X1T9R2JnRKLGAQ--.51710S2;
-	Wed, 18 Dec 2024 11:56:46 +0800 (CST)
-Message-ID: <fbc8a712-8ddd-467f-ab1f-d146f19535a6@126.com>
-Date: Wed, 18 Dec 2024 11:56:45 +0800
+	Content-Type; bh=2UEzFOMZ6OPdFgXmMI8Sln0onml4hCf8G2/OYX1EK3k=;
+	b=MmLL7YOl1CzcnwwcqMLKBZotjOrXHuizRDSZZlOq+X5Z0C4KSR1oqv/YIDNaKH
+	Xb2kcvUcPIYq2T5I+9aqDOZK4w5soPKoMNG7pwONJSmgKz7MehHlRhogEBAnDMXG
+	Al3iOoraV7isVv6Uf7NXl+UTVae2NonsmL3JWdwDu+0XU=
+Received: from [172.21.22.210] (unknown [118.242.3.34])
+	by gzsmtp5 (Coremail) with SMTP id qSkvCgD3_yLPSGJnBtcfCg--.12633S2;
+	Wed, 18 Dec 2024 12:00:16 +0800 (CST)
+Message-ID: <e3110390-299d-4428-9b2f-4dda7ede94b2@126.com>
+Date: Wed, 18 Dec 2024 12:00:15 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,12 +62,12 @@ From: Ge Yang <yangge1116@126.com>
 In-Reply-To: <20241218032936.GB37530@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3X1T9R2JnRKLGAQ--.51710S2
+X-CM-TRANSID:qSkvCgD3_yLPSGJnBtcfCg--.12633S2
 X-Coremail-Antispam: 1Uf129KBjvJXoW3XrW5Xr1Dur43WF1furW5Awb_yoW7WF4Dpr
 	W7ZFnFkws8XFy5Krs7tw1v9a4Ygw4rJF4UXw10vr1kurnI9F9FkF4DtFyUCFyUXr15JayY
 	qFWUuF9rZF45Z3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uq0PhUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbifhi5G2diKSuriQACsj
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6MKZUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhq5G2diQIGEAAABsD
 
 
 
@@ -145,7 +145,7 @@ X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbifhi5G2diKSuriQACsj
 >> ultimately leads to significantly longer virtual machine startup times.
 > 
 > I still don't follow. Why do you want the allocation to fail?
->
+> 
 pin_user_pages_remote(..., FOLL_LONGTERM, ...) first attemps to allocate 
 THP only on local node, and then fall back to remote NUMA nodes if the 
 local allocation fail. For detail, see alloc_pages_mpol().
@@ -161,6 +161,7 @@ to allocate THP only on local node
      page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);//2, 
 fall back to remote NUMA nodes
 }
+
 > The changelog says this is in order to fall back quickly to other
 > nodes. But there is a full node walk in get_page_from_freelist()
 > before the allocator even engages reclaim. There is something missing
@@ -168,7 +169,10 @@ fall back to remote NUMA nodes
 > 
 > But regardless - surely you can see that we can't make the allocator
 > generally weaker on large requests just because they happen to be
-> optional in your specific case? >First, try to allocate THP on the local node as much as possible, and 
+> optional in your specific case?
+> 
+
+First, try to allocate THP on the local node as much as possible, and
 then fall back to a remote node if the local allocation fail. This is 
 the default memory allocation strategy when starting virtual machines.
 
