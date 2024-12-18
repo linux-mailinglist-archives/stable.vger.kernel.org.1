@@ -1,138 +1,106 @@
-Return-Path: <stable+bounces-105226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E799F6E8A
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 20:51:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C5659F6EAE
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 21:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A97188B4ED
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 19:51:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDC6018918D2
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 20:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E771F4E52;
-	Wed, 18 Dec 2024 19:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACE91FBE9B;
+	Wed, 18 Dec 2024 20:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFPjXnzF"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="f3zgNLqH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB66155C87;
-	Wed, 18 Dec 2024 19:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F9F155C87;
+	Wed, 18 Dec 2024 20:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734551484; cv=none; b=GJEh9jSeWYlwmKXQP4jMA/33+hag/zTLj6HrY0eaJ0z4g4lUIKPvKJaXoHe+ubSKPNaJI6oRA53BBfSCqteIXqxn2bgw1u5qUos7cmGEyje4i+YFE4LAWCzMVimGffmq96HsuNkslQ7NnCgAWo7Z/dMnpp+jX3tusAcifbnh17s=
+	t=1734552334; cv=none; b=KiE0oytaA9xTTNoygc9oTAi82i20s+el2gnBBhuw7sVUf/PMdipD8GwGnyIOHLEvqqh/BtB9zNJUMlWltTMuEWm5AzQeSi8oIX2ruYqB1oH0Y4XZ3QPp0EqGIacLERLtDiL4u3exUoIG8bbwdqOpiuB0jaDWd5PpBMPHKCRDMvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734551484; c=relaxed/simple;
-	bh=qhYporBeqPCMQnPqEVYxLDJqj1HPniraK8ToDLq9N5s=;
-	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nn0pzVyJEmhZG994yH6tNdUmJJ7e5jnEjjOnb7MOFCbdpNSIlfscay/FSv413OgLkewFOkykHaSgjttHpb4avS2WbHuy2BOMj0bk7qUFtYHUWsXppElIwj0MMsIi81X/MpYyCO8Jbkz76BrrKjlhsTwBNbidiZfQ3BgiC28qEsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFPjXnzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA98C4CECD;
-	Wed, 18 Dec 2024 19:51:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734551484;
-	bh=qhYporBeqPCMQnPqEVYxLDJqj1HPniraK8ToDLq9N5s=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=tFPjXnzFBuO/zrilmsvFquLUNAHPWiAcZwVJgUC52txU78rU7JS/bRU3g5uTOlZS7
-	 pIz003k65qSqUVXlV0Z9Bn9V+eZmx0elUE5H+P4qxIY7PRJTQSUxM6f0PIUWIGz/SP
-	 RpwZFWKluRqdbllQ8WRiRcGdOVD+CA0bkXOOrfAFtzKicrC+wpL/64h5YUGHLjMhcL
-	 ZH02zQwsanwtAKNNH2kzpO/1z7jgESd7ooIZj89SnMLni+E7Fq8yeM61LFTrZPmd3G
-	 xsqI35aO3CXwrCR/6sNs16l+JtfD903kht7/Kf8aRjddDgtjlvui+m3LOhZpf1z+5M
-	 g6INOuQgh+wyw==
-Date: Wed, 18 Dec 2024 11:51:23 -0800
-Subject: [PATCH 5/5] xfs: fix zero byte checking in the superblock scrubber
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: stable@vger.kernel.org, djwong@kernel.org
-Cc: hch@lst.de, linux-xfs@vger.kernel.org
-Message-ID: <173455093579.305755.3960848373109465926.stgit@frogsfrogsfrogs>
-In-Reply-To: <173455093488.305755.7686977865497104809.stgit@frogsfrogsfrogs>
-References: <173455093488.305755.7686977865497104809.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1734552334; c=relaxed/simple;
+	bh=u02Gn6exfPKIbt3/cnfjpCAV3dtgCIFgzpTVTfE0FT4=;
+	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
+	 Content-Type:Subject; b=KuvOvI5GZDGWn0c8CQoaEeVl8pMWtg4IUQrjrYVUMy5ej98hPgn6k00qW36p953sxxd6Z/uRzWow2QDsZx6lPVSUi1mvomLkAi33woum4evVcZKI8uc0POa4vKv4f0TurXvBSomAq+XxaExdV+5iFESILoFEzmSjk8dHB+yWY/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=f3zgNLqH; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=IhMdQNQOcIwIXnR1AI4gbp9UwV92+Iav/NEyjeXxCSw=; b=f3zgNLqHGo1AA19nI2/DYk/XFF
+	Hn/hNqpuodmIu5Sjc0mNfFGmK9eRrclflTW0X+4nHdZxs9UU2yTzU/UprhCkn3TJ6H2W9dcwUxL4K
+	Za/DEYy7Qqtu+0t1i73E/XtdKOncbfwbzbloVFndQ93wUBFBnP9NlmzW+KwsEoad4pc0=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:46792 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1tO0IA-00068J-Pn; Wed, 18 Dec 2024 15:05:11 -0500
+Date: Wed, 18 Dec 2024 15:05:10 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+ hui.wang@canonical.com, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Lech Perczak
+ <lech.perczak@camlingroup.com>, linux-serial@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <20241218150510.5424cd78bafbcdc30a894f18@hugovil.com>
+In-Reply-To: <2024121709-fool-keep-c408@gregkh>
+References: <20241216191818.1553557-1-hugo@hugovil.com>
+	<20241216191818.1553557-2-hugo@hugovil.com>
+	<2024121709-fool-keep-c408@gregkh>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -2.1 NICE_REPLY_A Looks like a legit reply (A)
+Subject: Re: [PATCH 1/4] serial: sc16is7xx: add missing support for rs485
+ devicetree properties
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-From: Darrick J. Wong <djwong@kernel.org>
+On Tue, 17 Dec 2024 07:41:32 +0100
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-commit c004a793e0ec34047c3bd423bcd8966f5fac88dc upstream.
+> On Mon, Dec 16, 2024 at 02:18:15PM -0500, Hugo Villeneuve wrote:
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> >=20
+> > Retrieve rs485 devicetree properties on registration of sc16is7xx ports=
+ in
+> > case they are attached to an rs485 transceiver.
+> >=20
+> > Reworked to fix conflicts when backporting to linux-5.15.y.
+> >=20
+> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+> > Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+> > Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+> > Link: https://lore.kernel.org/r/20230807214556.540627-7-hugo@hugovil.com
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>=20
+> I do not see any commit ids on this series matching up with what is in
+> Linus's tree.  Please fix up and resend the series.
 
-The logic to check that the region past the end of the superblock is all
-zeroes is wrong -- we don't want to check only the bytes past the end of
-the maximally sized ondisk superblock structure as currently defined in
-xfs_format.h; we want to check the bytes beyond the end of the ondisk as
-defined by the feature bits.
+Ok will do. I will first submit only this patch to make sure my
+submission follows the stable guidelines.
 
-Port the superblock size logic from xfs_repair and then put it to use in
-xfs_scrub.
+Hugo.
 
-Cc: <stable@vger.kernel.org> # v4.15
-Fixes: 21fb4cb1981ef7 ("xfs: scrub the secondary superblocks")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
----
- fs/xfs/scrub/agheader.c |   29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
-
-
-diff --git a/fs/xfs/scrub/agheader.c b/fs/xfs/scrub/agheader.c
-index da30f926cbe66d..0f2f1852d58fe7 100644
---- a/fs/xfs/scrub/agheader.c
-+++ b/fs/xfs/scrub/agheader.c
-@@ -59,6 +59,30 @@ xchk_superblock_xref(
- 	/* scrub teardown will take care of sc->sa for us */
- }
- 
-+/*
-+ * Calculate the ondisk superblock size in bytes given the feature set of the
-+ * mounted filesystem (aka the primary sb).  This is subtlely different from
-+ * the logic in xfs_repair, which computes the size of a secondary sb given the
-+ * featureset listed in the secondary sb.
-+ */
-+STATIC size_t
-+xchk_superblock_ondisk_size(
-+	struct xfs_mount	*mp)
-+{
-+	if (xfs_has_metauuid(mp))
-+		return offsetofend(struct xfs_dsb, sb_meta_uuid);
-+	if (xfs_has_crc(mp))
-+		return offsetofend(struct xfs_dsb, sb_lsn);
-+	if (xfs_sb_version_hasmorebits(&mp->m_sb))
-+		return offsetofend(struct xfs_dsb, sb_bad_features2);
-+	if (xfs_has_logv2(mp))
-+		return offsetofend(struct xfs_dsb, sb_logsunit);
-+	if (xfs_has_sector(mp))
-+		return offsetofend(struct xfs_dsb, sb_logsectsize);
-+	/* only support dirv2 or more recent */
-+	return offsetofend(struct xfs_dsb, sb_dirblklog);
-+}
-+
- /*
-  * Scrub the filesystem superblock.
-  *
-@@ -75,6 +99,7 @@ xchk_superblock(
- 	struct xfs_buf		*bp;
- 	struct xfs_dsb		*sb;
- 	struct xfs_perag	*pag;
-+	size_t			sblen;
- 	xfs_agnumber_t		agno;
- 	uint32_t		v2_ok;
- 	__be32			features_mask;
-@@ -350,8 +375,8 @@ xchk_superblock(
- 	}
- 
- 	/* Everything else must be zero. */
--	if (memchr_inv(sb + 1, 0,
--			BBTOB(bp->b_length) - sizeof(struct xfs_dsb)))
-+	sblen = xchk_superblock_ondisk_size(mp);
-+	if (memchr_inv((char *)sb + sblen, 0, BBTOB(bp->b_length) - sblen))
- 		xchk_block_set_corrupt(sc, bp);
- 
- 	xchk_superblock_xref(sc, bp);
-
+--=20
+Hugo Villeneuve
 
