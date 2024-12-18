@@ -1,131 +1,116 @@
-Return-Path: <stable+bounces-105131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F7D9F5F6F
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 08:40:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBCA9F5FBD
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 08:58:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C2A11891BD9
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 07:40:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935761889EF2
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 07:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87823156F5E;
-	Wed, 18 Dec 2024 07:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AF4159596;
+	Wed, 18 Dec 2024 07:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="gXFbJEF+"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rjj/+jC3"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5DF15382E
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 07:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E455FEED;
+	Wed, 18 Dec 2024 07:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734507594; cv=none; b=Q4DnTj6S2n0rlaLk8jqqezU9dRBfJlwxpuk96dr4gLPy1rg29qC+DTE/nvgvUbpbrMkGSvtrdeBktDo/ysQUhkPw4Ll4Alr27IZ4YQ9lVVJmqeWXDkj/OOsyEQPEALNiVrqKx5TVuizoIqVEhGKejnjfe00w1kRXsGuH8ULx2lk=
+	t=1734508683; cv=none; b=GiZ9qWOK38zaEVRzPUKKPvuc7V56B8eWed6RFmE7QyNjFZGE6VUti//csJ+jxu+ktQvccHaOlsP7szTjsljqZq1GkM1+GxT8S2h9DCaTcwoTIyMUUjshXlc18I7IQ2hHQfSn9JwJB+ggIF7bjikqyK3X5E4+khFKihQJH+pHobk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734507594; c=relaxed/simple;
-	bh=ORbTe+GxqWIjsE/FS/LxlyqNyE4nkarEA9CFg0f2O6I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DPhDxZ0abkdKWoQYCnVPv88Yf1tHRUJDh1zd7IM3UBSrkxxvH53/zWSm+AfE9WwcNIIU/fkv/ZklARvt2xuIOvc6pbfTZ8pB2fbdL184Ya71PkADpMjYmTNnK9yOeN5Ije/zNpiCAvBy96sheEk7hKkq9RkVm2zzZ6f9otzA5es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=gXFbJEF+; arc=none smtp.client-ip=115.124.30.124
+	s=arc-20240116; t=1734508683; c=relaxed/simple;
+	bh=R8oL9HPGBNzLNd0sw+7+qI9wZ/5kfDeg58n1Gbv53z4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BjcAiG8MbL6OTwNiWN3eUx/DKH54DpQrEhYZpRbCuAQGYZbZ+HqMO0dq434vfcGCSDuwdtLhgn2FsmEZFLvGmbsRih3cZG2MXs3kTUnfijd5eN45o2VmjQVg2SWYGlj/cYh/tKpYKnj5SMx74Srkj1PsV92fkYyO4GvJHdiLxZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rjj/+jC3; arc=none smtp.client-ip=115.124.30.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1734507583; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=vdSVyoMB0y9/Ui3J906Gv8Qnits7tU5YvWYi4N8ibKY=;
-	b=gXFbJEF+392B4+L47ui9+IX34PFx00CUZOsCRa8cQz/vSb5uDMTDSBr9tIES9kc2zUZPnzEBVrt/CEB439+iFkmP5t6hZ72N/edu+SCI6GLfM6TlSifCGjhmu+vuBEwyp5rY7iYGaeDUf2KTQFdMhuh+2z7y10MWkCDA35AAIE4=
-Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WLlkMIl_1734507581 cluster:ay36)
+	t=1734508677; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=73PG00jNypyVuZ+U9GLfUx2Y2h80nJwkdo7O7xfYAZE=;
+	b=rjj/+jC3hdhKefUrY/LcXaRNOf8uNZg+IduxJAkgLk/vBSFg/tB37VnB815VnCsVBjQMuHrk575jr3nMzCr6fPq0t2f9D2e2KKufIIm9gbQFP6Tew3RQf7v2MVk/rUkoXIQAx4at7sQVLSzIcrf+M7ACq8MDgd+QJ0Inx95t8z0=
+Received: from 30.74.144.132(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WLloubY_1734508675 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 18 Dec 2024 15:39:43 +0800
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: allison.karlitskaya@redhat.com,
-	linux-erofs@lists.ozlabs.org,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Colin Walters <walters@verbum.org>
-Subject: [PATCH 5.4.y 2/2] erofs: fix incorrect symlink detection in fast symlink
-Date: Wed, 18 Dec 2024 15:39:38 +0800
-Message-ID: <20241218073938.459812-2-hsiangkao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241218073938.459812-1-hsiangkao@linux.alibaba.com>
-References: <20241218073938.459812-1-hsiangkao@linux.alibaba.com>
+          Wed, 18 Dec 2024 15:57:56 +0800
+Message-ID: <ded3d2bf-650e-4ddc-b2be-d6faddeb3037@linux.alibaba.com>
+Date: Wed, 18 Dec 2024 15:57:54 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V7] mm, compaction: don't use ALLOC_CMA for unmovable
+ allocations
+To: Johannes Weiner <hannes@cmpxchg.org>, yangge1116@126.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 21cnbao@gmail.com,
+ david@redhat.com, vbabka@suse.cz, liuzixing@hygon.cn
+References: <1734436004-1212-1-git-send-email-yangge1116@126.com>
+ <20241217155551.GA37530@cmpxchg.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20241217155551.GA37530@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit 9ed50b8231e37b1ae863f5dec8153b98d9f389b4 upstream.
 
-Fast symlink can be used if the on-disk symlink data is stored
-in the same block as the on-disk inode, so we don’t need to trigger
-another I/O for symlink data.  However, currently fs correction could be
-reported _incorrectly_ if inode xattrs are too large.
 
-In fact, these should be valid images although they cannot be handled as
-fast symlinks.
+On 2024/12/17 23:55, Johannes Weiner wrote:
+> Hello Yangge,
+> 
+> On Tue, Dec 17, 2024 at 07:46:44PM +0800, yangge1116@126.com wrote:
+>> From: yangge <yangge1116@126.com>
+>>
+>> Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
+>> in __compaction_suitable()") allow compaction to proceed when free
+>> pages required for compaction reside in the CMA pageblocks, it's
+>> possible that __compaction_suitable() always returns true, and in
+>> some cases, it's not acceptable.
+>>
+>> There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
+>> of memory. I have configured 16GB of CMA memory on each NUMA node,
+>> and starting a 32GB virtual machine with device passthrough is
+>> extremely slow, taking almost an hour.
+>>
+>> During the start-up of the virtual machine, it will call
+>> pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
+>> Long term GUP cannot allocate memory from CMA area, so a maximum
+>> of 16 GB of no-CMA memory on a NUMA node can be used as virtual
+>> machine memory. Since there is 16G of free CMA memory on the NUMA
+>> node, watermark for order-0 always be met for compaction, so
+>> __compaction_suitable() always returns true, even if the node is
+>> unable to allocate non-CMA memory for the virtual machine.
+>>
+>> For costly allocations, because __compaction_suitable() always
+>> returns true, __alloc_pages_slowpath() can't exit at the appropriate
+>> place, resulting in excessively long virtual machine startup times.
+>> Call trace:
+>> __alloc_pages_slowpath
+>>      if (compact_result == COMPACT_SKIPPED ||
+>>          compact_result == COMPACT_DEFERRED)
+>>          goto nopage; // should exit __alloc_pages_slowpath() from here
+>>
+>> Other unmovable alloctions, like dma_buf, which can be large in a
+>> Linux system, are also unable to allocate memory from CMA, and these
+>> allocations suffer from the same problems described above. In order
+>> to quickly fall back to remote node, we should remove ALLOC_CMA both
+>> in __compaction_suitable() and __isolate_free_page() for unmovable
+>> alloctions. After this fix, starting a 32GB virtual machine with
+>> device passthrough takes only a few seconds.
+> 
+> The symptom is obviously bad, but I don't understand this fix.
+> 
+> The reason we do ALLOC_CMA is that, even for unmovable allocations,
+> you can create space in non-CMA space by moving migratable pages over
+> to CMA space. This is not a property we want to lose. But I also don't
 
-Many thanks to Colin for reporting this!
-
-Reported-by: Colin Walters <walters@verbum.org>
-Reported-by: https://honggfuzz.dev/
-Link: https://lore.kernel.org/r/bb2dd430-7de0-47da-ae5b-82ab2dd4d945@app.fastmail.com
-Fixes: 431339ba9042 ("staging: erofs: add inode operations")
-[ Note that it's a runtime misbehavior instead of a security issue. ]
-Link: https://lore.kernel.org/r/20240909031911.1174718-1-hsiangkao@linux.alibaba.com
-[ Gao Xiang: fix 5.4.y build warning due to `check_add_overflow`. ]
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
----
- fs/erofs/inode.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
-
-diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
-index ba981076d6f2..af90d3d70a08 100644
---- a/fs/erofs/inode.c
-+++ b/fs/erofs/inode.c
-@@ -198,11 +198,14 @@ static int erofs_fill_symlink(struct inode *inode, void *data,
- 			      unsigned int m_pofs)
- {
- 	struct erofs_inode *vi = EROFS_I(inode);
-+	loff_t off;
- 	char *lnk;
- 
--	/* if it cannot be handled with fast symlink scheme */
--	if (vi->datalayout != EROFS_INODE_FLAT_INLINE ||
--	    inode->i_size >= PAGE_SIZE || inode->i_size < 0) {
-+	m_pofs += vi->xattr_isize;
-+	/* check if it cannot be handled with fast symlink scheme */
-+	if (vi->datalayout != EROFS_INODE_FLAT_INLINE || inode->i_size < 0 ||
-+	    check_add_overflow((loff_t)m_pofs, inode->i_size, &off) ||
-+	    off > i_blocksize(inode)) {
- 		inode->i_op = &erofs_symlink_iops;
- 		return 0;
- 	}
-@@ -211,17 +214,6 @@ static int erofs_fill_symlink(struct inode *inode, void *data,
- 	if (!lnk)
- 		return -ENOMEM;
- 
--	m_pofs += vi->xattr_isize;
--	/* inline symlink data shouldn't cross page boundary as well */
--	if (m_pofs + inode->i_size > PAGE_SIZE) {
--		kfree(lnk);
--		erofs_err(inode->i_sb,
--			  "inline data cross block boundary @ nid %llu",
--			  vi->nid);
--		DBG_BUGON(1);
--		return -EFSCORRUPTED;
--	}
--
- 	memcpy(lnk, data + m_pofs, inode->i_size);
- 	lnk[inode->i_size] = '\0';
- 
--- 
-2.43.5
-
+Good point. I missed that and I need to withdraw my reviewed tag. Thanks.
 
