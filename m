@@ -1,130 +1,125 @@
-Return-Path: <stable+bounces-105122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6399F5F0A
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 08:04:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E819F5F15
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 08:15:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C002B1692B4
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 07:04:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5E4C188B319
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 07:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F106D156991;
-	Wed, 18 Dec 2024 07:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FAF158A1F;
+	Wed, 18 Dec 2024 07:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="CFRNXyMa"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MKvrA/Bm"
 X-Original-To: stable@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACB6156C74
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 07:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507E315666B;
+	Wed, 18 Dec 2024 07:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734505438; cv=none; b=afGg4D3spgZHTtW0O4AmBVL1YLUX4+d8JrfofX+IWCMKmYx3YqzNtULUm+hJNWTviwCM+2ZSWnpWZpKmeqiaKRrneo84eBPQoJo+anx2BqtE60LYJ9g52O+/8DO9KO22XPH67v04QITOc94X2UWRnbKU4PgytlMo5P+DoPNtBSo=
+	t=1734506131; cv=none; b=HmwMSZjDInYpi6Phsdx9FKWWYUYE33MfIp9bfjAOnwElV2kSi/oJ1LSUExR32yVt1RrV5/D6KVuoqt+4jIJLIc3Zi+m0CBNNbduoXVq2cM21D3YClMUr52JTWN73snhqS+uvnn/hKbETdpMBAaENihI4HKRsdfsruIBRprFmVLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734505438; c=relaxed/simple;
-	bh=sUcBJUsNMeKQIIZkO3oTA6xEX5BgklADmyfNp2/njwk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sEZLJhY/JMo8YzFyjYkjZ9SIhvt5OjBk9NbCSJBylI/da6/twS+e1YG+jsE+L0NQbxCZlBjqii1KN6kU4RYtMuD/ek4qabJSP4fMfQUiKUqI/v4kgeH2sj1ksaHcamASlZFkcVFerxOU3cX8t3lWXN6EfrIi7+Tbs9B+bsiEYdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=CFRNXyMa; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
-	by cmsmtp with ESMTPS
-	id NiQRt2nP2xoE1No67tqyfY; Wed, 18 Dec 2024 07:03:55 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id No66tt92JZTzLNo67tY8Ak; Wed, 18 Dec 2024 07:03:55 +0000
-X-Authority-Analysis: v=2.4 cv=L+wbQfT8 c=1 sm=1 tr=0 ts=676273db
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=HPvIB9lQppeJS2B-OsoA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ITj9AQwEJVLEfP6hCL8kUAQ9IaOgMQ6NDvJ3Ar8BAi8=; b=CFRNXyMaU4u5v9x3n2Y/D63WwW
-	kdOvwHNfUwUMQXSVcfVT1Ar6LvIRMT1yz6XoJRwzZ3Xr2jWL8HoGRXfrsZJmJHGxVI5Ok9bAWUlko
-	cDCjyIP7b8Si994tq3EN16zbOrQaweg4duWiDCINAYeC+6FxsV5aXCFNbwsFwyq141Qp3lfsEGQTF
-	gnB7q9Up/tLdHdEJobnVk3J75Fgtwx86BE0vDA9HZyorJ2jwUclpjtFwDhtx8T8JzI0d3cyqXM7pZ
-	neKN1OlHnOEaraAF52EBdgjs8ivQjiwssD+q1VLmR/Tf609TANXozvD4+/OaVxiGCmwwa4Qt3XH2a
-	zx1pw1rA==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:32838 helo=[10.0.1.115])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1tNo65-000C6c-30;
-	Wed, 18 Dec 2024 00:03:53 -0700
-Message-ID: <3fb2f3cc-2323-4cd1-8473-e17ab8a2efad@w6rz.net>
-Date: Tue, 17 Dec 2024 23:03:51 -0800
+	s=arc-20240116; t=1734506131; c=relaxed/simple;
+	bh=aluugiqXTkoRRG7seS29rNH3yJ+36BBE06UAvdhrWtw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TuGQbK2k0+QzXZ/kHweX6zXzT8Alrd7KjzcRyGownEPPEaH/j2j46ou5qSLzY3D9Anb75S69NhX+VZePy6gXhrM4CHAmddcDJPZRTXSTNVa4ParXPrpQQZ1kVHj23oNyu+9i7eKInDOFtCCj2+6R+mhV+8dttTy+UFBJJzH2xFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MKvrA/Bm; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=YUJkv
+	boH8N2TDLKwm+M/QlVsztm9TDQx3DITEazuH1s=; b=MKvrA/Bm5R3alckiT0QZg
+	unJAREDkhdN0pOW2aWh5Iz1Jq7wNx8MGLbC47w+iMK+4GpUzkC4lSRHD73q697fW
+	j8ppxUC6N9oN2A29K6l9+1beggeRVYjg7YX453fmXB2cU+4hAlzv4Z/0FufxpzWJ
+	g3mcvLq5v1Hd+X5uzCM79U=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDH5gMsdmJnY9NlBQ--.19120S4;
+	Wed, 18 Dec 2024 15:13:57 +0800 (CST)
+From: Ma Ke <make_ruc2021@163.com>
+To: gregkh@linuxfoundation.org,
+	stern@rowland.harvard.edu,
+	quic_ugoswami@quicinc.com,
+	stanley_chang@realtek.com,
+	make_ruc2021@163.com,
+	christophe.jaillet@wanadoo.fr,
+	oneukum@suse.com,
+	javier.carrasco@wolfvision.net,
+	kay.sievers@vrfy.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] usb: fix reference leak in usb_new_device()
+Date: Wed, 18 Dec 2024 15:13:46 +0800
+Message-Id: <20241218071346.2973980-1-make_ruc2021@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/51] 5.15.175-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20241217170520.301972474@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20241217170520.301972474@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1tNo65-000C6c-30
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.115]) [73.223.253.157]:32838
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 18
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfDrFVyIH4BKWVKClRPCyeHDhcftNmOy24o+WvNLUGDm2jiSA3tBVd3w5yDiAXGaESdInj9xiPbPxAR1GQT93TEpKtoQLeEC6Mc8Jly+XfZcZrX+VbS6Y
- yCexf6i6nvu/IzjAJ8distxQQ/8AoEh8SjhvYbLtqGWgs/36znmmmtRrFTItKPTmx+7mCzx5j7xoKw==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDH5gMsdmJnY9NlBQ--.19120S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7KF1DKrW8WFyDXr18CrWrAFb_yoW8Aw1Upr
+	W8Ga98KrWDGr17Cw1jvFy8Xa45Ga10ya4rWFyfZw129w13X3yrKryrtry5ta48ArZ3AF4U
+	XFW7WF4SqryUCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pimhF7UUUUU=
+X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBXwG5C2diPlkwfAABsD
 
-On 12/17/24 09:06, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.175 release.
-> There are 51 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 19 Dec 2024 17:05:03 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.175-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+When device_add(&udev->dev) succeeds and a later call fails,
+usb_new_device() does not properly call device_del(). As comment of
+device_add() says, 'if device_add() succeeds, you should call
+device_del() when you want to get rid of it. If device_add() has not
+succeeded, use only put_device() to drop the reference count'.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Found by code review.
 
-Tested-by: Ron Economos <re@w6rz.net>
+Cc: stable@vger.kernel.org
+Fixes: 9f8b17e643fe ("USB: make usbdevices export their device nodes instead of using a separate class")
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+---
+Changes in v3:
+- modified the bug description according to the changes of the patch;
+- removed redundant put_device() in patch v2 as suggestions.
+Changes in v2:
+- modified the bug description to make it more clear;
+- added the missed part of the patch.
+---
+ drivers/usb/core/hub.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 4b93c0bd1d4b..21ac9b464696 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2663,13 +2663,13 @@ int usb_new_device(struct usb_device *udev)
+ 		err = sysfs_create_link(&udev->dev.kobj,
+ 				&port_dev->dev.kobj, "port");
+ 		if (err)
+-			goto fail;
++			goto out_del_dev;
+ 
+ 		err = sysfs_create_link(&port_dev->dev.kobj,
+ 				&udev->dev.kobj, "device");
+ 		if (err) {
+ 			sysfs_remove_link(&udev->dev.kobj, "port");
+-			goto fail;
++			goto out_del_dev;
+ 		}
+ 
+ 		if (!test_and_set_bit(port1, hub->child_usage_bits))
+@@ -2683,6 +2683,8 @@ int usb_new_device(struct usb_device *udev)
+ 	pm_runtime_put_sync_autosuspend(&udev->dev);
+ 	return err;
+ 
++out_del_dev:
++	device_del(&udev->dev);
+ fail:
+ 	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
+ 	pm_runtime_disable(&udev->dev);
+-- 
+2.25.1
 
 
