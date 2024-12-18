@@ -1,165 +1,302 @@
-Return-Path: <stable+bounces-105139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974F19F6141
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 10:18:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0C19F624D
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 11:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E492E166E03
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 09:18:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0821885A4B
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 10:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3384191F75;
-	Wed, 18 Dec 2024 09:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7E7197556;
+	Wed, 18 Dec 2024 10:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Zc/U2OL4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a5HoYhFx"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A5215B13D
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 09:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310E7126F1E;
+	Wed, 18 Dec 2024 10:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734513513; cv=none; b=bwQNRSZOHr7K+lqabviXCtNWnna00YtNr2+cSKlBIzAElz/WvWMeVNIzHp5hYH6zPUgskJe4LmhMLBCxjubel5Hpc+KoKZzKIKEnBsIPOiOsGbvfuq9GVGP5PqkySwkE++RBzJ63m9UnRUorwOi3OV2WdD1m6GQMszDguD6yjQs=
+	t=1734516229; cv=none; b=rTvfFmCnxxCXCEe2qYKp1J+OJFebVuGVVpZaxB/3W7r1KeoCpvtxf20+EzHdNcKvS6Zf2zyunv0TvoTv2GyjAGFVg8qj8Jq0LdOg/vK5eF8l+x2lnP2++Pm55fec/rykvf0X6R+M62Wr2mkCdrPLQRWOsRp80e/iMI6O5H9RB4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734513513; c=relaxed/simple;
-	bh=HSyDULdwQXu3xlcnyukj7r2kntKBqz06an3YCwlmq7Q=;
+	s=arc-20240116; t=1734516229; c=relaxed/simple;
+	bh=4MW1sRUQw5YWXsGlxupTf64ZpNbnKMtbaoSL0VoG000=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lI1mmbeWjjpEm/73R+eYastGP17Pjgd/puLUrpKO+Ursgm/HnNUKzk9LmQaD9MLtw+DuFQPap0mQnI1l4FE5d7AL9ig3x0hZP6BDQNJAC8PVCVjHYAnuHGBqmaPUsKMRyZrWc4KI21BnEMwWE3Q0c9arkKPx3IXoVSK466+DE40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Zc/U2OL4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734513509;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RLeA091LzMVlS973SFASJBgcuRe2YSP+pMH6a6B7hJQ=;
-	b=Zc/U2OL4Jxm6oiQI9Qdc1wS2dbqjrTBmDZlTIi+0ufn4IYhzQ6CQk70HsgwDKkBaGwdOkk
-	LDJiLBs97STPDoOPCMh/zBtF2PFmOUSp3l5E+Wb0A/GVpwNamZW2xWjKsPV9lEjPSUrsqq
-	ZQkdjxaEVI1+UJriTxCCC1iNw0va0Ag=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-132-4UoivWYpObidAdhczTRIMw-1; Wed, 18 Dec 2024 04:18:28 -0500
-X-MC-Unique: 4UoivWYpObidAdhczTRIMw-1
-X-Mimecast-MFC-AGG-ID: 4UoivWYpObidAdhczTRIMw
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-436379713baso21561965e9.2
-        for <stable@vger.kernel.org>; Wed, 18 Dec 2024 01:18:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734513507; x=1735118307;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RLeA091LzMVlS973SFASJBgcuRe2YSP+pMH6a6B7hJQ=;
-        b=jDSn4/m6dkn+Mruav5x9QelAI+UTRMkWU5mi7EQulrveY5MSf4Cpg1bx56A1aDFv3h
-         KAL4jClWWIiTZdva7kE8qzb+K2vaiE3WZ15i9RMQSUb8/QYPWWT/DW6tIEY0rdEZeSzQ
-         17lyJLbiqbo7llwrrRC/xEfNj2cu0HOYYgmd18tyLyOashcP98DnCWeANXxUaDxQCQ3/
-         AFk9Zvpn9aIJmLF4ZtEYmssTRR8z9eaBir3XO9oGlQwBVNpuHrS8BtCasNXqzO2s7zi9
-         queJMOy7S3VoBld67buZpjjP3CClpggSQ4LIAnyxv1Exbk/HrsI5RQ586m2uOr6jLQfV
-         dWcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXnsNKShJl8aS9dGlW2BET0wCEtRp3cAmp7bmuiPHWDiKEWd+5YmQy4bJ4eNgLSej7WuLnxu6s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4AHfyVN8L3kCR//Ng2iD2EWnUhFZuZNxOWLV4z6Q/Smb/C2h3
-	Kjv1ZmOHw+4r9mBx28XzdSkQqHt86IkUz/3NaVZwKwe++wpQivgfIwjgSkhLHzczft99VaZCa4v
-	wYXTC5ca+LdTSfj9jFoTXdwT/KTKxRvEsNORdqGtfhcgD4/95srMsVA==
-X-Gm-Gg: ASbGncu9SrbxjYgPg6mTJHN90pBYBNoo5OBUOF5108IUWC2+O9FFQIvBiHJY5obvuuh
-	9Ewg2RWxCB7a2xDdy7PvNw2IMZLNgm/gHYZOKJsYiTrWVMov3lHj6voPJOP59ENbyLqeE5/+Bpp
-	17Y+jlNLd/+Zk07GTKz0i7Nw4G4v9Ayqa5nMc21NxCQO85HNAQIKnjk66NtP1fcLivU2eAFg9wu
-	FPoKMFhko+OQi6lDBM6ZNKe4jJyer4vevfJ2g9yX8M=
-X-Received: by 2002:a05:600c:4748:b0:434:a1d3:a326 with SMTP id 5b1f17b1804b1-436553492e9mr15885255e9.6.1734513506928;
-        Wed, 18 Dec 2024 01:18:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGzQFTHFw7fnVGsOgmaN2fVP2YDadBMDrQRnfY9WghIfpNZbHV2iytk+s+GOfHa1YGNMY6H+Q==
-X-Received: by 2002:a05:600c:4748:b0:434:a1d3:a326 with SMTP id 5b1f17b1804b1-436553492e9mr15884945e9.6.1734513506566;
-        Wed, 18 Dec 2024 01:18:26 -0800 (PST)
-Received: from redhat.com ([2.52.9.192])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c80470afsm13691223f8f.75.2024.12.18.01.18.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2024 01:18:25 -0800 (PST)
-Date: Wed, 18 Dec 2024 04:18:21 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ma Ke <make_ruc2021@163.com>
-Cc: jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
-	zhangweiping@didichuxing.com, cohuck@redhat.com,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=HylqiBvZ/gOlROF7o+PRftambVuRWmFqVNAjFDupBM9qxl4P9q8cCg+ljYEETWHukDTPXOanzR+N6TwKMup2X/1lbqw57hFl6W7scrNM2Wx1oKNWeoeEbur+zmUCJiI8zmZCdkUHEj75Evxu+6YU4C9/TNV9fW3iwQNnAYmHUQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a5HoYhFx; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734516224; x=1766052224;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=4MW1sRUQw5YWXsGlxupTf64ZpNbnKMtbaoSL0VoG000=;
+  b=a5HoYhFx+sy56DKaz+pZpAgYTDyovYl8QWM6Qyw09Lvk8uDxY778N9WK
+   wTXW52J3TN54cm2g1SXRmfZIFuq7RhkXS6j0q3GJXkq+zMOGLdEWxSK8d
+   Y1Deu7Lz57RmKdrh6f5L2WalVIjQ7cY0BVGrHk/POL7o2rugjNlvdnohn
+   g8arK2fHpBBe3uzCM8SfnsNvgcdBw9bBaBMkPSP4TsDowXPM2X7F3XkV4
+   Fm0GVYus6yI3EWZJBn5fEesS9IjwXH2gSOqD3MHZwKY0tYCa9A1qqDNvr
+   YSyu2ajP2Yjm1BeKXG2jKx3r7IDRD3YvKJHBpBdR40bN8D+h4PCI8n+rU
+   Q==;
+X-CSE-ConnectionGUID: dMmGFSVlRqe0gPfVpT/Sfw==
+X-CSE-MsgGUID: VP5n82u5SJ+JXcB9PnhZPA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="38658953"
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
+   d="scan'208";a="38658953"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 02:03:42 -0800
+X-CSE-ConnectionGUID: b+KnILdDQxOYL/+3ety8XA==
+X-CSE-MsgGUID: 3wCQ1mRSQBm/mF/csyQRFQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
+   d="scan'208";a="97599713"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by fmviesa006.fm.intel.com with SMTP; 18 Dec 2024 02:03:39 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 18 Dec 2024 12:03:38 +0200
+Date: Wed, 18 Dec 2024 12:03:38 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: joswang <joswang1221@gmail.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Jos Wang <joswang@lenovo.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] virtio: fix reference leak in register_virtio_device()
-Message-ID: <20241218041403-mutt-send-email-mst@kernel.org>
-References: <20241218031201.2968918-1-make_ruc2021@163.com>
+Subject: Re: [PATCH 2/2] usb: typec: tcpm: fix the sender response time issue
+Message-ID: <Z2Kd-k5icFTLeJkT@kuha.fi.intel.com>
+References: <20241215125013.70671-1-joswang1221@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241218031201.2968918-1-make_ruc2021@163.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241215125013.70671-1-joswang1221@gmail.com>
 
-On Wed, Dec 18, 2024 at 11:12:01AM +0800, Ma Ke wrote:
-> Once device_add(&dev->dev) failed, call put_device() to explicitly
-> release dev->dev. Or it could cause double free problem.
+Hi,
+
+On Sun, Dec 15, 2024 at 08:50:13PM +0800, joswang wrote:
+> From: Jos Wang <joswang@lenovo.com>
 > 
-> As comment of device_add() says, 'if device_add() succeeds, you should
-> call device_del() when you want to get rid of it. If device_add() has
-> not succeeded, use only put_device() to drop the reference count'.
+> According to the USB PD3 CTS specification, the requirements
+
+What is "USB PD3 CTS specification"? Please open it here.
+
+> for tSenderResponse are different in PD2 and PD3 modes, see
+> Table 19 Timing Table & Calculations. For PD2 mode, the
+> tSenderResponse min 24ms and max 30ms; for PD3 mode, the
+> tSenderResponse min 27ms and max 33ms.
 > 
-> Found by code review.
+> For the "TEST.PD.PROT.SRC.2 Get_Source_Cap No Request" test
+> item, after receiving the Source_Capabilities Message sent by
+> the UUT, the tester deliberately does not send a Request Message
+> in order to force the SenderResponse timer on the Source UUT to
+> timeout. The Tester checks that a Hard Reset is detected between
+> tSenderResponse min and max，the delay is between the last bit of
+> the GoodCRC Message EOP has been sent and the first bit of Hard
+> Reset SOP has been received. The current code does not distinguish
+> between PD2 and PD3 modes, and tSenderResponse defaults to 60ms.
+> This will cause this test item and the following tests to fail:
+> TEST.PD.PROT.SRC3.2 SenderResponseTimer Timeout
+> TEST.PD.PROT.SNK.6 SenderResponseTimer Timeout
 > 
+> Considering factors such as SOC performance, i2c rate, and the speed
+> of PD chip sending data, "pd2-sender-response-time-ms" and
+> "pd3-sender-response-time-ms" DT time properties are added to allow
+> users to define platform timing. For values that have not been
+> explicitly defined in DT using this property, a default value of 27ms
+> for PD2 tSenderResponse and 30ms for PD3 tSenderResponse is set.
+> 
+> Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
 > Cc: stable@vger.kernel.org
-> Fixes: f2b44cde7e16 ("virtio: split device_register into device_initialize and device_add")
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
+> Signed-off-by: Jos Wang <joswang@lenovo.com>
 
+If this is a fix, then I think it's fixing commit 2eadc33f40d4
+("typec: tcpm: Add core support for sink side PPS"). That's where the
+pd_revision was changed to 3.0.
 
-Did you actually test this, triggering an error,
-and with debug options enabled to find double free
-and use after free? Which configurations?
-
-Because if you did, you would find for example this
-in drivers/virtio/virtio_vdpa.c:
-
-        ret = register_virtio_device(&vd_dev->vdev);
-        reg_dev = vd_dev;
-        if (ret)
-                goto err;
-
-        vdpa_set_drvdata(vdpa, vd_dev);
-
-        return 0;
-        
-err:    
-        if (reg_dev)
-                put_device(&vd_dev->vdev.dev);
-        else
-                kfree(vd_dev);
-        return ret;
-
-
-
+Badhri, could you take a look at this (and how about that
+maintainer role? :-) ).
 
 > ---
-> Changes in v2:
-> - modified the bug description to make it more clear;
-> - changed the Fixes tag.
-> ---
->  drivers/virtio/virtio.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/usb/typec/tcpm/tcpm.c | 50 +++++++++++++++++++++++------------
+>  include/linux/usb/pd.h        |  3 ++-
+>  2 files changed, 35 insertions(+), 18 deletions(-)
 > 
-> diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
-> index b9095751e43b..ac721b5597e8 100644
-> --- a/drivers/virtio/virtio.c
-> +++ b/drivers/virtio/virtio.c
-> @@ -503,6 +503,7 @@ int register_virtio_device(struct virtio_device *dev)
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 6021eeb903fe..3a159bfcf382 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -314,12 +314,16 @@ struct pd_data {
+>   * @sink_wait_cap_time: Deadline (in ms) for tTypeCSinkWaitCap timer
+>   * @ps_src_wait_off_time: Deadline (in ms) for tPSSourceOff timer
+>   * @cc_debounce_time: Deadline (in ms) for tCCDebounce timer
+> + * @pd2_sender_response_time: Deadline (in ms) for pd20 tSenderResponse timer
+> + * @pd3_sender_response_time: Deadline (in ms) for pd30 tSenderResponse timer
+>   */
+>  struct pd_timings {
+>  	u32 sink_wait_cap_time;
+>  	u32 ps_src_off_time;
+>  	u32 cc_debounce_time;
+>  	u32 snk_bc12_cmpletion_time;
+> +	u32 pd2_sender_response_time;
+> +	u32 pd3_sender_response_time;
+>  };
 >  
->  out_of_node_put:
->  	of_node_put(dev->dev.of_node);
-> +	put_device(&dev->dev);
->  out_ida_remove:
->  	ida_free(&virtio_index_ida, dev->index);
->  out:
-> -- 
-> 2.25.1
-> 
+>  struct tcpm_port {
+> @@ -3776,7 +3780,9 @@ static bool tcpm_send_queued_message(struct tcpm_port *port)
+>  			} else if (port->pwr_role == TYPEC_SOURCE) {
+>  				tcpm_ams_finish(port);
+>  				tcpm_set_state(port, HARD_RESET_SEND,
+> -					       PD_T_SENDER_RESPONSE);
+> +					       port->negotiated_rev >= PD_REV30 ?
+> +					       port->timings.pd3_sender_response_time :
+> +					       port->timings.pd2_sender_response_time);
+>  			} else {
+>  				tcpm_ams_finish(port);
+>  			}
+> @@ -4619,6 +4625,9 @@ static void run_state_machine(struct tcpm_port *port)
+>  	enum typec_pwr_opmode opmode;
+>  	unsigned int msecs;
+>  	enum tcpm_state upcoming_state;
+> +	u32 sender_response_time = port->negotiated_rev >= PD_REV30 ?
+> +				   port->timings.pd3_sender_response_time :
+> +				   port->timings.pd2_sender_response_time;
+>  
+>  	if (port->tcpc->check_contaminant && port->state != CHECK_CONTAMINANT)
+>  		port->potential_contaminant = ((port->enter_state == SRC_ATTACH_WAIT &&
+> @@ -5113,7 +5122,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  			tcpm_set_state(port, SNK_WAIT_CAPABILITIES, 0);
+>  		} else {
+>  			tcpm_set_state_cond(port, hard_reset_state(port),
+> -					    PD_T_SENDER_RESPONSE);
+> +					    sender_response_time);
+>  		}
+>  		break;
+>  	case SNK_NEGOTIATE_PPS_CAPABILITIES:
+> @@ -5135,7 +5144,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  				tcpm_set_state(port, SNK_READY, 0);
+>  		} else {
+>  			tcpm_set_state_cond(port, hard_reset_state(port),
+> -					    PD_T_SENDER_RESPONSE);
+> +					    sender_response_time);
+>  		}
+>  		break;
+>  	case SNK_TRANSITION_SINK:
+> @@ -5387,7 +5396,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  			port->message_id_prime = 0;
+>  			port->rx_msgid_prime = -1;
+>  			tcpm_pd_send_control(port, PD_CTRL_SOFT_RESET, TCPC_TX_SOP_PRIME);
+> -			tcpm_set_state_cond(port, ready_state(port), PD_T_SENDER_RESPONSE);
+> +			tcpm_set_state_cond(port, ready_state(port), sender_response_time);
+>  		} else {
+>  			port->message_id = 0;
+>  			port->rx_msgid = -1;
+> @@ -5398,7 +5407,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  				tcpm_set_state_cond(port, hard_reset_state(port), 0);
+>  			else
+>  				tcpm_set_state_cond(port, hard_reset_state(port),
+> -						    PD_T_SENDER_RESPONSE);
+> +						    sender_response_time);
+>  		}
+>  		break;
+>  
+> @@ -5409,8 +5418,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  			port->send_discover = true;
+>  			port->send_discover_prime = false;
+>  		}
+> -		tcpm_set_state_cond(port, DR_SWAP_SEND_TIMEOUT,
+> -				    PD_T_SENDER_RESPONSE);
+> +		tcpm_set_state_cond(port, DR_SWAP_SEND_TIMEOUT, sender_response_time);
+>  		break;
+>  	case DR_SWAP_ACCEPT:
+>  		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
+> @@ -5444,7 +5452,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  			tcpm_set_state(port, ERROR_RECOVERY, 0);
+>  			break;
+>  		}
+> -		tcpm_set_state_cond(port, FR_SWAP_SEND_TIMEOUT, PD_T_SENDER_RESPONSE);
+> +		tcpm_set_state_cond(port, FR_SWAP_SEND_TIMEOUT, sender_response_time);
+>  		break;
+>  	case FR_SWAP_SEND_TIMEOUT:
+>  		tcpm_set_state(port, ERROR_RECOVERY, 0);
+> @@ -5475,8 +5483,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  		break;
+>  	case PR_SWAP_SEND:
+>  		tcpm_pd_send_control(port, PD_CTRL_PR_SWAP, TCPC_TX_SOP);
+> -		tcpm_set_state_cond(port, PR_SWAP_SEND_TIMEOUT,
+> -				    PD_T_SENDER_RESPONSE);
+> +		tcpm_set_state_cond(port, PR_SWAP_SEND_TIMEOUT, sender_response_time);
+>  		break;
+>  	case PR_SWAP_SEND_TIMEOUT:
+>  		tcpm_swap_complete(port, -ETIMEDOUT);
+> @@ -5574,8 +5581,7 @@ static void run_state_machine(struct tcpm_port *port)
+>  		break;
+>  	case VCONN_SWAP_SEND:
+>  		tcpm_pd_send_control(port, PD_CTRL_VCONN_SWAP, TCPC_TX_SOP);
+> -		tcpm_set_state(port, VCONN_SWAP_SEND_TIMEOUT,
+> -			       PD_T_SENDER_RESPONSE);
+> +		tcpm_set_state(port, VCONN_SWAP_SEND_TIMEOUT, sender_response_time);
+>  		break;
+>  	case VCONN_SWAP_SEND_TIMEOUT:
+>  		tcpm_swap_complete(port, -ETIMEDOUT);
+> @@ -5656,23 +5662,21 @@ static void run_state_machine(struct tcpm_port *port)
+>  		break;
+>  	case GET_STATUS_SEND:
+>  		tcpm_pd_send_control(port, PD_CTRL_GET_STATUS, TCPC_TX_SOP);
+> -		tcpm_set_state(port, GET_STATUS_SEND_TIMEOUT,
+> -			       PD_T_SENDER_RESPONSE);
+> +		tcpm_set_state(port, GET_STATUS_SEND_TIMEOUT, sender_response_time);
+>  		break;
+>  	case GET_STATUS_SEND_TIMEOUT:
+>  		tcpm_set_state(port, ready_state(port), 0);
+>  		break;
+>  	case GET_PPS_STATUS_SEND:
+>  		tcpm_pd_send_control(port, PD_CTRL_GET_PPS_STATUS, TCPC_TX_SOP);
+> -		tcpm_set_state(port, GET_PPS_STATUS_SEND_TIMEOUT,
+> -			       PD_T_SENDER_RESPONSE);
+> +		tcpm_set_state(port, GET_PPS_STATUS_SEND_TIMEOUT, sender_response_time);
+>  		break;
+>  	case GET_PPS_STATUS_SEND_TIMEOUT:
+>  		tcpm_set_state(port, ready_state(port), 0);
+>  		break;
+>  	case GET_SINK_CAP:
+>  		tcpm_pd_send_control(port, PD_CTRL_GET_SINK_CAP, TCPC_TX_SOP);
+> -		tcpm_set_state(port, GET_SINK_CAP_TIMEOUT, PD_T_SENDER_RESPONSE);
+> +		tcpm_set_state(port, GET_SINK_CAP_TIMEOUT, sender_response_time);
+>  		break;
+>  	case GET_SINK_CAP_TIMEOUT:
+>  		port->sink_cap_done = true;
+> @@ -7109,6 +7113,18 @@ static void tcpm_fw_get_timings(struct tcpm_port *port, struct fwnode_handle *fw
+>  	ret = fwnode_property_read_u32(fwnode, "sink-bc12-completion-time-ms", &val);
+>  	if (!ret)
+>  		port->timings.snk_bc12_cmpletion_time = val;
+> +
+> +	ret = fwnode_property_read_u32(fwnode, "pd2-sender-response-time-ms", &val);
+> +	if (!ret)
+> +		port->timings.pd2_sender_response_time = val;
+> +	else
+> +		port->timings.pd2_sender_response_time = PD_T_PD2_SENDER_RESPONSE;
+> +
+> +	ret = fwnode_property_read_u32(fwnode, "pd3-sender-response-time-ms", &val);
+> +	if (!ret)
+> +		port->timings.pd3_sender_response_time = val;
+> +	else
+> +		port->timings.pd3_sender_response_time = PD_T_PD3_SENDER_RESPONSE;
+>  }
 
+I can't see the whole thread, but I guess those properties were
+okay(?).
+
+thanks,
+
+-- 
+heikki
 
