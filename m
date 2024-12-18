@@ -1,161 +1,198 @@
-Return-Path: <stable+bounces-105188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9359F6C44
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 18:21:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A709F6C40
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 18:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A01297A2D09
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 17:20:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB6C164461
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 17:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E2D1FA276;
-	Wed, 18 Dec 2024 17:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5F01FA82B;
+	Wed, 18 Dec 2024 17:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b="VQ9+bZR1"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QTi8A6J1"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2056.outbound.protection.outlook.com [40.107.95.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1581F76B1
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 17:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926521FA17F;
+	Wed, 18 Dec 2024 17:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734542442; cv=pass; b=aZO1gqo2ZN+KFl6yLEn5JbI0EHf2F2nMab0XMMm9UK5WanGEKBQYTLZmpHDTM2+23n0m0WtiD3GmQMioMwfoqgNF1amEYrdAq6kBt1sfkYTasvPYTk9MEf0MESz3dKHkIKhKe93s9Sz1j7hgWkam+rU65Tmu06IfCtJcgRu9qD8=
+	t=1734542447; cv=fail; b=kosGtgwoywjO0G5I5pPBcz2JZQvbadRgUPbt6/U51DLfgud9BDAqSe2CmiWmHaWvhmWUvF3RY/2ugZOvQiavxl6gAERk8hj0vdymDB+yPi8olKtqWNDoR/8EEryk+XNAGGCp/CLqmAMZQeSRK5vRZ2XtTl1GbYbF6KaXqjoWGJU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734542442; c=relaxed/simple;
-	bh=SPE8jIddQj17389fpan4Nw9u/C3PsTO0Q68sLwlaw1U=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=l7CtS5ryaRnF4AiYMhJIFg7aef9dinDW2n50F2x6D4J1wI3KVRVmSLVT6C+IAd97t9X5yi6bbfpGUw3DRV8wNmHkT4aAtdC55D/i1NP+t/zxDY+mvZ7aQCfjUNKEwzoEAlzzSroIlBmWjIZi/+4fVFWlTPXIbGrmNYwHTYCLrwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=gus@collabora.com header.b=VQ9+bZR1; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1734542429; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=jOQNlyghNXRUGwjIuWZZdto2N8sdKb8Q30hV/cfATeG4Q7hlfvvPyPrYVxey2oLpkofUig/r28UEnqTLngBXt6Iz48TOF/e5Qrdmlc0ypEMSNyP5cXgwP4oG/nCwBtGe2DwNko3eccKnshpMujpl2KkZdeFCVOjtKV6Ua7p2njw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1734542429; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=VjDFPEwEhN6J4PfPqdTiVLuUpQAbHXV2mLHR8NNuWz8=; 
-	b=HfGRb7dF3wHaRXj9n5cBGigq0ObfgmS4UT6lW5H5LDeikbfpshL7D2/60/fvW9JGWtCPFjJO+gH/nW5wdpdj7eGx8VlWXCw6LUZXX9UPxpnzGy0AgwjyXWXGnG5l2XVeanAY1dEHGPHQkIbzOhxzSBVE92GNMuE35gAV3a82+JA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=gus@collabora.com;
-	dmarc=pass header.from=<gus@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1734542429;
-	s=zohomail; d=collabora.com; i=gus@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=VjDFPEwEhN6J4PfPqdTiVLuUpQAbHXV2mLHR8NNuWz8=;
-	b=VQ9+bZR1JGvMOyJHIC1HO0R1JP4VyN8+Vcw9BFW1QTwMo51fdBR06CBFGG77XYpg
-	GvclmNRFfrcIdx7t7qrQHUZuzeRi8o6MfJZYoPI0FVBEuthGmousYwGCpFqknPRwncH
-	drJCHImO/ioiLuTXJhJ+3WYYJOe8axyoyOCCEYT4=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1734542427426775.2300171264964; Wed, 18 Dec 2024 09:20:27 -0800 (PST)
-Date: Wed, 18 Dec 2024 14:20:27 -0300
-From: Gustavo Padovan <gus@collabora.com>
-To: "Sasha Levin" <sashal@kernel.org>
-Cc: "Greg KH" <gregkh@linuxfoundation.org>,
-	"kernelci lists.linux.dev" <kernelci@lists.linux.dev>,
-	"stable" <stable@vger.kernel.org>,
-	"Engineering - Kernel" <kernel@collabora.com>,
-	"Muhammad Usama Anjum" <usama.anjum@collabora.com>
-Message-ID: <193dac90503.b68e06472045980.8166399130362883257@collabora.com>
-In-Reply-To: <Z2LtivhNCqY3WiJU@lappy>
-References: <193d4f2b9cc.10a73fabb1534367.6460832658918619961@collabora.com>
- <2024121731-famine-vacate-c548@gregkh>
- <193d506e75f.b285743e1543989.3693511477622845098@collabora.com>
- <2024121700-spotless-alike-5455@gregkh>
- <Z2GWCli0JpaRyTsp@lappy>
- <193d562463b.1195519191587461.735892529383555996@collabora.com> <Z2LtivhNCqY3WiJU@lappy>
-Subject: Re: add 'X-KernelTest-Commit' in the stable-rc mail header
+	s=arc-20240116; t=1734542447; c=relaxed/simple;
+	bh=5wOPes6EZr54GF3aK+gFbeWDqqimKD73JA9dECpmCTM=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=GeoHwxpvVZZGOPkIO36qAInTYgXzvtJ44p/WPZwdTmtIfMQxyzc3WX8i9GwMDI7Mjak1izytkmPiwio2YZ/S8tuaRa8nZ9AJVS1D3AdUHz+fjRFMuz7i8eD4gcyJNZoUIjSVZH5JItGgYq4XLSA5jX4ifeuhoNZWvn27FCbkIoY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QTi8A6J1; arc=fail smtp.client-ip=40.107.95.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zHObqWM1N5hPJUq/DPSYSK8y1d0zmPG78h/v8zN9nReCLS6sDqR1GNegX/IJAdDufJoGwAnLrKSKt1CT+8WpAv4qRELvTLKXHXMoKLAVNjDFNnvNNTK0nEMvS9kP5gkuQ0i6pyX0+X5W3fZiC77L/7rT1yFPsCkyD91q1opsS1LEb2nAI7RA8f8jLi/dlyQKHivubkKI+DG/weSahewysHeqBppcC9SrkQsR9BXZOyNU18A2Gs55NVR9EOBf0GvxHOt0c1ByPJx0vg3eHIcJdntpM3f2sxps03RW3vWAhE5nVxpKMJiSQ5BYWtQwh9g4jcyB7u3OsHm//PHLxtyjzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o09AX15zx+1jfUdh1oaQYp4INT35yKSL8NicKisGXpM=;
+ b=mv8C2oMWyIF57y921Vth8seuGyNBUiYRl2UK70Q8eSP/MeRL+OBmT46PA7K+L+XZL2SHS4AE7d6A1oBH7p0G3o/Sx5oq/c6auDYniZbgIWRtLNCFQNevARPO8V3dSZdZNZ9xpm74j7zlhfH3JWuADwV7bP9xYsJlu542UT+Jjl3WWY7Ak/hFRDUa3Ak+fIKrXsMd3yOlr/dOA347ouGdAEbMbJPNUmpXzKg4+5djjfkpdVXNon4i74iLhIdlZ52zNIcPyhOT7ifoGNS4aFdz0+mJ19jRfQwp38/Hn+qIEKXF4yVrRN5pGd+1GNUY5OpIfJmYipx4bJI/tpg0MQDshA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o09AX15zx+1jfUdh1oaQYp4INT35yKSL8NicKisGXpM=;
+ b=QTi8A6J1UvYY2neRLZ498ltzABxmak+JVvXUK9ssoQ3ZSYoOoSrlM//3wi7s5r2UAwj+YZQFCbWYvoL0r8tY5WOUHS05wR99iS3/UWCUTKLl2tfZaOeuWHVEnQRShLOzq0M9+f2Z0IbRf8SBniAIuxKQ1dCBLMx/PP8JpQ2DLT3395GRh3b1OVx/NYVnfwQH+VER/5F0q4dKHiOne96V90lnTwo9Uuy7VSJmhv8oE6gc+NXkvz2u7Kjtjq13/zk+1RNtCvrKsT69CwERoxK9XbO+xHh08yrgEJS0mY3EImdwzzu+hiBQgxsy5kGAkBAJEBoCKAViaR5nysoroAZXqA==
+Received: from PH7PR02CA0004.namprd02.prod.outlook.com (2603:10b6:510:33d::7)
+ by DS0PR12MB8272.namprd12.prod.outlook.com (2603:10b6:8:fc::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8272.13; Wed, 18 Dec 2024 17:20:40 +0000
+Received: from SN1PEPF000252A4.namprd05.prod.outlook.com
+ (2603:10b6:510:33d:cafe::72) by PH7PR02CA0004.outlook.office365.com
+ (2603:10b6:510:33d::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.23 via Frontend Transport; Wed,
+ 18 Dec 2024 17:20:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ SN1PEPF000252A4.mail.protection.outlook.com (10.167.242.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8251.15 via Frontend Transport; Wed, 18 Dec 2024 17:20:40 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 18 Dec
+ 2024 09:20:28 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Wed, 18 Dec 2024 09:20:28 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Wed, 18 Dec 2024 09:20:28 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.4 00/24] 5.4.288-rc1 review
+In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
+References: <20241217170519.006786596@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Message-ID: <3bce8da8-b79f-4ffa-ac80-6014639af721@drhqmail203.nvidia.com>
+Date: Wed, 18 Dec 2024 09:20:28 -0800
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000252A4:EE_|DS0PR12MB8272:EE_
+X-MS-Office365-Filtering-Correlation-Id: 288bd12f-2dcb-43df-9c06-08dd1f884bd5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|7416014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eXVtbVJEM0F2ZWU1dmVwcEswR29oMUYwcXFsMFR0ZXJmQU5Oa3h5eHdoZ3cy?=
+ =?utf-8?B?N3JRRjlOdFBWR2crT3lKU0tqRnRmODVVZFNTN2wxMCtqVEVLWFFDODJja0hx?=
+ =?utf-8?B?YmJmM25TNXVlVEYvamd2NkVzbGduMTM2dWZocmN5YTh0dnYxdCtqRXZFL2kz?=
+ =?utf-8?B?SG9zVEhnVTl6L3pUcUZhSHlvUXZrcVk2REtUbXF4NkdBdlhhUVhobnlaQ3pP?=
+ =?utf-8?B?VUpVcC80a3dUbUhGRFJYL0NpVkJrRVcxdS81aFZlVzRHbDU1Wk1FS2ZTamJh?=
+ =?utf-8?B?aVN5aXZmYVFqYXZudER0eG1heXJTMm5VUDllcmIwdnV0Rkloby9wNHJ4QU9C?=
+ =?utf-8?B?RVhpZzdmeXZzT0dsOUZZdjZNbUdXUUZmRklNdXZDYnU3d2dmVGVFc3BwOEY4?=
+ =?utf-8?B?U3VMMlJTczZFTHVJdjlNTzdEZi8yRzFqT2oyTjdYQjRkWHNCYmJuWlNQc3Er?=
+ =?utf-8?B?eCtydkRDODdBejR2RWVla2VEcXRUdGREM0tYcCszU0E5VHF2dXN2cHAyU3I0?=
+ =?utf-8?B?NXR3M0hFcUNIWGNVWDZBUjBVVmxPbklWRGxHekRoUWdvTUd4RVpqa3RDbWNX?=
+ =?utf-8?B?c21hRUd4NjY0L1h2K0ZKRCthUGs4NXd6UHRTSzNuOVdoTGJQWllWam9rbUM5?=
+ =?utf-8?B?emhtbVQ1amFTSWJQTXFsTjVQQUgxWTQrVnkxU1hvK1lNZmJKcEFEcTN2aHRk?=
+ =?utf-8?B?TUVqbFU5eUpTS0xHVG5jcHNPVDNMRk1WK0M2R1ZLK0hwVjdSUDFiV1RqZzhy?=
+ =?utf-8?B?OWthQlh0V01hdWovWkp5K1BnVGFCK0IrUTcwVEM3emJXZ21BcVM4YzVGTnBw?=
+ =?utf-8?B?L1c0YlpIaEp6N0NpVUZ2WEZBNlRBT2pIdGY3MnptQVhqQnBWWWhEMzFMck1a?=
+ =?utf-8?B?UVZGRHNpYytlbFZMVUxSbERYdVVSaG1YYkR1M0MzaHB4OERZbklWbFUvVVpK?=
+ =?utf-8?B?QklGMlpiUkVPOFhsb2t5OFFyMkZQNGJSaHVoL2dueUYvbWE1cE5UNHJqT1d3?=
+ =?utf-8?B?NmtPM0h0WVZuQVg5KzdBcEdYWW5wT3hTTnBGQlE1Z3pnb0haUkROYXBhZ0tX?=
+ =?utf-8?B?SU5SdTZKNDB4NDJhakJxbVhvQTB4SCtiUFBHb0xKcmxRNzgvYmkxbmk1SHBy?=
+ =?utf-8?B?L3QwQVhxdnNqZDNNci9nbGU2TTlLajZLL2VlRWtYb2crTVBWMXdVb1FUdHdy?=
+ =?utf-8?B?MzAyd1IwalkxUk9JbSs0a3V5cXFFQXBWMmRnT2pxbHNyMjE0TlZDdWdJaCtN?=
+ =?utf-8?B?S2lhWkxPc1FGWUNVUHAyaUNuK0tObGQzelR6V0c4VXRGMGJBZGNjbUJnVVN1?=
+ =?utf-8?B?VmlUaWo3aEdyQUMyTnlxdzY3THJuaURXZzF2RDBCd0p2NUxJV1Jva0NSN2JT?=
+ =?utf-8?B?TmdZWm11aWdVei9LSmY3aEtVV2dyUlQxdE5wd0FScnlJR0ZvMHE2aWtmQ1JR?=
+ =?utf-8?B?a0wvejVvYVFlUzZ0Z0tpZnQ0U2M3N2FCVXZvWWVMUkZXbTB2US9PNUZSNWJS?=
+ =?utf-8?B?WGRLM1RnYnBzUWo0QllxNjROSHpiQzg5bXFtOFNDZGJ2YS92OCtZNnJteE5T?=
+ =?utf-8?B?MHBmN2RRTGcrTlFWSUcvSnl2dlk0azhBcWtoUENLN09FQy9jTStYR0x5QVZ1?=
+ =?utf-8?B?TlRwYU10aGcwZ3oxV0tlNU9GcnNENlpocU12bytLdFh2NTNzd3lJY2h0Qjln?=
+ =?utf-8?B?YVJqd2FOcHNmS004MjJJa2ttdU80cmJCRHJCUzBCMVc0cmhPbm80cUJ5TkFu?=
+ =?utf-8?B?MkJPdUplVmVWQlAzaEhoZGFkSjd5ZXlLdzgraHowSkdENGs5VE1RcDNROCt4?=
+ =?utf-8?B?OFQ1U2FINVBBVHQ0NE9yWTJkc1JETlN6RzlXeVMvdENrZkR2bEhkMnY2K3Ja?=
+ =?utf-8?B?UHpaak4wT1NxcFcwZ1Fremhxc0ZrQVRxNWM1UXJ6SkxmQ3BWRGtUYmlqUHB4?=
+ =?utf-8?B?YTc2RlRxZEYraDJJYjdXa09YQWpNc1lJM2JOK2lQV2UyZkRuRElRSmV6b3FJ?=
+ =?utf-8?Q?smNPcZJw+6YbOFshBolLMUOrMi4WpI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(7416014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2024 17:20:40.3532
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 288bd12f-2dcb-43df-9c06-08dd1f884bd5
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000252A4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8272
 
+On Tue, 17 Dec 2024 18:06:58 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.288 release.
+> There are 24 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 19 Dec 2024 17:05:03 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.288-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
+All tests passing for Tegra ...
 
----- On Wed, 18 Dec 2024 12:43:06 -0300 Sasha Levin  wrote ---
+Test results for stable-v5.4:
+    10 builds:	10 pass, 0 fail
+    24 boots:	24 pass, 0 fail
+    54 tests:	54 pass, 0 fail
 
- > On Tue, Dec 17, 2024 at 01:10:07PM -0300, Gustavo Padovan wrote: 
- > > 
- > > 
- > >---- On Tue, 17 Dec 2024 12:17:30 -0300 Sasha Levin  wrote --- 
- > > 
- > > > On Tue, Dec 17, 2024 at 03:49:53PM +0100, Greg KH wrote: 
- > > > >On Tue, Dec 17, 2024 at 11:30:19AM -0300, Gustavo Padovan wrote: 
- > > > >> 
- > > > >> 
- > > > >> ---- On Tue, 17 Dec 2024 11:15:58 -0300 Greg KH  wrote --- 
- > > > >> 
- > > > >>  > On Tue, Dec 17, 2024 at 11:08:17AM -0300, Gustavo Padovan wrote: 
- > > > >>  > > Hey Greg, Sasha, 
- > > > >>  > > 
- > > > >>  > > 
- > > > >>  > > We are doing some work to further automate stable-rc testing, triage, validation and reporting of stable-rc branches in the new KernelCI system. As part of that, we want to start relying on the X-KernelTest-* mail header parameters, however there is no parameter with the git commit hash of the brach head. 
- > > > >>  > > 
- > > > >>  > > Today, there is only information about the tree and branch, but no tags or commits. Essentially, we want to parse the email headers and immediately be able to request results from the KernelCI Dashboard API passing the head commit being tested. 
- > > > >>  > > 
- > > > >>  > > Is it possible to add 'X-KernelTest-Commit'? 
- > > > >>  > 
- > > > >>  > Not really, no.  When I create the -rc branches, I apply them from 
- > > > >>  > quilt, push out the -rc branch, and then delete the branch locally, 
- > > > >>  > never to be seen again. 
- > > > >>  > 
- > > > >>  > That branch is ONLY for systems that can not handle a quilt series, as 
- > > > >>  > it gets rebased constantly and nothing there should ever be treated as 
- > > > >>  > stable at all. 
- > > > >>  > 
- > > > >>  > So my systems don't even have that git id around in order to reference 
- > > > >>  > it in an email, sorry.  Can't you all handle a quilt series? 
- > > > >> 
- > > > >> We have no support at all for quilt in KernelCI. The system pulls kernel 
- > > > >> branches frequently from all the configured trees and build and test them, 
- > > > >> so it does the same for stable-rc. 
- > > > >> 
- > > > >> Let me understand how quilt works before adding a more elaborated 
- > > > >> answer here as I never used it before. 
- > > > > 
- > > > >Ok, in digging, I think I can save off the git id, as I do have it right 
- > > > >_before_ I create the email.  If you don't do anything with quilt, I 
- > > > >can try to add it, but for some reason I thought kernelci was handling 
- > > > >quilt trees in the past.  Did this change? 
- > > > 
- > > > What if we provide the SHA1 of the stable-queue commit instead? This 
- > > > will allow us to rebuild the exact tree in question at any point in the 
- > > > future. 
- > > 
- > >Yeah, future-compatibility sounds better. As long as we have a git tree, a SHA1 
- > >and can match that to the test execution in KernelCI it works. 
- > > 
- > >Is that SHA1 different from the one in the stable-rc release? 
- >  
- > Yeah - it's a different repo that hosts the quilt series. 
- >  
- > We won't find that SHA1 in any of the kernel/stable repos we use, but we 
- > know how to recreate the exact kernel tree with the stable-queue SHA1. 
+Linux version:	5.4.288-rc1-gb66d75b25fae
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
-I just looked into the stable-queue repo. I was clueless about the fact that it is
-not a kernel tree. So passing that SHA1 to pull results from KernelCI won't work
-obviously.
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-I think we have to go back to Greg's suggestion of sticking the head SHA1 of
-the generated tree into 'X-KernelTest-Commit' just before you send the email
-and delete the local copy.
-
-That will get us going and then later we can revisit the approach if needed.
-
-Thanks,
-
-- Gus
-
-
-
+Jon
 
