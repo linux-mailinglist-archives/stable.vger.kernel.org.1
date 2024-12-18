@@ -1,121 +1,126 @@
-Return-Path: <stable+bounces-105082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986E99F5AEE
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 01:03:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6415A9F5B09
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 01:06:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E206716242B
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 00:03:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C45188D4BA
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 00:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F8714AD2B;
-	Wed, 18 Dec 2024 00:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785B53596A;
+	Wed, 18 Dec 2024 00:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="pY3ZflW9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hXpqhgBf"
 X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-ztdg06011201.me.com (mr85p00im-ztdg06011201.me.com [17.58.23.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CFF149C7A
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 00:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6389B35949
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 00:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734480153; cv=none; b=cnN0vD1hHk1PcfjAHyQESc4hl+3J+Eo/A3/jrCLDfgNZEfwA2N8emRKoYN+iKWhcgZxeGPkDlp9jUFuf5hPXYn4YqmsgoSe258XLGvT/hAfD6kOMZC9GXRJe6K71tqMYOPCQAjxMIkoTciRGWBRAHr5BeSxxiAkXtUX9OpzyqM8=
+	t=1734480186; cv=none; b=oC/CKSVayqy2UgKjAr6ceawtWNoSP7D2IdSt3infImSBdgd9FNam6sqcOCuCxS2LxBDhjBcecjPeon2BDfIfV9cja+wBEKde9IIZyndsi5nu4sdFR29wMsAp5zmFoWnS+ZBpiUPq+Wb0lKTc9gkPPaMefIXD6fmsrPFmnQsYdqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734480153; c=relaxed/simple;
-	bh=v2UDBGjNX/TBVEEyZ+l09JjXrifkZ0al8qUGlpvaJ5I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LtpyJhWuUiOdt4BTo0DBHPkt9bTKhsCq+K2hk2w3GEqbvAj1pIv6hojiKEsaazz9ZihYUrpKN8s3QNz8dSSWwadu9mx/rMyOyT21IfX1e3AXGbSP0zrYbQhN2XDS0yxPAaQMo/HWftbUk5VXWkChkJx2qgesWTYpVC1F3xxyNrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=pY3ZflW9; arc=none smtp.client-ip=17.58.23.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1734480151;
-	bh=/xL/Yze+0QjxeSoIHE+CFVDh+nPc165CBlyFJrejgkI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=pY3ZflW9atnEjrr9EIzDbuL9ZSgDGxe828AAJGy9cs9HGiCB5xKrQcpBGka6yldc8
-	 68k2kzxpFFozC3+D9tWJ2MUVixANz8MK1wRR8HUlmympWp5MGsvh7VU5zUJhvwlDmM
-	 yc6DEZkySYFqhjGDGBLq/HDPKEdODAuzaBKQ123AvVa8+J0atiRLLOIZ4BsxCRCFAi
-	 2rXntuKzFXIwFJmA0KTN/l5MQKmZEm4R2zFKQqsGjgf4FC32YPMFEUJIkXZopIyWQy
-	 ex9xev3bIrtW0SHcFQSfSAxMzcGSD198TNg2yqx1DmFqHQQOdkWICpqiXUd9l7LfFm
-	 pDOoCYJ7mKF0A==
-Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06011201.me.com (Postfix) with ESMTPSA id CBD979602BB;
-	Wed, 18 Dec 2024 00:02:24 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Wed, 18 Dec 2024 08:01:32 +0800
-Subject: [PATCH v4 2/8] blk-cgroup: Fix class @block_class's subsystem
- refcount leakage
+	s=arc-20240116; t=1734480186; c=relaxed/simple;
+	bh=TzqYrtdHi6eNGmGGNshxzQLbW6aEixLNXnqSldxiIL8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kf89Y8CTognpTG9DQyLdQeWDl+D2AzjM6HVcBbpt9+4UgbiZrYVyKF1HyDfgEZaS+Gu1e5NYfgAPhaSQttIcjxivfEFLVzLtTu4iF9TzFFnvUNGm6Ca1LMZa3JvXDz4y3Qr8gtO+tHnmpy0oumSk7itbWqgD9sOGFYWunjOwF3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hXpqhgBf; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d122cf8dd1so9887422a12.2
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 16:03:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1734480182; x=1735084982; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=JV+w9s52Xx8eRNhj+xW1leokp3ZTDX6dKUvSrTDSBw8=;
+        b=hXpqhgBf/JJoeGeu7NHw5A/7+Gn+ZQgJjWhNbcU/RV7mrHdIkKA3SCZekgbXfJGpUT
+         axDFz74V2XXTyI1fmZ3Jme5KCoNB+FI6PmPJ1sWzBQEYO1WBpFsf+j6Iqnw69RvGxBVL
+         4AYuuHxLyIZCKpdbFPCtXEFJ/6G+/EpiKthq0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734480182; x=1735084982;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JV+w9s52Xx8eRNhj+xW1leokp3ZTDX6dKUvSrTDSBw8=;
+        b=o86a/blNtsh2a6/kJWMe4eWBJ2D/KcLlsRK2mNlsK4Fd0hmpg8ctc0w6K2E7fX2SEi
+         MbG+KwrApnKv55uba59y+mw6HgVv0mK3kY3Upkfxl1cicV0x4JCfAesVrI5nmrkajVfd
+         Ur2ZmYEipwKxlMHO8ZDtkEc9wbPcHgQwiK8P0/Pgp8rKLjPk2uMdRyvjfNgwx4ogbPRn
+         CQQqtopqa2Yj33ORTelSWQOjrmaFGwXvakLQVBZEMkKkYlKb517gxnBrck37M5Bm0Ru0
+         +KYEuds73wvcFVoQT0WjqSeKlJ00/A6ardk1DzlijhZo0FeW+nJISiZW3CUxeEHu83Ig
+         XcvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOxeRQ4mmfTrBWBE6ZnBZ93WmTKhZvyOWUg5Bpwz3nEl9wa77rTHYWEspwhi6YwCAFdZDIYOo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZhiCwNfeADnpTGcSCVLUtAQQvAOL2W0j7OQcpZu53LXC0LBXJ
+	vpNkEBhT9DoMnbzUwvtFVcXayhUBj2ww1etZfBqUSImDhv/vgcpNMIjhPWGGGqMSvkbeDmhCght
+	RvIU=
+X-Gm-Gg: ASbGncsNb2uHAZy8C9I52beUFjXrXbXXxMZyLEdfvqh1QLAN+E/hkTsls4RMQQAgkki
+	OVpeFhyrWOueA4nZ7fHICBKdP1V//Zj2HzVHioyygLicVbpypHMZniCYhe9RqfTH20vA1IF+GBT
+	Dky6+yj+5T2breZE9ybZsR707TI4ddLlmS6y5ZoW/S8qQZxtpRQD1eHJZzO1e9SQ4XBusOvJ2rJ
+	iSg9wcM8+xfrXq48MwwTRJlJZWRGFnv9wSANkoCx96WwVmZT/i2BpMzKolqiaBqHv1mtNlOWK4d
+	/xGDFViXeQFDP47KN/bsfpLDLH0bWbY=
+X-Google-Smtp-Source: AGHT+IH9j5qaAsW9elzamJbuPQOs9nvK1pi59+dadiRtvU9nQMfb1jqjOPnqnPcmhSQohDqKR7/KiA==
+X-Received: by 2002:a17:907:d01:b0:aa6:a501:9b3b with SMTP id a640c23a62f3a-aabf475906bmr49789866b.19.1734480182389;
+        Tue, 17 Dec 2024 16:03:02 -0800 (PST)
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aab96069d06sm494994066b.77.2024.12.17.16.03.01
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Dec 2024 16:03:01 -0800 (PST)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5d3d2a30afcso10228137a12.3
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 16:03:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWRKcCc3PjP6Sk5Z8d558ac207s+P2paQ2neP5LHb/FHexsFfM6sV+LUCdTlr2W9784MIcUW0k=@vger.kernel.org
+X-Received: by 2002:a17:907:3e8c:b0:aa6:650f:cf35 with SMTP id
+ a640c23a62f3a-aabf48d50ecmr51073266b.47.1734480171482; Tue, 17 Dec 2024
+ 16:02:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241218-class_fix-v4-2-3c40f098356b@quicinc.com>
-References: <20241218-class_fix-v4-0-3c40f098356b@quicinc.com>
-In-Reply-To: <20241218-class_fix-v4-0-3c40f098356b@quicinc.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Tejun Heo <tj@kernel.org>, 
- Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>, 
- Boris Burkov <boris@bur.io>, Davidlohr Bueso <dave@stgolabs.net>, 
- Jonathan Cameron <jonathan.cameron@huawei.com>, 
- Dave Jiang <dave.jiang@intel.com>, 
- Alison Schofield <alison.schofield@intel.com>, 
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Dan Williams <dan.j.williams@intel.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
- cgroups@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-cxl@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Proofpoint-ORIG-GUID: OO8FJ9GKUHIVtIi_MadGQBRzJ2KI06yY
-X-Proofpoint-GUID: OO8FJ9GKUHIVtIi_MadGQBRzJ2KI06yY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-17_12,2024-12-17_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
- malwarescore=0 adultscore=0 bulkscore=0 clxscore=1015 spamscore=0
- mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412170183
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+References: <20241217173237.836878448@goodmis.org> <20241217173520.314190793@goodmis.org>
+ <CAHk-=wg5Kcr=sBuZcWs90CSGbJuKy0QsLaCC5oD15gS+Hk8j1A@mail.gmail.com>
+ <20241217130454.5bb593e8@gandalf.local.home> <CAHk-=whLJW1SWvJTHYmdVAL2yL=dh4RzMuxgT7rnksSpkfUVaA@mail.gmail.com>
+ <20241217133318.06f849c9@gandalf.local.home> <CAHk-=wgi1z85Cs4VmxTqFiG75qzoS_h_nszg6qP1ennEpdokkw@mail.gmail.com>
+ <20241217140153.22ac28b0@gandalf.local.home> <CAHk-=wgpjLhSv9_rnAGS1adekEHMHbjVFvmZEuEmVftuo2sJBw@mail.gmail.com>
+ <20241217144411.2165f73b@gandalf.local.home> <CAHk-=whWfmZbwRmySSpOyYEZJgcKG3d-qheYidnwu+b+rk6THg@mail.gmail.com>
+ <20241217175301.03d25799@gandalf.local.home> <CAHk-=wg9x1Xt2cmiBbCz5XTppDQ=RNkjkmegwaF6=QghG6kBtA@mail.gmail.com>
+In-Reply-To: <CAHk-=wg9x1Xt2cmiBbCz5XTppDQ=RNkjkmegwaF6=QghG6kBtA@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 17 Dec 2024 16:02:34 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgdFnwBD9odfSBz2zjedw1oWKKO3F46YAC_puE4b9J6JQ@mail.gmail.com>
+Message-ID: <CAHk-=wgdFnwBD9odfSBz2zjedw1oWKKO3F46YAC_puE4b9J6JQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] ring-buffer: Add uname to match criteria for
+ persistent ring buffer
+To: Steven Rostedt <rostedt@goodmis.org>, Alexei Starovoitov <ast@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Tue, 17 Dec 2024 at 15:32, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> But if you look more closely, you'll see that the way the buffer is
+> managed is actually not as a word array at all, but using
+>
+>         char *str, *end;
+>
+> instead of word pointers.
 
-blkcg_fill_root_iostats() iterates over @block_class's devices by
-class_dev_iter_(init|next)(), but does not end iterating with
-class_dev_iter_exit(), so causes the class's subsystem refcount leakage.
+Oh, and in addition to the smaller-than-int types ('%c' and '%hd'
+etc), pointers that get dereferenced also get written as a byte string
+to that word array. There might be other cases too.
 
-Fix by ending the iterating with class_dev_iter_exit().
+So it's really a fairly odd kind of "sometimes words, sometimes not"
+array, with the size of the array given in words.
 
-Fixes: ef45fe470e1e ("blk-cgroup: show global disk stats in root cgroup io.stat")
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- block/blk-cgroup.c | 1 +
- 1 file changed, 1 insertion(+)
+That binary printf is very strange.
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index e68c725cf8d975f53703ecf6e6c50594076204c8..fb9858efdfe9443704cb9a239def0e08addf2518 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1138,6 +1138,7 @@ static void blkcg_fill_root_iostats(void)
- 		blkg_iostat_set(&blkg->iostat.cur, &tmp);
- 		u64_stats_update_end_irqrestore(&blkg->iostat.sync, flags);
- 	}
-+	class_dev_iter_exit(&iter);
- }
- 
- static void blkcg_print_one_stat(struct blkcg_gq *blkg, struct seq_file *s)
-
--- 
-2.34.1
-
+               Linus
 
