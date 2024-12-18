@@ -1,302 +1,352 @@
-Return-Path: <stable+bounces-105140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C0C19F624D
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 11:03:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A449F62B5
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 11:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0821885A4B
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 10:03:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF80B7A5EDA
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 10:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7E7197556;
-	Wed, 18 Dec 2024 10:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D4419AD93;
+	Wed, 18 Dec 2024 10:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a5HoYhFx"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tO5xC67j"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310E7126F1E;
-	Wed, 18 Dec 2024 10:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41362198E75
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 10:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734516229; cv=none; b=rTvfFmCnxxCXCEe2qYKp1J+OJFebVuGVVpZaxB/3W7r1KeoCpvtxf20+EzHdNcKvS6Zf2zyunv0TvoTv2GyjAGFVg8qj8Jq0LdOg/vK5eF8l+x2lnP2++Pm55fec/rykvf0X6R+M62Wr2mkCdrPLQRWOsRp80e/iMI6O5H9RB4E=
+	t=1734517321; cv=none; b=f2jHG0z87tfPz8oX+xd+vazVVQTgUWgrx9smjQsqWrTTOSEg38ExYEZrahIOFItp1SsWz0/3nVVwSq+SzU1jzzD0He5ldsbWB3ToXOE3vhOwgHrt0yhwJNJthGcn+RqGisoE8SRCY3rEWG9RDCtB2c+qCLJTNmvmPQ7l68I7GTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734516229; c=relaxed/simple;
-	bh=4MW1sRUQw5YWXsGlxupTf64ZpNbnKMtbaoSL0VoG000=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HylqiBvZ/gOlROF7o+PRftambVuRWmFqVNAjFDupBM9qxl4P9q8cCg+ljYEETWHukDTPXOanzR+N6TwKMup2X/1lbqw57hFl6W7scrNM2Wx1oKNWeoeEbur+zmUCJiI8zmZCdkUHEj75Evxu+6YU4C9/TNV9fW3iwQNnAYmHUQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a5HoYhFx; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734516224; x=1766052224;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=4MW1sRUQw5YWXsGlxupTf64ZpNbnKMtbaoSL0VoG000=;
-  b=a5HoYhFx+sy56DKaz+pZpAgYTDyovYl8QWM6Qyw09Lvk8uDxY778N9WK
-   wTXW52J3TN54cm2g1SXRmfZIFuq7RhkXS6j0q3GJXkq+zMOGLdEWxSK8d
-   Y1Deu7Lz57RmKdrh6f5L2WalVIjQ7cY0BVGrHk/POL7o2rugjNlvdnohn
-   g8arK2fHpBBe3uzCM8SfnsNvgcdBw9bBaBMkPSP4TsDowXPM2X7F3XkV4
-   Fm0GVYus6yI3EWZJBn5fEesS9IjwXH2gSOqD3MHZwKY0tYCa9A1qqDNvr
-   YSyu2ajP2Yjm1BeKXG2jKx3r7IDRD3YvKJHBpBdR40bN8D+h4PCI8n+rU
-   Q==;
-X-CSE-ConnectionGUID: dMmGFSVlRqe0gPfVpT/Sfw==
-X-CSE-MsgGUID: VP5n82u5SJ+JXcB9PnhZPA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11289"; a="38658953"
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
-   d="scan'208";a="38658953"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 02:03:42 -0800
-X-CSE-ConnectionGUID: b+KnILdDQxOYL/+3ety8XA==
-X-CSE-MsgGUID: 3wCQ1mRSQBm/mF/csyQRFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
-   d="scan'208";a="97599713"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa006.fm.intel.com with SMTP; 18 Dec 2024 02:03:39 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 18 Dec 2024 12:03:38 +0200
-Date: Wed, 18 Dec 2024 12:03:38 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: joswang <joswang1221@gmail.com>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Jos Wang <joswang@lenovo.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] usb: typec: tcpm: fix the sender response time issue
-Message-ID: <Z2Kd-k5icFTLeJkT@kuha.fi.intel.com>
-References: <20241215125013.70671-1-joswang1221@gmail.com>
+	s=arc-20240116; t=1734517321; c=relaxed/simple;
+	bh=gIRlSuRZXCVhEj1cANdYWbnMlczEkhjziydB+7h0vBM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=frhejdZZjJfRJt2rVG9PiE4zcv82s2qdA5Wl9P1zCqsI1crEgy8GAZZlB673MLcluKt53pQ1uW61tOzhtX2faZeCEOHTt/INsPqyIEr36LDh1czFkxu2louyrI3E8zWXTwFajwuUNk8k8CqfhomeiCC1xedQzLhYNGuGZGhkR8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=tO5xC67j; arc=none smtp.client-ip=203.254.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20241218102156epoutp040857252a24a02f6a1d291d51ed0fe57f~SPk804Ao-0182701827epoutp04Q
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 10:21:56 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20241218102156epoutp040857252a24a02f6a1d291d51ed0fe57f~SPk804Ao-0182701827epoutp04Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1734517316;
+	bh=c5Hrh1CqgGRGngQYGz3bW4B3kn4R23TwdKn6OhVmBlM=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=tO5xC67jRvmmny9C4onzkKEFoIB8LHl6E50vMPV44HvkP6Ty8g7mjFGKPcJCubmGx
+	 I2uLky0Z9wgYByFsw74eeXl/dnHHVXOBvic5VRaQq7xB3KeLFesrxdpF/p2n+29hoe
+	 xZMGqAYnNRfEESk4wtbdRAa83pibIEATEibjO2ZU=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+	20241218102155epcas5p2a693d9b8f80efdb8ea683623acfabea1~SPk8WJTLi3048730487epcas5p2s;
+	Wed, 18 Dec 2024 10:21:55 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.176]) by
+	epsnrtp4.localdomain (Postfix) with ESMTP id 4YCqVB4VM8z4x9Q2; Wed, 18 Dec
+	2024 10:21:54 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+	epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	78.BF.19710.242A2676; Wed, 18 Dec 2024 19:21:54 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20241218102154epcas5p28e40b033d2bb3315847890044b0ae1d5~SPk6sJn-93048730487epcas5p2p;
+	Wed, 18 Dec 2024 10:21:54 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20241218102154epsmtrp2f6d28633267a267a6911c73c4ea03958~SPk6rKZRN3238332383epsmtrp2d;
+	Wed, 18 Dec 2024 10:21:54 +0000 (GMT)
+X-AuditID: b6c32a44-36bdd70000004cfe-96-6762a2421a19
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	73.01.18949.142A2676; Wed, 18 Dec 2024 19:21:53 +0900 (KST)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20241218102151epsmtip21447dda6633480e51d250d30fb0fb357~SPk4J6rJm2783627836epsmtip2I;
+	Wed, 18 Dec 2024 10:21:51 +0000 (GMT)
+Message-ID: <9f16a8ac-1623-425e-a46e-41e4133218e5@samsung.com>
+Date: Wed, 18 Dec 2024 15:51:50 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: gadget: f_midi: Fixing wMaxPacketSize exceeded
+ issue during MIDI bind retries
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: quic_jjohnson@quicinc.com, kees@kernel.org, abdul.rahim@myyahoo.com,
+	m.grzeschik@pengutronix.de, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, naushad@samsung.com, akash.m5@samsung.com,
+	rc93.raju@samsung.com, taehyun.cho@samsung.com, hongpooh.kim@samsung.com,
+	eomji.oh@samsung.com, shijie.cai@samsung.com, alim.akhtar@samsung.com,
+	stable@vger.kernel.org
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <2024121845-cactus-geology-8df3@gregkh>
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241215125013.70671-1-joswang1221@gmail.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrBJsWRmVeSWpSXmKPExsWy7bCmhq7ToqR0g6cf5CymT9vIavHm6ipW
+	iwfztrFZ3Fkwjcni1PKFTBbNi9ezWUzas5XF4u7DHywW696eZ7W4vGsOm8WiZa3MFlvarjBZ
+	fDr6n9WicctdVotVnXNYLC5/38lssWDjI0aLSQdFHYQ8Nq3qZPPYP3cNu8exF8fZPfr/GnhM
+	3FPn0bdlFaPH501yAexR2TYZqYkpqUUKqXnJ+SmZeem2St7B8c7xpmYGhrqGlhbmSgp5ibmp
+	tkouPgG6bpk5QE8oKZQl5pQChQISi4uV9O1sivJLS1IVMvKLS2yVUgtScgpMCvSKE3OLS/PS
+	9fJSS6wMDQyMTIEKE7IzLv4+xFZwXrfi2p7nLA2MD5S7GDk5JARMJFb9aGLrYuTiEBLYzSix
+	d9FcVgjnE6PE+onfoZxvjBKnNz9nhGl5dOAbVMteRonP63qYIJy3jBJ9636wglTxCthJbFow
+	lQ3EZhFQlfj9bCMTRFxQ4uTMJywgtqiAvMT9WzPYQWxhgUyJr9O7wDaICGhIvDx6iwVkKLPA
+	GmaJm196wQYxC4hL3HoyH2gQBwebgKHEsxM2ICYn0EWda8wgKuQlmrfOZgZplRB4wSHRcfYv
+	C8TVLhJTzhxng7CFJV4d38IOYUtJfH63FyqeLLFn0heoeIbEoVWHmCFse4nVC86wguxiFtCU
+	WL9LH2IXn0Tv7ydg10gI8Ep0tAlBVKtKnGq8DDVRWuLekmusELaHxKm272DThQR2Mkp8fG49
+	gVFhFlKgzELy4ywk38xCWLyAkWUVo2RqQXFuemqyaYFhXmo5PL6T83M3MYKTuJbLDsYb8//p
+	HWJk4mA8xCjBwawkwuummZguxJuSWFmVWpQfX1Sak1p8iNEUGDsTmaVEk/OBeSSvJN7QxNLA
+	xMzMzMTS2MxQSZz3devcFCGB9MSS1OzU1ILUIpg+Jg5OqQamDimpquoog7cv+o/8nSi3P/mp
+	ynvHjGqr4M7MJM1F96vKroU4H3vq6nhF7duUcv0J4ar7OL4ZKkxoVPHadD/t48EX+vOnxVrL
+	y249EV1+bXPcrO2cWnt2vn4TNeHvZPEVedHsElkZ83RXlYe+epzpkWf4YgpLltOpKUymDB4c
+	W7ZwvG7/n2+bZibk41sxNev9xeMZv7l3TrjAvDlE8ROffae9cdvhDYfMuE6YZq0u/zezTpo7
+	PSm7oOXpeee8wvnbbPLWe2887nv89HrHWVNcsq9o/7kwm9W6fIvirZk159XiXlu/enPzl87P
+	Av+j65/WR/NfXmJfGMj37TDTovkSF7ku85kcX1m181TqKud8JZbijERDLeai4kQAFsvlNGsE
+	AAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrKIsWRmVeSWpSXmKPExsWy7bCSvK7joqR0g/M3LSymT9vIavHm6ipW
+	iwfztrFZ3Fkwjcni1PKFTBbNi9ezWUzas5XF4u7DHywW696eZ7W4vGsOm8WiZa3MFlvarjBZ
+	fDr6n9WicctdVotVnXNYLC5/38lssWDjI0aLSQdFHYQ8Nq3qZPPYP3cNu8exF8fZPfr/GnhM
+	3FPn0bdlFaPH501yAexRXDYpqTmZZalF+nYJXBkXfx9iKzivW3Ftz3OWBsYHyl2MnBwSAiYS
+	jw58Y+ti5OIQEtjNKNG3fScTREJa4vWsLkYIW1hi5b/n7BBFrxkldq9aywyS4BWwk9i0YCob
+	iM0ioCrx+9lGJoi4oMTJmU9YQGxRAXmJ+7dmsIPYwgKZEvdOzQSrFxHQkHh59BYLyFBmgTXM
+	Er9mdDBCbNjJKHFu/i2wDcwC4hK3nswHmsrBwSZgKPHshA2IyQl0ducaM4gKM4murRCHMgPt
+	at46m3kCo9AsJGfMQjJoFpKWWUhaFjCyrGKUTC0ozk3PLTYsMMpLLdcrTswtLs1L10vOz93E
+	CI5ZLa0djHtWfdA7xMjEwXiIUYKDWUmE100zMV2INyWxsiq1KD++qDQntfgQozQHi5I477fX
+	vSlCAumJJanZqakFqUUwWSYOTqkGpiM7ZZpLny4w+2C6qNBvtdHV9R4nuY1Mps9zWJgWcLP6
+	1LtZN/7lLL+QIXj3SUCTqVDqsUf9ghUbT50VPynKkZDLlM0tFL7EgCP7Vs3JqsoqXdv1zH1H
+	fX55JViKX1h3WXh7WzirKcsDdUZZD2l3KUMety0XrO54yzdPTVhutXdL4sbls5Ss5ZeWhcq8
+	uqsqNE3YcJdZAIMSJ2tkvqTHfuWMKnuBwqZNmWbR9p92fPYrlLs1Yf1ESWOmVzxzzjC0fEuc
+	vezfMQluU4t5svfCY26rT7ecc3TT3/aaqYqa0rOkskzEoq41hx7p98pUvsSl/3lV5n6jjO1O
+	ZYuTH0Tb7NPtkUqO3ebT6StVPFuJpTgj0VCLuag4EQClJj7gSAMAAA==
+X-CMS-MailID: 20241218102154epcas5p28e40b033d2bb3315847890044b0ae1d5
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20241208152338epcas5p4fde427bb4467414417083221067ac7ab
+References: <CGME20241208152338epcas5p4fde427bb4467414417083221067ac7ab@epcas5p4.samsung.com>
+	<20241208152322.1653-1-selvarasu.g@samsung.com>
+	<2024121845-cactus-geology-8df3@gregkh>
 
-Hi,
 
-On Sun, Dec 15, 2024 at 08:50:13PM +0800, joswang wrote:
-> From: Jos Wang <joswang@lenovo.com>
-> 
-> According to the USB PD3 CTS specification, the requirements
+On 12/18/2024 11:01 AM, Greg KH wrote:
+> On Sun, Dec 08, 2024 at 08:53:20PM +0530, Selvarasu Ganesan wrote:
+>> The current implementation sets the wMaxPacketSize of bulk in/out
+>> endpoints to 1024 bytes at the end of the f_midi_bind function. However,
+>> in cases where there is a failure in the first midi bind attempt,
+>> consider rebinding.
+> What considers rebinding?  Your change does not modify that.
 
-What is "USB PD3 CTS specification"? Please open it here.
+Hi Greg,
+Thanks for your review comments.
 
-> for tSenderResponse are different in PD2 and PD3 modes, see
-> Table 19 Timing Table & Calculations. For PD2 mode, the
-> tSenderResponse min 24ms and max 30ms; for PD3 mode, the
-> tSenderResponse min 27ms and max 33ms.
-> 
-> For the "TEST.PD.PROT.SRC.2 Get_Source_Cap No Request" test
-> item, after receiving the Source_Capabilities Message sent by
-> the UUT, the tester deliberately does not send a Request Message
-> in order to force the SenderResponse timer on the Source UUT to
-> timeout. The Tester checks that a Hard Reset is detected between
-> tSenderResponse min and max，the delay is between the last bit of
-> the GoodCRC Message EOP has been sent and the first bit of Hard
-> Reset SOP has been received. The current code does not distinguish
-> between PD2 and PD3 modes, and tSenderResponse defaults to 60ms.
-> This will cause this test item and the following tests to fail:
-> TEST.PD.PROT.SRC3.2 SenderResponseTimer Timeout
-> TEST.PD.PROT.SNK.6 SenderResponseTimer Timeout
-> 
-> Considering factors such as SOC performance, i2c rate, and the speed
-> of PD chip sending data, "pd2-sender-response-time-ms" and
-> "pd3-sender-response-time-ms" DT time properties are added to allow
-> users to define platform timing. For values that have not been
-> explicitly defined in DT using this property, a default value of 27ms
-> for PD2 tSenderResponse and 30ms for PD3 tSenderResponse is set.
-> 
-> Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jos Wang <joswang@lenovo.com>
 
-If this is a fix, then I think it's fixing commit 2eadc33f40d4
-("typec: tcpm: Add core support for sink side PPS"). That's where the
-pd_revision was changed to 3.0.
+Here the term "rebind" in this context refers to attempting to bind the 
+MIDI function a second time in certain scenarios.
+The situations where rebinding is considered include:
 
-Badhri, could you take a look at this (and how about that
-maintainer role? :-) ).
+  * When there is a failure in the first UDC write attempt, which may be
+    caused by other functions bind along with MIDI
+  * Runtime composition change : Example : MIDI,ADB to MIDI. Or MIDI to
+    MIDI,ADB
 
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 50 +++++++++++++++++++++++------------
->  include/linux/usb/pd.h        |  3 ++-
->  2 files changed, 35 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 6021eeb903fe..3a159bfcf382 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -314,12 +314,16 @@ struct pd_data {
->   * @sink_wait_cap_time: Deadline (in ms) for tTypeCSinkWaitCap timer
->   * @ps_src_wait_off_time: Deadline (in ms) for tPSSourceOff timer
->   * @cc_debounce_time: Deadline (in ms) for tCCDebounce timer
-> + * @pd2_sender_response_time: Deadline (in ms) for pd20 tSenderResponse timer
-> + * @pd3_sender_response_time: Deadline (in ms) for pd30 tSenderResponse timer
->   */
->  struct pd_timings {
->  	u32 sink_wait_cap_time;
->  	u32 ps_src_off_time;
->  	u32 cc_debounce_time;
->  	u32 snk_bc12_cmpletion_time;
-> +	u32 pd2_sender_response_time;
-> +	u32 pd3_sender_response_time;
->  };
->  
->  struct tcpm_port {
-> @@ -3776,7 +3780,9 @@ static bool tcpm_send_queued_message(struct tcpm_port *port)
->  			} else if (port->pwr_role == TYPEC_SOURCE) {
->  				tcpm_ams_finish(port);
->  				tcpm_set_state(port, HARD_RESET_SEND,
-> -					       PD_T_SENDER_RESPONSE);
-> +					       port->negotiated_rev >= PD_REV30 ?
-> +					       port->timings.pd3_sender_response_time :
-> +					       port->timings.pd2_sender_response_time);
->  			} else {
->  				tcpm_ams_finish(port);
->  			}
-> @@ -4619,6 +4625,9 @@ static void run_state_machine(struct tcpm_port *port)
->  	enum typec_pwr_opmode opmode;
->  	unsigned int msecs;
->  	enum tcpm_state upcoming_state;
-> +	u32 sender_response_time = port->negotiated_rev >= PD_REV30 ?
-> +				   port->timings.pd3_sender_response_time :
-> +				   port->timings.pd2_sender_response_time;
->  
->  	if (port->tcpc->check_contaminant && port->state != CHECK_CONTAMINANT)
->  		port->potential_contaminant = ((port->enter_state == SRC_ATTACH_WAIT &&
-> @@ -5113,7 +5122,7 @@ static void run_state_machine(struct tcpm_port *port)
->  			tcpm_set_state(port, SNK_WAIT_CAPABILITIES, 0);
->  		} else {
->  			tcpm_set_state_cond(port, hard_reset_state(port),
-> -					    PD_T_SENDER_RESPONSE);
-> +					    sender_response_time);
->  		}
->  		break;
->  	case SNK_NEGOTIATE_PPS_CAPABILITIES:
-> @@ -5135,7 +5144,7 @@ static void run_state_machine(struct tcpm_port *port)
->  				tcpm_set_state(port, SNK_READY, 0);
->  		} else {
->  			tcpm_set_state_cond(port, hard_reset_state(port),
-> -					    PD_T_SENDER_RESPONSE);
-> +					    sender_response_time);
->  		}
->  		break;
->  	case SNK_TRANSITION_SINK:
-> @@ -5387,7 +5396,7 @@ static void run_state_machine(struct tcpm_port *port)
->  			port->message_id_prime = 0;
->  			port->rx_msgid_prime = -1;
->  			tcpm_pd_send_control(port, PD_CTRL_SOFT_RESET, TCPC_TX_SOP_PRIME);
-> -			tcpm_set_state_cond(port, ready_state(port), PD_T_SENDER_RESPONSE);
-> +			tcpm_set_state_cond(port, ready_state(port), sender_response_time);
->  		} else {
->  			port->message_id = 0;
->  			port->rx_msgid = -1;
-> @@ -5398,7 +5407,7 @@ static void run_state_machine(struct tcpm_port *port)
->  				tcpm_set_state_cond(port, hard_reset_state(port), 0);
->  			else
->  				tcpm_set_state_cond(port, hard_reset_state(port),
-> -						    PD_T_SENDER_RESPONSE);
-> +						    sender_response_time);
->  		}
->  		break;
->  
-> @@ -5409,8 +5418,7 @@ static void run_state_machine(struct tcpm_port *port)
->  			port->send_discover = true;
->  			port->send_discover_prime = false;
->  		}
-> -		tcpm_set_state_cond(port, DR_SWAP_SEND_TIMEOUT,
-> -				    PD_T_SENDER_RESPONSE);
-> +		tcpm_set_state_cond(port, DR_SWAP_SEND_TIMEOUT, sender_response_time);
->  		break;
->  	case DR_SWAP_ACCEPT:
->  		tcpm_pd_send_control(port, PD_CTRL_ACCEPT, TCPC_TX_SOP);
-> @@ -5444,7 +5452,7 @@ static void run_state_machine(struct tcpm_port *port)
->  			tcpm_set_state(port, ERROR_RECOVERY, 0);
->  			break;
->  		}
-> -		tcpm_set_state_cond(port, FR_SWAP_SEND_TIMEOUT, PD_T_SENDER_RESPONSE);
-> +		tcpm_set_state_cond(port, FR_SWAP_SEND_TIMEOUT, sender_response_time);
->  		break;
->  	case FR_SWAP_SEND_TIMEOUT:
->  		tcpm_set_state(port, ERROR_RECOVERY, 0);
-> @@ -5475,8 +5483,7 @@ static void run_state_machine(struct tcpm_port *port)
->  		break;
->  	case PR_SWAP_SEND:
->  		tcpm_pd_send_control(port, PD_CTRL_PR_SWAP, TCPC_TX_SOP);
-> -		tcpm_set_state_cond(port, PR_SWAP_SEND_TIMEOUT,
-> -				    PD_T_SENDER_RESPONSE);
-> +		tcpm_set_state_cond(port, PR_SWAP_SEND_TIMEOUT, sender_response_time);
->  		break;
->  	case PR_SWAP_SEND_TIMEOUT:
->  		tcpm_swap_complete(port, -ETIMEDOUT);
-> @@ -5574,8 +5581,7 @@ static void run_state_machine(struct tcpm_port *port)
->  		break;
->  	case VCONN_SWAP_SEND:
->  		tcpm_pd_send_control(port, PD_CTRL_VCONN_SWAP, TCPC_TX_SOP);
-> -		tcpm_set_state(port, VCONN_SWAP_SEND_TIMEOUT,
-> -			       PD_T_SENDER_RESPONSE);
-> +		tcpm_set_state(port, VCONN_SWAP_SEND_TIMEOUT, sender_response_time);
->  		break;
->  	case VCONN_SWAP_SEND_TIMEOUT:
->  		tcpm_swap_complete(port, -ETIMEDOUT);
-> @@ -5656,23 +5662,21 @@ static void run_state_machine(struct tcpm_port *port)
->  		break;
->  	case GET_STATUS_SEND:
->  		tcpm_pd_send_control(port, PD_CTRL_GET_STATUS, TCPC_TX_SOP);
-> -		tcpm_set_state(port, GET_STATUS_SEND_TIMEOUT,
-> -			       PD_T_SENDER_RESPONSE);
-> +		tcpm_set_state(port, GET_STATUS_SEND_TIMEOUT, sender_response_time);
->  		break;
->  	case GET_STATUS_SEND_TIMEOUT:
->  		tcpm_set_state(port, ready_state(port), 0);
->  		break;
->  	case GET_PPS_STATUS_SEND:
->  		tcpm_pd_send_control(port, PD_CTRL_GET_PPS_STATUS, TCPC_TX_SOP);
-> -		tcpm_set_state(port, GET_PPS_STATUS_SEND_TIMEOUT,
-> -			       PD_T_SENDER_RESPONSE);
-> +		tcpm_set_state(port, GET_PPS_STATUS_SEND_TIMEOUT, sender_response_time);
->  		break;
->  	case GET_PPS_STATUS_SEND_TIMEOUT:
->  		tcpm_set_state(port, ready_state(port), 0);
->  		break;
->  	case GET_SINK_CAP:
->  		tcpm_pd_send_control(port, PD_CTRL_GET_SINK_CAP, TCPC_TX_SOP);
-> -		tcpm_set_state(port, GET_SINK_CAP_TIMEOUT, PD_T_SENDER_RESPONSE);
-> +		tcpm_set_state(port, GET_SINK_CAP_TIMEOUT, sender_response_time);
->  		break;
->  	case GET_SINK_CAP_TIMEOUT:
->  		port->sink_cap_done = true;
-> @@ -7109,6 +7113,18 @@ static void tcpm_fw_get_timings(struct tcpm_port *port, struct fwnode_handle *fw
->  	ret = fwnode_property_read_u32(fwnode, "sink-bc12-completion-time-ms", &val);
->  	if (!ret)
->  		port->timings.snk_bc12_cmpletion_time = val;
-> +
-> +	ret = fwnode_property_read_u32(fwnode, "pd2-sender-response-time-ms", &val);
-> +	if (!ret)
-> +		port->timings.pd2_sender_response_time = val;
-> +	else
-> +		port->timings.pd2_sender_response_time = PD_T_PD2_SENDER_RESPONSE;
-> +
-> +	ret = fwnode_property_read_u32(fwnode, "pd3-sender-response-time-ms", &val);
-> +	if (!ret)
-> +		port->timings.pd3_sender_response_time = val;
-> +	else
-> +		port->timings.pd3_sender_response_time = PD_T_PD3_SENDER_RESPONSE;
->  }
+The issue arises during the second time the "f_midi_bind" function is 
+called. The problem lies in the fact that the size of 
+"bulk_in_desc.wMaxPacketSize" is set to 1024 during the first call, 
+which exceeds the hardware capability of the dwc3 TX/RX FIFO 
+(ep->maxpacket_limit = 512).
+Let consider the below sequence,
 
-I can't see the whole thread, but I guess those properties were
-okay(?).
 
-thanks,
+_1. First time f_midi_bind:_
 
--- 
-heikki
+  * As per the current codethe size of bulk_in_desc.wMaxPacketSize is 0
+    in first time call.
+  * Call usb_ep_autoconfig to match EP and got success as no failure in
+    the below code as part of usb_ep_autoconfig.
+
+    usb_gadget_ep_match_desc()
+        {
+        ..
+        ..
+        if (max > ep->maxpacket_limit)// (64 > 512)
+            return 0;
+
+        return 1;// Found Maching EP
+
+        } 
+
+  * EP claim got success and set bulk_in_desc.wMaxPacketSize =1024 at
+    end of f_midi_bind.
+
+
+_2. Second time enter into f_midi_bind _
+
+  * The size of bulk_in_desc.wMaxPacketSize become 1024 because of above
+    code.
+  * Call usb_ep_autoconfig for EP claim and has a failure now in the
+    below code as part of usb_ep_autoconfig
+
+    usb_gadget_ep_match_desc()
+
+    {
+    ..
+    ..
+    if (max > ep->maxpacket_limit)// (1024 > 512)
+    return 0; // Not found any matchingEP
+
+    }
+
+
+To resolve this issue, our patch sets the default value of 
+"bulk_in_desc.wMaxPacketSize" to 64 before endpoint claim. This ensures 
+that the endpoint claim is successful during the second time 
+"f_midi_bind" is called.
+
+
+>
+>> This scenario may encounter an f_midi_bind issue due
+>> to the previous bind setting the bulk endpoint's wMaxPacketSize to 1024
+>> bytes, which exceeds the ep->maxpacket_limit where configured TX/RX
+>> FIFO's maxpacket size of 512 bytes for IN/OUT endpoints in support HS
+>> speed only.
+>> This commit addresses this issue by resetting the wMaxPacketSize before
+>> endpoint claim.
+> resets it to what?  Where did the magic numbers come from?  How do we
+> know this is now full speed and not high speed?
+
+
+It’s a generic way of setwMaxPacketSize before endpoint claim. Its 
+because of the usb_ep_autoconfig treats endpoint descriptors as if they 
+were full speed. This approach follows the same pattern as other 
+function drivers, which also set the wMaxPacketSize to 64 before 
+endpoint claim.
+
+The following are the example of how other functions drivers EP claim.
+
+_1. drivers/usb/gadget/function/f_eem.c_
+
+
+eem_bind ()
+
+{
+
+…
+
+..
+
+/* allocate instance-specific endpoints */
+
+ep = usb_ep_autoconfig(cdev->gadget, &eem_fs_in_desc); 
+//eem_fs_in_desc.wMaxPacketSize=64
+
+if (!ep)
+
+goto fail;
+
+}
+
+_2. drivers/usb/gadget/function/f_rndis.c_
+
+
+rndis_bind()
+
+{
+
+...
+
+...
+
+/* allocate instance-specific endpoints */
+
+ep = usb_ep_autoconfig(cdev->gadget, &fs_in_desc); 
+//fs_in_desc.wMaxPacketSize=64
+
+if (!ep)
+
+goto fail;
+
+rndis->port.in_ep = ep;
+
+  }
+
+Anyway the wMaxPacketSize set with 64 byte after complete 
+usb_ep_autoconfig() as part of below this function ifep->maxpacket_limit 
+is grater then 64. It's means treats endpoint descriptors as if they 
+were full speed by default.
+
+struct usb_ep *usb_ep_autoconfig()
+
+{
+
+..
+
+…
+
+if (type == USB_ENDPOINT_XFER_BULK) {
+
+int size = ep->maxpacket_limit;
+
+/* min() doesn't work on bitfields with gcc-3.5 */
+
+if (size > 64)
+
+size = 64;
+
+desc->wMaxPacketSize = cpu_to_le16(size);
+
+}
+
+..
+
+..
+
+}
+
+>> Fixes: 46decc82ffd5 ("usb: gadget: unconditionally allocate hs/ss descriptor in bind operation")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+>> ---
+>>   drivers/usb/gadget/function/f_midi.c | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+>> index 837fcdfa3840..5caa0e4eb07e 100644
+>> --- a/drivers/usb/gadget/function/f_midi.c
+>> +++ b/drivers/usb/gadget/function/f_midi.c
+>> @@ -907,6 +907,15 @@ static int f_midi_bind(struct usb_configuration *c, struct usb_function *f)
+>>   
+>>   	status = -ENODEV;
+>>   
+>> +	/*
+>> +	 * Reset wMaxPacketSize with maximum packet size of FS bulk transfer before
+>> +	 * endpoint claim. This ensures that the wMaxPacketSize does not exceed the
+>> +	 * limit during bind retries where configured TX/RX FIFO's maxpacket size
+>> +	 * of 512 bytes for IN/OUT endpoints in support HS speed only.
+>> +	 */
+>> +	bulk_in_desc.wMaxPacketSize = cpu_to_le16(64);
+>> +	bulk_out_desc.wMaxPacketSize = cpu_to_le16(64);
+> Where did "64" come from?  How do we know this is full speed?  Later
+> on in this function the endpoint sizes are set, why set them here to
+> these small values when you do not know the speed?
+>
+> Or, if it had failed before, reset the values on the failure, not here
+> before you start anything up, right?
+
+Explained as part of above ask.
+
+>
+> thanks,
+>
+> greg k-h
+>
 
