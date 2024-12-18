@@ -1,126 +1,120 @@
-Return-Path: <stable+bounces-105172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5109F69B0
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 16:13:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58ADC9F69C9
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 16:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71E017A1EA9
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 15:13:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A91781628D7
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 15:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846C41DFD9C;
-	Wed, 18 Dec 2024 15:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB34189F2B;
+	Wed, 18 Dec 2024 15:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LqGxlT6r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B0qpZ1Sb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890A81C5CCF;
-	Wed, 18 Dec 2024 15:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8255FEE6;
+	Wed, 18 Dec 2024 15:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734534786; cv=none; b=kbgZVl2aDIO0m8BJs0wTokN9MKyedFmrwSWlPeU/h/yJF1AG29sPUXhYU0iWijh0fIrXXhzgGSoQCX3aF2qewWbzW5JuN8gqhT2Eb5YQSAzQxQDbOmHe7r00iH2ywoSszWhsDIWo9UCWxGBWEAVYpbgFpd2iacYWvs404zKepNY=
+	t=1734534972; cv=none; b=XRuvEoCtE0ar0kREsyCrrCLdH5J2L0ccKsEzwi7IHakGN7FiD1cpRWq2ziYHKVHW+YaNbWW+0VBrnz2c7J6f285g3H5lAQTl6kjAoi8FNhC6Ltca9MQd0KdAuo8nOXYYHxrGExrDnE+OzMY1KQE1VRDedF1Civvr6zeJoi7w1fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734534786; c=relaxed/simple;
-	bh=h/KTQvb5oy8GhiCfl5M3x0J5rQ6LFHeVg1+juvT60YA=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=G6KvizvakjCpJe+b2MXQcL05hcGBWJKfQVvG+wu0CP162ENowUbWwFNMGtAGSsUibWzkPO6fNvS5Pk8VTmClNqg+ZPwq6CmOHVLAQiE4WH6OwZTwS4HKdDNfvUazaMegLHIhLivkpGtrGvHKcyUy/oZ6YcGWmSP9iHksXFvwals=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LqGxlT6r; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1734534972; c=relaxed/simple;
+	bh=8/gobZpEotzrTqqW9q/uFG5l8ZutJeSbAun02px5kJM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GSW9pd7pTXnYSBAxyw026g8dfTFm6LZETpo2vdm6aU5jWgiaJkpLRYRJBY2uM3iZGeV3z+g0INQKyYrKwnyVztLaN9cZRAlhIej8HIS3aaFKgpURwu3zUlEHYTBRPUdtLQdy3alOQ5Ta/3JfilUWlZnzZ8egPEZLumTAH3GncZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B0qpZ1Sb; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734534785; x=1766070785;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=h/KTQvb5oy8GhiCfl5M3x0J5rQ6LFHeVg1+juvT60YA=;
-  b=LqGxlT6rfEh6v5Ir0Fp0zwJF7B8T3tMj53aKM8HiGllhANWIt4/c6m2f
-   hhWRglOmtqXLZ3P8l2elgZIeENB4u2S4iYLJGYBGEQE0KH1E+CWSCdda3
-   9/iMJHgrm/MHGbc/FsGSO/IVLaGTFtIhVZA7+67k6GLYeCle4mLKAxiUC
-   azFJdZykSJPc5mXL/Hy/ogvhplbb6pY+174LKQcbCCsY/+kiKtLxTmIVK
-   ckVX9EdhlsMijEmgfmiEofmDgqvRLz5oauinzSl1ShAfgK5h2A/NpMJ8O
-   z1442S1nVAQqgVjVgC+6+NeBUiO3fCYINdkvUOoL2YlEL0Tcpgl3emBz0
-   g==;
-X-CSE-ConnectionGUID: 31plc68NS3uxHSijyD8EUw==
-X-CSE-MsgGUID: diLb+T1KR7m7xLMT8eMMwg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="35230281"
+  t=1734534969; x=1766070969;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8/gobZpEotzrTqqW9q/uFG5l8ZutJeSbAun02px5kJM=;
+  b=B0qpZ1SbD6Zh4OyJ8KhN4n+SSac+1GmGFOXBmcsb6mDDsgjeqkvbV7dG
+   PKeDj+2zYzFrDfaYEJ9ILi2Pp3RUpugfZ6GZxMowEMfWZQvtAl6OjDd7B
+   uUeWYiI9QLPBypYKwouooKFI1BK36QFR7GbBdZdOgl1PCoc6BCKLcu++S
+   rldP9iKCdc5A30nwQh4ieBy+P0wL1QO79Rn6P/mtUwbLqCYFA2O+vXvPI
+   qsYIsSA3Z46hqVbIhowLEyrAYBDeoGJLs4AqOoMz+3mfKWvfzI5s7YiCu
+   p+yxuxvnVfUiYPiA0q6Q593v/yAln3Z+HXI3V0TqS4wrtTDkPf3/0bbdh
+   Q==;
+X-CSE-ConnectionGUID: WAePwUgCTBGtdhfyPOzIRw==
+X-CSE-MsgGUID: aRhpEdH9TUOfS2Lh8b2a1A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11290"; a="35047704"
 X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
-   d="scan'208";a="35230281"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 07:13:04 -0800
-X-CSE-ConnectionGUID: Y3hNxbhRSJ6XXTWy45Gjgg==
-X-CSE-MsgGUID: 3IhI7btwRpSc2lXMUFDbBg==
+   d="scan'208";a="35047704"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 07:16:08 -0800
+X-CSE-ConnectionGUID: 80Ture5xTWmrdpzDzXJfNQ==
+X-CSE-MsgGUID: xOB5ojYWTtqQGMqbvSBw2g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="102495180"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.138])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2024 07:13:01 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 18 Dec 2024 17:12:57 +0200 (EET)
-To: Ma Ke <make_ruc2021@163.com>, Lukas Wunner <lukas@wunner.de>, 
-    bhelgaas@google.com
-cc: rafael.j.wysocki@intel.com, yinghai@kernel.org, linux-pci@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: fix reference leak in pci_alloc_child_bus()
-In-Reply-To: <20241217035413.2892000-1-make_ruc2021@163.com>
-Message-ID: <479bf618-187e-14f0-5319-c41f8b80faeb@linux.intel.com>
-References: <20241217035413.2892000-1-make_ruc2021@163.com>
+X-IronPort-AV: E=Sophos;i="6.12,244,1728975600"; 
+   d="scan'208";a="97687788"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by fmviesa006.fm.intel.com with ESMTP; 18 Dec 2024 07:16:07 -0800
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Cc: ak@linux.intel.com,
+	eranian@google.com,
+	dapeng1.mi@linux.intel.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V6 1/3] perf/x86/intel/ds: Add PEBS format 6
+Date: Wed, 18 Dec 2024 07:16:41 -0800
+Message-Id: <20241218151643.1031659-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Tue, 17 Dec 2024, Ma Ke wrote:
+From: Kan Liang <kan.liang@linux.intel.com>
 
-> When device_register(&child->dev) failed, calling put_device() to
-> explicitly release child->dev. Otherwise, it could cause double free
-> problem.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> ---
->  drivers/pci/probe.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 2e81ab0f5a25..d3146c588d7f 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct pci_bus *parent,
->  add_dev:
->  	pci_set_bus_msi_domain(child);
->  	ret = device_register(&child->dev);
-> -	WARN_ON(ret < 0);
-> +	if (ret) {
-> +		WARN_ON(ret < 0);
+The only difference between 5 and 6 is the new counters snapshotting
+group, without the following counters snapshotting enabling patches,
+it's impossible to utilize the feature in a PEBS record. It's safe to
+share the same code path with format 5.
 
-The usual way is:
+Add format 6, so the end user can at least utilize the legacy PEBS
+features.
 
-	if (WARN_ON(ret < 0))
+Fixes: a932aa0e868f ("perf/x86: Add Lunar Lake and Arrow Lake support")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
 
-> +		put_device(&child->dev);
-> +	}
->  
->  	pcibios_add_bus(child);
+No changes since V5
 
-But more serious problem here is that should this code even proceed as if 
-nothing happened when an error occurs? pci_register_host_bridge() does 
-proper rollback when device_register() fails but this function doesn't.
+ arch/x86/events/intel/ds.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Into the same vein, is using WARN_ON() even correct here? Why should this 
-print a stacktrace if device_register() fails instead of simply printing 
-and error?
-
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index 8dcf90f6fb59..ba74e1198328 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -2551,6 +2551,7 @@ void __init intel_ds_init(void)
+ 			x86_pmu.large_pebs_flags |= PERF_SAMPLE_TIME;
+ 			break;
+ 
++		case 6:
+ 		case 5:
+ 			x86_pmu.pebs_ept = 1;
+ 			fallthrough;
 -- 
- i.
+2.38.1
 
 
