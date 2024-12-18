@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-105236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36989F6F23
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 22:01:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3CA9F6F21
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 22:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216CD1890EDF
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 21:01:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCBC116E0CD
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 21:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79135161311;
-	Wed, 18 Dec 2024 21:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC55516CD1D;
+	Wed, 18 Dec 2024 21:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNi20Jek"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XrAAAP1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371E715697B
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 21:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA74E15697B
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 21:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734555675; cv=none; b=Fkj5zcRt7FdgmOhRWse9JNX/mI4TkgSHYlxU2NezlA7IbQ1s9Lz+DpHgoZZEsOqRDtyyI5LfmDIYX0qazrb+HgCYYiEzGjG9sW3Fw6FIiB5l9bPTONrwSTbEnemZR89U+nqKSMemq4fezA79CSkqOOiWpCH3GTwosEjf0oR1rN4=
+	t=1734555677; cv=none; b=Z93W5pWDsjoItVXEUiPXF/dIxB6a2SHe1uSfkvP7RWKOZlgrL2fIvIom9TC0FVI18Jf4RVSfhgagpvY/5yixruCFqjxSopyfh7EpjzjN27+xMxlTJcrDIiAKwsdFd0gKS8wviMXz6x+QV4epZjDa1AMcVsXtp6Bjzqmrf5wf98s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734555675; c=relaxed/simple;
-	bh=pj5tDrLwRUqJ4Dkx2KpOb90zHKYJqlQJ1X62pFpJCvI=;
+	s=arc-20240116; t=1734555677; c=relaxed/simple;
+	bh=RlDxuuCYiRpg11aehWm6xVGlLyiddrIZ7QAYqfaZK3w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IAZZo4zpRDOhl6qOBzE0qWKvXWoJZGFQaQmpUdmmE8ArfkRDBTjo0/VbeTfRON4jd/NQ2RK7yMKFeZ4Z36nh1ByTCi673Oe6qCLwbaHS5ZbXVwgz5KuoV7E4u8T0NPoLugsnwwbiekI8qDhXzEbvKZiD3o0yF9XeBVh+TRxnD+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNi20Jek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5DFC4CECD;
-	Wed, 18 Dec 2024 21:01:14 +0000 (UTC)
+	 MIME-Version; b=V4oSpVWJ0TnQGXdbs72TiWLzBb2u3s8zhS/eOmB6x15MVjTfrO2kRnLM+Cf/7CXRIy1Ewl9RxgsqLjzvmnEYuK4Uwd4T+MMSJoMkehvId/0RQregXcYKnPxOvJvTUbwgl2MiHZAuHlLoRi6pcH12BnC+T/AnHpDLUZzmJupw1mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XrAAAP1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC06C4CEDF;
+	Wed, 18 Dec 2024 21:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734555675;
-	bh=pj5tDrLwRUqJ4Dkx2KpOb90zHKYJqlQJ1X62pFpJCvI=;
+	s=k20201202; t=1734555677;
+	bh=RlDxuuCYiRpg11aehWm6xVGlLyiddrIZ7QAYqfaZK3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNi20Jek8qXgff+OQ/IXzBVurSz1ZyWCgB08KJu2R0u9KlH/c6PVk0qHn6t0PM/aO
-	 XoahH/HeV94ZlJRLkVZywVirMcfPGsb6LFJoX+ClkWY+Y/ePFNEjZdeqj234xoQELu
-	 JBRvO7Po7UZBzgTq6Xca4tEJbZAF41/s30b/mxxQosCnB1w6+Ogu/Gktm4SY2mXOaE
-	 ClMPhPTyTwdF48CT2LvRFP6I80jlm2ejgEB9bw9CVZMck9hULuuPBhTz7w4czIRLVQ
-	 pyhZZYmk7vvwqWciy2kP2gPU9sK1a7SopJFE+Q8lkR7NFBjiZLHwyHM/X5zZl55V6u
-	 0GJLf3e+NXd+Q==
+	b=XrAAAP1l7Kr6GoLslFL7rdhdm/PGJvaFMvniKts4JcMpIs+zEzhIS0j/DYTslHh+t
+	 3SUzt3EaRciCiy2km/mhVceZ7u/m/EDP0gP3a1XG64dX9tu0DeP5qzBnsX+k7O42pT
+	 tATrMT2Dboznra+qzM9OJJBH8EYLsuY2lEQHrVqZMWsJW0PE2dZFoVAkwEqYzUsMPw
+	 MAxspXz6+0j43Qy8jjN5IN3F6+xOZWnemnUGMPymyr49NrdoPGHoWYKyLg/3z4ku5P
+	 lAKHXM9YCB1wcP7CNGi/OoE3T/GrM+mumxpXNsaxHAu6xxAMhgCjuds44ly5L4Mm3d
+	 pqRTkc87nn55w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Catherine Hoang <catherine.hoang@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 02/17] xfs: verify buffer, inode, and dquot items every tx commit
-Date: Wed, 18 Dec 2024 16:01:13 -0500
-Message-Id: <20241218150706-0fdf3ab3157e50d1@stable.kernel.org>
+Subject: Re: [PATCH 6.6 07/17] xfs: Fix xfs_prepare_shift() range for RT
+Date: Wed, 18 Dec 2024 16:01:15 -0500
+Message-Id: <20241218153217-48a33690faf4edca@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20241218191725.63098-3-catherine.hoang@oracle.com>
+In-Reply-To:  <20241218191725.63098-8-catherine.hoang@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,11 +63,11 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 150bb10a28b9c8709ae227fc898d9cf6136faa1e
+The upstream commit SHA1 provided is correct: f23660f059470ec7043748da7641e84183c23bc8
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Catherine Hoang <catherine.hoang@oracle.com>
-Commit author: Darrick J. Wong <djwong@kernel.org>
+Commit author: John Garry <john.g.garry@oracle.com>
 
 
 Status in newer kernel trees:
@@ -76,25 +76,25 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  150bb10a28b9 ! 1:  1893edde1b81 xfs: verify buffer, inode, and dquot items every tx commit
+1:  f23660f05947 ! 1:  7aa03646d5cc xfs: Fix xfs_prepare_shift() range for RT
     @@ Metadata
       ## Commit message ##
-         xfs: verify buffer, inode, and dquot items every tx commit
+         xfs: Fix xfs_prepare_shift() range for RT
      
-    +    commit 150bb10a28b9c8709ae227fc898d9cf6136faa1e upstream.
+    +    commit f23660f059470ec7043748da7641e84183c23bc8 upstream.
     +
-         generic/388 has an annoying tendency to fail like this during log
-         recovery:
+         The RT extent range must be considered in the xfs_flush_unmap_range() call
+         to stabilize the boundary.
      
     @@ Commit message
-     
-         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-         Reviewed-by: Christoph Hellwig <hch@lst.de>
+         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+         Signed-off-by: John Garry <john.g.garry@oracle.com>
+         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
     +    Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
     +    Acked-by: Darrick J. Wong <djwong@kernel.org>
      
-      ## fs/xfs/Kconfig ##
-     @@ fs/xfs/Kconfig: config XFS_DEBUG
+      ## fs/xfs/xfs_bmap_util.c ##
+     @@ fs/xfs/xfs_bmap_util.c: xfs_prepare_shift(
 ---
 
 Results of testing on various branches:
