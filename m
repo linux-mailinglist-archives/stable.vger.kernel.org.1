@@ -1,95 +1,165 @@
-Return-Path: <stable+bounces-105138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191D09F613F
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 10:18:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974F19F6141
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 10:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10F2B7A289C
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 09:17:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E492E166E03
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 09:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67357192B83;
-	Wed, 18 Dec 2024 09:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3384191F75;
+	Wed, 18 Dec 2024 09:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Mpa+aKfe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Zc/U2OL4"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B679C193077;
-	Wed, 18 Dec 2024 09:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A5215B13D
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 09:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734513462; cv=none; b=Q71GQCfgbkMavrVho6OOOamEYPclyF9O0rX6xWZngx5D8eO+jsyh6BsHbbpewmAnIJ0R+RdC+fWrYg7/kRkA6Zg2Dv4uHckauspQ/5BTGpQxTFj2OkWcq+vTRR8UpsGCbWjrGlb2pNog6YhHxdc4viEbDQZtqelOpr6q1Vdbwpw=
+	t=1734513513; cv=none; b=bwQNRSZOHr7K+lqabviXCtNWnna00YtNr2+cSKlBIzAElz/WvWMeVNIzHp5hYH6zPUgskJe4LmhMLBCxjubel5Hpc+KoKZzKIKEnBsIPOiOsGbvfuq9GVGP5PqkySwkE++RBzJ63m9UnRUorwOi3OV2WdD1m6GQMszDguD6yjQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734513462; c=relaxed/simple;
-	bh=81W03X68gGBYzA3rl6BqV/sE4OB77VA/zHv9hxXlc94=;
+	s=arc-20240116; t=1734513513; c=relaxed/simple;
+	bh=HSyDULdwQXu3xlcnyukj7r2kntKBqz06an3YCwlmq7Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KBzXKjFy/UT4MyyWwJbMqcDqj+PuL6XG1B+qX6huhyH2NwbFNt1h+l1lFVOMVJ9Dd93efoZVdLSg5cTTYvVMyTAZpaLQskC79Enj7wLg0nFA97H2KnDH1nmqa4kBil34XSAVUUDLgtBHly1/9z1FDKHnkXayfmLcDCpv4hZW/bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Mpa+aKfe; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 51B8214C1E1;
-	Wed, 18 Dec 2024 10:17:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1734513456;
+	 Content-Type:Content-Disposition:In-Reply-To; b=lI1mmbeWjjpEm/73R+eYastGP17Pjgd/puLUrpKO+Ursgm/HnNUKzk9LmQaD9MLtw+DuFQPap0mQnI1l4FE5d7AL9ig3x0hZP6BDQNJAC8PVCVjHYAnuHGBqmaPUsKMRyZrWc4KI21BnEMwWE3Q0c9arkKPx3IXoVSK466+DE40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Zc/U2OL4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734513509;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=66qhJNGeTZTNkdOOvfPlIMhbXk5bK/sdDLXwyNqim4U=;
-	b=Mpa+aKfenaajNCrIkuT99c8lCdd2hZkxsDWdqcxNFQdKE33fAwuX0PrulH77mMuXriAbps
-	T0put/ctxTpAacWYmpV4IkTq62XOwn0nSEmBbdez1fS52HxGSBDhPsXZLlQhCZK6zQQIrs
-	Ocji6lLVsy93jeTDcXs5DqSXhE2EPHyiSCbPUYKsXtC71r7aZi5/XrOs5BTUG+Q4+mv6Iu
-	KetxL6FusR8vlWbruEZQKjZLntypqH4ViXmVxqEe0WeGmlbF+6sm9JcA4l7F4Z6EFANd7R
-	HNafggCdGu7s+6zUFZRRNg7d6mVzkWWylCdkP3fLhy/EB9uyrc/ereoe3t63bQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 15f15ba4;
-	Wed, 18 Dec 2024 09:17:29 +0000 (UTC)
-Date: Wed, 18 Dec 2024 18:17:14 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 00/43] 5.10.232-rc1 review
-Message-ID: <Z2KTGgOWlLdPmlnr@codewreck.org>
-References: <20241217170520.459491270@linuxfoundation.org>
+	bh=RLeA091LzMVlS973SFASJBgcuRe2YSP+pMH6a6B7hJQ=;
+	b=Zc/U2OL4Jxm6oiQI9Qdc1wS2dbqjrTBmDZlTIi+0ufn4IYhzQ6CQk70HsgwDKkBaGwdOkk
+	LDJiLBs97STPDoOPCMh/zBtF2PFmOUSp3l5E+Wb0A/GVpwNamZW2xWjKsPV9lEjPSUrsqq
+	ZQkdjxaEVI1+UJriTxCCC1iNw0va0Ag=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-4UoivWYpObidAdhczTRIMw-1; Wed, 18 Dec 2024 04:18:28 -0500
+X-MC-Unique: 4UoivWYpObidAdhczTRIMw-1
+X-Mimecast-MFC-AGG-ID: 4UoivWYpObidAdhczTRIMw
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-436379713baso21561965e9.2
+        for <stable@vger.kernel.org>; Wed, 18 Dec 2024 01:18:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734513507; x=1735118307;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RLeA091LzMVlS973SFASJBgcuRe2YSP+pMH6a6B7hJQ=;
+        b=jDSn4/m6dkn+Mruav5x9QelAI+UTRMkWU5mi7EQulrveY5MSf4Cpg1bx56A1aDFv3h
+         KAL4jClWWIiTZdva7kE8qzb+K2vaiE3WZ15i9RMQSUb8/QYPWWT/DW6tIEY0rdEZeSzQ
+         17lyJLbiqbo7llwrrRC/xEfNj2cu0HOYYgmd18tyLyOashcP98DnCWeANXxUaDxQCQ3/
+         AFk9Zvpn9aIJmLF4ZtEYmssTRR8z9eaBir3XO9oGlQwBVNpuHrS8BtCasNXqzO2s7zi9
+         queJMOy7S3VoBld67buZpjjP3CClpggSQ4LIAnyxv1Exbk/HrsI5RQ586m2uOr6jLQfV
+         dWcw==
+X-Forwarded-Encrypted: i=1; AJvYcCXnsNKShJl8aS9dGlW2BET0wCEtRp3cAmp7bmuiPHWDiKEWd+5YmQy4bJ4eNgLSej7WuLnxu6s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4AHfyVN8L3kCR//Ng2iD2EWnUhFZuZNxOWLV4z6Q/Smb/C2h3
+	Kjv1ZmOHw+4r9mBx28XzdSkQqHt86IkUz/3NaVZwKwe++wpQivgfIwjgSkhLHzczft99VaZCa4v
+	wYXTC5ca+LdTSfj9jFoTXdwT/KTKxRvEsNORdqGtfhcgD4/95srMsVA==
+X-Gm-Gg: ASbGncu9SrbxjYgPg6mTJHN90pBYBNoo5OBUOF5108IUWC2+O9FFQIvBiHJY5obvuuh
+	9Ewg2RWxCB7a2xDdy7PvNw2IMZLNgm/gHYZOKJsYiTrWVMov3lHj6voPJOP59ENbyLqeE5/+Bpp
+	17Y+jlNLd/+Zk07GTKz0i7Nw4G4v9Ayqa5nMc21NxCQO85HNAQIKnjk66NtP1fcLivU2eAFg9wu
+	FPoKMFhko+OQi6lDBM6ZNKe4jJyer4vevfJ2g9yX8M=
+X-Received: by 2002:a05:600c:4748:b0:434:a1d3:a326 with SMTP id 5b1f17b1804b1-436553492e9mr15885255e9.6.1734513506928;
+        Wed, 18 Dec 2024 01:18:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGzQFTHFw7fnVGsOgmaN2fVP2YDadBMDrQRnfY9WghIfpNZbHV2iytk+s+GOfHa1YGNMY6H+Q==
+X-Received: by 2002:a05:600c:4748:b0:434:a1d3:a326 with SMTP id 5b1f17b1804b1-436553492e9mr15884945e9.6.1734513506566;
+        Wed, 18 Dec 2024 01:18:26 -0800 (PST)
+Received: from redhat.com ([2.52.9.192])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c80470afsm13691223f8f.75.2024.12.18.01.18.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Dec 2024 01:18:25 -0800 (PST)
+Date: Wed, 18 Dec 2024 04:18:21 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ma Ke <make_ruc2021@163.com>
+Cc: jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+	zhangweiping@didichuxing.com, cohuck@redhat.com,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] virtio: fix reference leak in register_virtio_device()
+Message-ID: <20241218041403-mutt-send-email-mst@kernel.org>
+References: <20241218031201.2968918-1-make_ruc2021@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241217170520.459491270@linuxfoundation.org>
+In-Reply-To: <20241218031201.2968918-1-make_ruc2021@163.com>
 
-Greg Kroah-Hartman wrote on Tue, Dec 17, 2024 at 06:06:51PM +0100:
-> This is the start of the stable review cycle for the 5.10.232 release.
-> There are 43 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Dec 18, 2024 at 11:12:01AM +0800, Ma Ke wrote:
+> Once device_add(&dev->dev) failed, call put_device() to explicitly
+> release dev->dev. Or it could cause double free problem.
 > 
-> Responses should be made by Thu, 19 Dec 2024 17:05:03 +0000.
-> Anything received after that time might be too late.
+> As comment of device_add() says, 'if device_add() succeeds, you should
+> call device_del() when you want to get rid of it. If device_add() has
+> not succeeded, use only put_device() to drop the reference count'.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.232-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: f2b44cde7e16 ("virtio: split device_register into device_initialize and device_add")
+> Signed-off-by: Ma Ke <make_ruc2021@163.com>
 
-Tested 238644b47ee3 ("Linux 5.10.232-rc1") on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
 
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
--- 
-Dominique Martinet
+Did you actually test this, triggering an error,
+and with debug options enabled to find double free
+and use after free? Which configurations?
+
+Because if you did, you would find for example this
+in drivers/virtio/virtio_vdpa.c:
+
+        ret = register_virtio_device(&vd_dev->vdev);
+        reg_dev = vd_dev;
+        if (ret)
+                goto err;
+
+        vdpa_set_drvdata(vdpa, vd_dev);
+
+        return 0;
+        
+err:    
+        if (reg_dev)
+                put_device(&vd_dev->vdev.dev);
+        else
+                kfree(vd_dev);
+        return ret;
+
+
+
+
+> ---
+> Changes in v2:
+> - modified the bug description to make it more clear;
+> - changed the Fixes tag.
+> ---
+>  drivers/virtio/virtio.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+> index b9095751e43b..ac721b5597e8 100644
+> --- a/drivers/virtio/virtio.c
+> +++ b/drivers/virtio/virtio.c
+> @@ -503,6 +503,7 @@ int register_virtio_device(struct virtio_device *dev)
+>  
+>  out_of_node_put:
+>  	of_node_put(dev->dev.of_node);
+> +	put_device(&dev->dev);
+>  out_ida_remove:
+>  	ida_free(&virtio_index_ida, dev->index);
+>  out:
+> -- 
+> 2.25.1
+> 
+
 
