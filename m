@@ -1,46 +1,55 @@
-Return-Path: <stable+bounces-105132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBCA9F5FBD
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 08:58:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534A29F5FC4
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 09:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935761889EF2
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 07:58:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0725216DB0F
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 08:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AF4159596;
-	Wed, 18 Dec 2024 07:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2233416F288;
+	Wed, 18 Dec 2024 08:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rjj/+jC3"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Lh19N3hZ"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E455FEED;
-	Wed, 18 Dec 2024 07:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F4C15854F;
+	Wed, 18 Dec 2024 08:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734508683; cv=none; b=GiZ9qWOK38zaEVRzPUKKPvuc7V56B8eWed6RFmE7QyNjFZGE6VUti//csJ+jxu+ktQvccHaOlsP7szTjsljqZq1GkM1+GxT8S2h9DCaTcwoTIyMUUjshXlc18I7IQ2hHQfSn9JwJB+ggIF7bjikqyK3X5E4+khFKihQJH+pHobk=
+	t=1734508850; cv=none; b=cbeMe8YW6IX7VEA0cbX/cIBlJdufSrES+qXzPa0yeYYn6XjCR+9vk+Ky9HEYvfKB+o0xrNpNIxsFsndptttNVEcHedFgHpWRkdS9RtLUS9Y8SuFP2EIutbyz3jCPEOnKgGDS1hsEEK8UKV3AwszpfOHZ/E5q8U5FAnfYDxisll0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734508683; c=relaxed/simple;
-	bh=R8oL9HPGBNzLNd0sw+7+qI9wZ/5kfDeg58n1Gbv53z4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BjcAiG8MbL6OTwNiWN3eUx/DKH54DpQrEhYZpRbCuAQGYZbZ+HqMO0dq434vfcGCSDuwdtLhgn2FsmEZFLvGmbsRih3cZG2MXs3kTUnfijd5eN45o2VmjQVg2SWYGlj/cYh/tKpYKnj5SMx74Srkj1PsV92fkYyO4GvJHdiLxZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rjj/+jC3; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1734508677; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=73PG00jNypyVuZ+U9GLfUx2Y2h80nJwkdo7O7xfYAZE=;
-	b=rjj/+jC3hdhKefUrY/LcXaRNOf8uNZg+IduxJAkgLk/vBSFg/tB37VnB815VnCsVBjQMuHrk575jr3nMzCr6fPq0t2f9D2e2KKufIIm9gbQFP6Tew3RQf7v2MVk/rUkoXIQAx4at7sQVLSzIcrf+M7ACq8MDgd+QJ0Inx95t8z0=
-Received: from 30.74.144.132(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WLloubY_1734508675 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 18 Dec 2024 15:57:56 +0800
-Message-ID: <ded3d2bf-650e-4ddc-b2be-d6faddeb3037@linux.alibaba.com>
-Date: Wed, 18 Dec 2024 15:57:54 +0800
+	s=arc-20240116; t=1734508850; c=relaxed/simple;
+	bh=aA3AumJBium5XUel0RXRniih59Vb8i5HixIYaTqea/I=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=ISAIAcy5j6fe0abuDz/HRb238q/ssdhjJgrkIa7vwLfcd3uOSZi9uZTVSdCg+abLki9+/z2qyPaAbA7osYJazz1R3GdipEZ5F1FNrya+vxn7rlmlT1IfIgRpmMRo76cj6cXf66UytLVkQiq1ZPnggEKJLrEhwI16RB31SJyp1r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Lh19N3hZ; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1734508831; x=1735113631; i=markus.elfring@web.de;
+	bh=ZiVQ013gzwXq0yefM486yeJ8+UOSpCWb4AaYGr8NYkI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Lh19N3hZV5LMGCLSF5A5AZDtAVQLQDX1fDIizEAAOLUmfDTCNEJDjcUFWJJfTcKi
+	 kcxqaOLKliSW0fUyNsrWWlUnKctG0ookeoIMvVu/V4PoPDE0N9AjK0edG04ilaIs3
+	 WQflbd6I6+5QAli6x5tcMRjijYhXYsk12atdH50XRg8kDUuaup6kRAIYaxUcpo4ij
+	 owXwp7SH0lIGWsFcDBEDPisbZ45APBF9hsPAg60WZ/v+1bmhW+ZSTTT+Uo2kjCBS+
+	 SLctJkZexwc3MpLEKTEtjwudKSk6IVDnhpNAMcGzfjyv08fZUiB+2Q/GmrxqU6imY
+	 TQfIq55jCpPmVH8ZFg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.70.41]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MDMvE-1tFc3F2vYM-00AyMn; Wed, 18
+ Dec 2024 09:00:31 +0100
+Message-ID: <e8dd155b-c907-4874-bd78-af768dc507a5@web.de>
+Date: Wed, 18 Dec 2024 09:00:27 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,69 +57,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V7] mm, compaction: don't use ALLOC_CMA for unmovable
- allocations
-To: Johannes Weiner <hannes@cmpxchg.org>, yangge1116@126.com
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 21cnbao@gmail.com,
- david@redhat.com, vbabka@suse.cz, liuzixing@hygon.cn
-References: <1734436004-1212-1-git-send-email-yangge1116@126.com>
- <20241217155551.GA37530@cmpxchg.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20241217155551.GA37530@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: make_ruc2021@163.com, virtualization@lists.linux.dev,
+ kernel-janitors@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ weiping zhang <zhangweiping@didichuxing.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241218031201.2968918-1-make_ruc2021@163.com>
+Subject: Re: [PATCH v2] virtio: fix reference leak in register_virtio_device()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20241218031201.2968918-1-make_ruc2021@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:stnYhqrMZMRL+tYtQPJEMn4nWYPSo7zdnq+q/3qYuHd2ZHDDEWV
+ 5MRTe4xxAGI4NWXW46k529kR3eldazBCtnQFandRHYl1xxtWZa5uJWlj7io0ZT2nP2KUUCs
+ C4IHJIq9481ufLXAjQF45aGS8/kTAQK7EBv9QqvRf6wilIPB5lp38bXgoBrVZaYuJ+hN8/4
+ qgteZv2soj9ps1RrHc79A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:5TZ/deI83Iw=;4rVdb+42OqUi0V9ghUfTvHJLipo
+ 1I/Op10dkReva/AIrSaLZ31YzbMZID+I+mjXL5Jnjyya5e663+UCQ4ybxrf+xVeiTVXLhlWLA
+ p6XUR/yyr9YuNEstAc5bpVIdD39t88pot8h0DT46rAXelIt1jWeAzfw44N32qT6JCl0yxi3sB
+ nabwYOx8ke03MPxQSaVVlXuAGC+rNj8/SxLFsYMey/BMfhLuaZ7DAdXbLkaqQCppCOmObQ4+Y
+ FnEqY4LcTQh3vzVgDfdFwP033LD9kBw5u0Hw0SvDksWS0aEu5JTrodEGsBuh5MSKSoEbI41aa
+ ha+zLFkRBUcvT5Y8HhuUWjocMJQpExiW0NmOHL8/OvyXxV4MgbvJbn688a2UD9Ip8XTxBBDTq
+ OIm0Tjd2ciUF5zqbpBjqJcLWYBOQL2YtomFQ+TD6KtJI4Qxra9mVmbECUEYJVPk0mSEnghqL+
+ 6AetLw7Ck/OyHDuQAaeBuzN8C3U1Pes0qK2d+yC+rIr4s9zZ34dN4recFI5CCMVh0EU+67CCH
+ LYr2VBUD5jehWxXHger1T3daSEo5Khm+Xfo/UZQR/DteluniLpMhT2d40UxtE8sVo3tHG2UzH
+ yIemXs8MsirsF5VoaytkSwHR5BG8m4PxRLMnPHTwXjNZ6naxar5s8EKlLa0spVFaCZdyirhPl
+ /0TBlRMDCD3AczqXuQ4C0jjje88J/uqxqfgCS9yg5ptRy0SpfQ1fauUqRsKqXI9fQFZwm68qm
+ WM1NMBhWVJE3qMx1rBsxB2BnAghvMj7iyUYWeE7Okg//JGMPddHdj08Tpr2YnZXJgD61657HV
+ ShKaVIDK3XbATgU+7c//4BTnZhDirBkIrEseCgC2tTGB9MFCC/MNh4U3pESCvId4ROhRAbi64
+ YKr4pxql9nz9WYrrLD8g2Z7Buhe2DUNFz/sR2jOLynEz742m/yRFa8wMcS1ha9QoUqAg6aJle
+ qR7P6HrpghNlYuB+HkmfVwt8gWGdAsDBI2qT/FHKhEIfa2lMPTJIg0CF9iQ94tPJOKI1bhmya
+ aAeCzIi3DdjsxPTS0cjWTdWVLqKvJuCcJAl3OVlUVUxp13Dek9NAkeLX3GoXKftGxbNOZfNIn
+ w0mjibJx8=
+
+> Once device_add(&dev->dev) failed, call put_device() to explicitly
+> release dev->dev. Or it could cause double free problem.
+
+https://elixir.bootlin.com/linux/v6.13-rc3/source/drivers/base/core.c#L352=
+1
 
 
+=E2=80=A6
+> Found by code review.
 
-On 2024/12/17 23:55, Johannes Weiner wrote:
-> Hello Yangge,
-> 
-> On Tue, Dec 17, 2024 at 07:46:44PM +0800, yangge1116@126.com wrote:
->> From: yangge <yangge1116@126.com>
->>
->> Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
->> in __compaction_suitable()") allow compaction to proceed when free
->> pages required for compaction reside in the CMA pageblocks, it's
->> possible that __compaction_suitable() always returns true, and in
->> some cases, it's not acceptable.
->>
->> There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
->> of memory. I have configured 16GB of CMA memory on each NUMA node,
->> and starting a 32GB virtual machine with device passthrough is
->> extremely slow, taking almost an hour.
->>
->> During the start-up of the virtual machine, it will call
->> pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
->> Long term GUP cannot allocate memory from CMA area, so a maximum
->> of 16 GB of no-CMA memory on a NUMA node can be used as virtual
->> machine memory. Since there is 16G of free CMA memory on the NUMA
->> node, watermark for order-0 always be met for compaction, so
->> __compaction_suitable() always returns true, even if the node is
->> unable to allocate non-CMA memory for the virtual machine.
->>
->> For costly allocations, because __compaction_suitable() always
->> returns true, __alloc_pages_slowpath() can't exit at the appropriate
->> place, resulting in excessively long virtual machine startup times.
->> Call trace:
->> __alloc_pages_slowpath
->>      if (compact_result == COMPACT_SKIPPED ||
->>          compact_result == COMPACT_DEFERRED)
->>          goto nopage; // should exit __alloc_pages_slowpath() from here
->>
->> Other unmovable alloctions, like dma_buf, which can be large in a
->> Linux system, are also unable to allocate memory from CMA, and these
->> allocations suffer from the same problems described above. In order
->> to quickly fall back to remote node, we should remove ALLOC_CMA both
->> in __compaction_suitable() and __isolate_free_page() for unmovable
->> alloctions. After this fix, starting a 32GB virtual machine with
->> device passthrough takes only a few seconds.
-> 
-> The symptom is obviously bad, but I don't understand this fix.
-> 
-> The reason we do ALLOC_CMA is that, even for unmovable allocations,
-> you can create space in non-CMA space by moving migratable pages over
-> to CMA space. This is not a property we want to lose. But I also don't
+https://elixir.bootlin.com/linux/v6.13-rc3/source/drivers/virtio/virtio.c#=
+L498
 
-Good point. I missed that and I need to withdraw my reviewed tag. Thanks.
+Will possibilities become interesting to improve automated source code ana=
+lyses accordingly?
+
+
+=E2=80=A6
+> +++ b/drivers/virtio/virtio.c
+> @@ -503,6 +503,7 @@ int register_virtio_device(struct virtio_device *dev=
+)
+>
+>  out_of_node_put:
+>  	of_node_put(dev->dev.of_node);
+> +	put_device(&dev->dev);
+>  out_ida_remove:
+>  	ida_free(&virtio_index_ida, dev->index);
+>  out:
+
+How much can the ordering matter for such resource cleanup calls here?
+
+Regards,
+Markus
 
