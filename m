@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-105081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C919F5AE7
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 01:02:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 986E99F5AEE
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 01:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C02237A3D72
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 00:02:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E206716242B
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 00:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026CC1E495;
-	Wed, 18 Dec 2024 00:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F8714AD2B;
+	Wed, 18 Dec 2024 00:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="X98NLjzy"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="pY3ZflW9"
 X-Original-To: stable@vger.kernel.org
 Received: from mr85p00im-ztdg06011201.me.com (mr85p00im-ztdg06011201.me.com [17.58.23.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D50228EA
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 00:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CFF149C7A
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 00:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734480138; cv=none; b=Gl+z0zLZgKkXVBYJSfdczuo3SDOXLOCh+VawVzE+1mlZ//EthNFaRw/GvRdbM51g9a3qqcImTdsjHU1GRwYLjbY16+Pprx5vYOwMYld+o6GeR7ORB4hUtPbyiaERqgKXlvDOZy8C0/WxR3PplcY3DxnaaiZ3wlaxIVUF6YdXDR4=
+	t=1734480153; cv=none; b=cnN0vD1hHk1PcfjAHyQESc4hl+3J+Eo/A3/jrCLDfgNZEfwA2N8emRKoYN+iKWhcgZxeGPkDlp9jUFuf5hPXYn4YqmsgoSe258XLGvT/hAfD6kOMZC9GXRJe6K71tqMYOPCQAjxMIkoTciRGWBRAHr5BeSxxiAkXtUX9OpzyqM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734480138; c=relaxed/simple;
-	bh=twBoU/hUI0BmgFQO7AYrFtb1Yc7+m7J4E3301tqjuAs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=d8Btvj8SihH3Nbbmb3fFtE1eiOZ4u5lvGOyINe7QUI8iNr4u2U+3kNd6amMWI/i1vB4UA9CpMLOs/8yXNUhZNNGzoDSZeRcRRHLE3i2/BHS1UlQvqJiq/m/HKXzbyOVpeWuWAhEpCpeZoyIsJOWMgewGydYvNn2sITViMx+Yp3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=X98NLjzy; arc=none smtp.client-ip=17.58.23.181
+	s=arc-20240116; t=1734480153; c=relaxed/simple;
+	bh=v2UDBGjNX/TBVEEyZ+l09JjXrifkZ0al8qUGlpvaJ5I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LtpyJhWuUiOdt4BTo0DBHPkt9bTKhsCq+K2hk2w3GEqbvAj1pIv6hojiKEsaazz9ZihYUrpKN8s3QNz8dSSWwadu9mx/rMyOyT21IfX1e3AXGbSP0zrYbQhN2XDS0yxPAaQMo/HWftbUk5VXWkChkJx2qgesWTYpVC1F3xxyNrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=pY3ZflW9; arc=none smtp.client-ip=17.58.23.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1734480136;
-	bh=TAmttWzYiyjZd5pyfmY5LYYcGBF5iOXw956oS/nDGtc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:
+	s=1a1hai; t=1734480151;
+	bh=/xL/Yze+0QjxeSoIHE+CFVDh+nPc165CBlyFJrejgkI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
 	 x-icloud-hme;
-	b=X98NLjzygvnowUFQNJGiqv+9g15ao+2S/JyPh+Z0yGqILITTjAUNDV4ixt7JeRRR0
-	 NTwiv3b89cox2P09LNPwIpRePqBNhTwwspNYjWhUPDDn+Btn3LUjsimTgh7yxNdI5+
-	 xPlHjw4G6R/MmLjpAbrK6YCfJ1E37R5cHYF2A8aq/0GFyT580qjVvBxr3mQZ7tL1MT
-	 4o/d/yHb1h7rklHvg+T51o53ZHnJ/ol9GphINfN9MULTXtm1juq3rs/v+bPe2wY8x4
-	 ZJ+ryt3thd4LsvHB/JOXxYP9k++AZCf8Azkd83FfPufsXahQySHeleojaLeNM6QE2S
-	 tBB9zVdr2cPaQ==
+	b=pY3ZflW9atnEjrr9EIzDbuL9ZSgDGxe828AAJGy9cs9HGiCB5xKrQcpBGka6yldc8
+	 68k2kzxpFFozC3+D9tWJ2MUVixANz8MK1wRR8HUlmympWp5MGsvh7VU5zUJhvwlDmM
+	 yc6DEZkySYFqhjGDGBLq/HDPKEdODAuzaBKQ123AvVa8+J0atiRLLOIZ4BsxCRCFAi
+	 2rXntuKzFXIwFJmA0KTN/l5MQKmZEm4R2zFKQqsGjgf4FC32YPMFEUJIkXZopIyWQy
+	 ex9xev3bIrtW0SHcFQSfSAxMzcGSD198TNg2yqx1DmFqHQQOdkWICpqiXUd9l7LfFm
+	 pDOoCYJ7mKF0A==
 Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-ztdg06011201.me.com (Postfix) with ESMTPSA id F309D960180;
-	Wed, 18 Dec 2024 00:02:08 +0000 (UTC)
+	by mr85p00im-ztdg06011201.me.com (Postfix) with ESMTPSA id CBD979602BB;
+	Wed, 18 Dec 2024 00:02:24 +0000 (UTC)
 From: Zijun Hu <zijun_hu@icloud.com>
-Subject: [PATCH v4 0/8] driver core: class: Fix bug and code improvements
- for class APIs
-Date: Wed, 18 Dec 2024 08:01:30 +0800
-Message-Id: <20241218-class_fix-v4-0-3c40f098356b@quicinc.com>
+Date: Wed, 18 Dec 2024 08:01:32 +0800
+Subject: [PATCH v4 2/8] blk-cgroup: Fix class @block_class's subsystem
+ refcount leakage
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,13 +56,10 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANoQYmcC/22Q3U7DMAxGX6XKNUF2kqZNr3gPhKr8OCwSa6EpF
- Wjau+NtQnQSl/6Sc+TPJ1FpKVTF0JzEQlupZZ54MA+NiAc/vZIsiWehQBlEMDK++VrHXL5kxs6
- G5Ch4pQT/f1+I46vr+YXnQ6nrvHxf1Rte0l9Lu7NsKEH20FubnXPGt08fnyWWKT7G+Sgunk3tW
- FR7VjHb6YSuT+Ah/cPqP1bds5pZMKQgmgyuw3v2fCu0EKe1rLdWIvhKkt+PZR2amJIGCgGDy9p
- i6xJ3gL4PFj2RsoascanzYn/LobntAsieqa5jynFM80TSe4odkg6B/LAZXuH8A3b/uy6eAQAA
-X-Change-ID: 20241104-class_fix-f176bd9eba22
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241218-class_fix-v4-2-3c40f098356b@quicinc.com>
+References: <20241218-class_fix-v4-0-3c40f098356b@quicinc.com>
+In-Reply-To: <20241218-class_fix-v4-0-3c40f098356b@quicinc.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  "Rafael J. Wysocki" <rafael@kernel.org>, Tejun Heo <tj@kernel.org>, 
  Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>, 
@@ -75,81 +72,50 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
  cgroups@vger.kernel.org, linux-block@vger.kernel.org, 
  linux-cxl@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, stable@vger.kernel.org, 
- Fan Ni <fan.ni@samsung.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Proofpoint-ORIG-GUID: zmuUOPLAPeEA9ukysVMFzKdYQRil6pPm
-X-Proofpoint-GUID: zmuUOPLAPeEA9ukysVMFzKdYQRil6pPm
+X-Proofpoint-ORIG-GUID: OO8FJ9GKUHIVtIi_MadGQBRzJ2KI06yY
+X-Proofpoint-GUID: OO8FJ9GKUHIVtIi_MadGQBRzJ2KI06yY
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2024-12-17_12,2024-12-17_03,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
- malwarescore=0 adultscore=0 bulkscore=0 clxscore=1011 spamscore=0
- mlxlogscore=872 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ malwarescore=0 adultscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2308100000 definitions=main-2412170183
 X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-This patch series is to fix bugs and improve codes regarding various
-driver core device iterating APIs
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
+blkcg_fill_root_iostats() iterates over @block_class's devices by
+class_dev_iter_(init|next)(), but does not end iterating with
+class_dev_iter_exit(), so causes the class's subsystem refcount leakage.
+
+Fix by ending the iterating with class_dev_iter_exit().
+
+Fixes: ef45fe470e1e ("blk-cgroup: show global disk stats in root cgroup io.stat")
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 ---
-Changes in v4:
-- Squich patches 3-5 into one based on Jonathan and Fan comments.
-- Add one more patch 
-- Link to v3: https://lore.kernel.org/r/20241212-class_fix-v3-0-04e20c4f0971@quicinc.com
+ block/blk-cgroup.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v3:
-- Correct commit message, add fix tag, and correct pr_crit() message for 1st patch
-- Add more patches regarding driver core device iterating APIs.
-- Link to v2: https://lore.kernel.org/r/20241112-class_fix-v2-0-73d198d0a0d5@quicinc.com
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index e68c725cf8d975f53703ecf6e6c50594076204c8..fb9858efdfe9443704cb9a239def0e08addf2518 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1138,6 +1138,7 @@ static void blkcg_fill_root_iostats(void)
+ 		blkg_iostat_set(&blkg->iostat.cur, &tmp);
+ 		u64_stats_update_end_irqrestore(&blkg->iostat.sync, flags);
+ 	}
++	class_dev_iter_exit(&iter);
+ }
+ 
+ static void blkcg_print_one_stat(struct blkcg_gq *blkg, struct seq_file *s)
 
-Changes in v2:
-- Remove both fix and stable tag for patch 1/3
-- drop patch 3/3
-- Link to v1: https://lore.kernel.org/r/20241105-class_fix-v1-0-80866f9994a5@quicinc.com
-
----
-Zijun Hu (8):
-      driver core: class: Fix wild pointer dereferences in API class_dev_iter_next()
-      blk-cgroup: Fix class @block_class's subsystem refcount leakage
-      driver core: Move true expression out of if condition in 3 device finding APIs
-      driver core: Rename declaration parameter name for API device_find_child() cluster
-      driver core: Correct parameter check for API device_for_each_child_reverse_from()
-      driver core: Correct API device_for_each_child_reverse_from() prototype
-      driver core: Introduce device_iter_t for device iterating APIs
-      driver core: Move 2 one line device finding APIs to header
-
- block/blk-cgroup.c            |  1 +
- drivers/base/bus.c            |  9 +++++---
- drivers/base/class.c          | 11 ++++++++--
- drivers/base/core.c           | 49 +++++++++----------------------------------
- drivers/base/driver.c         |  9 +++++---
- drivers/cxl/core/hdm.c        |  2 +-
- drivers/cxl/core/region.c     |  2 +-
- include/linux/device.h        | 28 ++++++++++++++++---------
- include/linux/device/bus.h    |  7 +++++--
- include/linux/device/class.h  |  4 ++--
- include/linux/device/driver.h |  2 +-
- 11 files changed, 60 insertions(+), 64 deletions(-)
----
-base-commit: cdd30ebb1b9f36159d66f088b61aee264e649d7a
-change-id: 20241104-class_fix-f176bd9eba22
-prerequisite-change-id: 20241201-const_dfc_done-aaec71e3bbea:v4
-prerequisite-patch-id: 536aa56c0d055f644a1f71ab5c88b7cac9510162
-prerequisite-patch-id: 39b0cf088c72853d9ce60c9e633ad2070a0278a8
-prerequisite-patch-id: 60b22c42b67ad56a3d2a7b80a30ad588cbe740ec
-prerequisite-patch-id: 119a167d7248481987b5e015db0e4fdb0d6edab8
-prerequisite-patch-id: 133248083f3d3c57beb16473c2a4c62b3abc5fd0
-prerequisite-patch-id: 4cda541f55165650bfa69fb19cbe0524eff0cb85
-prerequisite-patch-id: 2b4193c6ea6370c07e6b66de04be89fb09448f54
-prerequisite-patch-id: 73c675db18330c89fd8ca4790914d1d486ce0db8
-prerequisite-patch-id: 88c50fc851fd7077797fd4e63fb12966b1b601bd
-prerequisite-patch-id: 47b93916c1b5fb809d7c99aeaa05c729b1af01c5
-prerequisite-patch-id: 52ffb42b5aae69cae708332e0ddc7016139999f1
-
-Best regards,
 -- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+2.34.1
 
 
