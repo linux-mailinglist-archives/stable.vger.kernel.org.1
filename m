@@ -1,172 +1,122 @@
-Return-Path: <stable+bounces-105180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45089F6B28
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 17:29:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958219F6B4C
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 17:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78B2718976F2
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 16:29:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D7DE7A3E9C
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 16:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE791F4E58;
-	Wed, 18 Dec 2024 16:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988391F7072;
+	Wed, 18 Dec 2024 16:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HseMFRq7"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="F/VdIRsY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574394690;
-	Wed, 18 Dec 2024 16:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5921F63F9
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 16:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734539376; cv=none; b=ng/cUbsDYrMgGl+xAgumOMa2h+fmJ9l7l959uUuhk3emkc0IO4hBz9K+jzHp9vK/uT28pN7L9fPWX+6ho/vVbfcRknLh/YGPpnhSB6nYe+AkNUVAlWY9mvC6Zj2oPvztggUDnNGT4UEPdJ4YApuoiKXpLDEmL3brKXhPDPsi1PU=
+	t=1734539759; cv=none; b=AHstIzE6wvCnoXqKXXdR6qTwK1gbooVz6UoRNX2UN1hufny1by3hxUQjyMteS0EUJgyFXeN1Mj8ZGC3flh9nbOUCmJ9u+N7Sj7EgsF/7AdVB1DBwJelg2oI954XaIXQiAJhbeb6FDMP9q0Z6D+43dDnD4tTOa4TfX93qovVHN/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734539376; c=relaxed/simple;
-	bh=we+bkn3th2/V0frqnUXAEvGi2TCPWGTfiOOLirLF3cs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=asWgSKYe5YIXf5Cb8tAfVXDc5FaLkc6f+jhkpkrtACSEhq8lEpBWKqEJcxQdCcw5xKQv0JC3mlauU1aNsTxKCU15G2hLpE3zS193LOAy3XcjeizckfaKpwLHYVmTnw+BZhMLRHzISitgqQ32GhrKbkHII1Udq1tCTtRNfi7Ib8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HseMFRq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19261C4CECD;
-	Wed, 18 Dec 2024 16:29:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734539376;
-	bh=we+bkn3th2/V0frqnUXAEvGi2TCPWGTfiOOLirLF3cs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HseMFRq7WsXYKZtjqjD8Er3HvWAKv9pWsEAuYd8TFVzPS8wp7bTd8b9IJIlmdK31h
-	 SVh7vehr45+EDuCUgreBjSqvXrET6WHgqc9Nv5LklBJ79SmNdI8V1NmJGI0P4CXMJs
-	 kpHnLjENGjxbaobrbkA3QJTqsz3PUiSO208O6C/UjZH+oZvFRcPYeZaYDDYSPD1xRa
-	 NR0JdozDcYbrtRxCaLpKVJBvT3ip02sG8BcYJzG3mGPyQv8pvb2wkAN6X5UCgXz1X1
-	 +acaezp91W2Upm56nWLlK4QXTf5ysJs7aNTCTApQ0r9/Bko1BWbbxEh7H9iyRA0vHw
-	 UAbqFCTeq6Wvw==
-Date: Wed, 18 Dec 2024 16:29:31 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Z qiang <qiang.zhang1211@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-	jslaby@suse.cz, rcu <rcu@vger.kernel.org>
-Subject: Re: Linux 6.1.120
-Message-ID: <20241218-erupt-gratitude-1718d36bd1ac@spud>
-References: <2024121411-multiple-activist-51a1@gregkh>
- <20241216-comic-handling-3bcf108cc465@wendy>
- <CALm+0cVd=yhCTXm4j+OcqiBQwwC=bf2ja7iQ87ypBb7KD2qbjA@mail.gmail.com>
- <2024121703-bobbed-paced-99a5@gregkh>
+	s=arc-20240116; t=1734539759; c=relaxed/simple;
+	bh=hU1Z8+lcg+ptXSveEoYze+mbRwLw9U4+cd4zYPlrev0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GCWTYapzUOkU8o3lDXTgtVdjy4yFehg+BoaLX4k3HcIjXv6eYZIK9Qo0lc144GFq/2WNZOjTo6SuXZ9VdQHPba0Ieax20MCxnNX9CA+z+D2Qhs348n2pI0phJcepXaul1GkGcwYhBES8iMfSaqfLNE5W1dj1nKDp0lwGrtDnIzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=google.com; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=F/VdIRsY; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-467896541e1so313341cf.0
+        for <stable@vger.kernel.org>; Wed, 18 Dec 2024 08:35:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1734539757; x=1735144557; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hU1Z8+lcg+ptXSveEoYze+mbRwLw9U4+cd4zYPlrev0=;
+        b=F/VdIRsYwXK1dQbrUcbPT/flAVPHZxisaN0oKSmxc+lqigThPZZVjTORDu+AitL0wX
+         0N7+jOX3xMmtkxvBzgt8onR//WtGJtqs8UZCXShPCZw85SvxdcHtv5m9K5EBw8kZGuFp
+         +iPG8Tfo4+rd5vycz6MtFxZ9RnwUgiuzguHTU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734539757; x=1735144557;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hU1Z8+lcg+ptXSveEoYze+mbRwLw9U4+cd4zYPlrev0=;
+        b=CbadfvJfXtiiu9jZDoD/vy/AHXMZvDy1HvYNjfpIsGsSaTVtF4BxfKLSNiwNUCE4iJ
+         9BBAymZm9EB99FpT8KMzg70I3z24elNm0z8OmlGN7eVapy3dWQZvkgPu1j7B4AQ2yz/T
+         MarBgYjH5jJVstz8qcycJlY46/LqHy1I/jGcIA+NbG8JrvTZlZyTdjbELvTHBECjROtF
+         /LFtofe8ph79rBFUDZ7PmjHmGV94p6B4g3Yb4eZY61PY/QUOSSd+VAETpuaY15zlxP32
+         JrSrpudBNL6afwc1kKHLraw9kYCQuysVBbLIli04DPVBK1HoudQ4jtAT9HdpWqMjVuH6
+         gdQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJr77HIro+w9I3EgVlFjkVao1Q5vWjx63CDdbJbVYdzeo9uVy2wB1LrlbPCMXmYYXCVcAB+Io=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0S41u34jHFeAg2Iv8A4DbVGGNzHdyDGGejcVDn34piOGEdZd1
+	+RsYdYlbKvBQUBM14oMe5MM+q4gZUgL21XQEdumYDE27RDycfoH7TP7aBMA+WthmrbADqnijnSx
+	Rb36dS/sEVPi+TAClDUGRyyocXn9W8gm70l+wcig+jzIzpHVpMA==
+X-Gm-Gg: ASbGnct41QZrfrukFxviBKUh6gRjIV6siLBzDxyQhJPzkFcVpqFgSVJgOhvfrPibfwU
+	JFLftU6FB+iyMLqDX8g0TA0VqmS7BLsFaiorUPIMzDfxOAE9Waj+nPsBL7HDSO6kooJ4JGQ==
+X-Google-Smtp-Source: AGHT+IGlf+Wlv9h2+51DeY+YpWsJpttrKLiQ4T5hKVUT5e2IblIuVjyaICps4zat75Zd9spNCR9Zv3byB1374eRD8gw=
+X-Received: by 2002:ac8:5f49:0:b0:467:7ef7:88a3 with SMTP id
+ d75a77b69052e-469090dc683mr4277431cf.16.1734539756443; Wed, 18 Dec 2024
+ 08:35:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="YCh2qtl9xQ1a9WEY"
-Content-Disposition: inline
-In-Reply-To: <2024121703-bobbed-paced-99a5@gregkh>
+References: <20241214005248.198803-1-dianders@chromium.org>
+ <20241213165201.v2.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+ <CAODwPW_c+Ycu_zhiDOKN-fH2FEWf2pxr+FcugpqEjLX-nVjQrg@mail.gmail.com>
+ <CAD=FV=UHBA7zXZEw3K6TRpZEN-ApOkmymhRCOkz7h+yrAkR_Dw@mail.gmail.com>
+ <CAODwPW8s4GhWGuZMUbWVNLYw_EVJe=EeMDacy1hxDLmnthwoFg@mail.gmail.com> <CAD=FV=X61y+RmbWCiZut_HHVS4jPdv_ZB8F+_Hs0R-1aKHdK4w@mail.gmail.com>
+In-Reply-To: <CAD=FV=X61y+RmbWCiZut_HHVS4jPdv_ZB8F+_Hs0R-1aKHdK4w@mail.gmail.com>
+From: Julius Werner <jwerner@chromium.org>
+Date: Wed, 18 Dec 2024 17:35:45 +0100
+Message-ID: <CAODwPW_UNVkyXKxyhZv830bhzsy5idu6GiuR9mut+-qGOtv1pw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] arm64: errata: Assume that unknown CPUs _are_
+ vulnerable to Spectre BHB
+To: Doug Anderson <dianders@chromium.org>
+Cc: Julius Werner <jwerner@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, linux-arm-msm@vger.kernel.org, 
+	Jeffrey Hugo <quic_jhugo@quicinc.com>, linux-arm-kernel@lists.infradead.org, 
+	Roxana Bradescu <roxabee@google.com>, Trilok Soni <quic_tsoni@quicinc.com>, 
+	bjorn.andersson@oss.qualcomm.com, stable@vger.kernel.org, 
+	James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+> Given that I'm not going to change the way the existing predicates
+> work, if I move the "fallback" setting `max_bhb_k` to 32 to
+> spectre_bhb_enable_mitigation() then when we set `max_bhb_k` becomes
+> inconsistent between recognized and unrecognized CPUs.
 
---YCh2qtl9xQ1a9WEY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+A clean way to fix that could be to change spectre_bhb_loop_affected()
+to just return the K-value (rather than change max_bhb_k directly),
+and then set max_bhb_k to the max() of that return value and the
+existing value when it is called from spectre_bhb_enable_mitigation().
+That way, max_bhb_k would only be updated from
+spectre_bhb_enable_mitigation().
 
-On Tue, Dec 17, 2024 at 09:28:18AM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Dec 17, 2024 at 04:11:21PM +0800, Z qiang wrote:
-> > >
-> > > On Sat, Dec 14, 2024 at 09:53:13PM +0100, Greg Kroah-Hartman wrote:
-> > > > I'm announcing the release of the 6.1.120 kernel.
-> > > >
-> > > > All users of the 6.1 kernel series must upgrade.
-> > > >
-> > > > The updated 6.1.y git tree can be found at:
-> > > >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able.git linux-6.1.y
-> > > > and can be browsed at the normal kernel.org git web browser:
-> > > >       https://git.kernel.org/?p=3Dlinux/kernel/git/stable/linux-sta=
-ble.git;a=3Dsummary
-> > > >
-> > > > thanks,
-> > > >
-> > > > greg k-h
-> > > >
-> > > > ------------
-> > >
-> > > > Zqiang (1):
-> > > >       rcu-tasks: Fix access non-existent percpu rtpcp variable in r=
-cu_tasks_need_gpcb()
-> > >
-> > > I was AFK last week so I missed reporting this, but on riscv this pat=
-ch
-> > > causes:
-> > > [    0.145463] BUG: sleeping function called from invalid context at =
-include/linux/sched/mm.h:274
-> > > [    0.155273] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid:=
- 1, name: swapper/0
-> > > [    0.164160] preempt_count: 1, expected: 0
-> > > [    0.168716] RCU nest depth: 0, expected: 0
-> > > [    0.173370] 1 lock held by swapper/0/1:
-> > > [    0.177726]  #0: ffffffff81494d78 (rcu_tasks.cbs_gbl_lock){....}-{=
-2:2}, at: cblist_init_generic+0x2e/0x374
-> > > [    0.188768] irq event stamp: 718
-> > > [    0.192439] hardirqs last  enabled at (717): [<ffffffff8098df90>] =
-_raw_spin_unlock_irqrestore+0x34/0x5e
-> > > [    0.203098] hardirqs last disabled at (718): [<ffffffff8098de32>] =
-_raw_spin_lock_irqsave+0x24/0x60
-> > > [    0.213254] softirqs last  enabled at (0): [<ffffffff800105d2>] co=
-py_process+0x50c/0xdac
-> > > [    0.222445] softirqs last disabled at (0): [<0000000000000000>] 0x0
-> > > [    0.229551] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.119-0035=
-0-g224fd631c41b #1
-> > > [    0.238330] Hardware name: Microchip PolarFire-SoC Icicle Kit (DT)
-> > > [    0.245329] Call Trace:
-> > > [    0.248113] [<ffffffff8000678c>] show_stack+0x2c/0x38
-> > > [    0.253868] [<ffffffff80984e66>] dump_stack_lvl+0x5e/0x80
-> > > [    0.260022] [<ffffffff80984e9c>] dump_stack+0x14/0x20
-> > > [    0.265768] [<ffffffff800499b0>] __might_resched+0x200/0x20a
-> > > [    0.272217] [<ffffffff80049784>] __might_sleep+0x3c/0x68
-> > > [    0.278258] [<ffffffff802022aa>] __kmem_cache_alloc_node+0x64/0x240
-> > > [    0.285385] [<ffffffff801b1760>] __kmalloc+0xc0/0x180
-> > > [    0.291140] [<ffffffff8008c752>] cblist_init_generic+0x84/0x374
-> > > [    0.297857] [<ffffffff80a0b212>] rcu_spawn_tasks_kthread+0x1c/0x72
-> > > [    0.304888] [<ffffffff80a0b0e8>] rcu_init_tasks_generic+0x20/0x12e
-> > > [    0.311902] [<ffffffff80a00eb8>] kernel_init_freeable+0x56/0xa8
-> > > [    0.318638] [<ffffffff80985c10>] kernel_init+0x1a/0x18e
-> > > [    0.324574] [<ffffffff80004124>] ret_from_exception+0x0/0x1a
-> > >
-> >=20
-> > Hello, Xiangyu
-> >=20
-> > For v6.1.x kernels, the cblist_init_generic() is invoke in init task co=
-ntext,
-> > rtp->rtpcp_array is allocated use GFP_KERENL and in the critical section
-> > holding rcu_tasks.cbs_gbl_lock spinlock.  so might_resched() trigger wa=
-rnings.
-> > You should perform the operation of allocating rtpcp_array memory outsi=
-de
-> > the spinlock.
-> > Are you willing to resend the patch?
->=20
-> So should I revert this, or do you have a fixup patch somewhere?
+> I would also say that having `max_bhb_k` get set in an inconsistent
+> place opens us up for bugs in the future. Even if it works today, I
+> imagine someone could change things in the future such that
+> spectre_bhb_enable_mitigation() reads `max_bhb_k` and essentially
+> caches it (maybe it constructs an instruction based on it). If that
+> happened things could be subtly broken for the "unrecognized CPU" case
+> because the first CPU would "cache" the value without it having been
+> called on all CPUs.
 
-Is it too soon to push for a revert? It's interfering with my CIs
-attempts to test the 121-rc.
-
-Cheers,
-Conor.
-
---YCh2qtl9xQ1a9WEY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2L4awAKCRB4tDGHoIJi
-0j0YAPkBcWLo4gBdt4T7avkEGOLjDEepAsi2RpNtdHc4u+zMbAEA+4x9kKVhSGqd
-zadQyxYcPQaIr6Z24dyXOJWML1CGoAM=
-=+Abg
------END PGP SIGNATURE-----
-
---YCh2qtl9xQ1a9WEY--
+This would likely already be a problem with the current code, since
+spectre_bhb_enable_mitigations() is called one at a time for each CPU
+and the max_bhb_k value is only valid once it has been called on all
+CPUs. If someone tried to just immediately use the value inside the
+function that would just be a bug either way. (Right now this should
+not be a problem because max_bhb_k is only used by
+spectre_bhb_patch_loop_iter() which ends up being called through
+apply_alternatives_all(), which should only run after all those CPU
+errata cpu_enable callbacks have been called.)
 
