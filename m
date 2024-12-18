@@ -1,231 +1,126 @@
-Return-Path: <stable+bounces-105162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F359F6754
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 14:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 901749F6766
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 14:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A606E1882F82
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 13:33:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66732188A981
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 13:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB7A1B0404;
-	Wed, 18 Dec 2024 13:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC91E1C5489;
+	Wed, 18 Dec 2024 13:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Aza+dJKp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ItRufYRn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A371ACEAD
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 13:32:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11151B424B
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 13:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734528771; cv=none; b=S/vhLX4NVSRLxtcvAVeZT3gfnCU0kToqTHAA3E4PLZjupTCOBqOYvewlS/CYuB3KOLyKPrsx93XEpZToUSbprfnGXaZmlwTuxcuGYduJX70JMMej+mpVLAGbDZPQkGO7al2eE/D/xiu2XB9h2vLecmGNjh4sYc5E4AnKIhmF6Ok=
+	t=1734528870; cv=none; b=VPG7GFg5I4TEGv68LEpWosfJVmxPcl4B3Sb0SkpYEb7YZUmuDoC+lPHo003Gq7wV9kzO9GQHEIx16GvedgCQ53K7GdQGAAHVYkARYYdjueR+wlvaTydFzq/C6TGD3m4MIrMhjCcRKXliogPZaDeg45ouuPl+rKlq3Zp5e1jaR8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734528771; c=relaxed/simple;
-	bh=G5/soJifnSaX1ND1QtoXn3IjtMRSp9uGdN3QmqPu4No=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=APEvFH4KOrR5y0hAjaAegzBIV2RhDI2wY6O3sXvNJbgJ0M7wAzHbXw1mKIL5OJaMA3mBoflJ8V3gUU6nD/j4m+RdpW3S/RpiXUAfextns+fxf53iCeEbSd8fp8phKHvsajoknDPK43/mg3lcFuS9WseqEF0gnCOPeB+8cBwXhSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Aza+dJKp; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-51889930cb1so1779750e0c.0
-        for <stable@vger.kernel.org>; Wed, 18 Dec 2024 05:32:49 -0800 (PST)
+	s=arc-20240116; t=1734528870; c=relaxed/simple;
+	bh=OriOUj3M1nI27Avpba3wIze2vFUhMiy7qxk7DOa3psI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=JyY0VXyTzeBXiF06503p6v3Zq+thqsm61urZSb9OAeUzudek2YmOf4yaR7tUtdmeOr1UsRdtcaGlkGA3i6mr6J5eF3fUrC7/+7zz9pSetNTZVtjsfMVb/ynWnIPm5B7dJzBLpisevho6uN5yUxjDtIRjmPJhgCYCoGxHjRu9MZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ItRufYRn; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-218cf85639eso17207495ad.3
+        for <stable@vger.kernel.org>; Wed, 18 Dec 2024 05:34:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734528769; x=1735133569; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iUnvniu6hhiToDi2KkXkauo96l6qkrj1MUqRCRa1hWg=;
-        b=Aza+dJKpgbD7xP56LvDz3pfclBoJExb91Grp1tUQTy3LLpW5oon6XlrjAHCJhdsmyc
-         CQUsAPx+NrebkI8yhcOOiF2rsK8ftxT4JpVzwsjqNJ88U8YqR1ylVymXSO/kNzyf7JMM
-         yeW8RYRWGOTpdM7gE16iKbMejgyo/PT1t60oeA8Wk/nuiwVsXhIUtTWdWLem5jQpVdVE
-         +hHkt4O/CwP+Xq3kNm7kwpHnsOwhqX2j1Kp3dUYhdW+1CY86hYnUV6/PGzclDlQbrxr1
-         wcHWou8JSEefa0IqyuJWKsz3TMu6Op8diyN2fbJX0BGBfvVLb1Qo+EpMI1wCG9MB3E62
-         dmYQ==
+        d=google.com; s=20230601; t=1734528867; x=1735133667; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eAFTBo7ivhTuc59SVtnRzpksnEHu505WEYyIklRMIGY=;
+        b=ItRufYRn/73cAfP6i7/w4xR+14kfugMij8ku+JWTbkQf+FHOFKda45OGjyvTo5TEhL
+         +wB+F5azOSCleL5sHELza2tqeF8gcUObN7PZEWvILq5qKxVhunwm1YqFbIqy704UtMfR
+         5MS0FLYK5P8Kv9Bmjt8//yK/RxGOdQObI5AC1cj7Fi5znnLYktJcBIRVdFWH5zxcErpK
+         pFHC4EQFXNqjvIX82zmRlW89H4ylAd1KXuvlfnQzEu8HnBAVp2OY+Q4lUp4FAp5i5Tb3
+         VJRlWt4MLSqUlKNb46LC4qXBFWXo4EU+6OH/AZxQ46NwJl3gQgfzt6web5aRGNyUDNVG
+         Rjhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734528769; x=1735133569;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iUnvniu6hhiToDi2KkXkauo96l6qkrj1MUqRCRa1hWg=;
-        b=M6QeKdw5JTSo0Hsa1IL4q+Bz/J7zPYwmktuutERHzPsbXx9g6adnV8Mk9s1WkJFNER
-         hcTzkaUQvPF7nXW4VY3gsQhvGQzK9wsDHjIHp9J6NYKYLozmrLBlXaNPJ8Uxr6Vdrb9P
-         LM38dWhReVN+ejigSchOxnr+hxZWGKQNZ31oYNrMvjBWTgGTDs0oIHVbEQsmIZsk/4z8
-         kfwToxwsHP2DBwdmUJ+3ZYfvAcqvZ0zLSVUdJ6SNLaDwi9MBb7kwWJX7VmcV5Blchy3Y
-         VoLijk60xQ0NKWbeiaqQug1bIzYoYBs433WKnrzJnmylNrhYyG7HytdLtlrKS7rGyO/d
-         u80g==
-X-Gm-Message-State: AOJu0YwefCJZrgxGmwh+Yj/yBJCnlAxJmWlcjJNS3DC9rMdAIA8ttQEY
-	JCL5875ivGZvmQBlVo1JKkYhpcEiyyRj4F+nu8HXmDmd5XXXZKFcaHKSUwaUoFj3CiarrSTr2JN
-	dJ38LshqjlBm6ZouKOKZ1u2NYY812bhwTReMzRw==
-X-Gm-Gg: ASbGncv8jamUBTPwNnR/Tb8zeKx3kilz+lgbkbGdCmaS2XIxI37AmWzckA5CrqFXxjG
-	fyZFy/30TyngXNldbH/xtwVxlg2iCl+M4jMP0qbw=
-X-Google-Smtp-Source: AGHT+IFrn3WMYPlXHzUXLRGTfPnAsmK0F390EDdRR7M3D7ArWGAYU87aHLoNK3kNirhAdSej02oJOftv/JXTu7CbCWE=
-X-Received: by 2002:a05:6122:d0c:b0:50f:f21c:4fd0 with SMTP id
- 71dfb90a1353d-51a36d4c76cmr2707332e0c.8.1734528768665; Wed, 18 Dec 2024
- 05:32:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734528867; x=1735133667;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eAFTBo7ivhTuc59SVtnRzpksnEHu505WEYyIklRMIGY=;
+        b=G9CC1dxM7HPSjVTIsT3pd8UrbBxjOYSemobYBWf7LmsFwvEwiFRUMIgK+mn9lKBRig
+         fxJ8XlVv/MdLKAmP23tQoII/ynR+sTmPvYWSUD+B3Q4FIJOIU35GrlQIpXGEBUk8sPZa
+         9q/xDN/d7LzxceggUir5oXs4BrdU1jc0/Hpp7HHHmWQ6Mt3yNZdwvsUHrZ3R33zOrcj4
+         BL4Tkgxay1pLH3DHdkYFGb/RojwYHgAB1rf8Mm9gzf4ZmEhFbV+RM782engEmWRxgorI
+         DiAr2u9TJiShiKHdIrNYp9Ohk4dgjSwml7OW0T+r+8jrdPP6McJlbIK94ZdR40EqEus6
+         1oaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8WlHwDc0Mlt7wBLi9fqUJCANiqHuytMlS8tO8w+3K+ENrgPUTM7oq23DtTbA9xBZ6uAqAl10=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDqFFYkpD+XM6QW6L39WGe+HjMvjyCckvuVwOBP7KjbJYeDyug
+	bpXZmmzhZEMRUsUyDfFcFwWqBfb5NkyhpIoOM3ObfTj+o5X0q384Tgi8DIjcz5gPZfw3w8J2+Ua
+	2wyadCROhD/kr8lJYtBSGRM2VEw==
+X-Google-Smtp-Source: AGHT+IFY1SuAyxxaS/Chpz8wp/cqmlqOOaKMj+QKltDNe140ZmyzZdNe/qSR+a8+kqBKh2wehr1iKLZ6ofMLYYyTL+M=
+X-Received: from plbmf12.prod.google.com ([2002:a17:902:fc8c:b0:215:3fc5:cd3f])
+ (user=pkaligineedi job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:f70a:b0:215:b9a7:526d with SMTP id d9443c01a7336-218d7223339mr44408425ad.32.1734528867093;
+ Wed, 18 Dec 2024 05:34:27 -0800 (PST)
+Date: Wed, 18 Dec 2024 05:34:11 -0800
+In-Reply-To: <20241218133415.3759501-1-pkaligineedi@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241217170519.006786596@linuxfoundation.org>
-In-Reply-To: <20241217170519.006786596@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 18 Dec 2024 19:02:36 +0530
-Message-ID: <CA+G9fYvTZPHivc_QD=Y4o=3o7OBCqa_f5BHUpT-FGjBJnifsLw@mail.gmail.com>
-Subject: Re: [PATCH 5.4 00/24] 5.4.288-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
+Mime-Version: 1.0
+References: <20241218133415.3759501-1-pkaligineedi@google.com>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241218133415.3759501-2-pkaligineedi@google.com>
+Subject: [PATCH net 1/5] gve: clean XDP queues in gve_tx_stop_ring_gqi
+From: Praveen Kaligineedi <pkaligineedi@google.com>
+To: netdev@vger.kernel.org
+Cc: jeroendb@google.com, shailend@google.com, willemb@google.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, 
+	hawk@kernel.org, john.fastabend@gmail.com, horms@kernel.org, 
+	hramamurthy@google.com, joshwash@google.com, ziweixiao@google.com, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org, 
+	Praveen Kaligineedi <pkaligineedi@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 17 Dec 2024 at 22:40, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.4.288 release.
-> There are 24 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 19 Dec 2024 17:05:03 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.288-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Joshua Washington <joshwash@google.com>
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+When stopping XDP TX rings, the XDP clean function needs to be called to
+clean out the entire queue, similar to what happens in the normal TX
+queue case. Otherwise, the FIFO won't be cleared correctly, and
+xsk_tx_completed won't be reported.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: 75eaae158b1b ("gve: Add XDP DROP and TX support for GQI-QPL format")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+---
+ drivers/net/ethernet/google/gve/gve_tx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-## Build
-* kernel: 5.4.288-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: b66d75b25fae4e086d9f581b37104ef233989897
-* git describe: v5.4.287-25-gb66d75b25fae
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-87-25-gb66d75b25fae
+diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
+index e7fb7d6d283d..83ad278ec91f 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx.c
++++ b/drivers/net/ethernet/google/gve/gve_tx.c
+@@ -206,7 +206,10 @@ void gve_tx_stop_ring_gqi(struct gve_priv *priv, int idx)
+ 		return;
+ 
+ 	gve_remove_napi(priv, ntfy_idx);
+-	gve_clean_tx_done(priv, tx, priv->tx_desc_cnt, false);
++	if (tx->q_num < priv->tx_cfg.num_queues)
++		gve_clean_tx_done(priv, tx, priv->tx_desc_cnt, false);
++	else
++		gve_clean_xdp_done(priv, tx, priv->tx_desc_cnt);
+ 	netdev_tx_reset_queue(tx->netdev_txq);
+ 	gve_tx_remove_from_block(priv, idx);
+ }
+-- 
+2.47.1.613.gc27f4b7a9f-goog
 
-## Test Regressions (compared to v5.4.286-317-gce5516b3ce83)
-
-## Metric Regressions (compared to v5.4.286-317-gce5516b3ce83)
-
-## Test Fixes (compared to v5.4.286-317-gce5516b3ce83)
-
-## Metric Fixes (compared to v5.4.286-317-gce5516b3ce83)
-
-## Test result summary
-total: 42127, pass: 27773, fail: 3201, skip: 11132, xfail: 21
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 132 total, 132 passed, 0 failed
-* arm64: 32 total, 30 passed, 2 failed
-* i386: 20 total, 14 passed, 6 failed
-* mips: 25 total, 25 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 26 total, 26 passed, 0 failed
-* riscv: 9 total, 9 passed, 0 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 28 total, 28 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
