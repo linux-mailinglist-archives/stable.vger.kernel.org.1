@@ -1,654 +1,124 @@
-Return-Path: <stable+bounces-105098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB469F5C68
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 02:49:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333BD9F5C57
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 02:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D68F7A39A7
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 01:49:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9B0C166891
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 01:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73777080B;
-	Wed, 18 Dec 2024 01:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EE23594D;
+	Wed, 18 Dec 2024 01:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Bybp/22n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978D8481D1;
-	Wed, 18 Dec 2024 01:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85553595B
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 01:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734486564; cv=none; b=admGqs0+29FStulHed4jV0JZCRMG56O7RS3alB8A4K+h0fuhiS1END8GcPHmoq0IcNoLVOBbeWy0mYM6o8VFMy/a06uzK/Q2Xv1XyXJgjFzOC+jMSnIlBB2LbKFGOHmsBDCRDghJy/dZ+oMRTzJ9IzWWm017a8Q6mcMWNK9HcJo=
+	t=1734485970; cv=none; b=diTQAWCg9lKxnw/y7EWYelSP+VwGvT6OmU4mozxjY52TC6WLF2zQWrKRkCQgfLng7T5xBnIyRjt9AQSS125jmoAXtKb7iQ1LxEJigzN0rSZFbuxF/0AkLpND+k8t1C6mGFRANcyl6Sv+cPlS9YOW4ABHDUlQGY8aSmaussS0yXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734486564; c=relaxed/simple;
-	bh=KqM/SN/BM5Oin+KmPRz3yOPqHmgfVHPaxHcbBmPFAEY=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=bSMMIkKMt02NQiEq6gVYnrjbMYZPxxRUOMW5jbbv+XyLsSwvrzlc6X5ng6P+mieXBQL1HC510gxOfmIcKe4JcXqYdm4vZ4rcv7RON3b2qrNMOfix4nOvenA5B8R2EOyED1hhkUWro87wjtXSR3j8v8A+xIPowgCE8OiF6QacFsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29424C4CEE2;
-	Wed, 18 Dec 2024 01:49:24 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1tNjCL-00000008v4r-1kDA;
-	Tue, 17 Dec 2024 20:50:01 -0500
-Message-ID: <20241218015001.264897414@goodmis.org>
-User-Agent: quilt/0.68
-Date: Tue, 17 Dec 2024 20:38:32 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Al Viro <viro@ZenIV.linux.org.uk>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [for-linus][PATCH 4/4] tracing: Check "%s" dereference via the field and not the TP_printk
- format
-References: <20241218013828.733621977@goodmis.org>
+	s=arc-20240116; t=1734485970; c=relaxed/simple;
+	bh=NBXngBXuXUS1CuveS8CMCH5HMn+Pd3wVJYjajc/z6d0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G3OLjotfryviLKZwFtJBFOsCz+XXJddyXWdw35J97LRgsj5GnPFZjug+2pLUrJy3WfjRcS9O4F7ubjb9leucXCokeAe1Gb9vSORo/W4jrPNHxNl+qov42mhh7e2v+YvMn+wZZT0TH1ezc+00D3AzSXwV7YVCWus2wq+dXCiNph0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Bybp/22n; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5ceb03aadb1so8193949a12.0
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 17:39:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1734485967; x=1735090767; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iFUmBfvuCYiisihQ0MMHqMUfI983Sn9UGFbT49q6EUw=;
+        b=Bybp/22nA1ULl/PyQjewSQ51MvjF+ksX9CTc0ak6NiVkfu8BLUWJfx76CQuUbJhzox
+         qgiBT3QT6HFFJ8ZtQITtIz45+SF3/MzW0mdSiKh3wShZAXfjX0tiol+fftm8lgBed47K
+         uZ8lMD3C0FNoIXKGsJgO/92aEJFIQa/cFYUio=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734485967; x=1735090767;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iFUmBfvuCYiisihQ0MMHqMUfI983Sn9UGFbT49q6EUw=;
+        b=qIBPIVoC+GeOypNYUIvogtSGEzc1k56kEqItPzXPMgses39vhG9+f5HeulIpyynF/T
+         w05DQK+j3QK1eBaZpokqpc9uN/pmoRgnJbELhy3CzxzAhKkds79zTZTCfdPyeN7Eoq2r
+         cOoonvMVdsPLGZb0+XcVZ2BdUVvn60tOE+0D8U3oezeqCesA39nQqxUUfqwmqBBClySs
+         3wFMvWq3msc50YqAcIYlglHIXy5RF70D6UngWrRaLq7fA/rlL93XndXIvh5kSNLR2gxh
+         nuzhX/JsrepGT39XUrp7c1PcVeiYNCVTTnlSTgSOSCJE1JF7qoHhl1hhpVwAtqVUfnz0
+         t+1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVLwnkd+Ht2krpMEQOmmdQVUbxZSzMQ62QJ6jo8EyaDB5Svedib28QvG8S2NlGn4Six7kCjCWo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2GCWdFLPSlWuu/MJzhF5DtOjIlrVAIbs2RNXiF2zbnizTyyRt
+	Vi1KTu1UsfoPF97b9JRIHhqh+vPZY5Igm1tpYjmXGfz1rzsabLlJ5MIBPfqv8yek8Rg6WnlUXsw
+	H36I=
+X-Gm-Gg: ASbGnctp5InezAsTM/7FfghjagrV8RvZS5b+hLUyZ8R8ZU4ZqyyCDDcdqmQOKNq6PF0
+	sMsw3lK3yw2vG4t+GbYnAx5q6LU6BJ/OJvVUr6Lqjuel2JE+JAMWtcA0BWPUdsPdgFkzm4LyWwS
+	IT+QaTAwM0THSBEDRGQhhlDl53Inj4nIML+MAZbulnfH57W7FRVtAPhzoWci7T4MYue9zcZGscJ
+	6n+h9dQIV1E+RnKevW6ENNfm1/K46J5GHTcft+4N+0c1Rj+ijdKJvzHFhBzDlPQlRTp0yptD2ep
+	NHl0mcI346SfVSBleEl0oUDABhBF9nI=
+X-Google-Smtp-Source: AGHT+IGcqR2NhN2UkFed5mtlU8VR0xYN0IHDO++dJSWVCzT+jjzXJfVxXNEI25UvbN+FjHtT4GsGpA==
+X-Received: by 2002:a05:6402:5203:b0:5d2:723c:a57e with SMTP id 4fb4d7f45d1cf-5d7ee3dfa7bmr1035720a12.16.1734485966877;
+        Tue, 17 Dec 2024 17:39:26 -0800 (PST)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d652f25af0sm5059945a12.70.2024.12.17.17.39.23
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Dec 2024 17:39:24 -0800 (PST)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa6aad76beeso828131666b.2
+        for <stable@vger.kernel.org>; Tue, 17 Dec 2024 17:39:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVI294MAZKuO3DdfLGe8lYIu+18nXCJrmSgof2lMEa793V4KRqaMCtfSYspw+32KEYUdanPsU0=@vger.kernel.org
+X-Received: by 2002:a17:906:3119:b0:aa6:894c:84b7 with SMTP id
+ a640c23a62f3a-aabf470d31dmr63561966b.12.1734485963656; Tue, 17 Dec 2024
+ 17:39:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20241217173237.836878448@goodmis.org> <20241217173520.314190793@goodmis.org>
+ <CAHk-=wg5Kcr=sBuZcWs90CSGbJuKy0QsLaCC5oD15gS+Hk8j1A@mail.gmail.com>
+ <20241217130454.5bb593e8@gandalf.local.home> <CAHk-=whLJW1SWvJTHYmdVAL2yL=dh4RzMuxgT7rnksSpkfUVaA@mail.gmail.com>
+ <20241217133318.06f849c9@gandalf.local.home> <CAHk-=wgi1z85Cs4VmxTqFiG75qzoS_h_nszg6qP1ennEpdokkw@mail.gmail.com>
+ <20241217140153.22ac28b0@gandalf.local.home> <CAHk-=wgpjLhSv9_rnAGS1adekEHMHbjVFvmZEuEmVftuo2sJBw@mail.gmail.com>
+ <20241217144411.2165f73b@gandalf.local.home> <CAHk-=whWfmZbwRmySSpOyYEZJgcKG3d-qheYidnwu+b+rk6THg@mail.gmail.com>
+ <20241217175301.03d25799@gandalf.local.home> <CAHk-=wg9x1Xt2cmiBbCz5XTppDQ=RNkjkmegwaF6=QghG6kBtA@mail.gmail.com>
+ <CAADnVQJy65oOubjxM-378O3wDfhuwg8TGa9hc-cTv6NmmUSykQ@mail.gmail.com> <CAHk-=whOM+D1D4wb5M_SGQeiDSQbmUTrpjghy2+ivo6s1aXwFQ@mail.gmail.com>
+In-Reply-To: <CAHk-=whOM+D1D4wb5M_SGQeiDSQbmUTrpjghy2+ivo6s1aXwFQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 17 Dec 2024 17:39:07 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjOr6tJ2TsZg-gZkmNTLrDPcWWb1h-WsAo45AmV5KkJaw@mail.gmail.com>
+Message-ID: <CAHk-=wjOr6tJ2TsZg-gZkmNTLrDPcWWb1h-WsAo45AmV5KkJaw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] ring-buffer: Add uname to match criteria for
+ persistent ring buffer
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Florent Revest <revest@google.com>, Daniel Borkmann <daniel@iogearbox.net>, bpf <bpf@vger.kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Alexei Starovoitov <ast@kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, 
+	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Steven Rostedt <rostedt@goodmis.org>
+On Tue, 17 Dec 2024 at 17:26, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> Let me go separate that part out and maybe people can point out where
+> I've done something silly.
 
-The TP_printk() portion of a trace event is executed at the time a event
-is read from the trace. This can happen seconds, minutes, hours, days,
-months, years possibly later since the event was recorded. If the print
-format contains a dereference to a string via "%s", and that string was
-allocated, there's a chance that string could be freed before it is read
-by the trace file.
+Ok, that part I had actually already locally separated out better than
+some of my later patches in the series, so I sent it out as
 
-To protect against such bugs, there are two functions that verify the
-event. The first one is test_event_printk(), which is called when the
-event is created. It reads the TP_printk() format as well as its arguments
-to make sure nothing may be dereferencing a pointer that was not copied
-into the ring buffer along with the event. If it is, it will trigger a
-WARN_ON().
+  https://lore.kernel.org/all/20241218013620.1679088-1-torvalds@linux-foundation.org/
 
-For strings that use "%s", it is not so easy. The string may not reside in
-the ring buffer but may still be valid. Strings that are static and part
-of the kernel proper which will not be freed for the life of the running
-system, are safe to dereference. But to know if it is a pointer to a
-static string or to something on the heap can not be determined until the
-event is triggered.
+but I'm not guaranteeing it's right. Consider it a WIP thing, and only
+a first step.
 
-This brings us to the second function that tests for the bad dereferencing
-of strings, trace_check_vprintf(). It would walk through the printf format
-looking for "%s", and when it finds it, it would validate that the pointer
-is safe to read. If not, it would produces a WARN_ON() as well and write
-into the ring buffer "[UNSAFE-MEMORY]".
-
-The problem with this is how it used va_list to have vsnprintf() handle
-all the cases that it didn't need to check. Instead of re-implementing
-vsnprintf(), it would make a copy of the format up to the %s part, and
-call vsnprintf() with the current va_list ap variable, where the ap would
-then be ready to point at the string in question.
-
-For architectures that passed va_list by reference this was possible. For
-architectures that passed it by copy it was not. A test_can_verify()
-function was used to differentiate between the two, and if it wasn't
-possible, it would disable it.
-
-Even for architectures where this was feasible, it was a stretch to rely
-on such a method that is undocumented, and could cause issues later on
-with new optimizations of the compiler.
-
-Instead, the first function test_event_printk() was updated to look at
-"%s" as well. If the "%s" argument is a pointer outside the event in the
-ring buffer, it would find the field type of the event that is the problem
-and mark the structure with a new flag called "needs_test". The event
-itself will be marked by TRACE_EVENT_FL_TEST_STR to let it be known that
-this event has a field that needs to be verified before the event can be
-printed using the printf format.
-
-When the event fields are created from the field type structure, the
-fields would copy the field type's "needs_test" value.
-
-Finally, before being printed, a new function ignore_event() is called
-which will check if the event has the TEST_STR flag set (if not, it
-returns false). If the flag is set, it then iterates through the events
-fields looking for the ones that have the "needs_test" flag set.
-
-Then it uses the offset field from the field structure to find the pointer
-in the ring buffer event. It runs the tests to make sure that pointer is
-safe to print and if not, it triggers the WARN_ON() and also adds to the
-trace output that the event in question has an unsafe memory access.
-
-The ignore_event() makes the trace_check_vprintf() obsolete so it is
-removed.
-
-Link: https://lore.kernel.org/all/CAHk-=wh3uOnqnZPpR0PeLZZtyWbZLboZ7cHLCKRWsocvs9Y7hQ@mail.gmail.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20241217024720.848621576@goodmis.org
-Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- include/linux/trace_events.h |   6 +-
- kernel/trace/trace.c         | 255 ++++++++---------------------------
- kernel/trace/trace.h         |   6 +-
- kernel/trace/trace_events.c  |  32 +++--
- kernel/trace/trace_output.c  |   6 +-
- 5 files changed, 88 insertions(+), 217 deletions(-)
-
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 2a5df5b62cfc..91b8ffbdfa8c 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -273,7 +273,8 @@ struct trace_event_fields {
- 			const char *name;
- 			const int  size;
- 			const int  align;
--			const int  is_signed;
-+			const unsigned int is_signed:1;
-+			unsigned int needs_test:1;
- 			const int  filter_type;
- 			const int  len;
- 		};
-@@ -324,6 +325,7 @@ enum {
- 	TRACE_EVENT_FL_EPROBE_BIT,
- 	TRACE_EVENT_FL_FPROBE_BIT,
- 	TRACE_EVENT_FL_CUSTOM_BIT,
-+	TRACE_EVENT_FL_TEST_STR_BIT,
- };
- 
- /*
-@@ -340,6 +342,7 @@ enum {
-  *  CUSTOM        - Event is a custom event (to be attached to an exsiting tracepoint)
-  *                   This is set when the custom event has not been attached
-  *                   to a tracepoint yet, then it is cleared when it is.
-+ *  TEST_STR      - The event has a "%s" that points to a string outside the event
-  */
- enum {
- 	TRACE_EVENT_FL_CAP_ANY		= (1 << TRACE_EVENT_FL_CAP_ANY_BIT),
-@@ -352,6 +355,7 @@ enum {
- 	TRACE_EVENT_FL_EPROBE		= (1 << TRACE_EVENT_FL_EPROBE_BIT),
- 	TRACE_EVENT_FL_FPROBE		= (1 << TRACE_EVENT_FL_FPROBE_BIT),
- 	TRACE_EVENT_FL_CUSTOM		= (1 << TRACE_EVENT_FL_CUSTOM_BIT),
-+	TRACE_EVENT_FL_TEST_STR		= (1 << TRACE_EVENT_FL_TEST_STR_BIT),
- };
- 
- #define TRACE_EVENT_FL_UKPROBE (TRACE_EVENT_FL_KPROBE | TRACE_EVENT_FL_UPROBE)
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index be62f0ea1814..7cc18b9bce27 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -3611,17 +3611,12 @@ char *trace_iter_expand_format(struct trace_iterator *iter)
- }
- 
- /* Returns true if the string is safe to dereference from an event */
--static bool trace_safe_str(struct trace_iterator *iter, const char *str,
--			   bool star, int len)
-+static bool trace_safe_str(struct trace_iterator *iter, const char *str)
- {
- 	unsigned long addr = (unsigned long)str;
- 	struct trace_event *trace_event;
- 	struct trace_event_call *event;
- 
--	/* Ignore strings with no length */
--	if (star && !len)
--		return true;
--
- 	/* OK if part of the event data */
- 	if ((addr >= (unsigned long)iter->ent) &&
- 	    (addr < (unsigned long)iter->ent + iter->ent_size))
-@@ -3661,181 +3656,69 @@ static bool trace_safe_str(struct trace_iterator *iter, const char *str,
- 	return false;
- }
- 
--static DEFINE_STATIC_KEY_FALSE(trace_no_verify);
--
--static int test_can_verify_check(const char *fmt, ...)
--{
--	char buf[16];
--	va_list ap;
--	int ret;
--
--	/*
--	 * The verifier is dependent on vsnprintf() modifies the va_list
--	 * passed to it, where it is sent as a reference. Some architectures
--	 * (like x86_32) passes it by value, which means that vsnprintf()
--	 * does not modify the va_list passed to it, and the verifier
--	 * would then need to be able to understand all the values that
--	 * vsnprintf can use. If it is passed by value, then the verifier
--	 * is disabled.
--	 */
--	va_start(ap, fmt);
--	vsnprintf(buf, 16, "%d", ap);
--	ret = va_arg(ap, int);
--	va_end(ap);
--
--	return ret;
--}
--
--static void test_can_verify(void)
--{
--	if (!test_can_verify_check("%d %d", 0, 1)) {
--		pr_info("trace event string verifier disabled\n");
--		static_branch_inc(&trace_no_verify);
--	}
--}
--
- /**
-- * trace_check_vprintf - Check dereferenced strings while writing to the seq buffer
-+ * ignore_event - Check dereferenced fields while writing to the seq buffer
-  * @iter: The iterator that holds the seq buffer and the event being printed
-- * @fmt: The format used to print the event
-- * @ap: The va_list holding the data to print from @fmt.
-  *
-- * This writes the data into the @iter->seq buffer using the data from
-- * @fmt and @ap. If the format has a %s, then the source of the string
-- * is examined to make sure it is safe to print, otherwise it will
-- * warn and print "[UNSAFE MEMORY]" in place of the dereferenced string
-- * pointer.
-+ * At boot up, test_event_printk() will flag any event that dereferences
-+ * a string with "%s" that does exist in the ring buffer. It may still
-+ * be valid, as the string may point to a static string in the kernel
-+ * rodata that never gets freed. But if the string pointer is pointing
-+ * to something that was allocated, there's a chance that it can be freed
-+ * by the time the user reads the trace. This would cause a bad memory
-+ * access by the kernel and possibly crash the system.
-+ *
-+ * This function will check if the event has any fields flagged as needing
-+ * to be checked at runtime and perform those checks.
-+ *
-+ * If it is found that a field is unsafe, it will write into the @iter->seq
-+ * a message stating what was found to be unsafe.
-+ *
-+ * @return: true if the event is unsafe and should be ignored,
-+ *          false otherwise.
-  */
--void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
--			 va_list ap)
-+bool ignore_event(struct trace_iterator *iter)
- {
--	long text_delta = 0;
--	long data_delta = 0;
--	const char *p = fmt;
--	const char *str;
--	bool good;
--	int i, j;
-+	struct ftrace_event_field *field;
-+	struct trace_event *trace_event;
-+	struct trace_event_call *event;
-+	struct list_head *head;
-+	struct trace_seq *seq;
-+	const void *ptr;
- 
--	if (WARN_ON_ONCE(!fmt))
--		return;
-+	trace_event = ftrace_find_event(iter->ent->type);
- 
--	if (static_branch_unlikely(&trace_no_verify))
--		goto print;
-+	seq = &iter->seq;
- 
--	/*
--	 * When the kernel is booted with the tp_printk command line
--	 * parameter, trace events go directly through to printk().
--	 * It also is checked by this function, but it does not
--	 * have an associated trace_array (tr) for it.
--	 */
--	if (iter->tr) {
--		text_delta = iter->tr->text_delta;
--		data_delta = iter->tr->data_delta;
-+	if (!trace_event) {
-+		trace_seq_printf(seq, "EVENT ID %d NOT FOUND?\n", iter->ent->type);
-+		return true;
- 	}
- 
--	/* Don't bother checking when doing a ftrace_dump() */
--	if (iter->fmt == static_fmt_buf)
--		goto print;
--
--	while (*p) {
--		bool star = false;
--		int len = 0;
--
--		j = 0;
--
--		/*
--		 * We only care about %s and variants
--		 * as well as %p[sS] if delta is non-zero
--		 */
--		for (i = 0; p[i]; i++) {
--			if (i + 1 >= iter->fmt_size) {
--				/*
--				 * If we can't expand the copy buffer,
--				 * just print it.
--				 */
--				if (!trace_iter_expand_format(iter))
--					goto print;
--			}
--
--			if (p[i] == '\\' && p[i+1]) {
--				i++;
--				continue;
--			}
--			if (p[i] == '%') {
--				/* Need to test cases like %08.*s */
--				for (j = 1; p[i+j]; j++) {
--					if (isdigit(p[i+j]) ||
--					    p[i+j] == '.')
--						continue;
--					if (p[i+j] == '*') {
--						star = true;
--						continue;
--					}
--					break;
--				}
--				if (p[i+j] == 's')
--					break;
--
--				if (text_delta && p[i+1] == 'p' &&
--				    ((p[i+2] == 's' || p[i+2] == 'S')))
--					break;
--
--				star = false;
--			}
--			j = 0;
--		}
--		/* If no %s found then just print normally */
--		if (!p[i])
--			break;
--
--		/* Copy up to the %s, and print that */
--		strncpy(iter->fmt, p, i);
--		iter->fmt[i] = '\0';
--		trace_seq_vprintf(&iter->seq, iter->fmt, ap);
-+	event = container_of(trace_event, struct trace_event_call, event);
-+	if (!(event->flags & TRACE_EVENT_FL_TEST_STR))
-+		return false;
- 
--		/* Add delta to %pS pointers */
--		if (p[i+1] == 'p') {
--			unsigned long addr;
--			char fmt[4];
-+	head = trace_get_fields(event);
-+	if (!head) {
-+		trace_seq_printf(seq, "FIELDS FOR EVENT '%s' NOT FOUND?\n",
-+				 trace_event_name(event));
-+		return true;
-+	}
- 
--			fmt[0] = '%';
--			fmt[1] = 'p';
--			fmt[2] = p[i+2]; /* Either %ps or %pS */
--			fmt[3] = '\0';
-+	/* Offsets are from the iter->ent that points to the raw event */
-+	ptr = iter->ent;
- 
--			addr = va_arg(ap, unsigned long);
--			addr += text_delta;
--			trace_seq_printf(&iter->seq, fmt, (void *)addr);
-+	list_for_each_entry(field, head, link) {
-+		const char *str;
-+		bool good;
- 
--			p += i + 3;
-+		if (!field->needs_test)
- 			continue;
--		}
- 
--		/*
--		 * If iter->seq is full, the above call no longer guarantees
--		 * that ap is in sync with fmt processing, and further calls
--		 * to va_arg() can return wrong positional arguments.
--		 *
--		 * Ensure that ap is no longer used in this case.
--		 */
--		if (iter->seq.full) {
--			p = "";
--			break;
--		}
--
--		if (star)
--			len = va_arg(ap, int);
--
--		/* The ap now points to the string data of the %s */
--		str = va_arg(ap, const char *);
-+		str = *(const char **)(ptr + field->offset);
- 
--		good = trace_safe_str(iter, str, star, len);
--
--		/* Could be from the last boot */
--		if (data_delta && !good) {
--			str += data_delta;
--			good = trace_safe_str(iter, str, star, len);
--		}
-+		good = trace_safe_str(iter, str);
- 
- 		/*
- 		 * If you hit this warning, it is likely that the
-@@ -3846,44 +3729,14 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
- 		 * instead. See samples/trace_events/trace-events-sample.h
- 		 * for reference.
- 		 */
--		if (WARN_ONCE(!good, "fmt: '%s' current_buffer: '%s'",
--			      fmt, seq_buf_str(&iter->seq.seq))) {
--			int ret;
--
--			/* Try to safely read the string */
--			if (star) {
--				if (len + 1 > iter->fmt_size)
--					len = iter->fmt_size - 1;
--				if (len < 0)
--					len = 0;
--				ret = copy_from_kernel_nofault(iter->fmt, str, len);
--				iter->fmt[len] = 0;
--				star = false;
--			} else {
--				ret = strncpy_from_kernel_nofault(iter->fmt, str,
--								  iter->fmt_size);
--			}
--			if (ret < 0)
--				trace_seq_printf(&iter->seq, "(0x%px)", str);
--			else
--				trace_seq_printf(&iter->seq, "(0x%px:%s)",
--						 str, iter->fmt);
--			str = "[UNSAFE-MEMORY]";
--			strcpy(iter->fmt, "%s");
--		} else {
--			strncpy(iter->fmt, p + i, j + 1);
--			iter->fmt[j+1] = '\0';
-+		if (WARN_ONCE(!good, "event '%s' has unsafe pointer field '%s'",
-+			      trace_event_name(event), field->name)) {
-+			trace_seq_printf(seq, "EVENT %s: HAS UNSAFE POINTER FIELD '%s'\n",
-+					 trace_event_name(event), field->name);
-+			return true;
- 		}
--		if (star)
--			trace_seq_printf(&iter->seq, iter->fmt, len, str);
--		else
--			trace_seq_printf(&iter->seq, iter->fmt, str);
--
--		p += i + j + 1;
- 	}
-- print:
--	if (*p)
--		trace_seq_vprintf(&iter->seq, p, ap);
-+	return false;
- }
- 
- const char *trace_event_format(struct trace_iterator *iter, const char *fmt)
-@@ -10777,8 +10630,6 @@ __init static int tracer_alloc_buffers(void)
- 
- 	register_snapshot_cmd();
- 
--	test_can_verify();
--
- 	return 0;
- 
- out_free_pipe_cpumask:
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 266740b4e121..9691b47b5f3d 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -667,9 +667,8 @@ void trace_buffer_unlock_commit_nostack(struct trace_buffer *buffer,
- 
- bool trace_is_tracepoint_string(const char *str);
- const char *trace_event_format(struct trace_iterator *iter, const char *fmt);
--void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
--			 va_list ap) __printf(2, 0);
- char *trace_iter_expand_format(struct trace_iterator *iter);
-+bool ignore_event(struct trace_iterator *iter);
- 
- int trace_empty(struct trace_iterator *iter);
- 
-@@ -1413,7 +1412,8 @@ struct ftrace_event_field {
- 	int			filter_type;
- 	int			offset;
- 	int			size;
--	int			is_signed;
-+	unsigned int		is_signed:1;
-+	unsigned int		needs_test:1;
- 	int			len;
- };
- 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 521ad2fd1fe7..1545cc8b49d0 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -82,7 +82,7 @@ static int system_refcount_dec(struct event_subsystem *system)
- 	}
- 
- static struct ftrace_event_field *
--__find_event_field(struct list_head *head, char *name)
-+__find_event_field(struct list_head *head, const char *name)
- {
- 	struct ftrace_event_field *field;
- 
-@@ -114,7 +114,8 @@ trace_find_event_field(struct trace_event_call *call, char *name)
- 
- static int __trace_define_field(struct list_head *head, const char *type,
- 				const char *name, int offset, int size,
--				int is_signed, int filter_type, int len)
-+				int is_signed, int filter_type, int len,
-+				int need_test)
- {
- 	struct ftrace_event_field *field;
- 
-@@ -133,6 +134,7 @@ static int __trace_define_field(struct list_head *head, const char *type,
- 	field->offset = offset;
- 	field->size = size;
- 	field->is_signed = is_signed;
-+	field->needs_test = need_test;
- 	field->len = len;
- 
- 	list_add(&field->link, head);
-@@ -151,13 +153,13 @@ int trace_define_field(struct trace_event_call *call, const char *type,
- 
- 	head = trace_get_fields(call);
- 	return __trace_define_field(head, type, name, offset, size,
--				    is_signed, filter_type, 0);
-+				    is_signed, filter_type, 0, 0);
- }
- EXPORT_SYMBOL_GPL(trace_define_field);
- 
- static int trace_define_field_ext(struct trace_event_call *call, const char *type,
- 		       const char *name, int offset, int size, int is_signed,
--		       int filter_type, int len)
-+		       int filter_type, int len, int need_test)
- {
- 	struct list_head *head;
- 
-@@ -166,13 +168,13 @@ static int trace_define_field_ext(struct trace_event_call *call, const char *typ
- 
- 	head = trace_get_fields(call);
- 	return __trace_define_field(head, type, name, offset, size,
--				    is_signed, filter_type, len);
-+				    is_signed, filter_type, len, need_test);
- }
- 
- #define __generic_field(type, item, filter_type)			\
- 	ret = __trace_define_field(&ftrace_generic_fields, #type,	\
- 				   #item, 0, 0, is_signed_type(type),	\
--				   filter_type, 0);			\
-+				   filter_type, 0, 0);			\
- 	if (ret)							\
- 		return ret;
- 
-@@ -181,7 +183,8 @@ static int trace_define_field_ext(struct trace_event_call *call, const char *typ
- 				   "common_" #item,			\
- 				   offsetof(typeof(ent), item),		\
- 				   sizeof(ent.item),			\
--				   is_signed_type(type), FILTER_OTHER, 0);	\
-+				   is_signed_type(type), FILTER_OTHER,	\
-+				   0, 0);				\
- 	if (ret)							\
- 		return ret;
- 
-@@ -332,6 +335,7 @@ static bool process_pointer(const char *fmt, int len, struct trace_event_call *c
- /* Return true if the string is safe */
- static bool process_string(const char *fmt, int len, struct trace_event_call *call)
- {
-+	struct trace_event_fields *field;
- 	const char *r, *e, *s;
- 
- 	e = fmt + len;
-@@ -372,8 +376,16 @@ static bool process_string(const char *fmt, int len, struct trace_event_call *ca
- 	if (process_pointer(fmt, len, call))
- 		return true;
- 
--	/* Make sure the field is found, and consider it OK for now if it is */
--	return find_event_field(fmt, call) != NULL;
-+	/* Make sure the field is found */
-+	field = find_event_field(fmt, call);
-+	if (!field)
-+		return false;
-+
-+	/* Test this field's string before printing the event */
-+	call->flags |= TRACE_EVENT_FL_TEST_STR;
-+	field->needs_test = 1;
-+
-+	return true;
- }
- 
- /*
-@@ -2586,7 +2598,7 @@ event_define_fields(struct trace_event_call *call)
- 			ret = trace_define_field_ext(call, field->type, field->name,
- 						 offset, field->size,
- 						 field->is_signed, field->filter_type,
--						 field->len);
-+						 field->len, field->needs_test);
- 			if (WARN_ON_ONCE(ret)) {
- 				pr_err("error code is %d\n", ret);
- 				break;
-diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
-index da748b7cbc4d..03d56f711ad1 100644
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -317,10 +317,14 @@ EXPORT_SYMBOL(trace_raw_output_prep);
- 
- void trace_event_printf(struct trace_iterator *iter, const char *fmt, ...)
- {
-+	struct trace_seq *s = &iter->seq;
- 	va_list ap;
- 
-+	if (ignore_event(iter))
-+		return;
-+
- 	va_start(ap, fmt);
--	trace_check_vprintf(iter, trace_event_format(iter, fmt), ap);
-+	trace_seq_vprintf(s, trace_event_format(iter, fmt), ap);
- 	va_end(ap);
- }
- EXPORT_SYMBOL(trace_event_printf);
--- 
-2.45.2
-
-
+           Linus
 
