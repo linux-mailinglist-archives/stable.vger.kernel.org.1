@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-105243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3269F6FCE
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 22:59:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB199F6FEA
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 23:13:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 777DF188985F
-	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 21:59:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF911893CDD
+	for <lists+stable@lfdr.de>; Wed, 18 Dec 2024 22:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100921FC10E;
-	Wed, 18 Dec 2024 21:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25551FBE8B;
+	Wed, 18 Dec 2024 22:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4PQTt3o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjrY2RSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D1E154BE2
-	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 21:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E286198845
+	for <stable@vger.kernel.org>; Wed, 18 Dec 2024 22:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734559183; cv=none; b=nAC55t3ZKXJCkiB372wTxOUjreoQG52hO7wFjw/mq1ocGTfJc2wkx/TzZTpa+KWVLkFQ/nUVBfRL7BsIFnVBuHTizvWkj9xIXuD1ULPk6GVMy3hEmUE+HJqhSN2SY3Yd4Fkp9E8TjlaaF8hn5mcB/Zr9Se70Q2Ya/CFKLrcBQ9o=
+	t=1734560000; cv=none; b=tsqVYbJ+0EV/YvnBxhfGDTRXU5wMT1B/hKyZwZddtJceHLPasFH7MvEO+YOcwKQQ/tTiFeiYskkHdCtlYx+FKmd/RSOmyvViEpY8tWp4r0meBNPO0DclK12cZxVdxgfPVhw/uT59Up/QJSrxZ4dZWZtovxrrelAGUlJDw0+cjNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734559183; c=relaxed/simple;
-	bh=VVzFIMrU+QsZLY7oZ3CyZdypmx+lKyTlkmTXnvIeF6M=;
+	s=arc-20240116; t=1734560000; c=relaxed/simple;
+	bh=IKUB97eWrE+zI+iG7Tcq4ySSgK6N3rqYe/eVHI+eiU4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aj4kJSuzM2bD3Y8pC83qqD/XYM/G6If+qQb49mOFYANN80vuw/ykHFmzJq0uY3CcuExgNtap5hNs7ldh/E/VBOpT+It8BJUCHMfoC2tVq6tQzVAN0hmEHjujHCF8cu786rkkZHDUPuokSDQS7KBAYz9m1vZJLC0EXF1k/5Ka+Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4PQTt3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A16AC4CECD;
-	Wed, 18 Dec 2024 21:59:43 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TVmOYSU5SgCriPq7DoKF1pEjWV4htRQ/YgnfGipgaExJSDxpBVn/8MWRpgJkdf/nj7vKiPtf6WOhPltPrrpKy0mKGbhavbhV7CTLsiPpfc25QvYY/GJJ9DNNsu56iAEdSN0crdkcWZKUYf+PLxJKxLOqemJYZcgC119mdyF876A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjrY2RSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD106C4CECD;
+	Wed, 18 Dec 2024 22:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734559183;
-	bh=VVzFIMrU+QsZLY7oZ3CyZdypmx+lKyTlkmTXnvIeF6M=;
+	s=k20201202; t=1734559999;
+	bh=IKUB97eWrE+zI+iG7Tcq4ySSgK6N3rqYe/eVHI+eiU4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I4PQTt3osPb8/VttmF6WLdgjUpACB+rnlyBkDjAiCXuge//5H9TjS7sNHIWq9DQMO
-	 DbMyDr0WizMYyzgyfkOd3lIXEt9wMDqHdbVvbhw8FTDWkT9dmP7DYUzWXCMokKwe57
-	 IAnCjZyJXP9sF98f1Kju3MYVRQIivwTXeAGULoL7+9KkEpELAoMkNzAoOJjdeqXgvi
-	 SBot6BitDZ8eW9TWvecQ6FFaHVhVGllM97o9BUTiQRRFKZxWBQx+n8x4brQAXrbEOV
-	 8XWS5qubKOqP32qXAbWt+yuBM2pzhWIVS+sl6VzAi2x95DfUL5w5Sqzb6vs9ilj3e7
-	 yEH5djlQpV1qw==
-Date: Wed, 18 Dec 2024 16:59:41 -0500
+	b=IjrY2RSKN2M3xGlq1ds/PnIY/1qHNAu3kGlxCq6UQTxhLmYVyTMuiOr+nqFDVB9XH
+	 wNOyQbeaJk8uipUYZ6EJ8chs6HECNjA2wH7fBGjdzYXaRLI9wOYpm0DsnvwITIcfrM
+	 ehbzA2BrwnjAMRH7J1zch2Xtlw1adW9GMF0rlFxEu4Cg3eJjiH/mwy3WfoqXOkqDHS
+	 147pGdlyeHw5F82y0OP3fJ44EbCgNJIRsWXwFPiE7vMo3ihvzM7zwRR7OYo2Z+F0Pe
+	 m+dsOGWC4cQeamtAbeUjUtJggovyZzsMFss1rOjwg654CXRjFHp5+AM2nEwFygEVuS
+	 u80V2HLz4cPhg==
+Date: Wed, 18 Dec 2024 17:13:18 -0500
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Tanmay Shah <tanmay.shah@amd.com>
-Subject: Re: [PATCH v2] mailbox: zynqmp: setup IPI for each valid child node
-Message-ID: <Z2NFzb2byhmiDVtf@lappy>
-References: <20241216214257.3924162-1-tanmay.shah@amd.com>
- <20241216192841-922fe76161366e54@stable.kernel.org>
+Cc: Catherine Hoang <catherine.hoang@oracle.com>
+Subject: Re: [PATCH 6.6 12/17] xfs: attr forks require attr, not attr2
+Message-ID: <Z2NI_gDmfMNqHJh6@lappy>
+References: <20241218191725.63098-13-catherine.hoang@oracle.com>
+ <20241218155157-b0c79d27d96c74eb@stable.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,33 +57,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20241216192841-922fe76161366e54@stable.kernel.org>
+In-Reply-To: <20241218155157-b0c79d27d96c74eb@stable.kernel.org>
 
-On Mon, Dec 16, 2024 at 07:42:17PM -0500, Sasha Levin wrote:
+On Wed, Dec 18, 2024 at 04:01:11PM -0500, Sasha Levin wrote:
 >[ Sasha's backport helper bot ]
 >
 >Hi,
 >
->Found matching upstream commit: 98fc87fe2937db5a4948c553f69b5a3cc94c230a
+>The upstream commit SHA1 provided is correct: 73c34b0b85d46bf9c2c0b367aeaffa1e2481b136
+>
+>WARNING: Author mismatch between patch and upstream commit:
+>Backport author: Catherine Hoang <catherine.hoang@oracle.com>
+>Commit author: Darrick J. Wong <djwong@kernel.org>
 >
 >
 >Status in newer kernel trees:
->6.12.y | Not found
+>6.12.y | Present (exact SHA1)
 >
 >Note: The patch differs from the upstream commit:
 >---
->1:  98fc87fe2937 ! 1:  7d2de1d13592 mailbox: zynqmp: setup IPI for each valid child node
->    @@ Commit message
->         Fix this crash by registering IPI setup function for each available child
->         node.
+>Failed to apply patch cleanly, falling back to interdiff...
 >
->    +    Cc: stable@vger.kernel.org
->    +    Fixes: 41bcf30100c5 (mailbox: zynqmp: Move buffered IPI setup)
->         Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
->    -    Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
->    +    Reviewed-by: Michal Simek <michal.simek@amd.com>
+>interdiff error output:
+>/home/sasha/stable/mailbot.sh: line 525: interdiff: command not found
+>interdiff failed, falling back to standard diff...
+>---
+>
+>Results of testing on various branches:
+>
+>| Branch                    | Patch Apply | Build Test |
+>|---------------------------|-------------|------------|
+>| stable/linux-6.12.y       |  Failed (series apply)  |  N/A       |
+>| stable/linux-6.6.y        |  Success    |  Success   |
 
-Why did we lose a S-O-B line here?
+I'll figure out what went wrong here, please ignore...
 
 -- 
 Thanks,
