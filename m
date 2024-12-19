@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-105257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722DB9F7326
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 04:05:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2449F7327
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 04:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 541A47A35ED
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:05:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3338B16D399
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404DB12C484;
-	Thu, 19 Dec 2024 03:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9897C13A41F;
+	Thu, 19 Dec 2024 03:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="co2vWjnQ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eGRvGoIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACDD1EA90;
-	Thu, 19 Dec 2024 03:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E023136E37;
+	Thu, 19 Dec 2024 03:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734577516; cv=none; b=ZsPmCV3FanrX/Xyh2uKH9KzgWjOT8Xgyka41QMPd2qJsTrJg9bm9iErZ2RVhxA8MVbathMg2M5ItO/71n9K5YGO98qH7Se51/HGeQ/Cm8WScoHxOxzZTH8U/jK2GJd2UdNLrFhapRZA8K1v5ouj4e5HfNxVnU7CBfEEfKEMZVTw=
+	t=1734577518; cv=none; b=WgCz30b1LlD2M+6bKXN452WqFREQPJbqWmPOwv2gjULkCaid2jpAl95VhCeoxlN9IMDS03pLFb3UmKJ3QhK6udIRnteF8YEP9bJ08MoBXvEizC+e3Ow2FUWq7g1aC9xoMqLChjiaAxd6wuKoZWMrJedzYdBH5N1C6Sb5XFcGBaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734577516; c=relaxed/simple;
-	bh=yOCeGTPFSDVFMS535a9jz95Uit346xOX0ir1pXgt8Ao=;
-	h=Date:To:From:Subject:Message-Id; b=L3qbvSW8inp+ChBpHTdaeAVai8qYY2X7hPcJ7zAFjRCOV72CmyG1LDKE3XrWMeQUzpMr7PS46xu6hN+ON6mPLqcbYEt3Qf0dXo/gqH/1d7MJakUUlysPEFPZBbjFq5CXEcIcK7yN61/EWDOslP1gWwJkLoxyXrL+5t/9TyuRYW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=co2vWjnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2AFC4CECD;
-	Thu, 19 Dec 2024 03:05:15 +0000 (UTC)
+	s=arc-20240116; t=1734577518; c=relaxed/simple;
+	bh=FGSY7ODciTyere1ipkRM1hRlRbYdTTJuMLE6+f5E9Sc=;
+	h=Date:To:From:Subject:Message-Id; b=ETVD4G4M7UhrURa811QAX+13jVT5Lrdh5wgZQQXYQ/W2LDR1K71hs79aM/MIfTip6JxfutH0QRm/91Os7vti1e3AOxFP1kjHGbFBVRsrDt+A/Y8qQU4NbtiICNiKXeRfo+NQbe+9UkJqIKQrIIOv8wRdkIagBVstG63PE3qECTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eGRvGoIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D3DC4CED4;
+	Thu, 19 Dec 2024 03:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1734577515;
-	bh=yOCeGTPFSDVFMS535a9jz95Uit346xOX0ir1pXgt8Ao=;
+	s=korg; t=1734577517;
+	bh=FGSY7ODciTyere1ipkRM1hRlRbYdTTJuMLE6+f5E9Sc=;
 	h=Date:To:From:Subject:From;
-	b=co2vWjnQATSo/hUtip8NgEWHpIL0r62EzSVAXYN+XjjlCn/W7ARUG+KW+p0rRY6yF
-	 Zty79XO92ThZJDreM4EqTjJ+jCv/Cd+D1A948aN2Hu51G4s59dDIUuQzlhve44CPq0
-	 Pd5hxq1wL4pkTtENBbcu81aVJwzqQpKM01kkU2ZQ=
-Date: Wed, 18 Dec 2024 19:05:14 -0800
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,kaleshsingh@google.com,jeffxu@google.com,isaacmanjarres@google.com,akpm@linux-foundation.org
+	b=eGRvGoIpI2Y11V44dlfDknHZ6LXvWj8q3U9TAPYl2EdKozVBYb6qZGVhN4g9jY8Gn
+	 du9hIWNI97vLxs7SBUhwvL8DZePrmv055UUwmg3eZk3AQTTfrgzkJcgk7UIx9Mj304
+	 goLBudaS+KFuD+bceJeBLcnXXwcYLIVlLNUQ+IJg=
+Date: Wed, 18 Dec 2024 19:05:17 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,heming.zhao@suse.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] selftests-memfd-run-sysctl-tests-when-pid-namespace-support-is-enabled.patch removed from -mm tree
-Message-Id: <20241219030515.4E2AFC4CECD@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] ocfs2-revert-ocfs2-fix-the-la-space-leak-when-unmounting-an-ocfs2-volume.patch removed from -mm tree
+Message-Id: <20241219030517.C4D3DC4CED4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,83 +50,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: selftests/memfd: run sysctl tests when PID namespace support is enabled
+     Subject: ocfs2: revert "ocfs2: fix the la space leak when unmounting an ocfs2 volume"
 has been removed from the -mm tree.  Its filename was
-     selftests-memfd-run-sysctl-tests-when-pid-namespace-support-is-enabled.patch
+     ocfs2-revert-ocfs2-fix-the-la-space-leak-when-unmounting-an-ocfs2-volume.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-Subject: selftests/memfd: run sysctl tests when PID namespace support is enabled
-Date: Thu, 5 Dec 2024 11:29:41 -0800
+From: Heming Zhao <heming.zhao@suse.com>
+Subject: ocfs2: revert "ocfs2: fix the la space leak when unmounting an ocfs2 volume"
+Date: Thu, 5 Dec 2024 18:48:32 +0800
 
-The sysctl tests for vm.memfd_noexec rely on the kernel to support PID
-namespaces (i.e.  the kernel is built with CONFIG_PID_NS=y).  If the
-kernel the test runs on does not support PID namespaces, the first sysctl
-test will fail when attempting to spawn a new thread in a new PID
-namespace, abort the test, preventing the remaining tests from being run.
+Patch series "Revert ocfs2 commit dfe6c5692fb5 and provide a new fix".
 
-This is not desirable, as not all kernels need PID namespaces, but can
-still use the other features provided by memfd.  Therefore, only run the
-sysctl tests if the kernel supports PID namespaces.  Otherwise, skip those
-tests and emit an informative message to let the user know why the sysctl
-tests are not being run.
+SUSE QA team detected a mistake in my commit dfe6c5692fb5 ("ocfs2: fix the
+la space leak when unmounting an ocfs2 volume").  I am very sorry for my
+error.  (If my eyes are correct) From the mailling list mails, this patch
+shouldn't be applied to 4.19 5.4 5.10 5.15 6.1 6.6, and these branches
+should perform a revert operation.
 
-Link: https://lkml.kernel.org/r/20241205192943.3228757-1-isaacmanjarres@google.com
-Fixes: 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_EXEC")
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: Jeff Xu <jeffxu@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
+Reason for revert:
+In commit dfe6c5692fb5, I mistakenly wrote: "This bug has existed since
+the initial OCFS2 code.".  The statement is wrong.  The correct
+introduction commit is 30dd3478c3cd.  IOW, if the branch doesn't include
+30dd3478c3cd, dfe6c5692fb5 should also not be included.
+
+
+This reverts commit dfe6c5692fb5 ("ocfs2: fix the la space leak when
+unmounting an ocfs2 volume").
+
+In commit dfe6c5692fb5, the commit log "This bug has existed since the
+initial OCFS2 code." is wrong.  The correct introduction commit is
+30dd3478c3cd ("ocfs2: correctly use ocfs2_find_next_zero_bit()").
+
+The influence of commit dfe6c5692fb5 is that it provides a correct fix for
+the latest kernel.  however, it shouldn't be pushed to stable branches. 
+Let's use this commit to revert all branches that include dfe6c5692fb5 and
+use a new fix method to fix commit 30dd3478c3cd.
+
+Link: https://lkml.kernel.org/r/20241205104835.18223-1-heming.zhao@suse.com
+Link: https://lkml.kernel.org/r/20241205104835.18223-2-heming.zhao@suse.com
+Fixes: dfe6c5692fb5 ("ocfs2: fix the la space leak when unmounting an ocfs2 volume")
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/memfd/memfd_test.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/ocfs2/localalloc.c |   19 -------------------
+ 1 file changed, 19 deletions(-)
 
---- a/tools/testing/selftests/memfd/memfd_test.c~selftests-memfd-run-sysctl-tests-when-pid-namespace-support-is-enabled
-+++ a/tools/testing/selftests/memfd/memfd_test.c
-@@ -9,6 +9,7 @@
- #include <fcntl.h>
- #include <linux/memfd.h>
- #include <sched.h>
-+#include <stdbool.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <signal.h>
-@@ -1557,6 +1558,11 @@ static void test_share_fork(char *banner
- 	close(fd);
- }
+--- a/fs/ocfs2/localalloc.c~ocfs2-revert-ocfs2-fix-the-la-space-leak-when-unmounting-an-ocfs2-volume
++++ a/fs/ocfs2/localalloc.c
+@@ -1002,25 +1002,6 @@ static int ocfs2_sync_local_to_main(stru
+ 		start = bit_off + 1;
+ 	}
  
-+static bool pid_ns_supported(void)
-+{
-+	return access("/proc/self/ns/pid", F_OK) == 0;
-+}
-+
- int main(int argc, char **argv)
- {
- 	pid_t pid;
-@@ -1591,8 +1597,12 @@ int main(int argc, char **argv)
- 	test_seal_grow();
- 	test_seal_resize();
- 
--	test_sysctl_simple();
--	test_sysctl_nested();
-+	if (pid_ns_supported()) {
-+		test_sysctl_simple();
-+		test_sysctl_nested();
-+	} else {
-+		printf("PID namespaces are not supported; skipping sysctl tests\n");
-+	}
- 
- 	test_share_dup("SHARE-DUP", "");
- 	test_share_mmap("SHARE-MMAP", "");
+-	/* clear the contiguous bits until the end boundary */
+-	if (count) {
+-		blkno = la_start_blk +
+-			ocfs2_clusters_to_blocks(osb->sb,
+-					start - count);
+-
+-		trace_ocfs2_sync_local_to_main_free(
+-				count, start - count,
+-				(unsigned long long)la_start_blk,
+-				(unsigned long long)blkno);
+-
+-		status = ocfs2_release_clusters(handle,
+-				main_bm_inode,
+-				main_bm_bh, blkno,
+-				count);
+-		if (status < 0)
+-			mlog_errno(status);
+-	}
+-
+ bail:
+ 	if (status)
+ 		mlog_errno(status);
 _
 
-Patches currently in -mm which might be from isaacmanjarres@google.com are
+Patches currently in -mm which might be from heming.zhao@suse.com are
 
 
 
