@@ -1,52 +1,59 @@
-Return-Path: <stable+bounces-105252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE0E9F71B1
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1F79F71DA
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FE1B168DD7
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:23:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A32A169660
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72378339A1;
-	Thu, 19 Dec 2024 01:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0FD69D2B;
+	Thu, 19 Dec 2024 01:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bAjdJGWY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C5E1853;
-	Thu, 19 Dec 2024 01:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD3E22075;
+	Thu, 19 Dec 2024 01:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734571387; cv=none; b=P41cpwcvkVoCMixGEHrbIPIJ47U6htyPkutka8qPYPh+kZVh/zLtm+tOqSLOxpWNl20qAXFLwVJV/avic+QzBmJUTkvkID2g73SHHFim3u5oVhglMNy4RlXGgxqb3AlgYUwRGq1v4wfRQhz13rnNfb6UwQCKygXuzQYXweMPKN0=
+	t=1734572425; cv=none; b=XNslSm/OPi7UloaGqAIElm4XOZUBOckrnIQ2Fehegc+tNwNKQDqDll0TZnoiAHCgkUu8/JDCN+3gOI+3FxfhR8G63fOWWB8TbtvoVhjPbuiD2MKGYhwNbvWUTtcNxy98pr0ZuLKaXgmDNdSFFbYw5JQoUWt0TkvEUoieCL4hWfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734571387; c=relaxed/simple;
-	bh=6Khi+jzISIzfUW9GXWIi5pRc7MyRXAUtE5X+lmCD4Lk=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=bZFwRNSDSWf6VruXLms+eTsDF7iv2G/JwboYDiQAUaCKeaq7DtLgnAwxT2ONPsieZF5eynplqY4CzAwWcEjnr7wvQWkp60qjNYsq5DFAhRUEnmj9t062NQUZzii4N3lmy9VP2nv1isl+Q+kE1ocH0aNICLxppPemhTJlLyTcTaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1484AC4AF09;
-	Thu, 19 Dec 2024 01:23:07 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1tO5GU-00000009mOc-31zH;
-	Wed, 18 Dec 2024 20:23:46 -0500
-Message-ID: <20241219012346.575822656@goodmis.org>
-User-Agent: quilt/0.68
-Date: Wed, 18 Dec 2024 20:23:13 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [for-linus][PATCH 2/2] trace/ring-buffer: Do not use TP_printk() formatting for boot mapped
- buffers
-References: <20241219012311.649442084@goodmis.org>
+	s=arc-20240116; t=1734572425; c=relaxed/simple;
+	bh=D+hjjt3ihwde2L/XaDn561fQCTgdt3mPQJ6kAtBrx0U=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Kr5GZrflbBltu9koHYlWDC7jEs/UsYI9mBeDBVZGWhJzI/ERVunPSC7+0eMsnlIAFm5/fx0z2CzozKcqIFcOs1Xej78m87MR6pGaOyocMa0bytICBRHgnt0NZa71RSkPVQZQt7jr95e6wPomC1cfPsFdUIj5er1qqN6lUZNYJaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bAjdJGWY; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=PmrCcyA1Ch8l3GxS0c3p3ifF/9ECkLSeyXYIv7wdGcI=;
+	b=bAjdJGWYgJP4yZ6ZhMJisRa864Zl1s4Tign/mXDz/ztREnSDT+JwDd0Te7oNav
+	zUE4puxdVaBLfgflhuoiRnpRGKL01vVKPK7+n1AsB+UoQ7WuQTNWcx2CmNV5cvAF
+	M8ilLaihgyan+mLsyUjZbzQE2/dd109UQr/w9hbcpgITY=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAHAlNLeWNngMyQAA--.8650S4;
+	Thu, 19 Dec 2024 09:39:36 +0800 (CST)
+From: Ma Ke <make_ruc2021@163.com>
+To: ilpo.jarvinen@linux.intel.com
+Cc: bhelgaas@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lukas@wunner.de,
+	make_ruc2021@163.com,
+	rafael.j.wysocki@intel.com,
+	stable@vger.kernel.org,
+	yinghai@kernel.org
+Subject: Re: [PATCH] PCI: fix reference leak in pci_alloc_child_bus()
+Date: Thu, 19 Dec 2024 09:39:23 +0800
+Message-Id: <20241219013923.2996224-1-make_ruc2021@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <479bf618-187e-14f0-5319-c41f8b80faeb@linux.intel.com>
+References: <479bf618-187e-14f0-5319-c41f8b80faeb@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,69 +61,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAHAlNLeWNngMyQAA--.8650S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4xKw4Uuw4rAw1rtFyDGFg_yoW8Aryxpa
+	93Ga1YkFW8Xr17uw4qvF1jv3s0kanrtry09r1rJ3W7CFy3CryxKFW3tFW5G3WDu397C3Wj
+	v3Z8Xw1j9an8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUI1vsUUUUU=
+X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBFRm6C2djckyg+wAAsc
 
-From: Steven Rostedt <rostedt@goodmis.org>
+Ilpo Järvinen<ilpo.jarvinen@linux.intel.com> wrote:
+> Ma Ke <make_ruc2021@163.com> writes:
+> > When device_register(&child->dev) failed, calling put_device() to
+> > explicitly release child->dev. Otherwise, it could cause double free
+> > problem.
+> > 
+> > Found by code review.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
+> > Signed-off-by: Ma Ke <make_ruc2021@163.com>
+> > ---
+> >  drivers/pci/probe.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> > index 2e81ab0f5a25..d3146c588d7f 100644
+> > --- a/drivers/pci/probe.c
+> > +++ b/drivers/pci/probe.c
+> > @@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct pci_bus *parent,
+> >  add_dev:
+> >  	pci_set_bus_msi_domain(child);
+> >  	ret = device_register(&child->dev);
+> > -	WARN_ON(ret < 0);
+> > +	if (ret) {
+> > +		WARN_ON(ret < 0);
+> 
+> The usual way is:
+> 
+> 	if (WARN_ON(ret < 0))
+> 
+> > +		put_device(&child->dev);
+> > +	}
+> >  
+> >  	pcibios_add_bus(child);
+> 
+> But more serious problem here is that should this code even proceed as if 
+> nothing happened when an error occurs? pci_register_host_bridge() does 
+> proper rollback when device_register() fails but this function doesn't.
+> 
+> Into the same vein, is using WARN_ON() even correct here? Why should this 
+> print a stacktrace if device_register() fails instead of simply printing 
+> and error?
+Thank you for your guidance and suggestions. I have the same confusion
+about the simple handling(WARN_ON()) of errors if device_add() fails. 
+I am looking forward to receiving guidance and insights from other 
+experts.
 
-The TP_printk() of a TRACE_EVENT() is a generic printf format that any
-developer can create for their event. It may include pointers to strings
-and such. A boot mapped buffer may contain data from a previous kernel
-where the strings addresses are different.
+--
+Regards,
 
-One solution is to copy the event content and update the pointers by the
-recorded delta, but a simpler solution (for now) is to just use the
-print_fields() function to print these events. The print_fields() function
-just iterates the fields and prints them according to what type they are,
-and ignores the TP_printk() format from the event itself.
-
-To understand the difference, when printing via TP_printk() the output
-looks like this:
-
-  4582.696626: kmem_cache_alloc: call_site=getname_flags+0x47/0x1f0 ptr=00000000e70e10e0 bytes_req=4096 bytes_alloc=4096 gfp_flags=GFP_KERNEL node=-1 accounted=false
-  4582.696629: kmem_cache_alloc: call_site=alloc_empty_file+0x6b/0x110 ptr=0000000095808002 bytes_req=360 bytes_alloc=384 gfp_flags=GFP_KERNEL node=-1 accounted=false
-  4582.696630: kmem_cache_alloc: call_site=security_file_alloc+0x24/0x100 ptr=00000000576339c3 bytes_req=16 bytes_alloc=16 gfp_flags=GFP_KERNEL|__GFP_ZERO node=-1 accounted=false
-  4582.696653: kmem_cache_free: call_site=do_sys_openat2+0xa7/0xd0 ptr=00000000e70e10e0 name=names_cache
-
-But when printing via print_fields() (echo 1 > /sys/kernel/tracing/options/fields)
-the same event output looks like this:
-
-  4582.696626: kmem_cache_alloc: call_site=0xffffffff92d10d97 (-1831793257) ptr=0xffff9e0e8571e000 (-107689771147264) bytes_req=0x1000 (4096) bytes_alloc=0x1000 (4096) gfp_flags=0xcc0 (3264) node=0xffffffff (-1) accounted=(0)
-  4582.696629: kmem_cache_alloc: call_site=0xffffffff92d0250b (-1831852789) ptr=0xffff9e0e8577f800 (-107689770747904) bytes_req=0x168 (360) bytes_alloc=0x180 (384) gfp_flags=0xcc0 (3264) node=0xffffffff (-1) accounted=(0)
-  4582.696630: kmem_cache_alloc: call_site=0xffffffff92efca74 (-1829778828) ptr=0xffff9e0e8d35d3b0 (-107689640864848) bytes_req=0x10 (16) bytes_alloc=0x10 (16) gfp_flags=0xdc0 (3520) node=0xffffffff (-1) accounted=(0)
-  4582.696653: kmem_cache_free: call_site=0xffffffff92cfbea7 (-1831879001) ptr=0xffff9e0e8571e000 (-107689771147264) name=names_cache
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20241218141507.28389a1d@gandalf.local.home
-Fixes: 07714b4bb3f98 ("tracing: Handle old buffer mappings for event strings and functions")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/trace.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index be62f0ea1814..6581cb2bc67f 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4353,6 +4353,15 @@ static enum print_line_t print_trace_fmt(struct trace_iterator *iter)
- 	if (event) {
- 		if (tr->trace_flags & TRACE_ITER_FIELDS)
- 			return print_event_fields(iter, event);
-+		/*
-+		 * For TRACE_EVENT() events, the print_fmt is not
-+		 * safe to use if the array has delta offsets
-+		 * Force printing via the fields.
-+		 */
-+		if ((tr->text_delta || tr->data_delta) &&
-+		    event->type > __TRACE_LAST_TYPE)
-+			return print_event_fields(iter, event);
-+
- 		return event->funcs->trace(iter, sym_flags, event);
- 	}
- 
--- 
-2.45.2
-
+Ma Ke
 
 
