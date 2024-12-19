@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-105357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081169F8401
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 20:21:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C1E9F8459
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 20:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DED2A1888F58
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:21:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E6F71893DA7
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC211AA1FD;
-	Thu, 19 Dec 2024 19:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0601BAEF8;
+	Thu, 19 Dec 2024 19:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fsp4U8EW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3O1EgcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666321A9B53;
-	Thu, 19 Dec 2024 19:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990EB1B982E;
+	Thu, 19 Dec 2024 19:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734636048; cv=none; b=adFaQVRVV/7zX9Huq+vJFmq/MEuSxnmlgqMKK+bF0CNK0lEm8C1ZLQ7hGSUKwFbqZDSsKJhdxSShH8hpyzI9lDL6aCZsDJmi+6kHlm3L5j6Bsb8jO2ZgdVMTRMGIgg0iTa6OnfYi/sXPcI+DBPESnJL+BiFFpsPYoXZPBw8NqJ8=
+	t=1734636751; cv=none; b=UlVnzijSvQsGUJkBClGSQ8RN87K59EQAkA/vJ1/42xCmaCjsnEkMx3lVAroCOoXIbRb75cHFRuWp6rSWev3yx/LitRILjo8FajxtYc+MGRNqsMa1aOJWlZzBE2r5Pm/YNBp9KyV+BxVZg38GxNWda6i17zUYl5XuVKIDpaT4lK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734636048; c=relaxed/simple;
-	bh=EXnrut/7cp8GX1BFNcfEjeRFFG/TWYFDDVd0rm5b0Uo=;
+	s=arc-20240116; t=1734636751; c=relaxed/simple;
+	bh=rf4qOXHkAr+hLIvcjmLoSb+1dnXFRYW2ZAjWiVna1vw=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VRX7fPh9DM/IfIAGJ2FfxGnhbsNUHIIVSLZatYZ2L+H2o62z7kKKpxGOKElVs5Qvh82wXnPg8/2ucl0WcZfZg2Q5I8ScR0pCR2j+MgFIQo3y7DLMc2OsLKALDBd6xiA4bNuoKV870Waa1SVa1t5O4YGWcp0obH11E3oF5ajks5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fsp4U8EW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0982C4CECE;
-	Thu, 19 Dec 2024 19:20:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DquIqsSmxkiVphlzimXRb5BDNiBmfS7YCYpjwarqGXyxw8vL/aBf9cJSsyDXZkBVIRv9+mHDjuS3MlMPobCXpZ6CFCJKHBTUHBJG4V3pA3SuEmNrzSWiBF9EOoieZR0pkqNmBeZA+zzdDVNP5mlszGub0To17ZfJObufcTGvcnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3O1EgcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F6FC4CED4;
+	Thu, 19 Dec 2024 19:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734636048;
-	bh=EXnrut/7cp8GX1BFNcfEjeRFFG/TWYFDDVd0rm5b0Uo=;
+	s=k20201202; t=1734636751;
+	bh=rf4qOXHkAr+hLIvcjmLoSb+1dnXFRYW2ZAjWiVna1vw=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=Fsp4U8EW33mjVCVvN40yiFTfX17deOVpKkcjUMD67p3iyXMT2ZTwD3lFaXqYNSBym
-	 k2gOIh7F3ppQokWfT9xb+c7x2cKQ97X2+hyO2bmZTluQD1s9HKImfiK75lkl4H5jop
-	 Ed3OZ8RcaE5NLDmad/OX1rIBrCsdsrw+y4t5jOf/jpfIU9ekLUmmqfcZpmyxRz+jm3
-	 a6JB6MoPZI/lz0JZSey8a8bciGjztRmmjv7JJGMzHZWMk1cxpGibIOIGEksgeeNtPw
-	 yEA0nbWETycllrVzhwwTOcfTgNJbP9Hmqk5ATtJOnIyeI5VkBmPaooXmK/4U/4Fjyx
-	 vJJwQmHsj8ttQ==
-Date: Thu, 19 Dec 2024 11:20:47 -0800
-Subject: [PATCH 2/2] xfs: release the dquot buf outside of qli_lock
+	b=d3O1EgcSy0/39j3Pv6maOht5DY5qfzj59dYYN9a+YSgsC1AKho9ZW2Vgon57chnjl
+	 cm2FRM8qExc8BzHdX7eya3y8k852B4mCGs2UiJ2A7stW8LS1WUcdbN50pM8ZQoZTZk
+	 czeFiWqWiUrsGNAX7QM2LEnV8VNbvRU3fyr1OoGXXRVxWD9+2Pjvk2Y1ce2sgLeBbH
+	 jO0r2rRVvnQrpUEvePIe6+V+McYbGQh3GPnPyQhY72pKSixCp12erAGOAMEORYWFmw
+	 ih7Y5ar9yjz2MEXMCxxkpEdh/GpZFZDYYvXAk2kit7ZhLiEp36+Axu32Ti3kITQxBO
+	 cmeLUVtsuqhWw==
+Date: Thu, 19 Dec 2024 11:32:31 -0800
+Subject: [PATCH 35/37] xfs: don't shut down the filesystem for media failures
+ beyond end of log
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org
-Cc: syzbot+3126ab3db03db42e7a31@syzkaller.appspotmail.com,
- stable@vger.kernel.org,
- syzbot+3126ab3db03db42e7a31@syzkaller.appspotmail.com,
- linux-xfs@vger.kernel.org, hch@lst.de
-Message-ID: <173463578249.1570935.14851151691186464527.stgit@frogsfrogsfrogs>
-In-Reply-To: <173463578212.1570935.4004660775026906039.stgit@frogsfrogsfrogs>
-References: <173463578212.1570935.4004660775026906039.stgit@frogsfrogsfrogs>
+Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org, hch@lst.de
+Message-ID: <173463580360.1571512.2097717624016935698.stgit@frogsfrogsfrogs>
+In-Reply-To: <173463579653.1571512.7862891421559358642.stgit@frogsfrogsfrogs>
+References: <173463579653.1571512.7862891421559358642.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,71 +61,171 @@ Content-Transfer-Encoding: 7bit
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-Lai Yi reported a lockdep complaint about circular locking:
+If the filesystem has an external log device on pmem and the pmem
+reports a media error beyond the end of the log area, don't shut down
+the filesystem because we don't use that space.
 
- Chain exists of:
-   &lp->qli_lock --> &bch->bc_lock --> &l->lock
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&l->lock);
-                                lock(&bch->bc_lock);
-                                lock(&l->lock);
-   lock(&lp->qli_lock);
-
-I /think/ the problem here is that xfs_dquot_attach_buf during
-quotacheck will release the buffer while it's holding the qli_lock.
-Because this is a cached buffer, xfs_buf_rele_cached takes b_lock before
-decrementing b_hold.  Other threads have taught lockdep that a locking
-dependency chain is bp->b_lock -> bch->bc_lock -> l(ru)->lock; and that
-another chain is l(ru)->lock -> lp->qli_lock.  Hence we do not want to
-take b_lock while holding qli_lock.
-
-Reported-by: syzbot+3126ab3db03db42e7a31@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org> # v6.13-rc3
-Fixes: ca378189fdfa89 ("xfs: convert quotacheck to attach dquot buffers")
-Tested-by: syzbot+3126ab3db03db42e7a31@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org> # v6.0
+Fixes: 6f643c57d57c56 ("xfs: implement ->notify_failure() for XFS")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/xfs_dquot.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_notify_failure.c |  121 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 82 insertions(+), 39 deletions(-)
 
 
-diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
-index f11d475898f280..576b7755b1f1fc 100644
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -1315,7 +1315,8 @@ xfs_dquot_read_buf(
+diff --git a/fs/xfs/xfs_notify_failure.c b/fs/xfs/xfs_notify_failure.c
+index fa50e5308292d3..0b0b0f31aca274 100644
+--- a/fs/xfs/xfs_notify_failure.c
++++ b/fs/xfs/xfs_notify_failure.c
+@@ -153,6 +153,79 @@ xfs_dax_notify_failure_thaw(
+ 	thaw_super(sb, FREEZE_HOLDER_USERSPACE);
+ }
  
- /*
-  * Attach a dquot buffer to this dquot to avoid allocating a buffer during a
-- * dqflush, since dqflush can be called from reclaim context.
-+ * dqflush, since dqflush can be called from reclaim context.  Caller must hold
-+ * the dqlock.
-  */
- int
- xfs_dquot_attach_buf(
-@@ -1336,13 +1337,16 @@ xfs_dquot_attach_buf(
- 			return error;
- 
- 		/*
--		 * Attach the dquot to the buffer so that the AIL does not have
--		 * to read the dquot buffer to push this item.
-+		 * Hold the dquot buffer so that we retain our ref to it after
-+		 * detaching it from the transaction, then give that ref to the
-+		 * dquot log item so that the AIL does not have to read the
-+		 * dquot buffer to push this item.
- 		 */
- 		xfs_buf_hold(bp);
-+		xfs_trans_brelse(tp, bp);
++static int
++xfs_dax_translate_range(
++	struct xfs_buftarg	*btp,
++	u64			offset,
++	u64			len,
++	xfs_daddr_t		*daddr,
++	uint64_t		*bblen)
++{
++	u64			dev_start = btp->bt_dax_part_off;
++	u64			dev_len = bdev_nr_bytes(btp->bt_bdev);
++	u64			dev_end = dev_start + dev_len - 1;
 +
- 		spin_lock(&qlip->qli_lock);
- 		lip->li_buf = bp;
--		xfs_trans_brelse(tp, bp);
++	/* Notify failure on the whole device. */
++	if (offset == 0 && len == U64_MAX) {
++		offset = dev_start;
++		len = dev_len;
++	}
++
++	/* Ignore the range out of filesystem area */
++	if (offset + len - 1 < dev_start)
++		return -ENXIO;
++	if (offset > dev_end)
++		return -ENXIO;
++
++	/* Calculate the real range when it touches the boundary */
++	if (offset > dev_start)
++		offset -= dev_start;
++	else {
++		len -= dev_start - offset;
++		offset = 0;
++	}
++	if (offset + len - 1 > dev_end)
++		len = dev_end - offset + 1;
++
++	*daddr = BTOBB(offset);
++	*bblen = BTOBB(len);
++	return 0;
++}
++
++static int
++xfs_dax_notify_logdev_failure(
++	struct xfs_mount	*mp,
++	u64			offset,
++	u64			len,
++	int			mf_flags)
++{
++	xfs_daddr_t		daddr;
++	uint64_t		bblen;
++	int			error;
++
++	/*
++	 * Return ENXIO instead of shutting down the filesystem if the failed
++	 * region is beyond the end of the log.
++	 */
++	error = xfs_dax_translate_range(mp->m_logdev_targp,
++			offset, len, &daddr, &bblen);
++	if (error)
++		return error;
++
++	/*
++	 * In the pre-remove case the failure notification is attempting to
++	 * trigger a force unmount.  The expectation is that the device is
++	 * still present, but its removal is in progress and can not be
++	 * cancelled, proceed with accessing the log device.
++	 */
++	if (mf_flags & MF_MEM_PRE_REMOVE)
++		return 0;
++
++	xfs_err(mp, "ondisk log corrupt, shutting down fs!");
++	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_ONDISK);
++	return -EFSCORRUPTED;
++}
++
+ static int
+ xfs_dax_notify_ddev_failure(
+ 	struct xfs_mount	*mp,
+@@ -263,8 +336,9 @@ xfs_dax_notify_failure(
+ 	int			mf_flags)
+ {
+ 	struct xfs_mount	*mp = dax_holder(dax_dev);
+-	u64			ddev_start;
+-	u64			ddev_end;
++	xfs_daddr_t		daddr;
++	uint64_t		bblen;
++	int			error;
+ 
+ 	if (!(mp->m_super->s_flags & SB_BORN)) {
+ 		xfs_warn(mp, "filesystem is not ready for notify_failure()!");
+@@ -279,17 +353,7 @@ xfs_dax_notify_failure(
+ 
+ 	if (mp->m_logdev_targp && mp->m_logdev_targp->bt_daxdev == dax_dev &&
+ 	    mp->m_logdev_targp != mp->m_ddev_targp) {
+-		/*
+-		 * In the pre-remove case the failure notification is attempting
+-		 * to trigger a force unmount.  The expectation is that the
+-		 * device is still present, but its removal is in progress and
+-		 * can not be cancelled, proceed with accessing the log device.
+-		 */
+-		if (mf_flags & MF_MEM_PRE_REMOVE)
+-			return 0;
+-		xfs_err(mp, "ondisk log corrupt, shutting down fs!");
+-		xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_ONDISK);
+-		return -EFSCORRUPTED;
++		return xfs_dax_notify_logdev_failure(mp, offset, len, mf_flags);
  	}
- 	qlip->qli_dirty = true;
- 	spin_unlock(&qlip->qli_lock);
+ 
+ 	if (!xfs_has_rmapbt(mp)) {
+@@ -297,33 +361,12 @@ xfs_dax_notify_failure(
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	ddev_start = mp->m_ddev_targp->bt_dax_part_off;
+-	ddev_end = ddev_start + bdev_nr_bytes(mp->m_ddev_targp->bt_bdev) - 1;
++	error = xfs_dax_translate_range(mp->m_ddev_targp, offset, len, &daddr,
++			&bblen);
++	if (error)
++		return error;
+ 
+-	/* Notify failure on the whole device. */
+-	if (offset == 0 && len == U64_MAX) {
+-		offset = ddev_start;
+-		len = bdev_nr_bytes(mp->m_ddev_targp->bt_bdev);
+-	}
+-
+-	/* Ignore the range out of filesystem area */
+-	if (offset + len - 1 < ddev_start)
+-		return -ENXIO;
+-	if (offset > ddev_end)
+-		return -ENXIO;
+-
+-	/* Calculate the real range when it touches the boundary */
+-	if (offset > ddev_start)
+-		offset -= ddev_start;
+-	else {
+-		len -= ddev_start - offset;
+-		offset = 0;
+-	}
+-	if (offset + len - 1 > ddev_end)
+-		len = ddev_end - offset + 1;
+-
+-	return xfs_dax_notify_ddev_failure(mp, BTOBB(offset), BTOBB(len),
+-			mf_flags);
++	return xfs_dax_notify_ddev_failure(mp, daddr, bblen, mf_flags);
+ }
+ 
+ const struct dax_holder_operations xfs_dax_holder_operations = {
 
 
