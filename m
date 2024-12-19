@@ -1,123 +1,94 @@
-Return-Path: <stable+bounces-105342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB9F9F829A
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 18:54:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFA99F832F
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:23:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C04165F13
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 17:53:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACB921886E95
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 18:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF08B1AAA20;
-	Thu, 19 Dec 2024 17:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72EF1A0B05;
+	Thu, 19 Dec 2024 18:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUWDX+wd"
+	dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b="K6KNvsfV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.com (mout.gmx.com [74.208.4.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C18119DF60;
-	Thu, 19 Dec 2024 17:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C318E199234;
+	Thu, 19 Dec 2024 18:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734630694; cv=none; b=nhluxXGnp3cOjPHAwvTlEf2IjJHiuHrVmN2cR5PofavSHDJIR/gR38SRQEI/NbMK8h0LpTQoqIm7WtnIJ3o4dkJoQ7pxPvXo2MfVzCezUbcYVzVZVmHj1q23rHwjtB7+OkKr3TYsiJBCerIKLHq1KVfE2RFEhn9fzKG8XWyNjAo=
+	t=1734632581; cv=none; b=Ul/SLwnCG9peav5gXrXdbnJqzIMMmqc5Ty3e0BZis4wKW5ULFQwjDPh9s2nhJRvd8C75u/rHpaTamzGmRLQpblLDPiBrn5Qwl7FT5ndrjstPH0Hm2BwI3d3hadYKLcUi+zJgX79z29+RueC8v9susQgLCNwMtpKJJwlobz+6qIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734630694; c=relaxed/simple;
-	bh=mQhuLz9tB1b4rMtMDBUwzTyOUylWB0rq8Uw9EnJkeJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xp8qKqU3v3xDUjGEK+uDSdEnDpiURycjuREGvIACh81k5A6mCc2Co9/W7Z+E5nJIiDoRfKAk4U4A/M3jRaQNW2DPXzARdSXClFoT/pu3UiJlm9H9kq8Ss9CLA8ae16XtmAQR16Rv9T3FVtDUMyQY7nKn4qKMhg1Ks4CS2+ysgLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUWDX+wd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0D1C4CECE;
-	Thu, 19 Dec 2024 17:51:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734630694;
-	bh=mQhuLz9tB1b4rMtMDBUwzTyOUylWB0rq8Uw9EnJkeJA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CUWDX+wdWE+4qT6IPuWnw0OM+pH5ewsQlPNY427+g8ggMUC0S/Kh7FG+fcYEO/60P
-	 p0EbtyjpK6LsDXT5V/SuDHFgfy0BgZpGlZiCHCiZbXvUMEo8foREbdrJzDNNCsRn8X
-	 pOT8jiddQ9Mb+aS1U22qValRQ0w7meP4XbmqViftCdUb18Gej65qvwLQrQmkf1tNji
-	 rs1K49lQIxCKU5QpIhDOh8o0oohuDefzlCG3DYi54YKTHkeD63vsypGUsqsKpTom/Q
-	 Dak2vHjXTwo/2S+Fsj9v12FjGp7hLzxUllaLsiK0LvpUgqpz/BaMgWQ512sBxiV/Wd
-	 OVOVkKZIPJ3Og==
-Date: Thu, 19 Dec 2024 17:51:28 +0000
-From: Will Deacon <will@kernel.org>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>, linux-arm-msm@vger.kernel.org,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Julius Werner <jwerner@chromium.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Roxana Bradescu <roxabee@google.com>,
-	Trilok Soni <quic_tsoni@quicinc.com>,
-	bjorn.andersson@oss.qualcomm.com, stable@vger.kernel.org,
-	James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/6] arm64: errata: Assume that unknown CPUs _are_
- vulnerable to Spectre BHB
-Message-ID: <20241219175128.GA25477@willie-the-truck>
-References: <20241214005248.198803-1-dianders@chromium.org>
- <20241213165201.v2.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+	s=arc-20240116; t=1734632581; c=relaxed/simple;
+	bh=s5JlFHZHj/SkXwPq1A/1ZNcSzrC1Jf41gd9ygI0gvsE=;
+	h=MIME-Version:Message-ID:From:To:Subject:Content-Type:Date; b=VURKbdUGLY6IklcImHul/FYBpW+6O5y65Ubb6Skol1nowPSZQr/5E1UYHFA5m7G3qDHJrgX+uov8TmMq3jiYLcE3n7wGp3jCCe6r5pJWFrghQFCkfxc0lDboL8R7heDjYxGIFpIL4064kSBHHnFq6VnF6jLstjk7oFdSRF/CxBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com; spf=pass smtp.mailfrom=mail.com; dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b=K6KNvsfV; arc=none smtp.client-ip=74.208.4.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.com;
+	s=s1089575; t=1734632564; x=1735237364; i=gazo11@mail.com;
+	bh=s5JlFHZHj/SkXwPq1A/1ZNcSzrC1Jf41gd9ygI0gvsE=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=K6KNvsfVlrWJlIKcjIQltL0/9eFTCPIitJZExwIv9xYwdac6UpTarwkIwO+CnB0w
+	 m3g0SQ12Gp9l5mT5jRJuBk5Ct9v4eQl5GgRrPpV2CeeHEiJf1NKttRKgndwoJdRQW
+	 XIdLVWDDe/WHh9bwJqtSCey8aH+aSdRcv5q6FjXIYa4SUpozXDbYJe+f4GN+niwgD
+	 +0cQQDP6p8eRO8oj2gt6TSeutfySh6kix9afxF/wxmFGRhASaVBHsFvybx7dx1ybe
+	 5D5Ye0kIaXDDS70OZyOH3CF4iIIPJVX+aJof4vxl0W1QUmxU9OBZib3cugQwPNo8m
+	 yeD7oYmEb4XWqb3MPA==
+X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
+Received: from [77.137.74.199] ([77.137.74.199]) by web-mail.mail.com
+ (3c-app-mailcom-lxa11.server.lan [10.76.45.12]) (via HTTP); Thu, 19 Dec
+ 2024 19:22:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241213165201.v2.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID: <trinity-cd6b8598-763e-43fb-9ae8-2b19ddd7f56c-1734632564710@3c-app-mailcom-lxa11>
+From: Gustavo Azor <gazo11@mail.com>
+To: rafael@kernel.org, hdegoede@redhat.com, pmenzel@molgen.mpg.de,
+ linux-acpi@vger.kernel.org, stable@vger.kernel.org, tamim@fusetak.com
+Subject: Patch 3/4 ACPI resource.c.Add Asus Vivobook X1504VAP
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Dec 2024 19:22:44 +0100
+Importance: normal
+Sensitivity: Normal
+X-Priority: 3
+X-Provags-ID: V03:K1:iNOAmffiJBTVq6wMK75SNwXPXglY1SnBZNe5oouvPDgM+Ppy2cLDYIvkodkh3q5kzopVh
+ wlc8XHermQ6OLLu5vujibzWlh2N2K0QSiW5XBW1ei1OQMDjZKIF3kp9tfZ+1cpRJvRk4f7ArNdY6
+ uVKLS9Q7jlSnb3bT//j7TqANRFWvLjBrk8vvwQg5v3aFyxpMJHwmkDIr1Q2S+KU8k8l9AKTdhoYx
+ IOfkTkwlawB94U5ctSNNGAo7mSJmSJoDj7TzQv9mChj7XNQQnzXhoxNizVA3ygtoONIya18QOK64
+ us=
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:O0uWNkUBrrc=;Qiy9BRVIALMygfDHfob9y0SqYlk
+ G/DKrtb1p4ldlSdv0xeRmcfoNGV2EydRX3gogYz56o0UEsUeOo9y8m0ZrpH9Y91JmhgK3Of2y
+ ePztGd7rQTUW9Si/Y++NIUF6KoizsNZfEGeqXo9NueGrWZppk9GuZ/IoJTNlxIYz1eS/2yrGS
+ UE5HJjLEurjbzeNSC4fJSObpzUm55tG8uAuvDBoK+EVxEfLe3FWsh/TUaZcI56Mq3TFChFY/L
+ AlFiToOPSyj6TkqveWVvUGX27B7PIOnSIEp0m16qReppie9lLftIPVEXto1iT8ftb2+RIrcY0
+ vEkZOxIqfJv7UG4h1gRFktdf7jy5aj5xdV3qIZM+OiIpQZFmK13rCS6stE/ZchcwnvpCR+ju9
+ SM90YyUX21rOn0E22oQyxIqa7X7Npb5/OfXg6j+4nN6RAn0vM7zuphbDb31a+JThnqLi1L27T
+ obiTS/lcTUr7b+/2A7gNiG5uAnT30Ubqv0e6a4Hrpvkw1O2hNMhHm5DCJ9Nspj/CRY5HyHZGF
+ 25ayX8ldx+jMdK99L6ZIAijCcz5QBVx7PUBmEv3B6Bs7uBTa2cL9qc11gal7lgpP1GNY4N1qr
+ 5QCJkUbNwfe/xADpUrj/9i9JQrC2RR1tM12odX646CHUxMD21kXNtG16u5TKPvIZXi2JFO5LD
+ Gx1JmLlwbGDhpLq1GAu07nuwMpMjpiPYd9tN/I8pkOUFHT9kK4h4oBG05Q8E0RyJIJnQrRftE
+ x1IZdPf7BcSVVVOIDF0Mm6Xo87epUHk5hHSwllxd8NA7f+oMSk7W0Ae0kt+TXlOGqPNOYb68J
+ auENW/iW3/Fv0YtNQfK9QLoAQSc8pwfdqgLzWlr+d/yhOjfZX/gN++nRR73Hx/3xDow8JwMB/
+ DtLMKCEcX5jIuWBeqOXfGncS1lW8+UEYkNCs=
 
-On Fri, Dec 13, 2024 at 04:52:02PM -0800, Douglas Anderson wrote:
-> The code for detecting CPUs that are vulnerable to Spectre BHB was
-> based on a hardcoded list of CPU IDs that were known to be affected.
-> Unfortunately, the list mostly only contained the IDs of standard ARM
-> cores. The IDs for many cores that are minor variants of the standard
-> ARM cores (like many Qualcomm Kyro CPUs) weren't listed. This led the
-> code to assume that those variants were not affected.
-> 
-> Flip the code on its head and instead list CPU IDs for cores that are
-> known to be _not_ affected. Now CPUs will be assumed vulnerable until
-> added to the list saying that they're safe.
-> 
-> As of right now, the only CPU IDs added to the "unaffected" list are
-> ARM Cortex A35, A53, and A55. This list was created by looking at
-> older cores listed in cputype.h that weren't listed in the "affected"
-> list previously.
+Like other Asus Vivobook models the X1504VAP has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-There's a list of affected CPUs from Arm here:
+Add the X1504VAP to the irq1_level_low_skip_override[] quirk table to fix
+this.
+Thank You.
 
-https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
-
-(obviously only covers their own designs).
-
-So it looks like A510 and A520 should be unaffected too, although I
-didn't check exhaustively. It also looks like A715 is affected but the
-whitepaper doesn't tell you what version of 'k' to use...
-
-> Unfortunately, while this solution is better than what we had before,
-> it's still an imperfect solution. Specifically there are two ways to
-> mitigate Spectre BHB and one of those ways is parameterized with a "k"
-> value indicating how many loops are needed to mitigate. If we have an
-> unknown CPU ID then we've got to guess about how to mitigate it. Since
-> more cores seem to be mitigated by looping (and because it's unlikely
-> that the needed FW code will be in place for FW mitigation for unknown
-> cores), we'll choose looping for unknown CPUs and choose the highest
-> "k" value of 32.
-
-I don't think we should guess. Just say vulnerable.
-
-> The downside of our guessing is that some CPUs may now report as
-> "mitigated" when in reality they should need a firmware mitigation.
-> We'll choose to put a WARN_ON splat in the logs in this case any time
-> we had to make a guess since guessing the right mitigation is pretty
-> awful. Hopefully this will encourage CPU vendors to add their CPU IDs
-> to the list.
-
-Hmm. We shouldn't have to guess here as the firmware mitigation is
-discoverable. So if it's unavailable and we're running an a CPU which
-needs it, then we're vulnerable.
-
-Will
 
