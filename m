@@ -1,125 +1,150 @@
-Return-Path: <stable+bounces-105254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1F79F71DA
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:40:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7012D9F7277
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A32A169660
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 679F4161309
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0FD69D2B;
-	Thu, 19 Dec 2024 01:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED224D8DA;
+	Thu, 19 Dec 2024 02:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bAjdJGWY"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="NmK0vUNR"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD3E22075;
-	Thu, 19 Dec 2024 01:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2DCA31;
+	Thu, 19 Dec 2024 02:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734572425; cv=none; b=XNslSm/OPi7UloaGqAIElm4XOZUBOckrnIQ2Fehegc+tNwNKQDqDll0TZnoiAHCgkUu8/JDCN+3gOI+3FxfhR8G63fOWWB8TbtvoVhjPbuiD2MKGYhwNbvWUTtcNxy98pr0ZuLKaXgmDNdSFFbYw5JQoUWt0TkvEUoieCL4hWfA=
+	t=1734573962; cv=none; b=gjYMunnaCXLawuQeBTjC2l1Y8Gx9GwXMlsjeHAAbKYtnjlcAmyGCuFaWOvqM9v0RiLu2TyvALsgydPsmt6xIhG0jAXp8LjIIRZ3l7gWMwqH3r3X/JAyFYEFtBFRwizjZ5b3scIeEoKw+RZ9R6QoghkewJI5i4BxNph5c+sKZGVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734572425; c=relaxed/simple;
-	bh=D+hjjt3ihwde2L/XaDn561fQCTgdt3mPQJ6kAtBrx0U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kr5GZrflbBltu9koHYlWDC7jEs/UsYI9mBeDBVZGWhJzI/ERVunPSC7+0eMsnlIAFm5/fx0z2CzozKcqIFcOs1Xej78m87MR6pGaOyocMa0bytICBRHgnt0NZa71RSkPVQZQt7jr95e6wPomC1cfPsFdUIj5er1qqN6lUZNYJaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bAjdJGWY; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=PmrCcyA1Ch8l3GxS0c3p3ifF/9ECkLSeyXYIv7wdGcI=;
-	b=bAjdJGWYgJP4yZ6ZhMJisRa864Zl1s4Tign/mXDz/ztREnSDT+JwDd0Te7oNav
-	zUE4puxdVaBLfgflhuoiRnpRGKL01vVKPK7+n1AsB+UoQ7WuQTNWcx2CmNV5cvAF
-	M8ilLaihgyan+mLsyUjZbzQE2/dd109UQr/w9hbcpgITY=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAHAlNLeWNngMyQAA--.8650S4;
-	Thu, 19 Dec 2024 09:39:36 +0800 (CST)
-From: Ma Ke <make_ruc2021@163.com>
-To: ilpo.jarvinen@linux.intel.com
-Cc: bhelgaas@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lukas@wunner.de,
-	make_ruc2021@163.com,
-	rafael.j.wysocki@intel.com,
-	stable@vger.kernel.org,
-	yinghai@kernel.org
-Subject: Re: [PATCH] PCI: fix reference leak in pci_alloc_child_bus()
-Date: Thu, 19 Dec 2024 09:39:23 +0800
-Message-Id: <20241219013923.2996224-1-make_ruc2021@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <479bf618-187e-14f0-5319-c41f8b80faeb@linux.intel.com>
-References: <479bf618-187e-14f0-5319-c41f8b80faeb@linux.intel.com>
+	s=arc-20240116; t=1734573962; c=relaxed/simple;
+	bh=RSvJNtuKwHazwUBlxNiBVY2u7YCmPiJ65iB5FToBfHQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=MQFte3Mv2GxjPxeyFJ3IrJM7mrqgxM+WlX5XeY3Cn93KESgQ6l1oqWGl05fgpcq/uGhaXmS8H2QLpKGM2zMUKVKVso7iw4xfIHnK8DxVKetjToNGPeP8HOg2rk+t2ohRP1ohG9fSYV2nOfJR39PK+TRpPKfMr2oWilGLrpUrukc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=NmK0vUNR; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BJ25tQxA3235062, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1734573955; bh=RSvJNtuKwHazwUBlxNiBVY2u7YCmPiJ65iB5FToBfHQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=NmK0vUNRm/WALnmRw7zQ/xYwMygtPhAPsIvhSpza04S66+g1ecYSpWGB9l80gW6ed
+	 QKtVHxj6FTAXG2F1Lu3L98oZHoZ8lA5O9MdT6vIxxIEYs6QVQDxjF5bjDbvvoKCvW5
+	 u51eqY/Yetc18rZLag2L0iTY7mestsWcMUwOiG7hXaxGrXTRVDchuBKJPSDH3Xvvio
+	 RIUXh5hiqstTDpVSizVLBFlb+gV4yuMqnHiWU758IqznBxoEa7+RRvrUpW9rH6oYvF
+	 9BaZY2YwApYc54c19Tx24IHDG1U7FLcxhKtNoKF8jXBET1Q9lEiMKjG6AbMM4nSgWe
+	 joLce595mBnYg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BJ25tQxA3235062
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Dec 2024 10:05:55 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 19 Dec 2024 10:05:55 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 19 Dec 2024 10:05:54 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
+ RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
+ 15.01.2507.035; Thu, 19 Dec 2024 10:05:54 +0800
+From: Kailang <kailang@realtek.com>
+To: Evgeny Kapun <abacabadabacaba@gmail.com>,
+        Linux Sound Mailing List
+	<linux-sound@vger.kernel.org>
+CC: Takashi Iwai <tiwai@suse.de>,
+        Linux Kernel Mailing List
+	<linux-kernel@vger.kernel.org>,
+        Linux Regressions Mailing List
+	<regressions@lists.linux.dev>,
+        Linux Stable Mailing List
+	<stable@vger.kernel.org>
+Subject: RE: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
+Thread-Topic: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
+Thread-Index: AQHbTvIxtyWK99B6LkqZbi3R9/JZE7LoH/qQgAPUPYCAAOIHMA==
+Date: Thu, 19 Dec 2024 02:05:54 +0000
+Message-ID: <ff166dfd38db410d8a82489ff487b437@realtek.com>
+References: <e142749b-7714-4733-9452-918fbe328c8f@gmail.com>
+ <b4763f69b4004b19ab5c5e0a8f675282@realtek.com>
+ <0625722b-5404-406a-b571-ff79693fe980@gmail.com>
+In-Reply-To: <0625722b-5404-406a-b571-ff79693fe980@gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAHAlNLeWNngMyQAA--.8650S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4xKw4Uuw4rAw1rtFyDGFg_yoW8Aryxpa
-	93Ga1YkFW8Xr17uw4qvF1jv3s0kanrtry09r1rJ3W7CFy3CryxKFW3tFW5G3WDu397C3Wj
-	v3Z8Xw1j9an8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUI1vsUUUUU=
-X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBFRm6C2djckyg+wAAsc
 
-Ilpo Järvinen<ilpo.jarvinen@linux.intel.com> wrote:
-> Ma Ke <make_ruc2021@163.com> writes:
-> > When device_register(&child->dev) failed, calling put_device() to
-> > explicitly release child->dev. Otherwise, it could cause double free
-> > problem.
-> > 
-> > Found by code review.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
-> > Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> > ---
-> >  drivers/pci/probe.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> > index 2e81ab0f5a25..d3146c588d7f 100644
-> > --- a/drivers/pci/probe.c
-> > +++ b/drivers/pci/probe.c
-> > @@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct pci_bus *parent,
-> >  add_dev:
-> >  	pci_set_bus_msi_domain(child);
-> >  	ret = device_register(&child->dev);
-> > -	WARN_ON(ret < 0);
-> > +	if (ret) {
-> > +		WARN_ON(ret < 0);
-> 
-> The usual way is:
-> 
-> 	if (WARN_ON(ret < 0))
-> 
-> > +		put_device(&child->dev);
-> > +	}
-> >  
-> >  	pcibios_add_bus(child);
-> 
-> But more serious problem here is that should this code even proceed as if 
-> nothing happened when an error occurs? pci_register_host_bridge() does 
-> proper rollback when device_register() fails but this function doesn't.
-> 
-> Into the same vein, is using WARN_ON() even correct here? Why should this 
-> print a stacktrace if device_register() fails instead of simply printing 
-> and error?
-Thank you for your guidance and suggestions. I have the same confusion
-about the simple handling(WARN_ON()) of errors if device_add() fails. 
-I am looking forward to receiving guidance and insights from other 
-experts.
-
---
-Regards,
-
-Ma Ke
-
+DQpIZWFkcGhvbmUgb3IgSGVhZHNldC4gV2hpY2ggZGlkIHlvdSB1c2U/DQpJIGRvbid0IGtub3cg
+eW91ciBwbGF0Zm9ybSBoYXMgaGVhZHNldCBtaWMgc3VwcG9ydCBvciBub3QuDQoNCj4gLS0tLS1P
+cmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXZnZW55IEthcHVuIDxhYmFjYWJhZGFiYWNh
+YmFAZ21haWwuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgRGVjZW1iZXIgMTksIDIwMjQgNDozNCBB
+TQ0KPiBUbzogS2FpbGFuZyA8a2FpbGFuZ0ByZWFsdGVrLmNvbT47IExpbnV4IFNvdW5kIE1haWxp
+bmcgTGlzdA0KPiA8bGludXgtc291bmRAdmdlci5rZXJuZWwub3JnPg0KPiBDYzogVGFrYXNoaSBJ
+d2FpIDx0aXdhaUBzdXNlLmRlPjsgTGludXggS2VybmVsIE1haWxpbmcgTGlzdA0KPiA8bGludXgt
+a2VybmVsQHZnZXIua2VybmVsLm9yZz47IExpbnV4IFJlZ3Jlc3Npb25zIE1haWxpbmcgTGlzdA0K
+PiA8cmVncmVzc2lvbnNAbGlzdHMubGludXguZGV2PjsgTGludXggU3RhYmxlIE1haWxpbmcgTGlz
+dA0KPiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NCj4gU3ViamVjdDogUmU6IFtSRUdSRVNTSU9O
+XSBEaXN0b3J0ZWQgc291bmQgb24gQWNlciBBc3BpcmUgQTExNS0zMSBsYXB0b3ANCj4gDQo+IA0K
+PiBFeHRlcm5hbCBtYWlsLg0KPiANCj4gDQo+IA0KPiBIaSBLYWlsYW5nLA0KPiANCj4gSGVyZSBh
+cmUgdGhlIHJlc3VsdHMgb2YgcnVubmluZyB0aGUgc2NyaXB0IG9uIGtlcm5lbCB2ZXJzaW9ucyA2
+LjEyLjUNCj4gKGFmZmVjdGVkKSBhbmQgNi43LjExIChub3QgYWZmZWN0ZWQpLg0KPiANCj4gT24g
+MTIvMTYvMjQgMDQ6MDcsIEthaWxhbmcgd3JvdGU6DQo+ID4gSGkgS2FwdW4sDQo+ID4NCj4gPiBQ
+bGVhc2UgcnVuIGF0dGFjaCBzY3JpcHQgYXMgYmVsb3cuDQo+ID4NCj4gPiAuL2Fsc2EtaW5mby5z
+aCAtLW5vLXVwbG9hZA0KPiA+DQo+ID4gVGhlbiBzZW5kIGJhY2sgdGhlIHJlc3VsdC4NCj4gPg0K
+PiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBFdmdlbnkgS2FwdW4g
+PGFiYWNhYmFkYWJhY2FiYUBnbWFpbC5jb20+DQo+ID4+IFNlbnQ6IFN1bmRheSwgRGVjZW1iZXIg
+MTUsIDIwMjQgOTowNyBQTQ0KPiA+PiBUbzogTGludXggU291bmQgTWFpbGluZyBMaXN0IDxsaW51
+eC1zb3VuZEB2Z2VyLmtlcm5lbC5vcmc+DQo+ID4+IENjOiBLYWlsYW5nIDxrYWlsYW5nQHJlYWx0
+ZWsuY29tPjsgVGFrYXNoaSBJd2FpIDx0aXdhaUBzdXNlLmRlPjsNCj4gPj4gTGludXggS2VybmVs
+IE1haWxpbmcgTGlzdCA8bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZz47IExpbnV4DQo+ID4+
+IFJlZ3Jlc3Npb25zIE1haWxpbmcgTGlzdCA8cmVncmVzc2lvbnNAbGlzdHMubGludXguZGV2Pjsg
+TGludXggU3RhYmxlDQo+ID4+IE1haWxpbmcgTGlzdCA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4N
+Cj4gPj4gU3ViamVjdDogW1JFR1JFU1NJT05dIERpc3RvcnRlZCBzb3VuZCBvbiBBY2VyIEFzcGly
+ZSBBMTE1LTMxIGxhcHRvcA0KPiA+Pg0KPiA+Pg0KPiA+PiBFeHRlcm5hbCBtYWlsLg0KPiA+Pg0K
+PiA+Pg0KPiA+Pg0KPiA+PiBJIGFtIHVzaW5nIGFuIEFjZXIgQXNwaXJlIEExMTUtMzEgbGFwdG9w
+LiBXaGVuIHJ1bm5pbmcgbmV3ZXIga2VybmVsDQo+ID4+IHZlcnNpb25zLCBzb3VuZCBwbGF5ZWQg
+dGhyb3VnaCBoZWFkcGhvbmVzIGlzIGRpc3RvcnRlZCwgYnV0IHdoZW4NCj4gPj4gcnVubmluZyBv
+bGRlciB2ZXJzaW9ucywgaXQgaXMgbm90Lg0KPiA+Pg0KPiA+PiBLZXJuZWwgdmVyc2lvbjogTGlu
+dXggdmVyc2lvbiA2LjEyLjUgKHVzZXJAaG9zdG5hbWUpIChnY2MgKERlYmlhbg0KPiA+PiAxNC4y
+LjAtOCkgMTQuMi4wLCBHTlUgbGQgKEdOVSBCaW51dGlscyBmb3IgRGViaWFuKSAyLjQzLjUwLjIw
+MjQxMjEwKQ0KPiA+PiAjMSBTTVAgUFJFRU1QVF9EWU5BTUlDIFN1biBEZWMgMTUgMDU6MDk6MTYg
+SVNUIDIwMjQgT3BlcmF0aW5nDQo+IFN5c3RlbToNCj4gPj4gRGViaWFuIEdOVS9MaW51eCB0cml4
+aWUvc2lkDQo+ID4+DQo+ID4+IE5vIHNwZWNpYWwgYWN0aW9ucyBhcmUgbmVlZGVkIHRvIHJlcHJv
+ZHVjZSB0aGUgaXNzdWUuIFRoZSBzb3VuZCBpcw0KPiA+PiBkaXN0b3J0ZWQgYWxsIHRoZSB0aW1l
+LCBhbmQgaXQgZG9lc24ndCBkZXBlbmQgb24gYW55dGhpbmcgYmVzaWRlcw0KPiA+PiB1c2luZyBh
+biBhZmZlY3RlZCBrZXJuZWwgdmVyc2lvbi4NCj4gPj4NCj4gPj4gSXQgc2VlbXMgdG8gYmUgY2F1
+c2VkIGJ5IGNvbW1pdA0KPiA+PiAzNGFiNWJiYzZlODIyMTRkN2Y3MzkzZWJhMjZkMTY0YjMwM2Vi
+YjRlDQo+ID4+IChBTFNBOiBoZGEvcmVhbHRlayAtIEFkZCBIZWFkc2V0IE1pYyBzdXBwb3J0ZWQg
+QWNlciBOQiBwbGF0Zm9ybSkuDQo+ID4+IEluZGVlZCwgaWYgSSByZW1vdmUgdGhlIGVudHJ5IHRo
+YXQgdGhpcyBjb21taXQgYWRkcywgdGhlIGlzc3VlIGRpc2FwcGVhcnMuDQo+ID4+DQo+ID4+IGxz
+cGNpIG91dHB1dCBmb3IgdGhlIGRldmljZSBpbiBxdWVzdGlvbjoNCj4gPj4NCj4gPj4gMDA6MGUu
+MCBNdWx0aW1lZGlhIGF1ZGlvIGNvbnRyb2xsZXIgWzA0MDFdOiBJbnRlbCBDb3Jwb3JhdGlvbg0K
+PiA+PiBDZWxlcm9uL1BlbnRpdW0gU2lsdmVyIFByb2Nlc3NvciBIaWdoIERlZmluaXRpb24gQXVk
+aW8gWzgwODY6MzE5OF0gKHJldg0KPiAwNikNCj4gPj4gICAgICAgU3Vic3lzdGVtOiBBY2VyIElu
+Y29ycG9yYXRlZCBbQUxJXSBEZXZpY2UgWzEwMjU6MTM2MF0NCj4gPj4gICAgICAgRmxhZ3M6IGJ1
+cyBtYXN0ZXIsIGZhc3QgZGV2c2VsLCBsYXRlbmN5IDAsIElSUSAxMzANCj4gPj4gICAgICAgTWVt
+b3J5IGF0IGExMjE0MDAwICg2NC1iaXQsIG5vbi1wcmVmZXRjaGFibGUpIFtzaXplPTE2S10NCj4g
+Pj4gICAgICAgTWVtb3J5IGF0IGExMDAwMDAwICg2NC1iaXQsIG5vbi1wcmVmZXRjaGFibGUpIFtz
+aXplPTFNXQ0KPiA+PiAgICAgICBDYXBhYmlsaXRpZXM6IFs1MF0gUG93ZXIgTWFuYWdlbWVudCB2
+ZXJzaW9uIDMNCj4gPj4gICAgICAgQ2FwYWJpbGl0aWVzOiBbODBdIFZlbmRvciBTcGVjaWZpYyBJ
+bmZvcm1hdGlvbjogTGVuPTE0IDw/Pg0KPiA+PiAgICAgICBDYXBhYmlsaXRpZXM6IFs2MF0gTVNJ
+OiBFbmFibGUrIENvdW50PTEvMSBNYXNrYWJsZS0gNjRiaXQrDQo+ID4+ICAgICAgIENhcGFiaWxp
+dGllczogWzcwXSBFeHByZXNzIFJvb3QgQ29tcGxleCBJbnRlZ3JhdGVkIEVuZHBvaW50LA0KPiA+
+PiBJbnRNc2dOdW0NCj4gPj4gMA0KPiA+PiAgICAgICBLZXJuZWwgZHJpdmVyIGluIHVzZTogc25k
+X2hkYV9pbnRlbA0KPiA+PiAgICAgICBLZXJuZWwgbW9kdWxlczogc25kX2hkYV9pbnRlbCwgc25k
+X3NvY19hdnMsDQo+ID4+IHNuZF9zb2ZfcGNpX2ludGVsX2FwbA0K
 
