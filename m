@@ -1,344 +1,191 @@
-Return-Path: <stable+bounces-105372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3AF9F872B
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 22:37:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76F59F876A
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 22:59:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 438147A461A
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 21:37:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9DB1892EB2
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 21:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A00A1C0DCB;
-	Thu, 19 Dec 2024 21:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C0B1D6DC9;
+	Thu, 19 Dec 2024 21:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="sfm9t730"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cnWVVu+7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC0C1509BD
-	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 21:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87A58F6D;
+	Thu, 19 Dec 2024 21:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734644218; cv=none; b=n523YpA0rGpS4cGy3d+p61ggU3WtMMLDgNyseIaMTIO92AUc++d0U6iKdI2mwRqoSMo5T728TH7p8vRKsd0XY73O8/PHZI8TND6acYyX+tp/qJibgMX67SEnixworDrPAEYaxseDs9i6N+zcVEMqNIHALWFJGV613iZ9DzCbmHs=
+	t=1734645569; cv=none; b=XV4C1ihncbNKofELhWrflHc+XVXImoUi3BttqxE0WCYf2vYEDy/vnR/Jxa9FS8bxGkLuSXdRqnxrusUozxs7k6s7pKp3DEdhGWOxYnt9iiKx8x4AGpCmTs5m4XpRZaLaiOlagmHoY4svVoB0jiQ6AVnAjfvp7QsGfWeKKYvej4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734644218; c=relaxed/simple;
-	bh=3S23dTTP7NsKmXAV0bzH89sOImqZmkUX/E13JUSWaW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YF4fMtuUqC4jI2Emz0IA2Jl9Dik3F43ExJcjmSsWLVL+lhbv2TpMBexO0hmp6I016uK+jPPpgXC3aFSagrsivf2s0WlWMs/SPITWviqzmw3s8JnVjJVONELW8Ss2z2n325alFty63/57pNTlN7s9CGzBPXeGuE4R6bphwFGAOiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=sfm9t730; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2164b1f05caso12328005ad.3
-        for <stable@vger.kernel.org>; Thu, 19 Dec 2024 13:36:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1734644215; x=1735249015; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sBYqbJyIvcJfLc67nzPKYdjSB+90GgtMbY2G3flDnUI=;
-        b=sfm9t730EGhHY/HDvwVTSzZ6n+w4e5zbkvbO3U3TktsIyyvsMuC1DpteOC9joE4eye
-         UnX8mxwqaI6JtFfHp/dnCfOBJLKfWYxC3+J+0elcFDji9ACm7T/gPL64zkoeqZ8dWEKd
-         us4a/6RiS1c9wHvm5fzGE/L6lX7pzDO5lY22OduTQ8iy0VFMP3SB1GmTGQgTAVnOVoY+
-         h9XXQriSE3oBbfHwrxctU71DmNQLt+hWD559NBo6gumI1/+w0m1AaS1+Pzq2OToYAoer
-         q2b0yFOY+8cgu4isaFK0r8ObbeMvTEeT0my2zmbBfCqqK8HcNnegpqwE/nCQOfedkno+
-         3kZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734644215; x=1735249015;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sBYqbJyIvcJfLc67nzPKYdjSB+90GgtMbY2G3flDnUI=;
-        b=ZPjvF0oZdkUG+HxaB3a6ntvPfwHA08viJEyGYqai2OAHkZCCDVBdfvQUBhCns6vtE6
-         Y3ORnLtwRTaECOee+2a6tc6x+XegFPL7CRoCom/BQkaZAoyrZjs8e1sjjPV7/SNRUY5N
-         VKdp0OUzcUSZBfPyBemWJCoqw3+qVKWI7qj1Klkfy5xw6e7vQb4zvohsiIjHV40VmFHW
-         y5ltZX0/1K0nHzXQwJlIoYjqWz+wYrreuaGKYWj5s+4yLoJiIvxtCsBa48r6CMpjqO3t
-         dZJYfJAb3UcXseQOJw9FkDExzwDqyye5/ZHIJBnUHwdH9gP6iytsh7CrA2ho1FLQM6Tq
-         Fb4w==
-X-Forwarded-Encrypted: i=1; AJvYcCU8pENwKU2VyTHwjcZkxLI36gHaBtUTSOV9Nl41ZSEJrYBhhi1BOmIqy4O3aaTiaOQAHpafnaI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznYpMg/N3KH7iQXCWgBhET2RSU5FY62pfFfHu0qwwJvueGMQq3
-	By/ww/O42K4YKsAtKamqbSmj/BDQxCCmYtbT/nK/sjjRD/ezuvoZLaTicsuySTo=
-X-Gm-Gg: ASbGnctj2QsglGqfmPElRPq7NRg1EUT4SUYYt1bo8VwA2ApxCTwVtCgkqm1pdr+j8qb
-	TPWyaL367fRXcrWPWLySnZ7zbxAYMWNWP68dYMr8SRD3lij0TUsPtEI9rFeWl0ahdeFdNrqMtDO
-	QpJBPaJ+VFHly0WRtToTR4wi85oiaujFvHKJj84qgNcICAKsyxacsnMqwtSgUWr8tNmzAXr7c6a
-	5ls925/INtz96njNIwhu+o8c0wLd416RMED+5euODNyoAg=
-X-Google-Smtp-Source: AGHT+IG/Dgc/5kYcDlkg099vZ9/LAsV1QDOIoLm+mwtiNyuB7pILZ0WR6EgDxOuwJUotkZK+n+l86A==
-X-Received: by 2002:a17:90a:d64d:b0:2ee:b2fe:eeee with SMTP id 98e67ed59e1d1-2f452e3021cmr942885a91.15.1734644214713;
-        Thu, 19 Dec 2024 13:36:54 -0800 (PST)
-Received: from ghost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ed644d87sm4166935a91.27.2024.12.19.13.36.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 13:36:54 -0800 (PST)
-Date: Thu, 19 Dec 2024 13:36:51 -0800
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Celeste Liu <uwu@coelacanthus.name>
-Cc: Andrew Jones <ajones@ventanamicro.com>, Oleg Nesterov <oleg@redhat.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Shuah Khan <shuah@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
-	"Dmitry V. Levin" <ldv@strace.io>,
-	Andrea Bolognani <abologna@redhat.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>,
-	Quan Zhou <zhouquan@iscas.ac.cn>, Guo Ren <guoren@kernel.org>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] riscv: selftests: Add a ptrace test to verify
- syscall parameter modification
-Message-ID: <Z2SR86wpB5waLtx-@ghost>
-References: <20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name>
- <20241203-riscv-new-regset-v2-2-d37da8c0cba6@coelacanthus.name>
- <20241203-55c76715e16422ddaf8d7edf@orel>
- <Z2RlR1cP9tne8rNi@ghost>
- <50a62291-5ae1-47b0-8f64-a42271820789@coelacanthus.name>
+	s=arc-20240116; t=1734645569; c=relaxed/simple;
+	bh=ROm+b4jqipAAQzA7M5UhayYDEe3GUZqm058FAJ3LOvQ=;
+	h=Date:To:From:Subject:Message-Id; b=oFA8cnKljTbAVpGPw6+tsHHYGCztX4WLCU97O03fg/DpB2UVuz+ezdFa2ciZfVwxTjIjKH4mI4Oo1J7msje8pOgtMr88oZus8IX91vcleRTwwhShn/UwhOo5o2M9D8MDbhTSVZCihVh2xHrYZ3G4FPvi5ZSiVa/0fEoLYM7l5FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cnWVVu+7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A21C4CECE;
+	Thu, 19 Dec 2024 21:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1734645569;
+	bh=ROm+b4jqipAAQzA7M5UhayYDEe3GUZqm058FAJ3LOvQ=;
+	h=Date:To:From:Subject:From;
+	b=cnWVVu+7CqizVfGzDxxtvc+15ovImibkQP96+SXrpa49FLirmBQlrrvdXZrElQsEv
+	 FuIOIAh8c2/eWYYdomB8hqoI7Z6CXy1aIsK/6YlGY0C2G9lVUvg74JWdCj05pbqc3V
+	 TD6p1KHJtE2VdiVcIcqZHAmoW+Z8K+MSX4zjI43k=
+Date: Thu, 19 Dec 2024 13:59:28 -0800
+To: mm-commits@vger.kernel.org,vitalywool@gmail.com,stable@vger.kernel.org,samsun1006219@gmail.com,nphamcs@gmail.com,hannes@cmpxchg.org,chengming.zhou@linux.dev,baohua@kernel.org,yosryahmed@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-zswap-fix-race-between-compression-and-cpu-hotunplug.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241219215929.27A21C4CECE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50a62291-5ae1-47b0-8f64-a42271820789@coelacanthus.name>
 
-On Fri, Dec 20, 2024 at 05:29:45AM +0800, Celeste Liu wrote:
-> 
-> On 2024-12-20 02:26, Charlie Jenkins wrote:
-> > On Tue, Dec 03, 2024 at 01:55:07PM +0100, Andrew Jones wrote:
-> >> On Tue, Dec 03, 2024 at 05:30:05PM +0800, Celeste Liu wrote:
-> >>> From: Charlie Jenkins <charlie@rivosinc.com>
-> >>>
-> >>> This test checks that orig_a0 allows a syscall argument to be modified,
-> >>> and that changing a0 does not change the syscall argument.
-> >>>
-> >>> Cc: stable@vger.kernel.org
-> >>> Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> >>> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> >>> Co-developed-by: Celeste Liu <uwu@coelacanthus.name>
-> >>> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-> >>> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-> >>> ---
-> >>>  tools/testing/selftests/riscv/abi/.gitignore |   1 +
-> >>>  tools/testing/selftests/riscv/abi/Makefile   |   5 +-
-> >>>  tools/testing/selftests/riscv/abi/ptrace.c   | 134 +++++++++++++++++++++++++++
-> >>>  3 files changed, 139 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/tools/testing/selftests/riscv/abi/.gitignore b/tools/testing/selftests/riscv/abi/.gitignore
-> >>> index b38358f91c4d2240ae64892871d9ca98bda1ae58..378c605919a3b3d58eec2701eb7af430cfe315d6 100644
-> >>> --- a/tools/testing/selftests/riscv/abi/.gitignore
-> >>> +++ b/tools/testing/selftests/riscv/abi/.gitignore
-> >>> @@ -1 +1,2 @@
-> >>>  pointer_masking
-> >>> +ptrace
-> >>> diff --git a/tools/testing/selftests/riscv/abi/Makefile b/tools/testing/selftests/riscv/abi/Makefile
-> >>> index ed82ff9c664e7eb3f760cbab81fb957ff72579c5..3f74d059dfdcbce4d45d8ff618781ccea1419061 100644
-> >>> --- a/tools/testing/selftests/riscv/abi/Makefile
-> >>> +++ b/tools/testing/selftests/riscv/abi/Makefile
-> >>> @@ -2,9 +2,12 @@
-> >>>  
-> >>>  CFLAGS += -I$(top_srcdir)/tools/include
-> >>>  
-> >>> -TEST_GEN_PROGS := pointer_masking
-> >>> +TEST_GEN_PROGS := pointer_masking ptrace
-> >>>  
-> >>>  include ../../lib.mk
-> >>>  
-> >>>  $(OUTPUT)/pointer_masking: pointer_masking.c
-> >>>  	$(CC) -static -o$@ $(CFLAGS) $(LDFLAGS) $^
-> >>> +
-> >>> +$(OUTPUT)/ptrace: ptrace.c
-> >>> +	$(CC) -static -o$@ $(CFLAGS) $(LDFLAGS) $^
-> >>> diff --git a/tools/testing/selftests/riscv/abi/ptrace.c b/tools/testing/selftests/riscv/abi/ptrace.c
-> >>> new file mode 100644
-> >>> index 0000000000000000000000000000000000000000..d192764b428d1f1c442f3957c6fedeb01a48d556
-> >>> --- /dev/null
-> >>> +++ b/tools/testing/selftests/riscv/abi/ptrace.c
-> >>> @@ -0,0 +1,134 @@
-> >>> +// SPDX-License-Identifier: GPL-2.0-only
-> >>> +#include <stdio.h>
-> >>> +#include <stdlib.h>
-> >>> +#include <string.h>
-> >>> +#include <unistd.h>
-> >>> +#include <fcntl.h>
-> >>> +#include <signal.h>
-> >>> +#include <errno.h>
-> >>> +#include <sys/types.h>
-> >>> +#include <sys/ptrace.h>
-> >>> +#include <sys/stat.h>
-> >>> +#include <sys/user.h>
-> >>> +#include <sys/wait.h>
-> >>> +#include <sys/uio.h>
-> >>> +#include <linux/elf.h>
-> >>> +#include <linux/unistd.h>
-> >>> +#include <asm/ptrace.h>
-> >>> +
-> >>> +#include "../../kselftest_harness.h"
-> >>> +
-> >>> +#define ORIG_A0_MODIFY      0x01
-> >>> +#define A0_MODIFY           0x02
-> >>> +#define A0_OLD              0x03
-> >>> +#define A0_NEW              0x04
-> >>
-> >> Shouldn't A0_OLD and A0_NEW set more bits, since 3 and 4 aren't very
-> >> unique (we could have those values by accident)? And should we include
-> >> setting bits over 31 for 64-bit targets?
-> >>
-> >>> +
-> >>> +#define perr_and_exit(fmt, ...)						\
-> >>> +	({								\
-> >>> +		char buf[256];						\
-> >>> +		snprintf(buf, sizeof(buf), "%s:%d:" fmt ": %m\n",	\
-> >>> +			__func__, __LINE__, ##__VA_ARGS__);		\
-> >>> +		perror(buf);						\
-> >>> +		exit(-1);						\
-> >>> +	})
-> >>
-> >> Can we use e.g. ksft_exit_fail_perror() instead? I'd prefer we try to
-> >> consolidate testing/selftests/riscv/* tests on a common format for
-> >> errors and exit codes and we're already using other kselftest stuff.
-> >>
-> >>> +
-> >>> +static inline void resume_and_wait_tracee(pid_t pid, int flag)
-> >>> +{
-> >>> +	int status;
-> >>> +
-> >>> +	if (ptrace(flag, pid, 0, 0))
-> >>> +		perr_and_exit("failed to resume the tracee %d\n", pid);
-> >>> +
-> >>> +	if (waitpid(pid, &status, 0) != pid)
-> >>> +		perr_and_exit("failed to wait for the tracee %d\n", pid);
-> >>> +}
-> >>> +
-> >>> +static void ptrace_test(int opt, int *result)
-> >>> +{
-> >>> +	int status;
-> >>> +	pid_t pid;
-> >>> +	struct user_regs_struct regs;
-> >>> +	struct iovec iov = {
-> >>> +		.iov_base = &regs,
-> >>> +		.iov_len = sizeof(regs),
-> >>> +	};
-> >>> +
-> >>> +	unsigned long orig_a0;
-> >>> +	struct iovec a0_iov = {
-> >>> +		.iov_base = &orig_a0,
-> >>> +		.iov_len = sizeof(orig_a0),
-> >>> +	};
-> >>> +
-> >>> +	pid = fork();
-> >>> +	if (pid == 0) {
-> >>> +		/* Mark oneself being traced */
-> >>> +		long val = ptrace(PTRACE_TRACEME, 0, 0, 0);
-> >>> +
-> >>> +		if (val)
-> >>> +			perr_and_exit("failed to request for tracer to trace me: %ld\n", val);
-> >>> +
-> >>> +		kill(getpid(), SIGSTOP);
-> >>> +
-> >>> +		/* Perform exit syscall that will be intercepted */
-> >>> +		exit(A0_OLD);
-> >>> +	}
-> >>> +
-> >>> +	if (pid < 0)
-> >>> +		exit(1);
-> >>
-> >> This unexpected error condition deserves a message, so I'd use
-> >> ksft_exit_fail_perror() here.
-> >>
-> >>> +
-> >>> +	if (waitpid(pid, &status, 0) != pid)
-> >>> +		perr_and_exit("failed to wait for the tracee %d\n", pid);
-> >>> +
-> >>> +	/* Stop at the entry point of the syscall */
-> >>> +	resume_and_wait_tracee(pid, PTRACE_SYSCALL);
-> >>> +
-> >>> +	/* Check tracee regs before the syscall */
-> >>> +	if (ptrace(PTRACE_GETREGSET, pid, NT_PRSTATUS, &iov))
-> >>> +		perr_and_exit("failed to get tracee registers\n");
-> >>> +	if (ptrace(PTRACE_GETREGSET, pid, NT_RISCV_ORIG_A0, &a0_iov))
-> >>> +		perr_and_exit("failed to get tracee registers\n");
-> >>> +	if (orig_a0 != A0_OLD)
-> >>> +		perr_and_exit("unexpected orig_a0: 0x%lx\n", orig_a0);
-> >>> +
-> >>> +	/* Modify a0/orig_a0 for the syscall */
-> >>> +	switch (opt) {
-> >>> +	case A0_MODIFY:
-> >>> +		regs.a0 = A0_NEW;
-> >>> +		break;
-> >>> +	case ORIG_A0_MODIFY:
-> >>> +		orig_a0 = A0_NEW;
-> >>> +		break;
-> >>> +	}
-> >>> +
-> >>> +	if (ptrace(PTRACE_SETREGSET, pid, NT_RISCV_ORIG_A0, &a0_iov))
-> >>> +		perr_and_exit("failed to set tracee registers\n");
-> >>> +
-> >>> +	/* Resume the tracee */
-> >>> +	ptrace(PTRACE_CONT, pid, 0, 0);
-> >>> +	if (waitpid(pid, &status, 0) != pid)
-> >>> +		perr_and_exit("failed to wait for the tracee\n");
-> >>> +
-> >>> +	*result = WEXITSTATUS(status);
-> >>> +}
-> >>> +
-> >>> +TEST(ptrace_modify_a0)
-> >>> +{
-> >>> +	int result;
-> >>> +
-> >>> +	ptrace_test(A0_MODIFY, &result);
-> >>> +
-> >>> +	/* The modification of a0 cannot affect the first argument of the syscall */
-> >>> +	EXPECT_EQ(A0_OLD, result);
-> >>
-> >> What about checking that we actually set regs.a0 to A0_NEW? We'd need
-> >> A0_NEW to be more unique than 4, though.
-> >>
-> >>> +}
-> >>> +
-> >>> +TEST(ptrace_modify_orig_a0)
-> >>> +{
-> >>> +	int result;
-> >>> +
-> >>> +	ptrace_test(ORIG_A0_MODIFY, &result);
-> >>> +
-> >>> +	/* Only modify orig_a0 to change the first argument of the syscall */
-> >>
-> >> If we run ptrace_modify_a0 first then we've already set regs.a0 to A0_NEW
-> >> and can't check with this test that we don't set it to A0_NEW. We should
-> >> probably have two different test values, one for regs.a0 and one for
-> >> orig_a0 and ensure on both tests that we aren't writing both.
-> >>
-> > 
-> > Celeste, do you want to fix this up or are you waiting for me to?
-> 
-> Sorry for delay. I was busy with household affairs in the past few weeks.
-> v3 will be sent tomorrow or the day after tomorrow.
-> 
-> I am deeply sorry for this.
 
-No need to apologize! Just wanted to make sure you weren't expected me
-to update the test :)
+The patch titled
+     Subject: mm: zswap: fix race between [de]compression and CPU hotunplug
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-zswap-fix-race-between-compression-and-cpu-hotunplug.patch
 
-- Charlie
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zswap-fix-race-between-compression-and-cpu-hotunplug.patch
 
-> 
-> > 
-> > - Charlie
-> > 
-> >>> +	EXPECT_EQ(A0_NEW, result);
-> >>> +}
-> >>> +
-> >>> +TEST_HARNESS_MAIN
-> >>>
-> >>> -- 
-> >>> 2.47.0
-> >>>
-> >>
-> >> Thanks,
-> >> drew
-> 
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Yosry Ahmed <yosryahmed@google.com>
+Subject: mm: zswap: fix race between [de]compression and CPU hotunplug
+Date: Thu, 19 Dec 2024 21:24:37 +0000
+
+In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
+current CPU at the beginning of the operation is retrieved and used
+throughout.  However, since neither preemption nor migration are disabled,
+it is possible that the operation continues on a different CPU.
+
+If the original CPU is hotunplugged while the acomp_ctx is still in use,
+we run into a UAF bug as the resources attached to the acomp_ctx are freed
+during hotunplug in zswap_cpu_comp_dead().
+
+The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to use
+crypto_acomp API for hardware acceleration") when the switch to the
+crypto_acomp API was made.  Prior to that, the per-CPU crypto_comp was
+retrieved using get_cpu_ptr() which disables preemption and makes sure the
+CPU cannot go away from under us.  Preemption cannot be disabled with the
+crypto_acomp API as a sleepable context is needed.
+
+Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
+per-acomp_ctx") increased the UAF surface area by making the per-CPU
+buffers dynamic, adding yet another resource that can be freed from under
+zswap compression/decompression by CPU hotunplug.
+
+There are a few ways to fix this:
+(a) Add a refcount for acomp_ctx.
+(b) Disable migration while using the per-CPU acomp_ctx.
+(c) Disable CPU hotunplug while using the per-CPU acomp_ctx by holding
+the CPUs read lock.
+
+Implement (c) since it's simpler than (a), and (b) involves using
+migrate_disable() which is apparently undesired (see huge comment in
+include/linux/preempt.h).
+
+Link: https://lkml.kernel.org/r/20241219212437.2714151-1-yosryahmed@google.com
+Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Vitaly Wool <vitalywool@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/zswap.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+--- a/mm/zswap.c~mm-zswap-fix-race-between-compression-and-cpu-hotunplug
++++ a/mm/zswap.c
+@@ -880,6 +880,18 @@ static int zswap_cpu_comp_dead(unsigned
+ 	return 0;
+ }
+ 
++/* Prevent CPU hotplug from freeing up the per-CPU acomp_ctx resources */
++static struct crypto_acomp_ctx *acomp_ctx_get_cpu(struct crypto_acomp_ctx __percpu *acomp_ctx)
++{
++	cpus_read_lock();
++	return raw_cpu_ptr(acomp_ctx);
++}
++
++static void acomp_ctx_put_cpu(void)
++{
++	cpus_read_unlock();
++}
++
+ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 			   struct zswap_pool *pool)
+ {
+@@ -893,8 +905,7 @@ static bool zswap_compress(struct page *
+ 	gfp_t gfp;
+ 	u8 *dst;
+ 
+-	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+-
++	acomp_ctx = acomp_ctx_get_cpu(pool->acomp_ctx);
+ 	mutex_lock(&acomp_ctx->mutex);
+ 
+ 	dst = acomp_ctx->buffer;
+@@ -950,6 +961,7 @@ unlock:
+ 		zswap_reject_alloc_fail++;
+ 
+ 	mutex_unlock(&acomp_ctx->mutex);
++	acomp_ctx_put_cpu();
+ 	return comp_ret == 0 && alloc_ret == 0;
+ }
+ 
+@@ -960,7 +972,7 @@ static void zswap_decompress(struct zswa
+ 	struct crypto_acomp_ctx *acomp_ctx;
+ 	u8 *src;
+ 
+-	acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
++	acomp_ctx = acomp_ctx_get_cpu(entry->pool->acomp_ctx);
+ 	mutex_lock(&acomp_ctx->mutex);
+ 
+ 	src = zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+@@ -990,6 +1002,7 @@ static void zswap_decompress(struct zswa
+ 
+ 	if (src != acomp_ctx->buffer)
+ 		zpool_unmap_handle(zpool, entry->handle);
++	acomp_ctx_put_cpu();
+ }
+ 
+ /*********************************
+_
+
+Patches currently in -mm which might be from yosryahmed@google.com are
+
+mm-zswap-fix-race-between-compression-and-cpu-hotunplug.patch
+
 
