@@ -1,118 +1,153 @@
-Return-Path: <stable+bounces-105251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3611A9F71AA
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:20:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C149F71B3
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D7D31889CF3
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:20:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9D1F169522
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA04482EB;
-	Thu, 19 Dec 2024 01:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="NTrMBnPH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94BA70808;
+	Thu, 19 Dec 2024 01:23:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B1540BE0
-	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 01:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CD641C72;
+	Thu, 19 Dec 2024 01:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734571208; cv=none; b=ctn87nScvdSslEVc+90bTtzDtWmmq5ypBvplgYB9HY7JIcgJ2aSUyVcRr6Syput+Ui1Vo/dvjIicnj2l8arcBlx5WKoX8mv01l+fxPoNyCd7lJIkMmkwxVK5n2qpBdMSl1Gksl7Hrscijd9wKHD2T7IRlD3B9nsYreaMMOGEAR8=
+	t=1734571387; cv=none; b=KWpaYBy3iLVISIhLnI513j2zhsO4xthWk4nXPmwBjRSVDdqFKkPJwbDY336imS6AXxKVfOlkd0bdjrwN4ugQzTVajSxEY56N+ZkIzcqoK8C9fTu9Px4Y1+/VaYbaCNbKC0GCe/x6WEZhHQWSkMXx9ar29mSWbaRJkDv/Sch8m/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734571208; c=relaxed/simple;
-	bh=75zpHAYNNqaRd8aaNF8sw9oJd2zCUlOTXIKcoWP+MKY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rfDfiEkdia6x1qZig/4UxAx4yIFnNjMhbcDoF1UaK7HbRjWHSKjFjs3cYCzhGKzWq0fzOoS6AiH4KVgw2FQYAW+vq/RM0tNN2is/iP+GNr6S1x37v6EwEvdYJ1tM+/+MwFXpdDMk+teS7tVFXMaIsv8PDUIDDMf1gX7qLSaOcRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=NTrMBnPH; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2162c0f6a39so13032035ad.0
-        for <stable@vger.kernel.org>; Wed, 18 Dec 2024 17:20:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1734571204; x=1735176004; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G+DOnah1GMsUpAPjPp+7YAy+E0nqFBMmLEVKuZUZxK4=;
-        b=NTrMBnPHOIWmsOm09nwhr00lnrq06ImRmu6l9CdIjNCg1NTUVZefPhTNDGxpUn4lVF
-         DvPJRubAa25oe+L19RFw1KcTxU82wLw+6+QfYPheIZwreLeqlO1R7zZLR76JffJ/Txc4
-         7MaoaGcZoLKir6yS0TNxO765uM+MHxg1k0mhXK0W2HDlygFya/DK7KhsRF+0EGAHCW42
-         /fbtLugfFNA8OqX5FbWbtAJB1R0W3vRWGivHTvQ08QS2C/VOW7LbnyzcKbrv1TZaPd3t
-         3iDeYNfYqAaxcE8/6pwOig1mXsCdZsiRPRpXbcVX7YothOsaCIRIiqDP1z6dPeubkYBH
-         S4zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734571204; x=1735176004;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G+DOnah1GMsUpAPjPp+7YAy+E0nqFBMmLEVKuZUZxK4=;
-        b=JSc3v2hRq6/04YDOwD3S/2sC97ZWdSN0oisyG62PKNdSSTvdFzIRUD2czb0laRrEux
-         FX2ZhmyyDH/0rGJpP3L5lF+fJ6+JlF4IOl2J8yFQ8z+Pj43ucBbq2WgDDxFW8K0G7dLE
-         2HD+vpi9Rb3Tb8Hko+d2dxl443dOvbp8aqiGiQW1LeUVdWu9hkibF+vrizLXWry0potP
-         S1YP7ip3lJXdLlR4rqZ93kJPzGURqWYuYl4Np+xBXIARh31O9D+B0cQy//6cRvJ7luUX
-         OjkRt+pMcAS8/D44avk27K//na8O+xxEyphDf2/NGmGGh7wAhe6w+f85iSN+ep8GTCf4
-         Bfiw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDQZdpV/FvTTYix2csuAwlQiT+KPHrSKseu500utEMatk9FkCQ2oR4HRXTu8I4XN9KdJgzcDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0Qf7+1TZX+E2hx8J6RZW/iMfYWefqplCsKvAsnNYyIh5/BeKb
-	1TX8TvDfOUCUOLGMzL/6mksFafdnFUGS/x5eQ1u8NIKUZ97ClzD/syektiVpW2Nack2ZHjb3DRS
-	C
-X-Gm-Gg: ASbGncvWhrgQVvrQ8VtlD3SLOhnVZehAnw55sUeTX6pAeGtJvoRwgTe/OrdJ7q0sk7F
-	De6RgW/7jlgQhwyOSbX7HqNIfZ5oEO6n++b1AYyaXquJUj5zJW5Qcyi7Vwz72r5SXz54C6xogKP
-	UyEihsuFYElmavadRpiyfxY5GaCjx3qCqJgdyJy2U1qt9OOXtaoiglUqkwlnxBVEaZtH5VNVpF2
-	twL+JY/9kRD2SpzFapYTygTxdG5sm1HPR7wbQp/qFx3UyfP
-X-Google-Smtp-Source: AGHT+IHTG/+j0zzNohECjV/Ng8Bs7duXDHt4qA34KIIPFKFZVDer3b3BdqIAputJTK5KzycIRQRP8Q==
-X-Received: by 2002:a17:903:11c6:b0:215:8847:4377 with SMTP id d9443c01a7336-219da5eb59emr23753595ad.15.1734571204449;
-        Wed, 18 Dec 2024 17:20:04 -0800 (PST)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc972251sm1668765ad.96.2024.12.18.17.20.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2024 17:20:03 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
-To: Pavel Begunkov <asml.silence@gmail.com>, Jann Horn <jannh@google.com>
-Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20241218-uring-reg-ring-cleanup-v1-1-8f63e999045b@google.com>
-References: <20241218-uring-reg-ring-cleanup-v1-1-8f63e999045b@google.com>
-Subject: Re: [PATCH] io_uring: Fix registered ring file refcount leak
-Message-Id: <173457120329.744782.1920271046445831362.b4-ty@kernel.dk>
-Date: Wed, 18 Dec 2024 18:20:03 -0700
+	s=arc-20240116; t=1734571387; c=relaxed/simple;
+	bh=KtKWg+kyrvySj1SXUXmmVG0S88tVlPAeJs4RX52M4Wc=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=aK06bDr7KY0xHaFzkpCVI2G8Y6z7Fn2Wlyu/eG7lLLgH5/r8YWHJTZiZfAMoFoG/m0+1QZ+Nqjt+fu1nhdeSIhPq9H4pJWWpTB4aKUjXDuOaRKVLDiWIwhUsZe287Ye5WuPqTsnh7QGYaYZAZ/YZd/hx4QYwC+xpW9wi2vU+Eok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A19C4CED7;
+	Thu, 19 Dec 2024 01:23:06 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1tO5GU-00000009mO6-2KG8;
+	Wed, 18 Dec 2024 20:23:46 -0500
+Message-ID: <20241219012346.411908681@goodmis.org>
+User-Agent: quilt/0.68
+Date: Wed, 18 Dec 2024 20:23:12 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ syzbot+345e4443a21200874b18@syzkaller.appspotmail.com,
+ Edward Adam Davis <eadavis@qq.com>
+Subject: [for-linus][PATCH 1/2] ring-buffer: Fix overflow in __rb_map_vma
+References: <20241219012311.649442084@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3-dev-86319
+Content-Type: text/plain; charset=UTF-8
 
+From: Edward Adam Davis <eadavis@qq.com>
 
-On Wed, 18 Dec 2024 17:56:25 +0100, Jann Horn wrote:
-> Currently, io_uring_unreg_ringfd() (which cleans up registered rings) is
-> only called on exit, but __io_uring_free (which frees the tctx in which the
-> registered ring pointers are stored) is also called on execve (via
-> begin_new_exec -> io_uring_task_cancel -> __io_uring_cancel ->
-> io_uring_cancel_generic -> __io_uring_free).
-> 
-> This means: A process going through execve while having registered rings
-> will leak references to the rings' `struct file`.
-> 
-> [...]
+An overflow occurred when performing the following calculation:
 
-Applied, thanks!
+   nr_pages = ((nr_subbufs + 1) << subbuf_order) - pgoff;
 
-[1/1] io_uring: Fix registered ring file refcount leak
-      commit: 12d908116f7efd34f255a482b9afc729d7a5fb78
+Add a check before the calculation to avoid this problem.
 
-Best regards,
+syzbot reported this as a slab-out-of-bounds in __rb_map_vma:
+
+BUG: KASAN: slab-out-of-bounds in __rb_map_vma+0x9ab/0xae0 kernel/trace/ring_buffer.c:7058
+Read of size 8 at addr ffff8880767dd2b8 by task syz-executor187/5836
+
+CPU: 0 UID: 0 PID: 5836 Comm: syz-executor187 Not tainted 6.13.0-rc2-syzkaller-00159-gf932fb9b4074 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xc3/0x620 mm/kasan/report.c:489
+ kasan_report+0xd9/0x110 mm/kasan/report.c:602
+ __rb_map_vma+0x9ab/0xae0 kernel/trace/ring_buffer.c:7058
+ ring_buffer_map+0x56e/0x9b0 kernel/trace/ring_buffer.c:7138
+ tracing_buffers_mmap+0xa6/0x120 kernel/trace/trace.c:8482
+ call_mmap include/linux/fs.h:2183 [inline]
+ mmap_file mm/internal.h:124 [inline]
+ __mmap_new_file_vma mm/vma.c:2291 [inline]
+ __mmap_new_vma mm/vma.c:2355 [inline]
+ __mmap_region+0x1786/0x2670 mm/vma.c:2456
+ mmap_region+0x127/0x320 mm/mmap.c:1348
+ do_mmap+0xc00/0xfc0 mm/mmap.c:496
+ vm_mmap_pgoff+0x1ba/0x360 mm/util.c:580
+ ksys_mmap_pgoff+0x32c/0x5c0 mm/mmap.c:542
+ __do_sys_mmap arch/x86/kernel/sys_x86_64.c:89 [inline]
+ __se_sys_mmap arch/x86/kernel/sys_x86_64.c:82 [inline]
+ __x64_sys_mmap+0x125/0x190 arch/x86/kernel/sys_x86_64.c:82
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The reproducer for this bug is:
+
+------------------------8<-------------------------
+ #include <fcntl.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <asm/types.h>
+ #include <sys/mman.h>
+
+ int main(int argc, char **argv)
+ {
+	int page_size = getpagesize();
+	int fd;
+	void *meta;
+
+	system("echo 1 > /sys/kernel/tracing/buffer_size_kb");
+	fd = open("/sys/kernel/tracing/per_cpu/cpu0/trace_pipe_raw", O_RDONLY);
+
+	meta = mmap(NULL, page_size, PROT_READ, MAP_SHARED, fd, page_size * 5);
+ }
+------------------------>8-------------------------
+
+Cc: stable@vger.kernel.org
+Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
+Link: https://lore.kernel.org/tencent_06924B6674ED771167C23CC336C097223609@qq.com
+Reported-by: syzbot+345e4443a21200874b18@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=345e4443a21200874b18
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/ring_buffer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 7e257e855dd1..60210fb5b211 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -7019,7 +7019,11 @@ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
+ 	lockdep_assert_held(&cpu_buffer->mapping_lock);
+ 
+ 	nr_subbufs = cpu_buffer->nr_pages + 1; /* + reader-subbuf */
+-	nr_pages = ((nr_subbufs + 1) << subbuf_order) - pgoff; /* + meta-page */
++	nr_pages = ((nr_subbufs + 1) << subbuf_order); /* + meta-page */
++	if (nr_pages <= pgoff)
++		return -EINVAL;
++
++	nr_pages -= pgoff;
+ 
+ 	nr_vma_pages = vma_pages(vma);
+ 	if (!nr_vma_pages || nr_vma_pages > nr_pages)
 -- 
-Jens Axboe
-
+2.45.2
 
 
 
