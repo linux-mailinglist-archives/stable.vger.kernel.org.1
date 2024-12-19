@@ -1,174 +1,145 @@
-Return-Path: <stable+bounces-105319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AB19F8028
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 17:44:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2496A9F80B7
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 17:51:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7248C169D53
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 16:44:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 250EE189549C
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 16:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B529227561;
-	Thu, 19 Dec 2024 16:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8054190685;
+	Thu, 19 Dec 2024 16:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="PYubQ9bY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Evy1K8wR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4E7226551
-	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 16:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DD1146D6B;
+	Thu, 19 Dec 2024 16:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734626655; cv=none; b=XdhjG/qb8uk6IU5SsOcJ/mEL22JnVj6RCSkOkjutOK8ImTwEx3DNpw389TBba0qXOQ64LWN21sVFb1gmyjuYucCbg0v2Hn/drg1zYZ43Dllt2QhDG9Goas+WX4Rbg39oSDSCzN5yxBX5Pzn5BLACILaac19/VRBWHiptHn+epOQ=
+	t=1734627057; cv=none; b=a7O+YI7KvrsHXvBTTRdFztWLVfy6sKilcCj0P29qd3yz0L/nFGDwQhD8cWOgHGlvekj8MUHoT+04zbgAvHnOAr5K12FHxGoCfSmiK1g3DLRjIQjJvIqz52MJtiAwTqayeEeiLwTuqp+IbT4y4GrhdDezgUqA1gG+THK+n6jOEC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734626655; c=relaxed/simple;
-	bh=/WzK4ZNO7fuf8BvKKn1V0JJbMvcNr4d1yJhMfBFo2qQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r8A5Y0VcpJaqtxwzbnVwscx2WlqsRtPSOfOqDxr5F05oWg0PBu1Y0LQk5lPiQFnoKMKww5gASTc01X10PkSOY+oACs0nnI3i951+lSMhH475qQwjKUTniltROxOLeY0gF5pp/udvhTWUSrGs/L5Xpmd7KmnTd8/gMWBZmjRIUT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=PYubQ9bY; arc=none smtp.client-ip=209.85.128.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso6752505e9.1
-        for <stable@vger.kernel.org>; Thu, 19 Dec 2024 08:44:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1734626652; x=1735231452; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/WzK4ZNO7fuf8BvKKn1V0JJbMvcNr4d1yJhMfBFo2qQ=;
-        b=PYubQ9bYUfaQrGmQ/fyzNKGXnclKyhGqGa694dXuO1LHpWTbsiFndksbKwGAnvfe2s
-         RLrsdgAVmbrcpPxHQ6dQCCqxHbCW/sRuF5MC6cZnK2VSbST3t1KnZj0sIe8X1id9Up0z
-         23rlT56oHIs4jBg7xo4ftMS+ltqdntIkoc1tc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734626652; x=1735231452;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/WzK4ZNO7fuf8BvKKn1V0JJbMvcNr4d1yJhMfBFo2qQ=;
-        b=fRrLUx/3vNqOGzOnrypiKHix3g+Pkywk05WHcptYPa6mnD1YpTp5m87WLmHVtTeeNo
-         3V+ehuUeGwhOr3uoGAKZzNzj09snHXrSE+0ZgeoMAlQWj/TWN8a2l24PHUsof50IIO9u
-         Y/HDRVajcnjjNMdAmNaqm3zFyDo97Vdcn9wZy/hdiyN1jjXPCFw9t88M6neAxPU/+1Mg
-         Bkjs1bh+IbKHpUNB0jpas/8SszYfhQW4wQkYojyz4qQ/+BEzTBdtEDQSOEYZ2YtIg6ZE
-         1DU1S2q2WRGmos/TW5WQA74jTi9JR4J+rus4E1xIeCdfpac2oQ+uHslicTHDXxD0/fH/
-         WgdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFBbPHj0oqNTrbae1nlJQCUxuaGPSCqqGmYxSaNiEwVd5R/o4UnuJiDg7a22JBjItJFY4YVuE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymdT4NK6FrriPDDTD3oIvjqWB1hYKHO5bpQmh015pNvGfD3y5k
-	krsPaiWsJzqvtIxG9djwq5f3MJa1pL3zU8Czktjbxg9mgGNtetsF2i5NlPM9KQo=
-X-Gm-Gg: ASbGncupBPSjBAs58YkMowxuc3kXyocRTkUR6HNV2BKMtP6YgC/eOksjy7Eg+uWTsvg
-	14F56dV+ejMqfcutRiDvUg27TeNPzavYXFxBhUQ7UqH6EqeFv9PDVwvnAU+p4YLG4b6tfjxYIny
-	zBos3Ewa8AVzN63HwKU3XfAO1W5FZIPQEbtA043E6MbNexfzVJkQNeVNGlXXtoHghMzS7e3F/F3
-	FW0vQ5POV+Cf90lu1HhP1KNH+9woo8I2udmSEtj9yhB1U4+8uUbksJzVHwxwV3hDVJd3fQncoi6
-	jQLTJlPX4J71+sBVK7+k
-X-Google-Smtp-Source: AGHT+IGEPE2HmFwQQoALSPufvuY9OcbgJ6yxjHc1zy4vQSlpAqsTcBReairPrxguFq2h8tr0xiiMgA==
-X-Received: by 2002:a05:600c:1d1c:b0:434:fddf:5c06 with SMTP id 5b1f17b1804b1-43662ca2232mr25073075e9.1.1734626651927;
-        Thu, 19 Dec 2024 08:44:11 -0800 (PST)
-Received: from [192.168.1.10] (host-92-26-98-202.as13285.net. [92.26.98.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c84ca21sm1951594f8f.63.2024.12.19.08.44.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Dec 2024 08:44:11 -0800 (PST)
-Message-ID: <099d3a80-4fdb-49a7-9fd0-207d7386551f@citrix.com>
-Date: Thu, 19 Dec 2024 16:44:10 +0000
+	s=arc-20240116; t=1734627057; c=relaxed/simple;
+	bh=IiSx2c1rWCpopOjw7IUhmvQhktehYl5PNc2RgbhH8LM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VRAR4sqCAoyCvVrrZddPKCDjJ96/sJYFWBJ+qL62uyelJvkCVS8DeRibqVGDeN/f//cu1rvR/pRtU1rJKYSgopW2ux8RmaUzlm97V/G1J7KLW3vcTlu5xLt7QtP435uwuB3gcPSQuzJAf8NCrsqUVZMeK4KhBuDI1TK4b/OsIc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Evy1K8wR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 179EEC4CECE;
+	Thu, 19 Dec 2024 16:50:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734627057;
+	bh=IiSx2c1rWCpopOjw7IUhmvQhktehYl5PNc2RgbhH8LM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Evy1K8wRb8TvH3rHotl6L+hZW37cKJ60QMji8x9T772g6QLFxTz9MVnRKccYbOSzp
+	 qR3Vj37JDaW2H2D8RRTeb9A18jm9SBDrsI01Ug6EuaWHP44FgWTQkgKdTCGtbWL7f7
+	 XFsQ9yDPqXtuEDiIxfBRgIBYs37AwMvNwFfSY9jLyNDWtZE7yrZhaqzTTUma23ZDPG
+	 Bl7nrG7OB/67hssxr2wOIe8HV2cZRk+GenuD8xQ3EC+HvL1kgnHMkLq9TJaum9cwOH
+	 2yrnTHJhVpbarNeIEWrGamZfYfmTSZtKvubCOuCVpIyJGGLCmiUwwILzALlky7C5EQ
+	 p7AYSjG6+BaSg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EEECFE77184;
+	Thu, 19 Dec 2024 16:50:56 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
+Subject: [PATCH v3 0/4] scsi: ufs: qcom: Suspend fixes
+Date: Thu, 19 Dec 2024 22:20:40 +0530
+Message-Id: <20241219-ufs-qcom-suspend-fix-v3-0-63c4b95a70b9@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Linux-6.12.y] XEN: CVE-2024-53241 / XSA-466 and Clang-kCFI
-To: sedat.dilek@gmail.com, Juergen Gross <jgross@suse.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Sami Tolvanen <samitolvanen@google.com>
-Cc: Jan Beulich <jbeulich@suse.com>, Josh Poimboeuf <jpoimboe@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Kees Cook <kees@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev
-References: <CA+icZUWHU=oXOEj5wHTzxrw_wj1w5hTvqq8Ry400s0ZCJjTEZw@mail.gmail.com>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <CA+icZUWHU=oXOEj5wHTzxrw_wj1w5hTvqq8Ry400s0ZCJjTEZw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOBOZGcC/4XNQQ6CMBCF4auQrh3DtFDBlfcwLqAdoIm22EqjI
+ dzdwkoXxuX/kvlmZoG8ocCO2cw8RROMsynELmNqaGxPYHRqxnNeIEeEqQtwV+4GYQojWQ2deUI
+ psaJalVLXgqXT0VOaN/Z8ST2Y8HD+tX2JuK5/wIiQQyWobTUdZIvqdDW28W7vfM9WMfJPRfxQe
+ FJQk1Saa4mF/FKWZXkDArZAGP8AAAA=
+To: Alim Akhtar <alim.akhtar@samsung.com>, 
+ Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>, 
+ Nitin Rawat <quic_nitirawa@quicinc.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ stable@vger.kernel.org, Ram Kumar Dwivedi <quic_rdwivedi@quicinc.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2310;
+ i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
+ bh=IiSx2c1rWCpopOjw7IUhmvQhktehYl5PNc2RgbhH8LM=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBnZE7pF0xR8u5j1AZQNq0a1iIPAASQkMD+7+21s
+ TL6BvlQftOJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZ2RO6QAKCRBVnxHm/pHO
+ 9Y7xB/wJQUKBYCijZxDVSc4pOmjWd4WRh4wnXcK5J6+Xz6N3i1CNoFuu2JQGfbMx7vUQCgtzsjY
+ H8GahM/OrQSw1LWp8tOJQ2idxcqLOYtj76lF/Z6vq97A3rF3O1XoNAS8nfh2aCemWnFx1CofxMy
+ YbkPFly62g1yTOe1qboqc7FUjgiXtIAgH79y/RjrpKenhF7aY8ecLbn4kyWn7h+bjTkiGmNGOrW
+ EScBBX7B36xE+ifj3bp8FHK8KrL2xkc5KcN6M6fYnrdcmtxwSX0XwMEsqwcCPoqVqqhzqUMKADH
+ lfN0Hkcf5d3LO8chNNHB5Zdc5bVUSx+3n+dEeHB2Z1eG/ki4
+X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@linaro.org/default with auth_id=185
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reply-To: manivannan.sadhasivam@linaro.org
 
-On 19/12/2024 4:14 pm, Sedat Dilek wrote:
-> Hi,
->
-> Linux v6.12.6 will include XEN CVE fixes from mainline.
->
-> Here, I use Debian/unstable AMD64 and the SLIM LLVM toolchain 19.1.x
-> from kernel.org.
->
-> What does it mean in ISSUE DESCRIPTION...
->
-> Furthermore, the hypercall page has no provision for Control-flow
-> Integrity schemes (e.g. kCFI/CET-IBT/FineIBT), and will simply
-> malfunction in such configurations.
->
-> ...when someone uses Clang-kCFI?
+Hi,
 
-The hypercall page has functions of the form:
+This series fixes the several suspend issues on Qcom platforms. Patch 1 fixes
+the resume failure with spm_lvl=5 suspend on most of the Qcom platforms. For
+this patch, I couldn't figure out the exact commit that caused the issue. So I
+used the commit that introduced reinit support as a placeholder.
 
-    MOV $x, %eax
-    VMCALL / VMMCALL / SYSCALL
-    RET
+Patch 4 fixes the suspend issue on SM8550 and SM8650 platforms where UFS
+PHY retention is not supported. Hence the default spm_lvl=3 suspend fails. So
+this patch configures spm_lvl=5 as the default suspend level to force UFSHC/
+device powerdown during suspend. This supersedes the previous series [1] that
+tried to fix the issue in clock drivers.
 
-There are no ENDBR instructions, and no prologue/epilogue for hash-based
-CFI schemes.
+This series is tested on Qcom SM8550 QRD, SM8650 QRD and Qcom RB5 boards.
 
-This is because it's code provided by Xen, not code provided by Linux.
+[1] https://lore.kernel.org/linux-arm-msm/20241107-ufs-clk-fix-v1-0-6032ff22a052@linaro.org
 
-The absence of ENDBR instructions will yield #CP when CET-IBT is active,
-and the absence of hash prologue/epilogue lets the function be used in a
-type-confused manor that CFI should have caught.
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+Changes in v3:
+- Added a patch that honors the runtime/system PM levels set by host drivers.
+  Otherwise patch 4 doesn't have any effect. This was discovered with SM8650
+  QRD.
+- Collected tags
+- Link to v2: https://lore.kernel.org/r/20241213-ufs-qcom-suspend-fix-v2-0-1de6cd2d6146@linaro.org
 
-~Andrew
+Changes in v2:
+- Changed 'ufs_qcom_drvdata::quirks' type to 'enum ufshcd_quirks'
+- Collected tags
+- Link to v1: https://lore.kernel.org/r/20241211-ufs-qcom-suspend-fix-v1-0-83ebbde76b1c@linaro.org
+
+---
+Manivannan Sadhasivam (4):
+      scsi: ufs: qcom: Power off the PHY if it was already powered on in ufs_qcom_power_up_sequence()
+      scsi: ufs: core: Honor runtime/system PM levels if set by host controller drivers
+      scsi: ufs: qcom: Allow passing platform specific OF data
+      scsi: ufs: qcom: Power down the controller/device during system suspend for SM8550/SM8650 SoCs
+
+ drivers/ufs/core/ufshcd-priv.h |  6 ------
+ drivers/ufs/core/ufshcd.c      | 10 ++++++----
+ drivers/ufs/host/ufs-qcom.c    | 31 +++++++++++++++++++------------
+ drivers/ufs/host/ufs-qcom.h    |  5 +++++
+ include/ufs/ufshcd.h           |  2 --
+ 5 files changed, 30 insertions(+), 24 deletions(-)
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20241211-ufs-qcom-suspend-fix-5618e9c56d93
+
+Best regards,
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+
 
