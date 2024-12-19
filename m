@@ -1,94 +1,330 @@
-Return-Path: <stable+bounces-105343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFA99F832F
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:23:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0879F8336
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACB921886E95
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 18:23:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5755D167878
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 18:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72EF1A0B05;
-	Thu, 19 Dec 2024 18:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1052D1A2543;
+	Thu, 19 Dec 2024 18:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b="K6KNvsfV"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="dO2x4/ZC"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.com (mout.gmx.com [74.208.4.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C318E199234;
-	Thu, 19 Dec 2024 18:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC33192D66
+	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 18:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734632581; cv=none; b=Ul/SLwnCG9peav5gXrXdbnJqzIMMmqc5Ty3e0BZis4wKW5ULFQwjDPh9s2nhJRvd8C75u/rHpaTamzGmRLQpblLDPiBrn5Qwl7FT5ndrjstPH0Hm2BwI3d3hadYKLcUi+zJgX79z29+RueC8v9susQgLCNwMtpKJJwlobz+6qIc=
+	t=1734632782; cv=none; b=Eowaf8XNYKFLl3J7InIP3wtgFZaYHSFNDLH5UILPrdYn+LtWOIl1f+9TNu1w4GppFPFzmqC12EUrHb8Lxo2BQRHK7a9WvFScVuOHwYtN0yTQGTRUIdN3uace7UogzmN4gwA6O3fSAcSjzKrhFnVQgwIMjVoTeRz97sIHNvvBuY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734632581; c=relaxed/simple;
-	bh=s5JlFHZHj/SkXwPq1A/1ZNcSzrC1Jf41gd9ygI0gvsE=;
-	h=MIME-Version:Message-ID:From:To:Subject:Content-Type:Date; b=VURKbdUGLY6IklcImHul/FYBpW+6O5y65Ubb6Skol1nowPSZQr/5E1UYHFA5m7G3qDHJrgX+uov8TmMq3jiYLcE3n7wGp3jCCe6r5pJWFrghQFCkfxc0lDboL8R7heDjYxGIFpIL4064kSBHHnFq6VnF6jLstjk7oFdSRF/CxBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com; spf=pass smtp.mailfrom=mail.com; dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b=K6KNvsfV; arc=none smtp.client-ip=74.208.4.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.com;
-	s=s1089575; t=1734632564; x=1735237364; i=gazo11@mail.com;
-	bh=s5JlFHZHj/SkXwPq1A/1ZNcSzrC1Jf41gd9ygI0gvsE=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
-	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
-	 from:message-id:mime-version:reply-to:subject:to;
-	b=K6KNvsfVlrWJlIKcjIQltL0/9eFTCPIitJZExwIv9xYwdac6UpTarwkIwO+CnB0w
-	 m3g0SQ12Gp9l5mT5jRJuBk5Ct9v4eQl5GgRrPpV2CeeHEiJf1NKttRKgndwoJdRQW
-	 XIdLVWDDe/WHh9bwJqtSCey8aH+aSdRcv5q6FjXIYa4SUpozXDbYJe+f4GN+niwgD
-	 +0cQQDP6p8eRO8oj2gt6TSeutfySh6kix9afxF/wxmFGRhASaVBHsFvybx7dx1ybe
-	 5D5Ye0kIaXDDS70OZyOH3CF4iIIPJVX+aJof4vxl0W1QUmxU9OBZib3cugQwPNo8m
-	 yeD7oYmEb4XWqb3MPA==
-X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
-Received: from [77.137.74.199] ([77.137.74.199]) by web-mail.mail.com
- (3c-app-mailcom-lxa11.server.lan [10.76.45.12]) (via HTTP); Thu, 19 Dec
- 2024 19:22:44 +0100
+	s=arc-20240116; t=1734632782; c=relaxed/simple;
+	bh=/2GFVTGWItCrct80AUQkOv7AggOUOeigNcKeS4Yoytc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NYme91Uuq9WHeMX1PMSuNJzJL+4/TdCpIn7QJjwj9wfIhDdcyfv7VW/sSj7tuPUrRW/t2nL/hNetaINM+0618qp7fhVwZEfU21PWHav566ACXYdiV0g2p0ouE4BHJ1HZMPhT265yWTpp8HUjyOSsIVbKCsr5muuC8+lOx9770vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=dO2x4/ZC; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ee786b3277so737008a91.1
+        for <stable@vger.kernel.org>; Thu, 19 Dec 2024 10:26:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1734632779; x=1735237579; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hMRnvozbssngVqbSknpjzbx2RK+JVnD39zwZDG+y2n8=;
+        b=dO2x4/ZCJFI+la1r4/jZdjk0XFVqDmcOJ1x7+fuTT52KH1i92kkbroUXqv/rU68PMj
+         ZagsLlGsikFlgnxcPCBbarvl6HxzYFDYNOHswgWPXvwstGO2ZfRVgWyeJ5E1lpdXbIr3
+         4rlp5lU64zSMyu1Q1LujpeuQtBT7hC0cS2L7qXybmhkKF673Nd+S017gVaPFh3WxQ9Lo
+         fFYIeXTUUpRk1iExxz/k8IQ8bGa7dQE/S2wC98J24KFAYkIwKYD4RKX1kpgFsLU9gQme
+         W2Shp0BTVILPc+fwZPoW4FQcVjxnW2B+C7RM4m0eR7STEaN37+Zna9offByYbx9C25BY
+         H+6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734632779; x=1735237579;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hMRnvozbssngVqbSknpjzbx2RK+JVnD39zwZDG+y2n8=;
+        b=oBKQYQOttGCTf7iqTdD+F5Qrrx1q3bnIxi045THxGXFkOseLKh4QSZQcY/mRkzkdEh
+         r1dzpedBK6YaaZPWoYhT/xabqQf3ou3QjiukLhD6/PQQ6KiiOS7hjOyB2DUWtiOBV9mU
+         7Ixs0xLuq98k72BgZMeXA7OLzznbBZh5E1udIlT5bsXO25s9AduCvgCyIXpn5PTRtcdg
+         VIVISG6KqdHO2QHggECDMskgoveCSEESqYsyf7gHTom2EHN6wPuYrrkD7tytdWiEvLbZ
+         QLMIJlAz62EAxHZnuncqk37DqMs7iuUov1aD9QZlXCReoXprcsTr3EuuWIJlIRk5cTbS
+         4lhg==
+X-Forwarded-Encrypted: i=1; AJvYcCXDzG6rSX63UmYdrvcTwM57NJD9TwSIYzU6U7EyOfMsehSXtauptYMkfkaRroI6Mc0qgrx7Jsg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5mkvyE+4GTT9LP7wkVTWLxwrokCvVFQOEcjXOhsDaWR4PCfzN
+	7Y1qfEpFV2XQxuqGlH9JuhHbujRejUIkNEtsLuaIbA/Awc7CFKjvnW9wmElB6Co=
+X-Gm-Gg: ASbGncsZYdXtwHv86CfYy2qeuhviGqQuFAzyOypH7mrx3BsZXgOjMdlOJ+fy4XT4+Wo
+	s6uMCDgoqaRHlzOUwiRNiB+iQBaMNGiZzGcCFf9KgZd1+IKlpK8qO0vfk/trs2jQdHF3Oedo40v
+	txbrOC4cS8Sbx/AiKq1twIvaLVfL5/D5AxQA9sIgEA2ShaV/MGZZSdVNHY0ZuBojZ2FGtVdQjvk
+	Rbu3zRNX/tVbSkOoyzCiyiyo3msHJgb7pSKGftZQbCzSn17AaFb
+X-Google-Smtp-Source: AGHT+IFsWgJOva12zvp6tp180q3OiFLZ0d0TjIkVYwvTLN5q8JRYcM/SHtSfXHGK+OHbcvE+dj549w==
+X-Received: by 2002:a17:90b:2c84:b0:2ee:bbe0:98c6 with SMTP id 98e67ed59e1d1-2f452dfcb28mr13994a91.8.1734632779465;
+        Thu, 19 Dec 2024 10:26:19 -0800 (PST)
+Received: from ghost ([2601:647:6700:64d0:1e6a:6188:cfff:248e])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f447883b0csm1887523a91.42.2024.12.19.10.26.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2024 10:26:18 -0800 (PST)
+Date: Thu, 19 Dec 2024 10:26:15 -0800
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: Celeste Liu <uwu@coelacanthus.name>, Oleg Nesterov <oleg@redhat.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Shuah Khan <shuah@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+	"Dmitry V. Levin" <ldv@strace.io>,
+	Andrea Bolognani <abologna@redhat.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>,
+	Quan Zhou <zhouquan@iscas.ac.cn>,
+	Felix Yan <felixonmars@archlinux.org>,
+	Ruizhe Pan <c141028@gmail.com>,
+	Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>,
+	Yao Zi <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] riscv: selftests: Add a ptrace test to verify
+ syscall parameter modification
+Message-ID: <Z2RlR1cP9tne8rNi@ghost>
+References: <20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name>
+ <20241203-riscv-new-regset-v2-2-d37da8c0cba6@coelacanthus.name>
+ <20241203-55c76715e16422ddaf8d7edf@orel>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-cd6b8598-763e-43fb-9ae8-2b19ddd7f56c-1734632564710@3c-app-mailcom-lxa11>
-From: Gustavo Azor <gazo11@mail.com>
-To: rafael@kernel.org, hdegoede@redhat.com, pmenzel@molgen.mpg.de,
- linux-acpi@vger.kernel.org, stable@vger.kernel.org, tamim@fusetak.com
-Subject: Patch 3/4 ACPI resource.c.Add Asus Vivobook X1504VAP
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Dec 2024 19:22:44 +0100
-Importance: normal
-Sensitivity: Normal
-X-Priority: 3
-X-Provags-ID: V03:K1:iNOAmffiJBTVq6wMK75SNwXPXglY1SnBZNe5oouvPDgM+Ppy2cLDYIvkodkh3q5kzopVh
- wlc8XHermQ6OLLu5vujibzWlh2N2K0QSiW5XBW1ei1OQMDjZKIF3kp9tfZ+1cpRJvRk4f7ArNdY6
- uVKLS9Q7jlSnb3bT//j7TqANRFWvLjBrk8vvwQg5v3aFyxpMJHwmkDIr1Q2S+KU8k8l9AKTdhoYx
- IOfkTkwlawB94U5ctSNNGAo7mSJmSJoDj7TzQv9mChj7XNQQnzXhoxNizVA3ygtoONIya18QOK64
- us=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:O0uWNkUBrrc=;Qiy9BRVIALMygfDHfob9y0SqYlk
- G/DKrtb1p4ldlSdv0xeRmcfoNGV2EydRX3gogYz56o0UEsUeOo9y8m0ZrpH9Y91JmhgK3Of2y
- ePztGd7rQTUW9Si/Y++NIUF6KoizsNZfEGeqXo9NueGrWZppk9GuZ/IoJTNlxIYz1eS/2yrGS
- UE5HJjLEurjbzeNSC4fJSObpzUm55tG8uAuvDBoK+EVxEfLe3FWsh/TUaZcI56Mq3TFChFY/L
- AlFiToOPSyj6TkqveWVvUGX27B7PIOnSIEp0m16qReppie9lLftIPVEXto1iT8ftb2+RIrcY0
- vEkZOxIqfJv7UG4h1gRFktdf7jy5aj5xdV3qIZM+OiIpQZFmK13rCS6stE/ZchcwnvpCR+ju9
- SM90YyUX21rOn0E22oQyxIqa7X7Npb5/OfXg6j+4nN6RAn0vM7zuphbDb31a+JThnqLi1L27T
- obiTS/lcTUr7b+/2A7gNiG5uAnT30Ubqv0e6a4Hrpvkw1O2hNMhHm5DCJ9Nspj/CRY5HyHZGF
- 25ayX8ldx+jMdK99L6ZIAijCcz5QBVx7PUBmEv3B6Bs7uBTa2cL9qc11gal7lgpP1GNY4N1qr
- 5QCJkUbNwfe/xADpUrj/9i9JQrC2RR1tM12odX646CHUxMD21kXNtG16u5TKPvIZXi2JFO5LD
- Gx1JmLlwbGDhpLq1GAu07nuwMpMjpiPYd9tN/I8pkOUFHT9kK4h4oBG05Q8E0RyJIJnQrRftE
- x1IZdPf7BcSVVVOIDF0Mm6Xo87epUHk5hHSwllxd8NA7f+oMSk7W0Ae0kt+TXlOGqPNOYb68J
- auENW/iW3/Fv0YtNQfK9QLoAQSc8pwfdqgLzWlr+d/yhOjfZX/gN++nRR73Hx/3xDow8JwMB/
- DtLMKCEcX5jIuWBeqOXfGncS1lW8+UEYkNCs=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241203-55c76715e16422ddaf8d7edf@orel>
 
-Like other Asus Vivobook models the X1504VAP has its keybopard IRQ (1)
-described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
-which breaks the keyboard.
+On Tue, Dec 03, 2024 at 01:55:07PM +0100, Andrew Jones wrote:
+> On Tue, Dec 03, 2024 at 05:30:05PM +0800, Celeste Liu wrote:
+> > From: Charlie Jenkins <charlie@rivosinc.com>
+> > 
+> > This test checks that orig_a0 allows a syscall argument to be modified,
+> > and that changing a0 does not change the syscall argument.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> > Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> > Co-developed-by: Celeste Liu <uwu@coelacanthus.name>
+> > Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+> > Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+> > ---
+> >  tools/testing/selftests/riscv/abi/.gitignore |   1 +
+> >  tools/testing/selftests/riscv/abi/Makefile   |   5 +-
+> >  tools/testing/selftests/riscv/abi/ptrace.c   | 134 +++++++++++++++++++++++++++
+> >  3 files changed, 139 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/testing/selftests/riscv/abi/.gitignore b/tools/testing/selftests/riscv/abi/.gitignore
+> > index b38358f91c4d2240ae64892871d9ca98bda1ae58..378c605919a3b3d58eec2701eb7af430cfe315d6 100644
+> > --- a/tools/testing/selftests/riscv/abi/.gitignore
+> > +++ b/tools/testing/selftests/riscv/abi/.gitignore
+> > @@ -1 +1,2 @@
+> >  pointer_masking
+> > +ptrace
+> > diff --git a/tools/testing/selftests/riscv/abi/Makefile b/tools/testing/selftests/riscv/abi/Makefile
+> > index ed82ff9c664e7eb3f760cbab81fb957ff72579c5..3f74d059dfdcbce4d45d8ff618781ccea1419061 100644
+> > --- a/tools/testing/selftests/riscv/abi/Makefile
+> > +++ b/tools/testing/selftests/riscv/abi/Makefile
+> > @@ -2,9 +2,12 @@
+> >  
+> >  CFLAGS += -I$(top_srcdir)/tools/include
+> >  
+> > -TEST_GEN_PROGS := pointer_masking
+> > +TEST_GEN_PROGS := pointer_masking ptrace
+> >  
+> >  include ../../lib.mk
+> >  
+> >  $(OUTPUT)/pointer_masking: pointer_masking.c
+> >  	$(CC) -static -o$@ $(CFLAGS) $(LDFLAGS) $^
+> > +
+> > +$(OUTPUT)/ptrace: ptrace.c
+> > +	$(CC) -static -o$@ $(CFLAGS) $(LDFLAGS) $^
+> > diff --git a/tools/testing/selftests/riscv/abi/ptrace.c b/tools/testing/selftests/riscv/abi/ptrace.c
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..d192764b428d1f1c442f3957c6fedeb01a48d556
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/riscv/abi/ptrace.c
+> > @@ -0,0 +1,134 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <string.h>
+> > +#include <unistd.h>
+> > +#include <fcntl.h>
+> > +#include <signal.h>
+> > +#include <errno.h>
+> > +#include <sys/types.h>
+> > +#include <sys/ptrace.h>
+> > +#include <sys/stat.h>
+> > +#include <sys/user.h>
+> > +#include <sys/wait.h>
+> > +#include <sys/uio.h>
+> > +#include <linux/elf.h>
+> > +#include <linux/unistd.h>
+> > +#include <asm/ptrace.h>
+> > +
+> > +#include "../../kselftest_harness.h"
+> > +
+> > +#define ORIG_A0_MODIFY      0x01
+> > +#define A0_MODIFY           0x02
+> > +#define A0_OLD              0x03
+> > +#define A0_NEW              0x04
+> 
+> Shouldn't A0_OLD and A0_NEW set more bits, since 3 and 4 aren't very
+> unique (we could have those values by accident)? And should we include
+> setting bits over 31 for 64-bit targets?
+> 
+> > +
+> > +#define perr_and_exit(fmt, ...)						\
+> > +	({								\
+> > +		char buf[256];						\
+> > +		snprintf(buf, sizeof(buf), "%s:%d:" fmt ": %m\n",	\
+> > +			__func__, __LINE__, ##__VA_ARGS__);		\
+> > +		perror(buf);						\
+> > +		exit(-1);						\
+> > +	})
+> 
+> Can we use e.g. ksft_exit_fail_perror() instead? I'd prefer we try to
+> consolidate testing/selftests/riscv/* tests on a common format for
+> errors and exit codes and we're already using other kselftest stuff.
+> 
+> > +
+> > +static inline void resume_and_wait_tracee(pid_t pid, int flag)
+> > +{
+> > +	int status;
+> > +
+> > +	if (ptrace(flag, pid, 0, 0))
+> > +		perr_and_exit("failed to resume the tracee %d\n", pid);
+> > +
+> > +	if (waitpid(pid, &status, 0) != pid)
+> > +		perr_and_exit("failed to wait for the tracee %d\n", pid);
+> > +}
+> > +
+> > +static void ptrace_test(int opt, int *result)
+> > +{
+> > +	int status;
+> > +	pid_t pid;
+> > +	struct user_regs_struct regs;
+> > +	struct iovec iov = {
+> > +		.iov_base = &regs,
+> > +		.iov_len = sizeof(regs),
+> > +	};
+> > +
+> > +	unsigned long orig_a0;
+> > +	struct iovec a0_iov = {
+> > +		.iov_base = &orig_a0,
+> > +		.iov_len = sizeof(orig_a0),
+> > +	};
+> > +
+> > +	pid = fork();
+> > +	if (pid == 0) {
+> > +		/* Mark oneself being traced */
+> > +		long val = ptrace(PTRACE_TRACEME, 0, 0, 0);
+> > +
+> > +		if (val)
+> > +			perr_and_exit("failed to request for tracer to trace me: %ld\n", val);
+> > +
+> > +		kill(getpid(), SIGSTOP);
+> > +
+> > +		/* Perform exit syscall that will be intercepted */
+> > +		exit(A0_OLD);
+> > +	}
+> > +
+> > +	if (pid < 0)
+> > +		exit(1);
+> 
+> This unexpected error condition deserves a message, so I'd use
+> ksft_exit_fail_perror() here.
+> 
+> > +
+> > +	if (waitpid(pid, &status, 0) != pid)
+> > +		perr_and_exit("failed to wait for the tracee %d\n", pid);
+> > +
+> > +	/* Stop at the entry point of the syscall */
+> > +	resume_and_wait_tracee(pid, PTRACE_SYSCALL);
+> > +
+> > +	/* Check tracee regs before the syscall */
+> > +	if (ptrace(PTRACE_GETREGSET, pid, NT_PRSTATUS, &iov))
+> > +		perr_and_exit("failed to get tracee registers\n");
+> > +	if (ptrace(PTRACE_GETREGSET, pid, NT_RISCV_ORIG_A0, &a0_iov))
+> > +		perr_and_exit("failed to get tracee registers\n");
+> > +	if (orig_a0 != A0_OLD)
+> > +		perr_and_exit("unexpected orig_a0: 0x%lx\n", orig_a0);
+> > +
+> > +	/* Modify a0/orig_a0 for the syscall */
+> > +	switch (opt) {
+> > +	case A0_MODIFY:
+> > +		regs.a0 = A0_NEW;
+> > +		break;
+> > +	case ORIG_A0_MODIFY:
+> > +		orig_a0 = A0_NEW;
+> > +		break;
+> > +	}
+> > +
+> > +	if (ptrace(PTRACE_SETREGSET, pid, NT_RISCV_ORIG_A0, &a0_iov))
+> > +		perr_and_exit("failed to set tracee registers\n");
+> > +
+> > +	/* Resume the tracee */
+> > +	ptrace(PTRACE_CONT, pid, 0, 0);
+> > +	if (waitpid(pid, &status, 0) != pid)
+> > +		perr_and_exit("failed to wait for the tracee\n");
+> > +
+> > +	*result = WEXITSTATUS(status);
+> > +}
+> > +
+> > +TEST(ptrace_modify_a0)
+> > +{
+> > +	int result;
+> > +
+> > +	ptrace_test(A0_MODIFY, &result);
+> > +
+> > +	/* The modification of a0 cannot affect the first argument of the syscall */
+> > +	EXPECT_EQ(A0_OLD, result);
+> 
+> What about checking that we actually set regs.a0 to A0_NEW? We'd need
+> A0_NEW to be more unique than 4, though.
+> 
+> > +}
+> > +
+> > +TEST(ptrace_modify_orig_a0)
+> > +{
+> > +	int result;
+> > +
+> > +	ptrace_test(ORIG_A0_MODIFY, &result);
+> > +
+> > +	/* Only modify orig_a0 to change the first argument of the syscall */
+> 
+> If we run ptrace_modify_a0 first then we've already set regs.a0 to A0_NEW
+> and can't check with this test that we don't set it to A0_NEW. We should
+> probably have two different test values, one for regs.a0 and one for
+> orig_a0 and ensure on both tests that we aren't writing both.
+> 
 
-Add the X1504VAP to the irq1_level_low_skip_override[] quirk table to fix
-this.
-Thank You.
+Celeste, do you want to fix this up or are you waiting for me to?
 
+- Charlie
+
+> > +	EXPECT_EQ(A0_NEW, result);
+> > +}
+> > +
+> > +TEST_HARNESS_MAIN
+> > 
+> > -- 
+> > 2.47.0
+> >
+> 
+> Thanks,
+> drew
 
