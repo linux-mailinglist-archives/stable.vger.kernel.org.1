@@ -1,152 +1,241 @@
-Return-Path: <stable+bounces-105309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2549F7E3F
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 16:40:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2EF9F7E52
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 16:46:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D2E2188BA7F
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 15:40:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E68163BC2
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 15:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B1F13A41F;
-	Thu, 19 Dec 2024 15:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7403C225770;
+	Thu, 19 Dec 2024 15:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RihPjXsC"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mFlmKKQt";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="NiPd19En";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mFlmKKQt";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="NiPd19En"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1988C2AD16;
-	Thu, 19 Dec 2024 15:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7D33D3B8;
+	Thu, 19 Dec 2024 15:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734622824; cv=none; b=qhkHxazqhtllYBKwxKaFJgbiDKV+URMCMd5INLylzO+u/NCFFd3TuaCpNHHGom43k7QhCtAg6RMFzeP2rbQd5uetw4XqkOYuXtCHt37EbrkliPfHMA3yD/JfZOrNh9ZtOwsrQ+N+ZonkQuPFTAOZX5dql/tKmOrGyD8/b+HbSfQ=
+	t=1734623203; cv=none; b=lDTvGpdHWoPza1MadntfUdUjnnefzAklioOF+wyRXIeFYQv0V+FJJlOcG0Sc7JFXYEO3ZJSJkozsidW2gByW8eCqlThPB1aSLkEGN8PYKponDa5jRqHV+eDhVMoj6yHpMfzheuin86psst6K+9D4TGGw55lEzwe0292r+mvzX88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734622824; c=relaxed/simple;
-	bh=hiyLSIy0R+lLjGHumh91w/ETdsFIyMu5MGQ0JGWj1+A=;
+	s=arc-20240116; t=1734623203; c=relaxed/simple;
+	bh=0PWKfo11mb5vs+kRP1HxuTgxz7C5o804QfSQ2iaWR+s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I+zwHiZGZQkOYoXEbTvIZr91106nYe//1+1tpMH0uGGK41MX5IgDCS4e1SAxAEiDkJFOB4pP2OELW9pvljaxOt2LTnw1/j029r6VRK4TQQhX4/IRYPP1pV4tBi3C1xXf5r21OxNOw5PnbpYn4ABxDxTzUtZjzNBZs+ID3HryAtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RihPjXsC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3070FC4CECE;
-	Thu, 19 Dec 2024 15:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734622823;
-	bh=hiyLSIy0R+lLjGHumh91w/ETdsFIyMu5MGQ0JGWj1+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RihPjXsCwGBJ6jahQSq44EeOy1cyJOLtMBltr0ZxIVdXj9VgFXcQBAYy+17rNhdwP
-	 glS5mwu6IMXUksc0eFvbbzgkm8o6JFoZJPY1QGGpQDyn9vVYqYyE+BdgV/2r5FYpu9
-	 /pz9XM4EpWn6dEDf01pTq3GrdeHN0n2XDfBTs/WU=
-Date: Thu, 19 Dec 2024 16:40:20 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?Q?J=FCrgen_Gro=DF?= <jgross@suse.com>
-Cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Andrew Cooper <andrew.cooper3@citrix.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: Re: [PATCH 6.12 168/172] x86/static-call: provide a way to do very
- early static-call updates
-Message-ID: <2024121906-chubby-bobcat-132f@gregkh>
-References: <20241217170546.209657098@linuxfoundation.org>
- <20241217170553.299136607@linuxfoundation.org>
- <bf593d44-c59e-4158-b2c6-112372ab45d1@kernel.org>
- <aec47f97-c59b-403a-bf2a-d8551e2ec6f9@suse.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FW48EeIrUttQDrVAZgEaH+olq7yo+OxxpA+Rtu2t2paOv4uP1MlfjQf1FMeUbaPODX4HpMaUrT3tOAZ0KZsoh2I4AuAEKtW4N2EcrQ1vrMmF7EefQAkX7bpFah7XzjFguKKFPi3qOXj0HHGn7EvV8FKq2iPnE3pAdFj2gpz8hdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mFlmKKQt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=NiPd19En; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mFlmKKQt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=NiPd19En; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 37C681F396;
+	Thu, 19 Dec 2024 15:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1734623199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=udT7UZql6pDsfzcNT3uRscRGefgaW0sCcaRIh9dAU60=;
+	b=mFlmKKQt8Ain4oZHtsHmuoUMx3r818KpUIqj8N0hGzPdH9j3kGyEhfmpGtejzxncID50LW
+	Zhp2WUT8GGokukINhqwvtBG7mjgNjuusCfDCpTA9nbak29UHvFKkJ9luWc5DVrW7AcIfub
+	5+ztrMuEWMxhtMYY46o42mrNQpk3zfE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1734623199;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=udT7UZql6pDsfzcNT3uRscRGefgaW0sCcaRIh9dAU60=;
+	b=NiPd19EnfYlTdz0iG1X/Mvc9ASFZzpS4XLlwcYc0N0t/3COWxayaOXKszFX+rBPNZYMbzs
+	9ZhrYOzRFDwj4wDA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1734623199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=udT7UZql6pDsfzcNT3uRscRGefgaW0sCcaRIh9dAU60=;
+	b=mFlmKKQt8Ain4oZHtsHmuoUMx3r818KpUIqj8N0hGzPdH9j3kGyEhfmpGtejzxncID50LW
+	Zhp2WUT8GGokukINhqwvtBG7mjgNjuusCfDCpTA9nbak29UHvFKkJ9luWc5DVrW7AcIfub
+	5+ztrMuEWMxhtMYY46o42mrNQpk3zfE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1734623199;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=udT7UZql6pDsfzcNT3uRscRGefgaW0sCcaRIh9dAU60=;
+	b=NiPd19EnfYlTdz0iG1X/Mvc9ASFZzpS4XLlwcYc0N0t/3COWxayaOXKszFX+rBPNZYMbzs
+	9ZhrYOzRFDwj4wDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0ED8713ADA;
+	Thu, 19 Dec 2024 15:46:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CsyWA98/ZGeyQAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 19 Dec 2024 15:46:39 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 7D3FAA0904; Thu, 19 Dec 2024 16:46:34 +0100 (CET)
+Date: Thu, 19 Dec 2024 16:46:34 +0100
+From: Jan Kara <jack@suse.cz>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dmitry Safonov <dima@arista.com>, linux-fsdevel@vger.kernel.org,
+	linux-unionfs@vger.kernel.org,
+	syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs: relax assertions on failure to encode file handles
+Message-ID: <20241219154634.5z44m6erx3lxeq67@quack3>
+References: <20241219115301.465396-1-amir73il@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aec47f97-c59b-403a-bf2a-d8551e2ec6f9@suse.com>
+In-Reply-To: <20241219115301.465396-1-amir73il@gmail.com>
+X-Spam-Score: -2.30
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_LAST(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,qq.com];
+	FREEMAIL_CC(0.00)[kernel.org,suse.cz,szeredi.hu,qq.com,arista.com,vger.kernel.org,syzkaller.appspotmail.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[ec07f6f5ce62b858579f];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Wed, Dec 18, 2024 at 09:53:24AM +0100, Jürgen Groß wrote:
-> On 18.12.24 09:37, Jiri Slaby wrote:
-> > On 17. 12. 24, 18:08, Greg Kroah-Hartman wrote:
-> > > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Juergen Gross <jgross@suse.com>
-> > > 
-> > > commit 0ef8047b737d7480a5d4c46d956e97c190f13050 upstream.
-> > > 
-> > > Add static_call_update_early() for updating static-call targets in
-> > > very early boot.
-> > > 
-> > > This will be needed for support of Xen guest type specific hypercall
-> > > functions.
-> > > 
-> > > This is part of XSA-466 / CVE-2024-53241.
-> > > 
-> > > Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-> > > Signed-off-by: Juergen Gross <jgross@suse.com>
-> > > Co-developed-by: Peter Zijlstra <peterz@infradead.org>
-> > > Co-developed-by: Josh Poimboeuf <jpoimboe@redhat.com>
-> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > ---
-> > >   arch/x86/include/asm/static_call.h |   15 +++++++++++++++
-> > >   arch/x86/include/asm/sync_core.h   |    6 +++---
-> > >   arch/x86/kernel/static_call.c      |    9 +++++++++
-> > >   include/linux/compiler.h           |   37 ++++++++++++++++++++++++++-----------
-> > >   include/linux/static_call.h        |    1 +
-> > >   kernel/static_call_inline.c        |    2 +-
-> > >   6 files changed, 55 insertions(+), 15 deletions(-)
-> > > 
-> > > --- a/arch/x86/include/asm/static_call.h
-> > > +++ b/arch/x86/include/asm/static_call.h
-> > > @@ -65,4 +65,19 @@
-> > >   extern bool __static_call_fixup(void *tramp, u8 op, void *dest);
-> > > +extern void __static_call_update_early(void *tramp, void *func);
-> > > +
-> > > +#define static_call_update_early(name, _func)                \
-> > > +({                                    \
-> > > +    typeof(&STATIC_CALL_TRAMP(name)) __F = (_func);            \
-> > > +    if (static_call_initialized) {                    \
-> > > +        __static_call_update(&STATIC_CALL_KEY(name),        \
-> > > +                     STATIC_CALL_TRAMP_ADDR(name), __F);\
-> > > +    } else {                            \
-> > > +        WRITE_ONCE(STATIC_CALL_KEY(name).func, _func);        \
-> > > +        __static_call_update_early(STATIC_CALL_TRAMP_ADDR(name),\
-> > > +                       __F);            \
-> > > +    }                                \
-> > > +})
-> > ...
-> > > --- a/kernel/static_call_inline.c
-> > > +++ b/kernel/static_call_inline.c
-> > > @@ -15,7 +15,7 @@ extern struct static_call_site __start_s
-> > >   extern struct static_call_tramp_key __start_static_call_tramp_key[],
-> > >                       __stop_static_call_tramp_key[];
-> > > -static int static_call_initialized;
-> > > +int static_call_initialized;
-> > 
-> > This breaks the build on i386:
-> > > ld: arch/x86/xen/enlighten.o: in function `__xen_hypercall_setfunc':
-> > > enlighten.c:(.noinstr.text+0x2a): undefined reference to
-> > > `static_call_initialized'
-> > > ld: enlighten.c:(.noinstr.text+0x62): undefined reference to
-> > > `static_call_initialized'
-> > > ld: arch/x86/kernel/static_call.o: in function `__static_call_update_early':
-> > > static_call.c:(.noinstr.text+0x15): undefined reference to
-> > > `static_call_initialized'
-> > 
-> > kernel/static_call_inline.c containing this `static_call_initialized` is
-> > not built there as:
-> > HAVE_STATIC_CALL_INLINE=n
-> >   -> HAVE_OBJTOOL=n
-> >      -> X86_64=n
-> > 
-> > This is broken in upstream too.
+On Thu 19-12-24 12:53:01, Amir Goldstein wrote:
+> Encoding file handles is usually performed by a filesystem >encode_fh()
+> method that may fail for various reasons.
 > 
-> I've sent a fix already:
+> The legacy users of exportfs_encode_fh(), namely, nfsd and
+> name_to_handle_at(2) syscall are ready to cope with the possibility
+> of failure to encode a file handle.
 > 
-> https://lore.kernel.org/lkml/20241218080228.9742-1-jgross@suse.com/T/#u
+> There are a few other users of exportfs_encode_{fh,fid}() that
+> currently have a WARN_ON() assertion when ->encode_fh() fails.
+> Relax those assertions because they are wrong.
+> 
+> The second linked bug report states commit 16aac5ad1fa9 ("ovl: support
+> encoding non-decodable file handles") in v6.6 as the regressing commit,
+> but this is not accurate.
+> 
+> The aforementioned commit only increases the chances of the assertion
+> and allows triggering the assertion with the reproducer using overlayfs,
+> inotify and drop_caches.
+> 
+> Triggering this assertion was always possible with other filesystems and
+> other reasons of ->encode_fh() failures and more particularly, it was
+> also possible with the exact same reproducer using overlayfs that is
+> mounted with options index=on,nfs_export=on also on kernels < v6.6.
+> Therefore, I am not listing the aforementioned commit as a Fixes commit.
+> 
+> Backport hint: this patch will have a trivial conflict applying to
+> v6.6.y, and other trivial conflicts applying to stable kernels < v6.6.
+> 
+> Reported-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
+> Tested-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/linux-unionfs/671fd40c.050a0220.4735a.024f.GAE@google.com/
+> Reported-by: Dmitry Safonov <dima@arista.com>
+> Closes: https://lore.kernel.org/linux-fsdevel/CAGrbwDTLt6drB9eaUagnQVgdPBmhLfqqxAf3F+Juqy_o6oP8uw@mail.gmail.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 
-Thanks, I'll go queue that up (after fixing it up for the different
-branches...)
+Yeah, looks sensible. Feel free to add:
 
-greg k-h
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+> 
+> Christian,
+> 
+> I could have sumbitted two independant patches to relax the assertion
+> in fsnotify and overlayfs via fsnotify and overlayfs trees, but the
+> nature of the problem is the same and in both cases, the problem became
+> worse with the introduction of non-decodable file handles support,
+> so decided to fix them together and ask you to take the fix via the
+> vfs tree.
+> 
+> Please let you if you think it should be done differently.
+> 
+> Thanks,
+> Amir.
+> 
+>  fs/notify/fdinfo.c     | 4 +---
+>  fs/overlayfs/copy_up.c | 5 ++---
+>  2 files changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/notify/fdinfo.c b/fs/notify/fdinfo.c
+> index dec553034027e..e933f9c65d904 100644
+> --- a/fs/notify/fdinfo.c
+> +++ b/fs/notify/fdinfo.c
+> @@ -47,10 +47,8 @@ static void show_mark_fhandle(struct seq_file *m, struct inode *inode)
+>  	size = f->handle_bytes >> 2;
+>  
+>  	ret = exportfs_encode_fid(inode, (struct fid *)f->f_handle, &size);
+> -	if ((ret == FILEID_INVALID) || (ret < 0)) {
+> -		WARN_ONCE(1, "Can't encode file handler for inotify: %d\n", ret);
+> +	if ((ret == FILEID_INVALID) || (ret < 0))
+>  		return;
+> -	}
+>  
+>  	f->handle_type = ret;
+>  	f->handle_bytes = size * sizeof(u32);
+> diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+> index 3601ddfeddc2e..56eee9f23ea9a 100644
+> --- a/fs/overlayfs/copy_up.c
+> +++ b/fs/overlayfs/copy_up.c
+> @@ -442,9 +442,8 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
+>  	buflen = (dwords << 2);
+>  
+>  	err = -EIO;
+> -	if (WARN_ON(fh_type < 0) ||
+> -	    WARN_ON(buflen > MAX_HANDLE_SZ) ||
+> -	    WARN_ON(fh_type == FILEID_INVALID))
+> +	if (fh_type < 0 || fh_type == FILEID_INVALID ||
+> +	    WARN_ON(buflen > MAX_HANDLE_SZ))
+>  		goto out_err;
+>  
+>  	fh->fb.version = OVL_FH_VERSION;
+> -- 
+> 2.34.1
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
