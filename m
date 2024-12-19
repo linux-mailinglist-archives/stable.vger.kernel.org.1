@@ -1,55 +1,70 @@
-Return-Path: <stable+bounces-105358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C1E9F8459
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 20:32:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5B29F84B6
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 20:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E6F71893DA7
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:32:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE6981687A6
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0601BAEF8;
-	Thu, 19 Dec 2024 19:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD6D1C07C2;
+	Thu, 19 Dec 2024 19:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3O1EgcS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGFpgnCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990EB1B982E;
-	Thu, 19 Dec 2024 19:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C68A1ACECE;
+	Thu, 19 Dec 2024 19:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734636751; cv=none; b=UlVnzijSvQsGUJkBClGSQ8RN87K59EQAkA/vJ1/42xCmaCjsnEkMx3lVAroCOoXIbRb75cHFRuWp6rSWev3yx/LitRILjo8FajxtYc+MGRNqsMa1aOJWlZzBE2r5Pm/YNBp9KyV+BxVZg38GxNWda6i17zUYl5XuVKIDpaT4lK8=
+	t=1734637657; cv=none; b=kMkFvmGzIS9KUqOfHctTFkmGMo+GgkI0eqPxulHFni0VG/P0ljylkWMxHuAWYz9CZR3a2JNczF/dqreYHoXW9JKKf2jSbItDhZZMDpxfUHkgT233kK4BLW/cpLrcBAV0fDh/bA+D4Sozfe6yhTDVd5LaZKGEyFevAzM2Zkn4iEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734636751; c=relaxed/simple;
-	bh=rf4qOXHkAr+hLIvcjmLoSb+1dnXFRYW2ZAjWiVna1vw=;
-	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DquIqsSmxkiVphlzimXRb5BDNiBmfS7YCYpjwarqGXyxw8vL/aBf9cJSsyDXZkBVIRv9+mHDjuS3MlMPobCXpZ6CFCJKHBTUHBJG4V3pA3SuEmNrzSWiBF9EOoieZR0pkqNmBeZA+zzdDVNP5mlszGub0To17ZfJObufcTGvcnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3O1EgcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F6FC4CED4;
-	Thu, 19 Dec 2024 19:32:31 +0000 (UTC)
+	s=arc-20240116; t=1734637657; c=relaxed/simple;
+	bh=n6fXX5iTrXVlOQZyCTM9uWLSoLQaF9F51R34lpyH96Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oePasAhxTZU17XXaZXLVifeuj3tX8GDmZRJ+I6EfV6OXdhrJu2ME7ApZKnCXBu8v+Nw7FXkFjbnxC0sRxha2yQZPpiJOAHtQc+QGcOgZHr9woGiLniTqKw1rf062g0stE2f+JwMamUPzJvSbHpGxTAbYd2QDvwygHkRkh5lIko4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGFpgnCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D3AC4CED0;
+	Thu, 19 Dec 2024 19:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734636751;
-	bh=rf4qOXHkAr+hLIvcjmLoSb+1dnXFRYW2ZAjWiVna1vw=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=d3O1EgcSy0/39j3Pv6maOht5DY5qfzj59dYYN9a+YSgsC1AKho9ZW2Vgon57chnjl
-	 cm2FRM8qExc8BzHdX7eya3y8k852B4mCGs2UiJ2A7stW8LS1WUcdbN50pM8ZQoZTZk
-	 czeFiWqWiUrsGNAX7QM2LEnV8VNbvRU3fyr1OoGXXRVxWD9+2Pjvk2Y1ce2sgLeBbH
-	 jO0r2rRVvnQrpUEvePIe6+V+McYbGQh3GPnPyQhY72pKSixCp12erAGOAMEORYWFmw
-	 ih7Y5ar9yjz2MEXMCxxkpEdh/GpZFZDYYvXAk2kit7ZhLiEp36+Axu32Ti3kITQxBO
-	 cmeLUVtsuqhWw==
-Date: Thu, 19 Dec 2024 11:32:31 -0800
-Subject: [PATCH 35/37] xfs: don't shut down the filesystem for media failures
- beyond end of log
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: djwong@kernel.org
-Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org, hch@lst.de
-Message-ID: <173463580360.1571512.2097717624016935698.stgit@frogsfrogsfrogs>
-In-Reply-To: <173463579653.1571512.7862891421559358642.stgit@frogsfrogsfrogs>
-References: <173463579653.1571512.7862891421559358642.stgit@frogsfrogsfrogs>
+	s=k20201202; t=1734637657;
+	bh=n6fXX5iTrXVlOQZyCTM9uWLSoLQaF9F51R34lpyH96Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IGFpgnCPFV7xeFXDkuH5D9jtMK39U2xQ1OoO/jq379E59s0SlR8UymO3id8whAqVH
+	 Fu+e48vSHmm2lCQkSHrEMRpMIGgubREiyVja0/AuBvlsAe4UZRnKtXeFwI0T1JGZPf
+	 8QaHNtKYwdkbVG541n76EQK9iioqPxS/boTgEv0gDNNtOX8cuuyodTrIJGDhJ/F99g
+	 ZZWW31sS8J9RDdBIhXODoie6Wx9ZvHOLei+Owc2N18hteqlA96GK18XlbskH9K8T0h
+	 HBZ0tDWwwtf7qDIE0CH21/HQ3euzIMDCFZFEnIWmfdnE6JlKGfvZ1KSmgJ7j335fnl
+	 t8n+A9U0R4Q7Q==
+From: Will Deacon <will@kernel.org>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	robin.murphy@arm.com,
+	joro@8bytes.org,
+	thierry.reding@gmail.com,
+	vdumpa@nvidia.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org,
+	ikalinowski@nvidia.com,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH] iommu/tegra241-cmdqv: Read SMMU IDR1.CMDQS instead of hardcoding
+Date: Thu, 19 Dec 2024 19:47:11 +0000
+Message-Id: <173462305169.3912600.1369814969067145717.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20241219051421.1850267-1-nicolinc@nvidia.com>
+References: <20241219051421.1850267-1-nicolinc@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,175 +72,33 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-From: Darrick J. Wong <djwong@kernel.org>
+On Wed, 18 Dec 2024 21:14:21 -0800, Nicolin Chen wrote:
+> The hardware limitation "max=19" actually comes from SMMU Command Queue.
+> So, it'd be more natural for tegra241-cmdqv driver to read it out rather
+> than hardcoding it itself.
+> 
+> This is not an issue yet for a kernel on a baremetal system, but a guest
+> kernel setting the queue base/size in form of IPA/gPA might result in a
+> noncontiguous queue in the physical address space, if underlying physical
+> pages backing up the guest RAM aren't contiguous entirely: e.g. 2MB-page
+> backed guest RAM cannot guarantee a contiguous queue if it is 8MB (capped
+> to VCMDQ_LOG2SIZE_MAX=19). This might lead to command errors when HW does
+> linear-read from a noncontiguous queue memory.
+> 
+> [...]
 
-If the filesystem has an external log device on pmem and the pmem
-reports a media error beyond the end of the log area, don't shut down
-the filesystem because we don't use that space.
+Applied to will (for-joerg/arm-smmu/updates), thanks!
 
-Cc: <stable@vger.kernel.org> # v6.0
-Fixes: 6f643c57d57c56 ("xfs: implement ->notify_failure() for XFS")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
----
- fs/xfs/xfs_notify_failure.c |  121 +++++++++++++++++++++++++++++--------------
- 1 file changed, 82 insertions(+), 39 deletions(-)
+[1/1] iommu/tegra241-cmdqv: Read SMMU IDR1.CMDQS instead of hardcoding
+      https://git.kernel.org/will/c/e94dc6ddda8d
 
+Cheers,
+-- 
+Will
 
-diff --git a/fs/xfs/xfs_notify_failure.c b/fs/xfs/xfs_notify_failure.c
-index fa50e5308292d3..0b0b0f31aca274 100644
---- a/fs/xfs/xfs_notify_failure.c
-+++ b/fs/xfs/xfs_notify_failure.c
-@@ -153,6 +153,79 @@ xfs_dax_notify_failure_thaw(
- 	thaw_super(sb, FREEZE_HOLDER_USERSPACE);
- }
- 
-+static int
-+xfs_dax_translate_range(
-+	struct xfs_buftarg	*btp,
-+	u64			offset,
-+	u64			len,
-+	xfs_daddr_t		*daddr,
-+	uint64_t		*bblen)
-+{
-+	u64			dev_start = btp->bt_dax_part_off;
-+	u64			dev_len = bdev_nr_bytes(btp->bt_bdev);
-+	u64			dev_end = dev_start + dev_len - 1;
-+
-+	/* Notify failure on the whole device. */
-+	if (offset == 0 && len == U64_MAX) {
-+		offset = dev_start;
-+		len = dev_len;
-+	}
-+
-+	/* Ignore the range out of filesystem area */
-+	if (offset + len - 1 < dev_start)
-+		return -ENXIO;
-+	if (offset > dev_end)
-+		return -ENXIO;
-+
-+	/* Calculate the real range when it touches the boundary */
-+	if (offset > dev_start)
-+		offset -= dev_start;
-+	else {
-+		len -= dev_start - offset;
-+		offset = 0;
-+	}
-+	if (offset + len - 1 > dev_end)
-+		len = dev_end - offset + 1;
-+
-+	*daddr = BTOBB(offset);
-+	*bblen = BTOBB(len);
-+	return 0;
-+}
-+
-+static int
-+xfs_dax_notify_logdev_failure(
-+	struct xfs_mount	*mp,
-+	u64			offset,
-+	u64			len,
-+	int			mf_flags)
-+{
-+	xfs_daddr_t		daddr;
-+	uint64_t		bblen;
-+	int			error;
-+
-+	/*
-+	 * Return ENXIO instead of shutting down the filesystem if the failed
-+	 * region is beyond the end of the log.
-+	 */
-+	error = xfs_dax_translate_range(mp->m_logdev_targp,
-+			offset, len, &daddr, &bblen);
-+	if (error)
-+		return error;
-+
-+	/*
-+	 * In the pre-remove case the failure notification is attempting to
-+	 * trigger a force unmount.  The expectation is that the device is
-+	 * still present, but its removal is in progress and can not be
-+	 * cancelled, proceed with accessing the log device.
-+	 */
-+	if (mf_flags & MF_MEM_PRE_REMOVE)
-+		return 0;
-+
-+	xfs_err(mp, "ondisk log corrupt, shutting down fs!");
-+	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_ONDISK);
-+	return -EFSCORRUPTED;
-+}
-+
- static int
- xfs_dax_notify_ddev_failure(
- 	struct xfs_mount	*mp,
-@@ -263,8 +336,9 @@ xfs_dax_notify_failure(
- 	int			mf_flags)
- {
- 	struct xfs_mount	*mp = dax_holder(dax_dev);
--	u64			ddev_start;
--	u64			ddev_end;
-+	xfs_daddr_t		daddr;
-+	uint64_t		bblen;
-+	int			error;
- 
- 	if (!(mp->m_super->s_flags & SB_BORN)) {
- 		xfs_warn(mp, "filesystem is not ready for notify_failure()!");
-@@ -279,17 +353,7 @@ xfs_dax_notify_failure(
- 
- 	if (mp->m_logdev_targp && mp->m_logdev_targp->bt_daxdev == dax_dev &&
- 	    mp->m_logdev_targp != mp->m_ddev_targp) {
--		/*
--		 * In the pre-remove case the failure notification is attempting
--		 * to trigger a force unmount.  The expectation is that the
--		 * device is still present, but its removal is in progress and
--		 * can not be cancelled, proceed with accessing the log device.
--		 */
--		if (mf_flags & MF_MEM_PRE_REMOVE)
--			return 0;
--		xfs_err(mp, "ondisk log corrupt, shutting down fs!");
--		xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_ONDISK);
--		return -EFSCORRUPTED;
-+		return xfs_dax_notify_logdev_failure(mp, offset, len, mf_flags);
- 	}
- 
- 	if (!xfs_has_rmapbt(mp)) {
-@@ -297,33 +361,12 @@ xfs_dax_notify_failure(
- 		return -EOPNOTSUPP;
- 	}
- 
--	ddev_start = mp->m_ddev_targp->bt_dax_part_off;
--	ddev_end = ddev_start + bdev_nr_bytes(mp->m_ddev_targp->bt_bdev) - 1;
-+	error = xfs_dax_translate_range(mp->m_ddev_targp, offset, len, &daddr,
-+			&bblen);
-+	if (error)
-+		return error;
- 
--	/* Notify failure on the whole device. */
--	if (offset == 0 && len == U64_MAX) {
--		offset = ddev_start;
--		len = bdev_nr_bytes(mp->m_ddev_targp->bt_bdev);
--	}
--
--	/* Ignore the range out of filesystem area */
--	if (offset + len - 1 < ddev_start)
--		return -ENXIO;
--	if (offset > ddev_end)
--		return -ENXIO;
--
--	/* Calculate the real range when it touches the boundary */
--	if (offset > ddev_start)
--		offset -= ddev_start;
--	else {
--		len -= ddev_start - offset;
--		offset = 0;
--	}
--	if (offset + len - 1 > ddev_end)
--		len = ddev_end - offset + 1;
--
--	return xfs_dax_notify_ddev_failure(mp, BTOBB(offset), BTOBB(len),
--			mf_flags);
-+	return xfs_dax_notify_ddev_failure(mp, daddr, bblen, mf_flags);
- }
- 
- const struct dax_holder_operations xfs_dax_holder_operations = {
-
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
