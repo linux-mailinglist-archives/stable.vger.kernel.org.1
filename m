@@ -1,157 +1,159 @@
-Return-Path: <stable+bounces-105300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A9D9F7C1B
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 14:12:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCAA59F7C98
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 14:48:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A95F016660A
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 13:12:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1259316C2B9
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 13:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B76224887;
-	Thu, 19 Dec 2024 13:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D991224AF7;
+	Thu, 19 Dec 2024 13:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jcdX2DiG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="REjNZR6B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E101E511
-	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 13:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC32224894
+	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 13:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734613971; cv=none; b=ffN0UsNpVQoZf9TESfhrWX4U0J+fA3138p71DJG48OFrXKba9AyE/1VrqcVa3ki6Sq60QTz4QlrhioZjclgnliNH/mu6qCMlCsIYW6pxERMl//SbDP2Ta4+5Zs9Dpzi21K/1fe9jBIFDFKhk1zr1E+lLdSED8PIyum6vtt9Djpk=
+	t=1734616124; cv=none; b=MFmnxTXAi4EjFCwzNL+nIibaaINsMsSAdUkJP+n8Bzv9G3LhHPustTyKonXvOVhbZzTSPE26MnYA1e9aZsB5mSZBmgRCDcAgjMSSNTXvogOH6b3SWacRFTLmJbqG6K1Vudm6lI5o3IZO5nbMcvrT9RGU/mQ7miRJsnG4+23RPu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734613971; c=relaxed/simple;
-	bh=iK05DBAeu0Y3YAscJ8+7IXxgZrL60dLlnGJ2hM2DOTM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dj0GyncIZhlldZmtOAPFFfVj3mb7l1/0itVuC2T/taGFc+oMNp4KHeKoC+kYs4tG/k3oErAs7MES0+U5bbYVfE0SiGcfZqAlea4WbusiLkPadTu3fSI02/KcQwlHUdLzVRre9qyTsP4s3IltXAL5IVGlQWB+NJz8/gYA6Y90Qno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jcdX2DiG; arc=none smtp.client-ip=209.85.167.46
+	s=arc-20240116; t=1734616124; c=relaxed/simple;
+	bh=XO81+Jcc5NmcuuvImCT+riJpdk47c6EberFwhgQPnN0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O+wtw5NYOu3F4fsanZ7W+/IropM2Q6fE0sbgrxZGNPoaTCsK1NSzTe3XROintL2ioz37SVAmfqgmW2MLTkIrSMuxUANA7bJdEvwWqFtOS+bOkbhiqvXZrewiEANLcJwT0MI9vy5CRH50qkSyBfgoGansuoGv0Ja62JJt7TfXLVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=REjNZR6B; arc=none smtp.client-ip=209.85.128.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-540201cfedbso625012e87.3
-        for <stable@vger.kernel.org>; Thu, 19 Dec 2024 05:12:49 -0800 (PST)
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6ef4b6719d1so6746457b3.2
+        for <stable@vger.kernel.org>; Thu, 19 Dec 2024 05:48:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734613968; x=1735218768; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eY6Z0S57em9vHgQR4I6gVcXbF/PuYBYPSAnvDRTKdQM=;
-        b=jcdX2DiGHb/JUk4vFR5JtlKpynwrzBr3EnWyivB3S6678gOPuhi9ZnB2rX8nIf4/Fr
-         tSrtkcC2R72jlxDdbxji140pRees0/gJ7UaEdDonAe9lqhgJCVdiw8ZPwjnxezxmZMC6
-         CgVsGWjypJ8u2H/lGbPILXhArxF6eADyNVTYpXmNAbY8q5hd/BLcuNhlVHdzP8uxNHiz
-         0V+0wuxDyICLERIAaL0s9DxESOyB4wk3OXSIE6eHjQZF7CGgUPU15ozLe0Kh+t9ICldx
-         cw6wbImb9g9TF2VovZxYRVKcvN8YyDOxlsHznJamVnxjM8YA6HkEf094+dCid0MuUdDQ
-         WEAw==
+        d=linaro.org; s=google; t=1734616121; x=1735220921; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=In5HoeH7y9Mw3MBgtXCixaUYWromv5oJ1tBlMI+S7Q8=;
+        b=REjNZR6BGRCN2DgSdk0QfEuduSImCWkihNMRBtywBWw0e70c4Eu9aDUJoa6smjlXwl
+         jYZzloAdbI/oQOZsCcHamifcT5NCOCSnxdiwa2tcd97T9gXxmSNyQosX1qRxXVl6y+90
+         A9RXitzUlLTnSaZT+1N3GxXLFS54mERtWLwb2KxCzpM2+SeL2BAkaCRMs4TVe6vAnE3j
+         2A28PScdKwRgqJUIc/rl0NVzLKdHZnFnqO+SteJwoxPfXkX5SpD9bqH1LJupzevO65X2
+         mwlPi6bwdPd0sqRzcZAG9VkHVEcqJ6SACvdkXDmRLs72VudubIc/L6WNlHRKtUIsBBGP
+         KSNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734613968; x=1735218768;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eY6Z0S57em9vHgQR4I6gVcXbF/PuYBYPSAnvDRTKdQM=;
-        b=pycyaO1C9IS8Ic/xh2s344JdaXogeHtiLNz5a7FkmaNAxDK1Utl6zm4KIHsDmXnTxX
-         8ZqHKk5H3J7Lr3CqEB/0ftLOYF8K9CTbCsRtNzrkTiTNG+cZ4ztbTJQ1WJrS0gt3X57d
-         bW8sHPmqk5F1QN+8SwjjYuxGrt8Vrg1n+yChM7ekT1Go4wSZmLBxAlspcu5EYKtxhVn1
-         NOYAGXCXQx6A9DxYKEsds1mAswAQd5hrEyICY8WxGa01fWBfyydh/8KRNW5bpss1av1n
-         VULMGDYAyT5bJuPSrTEjGS12FT8q/eCz1k6Ld+l1qkIY0Qlou9CaOtwY0Kl/x9AXb8um
-         ihBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXquAWV8fD5E9qrxuU1hiwbAzktLsf4AnM1WbzVrefzxCuBnt70wWdNnaT21Itr/sI6Vxrlxqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjRT1rTyAftxOilrTtaMUbHEt3NdVLeykA56jhGo73ZpXLrMjx
-	eRtiqcOkllpg1Eq8kLubEBIHdcECefWmLja12oJ47teZPbUxFhNxeCnsw1l9sEA=
-X-Gm-Gg: ASbGncsWP3DBnPd1oy476ByPtYu7/B+O9aL86ZHzEhy6F6zI1+SoXyE8kD9bXMNlr1H
-	RD48Ui6k+u9bREpuXy33l+jExYD99ZQiBuyM79lOOyrsuaT/tPqXxNPzh1wpPkzRtF7kScpnS82
-	RCY4jTELoGakSqtkQekuCOfbh00epwKier7qAzohUulMHABfeN3SOe+M9cYdry8h72MU4Z9zQO5
-	OyiTw9tWnyx3VkUOcE46/pAwNZJYKqxrZh/0nohxk6vpT+rBGWSQ2luUgYjuDEMYRJHFYfrJngs
-	RH05v59yRF9V5wysKQ2N79nqBIKRNrEUuPFc
-X-Google-Smtp-Source: AGHT+IEVea9+vCQvrRgr9ejnNTBStIWfOUMmqzn46gKB6ilihrcG/FQySdfgi2BmIkYFBlgtwj4z7A==
-X-Received: by 2002:a05:6512:b97:b0:541:d287:a53b with SMTP id 2adb3069b0e04-541e67473c6mr2166847e87.19.1734613967889;
-        Thu, 19 Dec 2024 05:12:47 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223600125sm173459e87.101.2024.12.19.05.12.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 05:12:46 -0800 (PST)
-Date: Thu, 19 Dec 2024 15:12:45 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, 
-	Vikash Garodia <quic_vgarodia@quicinc.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCHv2] media: venc: destroy hfi session after m2m_ctx release
-Message-ID: <yp3nafi4blvtqmr6vqsso2cwrjwb5gdzakzal7ftr2ty66uh46@n42c4q7m6elm>
-References: <20241219033345.559196-1-senozhatsky@chromium.org>
- <20241219053734.588145-1-senozhatsky@chromium.org>
+        d=1e100.net; s=20230601; t=1734616121; x=1735220921;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=In5HoeH7y9Mw3MBgtXCixaUYWromv5oJ1tBlMI+S7Q8=;
+        b=llGofRuybRniNwaIB1Hb73fSLMLjlF4/qz8OKHS7EAAS8Pxo4oW7LSUUneiH+faJaD
+         orNiPwRWn5TMI0hTX1TEm+s85oi3uCwrcOc/afEKbubweQcHmbqjatFlVbVKh9uGbJ69
+         +nSGAglMgXhkPHpI38VPqWW+ue+k5mG2bl4E82GWxdHNob9j0zlpTq0Wt7aB/v6gbWN0
+         dXypGzzubq/YAfSSpuwCIchTXJq9ozuEUzENmmnJemIUgU8+PrzZ9EzIMEwOF/h5i4pK
+         /uMJYDJuSqPMv+Hxqhl+yzEe7L+pjpnsX2bNwoScZs1frK0pBa+HZAkTfoSVoxNFJf63
+         PJ4A==
+X-Forwarded-Encrypted: i=1; AJvYcCX2yr6xVhXhsj+bHU3gNoFGw38U9MW+qlaZTOMLNcJEZUkfbWGgrMO6XqvixPPriDGbjk9nYiU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyH5a9fminGihdvotJju30UrEB3Tdu/P1N7JwCOzSQnNhAMcdOO
+	jo+CDNoWWJAyP55jd+5biakaIt1ebSZQQFVao1gt43oEV75cRLrrG55mHgb0Bi/pK8DaLUnapYL
+	XzXZW2NaSw4pHZXR+s+FLVjJpJ9ECBFDNI10eUw==
+X-Gm-Gg: ASbGncsOvNaY+ncl/Hh+RlU+plAmrVJbH+WxeLzcDwCADjJG15FXQqCc3RH3Sucasz8
+	aoyMBqMsk1jBanYnfB5esgyG2g/38xyLwzojoFaQ=
+X-Google-Smtp-Source: AGHT+IHAgTWL75NXrM2GBK4SDn0t2shp+CeG7oHDnfNd5GjPl4y15Kf6WPYgbK4lJLVly6G4hcWHSkGBI5QdeqgJhdo=
+X-Received: by 2002:a05:690c:708b:b0:6ef:94db:b208 with SMTP id
+ 00721157ae682-6f3d263a814mr55382397b3.24.1734616121516; Thu, 19 Dec 2024
+ 05:48:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241219053734.588145-1-senozhatsky@chromium.org>
+References: <20241213041958.202565-1-ebiggers@kernel.org> <20241213041958.202565-6-ebiggers@kernel.org>
+In-Reply-To: <20241213041958.202565-6-ebiggers@kernel.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 19 Dec 2024 14:48:05 +0100
+Message-ID: <CAPDyKFp01751khZ7xKC0QFtsoqxVifTH4im6_2yq4heurdONRw@mail.gmail.com>
+Subject: Re: [PATCH v10 05/15] mmc: sdhci-msm: fix crypto key eviction
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-block@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Gaurav Kashyap <quic_gaurkash@quicinc.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+	Bart Van Assche <bvanassche@acm.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Jens Axboe <axboe@kernel.dk>, 
+	Konrad Dybcio <konradybcio@kernel.org>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	"Martin K . Petersen" <martin.petersen@oracle.com>, stable@vger.kernel.org, 
+	Abel Vesa <abel.vesa@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Dec 19, 2024 at 02:37:08PM +0900, Sergey Senozhatsky wrote:
-> This partially reverts commit that made hfi_session_destroy()
-> the first step of vdec/venc close().  The reason being is a
-> regression report when, supposedly, encode/decoder is closed
-> with still active streaming (no ->stop_streaming() call before
-> close()) and pending pkts, so isr_thread cannot find instance
-> and fails to process those pending pkts.  This was the idea
-> behind the original patch - make it impossible to use instance
-> under destruction, because this is racy, but apparently there
-> are uses cases that depend on that unsafe pattern.  Return to
-> the old (unsafe) behaviour for the time being (until a better
-> fix is found).
-
-You are describing a regression. Could you please add corresponding
-Reported-by and Closes tags (for now you can post them in a reply to
-your patch, in future please include them in your commit message).
-
-> 
-> Fixes: 45b1a1b348ec ("media: venus: sync with threaded IRQ during inst destruction")
+On Fri, 13 Dec 2024 at 05:20, Eric Biggers <ebiggers@kernel.org> wrote:
+>
+> From: Eric Biggers <ebiggers@google.com>
+>
+> Commit c7eed31e235c ("mmc: sdhci-msm: Switch to the new ICE API")
+> introduced an incorrect check of the algorithm ID into the key eviction
+> path, and thus qcom_ice_evict_key() is no longer ever called.  Fix it.
+>
+> Fixes: c7eed31e235c ("mmc: sdhci-msm: Switch to the new ICE API")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Cc: Abel Vesa <abel.vesa@linaro.org>
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 
-This is v2, but there is no changelog. Please provide one.
+Applied for fixes, thanks!
 
-Also please don't post your patches as replies to the previous versions.
+Kind regards
+Uffe
+
 
 > ---
->  drivers/media/platform/qcom/venus/core.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-> index 2d27c5167246..807487a1f536 100644
-> --- a/drivers/media/platform/qcom/venus/core.c
-> +++ b/drivers/media/platform/qcom/venus/core.c
-> @@ -506,18 +506,14 @@ static __maybe_unused int venus_runtime_suspend(struct device *dev)
->  void venus_close_common(struct venus_inst *inst)
->  {
->  	/*
-> -	 * First, remove the inst from the ->instances list, so that
-> -	 * to_instance() will return NULL.
-> -	 */
-> -	hfi_session_destroy(inst);
-> -	/*
-> -	 * Second, make sure we don't have IRQ/IRQ-thread currently running
-> +	 * Make sure we don't have IRQ/IRQ-thread currently running
->  	 * or pending execution, which would race with the inst destruction.
->  	 */
->  	synchronize_irq(inst->core->irq);
->  
->  	v4l2_m2m_ctx_release(inst->m2m_ctx);
->  	v4l2_m2m_release(inst->m2m_dev);
-> +	hfi_session_destroy(inst);
->  	v4l2_fh_del(&inst->fh);
->  	v4l2_fh_exit(&inst->fh);
->  	v4l2_ctrl_handler_free(&inst->ctrl_handler);
-> -- 
-> 2.47.1.613.gc27f4b7a9f-goog
-> 
-
--- 
-With best wishes
-Dmitry
+>  drivers/mmc/host/sdhci-msm.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+> index e00208535bd1..319f0ebbe652 100644
+> --- a/drivers/mmc/host/sdhci-msm.c
+> +++ b/drivers/mmc/host/sdhci-msm.c
+> @@ -1865,24 +1865,24 @@ static int sdhci_msm_program_key(struct cqhci_host *cq_host,
+>         struct sdhci_host *host = mmc_priv(cq_host->mmc);
+>         struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+>         struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+>         union cqhci_crypto_cap_entry cap;
+>
+> +       if (!(cfg->config_enable & CQHCI_CRYPTO_CONFIGURATION_ENABLE))
+> +               return qcom_ice_evict_key(msm_host->ice, slot);
+> +
+>         /* Only AES-256-XTS has been tested so far. */
+>         cap = cq_host->crypto_cap_array[cfg->crypto_cap_idx];
+>         if (cap.algorithm_id != CQHCI_CRYPTO_ALG_AES_XTS ||
+>                 cap.key_size != CQHCI_CRYPTO_KEY_SIZE_256)
+>                 return -EINVAL;
+>
+> -       if (cfg->config_enable & CQHCI_CRYPTO_CONFIGURATION_ENABLE)
+> -               return qcom_ice_program_key(msm_host->ice,
+> -                                           QCOM_ICE_CRYPTO_ALG_AES_XTS,
+> -                                           QCOM_ICE_CRYPTO_KEY_SIZE_256,
+> -                                           cfg->crypto_key,
+> -                                           cfg->data_unit_size, slot);
+> -       else
+> -               return qcom_ice_evict_key(msm_host->ice, slot);
+> +       return qcom_ice_program_key(msm_host->ice,
+> +                                   QCOM_ICE_CRYPTO_ALG_AES_XTS,
+> +                                   QCOM_ICE_CRYPTO_KEY_SIZE_256,
+> +                                   cfg->crypto_key,
+> +                                   cfg->data_unit_size, slot);
+>  }
+>
+>  #else /* CONFIG_MMC_CRYPTO */
+>
+>  static inline int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
+> --
+> 2.47.1
+>
 
