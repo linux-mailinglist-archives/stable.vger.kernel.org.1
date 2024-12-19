@@ -1,161 +1,189 @@
-Return-Path: <stable+bounces-105369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8C29F8672
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 21:59:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813249F86DD
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 22:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 079807A2173
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 20:59:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03FF618964A4
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 21:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE5E1C07F4;
-	Thu, 19 Dec 2024 20:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86C51A9B27;
+	Thu, 19 Dec 2024 21:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HISu6lUj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WiLFYh2n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58AB1A3A80;
-	Thu, 19 Dec 2024 20:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA48E1A0AFE
+	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 21:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734641968; cv=none; b=hHJWSXFI8erFCeTvsNYisRFCGk42fwwcfoPCIyh/2ClT8hCEJfJUCdv1uU6v1mZWSNAAoR7VqG3SJDxODvxFH3Nb3PW22gYHbTk0CX+UGbr3pIByixcUlvSnTSEiJGrDqT7F81lTIf2BTDUxRM/pAG51Wic2zN2PqrEiRdkarkY=
+	t=1734643482; cv=none; b=p61vIHMMsWePCxYRpocttPkMeZlaemcO/QYCeDcX1+AC2X7U1SIRY6DS18NxCtvNVH3a4ItwwUdyU/7sZQd0Lpmao/3bokeF6W+wBFbfUe73p1faJzQl5jA6fS0Ch2QdZdfO3YUUvuzfe5s6oK/ggS4+OVdMWOhGKhgWMKPuWTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734641968; c=relaxed/simple;
-	bh=V7J/LAhSIPTXjimVIbXDd3f2+rXpgilX72JEzf/sZts=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Zvu2rTh3Og4tf83jQYohBquPrcqBDrsGNX6Aq2unGaTY+twdUc7cJRUt0Uz1TiBFCja3DF4g09X/pfmzNh+gFdh1kNp3lRQbn0aT3RWKFb32Q2Xlu3ewx8yvpj7zHuTewBI1I6cVetlfCBFBMnoAk09en0VMQXqforrPFzeD16Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HISu6lUj; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-725dc290c00so1919410b3a.0;
-        Thu, 19 Dec 2024 12:59:26 -0800 (PST)
+	s=arc-20240116; t=1734643482; c=relaxed/simple;
+	bh=cefdfB1yGhxUINcQUilu5D19OlaisDnr306U1LVHeRU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=uqOHeeEPgBAUV2jlkufJzcz3CsKoUQsqhixsf5aTski4vC4W3+cgMi607YvdD7DMv8BM0oxQzK2NRPoFdLPFdqA996UzfucPpoWdquJG3y0F6LXGXBN02zGAnl6vta4joY651bparTwtoL15DXXw6N0WxKGZM4vpVmhY8MCl1Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WiLFYh2n; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-801d5add29eso808605a12.3
+        for <stable@vger.kernel.org>; Thu, 19 Dec 2024 13:24:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734641966; x=1735246766; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K2Jk2YHJUust1FHTygKl17EVvckqZVKe7okhPqKlraM=;
-        b=HISu6lUjzDeiRo8Xfp4dfry0ZTD0im9RTK9XUZRsCEE61iVVao6W7XwMiifvaSfVmQ
-         eR6lWQbB6xXvGWF+d9gpS2mlGhe81kmJ0O7epwsmjuWvhXS/MOc5jr+Alh1ODLNkh610
-         pvqasSGkCh0UTWXPaZy/XU+oEvUjwk6xtn0SviwBSen+wck7G9dn07aLHVz/Fnd94kC6
-         qZF+bp2442kXsT9IMxcIC2iD5uI7LAkrEbYGNMcPxIdtIANZ6n8JoUMs4rqZgllWKNJH
-         xrhIevJ7jmGCgNbOEs/lGjqjnFWBDkBV8uvtp8dqooMzOdnVXqoslHihLV16ItbI9a7s
-         rwmw==
+        d=google.com; s=20230601; t=1734643480; x=1735248280; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=u7O8GUIoD1UZG/rG8KBOAiEwEk9YL8KfYsJ7/2RZcq0=;
+        b=WiLFYh2nXT8NtrnJfC0+8sBbhttr//Ghmza4c0IRoN1PeHCnnplANERUX1iAG/JLOG
+         TLqQX8/68goFwqACbKPlCKVsbr3a4ev3ZMe8pj8J7KgZhFc/UwnH8sWznGpSG8Vb1ufO
+         2ux/efkC2vaw1GBb5TOJn0+X0BMBazo0mNU1yv6+alt2Yk4mriFW0MFXHsqJZOhE3nut
+         UmD3hQI87RVbMzN1AaFg+NZe1oqLO6WSKpgfyYpX6UeCCL4Op/2vBlO4r5XgY9f1o0Cd
+         d4Gh2czp9gMYWIQriRhu71tVHeb21qwUp1hPCROIQX/k6WZBmMJZpdupo3nlW5JUpHqp
+         sRfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734641966; x=1735246766;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K2Jk2YHJUust1FHTygKl17EVvckqZVKe7okhPqKlraM=;
-        b=HPD+70cSvJ+iSLlETLCR1UV4k+yqa8HDGhbFrfOMyh321OkBnwAAunShu0T1yVvx6Y
-         Hlnd8ZHlgeHnmKKf81v5LX176ZkkTq4GN/Uv+RT0DLhriuYIh0WZC1vhWa8edhT0/rt+
-         LqVzTsMOPOFjONx82jSifVNMTVn/KT0mgXExI8EDPEPnQo5Mkkf1LpT1q1tqcwbomd76
-         COkPIIBCcjam4bK+2SBp6Anjic6Ij01rmFx+R3BPRzKWICCcdKYrNcEYFr2xs5Dir7iB
-         uCT5DO4x+fVLG5VHL3gC6Djm4nhDFeOwotvqSI24Ppxqz4AdUgQfH3C0TqFORwUUgsP7
-         20Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCVnrJAdsv9l5o03ragFnV3k9nG//wmQq093ihpgOYKARXKh6TCRzTQ693D7Em3enK7nJPva5X9W@vger.kernel.org, AJvYcCVw86DU+Bj67lA+lHzT81NFSJtJRhj9EqA4jVxob3GL/CNpBfoEWNApgaDgjrcVeRSQg5HkoXRrqNsQmQ8=@vger.kernel.org, AJvYcCWaZLQQsVgdl5N6wl4ABuQqZzBoEJ0bnZkQ7Hx/riZ80Y8whz5rZ+DvwYJgyZKCJdNMIWS5Er6z/oQCG6bILws=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQqww1EUlLxM8XvzlhECVVc5i3EsrHYhrjllSQ+nlFdgtmBJ5I
-	FZTBMZGKGz0/92u4t9zNrg5AbOaXt9t16y25Wz72mfzSOedy7FEC
-X-Gm-Gg: ASbGncsxvhHGZR7qc6d7AYLysA8ax9bFRgdWJiNYQnf+/hcoJG+qtZJQG83Pz4KTTf4
-	Sxb6NbTFJmr/7Q9fqqFV0U2IEboukqoqoe53yReih1T9XjWHdWD20FHDEIGy57Z8DjQH1qvkmuM
-	nmmHBgYtX3pQ1ujdsRqNGEBndKpLbeBXx1W3D0FXONrS5YmlRt3ThpjgsTQueA1mwgwkRGzKr8E
-	vkVsxTyYjpRaHVOD2m2wtbq0mqv+/FtlTyla3f92m3YEOM8PJypgTJlZc7QkHRwiA==
-X-Google-Smtp-Source: AGHT+IFcOYrivglfZ9zfZFu5ZYZNKIlKewzZxcX4XLRNGDxuStBQsF8sv5sfHD4+SliIfgiUph33RA==
-X-Received: by 2002:a05:6a21:3989:b0:1d9:a94:feec with SMTP id adf61e73a8af0-1e5e1e0460bmr406814637.2.1734641966069;
-        Thu, 19 Dec 2024 12:59:26 -0800 (PST)
-Received: from mitchelllevy. ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad90c331sm1751090b3a.196.2024.12.19.12.59.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 12:59:25 -0800 (PST)
-From: Mitchell Levy <levymitchell0@gmail.com>
-Date: Thu, 19 Dec 2024 12:58:55 -0800
-Subject: [PATCH v2 1/2] rust: lockdep: Remove support for dynamically
- allocated LockClassKeys
+        d=1e100.net; s=20230601; t=1734643480; x=1735248280;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u7O8GUIoD1UZG/rG8KBOAiEwEk9YL8KfYsJ7/2RZcq0=;
+        b=dZZZCodGsGuPZnFkT3bomBZLouvxxTgnSO8jjX/+MoJyZblO35XEf+Uj1S95jocHS8
+         /6YeYWuXsxLWh/Qk9vazgvEPZYom9IEHvdq4dj3aOca/vFLUbS4S7zsG32U1EcvH88vW
+         a3400cWxXJQ5etSZ3y4H2AsmslcaWmQS59uLb2gj8Hu+fcXc3k2u4WdoY8P6+WH35sKY
+         RTi6BtwkIjcFfun4D8MNVpqVxnlKifKkvXkFVyT4ouPlTlI0PcPnSYYln0SHc4CxM3WI
+         O/6CqyEPZO6XlwFMPy6zwHMvZGg4ed/lE6+8SuG64E/WQ9k0ExJDgtNc4JdQybcCbpkV
+         jsDA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ0LKAnqbAMrHl9/jLlkxyt3hqLTL70jFxZg0OfoDQGCcl6jP8sMHsnpRdMqqDe1CJrgRoS4Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgJgACTX/zlncnKc3eQgvPsLePei+rao14WU4fsuCgBPOfIiKL
+	I+IfCCbqc0GnJcAsRALvyaQb4URrszOVEWZoJqUHk65hNrtjgj1l4CquGeIVMH7PzBTrKg/wCpA
+	qgeyOEzFMOu4ApZY/xQ==
+X-Google-Smtp-Source: AGHT+IFnH6UQrf3C3P3rhQlihyUOrX9sGtuPFMiRoQuLliycrZpnMFxS2E+N7rAXPa1MSWZDj7o1ChPfPBNiASrl
+X-Received: from pgbfu11.prod.google.com ([2002:a05:6a02:4a8b:b0:7fd:5569:7b79])
+ (user=yosryahmed job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:7487:b0:1e1:ab63:c5ed with SMTP id adf61e73a8af0-1e5e048b22emr887197637.23.1734643480234;
+ Thu, 19 Dec 2024 13:24:40 -0800 (PST)
+Date: Thu, 19 Dec 2024 21:24:37 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241219-rust-lockdep-v2-1-f65308fbc5ca@gmail.com>
-References: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
-In-Reply-To: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, 
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Andreas Hindborg <a.hindborg@kernel.org>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Mitchell Levy <levymitchell0@gmail.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734641963; l=1584;
- i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
- bh=V7J/LAhSIPTXjimVIbXDd3f2+rXpgilX72JEzf/sZts=;
- b=fdDHwQLnhJBN6KsfvmXze7GEOBK4QBrmIdx3gK5872qfQ6BXrI4aIhL76dVXrJH35rN3aJ18y
- 99hdb/WsF3PC5RLFjqhnSorkB3iXRmJdhu1SlKWRghDt3qxGnvK8FM8
-X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
- pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241219212437.2714151-1-yosryahmed@google.com>
+Subject: [PATCH] mm: zswap: fix race between [de]compression and CPU hotunplug
+From: Yosry Ahmed <yosryahmed@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Vitaly Wool <vitalywool@gmail.com>, 
+	Barry Song <baohua@kernel.org>, Sam Sun <samsun1006219@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosryahmed@google.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Currently, dynamically allocated LockCLassKeys can be used from the Rust
-side without having them registered. This is a soundness issue, so
-remove them.
+In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
+current CPU at the beginning of the operation is retrieved and used
+throughout. However, since neither preemption nor migration are
+disabled, it is possible that the operation continues on a different
+CPU.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi@metaspace.dk/
-Cc: stable@vger.kernel.org
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+If the original CPU is hotunplugged while the acomp_ctx is still in use,
+we run into a UAF bug as the resources attached to the acomp_ctx are
+freed during hotunplug in zswap_cpu_comp_dead().
+
+The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to
+use crypto_acomp API for hardware acceleration") when the switch to the
+crypto_acomp API was made. Prior to that, the per-CPU crypto_comp was
+retrieved using get_cpu_ptr() which disables preemption and makes sure
+the CPU cannot go away from under us. Preemption cannot be disabled with
+the crypto_acomp API as a sleepable context is needed.
+
+Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
+per-acomp_ctx") increased the UAF surface area by making the per-CPU
+buffers dynamic, adding yet another resource that can be freed from
+under zswap compression/decompression by CPU hotunplug.
+
+There are a few ways to fix this:
+(a) Add a refcount for acomp_ctx.
+(b) Disable migration while using the per-CPU acomp_ctx.
+(c) Disable CPU hotunplug while using the per-CPU acomp_ctx by holding
+the CPUs read lock.
+
+Implement (c) since it's simpler than (a), and (b) involves using
+migrate_disable() which is apparently undesired (see huge comment in
+include/linux/preempt.h).
+
+Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
+Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
 ---
- rust/kernel/sync.rs | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ mm/zswap.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 1eab7ebf25fd..ae16bfd98de2 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -29,28 +29,20 @@
- unsafe impl Sync for LockClassKey {}
- 
- impl LockClassKey {
--    /// Creates a new lock class key.
--    pub const fn new() -> Self {
--        Self(Opaque::uninit())
--    }
--
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.0.get()
-     }
+diff --git a/mm/zswap.c b/mm/zswap.c
+index f6316b66fb236..5a27af8d86ea9 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -880,6 +880,18 @@ static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
+ 	return 0;
  }
  
--impl Default for LockClassKey {
--    fn default() -> Self {
--        Self::new()
--    }
--}
++/* Prevent CPU hotplug from freeing up the per-CPU acomp_ctx resources */
++static struct crypto_acomp_ctx *acomp_ctx_get_cpu(struct crypto_acomp_ctx __percpu *acomp_ctx)
++{
++	cpus_read_lock();
++	return raw_cpu_ptr(acomp_ctx);
++}
++
++static void acomp_ctx_put_cpu(void)
++{
++	cpus_read_unlock();
++}
++
+ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 			   struct zswap_pool *pool)
+ {
+@@ -893,8 +905,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 	gfp_t gfp;
+ 	u8 *dst;
+ 
+-	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
 -
- /// Defines a new static lock class and returns a pointer to it.
- #[doc(hidden)]
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
--        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-+        // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
-+        // lock_class_key
-+        static CLASS: $crate::sync::LockClassKey =
-+            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
-         &CLASS
-     }};
++	acomp_ctx = acomp_ctx_get_cpu(pool->acomp_ctx);
+ 	mutex_lock(&acomp_ctx->mutex);
+ 
+ 	dst = acomp_ctx->buffer;
+@@ -950,6 +961,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+ 		zswap_reject_alloc_fail++;
+ 
+ 	mutex_unlock(&acomp_ctx->mutex);
++	acomp_ctx_put_cpu();
+ 	return comp_ret == 0 && alloc_ret == 0;
  }
-
+ 
+@@ -960,7 +972,7 @@ static void zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 	struct crypto_acomp_ctx *acomp_ctx;
+ 	u8 *src;
+ 
+-	acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
++	acomp_ctx = acomp_ctx_get_cpu(entry->pool->acomp_ctx);
+ 	mutex_lock(&acomp_ctx->mutex);
+ 
+ 	src = zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
+@@ -990,6 +1002,7 @@ static void zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+ 
+ 	if (src != acomp_ctx->buffer)
+ 		zpool_unmap_handle(zpool, entry->handle);
++	acomp_ctx_put_cpu();
+ }
+ 
+ /*********************************
 -- 
-2.34.1
+2.47.1.613.gc27f4b7a9f-goog
 
 
