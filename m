@@ -1,99 +1,109 @@
-Return-Path: <stable+bounces-105281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C469F77EB
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 10:03:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007C99F7810
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 10:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48E2116C0AA
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 09:03:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 405BE1889224
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 09:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C3321767F;
-	Thu, 19 Dec 2024 09:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9EF221459;
+	Thu, 19 Dec 2024 09:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Fkq8kNaT"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="jmQoZNUT"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D4E15B115;
-	Thu, 19 Dec 2024 09:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447DF149DF4;
+	Thu, 19 Dec 2024 09:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734599032; cv=none; b=qBx4JQINy8cASJ4AfQbBmhi3f1I+xzmDaL7Fa1fouD/IkQijuC0FMNYWRmiTRDytHW9IhyWT/yGJpmyJDEOzw1t8SfM8HqCRKdXgmKkpXucTVEK9JoZLDd/ZX5leGx5OXOg5wVsAi7mAnDBRHEU6/UwcQzoYPoB0hfrrdcZx+OE=
+	t=1734599404; cv=none; b=Ecb5K0lPf2US8upY65CcpdLmTc16m9vyO1lJQVSV7N3RkDQHjrngxEII4fSfpdIRJHogtYrwqF1j9J5eQNK1544cmqBQiqXlzI7+7Uvbhz7/L9Y/CeEHk43Qge6DCmYCgX31TBU9G6kPQBpSwbuSJCWFD6Ct7EylwwIbJkm8rV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734599032; c=relaxed/simple;
-	bh=Jltp9bnlx2+n18ClWB5oOsVvGL80S3zLfY6neFVpMps=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JCh8ybKfBtcIDW+PqBA3FqyhMo63Bs9UYICBHyO/xgBfYXj+p6xPEuxw7x1KFbVrga5tDVbXXtJuR11JivKYjhrjAwjivgA7PeHIwAAJCbYR4crBYH8/7mnxuGWPn4QbomltpqzSQpSZ0UQ2Dh00CTGsBQCrGqVOv6GFwfCemhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Fkq8kNaT; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=G8bXT
-	8guXuEHe3zwPNQ59rUUL4Ht2a1ZJXky8kfhCQA=; b=Fkq8kNaT3vUsEagYjDe2A
-	TPijfd9LPBgsy5soYFMlaHXk8bGjOYN2PiEVbIMT7tnRMH9Z5YOcjjQpWOk8Uq6m
-	lAwAIkPnfgdTihOqolm6ATLLfO8AZV6GxUJFRh3NRUvKW+Om09VyClFE16/W19x/
-	mSd8b82w1vHr1JsZUvaTqo=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDnDx5F4WNnd0biAA--.36215S4;
-	Thu, 19 Dec 2024 17:03:02 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: liviu.dudau@arm.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	james.qian.wang@arm.com,
-	ayan.halder@arm.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] drm/komeda: Add check for komeda_get_layer_fourcc_list()
-Date: Thu, 19 Dec 2024 17:02:56 +0800
-Message-Id: <20241219090256.146424-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1734599404; c=relaxed/simple;
+	bh=VC2FpbnZYj1Ez2mpdU/ToRdPgEr6S+ZWKRU/D3CFgF0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=b1e5iyzjNCnJ86T0AIsIRe/AM9dXqDIiPoI58/5OnKcIabUJN/LeY5GI5tLDghmUWRg0CT5MhiSUhtbP8Rqxl+d+j5MQApEvpkszvCWjk1kZmbcf7PWoBBmub9fqakmQkp7BrWjGyindPA3KgEESdtDxaVL4O/m0xgR4U/kfXFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=jmQoZNUT; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 36265A05FF;
+	Thu, 19 Dec 2024 10:09:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=uXdk9iXBjbSglfglNMlC
+	e1O5qHEJC/mlI8TGpLrLN0o=; b=jmQoZNUTN1K0TmOO9Vccf83zEYA1Ylaf0Zkk
+	xSkEtKMlPmVnhVLCCfJCo47AhxrA3tjdD2f6RBfZ+iJV0vMpDvQBzdLkl6j4tgbT
+	wA3vwh5Tq69Ays6SEs2zaqXhj3jir00nj7qNA2qZlygbRZUNuWFiUUPgJf9dsRpU
+	sEIJf9uGe9urF7KqyDdW47cz3CLaP5cbZOB6to7k+mcrCE0QEOXCNIjWxpmtjHKY
+	YPqhTwGiPIKPt6u/Rh4UGRO19qKCtoLttE1I69P4wGbGKWb9+0zEpNK57E0VsTAf
+	2IxapyW18AeQam1NHt/IeT3nGwGK2I8GPA9mQ/hExnHCjJHV8UYvgB7DnQccx9fl
+	dwhgXVSg2fTXPkMF0oW46M4MJdpR4tllW+NvCq5jeqWisDaeWN3AgIvkHwyb2nBf
+	c9z4pIDntf7SO/Dxu90Af2YfIfu1eXmFO2P/nODpejUAvXzOF18aTv29DvTv6JJC
+	niafqNOp/81D65EehWmjcb8eBZ1rR7oH27WkSgiR1dMH0RdAMxxboKTrdgfRP5wk
+	pca7IeDSoooYd8jkKzWKqmJSfrsJ0T86cVEytXYNytEpROtez39GE84Oo5TejgIl
+	ns4kZlITv1HYPzqbo0+4/m4L+9QpBxFvcWKgs3ZYfXJhsanstNvBzhn4YGYWoLWv
+	TQ66iAA=
+Message-ID: <72874aa6-22c7-40a6-83bb-1ace0f3aec73@prolan.hu>
+Date: Thu, 19 Dec 2024 10:09:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: atmel-qspi: Memory barriers after memory-mapped I/O
+To: Mark Brown <broonie@kernel.org>
+CC: Piotr Bugalski <bugalski.piotr@gmail.com>, <linux-spi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<Hari.PrasathGE@microchip.com>, <Mahesh.Abotula@microchip.com>,
+	<Marco.Cardellini@microchip.com>, <stable@vger.kernel.org>, Nicolas Ferre
+	<nicolas.ferre@microchip.com>, Alexandre Belloni
+	<alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>
+References: <20241218165850.378909-1-csokas.bence@prolan.hu>
+ <b1661e3f-cc62-489b-a4f8-9964ccf65fae@sirena.org.uk>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <b1661e3f-cc62-489b-a4f8-9964ccf65fae@sirena.org.uk>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnDx5F4WNnd0biAA--.36215S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKrWDtFyrtry3ZrW3tFykGrg_yoWDKrXEkF
-	1UJr1UXr4UCF9rZw12kw1fX34I9w4ayF4kJr1SqrySvr1xCrsFv3yxXwn8u3WUuay7XF4q
-	k3Z8GF1UA3yxWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUU5rc3UUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiMwq5bmdib3UAgQABsx
+X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D948556D706B
 
-Add check for the return value of komeda_get_layer_fourcc_list()
-to catch the potential exception.
+Right. I originally planned on splitting it into a cover letter and then 
+the patch, but I guess everything can just go into the msg. Dropping the ---
 
-Fixes: 5d51f6c0da1b ("drm/komeda: Add writeback support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Bence
 
-diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-index ebccb74306a7..f30b3d5eeca5 100644
---- a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-@@ -160,6 +160,10 @@ static int komeda_wb_connector_add(struct komeda_kms_dev *kms,
- 	formats = komeda_get_layer_fourcc_list(&mdev->fmt_tbl,
- 					       kwb_conn->wb_layer->layer_type,
- 					       &n_formats);
-+	if (!formats) {
-+		kfree(kwb_conn);
-+		return -ENOMEM;
-+	}
- 
- 	err = drm_writeback_connector_init(&kms->base, wb_conn,
- 					   &komeda_wb_connector_funcs,
--- 
-2.25.1
+On 2024. 12. 18. 18:01, Mark Brown wrote:
+> On Wed, Dec 18, 2024 at 05:58:49PM +0100, Bence Csókás wrote:
+> 
+>> However, the current documentation makes no mention to
+>> synchronization requirements in the other direction, i.e.
+>> after the last data written via AHB, and before the first
+>> register access on APB.
+>>
+>> ---
+>>
+>> Fixes: d5433def3153 ("mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi")
+>> Cc: Hari.PrasathGE@microchip.com
+>> Cc: Mahesh.Abotula@microchip.com
+>> Cc: Marco.Cardellini@microchip.com
+>> Cc: <stable@vger.kernel.org> # c0a0203cf579: ("spi: atmel-quadspi: Create `atmel_qspi_ops`"...)
+>> Cc: <stable@vger.kernel.org> # 6.x.y
+>> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+>> ---
+> 
+> Your signoffs and whatnot need to go before the --- so they don't get
+> cut off by tools, any any ancilliary stuff should go after.
 
 
