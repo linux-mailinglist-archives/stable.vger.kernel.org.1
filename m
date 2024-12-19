@@ -1,150 +1,142 @@
-Return-Path: <stable+bounces-105255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7012D9F7277
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:06:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4269F7290
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 679F4161309
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:06:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4E51188B6DA
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED224D8DA;
-	Thu, 19 Dec 2024 02:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3053478F29;
+	Thu, 19 Dec 2024 02:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="NmK0vUNR"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mzxeQvLK"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2DCA31;
-	Thu, 19 Dec 2024 02:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B7870809;
+	Thu, 19 Dec 2024 02:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734573962; cv=none; b=gjYMunnaCXLawuQeBTjC2l1Y8Gx9GwXMlsjeHAAbKYtnjlcAmyGCuFaWOvqM9v0RiLu2TyvALsgydPsmt6xIhG0jAXp8LjIIRZ3l7gWMwqH3r3X/JAyFYEFtBFRwizjZ5b3scIeEoKw+RZ9R6QoghkewJI5i4BxNph5c+sKZGVU=
+	t=1734575256; cv=none; b=ZvqJ6kDULzzyK5FbDZ6XfnDos0AiwkTDv1R+Cbw57drXiC9r1CHgL7fimI0+UYp3iTz0FZGse8l0Lk/m/j78FQ1He7NlZVfxa5QksPwiZFMKViWGw4VREu7PyFmIZ4ceDqOH9x7NIpKYLj7DX8Mzh71KWk0LlZikwfpJy4fM2RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734573962; c=relaxed/simple;
-	bh=RSvJNtuKwHazwUBlxNiBVY2u7YCmPiJ65iB5FToBfHQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MQFte3Mv2GxjPxeyFJ3IrJM7mrqgxM+WlX5XeY3Cn93KESgQ6l1oqWGl05fgpcq/uGhaXmS8H2QLpKGM2zMUKVKVso7iw4xfIHnK8DxVKetjToNGPeP8HOg2rk+t2ohRP1ohG9fSYV2nOfJR39PK+TRpPKfMr2oWilGLrpUrukc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=NmK0vUNR; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BJ25tQxA3235062, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1734573955; bh=RSvJNtuKwHazwUBlxNiBVY2u7YCmPiJ65iB5FToBfHQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=NmK0vUNRm/WALnmRw7zQ/xYwMygtPhAPsIvhSpza04S66+g1ecYSpWGB9l80gW6ed
-	 QKtVHxj6FTAXG2F1Lu3L98oZHoZ8lA5O9MdT6vIxxIEYs6QVQDxjF5bjDbvvoKCvW5
-	 u51eqY/Yetc18rZLag2L0iTY7mestsWcMUwOiG7hXaxGrXTRVDchuBKJPSDH3Xvvio
-	 RIUXh5hiqstTDpVSizVLBFlb+gV4yuMqnHiWU758IqznBxoEa7+RRvrUpW9rH6oYvF
-	 9BaZY2YwApYc54c19Tx24IHDG1U7FLcxhKtNoKF8jXBET1Q9lEiMKjG6AbMM4nSgWe
-	 joLce595mBnYg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BJ25tQxA3235062
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Dec 2024 10:05:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 19 Dec 2024 10:05:55 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 19 Dec 2024 10:05:54 +0800
-Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
- RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
- 15.01.2507.035; Thu, 19 Dec 2024 10:05:54 +0800
-From: Kailang <kailang@realtek.com>
-To: Evgeny Kapun <abacabadabacaba@gmail.com>,
-        Linux Sound Mailing List
-	<linux-sound@vger.kernel.org>
-CC: Takashi Iwai <tiwai@suse.de>,
-        Linux Kernel Mailing List
-	<linux-kernel@vger.kernel.org>,
-        Linux Regressions Mailing List
-	<regressions@lists.linux.dev>,
-        Linux Stable Mailing List
-	<stable@vger.kernel.org>
-Subject: RE: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
-Thread-Topic: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
-Thread-Index: AQHbTvIxtyWK99B6LkqZbi3R9/JZE7LoH/qQgAPUPYCAAOIHMA==
-Date: Thu, 19 Dec 2024 02:05:54 +0000
-Message-ID: <ff166dfd38db410d8a82489ff487b437@realtek.com>
-References: <e142749b-7714-4733-9452-918fbe328c8f@gmail.com>
- <b4763f69b4004b19ab5c5e0a8f675282@realtek.com>
- <0625722b-5404-406a-b571-ff79693fe980@gmail.com>
-In-Reply-To: <0625722b-5404-406a-b571-ff79693fe980@gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1734575256; c=relaxed/simple;
+	bh=OB6AcvM7XAqC2Z3FFsNNoei0wuA772XqOc/I3kn/XV8=;
+	h=Date:To:From:Subject:Message-Id; b=RWvmsBo6UlzIJyq4aEsrCl4Rn1126ATDQa01AlR09b/WBbsnYbZ0CMr+cDwLIWWzt6NvBodmMyWSWzHK6+uPoT5pCXBlTWJPcutoFKah4NaXl6czRsYT5Oo2v2oeSFY/mLKqvsc5gdW/TSOQBK+wFlnqLpTEtJKc6wqDA/BPYaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mzxeQvLK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E4EC4CECD;
+	Thu, 19 Dec 2024 02:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1734575254;
+	bh=OB6AcvM7XAqC2Z3FFsNNoei0wuA772XqOc/I3kn/XV8=;
+	h=Date:To:From:Subject:From;
+	b=mzxeQvLK4H7yv1xxvCGl1xGtAvpl3ODagbMFJl/YdHFBYlmHFzwMwOTgvQZ8e40nM
+	 kLFX6J2z/znP5yl2FKooI5u1hwPo2bz7U+uJEsZsOCZH6Qdp8DQWKWULZL3HwWJBLY
+	 NbbR67M0E+rz7dprYji783Dnu+JFpNaYNc/LI8qA=
+Date: Wed, 18 Dec 2024 18:27:33 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,dennis.lamerice@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv.patch added to mm-nonmm-unstable branch
+Message-Id: <20241219022734.33E4EC4CECD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
-DQpIZWFkcGhvbmUgb3IgSGVhZHNldC4gV2hpY2ggZGlkIHlvdSB1c2U/DQpJIGRvbid0IGtub3cg
-eW91ciBwbGF0Zm9ybSBoYXMgaGVhZHNldCBtaWMgc3VwcG9ydCBvciBub3QuDQoNCj4gLS0tLS1P
-cmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXZnZW55IEthcHVuIDxhYmFjYWJhZGFiYWNh
-YmFAZ21haWwuY29tPg0KPiBTZW50OiBUaHVyc2RheSwgRGVjZW1iZXIgMTksIDIwMjQgNDozNCBB
-TQ0KPiBUbzogS2FpbGFuZyA8a2FpbGFuZ0ByZWFsdGVrLmNvbT47IExpbnV4IFNvdW5kIE1haWxp
-bmcgTGlzdA0KPiA8bGludXgtc291bmRAdmdlci5rZXJuZWwub3JnPg0KPiBDYzogVGFrYXNoaSBJ
-d2FpIDx0aXdhaUBzdXNlLmRlPjsgTGludXggS2VybmVsIE1haWxpbmcgTGlzdA0KPiA8bGludXgt
-a2VybmVsQHZnZXIua2VybmVsLm9yZz47IExpbnV4IFJlZ3Jlc3Npb25zIE1haWxpbmcgTGlzdA0K
-PiA8cmVncmVzc2lvbnNAbGlzdHMubGludXguZGV2PjsgTGludXggU3RhYmxlIE1haWxpbmcgTGlz
-dA0KPiA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4NCj4gU3ViamVjdDogUmU6IFtSRUdSRVNTSU9O
-XSBEaXN0b3J0ZWQgc291bmQgb24gQWNlciBBc3BpcmUgQTExNS0zMSBsYXB0b3ANCj4gDQo+IA0K
-PiBFeHRlcm5hbCBtYWlsLg0KPiANCj4gDQo+IA0KPiBIaSBLYWlsYW5nLA0KPiANCj4gSGVyZSBh
-cmUgdGhlIHJlc3VsdHMgb2YgcnVubmluZyB0aGUgc2NyaXB0IG9uIGtlcm5lbCB2ZXJzaW9ucyA2
-LjEyLjUNCj4gKGFmZmVjdGVkKSBhbmQgNi43LjExIChub3QgYWZmZWN0ZWQpLg0KPiANCj4gT24g
-MTIvMTYvMjQgMDQ6MDcsIEthaWxhbmcgd3JvdGU6DQo+ID4gSGkgS2FwdW4sDQo+ID4NCj4gPiBQ
-bGVhc2UgcnVuIGF0dGFjaCBzY3JpcHQgYXMgYmVsb3cuDQo+ID4NCj4gPiAuL2Fsc2EtaW5mby5z
-aCAtLW5vLXVwbG9hZA0KPiA+DQo+ID4gVGhlbiBzZW5kIGJhY2sgdGhlIHJlc3VsdC4NCj4gPg0K
-PiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBFdmdlbnkgS2FwdW4g
-PGFiYWNhYmFkYWJhY2FiYUBnbWFpbC5jb20+DQo+ID4+IFNlbnQ6IFN1bmRheSwgRGVjZW1iZXIg
-MTUsIDIwMjQgOTowNyBQTQ0KPiA+PiBUbzogTGludXggU291bmQgTWFpbGluZyBMaXN0IDxsaW51
-eC1zb3VuZEB2Z2VyLmtlcm5lbC5vcmc+DQo+ID4+IENjOiBLYWlsYW5nIDxrYWlsYW5nQHJlYWx0
-ZWsuY29tPjsgVGFrYXNoaSBJd2FpIDx0aXdhaUBzdXNlLmRlPjsNCj4gPj4gTGludXggS2VybmVs
-IE1haWxpbmcgTGlzdCA8bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZz47IExpbnV4DQo+ID4+
-IFJlZ3Jlc3Npb25zIE1haWxpbmcgTGlzdCA8cmVncmVzc2lvbnNAbGlzdHMubGludXguZGV2Pjsg
-TGludXggU3RhYmxlDQo+ID4+IE1haWxpbmcgTGlzdCA8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4N
-Cj4gPj4gU3ViamVjdDogW1JFR1JFU1NJT05dIERpc3RvcnRlZCBzb3VuZCBvbiBBY2VyIEFzcGly
-ZSBBMTE1LTMxIGxhcHRvcA0KPiA+Pg0KPiA+Pg0KPiA+PiBFeHRlcm5hbCBtYWlsLg0KPiA+Pg0K
-PiA+Pg0KPiA+Pg0KPiA+PiBJIGFtIHVzaW5nIGFuIEFjZXIgQXNwaXJlIEExMTUtMzEgbGFwdG9w
-LiBXaGVuIHJ1bm5pbmcgbmV3ZXIga2VybmVsDQo+ID4+IHZlcnNpb25zLCBzb3VuZCBwbGF5ZWQg
-dGhyb3VnaCBoZWFkcGhvbmVzIGlzIGRpc3RvcnRlZCwgYnV0IHdoZW4NCj4gPj4gcnVubmluZyBv
-bGRlciB2ZXJzaW9ucywgaXQgaXMgbm90Lg0KPiA+Pg0KPiA+PiBLZXJuZWwgdmVyc2lvbjogTGlu
-dXggdmVyc2lvbiA2LjEyLjUgKHVzZXJAaG9zdG5hbWUpIChnY2MgKERlYmlhbg0KPiA+PiAxNC4y
-LjAtOCkgMTQuMi4wLCBHTlUgbGQgKEdOVSBCaW51dGlscyBmb3IgRGViaWFuKSAyLjQzLjUwLjIw
-MjQxMjEwKQ0KPiA+PiAjMSBTTVAgUFJFRU1QVF9EWU5BTUlDIFN1biBEZWMgMTUgMDU6MDk6MTYg
-SVNUIDIwMjQgT3BlcmF0aW5nDQo+IFN5c3RlbToNCj4gPj4gRGViaWFuIEdOVS9MaW51eCB0cml4
-aWUvc2lkDQo+ID4+DQo+ID4+IE5vIHNwZWNpYWwgYWN0aW9ucyBhcmUgbmVlZGVkIHRvIHJlcHJv
-ZHVjZSB0aGUgaXNzdWUuIFRoZSBzb3VuZCBpcw0KPiA+PiBkaXN0b3J0ZWQgYWxsIHRoZSB0aW1l
-LCBhbmQgaXQgZG9lc24ndCBkZXBlbmQgb24gYW55dGhpbmcgYmVzaWRlcw0KPiA+PiB1c2luZyBh
-biBhZmZlY3RlZCBrZXJuZWwgdmVyc2lvbi4NCj4gPj4NCj4gPj4gSXQgc2VlbXMgdG8gYmUgY2F1
-c2VkIGJ5IGNvbW1pdA0KPiA+PiAzNGFiNWJiYzZlODIyMTRkN2Y3MzkzZWJhMjZkMTY0YjMwM2Vi
-YjRlDQo+ID4+IChBTFNBOiBoZGEvcmVhbHRlayAtIEFkZCBIZWFkc2V0IE1pYyBzdXBwb3J0ZWQg
-QWNlciBOQiBwbGF0Zm9ybSkuDQo+ID4+IEluZGVlZCwgaWYgSSByZW1vdmUgdGhlIGVudHJ5IHRo
-YXQgdGhpcyBjb21taXQgYWRkcywgdGhlIGlzc3VlIGRpc2FwcGVhcnMuDQo+ID4+DQo+ID4+IGxz
-cGNpIG91dHB1dCBmb3IgdGhlIGRldmljZSBpbiBxdWVzdGlvbjoNCj4gPj4NCj4gPj4gMDA6MGUu
-MCBNdWx0aW1lZGlhIGF1ZGlvIGNvbnRyb2xsZXIgWzA0MDFdOiBJbnRlbCBDb3Jwb3JhdGlvbg0K
-PiA+PiBDZWxlcm9uL1BlbnRpdW0gU2lsdmVyIFByb2Nlc3NvciBIaWdoIERlZmluaXRpb24gQXVk
-aW8gWzgwODY6MzE5OF0gKHJldg0KPiAwNikNCj4gPj4gICAgICAgU3Vic3lzdGVtOiBBY2VyIElu
-Y29ycG9yYXRlZCBbQUxJXSBEZXZpY2UgWzEwMjU6MTM2MF0NCj4gPj4gICAgICAgRmxhZ3M6IGJ1
-cyBtYXN0ZXIsIGZhc3QgZGV2c2VsLCBsYXRlbmN5IDAsIElSUSAxMzANCj4gPj4gICAgICAgTWVt
-b3J5IGF0IGExMjE0MDAwICg2NC1iaXQsIG5vbi1wcmVmZXRjaGFibGUpIFtzaXplPTE2S10NCj4g
-Pj4gICAgICAgTWVtb3J5IGF0IGExMDAwMDAwICg2NC1iaXQsIG5vbi1wcmVmZXRjaGFibGUpIFtz
-aXplPTFNXQ0KPiA+PiAgICAgICBDYXBhYmlsaXRpZXM6IFs1MF0gUG93ZXIgTWFuYWdlbWVudCB2
-ZXJzaW9uIDMNCj4gPj4gICAgICAgQ2FwYWJpbGl0aWVzOiBbODBdIFZlbmRvciBTcGVjaWZpYyBJ
-bmZvcm1hdGlvbjogTGVuPTE0IDw/Pg0KPiA+PiAgICAgICBDYXBhYmlsaXRpZXM6IFs2MF0gTVNJ
-OiBFbmFibGUrIENvdW50PTEvMSBNYXNrYWJsZS0gNjRiaXQrDQo+ID4+ICAgICAgIENhcGFiaWxp
-dGllczogWzcwXSBFeHByZXNzIFJvb3QgQ29tcGxleCBJbnRlZ3JhdGVkIEVuZHBvaW50LA0KPiA+
-PiBJbnRNc2dOdW0NCj4gPj4gMA0KPiA+PiAgICAgICBLZXJuZWwgZHJpdmVyIGluIHVzZTogc25k
-X2hkYV9pbnRlbA0KPiA+PiAgICAgICBLZXJuZWwgbW9kdWxlczogc25kX2hkYV9pbnRlbCwgc25k
-X3NvY19hdnMsDQo+ID4+IHNuZF9zb2ZfcGNpX2ludGVsX2FwbA0K
+
+The patch titled
+     Subject: ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv.patch
+
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Dennis Lam <dennis.lamerice@gmail.com>
+Subject: ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv
+Date: Tue, 17 Dec 2024 21:39:25 -0500
+
+When mounting ocfs2 and then remounting it as read-only, a
+slab-use-after-free occurs after the user uses a syscall to
+quota_getnextquota.  Specifically, sb_dqinfo(sb, type)->dqi_priv is the
+dangling pointer.
+
+During the remounting process, the pointer dqi_priv is freed but is never
+set as null leaving it to to be accessed.  Additionally, the read-only
+option for remounting sets the DQUOT_SUSPENDED flag instead of setting the
+DQUOT_USAGE_ENABLED flags.  Moreover, later in the process of getting the
+next quota, the function ocfs2_get_next_id is called and only checks the
+quota usage flags and not the quota suspended flags.
+
+To fix this, I set dqi_priv to null when it is freed after remounting with
+read-only and put a check for DQUOT_SUSPENDED in ocfs2_get_next_id.
+
+Link: https://lkml.kernel.org/r/20241218023924.22821-2-dennis.lamerice@gmail.com
+Fixes: 8f9e8f5fcc05 ("ocfs2: Fix Q_GETNEXTQUOTA for filesystem without quotas")
+Signed-off-by: Dennis Lam <dennis.lamerice@gmail.com>
+Reported-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
+Tested-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6731d26f.050a0220.1fb99c.014b.GAE@google.com/T/
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/quota_global.c |    2 +-
+ fs/ocfs2/quota_local.c  |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+--- a/fs/ocfs2/quota_global.c~ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv
++++ a/fs/ocfs2/quota_global.c
+@@ -893,7 +893,7 @@ static int ocfs2_get_next_id(struct supe
+ 	int status = 0;
+ 
+ 	trace_ocfs2_get_next_id(from_kqid(&init_user_ns, *qid), type);
+-	if (!sb_has_quota_loaded(sb, type)) {
++	if (!sb_has_quota_active(sb, type)){
+ 		status = -ESRCH;
+ 		goto out;
+ 	}
+--- a/fs/ocfs2/quota_local.c~ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv
++++ a/fs/ocfs2/quota_local.c
+@@ -867,6 +867,7 @@ out:
+ 	brelse(oinfo->dqi_libh);
+ 	brelse(oinfo->dqi_lqi_bh);
+ 	kfree(oinfo);
++	info->dqi_priv = NULL;
+ 	return status;
+ }
+ 
+_
+
+Patches currently in -mm which might be from dennis.lamerice@gmail.com are
+
+ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv.patch
+
 
