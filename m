@@ -1,142 +1,118 @@
-Return-Path: <stable+bounces-105249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF279F716C
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:37:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CED9F719D
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:17:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9CE616BC7C
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 00:37:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086D5188C80D
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E53111A8;
-	Thu, 19 Dec 2024 00:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DAB3594B;
+	Thu, 19 Dec 2024 01:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="QM/waVd5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hx6NQoqN"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8F31805E;
-	Thu, 19 Dec 2024 00:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF1A64A8F;
+	Thu, 19 Dec 2024 01:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734568636; cv=none; b=sIyYNU6ooMTRM9JGWqLhcrnkdqVtzn7zYmXQACSyO3G+kkNqfJZTz+vQLPel2KiRv0csMJvm8fKuip1jOmpJV/infQEfww/QHm7jxCkLcTPAodWMqq0xmPyC0XCoar3OnM9ftEFienpw4M6NkNUmMgLeqigJY6yk8ied6inY3So=
+	t=1734571062; cv=none; b=Jdf6ID2ZXNfMz0LMsLM0mIOcvoDV+76WoOR/YbsBcwezSJ0sCNbIeRuwjmFZ3/4124vH6g54lhyu4xz9I9eYeLSUo/oIHO+KlR8gxtvNCfToeD2Ipxvx3KcLEMf2r6GZqAOOhxQRbKG1thzKfi15Ao1alg6zwoZR0uCDzhGkfoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734568636; c=relaxed/simple;
-	bh=TTLuCrqACwgADLkp2ytGhfloNQPktr8ckPVnKLz7RaQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sIkhnVnvUC1hGirW1NN1hbGRY2dzYA58k5adlhr4/RycfPNtmjXJStyysD+RjwdfGnm/LkGnUQWjn0GTRsZ3jAYCDjvOiYrKU9hOu9kKDDgdUjTUpE4ti0ydW91b9pYYYr/UxzGlMxTy1p2I90uz+763/WrINKa2uDytWqHCosQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=QM/waVd5; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 431BF163;
-	Thu, 19 Dec 2024 01:36:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1734568594;
-	bh=TTLuCrqACwgADLkp2ytGhfloNQPktr8ckPVnKLz7RaQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QM/waVd5ZNy/YQ1VH3rw6d8wFT7mnGuNHS0zDcfIBt37HBs6oLQl6z3Ztcokq5iab
-	 dW7o/dj83ucYpN6WYTCbFlFd85aDWfALjB61w44gqUrc464hbo+qqT2c7M5mTHGlax
-	 iillauNVo5kcmmTGtyapF7LhxYN38ToYF4ACPV6U=
-Date: Thu, 19 Dec 2024 02:37:08 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v6 0/5] media: uvcvideo: Two +1 fixes for async controls
-Message-ID: <20241219003708.GK5518@pendragon.ideasonboard.com>
-References: <20241203-uvc-fix-async-v6-0-26c867231118@chromium.org>
- <e3316372-d109-4d2e-ad2b-8989babdf546@redhat.com>
+	s=arc-20240116; t=1734571062; c=relaxed/simple;
+	bh=0NE9oPCfItxPii9OcgTm9DuGBcfrld1PP3bgzRwFNTs=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=twz6wYCVXTVjlkcYnCIGlZyAXXEy0qe+GWufpaUI28/3pyrtS9W+mH+TYPZy0Fn3TpARFEOyTB2kt38DzRQ9K/BD6p/JNJn+RmGIj5sKxgYA6Ns+j1pCMVJx3lpQ+xRji4Q+nQRrq1oNAbmay6yUXwFk643juGSIIbFhbfQJo4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hx6NQoqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7D5C4CECD;
+	Thu, 19 Dec 2024 01:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734571061;
+	bh=0NE9oPCfItxPii9OcgTm9DuGBcfrld1PP3bgzRwFNTs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Hx6NQoqN39o0iwQ31ryvkwgwkCMmVJD//lwJX6EYzxIP/gBeRI95y1WNCnMQ3yweJ
+	 MRgdq1tz8N11vtjdAjyQMb/xaaLyZxC8sE0tYPgnEiHOri7McYg/smky2pU8KLI/tW
+	 Emu2ZhMnUSw5xaIWCf86yVspDJKCAqwcnIspRhmp2FOAkKEUYQQtI0eW5WtmQ2+lil
+	 QqVwpV1EBeYle6Yq6YU9c9rxmuVHfbPpjrhl2JVAI4eFAKggsw5RL8e0uJIvgie5l0
+	 zk9wNRp09OvNWH8lebRldb7BZQX0Z0GPGPIGYWwC6+YherancHp8R6u9piUdqnW5xz
+	 5poiOvQMsN1og==
+Date: Thu, 19 Dec 2024 10:17:37 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
+ Francis Laniel <flaniel@linux.microsoft.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH v3] tracing/kprobes: Skip symbol counting logic for
+ module symbols in create_local_trace_kprobe()
+Message-Id: <20241219101737.83e3be23bd85c1f9810194c0@kernel.org>
+In-Reply-To: <20241216161145.2584246-1-kniv@yandex-team.ru>
+References: <20241216161145.2584246-1-kniv@yandex-team.ru>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e3316372-d109-4d2e-ad2b-8989babdf546@redhat.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 09, 2024 at 12:01:16PM +0100, Hans de Goede wrote:
-> Hi,
-> 
-> On 3-Dec-24 10:20 PM, Ricardo Ribalda wrote:
-> > This patchset fixes two +1 bugs with the async controls for the uvc driver.
-> > 
-> > They were found while implementing the granular PM, but I am sending
-> > them as a separate patches, so they can be reviewed sooner. They fix
-> > real issues in the driver that need to be taken care.
-> > 
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> 
-> Ricardo, Thank you for your patches.
-> 
-> I have merged patches 1-4 into:
-> 
-> https://gitlab.freedesktop.org/linux-media/users/uvc/-/commits/next/
+On Mon, 16 Dec 2024 19:11:45 +0300
+Nikolay Kuratov <kniv@yandex-team.ru> wrote:
 
-At least patch 5/5 was applied incorrectly. Does that result from a
-merge conflict ? Or did you apply v5 by mistake ? There doesn't seem to
-be any other issue.
+> commit b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+> avoids checking number_of_same_symbols() for module symbol in
+> __trace_kprobe_create(), but create_local_trace_kprobe() should avoid this
+> check too. Doing this check leads to ENOENT for module_name:symbol_name
+> constructions passed over perf_event_open.
+> 
+> No bug in mainline and 6.12 as those contain more general fix
+> commit 9d8616034f16 ("tracing/kprobes: Add symbol counting check when module loads")
 
-I've rebased the uvc/next branch to fix this. Once CI passes, I'll send
-a pull request.
+Thanks! It seems Greg already queued v2 for stable kernels, and
+it seems no theoletical change in this version.
 
-> > ---
-> > Changes in v6:
-> > - Swap order of patches
-> > - Use uvc_ctrl_set_handle again
-> > - Move loaded=0 to uvc_ctrl_status_event()
-> > - Link to v5: https://lore.kernel.org/r/20241202-uvc-fix-async-v5-0-6658c1fe312b@chromium.org
-> > 
-> > Changes in v5:
-> > - Move set handle to the entity_commit
-> > - Replace uvc_ctrl_set_handle with get/put_handle.
-> > - Add a patch to flush the cache of async controls.
-> > - Link to v4: https://lore.kernel.org/r/20241129-uvc-fix-async-v4-0-f23784dba80f@chromium.org
-> > 
-> > Changes in v4:
-> > - Fix implementation of uvc_ctrl_set_handle.
-> > - Link to v3: https://lore.kernel.org/r/20241129-uvc-fix-async-v3-0-ab675ce66db7@chromium.org
-> > 
-> > Changes in v3:
-> > - change again! order of patches.
-> > - Introduce uvc_ctrl_set_handle.
-> > - Do not change ctrl->handle if it is not NULL.
-> > 
-> > Changes in v2:
-> > - Annotate lockdep
-> > - ctrl->handle != handle
-> > - Change order of patches
-> > - Move documentation of mutex
-> > - Link to v1: https://lore.kernel.org/r/20241127-uvc-fix-async-v1-0-eb8722531b8c@chromium.org
-> > 
-> > ---
-> > Ricardo Ribalda (5):
-> >       media: uvcvideo: Only save async fh if success
-> >       media: uvcvideo: Remove redundant NULL assignment
-> >       media: uvcvideo: Remove dangling pointers
-> >       media: uvcvideo: Annotate lock requirements for uvc_ctrl_set
-> >       media: uvcvideo: Flush the control cache when we get an event
-> > 
-> >  drivers/media/usb/uvc/uvc_ctrl.c | 83 ++++++++++++++++++++++++++++++++++------
-> >  drivers/media/usb/uvc/uvc_v4l2.c |  2 +
-> >  drivers/media/usb/uvc/uvcvideo.h |  9 ++++-
-> >  3 files changed, 82 insertions(+), 12 deletions(-)
-> > ---
-> > base-commit: 291a8d98186f0a704cb954855d2ae3233971f07d
-> > change-id: 20241127-uvc-fix-async-2c9d40413ad8
+Thank you,
+
+> 
+> Link: https://lore.kernel.org/linux-trace-kernel/20240705161030.b3ddb33a8167013b9b1da202@kernel.org
+> Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+> Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+> ---
+> v1 -> v2:
+>  * Reword commit title and message
+>  * Send for stable instead of mainline
+> v2 -> v3:
+>  * Specify first good LTS version in commit message
+>  * Remove explicit versions from the subject since 6.1 and 5.10 need fix too
+> 
+>  kernel/trace/trace_kprobe.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+> index 12d997bb3e78..94cb09d44115 100644
+> --- a/kernel/trace/trace_kprobe.c
+> +++ b/kernel/trace/trace_kprobe.c
+> @@ -1814,7 +1814,7 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+>  	int ret;
+>  	char *event;
+>  
+> -	if (func) {
+> +	if (func && !strchr(func, ':')) {
+>  		unsigned int count;
+>  
+>  		count = number_of_same_symbols(func);
+> -- 
+> 2.34.1
+> 
+
 
 -- 
-Regards,
-
-Laurent Pinchart
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
