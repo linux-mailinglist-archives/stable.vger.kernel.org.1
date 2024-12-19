@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-105269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B129F7335
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 04:06:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631199F7330
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 04:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7986216D040
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FEAC18940C0
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37813154C15;
-	Thu, 19 Dec 2024 03:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE3B155335;
+	Thu, 19 Dec 2024 03:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sLdjYZD9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zcpiLCe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64FC1EA90;
-	Thu, 19 Dec 2024 03:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755641EA90;
+	Thu, 19 Dec 2024 03:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734577539; cv=none; b=PKjGIGnrl9O4UkzCHS/gZkL8JS1mJDB+g3AnI88MJQ6/ugfUmE/AuO2kT5fw8fmY1bbWJnNlcxlYxn/t2g3CDeKQ2d0eIv6ovGdwdltR9i+AbId6BvottGRVFiItixpV+17CXpR9OpLZs5hghLrGt7SfAa2Ks/+ee3tmTrpH9pI=
+	t=1734577541; cv=none; b=jly/SlyHAPusPaahoznhb4E4ULI1keezUtfRF14UwbMYnafsfpY/QvqzJxJCfh0tpD7pkoUxXtNhV9xJ7SKAn1M1Cou/WSQkr263FXJPnYEJdXMnNooN/iNnWSi7oyc9LleAIqsNsOPD20AtBFnNJOq6MQ9PR1c4a7XikX/gIGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734577539; c=relaxed/simple;
-	bh=6WOdsX02LGCO8WoeqUNVKZa3iiRV9ZQt3aooAsZdY74=;
-	h=Date:To:From:Subject:Message-Id; b=Y6WYLienX2+weEWSA0OwldvCc0TqVxSMBHln/pRNkiaEvyrLUL3K+y3r0EbHAQuYltKAQkEX962wRRJyn1DwgeL1dE9g+C/O24F5GhQLN48TiRNfvJtM0w/1kNQrujaW5Pm9buCbaaU6hx3wtqcEAn/DNuqsXex7WRhR0Q7aroY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sLdjYZD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B7BC4CECD;
-	Thu, 19 Dec 2024 03:05:38 +0000 (UTC)
+	s=arc-20240116; t=1734577541; c=relaxed/simple;
+	bh=tGl/B/HwA0uQzsA4M1JN0mIeQyoYo023gz9n/0NmB8w=;
+	h=Date:To:From:Subject:Message-Id; b=Yz9m5rVbVngUmNLTokyKrV9Cs0hVqtBNnZtau2/uq1jJ/FH9Q2bx4/RNr/KMRZC3fFpvUUYym/leb73QohHP5/pOJjo7BvEVssZuEJlPHg5EtPGj5MKBUFEV9tqPS16tEqTarIqui1ID8c//RL5wyO5llFNp9MiGPoOa25Tf50g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zcpiLCe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD72C4CECD;
+	Thu, 19 Dec 2024 03:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1734577538;
-	bh=6WOdsX02LGCO8WoeqUNVKZa3iiRV9ZQt3aooAsZdY74=;
+	s=korg; t=1734577541;
+	bh=tGl/B/HwA0uQzsA4M1JN0mIeQyoYo023gz9n/0NmB8w=;
 	h=Date:To:From:Subject:From;
-	b=sLdjYZD9bcSByS1c1fC8DKLnPYLA6TWIIn5C9ycyDAPPB1mC+vkkOTtcFbF8Egb8h
-	 N7WLhZ8wZaf/gr5oWuCiqPrh0f6V0H6EZGN8hX4akmvnMTgJJ62W+mtYzZAdfbavuN
-	 b8s7yw5argKT8RwiVbg0JywCDCP1d8FezN4ikQyM=
-Date: Wed, 18 Dec 2024 19:05:38 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,willy@infradead.org,stable@vger.kernel.org,shakeel.butt@linux.dev,ryan.roberts@arm.com,rppt@kernel.org,roman.gushchin@linux.dev,riel@surriel.com,npache@redhat.com,hannes@cmpxchg.org,david@redhat.com,corbet@lwn.net,cerasuolodomenico@gmail.com,baohua@kernel.org,usamaarif642@gmail.com,akpm@linux-foundation.org
+	b=zcpiLCe1/HPAuZQMBKUwHhQB1ubMlhYSaOfqcd36eA3MS24de+HaX9quUZitCYEML
+	 SXYGnZgpTPHsg26DpFEuUyvTqHyImWahecgkUdcRHY+As+ucLkE5Xzc2j0a8ZDsovC
+	 moVqHisiVjWCsnrl5Pq6LeeiAwRJS1tpiWPkMYfQ=
+Date: Wed, 18 Dec 2024 19:05:40 -0800
+To: mm-commits@vger.kernel.org,yuzhao@google.com,surenb@google.com,stable@vger.kernel.org,oliver.sang@intel.com,kent.overstreet@linux.dev,00107082@163.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-convert-partially_mapped-set-clear-operations-to-be-atomic.patch removed from -mm tree
-Message-Id: <20241219030538.B8B7BC4CECD@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-codetag-clear-tags-before-swap.patch removed from -mm tree
+Message-Id: <20241219030540.ECD72C4CECD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,113 +50,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: convert partially_mapped set/clear operations to be atomic
+     Subject: mm/codetag: clear tags before swap
 has been removed from the -mm tree.  Its filename was
-     mm-convert-partially_mapped-set-clear-operations-to-be-atomic.patch
+     mm-codetag-clear-tags-before-swap.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Usama Arif <usamaarif642@gmail.com>
-Subject: mm: convert partially_mapped set/clear operations to be atomic
-Date: Thu, 12 Dec 2024 18:33:51 +0000
+From: David Wang <00107082@163.com>
+Subject: mm/codetag: clear tags before swap
+Date: Fri, 13 Dec 2024 09:33:32 +0800
 
-Other page flags in the 2nd page, like PG_hwpoison and PG_anon_exclusive
-can get modified concurrently.  Changes to other page flags might be lost
-if they are happening at the same time as non-atomic partially_mapped
-operations.  Hence, make partially_mapped operations atomic.
+When CONFIG_MEM_ALLOC_PROFILING_DEBUG is set, kernel WARN would be
+triggered when calling __alloc_tag_ref_set() during swap:
 
-Link: https://lkml.kernel.org/r/20241212183351.1345389-1-usamaarif642@gmail.com
-Fixes: 8422acdc97ed ("mm: introduce a pageflag for partially mapped folios")
-Reported-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/all/e53b04ad-1827-43a2-a1ab-864c7efecf6e@redhat.com/
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
+	alloc_tag was not cleared (got tag for mm/filemap.c:1951)
+	WARNING: CPU: 0 PID: 816 at ./include/linux/alloc_tag.h...
+
+Clear code tags before swap can fix the warning. And this patch also fix
+a potential invalid address dereference in alloc_tag_add_check() when
+CONFIG_MEM_ALLOC_PROFILING_DEBUG is set and ref->ct is CODETAG_EMPTY,
+which is defined as ((void *)1).
+
+Link: https://lkml.kernel.org/r/20241213013332.89910-1-00107082@163.com
+Fixes: 51f43d5d82ed ("mm/codetag: swap tags when migrate pages")
+Signed-off-by: David Wang <00107082@163.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202412112227.df61ebb-lkp@intel.com
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
 Cc: Yu Zhao <yuzhao@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/page-flags.h |   12 ++----------
- mm/huge_memory.c           |    8 ++++----
- 2 files changed, 6 insertions(+), 14 deletions(-)
+ include/linux/alloc_tag.h |    2 +-
+ lib/alloc_tag.c           |    7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/include/linux/page-flags.h~mm-convert-partially_mapped-set-clear-operations-to-be-atomic
-+++ a/include/linux/page-flags.h
-@@ -862,18 +862,10 @@ static inline void ClearPageCompound(str
- 	ClearPageHead(page);
- }
- FOLIO_FLAG(large_rmappable, FOLIO_SECOND_PAGE)
--FOLIO_TEST_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
--/*
-- * PG_partially_mapped is protected by deferred_split split_queue_lock,
-- * so its safe to use non-atomic set/clear.
-- */
--__FOLIO_SET_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
--__FOLIO_CLEAR_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
-+FOLIO_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
- #else
- FOLIO_FLAG_FALSE(large_rmappable)
--FOLIO_TEST_FLAG_FALSE(partially_mapped)
--__FOLIO_SET_FLAG_NOOP(partially_mapped)
--__FOLIO_CLEAR_FLAG_NOOP(partially_mapped)
-+FOLIO_FLAG_FALSE(partially_mapped)
- #endif
+--- a/include/linux/alloc_tag.h~mm-codetag-clear-tags-before-swap
++++ a/include/linux/alloc_tag.h
+@@ -135,7 +135,7 @@ static inline struct alloc_tag_counters
+ #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
+ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag)
+ {
+-	WARN_ONCE(ref && ref->ct,
++	WARN_ONCE(ref && ref->ct && !is_codetag_empty(ref),
+ 		  "alloc_tag was not cleared (got tag for %s:%u)\n",
+ 		  ref->ct->filename, ref->ct->lineno);
  
- #define PG_head_mask ((1UL << PG_head))
---- a/mm/huge_memory.c~mm-convert-partially_mapped-set-clear-operations-to-be-atomic
-+++ a/mm/huge_memory.c
-@@ -3577,7 +3577,7 @@ int split_huge_page_to_list_to_order(str
- 		    !list_empty(&folio->_deferred_list)) {
- 			ds_queue->split_queue_len--;
- 			if (folio_test_partially_mapped(folio)) {
--				__folio_clear_partially_mapped(folio);
-+				folio_clear_partially_mapped(folio);
- 				mod_mthp_stat(folio_order(folio),
- 					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 			}
-@@ -3689,7 +3689,7 @@ bool __folio_unqueue_deferred_split(stru
- 	if (!list_empty(&folio->_deferred_list)) {
- 		ds_queue->split_queue_len--;
- 		if (folio_test_partially_mapped(folio)) {
--			__folio_clear_partially_mapped(folio);
-+			folio_clear_partially_mapped(folio);
- 			mod_mthp_stat(folio_order(folio),
- 				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 		}
-@@ -3733,7 +3733,7 @@ void deferred_split_folio(struct folio *
- 	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
- 	if (partially_mapped) {
- 		if (!folio_test_partially_mapped(folio)) {
--			__folio_set_partially_mapped(folio);
-+			folio_set_partially_mapped(folio);
- 			if (folio_test_pmd_mappable(folio))
- 				count_vm_event(THP_DEFERRED_SPLIT_PAGE);
- 			count_mthp_stat(folio_order(folio), MTHP_STAT_SPLIT_DEFERRED);
-@@ -3826,7 +3826,7 @@ static unsigned long deferred_split_scan
- 		} else {
- 			/* We lost race with folio_put() */
- 			if (folio_test_partially_mapped(folio)) {
--				__folio_clear_partially_mapped(folio);
-+				folio_clear_partially_mapped(folio);
- 				mod_mthp_stat(folio_order(folio),
- 					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 			}
+--- a/lib/alloc_tag.c~mm-codetag-clear-tags-before-swap
++++ a/lib/alloc_tag.c
+@@ -209,6 +209,13 @@ void pgalloc_tag_swap(struct folio *new,
+ 		return;
+ 	}
+ 
++	/*
++	 * Clear tag references to avoid debug warning when using
++	 * __alloc_tag_ref_set() with non-empty reference.
++	 */
++	set_codetag_empty(&ref_old);
++	set_codetag_empty(&ref_new);
++
+ 	/* swap tags */
+ 	__alloc_tag_ref_set(&ref_old, tag_new);
+ 	update_page_tag_ref(handle_old, &ref_old);
 _
 
-Patches currently in -mm which might be from usamaarif642@gmail.com are
+Patches currently in -mm which might be from 00107082@163.com are
 
 
 
