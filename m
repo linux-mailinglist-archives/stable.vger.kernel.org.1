@@ -1,118 +1,126 @@
-Return-Path: <stable+bounces-105290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936B19F79B3
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 11:39:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B686C9F79F1
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 11:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB4B216BD8B
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 10:38:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 139BA16ACF3
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 10:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A63A222D5E;
-	Thu, 19 Dec 2024 10:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M/43WoyN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB17F223330;
+	Thu, 19 Dec 2024 10:58:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87735221D8C
-	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 10:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADC422332C
+	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 10:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734604727; cv=none; b=LndO5X+YsQdMUPeQlTZRFw8Zz8JCzKzaIeDlbeEs3I2XhqVlYMxrPvXpKPf5dCK0V5jicUgCLl+XfJW5QlYW4iftu6Z7SXKJjdafGslQSwQEVfxR1/WLQIn0qNEJYLu8jNd8TECtUYs2lVPV3GbTVUfiK/xj1gqQVBAsDKQFt+k=
+	t=1734605929; cv=none; b=LFmvBLxcHkVlkVQgGxtDaCz+wFPQL2b1RF/R8xD4Z62iAqBQXGFZA2VS7zPU9rEfU5pFcQ/Erix4w/JC76cdbTsk7N1x+/ED5IyVe4uBbw9qRoujrMi2xjhxFUQGWJM7mfX9rdf8te3XdP5br5JObRSc/G5JlVrxX23D/hs/D10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734604727; c=relaxed/simple;
-	bh=DPmWrav8mPAsVCxJgpSudbk0PrfP+mG4vkwDLcZsJrE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t2jasaniEEA0aXnVnD8kS4OSGuewcmz05H9BVXX+QN7OlaT4fRjSYqm9/JiChn4NXgt2+p7YZEkUVastbeRoOv/WTq5RmMmcRKPH1YXJTyUG6MDMR1JgeSAIn0VNpK4rwPGI1PJnF/6Lp1TsARCXj2Zl2F/9Y79JDABUNdPAozg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M/43WoyN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734604724;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0GjqLR85RKltTkbESZcmcm9ul9rbVN2oBs4OUn61pgc=;
-	b=M/43WoyNJzxQXVpGERn/2aJJgnXNNNc/Q+AmMK8k6NQeoZgQkahXtCD2dvtIslTQDNK7EZ
-	e7eKoj7Ht+/CkjAfmA4zWtODB7SKcwi8kkQBw+zEEwqD55MJRIZ/u8VD+1Ql0gh8mze00L
-	L+AIu76Alek/L1nrmCUz0uurxk6kOjs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-568-Re7v6zcdNUWt1BLp5OE2Ug-1; Thu,
- 19 Dec 2024 05:38:40 -0500
-X-MC-Unique: Re7v6zcdNUWt1BLp5OE2Ug-1
-X-Mimecast-MFC-AGG-ID: Re7v6zcdNUWt1BLp5OE2Ug
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 893A31955F06;
-	Thu, 19 Dec 2024 10:38:39 +0000 (UTC)
-Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AD16219560AD;
-	Thu, 19 Dec 2024 10:38:38 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	stable@vger.kernel.org,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH] KVM: SVM: allow flipping the LFENCE_SERIALIZE bit
-Date: Thu, 19 Dec 2024 05:38:37 -0500
-Message-ID: <20241219103837.325113-1-pbonzini@redhat.com>
+	s=arc-20240116; t=1734605929; c=relaxed/simple;
+	bh=G5kcT4WxhFuzMY1pRCiYzc4K//k/tyl+NmgIcVDYP9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H3kBYg0TaxmVEWAjpWtlvu58lZpHNBxNeXJ1BIk9TXRih9ONXPBnLwJQ5CFA3W3XGupiBjduRp7ATzgKi16jexCKbH5Tgaui0+gNMR8rrE1uXU+ORmM8ugmt3O03t1kUyWhA6FwFU2cey3PD7rXyf07pWM2hHi7SQKNNlJuzubY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 1A80172C8CC;
+	Thu, 19 Dec 2024 13:49:23 +0300 (MSK)
+Received: from pony.office.basealt.ru (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id 1026E36D0193;
+	Thu, 19 Dec 2024 13:49:23 +0300 (MSK)
+Received: by pony.office.basealt.ru (Postfix, from userid 500)
+	id DB1BF360CB20; Thu, 19 Dec 2024 13:49:22 +0300 (MSK)
+Date: Thu, 19 Dec 2024 13:49:22 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, gshan@redhat.com, james.morse@arm.com, 
+	maz@kernel.org, oliver.upton@linux.dev, shameerali.kolothum.thodi@huawei.com, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Jing Zhang <jingzhangos@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 6.6 v1] KVM: arm64: Disable MPAM visibility by default
+ and ignore VMM writes
+Message-ID: <fqmjpadvbc7hoakm5qsmaxbgr7jomuehxjm3axo3sbpl4nzqvg@innog6dkmwqd>
+References: <20241212151406.1436382-1-joey.gouly@arm.com>
+ <2024121528-refurbish-plausibly-31c7@gregkh>
+ <20241217104058.GA2151333@e124191.cambridge.arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241217104058.GA2151333@e124191.cambridge.arm.com>
 
-Allow the guest to both clear and set the LFENCE_SERIALIZE bit as long as
-it is set in the host.  It is absolutely okay for the guest to set it if
-LFENCE_RDTSC is supported but userspace left it cleared; and it is also
-acceptable that the guest clears the bit even if this will actually have
-no effect.
+Marc, Joey,
 
-This fixes booting Windows in some configuration where it tries to set
-the bit, and hangs if it does not succeed.
+On Tue, Dec 17, 2024 at 10:40:58AM GMT, Joey Gouly wrote:
+> On Sun, Dec 15, 2024 at 10:22:53AM +0100, Greg KH wrote:
+> > On Thu, Dec 12, 2024 at 03:14:06PM +0000, Joey Gouly wrote:
+> > > From: James Morse <james.morse@arm.com>
+> > > 
+> > > commit 6685f5d572c22e1003e7c0d089afe1c64340ab1f upstream.
+> > > 
+> > > commit 011e5f5bf529f ("arm64/cpufeature: Add remaining feature bits in
+> > > ID_AA64PFR0 register") exposed the MPAM field of AA64PFR0_EL1 to guests,
+> > > but didn't add trap handling. A previous patch supplied the missing trap
+> > > handling.
+> > > 
+> > > Existing VMs that have the MPAM field of ID_AA64PFR0_EL1 set need to
+> > > be migratable, but there is little point enabling the MPAM CPU
+> > > interface on new VMs until there is something a guest can do with it.
+> > > 
+> > > Clear the MPAM field from the guest's ID_AA64PFR0_EL1 and on hardware
+> > > that supports MPAM, politely ignore the VMMs attempts to set this bit.
+> > > 
+> > > Guests exposed to this bug have the sanitised value of the MPAM field,
+> > > so only the correct value needs to be ignored. This means the field
+> > > can continue to be used to block migration to incompatible hardware
+> > > (between MPAM=1 and MPAM=5), and the VMM can't rely on the field
+> > > being ignored.
+> > > 
+> > > Signed-off-by: James Morse <james.morse@arm.com>
+> > > Co-developed-by: Joey Gouly <joey.gouly@arm.com>
+> > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > Tested-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> > > Reviewed-by: Marc Zyngier <maz@kernel.org>
+> > > Link: https://lore.kernel.org/r/20241030160317.2528209-7-joey.gouly@arm.com
+> > > Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> > > [ joey: fixed up merge conflict, no ID_FILTERED macro in 6.6 ]
+> > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> > > Cc: stable@vger.kernel.org # 6.6.x
+> > > Cc: Vitaly Chikunov <vt@altlinux.org>
+> > > Link: https://lore.kernel.org/linux-arm-kernel/20241202045830.e4yy3nkvxtzaybxk@altlinux.org/
+> > > ---
+> > > 
+> > > This fixes an issue seen when using KVM with a 6.6 host kernel, and
+> > > newer (6.13+) kernels in the guest.
+> > > 
+> > > Tested with a stripped down version of set_id_regs from the original
+> > > patch series.
+> > 
+> > What about 6.12.y?  You can't just skip a stable tree, otherwise you
+> > will get a regression when you upgrade to 6.12.y, right?
+> 
+> I did have it ported/tested locally, but I wasn't sure of the stable process,
+> so just sent out one!  Next time I will send all the backports at the same
+> time.
+> 
+> Thanks Marc Z for sending it out!
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Fixes: 74a0e79df68a ("KVM: SVM: Disallow guest from changing userspace's MSR_AMD64_DE_CFG value")
-Cc: stable@vger.kernel.org
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/svm/svm.c | 9 ---------
- 1 file changed, 9 deletions(-)
+Thank you for backporting this, and thanks to everyone involved in the fix.
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index dd15cc635655..21dacd312779 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3201,15 +3201,6 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
- 		if (data & ~supported_de_cfg)
- 			return 1;
- 
--		/*
--		 * Don't let the guest change the host-programmed value.  The
--		 * MSR is very model specific, i.e. contains multiple bits that
--		 * are completely unknown to KVM, and the one bit known to KVM
--		 * is simply a reflection of hardware capabilities.
--		 */
--		if (!msr->host_initiated && data != svm->msr_decfg)
--			return 1;
--
- 		svm->msr_decfg = data;
- 		break;
- 	}
--- 
-2.43.5
+Vitaly,
 
+> 
+> Joey
 
