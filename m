@@ -1,154 +1,185 @@
-Return-Path: <stable+bounces-105287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875149F7892
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 10:31:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C5C9F788E
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 10:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 470F218895C0
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 09:31:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65E841656FF
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 09:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B9D221472;
-	Thu, 19 Dec 2024 09:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB62D221472;
+	Thu, 19 Dec 2024 09:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="sBMq9/SB"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="me1FGiEk"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B43D2165F7;
-	Thu, 19 Dec 2024 09:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B802222563;
+	Thu, 19 Dec 2024 09:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734600691; cv=none; b=beSP7a9QIgq1XotS5U/G66zdoFTmQ2L8qVVUeX+TGj+ZqVQgcjbm7FXMew3DyqheILkku1b0aP7OJ5IUJkT4IiLZI9PMf/PiE/LMtWSmdRvpFrviAZF64trn7rcF1VxAqu9v+fIPgKq8jf94bl1/KGm2nANrUhaRXuzUpmMX78I=
+	t=1734600659; cv=none; b=gHQJSysdfD86tatzPYzKPhfyWYzwQig12fHJlDIdCWDnIrvUzJ29RTdnmUZL8yf/wfdqvq2W2Q5Z6SMU3m/7qZYMgzHfECOPIkjybl4KnSJPEQoz6yFe1B0P5Xlue7ekygIlaDoqL1uaKRpOr8fHMYss2FedRamhl9Vs/mBfu1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734600691; c=relaxed/simple;
-	bh=ik7oh3Iyx9RJyQqujVRwuabo9q5/sFl2UOPtQpw4W6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=KnoTD0JtigWBvg+r1LNElWjngYJY+aoju8WZrgiU2Ci4b1JqdE/AMSzF/rW9+y5Y/Ybom8LfWc+KpQJKwUSYgMm+D3bEw2IRTlw9IdYBfYV0nBm4qzInlDfZnuQvAdTzmE92ngy0XaDkMcyXWAUNRDr7e5V0Th+ELZnaKxmUh/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=sBMq9/SB; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BJ8p3br024853;
-	Thu, 19 Dec 2024 10:31:04 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	WmGBp6Jz4nXDnKrhsKtK5WI9Ke0a+8w8SkZRoc2M1nA=; b=sBMq9/SB9yLoCwZP
-	V8U7mKt5eXGedyPPkpqqVvIL0pPA5BrabXv8o9A9vwa60x9zx9DLiSW2L8RVKAlX
-	1gI/GZikEuzTpTArtQxrBEC9O1lXnMG3NgsFmzYpe4jup1T65tD8jh/AM43Mfaom
-	Mb+UVwfYWrB0MpLVvFWzhWzkalWkmoAyJg4N6VcmZg5iNlvTE5iA1IihpB+fftMF
-	8/C5o2z8hP0ESLXEa9jRD/6GnZiClmlZX+JjS4pd4iIaWR6xyqEXjZL/+7H3Q/9k
-	WW/Ceujv7KDfUjwa1LCTo/fcO3mhI4WrotAEu5ot/3uxqjwcJ3nbfhbO4aOMpD7l
-	ZS+i4g==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 43m03s3ecr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Dec 2024 10:31:04 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 21ADB4004A;
-	Thu, 19 Dec 2024 10:29:42 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 5E72A25CBE0;
-	Thu, 19 Dec 2024 10:28:40 +0100 (CET)
-Received: from [10.48.86.79] (10.48.86.79) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Thu, 19 Dec
- 2024 10:28:39 +0100
-Message-ID: <b6d92560-1bcc-4c9f-be1e-a5b7056f788a@foss.st.com>
-Date: Thu, 19 Dec 2024 10:28:39 +0100
+	s=arc-20240116; t=1734600659; c=relaxed/simple;
+	bh=cIFpi4oPu4AE/Gkd9AjeFMbwJ5/Efjo1d0EkGsl0rd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FZuBr8wUOK1BmbeMEtPRVR5H9X5z8suUd+XXlDaMicoBxhfAHo9csYPF3Gd/PQF5IIHhjNzvLX9rEOXuRZuJCXQ1W6oSXMzhGCCg2yAaZCEv7ER8jK97IczgVxiEcZbSm8dh9aFAj23/6Dzvjum6sL/oe/Nbl6w8w1uvfsMGs1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=me1FGiEk; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ZbFvZOFx+6BUg6zhOGCAS7uXf1ByPcEc85/6NcuhpcU=; b=me1FGiEktcTmKHit1bOzMXMzkS
+	CqtggkgZIuLErwhv6sHY6ZP+Ja9kBSczjYLDZXVc/OM/3quJ11oK1TZPdxHyxTIBI07qK+Ztsb3cC
+	7iZf/oDmLdQoNb4YQqYDk8wY5LvG7a143tfosW+IqD/eucL7WQd9pt7fO1l2RPG3GKMy/k+WgMwy5
+	JrOLa5SjoOKs/ac0bGPhi4MTDx7KyyLkS6P8paakcxjz+tApB9Jqn2S6KF2oRtHCUR+yDy4uAuese
+	7yTsaD8b8BDkE6eG6rGOV+0qZT1m0KlD8HVvtOR9Wix4teKMzK5eWrTKy+8R4l+ifJWMsl5tCDKJf
+	mVqn1J0Q==;
+Received: from [90.241.98.187] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tOCro-005B7A-R7; Thu, 19 Dec 2024 10:30:49 +0100
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	linux-kernel@vger.kernel.org,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Tejun Heo <tj@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] workqueue: Do not warn when cancelling WQ_MEM_RECLAIM work from !WQ_MEM_RECLAIM worker
+Date: Thu, 19 Dec 2024 09:30:30 +0000
+Message-ID: <20241219093030.52080-1-tursulin@igalia.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/15] media: stm32: introduction of CSI / DCMIPP for
- STM32MP25
-To: Alain Volmat <alain.volmat@foss.st.com>,
-        Hugues Fruchet
-	<hugues.fruchet@foss.st.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Sakari Ailus
-	<sakari.ailus@linux.intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof
- Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Philipp
- Zabel <p.zabel@pengutronix.de>,
-        Hans Verkuil <hverkuil@xs4all.nl>
-CC: <linux-media@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <stable@vger.kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski@linaro.org>
-References: <20241212-csi_dcmipp_mp25-v4-0-fbeb55a05ed7@foss.st.com>
-Content-Language: en-US
-From: Alexandre TORGUE <alexandre.torgue@foss.st.com>
-In-Reply-To: <20241212-csi_dcmipp_mp25-v4-0-fbeb55a05ed7@foss.st.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Alain
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-On 12/12/24 10:17, Alain Volmat wrote:
-> This series introduces the camera pipeline support for the
-> STM32MP25 SOC.  The STM32MP25 has 3 pipelines, fed from a
-> single camera input which can be either parallel or csi.
-> 
-> This series adds the basic support for the 1st pipe (dump)
-> which, in term of features is same as the one featured on
-> the STM32MP13 SOC.  It focuses on introduction of the
-> CSI input stage for the DCMIPP, and the CSI specific new
-> control code for the DCMIPP.
-> One of the subdev of the DCMIPP, dcmipp_parallel is now
-> renamed as dcmipp_input since it allows to not only control
-> the parallel but also the csi interface.
-> 
-> Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-> ---
-> Changes in v4:
-> * stm32-dcmipp: correct patch 13/15 with clk error handling in
->    dcmipp_runtime_resume function
-> - Link to v3: https://lore.kernel.org/r/20241118-csi_dcmipp_mp25-v3-0-c1914afb0a0f@foss.st.com
-> 
-> Changes in v3:
-> * stm32-csi: use clk_bulk api
-> * stm32-csiL perform reset control within the probe
-> - Link to v2: https://lore.kernel.org/r/20241105-csi_dcmipp_mp25-v2-0-b9fc8a7273c2@foss.st.com
-> 
-> ---
-> Alain Volmat (15):
->        media: stm32: dcmipp: correct dma_set_mask_and_coherent mask value
->        dt-bindings: media: add description of stm32 csi
->        media: stm32: csi: addition of the STM32 CSI driver
->        media: stm32: dcmipp: use v4l2_subdev_is_streaming
->        media: stm32: dcmipp: replace s_stream with enable/disable_streams
->        media: stm32: dcmipp: rename dcmipp_parallel into dcmipp_input
->        media: stm32: dcmipp: add support for csi input into dcmipp-input
->        media: stm32: dcmipp: add bayer 10~14 bits formats
->        media: stm32: dcmipp: add 1X16 RGB / YUV formats support
->        media: stm32: dcmipp: avoid duplicated format on enum in bytecap
->        media: stm32: dcmipp: fill media ctl hw_revision field
->        dt-bindings: media: add the stm32mp25 compatible of DCMIPP
->        media: stm32: dcmipp: add core support for the stm32mp25
->        arm64: dts: st: add csi & dcmipp node in stm32mp25
->        arm64: dts: st: enable imx335/csi/dcmipp pipeline on stm32mp257f-ev1
+After commit
+746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
+amdgpu started seeing the following warning:
 
-DT patches applied on stm32-next (as drivers and dt-bindings patches are 
-in linux-next branch).
+ [ ] workqueue: WQ_MEM_RECLAIM sdma0:drm_sched_run_job_work [gpu_sched] is flushing !WQ_MEM_RECLAIM events:amdgpu_device_delay_enable_gfx_off [amdgpu]
+...
+ [ ] Workqueue: sdma0 drm_sched_run_job_work [gpu_sched]
+...
+ [ ] Call Trace:
+ [ ]  <TASK>
+...
+ [ ]  ? check_flush_dependency+0xf5/0x110
+...
+ [ ]  cancel_delayed_work_sync+0x6e/0x80
+ [ ]  amdgpu_gfx_off_ctrl+0xab/0x140 [amdgpu]
+ [ ]  amdgpu_ring_alloc+0x40/0x50 [amdgpu]
+ [ ]  amdgpu_ib_schedule+0xf4/0x810 [amdgpu]
+ [ ]  ? drm_sched_run_job_work+0x22c/0x430 [gpu_sched]
+ [ ]  amdgpu_job_run+0xaa/0x1f0 [amdgpu]
+ [ ]  drm_sched_run_job_work+0x257/0x430 [gpu_sched]
+ [ ]  process_one_work+0x217/0x720
+...
+ [ ]  </TASK>
 
-Thanks
-Alex
+The intent of the verifcation done in check_flush_depedency is to ensure
+forward progress during memory reclaim, by flagging cases when either a
+memory reclaim process, or a memory reclaim work item is flushed from a
+context not marked as memory reclaim safe.
+
+This is correct when flushing, but when called from the
+cancel(_delayed)_work_sync() paths it is a false positive because work is
+either already running, or will not be running at all. Therefore
+cancelling it is safe and we can relax the warning criteria by letting the
+helper know of the calling context.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: fca839c00a12 ("workqueue: warn if memory reclaim tries to flush !WQ_MEM_RECLAIM workqueue")
+References: 746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v4.5+
+---
+ kernel/workqueue.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
+
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 9949ffad8df0..7abba81296cd 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -3680,23 +3680,27 @@ void workqueue_softirq_dead(unsigned int cpu)
+  * check_flush_dependency - check for flush dependency sanity
+  * @target_wq: workqueue being flushed
+  * @target_work: work item being flushed (NULL for workqueue flushes)
++ * @from_cancel: are we called from the work cancel path
+  *
+  * %current is trying to flush the whole @target_wq or @target_work on it.
+- * If @target_wq doesn't have %WQ_MEM_RECLAIM, verify that %current is not
+- * reclaiming memory or running on a workqueue which doesn't have
+- * %WQ_MEM_RECLAIM as that can break forward-progress guarantee leading to
+- * a deadlock.
++ * If this is not the cancel path (which implies work being flushed is either
++ * already running, or will not be at all), check if @target_wq doesn't have
++ * %WQ_MEM_RECLAIM and verify that %current is not reclaiming memory or running
++ * on a workqueue which doesn't have %WQ_MEM_RECLAIM as that can break forward-
++ * progress guarantee leading to a deadlock.
+  */
+ static void check_flush_dependency(struct workqueue_struct *target_wq,
+-				   struct work_struct *target_work)
++				   struct work_struct *target_work,
++				   bool from_cancel)
+ {
+-	work_func_t target_func = target_work ? target_work->func : NULL;
++	work_func_t target_func;
+ 	struct worker *worker;
+ 
+-	if (target_wq->flags & WQ_MEM_RECLAIM)
++	if (from_cancel || target_wq->flags & WQ_MEM_RECLAIM)
+ 		return;
+ 
+ 	worker = current_wq_worker();
++	target_func = target_work ? target_work->func : NULL;
+ 
+ 	WARN_ONCE(current->flags & PF_MEMALLOC,
+ 		  "workqueue: PF_MEMALLOC task %d(%s) is flushing !WQ_MEM_RECLAIM %s:%ps",
+@@ -3966,7 +3970,7 @@ void __flush_workqueue(struct workqueue_struct *wq)
+ 		list_add_tail(&this_flusher.list, &wq->flusher_overflow);
+ 	}
+ 
+-	check_flush_dependency(wq, NULL);
++	check_flush_dependency(wq, NULL, false);
+ 
+ 	mutex_unlock(&wq->mutex);
+ 
+@@ -4141,7 +4145,7 @@ static bool start_flush_work(struct work_struct *work, struct wq_barrier *barr,
+ 	}
+ 
+ 	wq = pwq->wq;
+-	check_flush_dependency(wq, work);
++	check_flush_dependency(wq, work, from_cancel);
+ 
+ 	insert_wq_barrier(pwq, barr, work, worker);
+ 	raw_spin_unlock_irq(&pool->lock);
+-- 
+2.47.1
+
 
