@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-105253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C149F71B3
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE0E9F71B1
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9D1F169522
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:23:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FE1B168DD7
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 01:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94BA70808;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72378339A1;
 	Thu, 19 Dec 2024 01:23:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CD641C72;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C5E1853;
 	Thu, 19 Dec 2024 01:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734571387; cv=none; b=KWpaYBy3iLVISIhLnI513j2zhsO4xthWk4nXPmwBjRSVDdqFKkPJwbDY336imS6AXxKVfOlkd0bdjrwN4ugQzTVajSxEY56N+ZkIzcqoK8C9fTu9Px4Y1+/VaYbaCNbKC0GCe/x6WEZhHQWSkMXx9ar29mSWbaRJkDv/Sch8m/4=
+	t=1734571387; cv=none; b=P41cpwcvkVoCMixGEHrbIPIJ47U6htyPkutka8qPYPh+kZVh/zLtm+tOqSLOxpWNl20qAXFLwVJV/avic+QzBmJUTkvkID2g73SHHFim3u5oVhglMNy4RlXGgxqb3AlgYUwRGq1v4wfRQhz13rnNfb6UwQCKygXuzQYXweMPKN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1734571387; c=relaxed/simple;
-	bh=KtKWg+kyrvySj1SXUXmmVG0S88tVlPAeJs4RX52M4Wc=;
+	bh=6Khi+jzISIzfUW9GXWIi5pRc7MyRXAUtE5X+lmCD4Lk=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=aK06bDr7KY0xHaFzkpCVI2G8Y6z7Fn2Wlyu/eG7lLLgH5/r8YWHJTZiZfAMoFoG/m0+1QZ+Nqjt+fu1nhdeSIhPq9H4pJWWpTB4aKUjXDuOaRKVLDiWIwhUsZe287Ye5WuPqTsnh7QGYaYZAZ/YZd/hx4QYwC+xpW9wi2vU+Eok=
+	 Content-Type; b=bZFwRNSDSWf6VruXLms+eTsDF7iv2G/JwboYDiQAUaCKeaq7DtLgnAwxT2ONPsieZF5eynplqY4CzAwWcEjnr7wvQWkp60qjNYsq5DFAhRUEnmj9t062NQUZzii4N3lmy9VP2nv1isl+Q+kE1ocH0aNICLxppPemhTJlLyTcTaE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A19C4CED7;
-	Thu, 19 Dec 2024 01:23:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1484AC4AF09;
+	Thu, 19 Dec 2024 01:23:07 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.98)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1tO5GU-00000009mO6-2KG8;
+	id 1tO5GU-00000009mOc-31zH;
 	Wed, 18 Dec 2024 20:23:46 -0500
-Message-ID: <20241219012346.411908681@goodmis.org>
+Message-ID: <20241219012346.575822656@goodmis.org>
 User-Agent: quilt/0.68
-Date: Wed, 18 Dec 2024 20:23:12 -0500
+Date: Wed, 18 Dec 2024 20:23:13 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -43,9 +43,9 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org,
- syzbot+345e4443a21200874b18@syzkaller.appspotmail.com,
- Edward Adam Davis <eadavis@qq.com>
-Subject: [for-linus][PATCH 1/2] ring-buffer: Fix overflow in __rb_map_vma
+ Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [for-linus][PATCH 2/2] trace/ring-buffer: Do not use TP_printk() formatting for boot mapped
+ buffers
 References: <20241219012311.649442084@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,97 +55,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-An overflow occurred when performing the following calculation:
+The TP_printk() of a TRACE_EVENT() is a generic printf format that any
+developer can create for their event. It may include pointers to strings
+and such. A boot mapped buffer may contain data from a previous kernel
+where the strings addresses are different.
 
-   nr_pages = ((nr_subbufs + 1) << subbuf_order) - pgoff;
+One solution is to copy the event content and update the pointers by the
+recorded delta, but a simpler solution (for now) is to just use the
+print_fields() function to print these events. The print_fields() function
+just iterates the fields and prints them according to what type they are,
+and ignores the TP_printk() format from the event itself.
 
-Add a check before the calculation to avoid this problem.
+To understand the difference, when printing via TP_printk() the output
+looks like this:
 
-syzbot reported this as a slab-out-of-bounds in __rb_map_vma:
+  4582.696626: kmem_cache_alloc: call_site=getname_flags+0x47/0x1f0 ptr=00000000e70e10e0 bytes_req=4096 bytes_alloc=4096 gfp_flags=GFP_KERNEL node=-1 accounted=false
+  4582.696629: kmem_cache_alloc: call_site=alloc_empty_file+0x6b/0x110 ptr=0000000095808002 bytes_req=360 bytes_alloc=384 gfp_flags=GFP_KERNEL node=-1 accounted=false
+  4582.696630: kmem_cache_alloc: call_site=security_file_alloc+0x24/0x100 ptr=00000000576339c3 bytes_req=16 bytes_alloc=16 gfp_flags=GFP_KERNEL|__GFP_ZERO node=-1 accounted=false
+  4582.696653: kmem_cache_free: call_site=do_sys_openat2+0xa7/0xd0 ptr=00000000e70e10e0 name=names_cache
 
-BUG: KASAN: slab-out-of-bounds in __rb_map_vma+0x9ab/0xae0 kernel/trace/ring_buffer.c:7058
-Read of size 8 at addr ffff8880767dd2b8 by task syz-executor187/5836
+But when printing via print_fields() (echo 1 > /sys/kernel/tracing/options/fields)
+the same event output looks like this:
 
-CPU: 0 UID: 0 PID: 5836 Comm: syz-executor187 Not tainted 6.13.0-rc2-syzkaller-00159-gf932fb9b4074 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:489
- kasan_report+0xd9/0x110 mm/kasan/report.c:602
- __rb_map_vma+0x9ab/0xae0 kernel/trace/ring_buffer.c:7058
- ring_buffer_map+0x56e/0x9b0 kernel/trace/ring_buffer.c:7138
- tracing_buffers_mmap+0xa6/0x120 kernel/trace/trace.c:8482
- call_mmap include/linux/fs.h:2183 [inline]
- mmap_file mm/internal.h:124 [inline]
- __mmap_new_file_vma mm/vma.c:2291 [inline]
- __mmap_new_vma mm/vma.c:2355 [inline]
- __mmap_region+0x1786/0x2670 mm/vma.c:2456
- mmap_region+0x127/0x320 mm/mmap.c:1348
- do_mmap+0xc00/0xfc0 mm/mmap.c:496
- vm_mmap_pgoff+0x1ba/0x360 mm/util.c:580
- ksys_mmap_pgoff+0x32c/0x5c0 mm/mmap.c:542
- __do_sys_mmap arch/x86/kernel/sys_x86_64.c:89 [inline]
- __se_sys_mmap arch/x86/kernel/sys_x86_64.c:82 [inline]
- __x64_sys_mmap+0x125/0x190 arch/x86/kernel/sys_x86_64.c:82
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The reproducer for this bug is:
-
-------------------------8<-------------------------
- #include <fcntl.h>
- #include <stdlib.h>
- #include <unistd.h>
- #include <asm/types.h>
- #include <sys/mman.h>
-
- int main(int argc, char **argv)
- {
-	int page_size = getpagesize();
-	int fd;
-	void *meta;
-
-	system("echo 1 > /sys/kernel/tracing/buffer_size_kb");
-	fd = open("/sys/kernel/tracing/per_cpu/cpu0/trace_pipe_raw", O_RDONLY);
-
-	meta = mmap(NULL, page_size, PROT_READ, MAP_SHARED, fd, page_size * 5);
- }
------------------------->8-------------------------
+  4582.696626: kmem_cache_alloc: call_site=0xffffffff92d10d97 (-1831793257) ptr=0xffff9e0e8571e000 (-107689771147264) bytes_req=0x1000 (4096) bytes_alloc=0x1000 (4096) gfp_flags=0xcc0 (3264) node=0xffffffff (-1) accounted=(0)
+  4582.696629: kmem_cache_alloc: call_site=0xffffffff92d0250b (-1831852789) ptr=0xffff9e0e8577f800 (-107689770747904) bytes_req=0x168 (360) bytes_alloc=0x180 (384) gfp_flags=0xcc0 (3264) node=0xffffffff (-1) accounted=(0)
+  4582.696630: kmem_cache_alloc: call_site=0xffffffff92efca74 (-1829778828) ptr=0xffff9e0e8d35d3b0 (-107689640864848) bytes_req=0x10 (16) bytes_alloc=0x10 (16) gfp_flags=0xdc0 (3520) node=0xffffffff (-1) accounted=(0)
+  4582.696653: kmem_cache_free: call_site=0xffffffff92cfbea7 (-1831879001) ptr=0xffff9e0e8571e000 (-107689771147264) name=names_cache
 
 Cc: stable@vger.kernel.org
-Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
-Link: https://lore.kernel.org/tencent_06924B6674ED771167C23CC336C097223609@qq.com
-Reported-by: syzbot+345e4443a21200874b18@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=345e4443a21200874b18
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20241218141507.28389a1d@gandalf.local.home
+Fixes: 07714b4bb3f98 ("tracing: Handle old buffer mappings for event strings and functions")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/ring_buffer.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/trace/trace.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 7e257e855dd1..60210fb5b211 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -7019,7 +7019,11 @@ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
- 	lockdep_assert_held(&cpu_buffer->mapping_lock);
- 
- 	nr_subbufs = cpu_buffer->nr_pages + 1; /* + reader-subbuf */
--	nr_pages = ((nr_subbufs + 1) << subbuf_order) - pgoff; /* + meta-page */
-+	nr_pages = ((nr_subbufs + 1) << subbuf_order); /* + meta-page */
-+	if (nr_pages <= pgoff)
-+		return -EINVAL;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index be62f0ea1814..6581cb2bc67f 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4353,6 +4353,15 @@ static enum print_line_t print_trace_fmt(struct trace_iterator *iter)
+ 	if (event) {
+ 		if (tr->trace_flags & TRACE_ITER_FIELDS)
+ 			return print_event_fields(iter, event);
++		/*
++		 * For TRACE_EVENT() events, the print_fmt is not
++		 * safe to use if the array has delta offsets
++		 * Force printing via the fields.
++		 */
++		if ((tr->text_delta || tr->data_delta) &&
++		    event->type > __TRACE_LAST_TYPE)
++			return print_event_fields(iter, event);
 +
-+	nr_pages -= pgoff;
+ 		return event->funcs->trace(iter, sym_flags, event);
+ 	}
  
- 	nr_vma_pages = vma_pages(vma);
- 	if (!nr_vma_pages || nr_vma_pages > nr_pages)
 -- 
 2.45.2
 
