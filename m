@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-105256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4269F7290
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:27:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722DB9F7326
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 04:05:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4E51188B6DA
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 02:27:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 541A47A35ED
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 03:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3053478F29;
-	Thu, 19 Dec 2024 02:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404DB12C484;
+	Thu, 19 Dec 2024 03:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mzxeQvLK"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="co2vWjnQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B7870809;
-	Thu, 19 Dec 2024 02:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACDD1EA90;
+	Thu, 19 Dec 2024 03:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734575256; cv=none; b=ZvqJ6kDULzzyK5FbDZ6XfnDos0AiwkTDv1R+Cbw57drXiC9r1CHgL7fimI0+UYp3iTz0FZGse8l0Lk/m/j78FQ1He7NlZVfxa5QksPwiZFMKViWGw4VREu7PyFmIZ4ceDqOH9x7NIpKYLj7DX8Mzh71KWk0LlZikwfpJy4fM2RY=
+	t=1734577516; cv=none; b=ZsPmCV3FanrX/Xyh2uKH9KzgWjOT8Xgyka41QMPd2qJsTrJg9bm9iErZ2RVhxA8MVbathMg2M5ItO/71n9K5YGO98qH7Se51/HGeQ/Cm8WScoHxOxzZTH8U/jK2GJd2UdNLrFhapRZA8K1v5ouj4e5HfNxVnU7CBfEEfKEMZVTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734575256; c=relaxed/simple;
-	bh=OB6AcvM7XAqC2Z3FFsNNoei0wuA772XqOc/I3kn/XV8=;
-	h=Date:To:From:Subject:Message-Id; b=RWvmsBo6UlzIJyq4aEsrCl4Rn1126ATDQa01AlR09b/WBbsnYbZ0CMr+cDwLIWWzt6NvBodmMyWSWzHK6+uPoT5pCXBlTWJPcutoFKah4NaXl6czRsYT5Oo2v2oeSFY/mLKqvsc5gdW/TSOQBK+wFlnqLpTEtJKc6wqDA/BPYaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mzxeQvLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E4EC4CECD;
-	Thu, 19 Dec 2024 02:27:34 +0000 (UTC)
+	s=arc-20240116; t=1734577516; c=relaxed/simple;
+	bh=yOCeGTPFSDVFMS535a9jz95Uit346xOX0ir1pXgt8Ao=;
+	h=Date:To:From:Subject:Message-Id; b=L3qbvSW8inp+ChBpHTdaeAVai8qYY2X7hPcJ7zAFjRCOV72CmyG1LDKE3XrWMeQUzpMr7PS46xu6hN+ON6mPLqcbYEt3Qf0dXo/gqH/1d7MJakUUlysPEFPZBbjFq5CXEcIcK7yN61/EWDOslP1gWwJkLoxyXrL+5t/9TyuRYW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=co2vWjnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2AFC4CECD;
+	Thu, 19 Dec 2024 03:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1734575254;
-	bh=OB6AcvM7XAqC2Z3FFsNNoei0wuA772XqOc/I3kn/XV8=;
+	s=korg; t=1734577515;
+	bh=yOCeGTPFSDVFMS535a9jz95Uit346xOX0ir1pXgt8Ao=;
 	h=Date:To:From:Subject:From;
-	b=mzxeQvLK4H7yv1xxvCGl1xGtAvpl3ODagbMFJl/YdHFBYlmHFzwMwOTgvQZ8e40nM
-	 kLFX6J2z/znP5yl2FKooI5u1hwPo2bz7U+uJEsZsOCZH6Qdp8DQWKWULZL3HwWJBLY
-	 NbbR67M0E+rz7dprYji783Dnu+JFpNaYNc/LI8qA=
-Date: Wed, 18 Dec 2024 18:27:33 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,dennis.lamerice@gmail.com,akpm@linux-foundation.org
+	b=co2vWjnQATSo/hUtip8NgEWHpIL0r62EzSVAXYN+XjjlCn/W7ARUG+KW+p0rRY6yF
+	 Zty79XO92ThZJDreM4EqTjJ+jCv/Cd+D1A948aN2Hu51G4s59dDIUuQzlhve44CPq0
+	 Pd5hxq1wL4pkTtENBbcu81aVJwzqQpKM01kkU2ZQ=
+Date: Wed, 18 Dec 2024 19:05:14 -0800
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,kaleshsingh@google.com,jeffxu@google.com,isaacmanjarres@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv.patch added to mm-nonmm-unstable branch
-Message-Id: <20241219022734.33E4EC4CECD@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-memfd-run-sysctl-tests-when-pid-namespace-support-is-enabled.patch removed from -mm tree
+Message-Id: <20241219030515.4E2AFC4CECD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,94 +49,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The patch titled
-     Subject: ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv.patch
+The quilt patch titled
+     Subject: selftests/memfd: run sysctl tests when PID namespace support is enabled
+has been removed from the -mm tree.  Its filename was
+     selftests-memfd-run-sysctl-tests-when-pid-namespace-support-is-enabled.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv.patch
-
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Dennis Lam <dennis.lamerice@gmail.com>
-Subject: ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv
-Date: Tue, 17 Dec 2024 21:39:25 -0500
+From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+Subject: selftests/memfd: run sysctl tests when PID namespace support is enabled
+Date: Thu, 5 Dec 2024 11:29:41 -0800
 
-When mounting ocfs2 and then remounting it as read-only, a
-slab-use-after-free occurs after the user uses a syscall to
-quota_getnextquota.  Specifically, sb_dqinfo(sb, type)->dqi_priv is the
-dangling pointer.
+The sysctl tests for vm.memfd_noexec rely on the kernel to support PID
+namespaces (i.e.  the kernel is built with CONFIG_PID_NS=y).  If the
+kernel the test runs on does not support PID namespaces, the first sysctl
+test will fail when attempting to spawn a new thread in a new PID
+namespace, abort the test, preventing the remaining tests from being run.
 
-During the remounting process, the pointer dqi_priv is freed but is never
-set as null leaving it to to be accessed.  Additionally, the read-only
-option for remounting sets the DQUOT_SUSPENDED flag instead of setting the
-DQUOT_USAGE_ENABLED flags.  Moreover, later in the process of getting the
-next quota, the function ocfs2_get_next_id is called and only checks the
-quota usage flags and not the quota suspended flags.
+This is not desirable, as not all kernels need PID namespaces, but can
+still use the other features provided by memfd.  Therefore, only run the
+sysctl tests if the kernel supports PID namespaces.  Otherwise, skip those
+tests and emit an informative message to let the user know why the sysctl
+tests are not being run.
 
-To fix this, I set dqi_priv to null when it is freed after remounting with
-read-only and put a check for DQUOT_SUSPENDED in ocfs2_get_next_id.
-
-Link: https://lkml.kernel.org/r/20241218023924.22821-2-dennis.lamerice@gmail.com
-Fixes: 8f9e8f5fcc05 ("ocfs2: Fix Q_GETNEXTQUOTA for filesystem without quotas")
-Signed-off-by: Dennis Lam <dennis.lamerice@gmail.com>
-Reported-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
-Tested-by: syzbot+d173bf8a5a7faeede34c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6731d26f.050a0220.1fb99c.014b.GAE@google.com/T/
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20241205192943.3228757-1-isaacmanjarres@google.com
+Fixes: 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_EXEC")
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Reviewed-by: Jeff Xu <jeffxu@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/ocfs2/quota_global.c |    2 +-
- fs/ocfs2/quota_local.c  |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/memfd/memfd_test.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/fs/ocfs2/quota_global.c~ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv
-+++ a/fs/ocfs2/quota_global.c
-@@ -893,7 +893,7 @@ static int ocfs2_get_next_id(struct supe
- 	int status = 0;
- 
- 	trace_ocfs2_get_next_id(from_kqid(&init_user_ns, *qid), type);
--	if (!sb_has_quota_loaded(sb, type)) {
-+	if (!sb_has_quota_active(sb, type)){
- 		status = -ESRCH;
- 		goto out;
- 	}
---- a/fs/ocfs2/quota_local.c~ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv
-+++ a/fs/ocfs2/quota_local.c
-@@ -867,6 +867,7 @@ out:
- 	brelse(oinfo->dqi_libh);
- 	brelse(oinfo->dqi_lqi_bh);
- 	kfree(oinfo);
-+	info->dqi_priv = NULL;
- 	return status;
+--- a/tools/testing/selftests/memfd/memfd_test.c~selftests-memfd-run-sysctl-tests-when-pid-namespace-support-is-enabled
++++ a/tools/testing/selftests/memfd/memfd_test.c
+@@ -9,6 +9,7 @@
+ #include <fcntl.h>
+ #include <linux/memfd.h>
+ #include <sched.h>
++#include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <signal.h>
+@@ -1557,6 +1558,11 @@ static void test_share_fork(char *banner
+ 	close(fd);
  }
  
++static bool pid_ns_supported(void)
++{
++	return access("/proc/self/ns/pid", F_OK) == 0;
++}
++
+ int main(int argc, char **argv)
+ {
+ 	pid_t pid;
+@@ -1591,8 +1597,12 @@ int main(int argc, char **argv)
+ 	test_seal_grow();
+ 	test_seal_resize();
+ 
+-	test_sysctl_simple();
+-	test_sysctl_nested();
++	if (pid_ns_supported()) {
++		test_sysctl_simple();
++		test_sysctl_nested();
++	} else {
++		printf("PID namespaces are not supported; skipping sysctl tests\n");
++	}
+ 
+ 	test_share_dup("SHARE-DUP", "");
+ 	test_share_mmap("SHARE-MMAP", "");
 _
 
-Patches currently in -mm which might be from dennis.lamerice@gmail.com are
+Patches currently in -mm which might be from isaacmanjarres@google.com are
 
-ocfs2-fix-slab-use-after-free-due-to-dangling-pointer-dqi_priv.patch
 
 
