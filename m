@@ -1,189 +1,354 @@
-Return-Path: <stable+bounces-105370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813249F86DD
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 22:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BD99F86EA
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 22:30:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03FF618964A4
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 21:24:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2F2D1897C62
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 21:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86C51A9B27;
-	Thu, 19 Dec 2024 21:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DDD1C5F1E;
+	Thu, 19 Dec 2024 21:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WiLFYh2n"
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="Mp1U2niv";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="xEmPJhIP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA48E1A0AFE
-	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 21:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DCB1A2632;
+	Thu, 19 Dec 2024 21:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734643482; cv=none; b=p61vIHMMsWePCxYRpocttPkMeZlaemcO/QYCeDcX1+AC2X7U1SIRY6DS18NxCtvNVH3a4ItwwUdyU/7sZQd0Lpmao/3bokeF6W+wBFbfUe73p1faJzQl5jA6fS0Ch2QdZdfO3YUUvuzfe5s6oK/ggS4+OVdMWOhGKhgWMKPuWTw=
+	t=1734643803; cv=none; b=IdgrrBLWObqX0iTZEPospzFCU09sApTp74slwhXLWxF7ucc4vtATJpc/OJyzKWjrf9FxXV0AQVaHUluiwQwTpcj70MfwqCUCWRgpXwD7p27pmhBiI3/93TXoyJaGkAUqm7k23MIVCbPpijESWu0I+VmRzZtFd2FuNIIdoSqB5JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734643482; c=relaxed/simple;
-	bh=cefdfB1yGhxUINcQUilu5D19OlaisDnr306U1LVHeRU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=uqOHeeEPgBAUV2jlkufJzcz3CsKoUQsqhixsf5aTski4vC4W3+cgMi607YvdD7DMv8BM0oxQzK2NRPoFdLPFdqA996UzfucPpoWdquJG3y0F6LXGXBN02zGAnl6vta4joY651bparTwtoL15DXXw6N0WxKGZM4vpVmhY8MCl1Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WiLFYh2n; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-801d5add29eso808605a12.3
-        for <stable@vger.kernel.org>; Thu, 19 Dec 2024 13:24:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734643480; x=1735248280; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=u7O8GUIoD1UZG/rG8KBOAiEwEk9YL8KfYsJ7/2RZcq0=;
-        b=WiLFYh2nXT8NtrnJfC0+8sBbhttr//Ghmza4c0IRoN1PeHCnnplANERUX1iAG/JLOG
-         TLqQX8/68goFwqACbKPlCKVsbr3a4ev3ZMe8pj8J7KgZhFc/UwnH8sWznGpSG8Vb1ufO
-         2ux/efkC2vaw1GBb5TOJn0+X0BMBazo0mNU1yv6+alt2Yk4mriFW0MFXHsqJZOhE3nut
-         UmD3hQI87RVbMzN1AaFg+NZe1oqLO6WSKpgfyYpX6UeCCL4Op/2vBlO4r5XgY9f1o0Cd
-         d4Gh2czp9gMYWIQriRhu71tVHeb21qwUp1hPCROIQX/k6WZBmMJZpdupo3nlW5JUpHqp
-         sRfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734643480; x=1735248280;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=u7O8GUIoD1UZG/rG8KBOAiEwEk9YL8KfYsJ7/2RZcq0=;
-        b=dZZZCodGsGuPZnFkT3bomBZLouvxxTgnSO8jjX/+MoJyZblO35XEf+Uj1S95jocHS8
-         /6YeYWuXsxLWh/Qk9vazgvEPZYom9IEHvdq4dj3aOca/vFLUbS4S7zsG32U1EcvH88vW
-         a3400cWxXJQ5etSZ3y4H2AsmslcaWmQS59uLb2gj8Hu+fcXc3k2u4WdoY8P6+WH35sKY
-         RTi6BtwkIjcFfun4D8MNVpqVxnlKifKkvXkFVyT4ouPlTlI0PcPnSYYln0SHc4CxM3WI
-         O/6CqyEPZO6XlwFMPy6zwHMvZGg4ed/lE6+8SuG64E/WQ9k0ExJDgtNc4JdQybcCbpkV
-         jsDA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQ0LKAnqbAMrHl9/jLlkxyt3hqLTL70jFxZg0OfoDQGCcl6jP8sMHsnpRdMqqDe1CJrgRoS4Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgJgACTX/zlncnKc3eQgvPsLePei+rao14WU4fsuCgBPOfIiKL
-	I+IfCCbqc0GnJcAsRALvyaQb4URrszOVEWZoJqUHk65hNrtjgj1l4CquGeIVMH7PzBTrKg/wCpA
-	qgeyOEzFMOu4ApZY/xQ==
-X-Google-Smtp-Source: AGHT+IFnH6UQrf3C3P3rhQlihyUOrX9sGtuPFMiRoQuLliycrZpnMFxS2E+N7rAXPa1MSWZDj7o1ChPfPBNiASrl
-X-Received: from pgbfu11.prod.google.com ([2002:a05:6a02:4a8b:b0:7fd:5569:7b79])
- (user=yosryahmed job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:7487:b0:1e1:ab63:c5ed with SMTP id adf61e73a8af0-1e5e048b22emr887197637.23.1734643480234;
- Thu, 19 Dec 2024 13:24:40 -0800 (PST)
-Date: Thu, 19 Dec 2024 21:24:37 +0000
+	s=arc-20240116; t=1734643803; c=relaxed/simple;
+	bh=tMQBpQaB9R9b19u3HON61Sjo/poteZGRSxXa+j/0QPY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Aq4UDuBo6ILtrJF/zlfhrL9YZyD/XJoISvQbeoJjzV1gsgixqKT+Fnisfhokak14B6DvG0g7hrlqDBxUcU7JGVOx7HuM5//n95udAEzaZERxjcgUXah66UUCxC86gvUBlCulXN4IacGVtvpqAIbqOTzfT/TfVWxt0CwgL6Icw4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=Mp1U2niv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=xEmPJhIP; arc=none smtp.client-ip=202.12.124.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id F41541D40584;
+	Thu, 19 Dec 2024 16:29:58 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 19 Dec 2024 16:29:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	coelacanthus.name; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1734643798; x=1734650998; bh=Ly5Y8jVk5m
+	oLHMzQ7W8exXV5U16sE/p4pCtMgqqBuII=; b=Mp1U2nivsGGD80upLCLOGHvbCr
+	oaNvhOH+NhMVGOszjBPvJhb6rmQhba0k4N8psWIMmOJgi2Gzr+DZm4H/V0yLNcT2
+	qVKzRnf+wO2rjJijf55cmphYq4S5Ry8NXL9r5OUQaJYh3Dw88QmP+RrzC8itNZf7
+	diiAHjmvtVns58TL/rjl0/Ai3mmrm+Jtb7i53WHt/UjRlHIjuFz0x0n/LzTn2Hrc
+	mEFZqTh2Isx9h6uotGuqG6AVsnL9rdd7lSAzv2IDLoZeQ/m4iguMEjwqmui/p/y1
+	6fvd188JCzi4T5MkuhVv9J3t7dQflCoJAxg7wIfTvgKZOwxb6T6UkahIkZ2w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734643798; x=
+	1734650998; bh=Ly5Y8jVk5moLHMzQ7W8exXV5U16sE/p4pCtMgqqBuII=; b=x
+	EmPJhIPrE3uJpeIijsDG14VGPg2S5j5sejI3Me1x8kIQ5A9O6yotGXCxb13QC5bw
+	7e/sq7OuuAxiPa+thcmElCqcO8UGrZ6kJpbKmGjt6S74FpkLlI+Iy3K5fqCVoybZ
+	RDuQYtnZ4hqoWIHKQsQKTB6O9QOM62ARCXzfdrU9g57qzqOH1OvUVpJEHTmRk+wp
+	VDeBzID0JlxGKrScMarxGTQSb3l/RWH+mha9fzwtN4DRFjDqFV6uo6KJgZBJVFyH
+	UAXpEQme1vBoIN+Gdw4UZrfXck8fk1pzNraKXbnttjUDze4n9SoGFv14ZU5h57qL
+	WFGtuWK4ggTwHXcqt099g==
+X-ME-Sender: <xms:VJBkZ94YbhHRO-5R1VH-1cQLDbY5ioUSARjnoOm9zDrQPg16PgMWUg>
+    <xme:VJBkZ64m1g5kGwUKVQjrnVL0HYBnPhLXckgRCsCsQVABeJnfnFKXDfGw9Hma0tZao
+    AcWc-Qudq4KLoiawaI>
+X-ME-Received: <xmr:VJBkZ0cktzvYhBt3JKWnno8HUxxa3WTrfR81W-j4brxt0uzO2kN5iBzPaKYXDqWN>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddttddgudegjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddv
+    jeenucfhrhhomhepvegvlhgvshhtvgcunfhiuhcuoehufihusegtohgvlhgrtggrnhhthh
+    hushdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeefgfdvgfetveevkeehleffteekvdfh
+    vedvheduueehkedvuedvhfeiieejudekueenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgv
+    pdhnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptg
+    hhrghrlhhivgesrhhivhhoshhinhgtrdgtohhmpdhrtghpthhtoheprghjohhnvghssehv
+    vghnthgrnhgrmhhitghrohdrtghomhdprhgtphhtthhopeholhgvghesrhgvughhrghtrd
+    gtohhmpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhifhhivhgvrdgtohhm
+    pdhrtghpthhtohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtoheprg
+    houhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopegvsghivgguvghr
+    mhesgihmihhsshhiohhnrdgtohhmpdhrtghpthhtohepkhgvvghssehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:VJBkZ2Ko6T9hth8lfkB2eDU3wjCXjTLIFfix2R0Fehb2RuFPHrCLMw>
+    <xmx:VJBkZxKCYJYLo2EBDpHwK28iZLuaawgldCvUomZMG62di_KSh-2ITA>
+    <xmx:VJBkZ_wpcsGm5HgrVWtkBnsnUM33f-icqTuxU86JtTRPuMyFJ0GTbA>
+    <xmx:VJBkZ9LZQZ57APh6GizakD-7MUbSzuR1qZGIutmgXhOntoZ6J315CQ>
+    <xmx:VpBkZ5_AE5GlgtiWDbX5kpCRrI71Azt1liL7xRl12BIgi53EhpZ1rxzO>
+Feedback-ID: i95c648bc:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Dec 2024 16:29:49 -0500 (EST)
+Message-ID: <50a62291-5ae1-47b0-8f64-a42271820789@coelacanthus.name>
+Date: Fri, 20 Dec 2024 05:29:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241219212437.2714151-1-yosryahmed@google.com>
-Subject: [PATCH] mm: zswap: fix race between [de]compression and CPU hotunplug
-From: Yosry Ahmed <yosryahmed@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Vitaly Wool <vitalywool@gmail.com>, 
-	Barry Song <baohua@kernel.org>, Sam Sun <samsun1006219@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Yosry Ahmed <yosryahmed@google.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] riscv: selftests: Add a ptrace test to verify
+ syscall parameter modification
+Content-Language: en-GB-large
+To: Charlie Jenkins <charlie@rivosinc.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Cc: Oleg Nesterov <oleg@redhat.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Eric Biederman <ebiederm@xmission.com>,
+ Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>,
+ Andrea Bolognani <abologna@redhat.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Ron Economos <re@w6rz.net>, Quan Zhou <zhouquan@iscas.ac.cn>,
+ Guo Ren <guoren@kernel.org>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name>
+ <20241203-riscv-new-regset-v2-2-d37da8c0cba6@coelacanthus.name>
+ <20241203-55c76715e16422ddaf8d7edf@orel> <Z2RlR1cP9tne8rNi@ghost>
+From: Celeste Liu <uwu@coelacanthus.name>
+In-Reply-To: <Z2RlR1cP9tne8rNi@ghost>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
-current CPU at the beginning of the operation is retrieved and used
-throughout. However, since neither preemption nor migration are
-disabled, it is possible that the operation continues on a different
-CPU.
 
-If the original CPU is hotunplugged while the acomp_ctx is still in use,
-we run into a UAF bug as the resources attached to the acomp_ctx are
-freed during hotunplug in zswap_cpu_comp_dead().
+On 2024-12-20 02:26, Charlie Jenkins wrote:
+> On Tue, Dec 03, 2024 at 01:55:07PM +0100, Andrew Jones wrote:
+>> On Tue, Dec 03, 2024 at 05:30:05PM +0800, Celeste Liu wrote:
+>>> From: Charlie Jenkins <charlie@rivosinc.com>
+>>>
+>>> This test checks that orig_a0 allows a syscall argument to be modified,
+>>> and that changing a0 does not change the syscall argument.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+>>> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+>>> Co-developed-by: Celeste Liu <uwu@coelacanthus.name>
+>>> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+>>> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+>>> ---
+>>>  tools/testing/selftests/riscv/abi/.gitignore |   1 +
+>>>  tools/testing/selftests/riscv/abi/Makefile   |   5 +-
+>>>  tools/testing/selftests/riscv/abi/ptrace.c   | 134 +++++++++++++++++++++++++++
+>>>  3 files changed, 139 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/tools/testing/selftests/riscv/abi/.gitignore b/tools/testing/selftests/riscv/abi/.gitignore
+>>> index b38358f91c4d2240ae64892871d9ca98bda1ae58..378c605919a3b3d58eec2701eb7af430cfe315d6 100644
+>>> --- a/tools/testing/selftests/riscv/abi/.gitignore
+>>> +++ b/tools/testing/selftests/riscv/abi/.gitignore
+>>> @@ -1 +1,2 @@
+>>>  pointer_masking
+>>> +ptrace
+>>> diff --git a/tools/testing/selftests/riscv/abi/Makefile b/tools/testing/selftests/riscv/abi/Makefile
+>>> index ed82ff9c664e7eb3f760cbab81fb957ff72579c5..3f74d059dfdcbce4d45d8ff618781ccea1419061 100644
+>>> --- a/tools/testing/selftests/riscv/abi/Makefile
+>>> +++ b/tools/testing/selftests/riscv/abi/Makefile
+>>> @@ -2,9 +2,12 @@
+>>>  
+>>>  CFLAGS += -I$(top_srcdir)/tools/include
+>>>  
+>>> -TEST_GEN_PROGS := pointer_masking
+>>> +TEST_GEN_PROGS := pointer_masking ptrace
+>>>  
+>>>  include ../../lib.mk
+>>>  
+>>>  $(OUTPUT)/pointer_masking: pointer_masking.c
+>>>  	$(CC) -static -o$@ $(CFLAGS) $(LDFLAGS) $^
+>>> +
+>>> +$(OUTPUT)/ptrace: ptrace.c
+>>> +	$(CC) -static -o$@ $(CFLAGS) $(LDFLAGS) $^
+>>> diff --git a/tools/testing/selftests/riscv/abi/ptrace.c b/tools/testing/selftests/riscv/abi/ptrace.c
+>>> new file mode 100644
+>>> index 0000000000000000000000000000000000000000..d192764b428d1f1c442f3957c6fedeb01a48d556
+>>> --- /dev/null
+>>> +++ b/tools/testing/selftests/riscv/abi/ptrace.c
+>>> @@ -0,0 +1,134 @@
+>>> +// SPDX-License-Identifier: GPL-2.0-only
+>>> +#include <stdio.h>
+>>> +#include <stdlib.h>
+>>> +#include <string.h>
+>>> +#include <unistd.h>
+>>> +#include <fcntl.h>
+>>> +#include <signal.h>
+>>> +#include <errno.h>
+>>> +#include <sys/types.h>
+>>> +#include <sys/ptrace.h>
+>>> +#include <sys/stat.h>
+>>> +#include <sys/user.h>
+>>> +#include <sys/wait.h>
+>>> +#include <sys/uio.h>
+>>> +#include <linux/elf.h>
+>>> +#include <linux/unistd.h>
+>>> +#include <asm/ptrace.h>
+>>> +
+>>> +#include "../../kselftest_harness.h"
+>>> +
+>>> +#define ORIG_A0_MODIFY      0x01
+>>> +#define A0_MODIFY           0x02
+>>> +#define A0_OLD              0x03
+>>> +#define A0_NEW              0x04
+>>
+>> Shouldn't A0_OLD and A0_NEW set more bits, since 3 and 4 aren't very
+>> unique (we could have those values by accident)? And should we include
+>> setting bits over 31 for 64-bit targets?
+>>
+>>> +
+>>> +#define perr_and_exit(fmt, ...)						\
+>>> +	({								\
+>>> +		char buf[256];						\
+>>> +		snprintf(buf, sizeof(buf), "%s:%d:" fmt ": %m\n",	\
+>>> +			__func__, __LINE__, ##__VA_ARGS__);		\
+>>> +		perror(buf);						\
+>>> +		exit(-1);						\
+>>> +	})
+>>
+>> Can we use e.g. ksft_exit_fail_perror() instead? I'd prefer we try to
+>> consolidate testing/selftests/riscv/* tests on a common format for
+>> errors and exit codes and we're already using other kselftest stuff.
+>>
+>>> +
+>>> +static inline void resume_and_wait_tracee(pid_t pid, int flag)
+>>> +{
+>>> +	int status;
+>>> +
+>>> +	if (ptrace(flag, pid, 0, 0))
+>>> +		perr_and_exit("failed to resume the tracee %d\n", pid);
+>>> +
+>>> +	if (waitpid(pid, &status, 0) != pid)
+>>> +		perr_and_exit("failed to wait for the tracee %d\n", pid);
+>>> +}
+>>> +
+>>> +static void ptrace_test(int opt, int *result)
+>>> +{
+>>> +	int status;
+>>> +	pid_t pid;
+>>> +	struct user_regs_struct regs;
+>>> +	struct iovec iov = {
+>>> +		.iov_base = &regs,
+>>> +		.iov_len = sizeof(regs),
+>>> +	};
+>>> +
+>>> +	unsigned long orig_a0;
+>>> +	struct iovec a0_iov = {
+>>> +		.iov_base = &orig_a0,
+>>> +		.iov_len = sizeof(orig_a0),
+>>> +	};
+>>> +
+>>> +	pid = fork();
+>>> +	if (pid == 0) {
+>>> +		/* Mark oneself being traced */
+>>> +		long val = ptrace(PTRACE_TRACEME, 0, 0, 0);
+>>> +
+>>> +		if (val)
+>>> +			perr_and_exit("failed to request for tracer to trace me: %ld\n", val);
+>>> +
+>>> +		kill(getpid(), SIGSTOP);
+>>> +
+>>> +		/* Perform exit syscall that will be intercepted */
+>>> +		exit(A0_OLD);
+>>> +	}
+>>> +
+>>> +	if (pid < 0)
+>>> +		exit(1);
+>>
+>> This unexpected error condition deserves a message, so I'd use
+>> ksft_exit_fail_perror() here.
+>>
+>>> +
+>>> +	if (waitpid(pid, &status, 0) != pid)
+>>> +		perr_and_exit("failed to wait for the tracee %d\n", pid);
+>>> +
+>>> +	/* Stop at the entry point of the syscall */
+>>> +	resume_and_wait_tracee(pid, PTRACE_SYSCALL);
+>>> +
+>>> +	/* Check tracee regs before the syscall */
+>>> +	if (ptrace(PTRACE_GETREGSET, pid, NT_PRSTATUS, &iov))
+>>> +		perr_and_exit("failed to get tracee registers\n");
+>>> +	if (ptrace(PTRACE_GETREGSET, pid, NT_RISCV_ORIG_A0, &a0_iov))
+>>> +		perr_and_exit("failed to get tracee registers\n");
+>>> +	if (orig_a0 != A0_OLD)
+>>> +		perr_and_exit("unexpected orig_a0: 0x%lx\n", orig_a0);
+>>> +
+>>> +	/* Modify a0/orig_a0 for the syscall */
+>>> +	switch (opt) {
+>>> +	case A0_MODIFY:
+>>> +		regs.a0 = A0_NEW;
+>>> +		break;
+>>> +	case ORIG_A0_MODIFY:
+>>> +		orig_a0 = A0_NEW;
+>>> +		break;
+>>> +	}
+>>> +
+>>> +	if (ptrace(PTRACE_SETREGSET, pid, NT_RISCV_ORIG_A0, &a0_iov))
+>>> +		perr_and_exit("failed to set tracee registers\n");
+>>> +
+>>> +	/* Resume the tracee */
+>>> +	ptrace(PTRACE_CONT, pid, 0, 0);
+>>> +	if (waitpid(pid, &status, 0) != pid)
+>>> +		perr_and_exit("failed to wait for the tracee\n");
+>>> +
+>>> +	*result = WEXITSTATUS(status);
+>>> +}
+>>> +
+>>> +TEST(ptrace_modify_a0)
+>>> +{
+>>> +	int result;
+>>> +
+>>> +	ptrace_test(A0_MODIFY, &result);
+>>> +
+>>> +	/* The modification of a0 cannot affect the first argument of the syscall */
+>>> +	EXPECT_EQ(A0_OLD, result);
+>>
+>> What about checking that we actually set regs.a0 to A0_NEW? We'd need
+>> A0_NEW to be more unique than 4, though.
+>>
+>>> +}
+>>> +
+>>> +TEST(ptrace_modify_orig_a0)
+>>> +{
+>>> +	int result;
+>>> +
+>>> +	ptrace_test(ORIG_A0_MODIFY, &result);
+>>> +
+>>> +	/* Only modify orig_a0 to change the first argument of the syscall */
+>>
+>> If we run ptrace_modify_a0 first then we've already set regs.a0 to A0_NEW
+>> and can't check with this test that we don't set it to A0_NEW. We should
+>> probably have two different test values, one for regs.a0 and one for
+>> orig_a0 and ensure on both tests that we aren't writing both.
+>>
+> 
+> Celeste, do you want to fix this up or are you waiting for me to?
 
-The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to
-use crypto_acomp API for hardware acceleration") when the switch to the
-crypto_acomp API was made. Prior to that, the per-CPU crypto_comp was
-retrieved using get_cpu_ptr() which disables preemption and makes sure
-the CPU cannot go away from under us. Preemption cannot be disabled with
-the crypto_acomp API as a sleepable context is needed.
+Sorry for delay. I was busy with household affairs in the past few weeks.
+v3 will be sent tomorrow or the day after tomorrow.
 
-Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
-per-acomp_ctx") increased the UAF surface area by making the per-CPU
-buffers dynamic, adding yet another resource that can be freed from
-under zswap compression/decompression by CPU hotunplug.
+I am deeply sorry for this.
 
-There are a few ways to fix this:
-(a) Add a refcount for acomp_ctx.
-(b) Disable migration while using the per-CPU acomp_ctx.
-(c) Disable CPU hotunplug while using the per-CPU acomp_ctx by holding
-the CPUs read lock.
-
-Implement (c) since it's simpler than (a), and (b) involves using
-migrate_disable() which is apparently undesired (see huge comment in
-include/linux/preempt.h).
-
-Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
-Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
----
- mm/zswap.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index f6316b66fb236..5a27af8d86ea9 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -880,6 +880,18 @@ static int zswap_cpu_comp_dead(unsigned int cpu, struct hlist_node *node)
- 	return 0;
- }
- 
-+/* Prevent CPU hotplug from freeing up the per-CPU acomp_ctx resources */
-+static struct crypto_acomp_ctx *acomp_ctx_get_cpu(struct crypto_acomp_ctx __percpu *acomp_ctx)
-+{
-+	cpus_read_lock();
-+	return raw_cpu_ptr(acomp_ctx);
-+}
-+
-+static void acomp_ctx_put_cpu(void)
-+{
-+	cpus_read_unlock();
-+}
-+
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
- {
-@@ -893,8 +905,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	gfp_t gfp;
- 	u8 *dst;
- 
--	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
--
-+	acomp_ctx = acomp_ctx_get_cpu(pool->acomp_ctx);
- 	mutex_lock(&acomp_ctx->mutex);
- 
- 	dst = acomp_ctx->buffer;
-@@ -950,6 +961,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 		zswap_reject_alloc_fail++;
- 
- 	mutex_unlock(&acomp_ctx->mutex);
-+	acomp_ctx_put_cpu();
- 	return comp_ret == 0 && alloc_ret == 0;
- }
- 
-@@ -960,7 +972,7 @@ static void zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	struct crypto_acomp_ctx *acomp_ctx;
- 	u8 *src;
- 
--	acomp_ctx = raw_cpu_ptr(entry->pool->acomp_ctx);
-+	acomp_ctx = acomp_ctx_get_cpu(entry->pool->acomp_ctx);
- 	mutex_lock(&acomp_ctx->mutex);
- 
- 	src = zpool_map_handle(zpool, entry->handle, ZPOOL_MM_RO);
-@@ -990,6 +1002,7 @@ static void zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 
- 	if (src != acomp_ctx->buffer)
- 		zpool_unmap_handle(zpool, entry->handle);
-+	acomp_ctx_put_cpu();
- }
- 
- /*********************************
--- 
-2.47.1.613.gc27f4b7a9f-goog
+> 
+> - Charlie
+> 
+>>> +	EXPECT_EQ(A0_NEW, result);
+>>> +}
+>>> +
+>>> +TEST_HARNESS_MAIN
+>>>
+>>> -- 
+>>> 2.47.0
+>>>
+>>
+>> Thanks,
+>> drew
 
 
