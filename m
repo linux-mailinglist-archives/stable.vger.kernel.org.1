@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-105352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2199F83DE
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 20:14:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E2A9F83DC
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 20:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2C901890761
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:14:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC9F9166748
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 19:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0E01AA1C1;
-	Thu, 19 Dec 2024 19:13:51 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0F91A2632;
+	Thu, 19 Dec 2024 19:13:53 +0000 (UTC)
+X-Original-To: Stable@vger.kernel.org
 Received: from acount-cdif4.webhop.me (acount-cdif4.webhop.me [141.94.213.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CD1194C96
-	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 19:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA4B1A9B5F
+	for <Stable@vger.kernel.org>; Thu, 19 Dec 2024 19:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.94.213.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734635631; cv=none; b=d/uidarUBrP4bb7aQQv2dAWYpGM81XfULcpEF/0paJql7Qw4YS5pfC3Pk/5NtJUUcY4qy+/KWB1Hf0deVdh40hg2JgWrJu1npZjIs9VJxTbraTLNDqeddvpd1aXbvn6YFWlTjIJSuvOpKGHhJnepwClX/t9ZTI6XTrJJspdUkpA=
+	t=1734635633; cv=none; b=Wchlmz0k6mNor6XBC5DKSAwO+Z91WMwwHdBJEfwtlTPeEGGifKofOVLq9/kj1h6tsoDFYDLNpWizmVaCZm28QX9u0GtaFKWt9uAkWrGLonnIDZRWE14zMnLqHUBnbHSTAFIejsWiszDNOGvIwFF8dfsYAXyoRc3fRzpqd/kh2zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734635631; c=relaxed/simple;
-	bh=QIoZXGLw/QJ3oG8Rkz/VLiA5PuDpPXgwC5BHGWKPF2k=;
-	h=Content-Type:MIME-Version:Date:From:To:Subject:Message-Id; b=pYcjr6FOc2SN+wEhL7ptB/oduwvJDnSAYEbZgNiUcB3dPuURREkXctQQrT+UxAyCdq0O/gz+dZKh6mpS5G7qWXmzV0uDggmG+yI16mStwV8RFKdBi9cuc7Fd0On6hXtrqvTkLc1MqdjAxNRvr1X+TUlLHxt3FpcQ2BExLw4Psmg=
+	s=arc-20240116; t=1734635633; c=relaxed/simple;
+	bh=D7i9ZOlcpsP4TpIoeLk+0S4EFl5sb55X5LLlW/Q0pNY=;
+	h=Content-Type:MIME-Version:Date:From:To:Subject:Message-Id; b=k/cGc03r0Xk1g20y6m6LaxkKLUEQ7rqzSKShLIgazMeSNLfYpzDka+DaNJGIndT6LDjckC588BD1SP+Moz9JuJgR7VNeUgmm9UstYUcYZ2ys5J68vHuOkoyMS09ID18poCSczVj5Z0PXfSCWKE0gDyAzjVkY1XEb/nEM4whmeV8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acount-cdif4.webhop.me; spf=pass smtp.mailfrom=acount-cdif4.webhop.me; arc=none smtp.client-ip=141.94.213.144
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=acount-cdif4.webhop.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acount-cdif4.webhop.me
 Received: by acount-cdif4.webhop.me (Postfix, from userid 0)
-	id E27BD40258; Thu, 19 Dec 2024 14:07:24 -0500 (EST)
+	id DE0D740269; Thu, 19 Dec 2024 14:07:24 -0500 (EST)
 Content-Transfer-Encoding: binary
-Content-Type: multipart/mixed; boundary="_----------=_173463524485574470"
+Content-Type: multipart/mixed; boundary="_----------=_173463524485574469"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -40,25 +40,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mailer: MIME::Lite 3.031 (F2.85; T2.17; A2.21; B3.15; Q3.13)
 Date: Thu, 19 Dec 2024 14:07:24 -0500
-From: pago278@acount-cdif4.webhop.me
-To: stable@vger.kernel.org
-Subject: stable@vger.kernel.org  CDIF Comprobante 14:07
-Message-Id: <20241219190724.E27BD40258@acount-cdif4.webhop.me>
+From: pago528@acount-cdif4.webhop.me
+To: Stable@vger.kernel.org
+Subject: Stable@vger.kernel.org  CDIF Comprobante 14:07
+Message-Id: <20241219190724.DE0D740269@acount-cdif4.webhop.me>
 
 This is a multi-part message in MIME format.
 
---_----------=_173463524485574470
+--_----------=_173463524485574469
 Content-Disposition: inline
 Content-Transfer-Encoding: base64
 Content-Type: text/plain
 
-RXN0aW1hZG8oYSkgc3RhYmxlIENvbXByb2JhbnRlIFBhZ28gVG90YWw6IDIgYXJjaGl2b3MgYWRq
+RXN0aW1hZG8oYSkgU3RhYmxlIENvbXByb2JhbnRlIFBhZ28gVG90YWw6IDIgYXJjaGl2b3MgYWRq
 dW50b3Mgc3UgY29udHJhc2VuYSAzMzEwIC4K
 
---_----------=_173463524485574470
-Content-Disposition: attachment; filename="stable@vger.kernel.org .zip"
+--_----------=_173463524485574469
+Content-Disposition: attachment; filename="Stable@vger.kernel.org .zip"
 Content-Transfer-Encoding: base64
-Content-Type: application/zip; name="stable@vger.kernel.org .zip"
+Content-Type: application/zip; name="Stable@vger.kernel.org .zip"
 
 UEsDBAoAAAAAAJV1kFkAAAAAAAAAAAAAAAAVAAAAQ29tcHJvYmFudGUgUGFn
 byBQREYvUEsDBBQAAAAIAGR0kFngYd73NJsAADScAAAqAAAAQ29tcHJvYmFu
@@ -953,10 +953,10 @@ b21wcm9iYW50ZSBQYWdvIFBERi9DT01QUk9CQU5URShQQUdPKS5wZGYKACAA
 AAAAAAEAGABZ8rva4E/bAe4PT4zhT9sBOJJDjOFP2wFQSwUGAAAAAAIAAgDj
 AAAAr5sAAAAA
 
---_----------=_173463524485574470
-Content-Disposition: attachment; filename="stable@vger.kernel.org .jpg"
+--_----------=_173463524485574469
+Content-Disposition: attachment; filename="Stable@vger.kernel.org .jpg"
 Content-Transfer-Encoding: base64
-Content-Type: application/jpg; name="stable@vger.kernel.org .jpg"
+Content-Type: application/jpg; name="Stable@vger.kernel.org .jpg"
 
 /9j/4AAQSkZJRgABAQEAwADAAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE
 BQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/
@@ -1147,5 +1147,5 @@ AUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAB
 RRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFF
 FFABRRRQAUUUUAFFFFABRRRQAUUUUAf/2Q==
 
---_----------=_173463524485574470--
+--_----------=_173463524485574469--
 
