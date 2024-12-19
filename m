@@ -1,126 +1,118 @@
-Return-Path: <stable+bounces-105291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B686C9F79F1
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 11:58:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C0F9F7A99
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 12:45:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 139BA16ACF3
-	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 10:58:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76C427A38A6
+	for <lists+stable@lfdr.de>; Thu, 19 Dec 2024 11:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB17F223330;
-	Thu, 19 Dec 2024 10:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EAE223C4C;
+	Thu, 19 Dec 2024 11:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0hIl9Pw"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADC422332C
-	for <stable@vger.kernel.org>; Thu, 19 Dec 2024 10:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF86F223C64;
+	Thu, 19 Dec 2024 11:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734605929; cv=none; b=LFmvBLxcHkVlkVQgGxtDaCz+wFPQL2b1RF/R8xD4Z62iAqBQXGFZA2VS7zPU9rEfU5pFcQ/Erix4w/JC76cdbTsk7N1x+/ED5IyVe4uBbw9qRoujrMi2xjhxFUQGWJM7mfX9rdf8te3XdP5br5JObRSc/G5JlVrxX23D/hs/D10=
+	t=1734608745; cv=none; b=PhiMuLDJ6ITNok5HJkQWu31+eMa8h275fxz68NtGsNImPhupPrcWLPJ8mJ8lx+hGnVdpOknMP1lVgfOvghREr7P/rSwWVJMyRSBnzrf54zwADHvDZt/351HqcNBMG/bd4d2+TORSrMWhk30dTEPqepUuDiYayIJ1d2aiBDsRpvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734605929; c=relaxed/simple;
-	bh=G5kcT4WxhFuzMY1pRCiYzc4K//k/tyl+NmgIcVDYP9Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H3kBYg0TaxmVEWAjpWtlvu58lZpHNBxNeXJ1BIk9TXRih9ONXPBnLwJQ5CFA3W3XGupiBjduRp7ATzgKi16jexCKbH5Tgaui0+gNMR8rrE1uXU+ORmM8ugmt3O03t1kUyWhA6FwFU2cey3PD7rXyf07pWM2hHi7SQKNNlJuzubY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 1A80172C8CC;
-	Thu, 19 Dec 2024 13:49:23 +0300 (MSK)
-Received: from pony.office.basealt.ru (unknown [193.43.10.9])
-	by imap.altlinux.org (Postfix) with ESMTPSA id 1026E36D0193;
-	Thu, 19 Dec 2024 13:49:23 +0300 (MSK)
-Received: by pony.office.basealt.ru (Postfix, from userid 500)
-	id DB1BF360CB20; Thu, 19 Dec 2024 13:49:22 +0300 (MSK)
-Date: Thu, 19 Dec 2024 13:49:22 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, gshan@redhat.com, james.morse@arm.com, 
-	maz@kernel.org, oliver.upton@linux.dev, shameerali.kolothum.thodi@huawei.com, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Jing Zhang <jingzhangos@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 6.6 v1] KVM: arm64: Disable MPAM visibility by default
- and ignore VMM writes
-Message-ID: <fqmjpadvbc7hoakm5qsmaxbgr7jomuehxjm3axo3sbpl4nzqvg@innog6dkmwqd>
-References: <20241212151406.1436382-1-joey.gouly@arm.com>
- <2024121528-refurbish-plausibly-31c7@gregkh>
- <20241217104058.GA2151333@e124191.cambridge.arm.com>
+	s=arc-20240116; t=1734608745; c=relaxed/simple;
+	bh=L5I92xzjE+xlE2hla+sscgIGlaUc5vih+n82H4lZf7g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OmqH1E8+bycRsSxNGV8nhjjiaSs9l+qAubenKv+7aOWY7c7xlfUQQBCOeZl7ZPZ4pJaNKn9gwmVkkPzg+cth2UIeoWj0VQBbR2CYur/vDJYePdWyp9JlYrr0EmdPe0mbyNsLgTmx5y94LYBWzZBMcZNCHqqrEpQ0iGj+qmBjxfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0hIl9Pw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE18C4CECE;
+	Thu, 19 Dec 2024 11:45:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734608744;
+	bh=L5I92xzjE+xlE2hla+sscgIGlaUc5vih+n82H4lZf7g=;
+	h=From:Subject:Date:To:Cc:From;
+	b=V0hIl9PwamjLKsCO3qFvXjhS/vtrhHXK2RIvPkDAPuVc8KOR4Y4m/HgnSy0yTyem2
+	 Aqnho6VhxDTViQbunuaAAY0ez1P7rjgCVaATsemtIsk/O72LIQK5v0Ei8gbGeJ+okz
+	 4aL2bl5w8d+puhJ5ccnf7sqOD2FVRjcyF2dvuYF9PjKfhRUSaqE9+N30Lbi9XRUFjh
+	 3cpAbjkqn/IAbnQ0nynvnxVr01P9NtSfINYDnQsCACeK/Vp75SYaqTk8yzL0z0uEVK
+	 AsXAbKA2nn0laLOraTZRSYPU5H8w18+HFaDkcDL6o943DH7GFUEAmeEUThk9NlYsd/
+	 tFWf994iKsDvg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/3] netlink: specs: mptcp: fixes for some descriptions
+Date: Thu, 19 Dec 2024 12:45:26 +0100
+Message-Id: <20241219-net-mptcp-netlink-specs-pm-doc-fixes-v1-0-825d3b45f27b@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241217104058.GA2151333@e124191.cambridge.arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFYHZGcC/x2M0QqCQBBFf0XmuYF2EbF+JXrY1msN5TrsiATiv
+ zv1dg+XczYyVIHRtdmoYhWTuTiEU0P5lcoTLIMzxXNsQwwXLlh40iXrb32kvNkU2VgnHubMo3x
+ h3IU+RfRjl/AgT2nF//DSjdyj+74fw//HensAAAA=
+X-Change-ID: 20241219-net-mptcp-netlink-specs-pm-doc-fixes-618a2e8f6aeb
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Kishen Maloor <kishen.maloor@intel.com>, 
+ Davide Caratti <dcaratti@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1140; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=L5I92xzjE+xlE2hla+sscgIGlaUc5vih+n82H4lZf7g=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnZAdl4U+V32qYR7n8/pblQCq+PCzlJWpUpCSQ4
+ B9nJ7ZUcMmJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ2QHZQAKCRD2t4JPQmmg
+ c9EZEADITUi98FJ+QXIOKMI0q8HLBLBAoTuHAtMaD3cB3kEXRRIEgMgX0CUetonRlPDxz4cLJlc
+ im1HF9tUqsajxGh/MXLZ5wXTK/nRW6dizFZPIAoFmyZlI34+PyAvISZ+BXSKIzFLy2EHUhzZEyc
+ 6QWZhpL3RSDcoYgyQzyHDQ4QR3Q5nxW8DV5BXsWwSrdMVACWTh68KbLK+Lx9mN6EeP64K0w3oxy
+ I6n2cJ9gxi55VcOeq7viHo6vll8moVT8ThbCKvsj21g/oasGBddudTt23ek2dLbPXI5YhUtpfyI
+ padwppFtA98o9DLkeuiBK6vUChUHx1lKoXYNijylY7fEif1w+6B/V+3YQF5n1b5pg33vgjpfLuD
+ CONWPsM1OSdU9jlnoHelKKTfW3cR1IXRHytF+K5DvfK0GjLVPUxb8uBnKKVm2+8hwGd/PHVrY9O
+ sQbFt6Wo9upciWXTixWJBt3SElqO7WFg1ycqREBtrhMsOhY3wlwDmDBxm3FFHn+yxjIbrAAFMLl
+ dDaD7Za/NzTonsagt/OYAI/wnH0/2fDJ97bnOVDbgZCX6o43/RlbawysCkDqP+YwAHOlh9rtGzy
+ RHzFe/CX/jgItmt9ATUfFdvdqPB/zp4i60r/jDxSWz5+/cNEmVHyONmr5FzZBn/INqzy21MKsZW
+ 18oFKdDwhYLWj2g==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Marc, Joey,
+When looking at the MPTCP PM Netlink specs rendered version [1], a few
+small issues have been found with the descriptions, and fixed here:
 
-On Tue, Dec 17, 2024 at 10:40:58AM GMT, Joey Gouly wrote:
-> On Sun, Dec 15, 2024 at 10:22:53AM +0100, Greg KH wrote:
-> > On Thu, Dec 12, 2024 at 03:14:06PM +0000, Joey Gouly wrote:
-> > > From: James Morse <james.morse@arm.com>
-> > > 
-> > > commit 6685f5d572c22e1003e7c0d089afe1c64340ab1f upstream.
-> > > 
-> > > commit 011e5f5bf529f ("arm64/cpufeature: Add remaining feature bits in
-> > > ID_AA64PFR0 register") exposed the MPAM field of AA64PFR0_EL1 to guests,
-> > > but didn't add trap handling. A previous patch supplied the missing trap
-> > > handling.
-> > > 
-> > > Existing VMs that have the MPAM field of ID_AA64PFR0_EL1 set need to
-> > > be migratable, but there is little point enabling the MPAM CPU
-> > > interface on new VMs until there is something a guest can do with it.
-> > > 
-> > > Clear the MPAM field from the guest's ID_AA64PFR0_EL1 and on hardware
-> > > that supports MPAM, politely ignore the VMMs attempts to set this bit.
-> > > 
-> > > Guests exposed to this bug have the sanitised value of the MPAM field,
-> > > so only the correct value needs to be ignored. This means the field
-> > > can continue to be used to block migration to incompatible hardware
-> > > (between MPAM=1 and MPAM=5), and the VMM can't rely on the field
-> > > being ignored.
-> > > 
-> > > Signed-off-by: James Morse <james.morse@arm.com>
-> > > Co-developed-by: Joey Gouly <joey.gouly@arm.com>
-> > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > > Tested-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> > > Reviewed-by: Marc Zyngier <maz@kernel.org>
-> > > Link: https://lore.kernel.org/r/20241030160317.2528209-7-joey.gouly@arm.com
-> > > Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-> > > [ joey: fixed up merge conflict, no ID_FILTERED macro in 6.6 ]
-> > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > > Cc: stable@vger.kernel.org # 6.6.x
-> > > Cc: Vitaly Chikunov <vt@altlinux.org>
-> > > Link: https://lore.kernel.org/linux-arm-kernel/20241202045830.e4yy3nkvxtzaybxk@altlinux.org/
-> > > ---
-> > > 
-> > > This fixes an issue seen when using KVM with a 6.6 host kernel, and
-> > > newer (6.13+) kernels in the guest.
-> > > 
-> > > Tested with a stripped down version of set_id_regs from the original
-> > > patch series.
-> > 
-> > What about 6.12.y?  You can't just skip a stable tree, otherwise you
-> > will get a regression when you upgrade to 6.12.y, right?
-> 
-> I did have it ported/tested locally, but I wasn't sure of the stable process,
-> so just sent out one!  Next time I will send all the backports at the same
-> time.
-> 
-> Thanks Marc Z for sending it out!
+- Patch 1: add a missing attribute for two events. For >= v5.19.
 
-Thank you for backporting this, and thanks to everyone involved in the fix.
+- Patch 2: clearly mention the attributes. For >= v6.7.
 
-Vitaly,
+- Patch 3: fix missing descriptions and replace a wrong one. For >= v6.7.
 
-> 
-> Joey
+Link: https://docs.kernel.org/networking/netlink_spec/mptcp_pm.html [1]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Please note that there is no urgency here: this can of course be sent to
+Linus next year!
+
+Enjoy this holiday period!
+
+---
+Matthieu Baerts (NGI0) (3):
+      netlink: specs: mptcp: add missing 'server-side' attr
+      netlink: specs: mptcp: clearly mention attributes
+      netlink: specs: mptcp: fix missing doc
+
+ Documentation/netlink/specs/mptcp_pm.yaml | 60 ++++++++++++++++---------------
+ 1 file changed, 31 insertions(+), 29 deletions(-)
+---
+base-commit: ce1219c3f76bb131d095e90521506d3c6ccfa086
+change-id: 20241219-net-mptcp-netlink-specs-pm-doc-fixes-618a2e8f6aeb
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
