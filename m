@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-105508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6369F984C
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:40:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374F99F984A
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9655162EDE
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:40:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E34ED7A498D
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D0323A592;
-	Fri, 20 Dec 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0F023A57C;
+	Fri, 20 Dec 2024 17:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5cXuUut"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYZzphal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4380623A589;
-	Fri, 20 Dec 2024 17:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5953D21B182;
+	Fri, 20 Dec 2024 17:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714868; cv=none; b=ElueCWpz0lKrlaOO+NwlMn6eNTVRP3KWOqmqubKM2j/oRM0lEopQcnhgqetYqxRWoBjuv3WQ418gPwFI2Oqhw+78MpTBpumfygsFJPWq9nQ05aPNTNAfWOFNrp9+B6v7+9yQs1ZUNwQCSyrUdYwFUrb05BB+VCm4UBk7033yBdg=
+	t=1734714867; cv=none; b=eJ2IEnkS+w7qEmIzt+3ixrtXi79ts3qQ+LKby10O9kpMHYR3uGXE5M7JqlexaT9O68IxWrqDlG+C/O4GFAIJq4XMq6HxL2Dyqe0Z5vOSV1L5OvJ9ya3P4/aWAgE7hhozdhBLsgq9vWpS4H4els/U6sEQWk3WYn/e8VzfIuu19eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714868; c=relaxed/simple;
-	bh=+GcQLrydn8SgjXAX/5m0gSJqTHTWX0VI7FL8dcrPJs4=;
+	s=arc-20240116; t=1734714867; c=relaxed/simple;
+	bh=+Gx9VfELhe5vdNlK/GhGA0AxXuthCSN/iLDGZt8uQDg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W3p8DtpXuE7vtR2SL7BQH/gqp6SLUQc8IZYy7/fS/PLzP29Rz96PFFRzdm8abWc1bevXvxV+qci4uHLQWLd3+LwS1cICp9c7gimvFBEPl8kmvjMtPSrRfgoChdOdquNfurGxjYcskDRHcXQpOEsN6Mae0qgQAAVpVAmKR3wJu0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5cXuUut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A5FC4CECD;
-	Fri, 20 Dec 2024 17:14:24 +0000 (UTC)
+	 MIME-Version; b=Cpqxsq3VTqd44M2AH/3ymv9COy3aaSN2bSSh1EWDPKAEQFPxjCqkcJg7In+0lgAkYFY7rET6RqlPwcqIVY3Ty4X/UYPALjI//LHMSkSx6mh27srnvk8dnP+84tzMYO+WVBPcD6Yx7UMGIT39+ZXTZA/21fzEKUM5NmbeE1Yh+vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYZzphal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3966AC4CED3;
+	Fri, 20 Dec 2024 17:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714865;
-	bh=+GcQLrydn8SgjXAX/5m0gSJqTHTWX0VI7FL8dcrPJs4=;
+	s=k20201202; t=1734714867;
+	bh=+Gx9VfELhe5vdNlK/GhGA0AxXuthCSN/iLDGZt8uQDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5cXuUutP4X+o8DmfP07POPr7iV9ID4RZWZGJUuBYrgu6Nz8tZ94luDaxymMTWikG
-	 OPvEk4K6GJ+Jbm+Q38GgYnDCrPA7rNciOkQBgVD8ivljR3ged4sVOlY3NLT5BOwlQo
-	 /Bh8DdmSKvj7o9Q/1uw5E5mivgL/AUR13uTPeIuncHZxHbqHUQ1wPowxrWK1py/Eva
-	 Yu9bWWgXYlilMa/bkUBcWplI4UkWuKm8LRrFc5/THFOjlgalltc0XZ2claL68kH87l
-	 oxyL8YWOSm+0NJFCxDtwDnz0Y1lZTulMPd8Q1JEovlS6mv8pw1lpptkRQXkaU0OZGE
-	 jzexsEQEr0zUQ==
+	b=eYZzphaltlhmvJ7jmnfqNo7jJtCL/RnuGwk0ZYXCeVpt2Tx4W9Cv+UJDKoXxMPgCG
+	 HbwhXqjiSk5nn/vzctCsye4UKTcrYT9mQcLLU2ndOXsH51TRg6LepzAthoLXf4uWaH
+	 HV5htwr6alzLTYZbH6y7x/jvFcCekX50Wf/1btQb4XB+aqa0jANU59IlENi7z6dz8Z
+	 Xshq5qkvbgOzOS8Pb6NjAVN/jcySfw4P6xSsw0S8JGf2guuNLAJDbFQQBogbASTkXy
+	 iP3h3uXuSmbYJ0wzcBoW5/xlcOf+rlyz+wvWe3X1ruZcZDMDNiwdrWwyQ/Os5nPoQH
+	 CI4lftrLDbrOg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Adrian Ratiu <adrian.ratiu@collabora.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Anton Protopopov <aspsk@isovalent.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	k.kosik@outlook.com,
-	alexander@tsoy.me,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/6] sound: usb: format: don't warn that raw DSD is unsupported
-Date: Fri, 20 Dec 2024 12:14:16 -0500
-Message-Id: <20241220171420.512513-2-sashal@kernel.org>
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 3/6] bpf: fix potential error return
+Date: Fri, 20 Dec 2024 12:14:17 -0500
+Message-Id: <20241220171420.512513-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220171420.512513-1-sashal@kernel.org>
 References: <20241220171420.512513-1-sashal@kernel.org>
@@ -69,73 +68,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.288
 Content-Transfer-Encoding: 8bit
 
-From: Adrian Ratiu <adrian.ratiu@collabora.com>
+From: Anton Protopopov <aspsk@isovalent.com>
 
-[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
+[ Upstream commit c4441ca86afe4814039ee1b32c39d833c1a16bbc ]
 
-UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
-RAW_DATA type, typically used for DSD playback.
+The bpf_remove_insns() function returns WARN_ON_ONCE(error), where
+error is a result of bpf_adj_branches(), and thus should be always 0
+However, if for any reason it is not 0, then it will be converted to
+boolean by WARN_ON_ONCE and returned to user space as 1, not an actual
+error value. Fix this by returning the original err after the WARN check.
 
-This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
-fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
-however a confusing and unnecessary message gets printed because
-the bit is not properly tested in the last "unsupported" if test:
-if (format & ~0x3F) { ... }
-
-For example the output:
-
-usb 7-1: new high-speed USB device number 5 using xhci_hcd
-usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
-usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
-usb 7-1: Product: TC44C
-usb 7-1: Manufacturer: TC44C
-usb 7-1: SerialNumber: 5000000001
-hid-generic 0003:262A:9302.001E: No inputs registered, leaving
-hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
-usb 7-1: 2:4 : unsupported format bits 0x100000000
-
-This last "unsupported format" is actually wrong: we know the
-format is a RAW_DATA which we assume is DSD, so there is no need
-to print the confusing message.
-
-This we unset bit 31 of the format after recognizing it, to avoid
-the message.
-
-Suggested-by: Takashi Iwai <tiwai@suse.com>
-Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
-Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20241210114245.836164-1-aspsk@isovalent.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/format.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/bpf/core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/format.c b/sound/usb/format.c
-index 11a4454c6f64..b29190042f30 100644
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -61,6 +61,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
- 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
- 			/* flag potentially raw DSD capable altsettings */
- 			fp->dsd_raw = true;
-+			/* clear special format bit to avoid "unsupported format" msg below */
-+			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
- 		}
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index dde21d23f220..9fb103426cf0 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -496,6 +496,8 @@ struct bpf_prog *bpf_patch_insn_single(struct bpf_prog *prog, u32 off,
  
- 		format <<= 1;
-@@ -72,8 +74,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
- 		sample_width = as->bBitResolution;
- 		sample_bytes = as->bSubslotSize;
+ int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
+ {
++	int err;
++
+ 	/* Branch offsets can't overflow when program is shrinking, no need
+ 	 * to call bpf_adj_branches(..., true) here
+ 	 */
+@@ -503,7 +505,9 @@ int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
+ 		sizeof(struct bpf_insn) * (prog->len - off - cnt));
+ 	prog->len -= cnt;
  
--		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
-+		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
- 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
-+			/* clear special format bit to avoid "unsupported format" msg below */
-+			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
-+		}
+-	return WARN_ON_ONCE(bpf_adj_branches(prog, off, off + cnt, off, false));
++	err = bpf_adj_branches(prog, off, off + cnt, off, false);
++	WARN_ON_ONCE(err);
++	return err;
+ }
  
- 		format <<= 1;
- 		break;
+ static void bpf_prog_kallsyms_del_subprogs(struct bpf_prog *fp)
 -- 
 2.39.5
 
