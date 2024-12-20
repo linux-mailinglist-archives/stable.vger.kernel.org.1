@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-105506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC259F98C1
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:55:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6369F984C
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:40:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49603189D69F
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:39:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9655162EDE
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57610239BAE;
-	Fri, 20 Dec 2024 17:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D0323A592;
+	Fri, 20 Dec 2024 17:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZ1P5c8p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5cXuUut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C93523A1B7;
-	Fri, 20 Dec 2024 17:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4380623A589;
+	Fri, 20 Dec 2024 17:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714863; cv=none; b=BXC1kOUHuWJtaPXsJsLNhKhBpwBZxQEPkO20N0outy9BeuMNci9Ww2JRcQHbO/lK99BWnNetjpR57JDW4Ar83/XIh3q6Khhr8+/FuMND4qvO6n++NtFe6jI6CZMbyrgsjA3f6saMG+kdZZfoofj15sNqSPfsyul9gWRvQKFomxs=
+	t=1734714868; cv=none; b=ElueCWpz0lKrlaOO+NwlMn6eNTVRP3KWOqmqubKM2j/oRM0lEopQcnhgqetYqxRWoBjuv3WQ418gPwFI2Oqhw+78MpTBpumfygsFJPWq9nQ05aPNTNAfWOFNrp9+B6v7+9yQs1ZUNwQCSyrUdYwFUrb05BB+VCm4UBk7033yBdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714863; c=relaxed/simple;
-	bh=7bJtG8AhoTYudM19HcUmlXvNCViYljPNQhacxOceofs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=opLtdX/5CfoEidVlAObsVRhj7C0EsoWDpAGr8iv84u+w3dY3Rigc/y5Fp9swPuwirky1bhkF+rbYRhfCL0DOprSfSrqHzp705Vf8gPsXHij2EaVkivMJqpbwSGUszfXNWgu8PCt/lKlG4ExpJzX7cv+UD7gAJKygiBZJavyMTwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZ1P5c8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC790C4CECD;
-	Fri, 20 Dec 2024 17:14:21 +0000 (UTC)
+	s=arc-20240116; t=1734714868; c=relaxed/simple;
+	bh=+GcQLrydn8SgjXAX/5m0gSJqTHTWX0VI7FL8dcrPJs4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=W3p8DtpXuE7vtR2SL7BQH/gqp6SLUQc8IZYy7/fS/PLzP29Rz96PFFRzdm8abWc1bevXvxV+qci4uHLQWLd3+LwS1cICp9c7gimvFBEPl8kmvjMtPSrRfgoChdOdquNfurGxjYcskDRHcXQpOEsN6Mae0qgQAAVpVAmKR3wJu0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5cXuUut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A5FC4CECD;
+	Fri, 20 Dec 2024 17:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714862;
-	bh=7bJtG8AhoTYudM19HcUmlXvNCViYljPNQhacxOceofs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iZ1P5c8pFiq7S4nr65xnEeFg7ZOAp3KsY4b9KAjcn19a+7YQ17s8tB3tmZBNg/Zgy
-	 nN86uGo7xz6YuUAiVoS/sToqWhs2nfDxZkcxLk5S2xC1MUVM6B+rR3I/w3yErF94ti
-	 OhDAmHJ28XrdKZfd+eo0I6XZiOH9xCz5iMruM8Sv3KgZGQIuXS6foxU/FYYru7H0K8
-	 lA/dwHkuXNHOfYm55QrLTDHH085i4Q8x7yoHy8dnda9W1EzGIRQxxYZtwyXy+1wIec
-	 m/VONlC9I6XPBZftEnjGOF5/aawl++S5nEY4nn7ZxZVQ0RXoicMZgv/dN5TAG7T+5o
-	 6iQz6siZ1OOVQ==
+	s=k20201202; t=1734714865;
+	bh=+GcQLrydn8SgjXAX/5m0gSJqTHTWX0VI7FL8dcrPJs4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Y5cXuUutP4X+o8DmfP07POPr7iV9ID4RZWZGJUuBYrgu6Nz8tZ94luDaxymMTWikG
+	 OPvEk4K6GJ+Jbm+Q38GgYnDCrPA7rNciOkQBgVD8ivljR3ged4sVOlY3NLT5BOwlQo
+	 /Bh8DdmSKvj7o9Q/1uw5E5mivgL/AUR13uTPeIuncHZxHbqHUQ1wPowxrWK1py/Eva
+	 Yu9bWWgXYlilMa/bkUBcWplI4UkWuKm8LRrFc5/THFOjlgalltc0XZ2claL68kH87l
+	 oxyL8YWOSm+0NJFCxDtwDnz0Y1lZTulMPd8Q1JEovlS6mv8pw1lpptkRQXkaU0OZGE
+	 jzexsEQEr0zUQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 1/6] wifi: mac80211: wake the queues in case of failure in resume
-Date: Fri, 20 Dec 2024 12:14:15 -0500
-Message-Id: <20241220171420.512513-1-sashal@kernel.org>
+	perex@perex.cz,
+	k.kosik@outlook.com,
+	alexander@tsoy.me,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/6] sound: usb: format: don't warn that raw DSD is unsupported
+Date: Fri, 20 Dec 2024 12:14:16 -0500
+Message-Id: <20241220171420.512513-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241220171420.512513-1-sashal@kernel.org>
+References: <20241220171420.512513-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,42 +69,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.288
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
+[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
 
-In case we fail to resume, we'll WARN with
-"Hardware became unavailable during restart." and we'll wait until user
-space does something. It'll typically bring the interface down and up to
-recover. This won't work though because the queues are still stopped on
-IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
-Make sure we clear that reason so that we give a chance to the recovery
-to succeed.
+UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
+RAW_DATA type, typically used for DSD playback.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
+fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
+however a confusing and unnecessary message gets printed because
+the bit is not properly tested in the last "unsupported" if test:
+if (format & ~0x3F) { ... }
+
+For example the output:
+
+usb 7-1: new high-speed USB device number 5 using xhci_hcd
+usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
+usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
+usb 7-1: Product: TC44C
+usb 7-1: Manufacturer: TC44C
+usb 7-1: SerialNumber: 5000000001
+hid-generic 0003:262A:9302.001E: No inputs registered, leaving
+hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
+usb 7-1: 2:4 : unsupported format bits 0x100000000
+
+This last "unsupported format" is actually wrong: we know the
+format is a RAW_DATA which we assume is DSD, so there is no need
+to print the confusing message.
+
+This we unset bit 31 of the format after recognizing it, to avoid
+the message.
+
+Suggested-by: Takashi Iwai <tiwai@suse.com>
+Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/util.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/usb/format.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 63b66fd0a1ce..515fe1d539b4 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2209,6 +2209,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
- 		else
- 			WARN(1, "Hardware became unavailable during restart.\n");
-+		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
-+						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
-+						false);
- 		ieee80211_handle_reconfig_failure(local);
- 		return res;
- 	}
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index 11a4454c6f64..b29190042f30 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -61,6 +61,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
+ 			/* flag potentially raw DSD capable altsettings */
+ 			fp->dsd_raw = true;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
+ 		}
+ 
+ 		format <<= 1;
+@@ -72,8 +74,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 		sample_width = as->bBitResolution;
+ 		sample_bytes = as->bSubslotSize;
+ 
+-		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
++		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
++		}
+ 
+ 		format <<= 1;
+ 		break;
 -- 
 2.39.5
 
