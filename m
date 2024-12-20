@@ -1,130 +1,125 @@
-Return-Path: <stable+bounces-105409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620FB9F8F34
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 10:42:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 233529F8F5E
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 10:51:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BC161897650
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 09:42:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 775E4166B0C
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 09:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335BC1BD00A;
-	Fri, 20 Dec 2024 09:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146331B394E;
+	Fri, 20 Dec 2024 09:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LRSy3nJ4"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gWuyofKk"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81A91ABEA8
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 09:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFE6199E84;
+	Fri, 20 Dec 2024 09:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734687747; cv=none; b=WdFZlK51woNrcYi7e3Ke3j/zHqNo0YyL/hO2HDVsS+uDTatm+1Jqwsqu7Ql+AeZ2/86tpLwMFbM9bC8idFBPLEBCbB50jYw+9vWps2eP173ir7CK82bdcIY3AmNQIpiMnwx755WoYBWsRNWx2GYxpKF38zPmmiV1cjFGghMy7d4=
+	t=1734688295; cv=none; b=XGcsOWfZ+f5PfETE+r43wyWMKnUOfTIuoubZeqbURbka+c7QjD/XE7Wn+JN6ejF4CX/Uu+rN7hxoWJAZKaR1EAZYgLkThcusxgKf8ppuPpv74axS5t6Fz9sLab7U08ExO/e398d8OYAThMpg+GZSMt2k7y+ZhCDlFzMUSBs0vs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734687747; c=relaxed/simple;
-	bh=Srb/IMApP0AmNywP55aONUjmWy3LzpeEFQ6056YKF3E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TCeP6L4trwlaSlDPWZuK98udkTOz4egCBxdoaZUP4mUH1RKW2vWJeb6C2wsZblQ+ReT1EY6iZ2ZRmJ+YNj/zFSfZ0qPDl1xGn2cpIGMsfF5crL6EiI1YjHb+prmwTIKzznUmOTT2AEWDH2gTSBAa3lGK3sOvINFbp2+Zrx+q9Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LRSy3nJ4; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK7Li6b029674
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 09:42:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Srb/IMApP0AmNywP55aONUjmWy3LzpeEFQ6056YKF3E=; b=LRSy3nJ47eVv1x/r
-	RYcMFHq4QDGUTLr91PB1Tcx3UhnVVQhxqaLKe6bKqNPkQC7zSaiVo9njvksGR3PV
-	Ec9SYzXUZZdG96+N5E6l6hrMTpC107YsVG220PXuPtxxvuNz77sCZlBMLq3cTwpB
-	saQEH4ilPtHjz1fQ8WslLvjLeEI/fu0PA5l3XcAD5OWJkTbREtz9wWS73kFCjlh4
-	kYXXAVyJ5wBNLGmXCVbxFyUKrMjev2dGIiFfvkwK9F5MdEaMqO06Vzjot/gZcGvo
-	g5PSkuZazzLAZ+3cK5QnKLcAGCADdtUI/h8JSNXbXwLTaslaDB0yXr/zaD6Vxjyo
-	ayRuOQ==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n44fgdgu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 09:42:24 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6d8f15481bbso5069506d6.1
-        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 01:42:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734687743; x=1735292543;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Srb/IMApP0AmNywP55aONUjmWy3LzpeEFQ6056YKF3E=;
-        b=wmPAXAWtkU8zz7M482+R8P+7M3jjKwoJm+pfucE76vNBk105qFa4eNY6Qb1drYbPkM
-         eWPepSch7a0ThZnPqQ2xnh9Jcl/ALc06N1QmNA1KxBwLE6LYeQ9GRaWgHAM2kfUIAe0V
-         CvgYZA1BuNVEDP0X8g95XGkQ4JFg7e57PCMt7DaXI7UgvrqANyqKels7GUfutOCu8sSV
-         S04A3w5F8WOqy4TOg6H0+Qu1mpDQciiQe6MhcQJC6HQeUpv5dAQ8LsvZpcDoxnkbFrDH
-         LbToErp/jvMJFG2IhNJ9SBFgeZbXn64Y3rCJXjOOHi/G1va+V5P+92cW4wpkz2w4sFYE
-         CISA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwdCSWE1BzaqdeaA9WGZMKU70Ml0WHbnzdBCbw0SsWDz0y/kI3eq7VYVeXfyMr8ldacmdogmQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoI7TZGvv4Tz33dL/m1MOlsaGFDS8vyoMrXQy7ow5ry3xqqYek
-	w+F56xFmNDklDaiTfr4Qz+oKZvasy5nY9OCtOhfacUv7ySLhi4CulWwXNTbquWMIyAqmjAAoLR1
-	Oh5dfuCFpMuJXlyA66+F1ixEuUeyzgHzZ+6panFqxFxLh8ErJZDMK8Ac=
-X-Gm-Gg: ASbGnctmxeJ4bW/SGWsgjrXiJVFLIAzS5EJok4Poff1vz6dSbrXNvU/Iuhk9bWDQ9Mm
-	wnEsz1vSm1qGIMChufTA8P3f2xlvS5cXdwx39+r/rjS5MV2viEplqcXz+Dwp16skr4+O5i2e94n
-	agX7UMvW+9ALnch7Fy0SY5hANWWmtq+wSpAyTz7/qubc7XWTU3Wfz0SRI8gsdH5baoeOGCFK5/D
-	qDkrwLfmtUxcYaFnupovLskBfKyKWjgJzTmiuARxL5tSDhbrti1cc1wkS47GqzHG1nwEbQK02vH
-	dbjazCeTg8SrPKg7PhL0km/S+QEL1F4j2Gk=
-X-Received: by 2002:ac8:7f14:0:b0:464:af83:ba34 with SMTP id d75a77b69052e-46a4a989db9mr14370641cf.10.1734687743642;
-        Fri, 20 Dec 2024 01:42:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGtVFYoZr8OVyUkQYL9m/mvQSFGgdGO3w4czfWfr5Bk2uAOQJsU+lMK0vdweVrYuEj46G9JVA==
-X-Received: by 2002:ac8:7f14:0:b0:464:af83:ba34 with SMTP id d75a77b69052e-46a4a989db9mr14370531cf.10.1734687743313;
-        Fri, 20 Dec 2024 01:42:23 -0800 (PST)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d80675a41esm1545415a12.1.2024.12.20.01.42.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2024 01:42:22 -0800 (PST)
-Message-ID: <d9309db7-e208-4dbe-b408-e637566ece4c@oss.qualcomm.com>
-Date: Fri, 20 Dec 2024 10:42:20 +0100
+	s=arc-20240116; t=1734688295; c=relaxed/simple;
+	bh=qOwso/SHpEXaGxkAyPG8iBkqg9GhvqY50oX+iClLyDw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hBAN9QTdkwBgnEfA3GWPywjwYz7gD84lJHThqGLUAVrwh0ntRD7BnS/XvdyYIKDmFX/4e5Qa6fr0Hhv4SET3Lu6LsO2NBH6jJWcRw2MWmiZw1SVyaiF3pju/OJOfWbY5SP4nM9grfONDE6x7cADVm1mIpFYpD39YGUcD3VzNF3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gWuyofKk; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK7LlOn028178;
+	Fri, 20 Dec 2024 09:51:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=kyJjQ+f+A9Q96aM7CytjoO
+	GcvaHTb7ojyzn0FzjC/cE=; b=gWuyofKkd1rf3/iwWb29M8+KvFaXbgZtu2gefe
+	PP4YXerP3twksQHe9BE1WBn8EkUoMTDD6+KUFmsf/ApB5ay9f4L4cKeYvQ5u1N42
+	XN6EGZfLOTsjxWSEIeDTYHz35aNAjVWneJU8y6ZGM0hObbyUIRzdPXw7bBYmCUW1
+	+SeL8yM+tyFoVE1mJgVbalU8HalRug3j9Ta1DR0XlT0rxlC/itnu58PlcsSYQ8cN
+	BJql4YwwMZN93TBpeeRt2x0naXEtFcpr0+C6irVVSvEZ7NYcHStaYk4eAx2omGAC
+	QXTGj9QvZXw9cP6ZxdE4xtbzpk/gmgGk05zXt0uH/XCdfwYw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n44ggdef-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Dec 2024 09:51:30 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BK9p7n1016114
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Dec 2024 09:51:07 GMT
+Received: from hu-skakitap-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 20 Dec 2024 01:51:03 -0800
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette
+	<mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
+CC: Konrad Dybcio <konradybcio@kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Taniya Das
+	<quic_tdas@quicinc.com>,
+        Imran Shaik <quic_imrashai@quicinc.com>,
+        Ajit Pandey
+	<quic_ajipan@quicinc.com>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>,
+        "Satya
+ Priya Kakitapalli" <quic_skakitap@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] clk: qcom: gcc-mdm9607: Fix cmd_rcgr offset for blsp1_uart6 rcg
+Date: Fri, 20 Dec 2024 15:20:48 +0530
+Message-ID: <20241220095048.248425-1-quic_skakitap@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] clk: qcom: dispcc-sm6350: Add missing parent_map for
- a clock
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
- <20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 9b12WV19mdDCIQ3ofj7OqkUpxSHKjy--
-X-Proofpoint-ORIG-GUID: 9b12WV19mdDCIQ3ofj7OqkUpxSHKjy--
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: PqgmC2ury4pVMUrgV18OkEjZcn3oVcXV
+X-Proofpoint-GUID: PqgmC2ury4pVMUrgV18OkEjZcn3oVcXV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=784 malwarescore=0 impostorscore=0 suspectscore=0 spamscore=0
- clxscore=1015 mlxscore=0 lowpriorityscore=0 adultscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412200080
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=806 spamscore=0 phishscore=0 lowpriorityscore=0 mlxscore=0
+ clxscore=1011 suspectscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412200081
 
-On 20.12.2024 10:03 AM, Luca Weiss wrote:
-> If a clk_rcg2 has a parent, it should also have parent_map defined,
-> otherwise we'll get a NULL pointer dereference when calling clk_set_rate
-> like the following:
+Fix cmd_rcgr offset for blsp1_uart6_apps_clk_src on mdm9607 platform.
 
-Same as patch 1
+Fixes: 48b7253264ea ("clk: qcom: Add MDM9607 GCC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+---
+ drivers/clk/qcom/gcc-mdm9607.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Konrad
+diff --git a/drivers/clk/qcom/gcc-mdm9607.c b/drivers/clk/qcom/gcc-mdm9607.c
+index 6e6068b168e6..07f1b78d737a 100644
+--- a/drivers/clk/qcom/gcc-mdm9607.c
++++ b/drivers/clk/qcom/gcc-mdm9607.c
+@@ -535,7 +535,7 @@ static struct clk_rcg2 blsp1_uart5_apps_clk_src = {
+ };
+ 
+ static struct clk_rcg2 blsp1_uart6_apps_clk_src = {
+-	.cmd_rcgr = 0x6044,
++	.cmd_rcgr = 0x7044,
+ 	.mnd_width = 16,
+ 	.hid_width = 5,
+ 	.parent_map = gcc_xo_gpll0_map,
+-- 
+2.25.1
+
 
