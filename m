@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-105439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44679F97BF
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:21:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C769F9791
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:14:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C5D61899918
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:13:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BC22163FEF
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9297121D5B6;
-	Fri, 20 Dec 2024 17:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ABF220684;
+	Fri, 20 Dec 2024 17:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SRQpg0KV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I30OjKCX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA0521D5AB;
-	Fri, 20 Dec 2024 17:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20A521A95D;
+	Fri, 20 Dec 2024 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714706; cv=none; b=mGsLuWK5zE5MQT8ju8/pMl7aeAAsVNsC51NWK1JQTZsccDnhkkFCibCdxApvg7d1oHn+xz1C/8Q47jlKF6HOlLXaECuIuKQ/yMrMjvOigicTQiI8CrQY4VTY9VFi8/KtKGmUj7jtj5hA7Y1m5co9iMXoMdFNhq7r22c65s+WnFA=
+	t=1734714711; cv=none; b=fhcv5Nstf6AJe12qOgBJFQth1SRmeE0qTqEDjFaxzPixjSygvKTXrbKCBJsAoX5VL5SolS7/YPxuyio/Tlhgjsb4FoX6DaB+kWlaVyBBByH77SU9FgwbeYwNVhNpvUb/URmqBxpEEJK+2xzNAiQ6PZVGyB5/5tUKpgk90149e/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714706; c=relaxed/simple;
-	bh=ThH0aDLGcUGbu9Akpish5YXh+1I3B1+y+S5BGsx4ba8=;
+	s=arc-20240116; t=1734714711; c=relaxed/simple;
+	bh=/WuPFagjL6ddtIFK+BIu5jU20oVJp0MMnfC2FJyFbp0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Rn9mHIp3ROLTh1u4qCgn7jQ4/Ov5m8OSI2WADvvRxzWE4AKjYiN5FMAP++3bbTqsRo5NGtMGQdurRhplqRG9AYuXGrJJS4Tk9nHxyTH2kTa45yBkpU4a+atQotRsD6qQL9FOHNI/6TrYkvNJ4lh1idi6aF5nBBs3wKSiRHo/5Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SRQpg0KV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF49C4CECD;
-	Fri, 20 Dec 2024 17:11:44 +0000 (UTC)
+	 MIME-Version; b=QfCo8PolC1tZ8a3yNhmKlVqoCzvYLcG4NYdWJd1o50kxbjfwt9s3aIvGF822XFfB4m9VEMU/vytnx7eWJjSYpPzhx4UZhwbtipCldY3bNtMqAp36kOBHNtgmv9p1N7g4w3368rNIw8nXqCk04CjVNpjTzifbQjrF8QDXfl1Voc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I30OjKCX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398FDC4CEE1;
+	Fri, 20 Dec 2024 17:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714705;
-	bh=ThH0aDLGcUGbu9Akpish5YXh+1I3B1+y+S5BGsx4ba8=;
+	s=k20201202; t=1734714710;
+	bh=/WuPFagjL6ddtIFK+BIu5jU20oVJp0MMnfC2FJyFbp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SRQpg0KVvGf5jGlVz+o4lewx0EyCPFuCNLICs3F6tszG3JA/fp+q8jLsM+h7s94eA
-	 P9YHoanCklwym++UF+6XbwfP0kOP+1kuvSGoO0JutVClfiWimr+i05VAKTKJkSFGFz
-	 NaOCCq9QUSBdWfWLofbUkJXq8tfpnVqXssa3wJ0TwkJ6BfCJ/+UwvVXXzgDEnz2jDJ
-	 oUU8im/FERY7JUOlnJUSCOMGQ3SYlEdLiapnC3Hi+DjFwqTiXqqxtx1XXKZVADFMUe
-	 c3PHghbEwCO5p9BDkaZW0RlFlo6e4HtyiSfa70LyKUwRcT/FnkpCShpoizUMPUZb+I
-	 bkh/nzkeu3CNw==
+	b=I30OjKCXTZ7ZFFs9W7BI8bkYYgCWEL7UhrJz3xrPwfBkzxCpkBKQD38xWNo18VoZK
+	 DDQ763V0V62pOaUigj2/TeTrqKn18Yq10/AKE6ZJyT0/YuH6oQbehIRXCaJUZhZja+
+	 /lAmvIUXs/ERkiOlWd1ePAF4vjzUGXCsC0x+423qA/YBtmwBm5EeolFHHi1v371WsC
+	 GXzW0wwo0ef0mzX8Rs1rg7ws5y1nFq2lSwejqHi2s28WCc87a3Qkcd/he/9vAzR+5l
+	 xMBXEmcv7NDOKURoVl78llhXgqTXWIwCm8/LVIVprl8kxxB/VYEUzIMg1FjDpUkOpo
+	 PVNSNTzZsATNA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Simon Trimmer <simont@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	david.rhodes@cirrus.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com
-Subject: [PATCH AUTOSEL 6.12 07/29] ALSA: hda: cs35l56: Remove calls to cs35l56_force_sync_asp1_registers_from_cache()
-Date: Fri, 20 Dec 2024 12:11:08 -0500
-Message-Id: <20241220171130.511389-7-sashal@kernel.org>
+	kailang@realtek.com,
+	sbinding@opensource.cirrus.com,
+	simont@opensource.cirrus.com,
+	josh@joshuagrisham.com,
+	rf@opensource.cirrus.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 08/29] ALSA: hda/realtek - Add support for ASUS Zen AIO 27 Z272SD_A272SD audio
+Date: Fri, 20 Dec 2024 12:11:09 -0500
+Message-Id: <20241220171130.511389-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220171130.511389-1-sashal@kernel.org>
 References: <20241220171130.511389-1-sashal@kernel.org>
@@ -70,77 +72,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.6
 Content-Transfer-Encoding: 8bit
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 47b17ba05a463b22fa79f132e6f6899d53538802 ]
+[ Upstream commit 1b452c2de5555d832cd51c46824272a44ad7acac ]
 
-Commit 5d7e328e20b3 ("ASoC: cs35l56: Revert support for dual-ownership
-of ASP registers")
-replaced cs35l56_force_sync_asp1_registers_from_cache() with a dummy
-implementation so that the HDA driver would continue to build.
+Introduces necessary quirks to enable audio functionality on the
+ASUS Zen AIO 27 Z272SD_A272SD:
+- configures verbs to activate internal speakers and headphone jack.
+- implements adjustments for headset microphone functionality.
 
-Remove the calls from HDA and remove the stub function.
+The speaker and jack configurations were derived from a dump of
+the working Windows driver, while the headset microphone
+functionality was fine-tuned through experimental testing.
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20241206105757.718750-1-rf@opensource.cirrus.com
+Link: https://lore.kernel.org/all/CAGGMHBOGDUnMewBTrZgoBKFk_A4sNF4fEXwfH9Ay8SNTzjy0-g@mail.gmail.com/T/
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://patch.msgid.link/20241205210306.977634-1-kovalev@altlinux.org
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/cs35l56.h     | 6 ------
- sound/pci/hda/cs35l56_hda.c | 8 --------
- 2 files changed, 14 deletions(-)
+ sound/pci/hda/patch_realtek.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
-index 94e8185c4795..3dc7a1551ac3 100644
---- a/include/sound/cs35l56.h
-+++ b/include/sound/cs35l56.h
-@@ -271,12 +271,6 @@ struct cs35l56_base {
- 	struct gpio_desc *reset_gpio;
- };
- 
--/* Temporary to avoid a build break with the HDA driver */
--static inline int cs35l56_force_sync_asp1_registers_from_cache(struct cs35l56_base *cs35l56_base)
--{
--	return 0;
--}
--
- static inline bool cs35l56_is_otp_register(unsigned int reg)
- {
- 	return (reg >> 16) == 3;
-diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
-index e3ac0e23ae32..7baf3b506eef 100644
---- a/sound/pci/hda/cs35l56_hda.c
-+++ b/sound/pci/hda/cs35l56_hda.c
-@@ -151,10 +151,6 @@ static int cs35l56_hda_runtime_resume(struct device *dev)
- 		}
- 	}
- 
--	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
--	if (ret)
--		goto err;
--
- 	return 0;
- 
- err:
-@@ -1059,9 +1055,6 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int hid, int id)
- 
- 	regmap_multi_reg_write(cs35l56->base.regmap, cs35l56_hda_dai_config,
- 			       ARRAY_SIZE(cs35l56_hda_dai_config));
--	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
--	if (ret)
--		goto dsp_err;
- 
- 	/*
- 	 * By default only enable one ASP1TXn, where n=amplifier index,
-@@ -1087,7 +1080,6 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int hid, int id)
- 
- pm_err:
- 	pm_runtime_disable(cs35l56->base.dev);
--dsp_err:
- 	cs_dsp_remove(&cs35l56->cs_dsp);
- err:
- 	gpiod_set_value_cansleep(cs35l56->base.reset_gpio, 0);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 973671e0cdb0..5b518a44b78a 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7704,6 +7704,7 @@ enum {
+ 	ALC274_FIXUP_HP_MIC,
+ 	ALC274_FIXUP_HP_HEADSET_MIC,
+ 	ALC274_FIXUP_HP_ENVY_GPIO,
++	ALC274_FIXUP_ASUS_ZEN_AIO_27,
+ 	ALC256_FIXUP_ASUS_HPE,
+ 	ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK,
+ 	ALC287_FIXUP_HP_GPIO_LED,
+@@ -9505,6 +9506,26 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc274_fixup_hp_envy_gpio,
+ 	},
++	[ALC274_FIXUP_ASUS_ZEN_AIO_27] = {
++		.type = HDA_FIXUP_VERBS,
++		.v.verbs = (const struct hda_verb[]) {
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x10 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0xc420 },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x40 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x8800 },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x49 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x0249 },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x4a },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x202b },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x62 },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0xa007 },
++			{ 0x20, AC_VERB_SET_COEF_INDEX, 0x6b },
++			{ 0x20, AC_VERB_SET_PROC_COEF, 0x5060 },
++			{}
++		},
++		.chained = true,
++		.chain_id = ALC2XX_FIXUP_HEADSET_MIC,
++	},
+ 	[ALC256_FIXUP_ASUS_HPE] = {
+ 		.type = HDA_FIXUP_VERBS,
+ 		.v.verbs = (const struct hda_verb[]) {
+@@ -10614,6 +10635,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
++	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
+ 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
 -- 
 2.39.5
 
