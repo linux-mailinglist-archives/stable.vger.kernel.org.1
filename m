@@ -1,87 +1,87 @@
-Return-Path: <stable+bounces-105413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474139F9033
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 11:28:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B65179F9035
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 11:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9703C16158A
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 10:28:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC8341650F1
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 10:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18331C4604;
-	Fri, 20 Dec 2024 10:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8FC1C4A1B;
+	Fri, 20 Dec 2024 10:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Ne/R+R9T"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gmjlEI1/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2868F1C3F27
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 10:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0301C07DA
+	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 10:28:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734690513; cv=none; b=r/IU4zHSnjslcW6/2rnn4hCELT1jveW9GStH8zLu/fmxQ8TVPiOBcrW5Wy4Ip2/Bi04HAw1ScHEnqayJXFz4DBUk5KPoNPRW9gG6l7gyu7ypKT5nd+JSSDcnCHT1k7gMHyOTkOGm4WP6bRJaIq4/b2CtxoxmjSLXnDrYwavtGfY=
+	t=1734690522; cv=none; b=TX1FikX5oB2YSfdhMjnzvXS6BFNc+p3rdmrBAZ8r3P4W3W4tgMzX306lfttC6yU3bdF4PT9PsqsJP55cxz8fzJFi2fcy+PSf+4opimd3bFIVMyYcf1NTnacIwIrpCeWRm5FklR2LQc3/YBp0LMCZgKdLBdHUFKqenIqKrRryjEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734690513; c=relaxed/simple;
-	bh=1hjBVCcUS89gAYDyc+pvRL1kdXckem1XTkgZ8bCc7Sk=;
+	s=arc-20240116; t=1734690522; c=relaxed/simple;
+	bh=5QWr8KiK0fqKJ2BcZIva5mJXwGTB/TaTgOD7YAkLkD8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LB32050X0TDjFQP4y4xUQfBBvw6fZjwaY0ZFmOAvWuxengPBa2MU+OJEgB1Rj3FEemgo/IBcxHXTXfReQKGpzTIqbcj10VJSeoQHVeFsnxNg7+6relBFXUSnna0BqMeyoLKNFSbhwbAyMFvyILOk8tyn0uPJVpyLuxW4hoSsGRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Ne/R+R9T; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=iZLIeMtjFUMETZTb7hUsbNJeB3cTUrpHG/7Ilukjgzxo2fc07B3ncw7PZWjrwNml2V/387IS32HPTjOfCRdlr0gQIyyaJ0ZGuPa+jPN1lN3ah2oxCeYaeKlgcYU46ue4CZEnp/HulvcXtTz/hoqK31K6qeqXegfluBtEcJfDcGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gmjlEI1/; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK6lbFU001448
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 10:28:31 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK6n08f028591
+	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 10:28:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	XjQWa0qd5X0wQZSFo1zpsnnF4GInUf2OufuV4F6Rxo8=; b=Ne/R+R9TGe/rAt4I
-	8gdnZL4m4HNlcU9vDI6/Ao4tHqnlb540+ToYBxs5hqao/bIZXxtmuLi5jLVgOsqH
-	YnqhlXYHA6bpYaoTbceHUL1MLjfefiRnkOJ5HBKPge0auYoohHSYCyIcqwtShuBU
-	E3k4gKG4QLblChNktt38+wVswowx9ZTTvnNu5tEeIS3dNN3JCA33xXSZHC1XMjLR
-	Npg2MrdhWwHspL+aWMjdQrGvqLRAQuDKdHvt7kkZJKWwRd9g7LFyQH8Za+TgqkC5
-	uyktPWL1XzB5iN6iCZQ4arfaQURLuOa05BhtvNfwte4/ijFLL+j/lB0QOGAjKUz4
-	3e/Ccg==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n3mfrkxa-1
+	B0LK1w8USgsUPXw9o6UhgF0/OBJgHQXzHotizFN7BT0=; b=gmjlEI1/IWZYvFCS
+	s2TrItx7xzF4NNTQ0SUQ1wQ/ICLkdu/xm/bxSapsBQD71mfrEcndIp7m4uIVh/4b
+	1fVL4GhNLbB3x6Kbryt3Rdj88zz8yX+wfNE3LbkiEqEt1kjqX0tAS1xj0ux6dEWl
+	DeUUDBJH5smvKi6iBsGfHNoq+5G5L6vGnKCWGam03vdkVNNWI+6mWMV2hI1sV9YI
+	xsGRzmhKvYXsSwWQJjp8gT/zI26VDx5HCwGa9ZkO0HRttABgXHyiuw0EmwnnBKL3
+	4/8E/UOQ4AgG0gDl8eFtN/Zu4SZDvVQjgvQMSz1QjAGGN4n3UceCg3R+g+7mkMZK
+	Fx4jLA==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n3mxrkfe-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 10:28:31 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-469059f07e2so4001681cf.3
-        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 02:28:30 -0800 (PST)
+	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 10:28:39 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-469059f07e2so4001981cf.3
+        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 02:28:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734690510; x=1735295310;
+        d=1e100.net; s=20230601; t=1734690519; x=1735295319;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XjQWa0qd5X0wQZSFo1zpsnnF4GInUf2OufuV4F6Rxo8=;
-        b=ju2fBOT1GXvGrqFDnas5Vk5qelavtov5F7eBTKkGLrf8RxiL8cdO5yyoOl8u37e8Rr
-         ukNEmy54Xl+jpODUaVW8iuupRqJOaJ87Sf8xBj5olHyLJMl79OViPNg09e9kdW5pos36
-         +/v0fgPYZsBmTLGZyat9YKjRHCIuqtrmpD3mKkE2OKaL0qqbl5gr4VLoZloN7fcZ1vOK
-         iT7V1VW1OZRwxFaBPTgLf/kMP6mybtWxnCjVztD5HTElHb6GXLzuQs0EX9k9n+C1bB8w
-         BoCN1VZLHBEgDM7ViRlFD3/fE9utvDgcs/9IAdUd3njAvAdKDPp/OfnvoGP+eNqV2b6s
-         2cmA==
-X-Forwarded-Encrypted: i=1; AJvYcCVPsqcnRjwS+/NWf4xvlLl5RY1BKg+HzDa3/Wk/JW/1lkRJaAUUyexew1Q7clffMb5gaC6E2Vg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxS54VqvgLj/8Viy8lcFlE4//FikXyOlicp+Ky2rvSQVbkkjwp
-	IqTomG8Q7OygmHfoR5uQyzzaalr8TsGODWKMy9+AeBhuQOiUfzIK1spHflIE88PiCowMbt5vNc4
-	O2WV/KG82qdmwi2fY67V4kroS5KFw0Y/2M1Qqv3LO/b81mxkdK3lnaSc=
-X-Gm-Gg: ASbGncvq3WUetHGXZhtRSHDSPMib1Rq1v7wZUIt7xpUNFKtpHIlodholnK3yW8e/Rax
-	6f9XCqHVqsSHFzUISGWBrqVRyQZLLS8sL+xAGrB1zzFMEX1pFsdJXqAGGJlk0YLO8H42Je3Aq7P
-	2M/tDJOttez5QerAqtccsNVhs/3Pg8Xnn3oDAsTf8dnjN0jJQAFQbcYKelvg/1Jhp7P4EWqnNXq
-	pMSOzn/Tq0e2IAW4E5fAmOX1nsNwFatI6Dt2FvG4u/nbglh4piAk1L9bHxiO97JdJa7vVZZ85DS
-	LzgzMLPUAgfq6BSEC9gEJr42I6ANVuw0v40=
-X-Received: by 2002:a05:622a:4e:b0:469:dcc0:9b23 with SMTP id d75a77b69052e-46a4a9a3eecmr15332281cf.13.1734690509599;
-        Fri, 20 Dec 2024 02:28:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFMtjaKvTFUsh9ZDwXASae8DAiBKh90dcboQDUxU8iSgVq6zGvdYVzXhh/z0oYYZdIkXxgu7Q==
-X-Received: by 2002:a05:622a:4e:b0:469:dcc0:9b23 with SMTP id d75a77b69052e-46a4a9a3eecmr15332111cf.13.1734690509230;
-        Fri, 20 Dec 2024 02:28:29 -0800 (PST)
+        bh=B0LK1w8USgsUPXw9o6UhgF0/OBJgHQXzHotizFN7BT0=;
+        b=w4l3Ais6pxyDWPE/74XpBWxjSoitB6kcGyOohqDjCCYh5kQvGJxJxlvGDVkynei3/c
+         9Ti9kNyig55NhRXDQwzOxAcVwUIy+q/GbS9MwQEkSnLBzdhs/RgXPHl+gcUefRnBIJgf
+         p4J681k4CabUfOtTMe8yVfoVHzlQYxejunQQj3ia04zXJ5YT6X3Ivfc/EDsi0vOAGMnV
+         wYlkNiBhqcZ1o07+5HLPV508wjjePIWTfnbPnEgCJoBOr3YYzBG+GLZbKfgVrodsPBI4
+         A23L5tpr5BANcWnGKuStiK/SMUMmGpVOpWuWV12TOF2pZnrlHOhlaD95yYbix2FbmWtj
+         6PKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCVcb/2/ekk6H6fSdEudmfZwt7wj423snv/0pNveENGK8aMYbjWAxRNF4HZSvEGFdTFDY6nZo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywbha0z4tSnIFTnFm34S4DWY4ysrUPjnTUzImg1ooT/LqBQYZZe
+	XXoC8jJ5NIr+d+TAj5bxJpfexuk+gv+Husf5+sak4R9T32VLdMet7ch8CtQ+3zer/pOePgIuwS5
+	BRVFjeMuH5vbDAYVaFMpZceY6QLIn1JxxmF6ZjUuXwomHK2ny3cqWnR0=
+X-Gm-Gg: ASbGnctbgexueFy+827GqDqnH14LetrRaAt378dw6mx2FWny8AseYIg1GSkqda22G1H
+	54kxMLd8CABJH3+x8wCSJtR6QNaPQJpBxHR06b1DmEpfuRs0os577i0XP0e1ojUQxifcElOOFNA
+	RJU2FfDOqkcYuEfhcK4jQT6JUtqCXQ6Z9QrTGYrAvEzmoqezBZnkFojJD9fr5Tgf7ZYIyONcpSA
+	W/f943yE9mMwoX0bEnOpCQ13YZvtlzcBg6zehTaXjlI0pDdJtz0K329w0xDHo35fC091dIPLBz+
+	r7nTpkg6Pjz+HEaQyQS99qyxKNOVykw02pk=
+X-Received: by 2002:ac8:5f93:0:b0:467:5eaf:7d22 with SMTP id d75a77b69052e-46a4a9785cdmr14547691cf.10.1734690519007;
+        Fri, 20 Dec 2024 02:28:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFEnO9AJSDDgOGm3ytySndEK+tdE7dRdZ3crkt+on5jmDGWI0kAK+1MGayLMPEHLC1GlL8+sQ==
+X-Received: by 2002:ac8:5f93:0:b0:467:5eaf:7d22 with SMTP id d75a77b69052e-46a4a9785cdmr14547501cf.10.1734690518633;
+        Fri, 20 Dec 2024 02:28:38 -0800 (PST)
 Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f06cf19sm160882366b.198.2024.12.20.02.28.27
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0eae4345sm160775866b.84.2024.12.20.02.28.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2024 02:28:28 -0800 (PST)
-Message-ID: <0f5f07f8-dc6a-4162-b9b4-82e40b9ca526@oss.qualcomm.com>
-Date: Fri, 20 Dec 2024 11:28:26 +0100
+        Fri, 20 Dec 2024 02:28:38 -0800 (PST)
+Message-ID: <6220744e-8e62-475f-a1a3-3b7c2c888b3b@oss.qualcomm.com>
+Date: Fri, 20 Dec 2024 11:28:36 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,10 +89,9 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] clk: qcom: gcc-sm6350: Add missing parent_map for two
- clocks
+Subject: Re: [PATCH 2/2] clk: qcom: dispcc-sm6350: Add missing parent_map for
+ a clock
 To: Luca Weiss <luca.weiss@fairphone.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
         Bjorn Andersson <andersson@kernel.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd
@@ -103,54 +102,47 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
- <20241220-sm6350-parent_map-v1-1-64f3d04cb2eb@fairphone.com>
- <e909ac59-b2d6-4626-8d4e-8279a691f98a@oss.qualcomm.com>
- <D6GGBPC4V5XV.YU8Z2KASBH07@fairphone.com>
+ <20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <D6GGBPC4V5XV.YU8Z2KASBH07@fairphone.com>
+In-Reply-To: <20241220-sm6350-parent_map-v1-2-64f3d04cb2eb@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: zJgnZqMkxVPpHJz-q5oJqEFP2tPGoXK5
-X-Proofpoint-ORIG-GUID: zJgnZqMkxVPpHJz-q5oJqEFP2tPGoXK5
+X-Proofpoint-GUID: n_aDnuqY4x64SSv6zS_A1aUgvMzy5vOm
+X-Proofpoint-ORIG-GUID: n_aDnuqY4x64SSv6zS_A1aUgvMzy5vOm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 mlxscore=0 spamscore=0 malwarescore=0 phishscore=0
- adultscore=0 mlxlogscore=948 impostorscore=0 clxscore=1015 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412200086
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=967 mlxscore=0
+ spamscore=0 suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 clxscore=1015 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412200086
 
-On 20.12.2024 11:21 AM, Luca Weiss wrote:
-> On Fri Dec 20, 2024 at 10:42 AM CET, Konrad Dybcio wrote:
->> On 20.12.2024 10:03 AM, Luca Weiss wrote:
->>> If a clk_rcg2 has a parent, it should also have parent_map defined,
->>
->>                       ^
->>                         freq_tbl
+On 20.12.2024 10:03 AM, Luca Weiss wrote:
+> If a clk_rcg2 has a parent, it should also have parent_map defined,
+> otherwise we'll get a NULL pointer dereference when calling clk_set_rate
+> like the following:
 > 
-> I was basing this on that part of the clk-rcg2.c, so for every parent
-> there also needs to be a parent_map specified.
+>   [    3.388105] Call trace:
+>   [    3.390664]  qcom_find_src_index+0x3c/0x70 (P)
+>   [    3.395301]  qcom_find_src_index+0x1c/0x70 (L)
+>   [    3.399934]  _freq_tbl_determine_rate+0x48/0x100
+>   [    3.404753]  clk_rcg2_determine_rate+0x1c/0x28
+>   [    3.409387]  clk_core_determine_round_nolock+0x58/0xe4
+>   [    3.421414]  clk_core_round_rate_nolock+0x48/0xfc
+>   [    3.432974]  clk_core_round_rate_nolock+0xd0/0xfc
+>   [    3.444483]  clk_core_set_rate_nolock+0x8c/0x300
+>   [    3.455886]  clk_set_rate+0x38/0x14c
 > 
->     int num_parents = clk_hw_get_num_parents(hw);
->     [...]
->     for (i = 0; i < num_parents; i++)
->         if (cfg == rcg->parent_map[i].cfg)
->             [...]
+> Add the parent_map property for the clock where it's missing and also
+> un-inline the parent_data as well to keep the matching parent_map and
+> parent_data together.
 > 
-> Should I still change the commit message? I guess there's no clk_rcg2
-> without a parent at all?
-> 
-> I guess I could reword it like that also or something?
-> 
->   A clk_rcg2 needs to have a parent_map entry for every parent it has,
->   otherwise [...]
-> 
-> Regards
-> Luca
-
-Okay I suppose it's fine as-is
+> Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
