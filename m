@@ -1,110 +1,105 @@
-Return-Path: <stable+bounces-105489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163C19F9826
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:35:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF199F9828
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C32316DCF2
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:32:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF4E7169478
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9DA234963;
-	Fri, 20 Dec 2024 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CA723588C;
+	Fri, 20 Dec 2024 17:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mkupn39x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWrPVZiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070832343C7;
-	Fri, 20 Dec 2024 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBFE1A01BD;
+	Fri, 20 Dec 2024 17:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714827; cv=none; b=qEi2GK6V29DBIzV4BzmZ912epANdoDzdiIFQejfkODXNZbFYlZkkRrB/LzgPXHCcRcGIrLGx1K8wPW7vi+jF3s2Lxw0VxGnDr97D9GCIbIaMKHU+fHfwVmCl5IaSGpsMOBKElMaBmLh4Yj2xiMiwgCcbfOQwtx5+UWLumCZvLBo=
+	t=1734714830; cv=none; b=ccpVolMbq9bo4tuXD4iu8jzfLKViaNy7FYE3ZwveweBFjQWNZSaAwxkSH4kC4DivFml+zZyEp1plYpSYR31g9IIrGfrDYGcIwD7DMoLwCNC5+5zFvhOsaiU4PDtKOtNo/lqqIUuWvHBkwQusoqYMdhOWQGeNU0ZJJcuNK+87B/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714827; c=relaxed/simple;
-	bh=yn0Z0aegbw1mIQcLSMM7arnwATrsIPNePoLxI448R+0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OWD6xiM7Rw1uB6gP8FzZbtvcXpjBl0xq+1HjObqbyT6rxdKJV80uhk4kwvU/VVzhpFcFAgQ/3T72Dj5YjRSRgIBtD3/FH3JvJogjZzOuOTGMgir4VV7WnNZ6LXyOn3TFdsnJy3Sf19pEknY+VEkQqVGuObliRyhDQ/doyl6YwrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mkupn39x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B435C4CEDD;
-	Fri, 20 Dec 2024 17:13:46 +0000 (UTC)
+	s=arc-20240116; t=1734714830; c=relaxed/simple;
+	bh=7/ky7wjBDGDXL74FY0a86N3C6OqFGMhTWisUfsrZ5YU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TGopepukUzwZBkS3zPNemnfqprol1eZJQgkaAfI6ooMOI5hX+YYVhRWc8UCtuHZdfr41jrIq4JQs/kbh05m2Z9EmCGGek4084XDgc5D1QIVRW1HdEHzF2TyFJdJJV2gJLlGGh/eZlK1iGecfXaaE2Iz2gn95agwtSm3YW/LRlcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWrPVZiT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1183C4CECD;
+	Fri, 20 Dec 2024 17:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714826;
-	bh=yn0Z0aegbw1mIQcLSMM7arnwATrsIPNePoLxI448R+0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkupn39xNwsxs2fSoNmvbgM50gZituSVOGK4QMg+HuTo6GnDLu7mEAC4ceEDN8riG
-	 1yZVRLRVg4BGzMCx05X+gesSB7NAb19HFzUadYfnKzSd4yjb2+yXlGo/4tCpvTfIQ6
-	 RUlAqIUiLZvBZ79D6gWidBsUhg2aDwKd8p/OgwWOT+tftGhKJTkreNxeeNSzSU/zq7
-	 zlzFROryZ84E/lJpfLyZp79doN2PeMq8iH7aQrvnRBRR4mZ+mUTbR3uIsuGV2UVSFv
-	 c2DZhx5dJozt38fimnOTsw9tIOKnBOugRSldnljJc/yCz3dcyRQOvg4AyaUUwl+AZ+
-	 5WuglYcoeceFQ==
+	s=k20201202; t=1734714829;
+	bh=7/ky7wjBDGDXL74FY0a86N3C6OqFGMhTWisUfsrZ5YU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TWrPVZiT1U/ZwRCnsFXLYZq9OX1GaxpwzCWjFQFkmEonPPRcBPHBDik1vuNuz5RPk
+	 JXyXtwn62JtfdV1gIVvxxI/vfUPam6Tbx0LwRnWZzfXGPVUmVoJ4WMxMfoL31wLO5A
+	 XT6qhyeQ4jAFt53pcueg3B8ipVcV02NgoI65FCI5BMATc2wvSw8OoW2C8yyo4ZEUA7
+	 4QcfHph5P6bXDwARJXF3NgCJl5Udqt/xPpJYob1w0C5FhEHgSjQP985C4G5Dkda8Gc
+	 NUOCxPc6eHzoHaPyLx+XP0d+K3gLsRE7T2k4N7l8dy531uFp1bxFXymSdKjAAnmASC
+	 JwVbFZg9W4ljQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Vineet Gupta <vgupta@kernel.org>,
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-snps-arc@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 12/12] ARC: build: Try to guess GCC variant of cross compiler
-Date: Fri, 20 Dec 2024 12:13:17 -0500
-Message-Id: <20241220171317.512120-12-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 1/9] wifi: mac80211: wake the queues in case of failure in resume
+Date: Fri, 20 Dec 2024 12:13:39 -0500
+Message-Id: <20241220171347.512287-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241220171317.512120-1-sashal@kernel.org>
-References: <20241220171317.512120-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.121
+X-stable-base: Linux 5.15.175
 Content-Transfer-Encoding: 8bit
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 824927e88456331c7a999fdf5d9d27923b619590 ]
+[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
 
-ARC GCC compiler is packaged starting from Fedora 39i and the GCC
-variant of cross compile tools has arc-linux-gnu- prefix and not
-arc-linux-. This is causing that CROSS_COMPILE variable is left unset.
+In case we fail to resume, we'll WARN with
+"Hardware became unavailable during restart." and we'll wait until user
+space does something. It'll typically bring the interface down and up to
+recover. This won't work though because the queues are still stopped on
+IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
+Make sure we clear that reason so that we give a chance to the recovery
+to succeed.
 
-This change allows builds without need to supply CROSS_COMPILE argument
-if distro package is used.
-
-Before this change:
-$ make -j 128 ARCH=arc W=1 drivers/infiniband/hw/mlx4/
-  gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
-  gcc: error: unrecognized command-line option ‘-mmedium-calls’
-  gcc: error: unrecognized command-line option ‘-mlock’
-  gcc: error: unrecognized command-line option ‘-munaligned-access’
-
-[1] https://packages.fedoraproject.org/pkgs/cross-gcc/gcc-arc-linux-gnu/index.html
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/util.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arc/Makefile b/arch/arc/Makefile
-index 329400a1c355..8e6f52c6626d 100644
---- a/arch/arc/Makefile
-+++ b/arch/arc/Makefile
-@@ -6,7 +6,7 @@
- KBUILD_DEFCONFIG := haps_hs_smp_defconfig
- 
- ifeq ($(CROSS_COMPILE),)
--CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux-)
-+CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux- arc-linux-gnu-)
- endif
- 
- cflags-y	+= -fno-common -pipe -fno-builtin -mmedium-calls -D__linux__
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 85d3d2034d43..cc78d3cba45e 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2374,6 +2374,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
+ 		else
+ 			WARN(1, "Hardware became unavailable during restart.\n");
++		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
++						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
++						false);
+ 		ieee80211_handle_reconfig_failure(local);
+ 		return res;
+ 	}
 -- 
 2.39.5
 
