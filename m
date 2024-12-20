@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-105484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB079F9817
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:33:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC009F982D
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4507F170494
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:30:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28FA1189AA99
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D3B232360;
-	Fri, 20 Dec 2024 17:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF412327A7;
+	Fri, 20 Dec 2024 17:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRM1ou6F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUbFGz0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D513E231CA1;
-	Fri, 20 Dec 2024 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7873E231A5F;
+	Fri, 20 Dec 2024 17:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714816; cv=none; b=n0Fm3Lfyi8/X8hUs7u1bhZW+d74OnOtp1JcWAWsKYrwW8r9O/0FKbRp3TU34lY/LFb8ev6knbRANemzHz0GnzrilM2EBRXyJaO0K/bphgm1hWQhtAXDobNua009FDyFfuuFPP/61Ek/i8Cdo4dHTmn6vfcImi9N/uKQ6l+9kRmc=
+	t=1734714818; cv=none; b=c/hNPUrPPSFNFS/WUvlx72i2nkl7zJ7GsSPqty2V3Nmpy1zalzDC53Vupuz8EzXJrkgGdAwUdJyrcjDk3naqYC14qYuOOi/2NtxmDKA+P3tlcN0XrGUwG401aNgOC6ltaXQPsyuf4C5WLKLSnzs4YNyOWviymNgx03e5Fhks3oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714816; c=relaxed/simple;
-	bh=Re2/xzreWzH2qBLyWafylmdHdboJcmq5CLaoHQR1E+A=;
+	s=arc-20240116; t=1734714818; c=relaxed/simple;
+	bh=o5vIrR/3iGxvCBLI7ftNNEp4g1Apz50WPA0CKE8r2bc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NjjEU9bjQvwNn0Qku91STyYO3J0KjprVxg99GTy5CH8mAMEHT2UMDBLpI6SSo/ydFPdWh11+xpp8OjHufqiooV7eEXfX+0GquNsVhbZUzYtUNd1mgjyv5XOUUH8owXkKXKgVcZZ5qfIiLtRaV40nCKu4rK9Iolbfzk8Z1R0JDZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRM1ou6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4A0C4CEDC;
-	Fri, 20 Dec 2024 17:13:35 +0000 (UTC)
+	 MIME-Version; b=VqazfrrsANHJv6qy3hfYYWm+WsVHqx0FsUUXly9rgsBvdVowIegFNSGVG17vjuUHNM9nQ7WFTBPn9EHYg2eCpfOML+26JGySnpYh9w5FH3UCn/saeMmdfsrYkzwm7eb/41om+sAcTIaCxLXT9yd2ylIL9ZvXGhmNfL28TtWD+8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUbFGz0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2EFC4CECD;
+	Fri, 20 Dec 2024 17:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714816;
-	bh=Re2/xzreWzH2qBLyWafylmdHdboJcmq5CLaoHQR1E+A=;
+	s=k20201202; t=1734714818;
+	bh=o5vIrR/3iGxvCBLI7ftNNEp4g1Apz50WPA0CKE8r2bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lRM1ou6F9UM7cCtDYhu6kozC8nt7AGU24ejfg5YrswwEQIOyHYY6ye2GsFwv9v0Kn
-	 evxJARz2zMdvoCAr8NV54jtZeWnOtK9sXBSsCpaFVds+7CCVLx5HnJi1dk46qdvgH1
-	 tV15AcRYGgVOJR+tqOk6OOaCsw/7UR0f5j9v+n4WNssYzE27Z3oC07fAbIJm7g2Nv8
-	 uMlmtf3mQKMKwiNJXRZ5cplkHWQLlcdNEcubONXpIUd/Ius0UscApyAPSATijN2nUc
-	 8LqJVogwt4DHx6Qy5XiGzOHKFEd8vkwHcprQCXQCJWxS9fEZAnHM0EKy3F2CbsI1JS
-	 A+BMiMIdx97WA==
+	b=BUbFGz0YZ64foXTuNyav1lR2TnlAYvtM2G7nTfrHyUaSNnsH3aFpv6Re6pipNVsy6
+	 /+hbEmkbgJgelLpso2Ho26E3l2L0k55dvQYGGR91vCuL/fJDp0x624aOlKO6Bxl3yE
+	 kx3Tk1e/oT2qxg9gYi/r3FVFT/tZwPvW9G99kHq0+xo5bZXG97q7o2sHRQf2eC6Iyi
+	 SBiqnsxQVKKBE4+s3M/UuhLM3LBtVSwdB/CgrBPV8RqYDm66bE7hcw1OmaE+ufSH2L
+	 G08Wz/o9iEeua4w0nCewPDxjyQ/2LBAEKVUY8Ye5y+XBn1XG3o7mDZEydqjd9dWOH/
+	 XDJVB0YCwR03w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Anton Protopopov <aspsk@isovalent.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Hobin Woo <hobin.woo@samsung.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Yoonho Shin <yoonho.shin@samsung.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 07/12] bpf: fix potential error return
-Date: Fri, 20 Dec 2024 12:13:12 -0500
-Message-Id: <20241220171317.512120-7-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 08/12] ksmbd: retry iterate_dir in smb2_query_dir
+Date: Fri, 20 Dec 2024 12:13:13 -0500
+Message-Id: <20241220171317.512120-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220171317.512120-1-sashal@kernel.org>
 References: <20241220171317.512120-1-sashal@kernel.org>
@@ -68,50 +69,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.121
 Content-Transfer-Encoding: 8bit
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Hobin Woo <hobin.woo@samsung.com>
 
-[ Upstream commit c4441ca86afe4814039ee1b32c39d833c1a16bbc ]
+[ Upstream commit 2b904d61a97e8ba79e3bc216ba290fd7e1d85028 ]
 
-The bpf_remove_insns() function returns WARN_ON_ONCE(error), where
-error is a result of bpf_adj_branches(), and thus should be always 0
-However, if for any reason it is not 0, then it will be converted to
-boolean by WARN_ON_ONCE and returned to user space as 1, not an actual
-error value. Fix this by returning the original err after the WARN check.
+Some file systems do not ensure that the single call of iterate_dir
+reaches the end of the directory. For example, FUSE fetches entries from
+a daemon using 4KB buffer and stops fetching if entries exceed the
+buffer. And then an actor of caller, KSMBD, is used to fill the entries
+from the buffer.
+Thus, pattern searching on FUSE, files located after the 4KB could not
+be found and STATUS_NO_SUCH_FILE was returned.
 
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241210114245.836164-1-aspsk@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
+Tested-by: Yoonho Shin <yoonho.shin@samsung.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 12 +++++++++++-
+ fs/smb/server/vfs.h     |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 0ea0d50a7c16..83b416af4da1 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -523,6 +523,8 @@ struct bpf_prog *bpf_patch_insn_single(struct bpf_prog *prog, u32 off,
- 
- int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
- {
-+	int err;
-+
- 	/* Branch offsets can't overflow when program is shrinking, no need
- 	 * to call bpf_adj_branches(..., true) here
- 	 */
-@@ -530,7 +532,9 @@ int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
- 		sizeof(struct bpf_insn) * (prog->len - off - cnt));
- 	prog->len -= cnt;
- 
--	return WARN_ON_ONCE(bpf_adj_branches(prog, off, off + cnt, off, false));
-+	err = bpf_adj_branches(prog, off, off + cnt, off, false);
-+	WARN_ON_ONCE(err);
-+	return err;
- }
- 
- static void bpf_prog_kallsyms_del_subprogs(struct bpf_prog *fp)
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index cb7756469621..bdd94339725c 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3988,6 +3988,7 @@ static bool __query_dir(struct dir_context *ctx, const char *name, int namlen,
+ 	/* dot and dotdot entries are already reserved */
+ 	if (!strcmp(".", name) || !strcmp("..", name))
+ 		return true;
++	d_info->num_scan++;
+ 	if (ksmbd_share_veto_filename(priv->work->tcon->share_conf, name))
+ 		return true;
+ 	if (!match_pattern(name, namlen, priv->search_pattern))
+@@ -4148,8 +4149,17 @@ int smb2_query_dir(struct ksmbd_work *work)
+ 	query_dir_private.info_level		= req->FileInformationClass;
+ 	dir_fp->readdir_data.private		= &query_dir_private;
+ 	set_ctx_actor(&dir_fp->readdir_data.ctx, __query_dir);
+-
++again:
++	d_info.num_scan = 0;
+ 	rc = iterate_dir(dir_fp->filp, &dir_fp->readdir_data.ctx);
++	/*
++	 * num_entry can be 0 if the directory iteration stops before reaching
++	 * the end of the directory and no file is matched with the search
++	 * pattern.
++	 */
++	if (rc >= 0 && !d_info.num_entry && d_info.num_scan &&
++	    d_info.out_buf_len > 0)
++		goto again;
+ 	/*
+ 	 * req->OutputBufferLength is too small to contain even one entry.
+ 	 * In this case, it immediately returns OutputBufferLength 0 to client.
+diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
+index e761dde2443e..cc47e71c4de1 100644
+--- a/fs/smb/server/vfs.h
++++ b/fs/smb/server/vfs.h
+@@ -43,6 +43,7 @@ struct ksmbd_dir_info {
+ 	char		*rptr;
+ 	int		name_len;
+ 	int		out_buf_len;
++	int		num_scan;
+ 	int		num_entry;
+ 	int		data_count;
+ 	int		last_entry_offset;
 -- 
 2.39.5
 
