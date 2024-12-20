@@ -1,252 +1,132 @@
-Return-Path: <stable+bounces-105401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E1E9F8E6B
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 09:58:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A92609F8E73
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 10:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3ACE1896AB1
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 08:58:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89869188DED9
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 09:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620C81AA1C0;
-	Fri, 20 Dec 2024 08:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8281A841E;
+	Fri, 20 Dec 2024 08:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="RAqHHnzS"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="srA+c5mv"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4548C1A0BFA;
-	Fri, 20 Dec 2024 08:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E241A76D5
+	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 08:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734685091; cv=none; b=MwCIWlcB5ml+TJfpcww/WG7NgSfTH2/34KgcF/M/g9cfqk/4GLNcc/E2E8CXQ0o/8HEH6UfPwVLGdEQBps8/oFaX8D3Y2H85ImEjg/xgPoorf4kTnFR/ubLJ5AcMZ27fSXHi95ekDvBpQydhP3aF7Sup3Wbl+OINZ+07MDrAZvM=
+	t=1734685198; cv=none; b=ZzoHKyCw1alhFk4K4dUUtWQTViQqcKRzgDYeyaMlmJa9HWrUkO00ZmRr7Wqjwbd68F2X65dpuOh4CLmmaGA4mUh5CBenEHbQQgsosQvGoHYS7iBunT1bWUz78VGjMh9OMv5JcUFOhBjX/pr4bRlNfK3dOPZn2zSnHGcvI5t/KyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734685091; c=relaxed/simple;
-	bh=DB1ziz8HSL3/2AX5CPlpA6yQWCo3fLlM8HkWIIIijgI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T51avp2E4i9a0v+GNOOdh7vsW9AsoUKTRSYjf7CuBzsdyzYxcUUv0pkyHu2WnKMEaw6A6ZnahgU4h78yN2E0Au21UsZ5/r4bcRoDYiUPO+Ste4ymD3/IKjx5pl8jkjxagXU7mjLeLoqbM3ESRJaOgr+wQlRFfCE/ma+2nwBblxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=RAqHHnzS; arc=none smtp.client-ip=220.197.31.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=bAGuREr7HeDMX+iJP6gjezFu9fw3q6kjQHi3rKN4Et8=;
-	b=RAqHHnzSeKNsQszCDqHl0IpSRHlWgwNQRTsIePebKh0lEtbuDo/HAcjoOmL29J
-	CzDwQuXKnZgCJQwHthr/CLKJ9JfCl6QnAZjvm4l0mzWTxMy9nGOK3f3Wxivry14A
-	EsRLMDJOuFZZx/U8m9dOlE2vaUhsISGbBN6W7N25igAuA=
-Received: from [172.20.10.3] (unknown [39.144.39.55])
-	by gzsmtp3 (Coremail) with SMTP id pykvCgBHrlFDMWVn+T0BCw--.29692S2;
-	Fri, 20 Dec 2024 16:56:36 +0800 (CST)
-Message-ID: <1241b567-88b6-462c-9088-8f72a45788b7@126.com>
-Date: Fri, 20 Dec 2024 16:56:34 +0800
+	s=arc-20240116; t=1734685198; c=relaxed/simple;
+	bh=B/CSxh8bc02YGzxj4Cp8fAYbQzfHZ0MyOHkF9uHAlPE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TzX0VTvz4QdzWXinV1Xa+611sDr8Tfnq9cTWlXa703GTUBQulUTBs65TBay3wK++HeKu3q8LMh+oDlZJ2fzGcAdVNf7D2zGC7SAeEeEdrtmh9luxNKOJ5gIrh92nTeUeWtJRIaHa0ElO8RfQszg8MDtGZpDqgBvtKT5L9IrdfRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=srA+c5mv; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a9e44654ae3so249494166b.1
+        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 00:59:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1734685194; x=1735289994; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AvLjk+c7NI0W4wMRUe8v0vkFjUGPpNKl7JTlpY6nKSM=;
+        b=srA+c5mvSf5bH9gWc20ubWKiWy4hWZUtrPSmLYZE+W1mCrP7mP2V8v+KmNj0qDBAza
+         NZrudquBDpd5p+vy4Z2LK4MqUU/9YCPdi/7prh7cZjkIFTNMAGdfcScpUlwfXEVksere
+         xZ6QA56KqrZAvzU+KnscMXM26sNFQnBiuKyaSAlS02EUEK+4HgAz7WbSGyftKnhVEvd5
+         O1+3hjgo+M6zsg8JJxxyYuIpgM7JBKrDjpyHdw/CaOCWh9exAlixjWLoMkn9zIdt2XMD
+         BSOv6TuPDPZqUKYl96Gc0NdrdQbU8fkd6VQAM6dkYSKA+jdM4cPS8v5JjKSlLTABC6Ss
+         RilA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734685194; x=1735289994;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AvLjk+c7NI0W4wMRUe8v0vkFjUGPpNKl7JTlpY6nKSM=;
+        b=ufT212wOf84k7TY6tdMY5gnFw9MZ4Sluv3Jpdf6DCbSz6hS9X1lEUV/LKwxDAPayvr
+         Pw/f0miwbQzgWYSxZiIATbKmsC4sNvbDijqA6aQqg/I6jNOgr4eop+4p2bRC57HmhON4
+         KfpuVHlNMhmBAjVzMb/ca0wAfDnWdiYvx+fmLgBbmDpL4/bmF7kEJbRo63KSxcs/mfO+
+         Anig2surpQXQGV6ICu2P5Ub6yYW+RBlTRy/itloVDR6QJ/Ug1cb1N3qclZKuR4A+Cw4o
+         wAf+E2/dBJZlJnOVCxwTUvNPmLGMrjC38ATzqXrC2JrB7aRgCMQyAglSFQGrdnA1cTv5
+         np9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVKxp0htNWQJoJzCKRy61u0GH7qkIv+okGUiIjZ0gZvMZeHK8UMJTfNlUJWF1jAejwd8hhQgr0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbnJuk5Fm51DrA+YIXlxsPMT0hMQdqpAqVVnmGQwXTOY48alwN
+	hLeu30JNv3lBn8kwFHrZXXUlHCnzUOoGk0jHSK+fUBY5HD5SDx8PxJXODe+QXPw=
+X-Gm-Gg: ASbGncsjPliXly8ULy5YslwO3lVbofEBivGFmtTyGbZAlYfcE+Jg+6fGizsG3UfSLHQ
+	uikz12WEh77cpQldFou9kZHV5OJ21tys3a6/5ymNerCdJ1imNJK0CdNlMN5USZ2zXHvDL3t+MDA
+	VYOpeJtK+QIa7r42w9zwMSp6AqtMF6bX4+howv7XC1Buhe/LQ9b11EPTktXReYNgWamByjDkNtB
+	2piVSsG4JOXpm2eFti23gq/SVoVPmAtcopySjqOPiSCJEqI1XDZDVYPh90y0DcAjM6MdPnspNbB
+	YoCHiFrKpv0YptvcxlafKj0KgRE3qw==
+X-Google-Smtp-Source: AGHT+IG4raqmf5z3+Bbit2pptVJL+0AF6PrPFax/4lpRRdG7CllZm9cIM6vpTrrrMN18RRgqKa7m+w==
+X-Received: by 2002:a17:907:6e8c:b0:aa9:1b4b:489e with SMTP id a640c23a62f3a-aac2ad8ea23mr156763466b.24.1734685194579;
+        Fri, 20 Dec 2024 00:59:54 -0800 (PST)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f080c1asm151178766b.205.2024.12.20.00.59.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 00:59:54 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 20 Dec 2024 09:59:50 +0100
+Subject: [PATCH] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] replace free hugepage folios after migration
-To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
- liuzixing@hygon.cn, Oscar Salvador <osalvador@suse.de>
-References: <1734503588-16254-1-git-send-email-yangge1116@126.com>
- <0b41cc6b-5c93-408f-801f-edd9793cb979@redhat.com>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <0b41cc6b-5c93-408f-801f-edd9793cb979@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:pykvCgBHrlFDMWVn+T0BCw--.29692S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKrWkKw1UAF1xAw48Ww4kZwb_yoWxXrWfpF
-	y8Gr15KrWDJr9rGr12qan8Cr1SvrWkXFWjyFWfJ343ZFnxtr929F1Dtwn093yrAr97CF4I
-	vFW2qFWkuF1UAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UKFAJUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbifgu7G2dlLw8k+wAAso
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAAUyZWcC/x3MOQqAMBBA0avI1A5kU8SriEVMRp3ChURFCLm7w
+ fIV/yeIFJgi9FWCQA9HPvYCWVfgVrsvhOyLQQllpFIC49bqRuBtwyWRnUNPxgk7dUZqDyU7A83
+ 8/sthzPkDzf3AwmIAAAA=
+X-Change-ID: 20241220-sm6350-uart1-icc-de4c0ab8413d
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
+The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
+qup-config. Since the qup-memory path is not part of the qcom,geni-uart
+bindings, just replace that path with the correct path for qup-config.
 
+Fixes: b179f35b887b ("arm64: dts: qcom: sm6350: add uart1 node")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-在 2024/12/20 0:40, David Hildenbrand 写道:
-> On 18.12.24 07:33, yangge1116@126.com wrote:
->> From: yangge <yangge1116@126.com>
-> 
-> CCing Oscar, who worked on migrating these pages during memory offlining 
-> and alloc_contig_range().
-> 
->>
->> My machine has 4 NUMA nodes, each equipped with 32GB of memory. I
->> have configured each NUMA node with 16GB of CMA and 16GB of in-use
->> hugetlb pages. The allocation of contiguous memory via the
->> cma_alloc() function can fail probabilistically.
->>
->> The cma_alloc() function may fail if it sees an in-use hugetlb page
->> within the allocation range, even if that page has already been
->> migrated. When in-use hugetlb pages are migrated, they may simply
->> be released back into the free hugepage pool instead of being
->> returned to the buddy system. This can cause the
->> test_pages_isolated() function check to fail, ultimately leading
->> to the failure of the cma_alloc() function:
->> cma_alloc()
->>      __alloc_contig_migrate_range() // migrate in-use hugepage
->>      test_pages_isolated()
->>          __test_page_isolated_in_pageblock()
->>               PageBuddy(page) // check if the page is in buddy
-> 
-> I thought this would be working as expected, at least we tested it with 
-> alloc_contig_range / virtio-mem a while ago.
-> 
-> On the memory_offlining path, we migrate hugetlb folios, but also 
-> dissolve any remaining free folios even if it means that we will going 
-> below the requested number of hugetlb pages in our pool.
-> 
-> During alloc_contig_range(), we only migrate them, to then free them up 
-> after migration.
-> 
-> Under which circumstances doe sit apply that "they may simply be 
-> released back into the free hugepage pool instead of being returned to 
-> the buddy system"?
-> 
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 8d697280249fefcc62ab0848e949b5509deb32a6..7b5c340df5f6f32233f4254db2012f84bdde6be2 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -936,7 +936,7 @@ uart1: serial@884000 {
+ 				power-domains = <&rpmhpd SM6350_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+ 				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
+-						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
++						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>;
+ 				interconnect-names = "qup-core", "qup-config";
+ 				status = "disabled";
+ 			};
 
-After migration, in-use hugetlb pages are only released back to the 
-hugetlb pool and are not returned to the buddy system.
+---
+base-commit: 8155b4ef3466f0e289e8fcc9e6e62f3f4dceeac2
+change-id: 20241220-sm6350-uart1-icc-de4c0ab8413d
 
-The specific steps for reproduction are as follows:
-1，Reserve hugetlb pages. Some of these hugetlb pages are allocated 
-within the CMA area.
-echo 10240 > /proc/sys/vm/nr_hugepages
-
-2，To ensure that hugetlb pages are in an in-use state, we can use the 
-following command.
-qemu-system-x86_64 \
-   -mem-prealloc \
-   -mem-path /dev/hugepage/ \
-   ...
-
-3，At this point, using cma_alloc() to allocate contiguous memory may 
-result in a probable failure.
-
->>
->> To address this issue, we will add a function named
->> replace_free_hugepage_folios(). This function will replace the
->> hugepage in the free hugepage pool with a new one and release the
->> old one to the buddy system. After the migration of in-use hugetlb
->> pages is completed, we will invoke the replace_free_hugepage_folios()
->> function to ensure that these hugepages are properly released to
->> the buddy system. Following this step, when the test_pages_isolated()
->> function is executed for inspection, it will successfully pass.
->>
->> Signed-off-by: yangge <yangge1116@126.com>
->> ---
->>   include/linux/hugetlb.h |  6 ++++++
->>   mm/hugetlb.c            | 37 +++++++++++++++++++++++++++++++++++++
->>   mm/page_alloc.c         | 13 ++++++++++++-
->>   3 files changed, 55 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->> index ae4fe86..7d36ac8 100644
->> --- a/include/linux/hugetlb.h
->> +++ b/include/linux/hugetlb.h
->> @@ -681,6 +681,7 @@ struct huge_bootmem_page {
->>   };
->>   int isolate_or_dissolve_huge_page(struct page *page, struct 
->> list_head *list);
->> +int replace_free_hugepage_folios(unsigned long start_pfn, unsigned 
->> long end_pfn);
->>   struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->>                   unsigned long addr, int avoid_reserve);
->>   struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int 
->> preferred_nid,
->> @@ -1059,6 +1060,11 @@ static inline int 
->> isolate_or_dissolve_huge_page(struct page *page,
->>       return -ENOMEM;
->>   }
->> +int replace_free_hugepage_folios(unsigned long start_pfn, unsigned 
->> long end_pfn)
->> +{
->> +    return 0;
->> +}
->> +
->>   static inline struct folio *alloc_hugetlb_folio(struct 
->> vm_area_struct *vma,
->>                          unsigned long addr,
->>                          int avoid_reserve)
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 8e1db80..a099c54 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -2975,6 +2975,43 @@ int isolate_or_dissolve_huge_page(struct page 
->> *page, struct list_head *list)
->>       return ret;
->>   }
->> +/*
->> + *  replace_free_hugepage_folios - Replace free hugepage folios in a 
->> given pfn
->> + *  range with new folios.
->> + *  @stat_pfn: start pfn of the given pfn range
->> + *  @end_pfn: end pfn of the given pfn range
->> + *  Returns 0 on success, otherwise negated error.
->> + */
->> +int replace_free_hugepage_folios(unsigned long start_pfn, unsigned 
->> long end_pfn)
->> +{
->> +    struct hstate *h;
->> +    struct folio *folio;
->> +    int ret = 0;
->> +
->> +    LIST_HEAD(isolate_list);
->> +
->> +    while (start_pfn < end_pfn) {
->> +        folio = pfn_folio(start_pfn);
->> +        if (folio_test_hugetlb(folio)) {
->> +            h = folio_hstate(folio);
->> +        } else {
->> +            start_pfn++;
->> +            continue;
->> +        }
->> +
->> +        if (!folio_ref_count(folio)) {
->> +            ret = alloc_and_dissolve_hugetlb_folio(h, folio, 
->> &isolate_list);
->> +            if (ret)
->> +                break;
->> +
->> +            putback_movable_pages(&isolate_list);
->> +        }
->> +        start_pfn++;
->> +    }
->> +
->> +    return ret;
->> +}
->> +
->>   struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->>                       unsigned long addr, int avoid_reserve)
->>   {
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index dde19db..1dcea28 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -6504,7 +6504,18 @@ int alloc_contig_range_noprof(unsigned long 
->> start, unsigned long end,
->>       ret = __alloc_contig_migrate_range(&cc, start, end, migratetype);
->>       if (ret && ret != -EBUSY)
->>           goto done;
->> -    ret = 0;
->> +
->> +    /*
->> +     * When in-use hugetlb pages are migrated, they may simply be
->> +     * released back into the free hugepage pool instead of being
->> +     * returned to the buddy system. After the migration of in-use
->> +     * huge pages is completed, we will invoke the
->> +     * replace_free_hugepage_folios() function to ensure that
->> +     * these hugepages are properly released to the buddy system.
->> +     */
->> +    ret = replace_free_hugepage_folios(start, end);
->> +    if (ret)
->> +        goto done;
->>       /*
->>        * Pages from [start, end) are within a pageblock_nr_pages
-> 
-> 
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
 
