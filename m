@@ -1,178 +1,151 @@
-Return-Path: <stable+bounces-105416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4389F91FD
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 13:16:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E57719F9218
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 13:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C17A5188CF2B
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 12:16:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04C31169E3F
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 12:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770A31C5F14;
-	Fri, 20 Dec 2024 12:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB16204693;
+	Fri, 20 Dec 2024 12:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hyperbeam-com.20230601.gappssmtp.com header.i=@hyperbeam-com.20230601.gappssmtp.com header.b="go2rczo4"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="yNe1M87h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B1F1C4A1C
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 12:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE27204567
+	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 12:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734696951; cv=none; b=LHwUx3aUTt6UnZnwO+4/j6WErTMmQFYwT6ZuhKRVkMaKPXQ9QtbPec2FWT8YUHqwU3xauZ6JvXQMLd7ZR9wAGlEnNHkWmkcLtwO+/7MpVF6A3/NzvLBpL6b4Dos+rapVrMLWDRgBxooLMx1CD+sH7efBPCA7EruYtqlWMYB2YWY=
+	t=1734697337; cv=none; b=LWWRN+nGPrqmJ6vbz+14WQF7mSt8pkh6tP8UvhvAHOAd0YPXn3mIvMawzscqO93Ark3c+jgxU1gtPvqhgd9cQy6rmSVVIp3Bfa7K9Zpq005REWP2IGU2QNQQp5M5DoZwU2toUppuLVqsvsm0R8d+ObTYYOBQzjmREnf249G6/ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734696951; c=relaxed/simple;
-	bh=1FfFAy6dqhyPeiJL2W7VmhgU8cgOK5qtgPPuAHaz88E=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=qlN8zmu/NcxNtr3QzatJHUqm82RF4KF0aLzk1mRpHJS0mrTafMguD0bVhqFRHmP6+UyPF3ZO2QrOAZ/au0anHU0FufTYzLOSn9ns8Zdi+xsh5AvwI/gE3Y90RwxlwnfRUgIK+dQ89LYobl1sXDihdSuYv86773VhKLBYySuKZCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hyperbeam.com; spf=pass smtp.mailfrom=hyperbeam.com; dkim=pass (2048-bit key) header.d=hyperbeam-com.20230601.gappssmtp.com header.i=@hyperbeam-com.20230601.gappssmtp.com header.b=go2rczo4; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hyperbeam.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hyperbeam.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5f2e370bb3aso482321eaf.0
-        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 04:15:48 -0800 (PST)
+	s=arc-20240116; t=1734697337; c=relaxed/simple;
+	bh=qx5p/hDbUkuDZtzddbNWpM0QTt2rSGt/pmcZqagYCts=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=F84pb/SLm/szhoNU4GCUkuvh7r0b8RxcTTKU9rQcxQEiotfZOUiFV54Yd0SRStJLkrCnk21ne16F7e7GD3iNzw5F6VH2IpMtFtYz/VqItkdPS5btcKKXL3XvXibCq4TlGSOnnxEVDXLPp0XYlHOiwhomrtr8ETPM3M4p8ylf2dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=yNe1M87h; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9a68480164so304672066b.3
+        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 04:22:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hyperbeam-com.20230601.gappssmtp.com; s=20230601; t=1734696947; x=1735301747; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NdpCDurukw6jqUijSW3kFmnh8o3vQPLCGbMsoFLI7qs=;
-        b=go2rczo4FaugrfGXUBebyPQgwSxiGq7BVy116Ge31YKpIMb4b8HVvB70299B6Ujg22
-         xYghyvuXfdaAW2QDoYiSMaSAD7piMoAdpY8s4wgwuCqoA7SsoCOzDtE8h8vlqqP/GfPx
-         gQ5EIqjWYD0aYa0OVP6iINQFtGR2usV9DnsgMB/i/2lHt96fe+qpyEdXEruyvTxf1fqk
-         DcKAOtvl0q+kPpsyoQAqNeBYFIf9Y3E4z0wGZ8tWD6DDpgS7bD/egy4Y7DDXkdFPe4wZ
-         ZQhptMrQjw44q8EpJo+ZzdLhDQ6XDV5tCSKBu0PKt2k2U1forNPpP5x/xlb7GmNHIsAu
-         LkKA==
+        d=fairphone.com; s=fair; t=1734697333; x=1735302133; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dVIs/A5zO1lF6Hvf56Jf96I1JylRoUAYB/UjCgUI+Ws=;
+        b=yNe1M87hI4shQl5xbvB5lfiFPX8AzZmee9d8Y/Qjy2JqC1Ws+mK3zlWN5TEW7NuYkr
+         MfHh5/GpW0ET11M3A/9CO9GevuavAJlWy+H46RjyU0kOpuO+LCiaT1HT32pXIowmrMEt
+         5ibW/d6SA+j1srgNYxGclQzDQtDufNO8GuNLjh4u8wE+xG6HcTBa4+toGaFmrTt+g/x6
+         uxFpTLtXIkJ0ipoAwgYC+OJjAfzmlBdfy0LF3fW+WTjTiCvDG3F8RfNj0wnMInu77edQ
+         Q1Utfk1POeg0y1Yc5V5d00b1Oontqwwvi5wYjTcXxKfL/zi8e6DKbRzCiri0FnzikYHL
+         oTsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734696947; x=1735301747;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NdpCDurukw6jqUijSW3kFmnh8o3vQPLCGbMsoFLI7qs=;
-        b=bNl83HnjIxuZUDe1M8Xoqbjmrj/8s8hY2NNuT65SUT/9wtNrtvu3TsNCdzSa8e5MH2
-         hS9hU4pNK7b0Of8yxKy5TbwHT9kMI5ngLbihJGRUROaodpO8EZ7/ehHtQHpor3+57ppy
-         bFkgiMmiM5e28ltMupChNl1UDl8B1xSjTLYYBunWarqaS33Ly8UGzU33YhU2xL7Up9XL
-         zs2HS1dd+I/4fq7qVXsFRZ92beIoelO3CEedDMdYtz4uC88Ubq8FZLT2vr6D0PGOOEY7
-         XWHmux9JqQrwkaN3wlBhCJXFuX8FWYZzH1yfHeCWXga9yOppxjy5pmMdGssAnDaRHPCi
-         h4pA==
-X-Gm-Message-State: AOJu0YyIe72GtfhTMUPUKKxbF5iTljyjEBRgb8fQFfu8RIPg78dlMTAA
-	eFXllbiCXCI+ilGgXrQwLeWWaWFEjTNnP1Lzfc7faBO3Ii/sv/Z2HbkwiOHeUCOZgEfFVVNliZn
-	+O/YAM1eH3YljDexpKvo+YalR1ktrIVyRyCfb2l7s6kZNd9lIoY2DVpyq
-X-Gm-Gg: ASbGncuhjMH5ygzLqt9D6Ge3l30JDukphwC0YyOF0KQGFHfT7bwsYvk+7IwEqIz68B7
-	75XdjvnMX0pxI68YwehwRCe0x23hjthhG5PRmX7riYjFs3FpQx9m9rgGJD2yjbBenVMtL
-X-Google-Smtp-Source: AGHT+IHBm+h34Iyifc5RhtxtU/PklG1tn/zIhV+W/kyF4TCUigoyIsLVIH5PX8uPvbtzTrsBD2ftS8V8zwthhFP36Sk=
-X-Received: by 2002:a05:6870:2a41:b0:29e:5de2:cffb with SMTP id
- 586e51a60fabf-2a7fb0bf91fmr1174528fac.17.1734696947496; Fri, 20 Dec 2024
- 04:15:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734697333; x=1735302133;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dVIs/A5zO1lF6Hvf56Jf96I1JylRoUAYB/UjCgUI+Ws=;
+        b=K51vbUdMAnPe4jYxY3UNVQq6TcHT7vQihVv5a+6TgcqWnpzx34iFF+/3afieSiAlyI
+         YUC6H4mfItMiEg5244TS7bZv+SW9zYHSJtylCYOCqq/FKrD9dTN/dHFOqN0E1eojjsdn
+         mHBAa7Y/KISuddoLUi9Aqx39MfLTcBH/X+jwhvy5kz+RCcVdMucpLfT6csekbgMPWgOL
+         hSQKKUvVCyBtTbkyZv/V8YPpQoXJODmKW4/zU0aUZVn9WUAK5lFHwD/scWVB/lui6sEX
+         6Anvmt60BmoFF5QJA4XHONBladxd1s6018u/6EYRN6iV2++VHEVp9ad9nU80W3Rn0lch
+         7F/g==
+X-Forwarded-Encrypted: i=1; AJvYcCU41H3RNFT0a/9esasvbIvGImaSO4ndBqRmHLZLvkgU4TCITwiUcfGzCSQ8qgWIzPgJwcdTjfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb5JGesGujU2X6zLNHLbC+T81uzc5+2XKgaoXDzwcD6qXOoEO7
+	GjZWJNl1imS0wRfap9jCgIJSyItTzvJGTVUfcRpcM4rhCy5EQcXYiYBiE2Z3vf0=
+X-Gm-Gg: ASbGncstjKJ5iwH9ZtkdCprwgo6aaCdBM1+eUk8BS5NFG3RegyDHAl3NQTmEeuyeB9q
+	QyCCM4yg1IUokspXjx0xuhoRwmXHNOvczvIOOBmtUoV3kx+WtIBifggJ27fQqV7+o1vwZ5BrMf3
+	vNS+VcaedlmF1S6jWy1pDrXdM+DzNN5Fqwaaj6ysTNFUFvUrUFsZaYneYbxznxoQJ9YZD9eDSBo
+	fQvAa/eGW4fl06BiqVwa4xCpCZB/Ynvrlz3vstzimaYZdqd45Y9Dcw9Om4LPrCENx6GKWt1atK4
+	jdK4RIEF3TL8hlkbo134hH3dJNx8YQ==
+X-Google-Smtp-Source: AGHT+IFPG5xPXCwcvvE2JWaV4HcrHvc6W3DgQ5ZikyH58crfIMJ8TJhxYQjOiX6A2Ig+f3m0RqS6HQ==
+X-Received: by 2002:a17:907:7e86:b0:aac:4ef:36de with SMTP id a640c23a62f3a-aac2b19a851mr241107266b.17.1734697333203;
+        Fri, 20 Dec 2024 04:22:13 -0800 (PST)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e82f5f4sm171403166b.6.2024.12.20.04.22.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 04:22:12 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 20 Dec 2024 13:22:07 +0100
+Subject: [PATCH] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Amby @ Hyperbeam" <amby@hyperbeam.com>
-Date: Fri, 20 Dec 2024 12:15:36 +0000
-Message-ID: <CAFyAQLvdZVRFYW+xbHCu3j354O4=YDVyygXdw3ozEMfFbHkdig@mail.gmail.com>
-Subject: netfilter regression on aarch64 16k page size
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, pablo@netfilter.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241220-sdam-size-v1-1-17868a8744d3@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAG5hZWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDIyMD3eKUxFzd4syqVN2URLPElNRks7SkxEQloPqCotS0zAqwWdGxtbU
+ Aju9aLlsAAAA=
+X-Change-ID: 20241220-sdam-size-da6adec6fbaa
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Shyam Kumar Thella <sthella@codeaurora.org>, 
+ Anirudh Ghayal <quic_aghayal@quicinc.com>, 
+ Guru Das Srinagesh <quic_gurus@quicinc.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.14.2
 
-Greetings,
-We are seeing a regression in 6.6.66 which I have narrowed down to this commit:
-stable: 86c27603514cb8ead29857365cdd145404ee9706
-upstream: 7ffc7481153bbabf3332c6a19b289730c7e1edf5
+Let the nvmem core know what size the SDAM is, most notably this fixes
+the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
+user space work with that file.
 
-Kernel version: 6.6.66 on aarch64 with 16k page size
-Last known good version: 6.6.65
+  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
+  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
+  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+  *
+  00000080
 
-Steps to repro:
-- run a 16k page size kernel (check with getconf PAGESIZE)
-- try to load an nftables config file on the problem
+Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Related, it would be nice to set sdam->sdam_config.type to an
+appropriate value, the ones currently upstream are:
 
-Expected:
-- no errors
+  enum nvmem_type {
+      NVMEM_TYPE_UNKNOWN = 0,
+      NVMEM_TYPE_EEPROM,
+      NVMEM_TYPE_OTP,
+      NVMEM_TYPE_BATTERY_BACKED,
+      NVMEM_TYPE_FRAM,
+  };
 
-Actual:
-- system enters a broken state, with the following trace in dmesg:
-[   40.939230] Unable to handle kernel paging request at virtual
-address ffff00015ad7e4cc
-[   40.939841] Mem abort info:
-[   40.940079]   ESR = 0x0000000096000021
-[   40.940389]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   40.940820]   SET = 0, FnV = 0
-[   40.941042]   EA = 0, S1PTW = 0
-[   40.941289]   FSC = 0x21: alignment fault
-[   40.941570] Data abort info:
-[   40.941805]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
-[   40.942229]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   40.942857]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   40.943313] swapper pgtable: 16k pages, 48-bit VAs, pgdp=00000000474f0000
-[   40.943865] [ffff00015ad7e4cc] pgd=180000043f7e8003,
-p4d=180000043f7e8003, pud=180000043f7e4003, pmd=180000043f52c003,
-pte=006800019ad7cf07
-[   40.945664] Internal error: Oops: 0000000096000021 [#1] SMP
-[   40.946055] Modules linked in: zstd zram zsmalloc nf_log_syslog
-nft_log nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject
-nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables
-crct10dif_ce polyval_ce polyval_generic ghash_ce tcp_bbr sch_fq fuse
-nfnetlink vsock_loopback vmw_vsock_virtio_transport_common
-vmw_vsock_vmci_transport vmw_vmci vsock bpf_preload qemu_fw_cfg
-ip_tables squashfs virtio_net net_failover virtio_blk gpio_keys
-failover virtio_mmio virtio_scsi virtio_console virtio_balloon
-virtio_gpu virtio_dma_buf megaraid_sas
-[   40.950262] CPU: 7 PID: 116 Comm: kworker/7:1 Not tainted 6.6.67-1-lts #1
-[   40.951542] Hardware name: netcup KVM Server, BIOS VPS 2000 ARM G11
-08/07/2024
-[   40.952287] Workqueue: events_power_efficient nft_rhash_gc [nf_tables]
-[   40.952798] pstate: 20401005 (nzCv daif +PAN -UAO -TCO -DIT +SSBS BTYPE=--)
-[   40.953401] pc : nft_rhash_gc+0x208/0x2c0 [nf_tables]
-[   40.954054] lr : nft_rhash_gc+0x134/0x2c0 [nf_tables]
-[   40.954806] sp : ffff800081fb3cf0
-[   40.955138] x29: ffff800081fb3d50 x28: 0000000000000000 x27: 0000000000000000
-[   40.955974] x26: ffff0000cc760ef0 x25: ffff0000ccba9c80 x24: ffff0000cc758f78
-[   40.956750] x23: 0000000000000010 x22: ffff0000ca789000 x21: ffff0000cc760f78
-[   40.957455] x20: ffffd62d3ac3be40 x19: ffff00015ad7e4c0 x18: 0000000000000000
-[   40.959005] x17: 0000000000000000 x16: ffffd62d37926880 x15: 000000400002fef8
-[   40.959614] x14: ffffffffffffffff x13: 0000000000000030 x12: ffff0000cc760ef0
-[   40.960197] x11: 0000000000000000 x10: ffff800081fb3d08 x9 : ffff0000cba89fe0
-[   40.960739] x8 : 0000000000000003 x7 : 0000000000000000 x6 : 0000000000000000
-[   40.961287] x5 : 0000000000000040 x4 : ffff0000cba89ff0 x3 : ffff00015ad7e4c0
-[   40.961814] x2 : ffff00015ad7e4cc x1 : ffff00015ad7e4cc x0 : 0000000000000004
-[   40.962339] Call trace:
-[   40.962531]  nft_rhash_gc+0x208/0x2c0 [nf_tables]
-[   40.962911]  process_one_work+0x178/0x3e0
-[   40.963710]  worker_thread+0x2ac/0x3e0
-[   40.964530]  kthread+0xf0/0x108
-[   40.966259]  ret_from_fork+0x10/0x20
-[   40.967287] Code: 54fff9a4 d503201f d2800080 91003261 (f820303f)
-[   40.968245] ---[ end trace 0000000000000000 ]---
+I don't know what would fit for SDAM and I couldn't find any info on
+createpoint either, not even what the abbreviation SDAM stands for.
+---
+ drivers/nvmem/qcom-spmi-sdam.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-faddr2line gave me the following:
-nft_rhash_gc+0x208/0x2c0:
-__lse_atomic64_or at
-/root/gg/setup/linux-lts/src/linux-6.6.67/./arch/arm64/include/asm/atomic_lse.h:132
-(inlined by) arch_atomic64_or at
-/root/gg/setup/linux-lts/src/linux-6.6.67/./arch/arm64/include/asm/atomic.h:65
-(inlined by) raw_atomic64_or at
-/root/gg/setup/linux-lts/src/linux-6.6.67/./include/linux/atomic/atomic-arch-fallback.h:3771
-(inlined by) raw_atomic_long_or at
-/root/gg/setup/linux-lts/src/linux-6.6.67/./include/linux/atomic/atomic-long.h:1069
-(inlined by) arch_set_bit at
-/root/gg/setup/linux-lts/src/linux-6.6.67/./include/asm-generic/bitops/atomic.h:18
-(inlined by) set_bit at
-/root/gg/setup/linux-lts/src/linux-6.6.67/./include/asm-generic/bitops/instrumented-atomic.h:29
-(inlined by) nft_set_elem_dead at
-/root/gg/setup/linux-lts/src/linux-6.6.67/./include/net/netfilter/nf_tables.h:1576
-(inlined by) nft_rhash_gc at
-/root/gg/setup/linux-lts/src/linux-6.6.67/net/netfilter/nft_set_hash.c:375
+diff --git a/drivers/nvmem/qcom-spmi-sdam.c b/drivers/nvmem/qcom-spmi-sdam.c
+index 9aa8f42faa4c93532cf8c70ea992a4fbb005d006..4f1cca6eab71e1efc5328448f69f863e6db57c5a 100644
+--- a/drivers/nvmem/qcom-spmi-sdam.c
++++ b/drivers/nvmem/qcom-spmi-sdam.c
+@@ -144,6 +144,7 @@ static int sdam_probe(struct platform_device *pdev)
+ 	sdam->sdam_config.owner = THIS_MODULE;
+ 	sdam->sdam_config.add_legacy_fixed_of_cells = true;
+ 	sdam->sdam_config.stride = 1;
++	sdam->sdam_config.size = sdam->size;
+ 	sdam->sdam_config.word_size = 1;
+ 	sdam->sdam_config.reg_read = sdam_read;
+ 	sdam->sdam_config.reg_write = sdam_write;
 
-By looking at the diff between 6.6.65 and 6.6.66 I was able to narrow
-it down to the above commit and I can confirm that reverting it fixes
-the issue.
+---
+base-commit: 8155b4ef3466f0e289e8fcc9e6e62f3f4dceeac2
+change-id: 20241220-sdam-size-da6adec6fbaa
 
-Best
+Best regards,
 -- 
-Amby Balaji
-Co-founder & CTO
-Hyperbeam, Inc.
+Luca Weiss <luca.weiss@fairphone.com>
+
 
