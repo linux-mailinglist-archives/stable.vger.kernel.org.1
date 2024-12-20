@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-105446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE829F979F
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:16:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3250C9F97C9
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEAC31645F7
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFCF4189CEEF
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44077224AE6;
-	Fri, 20 Dec 2024 17:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B19A22578A;
+	Fri, 20 Dec 2024 17:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8XRt3hQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnPHBReE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DEB21B1B4;
-	Fri, 20 Dec 2024 17:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229C62253EE;
+	Fri, 20 Dec 2024 17:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714729; cv=none; b=p/EwUAbPTPwJvYH+Dlw6wS5lLuyp8ZYGxNf9/SnySLZk70N0IUzsM0fbaY8ihF/z//yod2l2UScrGt7mOfhtckY2J8cfRvsBbQVKyqboXL4/f5QekKdCMsqDZAfjizouK9ptD+BNsnZePWsTmsAJdqSNTA5pJHKgR28JlR8E6O4=
+	t=1734714730; cv=none; b=CmZve7Oc3FvfmI9dlijCzJ7rnPvF4YCIUq0TP6YgwnFOJdyEX1lttCzO43T+O2dPHqDAxUObhYtrZiScXiUmCXH+la60HQDAmKt6Uo2UPg1EFpTLTFjJsTMX3htjsbNMb4fwzB6xhAodm25+S/LVyAucE/jyQXSG7PYTWcVD0P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714729; c=relaxed/simple;
-	bh=jqV9yDh1oaeYjwK6LbgMaYXnVkpQwXCmemlPTyo+9ug=;
+	s=arc-20240116; t=1734714730; c=relaxed/simple;
+	bh=3J3Z20U6LCUOXoS4iDJwHTr2ftQBWJ1941sXp4gcxJk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cf1jFiEG4L8KYRc2gOwneuSAe1Rp1K0ZDKb5nf28B2r6wdSqIVvda2402dJ44ddhDR7L2ujuYCNopHSyF7TS/a/tUjTFAamTTsmF2dw15649tfZpNQb7/kQ1iRhEPBcWsdrpkgU/YkmAmvPRkeNWQqHv2NM/YShyyHdMQD5+Uqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8XRt3hQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFC9C4CED3;
-	Fri, 20 Dec 2024 17:12:07 +0000 (UTC)
+	 MIME-Version; b=AdWw7yYuHA+NVb4bJTa+gLQgRxMHagLvQz1htjbFD6XXNIZANmU8M4dWzhBuAr094vOPn7AbEJkH6YRUGdx6xqtJhm4FIlkakDpOjAu8a4qiYTUT0aU3KLGT4SloSlBI6b5CuawPB1x6cafbKFYD/G5ybJFmVQ9rjAk+sHWysKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnPHBReE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09230C4CECD;
+	Fri, 20 Dec 2024 17:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714728;
-	bh=jqV9yDh1oaeYjwK6LbgMaYXnVkpQwXCmemlPTyo+9ug=;
+	s=k20201202; t=1734714729;
+	bh=3J3Z20U6LCUOXoS4iDJwHTr2ftQBWJ1941sXp4gcxJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X8XRt3hQjft2ZjVJucU7V9BjWi4KpEOVh122Z8+53WMnnb+fM8L3u/8v8tFJfNBe0
-	 o9FIerVp27rQmqzIsx0uRibaz9C39IBOaOFyRSMf0UagNSKD0M/F5lDFUmvJv2uTwL
-	 hOqLggp96odY0d2V1I/dNQpcse/D0QtQy6YkToyWqZxvnVwB7bj7+ATUOxLWCPZrQW
-	 Cd+1pRRliRx56sBHSeG/t0B8W74x5g9K+YW1W0rMSADk+xqCMD9sWSJnFbZS0A2E8g
-	 L3h6hZgouwQAeoUXwP0jF5ec3AJaBmY3P2U5Yo1Iq8ED2rA7YdQUAfblCDSoi47P3c
-	 QLu5CCbUWCyJQ==
+	b=MnPHBReExvHuirJIb9g3JIuZuJZeP/fn8hLNYv2fx6RlOT0Foj7SoYoIiuRFt/0Od
+	 FWh5d3uoVu8W68/vQfBm1L18FCneo7sT5O2XiPRRVzLCCVoPI+Nu9efmQ3senOe6X6
+	 zvpvg981OGN0OlFkGbuh26kkqytQX1Uc/qUj2LSMx04e4YiOlzYHakkGtlZ2SAgnAb
+	 zX6UQXOo5v4dwo3f+rTIi1NvkXZ77BwkN9iMlLXjWmi7tnTKgXcnl+zMMmARkeUPKs
+	 AOdZnB/KjKyG8xVGO4x8yxovzYNFUUJLYj82bM3zrp2BKfEc7ahG5vQsVNskeD+rdf
+	 cczziEwiY2/8Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Adrian Ratiu <adrian.ratiu@collabora.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	alexander@tsoy.me,
-	k.kosik@outlook.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 14/29] sound: usb: format: don't warn that raw DSD is unsupported
-Date: Fri, 20 Dec 2024 12:11:15 -0500
-Message-Id: <20241220171130.511389-14-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 15/29] spi: spi-cadence-qspi: Disable STIG mode for Altera SoCFPGA.
+Date: Fri, 20 Dec 2024 12:11:16 -0500
+Message-Id: <20241220171130.511389-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220171130.511389-1-sashal@kernel.org>
 References: <20241220171130.511389-1-sashal@kernel.org>
@@ -69,73 +65,72 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.6
 Content-Transfer-Encoding: 8bit
 
-From: Adrian Ratiu <adrian.ratiu@collabora.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
+[ Upstream commit 25fb0e77b90e290a1ca30900d54c6a495eea65e2 ]
 
-UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
-RAW_DATA type, typically used for DSD playback.
+STIG mode is enabled by default for less than 8 bytes data read/write.
+STIG mode doesn't work with Altera SocFPGA platform due hardware
+limitation.
+Add a quirks to disable STIG mode for Altera SoCFPGA platform.
 
-This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
-fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
-however a confusing and unnecessary message gets printed because
-the bit is not properly tested in the last "unsupported" if test:
-if (format & ~0x3F) { ... }
-
-For example the output:
-
-usb 7-1: new high-speed USB device number 5 using xhci_hcd
-usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
-usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
-usb 7-1: Product: TC44C
-usb 7-1: Manufacturer: TC44C
-usb 7-1: SerialNumber: 5000000001
-hid-generic 0003:262A:9302.001E: No inputs registered, leaving
-hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
-usb 7-1: 2:4 : unsupported format bits 0x100000000
-
-This last "unsupported format" is actually wrong: we know the
-format is a RAW_DATA which we assume is DSD, so there is no need
-to print the confusing message.
-
-This we unset bit 31 of the format after recognizing it, to avoid
-the message.
-
-Suggested-by: Takashi Iwai <tiwai@suse.com>
-Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
-Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Link: https://patch.msgid.link/20241204063338.296959-1-niravkumar.l.rabara@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/format.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/format.c b/sound/usb/format.c
-index 0cbf1d4fbe6e..6049d957694c 100644
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -60,6 +60,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
- 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
- 			/* flag potentially raw DSD capable altsettings */
- 			fp->dsd_raw = true;
-+			/* clear special format bit to avoid "unsupported format" msg below */
-+			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 1755ca026f08..73b1edd0531b 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -43,6 +43,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_CS_CNT_MAX);
+ #define CQSPI_SLOW_SRAM		BIT(4)
+ #define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(5)
+ #define CQSPI_RD_NO_IRQ			BIT(6)
++#define CQSPI_DISABLE_STIG_MODE		BIT(7)
+ 
+ /* Capabilities */
+ #define CQSPI_SUPPORTS_OCTAL		BIT(0)
+@@ -103,6 +104,7 @@ struct cqspi_st {
+ 	bool			apb_ahb_hazard;
+ 
+ 	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
++	bool			disable_stig_mode;
+ 
+ 	const struct cqspi_driver_platdata *ddata;
+ };
+@@ -1416,7 +1418,8 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	 * reads, prefer STIG mode for such small reads.
+ 	 */
+ 		if (!op->addr.nbytes ||
+-		    op->data.nbytes <= CQSPI_STIG_DATA_LEN_MAX)
++		    (op->data.nbytes <= CQSPI_STIG_DATA_LEN_MAX &&
++		     !cqspi->disable_stig_mode))
+ 			return cqspi_command_read(f_pdata, op);
+ 
+ 		return cqspi_read(f_pdata, op);
+@@ -1880,6 +1883,8 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			if (ret)
+ 				goto probe_reset_failed;
  		}
++		if (ddata->quirks & CQSPI_DISABLE_STIG_MODE)
++			cqspi->disable_stig_mode = true;
  
- 		format <<= 1;
-@@ -71,8 +73,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
- 		sample_width = as->bBitResolution;
- 		sample_bytes = as->bSubslotSize;
+ 		if (of_device_is_compatible(pdev->dev.of_node,
+ 					    "xlnx,versal-ospi-1.0")) {
+@@ -2043,7 +2048,8 @@ static const struct cqspi_driver_platdata intel_lgm_qspi = {
+ static const struct cqspi_driver_platdata socfpga_qspi = {
+ 	.quirks = CQSPI_DISABLE_DAC_MODE
+ 			| CQSPI_NO_SUPPORT_WR_COMPLETION
+-			| CQSPI_SLOW_SRAM,
++			| CQSPI_SLOW_SRAM
++			| CQSPI_DISABLE_STIG_MODE,
+ };
  
--		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
-+		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
- 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
-+			/* clear special format bit to avoid "unsupported format" msg below */
-+			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
-+		}
- 
- 		format <<= 1;
- 		break;
+ static const struct cqspi_driver_platdata versal_ospi = {
 -- 
 2.39.5
 
