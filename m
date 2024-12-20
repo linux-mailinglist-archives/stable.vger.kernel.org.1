@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-105496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C659F9824
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C679F9827
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33F9C7A046D
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:35:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 271857A2C5D
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EAD236925;
-	Fri, 20 Dec 2024 17:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE1323694E;
+	Fri, 20 Dec 2024 17:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eS05slmQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQRSeNTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3F423691B;
-	Fri, 20 Dec 2024 17:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBD1236947;
+	Fri, 20 Dec 2024 17:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714843; cv=none; b=BRcRsilxt8Jd5NQoi9pUKssVCj8GJTry7gyGaLEa+95jYy2Rtk4rtiAPL8/MdlfxS5wDaXHMHwLtNojfC9xipX86tuyUd3CWwOW+lK80EJV5ZDqLRIAQ3zY+Ek+QqNQ9Bc6Z2E4nY+6l0ULqCV63Zpj0WwqROuxHFLqW/GcxXG0=
+	t=1734714845; cv=none; b=HFv31x33CiuwL+GpQ1KstLANTIeg4ONk/d3L1b12hTUW85leHvt6ERKXtHsM72eZXdnuZmQTyc5fuIXTaUeEhe4GbK89hebHlXZWRUx9qTkmeW/VtOfGmsjJ8ucxr5y+dH3c/MPFuR5l2Mw2A7SX16LqGkUuriLy3doXMhWUfHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714843; c=relaxed/simple;
-	bh=zDbZC7o/dnFj8N3lGyDiZJhnrU64sR8SxdbrMQK/Jlw=;
+	s=arc-20240116; t=1734714845; c=relaxed/simple;
+	bh=PUH7xLZU3eTBut67cDj/0MSSJ+FcT2BnzFAo+dQQEm4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Yb8I+H0+GqTbFD9OU5xvq2xj24dZeqDtauq2FGbSmHTEbWKKRYaDpyX5p+c84vyEev3Ez0mmVsE5Hhx60dylEbg/sjCMv925KYUZucsOH3CoRKfCiYT49/yqe+IGVB/+T6Ngd7DOISLTLrQL2hcwv51ViUsWAPceUaaIWHbDJDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eS05slmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57472C4CECD;
-	Fri, 20 Dec 2024 17:14:02 +0000 (UTC)
+	 MIME-Version; b=oioOw6PYL14Gkx62tRVqbtlzImXmNReqA2UL2flz+xYM/Fptx0aNN/mt9yjd+V12tWuaAWnO8CxV7ajs2QEi3buwdzPdug9gn3Pvf3EhkAD7Yp1NWDkV9GuZcf8KfRB4ECkxcEBUiXjD2N14a4roc4bAb3lzFM/Hl/WeTk5c97Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQRSeNTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27ED1C4CECD;
+	Fri, 20 Dec 2024 17:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714843;
-	bh=zDbZC7o/dnFj8N3lGyDiZJhnrU64sR8SxdbrMQK/Jlw=;
+	s=k20201202; t=1734714845;
+	bh=PUH7xLZU3eTBut67cDj/0MSSJ+FcT2BnzFAo+dQQEm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eS05slmQTDwJAKplTpx4QfeB420cZZqeB40FOVq5x7wWvSHoPb6LF2SWS38PjzgVs
-	 Raz62jcVIfQFinpZlZ4o8WzDs8/q5b4FwjPaGTHGaLiiDd4E6jHXLItT58Ub4dB6Gt
-	 eGzkBxkasyd9ZxPNu7s1yBsaIftt6G37ASHVnFVqXfnLO7mYif/PIL4iwl8kfadswr
-	 ftsRj/eQrgw+GkJQS92fypaWl52JT1gt8qZMekV0CLy0FTpxQUoRlzW3zgGvxJzRoo
-	 T8mhSGxKBGnwS6iX57LZQeMSo7DztbCMyryCQO7iImOaobWIbquKoPO39DhEPDv7ab
-	 bLuxBoVRveWEg==
+	b=IQRSeNTtZCRkxmMkSB4D2+LmsgSPXGIl5eWGZgUpibwYGusy3mjd8ToI64X2lbJcv
+	 bXwKCIVedHcYeW5JQRmWeNZP6+CWYrFhtJQS22gqZGJjWVM8Rufwd5fccxfKz22xPu
+	 kfc53tePrHSU3PVFMrQOtAud/AZibUsNicPeFYr7AAHzqHckd/h33rznTtN02FTfYJ
+	 wpz8Qxd/2Ya2oPLLIww3zdXYVcvrh0lOzUQZL2q6uchclm12O7IWTea8kL3mU/Vc/a
+	 9NvRX7itJAuuJzbT9HarnT1p+6rgSGui5a5FyHpE+wCANrSghhyOxyWvJ+rNu+V6dw
+	 M9fRqP4HHMbYA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniele Palmas <dnlplm@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Uros Bizjak <ubizjak@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bjorn@mork.no,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 7/9] net: usb: qmi_wwan: add Telit FE910C04 compositions
-Date: Fri, 20 Dec 2024 12:13:45 -0500
-Message-Id: <20241220171347.512287-7-sashal@kernel.org>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 8/9] irqchip/gic: Correct declaration of *percpu_base pointer in union gic_base
+Date: Fri, 20 Dec 2024 12:13:46 -0500
+Message-Id: <20241220171347.512287-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220171347.512287-1-sashal@kernel.org>
 References: <20241220171347.512287-1-sashal@kernel.org>
@@ -71,107 +66,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.175
 Content-Transfer-Encoding: 8bit
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 3b58b53a26598209a7ad8259a5114ce71f7c3d64 ]
+[ Upstream commit a1855f1b7c33642c9f7a01991fb763342a312e9b ]
 
-Add the following Telit FE910C04 compositions:
+percpu_base is used in various percpu functions that expect variable in
+__percpu address space. Correct the declaration of percpu_base to
 
-0x10c0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 13 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+void __iomem * __percpu *percpu_base;
 
-0x10c4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+to declare the variable as __percpu pointer.
 
-0x10c8: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c8 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+The patch fixes several sparse warnings:
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Link: https://patch.msgid.link/20241209151821.3688829-1-dnlplm@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+irq-gic.c:1172:44: warning: incorrect type in assignment (different address spaces)
+irq-gic.c:1172:44:    expected void [noderef] __percpu *[noderef] __iomem *percpu_base
+irq-gic.c:1172:44:    got void [noderef] __iomem *[noderef] __percpu *
+...
+irq-gic.c:1231:43: warning: incorrect type in argument 1 (different address spaces)
+irq-gic.c:1231:43:    expected void [noderef] __percpu *__pdata
+irq-gic.c:1231:43:    got void [noderef] __percpu *[noderef] __iomem *percpu_base
+
+There were no changes in the resulting object files.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/all/20241213145809.2918-2-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-gic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 758af6ea861b..96cbc8a7ee9b 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1367,6 +1367,9 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
+diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
+index 99077f30f699..c941037199c8 100644
+--- a/drivers/irqchip/irq-gic.c
++++ b/drivers/irqchip/irq-gic.c
+@@ -62,7 +62,7 @@ static void gic_check_cpu_features(void)
+ 
+ union gic_base {
+ 	void __iomem *common_base;
+-	void __percpu * __iomem *percpu_base;
++	void __iomem * __percpu *percpu_base;
+ };
+ 
+ struct gic_chip_data {
 -- 
 2.39.5
 
