@@ -1,121 +1,102 @@
-Return-Path: <stable+bounces-105432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A786A9F96D6
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:47:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C629F9781
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603001889788
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 16:47:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0C9A160CCE
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00A121A43A;
-	Fri, 20 Dec 2024 16:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60C021A44E;
+	Fri, 20 Dec 2024 17:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IkQbq0JR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EU47C78d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDD121A421
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 16:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE0B1853;
+	Fri, 20 Dec 2024 17:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734713221; cv=none; b=KpF7YDVUipygmu1/APD6jRMnWI2yja4P+QGAl+kiX4a9xIVbK38QJBf85ba681w/lP4CHxnnljk9DRukm1u+NIU3E37kYeUA3rR8zBc6KKLyoR9ZdgJPQTeJfGaOCHmut4YCtitL+vxBfKS97rA5beKnJ62FZZuyWv//seIWz9w=
+	t=1734714693; cv=none; b=VyEZOMD9hDZL1ogadp5xg+D4KSBf0Drsz/qrpG7kOYVAKINl3Pb3f8zz+gqz1FocHUF3583Wc3UwEDnrBS0ngYZdCQwMyqBlfJpXGmqz8JN4HsYalkzrK8WaEAm3io2nX9BFC+DZxSppjVJU/Gzf623vWZB5OlqkXs5IEMyMjas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734713221; c=relaxed/simple;
-	bh=/B2hFvPofbZI1fc2VO8E92d2OtYMYvxKg4TvrOTtaAw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MuDgAv8JzjpzhP2FuH+SQluhzxttNdUkYBTbWiWCFnsWCIqdeU+jfUqKobSWECwF+MYDLKstLNDXBM6z8bXyk/zasH7uaCZAmJl0v1nw1KHm2sIx0uR8InZVXgSafo/u3fimoDasvlffxl3jbZUBcGljWJ2wy0g3Tu6rHTt+ptg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IkQbq0JR; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385d7b4da2bso1872270f8f.1
-        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 08:46:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734713218; x=1735318018; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pN3NCV0VK/uGJibMQfEcSGLqDK9XIPj1wk3PZ/vmF2U=;
-        b=IkQbq0JRWjKA2GALN8m5dAMffjC86Qjc1xJ9WfGsRQHT3FIH8hdJkHeCMg3cUkj+4p
-         OBply9sQqML/udXphC3PIRn/Qxr8C4enzLACJIuqesJS7oLlAaa9QThZmkXCDtc651xo
-         SurdbjpEiCbXW4ImaJV4kUaDnDUB0IQb9DJeDs0W67U4IvV72jj7TmoGR5nlUUNRUbjw
-         kXWC1k2qWhywSkyk1eZvl6jHV/uB8dVjbVFongLfkTgAQaI+aSbIbk2t0n+TG/T5X0VU
-         232PWtUYwSYNbAGZ1pTVNGzpeWJoUDWG7Ex7QfKnC6PBULN7qVo30sRCtifNcco2ybC6
-         ZOhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734713218; x=1735318018;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pN3NCV0VK/uGJibMQfEcSGLqDK9XIPj1wk3PZ/vmF2U=;
-        b=dNtwJt5ug73F2shA/GWSHTeKDvq7IVkjtxnGYaPUZnAW46vpOg7AQKiOVaZY/toIZb
-         BqkxqWnK8s3gEaiMFEDOuVqo1UO2FRcFesKDVKUi1UEsDJU1iWGchoerG3C5hPjMBDFi
-         YosbZCsqe2afZEdsP2SPmCaeXBTz+Nbl10DJWrtgMJ7WEebWAQiIZiaGThy+kfRiX4Jw
-         3v8jnVcnHGvvulAnv3B2Blw+x9tYfxJCC9CIO3srpsYR3VH3zfsMQV6/s/xZMpLW65SG
-         ylTYOm96A8mDgDIYxfXkNMNllc+lBJb5HiwRAALTlRRbmaKNYqPRRhidUu8ebryZKNou
-         6NyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdyO/JrDotEGccABMW0kxraIzP9VhCkCfCBnPVgOwYDHefWkGvhz9eBD4ZMXVbC+QuhI21w3M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuFLBKQd+u3VQ2svUGqBIlHYneFhTESGB2VxbFkxYc76TIyRos
-	NWj54TXf7D8SuNZOHzCWcXK2JUuIreTTbdiU4HN4LKTtauNBguemZy2Qtwo9dGY=
-X-Gm-Gg: ASbGncsMgpJ+RnmgH/V7MMaU4K6EXkTEMmBzn6cgC9d1tMNcNU4GvCIBnbZpBUNKwS/
-	EhQl/f7kdtpPpQo22tnYlhwYlWLTFzU6Q+01uP67yT5Con96yGGPMwdBbJwqfoAxU3aDg0Wl6rs
-	ZvejE0Wdk1BKBTRbIuIe3j7iWit9tV8tfdOrx327vyTnz73KGmfEHrf5LQSZw9m0ovAJB8y+ynV
-	mm5pBzHlXD580zHaIwTh3uioyqj7cDsiEcGupakg9Kq1JgXvF2LjOGwujN2AqXkxZ7q+F+a1b0=
-X-Google-Smtp-Source: AGHT+IF2qOn5DQvkDWQOOGonC75zrI8OJerUlOXhUaC5o56J1R56eQiHy3EN9O2yh86rk+H5NyWy+w==
-X-Received: by 2002:a5d:64eb:0:b0:385:fb8d:865b with SMTP id ffacd0b85a97d-38a223ff5bbmr4232823f8f.48.1734713218009;
-        Fri, 20 Dec 2024 08:46:58 -0800 (PST)
-Received: from [192.168.68.114] ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c89e2f9sm4546038f8f.81.2024.12.20.08.46.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Dec 2024 08:46:57 -0800 (PST)
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Shyam Kumar Thella <sthella@codeaurora.org>, 
- Anirudh Ghayal <quic_aghayal@quicinc.com>, 
- Guru Das Srinagesh <quic_gurus@quicinc.com>, 
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20241220-sdam-size-v1-1-17868a8744d3@fairphone.com>
-References: <20241220-sdam-size-v1-1-17868a8744d3@fairphone.com>
-Subject: Re: [PATCH] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
-Message-Id: <173471321721.223061.15271739555049260433.b4-ty@linaro.org>
-Date: Fri, 20 Dec 2024 16:46:57 +0000
+	s=arc-20240116; t=1734714693; c=relaxed/simple;
+	bh=a/mmhGrEzb5373DDRY9uU4VV1DaUT4hipb16YyZfKW0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H20Z2Ey3UFFLFIR6440X2/Xl4KAEOStM2CuH0S2wS/MeesJMfdo/Ki8FfZrjTUFNUeUhVchijuk8EhwhedFvmelo2zncgrSdUBfdFPQ7N0WLzHw/xM1TTymWYW2xbYWYFS4J+zpx/+zlgdqXdDuMht/2RLMAEUI5On6C2I9utvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EU47C78d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DAEC4CECD;
+	Fri, 20 Dec 2024 17:11:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734714693;
+	bh=a/mmhGrEzb5373DDRY9uU4VV1DaUT4hipb16YyZfKW0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EU47C78dPWmmqI39Q0nMCprd1lKBw8niW1uE+jqb9Z3K4VVXrfZJQBTCUBSsuW+tJ
+	 wZm4GguVDeId8jre8RQeL1xgGCNXU/cqSIVJw1xN5+r+NI+uo0U0Uv/ILWtQn/MsYG
+	 Cvx5ZcXAbTlRlG/CjuMH9G73SBuHY5DEJdqS/g4O42mmFvC8g5o+eCW06B25MTC9PS
+	 0qCDKRw8NzqSSLIbr4tw0+4Udm4i7c4JzMGtEoXEMF2YnudEE/yEhejKKJpdbkoTOe
+	 s7uvGtVFPTumM8jnzFnL1dcMQTW3uEvdd6Pnh4RjDCpmPG3M/5hbyEjh2Ulw3wWqe0
+	 iU/dtbtLY6fgA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	tglx@linutronix.de,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 01/29] perf/x86/intel: Add Arrow Lake U support
+Date: Fri, 20 Dec 2024 12:11:02 -0500
+Message-Id: <20241220171130.511389-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.2
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.6
+Content-Transfer-Encoding: 8bit
 
+From: Kan Liang <kan.liang@linux.intel.com>
 
-On Fri, 20 Dec 2024 13:22:07 +0100, Luca Weiss wrote:
-> Let the nvmem core know what size the SDAM is, most notably this fixes
-> the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
-> user space work with that file.
-> 
->   ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
->   00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
->   00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
->   *
->   00000080
-> 
-> [...]
+[ Upstream commit 4e54ed496343702837ddca5f5af720161c6a5407 ]
 
-Applied, thanks!
+From PMU's perspective, the new Arrow Lake U is the same as the
+Meteor Lake.
 
-[1/1] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
-      commit: ad71aaa9083a7ca8be9105d30a3eeaf4937234f8
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20241121180526.2364759-1-kan.liang@linux.intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/events/intel/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards,
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index d879478db3f5..5e6dc07c298c 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -7057,6 +7057,7 @@ __init int intel_pmu_init(void)
+ 
+ 	case INTEL_METEORLAKE:
+ 	case INTEL_METEORLAKE_L:
++	case INTEL_ARROWLAKE_U:
+ 		intel_pmu_init_hybrid(hybrid_big_small);
+ 
+ 		x86_pmu.pebs_latency_data = cmt_latency_data;
 -- 
-Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+2.39.5
 
 
