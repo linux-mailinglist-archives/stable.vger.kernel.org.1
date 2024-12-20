@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A87F9F9802
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:31:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 092839F9806
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDE97166EA0
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:27:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8648616AF0D
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6344422FE08;
-	Fri, 20 Dec 2024 17:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB30B230270;
+	Fri, 20 Dec 2024 17:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kpGLersX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VtwSvS/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BF022FE03;
-	Fri, 20 Dec 2024 17:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967AF230269;
+	Fri, 20 Dec 2024 17:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714796; cv=none; b=KD1hGIQ9AIlXvqKeeYLRHtQ8PKFf/PhcmPJwk0rbhlzjZtrWsvzV0uXIpU/Xg/jXmfoc034PYi+mh9r8Xk7zpDRpkh1aZ6Cyei4LVtsyrkKvBhgTUEC+MuJvKhQjxi4nZmC3VUMxM6Br0Rs45IxFH+fHfhrR/pAMRaSF9z55b+s=
+	t=1734714798; cv=none; b=dAJL5qsv/Tnc2Fq6S3Q3yAnxbCQ9n0Er3xjFm8i1qWNOq+tdZ6bzcLSPS94OwGvisIzHtJkjvLoXWD5rnbri1n5F7h0R0MA0X22PNyT6TrOXvfgF3yvqn6KSWJU7EvjgVan+KgguOBjKMYcwBHzk2md35H/YRmB4fBDy4hpGKZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714796; c=relaxed/simple;
-	bh=JA2za8F6djLFcqYPd7qs0YZuwyH9yI+KQdrRY/Z3h74=;
+	s=arc-20240116; t=1734714798; c=relaxed/simple;
+	bh=s0STJfAFIP5+6UO4H5FBYvKDuYRxeyInv+oPb0VXi8s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=X2mbLvL/24H2K7AnTfuio7oOEmD3Llh50bz9RfAfpHXJ8ay3aP+N3YhQBJXCOXpz4JwjDqfYivM0qbfyAFw82lRowgfHLsUBRT7LjCWD2QXcIuqtPk70heeodPxfldRG/hSjpJHm3ojp38iExvyffKkSW+2xwtRmDNxCL9Vr8KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kpGLersX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D630C4CECD;
-	Fri, 20 Dec 2024 17:13:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uL3C+afMg4sQbPg9RATNzZ/vibmqCpLBAgy+wXtIQe/HtaiP7G2JuGQqH5TZ4L1ixR2s+E/f+qfVoia/j242aWuuYqc6W6vfjDTVwottn2kQ6yjNo2SZGnh7VOzUrlOOIGfDSYG8hH0ZHdTxzBry7caGQeCOWNg5DTygnk4gz/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VtwSvS/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B8FC4CECD;
+	Fri, 20 Dec 2024 17:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714796;
-	bh=JA2za8F6djLFcqYPd7qs0YZuwyH9yI+KQdrRY/Z3h74=;
+	s=k20201202; t=1734714797;
+	bh=s0STJfAFIP5+6UO4H5FBYvKDuYRxeyInv+oPb0VXi8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpGLersXRqiOwr9y4XX8+d+xcWwI4mjE4aeSw4MwxWD/F7CwjhwG1vbXSM0XtrdqU
-	 aHM7hlm7TU89q5as5BUfhrK3vYkii77axu7RCUA41bPrnkWl04+8an1L6CBf9xctx4
-	 kc9CYInc6tlksCh3etSSVsrKa5JeKKtnVxdT0oaNTr17SPVpPbZBtPzGvpMzxygpGk
-	 2WZ67QSSKcHdYhE3QqIdOCBOvqMPUKouSMw7sy84qubeHfrR3pvTk0UKP740QsJwzR
-	 UV1ckeX8NXdEURCWACwycBrCA044j5vej9o6Vfr++wB8qDD50V51HunLOaJM6rKPlV
-	 80zEnY4yv291Q==
+	b=VtwSvS/B5mDCfvD8UTk9xe0T7TM7wpOvviKnPKxqwsf9vk4FAtHsm2pmAAaINOE10
+	 o6i/JYu4CMUletM2Prdwd2SXNbB6xNaBmIodTD0ekdT2WaQZGvD1Ss/BBBiQSIqbgA
+	 cVQAQ7O0RKBNKPJfLIlmwyZfWLbKS6etXSE6QJkcTdXOY3VW3lxU1EkIu68GlD5zm1
+	 OzV/F2eW2ECaxC/ti8T2thJ17ruyoKtIsJCqMAdqcv8Fy+9Q0Y4Q3ycFnpODLomnK4
+	 nocVlT6Fjqn0DvyZcK4GMb7pTFdexCieMhj6Q0R3Z3/uPjkXKP2yrDVLtOs+hw7X5q
+	 tW+PwJNKPUMHg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Uros Bizjak <ubizjak@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
+Cc: Leon Romanovsky <leonro@nvidia.com>,
+	Vineet Gupta <vgupta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 15/16] irqchip/gic: Correct declaration of *percpu_base pointer in union gic_base
-Date: Fri, 20 Dec 2024 12:12:39 -0500
-Message-Id: <20241220171240.511904-15-sashal@kernel.org>
+	linux-snps-arc@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 16/16] ARC: build: Try to guess GCC variant of cross compiler
+Date: Fri, 20 Dec 2024 12:12:40 -0500
+Message-Id: <20241220171240.511904-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220171240.511904-1-sashal@kernel.org>
 References: <20241220171240.511904-1-sashal@kernel.org>
@@ -61,56 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.67
 Content-Transfer-Encoding: 8bit
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit a1855f1b7c33642c9f7a01991fb763342a312e9b ]
+[ Upstream commit 824927e88456331c7a999fdf5d9d27923b619590 ]
 
-percpu_base is used in various percpu functions that expect variable in
-__percpu address space. Correct the declaration of percpu_base to
+ARC GCC compiler is packaged starting from Fedora 39i and the GCC
+variant of cross compile tools has arc-linux-gnu- prefix and not
+arc-linux-. This is causing that CROSS_COMPILE variable is left unset.
 
-void __iomem * __percpu *percpu_base;
+This change allows builds without need to supply CROSS_COMPILE argument
+if distro package is used.
 
-to declare the variable as __percpu pointer.
+Before this change:
+$ make -j 128 ARCH=arc W=1 drivers/infiniband/hw/mlx4/
+  gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+  gcc: error: unrecognized command-line option ‘-mmedium-calls’
+  gcc: error: unrecognized command-line option ‘-mlock’
+  gcc: error: unrecognized command-line option ‘-munaligned-access’
 
-The patch fixes several sparse warnings:
-
-irq-gic.c:1172:44: warning: incorrect type in assignment (different address spaces)
-irq-gic.c:1172:44:    expected void [noderef] __percpu *[noderef] __iomem *percpu_base
-irq-gic.c:1172:44:    got void [noderef] __iomem *[noderef] __percpu *
-...
-irq-gic.c:1231:43: warning: incorrect type in argument 1 (different address spaces)
-irq-gic.c:1231:43:    expected void [noderef] __percpu *__pdata
-irq-gic.c:1231:43:    got void [noderef] __percpu *[noderef] __iomem *percpu_base
-
-There were no changes in the resulting object files.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/all/20241213145809.2918-2-ubizjak@gmail.com
+[1] https://packages.fedoraproject.org/pkgs/cross-gcc/gcc-arc-linux-gnu/index.html
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic.c | 2 +-
+ arch/arc/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
-index 412196a7dad5..2c6c50348afd 100644
---- a/drivers/irqchip/irq-gic.c
-+++ b/drivers/irqchip/irq-gic.c
-@@ -64,7 +64,7 @@ static void gic_check_cpu_features(void)
+diff --git a/arch/arc/Makefile b/arch/arc/Makefile
+index 2390dd042e36..fb98478ed1ab 100644
+--- a/arch/arc/Makefile
++++ b/arch/arc/Makefile
+@@ -6,7 +6,7 @@
+ KBUILD_DEFCONFIG := haps_hs_smp_defconfig
  
- union gic_base {
- 	void __iomem *common_base;
--	void __percpu * __iomem *percpu_base;
-+	void __iomem * __percpu *percpu_base;
- };
+ ifeq ($(CROSS_COMPILE),)
+-CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux-)
++CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux- arc-linux-gnu-)
+ endif
  
- struct gic_chip_data {
+ cflags-y	+= -fno-common -pipe -fno-builtin -mmedium-calls -D__linux__
 -- 
 2.39.5
 
