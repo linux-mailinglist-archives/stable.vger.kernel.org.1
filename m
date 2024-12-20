@@ -1,58 +1,68 @@
-Return-Path: <stable+bounces-105436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC56A9F97AF
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:19:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FD09F978A
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0FBD189A434
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:12:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925D6160BAA
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B23821C9FE;
-	Fri, 20 Dec 2024 17:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A004221D00E;
+	Fri, 20 Dec 2024 17:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4NUTpkF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k95uDSul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333DB21C9E3;
-	Fri, 20 Dec 2024 17:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A20A21A423;
+	Fri, 20 Dec 2024 17:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714697; cv=none; b=gk9jSOfd5SG5w1kM4wFIojJ6z3F8txOd0fjFFd0HBbKIV8eLPY/dbx5lejbDpc34A3wrENLJb9sP8w6ckapPeTkK7fNRBHDfgKSd+/SMoUV4dzSu6kfFtuJfdRa8CZqCRFLVctXCvDeWVGXLvHceDm9BGAPAV9RhfUn3/sTYlhs=
+	t=1734714702; cv=none; b=b1wqalh/8XbmYMOEQ0Pm+0BzbnHbB0LTh5nPWg0+9pXvr5POQNP1Qu1o/O26jXc5olMTsp1BXO7eCcRAxwNXgscQ3HD5j3CpXnfN7V5H3Xza9jd7YHeaeiYDWTO94RaSr1YfaeO9CB6LEFiDYZcgaccuNEWoI1oXpUiroq+aJ4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714697; c=relaxed/simple;
-	bh=uisoTbrZB5Ys2OPjmjLgIFWxK/uTzX+73PPJu79PXI4=;
+	s=arc-20240116; t=1734714702; c=relaxed/simple;
+	bh=PLM039DLz37oDRMNqlZelRLhS5jnRg0yYCkicMyTONI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dHFU54srFyT0khrtSea26DzBsPfXZex2Sz9ch7p7dNR//tViL9GRgt9Xb6IRA/KYtdJ1Zx4Zj+OXcLHDwoCoTzN9zGIPRPWab0+MINzt6ODz1jm49J10hGQ/1kiJRSjHBV0GPJ3ZN+Zndyoifsmr/WuYOg1PzmOy8ZAkXiTl60Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4NUTpkF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E54C4CED7;
-	Fri, 20 Dec 2024 17:11:36 +0000 (UTC)
+	 MIME-Version; b=PmCT7IHymQ7QoHM8HW4BnmIgl3+Yig3mn89BoBhzKu1GwOxy2nrsiyXWCzsUW42DHdfg8GgnkR2FCg75vxdIGChuYcgJ5V+16/bu1+x0Auq8yqB46qyB2kHW36xSOgpgBRM8ZkSpviHCm9xj39bs5Q2eIkas76lgC4rySoARIAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k95uDSul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53177C4CECD;
+	Fri, 20 Dec 2024 17:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714697;
-	bh=uisoTbrZB5Ys2OPjmjLgIFWxK/uTzX+73PPJu79PXI4=;
+	s=k20201202; t=1734714702;
+	bh=PLM039DLz37oDRMNqlZelRLhS5jnRg0yYCkicMyTONI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4NUTpkFQJY4GBbBjov0iID073mre27aYqzOrs647+yz0mwFxIDDtQ/u/lUpissI1
-	 KJmeI84TRAp5td4DCrvBcHsIu030QlAotP3UsljqjYsb/csOLdG+lufEkxu5ZvLCdj
-	 FZuDPfL7zP+plxwZUIonDrEz6EPfKR7BFz5hwZxnyBrQrs+RXxeqEvOaz/2WizaobV
-	 XX3q0oFPycIdaQouTtpH5TqNwW3j2QxH0SMSfMq3uSakvkcustUB6KAQfy1y5utQDD
-	 rx8X7z4HnR2iYyTBzMKrVLdZl+yLMUW0TB57AZvy6gA/O7nzSHumabPUZMjZjUmGu7
-	 ME5klZmwqh3zA==
+	b=k95uDSulMiWzUHXTgUU99oF6jw17RnDNj0ZToaqjtUgyHmAGIJ9kgwfelY1o0VJci
+	 rE0JmMygrtiPxkFO9EJBbBHxFWZ+muY2juPAk0K6aGjrnKXy++sQris1Jj2eCkT/kk
+	 KaA062L7bT8XbSQAyhndHj0GnnxEHynlzuPBZMK7NOD2/4h+e+n+1731Cdv8lqkHlz
+	 0XsqrkAzL0dkKL13JbetrFON5DvrZq7QljTKeYPLV8rqIOVfV7V6Qqkp3MLIcO6Di1
+	 5QpAIL7vj1LeWJl+S37/hcu6Js7cBA7HqPQ3qzHm/5JjRP6GBdlxp+cwYCh6nw2jb7
+	 1ooh7sjGw6oCQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Victor Zhao <Victor.Zhao@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 04/29] wifi: mac80211: wake the queues in case of failure in resume
-Date: Fri, 20 Dec 2024 12:11:05 -0500
-Message-Id: <20241220171130.511389-4-sashal@kernel.org>
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunil.khatri@amd.com,
+	lijo.lazar@amd.com,
+	Hawking.Zhang@amd.com,
+	srinivasan.shanmugam@amd.com,
+	Prike.Liang@amd.com,
+	Jiadong.Zhu@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 05/29] drm/amdgpu: use sjt mec fw on gfx943 for sriov
+Date: Fri, 20 Dec 2024 12:11:06 -0500
+Message-Id: <20241220171130.511389-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220171130.511389-1-sashal@kernel.org>
 References: <20241220171130.511389-1-sashal@kernel.org>
@@ -67,42 +77,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.6
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Victor Zhao <Victor.Zhao@amd.com>
 
-[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
+[ Upstream commit 9a4ab400f1fad0e6e8686b8f5fc5376383860ce8 ]
 
-In case we fail to resume, we'll WARN with
-"Hardware became unavailable during restart." and we'll wait until user
-space does something. It'll typically bring the interface down and up to
-recover. This won't work though because the queues are still stopped on
-IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
-Make sure we clear that reason so that we give a chance to the recovery
-to succeed.
+Use second jump table in sriov for live migration or mulitple VF
+support so different VF can load different version of MEC as long
+as they support sjt
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/util.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index f94faa86ba8a..9f96c4dc037a 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1842,6 +1842,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
- 		else
- 			WARN(1, "Hardware became unavailable during restart.\n");
-+		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
-+						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
-+						false);
- 		ieee80211_handle_reconfig_failure(local);
- 		return res;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index c100845409f7..ffdb966c4127 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -45,6 +45,8 @@ MODULE_FIRMWARE("amdgpu/gc_9_4_3_mec.bin");
+ MODULE_FIRMWARE("amdgpu/gc_9_4_4_mec.bin");
+ MODULE_FIRMWARE("amdgpu/gc_9_4_3_rlc.bin");
+ MODULE_FIRMWARE("amdgpu/gc_9_4_4_rlc.bin");
++MODULE_FIRMWARE("amdgpu/gc_9_4_3_sjt_mec.bin");
++MODULE_FIRMWARE("amdgpu/gc_9_4_4_sjt_mec.bin");
+ 
+ #define GFX9_MEC_HPD_SIZE 4096
+ #define RLCG_UCODE_LOADING_START_ADDRESS 0x00002000L
+@@ -574,8 +576,12 @@ static int gfx_v9_4_3_init_cp_compute_microcode(struct amdgpu_device *adev,
+ {
+ 	int err;
+ 
+-	err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
+-				   "amdgpu/%s_mec.bin", chip_name);
++	if (amdgpu_sriov_vf(adev))
++		err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
++				"amdgpu/%s_sjt_mec.bin", chip_name);
++	else
++		err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
++				"amdgpu/%s_mec.bin", chip_name);
+ 	if (err)
+ 		goto out;
+ 	amdgpu_gfx_cp_init_microcode(adev, AMDGPU_UCODE_ID_CP_MEC1);
 -- 
 2.39.5
 
