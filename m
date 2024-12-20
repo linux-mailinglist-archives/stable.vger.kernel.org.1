@@ -1,258 +1,407 @@
-Return-Path: <stable+bounces-105429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52939F969A
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB38D9F96A2
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF3B2164CBA
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 16:31:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6BF41671D7
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 16:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7617921A931;
-	Fri, 20 Dec 2024 16:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2421021A423;
+	Fri, 20 Dec 2024 16:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d/9VT4wI"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IlftpR4q"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710AD21A450
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 16:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158CC219A86
+	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 16:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734712237; cv=none; b=Ba7VQlISoVNLOaBaFFKgTIyf2wbxABxctbyO6NCH96q/rVYhnfeiw4B63HdlkEYmtUh/Yu6Yy6oBH9GqTAmVbzmfM+MrogVjUODuI4aPjGYBXm6vjW1u3h6n51hUPixv2L5mPwrIq8AiCRTFcaYkoaRT7G8F8PGY7bJN3KU9SUM=
+	t=1734712448; cv=none; b=riLr8yyxlJy7pWr34wZp+bU+aZqclJ2fYDyDgtfDhY7MctIx36l4jb9aPGKSAX9xIg66urS1EM7AjrJg7YaT6BH9OmSKvX3iTq/jARhFu5953bx1BZdnSVNWLUNP7+j273tOzyCqRDiTeiyeSfdPQNL2fnO33zH93kBcVxmXNuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734712237; c=relaxed/simple;
-	bh=3gbCA1WLPAGfNVUpUoQiw3HwSiJ0CyLSQOZqig2XLgI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LbJ/6vOv71RkNwtTQ+Yk3ozIwXU6MLFw4Xt/wxPGt4vVnEzsRiVP5Pm0GYDLiq1NVhS0bJJ/P8q2RGfDVxBIfu1PArcg4Ap7kDSJer/dBtD0Xxl/fg+QoNCLcRO3mhK6enQIDSB9G8+sOPiTX2gHaCFwnvGwn5Xd/j55NaOpRW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d/9VT4wI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734712234;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/iWn0Ce3tJncXqJxpZDoZJspbC1CR6Ur+Lnwih/c65o=;
-	b=d/9VT4wIaiDdCKpm2dBVSD+WQf42rX/+WF/E51iyTOade2z+282UplCn45Nouh+NN91o+C
-	8S+BvDAM3B4M7x8Vddh652PyCgTzDWx2cGamhhu1YQ7E1EWO2yqt4Qf1gzSY9NbyKNEfxN
-	zNuJoVw8KXWP6UYhwaYLQkySm+0MaAQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-J5kR51JNPVCGbLXlkn2ktQ-1; Fri, 20 Dec 2024 11:30:28 -0500
-X-MC-Unique: J5kR51JNPVCGbLXlkn2ktQ-1
-X-Mimecast-MFC-AGG-ID: J5kR51JNPVCGbLXlkn2ktQ
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-38a2140a400so885206f8f.0
-        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 08:30:28 -0800 (PST)
+	s=arc-20240116; t=1734712448; c=relaxed/simple;
+	bh=WLzO8o+Rs8pzVPcsWYuCPjT22UuM4aVjhgiEa8IDNoY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UChU8ADrvC2dTaHbMiNyGWSkI1IBO+WeGV67y76NSFj+wJ6LeYNVtn1PdF3CemVWIyY9Idt6VngsCzP6IMk0E9mvI/X7d2JLCbD8EqNOa245eKE87uY2oWKvbM2lgMuCoHY17JO8DDsgN539Bp9OvG13xVWWODlLvIstXnf5jsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=google.com; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IlftpR4q; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4679b5c66d0so264351cf.1
+        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 08:34:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1734712445; x=1735317245; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wgz1pf59HhFQwhX+AoO9GXmTEj308CqbXM6bULf4Lzw=;
+        b=IlftpR4qt62M67XaAKvo8y5g937imdSVbcbvETLy/Effss2HUICXS/E/wgG8q/+RBs
+         RMrHva62UhFI3UfYxaT4UIbLldM17vdpWtrZHOT4wgOExZxlk2e5TOEFQfZ+YZX8vaRJ
+         fojd5TBozsnhwA06lSgwfaLF9qqiDM0huIEm0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734712227; x=1735317027;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/iWn0Ce3tJncXqJxpZDoZJspbC1CR6Ur+Lnwih/c65o=;
-        b=rXO+g0x54kp7MrpejS0f+cAJlSBBAvsKWww7seW6hrwQOpKYMwXv1ExXKiyGMH+02j
-         VIeoiCp8GGh9hJnPM1vdfg5cbWXqaq0kLWWGldA1nDai0YTQw3IBu0Is4++BGRnyg69h
-         wN03RuQfYeVszu3Unq6+Eqhoqvk0gLujH22CDLF4ZOR/0xM4dB0b4zdgtRxERBcJM+Jv
-         UAtnTd4AoZYhRWhzbAr5J8HAkeqUzAcLssmCV8KBYNwZU5A038Wld3uXflTQ1rPJ8RXN
-         tdtmsHevRFSp2EiWJM8d2IeSSmJbV/RrG/90FjO5JLay4YMQ18MSDfqepXFfQNbMSuj6
-         f1Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOXz02SSOwvGcFxYQzsvFNjnxKh/LX1RgZt5MPtiy9nreMS/Cj3b9H4u2z0POelwZ5Vn0rG+k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkRc7Tk++vLkWNDL7mThZF9CP3mG5u9gWXGTz+5ZD4jRGpYCYw
-	x4PvP2e2poAq8LLtfjXdHgb1/2mqXlV0FsM2Ey20J+g5iXvUsy712t5M/lQm4AAQcHpbBxYUzPX
-	LXvT+GcUzcSuwb2VUlO7IuPjtqT872aQ1Li4f6F54k0K4jWsR/djL9uRLPvKA9XIs
-X-Gm-Gg: ASbGnculvdW0AfBhEYKtkZRtYkfaE9yEaX64SErkXeoT3U9e4DeBk7VnzCiMppdVtIM
-	cZ8Q9SshzNK3XBJn9Xatg8z3yugiz0qvq0yGuwOwbdF4KBmTZKkVzba+q2cQctouh9Fg0ROmI9H
-	khS5lp8V6FYkBrPJ3XeF7mHfT512yBcb+zTGN8Itw4FO8Sh7FvEujUGBxWz3QUu/eNMKQmItdgC
-	6W1ojHx05nPXDjFEFgdRrJ4rDvcFx5qrbxX1+ulo5P/dQVs8m9KYfX/hlTdcy0hXiEwUo4Co5//
-	YoWZz/YKS/FZ816A9/XyGtjDDELzEKXNZ16zIqlh1un5iMiCEQloMEHGEq/+ltBLFXa2l5havwu
-	qf1Ml1Q0N
-X-Received: by 2002:a05:6000:4b10:b0:385:f470:c2c6 with SMTP id ffacd0b85a97d-38a221e21a9mr3688462f8f.11.1734712227542;
-        Fri, 20 Dec 2024 08:30:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGhviMmp8oDzO2Vta4bKn4D5S3CRPFiVnXNDNvJbrNTZ/ExTBrmwBLoZcRLAHjKTrK+tbTEEA==
-X-Received: by 2002:a05:6000:4b10:b0:385:f470:c2c6 with SMTP id ffacd0b85a97d-38a221e21a9mr3688437f8f.11.1734712227128;
-        Fri, 20 Dec 2024 08:30:27 -0800 (PST)
-Received: from ?IPV6:2003:cb:c708:9d00:edd9:835b:4bfb:2ce3? (p200300cbc7089d00edd9835b4bfb2ce3.dip0.t-ipconnect.de. [2003:cb:c708:9d00:edd9:835b:4bfb:2ce3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c833155sm4364949f8f.24.2024.12.20.08.30.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2024 08:30:25 -0800 (PST)
-Message-ID: <fe57ef80-bbdb-44dc-97d9-b390778430a4@redhat.com>
-Date: Fri, 20 Dec 2024 17:30:24 +0100
+        d=1e100.net; s=20230601; t=1734712445; x=1735317245;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wgz1pf59HhFQwhX+AoO9GXmTEj308CqbXM6bULf4Lzw=;
+        b=MmXYvEnNe9EKg+UGRw/nJHTzZg83LTDoL9ri0OSnkwKZqkrnc1hLpF1mJsg7M3gIik
+         j3+MueRBbziByHAAX1XgvJCyj+zu/7pJqfX+gUso3KyvkbMgAE0SNOP2Lzg9to2eJcGD
+         jq8QVHw3ftDc/AbVioNWNaAt9BlYhPCRXHfmwSlov4u7EnMW/HmskuLLmU6xYki5ZmjH
+         vd64nCvW0HI2H5Y4UXLrrBbWicFga+tR5CRd/tCTjrK2JgXeqY6GIkO9hz/dJ1SVAZIE
+         ljIalUQf/vRlhqArDBSxKWY3umY6JhGZoWR505bek2kL02QQ/TywKpp6Vt+8hvQqHq6z
+         IXUg==
+X-Forwarded-Encrypted: i=1; AJvYcCVykS1RkxC3xqTAvspEccG2XNt6zmslrNK9CgXWMtrH9c5zvpjpESudpEPhTjnf4mD0/XaMZb0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhCnesgtRO/CkS6KkMbwbupaX85u4PX29CUQUVjUgKUg+aIlt6
+	XvfJGK6lW5xN6E/sUs2XovKXktUJWUAdp38tx+tYbUJAcUfo2EYvWWkzgai3CM24lBNaeLm5kwT
+	ARnVONcG6fodvjCocbkeWevZDUm0aSdld1AF+
+X-Gm-Gg: ASbGncuu3MP/W8u4GLysr4bomIzziNmYYrYX9Rte1Z15wBXsFIGYIk8SsdVnmCVm7Hd
+	bwxSuN2g4Exzq88txZyID34Yt1y5woZTDXIWi5MyXDJ4SOk1iKSN5Zz0mtgYX+x8/qjR8yw==
+X-Google-Smtp-Source: AGHT+IEgZZs0znvBuNHG1EZaFB+UIey+thgVWIJFuk5hqk6kjp6faIRhF72ecybWNyHZ7j58TpZIfqHLBIotJLdkotM=
+X-Received: by 2002:ac8:5ad0:0:b0:447:e59b:54eb with SMTP id
+ d75a77b69052e-46a4a9bebdfmr3988641cf.26.1734712444631; Fri, 20 Dec 2024
+ 08:34:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] replace free hugepage folios after migration
-To: Ge Yang <yangge1116@126.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
- liuzixing@hygon.cn, Oscar Salvador <osalvador@suse.de>,
- Michal Hocko <mhocko@kernel.org>
-References: <1734503588-16254-1-git-send-email-yangge1116@126.com>
- <0b41cc6b-5c93-408f-801f-edd9793cb979@redhat.com>
- <1241b567-88b6-462c-9088-8f72a45788b7@126.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <1241b567-88b6-462c-9088-8f72a45788b7@126.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20241219205426.2275508-1-dianders@chromium.org> <20241219125317.v3.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+In-Reply-To: <20241219125317.v3.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+From: Julius Werner <jwerner@chromium.org>
+Date: Fri, 20 Dec 2024 17:33:53 +0100
+Message-ID: <CAODwPW8bq8ev7gb4T=p7GeKsW8Q_7MNY1MpauZ9LOcmH3qVw1A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] arm64: errata: Assume that unknown CPUs _are_
+ vulnerable to Spectre BHB
+To: Douglas Anderson <dianders@chromium.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Roxana Bradescu <roxabee@google.com>, 
+	Julius Werner <jwerner@chromium.org>, bjorn.andersson@oss.qualcomm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	Jeffrey Hugo <quic_jhugo@quicinc.com>, Trilok Soni <quic_tsoni@quicinc.com>, stable@vger.kernel.org, 
+	James Morse <james.morse@arm.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 20.12.24 09:56, Ge Yang wrote:
-> 
-> 
-> 在 2024/12/20 0:40, David Hildenbrand 写道:
->> On 18.12.24 07:33, yangge1116@126.com wrote:
->>> From: yangge <yangge1116@126.com>
->>
->> CCing Oscar, who worked on migrating these pages during memory offlining
->> and alloc_contig_range().
->>
->>>
->>> My machine has 4 NUMA nodes, each equipped with 32GB of memory. I
->>> have configured each NUMA node with 16GB of CMA and 16GB of in-use
->>> hugetlb pages. The allocation of contiguous memory via the
->>> cma_alloc() function can fail probabilistically.
->>>
->>> The cma_alloc() function may fail if it sees an in-use hugetlb page
->>> within the allocation range, even if that page has already been
->>> migrated. When in-use hugetlb pages are migrated, they may simply
->>> be released back into the free hugepage pool instead of being
->>> returned to the buddy system. This can cause the
->>> test_pages_isolated() function check to fail, ultimately leading
->>> to the failure of the cma_alloc() function:
->>> cma_alloc()
->>>       __alloc_contig_migrate_range() // migrate in-use hugepage
->>>       test_pages_isolated()
->>>           __test_page_isolated_in_pageblock()
->>>                PageBuddy(page) // check if the page is in buddy
->>
->> I thought this would be working as expected, at least we tested it with
->> alloc_contig_range / virtio-mem a while ago.
->>
->> On the memory_offlining path, we migrate hugetlb folios, but also
->> dissolve any remaining free folios even if it means that we will going
->> below the requested number of hugetlb pages in our pool.
->>
->> During alloc_contig_range(), we only migrate them, to then free them up
->> after migration.
->>
->> Under which circumstances doe sit apply that "they may simply be
->> released back into the free hugepage pool instead of being returned to
->> the buddy system"?
->>
-> 
-> After migration, in-use hugetlb pages are only released back to the
-> hugetlb pool and are not returned to the buddy system.
+Reviewed-by: Julius Werner <jwerner@chromium.org>
 
-We had
-
-commit ae37c7ff79f1f030e28ec76c46ee032f8fd07607
-Author: Oscar Salvador <osalvador@suse.de>
-Date:   Tue May 4 18:35:29 2021 -0700
-
-     mm: make alloc_contig_range handle in-use hugetlb pages
-     
-     alloc_contig_range() will fail if it finds a HugeTLB page within the
-     range, without a chance to handle them.  Since HugeTLB pages can be
-     migrated as any LRU or Movable page, it does not make sense to bail out
-     without trying.  Enable the interface to recognize in-use HugeTLB pages so
-     we can migrate them, and have much better chances to succeed the call.
-
-
-And I am trying to figure out if it never worked correctly, or if
-something changed that broke it.
-
-
-In start_isolate_page_range()->isolate_migratepages_block(), we do the
-
-	ret = isolate_or_dissolve_huge_page(page, &cc->migratepages);
-
-to add these folios to the cc->migratepages list.
-
-In __alloc_contig_migrate_range(), we migrate the pages using migrate_pages().
-
-
-After that, the src hugetlb folios should still be isolated? But I'm getting
-confused when these pages get un-silated and putback to hugetlb/freed.
-
-
-> 
-> The specific steps for reproduction are as follows:
-> 1，Reserve hugetlb pages. Some of these hugetlb pages are allocated
-> within the CMA area.
-> echo 10240 > /proc/sys/vm/nr_hugepages
-> 
-> 2，To ensure that hugetlb pages are in an in-use state, we can use the
-> following command.
-> qemu-system-x86_64 \
->     -mem-prealloc \
->     -mem-path /dev/hugepage/ \
->     ...
-> 
-> 3，At this point, using cma_alloc() to allocate contiguous memory may
-> result in a probable failure.
+On Thu, Dec 19, 2024 at 9:54=E2=80=AFPM Douglas Anderson <dianders@chromium=
+.org> wrote:
 >
-
-Will these free hugetlb folios become surplus pages? I would have assumed
-they get freed immediately to the buddy, or does you config maybe allow for
-surplus pages?
-
--- 
-Cheers,
-
-David / dhildenb
-
+> The code for detecting CPUs that are vulnerable to Spectre BHB was
+> based on a hardcoded list of CPU IDs that were known to be affected.
+> Unfortunately, the list mostly only contained the IDs of standard ARM
+> cores. The IDs for many cores that are minor variants of the standard
+> ARM cores (like many Qualcomm Kyro CPUs) weren't listed. This led the
+> code to assume that those variants were not affected.
+>
+> Flip the code on its head and instead assume that a core is vulnerable
+> if it doesn't have CSV2_3 but is unrecognized as being safe. This
+> involves creating a "Spectre BHB safe" list.
+>
+> As of right now, the only CPU IDs added to the "Spectre BHB safe" list
+> are ARM Cortex A35, A53, A55, A510, and A520. This list was created by
+> looking for cores that weren't listed in ARM's list [1] as per review
+> feedback on v2 of this patch [2].
+>
+> NOTE: this patch will not actually _mitigate_ anyone, it will simply
+> cause them to report themselves as vulnerable. If any cores in the
+> system are reported as vulnerable but not mitigated then the whole
+> system will be reported as vulnerable though the system will attempt
+> to mitigate with the information it has about the known cores.
+>
+> [1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
+> [2] https://lore.kernel.org/r/20241219175128.GA25477@willie-the-truck
+>
+>
+> Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side c=
+hannels")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+> ---
+>
+> Changes in v3:
+> - Don't guess the mitigation; just report unknown cores as vulnerable.
+> - Restructure the code since is_spectre_bhb_affected() defaults to true
+>
+> Changes in v2:
+> - New
+>
+>  arch/arm64/include/asm/spectre.h |   1 -
+>  arch/arm64/kernel/proton-pack.c  | 144 +++++++++++++++++--------------
+>  2 files changed, 77 insertions(+), 68 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/spectre.h b/arch/arm64/include/asm/sp=
+ectre.h
+> index 0c4d9045c31f..f1524cdeacf1 100644
+> --- a/arch/arm64/include/asm/spectre.h
+> +++ b/arch/arm64/include/asm/spectre.h
+> @@ -97,7 +97,6 @@ enum mitigation_state arm64_get_meltdown_state(void);
+>
+>  enum mitigation_state arm64_get_spectre_bhb_state(void);
+>  bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry,=
+ int scope);
+> -u8 spectre_bhb_loop_affected(int scope);
+>  void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *=
+__unused);
+>  bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
+>
+> diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-p=
+ack.c
+> index da53722f95d4..06e04c9e6480 100644
+> --- a/arch/arm64/kernel/proton-pack.c
+> +++ b/arch/arm64/kernel/proton-pack.c
+> @@ -845,52 +845,68 @@ static unsigned long system_bhb_mitigations;
+>   * This must be called with SCOPE_LOCAL_CPU for each type of CPU, before=
+ any
+>   * SCOPE_SYSTEM call will give the right answer.
+>   */
+> -u8 spectre_bhb_loop_affected(int scope)
+> +static bool is_spectre_bhb_safe(int scope)
+> +{
+> +       static const struct midr_range spectre_bhb_safe_list[] =3D {
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A35),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A53),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A55),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A510),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A520),
+> +               {},
+> +       };
+> +       static bool all_safe =3D true;
+> +
+> +       if (scope !=3D SCOPE_LOCAL_CPU)
+> +               return all_safe;
+> +
+> +       if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_safe_list)=
+)
+> +               return true;
+> +
+> +       all_safe =3D false;
+> +
+> +       return false;
+> +}
+> +
+> +static u8 spectre_bhb_loop_affected(void)
+>  {
+>         u8 k =3D 0;
+> -       static u8 max_bhb_k;
+> -
+> -       if (scope =3D=3D SCOPE_LOCAL_CPU) {
+> -               static const struct midr_range spectre_bhb_k32_list[] =3D=
+ {
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
+> -                       MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+> -                       MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+> -                       {},
+> -               };
+> -               static const struct midr_range spectre_bhb_k24_list[] =3D=
+ {
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+> -                       MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+> -                       {},
+> -               };
+> -               static const struct midr_range spectre_bhb_k11_list[] =3D=
+ {
+> -                       MIDR_ALL_VERSIONS(MIDR_AMPERE1),
+> -                       {},
+> -               };
+> -               static const struct midr_range spectre_bhb_k8_list[] =3D =
+{
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
+> -                       MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
+> -                       {},
+> -               };
+> -
+> -               if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k3=
+2_list))
+> -                       k =3D 32;
+> -               else if (is_midr_in_range_list(read_cpuid_id(), spectre_b=
+hb_k24_list))
+> -                       k =3D 24;
+> -               else if (is_midr_in_range_list(read_cpuid_id(), spectre_b=
+hb_k11_list))
+> -                       k =3D 11;
+> -               else if (is_midr_in_range_list(read_cpuid_id(), spectre_b=
+hb_k8_list))
+> -                       k =3D  8;
+> -
+> -               max_bhb_k =3D max(max_bhb_k, k);
+> -       } else {
+> -               k =3D max_bhb_k;
+> -       }
+> +
+> +       static const struct midr_range spectre_bhb_k32_list[] =3D {
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
+> +               MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+> +               MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+> +               {},
+> +       };
+> +       static const struct midr_range spectre_bhb_k24_list[] =3D {
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+> +               MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+> +               {},
+> +       };
+> +       static const struct midr_range spectre_bhb_k11_list[] =3D {
+> +               MIDR_ALL_VERSIONS(MIDR_AMPERE1),
+> +               {},
+> +       };
+> +       static const struct midr_range spectre_bhb_k8_list[] =3D {
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
+> +               MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
+> +               {},
+> +       };
+> +
+> +       if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
+> +               k =3D 32;
+> +       else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_l=
+ist))
+> +               k =3D 24;
+> +       else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_l=
+ist))
+> +               k =3D 11;
+> +       else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_li=
+st))
+> +               k =3D  8;
+>
+>         return k;
+>  }
+> @@ -916,9 +932,8 @@ static enum mitigation_state spectre_bhb_get_cpu_fw_m=
+itigation_state(void)
+>         }
+>  }
+>
+> -static bool is_spectre_bhb_fw_affected(int scope)
+> +static bool is_spectre_bhb_fw_affected(void)
+>  {
+> -       static bool system_affected;
+>         enum mitigation_state fw_state;
+>         bool has_smccc =3D arm_smccc_1_1_get_conduit() !=3D SMCCC_CONDUIT=
+_NONE;
+>         static const struct midr_range spectre_bhb_firmware_mitigated_lis=
+t[] =3D {
+> @@ -929,16 +944,8 @@ static bool is_spectre_bhb_fw_affected(int scope)
+>         bool cpu_in_list =3D is_midr_in_range_list(read_cpuid_id(),
+>                                          spectre_bhb_firmware_mitigated_l=
+ist);
+>
+> -       if (scope !=3D SCOPE_LOCAL_CPU)
+> -               return system_affected;
+> -
+>         fw_state =3D spectre_bhb_get_cpu_fw_mitigation_state();
+> -       if (cpu_in_list || (has_smccc && fw_state =3D=3D SPECTRE_MITIGATE=
+D)) {
+> -               system_affected =3D true;
+> -               return true;
+> -       }
+> -
+> -       return false;
+> +       return cpu_in_list || (has_smccc && fw_state =3D=3D SPECTRE_MITIG=
+ATED);
+>  }
+>
+>  static bool supports_ecbhb(int scope)
+> @@ -954,6 +961,8 @@ static bool supports_ecbhb(int scope)
+>                                                     ID_AA64MMFR1_EL1_ECBH=
+B_SHIFT);
+>  }
+>
+> +static u8 max_bhb_k;
+> +
+>  bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry,
+>                              int scope)
+>  {
+> @@ -962,16 +971,18 @@ bool is_spectre_bhb_affected(const struct arm64_cpu=
+_capabilities *entry,
+>         if (supports_csv2p3(scope))
+>                 return false;
+>
+> -       if (supports_clearbhb(scope))
+> -               return true;
+> -
+> -       if (spectre_bhb_loop_affected(scope))
+> -               return true;
+> +       if (is_spectre_bhb_safe(scope))
+> +               return false;
+>
+> -       if (is_spectre_bhb_fw_affected(scope))
+> -               return true;
+> +       /*
+> +        * At this point the core isn't known to be "safe" so we're going=
+ to
+> +        * assume it's vulnerable. We still need to update `max_bhb_k` th=
+ough,
+> +        * but only if we aren't mitigating with clearbhb though.
+> +        */
+> +       if (scope =3D=3D SCOPE_LOCAL_CPU && !supports_clearbhb(SCOPE_LOCA=
+L_CPU))
+> +               max_bhb_k =3D max(max_bhb_k, spectre_bhb_loop_affected())=
+;
+>
+> -       return false;
+> +       return true;
+>  }
+>
+>  static void this_cpu_set_vectors(enum arm64_bp_harden_el1_vectors slot)
+> @@ -1028,7 +1039,7 @@ void spectre_bhb_enable_mitigation(const struct arm=
+64_cpu_capabilities *entry)
+>                 this_cpu_set_vectors(EL1_VECTOR_BHB_CLEAR_INSN);
+>                 state =3D SPECTRE_MITIGATED;
+>                 set_bit(BHB_INSN, &system_bhb_mitigations);
+> -       } else if (spectre_bhb_loop_affected(SCOPE_LOCAL_CPU)) {
+> +       } else if (spectre_bhb_loop_affected()) {
+>                 /*
+>                  * Ensure KVM uses the indirect vector which will have th=
+e
+>                  * branchy-loop added. A57/A72-r0 will already have selec=
+ted
+> @@ -1041,7 +1052,7 @@ void spectre_bhb_enable_mitigation(const struct arm=
+64_cpu_capabilities *entry)
+>                 this_cpu_set_vectors(EL1_VECTOR_BHB_LOOP);
+>                 state =3D SPECTRE_MITIGATED;
+>                 set_bit(BHB_LOOP, &system_bhb_mitigations);
+> -       } else if (is_spectre_bhb_fw_affected(SCOPE_LOCAL_CPU)) {
+> +       } else if (is_spectre_bhb_fw_affected()) {
+>                 fw_state =3D spectre_bhb_get_cpu_fw_mitigation_state();
+>                 if (fw_state =3D=3D SPECTRE_MITIGATED) {
+>                         /*
+> @@ -1100,7 +1111,6 @@ void noinstr spectre_bhb_patch_loop_iter(struct alt=
+_instr *alt,
+>  {
+>         u8 rd;
+>         u32 insn;
+> -       u16 loop_count =3D spectre_bhb_loop_affected(SCOPE_SYSTEM);
+>
+>         BUG_ON(nr_inst !=3D 1); /* MOV -> MOV */
+>
+> @@ -1109,7 +1119,7 @@ void noinstr spectre_bhb_patch_loop_iter(struct alt=
+_instr *alt,
+>
+>         insn =3D le32_to_cpu(*origptr);
+>         rd =3D aarch64_insn_decode_register(AARCH64_INSN_REGTYPE_RD, insn=
+);
+> -       insn =3D aarch64_insn_gen_movewide(rd, loop_count, 0,
+> +       insn =3D aarch64_insn_gen_movewide(rd, max_bhb_k, 0,
+>                                          AARCH64_INSN_VARIANT_64BIT,
+>                                          AARCH64_INSN_MOVEWIDE_ZERO);
+>         *updptr++ =3D cpu_to_le32(insn);
+> --
+> 2.47.1.613.gc27f4b7a9f-goog
+>
 
