@@ -1,101 +1,110 @@
-Return-Path: <stable+bounces-105398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3FED9F8DC9
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 09:15:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2189F8E25
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 09:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2227F7A1853
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 08:15:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72D847A2D46
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 08:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1311A83F9;
-	Fri, 20 Dec 2024 08:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549F11A83E8;
+	Fri, 20 Dec 2024 08:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vt2fK1Fn"
+	dkim=pass (1024-bit key) header.d=eurecom.fr header.i=@eurecom.fr header.b="NLpu3x8l"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.eurecom.fr (smtp.eurecom.fr [193.55.113.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767C71A0BD7;
-	Fri, 20 Dec 2024 08:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C50197A8F;
+	Fri, 20 Dec 2024 08:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.55.113.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734682521; cv=none; b=P3A+rr8inLvU0s0NVtMW6/yeVsXz2XPCZzHBOWOAI1aN8bhVnpxtPlIhniYux+CkdW3LtTb0CvLDu5B5DQ1D7tm9IBqp9ebQId/eloUmqZJhvJ4o/Ryc50cki3CTIIl/1FaxiqqjhLR/Hj2U39we+tTyfiT8Nd+LT4Za9vtpSXw=
+	t=1734684278; cv=none; b=uCjBSQbUHoH2SYSnvYmf4s0Z7PD4ncmzY6UGXVKDfHf26HqOBTz7tiatwm6Ue7gUSHl/J+h9X0JevCN69/Na1lRjBPjqiMIfDgYPTe/o/recgRHwgn1LK3yp3WzQxdoHiCTKrgi7SsJUlBLFIuOm2T5CZAh/Bk4v9Rxuc3McU7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734682521; c=relaxed/simple;
-	bh=aeJUkoLT0R/CKgcZSzkosa2SpvGc8sse+HOk7Y8neZ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QXKOdrUu4ATBuXPoGGp9Voh2DNcfs1rdXRun9rFDd+iKfcla1maTxTNfI/Dy1xieylcy+ezOmKAklPCt/Q3iQG/8+gr8sbibo8JuHKi9pI4EVggCCxgW8lBc2j9enibgiw8ohxIvA/bz1kb/jD61SZSz7bmG//QfUEXq7FfQLx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vt2fK1Fn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CDFC4CECD;
-	Fri, 20 Dec 2024 08:15:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734682520;
-	bh=aeJUkoLT0R/CKgcZSzkosa2SpvGc8sse+HOk7Y8neZ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vt2fK1FnNNAr8kTZrcdIYPhBCHfHsXBhzN5tkd670TT8xNUhPpSgYnXW0FbkWYudT
-	 DB3RPcthDPPcg1lI+pVqLy5jPW1xlMnwmSAGnqkrMdA7VUH7ZsudKGGgukVVVgGuws
-	 gRE92zY9CzwNbGv9K3+vPFSwra/Tnjc/jasFLZNobZBugQcMAAu4xf8IXOokUtcBV+
-	 YitDO51WcsFdNQfMpNreeC5j8g0PZZb+x2jTB96z1Sc/UK+Wm60w7lrPm0CMgJ3Jdu
-	 7HwrmjdgKjej22ypNS0Y72fGZsfqBE/0vXbt99cN1QmOzKBG7kkE1Lty7rNaj9JfkI
-	 RMH1EmrhVHxXw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tOYAP-000000000ZW-0kDr;
-	Fri, 20 Dec 2024 09:15:25 +0100
-Date: Fri, 20 Dec 2024 09:15:25 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] soc: qcom: llcc: Enable LLCC_WRCACHE at boot on X1
-Message-ID: <Z2Unnbj_umau4XSR@hovoldconsulting.com>
-References: <20241219-topic-llcc_x1e_wrcache-v3-1-b9848d9c3d63@oss.qualcomm.com>
+	s=arc-20240116; t=1734684278; c=relaxed/simple;
+	bh=MhFL34B+Wvm9oSwNNFdcMDYglsbCPPNQyJ/6awuEq94=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=qdeYPvpOHPl1MPu5/OeBVIceIvRLOPi83VDQWnwX9esQ5eeCPe64sPXL8ztsHYXSXZUk3EZP33kjK7Pv7zRVit9r0g11DJ2Xg7NWuLpFqo31V07scdaEpRknQJ7kVpPM9yWHOj8J1HNCtEzz98oqY1Khdf/vXwAVsMeVN/9D6rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eurecom.fr; spf=pass smtp.mailfrom=eurecom.fr; dkim=pass (1024-bit key) header.d=eurecom.fr header.i=@eurecom.fr header.b=NLpu3x8l; arc=none smtp.client-ip=193.55.113.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eurecom.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eurecom.fr
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=eurecom.fr; i=@eurecom.fr; q=dns/txt; s=default;
+  t=1734684274; x=1766220274;
+  h=from:in-reply-to:references:date:cc:to:mime-version:
+   message-id:subject:content-transfer-encoding;
+  bh=MhFL34B+Wvm9oSwNNFdcMDYglsbCPPNQyJ/6awuEq94=;
+  b=NLpu3x8lVMuCoKbJ9cp6LwOGxa//WsKCEqHG3WY1MvfVhqYqnJQAyxzI
+   mHDJcd7iaRsBOtWM9O/JFZ3h5iY2w2J1LjcnvmNOEunDeyXDAj3OqaXhI
+   3IV1xNVKYJnGdH19mVcNZhhkBtr2jcKE+y9HR6eqHAG55Y4C+nLRQNlvI
+   Q=;
+X-CSE-ConnectionGUID: 3lLPQu7pSRCtQmZ3lBE9rQ==
+X-CSE-MsgGUID: F0kXtgcrRpeBqb+3wzvApQ==
+X-IronPort-AV: E=Sophos;i="6.12,250,1728943200"; 
+   d="scan'208";a="28266527"
+Received: from quovadis.eurecom.fr ([10.3.2.233])
+  by drago1i.eurecom.fr with ESMTP; 20 Dec 2024 09:44:31 +0100
+From: "Ariel Otilibili-Anieli" <Ariel.Otilibili-Anieli@eurecom.fr>
+In-Reply-To: <2024122042-guidable-overhand-b8a9@gregkh>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 88.183.119.157
+References: <20241219092615.644642-1-ariel.otilibili-anieli@eurecom.fr>
+ <20241219224645.749233-1-ariel.otilibili-anieli@eurecom.fr>
+ <20241219224645.749233-2-ariel.otilibili-anieli@eurecom.fr> <2024122042-guidable-overhand-b8a9@gregkh>
+Date: Fri, 20 Dec 2024 09:44:31 +0100
+Cc: linux-kernel@vger.kernel.org, "Jan Beulich" <jbeulich@suse.com>, stable@vger.kernel.org, "Andrew Morton" <akpm@linux-foundation.org>, "Andrew Cooper" <andrew.cooper3@citrix.com>, "Anthony PERARD" <anthony.perard@vates.tech>, "Michal Orzel" <michal.orzel@amd.com>, "Julien Grall" <julien@xen.org>, =?utf-8?q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, "Stefano Stabellini" <sstabellini@kernel.org>, xen-devel@lists.xenproject.org
+To: "Greg KH" <gregkh@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241219-topic-llcc_x1e_wrcache-v3-1-b9848d9c3d63@oss.qualcomm.com>
+Message-ID: <2f7a82-67652e80-9181-6eae3780@215109797>
+Subject: =?utf-8?q?Re=3A?= [PATCH v2 1/1] =?utf-8?q?lib=3A?= Remove dead code
+User-Agent: SOGoMail 5.11.1
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 19, 2024 at 07:53:29PM +0100, Konrad Dybcio wrote:
-> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> 
-> The Last Level Cache is split into many slices, each one of which can
-> be toggled on or off.
-> 
-> Only certain slices are recommended to be turned on unconditionally,
-> in order to reach optimal performance/latency/power levels.
-> 
-> Enable WRCACHE on X1 at boot, in accordance with internal
-> recommendations.
+On Friday, December 20, 2024 08:09 CET, Greg KH <gregkh@linuxfoundation=
+.org> wrote:
 
-Thanks for the update. Can you say something about what WRCACHE is used
-for as well?
+> On Thu, Dec 19, 2024 at 11:45:01PM +0100, Ariel Otilibili wrote:
+> > This is a follow up from a discussion in Xen:
+> >=20
+> > The if-statement tests `res` is non-zero; meaning the case zero is =
+never reached.
+> >=20
+> > Link: https://lore.kernel.org/all/7587b503-b2ca-4476-8dc9-e9683d4ca=
+5f0@suse.com/
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Suggested-by: Jan Beulich <jbeulich@suse.com>
+> > Signed-off-by: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
+> > --
+> > Cc: stable@vger.kernel.org
+>=20
+> Why is "removing dead code" a stable kernel thing?
 
-> No significant performance difference is expected.
+Hello Greg,
 
-This matches my findings (and it seems the slice has not been left
-enabled by the boot firmware).
+It is what I understood from the process:
 
-> Fixes: b3cf69a43502 ("soc: qcom: llcc: Add configuration data for X1E80100")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Rajendra Nayak <quic_rjendra@quicinc.com>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+"Attaching a Fixes: tag does not subvert the stable kernel rules proces=
+s nor the requirement to Cc: stable@vger.kernel.org on all stable patch=
+ candidates." [1]
 
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Does my understanding make sense?
 
-Johan
+Regards,
+Ariel
+
+[1] https://docs.kernel.org/process/submitting-patches.html
+
+>=20
+> confused,
+>=20
+> greg k-h
+
 
