@@ -1,115 +1,123 @@
-Return-Path: <stable+bounces-105386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C52E9F8A1A
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 03:31:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7AC9F8B3F
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 05:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2E3E16B4B6
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 02:31:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 196247A1B9E
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 04:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1EB17583;
-	Fri, 20 Dec 2024 02:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B157082B;
+	Fri, 20 Dec 2024 04:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hNEilVb/"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dxugQtnU"
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EC9C139
-	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 02:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BF03A8CB
+	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 04:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734661900; cv=none; b=J0OM9T0oFTll8Qbtkx6lqljB72+/4awQJU57qyIk4i+a37Oq10SyuV/eDQWLffuG4gaHjW7lH26Orwr/TDnOSIsWuwowcRJJ3Krk2htE/96+HOX3qGsK6gegEy/AUoM3Oz+PEkS82N0UU/LgVuov1hi3pccM2G1SJC8ZprZB8Zg=
+	t=1734669175; cv=none; b=DDutpGpT/aQTnfU6VRmP8MLL/U1OEwlExEBQFIz6VwGiCG6NKDgaKs0Z3l2FJUKVK6r74OHZYhTUu+JocOfxGMv+5zdPKn1DMv9glnsgv9cexuZwAd9Nn8KBOiVNwg8RbhZcDvM2+F76Efeg1kDLFNzMujwIicy2/kUDBqffR4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734661900; c=relaxed/simple;
-	bh=skIYNzG6AUQFvqnpBgycnviNkI5cHpEfWKEhXCmd02U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WrhUa05a/NM1seySNQ6/tD68Duw/tTvNdWWjR8tQ1TPbAGugA6MwjwiNQezigxanKsox+WtNY0NX9C0ZOwTbMTDpm2pa4K0gyX0aeUXjGJ4N9+s5uYxwPHX5eEJyt8+eQw5fIcmHQ2BC0q986c6YpTVXmekkbB8FltsbMlVppj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hNEilVb/; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <5fd25908-8c1d-4caf-ab6d-9e2c578515db@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1734661896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IHH9blCLbbdRFm3g4acwlY7ei2GOyp4N/b4u5S7BEjE=;
-	b=hNEilVb/92pGfyAN2kGGp0Fs+sGZiQtKW1vgMc7XaiY3WwdHB/OkILRAYxAo94L2PX8SOq
-	Lq9IBTVgMS8v9ZALJ1lbmsGrrGHc0cC2ZIMapuxhT4rQiO+OerjpbUOkRlvAukRyLbnwtl
-	sUT4bgBeCC8/FpbdLqI9BfCo/5nTvX4=
-Date: Fri, 20 Dec 2024 10:31:27 +0800
+	s=arc-20240116; t=1734669175; c=relaxed/simple;
+	bh=OSrK4P8S/D7uJoH0nEX3pAuAWd0uXm4JvxyRw6d9X8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r4D9c6F0IOlG3yAhPiZ6Y/iUIDvzeg7S3blrRYbjVlHiPxW5K7hF0v4KbJNxXYsR7T17RCZks9euEpFK5CbOybXfI35rwlT+o1Ast7aNRG7brxW0T+SYufNLyvwsjWDkt80dAXNyln4mA4UjX5/HLZKLcRH7qPFUdO2wON14eRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dxugQtnU; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2163bd70069so13914235ad.0
+        for <stable@vger.kernel.org>; Thu, 19 Dec 2024 20:32:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1734669173; x=1735273973; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NVqSzgdvMPcdx/FNg6nKx+Oqk/eOtN9slCOURnBKQ6c=;
+        b=dxugQtnUiWRpp2K2bxhc2kLnQB46OQwjGYGeWgN8kc2jrSY0ZSg/qL1Yq5XH3SGwdh
+         jHWfX7pfcyOzVCeX0MyFKHn3jDnj4NtMW+tRxQra8vxUWsFvHl+SR1t4A5BUkrTf/CXw
+         2UzCe7K45TC7WrWFK/STQO7w9/eyIMnCAtnRY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734669173; x=1735273973;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NVqSzgdvMPcdx/FNg6nKx+Oqk/eOtN9slCOURnBKQ6c=;
+        b=juFXlNgqcBJAcjJ1PQCgs3gFnW7/edvj0oGYdPPreu2uZJzQG+AiGEqp5iSFEIlvWC
+         CdrvR1V/4BTWRi2VerSeLmY+lyLiascDzqF6a2xQ2RrXWqNZuytIpoUNwBFvKEubB+gL
+         jGyUUt/bVFtXuo3uDbCCJhrHBIFn3KsMiEbKWzON0qW1gRQ/dxTP40sJqrFI/PGKwNqm
+         nrfZSFFv59Tuw0DmZucakXev9pHkyfRoyzaRSF/qSzlNIr/SRkt2eSziIIBrb5Zg2wDg
+         8CvqIKiMGC2pXRzH3H5fh7yeMB2fwsjciRWM+/EdEx/RENC45sMw6BS0KsbVUWZu8Q3E
+         aXbw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSvd0sBnWKLD2FsCa+BZ7qL7UqaB8sR+f7LsCQjpOHwt34iHx8NWCjY6Q51QjU7uQvaejB9M4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOFQMMUmYNfVYP7L8SImBZnnLdViD5lutNwJ6n3HZR4Fi6RNw7
+	qf0pMkCwdW8xYVjl7VNfuZQpOvXy3k8FLy4f4NuQVBqwFjbfZPhQ41rChDSCVKgpcAMhO2UKqpA
+	=
+X-Gm-Gg: ASbGncslZu3o8aSZp9IyUYcNybZZmU+lnAzJ4+W28Z6/kLI1OU4r5e2e1DUeNmwDBeo
+	7QhLy2pj3ClgMkoxmy/J8E8tVY1dlr4K3mQYs3wuBpG2dBqCi4Dhlnc1V2/Bv7reh1q7HEsyzI2
+	40QqFrzlLt86+nqrwUhNoiAS/iZZXZsODHtZ+Nox8Wm4HZLMe4UJapy9ShCUy6qqIM3nhVpng/5
+	vCZsOWx+OpM+k94IJloUGAu94KW69VJ+wc7AaVB3Xu2NvQUqmDqHTbCEjyb
+X-Google-Smtp-Source: AGHT+IEcslkGB6AJ/jFfNUJKFDnDJ0UoXitm3+XznAk8iVhKCkHnnHczShCxzi/hkt0jWFWF298nFQ==
+X-Received: by 2002:a17:902:ccc7:b0:215:94b0:9df4 with SMTP id d9443c01a7336-219e6f283aemr20782245ad.54.1734669173741;
+        Thu, 19 Dec 2024 20:32:53 -0800 (PST)
+Received: from google.com ([2401:fa00:8f:203:8e99:8969:ed54:b6c2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc964b1fsm20366725ad.37.2024.12.19.20.32.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2024 20:32:53 -0800 (PST)
+Date: Fri, 20 Dec 2024 13:32:48 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, Vikash Garodia <quic_vgarodia@quicinc.com>, 
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCHv2] media: venc: destroy hfi session after m2m_ctx release
+Message-ID: <xkmtptaqzvwe2px7q7ypnkltpx6jnnjeh5mgbirajzbomtsjyz@gefwjgfsjnv7>
+References: <20241219033345.559196-1-senozhatsky@chromium.org>
+ <20241219053734.588145-1-senozhatsky@chromium.org>
+ <yp3nafi4blvtqmr6vqsso2cwrjwb5gdzakzal7ftr2ty66uh46@n42c4q7m6elm>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm: zswap: fix race between [de]compression and CPU
- hotunplug
-To: Yosry Ahmed <yosryahmed@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
- Vitaly Wool <vitalywool@gmail.com>, Barry Song <baohua@kernel.org>,
- Sam Sun <samsun1006219@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241219212437.2714151-1-yosryahmed@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Chengming Zhou <chengming.zhou@linux.dev>
-In-Reply-To: <20241219212437.2714151-1-yosryahmed@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yp3nafi4blvtqmr6vqsso2cwrjwb5gdzakzal7ftr2ty66uh46@n42c4q7m6elm>
 
-On 2024/12/20 05:24, Yosry Ahmed wrote:
-> In zswap_compress() and zswap_decompress(), the per-CPU acomp_ctx of the
-> current CPU at the beginning of the operation is retrieved and used
-> throughout. However, since neither preemption nor migration are
-> disabled, it is possible that the operation continues on a different
-> CPU.
+On (24/12/19 15:12), Dmitry Baryshkov wrote:
+> On Thu, Dec 19, 2024 at 02:37:08PM +0900, Sergey Senozhatsky wrote:
+> > This partially reverts commit that made hfi_session_destroy()
+> > the first step of vdec/venc close().  The reason being is a
+> > regression report when, supposedly, encode/decoder is closed
+> > with still active streaming (no ->stop_streaming() call before
+> > close()) and pending pkts, so isr_thread cannot find instance
+> > and fails to process those pending pkts.  This was the idea
+> > behind the original patch - make it impossible to use instance
+> > under destruction, because this is racy, but apparently there
+> > are uses cases that depend on that unsafe pattern.  Return to
+> > the old (unsafe) behaviour for the time being (until a better
+> > fix is found).
 > 
-> If the original CPU is hotunplugged while the acomp_ctx is still in use,
-> we run into a UAF bug as the resources attached to the acomp_ctx are
-> freed during hotunplug in zswap_cpu_comp_dead().
-> 
-> The problem was introduced in commit 1ec3b5fe6eec ("mm/zswap: move to
-> use crypto_acomp API for hardware acceleration") when the switch to the
-> crypto_acomp API was made. Prior to that, the per-CPU crypto_comp was
-> retrieved using get_cpu_ptr() which disables preemption and makes sure
-> the CPU cannot go away from under us. Preemption cannot be disabled with
-> the crypto_acomp API as a sleepable context is needed.
-> 
-> Commit 8ba2f844f050 ("mm/zswap: change per-cpu mutex and buffer to
-> per-acomp_ctx") increased the UAF surface area by making the per-CPU
-> buffers dynamic, adding yet another resource that can be freed from
-> under zswap compression/decompression by CPU hotunplug.
-> 
-> There are a few ways to fix this:
-> (a) Add a refcount for acomp_ctx.
-> (b) Disable migration while using the per-CPU acomp_ctx.
-> (c) Disable CPU hotunplug while using the per-CPU acomp_ctx by holding
-> the CPUs read lock.
-> 
-> Implement (c) since it's simpler than (a), and (b) involves using
-> migrate_disable() which is apparently undesired (see huge comment in
-> include/linux/preempt.h).
-> 
-> Fixes: 1ec3b5fe6eec ("mm/zswap: move to use crypto_acomp API for hardware acceleration")
-> Reported-by: Johannes Weiner <hannes@cmpxchg.org>
-> Closes: https://lore.kernel.org/lkml/20241113213007.GB1564047@cmpxchg.org/
-> Reported-by: Sam Sun <samsun1006219@gmail.com>
-> Closes: https://lore.kernel.org/lkml/CAEkJfYMtSdM5HceNsXUDf5haghD5+o2e7Qv4OcuruL4tPg6OaQ@mail.gmail.com/
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-> ---
+> You are describing a regression. Could you please add corresponding
+> Reported-by and Closes tags (for now you can post them in a reply to
+> your patch, in future please include them in your commit message).
 
-Good analysis and solution!
+The regression report is internal, I don't have anything public.
+One of the teams found out that some of their tests started to
+fail.
 
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+> > Fixes: 45b1a1b348ec ("media: venus: sync with threaded IRQ during inst destruction")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> 
+> This is v2, but there is no changelog. Please provide one.
 
-Thanks.
+The code is obviously the same, I only added Cc: stable and removed
+one extra character in commit id "45b1a1b348ec".
 
