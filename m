@@ -1,68 +1,63 @@
-Return-Path: <stable+bounces-105437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FD09F978A
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:13:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F959F97BD
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 18:21:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925D6160BAA
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:13:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E71B6189B4B6
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 17:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A004221D00E;
-	Fri, 20 Dec 2024 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851C321D596;
+	Fri, 20 Dec 2024 17:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k95uDSul"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZHMPE5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A20A21A423;
-	Fri, 20 Dec 2024 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4090E21D58D;
+	Fri, 20 Dec 2024 17:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714702; cv=none; b=b1wqalh/8XbmYMOEQ0Pm+0BzbnHbB0LTh5nPWg0+9pXvr5POQNP1Qu1o/O26jXc5olMTsp1BXO7eCcRAxwNXgscQ3HD5j3CpXnfN7V5H3Xza9jd7YHeaeiYDWTO94RaSr1YfaeO9CB6LEFiDYZcgaccuNEWoI1oXpUiroq+aJ4k=
+	t=1734714704; cv=none; b=sxIfWk6+sCasDJ2DvqsTvKaFNgmW6G865NGn7SkQSAG/+uTMziFFeR4BOs8sYJ6c8Y29sa2t6vLmgpCB9TxHMUhooS5ew2r/nTNJEoiA5MnXrUkAUjI/5OmxH2iJDxK4qLlhydZ+YOGI7qf+e1F/DbYmvi68tv9vaHalkILkU7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714702; c=relaxed/simple;
-	bh=PLM039DLz37oDRMNqlZelRLhS5jnRg0yYCkicMyTONI=;
+	s=arc-20240116; t=1734714704; c=relaxed/simple;
+	bh=LusfN/+kZ7Vzl/cO6zVyV4mjfn3wRygLgDX6IiEdXjI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PmCT7IHymQ7QoHM8HW4BnmIgl3+Yig3mn89BoBhzKu1GwOxy2nrsiyXWCzsUW42DHdfg8GgnkR2FCg75vxdIGChuYcgJ5V+16/bu1+x0Auq8yqB46qyB2kHW36xSOgpgBRM8ZkSpviHCm9xj39bs5Q2eIkas76lgC4rySoARIAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k95uDSul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53177C4CECD;
-	Fri, 20 Dec 2024 17:11:40 +0000 (UTC)
+	 MIME-Version; b=ikUCGYTqTn/oH69WeNxeAsdf+a4edi0rp/Nn5i4n4tcNuDhopHtWDuhuE23D6PKvYb8tA/+YV/WV00S2WAS8aFXeVMZQkla9luA4WT6KbdsPqV8FAstKBXN7ckvgK6ixck1ESz7Ile7tvV+P6g4zUIcHjbMeTn8wrANwyIezPo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZHMPE5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC977C4CED7;
+	Fri, 20 Dec 2024 17:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714702;
-	bh=PLM039DLz37oDRMNqlZelRLhS5jnRg0yYCkicMyTONI=;
+	s=k20201202; t=1734714704;
+	bh=LusfN/+kZ7Vzl/cO6zVyV4mjfn3wRygLgDX6IiEdXjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k95uDSulMiWzUHXTgUU99oF6jw17RnDNj0ZToaqjtUgyHmAGIJ9kgwfelY1o0VJci
-	 rE0JmMygrtiPxkFO9EJBbBHxFWZ+muY2juPAk0K6aGjrnKXy++sQris1Jj2eCkT/kk
-	 KaA062L7bT8XbSQAyhndHj0GnnxEHynlzuPBZMK7NOD2/4h+e+n+1731Cdv8lqkHlz
-	 0XsqrkAzL0dkKL13JbetrFON5DvrZq7QljTKeYPLV8rqIOVfV7V6Qqkp3MLIcO6Di1
-	 5QpAIL7vj1LeWJl+S37/hcu6Js7cBA7HqPQ3qzHm/5JjRP6GBdlxp+cwYCh6nw2jb7
-	 1ooh7sjGw6oCQ==
+	b=TZHMPE5BPc958MPOgn77c7Yg/ei3nHRYRALOKjGUcCia/6blIgHW/+JU2PN6veTfV
+	 tOnttmoOfLEo7DBjrF+3347zsgvhc0K7j1snMtyCK0PnlCWJRGNTI3ynkyajdtSwVQ
+	 RppT06o2TvrwR1kA9ToNBICM/GTDcgnCEfS6yz7naZ+SiekzDOV6o2D+gMZdzEuDnE
+	 W8UXNCcUYRIbaMdLnd1cSUDx1qfRwaGMHXzH9JOoAU2ZnDhIas0ls4sI1DPitWO+QN
+	 lMka7n3VP3y01YTpMMN1NpiAI+tCpZ2H5ey7f7oSyhVmNRfFasvXpwrDUL0qdDl13L
+	 Q+L85EB+ezhaA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Victor Zhao <Victor.Zhao@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
+Cc: Prike Liang <Prike.Liang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	Felix.Kuehling@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	sunil.khatri@amd.com,
-	lijo.lazar@amd.com,
-	Hawking.Zhang@amd.com,
-	srinivasan.shanmugam@amd.com,
-	Prike.Liang@amd.com,
-	Jiadong.Zhu@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 05/29] drm/amdgpu: use sjt mec fw on gfx943 for sriov
-Date: Fri, 20 Dec 2024 12:11:06 -0500
-Message-Id: <20241220171130.511389-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 06/29] drm/amdkfd: Correct the migration DMA map direction
+Date: Fri, 20 Dec 2024 12:11:07 -0500
+Message-Id: <20241220171130.511389-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241220171130.511389-1-sashal@kernel.org>
 References: <20241220171130.511389-1-sashal@kernel.org>
@@ -75,53 +70,157 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.6
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-From: Victor Zhao <Victor.Zhao@amd.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit 9a4ab400f1fad0e6e8686b8f5fc5376383860ce8 ]
+[ Upstream commit 5c3de6b02d38eb9386edf50490e050bb44398e40 ]
 
-Use second jump table in sriov for live migration or mulitple VF
-support so different VF can load different version of MEC as long
-as they support sjt
+The SVM DMA device map direction should be set the same as
+the DMA unmap setting, otherwise the DMA core will report
+the following warning.
 
-Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Before finialize this solution, there're some discussion on
+the DMA mapping type(stream-based or coherent) in this KFD
+migration case, followed by https://lore.kernel.org/all/04d4ab32
+-45a1-4b88-86ee-fb0f35a0ca40@amd.com/T/.
+
+As there's no dma_sync_single_for_*() in the DMA buffer accessed
+that because this migration operation should be sync properly and
+automatically. Give that there's might not be a performance problem
+in various cache sync policy of DMA sync. Therefore, in order to
+simplify the DMA direction setting alignment, let's set the DMA map
+direction as BIDIRECTIONAL.
+
+[  150.834218] WARNING: CPU: 8 PID: 1812 at kernel/dma/debug.c:1028 check_u=
+nmap+0x1cc/0x930
+[  150.834225] Modules linked in: amdgpu(OE) amdxcp drm_exec(OE) gpu_sched =
+drm_buddy(OE) drm_ttm_helper(OE) ttm(OE) drm_suballoc_helper(OE) drm_displa=
+y_helper(OE) drm_kms_helper(OE) i2c_algo_bit rpcsec_gss_krb5 auth_rpcgss nf=
+sv4 nfs lockd grace netfs xt_conntrack xt_MASQUERADE nf_conntrack_netlink x=
+frm_user xfrm_algo iptable_nat xt_addrtype iptable_filter br_netfilter nvme=
+_fabrics overlay nfnetlink_cttimeout nfnetlink openvswitch nsh nf_conncount=
+ nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c bridge stp llc=
+ sch_fq_codel intel_rapl_msr amd_atl intel_rapl_common snd_hda_codec_realte=
+k snd_hda_codec_generic snd_hda_scodec_component snd_hda_codec_hdmi snd_hda=
+_intel snd_intel_dspcfg edac_mce_amd snd_pci_acp6x snd_hda_codec snd_acp_co=
+nfig snd_hda_core snd_hwdep snd_soc_acpi kvm_amd sunrpc snd_pcm kvm binfmt_=
+misc snd_seq_midi crct10dif_pclmul snd_seq_midi_event ghash_clmulni_intel s=
+ha512_ssse3 snd_rawmidi nls_iso8859_1 sha256_ssse3 sha1_ssse3 snd_seq aesni=
+_intel snd_seq_device crypto_simd snd_timer cryptd input_leds
+[  150.834310]  wmi_bmof serio_raw k10temp rapl snd sp5100_tco ipmi_devintf=
+ soundcore ccp ipmi_msghandler cm32181 industrialio mac_hid msr parport_pc =
+ppdev lp parport efi_pstore drm(OE) ip_tables x_tables pci_stub crc32_pclmu=
+l nvme ahci libahci i2c_piix4 r8169 nvme_core i2c_designware_pci realtek i2=
+c_ccgx_ucsi video wmi hid_generic cdc_ether usbnet usbhid hid r8152 mii
+[  150.834354] CPU: 8 PID: 1812 Comm: rocrtst64 Tainted: G           OE    =
+  6.10.0-custom #492
+[  150.834358] Hardware name: AMD Majolica-RN/Majolica-RN, BIOS RMJ1009A 06=
+/13/2021
+[  150.834360] RIP: 0010:check_unmap+0x1cc/0x930
+[  150.834363] Code: c0 4c 89 4d c8 e8 34 bf 86 00 4c 8b 4d c8 4c 8b 45 c0 =
+48 8b 4d b8 48 89 c6 41 57 4c 89 ea 48 c7 c7 80 49 b4 84 e8 b4 81 f3 ff <0f=
+> 0b 48 c7 c7 04 83 ac 84 e8 76 ba fc ff 41 8b 76 4c 49 8d 7e 50
+[  150.834365] RSP: 0018:ffffaac5023739e0 EFLAGS: 00010086
+[  150.834368] RAX: 0000000000000000 RBX: ffffffff8566a2e0 RCX: 00000000000=
+00027
+[  150.834370] RDX: ffff8f6a8f621688 RSI: 0000000000000001 RDI: ffff8f6a8f6=
+21680
+[  150.834372] RBP: ffffaac502373a30 R08: 00000000000000c9 R09: ffffaac5023=
+73850
+[  150.834373] R10: ffffaac502373848 R11: ffffffff84f46328 R12: ffffaac5023=
+73a40
+[  150.834375] R13: ffff8f6741045330 R14: ffff8f6741a77700 R15: ffffffff84a=
+c831b
+[  150.834377] FS:  00007faf0fc94c00(0000) GS:ffff8f6a8f600000(0000) knlGS:=
+0000000000000000
+[  150.834379] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  150.834381] CR2: 00007faf0b600020 CR3: 000000010a52e000 CR4: 00000000003=
+50ef0
+[  150.834383] Call Trace:
+[  150.834385]  <TASK>
+[  150.834387]  ? show_regs+0x6d/0x80
+[  150.834393]  ? __warn+0x8c/0x140
+[  150.834397]  ? check_unmap+0x1cc/0x930
+[  150.834400]  ? report_bug+0x193/0x1a0
+[  150.834406]  ? handle_bug+0x46/0x80
+[  150.834410]  ? exc_invalid_op+0x1d/0x80
+[  150.834413]  ? asm_exc_invalid_op+0x1f/0x30
+[  150.834420]  ? check_unmap+0x1cc/0x930
+[  150.834425]  debug_dma_unmap_page+0x86/0x90
+[  150.834431]  ? srso_return_thunk+0x5/0x5f
+[  150.834435]  ? rmap_walk+0x28/0x50
+[  150.834438]  ? srso_return_thunk+0x5/0x5f
+[  150.834441]  ? remove_migration_ptes+0x79/0x80
+[  150.834445]  ? srso_return_thunk+0x5/0x5f
+[  150.834448]  dma_unmap_page_attrs+0xfa/0x1d0
+[  150.834453]  svm_range_dma_unmap_dev+0x8a/0xf0 [amdgpu]
+[  150.834710]  svm_migrate_ram_to_vram+0x361/0x740 [amdgpu]
+[  150.834914]  svm_migrate_to_vram+0xa8/0xe0 [amdgpu]
+[  150.835111]  svm_range_set_attr+0xff2/0x1450 [amdgpu]
+[  150.835311]  svm_ioctl+0x4a/0x50 [amdgpu]
+[  150.835510]  kfd_ioctl_svm+0x54/0x90 [amdgpu]
+[  150.835701]  kfd_ioctl+0x3c2/0x530 [amdgpu]
+[  150.835888]  ? __pfx_kfd_ioctl_svm+0x10/0x10 [amdgpu]
+[  150.836075]  ? srso_return_thunk+0x5/0x5f
+[  150.836080]  ? tomoyo_file_ioctl+0x20/0x30
+[  150.836086]  __x64_sys_ioctl+0x9c/0xd0
+[  150.836091]  x64_sys_call+0x1219/0x20d0
+[  150.836095]  do_syscall_64+0x51/0x120
+[  150.836098]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  150.836102] RIP: 0033:0x7faf0f11a94f
+[  150.836105] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 =
+00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41=
+> 89 c0 3d 00 f0 ff ff 77 1f 48 8b 44 24 18 64 48 2b 04 25 28 00
+[  150.836107] RSP: 002b:00007ffeced26bc0 EFLAGS: 00000246 ORIG_RAX: 000000=
+0000000010
+[  150.836110] RAX: ffffffffffffffda RBX: 000055c683528fb0 RCX: 00007faf0f1=
+1a94f
+[  150.836112] RDX: 00007ffeced26c60 RSI: 00000000c0484b20 RDI: 00000000000=
+00003
+[  150.836114] RBP: 00007ffeced26c50 R08: 0000000000000000 R09: 00000000000=
+00001
+[  150.836115] R10: 0000000000000032 R11: 0000000000000246 R12: 000055c6835=
+28bd0
+[  150.836117] R13: 0000000000000000 R14: 0000000000000021 R15: 00000000000=
+00000
+[  150.836122]  </TASK>
+[  150.836124] ---[ end trace 0000000000000000 ]---
+
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-index c100845409f7..ffdb966c4127 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-@@ -45,6 +45,8 @@ MODULE_FIRMWARE("amdgpu/gc_9_4_3_mec.bin");
- MODULE_FIRMWARE("amdgpu/gc_9_4_4_mec.bin");
- MODULE_FIRMWARE("amdgpu/gc_9_4_3_rlc.bin");
- MODULE_FIRMWARE("amdgpu/gc_9_4_4_rlc.bin");
-+MODULE_FIRMWARE("amdgpu/gc_9_4_3_sjt_mec.bin");
-+MODULE_FIRMWARE("amdgpu/gc_9_4_4_sjt_mec.bin");
- 
- #define GFX9_MEC_HPD_SIZE 4096
- #define RLCG_UCODE_LOADING_START_ADDRESS 0x00002000L
-@@ -574,8 +576,12 @@ static int gfx_v9_4_3_init_cp_compute_microcode(struct amdgpu_device *adev,
- {
- 	int err;
- 
--	err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
--				   "amdgpu/%s_mec.bin", chip_name);
-+	if (amdgpu_sriov_vf(adev))
-+		err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
-+				"amdgpu/%s_sjt_mec.bin", chip_name);
-+	else
-+		err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
-+				"amdgpu/%s_mec.bin", chip_name);
- 	if (err)
- 		goto out;
- 	amdgpu_gfx_cp_init_microcode(adev, AMDGPU_UCODE_ID_CP_MEC1);
--- 
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd=
+/amdkfd/kfd_migrate.c
+index 8ee3d07ffbdf..f31e9fbf634a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -306,7 +306,7 @@ svm_migrate_copy_to_vram(struct kfd_node *node, struct =
+svm_range *prange,
+ 		spage =3D migrate_pfn_to_page(migrate->src[i]);
+ 		if (spage && !is_zone_device_page(spage)) {
+ 			src[i] =3D dma_map_page(dev, spage, 0, PAGE_SIZE,
+-					      DMA_TO_DEVICE);
++					      DMA_BIDIRECTIONAL);
+ 			r =3D dma_mapping_error(dev, src[i]);
+ 			if (r) {
+ 				dev_err(dev, "%s: fail %d dma_map_page\n",
+@@ -630,7 +630,7 @@ svm_migrate_copy_to_ram(struct amdgpu_device *adev, str=
+uct svm_range *prange,
+ 			goto out_oom;
+ 		}
+=20
+-		dst[i] =3D dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_FROM_DEVICE);
++		dst[i] =3D dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_BIDIRECTIONAL);
+ 		r =3D dma_mapping_error(dev, dst[i]);
+ 		if (r) {
+ 			dev_err(adev->dev, "%s: fail %d dma_map_page\n", __func__, r);
+--=20
 2.39.5
 
 
