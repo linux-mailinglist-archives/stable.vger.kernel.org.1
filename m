@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-105393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6B69F8CDE
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 07:41:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408DF9F8D15
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 08:10:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 701A8163EE6
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 06:41:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 265F67A34D7
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 07:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D494C17C9F1;
-	Fri, 20 Dec 2024 06:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D872F19DF47;
+	Fri, 20 Dec 2024 07:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="3i8VH38z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5Nxcrqo"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B3D18EAB;
-	Fri, 20 Dec 2024 06:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84449175D29;
+	Fri, 20 Dec 2024 07:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734676881; cv=none; b=ExhBl970e6wjnEWt0vi/ottCG1LxKO8L6xGG3/MRtXaRF30qb8eAKMeUvyfg9QCsZs8tbUDYdp9s8zxf/iRblgg0o2V8S3KGeboodCPPpBvsnxzAY//H/d+ySVwRAQRfDWS/usfEZ4+GApANJ4tUxFW3QDZMc1Doqfi7/c53uYI=
+	t=1734678603; cv=none; b=GNkkg6pPA2xQQeoFvbYsZFnRT5EVdH+Ai07FMA+d32F2PRAUPQrbTtoVeoHky+BIXipWjhibCyBL56TT53MnTcMfQf3w9x3J811sxIPGa5Mu1qiPn24gV2VFgrpM333M/5pgScgjhRPKkXvcMFta08/xv/s9iY12+WDKflFnZbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734676881; c=relaxed/simple;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
+	s=arc-20240116; t=1734678603; c=relaxed/simple;
+	bh=+Qa20dpz1k2c9j6vQ8UiCWd2lz481p5oFDkSS/B0hoA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AwmooNUGECoUKCoo3J1ZrwhyqFdA2YQtanr9bQoXXhrn1eBk9Zog0WV3HVf2AOq8JX3OdeAr0eblm9qBSdBOQfU8pYM0Uhopf2UzNUxeUUb0+s7q2eGx3tFnIjZPPqkCD7f241+yWuBQSSKLmlCA+NVKlQ8889UngbMCRAxRwzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=3i8VH38z; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=3i8VH38zjwbrWstuU1FCq7iDx0
-	e/TEmwsKUhiqxY/cM++COOV34CCjIyjaKpfaYsEmv2cMc4XYUY7EoJtZxLDyKHXn8Uxr7fqaNg1b2
-	2blAmuGpoRGNvR5zZEZ9jeaR3XBLBoKM3MaIIVqpf3t2VnOhpc0+UCE544IxxsEA4oN/GWWdjU/x3
-	O0AS/6gzfLC+zqOOfefh/EqVXtIHIeGgZZxfszt2Zl6O5yiSbfJb1OXrw+p34xsfI22TeETutiou3
-	eu5Wa9VkSPXRAf9ymGdtZ1Fcqgujf7GwfOcJ/AOIGAsUT/UpHqEXRyHrQ/7Xm2Z8iW3RZqmmWx9Zf
-	R/QnjUzA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tOWhL-000000046yR-3PwJ;
-	Fri, 20 Dec 2024 06:41:19 +0000
-Date: Thu, 19 Dec 2024 22:41:19 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org, hch@lst.de
-Subject: Re: [PATCH 35/37] xfs: don't shut down the filesystem for media
- failures beyond end of log
-Message-ID: <Z2URj2eux-LeL1SG@infradead.org>
-References: <173463579653.1571512.7862891421559358642.stgit@frogsfrogsfrogs>
- <173463580360.1571512.2097717624016935698.stgit@frogsfrogsfrogs>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CF5IWThFRilCk9Lh33pOY95oKkomQa/RpmPgDyfbdHyuf452Hr4Vl7mBnW5hoei8ps/byKYgmKhjwaDIAVqLYIDRywm6iODzOt49NmSZ3cXajUAEt4J0dZrv4MKelHOXig4ymi6bW01Ysia3S+vjjT3aWYOmfK1zXiu/JFHkUac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5Nxcrqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF46C4CECD;
+	Fri, 20 Dec 2024 07:10:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734678603;
+	bh=+Qa20dpz1k2c9j6vQ8UiCWd2lz481p5oFDkSS/B0hoA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J5NxcrqoUXs+GvMI+39Hg4JYtrYykJ4MertG5+Rp/4KqLmsmqf3i0g4Bsg2psaayn
+	 igOHH0/xTMHnNuP4BeyO7QiLqh6oFhaVbzHRCb6Vi0c3m/A23xtwctJ6ymZ22lJkse
+	 fa0qX/sqE5IeGXO3xSvmqLCOUx6IMHrMB7vA3Taw=
+Date: Fri, 20 Dec 2024 08:09:59 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
+Cc: linux-kernel@vger.kernel.org, Jan Beulich <jbeulich@suse.com>,
+	stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Anthony PERARD <anthony.perard@vates.tech>,
+	Michal Orzel <michal.orzel@amd.com>, Julien Grall <julien@xen.org>,
+	Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 1/1] lib: Remove dead code
+Message-ID: <2024122042-guidable-overhand-b8a9@gregkh>
+References: <20241219092615.644642-1-ariel.otilibili-anieli@eurecom.fr>
+ <20241219224645.749233-1-ariel.otilibili-anieli@eurecom.fr>
+ <20241219224645.749233-2-ariel.otilibili-anieli@eurecom.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,11 +62,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <173463580360.1571512.2097717624016935698.stgit@frogsfrogsfrogs>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20241219224645.749233-2-ariel.otilibili-anieli@eurecom.fr>
 
-Looks good:
+On Thu, Dec 19, 2024 at 11:45:01PM +0100, Ariel Otilibili wrote:
+> This is a follow up from a discussion in Xen:
+> 
+> The if-statement tests `res` is non-zero; meaning the case zero is never reached.
+> 
+> Link: https://lore.kernel.org/all/7587b503-b2ca-4476-8dc9-e9683d4ca5f0@suse.com/
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Suggested-by: Jan Beulich <jbeulich@suse.com>
+> Signed-off-by: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
+> --
+> Cc: stable@vger.kernel.org
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Why is "removing dead code" a stable kernel thing?
 
+confused,
+
+greg k-h
 
