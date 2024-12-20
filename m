@@ -1,112 +1,125 @@
-Return-Path: <stable+bounces-105406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48F19F8E95
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 10:05:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2539F8E8F
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 10:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C15218923FE
-	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 09:04:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFAB618854C5
+	for <lists+stable@lfdr.de>; Fri, 20 Dec 2024 09:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0781A83ED;
-	Fri, 20 Dec 2024 09:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AD91AAA1C;
+	Fri, 20 Dec 2024 09:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="LMxBIfQ/"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vuWkiM2X"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877E11A726B;
-	Fri, 20 Dec 2024 09:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.6
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6051A7ADD
+	for <stable@vger.kernel.org>; Fri, 20 Dec 2024 09:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734685466; cv=none; b=tIRzQNsldG/QPybyXdY5qpXT4lAyv8fvUh7kct9sAiiL0NUiVSMtPjrNWKAjUFBNLqCAmmfNN0HGEe9nOkeZpZeILbd1ptV4hbWFWJri4MoLVDtFhE0eqIcDfNL5b/0IadtXkjHRSXgfdsm2xc9ZABJ8D36fCwWmqxtWwyxgSiw=
+	t=1734685429; cv=none; b=Ct+vk9hB9Yu7E7I0ZKyITVRkhEw3Srp0N/540c9kMW9F//L9lsiUzbKpC/3kTMoMsYdBnenFC/fDvbcd5pKUGN3BsHBXgLbAzgRdirDP2khO/05aW6jn/CLZzHejlEE18nVfUMHa0gEHUAZDb2E0hcznVcsONKLg3KjFLVTki9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734685466; c=relaxed/simple;
-	bh=1Ti6XMH9pUXfXmyxQjyGxz1LxhgclpBCO8+qlbHmMlY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pLebs0JqqPqnGz7n1WvrytrO/lKhUTdD1S398ix5UTxvx/BOPluQ9qAcDSBhqyLwsV5ke0mMk1ijdrI4wB2kX25Rl6XtLj3RbCd2dyKk583c5rncqDwoDWyP4WGsNXkSDNAzizX8ufb9hmk9sqw/C27oaG5mC9mM3Hz8wCCyXBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=LMxBIfQ/; arc=none smtp.client-ip=117.135.210.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=2tfd3OeQZhvI5s/uqg7ObNyfdEbgcw00VOEf8s5Q39Y=;
-	b=LMxBIfQ/6s5HdH5tuYLCTk50lSZueaxbNM8GuKaOMTxzX44ZLRw95DYT+imuju
-	OVV0HQ+mNX3BXLUtCfXHsyo6B/WSpT/Cs6b57KpoDKvJGY85YHdK164y32OVniRi
-	5WHilgR0V1U7V49CBOIZyR7k4TzTJt0GYqhUJyOZP7Mmc=
-Received: from [172.20.10.3] (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3H3nhMmVnd+hkAA--.65229S2;
-	Fri, 20 Dec 2024 17:03:30 +0800 (CST)
-Message-ID: <1c05db02-f1f7-475b-ad89-9c00ab970604@126.com>
-Date: Fri, 20 Dec 2024 17:03:28 +0800
+	s=arc-20240116; t=1734685429; c=relaxed/simple;
+	bh=DbfIVgwdPOtjGyPYp3zFC8cSx0e4NRwlmaO+ILtD/1s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rwNmQh9/+s7CjyssHbM4b+UbLdma4s5pDvUeAnfTdY63eHbV0tfg1N39x1CPUuAt35LEJULsza7xuMbVxxi6yvIKApJQtZUXDugAVaIjYvyPFRhVqNULsmxgeVM4cLBGX3UqhZJZZBBdOjQypqzbo3jULLBU7oqTinh8OOfRx1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vuWkiM2X; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-434e3953b65so11241885e9.1
+        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 01:03:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1734685425; x=1735290225; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TKQF6v9mjJTHAGrz+anbwJhJc4N1fYhnSvoLIwg6Hw4=;
+        b=vuWkiM2X2LurHfl3/g+Jj7uFleBh8ZZDzDqFryqzDp9kC5QIc8gZ2WbFhc/TTsyN5x
+         IZs3kh9hl0UccvbDEYBOQlMdhXagX4bHcRRIIpbJXJTN7sFNvQdDSmtaXQhTOYRfeOOz
+         M4ZKV9qzuxEcw3FGFo4lOazlVpYOIrfLPFZBui5clscZelSHKo2L/PXSSuIa1Qknaf6K
+         UG5DwwVxu45S4zgKRNtr7m7EfpT5X8/rjvxsgFYATcKobrG2D+935LQAUH5+Adufgl6o
+         OTEuaH51tfS6q5fjpO1mnZTTH6XBgcHK3oKjQB5mT4ylM/e6BD8ldfwIbiri9Qp7VUDh
+         tE0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734685425; x=1735290225;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TKQF6v9mjJTHAGrz+anbwJhJc4N1fYhnSvoLIwg6Hw4=;
+        b=F6/xEzy35BRPZru0lNYfrzOeYCsuG3p1JEPjWR8q89u8EfFqRq+Qf6I60de9dPyEyH
+         cI/f49mQpj55hajfbjvok8TIAVuHtYh5U5Lmu68VzS81tnFAyIgsokZNFMwrQ0xoJrvq
+         UjqGoaYD2HsrN3ocQQYUfufS/ozn7beFWr+UbJmPGKpKICB+LDhhi0cu0Tky7DdrSs+Y
+         k1jijpFlyHr+5nx30NqEDku6Lu1Dp1W6NOnLMksLSZesUied0pIgTklS0OjzdIyYOONm
+         zt55K9BhIvuiAsQAbO+Jtmh7dy7P1P2i6qALrc3LWoVa73igpAv9xnE5IcsXKcHWSG6r
+         R2jA==
+X-Forwarded-Encrypted: i=1; AJvYcCXjSItGIIkey/sKGOGHLUl3lRc9vvZpL8HTTukUrhEcpAKiG2pHRo8IN+phhvH1+f1T6+aCiMw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2TtmGd4ERozoYGQ1l5veKNTQjpEqOrmXaow35GAhDTMYnTlmY
+	zWNxxfRLA69uNav4HWCl+ARn8+4LDQTs0pjgnO0HxGWbBAsH6rvTwvJrPqcHHvFhhR/eC1fKLGX
+	pq7s=
+X-Gm-Gg: ASbGncvD+WrUuKcp/UP/NUkn/Waju3oDFz9SXDk9eclgPZGpEidkCAPUWBn5VNXYw2V
+	WRFMtziwazToVhcq9/5JnnxKBY/q7iMW33jMmJRYq1Qkqg4B6PtF3CuecSHH2cGOenDSlm/Qrbn
+	Q06fI2SuzHvgkfH3w0+CqL8AyjzbDxPCnjG0zwFmQLgtd/OS4bOIMNzJrEuWzQiZfakVNyXghgW
+	XT+B4rqC/srWl9wyHRF9Hgi9rvGW1wQDR9PR6SWiQ9Q8QfR9M/Q7mq1Ws4RUucvgtt/jeAUpVnC
+	JzHb0aXAXXT9/ruA9rIIe1Eor5CI2w==
+X-Google-Smtp-Source: AGHT+IGSHfVV7ZgeNmbzBWx67alIxQ8s1vI3ArjQYk5K4x5dU5OensPI2MOkBdI3RPTXPnjlqYDKeg==
+X-Received: by 2002:a05:600c:4f51:b0:436:1b7a:c0b4 with SMTP id 5b1f17b1804b1-4366854850emr12697055e9.1.1734685425468;
+        Fri, 20 Dec 2024 01:03:45 -0800 (PST)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436611ea3e0sm40610375e9.7.2024.12.20.01.03.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 01:03:45 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/2] Add missing parent_map to clocks in SM6350 clock
+ drivers
+Date: Fri, 20 Dec 2024 10:03:29 +0100
+Message-Id: <20241220-sm6350-parent_map-v1-0-64f3d04cb2eb@fairphone.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] replace free hugepage folios after migration
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 21cnbao@gmail.com,
- david@redhat.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
- liuzixing@hygon.cn
-References: <20241219184301.63011-1-sj@kernel.org>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <20241219184301.63011-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3H3nhMmVnd+hkAA--.65229S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Zw48AFy3tr18CFyfKF4kJFb_yoW8Jw43pF
-	ykGF1DtrW8trykurZ7trsxAFyavrn0qryjkrWxJa47A3W3tw1qgF15Zr15Ar4rurZ7GF4I
-	v3y2gF4q9a1UX3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ut8nOUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhG7G2dlJ1XGEwAAsu
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOEyZWcC/x3MSQqAMAxA0atI1hY6OF9FRKpGzcJaGhFBeneLy
+ 7f4/wXGQMjQZS8EvInpdAkqz2DerdtQ0JIMWupCaS0FH5UppfA2oLvGw3oxS4PtVClbqwZS5wO
+ u9PzPfojxA5EIHo1jAAAA
+X-Change-ID: 20241220-sm6350-parent_map-c03e9b61a718
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
+If a clk_rcg2 has a parent, it should also have parent_map defined,
+otherwise we'll get a NULL pointer dereference when calling clk_set_rate
+on those clocks.
 
+Correct this on clocks in both gcc-sm6350 and dispcc-sm6350.
 
-在 2024/12/20 2:43, SeongJae Park 写道:
-> Hello,
-> 
-> On Wed, 18 Dec 2024 14:33:08 +0800 yangge1116@126.com wrote:
-> 
-> [...]
->> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->> index ae4fe86..7d36ac8 100644
->> --- a/include/linux/hugetlb.h
->> +++ b/include/linux/hugetlb.h
->> @@ -681,6 +681,7 @@ struct huge_bootmem_page {
->>   };
->>   
->>   int isolate_or_dissolve_huge_page(struct page *page, struct list_head *list);
->> +int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
->>   struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->>   				unsigned long addr, int avoid_reserve);
->>   struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
->> @@ -1059,6 +1060,11 @@ static inline int isolate_or_dissolve_huge_page(struct page *page,
->>   	return -ENOMEM;
->>   }
->>   
->> +int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn)
->> +{
->> +	return 0;
->> +}
->> +
-> 
-> I think this should be static inline.  Otherwise, build fails when
-> CONFIG_HUGETLB_PAGE is unset.  Since this is already merged into mm-unstable
-> and the problem and fix seems straigthforward, I directly sent my fix:
-> https://lore.kernel.org/20241219183753.62922-1-sj@kernel.org
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Luca Weiss (2):
+      clk: qcom: gcc-sm6350: Add missing parent_map for two clocks
+      clk: qcom: dispcc-sm6350: Add missing parent_map for a clock
 
-Thanks.
+ drivers/clk/qcom/dispcc-sm6350.c |  7 +++----
+ drivers/clk/qcom/gcc-sm6350.c    | 22 ++++++++++++++--------
+ 2 files changed, 17 insertions(+), 12 deletions(-)
+---
+base-commit: 8155b4ef3466f0e289e8fcc9e6e62f3f4dceeac2
+change-id: 20241220-sm6350-parent_map-c03e9b61a718
 
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
 
