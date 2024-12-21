@@ -1,147 +1,155 @@
-Return-Path: <stable+bounces-105530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FE09FA044
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 12:09:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F3C9FA050
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 12:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730FC1884FE5
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 11:08:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A086A1684BE
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 11:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58051F192E;
-	Sat, 21 Dec 2024 11:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C1B1F2C26;
+	Sat, 21 Dec 2024 11:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJQHXlJb"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w8N6MNMn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716FD646;
-	Sat, 21 Dec 2024 11:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2189A1F2394
+	for <stable@vger.kernel.org>; Sat, 21 Dec 2024 11:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734779319; cv=none; b=JMLBPaSl5ztIDC+QxDQOgcf5FN83GRjr0dIQTfFi3MnR9htR6+ahcKfsAxF0Fv07JwuwEFup0u5ajAqsCOUQfpLuzdIMeQcfC1Pyciil90g7feZUFSGdbFOT6AM0ZA1xLMYd7nftJpIYXO5p/gbmcE5gw8eKR4ruAh8nj0algsM=
+	t=1734779453; cv=none; b=PyZMbTkaaPmYxXJAK8YyJRPuAwfANjjKmUvcTRNR2wGNS+KhcHzhoOROMuNqlYzXOhud4NaAdXzAh9+p1nDDpTUTP1P7oKnzluqXq2Tb/IA+6GI6fknB8CBoiRmVI0pvbOdZ4bnJpGCZLcRz9czrA+ldw/79WddzeJ1MZy0MOgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734779319; c=relaxed/simple;
-	bh=tAckshAuXhsjwcMCAwMvEAWkCcOcREPvM+07Vs6s8Ms=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hW8Dph7pNl2HvtanizlnDj1WpmTQk+tJNRJJcgkjKS6a6kGihjo61t3q7vMqlQVP+Doqz865501MlawBklyGXdOy82yiJeFPzi3cLLxHOiIMlOlaMDNNz+JDOkrxYcHfxZy6eXmc67It8qt9U2iyd1M/pqQZfi9IAl9Tn7JgmEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJQHXlJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7D7C4CECE;
-	Sat, 21 Dec 2024 11:08:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734779318;
-	bh=tAckshAuXhsjwcMCAwMvEAWkCcOcREPvM+07Vs6s8Ms=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uJQHXlJbVLyHpbB5ELeOdRCpFCnDKcqhhvkFyZBUE732ItgFFi4Lvym+zl3WewHXD
-	 6aBbs8wZA7p07jrtJZClRnjRyRm+1Kv/q9vN37W6pT6oNI3uOZeJrodfo8WgI4ynM+
-	 y5tFitCuWYYuVLsVH11whTUmMNJnFHVOSuxN/tvng8nhEaoeWxeX0hdCG3w18ODkXi
-	 uXnjpAQ/cmXoLst0d489j52aNg4oWZypDFhA8gyiwie77wCGOYyh2rINiZTpteKXl4
-	 MUESZIZQLSmr+7/+T2jx/ZBBvhzfrkdBQfQVjsQZ2PrzautR6A8TMXZEreK2VXBaTv
-	 TD/nnzj2EfZGw==
-Message-ID: <bf12223a-42f6-4c31-992e-142568890af1@kernel.org>
-Date: Sat, 21 Dec 2024 12:08:33 +0100
+	s=arc-20240116; t=1734779453; c=relaxed/simple;
+	bh=XhWNXFHaJ9glrnThaW+6uFMdg7Jt0dVoQ8ReWmSarVw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oug6PHf+2FL+DRljk3HXO99ZFo9GCPcXKDq8C3ILw/sG6oLPlucaJ+ILytMv+nCJa4hoYHoEXIRLoAvcc5QJi+n3jlsghAkNlN3MRobO9Jo6SyC6OvWYpjCCPGi+8CZESTlOX0bbsB4iA24e77ybojqtM7ZlAFu/i4vHyu0OgGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w8N6MNMn; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5d3ff30b566so2844043a12.1
+        for <stable@vger.kernel.org>; Sat, 21 Dec 2024 03:10:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734779449; x=1735384249; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=acFqHgTTvDfsaGKKoef1ZEN8Prd2tlZbEpNeYt8pW4w=;
+        b=w8N6MNMnGoBZdDNYKib2K1CTFyo5K8pBhxsWZHJB27Y8fUoFOdczn3fwyy9/tFp7dy
+         aMuVcOt106NaQqp5oyhxOn4QWbyPa/+LWGYpUCXcJJgoDXZyvWZMDJy4IiKYTEscPg3S
+         HCXgQV2SNyLPIIAQDK7w9xL7y6iS9qLP8drLP2/vELShuuwMf/uqQfdk5T9L7evxcm0f
+         PzhOHDYJvDheuSEu0rOyHE+T6IgOPwonLqLck0s+kIKI2ihusjjrtctLjp53YxNtt30o
+         opH6dYF0uVEsEtuVtKB6WMQ/Vbu9yiDLkKLuRPgTkknHj0XLJlU2MbqWJZXCG10J7BwT
+         mnFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734779449; x=1735384249;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=acFqHgTTvDfsaGKKoef1ZEN8Prd2tlZbEpNeYt8pW4w=;
+        b=AZgjxy73lxOWiGaVv4WizAcoMFI65V5fY1zMjSmY6QFMzfre9pvo1zu5ST6yyxuOrf
+         V28l7E2iTqmddFwaTxo//iX4S6hn4iWEO/SxrzDA6G6LXyvKs/R+nmmjBTZ/WLbH8n2/
+         eW66EBPqjWAZ57N/oFTPCvZjnLMif7bpYRtjhhpg/7HMkVaYKK3ROn8CX2DqScpPjJKI
+         lVPXZCX7UGv1BZVfcfeODKjRgprDGnxZJ5/iUuWCCU+QE9LHZjwlei7fzfXkC9+oRFrN
+         5c8fu+iWjEqkx3GvNaAvlzKzcRID1v0fhBMcUxJTgXOjhg+/qCD2GtL9WOaitNti7Xx7
+         R6DA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3+Fl1wGuPTm0qBm9r9nNyKq10DfcUFCVQhAHamAAnNQiGsltyNDCraqnI/3w/gtSEu2lqG/M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxj1c28BcPDwYs7bUXXDFsG9UzGdNG69ARkeiepvYVvyOlqy9Kd
+	GJb+s47czYyoaQPP6pIlJXFg0BjQegWFZiw28fJdbdf5ib4XLkJcwvsxJxbyUDQFCfzJM1YjGgN
+	Q7g==
+X-Google-Smtp-Source: AGHT+IGeWbKxpk3gdrLwTVMOGxYTHG++3ekHtzTCNYqK+VxLg7d/tlVkzABgBueeFhOF/tGOx98kdsq6Gwg=
+X-Received: from edzf16.prod.google.com ([2002:a05:6402:1950:b0:5d2:7367:4c84])
+ (user=gnoack job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:254f:b0:5cf:e71c:ff97
+ with SMTP id 4fb4d7f45d1cf-5d81ddfbe45mr4289512a12.24.1734779449412; Sat, 21
+ Dec 2024 03:10:49 -0800 (PST)
+Date: Sat, 21 Dec 2024 11:10:45 +0000
+In-Reply-To: <Z2ahOy7XaflrfCMw@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 0/3] netlink: specs: mptcp: fixes for some
- descriptions
-Content-Language: en-GB
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Kishen Maloor <kishen.maloor@intel.com>, Davide Caratti
- <dcaratti@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241219-net-mptcp-netlink-specs-pm-doc-fixes-v1-0-825d3b45f27b@kernel.org>
- <20241220115406.407a4c82@kernel.org> <20241220115622.2101e554@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20241220115622.2101e554@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <Z2ahOy7XaflrfCMw@google.com>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241221111045.1082615-1-gnoack@google.com>
+Subject: [PATCH v2] tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN
+From: "=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jann Horn <jannh@google.com>, "=?UTF-8?q?Hanno=20B=C3=B6ck?=" <hanno@hboeck.de>, Jiri Slaby <jirislaby@kernel.org>, 
+	linux-hardening@vger.kernel.org, regressions@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, 
+	"=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jakub,
+With this, processes without CAP_SYS_ADMIN are able to use TIOCLINUX with
+subcode TIOCL_SETSEL, in the selection modes TIOCL_SETPOINTER,
+TIOCL_SELCLEAR and TIOCL_SELMOUSEREPORT.
 
-Thank you for the review!
+TIOCL_SETSEL was previously changed to require CAP_SYS_ADMIN, as this IOCTL
+let callers change the selection buffer and could be used to simulate
+keypresses.  These three TIOCL_SETSEL selection modes, however, are safe to
+use, as they do not modify the selection buffer.
 
-On 20/12/2024 20:56, Jakub Kicinski wrote:
-> On Fri, 20 Dec 2024 11:54:06 -0800 Jakub Kicinski wrote:
->> On Thu, 19 Dec 2024 12:45:26 +0100 Matthieu Baerts (NGI0) wrote:
->>> When looking at the MPTCP PM Netlink specs rendered version [1], a few
->>> small issues have been found with the descriptions, and fixed here:
->>>
->>> - Patch 1: add a missing attribute for two events. For >= v5.19.
->>>
->>> - Patch 2: clearly mention the attributes. For >= v6.7.
->>>
->>> - Patch 3: fix missing descriptions and replace a wrong one. For >= v6.7.  
->>
->> I'm going to treat this as documentation fixes, so perfectly fine for
->> net but they don't need Fixes tags. Hope that's okay, and that I'm
->> not missing anything.
-> 
-> Ah, these also need a regen since the kdoc has changed!
-> 
-> please run ./tools/net/ynl/ynl-regen.sh
+This fixes a mouse support regression that affected Emacs (invisible mouse
+cursor).
 
-Oh, sorry, I didn't know. I will fix that in a v2 without the Fixes and
-cc stable.
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/ee3ec63269b43b34e1c90dd8c9743bf8@finder.org
+Fixes: 8d1b43f6a6df ("tty: Restrict access to TIOCLINUX' copy-and-paste sub=
+commands")
+Signed-off-by: G=C3=BCnther Noack <gnoack@google.com>
+---
+ drivers/tty/vt/selection.c | 14 ++++++++++++++
+ drivers/tty/vt/vt.c        |  2 --
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+diff --git a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
+index 564341f1a74f..0bd6544e30a6 100644
+--- a/drivers/tty/vt/selection.c
++++ b/drivers/tty/vt/selection.c
+@@ -192,6 +192,20 @@ int set_selection_user(const struct tiocl_selection __=
+user *sel,
+ 	if (copy_from_user(&v, sel, sizeof(*sel)))
+ 		return -EFAULT;
+=20
++	/*
++	 * TIOCL_SELCLEAR, TIOCL_SELPOINTER and TIOCL_SELMOUSEREPORT are OK to
++	 * use without CAP_SYS_ADMIN as they do not modify the selection.
++	 */
++	switch (v.sel_mode) {
++	case TIOCL_SELCLEAR:
++	case TIOCL_SELPOINTER:
++	case TIOCL_SELMOUSEREPORT:
++		break;
++	default:
++		if (!capable(CAP_SYS_ADMIN))
++			return -EPERM;
++	}
++
+ 	return set_selection_kernel(&v, tty);
+ }
+=20
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index 96842ce817af..be5564ed8c01 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -3345,8 +3345,6 @@ int tioclinux(struct tty_struct *tty, unsigned long a=
+rg)
+=20
+ 	switch (type) {
+ 	case TIOCL_SETSEL:
+-		if (!capable(CAP_SYS_ADMIN))
+-			return -EPERM;
+ 		return set_selection_user(param, tty);
+ 	case TIOCL_PASTESEL:
+ 		if (!capable(CAP_SYS_ADMIN))
+--=20
+2.47.1.613.gc27f4b7a9f-goog
 
 
