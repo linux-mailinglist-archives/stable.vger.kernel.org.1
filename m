@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-105529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AE59FA013
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 11:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FE09FA044
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 12:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE061888829
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 10:28:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730FC1884FE5
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 11:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4521EE7A1;
-	Sat, 21 Dec 2024 10:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58051F192E;
+	Sat, 21 Dec 2024 11:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyLdsT/n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJQHXlJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EB8CA5A;
-	Sat, 21 Dec 2024 10:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716FD646;
+	Sat, 21 Dec 2024 11:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734776910; cv=none; b=Zd/hiES75pzMXxL6Db3PMwbnEzOkHGBZVMg4TVFpZDrsx5EQHTzgWsypI5Csej+DTHVYm3P3DHa5zwEtN3CwBe9jhvgPw1/HXJrJJUaUv6QQRpz9ztgsb1sPdxmsv/B1xwwYCo6FXCx75bNYlmaJHnZqj3Et/vFHPhFL283DAOQ=
+	t=1734779319; cv=none; b=JMLBPaSl5ztIDC+QxDQOgcf5FN83GRjr0dIQTfFi3MnR9htR6+ahcKfsAxF0Fv07JwuwEFup0u5ajAqsCOUQfpLuzdIMeQcfC1Pyciil90g7feZUFSGdbFOT6AM0ZA1xLMYd7nftJpIYXO5p/gbmcE5gw8eKR4ruAh8nj0algsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734776910; c=relaxed/simple;
-	bh=F8qyLk2tQa0JK3a0b5tK09o53tJ+d/qyRpNct4qmXKc=;
+	s=arc-20240116; t=1734779319; c=relaxed/simple;
+	bh=tAckshAuXhsjwcMCAwMvEAWkCcOcREPvM+07Vs6s8Ms=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lyh7CZ+OsVfETbIr3OQMvopUNpB09q4/fYQul8I4/hzfcovsCkFMcbXb65KFhkM7uMzmK7vOVBRRZ51MJEU65dLohoGKkhilGawJactqi8rJ2qABBINVTv778OK3YFQVMPGA9K6QgberYdpqLR+2M+1GOtJ9Q75w/rdYDhh/keg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyLdsT/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E52BC4CECE;
-	Sat, 21 Dec 2024 10:28:27 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=hW8Dph7pNl2HvtanizlnDj1WpmTQk+tJNRJJcgkjKS6a6kGihjo61t3q7vMqlQVP+Doqz865501MlawBklyGXdOy82yiJeFPzi3cLLxHOiIMlOlaMDNNz+JDOkrxYcHfxZy6eXmc67It8qt9U2iyd1M/pqQZfi9IAl9Tn7JgmEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJQHXlJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7D7C4CECE;
+	Sat, 21 Dec 2024 11:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734776910;
-	bh=F8qyLk2tQa0JK3a0b5tK09o53tJ+d/qyRpNct4qmXKc=;
+	s=k20201202; t=1734779318;
+	bh=tAckshAuXhsjwcMCAwMvEAWkCcOcREPvM+07Vs6s8Ms=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iyLdsT/nJrKFR2MLsSwIx9L76rSuuFPuR6fMP9dPZq/A1D/KZRdIS/Wn3TYdCURnR
-	 l8lWD9JEVFQif/1NPHwDT/Og/Uc6kM6zV942nE4m/Fm0f35js8twbgbeCpFyak0NB3
-	 CTpwtCR5su71BwQqwdGeOG37PY7eKMfywfsWr6raPne7Ac+IXVATKTb9lr+8VRYvqJ
-	 7t/hnBrSdse3ZoUlgm0MFuaBCduoM9W6pAMPll6so04wbG4K5fyTtQgonKEstOrY3y
-	 co5H2+3veYjslLNWH1VLzgy60ywWIqTXJ8HGsHqSCDVoqWXmN/y8is8G/13+FY3HRy
-	 R8NV2h+GbfYTQ==
-Message-ID: <047cb3ef-f0c0-43e4-82e9-dc0073c8b953@kernel.org>
-Date: Sat, 21 Dec 2024 11:28:26 +0100
+	b=uJQHXlJbVLyHpbB5ELeOdRCpFCnDKcqhhvkFyZBUE732ItgFFi4Lvym+zl3WewHXD
+	 6aBbs8wZA7p07jrtJZClRnjRyRm+1Kv/q9vN37W6pT6oNI3uOZeJrodfo8WgI4ynM+
+	 y5tFitCuWYYuVLsVH11whTUmMNJnFHVOSuxN/tvng8nhEaoeWxeX0hdCG3w18ODkXi
+	 uXnjpAQ/cmXoLst0d489j52aNg4oWZypDFhA8gyiwie77wCGOYyh2rINiZTpteKXl4
+	 MUESZIZQLSmr+7/+T2jx/ZBBvhzfrkdBQfQVjsQZ2PrzautR6A8TMXZEreK2VXBaTv
+	 TD/nnzj2EfZGw==
+Message-ID: <bf12223a-42f6-4c31-992e-142568890af1@kernel.org>
+Date: Sat, 21 Dec 2024 12:08:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,14 +50,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net] mptcp: fix TCP options overflow.
+Subject: Re: [PATCH net 0/3] netlink: specs: mptcp: fixes for some
+ descriptions
 Content-Language: en-GB
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, Donald Hunter <donald.hunter@gmail.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- mptcp@lists.linux.dev, stable@vger.kernel.org
-References: <025d9df8cde3c9a557befc47e9bc08fbbe3476e5.1734771049.git.pabeni@redhat.com>
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Kishen Maloor <kishen.maloor@intel.com>, Davide Caratti
+ <dcaratti@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241219-net-mptcp-netlink-specs-pm-doc-fixes-v1-0-825d3b45f27b@kernel.org>
+ <20241220115406.407a4c82@kernel.org> <20241220115622.2101e554@kernel.org>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -103,51 +108,37 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <025d9df8cde3c9a557befc47e9bc08fbbe3476e5.1734771049.git.pabeni@redhat.com>
+In-Reply-To: <20241220115622.2101e554@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Paolo,
+Hi Jakub,
 
-On 21/12/2024 09:51, Paolo Abeni wrote:
-> Syzbot reported the following splat:
+Thank you for the review!
 
-(...)
-
-> Eric noted a probable shinfo->nr_frags corruption, which indeed
-> occurs.
+On 20/12/2024 20:56, Jakub Kicinski wrote:
+> On Fri, 20 Dec 2024 11:54:06 -0800 Jakub Kicinski wrote:
+>> On Thu, 19 Dec 2024 12:45:26 +0100 Matthieu Baerts (NGI0) wrote:
+>>> When looking at the MPTCP PM Netlink specs rendered version [1], a few
+>>> small issues have been found with the descriptions, and fixed here:
+>>>
+>>> - Patch 1: add a missing attribute for two events. For >= v5.19.
+>>>
+>>> - Patch 2: clearly mention the attributes. For >= v6.7.
+>>>
+>>> - Patch 3: fix missing descriptions and replace a wrong one. For >= v6.7.  
+>>
+>> I'm going to treat this as documentation fixes, so perfectly fine for
+>> net but they don't need Fixes tags. Hope that's okay, and that I'm
+>> not missing anything.
 > 
-> The root cause is a buggy MPTCP option len computation in some
-> circumstances: the ADD_ADDR option should be mutually exclusive
-> with DSS since the blamed commit.
+> Ah, these also need a regen since the kdoc has changed!
 > 
-> Still, mptcp_established_options_add_addr() tries to set the
-> relevant info in mptcp_out_options, if the remaining space is
-> large enough even when DSS is present.
-> 
-> Since the ADD_ADDR infos and the DSS share the same union
-> fields, adding first corrupts the latter. In the worst-case
-> scenario, such corruption increases the DSS binary layout,
-> exceeding the computed length and possibly overwriting the
-> skb shared info.
-> 
-> Address the issue by enforcing mutual exclusion in
-> mptcp_established_options_add_addr(), too.
+> please run ./tools/net/ynl/ynl-regen.sh
 
-Thank you for the investigation and the fix, it looks good to me:
+Oh, sorry, I didn't know. I will fix that in a v2 without the Fixes and
+cc stable.
 
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-
-> Reported-by: syzbot+38a095a81f30d82884c1@syzkaller.appspotmail.com
-
-If you don't mind, can you please add these two tags when applying the
-patches to help to track the backports?
-
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/538
-Cc: stable@vger.kernel.org
-
-> Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Cheers,
 Matt
 -- 
