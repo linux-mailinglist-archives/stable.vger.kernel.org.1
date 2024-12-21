@@ -1,179 +1,147 @@
-Return-Path: <stable+bounces-105522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843769F9D6C
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 01:42:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE579F9E10
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 04:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C71C616AAD5
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 00:42:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6B4B188B421
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 03:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FB81C32;
-	Sat, 21 Dec 2024 00:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC241AAE01;
+	Sat, 21 Dec 2024 03:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HrRUTIOj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m7A2HeCO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E376195
-	for <stable@vger.kernel.org>; Sat, 21 Dec 2024 00:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC291A83E3
+	for <stable@vger.kernel.org>; Sat, 21 Dec 2024 03:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734741752; cv=none; b=OiPFWy3Cp4J1Z2hNMjQMsPzrognpfwcC8F58ZnWTMqEQLECkQC488SDFljFHVG0nLW0G3KnF7KKIFavbLE7Bm++gJcV/fXmv3bvk9NbLa/GRkRyCYQVzSRhiBDNLADNU0BpXvrjeWtwjYw2DP085IbJbZ5tBxa/dcx3+ifIZ8AI=
+	t=1734751697; cv=none; b=tNKcH0hfxM8SK3gw/WeZ7+MALAqXjDUG317WWd4VdGoTco/a4LEWs7ZBCL4L4yh7L2F7Vb8/E57DFo+dNgBfjp6U98S5haMYttMc/UKyH0fSg63RmdU+9aLHdN6rBLmC59IWsq27Rh7W0sBByTCh7e3rhh0bwHkHZs4I4ImURzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734741752; c=relaxed/simple;
-	bh=oRoe2x0/IBS9nPdFvRDuRV7YEEhKPrD2iAvXlJrmQU0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WLc6S1eygNAuLlqEh0ZlAldsLwmZmHeidDYYt3zl9KMqx0pAt9g9ISbKL19fUq0Dpp2llp/ovnAJdDSJ1826lC0wymfO3MdCLPTUB588e6hVLKzGBvvBWX6CnTmBvZQ689sOpblEPLhaXTMzYCSfeofDBsXWnPPMl/DNJdOHf7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HrRUTIOj; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734741751; x=1766277751;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oRoe2x0/IBS9nPdFvRDuRV7YEEhKPrD2iAvXlJrmQU0=;
-  b=HrRUTIOj5HD82ZlYbfrY5sLwFyVy1YbP8kOu/kriY43fuHLORaO91lPD
-   2P6+/NrtM5j41Q+Hi6jar0eYe22FysmSsTnDCkS42j2WQ8mdk7vUvTIAJ
-   amKT0p1yHqY0CpZXUXTUW/EL/dtamkk1Q3D9csfeO/lgI1COEZ530B7Sa
-   3ZpiGKc+ko1dygC3P4DPefmaDApK+UvaQIySagb0m2C3UPWclrhFkiPsj
-   pUq6/ENHVQyJoMOiwZWie2q26vnRZZoOUSWJRINftk4Yj3TUFtrlJc+fz
-   QU3wTBNWKFuHBxnkd8OlZL3KvtMD7OWh/Eao1lC3TLdBN8/4npAuPrw/n
-   g==;
-X-CSE-ConnectionGUID: PtMtz5jFTuiw9uKO4UueJw==
-X-CSE-MsgGUID: G8DX+J4nQkGB91zLWz/aQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="35462728"
-X-IronPort-AV: E=Sophos;i="6.12,252,1728975600"; 
-   d="scan'208";a="35462728"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 16:42:16 -0800
-X-CSE-ConnectionGUID: wiLvtF0bQ0OXaCIlqdsmnw==
-X-CSE-MsgGUID: c4LOOuGATVeH1YNU0lefaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,252,1728975600"; 
-   d="scan'208";a="103515881"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2) ([10.125.108.128])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 16:42:17 -0800
-Date: Fri, 20 Dec 2024 18:42:09 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: intel-xe@lists.freedesktop.org, matthew.brost@intel.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/xe/client: Better correlate exec_queue and GT
- timestamps
-Message-ID: <7bvt3larl4sobadx57a255cvu7i5lkjpt2tdxa4baa324v6va6@ijl7gzqjh7qo>
-References: <20241212173432.1244440-1-lucas.demarchi@intel.com>
- <Z2SGzHYsJ+CRoF9p@orsosgc001>
- <wdcrw3du2ssykmsrda3mvwjhreengeovwasikmixdiowqsfnwj@lsputsgtmha4>
- <Z2YMiTq5P81dmjVH@orsosgc001>
+	s=arc-20240116; t=1734751697; c=relaxed/simple;
+	bh=0r9RPzLueo071by/j66yGqEyUFdzbXHoDDfi7ICnaRk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rIWdk2GnkpShiaS/t6F+xcZNietAQCTzWhK4b6uG/Sl1XRD99bpdb6CYC/1SYdH+pEYBLngRhJ7vAgoZE1vnPE/WisVHAFeGVM3QGA+ctTOocIgX12Ps6IBlctxP/Q3xkdqtMrojKMwuNRvAlQdQVHimGFnerhSsbQhlDyRHUQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m7A2HeCO; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pkaligineedi.bounces.google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-801d5add29eso1665476a12.3
+        for <stable@vger.kernel.org>; Fri, 20 Dec 2024 19:28:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734751695; x=1735356495; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tcxNSCs1RfdUrDoDnyiQQzL3U3m813D09LyracgP52g=;
+        b=m7A2HeCOW4zfP+RrqV5i19ia/uV4/pn/5ClCKI7yn4hZqrH3LOs6EChdTFMCO65Jwh
+         ipffk91FEN0tXgcBd7ShgatYKCkrwc3HkLVdKVCEAHYh+a5fvymbHClKW7h9xdHvvN1r
+         v8EkWFeOB5GauAQqzI3OtzxAYGXEoQ7ksktb7We8fw96IF7fWHsmBCvSDXtLEQjbGvjN
+         QTuBLgYjqRj2ZNLYcKlTEtOF9fRBz3WhyLyROEqB+TSNAOeUOGYWe3wtGKjtN3fl9Xq5
+         2HBGJb+duryoiOW9K4zIJLYFwsNTm+0CcrqCTe/+fFF98fBi+tCu1RX1iNP08a9cSZS3
+         ilcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734751695; x=1735356495;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tcxNSCs1RfdUrDoDnyiQQzL3U3m813D09LyracgP52g=;
+        b=OOu2197R8who2jJbLKA6VzTdiKwy/FuEQ9m/jPwSx2tMX5V7yaFrzu85tZ5m8lbKZN
+         96YfgUPvr/j4xeSj/cK4ZHH8OuWd4XeO0JifcCxZ0dIP5RitDGgSWVMluCdFlDRA/Hih
+         Us50d+/6drnVinUno9qmcdLqpQtwqB24jD/pMzAtVDdGDAj+Wdq6V4vjvAKMI4Nit+Qv
+         6/j4eql6et6c+wK2hcdmzi64OqXHA5w40/EBIHW0Pxay32CAoYU7v9bjaBL3NAWhasWC
+         9S0qPqO46bfviNV5JwECQ0TPhN6fwZh8NfQhx4+Dja8Vdn+Pyxj+yRzICzkyKqXG7xqm
+         B/ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhte5UcaE583e6opq5mNH6QbBA/9QeBTSqQm1kHIaniqrovlANzZrrZwoKpwroVDpNAQWaIys=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWNSaoxtQYUKS9nQAmqJ/Dkmg1GXGsdETnLevN/VZs/1cVnl6Y
+	6OvLAx+oimSFh825M380oX/GxOMqBfTVFvVrDP2uKoAICgFBssxf8h7x7F0oeTyzfuJWmgEAK9k
+	Qi1V+Vi7Ylc7CW4XtUK/9kHhl2A==
+X-Google-Smtp-Source: AGHT+IGeFqQj5dJOTAyGRmtAIXY2OUqiW0yrJQ0AXC6Y1dhP3iTemr82Ra1Fyo9FOmb1VKzWtqJ5Zjnbt2sbi9XtRN0=
+X-Received: from pfxa4.prod.google.com ([2002:a05:6a00:1d04:b0:725:e05b:5150])
+ (user=pkaligineedi job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:2d21:b0:1e0:bf98:42dc with SMTP id adf61e73a8af0-1e5e07f98d0mr9277145637.28.1734751695309;
+ Fri, 20 Dec 2024 19:28:15 -0800 (PST)
+Date: Fri, 20 Dec 2024 19:28:06 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <Z2YMiTq5P81dmjVH@orsosgc001>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241221032807.302244-1-pkaligineedi@google.com>
+Subject: [PATCH net] gve: trigger RX NAPI instead of TX NAPI in gve_xsk_wakeup
+From: Praveen Kaligineedi <pkaligineedi@google.com>
+To: netdev@vger.kernel.org
+Cc: jeroendb@google.com, shailend@google.com, willemb@google.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, 
+	hawk@kernel.org, john.fastabend@gmail.com, hramamurthy@google.com, 
+	joshwash@google.com, ziweixiao@google.com, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, stable@vger.kernel.org, 
+	Praveen Kaligineedi <pkaligineedi@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Dec 20, 2024 at 04:32:09PM -0800, Umesh Nerlige Ramappa wrote:
->On Fri, Dec 20, 2024 at 12:32:16PM -0600, Lucas De Marchi wrote:
->>On Thu, Dec 19, 2024 at 12:49:16PM -0800, Umesh Nerlige Ramappa wrote:
->>>On Thu, Dec 12, 2024 at 09:34:32AM -0800, Lucas De Marchi wrote:
->>>>This partially reverts commit fe4f5d4b6616 ("drm/xe: Clean up VM / exec
->>>>queue file lock usage."). While it's desired to have the mutex to
->>>>protect only the reference to the exec queue, getting and dropping each
->>>>mutex and then later getting the GPU timestamp, doesn't produce a
->>>>correct result: it introduces multiple opportunities for the task to be
->>>>scheduled out and thus wrecking havoc the deltas reported to userspace.
->>>>
->>>>Also, to better correlate the timestamp from the exec queues with the
->>>>GPU, disable preemption so they can be updated without allowing the task
->>>>to be scheduled out. We leave interrupts enabled as that shouldn't be
->>>>enough disturbance for the deltas to matter to userspace.
->>>
->>>Like I said in the past, this is not trivial to solve and I would 
->>>hate to add anything in the KMD to do so.
->>
->>I think the best we can do in the kernel side is to try to guarantee the
->>correlated counters are sampled together... And that is already very
->>good per my tests. Also, it'd not only be good from a testing
->>perspective, but for any userspace trying to make sense of the 2
->>counters.
->>
->>Note that this is not much different from how e.g. perf samples group
->>events:
->>
->>	The unit of scheduling in perf is not an individual event, but rather an
->>	event group, which may contain one or more events (potentially on
->>	different PMUs). The notion of an event group is useful for ensuring
->>	that a set of mathematically related events are all simultaneously
->>	measured for the same period of time. For example, the number of L1
->>	cache misses should not be larger than the number of L2 cache accesses.
->>	Otherwise, it may happen that the events get multiplexed and their
->>	measurements would no longer be comparable, making the analysis more
->>	difficult.
->>
->>See __perf_event_read() that will call pmu->read() on all sibling events
->>while disabling preemption:
->>
->>	perf_event_read()
->>	{
->>		...
->>		preempt_disable();
->>		event_cpu = __perf_event_read_cpu(event, event_cpu);
->>		...
->>		(void)smp_call_function_single(event_cpu, __perf_event_read, &data, 1);
->>		preempt_enable();
->>		...
->>	}
->>
->>so... at least there's prior art for that... for the same reason that
->>userspace should see the values sampled together.
->
->Well, I have used the preempt_disable/enable when fixing some selftest 
->(i915), but was not happy that there were still some rare failures. If 
->reducing error rates is the intention, then it's fine. In my mind, the 
->issue still exists and once in a while we would end up assessing such 
->a failure. Maybe, in addition, fixing up the IGTs like you suggest 
->below is a worthwhile option.
+From: Joshua Washington <joshwash@google.com>
 
-for me this fix is not targeted at tests, even if it improves them a
-lot. It's more for consistent userspace behavior.
+Commit ba0925c34e0f ("gve: process XSK TX descriptors as part of RX NAPI")
+moved XSK TX processing to be part of the RX NAPI. However, that commit
+did not include triggering the RX NAPI in gve_xsk_wakeup. This is
+necessary because the TX NAPI only processes TX completions, meaning
+that a TX wakeup would not actually trigger XSK descriptor processing.
+Also, the branch on XDP_WAKEUP_TX was supposed to have been removed, as
+the NAPI should be scheduled whether the wakeup is for RX or TX.
 
->
->>
->>>
->>>For IGT, why not just take 4 samples for the measurement (separate 
->>>out the 2 counters)
->>>
->>>1. get gt timestamp in the first sample
->>>2. get run ticks in the second sample
->>>3. get run ticks in the third sample
->>>4. get gt timestamp in the fourth sample
->>>
->>>Rely on 1 and 4 for gt timestamp delta and on 2 and 3 for run 
->>>ticks delta.
->>
->>this won't fix it for the general case: you get rid of the > 100% case,
->>you make the < 100% much worse.
->
->yeah, that's quite possible.
->
->>
->>For a testing perspective I think the non-flaky solution is to stop
->>calculating percentages and rather check that the execution timestamp
->>recorded by the GPU very closely matches (minus gpu scheduling delays)
->>the one we got via fdinfo once the fence signals and we wait for the job
->>completion.
->
->Agree, we should change how we validate the counters in IGT.
+Fixes: ba0925c34e0f ("gve: process XSK TX descriptors as part of RX NAPI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+---
+ drivers/net/ethernet/google/gve/gve_main.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
-I have a wip patch to cleanup and submit to igt. I will submit it soon.
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 09fb7f16f73e..8a8f6ab12a98 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1714,7 +1714,7 @@ static int gve_xsk_pool_disable(struct net_device *dev,
+ static int gve_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags)
+ {
+ 	struct gve_priv *priv = netdev_priv(dev);
+-	int tx_queue_id = gve_xdp_tx_queue_id(priv, queue_id);
++	struct napi_struct *napi;
+ 
+ 	if (!gve_get_napi_enabled(priv))
+ 		return -ENETDOWN;
+@@ -1722,19 +1722,12 @@ static int gve_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags)
+ 	if (queue_id >= priv->rx_cfg.num_queues || !priv->xdp_prog)
+ 		return -EINVAL;
+ 
+-	if (flags & XDP_WAKEUP_TX) {
+-		struct gve_tx_ring *tx = &priv->tx[tx_queue_id];
+-		struct napi_struct *napi =
+-			&priv->ntfy_blocks[tx->ntfy_id].napi;
+-
+-		if (!napi_if_scheduled_mark_missed(napi)) {
+-			/* Call local_bh_enable to trigger SoftIRQ processing */
+-			local_bh_disable();
+-			napi_schedule(napi);
+-			local_bh_enable();
+-		}
+-
+-		tx->xdp_xsk_wakeup++;
++	napi = &priv->ntfy_blocks[gve_rx_idx_to_ntfy(priv, queue_id)].napi;
++	if (!napi_if_scheduled_mark_missed(napi)) {
++		/* Call local_bh_enable to trigger SoftIRQ processing */
++		local_bh_disable();
++		napi_schedule(napi);
++		local_bh_enable();
+ 	}
+ 
+ 	return 0;
+-- 
+2.47.1.613.gc27f4b7a9f-goog
 
-Lucas De Marchi
 
