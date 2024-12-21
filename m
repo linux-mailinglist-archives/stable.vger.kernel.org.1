@@ -1,155 +1,200 @@
-Return-Path: <stable+bounces-105531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F3C9FA050
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 12:12:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022479FA07E
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 13:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A086A1684BE
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 11:12:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F067165C17
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 12:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C1B1F2C26;
-	Sat, 21 Dec 2024 11:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664071F190D;
+	Sat, 21 Dec 2024 12:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w8N6MNMn"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="pSI2BljQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2189A1F2394
-	for <stable@vger.kernel.org>; Sat, 21 Dec 2024 11:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C245B25949E;
+	Sat, 21 Dec 2024 12:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734779453; cv=none; b=PyZMbTkaaPmYxXJAK8YyJRPuAwfANjjKmUvcTRNR2wGNS+KhcHzhoOROMuNqlYzXOhud4NaAdXzAh9+p1nDDpTUTP1P7oKnzluqXq2Tb/IA+6GI6fknB8CBoiRmVI0pvbOdZ4bnJpGCZLcRz9czrA+ldw/79WddzeJ1MZy0MOgI=
+	t=1734782812; cv=none; b=IaEEDjNUqbv4IpvSNEVmT6oOTI+Ef+iw1nCKzzEBoxcoTBQZVfy0G+uKvDkAiOcDG7LwFwTtrbv5omnTMNX+FpKylQ4qUztaPMp+h++zmP4hCBVEfe0u6gOmmLYdjWuRFKzq075CPIJ0d+hrIlyZls0kARtr1QDyFCH8Ca/1Nl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734779453; c=relaxed/simple;
-	bh=XhWNXFHaJ9glrnThaW+6uFMdg7Jt0dVoQ8ReWmSarVw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oug6PHf+2FL+DRljk3HXO99ZFo9GCPcXKDq8C3ILw/sG6oLPlucaJ+ILytMv+nCJa4hoYHoEXIRLoAvcc5QJi+n3jlsghAkNlN3MRobO9Jo6SyC6OvWYpjCCPGi+8CZESTlOX0bbsB4iA24e77ybojqtM7ZlAFu/i4vHyu0OgGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w8N6MNMn; arc=none smtp.client-ip=209.85.208.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5d3ff30b566so2844043a12.1
-        for <stable@vger.kernel.org>; Sat, 21 Dec 2024 03:10:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734779449; x=1735384249; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=acFqHgTTvDfsaGKKoef1ZEN8Prd2tlZbEpNeYt8pW4w=;
-        b=w8N6MNMnGoBZdDNYKib2K1CTFyo5K8pBhxsWZHJB27Y8fUoFOdczn3fwyy9/tFp7dy
-         aMuVcOt106NaQqp5oyhxOn4QWbyPa/+LWGYpUCXcJJgoDXZyvWZMDJy4IiKYTEscPg3S
-         HCXgQV2SNyLPIIAQDK7w9xL7y6iS9qLP8drLP2/vELShuuwMf/uqQfdk5T9L7evxcm0f
-         PzhOHDYJvDheuSEu0rOyHE+T6IgOPwonLqLck0s+kIKI2ihusjjrtctLjp53YxNtt30o
-         opH6dYF0uVEsEtuVtKB6WMQ/Vbu9yiDLkKLuRPgTkknHj0XLJlU2MbqWJZXCG10J7BwT
-         mnFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734779449; x=1735384249;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=acFqHgTTvDfsaGKKoef1ZEN8Prd2tlZbEpNeYt8pW4w=;
-        b=AZgjxy73lxOWiGaVv4WizAcoMFI65V5fY1zMjSmY6QFMzfre9pvo1zu5ST6yyxuOrf
-         V28l7E2iTqmddFwaTxo//iX4S6hn4iWEO/SxrzDA6G6LXyvKs/R+nmmjBTZ/WLbH8n2/
-         eW66EBPqjWAZ57N/oFTPCvZjnLMif7bpYRtjhhpg/7HMkVaYKK3ROn8CX2DqScpPjJKI
-         lVPXZCX7UGv1BZVfcfeODKjRgprDGnxZJ5/iUuWCCU+QE9LHZjwlei7fzfXkC9+oRFrN
-         5c8fu+iWjEqkx3GvNaAvlzKzcRID1v0fhBMcUxJTgXOjhg+/qCD2GtL9WOaitNti7Xx7
-         R6DA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3+Fl1wGuPTm0qBm9r9nNyKq10DfcUFCVQhAHamAAnNQiGsltyNDCraqnI/3w/gtSEu2lqG/M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxj1c28BcPDwYs7bUXXDFsG9UzGdNG69ARkeiepvYVvyOlqy9Kd
-	GJb+s47czYyoaQPP6pIlJXFg0BjQegWFZiw28fJdbdf5ib4XLkJcwvsxJxbyUDQFCfzJM1YjGgN
-	Q7g==
-X-Google-Smtp-Source: AGHT+IGeWbKxpk3gdrLwTVMOGxYTHG++3ekHtzTCNYqK+VxLg7d/tlVkzABgBueeFhOF/tGOx98kdsq6Gwg=
-X-Received: from edzf16.prod.google.com ([2002:a05:6402:1950:b0:5d2:7367:4c84])
- (user=gnoack job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:254f:b0:5cf:e71c:ff97
- with SMTP id 4fb4d7f45d1cf-5d81ddfbe45mr4289512a12.24.1734779449412; Sat, 21
- Dec 2024 03:10:49 -0800 (PST)
-Date: Sat, 21 Dec 2024 11:10:45 +0000
-In-Reply-To: <Z2ahOy7XaflrfCMw@google.com>
+	s=arc-20240116; t=1734782812; c=relaxed/simple;
+	bh=6cjg3bXh/OsM3E60x8rS36hGGpEICt6jZLZJ04Gjrn4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kur6d03S2cotCtmfG0SIzGHk3U6hZGKQXIvt5fuKFXCvz2/A12Gs0t1+g8/O9Sd7fj9Dx3a1ndm0atWZZOlk1/+tpnBdVyvhxy5NQPU6jUCb61w0i6dtKaRsQ8XBoTpyKLQaQ6OQXKYYpRg885meQhu6IWxCW/DWxeYJoYkvDIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=pSI2BljQ; arc=none smtp.client-ip=117.135.210.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=ZosUyGnmovPEBWzy4oa5AcYcXN9kr0hw/5zK6jZF/oA=;
+	b=pSI2BljQQLjBGym0Fj5onDlp1iv/QuBHPub0ar7EGSGggMZ/WqJ1YKhYoDRvdj
+	1WC01F2Bf6I6M9Zgjm01M7iToTQMk4dxOSsA3tLuWCrdtYzmzMINhsJLYCAWweO2
+	XgUvJWvv26QzWCjrnOVN+vBu4lRpJNujSgjYPHFVBo274=
+Received: from [172.20.10.3] (unknown [39.144.39.55])
+	by gzsmtp4 (Coremail) with SMTP id qCkvCgD3PIfrrmZnzSstCw--.48830S2;
+	Sat, 21 Dec 2024 20:05:00 +0800 (CST)
+Message-ID: <333e584c-2688-4a3f-bc1f-2e84d5215005@126.com>
+Date: Sat, 21 Dec 2024 20:04:59 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <Z2ahOy7XaflrfCMw@google.com>
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241221111045.1082615-1-gnoack@google.com>
-Subject: [PATCH v2] tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN
-From: "=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jann Horn <jannh@google.com>, "=?UTF-8?q?Hanno=20B=C3=B6ck?=" <hanno@hboeck.de>, Jiri Slaby <jirislaby@kernel.org>, 
-	linux-hardening@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, 
-	"=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] replace free hugepage folios after migration
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
+ liuzixing@hygon.cn, Oscar Salvador <osalvador@suse.de>,
+ Michal Hocko <mhocko@kernel.org>
+References: <1734503588-16254-1-git-send-email-yangge1116@126.com>
+ <0b41cc6b-5c93-408f-801f-edd9793cb979@redhat.com>
+ <1241b567-88b6-462c-9088-8f72a45788b7@126.com>
+ <fe57ef80-bbdb-44dc-97d9-b390778430a4@redhat.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <fe57ef80-bbdb-44dc-97d9-b390778430a4@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qCkvCgD3PIfrrmZnzSstCw--.48830S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAr48ZFyxKry3Gr4xKw4Durg_yoWrZw4UpF
+	WrGa1ak3yDJrZxJr12qwn8CF1FyrsrWFW0qF1rtF9YvwsxAryIkr12yw1Y93yfAr1fGa10
+	v3yvqws7u3WUZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UKFAJUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhu7G2dlk9LH2gACsd
 
-With this, processes without CAP_SYS_ADMIN are able to use TIOCLINUX with
-subcode TIOCL_SETSEL, in the selection modes TIOCL_SETPOINTER,
-TIOCL_SELCLEAR and TIOCL_SELMOUSEREPORT.
 
-TIOCL_SETSEL was previously changed to require CAP_SYS_ADMIN, as this IOCTL
-let callers change the selection buffer and could be used to simulate
-keypresses.  These three TIOCL_SETSEL selection modes, however, are safe to
-use, as they do not modify the selection buffer.
 
-This fixes a mouse support regression that affected Emacs (invisible mouse
-cursor).
+在 2024/12/21 0:30, David Hildenbrand 写道:
+> On 20.12.24 09:56, Ge Yang wrote:
+>>
+>>
+>> 在 2024/12/20 0:40, David Hildenbrand 写道:
+>>> On 18.12.24 07:33, yangge1116@126.com wrote:
+>>>> From: yangge <yangge1116@126.com>
+>>>
+>>> CCing Oscar, who worked on migrating these pages during memory offlining
+>>> and alloc_contig_range().
+>>>
+>>>>
+>>>> My machine has 4 NUMA nodes, each equipped with 32GB of memory. I
+>>>> have configured each NUMA node with 16GB of CMA and 16GB of in-use
+>>>> hugetlb pages. The allocation of contiguous memory via the
+>>>> cma_alloc() function can fail probabilistically.
+>>>>
+>>>> The cma_alloc() function may fail if it sees an in-use hugetlb page
+>>>> within the allocation range, even if that page has already been
+>>>> migrated. When in-use hugetlb pages are migrated, they may simply
+>>>> be released back into the free hugepage pool instead of being
+>>>> returned to the buddy system. This can cause the
+>>>> test_pages_isolated() function check to fail, ultimately leading
+>>>> to the failure of the cma_alloc() function:
+>>>> cma_alloc()
+>>>>       __alloc_contig_migrate_range() // migrate in-use hugepage
+>>>>       test_pages_isolated()
+>>>>           __test_page_isolated_in_pageblock()
+>>>>                PageBuddy(page) // check if the page is in buddy
+>>>
+>>> I thought this would be working as expected, at least we tested it with
+>>> alloc_contig_range / virtio-mem a while ago.
+>>>
+>>> On the memory_offlining path, we migrate hugetlb folios, but also
+>>> dissolve any remaining free folios even if it means that we will going
+>>> below the requested number of hugetlb pages in our pool.
+>>>
+>>> During alloc_contig_range(), we only migrate them, to then free them up
+>>> after migration.
+>>>
+>>> Under which circumstances doe sit apply that "they may simply be
+>>> released back into the free hugepage pool instead of being returned to
+>>> the buddy system"?
+>>>
+>>
+>> After migration, in-use hugetlb pages are only released back to the
+>> hugetlb pool and are not returned to the buddy system.
+> 
+> We had
+> 
+> commit ae37c7ff79f1f030e28ec76c46ee032f8fd07607
+> Author: Oscar Salvador <osalvador@suse.de>
+> Date:   Tue May 4 18:35:29 2021 -0700
+> 
+>      mm: make alloc_contig_range handle in-use hugetlb pages
+>      alloc_contig_range() will fail if it finds a HugeTLB page within the
+>      range, without a chance to handle them.  Since HugeTLB pages can be
+>      migrated as any LRU or Movable page, it does not make sense to bail 
+> out
+>      without trying.  Enable the interface to recognize in-use HugeTLB 
+> pages so
+>      we can migrate them, and have much better chances to succeed the call.
+> 
+> 
+> And I am trying to figure out if it never worked correctly, or if
+> something changed that broke it.
+> 
+> 
+> In start_isolate_page_range()->isolate_migratepages_block(), we do the
+> 
+>      ret = isolate_or_dissolve_huge_page(page, &cc->migratepages);
+> 
+> to add these folios to the cc->migratepages list.
+> 
+> In __alloc_contig_migrate_range(), we migrate the pages using 
+> migrate_pages().
+> 
+> 
+> After that, the src hugetlb folios should still be isolated? 
+Yes.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/ee3ec63269b43b34e1c90dd8c9743bf8@finder.org
-Fixes: 8d1b43f6a6df ("tty: Restrict access to TIOCLINUX' copy-and-paste sub=
-commands")
-Signed-off-by: G=C3=BCnther Noack <gnoack@google.com>
----
- drivers/tty/vt/selection.c | 14 ++++++++++++++
- drivers/tty/vt/vt.c        |  2 --
- 2 files changed, 14 insertions(+), 2 deletions(-)
+But I'm
+> getting
+> confused when these pages get un-silated and putback to hugetlb/freed.
+> 
+If the migration is successful, call folio_putback_active_hugetlb to 
+release the src hugetlb folios back to the free hugetlb pool.
 
-diff --git a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
-index 564341f1a74f..0bd6544e30a6 100644
---- a/drivers/tty/vt/selection.c
-+++ b/drivers/tty/vt/selection.c
-@@ -192,6 +192,20 @@ int set_selection_user(const struct tiocl_selection __=
-user *sel,
- 	if (copy_from_user(&v, sel, sizeof(*sel)))
- 		return -EFAULT;
-=20
-+	/*
-+	 * TIOCL_SELCLEAR, TIOCL_SELPOINTER and TIOCL_SELMOUSEREPORT are OK to
-+	 * use without CAP_SYS_ADMIN as they do not modify the selection.
-+	 */
-+	switch (v.sel_mode) {
-+	case TIOCL_SELCLEAR:
-+	case TIOCL_SELPOINTER:
-+	case TIOCL_SELMOUSEREPORT:
-+		break;
-+	default:
-+		if (!capable(CAP_SYS_ADMIN))
-+			return -EPERM;
-+	}
-+
- 	return set_selection_kernel(&v, tty);
- }
-=20
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 96842ce817af..be5564ed8c01 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -3345,8 +3345,6 @@ int tioclinux(struct tty_struct *tty, unsigned long a=
-rg)
-=20
- 	switch (type) {
- 	case TIOCL_SETSEL:
--		if (!capable(CAP_SYS_ADMIN))
--			return -EPERM;
- 		return set_selection_user(param, tty);
- 	case TIOCL_PASTESEL:
- 		if (!capable(CAP_SYS_ADMIN))
---=20
-2.47.1.613.gc27f4b7a9f-goog
+trace:
+unmap_and_move_huge_page
+     folio_putback_active_hugetlb
+         folio_put
+             free_huge_folio
+
+alloc_contig_range_noprof
+     __alloc_contig_migrate_range
+     if (test_pages_isolated())  //to determine if hugetlb pages in buddy
+         isolate_freepages_range //grab isolated pages from freelists.
+     else
+         undo_isolate_page_range //undo isolate
+
+> 
+>>
+>> The specific steps for reproduction are as follows:
+>> 1，Reserve hugetlb pages. Some of these hugetlb pages are allocated
+>> within the CMA area.
+>> echo 10240 > /proc/sys/vm/nr_hugepages
+>>
+>> 2，To ensure that hugetlb pages are in an in-use state, we can use the
+>> following command.
+>> qemu-system-x86_64 \
+>>     -mem-prealloc \
+>>     -mem-path /dev/hugepage/ \
+>>     ...
+>>
+>> 3，At this point, using cma_alloc() to allocate contiguous memory may
+>> result in a probable failure.
+>>
+> 
+> Will these free hugetlb folios become surplus pages? I would have assumed
+> they get freed immediately to the buddy, or does you config maybe allow for
+> surplus pages?
+> 
+These freed hugetlb folios will not become surplus pages. I have not 
+configured the system to allow for the existence of surplus pages.
+
 
 
