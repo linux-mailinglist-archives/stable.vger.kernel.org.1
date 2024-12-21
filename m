@@ -1,187 +1,163 @@
-Return-Path: <stable+bounces-105540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94219FA216
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 20:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4AFB9FA29A
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 22:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20112161D42
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 19:10:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABB84161356
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 21:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43DA290F;
-	Sat, 21 Dec 2024 19:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0602594B0;
+	Sat, 21 Dec 2024 21:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LL9r999G"
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="GHFp3tcC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C2E13541B;
-	Sat, 21 Dec 2024 19:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D602D18873E
+	for <stable@vger.kernel.org>; Sat, 21 Dec 2024 21:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734808228; cv=none; b=Z026+B8aEdgtH6ZBORU15zL724gDu2/GRn3vjgtEQQicWR2F4akSXv5FAcfY7DLaIen49TWOyVidQfty1gN0y96xcG6rs822QXnXZpI/v12WzO31RL4zCyoGINNK/u7VzQPmVsVAFQJnnLvOweVom67xlwo0ba3WYx9STBi6ux4=
+	t=1734816701; cv=none; b=B36WvjzO4YHi3ZjXxJhMoV3fXYaK8PZkZfIvCedHKpHvR1IXNR+A3AvpofL2WDBeT8u1gib40gzM8KRSWKFpVod2NdFGw66NQPItlkkPSxW3V7KOd3VQGAdweR6ZhL3tG6IcJ5dkpZQBP6icgIqOjDCbrnF1Ry7Km76KruWLLJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734808228; c=relaxed/simple;
-	bh=1vCSKsrwRIcipEZJIKPCqWIAmgBtuik4Cc4Zpxa9jaQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lU9Xx0ybphGb8Nf89ynP4MgOPGaxbHW4h5IsEs0ZQH4WEatyhzESH7hgpdLC9/Asq8+El2lLsMbY+4iw1XsoucQzlm1r//WqbByw4lNq6pdcQu/M/uUr2DPujT8NQGTe9dAWjTJhF/C3rnMCWa+5dM8efMwrtntzh4pWivhS914=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LL9r999G; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5401c52000dso3238407e87.3;
-        Sat, 21 Dec 2024 11:10:26 -0800 (PST)
+	s=arc-20240116; t=1734816701; c=relaxed/simple;
+	bh=g80Xv9sdG8bld1hI5N8TIg0l0usJaOYYz4GMokDzByQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mjRd/lhy2dc/00H6FFAdlj0CD4z51VdnQ80EONQ+Iwcw8Kre/6S4nHIVlz4q7kpqngnosr0KJNU3J0bdv8kL76WRY1DdgVGIv4JUqNWbBjnwdQAzqLkNCU2J6/sVhGH+++C8vvHBJ9KrNaq4e0g0MZsGIoKkAL9gGzAq03Wf/p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=GHFp3tcC; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385e0e224cbso1720673f8f.2
+        for <stable@vger.kernel.org>; Sat, 21 Dec 2024 13:31:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734808225; x=1735413025; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DICSLitDkSZdoKgSJ3JkSamUIfZXy0wB9Dy+tZ/JX4o=;
-        b=LL9r999GEWso+CNW7a8ZwE7R4cjECSlcMXHjy8vGTfuXSONWVSkUdTQmjCyLfp4t5I
-         VKjh7a0fuW2r0FbGx80SmR8UZUJtrMf6SfvcrduC95bUVJbayr7CQ7xWXvmwHyQh/Buh
-         AnQ1xQSol4X08A9JE3w3f5COcybRxTgCMME+0GdzVkwUP0AjGawi23FSrYwxQm3iUh8B
-         rj/jcETUrtCKPOSq80LB+J8XllMihrG3L/pP9/ArZIl6rePTmekOjdCZFNpELf6LmJMJ
-         YwJsXEq0+7LGsPsPtBM/Epz4Ow+RAPSeP0tgv1f2FORYbSqLHonC8KScULVsWb6S3hxZ
-         rwwg==
+        d=citrix.com; s=google; t=1734816698; x=1735421498; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=g80Xv9sdG8bld1hI5N8TIg0l0usJaOYYz4GMokDzByQ=;
+        b=GHFp3tcC6gK/sAbaC1XljWUFbfyTdQsslauQ/VwuG+pkutBYuVyofPkWc1gpgRmg45
+         FgnfdXjAFHwNQkpEn6mFMoOz+yelDEX8ziy5VpNYV50zRUgzYA9F9qBVMWXOFZcDtAlA
+         a/bY/SNyj5C8vGhHBdQitMOhl33TZ57XF92jc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734808225; x=1735413025;
-        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DICSLitDkSZdoKgSJ3JkSamUIfZXy0wB9Dy+tZ/JX4o=;
-        b=bkmp9rhMAKrWzJsbrwGVpFnX3xq8ZBDEq1h4NnGEVtMo4OZEo4PL30WYOIt9kHDGAq
-         eNTr4H592DxvPja2lq/IeL4OqjuHEOKGLsqBLxfDBMKj3DUDt+2AAozIyS8UjHQ7Gh1G
-         Y5iHNHBvgu0xZBpvV7kiqmMNC/nCVoHiOJZ5V1QykaM9LZjLfeH9GltPIAUEVzK0ppxe
-         7FRcI+bgsGVYG4JMRJYcsX87M6XIBPWrJ8BO6tTOem3nlfpPAouDet2Zyh9tO+Kq97dE
-         jbnEU/waBEo6bhKMy8VNZGM7VyHcpkNQK9VQR8y6zB4IUOrK0bVlGsI9v4eYCcCmh9M4
-         2Yww==
-X-Forwarded-Encrypted: i=1; AJvYcCUwm4iCUJrBdUtJ9zXSH8yUk8xvLw8tr8qPZzBV76gfLC39U3RUMNoUqbSgGMmnyjkpWa9sQhyPCFFLPvY=@vger.kernel.org, AJvYcCXwColhAob+GpxnjggynKeFyyPWuV1AJ/Cb+hR+Cn3WhJRjKaeuOYReUfR/UyefM2ELpAZpAFW4@vger.kernel.org
-X-Gm-Message-State: AOJu0YxflbZQZXlpzTFWc4j9KMU6ndujsl2HP2wIenQgsi2P8Xv3Ippi
-	aRYLsvpcdJI1cdcWPI798WSkmFkyUExS5Uo7zb8GE80Q8kAau4OfDKX4nJxjroe6ZdylzxnLc0Z
-	NDmDjn/zWiMLsyQ11xbwAZk6oefE=
-X-Gm-Gg: ASbGncvBBEjJ6Id2yCIQU/tlaoQAKSBa7dv45FGyINMR2f32gY3vq/Fn0mk5XijjIhu
-	Rgb62ZULAzphlGuwtV3U1999TNpg8GlArL5hmbFot0JTcjAMcS6khdyiNOg53reh/D97B
-X-Google-Smtp-Source: AGHT+IEe2LojPiPTBvWcFiJy0Wow6bjJvCnYTDrCzXg4UoYFG87UC6TJQDcIoRRxmiY1F2RYuqc9z090hwAo9aGKC5M=
-X-Received: by 2002:a05:6512:2246:b0:542:2e04:edd1 with SMTP id
- 2adb3069b0e04-5422e04f073mr879572e87.42.1734808224878; Sat, 21 Dec 2024
- 11:10:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734816698; x=1735421498;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g80Xv9sdG8bld1hI5N8TIg0l0usJaOYYz4GMokDzByQ=;
+        b=aL0kyKpFgbJr6coTtAu/virsudPQoaj8VCpGvcTzAUSGVPqtWHc2D0bQO73S9zS9/9
+         igKC74nIYzAr/OnUxKeaIMDwgkgnOMR8YhK+qJbl0ISf149SXrkYbqvIEbTEJ1PgjlIH
+         0/0p7zInzq8W2nP3V3IFhdVgg90rrJ+X7dK7/1kfpfHMuOyU8IUjrIQwjRIReGNM1H9x
+         3vg5u8I0EeEXEB8NJIEmDzl0RNbsiqTW+4dZgNBFz8N9z91Lvk/Vnp43pV17Kve8LqCN
+         00V+I1wqbEQDWkrDAHgF4jRfP9IpBwpj4XKXTX3vGCdjYU6HyEvzCRObG3MNmpH1YX3l
+         /kCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW/fG4had5SJCoN3giAXUqt/8DxsjLvLnDLQPCh0T7dSsGZVe6raeZqyT3IA68RvvnU6aiHUjc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwyXy6nabPBw9uNfUwOF+GtzUuxbi/7TR1+u0wjdTRYn4UgJqy
+	dGV4msbHwT5yVCyFuEHlIUT1IEHrcxCMD3kzvHJOQkAHpc6QdHEPDTKh2V3b2+M=
+X-Gm-Gg: ASbGncujz6vonSKBK41e1mJlDNuGBm6r6GOWTfXa1oh6wSTRCV6VMOTJBJYlXdjDVld
+	KdH2hSKvMKWYYnndeo/KVAkrqEuut0QW0u/O+f+VQYvQXCj8J5gvxyIfwj8Nh7IfuzgRXozSj3Q
+	JjlFXqO6Qbr+vQE4ggYDhsM/Zvv+mUNeMlrubMvv9sJ9IcPBHwiSi6P9//SP/1wzAswUOIujWji
+	1vGBdOecjZgycxY1SKYPsg5iFrr7UyoeVGWDBBIqbyruHjY1oh05Mzig07x8JEgiaRLsqFpmkSQ
+	kPASvT2xMbddU+Io971P
+X-Google-Smtp-Source: AGHT+IFrVlLP9YH10ZAu9oKbTiFL/KTq/9QViPYsupLF2ej43cn2G5wKtY+3Gp7pjqL4avgqCHPezA==
+X-Received: by 2002:a05:6000:156f:b0:386:2aba:a7f6 with SMTP id ffacd0b85a97d-38a224071e3mr5767422f8f.49.1734816698193;
+        Sat, 21 Dec 2024 13:31:38 -0800 (PST)
+Received: from [192.168.1.10] (host-92-26-98-202.as13285.net. [92.26.98.202])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c828cc8sm7363868f8f.17.2024.12.21.13.31.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Dec 2024 13:31:37 -0800 (PST)
+Message-ID: <698f48a0-b674-4d7f-9c47-f1f8bf86379e@citrix.com>
+Date: Sat, 21 Dec 2024 21:31:36 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+icZUWHU=oXOEj5wHTzxrw_wj1w5hTvqq8Ry400s0ZCJjTEZw@mail.gmail.com>
- <099d3a80-4fdb-49a7-9fd0-207d7386551f@citrix.com> <CA+icZUX98gQ54hePEWNauiU41XQV7qdKJx5PiiXzxy+6yW7hTw@mail.gmail.com>
- <CA+icZUW-i53boHBPt+8zh-D921XFbPb_Kc=dzdgCK1QvkOgCsw@mail.gmail.com>
- <90640a5d-ff17-4555-adc6-ae9e21e24ebd@citrix.com> <CA+icZUVo69swc9QfwJr+mDuHqJKcFUexc08voP2O41g31HGx5w@mail.gmail.com>
- <43166e29-ff2d-4a9d-8c1b-41b5e247974b@citrix.com> <CA+icZUUp9rgx2Dvsww6QbTGRZz5=mf75D0_KncwdgCEZe01-EA@mail.gmail.com>
- <CA+icZUV0HEF_hwr-eSovntfcT0++FBrQN-HbFL+oZtnKjJzLtA@mail.gmail.com>
-In-Reply-To: <CA+icZUV0HEF_hwr-eSovntfcT0++FBrQN-HbFL+oZtnKjJzLtA@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From: Sedat Dilek <sedat.dilek@gmail.com>
-Date: Sat, 21 Dec 2024 20:09:48 +0100
-Message-ID: <CA+icZUV2=20qAqUmXBSfeechf_ObF-m71H7u9zAxGq5hz7k2-g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [Linux-6.12.y] XEN: CVE-2024-53241 / XSA-466 and Clang-kCFI
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Juergen Gross <jgross@suse.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Jan Beulich <jbeulich@suse.com>, 
-	Josh Poimboeuf <jpoimboe@redhat.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, 
-	xen-devel <xen-devel@lists.xenproject.org>
-Content-Type: text/plain; charset="UTF-8"
+To: sedat.dilek@gmail.com
+Cc: Juergen Gross <jgross@suse.com>, Peter Zijlstra <peterz@infradead.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Jan Beulich <jbeulich@suse.com>,
+ Josh Poimboeuf <jpoimboe@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Kees Cook <kees@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev,
+ xen-devel <xen-devel@lists.xenproject.org>
+References: <CA+icZUWHU=oXOEj5wHTzxrw_wj1w5hTvqq8Ry400s0ZCJjTEZw@mail.gmail.com>
+ <099d3a80-4fdb-49a7-9fd0-207d7386551f@citrix.com>
+ <CA+icZUX98gQ54hePEWNauiU41XQV7qdKJx5PiiXzxy+6yW7hTw@mail.gmail.com>
+ <CA+icZUW-i53boHBPt+8zh-D921XFbPb_Kc=dzdgCK1QvkOgCsw@mail.gmail.com>
+ <90640a5d-ff17-4555-adc6-ae9e21e24ebd@citrix.com>
+ <CA+icZUVo69swc9QfwJr+mDuHqJKcFUexc08voP2O41g31HGx5w@mail.gmail.com>
+ <43166e29-ff2d-4a9d-8c1b-41b5e247974b@citrix.com>
+ <CA+icZUUp9rgx2Dvsww6QbTGRZz5=mf75D0_KncwdgCEZe01-EA@mail.gmail.com>
+ <CA+icZUV0HEF_hwr-eSovntfcT0++FBrQN-HbFL+oZtnKjJzLtA@mail.gmail.com>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <CA+icZUV0HEF_hwr-eSovntfcT0++FBrQN-HbFL+oZtnKjJzLtA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Run all SUCCESS tests on my selfmade kernel.
+On 21/12/2024 6:25 pm, Sedat Dilek wrote:
+> With...
+>
+> dileks@iniza:~/src/xtf/git$ mv tests/xsa-454 ../
+> dileks@iniza:~/src/xtf/git$ mv tests/xsa-consoleio-write ../
 
-# xl info | egrep 'release|version|commandline|caps'
-release                : 6.12.6-1-amd64-clang19-kcfi
-version                : #1~trixie+dileks SMP PREEMPT_DYNAMIC 2024-12-19
-hw_caps                :
-bfebfbff:17bae3bf:28100800:00000001:00000001:00000000:00000000:00000100
-virt_caps              : pv hvm hap shadow gnttab-v1 gnttab-v2
-xen_version            : 4.17.4-pre
-xen_caps               : xen-3.0-x86_64 hvm-3.0-x86_32 hvm-3.0-x86_32p
-hvm-3.0-x86_64
-xen_commandline        : placeholder vga=,keep noreboot
+That's completely bizzare.   There's nothing interestingly different
+with those two tests vs the others.
 
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner --host $( grep SUCCESS
-../TESTS-SUCCESS | awk '{ print $1 }' )
-...
-Combined test results:
-test-hvm32-invlpg~hap                    SUCCESS
-test-hvm32-invlpg~shadow                 SUCCESS
-test-hvm32pae-invlpg~hap                 SUCCESS
-test-hvm32pae-invlpg~shadow              SUCCESS
-test-hvm64-invlpg~hap                    SUCCESS
-test-hvm64-invlpg~shadow                 SUCCESS
-test-hvm64-lbr-tsx-vmentry               SUCCESS
-test-hvm32-livepatch-priv-check          SUCCESS
-test-hvm64-livepatch-priv-check          SUCCESS
-test-pv64-livepatch-priv-check           SUCCESS
-test-hvm32-lm-ts                         SUCCESS
-test-hvm64-lm-ts                         SUCCESS
-test-hvm32pae-memop-seg                  SUCCESS
-test-hvm64-memop-seg                     SUCCESS
-test-pv64-memop-seg                      SUCCESS
-test-hvm32pae-nmi-taskswitch-priv        SUCCESS
-test-pv64-pv-iopl~hypercall              SUCCESS
-test-pv64-pv-iopl~vmassist               SUCCESS
-test-hvm32-xsa-122                       SUCCESS
-test-hvm32pae-xsa-122                    SUCCESS
-test-hvm32pse-xsa-122                    SUCCESS
-test-hvm64-xsa-122                       SUCCESS
-test-pv64-xsa-122                        SUCCESS
-test-hvm64-xsa-168~shadow                SUCCESS
-test-hvm64-xsa-173~shadow                SUCCESS
-test-pv64-xsa-182                        SUCCESS
-test-hvm32-xsa-188                       SUCCESS
-test-hvm32pae-xsa-188                    SUCCESS
-test-hvm32pse-xsa-188                    SUCCESS
-test-hvm64-xsa-188                       SUCCESS
-test-pv64-xsa-188                        SUCCESS
-test-hvm32-xsa-192                       SUCCESS
-test-pv64-xsa-193                        SUCCESS
-test-hvm64-xsa-195                       SUCCESS
-test-pv64-xsa-212                        SUCCESS
-test-pv64-xsa-213                        SUCCESS
-test-hvm64-xsa-221                       SUCCESS
-test-pv64-xsa-221                        SUCCESS
-test-pv64-xsa-224                        SUCCESS
-test-pv64-xsa-227                        SUCCESS
-test-hvm64-xsa-231                       SUCCESS
-test-pv64-xsa-231                        SUCCESS
-test-hvm64-xsa-232                       SUCCESS
-test-pv64-xsa-232                        SUCCESS
-test-pv64-xsa-234                        SUCCESS
-test-hvm32-xsa-239                       SUCCESS
-test-pv64-xsa-255                        SUCCESS
-test-pv64-xsa-259                        SUCCESS
-test-pv64-xsa-260                        SUCCESS
-test-hvm64-xsa-261                       SUCCESS
-test-pv64-xsa-265                        SUCCESS
-test-hvm64-xsa-269                       SUCCESS
-test-hvm64-xsa-277                       SUCCESS
-test-hvm64-xsa-278                       SUCCESS
-test-pv64-xsa-279                        SUCCESS
-test-pv64-xsa-286                        SUCCESS
-test-pv64-xsa-296                        SUCCESS
-test-pv64-xsa-298                        SUCCESS
-test-hvm64-xsa-304                       SUCCESS
-test-hvm64-xsa-308                       SUCCESS
-test-pv64-xsa-316                        SUCCESS
-test-hvm32-xsa-317                       SUCCESS
-test-hvm32pae-xsa-317                    SUCCESS
-test-hvm32pse-xsa-317                    SUCCESS
-test-hvm64-xsa-317                       SUCCESS
-test-pv64-xsa-317                        SUCCESS
-test-pv64-xsa-333                        SUCCESS
-test-pv64-xsa-339                        SUCCESS
+I take it the crash is repeatable when using either of these?
 
-No CFI related stuff in dmesg seen after running XFT tests.
-
-Best regards,
--Sedat-
+~Andrew
 
