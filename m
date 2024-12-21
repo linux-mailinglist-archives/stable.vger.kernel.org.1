@@ -1,503 +1,302 @@
-Return-Path: <stable+bounces-105533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803769FA0A6
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 13:45:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799FB9FA0FD
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 15:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F7361886DA1
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 12:45:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7D3E7A1BEB
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 14:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC47D1F2C2E;
-	Sat, 21 Dec 2024 12:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE321F8668;
+	Sat, 21 Dec 2024 14:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RfhQWaMT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IDKnGwTQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA7864D;
-	Sat, 21 Dec 2024 12:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7625EEDE
+	for <stable@vger.kernel.org>; Sat, 21 Dec 2024 14:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734785095; cv=none; b=lRVbgDyIykOtK5ENbwX1sQDKbWC6tU2QIU+b323u9HFYQYIlPdJMcvSScQDsQMRfhYtLH29rrcbg5yZAgus0o12Dv1JasSvaFqSTRkWZLMctEQp+ncVk/w2VT0NEMDo9XJfMv5sIYACa8mZ4rNNo9EVsihhwR2sCqeB2YBNQp+I=
+	t=1734791543; cv=none; b=lMeOy/VdbhUuuubBeOBd172UsNyn0b4dOxyOD3akEBeP8tx5lX80ZE/1qcxT3Amlt6AGgCdWlKWMpuq3KJ8ql3bAsSh09tGv3QCqrD6yTQooKLPaEv2xDnPYhfhQmOY/H9Z7mitO9yuNO9xtu5EEJlLDQrmuG1sV/iykkPBwu+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734785095; c=relaxed/simple;
-	bh=m3iZptMCNs/ZO5tvR1FZmc24DsZgQf16xG5yj96wYRw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z37rYAiS1QFeMB2TX8moeSAWSibGNoyRyfGKbmFPqptgKcjTNnpwll5PKFAJcQQHFrhgr9ptOisJmanyhDAqSvPo89FP9qMovbxN/u9PxvDC0XINZmMKyTLFmna67VyK2BdYixqj5SO/p3owFQTnpCp70mCiZDdo4foMv5iwIjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RfhQWaMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3500C4CECE;
-	Sat, 21 Dec 2024 12:44:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734785095;
-	bh=m3iZptMCNs/ZO5tvR1FZmc24DsZgQf16xG5yj96wYRw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RfhQWaMT6cRX1PtvovaMoTfEOpyzw6UfeqBmFnuwJwVSWmaMXlT5DQAjdB2Q9UEjf
-	 Z3OtoFVqRK+Cmw1yIr6VzmIx2ECoY2ZEDt5UYw36EE2zgliqUJHZYavshq73nFiXcz
-	 yjyZgyIM5UoA/uldtTE2uh/6uN7JuTafRgBZZZMz7VDxeIaft38QLmGKkBlfod/kox
-	 Cmk0F762NXeSFIUB/bt2jpZg2wJgIrEWQKLN930nsYU4rWTbrLlZybbzANgMRmpyag
-	 egKZ7Mmtqcy/UujKMG4rJxbOeHltjhDjbYOZ8titpxWHoYyrghawnIwJ3fpK9eCgmz
-	 grNAFJcE/b7HQ==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Seiji Munetoh <munetoh@jp.ibm.com>,
-	Andrew Morton <akpm@osdl.org>,
-	Kylene Jo Hall <kjhall@us.ibm.com>,
-	Reiner Sailer <sailer@us.ibm.com>
-Cc: stable@vger.kernel.org,
-	Andy Liang <andy.liang@hpe.com>,
-	Matthew Garrett <mjg59@srcf.ucam.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] tpm: Map the ACPI provided event log
-Date: Sat, 21 Dec 2024 14:44:36 +0200
-Message-ID: <20241221124447.774553-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1734791543; c=relaxed/simple;
+	bh=V6aqePbPJihGnM15mCPSwijHPJigUDAJca9491+h02U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uszjfwCX76OLLm0Ob8xeFz4D1khrFTk+qlJmz5QB1EqVEon2aaQ0Gk+kSGpAKvpaFIrxUlLyLhlLIEl4XrX0hbj0zjMElmP7qc3H5YcWSQI5UdwjQEiwq1tFp0jupyzLCBdDuOc8rd4x7f91aUbqmjYKYapasn+YCkZdmRtZTvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IDKnGwTQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734791539;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=glzaZ4GMQ7kx43PeLKg9UKk4Yr/KeQENxPVtTJNPfys=;
+	b=IDKnGwTQt0z0w/5spaYxsPt8jyciH8SsvzkI8K4h4nI9VHUqVUxD3IpXP3fwMPdbdO3o1c
+	epV7x4LK7OvqpSvSzNxg6KylOcRIKubzsgk7w9rLanSb+iidFTj2zBUU9pdpPnuuruEwJc
+	+kXKdHV12Fgy9H+85JgsI7OjHW7eFmI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-327-W1ixLCALPrm9ky_V9wjc9A-1; Sat, 21 Dec 2024 09:32:15 -0500
+X-MC-Unique: W1ixLCALPrm9ky_V9wjc9A-1
+X-Mimecast-MFC-AGG-ID: W1ixLCALPrm9ky_V9wjc9A
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-385ed79291eso1939235f8f.0
+        for <stable@vger.kernel.org>; Sat, 21 Dec 2024 06:32:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734791534; x=1735396334;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=glzaZ4GMQ7kx43PeLKg9UKk4Yr/KeQENxPVtTJNPfys=;
+        b=NoqUqsN/y+hInyy8LSDNf3Vsewcr5w1xyICS5sM6EigQ3H402+V51oPa5ehxBASC5f
+         58JZu6TvKkJYGqPzWCcOZjuMtB8sI+qPc0a2GbzeO7wMFLZFJVsM8GaSvLbHPWPT4nro
+         eBenYKR1F+oJqq8nqCh8GKO6hJqEHRXOxQEk9FEbCwn6tsrFglt9iESlso4ycGtx1cUw
+         wksXV/c3qcgQS5fav3dp8afzr6JyC3ofMGvTuwPNzFXUX8kuA8gD0m0hLyToqeoD9d6h
+         JL54DpC47Zy2hG0o+j2UibrrSYMuPrnAIz9LqmWtDf04wu6byc/gXcuGOtG8rAGu12e4
+         x6/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXHdoK9sGmVvBexHA2XoFy8bbxpd9fada8lDT2wDsQYZUx4VQy2fEaAul8uB99frP3w0HfTMVM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd9e1YCZbFnZYToLEenWNn1Z6jOX23xBObBVobzRs+OavQgZmk
+	3xfysm2nVbTtxIpsblHdKxVtvkszuHktVXplNzOg+ZHGc3cHAwde8eTnFNNT6QqDgiUl5IC0kn6
+	B8up5PE/T9G2FwRg2om8QFARccVKRECZXQf9cT+SkRibgdfeOKpw4VA==
+X-Gm-Gg: ASbGncs49lssKntkWJdErMUegNGOuer5dUBrc2SqRz0kXaYmeeoWI/0uLXMuHySNXbb
+	sF6i7uNxXZShvfqC6iFXZHRrDdhlnOs9OkSJszfYTshsDg64V+X6JYSC2HRWdIl/XjTzmDXrueI
+	UJ4KOGoNR162C3UBiwJu8rEH2C312DexdDFNXm/w1Me+9ehp1xG0yQgRs+U1rSw7ClXmkmOJy3J
+	TJ8Ms8cwL1pswTrv9DiY8vV5jhji0IknlfAt7P9Ho9dfz6aIAOhVPquwVzyvHCAhUNVsOtMl8Fe
+	np8NM/dBvrU1uWki3z5WXMtgZEWkCGISWmrCq2+uTfzQCPiNhzaYZZzjX5SZKA7B3zZ6RHiU9zG
+	rWH8h6xx3
+X-Received: by 2002:a5d:5d09:0:b0:386:4570:ee3d with SMTP id ffacd0b85a97d-38a22a4c983mr5810361f8f.24.1734791534472;
+        Sat, 21 Dec 2024 06:32:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHCMDZk/93Kg60YQwF51fyaC60CAIZCXyZ7BqG62+zVeO+S8Cz54v+G8U7DmDs50F+Vm3RtSg==
+X-Received: by 2002:a5d:5d09:0:b0:386:4570:ee3d with SMTP id ffacd0b85a97d-38a22a4c983mr5810339f8f.24.1734791534022;
+        Sat, 21 Dec 2024 06:32:14 -0800 (PST)
+Received: from ?IPV6:2003:cb:c70e:d000:4622:73e7:6184:8f0d? (p200300cbc70ed000462273e761848f0d.dip0.t-ipconnect.de. [2003:cb:c70e:d000:4622:73e7:6184:8f0d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8ace0esm6517219f8f.106.2024.12.21.06.32.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Dec 2024 06:32:12 -0800 (PST)
+Message-ID: <433fb64d-80e1-4d96-904e-10b51e40898d@redhat.com>
+Date: Sat, 21 Dec 2024 15:32:11 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] replace free hugepage folios after migration
+To: Ge Yang <yangge1116@126.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
+ liuzixing@hygon.cn, Oscar Salvador <osalvador@suse.de>,
+ Michal Hocko <mhocko@kernel.org>
+References: <1734503588-16254-1-git-send-email-yangge1116@126.com>
+ <0b41cc6b-5c93-408f-801f-edd9793cb979@redhat.com>
+ <1241b567-88b6-462c-9088-8f72a45788b7@126.com>
+ <fe57ef80-bbdb-44dc-97d9-b390778430a4@redhat.com>
+ <333e584c-2688-4a3f-bc1f-2e84d5215005@126.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <333e584c-2688-4a3f-bc1f-2e84d5215005@126.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-The following failure was reported:
+On 21.12.24 13:04, Ge Yang wrote:
+> 
+> 
+> 在 2024/12/21 0:30, David Hildenbrand 写道:
+>> On 20.12.24 09:56, Ge Yang wrote:
+>>>
+>>>
+>>> 在 2024/12/20 0:40, David Hildenbrand 写道:
+>>>> On 18.12.24 07:33, yangge1116@126.com wrote:
+>>>>> From: yangge <yangge1116@126.com>
+>>>>
+>>>> CCing Oscar, who worked on migrating these pages during memory offlining
+>>>> and alloc_contig_range().
+>>>>
+>>>>>
+>>>>> My machine has 4 NUMA nodes, each equipped with 32GB of memory. I
+>>>>> have configured each NUMA node with 16GB of CMA and 16GB of in-use
+>>>>> hugetlb pages. The allocation of contiguous memory via the
+>>>>> cma_alloc() function can fail probabilistically.
+>>>>>
+>>>>> The cma_alloc() function may fail if it sees an in-use hugetlb page
+>>>>> within the allocation range, even if that page has already been
+>>>>> migrated. When in-use hugetlb pages are migrated, they may simply
+>>>>> be released back into the free hugepage pool instead of being
+>>>>> returned to the buddy system. This can cause the
+>>>>> test_pages_isolated() function check to fail, ultimately leading
+>>>>> to the failure of the cma_alloc() function:
+>>>>> cma_alloc()
+>>>>>        __alloc_contig_migrate_range() // migrate in-use hugepage
+>>>>>        test_pages_isolated()
+>>>>>            __test_page_isolated_in_pageblock()
+>>>>>                 PageBuddy(page) // check if the page is in buddy
+>>>>
+>>>> I thought this would be working as expected, at least we tested it with
+>>>> alloc_contig_range / virtio-mem a while ago.
+>>>>
+>>>> On the memory_offlining path, we migrate hugetlb folios, but also
+>>>> dissolve any remaining free folios even if it means that we will going
+>>>> below the requested number of hugetlb pages in our pool.
+>>>>
+>>>> During alloc_contig_range(), we only migrate them, to then free them up
+>>>> after migration.
+>>>>
+>>>> Under which circumstances doe sit apply that "they may simply be
+>>>> released back into the free hugepage pool instead of being returned to
+>>>> the buddy system"?
+>>>>
+>>>
+>>> After migration, in-use hugetlb pages are only released back to the
+>>> hugetlb pool and are not returned to the buddy system.
+>>
+>> We had
+>>
+>> commit ae37c7ff79f1f030e28ec76c46ee032f8fd07607
+>> Author: Oscar Salvador <osalvador@suse.de>
+>> Date:   Tue May 4 18:35:29 2021 -0700
+>>
+>>       mm: make alloc_contig_range handle in-use hugetlb pages
+>>       alloc_contig_range() will fail if it finds a HugeTLB page within the
+>>       range, without a chance to handle them.  Since HugeTLB pages can be
+>>       migrated as any LRU or Movable page, it does not make sense to bail
+>> out
+>>       without trying.  Enable the interface to recognize in-use HugeTLB
+>> pages so
+>>       we can migrate them, and have much better chances to succeed the call.
+>>
+>>
+>> And I am trying to figure out if it never worked correctly, or if
+>> something changed that broke it.
+>>
+>>
+>> In start_isolate_page_range()->isolate_migratepages_block(), we do the
+>>
+>>       ret = isolate_or_dissolve_huge_page(page, &cc->migratepages);
+>>
+>> to add these folios to the cc->migratepages list.
+>>
+>> In __alloc_contig_migrate_range(), we migrate the pages using
+>> migrate_pages().
+>>
+>>
+>> After that, the src hugetlb folios should still be isolated?
+> Yes.
+> 
+> But I'm
+>> getting
+>> confused when these pages get un-silated and putback to hugetlb/freed.
+>>
+> If the migration is successful, call folio_putback_active_hugetlb to
+> release the src hugetlb folios back to the free hugetlb pool.
+> 
+> trace:
+> unmap_and_move_huge_page
+>       folio_putback_active_hugetlb
+>           folio_put
+>               free_huge_folio
+> 
+> alloc_contig_range_noprof
+>       __alloc_contig_migrate_range
+>       if (test_pages_isolated())  //to determine if hugetlb pages in buddy
+>           isolate_freepages_range //grab isolated pages from freelists.
+>       else
+>           undo_isolate_page_range //undo isolate
 
-[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
-[   10.848132][    T1] ------------[ cut here ]------------
-[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
-[   10.862827][    T1] Modules linked in:
-[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
-[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
-[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
-[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
-[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
+Ah, now I remember, thanks.
 
-Above shows that ACPI pointed a 16 MiB buffer for the log events because
-RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address the
-bug by mapping the region when needed instead of copying.
+So when we free an ordinary page, we put it onto the buddy isolate list, 
+from where we can grab it later and nobody can allocate it in the meantime.
 
-Cc: stable@vger.kernel.org # v2.6.16+
-Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
-Reported-by: Andy Liang <andy.liang@hpe.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
-Suggested-by: Matthew Garrett <mjg59@srcf.ucam.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v2:
-* There was some extra cruft (irrelevant diff), which is now wiped away.
-* Added missing tags (fixes, stable).
----
- drivers/char/tpm/eventlog/acpi.c   | 30 +++++--------------
- drivers/char/tpm/eventlog/common.c | 25 +++++++++++-----
- drivers/char/tpm/eventlog/common.h |  6 ++++
- drivers/char/tpm/eventlog/tpm1.c   | 38 +++++++++++++++--------
- drivers/char/tpm/eventlog/tpm2.c   | 48 +++++++++++++++++++-----------
- include/linux/tpm.h                |  1 +
- 6 files changed, 87 insertions(+), 61 deletions(-)
+In case of hugetlb, we simply free it back to hugetlb, from where it can 
+likely even get allocated immediately again.
 
-diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
-index 69533d0bfb51..8d8db66ce876 100644
---- a/drivers/char/tpm/eventlog/acpi.c
-+++ b/drivers/char/tpm/eventlog/acpi.c
-@@ -22,8 +22,6 @@
- #include <linux/slab.h>
- #include <linux/acpi.h>
- #include <linux/tpm_eventlog.h>
--
--#include "../tpm.h"
- #include "common.h"
- 
- struct acpi_tcpa {
-@@ -70,14 +68,11 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
- 	acpi_status status;
- 	void __iomem *virt;
- 	u64 len, start;
--	struct tpm_bios_log *log;
- 	struct acpi_table_tpm2 *tbl;
- 	struct acpi_tpm2_phy *tpm2_phy;
- 	int format;
- 	int ret;
- 
--	log = &chip->log;
--
- 	/* Unfortuntely ACPI does not associate the event log with a specific
- 	 * TPM, like PPI. Thus all ACPI TPMs will read the same log.
- 	 */
-@@ -135,36 +130,27 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
- 		return -EIO;
- 	}
- 
--	/* malloc EventLog space */
--	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
--	if (!log->bios_event_log)
--		return -ENOMEM;
--
--	log->bios_event_log_end = log->bios_event_log + len;
--
- 	virt = acpi_os_map_iomem(start, len);
- 	if (!virt) {
- 		dev_warn(&chip->dev, "%s: Failed to map ACPI memory\n", __func__);
- 		/* try EFI log next */
--		ret = -ENODEV;
--		goto err;
-+		return -ENODEV;
- 	}
- 
--	memcpy_fromio(log->bios_event_log, virt, len);
--
--	acpi_os_unmap_iomem(virt, len);
--
--	if (chip->flags & TPM_CHIP_FLAG_TPM2 &&
--	    !tpm_is_tpm2_log(log->bios_event_log, len)) {
-+	if (chip->flags & TPM_CHIP_FLAG_TPM2 && !tpm_is_tpm2_log(virt, len)) {
-+		acpi_os_unmap_iomem(virt, len);
- 		/* try EFI log next */
- 		ret = -ENODEV;
- 		goto err;
- 	}
- 
-+	acpi_os_unmap_iomem(virt, len);
-+	chip->flags |= TPM_CHIP_FLAG_ACPI_LOG;
-+	chip->log.bios_event_log = (void *)start;
-+	chip->log.bios_event_log_end = (void *)start + len;
- 	return format;
- 
- err:
--	devm_kfree(&chip->dev, log->bios_event_log);
--	log->bios_event_log = NULL;
-+	acpi_os_unmap_iomem(virt, len);
- 	return ret;
- }
-diff --git a/drivers/char/tpm/eventlog/common.c b/drivers/char/tpm/eventlog/common.c
-index 4c0bbba64ee5..44340ca6e2ac 100644
---- a/drivers/char/tpm/eventlog/common.c
-+++ b/drivers/char/tpm/eventlog/common.c
-@@ -27,6 +27,7 @@ static int tpm_bios_measurements_open(struct inode *inode,
- {
- 	int err;
- 	struct seq_file *seq;
-+	struct tpm_measurements *priv;
- 	struct tpm_chip_seqops *chip_seqops;
- 	const struct seq_operations *seqops;
- 	struct tpm_chip *chip;
-@@ -42,13 +43,18 @@ static int tpm_bios_measurements_open(struct inode *inode,
- 	get_device(&chip->dev);
- 	inode_unlock(inode);
- 
--	/* now register seq file */
-+	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	priv->chip = chip;
-+
- 	err = seq_open(file, seqops);
--	if (!err) {
--		seq = file->private_data;
--		seq->private = chip;
--	} else {
-+	if (err) {
-+		kfree(priv);
- 		put_device(&chip->dev);
-+	} else {
-+		seq = file->private_data;
-+		seq->private = priv;
- 	}
- 
- 	return err;
-@@ -58,11 +64,14 @@ static int tpm_bios_measurements_release(struct inode *inode,
- 					 struct file *file)
- {
- 	struct seq_file *seq = file->private_data;
--	struct tpm_chip *chip = seq->private;
-+	struct tpm_measurements *priv = seq->private;
-+	int ret;
- 
--	put_device(&chip->dev);
-+	put_device(&priv->chip->dev);
-+	ret = seq_release(inode, file);
-+	kfree(priv);
- 
--	return seq_release(inode, file);
-+	return ret;
- }
- 
- static const struct file_operations tpm_bios_measurements_ops = {
-diff --git a/drivers/char/tpm/eventlog/common.h b/drivers/char/tpm/eventlog/common.h
-index 47ff8136ceb5..ad89a0daf585 100644
---- a/drivers/char/tpm/eventlog/common.h
-+++ b/drivers/char/tpm/eventlog/common.h
-@@ -7,6 +7,12 @@ extern const struct seq_operations tpm1_ascii_b_measurements_seqops;
- extern const struct seq_operations tpm1_binary_b_measurements_seqops;
- extern const struct seq_operations tpm2_binary_b_measurements_seqops;
- 
-+struct tpm_measurements {
-+	struct tpm_chip *chip;
-+	void *start;
-+	void *end;
-+};
-+
- #if defined(CONFIG_ACPI)
- int tpm_read_log_acpi(struct tpm_chip *chip);
- #else
-diff --git a/drivers/char/tpm/eventlog/tpm1.c b/drivers/char/tpm/eventlog/tpm1.c
-index 12ee42a31c71..a10aca7c25df 100644
---- a/drivers/char/tpm/eventlog/tpm1.c
-+++ b/drivers/char/tpm/eventlog/tpm1.c
-@@ -22,11 +22,8 @@
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/tpm_eventlog.h>
--
--#include "../tpm.h"
- #include "common.h"
- 
--
- static const char* tcpa_event_type_strings[] = {
- 	"PREBOOT",
- 	"POST CODE",
-@@ -70,20 +67,32 @@ static const char* tcpa_pc_event_id_strings[] = {
- static void *tpm1_bios_measurements_start(struct seq_file *m, loff_t *pos)
- {
- 	loff_t i = 0;
--	struct tpm_chip *chip = m->private;
-+	struct tpm_measurements *priv = m->private;
-+	struct tpm_chip *chip = priv->chip;
- 	struct tpm_bios_log *log = &chip->log;
--	void *addr = log->bios_event_log;
--	void *limit = log->bios_event_log_end;
- 	struct tcpa_event *event;
- 	u32 converted_event_size;
- 	u32 converted_event_type;
-+	size_t log_size;
-+	void *addr;
-+
-+	log_size = log->bios_event_log_end - log->bios_event_log;
-+
-+	priv->start = !(chip->flags & TPM_CHIP_FLAG_ACPI_LOG) ?
-+		      log->bios_event_log :
-+		      acpi_os_map_iomem((unsigned long)log->bios_event_log, log_size);
-+	if (!priv->start)
-+		return NULL;
-+	priv->end = priv->start + log_size;
-+
-+	addr = priv->start;
- 
- 	/* read over *pos measurements */
- 	do {
- 		event = addr;
- 
- 		/* check if current entry is valid */
--		if (addr + sizeof(struct tcpa_event) > limit)
-+		if (addr + sizeof(struct tcpa_event) > priv->end)
- 			return NULL;
- 
- 		converted_event_size =
-@@ -93,7 +102,7 @@ static void *tpm1_bios_measurements_start(struct seq_file *m, loff_t *pos)
- 
- 		if (((converted_event_type == 0) && (converted_event_size == 0))
- 		    || ((addr + sizeof(struct tcpa_event) + converted_event_size)
--			> limit))
-+			> priv->end))
- 			return NULL;
- 
- 		if (i++ == *pos)
-@@ -109,9 +118,7 @@ static void *tpm1_bios_measurements_next(struct seq_file *m, void *v,
- 					loff_t *pos)
- {
- 	struct tcpa_event *event = v;
--	struct tpm_chip *chip = m->private;
--	struct tpm_bios_log *log = &chip->log;
--	void *limit = log->bios_event_log_end;
-+	struct tpm_measurements *priv = m->private;
- 	u32 converted_event_size;
- 	u32 converted_event_type;
- 
-@@ -121,7 +128,7 @@ static void *tpm1_bios_measurements_next(struct seq_file *m, void *v,
- 	v += sizeof(struct tcpa_event) + converted_event_size;
- 
- 	/* now check if current entry is valid */
--	if ((v + sizeof(struct tcpa_event)) > limit)
-+	if ((v + sizeof(struct tcpa_event)) > priv->end)
- 		return NULL;
- 
- 	event = v;
-@@ -130,7 +137,7 @@ static void *tpm1_bios_measurements_next(struct seq_file *m, void *v,
- 	converted_event_type = do_endian_conversion(event->event_type);
- 
- 	if (((converted_event_type == 0) && (converted_event_size == 0)) ||
--	    ((v + sizeof(struct tcpa_event) + converted_event_size) > limit))
-+	    ((v + sizeof(struct tcpa_event) + converted_event_size) > priv->end))
- 		return NULL;
- 
- 	return v;
-@@ -138,6 +145,11 @@ static void *tpm1_bios_measurements_next(struct seq_file *m, void *v,
- 
- static void tpm1_bios_measurements_stop(struct seq_file *m, void *v)
- {
-+	struct tpm_measurements *priv = m->private;
-+	struct tpm_chip *chip = priv->chip;
-+
-+	if (!!(chip->flags & TPM_CHIP_FLAG_ACPI_LOG))
-+		acpi_os_unmap_iomem(priv->start, priv->end - priv->start);
- }
- 
- static int get_event_name(char *dest, struct tcpa_event *event,
-diff --git a/drivers/char/tpm/eventlog/tpm2.c b/drivers/char/tpm/eventlog/tpm2.c
-index 37a05800980c..23a12482415b 100644
---- a/drivers/char/tpm/eventlog/tpm2.c
-+++ b/drivers/char/tpm/eventlog/tpm2.c
-@@ -12,14 +12,13 @@
-  * content.
-  */
- 
-+#include "linux/tpm.h"
- #include <linux/seq_file.h>
- #include <linux/fs.h>
- #include <linux/security.h>
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/tpm_eventlog.h>
--
--#include "../tpm.h"
- #include "common.h"
- 
- /*
-@@ -41,20 +40,31 @@ static size_t calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
- 
- static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
- {
--	struct tpm_chip *chip = m->private;
-+	struct tpm_measurements *priv = m->private;
-+	struct tpm_chip *chip = priv->chip;
- 	struct tpm_bios_log *log = &chip->log;
--	void *addr = log->bios_event_log;
--	void *limit = log->bios_event_log_end;
- 	struct tcg_pcr_event *event_header;
- 	struct tcg_pcr_event2_head *event;
--	size_t size;
-+	size_t size, log_size;
-+	void *addr;
- 	int i;
- 
-+	log_size = log->bios_event_log_end - log->bios_event_log;
-+
-+	priv->start = !(chip->flags & TPM_CHIP_FLAG_ACPI_LOG) ?
-+		      log->bios_event_log :
-+		      acpi_os_map_iomem((unsigned long)log->bios_event_log, log_size);
-+	if (!priv->start)
-+		return NULL;
-+
-+	priv->end = priv->start + log_size;
-+
-+	addr = priv->start;
- 	event_header = addr;
- 	size = struct_size(event_header, event, event_header->event_size);
- 
- 	if (*pos == 0) {
--		if (addr + size < limit) {
-+		if (addr + size < priv->end) {
- 			if ((event_header->event_type == 0) &&
- 			    (event_header->event_size == 0))
- 				return NULL;
-@@ -66,7 +76,7 @@ static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
- 		addr += size;
- 		event = addr;
- 		size = calc_tpm2_event_size(event, event_header);
--		if ((addr + size >=  limit) || (size == 0))
-+		if ((addr + size >= priv->end) || !size)
- 			return NULL;
- 	}
- 
-@@ -74,7 +84,7 @@ static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
- 		event = addr;
- 		size = calc_tpm2_event_size(event, event_header);
- 
--		if ((addr + size >= limit) || (size == 0))
-+		if ((addr + size >= priv->end) || !size)
- 			return NULL;
- 		addr += size;
- 	}
-@@ -87,14 +97,12 @@ static void *tpm2_bios_measurements_next(struct seq_file *m, void *v,
- {
- 	struct tcg_pcr_event *event_header;
- 	struct tcg_pcr_event2_head *event;
--	struct tpm_chip *chip = m->private;
--	struct tpm_bios_log *log = &chip->log;
--	void *limit = log->bios_event_log_end;
-+	struct tpm_measurements *priv = m->private;
- 	size_t event_size;
- 	void *marker;
- 
- 	(*pos)++;
--	event_header = log->bios_event_log;
-+	event_header = priv->start;
- 
- 	if (v == SEQ_START_TOKEN) {
- 		event_size = struct_size(event_header, event,
-@@ -109,13 +117,13 @@ static void *tpm2_bios_measurements_next(struct seq_file *m, void *v,
- 	}
- 
- 	marker = marker + event_size;
--	if (marker >= limit)
-+	if (marker >= priv->end)
- 		return NULL;
- 	v = marker;
- 	event = v;
- 
- 	event_size = calc_tpm2_event_size(event, event_header);
--	if (((v + event_size) >= limit) || (event_size == 0))
-+	if (((v + event_size) >= priv->end) || !event_size)
- 		return NULL;
- 
- 	return v;
-@@ -123,13 +131,17 @@ static void *tpm2_bios_measurements_next(struct seq_file *m, void *v,
- 
- static void tpm2_bios_measurements_stop(struct seq_file *m, void *v)
- {
-+	struct tpm_measurements *priv = m->private;
-+	struct tpm_chip *chip = priv->chip;
-+
-+	if (!!(chip->flags & TPM_CHIP_FLAG_ACPI_LOG))
-+		acpi_os_unmap_iomem(priv->start, priv->end - priv->start);
- }
- 
- static int tpm2_binary_bios_measurements_show(struct seq_file *m, void *v)
- {
--	struct tpm_chip *chip = m->private;
--	struct tpm_bios_log *log = &chip->log;
--	struct tcg_pcr_event *event_header = log->bios_event_log;
-+	struct tpm_measurements *priv = m->private;
-+	struct tcg_pcr_event *event_header = priv->start;
- 	struct tcg_pcr_event2_head *event = v;
- 	void *temp_ptr;
- 	size_t size;
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 20a40ade8030..f3d12738b93b 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -348,6 +348,7 @@ enum tpm_chip_flags {
- 	TPM_CHIP_FLAG_SUSPENDED			= BIT(8),
- 	TPM_CHIP_FLAG_HWRNG_DISABLED		= BIT(9),
- 	TPM_CHIP_FLAG_DISABLE			= BIT(10),
-+	TPM_CHIP_FLAG_ACPI_LOG		= BIT(11),
- };
- 
- #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
+I think that can actually happen in your proposal: the now-free page 
+will get reallocated, for example for migrating the next folio. Or some 
+concurrent system activity can simply allocate the now-free folio. Or am 
+I missing something that prevents these now-free hugetlb folios from 
+getting re-allocated after migration succeeded?
+
+
+Conceptually, I think we would want migration code in the case of 
+alloc_contig_range() to allocate a new folio from the buddy, and to free 
+the old one back to the buddy immediately, without ever allowing 
+re-allocation of it.
+
+What needs to be handled is detecting that
+
+(a) we want to allocate a fresh hugetlb folio as migration target
+(b) if migration succeeds, we have to free the hugetlb folio back to the 
+buddy
+(c) if migation fails, we have to free the allocated hugetlb foliio back 
+to the buddy
+
+
+We could provide a custom alloc_migration_target that we pass to 
+migrate_page to allocate a fresh hugetlb folio to handle (a). Using the 
+put_new_folio callback we could handle (c). (b) would need some thought.
+
+Maybe we can also just mark the source folio as we isolate it, and 
+enlighten migration+freeing code to handle it automatically?
+
+Hoping to get some feedback from hugetlb maintainers.
+
 -- 
-2.47.1
+Cheers,
+
+David / dhildenb
 
 
