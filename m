@@ -1,294 +1,232 @@
-Return-Path: <stable+bounces-105536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2239FA1B4
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 18:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 581FA9FA1CF
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 19:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10D1188D51A
-	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 17:06:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66271188BAF4
+	for <lists+stable@lfdr.de>; Sat, 21 Dec 2024 18:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6DC1547F0;
-	Sat, 21 Dec 2024 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E22816C854;
+	Sat, 21 Dec 2024 18:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ux+eQ7nD"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="cyiJ9BFH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3326A154BE4;
-	Sat, 21 Dec 2024 17:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60D51547F0
+	for <stable@vger.kernel.org>; Sat, 21 Dec 2024 18:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734800808; cv=none; b=Ol1RTTviHcl/V+/ElZCzkMlMxPf4Mk1EW/ZPID43/wr2VHH3nOjMWtUMFpe1tD/fHsQRL+aZ2uJUU22vI8CVP+ODEwxfXYeVGpDmiiBhF6N34tR6LXnEHW0dxVIRev4qxZHjc5vnfmWRLLvn54oySl4NcKE35KjCU3ULvqZIa1E=
+	t=1734804497; cv=none; b=SY+MEJPDWgSuwbFJm7IC21ybtmag8Nw5sceT2BNYE7iB1CRkKRChdV6hem+3OSNjAtblcr73NzuG/zSkt/IHoBc+gGDoEjJZfwAIRT0Ys0nckrmFnEhtWaqFZnLHPZ+tfYt0+dipI3/CeHQ2x3STxoE7p8yfViQv4UEj795cVN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734800808; c=relaxed/simple;
-	bh=KQ9kRAwsMgtVXjzCbzp/JSJRsjYcY4KE8q41rvpS99g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YAbRIjpxF0ffnAa1pzFeVyPE33AOkVfaX+dxAop6uzYu0mdmeWHS4/epVYPpwweTWc3iX4pq9d3VUEIN7gqSmSJQEllxdsm17kOiPVH86aM5ruo26n7hwinjMMc+we4QYRL8sPFaHemu5QME9YB5FF+OfQmhzhwRUVtN4+Caz0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ux+eQ7nD; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53e389d8dc7so3013523e87.0;
-        Sat, 21 Dec 2024 09:06:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734800804; x=1735405604; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=agKbG4Ad2aFh5DQ9Ty8+oto7J07OzvutBur24QnJNbs=;
-        b=Ux+eQ7nDPi0Rarr+HcVrMb1AsczhpkNU7N9BrPH675CGsQRR/3n/T1shp/WF5Ku9wy
-         vnP3X3uuWTAmjT0ppONk+GEjsJ6+rIk8OlwZTJuDdbqSnUzRBaf6aKsE2N9Ai6DGj20/
-         WJVTBY4qQ0uAkjIuatN+wAG0MofbnNVeOv0ME8zAeR+WmAiHcopJDWL/9ne/hq4wgf7p
-         m++IlZxthHs+AWa2Qt6paxe5V21WO9ugLc1SuW2TJ9DmGihHXVmh396m2DOVZoFULpeF
-         lJue6x+jHUHlBJluQSkld5NQM3xi4k1uNvTCPfIesTP7W+PIxN7y8W2VXxid6MMn8jmR
-         g/qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734800804; x=1735405604;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=agKbG4Ad2aFh5DQ9Ty8+oto7J07OzvutBur24QnJNbs=;
-        b=q6OQG4hyGCZVUxv2JZ0leHd2H8bLmUMIpxE7g48Roto2aVBXaAjmSSY/K5h8UEfGq6
-         OuNyWbTredK1gWBDZ3jrntjnwEDZwWnnIwwOdRpHXKw6xKs+PraYztEtAgc3JHYK7GSs
-         5V+LP3ZRWjGmT1sEGkq6EzfejpejJAZejjsOCylP7hJOhuOoO5ogbDlJOttbLbPGFVcV
-         QEhkFF8O4sLzSmY5SUHh+0Mm7uMkqdv1MZerDcS/CdqIkKgX8f/Y9tkXSGmuH13gdPV0
-         G3bOJR2ppwk50DJqv+hnr+wMpzQ5IzDvwHDpnvzhh3O3UqIXkoaefemuGO5TSffUiZ3d
-         gvKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVg9fnQQ0YEcgYXur2nIZMdyfl+afgCI01RmWQMLrVxignfPnrFDPwOEJyQmHd65dcxwE2TxqF3@vger.kernel.org, AJvYcCW+OiFt+0Xes4r9in2AofR41veFORXdGDZ8TJUNb1AIAoO5qKNZF5tihdErgG75OgsUKM0YxICOY2iUsc4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTC/Do4+fVxNbGPtWhkuD9ZIyTC0Fht4Y4HcIuDKD1vurP2RQH
-	FhM0cAnCRgmqs/wQ1mqcrDbQX67LuY/0K3CYjN6fdfVtl9XgdY0C/3OaCGgzbxUWjum2mxTt2Rs
-	bMov+YExOXw16n5HGFukACxtJmO8=
-X-Gm-Gg: ASbGncsnR8DTVeXPUbqmzuMu6ZAwunRCzyzwbsE/T3gZ7dETmImklkscvKM71UVVWlM
-	CZGzTH1czUFbapJ9ZLm5JdE8KqIwOaXjDqWGh8aP7/cLjdJkdDh/sK9/cF3Fd+tqtlhko
-X-Google-Smtp-Source: AGHT+IFlbPcGmfsM9lCdXkpNmrdsNPjnuj/3oeIGySw+8+ouW9qKDdkS6zFmZVV0L0qLBb8weZW1jPVbzwqmFTzG3VQ=
-X-Received: by 2002:a05:6512:2214:b0:53e:38df:672a with SMTP id
- 2adb3069b0e04-5422956289amr2032769e87.36.1734800803975; Sat, 21 Dec 2024
- 09:06:43 -0800 (PST)
+	s=arc-20240116; t=1734804497; c=relaxed/simple;
+	bh=16YzqKFTkTvxfdNNZkdNT4Z2zvtpvGIgupdWLbfzORg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=bwtLotaIdsYmk75FINsloZUicWIdjQ6cGMx3CJgCRc9z3zQ4zKAlvzsdJKJy3MiCr8NQ3jZbLwVffM0bGaCGLvHTxu4djJWCmPyuckwbXf2m1d6phA8Y/Wg0W9OUQ2WsPxLHEu4uKsBFqDVvlNh9z/71VOY/pYUAkBCuQ39VAmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=cyiJ9BFH; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20241221180805epoutp01f446a9616a7730816be283aae8ed2a44~TQ3zz7jl51863018630epoutp01Y
+	for <stable@vger.kernel.org>; Sat, 21 Dec 2024 18:08:05 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20241221180805epoutp01f446a9616a7730816be283aae8ed2a44~TQ3zz7jl51863018630epoutp01Y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1734804485;
+	bh=uARgmvpASQAKIdPH6Cgx961uzCEyQMHmG6n3EbcH7Rg=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=cyiJ9BFHm8VyLCKTZPTL+M1ZxJ2tshAH6w4ia6zSzA7TdMj+zlC0ciQBBSxnjcd2Z
+	 hULuo6MXtTpW9030te2fCaeb2uHefAj6d4oJmSCU8HTMi2Rd4u2AlmtRmXkKqUJqOw
+	 pZ7CBrg7KIHC2YiLeGE5wi2SMC1WLHixKGekijgU=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+	20241221180803epcas5p4e87fc1316126f340b88723ebf0758236~TQ3yXZmxP0138001380epcas5p4V;
+	Sat, 21 Dec 2024 18:08:03 +0000 (GMT)
+Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.175]) by
+	epsnrtp4.localdomain (Postfix) with ESMTP id 4YFshf4mggz4x9Pq; Sat, 21 Dec
+	2024 18:08:02 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+	epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	A7.79.29212.20407676; Sun, 22 Dec 2024 03:08:02 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20241221180801epcas5p29e3c0c70e8876befc6c2d1eb68b0f59c~TQ3v_z0Mz0557705577epcas5p2r;
+	Sat, 21 Dec 2024 18:08:01 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20241221180801epsmtrp1a63c9f4f09936cfe23ddf812c3c6a9dc~TQ3v9Bz_33112231122epsmtrp1f;
+	Sat, 21 Dec 2024 18:08:01 +0000 (GMT)
+X-AuditID: b6c32a50-801fa7000000721c-12-676704029763
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	6A.F4.18729.10407676; Sun, 22 Dec 2024 03:08:01 +0900 (KST)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20241221180758epsmtip1419674e0523f6dd79646a0e0867cd729~TQ3tepSQP2035020350epsmtip1h;
+	Sat, 21 Dec 2024 18:07:58 +0000 (GMT)
+Message-ID: <6629115f-5208-42fe-8bf4-25d808129741@samsung.com>
+Date: Sat, 21 Dec 2024 23:37:57 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+icZUWHU=oXOEj5wHTzxrw_wj1w5hTvqq8Ry400s0ZCJjTEZw@mail.gmail.com>
- <099d3a80-4fdb-49a7-9fd0-207d7386551f@citrix.com> <CA+icZUX98gQ54hePEWNauiU41XQV7qdKJx5PiiXzxy+6yW7hTw@mail.gmail.com>
- <CA+icZUW-i53boHBPt+8zh-D921XFbPb_Kc=dzdgCK1QvkOgCsw@mail.gmail.com>
- <90640a5d-ff17-4555-adc6-ae9e21e24ebd@citrix.com> <CA+icZUVo69swc9QfwJr+mDuHqJKcFUexc08voP2O41g31HGx5w@mail.gmail.com>
- <43166e29-ff2d-4a9d-8c1b-41b5e247974b@citrix.com>
-In-Reply-To: <43166e29-ff2d-4a9d-8c1b-41b5e247974b@citrix.com>
-Reply-To: sedat.dilek@gmail.com
-From: Sedat Dilek <sedat.dilek@gmail.com>
-Date: Sat, 21 Dec 2024 18:06:06 +0100
-Message-ID: <CA+icZUVhzsc+_PJr0RSwaVQTbz5TKa8wmyzgBNQEcody4YGesg@mail.gmail.com>
-Subject: Re: [Linux-6.12.y] XEN: CVE-2024-53241 / XSA-466 and Clang-kCFI
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Juergen Gross <jgross@suse.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Jan Beulich <jbeulich@suse.com>, 
-	Josh Poimboeuf <jpoimboe@redhat.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, 
-	xen-devel <xen-devel@lists.xenproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: gadget: f_midi: Fixing wMaxPacketSize exceeded
+ issue during MIDI bind retries
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: quic_jjohnson@quicinc.com, kees@kernel.org, abdul.rahim@myyahoo.com,
+	m.grzeschik@pengutronix.de, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, naushad@samsung.com, akash.m5@samsung.com,
+	rc93.raju@samsung.com, taehyun.cho@samsung.com, hongpooh.kim@samsung.com,
+	eomji.oh@samsung.com, shijie.cai@samsung.com, alim.akhtar@samsung.com,
+	stable@vger.kernel.org
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <2024122007-flail-traverse-b7b8@gregkh>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrBJsWRmVeSWpSXmKPExsWy7bCmhi4TS3q6webJihbTp21ktXhzdRWr
+	xYN529gs7iyYxmRxavlCJovmxevZLCbt2cpicffhDxaLdW/Ps1pc3jWHzWLRslZmiy1tV5gs
+	Ph39z2rRuOUuq8WqzjksFpe/72S2WLDxEaPFpIOiDkIem1Z1snnsn7uG3ePYi+PsHv1/DTwm
+	7qnz6NuyitHj8ya5APaobJuM1MSU1CKF1Lzk/JTMvHRbJe/geOd4UzMDQ11DSwtzJYW8xNxU
+	WyUXnwBdt8wcoCeUFMoSc0qBQgGJxcVK+nY2RfmlJakKGfnFJbZKqQUpOQUmBXrFibnFpXnp
+	enmpJVaGBgZGpkCFCdkZ7fP3shecUar4Of0DYwPjZJkuRg4OCQETiZPr1bsYuTiEBPYwSjT1
+	XWbqYuQEcj4xSpx4WQphf2OU+LYqA8QGqd/5Yz8zRMNeRonunndQzltGiRnnXjKDVPEK2Ens
+	btvPCmKzCKhKPJ1/GCouKHFy5hMWEFtUQF7i/q0Z7CC2sECmxNfpXYwgtoiAhsTLo7dYQIYy
+	C6xhlrj5pZcNJMEsIC5x68l8JpCz2QQMJZ6dsAEJcwJdtGL3H1aIEnmJ5q2zwQ6SEHjBIfHp
+	+G12iLNdJObt2sYKYQtLvDq+BSouJfGyvw3KTpbYM+kLlJ0hcWjVIWYI215i9YIzrCB7mQU0
+	Jdbv0ofYxSfR+/sJEyQUeSU62oQgqlUlTjVeZoOwpSXuLbkGtdVD4lTbd3ZIWH1hkpjXe4Rl
+	AqPCLKRgmYXky1lI3pmFsHkBI8sqRqnUguLc9NRk0wJD3bzUcnh8J+fnbmIEJ3GtgB2Mqzf8
+	1TvEyMTBeIhRgoNZSYSXRy41XYg3JbGyKrUoP76oNCe1+BCjKTCCJjJLiSbnA/NIXkm8oYml
+	gYmZmZmJpbGZoZI47+vWuSlCAumJJanZqakFqUUwfUwcnFINTNrX2b4yfVwteuyCdIKDReOr
+	rj0nHr7SOhQ8/eNHRjUlTdWFsutOLY5L9nF4uaR6Y2Jv3vfv9mW7HvnPu77w6bRgsz/8h/VC
+	djvWvbzqGRO+Z5Hi6xsrr/+rFHXx3VWQ3Ja0dqamqVlEz3Eu1fuf14Rv9Xv9dG68dcyerF/v
+	/906V33x0J35akc+2q4482Jae5e6/uWWJ3YMCyIregSj9j6ROq5+Pc1oblrkOoF6b6udmfp5
+	EotXN7HL33zMuXJyxqsN5o12RvnCPx6yx5Y4C7LN8VgZd9Rlp22W6ro5Ec9LJi9ped1vLeh4
+	5zSbZaWP6F/BxBlqT08U/xTS3HlreknrHke+J06a5nyfo+57TlViKc5INNRiLipOBAAGtjJx
+	awQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGIsWRmVeSWpSXmKPExsWy7bCSnC4jS3q6wYQ2Dovp0zayWry5uorV
+	4sG8bWwWdxZMY7I4tXwhk0Xz4vVsFpP2bGWxuPvwB4vFurfnWS0u75rDZrFoWSuzxZa2K0wW
+	n47+Z7Vo3HKX1WJV5xwWi8vfdzJbLNj4iNFi0kFRByGPTas62Tz2z13D7nHsxXF2j/6/Bh4T
+	99R59G1ZxejxeZNcAHsUl01Kak5mWWqRvl0CV0b7/L3sBWeUKn5O/8DYwDhZpouRk0NCwERi
+	54/9zF2MXBxCArsZJe41zGODSEhLvJ7VxQhhC0us/PecHaLoNaPEwqYTTCAJXgE7id1t+1lB
+	bBYBVYmn8w8zQ8QFJU7OfMICYosKyEvcvzWDHcQWFsiUuHdqJtgCEQENiZdHb7GADGUWWMMs
+	8WtGByPEhi9MEk/27QObyiwgLnHryXygbRwcbAKGEs9O2ICEOYHOXrH7D1SJmUTXVohLmYGW
+	NW+dzTyBUWgWkjtmIZk0C0nLLCQtCxhZVjFKphYU56bnFhsWGOallusVJ+YWl+al6yXn525i
+	BEetluYOxu2rPugdYmTiYDzEKMHBrCTCyyOXmi7Em5JYWZValB9fVJqTWnyIUZqDRUmcV/xF
+	b4qQQHpiSWp2ampBahFMlomDU6qByY3ZyMvh14MDV3VKGT6ovCubcDtX4vefiuaAEzxf3yTo
+	rCkScZo9/fsJ/7eyQSsPM79a8m3tDz7rczN3ftzqdPWJIn9UmM9fvvpOvm0VnIoR60q32thF
+	TnZ+zBAfZHZUnJkzLH1G99xrnrJCt3KD989cWK0/s2rGj84dmrqlOkWBllYSN9NDTf+c57ty
+	Ufv7wklsN/x1MkMuzfntc7ZJdz+/BrviEV8hg7PNiiuUZx+yW9Bh1n7w8bYe2+37Chv8Zs02
+	aFKQK5z0qliEs3ke55Opqg9T7t4yZ2O2Xrrenu3Fvp3TbGLW79jgJFoq4fVMKvTiKmYFfvbD
+	TmWSn9kMsiRs5T46sh64Otf9mK+EEktxRqKhFnNRcSIAesMfV0kDAAA=
+X-CMS-MailID: 20241221180801epcas5p29e3c0c70e8876befc6c2d1eb68b0f59c
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20241208152338epcas5p4fde427bb4467414417083221067ac7ab
+References: <CGME20241208152338epcas5p4fde427bb4467414417083221067ac7ab@epcas5p4.samsung.com>
+	<20241208152322.1653-1-selvarasu.g@samsung.com>
+	<2024121845-cactus-geology-8df3@gregkh>
+	<9f16a8ac-1623-425e-a46e-41e4133218e5@samsung.com>
+	<2024122013-scary-paver-fcff@gregkh>
+	<a1dedf06-e804-4580-a690-25e55312eab8@samsung.com>
+	<2024122007-flail-traverse-b7b8@gregkh>
 
-On Fri, Dec 20, 2024 at 2:39=E2=80=AFAM Andrew Cooper <andrew.cooper3@citri=
-x.com> wrote:
+
+On 12/20/2024 8:45 PM, Greg KH wrote:
+> On Fri, Dec 20, 2024 at 07:02:06PM +0530, Selvarasu Ganesan wrote:
+>> On 12/20/2024 5:54 PM, Greg KH wrote:
+>>> On Wed, Dec 18, 2024 at 03:51:50PM +0530, Selvarasu Ganesan wrote:
+>>>> On 12/18/2024 11:01 AM, Greg KH wrote:
+>>>>> On Sun, Dec 08, 2024 at 08:53:20PM +0530, Selvarasu Ganesan wrote:
+>>>>>> The current implementation sets the wMaxPacketSize of bulk in/out
+>>>>>> endpoints to 1024 bytes at the end of the f_midi_bind function. However,
+>>>>>> in cases where there is a failure in the first midi bind attempt,
+>>>>>> consider rebinding.
+>>>>> What considers rebinding?  Your change does not modify that.
+>>>> Hi Greg,
+>>>> Thanks for your review comments.
+>>>>
+>>>>
+>>>> Here the term "rebind" in this context refers to attempting to bind the
+>>>> MIDI function a second time in certain scenarios.
+>>>> The situations where rebinding is considered include:
+>>>>
+>>>>     * When there is a failure in the first UDC write attempt, which may be
+>>>>       caused by other functions bind along with MIDI
+>>>>     * Runtime composition change : Example : MIDI,ADB to MIDI. Or MIDI to
+>>>>       MIDI,ADB
+>>>>
+>>>> The issue arises during the second time the "f_midi_bind" function is
+>>>> called. The problem lies in the fact that the size of
+>>>> "bulk_in_desc.wMaxPacketSize" is set to 1024 during the first call,
+>>>> which exceeds the hardware capability of the dwc3 TX/RX FIFO
+>>>> (ep->maxpacket_limit = 512).
+>>> Ok, but then why not properly reset ALL of the options/values when a
+>>> failure happens, not just this one when the initialization happens
+>>> again?  Odds are you might be missing the change of something else here
+>>> as well, right?
+>> Are you suggesting that we reset the entire value of
+>> usb_endpoint_descriptor before call usb_ep_autoconfig? If so, Sorry I am
+>> not clear on your reasoning for wanting to reset all options/values.
+>> After all, all values will be overwritten
+>> afterusb_ep_autoconfig.Additionally, the wMaxPacketSize is the only
+>> value being checked during the EP claim process (usb_ep_autoconfig), and
+>> it has caused issues where claiming wMaxPacketSize is grater than
+>> ep->maxpacket_limit.
+> Then fix up that value on failure, if things fail you should reset it
+> back to a "known good state", right?  And what's wrong with resetting
+> all of the values anyway, wouldn't that be the correct thing to do?
+
+Yes, It's back to known good state if we reset wMaxPacketSize. There is 
+no point to reset all values in the usb endpoint descriptor structure as 
+all the member of this structure are predefined value except 
+wMaxPacketSize and bEndpointAddress. The bEndpointAddress is obtain as 
+part of usb_ep_autoconfig.
+
+static struct usb_endpoint_descriptor bulk_out_desc = {
+         .bLength =              USB_DT_ENDPOINT_AUDIO_SIZE,
+         .bDescriptorType =      USB_DT_ENDPOINT,
+         .bEndpointAddress =     USB_DIR_OUT,
+         .bmAttributes =         USB_ENDPOINT_XFER_BULK,
+};
+
+>>> Also, cleaning up from an error is a better thing to do than forcing
+>>> something to be set all the time when you don't have anything gone
+>>> wrong.
+>> As I previously mentioned, this is a general approach to set
+>> wMaxPacketSize before claiming the endpoint. This is because the
+>> usb_ep_autoconfig treats endpoint descriptors as if they were full
+>> speed. Following the same pattern as other function drivers, that
+>> approach allows us to claim the EP with using a full-speed descriptor.
+>> We can use the same approach here instead of resetting wMaxPacketSize
+>> every time.
+>>
+>> The following provided code is used to claim an EP with a full-speed
+>> bulk descriptor in MIDI. Its also working solution.  But, We thinking
+>> that it may unnecessarily complicate the code as it only utilizes the
+>> full descriptor for obtaining the EP address here. What you think shall
+>> we go with below approach instead of rest wMaxPacketSize before call
+>> usb_ep_autoconfig?
+> I don't know, what do you think is best to do?  You are the one having
+> problems and will need to fix any bugs that your changes will cause :)
 >
-> On 20/12/2024 12:27 am, Sedat Dilek wrote:
-> > On Fri, Dec 20, 2024 at 12:26=E2=80=AFAM Andrew Cooper
-> > <andrew.cooper3@citrix.com> wrote:
-> >> On 19/12/2024 11:10 pm, Sedat Dilek wrote:
-> >>> On Thu, Dec 19, 2024 at 6:07=E2=80=AFPM Sedat Dilek <sedat.dilek@gmai=
-l.com> wrote:
-> >>>> On Thu, Dec 19, 2024 at 5:44=E2=80=AFPM Andrew Cooper <andrew.cooper=
-3@citrix.com> wrote:
-> >>>>> On 19/12/2024 4:14 pm, Sedat Dilek wrote:
-> >>>>>> Hi,
-> >>>>>>
-> >>>>>> Linux v6.12.6 will include XEN CVE fixes from mainline.
-> >>>>>>
-> >>>>>> Here, I use Debian/unstable AMD64 and the SLIM LLVM toolchain 19.1=
-.x
-> >>>>>> from kernel.org.
-> >>>>>>
-> >>>>>> What does it mean in ISSUE DESCRIPTION...
-> >>>>>>
-> >>>>>> Furthermore, the hypercall page has no provision for Control-flow
-> >>>>>> Integrity schemes (e.g. kCFI/CET-IBT/FineIBT), and will simply
-> >>>>>> malfunction in such configurations.
-> >>>>>>
-> >>>>>> ...when someone uses Clang-kCFI?
-> >>>>> The hypercall page has functions of the form:
-> >>>>>
-> >>>>>     MOV $x, %eax
-> >>>>>     VMCALL / VMMCALL / SYSCALL
-> >>>>>     RET
-> >>>>>
-> >>>>> There are no ENDBR instructions, and no prologue/epilogue for hash-=
-based
-> >>>>> CFI schemes.
-> >>>>>
-> >>>>> This is because it's code provided by Xen, not code provided by Lin=
-ux.
-> >>>>>
-> >>>>> The absence of ENDBR instructions will yield #CP when CET-IBT is ac=
-tive,
-> >>>>> and the absence of hash prologue/epilogue lets the function be used=
- in a
-> >>>>> type-confused manor that CFI should have caught.
-> >>>>>
-> >>>>> ~Andrew
-> >>>> Thanks for the technical explanation, Andrew.
-> >>>>
-> >>>> Hope that helps the folks of "CLANG CONTROL FLOW INTEGRITY SUPPORT".
-> >>>>
-> >>>> I am not an active user of XEN in the Linux-kernel but I am willing =
-to
-> >>>> test when Linux v6.12.6 is officially released and give feedback.
-> >>>>
-> >>> https://wiki.xenproject.org/wiki/Testing_Xen#Presence_test
-> >>> https://wiki.xenproject.org/wiki/Testing_Xen#Commands_for_presence_te=
-sting
-> >>>
-> >>> # apt install -t unstable xen-utils-4.17 -y
-> >>>
-> >>> # xl list
-> >>> Name                                        ID   Mem VCPUs      State=
-   Time(s)
-> >>> Domain-0                                     0  7872     4     r-----=
-     398.2
-> >>>
-> >>> Some basic tests LGTM - see also attached stuff.
-> >>>
-> >>> If you have any tests to recommend, let me know.
-> >> That itself is good enough as a smoke test.  Thankyou for trying it ou=
-t.
-> >>
-> >> If you want something a bit more thorough, try
-> >> https://xenbits.xen.org/docs/xtf/  (Xen's self-tests)
-> >>
-> >> Grab and build it, and `./xtf-runner -aqq --host` will run a variety o=
-f
-> >> extra codepaths in dom0, without the effort of making/running full gue=
-sts.
-> >>
-> >> ~Andrew
-> > Run on Debian 6.12.5 and my selfmade 6.12.5 and 6.12.6.
-> > All tests lead to a reboot in case of Debian or in my kernels to a shut=
-down.
-> >
-> > Can you recommend a specific test?
+> thanks,
 >
-> Oh, that's distinctly less good.
->
-> Start with just "example".  It's literally a hello world microkernel,
-> but the symptoms you're seeing is a dom0 crash, so it will likely
-> provoke it.
->
-> Do you have serial to the machine?  If so, boot Xen with `console=3Dcom1
-> com1=3D115200,8n1` (or com2, as appropriate).
->
-> If not and you've only got a regular screen, boot Xen with `vga=3D,keep
-> noreboot` (comma is important) which might leave enough information on
-> screen to get an idea of what's going on.
->
-> Full command line docs at
-> https://xenbits.xen.org/docs/unstable/misc/xen-command-line.html
->
-> > dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner --list functional xsa | g=
-rep xsa-4
-> > test-pv64-xsa-444
-> > test-hvm64-xsa-451
-> > test-hvm64-xsa-454
-> >
-> > Is there no xsa-466 test?
->
-> No.  XSA-466 is really "well don't do that then if it matters".
->
-> More generally, not all XSAs are amenable to testing in this way.
->
-> ~Andrew
+> greg k-h
 
-RUN example tests on Debian's 6.12.6 kernel.
+We agree. Restting wMaxPacketSize is the best solution for this issue, 
+as concluded from our internal review meeting as well.
 
-$ cat /proc/version
-Linux version 6.12.6-amd64 (debian-kernel@lists.debian.org)
-(x86_64-linux-gnu-gcc-14 (Debian 14.2.0-11) 14.2.0, GNU ld (GNU
-Binutils for Debian) 2.43.50.20241215) #1 SMP PREEMPT_DYNAMIC Debian
-6.12.6-1 (2024-12-21)
-
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner --list example
-test-hvm32-example
-test-hvm32pae-example
-test-hvm32pse-example
-test-hvm64-example
-test-pv32pae-example
-test-pv64-example
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner test-hvm32-example
-Executing 'xl create -p tests/example/test-hvm32-example.cfg'
-Executing 'xl console test-hvm32-example'
-Executing 'xl unpause test-hvm32-example'
---- Xen Test Framework ---
-Environment: HVM 32bit (No paging)
-Hello World
-Test result: SUCCESS
-
-Combined test results:
-test-hvm32-example                       SUCCESS
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner test-hvm32pae-example
-Executing 'xl create -p tests/example/test-hvm32pae-example.cfg'
-Executing 'xl console test-hvm32pae-example'
-Executing 'xl unpause test-hvm32pae-example'
---- Xen Test Framework ---
-Environment: HVM 32bit (PAE 3 levels)
-Hello World
-Test result: SUCCESS
-
-Combined test results:
-test-hvm32pae-example                    SUCCESS
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner test-hvm32pse-example
-Executing 'xl create -p tests/example/test-hvm32pse-example.cfg'
-Executing 'xl console test-hvm32pse-example'
-Executing 'xl unpause test-hvm32pse-example'
---- Xen Test Framework ---
-Environment: HVM 32bit (PSE 2 levels)
-Hello World
-Test result: SUCCESS
-
-Combined test results:
-test-hvm32pse-example                    SUCCESS
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner test-hvm64-example
-Executing 'xl create -p tests/example/test-hvm64-example.cfg'
-Executing 'xl console test-hvm64-example'
-Executing 'xl unpause test-hvm64-example'
---- Xen Test Framework ---
-Environment: HVM 64bit (Long mode 4 levels)
-Hello World
-Test result: SUCCESS
-
-Combined test results:
-test-hvm64-example                       SUCCESS
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner test-pv32pae-example
-Combined test results:
-test-pv32pae-example                     SKIP
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner test-pv64-example
-Executing 'xl create -p tests/example/test-pv64-example.cfg'
-Executing 'xl console test-pv64-example'
-Executing 'xl unpause test-pv64-example'
---- Xen Test Framework ---
-Environment: PV 64bit (Long mode 4 levels)
-Hello World
-Test result: SUCCESS
-
-Combined test results:
-test-pv64-example                        SUCCESS
-
-Thanks.
-
-Best regards,
--Sedat-
+Thanks,
+Selva
 
