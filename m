@@ -1,155 +1,485 @@
-Return-Path: <stable+bounces-105560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CF19FA5BF
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 14:14:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF899FA623
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 15:30:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 546AE7A1A93
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 13:14:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A799C18868A5
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 14:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6A818F2DD;
-	Sun, 22 Dec 2024 13:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7571018C018;
+	Sun, 22 Dec 2024 14:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IO15F9Jm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4RVaNSq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5CF18A931
-	for <stable@vger.kernel.org>; Sun, 22 Dec 2024 13:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF7C53BE;
+	Sun, 22 Dec 2024 14:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734873245; cv=none; b=k7KJ90kLvi44ZoMb39Q42mqkNGblLeOqw8dxGtOz5uMpHasICCH2hIIOmuPlbcIolkf/OgJarx7TjyTEWwSiSdoVheH6c4EaS5V2Vd41ZE20v52041AbdiJMhj+7hUuLHh/gemj4IkX9Ptp4IZXB11Ayim4fduTUqL7VK5uq0RU=
+	t=1734877834; cv=none; b=b4Ncwrm53//BCmI217eWLMqIRzilTvnEzGDuGIkeyLZBOk0BedYbEE/TUHwDoB7YCx7gpU5ik5caGdCcjM9/BQKjJZ8u9uDh9RB/pdVWdj3s44IygXKXdoY8Tmyzl5yJ5/qLDsT0N6FBbm/G0RwIc+zUv3eW3qBYaGF7wnbUL1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734873245; c=relaxed/simple;
-	bh=kYdP5yeZkzBAq4lBYi0ltwGr+zxdlCaWvTJWPfDhwf8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OzhBG87FRHx6t8kUoUcwXgSsrFGbHwndVsVXCMRdecX3Q8+2aSrZajBWeYTKJsrBC0Dtzr65KO100QT16UNytzqcDtr5NFFQpJAUPAHwMO5I3stANOI4n7czuPsFIspSiFl8WQASiM5nkfN9zSvsincftHI2r3vcaw+Gim8hbFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IO15F9Jm; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53e399e3310so3879522e87.1
-        for <stable@vger.kernel.org>; Sun, 22 Dec 2024 05:14:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734873239; x=1735478039; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5G1n789VI+iPhBQH5F4v6UNNOm0uHyaOkYxT8zl1MWs=;
-        b=IO15F9JmwFPZOb60k4WaszQc9Ux9nNrigHM05IbcqHKOkrd9VCYqsqCH4ZpiLCOKWI
-         gXHunWh8aYcFLMZaSqmKI69H6ckzM7fOfa++0jV8RdqNsgJMD5MivTiMYD3F1FENu+fI
-         fliGVCqvFY3crjZvBQuarOHUW32hhH79OlwaWeylzVQKRvsuhuvq0qINSgCpG+/VH45w
-         O7aRL1sKGvwcMdLGPf9EB/hTK/+2f7IzFxuB0uuFhGQd7tIb86zHHNoP+oc3UOfqo5vk
-         a66MhIyk4gXuLfOtiyEXTMragQH6QAsW9G7Zf3A0EK0EKYTvyEi3e9/JduMGNOSK8dUV
-         MyJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734873239; x=1735478039;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5G1n789VI+iPhBQH5F4v6UNNOm0uHyaOkYxT8zl1MWs=;
-        b=G7jb/tzs9gvfM8ohYQPGgsfyMAkS6ugEFtuidQyye0Q9JUSBQBsbq5okKQjZELf9Dn
-         fdA5f3W63Sw9rLPTgOa4Q+s+nU8qU0NOIy9uDIPP1mVvDxKBPQJ1m6O5dhNL+CIgfYzI
-         3xfkzG95VQddsr1xvmAIHIiO5VtD/j6JiNdngen9PjEt+BxaQLxIA2ih8708l7sXS9vo
-         KYKjKFAiKokYaA8yDQ+yez8iVzhFqLe0xJKVJwPMcpYZ5inxbFPWxXl+ymsDwfG69NoJ
-         0NFAWnztW+KzihUML7Fxu9gPPL/9q4uQ01lcWwu85/K6C0nCnurWT8irYmJ8wB90mKFp
-         SHzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUlfntaS0myUZ8XrPo7d2688iSw/wbsi3sBE3Fd8mkHHRs6JbiAf/tRZ0/dujMecR3FHprJANo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT5ofxo6FndVqq9OvV9TN/NyAUjl2cbEMMtha+iU8v+t4U/XsY
-	m6rNETA67d4vKxX20zbPii8Ei9p1d35gReKvEvwhkxpUyFlS+H1VYCxJduO4GHo=
-X-Gm-Gg: ASbGncsS5JB/962V8lDKcrN0ixJz5QTiAxETut1h1NX/DA5OnDSsOV+TBu5minyUIRc
-	iQmRSe3GSPS9+X6M3bWXY8vMDLA6exaGfS4gK7vBydyHGN6BXKZejpmMpXscvIIVTc1BEQPTlrv
-	V+cVALN9LjUiAzgPhSVQKFI+Q/dueL2Bfb1ktOQPzHlTUL2f/Vt4AJaoLKQNEA/Dye1tld8mJLo
-	9OYLtnH91J3xXLL4mgVLx1UH56qFhLRxsZM36AwVQDywuoE3icLWEatayKGp0s5NxjDM6x0YGew
-	NC+0/Axg6yGsy4J0/DQ1DSARrGec3t0A4EJ8
-X-Google-Smtp-Source: AGHT+IEf5hoYBKrJGH61USlw3q8c948U1qUxhVRDxvwTtjOb9SST31C/wZsizm3j81A53TpLipPuxA==
-X-Received: by 2002:a05:6512:2246:b0:542:2e04:edd1 with SMTP id 2adb3069b0e04-5422e04f073mr1389823e87.42.1734873239122;
-        Sun, 22 Dec 2024 05:13:59 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542235fecb7sm951614e87.64.2024.12.22.05.13.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Dec 2024 05:13:57 -0800 (PST)
-Date: Sun, 22 Dec 2024 15:13:55 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: joswang <joswang1221@gmail.com>
-Cc: heikki.krogerus@linux.intel.com, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, rdbabiera@google.com, 
-	Jos Wang <joswang@lenovo.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2, 2/2] usb: typec: tcpm: fix the sender response time
- issue
-Message-ID: <exu4kkmysquqfygz4gk26kfzediyqmq3wsxvu5ro454mi4fgyp@gr44ymyyxmng>
-References: <20241222105239.2618-1-joswang1221@gmail.com>
- <20241222105239.2618-2-joswang1221@gmail.com>
+	s=arc-20240116; t=1734877834; c=relaxed/simple;
+	bh=e73xDy/BGmvDpP5clNL/dMA6pUB1C1RQURrC7mPX4ec=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=juBdpvO7Uoi0eo5IV1A0AkR8gf0u8oCz6u0fpPi7nuQDPjONuyw2n9tPLgsuZTeptmRyzsEChLLR7esNYAWiaMlKC5HILK+ayor+xaywQOcnd2Vu7kB1UiIp2I6bBAVhsgcG5Ljt0hpC0IIb8pG/qcJuJMV6KQPwpOWetFuze2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4RVaNSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D065C4CECD;
+	Sun, 22 Dec 2024 14:30:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734877834;
+	bh=e73xDy/BGmvDpP5clNL/dMA6pUB1C1RQURrC7mPX4ec=;
+	h=From:To:Cc:Subject:Date:From;
+	b=o4RVaNSq2ZhUVqi4fRxU4msFUQkiZd335jO38nGJG5GERdYU8zU8v/76m9XuDRf3p
+	 +buY4ngfoNDTbbuGNB2/O+AT+NsjWFxkafMBz1sr5cMPnFh8kcJB6NumAZy3qE5aez
+	 XSEoCg0PjvURKvcLA67O8zi3GdzT/6kX0hSnTjRTnoPeuE2MDpKHXTjc18VwlnkS61
+	 pClW07EN7dEb70ZVVbZyXinUM4+ElHriIF2JKYSKQ3Z6SHygHNioKBo/hwX/pBIoHF
+	 T99hI7qLx6XR4By0xtbwnFLRrWXw4zYAXauNEO9w1COx98lF9P/Ly+2xAvCbzTvYYd
+	 RXxXEj69b96lw==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Kylene Jo Hall <kjhall@us.ibm.com>,
+	Seiji Munetoh <munetoh@jp.ibm.com>,
+	Reiner Sailer <sailer@us.ibm.com>,
+	Andrew Morton <akpm@osdl.org>
+Cc: stable@vger.kernel.org,
+	Andy Liang <andy.liang@hpe.com>,
+	Matthew Garrett <mjg59@srcf.ucam.org>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] tpm: Map the ACPI provided event log
+Date: Sun, 22 Dec 2024 16:30:11 +0200
+Message-ID: <20241222143022.297309-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241222105239.2618-2-joswang1221@gmail.com>
 
-On Sun, Dec 22, 2024 at 06:52:39PM +0800, joswang wrote:
-> From: Jos Wang <joswang@lenovo.com>
-> 
-> According to the USB PD3 CTS specification
-> (https://usb.org/document-library/
-> usb-power-delivery-compliance-test-specification-0/
-> USB_PD3_CTS_Q4_2024_OR.zip), the requirements for
-> tSenderResponse are different in PD2 and PD3 modes, see
-> Table 19 Timing Table & Calculations. For PD2 mode, the
-> tSenderResponse min 24ms and max 30ms; for PD3 mode, the
-> tSenderResponse min 27ms and max 33ms.
-> 
-> For the "TEST.PD.PROT.SRC.2 Get_Source_Cap No Request" test
-> item, after receiving the Source_Capabilities Message sent by
-> the UUT, the tester deliberately does not send a Request Message
-> in order to force the SenderResponse timer on the Source UUT to
-> timeout. The Tester checks that a Hard Reset is detected between
-> tSenderResponse min and max，the delay is between the last bit of
-> the GoodCRC Message EOP has been sent and the first bit of Hard
-> Reset SOP has been received. The current code does not distinguish
-> between PD2 and PD3 modes, and tSenderResponse defaults to 60ms.
-> This will cause this test item and the following tests to fail:
-> TEST.PD.PROT.SRC3.2 SenderResponseTimer Timeout
-> TEST.PD.PROT.SNK.6 SenderResponseTimer Timeout
-> 
-> Considering factors such as SOC performance, i2c rate, and the speed
-> of PD chip sending data, "pd2-sender-response-time-ms" and
-> "pd3-sender-response-time-ms" DT time properties are added to allow
-> users to define platform timing. For values that have not been
-> explicitly defined in DT using this property, a default value of 27ms
-> for PD2 tSenderResponse and 30ms for PD3 tSenderResponse is set.
+The following failure was reported:
 
-You have several different changes squashed into the same commit:
-- Change the timeout from 60 ms to 27-30 ms (I'd recommend using 27 ms
-  as it fits both 24-30 ms and 27-33 ms ranges,
-- Make timeout depend on the PD version,
-- Make timeouts configurable via DT.
+[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
+[   10.848132][    T1] ------------[ cut here ]------------
+[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
+[   10.862827][    T1] Modules linked in:
+[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
+[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
+[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
+[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
+[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
 
-Only the first item is a fix per se and only that change should be
-considered for backporting. Please unsquash your changes into logical
-commits.  Theoretically the second change can be thought about as a part
-of the third change (making timeouts configurable) or of the fist change
-(fix the timeout to follow the standard), but I'd suggest having three
-separate commits.
+Above shows that ACPI pointed a 16 MiB buffer for the log events because
+RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address the
+bug by mapping the region when needed instead of copying.
 
-> 
-> Fixes: 2eadc33f40d4 ("typec: tcpm: Add core support for sink side PPS")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jos Wang <joswang@lenovo.com>
-> ---
-> v1 -> v2:
-> - modify the commit message
-> - patch 1/2 and patch 2/2 are placed in the same thread
+Cc: stable@vger.kernel.org # v2.6.16+
+Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
+Reported-by: Andy Liang <andy.liang@hpe.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
+Suggested-by: Matthew Garrett <mjg59@srcf.ucam.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+v3:
+* Flag mapping code in tpm{1,2}.c with CONFIG_ACPI (nios2 compilation
+  fix).
+v2:
+* There was some extra cruft (irrelevant diff), which is now wiped away.
+* Added missing tags (fixes, stable).
+---
+ drivers/char/tpm/eventlog/acpi.c   | 28 +++++++---------------
+ drivers/char/tpm/eventlog/common.c | 25 +++++++++++++-------
+ drivers/char/tpm/eventlog/common.h | 28 ++++++++++++++++++++++
+ drivers/char/tpm/eventlog/tpm1.c   | 30 ++++++++++++++---------
+ drivers/char/tpm/eventlog/tpm2.c   | 38 +++++++++++++++++-------------
+ include/linux/tpm.h                |  1 +
+ 6 files changed, 95 insertions(+), 55 deletions(-)
 
+diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
+index 69533d0bfb51..2c4f7355b584 100644
+--- a/drivers/char/tpm/eventlog/acpi.c
++++ b/drivers/char/tpm/eventlog/acpi.c
+@@ -70,14 +70,11 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 	acpi_status status;
+ 	void __iomem *virt;
+ 	u64 len, start;
+-	struct tpm_bios_log *log;
+ 	struct acpi_table_tpm2 *tbl;
+ 	struct acpi_tpm2_phy *tpm2_phy;
+ 	int format;
+ 	int ret;
+ 
+-	log = &chip->log;
+-
+ 	/* Unfortuntely ACPI does not associate the event log with a specific
+ 	 * TPM, like PPI. Thus all ACPI TPMs will read the same log.
+ 	 */
+@@ -135,36 +132,27 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 		return -EIO;
+ 	}
+ 
+-	/* malloc EventLog space */
+-	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
+-	if (!log->bios_event_log)
+-		return -ENOMEM;
+-
+-	log->bios_event_log_end = log->bios_event_log + len;
+-
+ 	virt = acpi_os_map_iomem(start, len);
+ 	if (!virt) {
+ 		dev_warn(&chip->dev, "%s: Failed to map ACPI memory\n", __func__);
+ 		/* try EFI log next */
+-		ret = -ENODEV;
+-		goto err;
++		return -ENODEV;
+ 	}
+ 
+-	memcpy_fromio(log->bios_event_log, virt, len);
+-
+-	acpi_os_unmap_iomem(virt, len);
+-
+-	if (chip->flags & TPM_CHIP_FLAG_TPM2 &&
+-	    !tpm_is_tpm2_log(log->bios_event_log, len)) {
++	if (chip->flags & TPM_CHIP_FLAG_TPM2 && !tpm_is_tpm2_log(virt, len)) {
++		acpi_os_unmap_iomem(virt, len);
+ 		/* try EFI log next */
+ 		ret = -ENODEV;
+ 		goto err;
+ 	}
+ 
++	acpi_os_unmap_iomem(virt, len);
++	chip->flags |= TPM_CHIP_FLAG_ACPI_LOG;
++	chip->log.bios_event_log = (void *)start;
++	chip->log.bios_event_log_end = (void *)start + len;
+ 	return format;
+ 
+ err:
+-	devm_kfree(&chip->dev, log->bios_event_log);
+-	log->bios_event_log = NULL;
++	acpi_os_unmap_iomem(virt, len);
+ 	return ret;
+ }
+diff --git a/drivers/char/tpm/eventlog/common.c b/drivers/char/tpm/eventlog/common.c
+index 4c0bbba64ee5..44340ca6e2ac 100644
+--- a/drivers/char/tpm/eventlog/common.c
++++ b/drivers/char/tpm/eventlog/common.c
+@@ -27,6 +27,7 @@ static int tpm_bios_measurements_open(struct inode *inode,
+ {
+ 	int err;
+ 	struct seq_file *seq;
++	struct tpm_measurements *priv;
+ 	struct tpm_chip_seqops *chip_seqops;
+ 	const struct seq_operations *seqops;
+ 	struct tpm_chip *chip;
+@@ -42,13 +43,18 @@ static int tpm_bios_measurements_open(struct inode *inode,
+ 	get_device(&chip->dev);
+ 	inode_unlock(inode);
+ 
+-	/* now register seq file */
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++	priv->chip = chip;
++
+ 	err = seq_open(file, seqops);
+-	if (!err) {
+-		seq = file->private_data;
+-		seq->private = chip;
+-	} else {
++	if (err) {
++		kfree(priv);
+ 		put_device(&chip->dev);
++	} else {
++		seq = file->private_data;
++		seq->private = priv;
+ 	}
+ 
+ 	return err;
+@@ -58,11 +64,14 @@ static int tpm_bios_measurements_release(struct inode *inode,
+ 					 struct file *file)
+ {
+ 	struct seq_file *seq = file->private_data;
+-	struct tpm_chip *chip = seq->private;
++	struct tpm_measurements *priv = seq->private;
++	int ret;
+ 
+-	put_device(&chip->dev);
++	put_device(&priv->chip->dev);
++	ret = seq_release(inode, file);
++	kfree(priv);
+ 
+-	return seq_release(inode, file);
++	return ret;
+ }
+ 
+ static const struct file_operations tpm_bios_measurements_ops = {
+diff --git a/drivers/char/tpm/eventlog/common.h b/drivers/char/tpm/eventlog/common.h
+index 47ff8136ceb5..b98fd6d9a6e9 100644
+--- a/drivers/char/tpm/eventlog/common.h
++++ b/drivers/char/tpm/eventlog/common.h
+@@ -1,12 +1,40 @@
+ #ifndef __TPM_EVENTLOG_COMMON_H__
+ #define __TPM_EVENTLOG_COMMON_H__
+ 
++#include <linux/acpi.h>
+ #include "../tpm.h"
+ 
+ extern const struct seq_operations tpm1_ascii_b_measurements_seqops;
+ extern const struct seq_operations tpm1_binary_b_measurements_seqops;
+ extern const struct seq_operations tpm2_binary_b_measurements_seqops;
+ 
++struct tpm_measurements {
++	struct tpm_chip *chip;
++	void *start;
++	void *end;
++};
++
++static inline bool tpm_measurements_map(struct tpm_measurements *measurements)
++{
++	struct tpm_chip *chip = measurements->chip;
++	struct tpm_bios_log *log = &chip->log;
++	size_t size;
++
++	size = log->bios_event_log_end - log->bios_event_log;
++	measurements->start = log->bios_event_log;
++
++#ifdef CONFIG_ACPI
++	if (chip->flags & TPM_CHIP_FLAG_ACPI_LOG)
++		measurements->start = acpi_os_map_iomem((unsigned long)log->bios_event_log, size);
++#endif
++
++	if (!measurements->start)
++		return false;
++
++	measurements->end = measurements->start + size;
++	return true;
++}
++
+ #if defined(CONFIG_ACPI)
+ int tpm_read_log_acpi(struct tpm_chip *chip);
+ #else
+diff --git a/drivers/char/tpm/eventlog/tpm1.c b/drivers/char/tpm/eventlog/tpm1.c
+index 12ee42a31c71..aef6ee39423a 100644
+--- a/drivers/char/tpm/eventlog/tpm1.c
++++ b/drivers/char/tpm/eventlog/tpm1.c
+@@ -70,20 +70,23 @@ static const char* tcpa_pc_event_id_strings[] = {
+ static void *tpm1_bios_measurements_start(struct seq_file *m, loff_t *pos)
+ {
+ 	loff_t i = 0;
+-	struct tpm_chip *chip = m->private;
+-	struct tpm_bios_log *log = &chip->log;
+-	void *addr = log->bios_event_log;
+-	void *limit = log->bios_event_log_end;
++	struct tpm_measurements *priv = m->private;
+ 	struct tcpa_event *event;
+ 	u32 converted_event_size;
+ 	u32 converted_event_type;
++	void *addr;
++
++	if (!tpm_measurements_map(priv))
++		return NULL;
++
++	addr = priv->start;
+ 
+ 	/* read over *pos measurements */
+ 	do {
+ 		event = addr;
+ 
+ 		/* check if current entry is valid */
+-		if (addr + sizeof(struct tcpa_event) > limit)
++		if (addr + sizeof(struct tcpa_event) > priv->end)
+ 			return NULL;
+ 
+ 		converted_event_size =
+@@ -93,7 +96,7 @@ static void *tpm1_bios_measurements_start(struct seq_file *m, loff_t *pos)
+ 
+ 		if (((converted_event_type == 0) && (converted_event_size == 0))
+ 		    || ((addr + sizeof(struct tcpa_event) + converted_event_size)
+-			> limit))
++			> priv->end))
+ 			return NULL;
+ 
+ 		if (i++ == *pos)
+@@ -109,9 +112,7 @@ static void *tpm1_bios_measurements_next(struct seq_file *m, void *v,
+ 					loff_t *pos)
+ {
+ 	struct tcpa_event *event = v;
+-	struct tpm_chip *chip = m->private;
+-	struct tpm_bios_log *log = &chip->log;
+-	void *limit = log->bios_event_log_end;
++	struct tpm_measurements *priv = m->private;
+ 	u32 converted_event_size;
+ 	u32 converted_event_type;
+ 
+@@ -121,7 +122,7 @@ static void *tpm1_bios_measurements_next(struct seq_file *m, void *v,
+ 	v += sizeof(struct tcpa_event) + converted_event_size;
+ 
+ 	/* now check if current entry is valid */
+-	if ((v + sizeof(struct tcpa_event)) > limit)
++	if ((v + sizeof(struct tcpa_event)) > priv->end)
+ 		return NULL;
+ 
+ 	event = v;
+@@ -130,7 +131,7 @@ static void *tpm1_bios_measurements_next(struct seq_file *m, void *v,
+ 	converted_event_type = do_endian_conversion(event->event_type);
+ 
+ 	if (((converted_event_type == 0) && (converted_event_size == 0)) ||
+-	    ((v + sizeof(struct tcpa_event) + converted_event_size) > limit))
++	    ((v + sizeof(struct tcpa_event) + converted_event_size) > priv->end))
+ 		return NULL;
+ 
+ 	return v;
+@@ -138,6 +139,13 @@ static void *tpm1_bios_measurements_next(struct seq_file *m, void *v,
+ 
+ static void tpm1_bios_measurements_stop(struct seq_file *m, void *v)
+ {
++#ifdef CONFIG_ACPI
++	struct tpm_measurements *priv = m->private;
++	struct tpm_chip *chip = priv->chip;
++
++	if (chip->flags & TPM_CHIP_FLAG_ACPI_LOG)
++		acpi_os_unmap_iomem(priv->start, priv->end - priv->start);
++#endif
+ }
+ 
+ static int get_event_name(char *dest, struct tcpa_event *event,
+diff --git a/drivers/char/tpm/eventlog/tpm2.c b/drivers/char/tpm/eventlog/tpm2.c
+index 37a05800980c..6289d8893e46 100644
+--- a/drivers/char/tpm/eventlog/tpm2.c
++++ b/drivers/char/tpm/eventlog/tpm2.c
+@@ -41,20 +41,22 @@ static size_t calc_tpm2_event_size(struct tcg_pcr_event2_head *event,
+ 
+ static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
+ {
+-	struct tpm_chip *chip = m->private;
+-	struct tpm_bios_log *log = &chip->log;
+-	void *addr = log->bios_event_log;
+-	void *limit = log->bios_event_log_end;
++	struct tpm_measurements *priv = m->private;
+ 	struct tcg_pcr_event *event_header;
+ 	struct tcg_pcr_event2_head *event;
+ 	size_t size;
++	void *addr;
+ 	int i;
+ 
++	if (!tpm_measurements_map(priv))
++		return NULL;
++
++	addr = priv->start;
+ 	event_header = addr;
+ 	size = struct_size(event_header, event, event_header->event_size);
+ 
+ 	if (*pos == 0) {
+-		if (addr + size < limit) {
++		if (addr + size < priv->end) {
+ 			if ((event_header->event_type == 0) &&
+ 			    (event_header->event_size == 0))
+ 				return NULL;
+@@ -66,7 +68,7 @@ static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
+ 		addr += size;
+ 		event = addr;
+ 		size = calc_tpm2_event_size(event, event_header);
+-		if ((addr + size >=  limit) || (size == 0))
++		if ((addr + size >= priv->end) || !size)
+ 			return NULL;
+ 	}
+ 
+@@ -74,7 +76,7 @@ static void *tpm2_bios_measurements_start(struct seq_file *m, loff_t *pos)
+ 		event = addr;
+ 		size = calc_tpm2_event_size(event, event_header);
+ 
+-		if ((addr + size >= limit) || (size == 0))
++		if ((addr + size >= priv->end) || !size)
+ 			return NULL;
+ 		addr += size;
+ 	}
+@@ -87,14 +89,12 @@ static void *tpm2_bios_measurements_next(struct seq_file *m, void *v,
+ {
+ 	struct tcg_pcr_event *event_header;
+ 	struct tcg_pcr_event2_head *event;
+-	struct tpm_chip *chip = m->private;
+-	struct tpm_bios_log *log = &chip->log;
+-	void *limit = log->bios_event_log_end;
++	struct tpm_measurements *priv = m->private;
+ 	size_t event_size;
+ 	void *marker;
+ 
+ 	(*pos)++;
+-	event_header = log->bios_event_log;
++	event_header = priv->start;
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		event_size = struct_size(event_header, event,
+@@ -109,13 +109,13 @@ static void *tpm2_bios_measurements_next(struct seq_file *m, void *v,
+ 	}
+ 
+ 	marker = marker + event_size;
+-	if (marker >= limit)
++	if (marker >= priv->end)
+ 		return NULL;
+ 	v = marker;
+ 	event = v;
+ 
+ 	event_size = calc_tpm2_event_size(event, event_header);
+-	if (((v + event_size) >= limit) || (event_size == 0))
++	if (((v + event_size) >= priv->end) || !event_size)
+ 		return NULL;
+ 
+ 	return v;
+@@ -123,13 +123,19 @@ static void *tpm2_bios_measurements_next(struct seq_file *m, void *v,
+ 
+ static void tpm2_bios_measurements_stop(struct seq_file *m, void *v)
+ {
++#ifdef CONFIG_ACPI
++	struct tpm_measurements *priv = m->private;
++	struct tpm_chip *chip = priv->chip;
++
++	if (chip->flags & TPM_CHIP_FLAG_ACPI_LOG)
++		acpi_os_unmap_iomem(priv->start, priv->end - priv->start);
++#endif
+ }
+ 
+ static int tpm2_binary_bios_measurements_show(struct seq_file *m, void *v)
+ {
+-	struct tpm_chip *chip = m->private;
+-	struct tpm_bios_log *log = &chip->log;
+-	struct tcg_pcr_event *event_header = log->bios_event_log;
++	struct tpm_measurements *priv = m->private;
++	struct tcg_pcr_event *event_header = priv->start;
+ 	struct tcg_pcr_event2_head *event = v;
+ 	void *temp_ptr;
+ 	size_t size;
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index 20a40ade8030..f3d12738b93b 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -348,6 +348,7 @@ enum tpm_chip_flags {
+ 	TPM_CHIP_FLAG_SUSPENDED			= BIT(8),
+ 	TPM_CHIP_FLAG_HWRNG_DISABLED		= BIT(9),
+ 	TPM_CHIP_FLAG_DISABLE			= BIT(10),
++	TPM_CHIP_FLAG_ACPI_LOG		= BIT(11),
+ };
+ 
+ #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
 -- 
-With best wishes
-Dmitry
+2.47.1
+
 
