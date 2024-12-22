@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-105543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA189FA47D
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 08:18:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517F19FA47E
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 08:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 789961651D9
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 07:18:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C75B188743E
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 07:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE32156960;
-	Sun, 22 Dec 2024 07:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324FC156243;
+	Sun, 22 Dec 2024 07:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMaU5nWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5CaXZjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA82156243
-	for <stable@vger.kernel.org>; Sun, 22 Dec 2024 07:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E2855897
+	for <stable@vger.kernel.org>; Sun, 22 Dec 2024 07:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734851930; cv=none; b=bVFMEMRLjVVicKo8H9h1GHs8xLUlnf82b1IYe2P9T3+geRl91QtToczJawoZCSYy2VJIcl5p7feq4yjsTCmDDRR6nEaJzlWLDN0KsJhdS9mzo2l0mGe02tQ8GabLW+mq2xM9XpjwSOeAHVlla425svfEgMzdcaETTQrJXfyxAnI=
+	t=1734851960; cv=none; b=f/q4OJxSTrFAxTybUmZ22vkYO1qfpiF3SKQVAssCuxWemgPfRej6tiwDqH6aWmVDoZ8mUmCMolucj1dCblcIfGC2gQsfRJQ0ZfE12V8hn8/ZOa8fJ/7Sbh7OPQJV7TrGHuIsKJtiW3k1KbvBKcEbRWxRUYuTllJWzdzemwg4Y5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734851930; c=relaxed/simple;
-	bh=69XJpEZ4Fum/+oylUTIMa80iKYzI2JLG1gPJhF+M49s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Co7aa+ueg31I7fhB+YNinrMZ2wuv9DSubpUpXIJAIuImDrHmTE2+ko7LmlE2gkWOhz7FCN1OppglrRmzkYGpDTveclcflkC1k4Mc5uRH0/jabAnS88cD+1yVecjizBFDVZCszHpRCJxjQAO85CjgLXD9qJhO8PIoyaI9mn9ujtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMaU5nWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC18C4CECD;
-	Sun, 22 Dec 2024 07:18:49 +0000 (UTC)
+	s=arc-20240116; t=1734851960; c=relaxed/simple;
+	bh=FZebgZTPrn5vX4NeXJ8mJHa9t/fR/d64nkKHF0SRx2o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RNHb8ogRnEXYR/uPLQPHuRGreq+R78Nt3IcPBoAg5+SIRDyo19q+r0Dx3q/r8w5PFg2PvUMFedNEDMbaeWd9/WNFN9kA6hWqHBkMJuLk+5c2i2PFPKQZGQtuu4OM9legXNsZBHRT/2NIpj3uJkmgUygDqcQho++Wd50KHpJLOhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5CaXZjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD7CC4CECD;
+	Sun, 22 Dec 2024 07:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734851930;
-	bh=69XJpEZ4Fum/+oylUTIMa80iKYzI2JLG1gPJhF+M49s=;
+	s=korg; t=1734851959;
+	bh=FZebgZTPrn5vX4NeXJ8mJHa9t/fR/d64nkKHF0SRx2o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fMaU5nWAWRy/wf8lk+WCODGPKOyBWuScqRbDtT1rEpXSqsuSWmyg9U1K2ayb8ALfM
-	 yfW31t7rj6QT4gM6LKSyS+YqgGmfRYpAdb0S5UrOSMX8vTeX+hO7BjWpij1nKuu0X1
-	 o74CGUhz2x7LiSftl76pdp0eqRuW4FFovZ46Bo50=
-Subject: FAILED: patch "[PATCH] mmc: mtk-sd: disable wakeup in .remove() and in the error" failed to apply to 6.1-stable tree
-To: joe@pf.is.s.u-tokyo.ac.jp,ulf.hansson@linaro.org
+	b=i5CaXZjAtScJg/bhxfNx3k42cpc/tVbM1DHpkFppjvJ/5pnP7mLpe/XgowtWvm6JM
+	 v38bf4MP2YInqZfpSi7CWAke182ZAWIaizY/bVqDswxQZRdmQpnUkA5Q1/eXlpwzPC
+	 xWpdZiS4lGTP/+CIdscp+Rzn5IWsp8PG50DLWck4=
+Subject: FAILED: patch "[PATCH] EDAC/amd64: Simplify ECC check on unified memory controllers" failed to apply to 6.1-stable tree
+To: bp@alien8.de,avadhut.naik@amd.com,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 22 Dec 2024 08:18:46 +0100
-Message-ID: <2024122246-resend-agonize-69e0@gregkh>
+Date: Sun, 22 Dec 2024 08:19:11 +0100
+Message-ID: <2024122210-tableful-nugget-15bc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x f3d87abe11ed04d1b23a474a212f0e5deeb50892
+git cherry-pick -x 747367340ca6b5070728b86ae36ad6747f66b2fb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024122246-resend-agonize-69e0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024122210-tableful-nugget-15bc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,41 +77,74 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f3d87abe11ed04d1b23a474a212f0e5deeb50892 Mon Sep 17 00:00:00 2001
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Date: Tue, 3 Dec 2024 11:34:42 +0900
-Subject: [PATCH] mmc: mtk-sd: disable wakeup in .remove() and in the error
- path of .probe()
+From 747367340ca6b5070728b86ae36ad6747f66b2fb Mon Sep 17 00:00:00 2001
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
+Date: Wed, 11 Dec 2024 12:07:42 +0100
+Subject: [PATCH] EDAC/amd64: Simplify ECC check on unified memory controllers
 
-Current implementation leaves pdev->dev as a wakeup source. Add a
-device_init_wakeup(&pdev->dev, false) call in the .remove() function and
-in the error path of the .probe() function.
+The intent of the check is to see whether at least one UMC has ECC
+enabled. So do that instead of tracking which ones are enabled in masks
+which are too small in size anyway and lead to not loading the driver on
+Zen4 machines with UMCs enabled over UMC8.
 
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Fixes: 527f36f5efa4 ("mmc: mediatek: add support for SDIO eint wakup IRQ")
-Cc: stable@vger.kernel.org
-Message-ID: <20241203023442.2434018-1-joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: e2be5955a886 ("EDAC/amd64: Add support for AMD Family 19h Models 10h-1Fh and A0h-AFh")
+Reported-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Avadhut Naik <avadhut.naik@amd.com>
+Reviewed-by: Avadhut Naik <avadhut.naik@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241210212054.3895697-1-avadhut.naik@amd.com
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index efb0d2d5716b..af445d3f8e2a 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -3070,6 +3070,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
- 	msdc_gate_clock(host);
- 	platform_set_drvdata(pdev, NULL);
- release_mem:
-+	device_init_wakeup(&pdev->dev, false);
- 	if (host->dma.gpd)
- 		dma_free_coherent(&pdev->dev,
- 			2 * sizeof(struct mt_gpdma_desc),
-@@ -3103,6 +3104,7 @@ static void msdc_drv_remove(struct platform_device *pdev)
- 			host->dma.gpd, host->dma.gpd_addr);
- 	dma_free_coherent(&pdev->dev, MAX_BD_NUM * sizeof(struct mt_bdma_desc),
- 			  host->dma.bd, host->dma.bd_addr);
-+	device_init_wakeup(&pdev->dev, false);
+diff --git a/drivers/edac/amd64_edac.c b/drivers/edac/amd64_edac.c
+index ddfbdb66b794..5d356b7c4589 100644
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -3362,36 +3362,24 @@ static bool dct_ecc_enabled(struct amd64_pvt *pvt)
+ 
+ static bool umc_ecc_enabled(struct amd64_pvt *pvt)
+ {
+-	u8 umc_en_mask = 0, ecc_en_mask = 0;
+-	u16 nid = pvt->mc_node_id;
+ 	struct amd64_umc *umc;
+-	u8 ecc_en = 0, i;
++	bool ecc_en = false;
++	int i;
+ 
++	/* Check whether at least one UMC is enabled: */
+ 	for_each_umc(i) {
+ 		umc = &pvt->umc[i];
+ 
+-		/* Only check enabled UMCs. */
+-		if (!(umc->sdp_ctrl & UMC_SDP_INIT))
+-			continue;
+-
+-		umc_en_mask |= BIT(i);
+-
+-		if (umc->umc_cap_hi & UMC_ECC_ENABLED)
+-			ecc_en_mask |= BIT(i);
++		if (umc->sdp_ctrl & UMC_SDP_INIT &&
++		    umc->umc_cap_hi & UMC_ECC_ENABLED) {
++			ecc_en = true;
++			break;
++		}
+ 	}
+ 
+-	/* Check whether at least one UMC is enabled: */
+-	if (umc_en_mask)
+-		ecc_en = umc_en_mask == ecc_en_mask;
+-	else
+-		edac_dbg(0, "Node %d: No enabled UMCs.\n", nid);
++	edac_dbg(3, "Node %d: DRAM ECC %s.\n", pvt->mc_node_id, (ecc_en ? "enabled" : "disabled"));
+ 
+-	edac_dbg(3, "Node %d: DRAM ECC %s.\n", nid, (ecc_en ? "enabled" : "disabled"));
+-
+-	if (!ecc_en)
+-		return false;
+-	else
+-		return true;
++	return ecc_en;
  }
  
- static void msdc_save_reg(struct msdc_host *host)
+ static inline void
 
 
