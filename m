@@ -1,157 +1,188 @@
-Return-Path: <stable+bounces-105554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B45B9FA4BB
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 09:38:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B779FA516
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 11:05:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90079166D46
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 08:38:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 650271662F3
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 10:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE3B17C7C4;
-	Sun, 22 Dec 2024 08:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+rn7u4D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5208ACA4B;
+	Sun, 22 Dec 2024 10:05:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE5F3D561;
-	Sun, 22 Dec 2024 08:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A10F846F
+	for <stable@vger.kernel.org>; Sun, 22 Dec 2024 10:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734856677; cv=none; b=jbigbnJxYelIvklUtOzqYDL1oCeoeqbgR8EPXzikI+Xm2ng0NBw5qNe1aArSjFKFhfwnEzZtQ7lNcaYAhWEPkWWWYnlU6nMQkvqDMbH2igXwlvdD0DfzbNbvT+putCShjzPUS3akqtueMY/IuucB9aLnFmuAsWGf1WzxWhMjPqA=
+	t=1734861904; cv=none; b=VH5gcZZHPASY8XTRo/QzixzkImn2lnqH055RP2GtFCFAe1U8Nf3tb6rvnlchdcTzDJavbZu+ZmReqCwV1sM7QEi6rNT5As6/AYIjXsMXOIzPZAbVdw/l7AvzTfpW7jkJ1FjDXne3e8VPfhmSAVSRAa6gRIDzMsNk8N+BUfelzQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734856677; c=relaxed/simple;
-	bh=ScnuKx4U4VegmYhx0R2xrwGZ/4XvMe1Dhhut4teYpZM=;
+	s=arc-20240116; t=1734861904; c=relaxed/simple;
+	bh=6KnNIJKNOo8RZ9E4YUvU3GjZOz81139NvMUYJ6+slUU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GVQVgvTk0M5Aq4/6cYKD3tjWN2dlfwd2OLFQq+TjMWiVP2VqBQAAc2amm+Ka9CR8EtxGlSH8wkpx8sbyx1F9Lu48khSNZVSJU6+EEt+Kz1b4dsoHT8MolS4IWcTJgjGvqQqe1ZwPExVvNISxnlndRh8K/lIncKNY2I/fSd0rOUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+rn7u4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC04C4CECD;
-	Sun, 22 Dec 2024 08:37:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734856676;
-	bh=ScnuKx4U4VegmYhx0R2xrwGZ/4XvMe1Dhhut4teYpZM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E+rn7u4D8HdILa6yZs//7VkwuorLftTyomjR/Yzg23Vb2F1GhuM5/ZlThjKI8gQMx
-	 AMB8FJlNAYPjc3ITUyKYuVPXE72RYy6nv8NhLfkE/CoiecqIinu/cHNZBGnhoXy2eM
-	 jpVRbS2ksg5K42FmumxfCH4XO+CSnwu2hBwMSRP0=
-Date: Sun, 22 Dec 2024 09:37:12 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>
-Cc: Jann Horn <jannh@google.com>,
-	Hanno =?iso-8859-1?Q?B=F6ck?= <hanno@hboeck.de>,
-	Jiri Slaby <jirislaby@kernel.org>, linux-hardening@vger.kernel.org,
-	regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] tty: Permit some TIOCL_SETSEL modes without
- CAP_SYS_ADMIN
-Message-ID: <2024122254-chewing-trickery-3eda@gregkh>
-References: <Z2ahOy7XaflrfCMw@google.com>
- <20241221111045.1082615-1-gnoack@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=L6uCntrWIc56aBRYkfgVsPSDF97sBKUIv2pJBu+FZJ2JzqhvDr4xA3+W+8YwYQDJ4G4lDeqM9mQt3ENLYfKtIYQ6Qu599h/49Ha5BwTeniKAkmBIjqyIfuJ/Sw8WxQOp8W+aF3VQiNcVej+idsvKx6OvWeitK29aOfIv4QM2H1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Date: Sun, 22 Dec 2024 11:04:57 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: "Amby @ Hyperbeam" <amby@hyperbeam.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: netfilter regression on aarch64 16k page size
+Message-ID: <Z2fkSV6624wnlTjb@calendula>
+References: <CAFyAQLvdZVRFYW+xbHCu3j354O4=YDVyygXdw3ozEMfFbHkdig@mail.gmail.com>
+ <Z2Vyh91HQ7i6O-6R@calendula>
+ <Z2V3fhnOaOMcCtUt@calendula>
+ <CAFyAQLt3i4Q56aCRXjWZkz=A8rotoPtHKcosRXiM+RF7AYBb4w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241221111045.1082615-1-gnoack@google.com>
+In-Reply-To: <CAFyAQLt3i4Q56aCRXjWZkz=A8rotoPtHKcosRXiM+RF7AYBb4w@mail.gmail.com>
 
-On Sat, Dec 21, 2024 at 11:10:45AM +0000, Günther Noack wrote:
-> With this, processes without CAP_SYS_ADMIN are able to use TIOCLINUX with
-> subcode TIOCL_SETSEL, in the selection modes TIOCL_SETPOINTER,
-> TIOCL_SELCLEAR and TIOCL_SELMOUSEREPORT.
+Hi again,
+
+I posted this alternative fix:
+
+https://patchwork.ozlabs.org/project/netfilter-devel/patch/20241222100239.336289-1-pablo@netfilter.org/
+
+in case you have a chance to test it too.
+
+Thanks.
+
+On Fri, Dec 20, 2024 at 08:00:43PM +0000, Amby @ Hyperbeam wrote:
+> The patch worked, thank you!
 > 
-> TIOCL_SETSEL was previously changed to require CAP_SYS_ADMIN, as this IOCTL
-> let callers change the selection buffer and could be used to simulate
-> keypresses.  These three TIOCL_SETSEL selection modes, however, are safe to
-> use, as they do not modify the selection buffer.
+> On Fri, 20 Dec 2024 at 13:56, Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+> >
+> > Hi,
+> >
+> > Could you give a try to this quick patch?
+> >
+> > I will have to add BUILD_BUG_ON() as well to make sure struct
+> > nft_set_ext is aligned so this atomic operation does not break again.
+> >
+> > Thanks.
+> >
+> > On Fri, Dec 20, 2024 at 02:35:06PM +0100, Pablo Neira Ayuso wrote:
+> > > Hi,
+> > >
+> > > Thanks for your report, it is an unalign atomic that results from
+> > > this.
+> > >
+> > > I will post a patch asap to address this.
+> > >
+> > > On Fri, Dec 20, 2024 at 12:15:36PM +0000, Amby @ Hyperbeam wrote:
+> > > > Greetings,
+> > > > We are seeing a regression in 6.6.66 which I have narrowed down to this commit:
+> > > > stable: 86c27603514cb8ead29857365cdd145404ee9706
+> > > > upstream: 7ffc7481153bbabf3332c6a19b289730c7e1edf5
+> > > >
+> > > > Kernel version: 6.6.66 on aarch64 with 16k page size
+> > > > Last known good version: 6.6.65
+> > > >
+> > > > Steps to repro:
+> > > > - run a 16k page size kernel (check with getconf PAGESIZE)
+> > > > - try to load an nftables config file on the problem
+> > > >
+> > > > Expected:
+> > > > - no errors
+> > > >
+> > > > Actual:
+> > > > - system enters a broken state, with the following trace in dmesg:
+> > > > [   40.939230] Unable to handle kernel paging request at virtual
+> > > > address ffff00015ad7e4cc
+> > > > [   40.939841] Mem abort info:
+> > > > [   40.940079]   ESR = 0x0000000096000021
+> > > > [   40.940389]   EC = 0x25: DABT (current EL), IL = 32 bits
+> > > > [   40.940820]   SET = 0, FnV = 0
+> > > > [   40.941042]   EA = 0, S1PTW = 0
+> > > > [   40.941289]   FSC = 0x21: alignment fault
+> > > > [   40.941570] Data abort info:
+> > > > [   40.941805]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
+> > > > [   40.942229]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> > > > [   40.942857]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> > > > [   40.943313] swapper pgtable: 16k pages, 48-bit VAs, pgdp=00000000474f0000
+> > > > [   40.943865] [ffff00015ad7e4cc] pgd=180000043f7e8003,
+> > > > p4d=180000043f7e8003, pud=180000043f7e4003, pmd=180000043f52c003,
+> > > > pte=006800019ad7cf07
+> > > > [   40.945664] Internal error: Oops: 0000000096000021 [#1] SMP
+> > > > [   40.946055] Modules linked in: zstd zram zsmalloc nf_log_syslog
+> > > > nft_log nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject
+> > > > nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables
+> > > > crct10dif_ce polyval_ce polyval_generic ghash_ce tcp_bbr sch_fq fuse
+> > > > nfnetlink vsock_loopback vmw_vsock_virtio_transport_common
+> > > > vmw_vsock_vmci_transport vmw_vmci vsock bpf_preload qemu_fw_cfg
+> > > > ip_tables squashfs virtio_net net_failover virtio_blk gpio_keys
+> > > > failover virtio_mmio virtio_scsi virtio_console virtio_balloon
+> > > > virtio_gpu virtio_dma_buf megaraid_sas
+> > > > [   40.950262] CPU: 7 PID: 116 Comm: kworker/7:1 Not tainted 6.6.67-1-lts #1
+> > > > [   40.951542] Hardware name: netcup KVM Server, BIOS VPS 2000 ARM G11
+> > > > 08/07/2024
+> > > > [   40.952287] Workqueue: events_power_efficient nft_rhash_gc [nf_tables]
+> > > > [   40.952798] pstate: 20401005 (nzCv daif +PAN -UAO -TCO -DIT +SSBS BTYPE=--)
+> > > > [   40.953401] pc : nft_rhash_gc+0x208/0x2c0 [nf_tables]
+> > > > [   40.954054] lr : nft_rhash_gc+0x134/0x2c0 [nf_tables]
+> > > > [   40.954806] sp : ffff800081fb3cf0
+> > > > [   40.955138] x29: ffff800081fb3d50 x28: 0000000000000000 x27: 0000000000000000
+> > > > [   40.955974] x26: ffff0000cc760ef0 x25: ffff0000ccba9c80 x24: ffff0000cc758f78
+> > > > [   40.956750] x23: 0000000000000010 x22: ffff0000ca789000 x21: ffff0000cc760f78
+> > > > [   40.957455] x20: ffffd62d3ac3be40 x19: ffff00015ad7e4c0 x18: 0000000000000000
+> > > > [   40.959005] x17: 0000000000000000 x16: ffffd62d37926880 x15: 000000400002fef8
+> > > > [   40.959614] x14: ffffffffffffffff x13: 0000000000000030 x12: ffff0000cc760ef0
+> > > > [   40.960197] x11: 0000000000000000 x10: ffff800081fb3d08 x9 : ffff0000cba89fe0
+> > > > [   40.960739] x8 : 0000000000000003 x7 : 0000000000000000 x6 : 0000000000000000
+> > > > [   40.961287] x5 : 0000000000000040 x4 : ffff0000cba89ff0 x3 : ffff00015ad7e4c0
+> > > > [   40.961814] x2 : ffff00015ad7e4cc x1 : ffff00015ad7e4cc x0 : 0000000000000004
+> > > > [   40.962339] Call trace:
+> > > > [   40.962531]  nft_rhash_gc+0x208/0x2c0 [nf_tables]
+> > > > [   40.962911]  process_one_work+0x178/0x3e0
+> > > > [   40.963710]  worker_thread+0x2ac/0x3e0
+> > > > [   40.964530]  kthread+0xf0/0x108
+> > > > [   40.966259]  ret_from_fork+0x10/0x20
+> > > > [   40.967287] Code: 54fff9a4 d503201f d2800080 91003261 (f820303f)
+> > > > [   40.968245] ---[ end trace 0000000000000000 ]---
+> > > >
+> > > > faddr2line gave me the following:
+> > > > nft_rhash_gc+0x208/0x2c0:
+> > > > __lse_atomic64_or at
+> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./arch/arm64/include/asm/atomic_lse.h:132
+> > > > (inlined by) arch_atomic64_or at
+> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./arch/arm64/include/asm/atomic.h:65
+> > > > (inlined by) raw_atomic64_or at
+> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/linux/atomic/atomic-arch-fallback.h:3771
+> > > > (inlined by) raw_atomic_long_or at
+> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/linux/atomic/atomic-long.h:1069
+> > > > (inlined by) arch_set_bit at
+> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/asm-generic/bitops/atomic.h:18
+> > > > (inlined by) set_bit at
+> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/asm-generic/bitops/instrumented-atomic.h:29
+> > > > (inlined by) nft_set_elem_dead at
+> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/net/netfilter/nf_tables.h:1576
+> > > > (inlined by) nft_rhash_gc at
+> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/net/netfilter/nft_set_hash.c:375
+> > > >
+> > > > By looking at the diff between 6.6.65 and 6.6.66 I was able to narrow
+> > > > it down to the above commit and I can confirm that reverting it fixes
+> > > > the issue.
+> > > >
+> > > > Best
+> > > > --
+> > > > Amby Balaji
+> > > > Co-founder & CTO
+> > > > Hyperbeam, Inc.
 > 
-> This fixes a mouse support regression that affected Emacs (invisible mouse
-> cursor).
 > 
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/r/ee3ec63269b43b34e1c90dd8c9743bf8@finder.org
-> Fixes: 8d1b43f6a6df ("tty: Restrict access to TIOCLINUX' copy-and-paste subcommands")
-> Signed-off-by: Günther Noack <gnoack@google.com>
-> ---
->  drivers/tty/vt/selection.c | 14 ++++++++++++++
->  drivers/tty/vt/vt.c        |  2 --
->  2 files changed, 14 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
-> index 564341f1a74f..0bd6544e30a6 100644
-> --- a/drivers/tty/vt/selection.c
-> +++ b/drivers/tty/vt/selection.c
-> @@ -192,6 +192,20 @@ int set_selection_user(const struct tiocl_selection __user *sel,
->  	if (copy_from_user(&v, sel, sizeof(*sel)))
->  		return -EFAULT;
->  
-> +	/*
-> +	 * TIOCL_SELCLEAR, TIOCL_SELPOINTER and TIOCL_SELMOUSEREPORT are OK to
-> +	 * use without CAP_SYS_ADMIN as they do not modify the selection.
-> +	 */
-> +	switch (v.sel_mode) {
-> +	case TIOCL_SELCLEAR:
-> +	case TIOCL_SELPOINTER:
-> +	case TIOCL_SELMOUSEREPORT:
-> +		break;
-> +	default:
-> +		if (!capable(CAP_SYS_ADMIN))
-> +			return -EPERM;
-> +	}
-> +
->  	return set_selection_kernel(&v, tty);
->  }
->  
-> diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-> index 96842ce817af..be5564ed8c01 100644
-> --- a/drivers/tty/vt/vt.c
-> +++ b/drivers/tty/vt/vt.c
-> @@ -3345,8 +3345,6 @@ int tioclinux(struct tty_struct *tty, unsigned long arg)
->  
->  	switch (type) {
->  	case TIOCL_SETSEL:
-> -		if (!capable(CAP_SYS_ADMIN))
-> -			return -EPERM;
->  		return set_selection_user(param, tty);
->  	case TIOCL_PASTESEL:
->  		if (!capable(CAP_SYS_ADMIN))
 > -- 
-> 2.47.1.613.gc27f4b7a9f-goog
-> 
-> 
-
-Hi,
-
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+> Amby Balaji
+> Co-founder & CTO
+> Hyperbeam, Inc.
 
