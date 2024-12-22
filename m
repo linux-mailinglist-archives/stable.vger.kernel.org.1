@@ -1,188 +1,139 @@
-Return-Path: <stable+bounces-105555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B779FA516
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 11:05:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80F29FA546
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 11:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 650271662F3
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 10:05:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBC941888DC6
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 10:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5208ACA4B;
-	Sun, 22 Dec 2024 10:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4324189B86;
+	Sun, 22 Dec 2024 10:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jgRyZ/fR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A10F846F
-	for <stable@vger.kernel.org>; Sun, 22 Dec 2024 10:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BF4188722;
+	Sun, 22 Dec 2024 10:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734861904; cv=none; b=VH5gcZZHPASY8XTRo/QzixzkImn2lnqH055RP2GtFCFAe1U8Nf3tb6rvnlchdcTzDJavbZu+ZmReqCwV1sM7QEi6rNT5As6/AYIjXsMXOIzPZAbVdw/l7AvzTfpW7jkJ1FjDXne3e8VPfhmSAVSRAa6gRIDzMsNk8N+BUfelzQM=
+	t=1734863868; cv=none; b=A2hs5m5A/ouT0RPbmDVlLgGLvuoAmtQWYgnZTYcCjth+V6ao1/5LRtdDNOZh8knVPA95HfAkssiP4X160neWdBLiPT7/lqMj6MvpXK4BYE/f6J7OeWmf/jYdPW19uWpRrrqbZF2dEuG1+ydU0LzDPX/E8ZFH8oYACGXrJf12djI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734861904; c=relaxed/simple;
-	bh=6KnNIJKNOo8RZ9E4YUvU3GjZOz81139NvMUYJ6+slUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6uCntrWIc56aBRYkfgVsPSDF97sBKUIv2pJBu+FZJ2JzqhvDr4xA3+W+8YwYQDJ4G4lDeqM9mQt3ENLYfKtIYQ6Qu599h/49Ha5BwTeniKAkmBIjqyIfuJ/Sw8WxQOp8W+aF3VQiNcVej+idsvKx6OvWeitK29aOfIv4QM2H1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Date: Sun, 22 Dec 2024 11:04:57 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: "Amby @ Hyperbeam" <amby@hyperbeam.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: netfilter regression on aarch64 16k page size
-Message-ID: <Z2fkSV6624wnlTjb@calendula>
-References: <CAFyAQLvdZVRFYW+xbHCu3j354O4=YDVyygXdw3ozEMfFbHkdig@mail.gmail.com>
- <Z2Vyh91HQ7i6O-6R@calendula>
- <Z2V3fhnOaOMcCtUt@calendula>
- <CAFyAQLt3i4Q56aCRXjWZkz=A8rotoPtHKcosRXiM+RF7AYBb4w@mail.gmail.com>
+	s=arc-20240116; t=1734863868; c=relaxed/simple;
+	bh=Dih0UevojjK6aYi/hraFiM0YbAA8nuuUB3ySstbKIVc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d5vEWinr0jaQHeWJUEkLwBaaVO56rNR+yFqnnDfYnQq06vALdGicbLwtymr7/e7shq0XKidGJgRQdAZrCUob7q6C6GtEsE6zuLZpeXw/4YWhcItbQOCiXtslWYdTo8hNsxrkRf1UeYKf892BAHTbi5LH+QCZ4cIeesJHdEnTbp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jgRyZ/fR; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30219437e63so45247071fa.1;
+        Sun, 22 Dec 2024 02:37:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734863865; x=1735468665; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uAf4XYF+BN/cynPMUouPVnj1TJkDYFatX5sPirx1ssQ=;
+        b=jgRyZ/fRlojXXeydOYmFkCT6KmB7srXsWO/FZQaMFH9Kq9NknjUU+AqR6czT3WXDqx
+         sEmgBR7L2A9dmXhSWlXtvIUqFjvQNQrhd/SBEwNz05uD71TnUJFoqA37PbofU4I1knjJ
+         qKEzfs0Ic5c7qa/8GY3Aid4gRXGsFJwAgmd7aqw0hfHkk0K1xJ5nxNQBCEpZ9mI1Aeg5
+         P4w3dtmdVjwmvhCtxdBNRIHSQyMo55FP/KDBkhToI7sOle44NB+bVZUxONqOaR1G3Z7J
+         8kPy1F6PuU8fnUguShwREpqxCFfeeup95rgmp/aIHLrBJHhvR1tlP3gqeUkoDSrJPvel
+         yWjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734863865; x=1735468665;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uAf4XYF+BN/cynPMUouPVnj1TJkDYFatX5sPirx1ssQ=;
+        b=jktImjgfIOFP/027xdMbu9ksb3fdYoOgjZeIYubhDkE2vjuao17dQkTGPSfQiH8Z/3
+         r4mpugbpaUs377dE+GmLnXrmOX+IskZev04b9uP4ogzgK+pG4Hgfgqxbp+wd+pAWcWAX
+         sA3atUXDRaJIgZcaMWgkvF4q5I7IIscZMC1t7NSrzGItSS7I1o8SNjDwr0c5b/gmcRkl
+         xAyGYKOyyOTaBiVfIOEadEnx8gXBLZpafg4d4zyfFdAnj1vFe0usfyezmdbzyUDK3gaX
+         bVIA0wIgErKWdSRD93jAFjAwTRj9qEugjXDaBUWgel/RmFlckb0CN90XXinzk5Ca4n0i
+         Neaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvt2nWFBRLrSBx/pa8kAatZDrXTIIQK574TL/5ZXlEtc+Zf9gfh0jGKBShYaaKq618Gny7OwM4@vger.kernel.org, AJvYcCX9hFZW7EqOwxMgCIk8s2p6OA2e/ldevbWdt3NJBa7p96pv/sFoPDAxVnT+GWUVaPTIrVxpbSRRvBim4SY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkXPpQh3pfKEcfs38yWGUTxLzde4PolMsACUCjvXR8wvOQd5Ab
+	vdk97FcWD4VuYyAm7XgRZnGjoMxyqBJpmyXMYzOyInWXhMVxD3FlRbf/OeXlk82grfT5s2aaEpm
+	OTmcxOTmMQp9xfk7kMMSRRDT36hY=
+X-Gm-Gg: ASbGnctkf7PpmtsSH0AlddqSYAlBopfcxo1nlJbFh4UIQloxmhnV28zBikjUA+ouMp2
+	ucfpUeA/BbcTxt1fBGXgJMljREHo5pAxc0vhEAiwwPY4wChL7J57eebU2itsPQt630YFA
+X-Google-Smtp-Source: AGHT+IGJ4XnG6hPJJ83WUCPU4UF5z2bmt9KoMQ+xXAQfdQtvpcUiv3Qt3tZqeiwj1hLIlyJ3fx6mjYGevzp0orcU4bE=
+X-Received: by 2002:a05:6512:3510:b0:542:2952:8848 with SMTP id
+ 2adb3069b0e04-54229529bb5mr1819462e87.3.1734863864768; Sun, 22 Dec 2024
+ 02:37:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAFyAQLt3i4Q56aCRXjWZkz=A8rotoPtHKcosRXiM+RF7AYBb4w@mail.gmail.com>
+References: <CA+icZUWHU=oXOEj5wHTzxrw_wj1w5hTvqq8Ry400s0ZCJjTEZw@mail.gmail.com>
+ <099d3a80-4fdb-49a7-9fd0-207d7386551f@citrix.com> <CA+icZUX98gQ54hePEWNauiU41XQV7qdKJx5PiiXzxy+6yW7hTw@mail.gmail.com>
+ <CA+icZUW-i53boHBPt+8zh-D921XFbPb_Kc=dzdgCK1QvkOgCsw@mail.gmail.com>
+ <90640a5d-ff17-4555-adc6-ae9e21e24ebd@citrix.com> <CA+icZUVo69swc9QfwJr+mDuHqJKcFUexc08voP2O41g31HGx5w@mail.gmail.com>
+ <43166e29-ff2d-4a9d-8c1b-41b5e247974b@citrix.com> <CA+icZUUp9rgx2Dvsww6QbTGRZz5=mf75D0_KncwdgCEZe01-EA@mail.gmail.com>
+ <CA+icZUV0HEF_hwr-eSovntfcT0++FBrQN-HbFL+oZtnKjJzLtA@mail.gmail.com> <698f48a0-b674-4d7f-9c47-f1f8bf86379e@citrix.com>
+In-Reply-To: <698f48a0-b674-4d7f-9c47-f1f8bf86379e@citrix.com>
+Reply-To: sedat.dilek@gmail.com
+From: Sedat Dilek <sedat.dilek@gmail.com>
+Date: Sun, 22 Dec 2024 11:37:08 +0100
+Message-ID: <CA+icZUW454ND85nbjqAoMg42=i+aGht8Z=iG2wKj=Un7Ot0y6Q@mail.gmail.com>
+Subject: Re: [Linux-6.12.y] XEN: CVE-2024-53241 / XSA-466 and Clang-kCFI
+To: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: Juergen Gross <jgross@suse.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Jan Beulich <jbeulich@suse.com>, 
+	Josh Poimboeuf <jpoimboe@redhat.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, 
+	xen-devel <xen-devel@lists.xenproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi again,
-
-I posted this alternative fix:
-
-https://patchwork.ozlabs.org/project/netfilter-devel/patch/20241222100239.336289-1-pablo@netfilter.org/
-
-in case you have a chance to test it too.
-
-Thanks.
-
-On Fri, Dec 20, 2024 at 08:00:43PM +0000, Amby @ Hyperbeam wrote:
-> The patch worked, thank you!
-> 
-> On Fri, 20 Dec 2024 at 13:56, Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+On Sat, Dec 21, 2024 at 10:31=E2=80=AFPM Andrew Cooper
+<andrew.cooper3@citrix.com> wrote:
+>
+> On 21/12/2024 6:25 pm, Sedat Dilek wrote:
+> > With...
 > >
-> > Hi,
-> >
-> > Could you give a try to this quick patch?
-> >
-> > I will have to add BUILD_BUG_ON() as well to make sure struct
-> > nft_set_ext is aligned so this atomic operation does not break again.
-> >
-> > Thanks.
-> >
-> > On Fri, Dec 20, 2024 at 02:35:06PM +0100, Pablo Neira Ayuso wrote:
-> > > Hi,
-> > >
-> > > Thanks for your report, it is an unalign atomic that results from
-> > > this.
-> > >
-> > > I will post a patch asap to address this.
-> > >
-> > > On Fri, Dec 20, 2024 at 12:15:36PM +0000, Amby @ Hyperbeam wrote:
-> > > > Greetings,
-> > > > We are seeing a regression in 6.6.66 which I have narrowed down to this commit:
-> > > > stable: 86c27603514cb8ead29857365cdd145404ee9706
-> > > > upstream: 7ffc7481153bbabf3332c6a19b289730c7e1edf5
-> > > >
-> > > > Kernel version: 6.6.66 on aarch64 with 16k page size
-> > > > Last known good version: 6.6.65
-> > > >
-> > > > Steps to repro:
-> > > > - run a 16k page size kernel (check with getconf PAGESIZE)
-> > > > - try to load an nftables config file on the problem
-> > > >
-> > > > Expected:
-> > > > - no errors
-> > > >
-> > > > Actual:
-> > > > - system enters a broken state, with the following trace in dmesg:
-> > > > [   40.939230] Unable to handle kernel paging request at virtual
-> > > > address ffff00015ad7e4cc
-> > > > [   40.939841] Mem abort info:
-> > > > [   40.940079]   ESR = 0x0000000096000021
-> > > > [   40.940389]   EC = 0x25: DABT (current EL), IL = 32 bits
-> > > > [   40.940820]   SET = 0, FnV = 0
-> > > > [   40.941042]   EA = 0, S1PTW = 0
-> > > > [   40.941289]   FSC = 0x21: alignment fault
-> > > > [   40.941570] Data abort info:
-> > > > [   40.941805]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
-> > > > [   40.942229]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> > > > [   40.942857]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> > > > [   40.943313] swapper pgtable: 16k pages, 48-bit VAs, pgdp=00000000474f0000
-> > > > [   40.943865] [ffff00015ad7e4cc] pgd=180000043f7e8003,
-> > > > p4d=180000043f7e8003, pud=180000043f7e4003, pmd=180000043f52c003,
-> > > > pte=006800019ad7cf07
-> > > > [   40.945664] Internal error: Oops: 0000000096000021 [#1] SMP
-> > > > [   40.946055] Modules linked in: zstd zram zsmalloc nf_log_syslog
-> > > > nft_log nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject
-> > > > nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables
-> > > > crct10dif_ce polyval_ce polyval_generic ghash_ce tcp_bbr sch_fq fuse
-> > > > nfnetlink vsock_loopback vmw_vsock_virtio_transport_common
-> > > > vmw_vsock_vmci_transport vmw_vmci vsock bpf_preload qemu_fw_cfg
-> > > > ip_tables squashfs virtio_net net_failover virtio_blk gpio_keys
-> > > > failover virtio_mmio virtio_scsi virtio_console virtio_balloon
-> > > > virtio_gpu virtio_dma_buf megaraid_sas
-> > > > [   40.950262] CPU: 7 PID: 116 Comm: kworker/7:1 Not tainted 6.6.67-1-lts #1
-> > > > [   40.951542] Hardware name: netcup KVM Server, BIOS VPS 2000 ARM G11
-> > > > 08/07/2024
-> > > > [   40.952287] Workqueue: events_power_efficient nft_rhash_gc [nf_tables]
-> > > > [   40.952798] pstate: 20401005 (nzCv daif +PAN -UAO -TCO -DIT +SSBS BTYPE=--)
-> > > > [   40.953401] pc : nft_rhash_gc+0x208/0x2c0 [nf_tables]
-> > > > [   40.954054] lr : nft_rhash_gc+0x134/0x2c0 [nf_tables]
-> > > > [   40.954806] sp : ffff800081fb3cf0
-> > > > [   40.955138] x29: ffff800081fb3d50 x28: 0000000000000000 x27: 0000000000000000
-> > > > [   40.955974] x26: ffff0000cc760ef0 x25: ffff0000ccba9c80 x24: ffff0000cc758f78
-> > > > [   40.956750] x23: 0000000000000010 x22: ffff0000ca789000 x21: ffff0000cc760f78
-> > > > [   40.957455] x20: ffffd62d3ac3be40 x19: ffff00015ad7e4c0 x18: 0000000000000000
-> > > > [   40.959005] x17: 0000000000000000 x16: ffffd62d37926880 x15: 000000400002fef8
-> > > > [   40.959614] x14: ffffffffffffffff x13: 0000000000000030 x12: ffff0000cc760ef0
-> > > > [   40.960197] x11: 0000000000000000 x10: ffff800081fb3d08 x9 : ffff0000cba89fe0
-> > > > [   40.960739] x8 : 0000000000000003 x7 : 0000000000000000 x6 : 0000000000000000
-> > > > [   40.961287] x5 : 0000000000000040 x4 : ffff0000cba89ff0 x3 : ffff00015ad7e4c0
-> > > > [   40.961814] x2 : ffff00015ad7e4cc x1 : ffff00015ad7e4cc x0 : 0000000000000004
-> > > > [   40.962339] Call trace:
-> > > > [   40.962531]  nft_rhash_gc+0x208/0x2c0 [nf_tables]
-> > > > [   40.962911]  process_one_work+0x178/0x3e0
-> > > > [   40.963710]  worker_thread+0x2ac/0x3e0
-> > > > [   40.964530]  kthread+0xf0/0x108
-> > > > [   40.966259]  ret_from_fork+0x10/0x20
-> > > > [   40.967287] Code: 54fff9a4 d503201f d2800080 91003261 (f820303f)
-> > > > [   40.968245] ---[ end trace 0000000000000000 ]---
-> > > >
-> > > > faddr2line gave me the following:
-> > > > nft_rhash_gc+0x208/0x2c0:
-> > > > __lse_atomic64_or at
-> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./arch/arm64/include/asm/atomic_lse.h:132
-> > > > (inlined by) arch_atomic64_or at
-> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./arch/arm64/include/asm/atomic.h:65
-> > > > (inlined by) raw_atomic64_or at
-> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/linux/atomic/atomic-arch-fallback.h:3771
-> > > > (inlined by) raw_atomic_long_or at
-> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/linux/atomic/atomic-long.h:1069
-> > > > (inlined by) arch_set_bit at
-> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/asm-generic/bitops/atomic.h:18
-> > > > (inlined by) set_bit at
-> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/asm-generic/bitops/instrumented-atomic.h:29
-> > > > (inlined by) nft_set_elem_dead at
-> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/./include/net/netfilter/nf_tables.h:1576
-> > > > (inlined by) nft_rhash_gc at
-> > > > /root/gg/setup/linux-lts/src/linux-6.6.67/net/netfilter/nft_set_hash.c:375
-> > > >
-> > > > By looking at the diff between 6.6.65 and 6.6.66 I was able to narrow
-> > > > it down to the above commit and I can confirm that reverting it fixes
-> > > > the issue.
-> > > >
-> > > > Best
-> > > > --
-> > > > Amby Balaji
-> > > > Co-founder & CTO
-> > > > Hyperbeam, Inc.
-> 
-> 
-> 
-> -- 
-> Amby Balaji
-> Co-founder & CTO
-> Hyperbeam, Inc.
+> > dileks@iniza:~/src/xtf/git$ mv tests/xsa-454 ../
+> > dileks@iniza:~/src/xtf/git$ mv tests/xsa-consoleio-write ../
+>
+> That's completely bizzare.   There's nothing interestingly different
+> with those two tests vs the others.
+>
+> I take it the crash is repeatable when using either of these?
+>
+> ~Andrew
+
+This time I stopped SDDM and thus KDE-6/Wayland session.
+
+Tested with Debian's officially 6.12.6-amd64 kernel in VT-3.
+
+test-hvm32pae-xsa-consoleio-write SUCCESS <--- 1st time I tried, never
+said this is not OK
+
+test-hvm64-xsa-454 leads to FROZEN system and DATA LOSS (here: ext4).
+Reproducibly as told many times.- in Debian and selfmade kernels version 6.=
+12.6.
+
+Stolen from the picture I took with my smartphone:
+
+sudo ./xft-runner test-hvm64-xsa-454
+
+Executing 'xl create -p tests/xsa-454/test-hvm64-xsa-454.cfg'
+Executing 'xl console test-hvm64-xsa-454'
+Executing 'xl unpause test-hvm64-xsa-454'
+
+^^ System does NOT react!
+
+I can send you the picture on request.
+
+-Sedat-
 
