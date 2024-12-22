@@ -1,227 +1,173 @@
-Return-Path: <stable+bounces-105552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6029FA4A2
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 09:14:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2351F9FA4B2
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 09:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E98CE16677E
-	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 08:14:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7462A166A93
+	for <lists+stable@lfdr.de>; Sun, 22 Dec 2024 08:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094501632D7;
-	Sun, 22 Dec 2024 08:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508C516BE3A;
+	Sun, 22 Dec 2024 08:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="WabXblh+"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="buWx6i7B";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="H7lqMEmi";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="buWx6i7B";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="H7lqMEmi"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA865EAF6;
-	Sun, 22 Dec 2024 08:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73535290F;
+	Sun, 22 Dec 2024 08:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734855277; cv=none; b=uAeDUhWQIvkxMkuuiuiSb3p8yyNoe4ZUL2IazE7RPFCq7lOSZ4EWkzPnzUut2hbiplhxGuaRaLK0AtsCmIbOOG91+AA4qXXq5CvwcH5fMUGOljBWoK8jWkvPD+bQaMW+CBQ90EPc+/v6f/VHR6qk/uuAdB5WtEBEvoZfwzWuTjo=
+	t=1734856052; cv=none; b=oam6zjt21mNEBK+hXSlJlezEUwFJjb7fk9a+pcUz05udxx14aAY2W/NpdWmdnf2Wxq18FLyOANs/6u6LiA2HjOwue1X5KbFpc3dotChBjNTMm6oHATpgnVFzFbhlZ1bzCox3ewtRzC8hUufeTnPPfNU6fYz1u7/LD01RJX9ReME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734855277; c=relaxed/simple;
-	bh=RU0grsk1NlJOrri0TnPVdDWVkgjWLJBP5YdGgV4zIJU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sifaCzsYQACFfMe8BtWGkqN0XXxopvqRYlZf3odoF8tWHCiyMttH4Sb+vPw3VCN/liP2OguLjAIcKfE3eRhafoOFsmvAW77S0aDwUGqmmYDvM6YVlw+9B0/y6vUQwrA+cHoiffnSaEXlKRt8sbb1nQJtmyoNoobjsNVYLxozg0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=WabXblh+; arc=none smtp.client-ip=117.135.210.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=MEj+1+5yRDWIb0ATQhyGvjl5S2ZyCLRVuyNGEQnBk68=;
-	b=WabXblh+7T8z+YPvm0ufFQLa67aDzukKmFkbD2dwi+V3MilPgeYNVI01MCjm5x
-	3bwMM0N8mMY8zWz7H0kILnJuywcXA99d9dXaGPmHKn0dXbwak2xoznva+rCSA5bY
-	dAN2d2m9SZi2kXPWMFs7lO9RmWq2b+fhdIWhiYMGvUK5U=
-Received: from [172.20.10.3] (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD314M+ymdnnSbTAA--.60994S2;
-	Sun, 22 Dec 2024 16:13:51 +0800 (CST)
-Message-ID: <d6d92a36-4ed7-4ae8-8b74-48f79a502a36@126.com>
-Date: Sun, 22 Dec 2024 16:13:43 +0800
+	s=arc-20240116; t=1734856052; c=relaxed/simple;
+	bh=P0y6YF7geAMX3Zs7WLZL+7DfTM1U/RAuwLkx93wvwVQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GeH+17LM/MksKYvtPiMzty7gvo5xYzNZtv3aDUfbxpX5+0qJRy3TZumKSpjD5GWh0MXGtjcTe2q9mz53miOiKN/1logeppslnDmdJNWzVCPV+4G4q0ilD4qNbw8QObwFxwcNO2y6wljbXtAeDzJkc+1+bVo4Acgd0C2dW/paxh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=buWx6i7B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=H7lqMEmi; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=buWx6i7B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=H7lqMEmi; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AF37C1F37E;
+	Sun, 22 Dec 2024 08:27:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1734856042; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xVrI9i3WvxuE/DEox1m2Wwb87x1cqqrB/RdP1vFefzc=;
+	b=buWx6i7B5aAqPEeWIHLuWZhAPoaDLKodRchLIIAP4LMo6ElaEt6pMjPZ6hqd+az4E6Doow
+	2Ixbj78GXC0iVlao4QLjDVrUC/NOG5zFrxopgq/wr+mieIbCdfQBIxMVCrBplPYJ/qsuDD
+	i7GOZERD9wNvtf7IPBq7NE/vk5Fbp2c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1734856042;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xVrI9i3WvxuE/DEox1m2Wwb87x1cqqrB/RdP1vFefzc=;
+	b=H7lqMEmilmtLci57ltWPweg7Y65geCD4KZO7cU/xGlC271sPFydFsEr61zVsJ/WnAu5BAM
+	4qHTksWlAIrzrbAw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=buWx6i7B;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=H7lqMEmi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1734856042; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xVrI9i3WvxuE/DEox1m2Wwb87x1cqqrB/RdP1vFefzc=;
+	b=buWx6i7B5aAqPEeWIHLuWZhAPoaDLKodRchLIIAP4LMo6ElaEt6pMjPZ6hqd+az4E6Doow
+	2Ixbj78GXC0iVlao4QLjDVrUC/NOG5zFrxopgq/wr+mieIbCdfQBIxMVCrBplPYJ/qsuDD
+	i7GOZERD9wNvtf7IPBq7NE/vk5Fbp2c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1734856042;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xVrI9i3WvxuE/DEox1m2Wwb87x1cqqrB/RdP1vFefzc=;
+	b=H7lqMEmilmtLci57ltWPweg7Y65geCD4KZO7cU/xGlC271sPFydFsEr61zVsJ/WnAu5BAM
+	4qHTksWlAIrzrbAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 268A213A6D;
+	Sun, 22 Dec 2024 08:27:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id EKWaBWrNZ2ewCwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sun, 22 Dec 2024 08:27:22 +0000
+Date: Sun, 22 Dec 2024 09:27:17 +0100
+Message-ID: <87ldw89l7e.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Evgeny Kapun <abacabadabacaba@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Linux Sound Mailing List <linux-sound@vger.kernel.org>,
+	Kailang Yang <kailang@realtek.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Regressions Mailing List <regressions@lists.linux.dev>,
+	Linux Stable Mailing List <stable@vger.kernel.org>
+Subject: Re: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
+In-Reply-To: <57883f2e-49cd-4aa4-9879-7dcdf7fec6df@gmail.com>
+References: <e142749b-7714-4733-9452-918fbe328c8f@gmail.com>
+	<8734ijwru5.wl-tiwai@suse.de>
+	<57883f2e-49cd-4aa4-9879-7dcdf7fec6df@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] replace free hugepage folios after migration
-To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, muchun.song@linux.dev,
- liuzixing@hygon.cn
-References: <1734503588-16254-1-git-send-email-yangge1116@126.com>
- <0ca35fe5-9799-4518-9fb1-701c88501a8d@redhat.com>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <0ca35fe5-9799-4518-9fb1-701c88501a8d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD314M+ymdnnSbTAA--.60994S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKrWkXrWDtFy3XFWUAryrJFb_yoW7uw15pF
-	y8Gr15GrWDJr9rGr1Iqan8Ar1Sy3ykXFWjkFWftrW3ZFnxtr929Fn0ywn093y8Cr97CF4I
-	vFWjqr4kuF1UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UKzuZUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWRO9G2dnuXaZzgAAs0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: AF37C1F37E
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_DN_ALL(0.00)[];
+	URIBL_BLOCKED(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,alsa-info.sh:url];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.51
+X-Spam-Flag: NO
 
-
-
-在 2024/12/21 22:35, David Hildenbrand 写道:
-> On 18.12.24 07:33, yangge1116@126.com wrote:
->> From: yangge <yangge1116@126.com>
->>
->> My machine has 4 NUMA nodes, each equipped with 32GB of memory. I
->> have configured each NUMA node with 16GB of CMA and 16GB of in-use
->> hugetlb pages. The allocation of contiguous memory via the
->> cma_alloc() function can fail probabilistically.
->>
->> The cma_alloc() function may fail if it sees an in-use hugetlb page
->> within the allocation range, even if that page has already been
->> migrated. When in-use hugetlb pages are migrated, they may simply
->> be released back into the free hugepage pool instead of being
->> returned to the buddy system. This can cause the
->> test_pages_isolated() function check to fail, ultimately leading
->> to the failure of the cma_alloc() function:
->> cma_alloc()
->>      __alloc_contig_migrate_range() // migrate in-use hugepage
->>      test_pages_isolated()
->>          __test_page_isolated_in_pageblock()
->>               PageBuddy(page) // check if the page is in buddy
->>
->> To address this issue, we will add a function named
->> replace_free_hugepage_folios(). This function will replace the
->> hugepage in the free hugepage pool with a new one and release the
->> old one to the buddy system. After the migration of in-use hugetlb
->> pages is completed, we will invoke the replace_free_hugepage_folios()
->> function to ensure that these hugepages are properly released to
->> the buddy system. Following this step, when the test_pages_isolated()
->> function is executed for inspection, it will successfully pass.
->>
->> Signed-off-by: yangge <yangge1116@126.com>
->> ---
->>   include/linux/hugetlb.h |  6 ++++++
->>   mm/hugetlb.c            | 37 +++++++++++++++++++++++++++++++++++++
->>   mm/page_alloc.c         | 13 ++++++++++++-
->>   3 files changed, 55 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->> index ae4fe86..7d36ac8 100644
->> --- a/include/linux/hugetlb.h
->> +++ b/include/linux/hugetlb.h
->> @@ -681,6 +681,7 @@ struct huge_bootmem_page {
->>   };
->>   int isolate_or_dissolve_huge_page(struct page *page, struct 
->> list_head *list);
->> +int replace_free_hugepage_folios(unsigned long start_pfn, unsigned 
->> long end_pfn);
->>   struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->>                   unsigned long addr, int avoid_reserve);
->>   struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int 
->> preferred_nid,
->> @@ -1059,6 +1060,11 @@ static inline int 
->> isolate_or_dissolve_huge_page(struct page *page,
->>       return -ENOMEM;
->>   }
->> +int replace_free_hugepage_folios(unsigned long start_pfn, unsigned 
->> long end_pfn)
->> +{
->> +    return 0;
->> +}
->> +
->>   static inline struct folio *alloc_hugetlb_folio(struct 
->> vm_area_struct *vma,
->>                          unsigned long addr,
->>                          int avoid_reserve)
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 8e1db80..a099c54 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -2975,6 +2975,43 @@ int isolate_or_dissolve_huge_page(struct page 
->> *page, struct list_head *list)
->>       return ret;
->>   }
->> +/*
->> + *  replace_free_hugepage_folios - Replace free hugepage folios in a 
->> given pfn
->> + *  range with new folios.
->> + *  @stat_pfn: start pfn of the given pfn range
->> + *  @end_pfn: end pfn of the given pfn range
->> + *  Returns 0 on success, otherwise negated error.
->> + */
->> +int replace_free_hugepage_folios(unsigned long start_pfn, unsigned 
->> long end_pfn)
->> +{
->> +    struct hstate *h;
->> +    struct folio *folio;
->> +    int ret = 0;
->> +
->> +    LIST_HEAD(isolate_list);
->> +
->> +    while (start_pfn < end_pfn) {
->> +        folio = pfn_folio(start_pfn);
->> +        if (folio_test_hugetlb(folio)) {
->> +            h = folio_hstate(folio);
->> +        } else {
->> +            start_pfn++;
->> +            continue;
->> +        }
->> +
->> +        if (!folio_ref_count(folio)) {
->> +            ret = alloc_and_dissolve_hugetlb_folio(h, folio, 
->> &isolate_list);
->> +            if (ret)
->> +                break;
->> +
->> +            putback_movable_pages(&isolate_list);
->> +        }
->> +        start_pfn++;
->> +    }
->> +
->> +    return ret;
->> +}
->> +
->>   struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->>                       unsigned long addr, int avoid_reserve)
->>   {
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index dde19db..1dcea28 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -6504,7 +6504,18 @@ int alloc_contig_range_noprof(unsigned long 
->> start, unsigned long end,
->>       ret = __alloc_contig_migrate_range(&cc, start, end, migratetype);
->>       if (ret && ret != -EBUSY)
->>           goto done;
->> -    ret = 0;
->> +
->> +    /*
->> +     * When in-use hugetlb pages are migrated, they may simply be
->> +     * released back into the free hugepage pool instead of being
->> +     * returned to the buddy system. After the migration of in-use
->> +     * huge pages is completed, we will invoke the
->> +     * replace_free_hugepage_folios() function to ensure that
->> +     * these hugepages are properly released to the buddy system.
->> +     */
+On Sun, 22 Dec 2024 08:37:27 +0100,
+Evgeny Kapun wrote:
 > 
-> As mentioned in my other mail, what I don't like about this is, IIUC, 
-> the pages can get reallocated anytime after we successfully migrated 
-> them, or is there  anything that prevents that?
+> On 12/19/24 18:38, Takashi Iwai wrote:
+> > Could you give alsa-info.sh output with broken and working (reverted)
+> > states?  Run the script with --no-upload option and attach the
+> > outputs.
 > 
-The pages can get reallocated anytime after we successfully migrated 
-them. Currently, I haven't thought of a good way to prevent it.
-
-> Did you ever try allocating a larger range with a single 
-> alloc_contig_range() call, that possibly has to migrate multiple hugetlb 
-> folios in one go (and maybe just allocates one of the just-freed hugetlb 
-> folios as migration target)?
+> Hi,
 > 
-
-I have tried using a single alloc_contig_range() call to allocate a 
-larger contiguous range, and it works properly. This is because during 
-the period between __alloc_contig_migrate_range() and 
-isolate_freepages_range(), no one allocates a hugetlb folio from the 
-free hugetlb pool.
+> I already posted alsa-info output in a previous message:
 > 
+> Broken, kernel version 6.12.5:
+> https://lore.kernel.org/linux-sound/0625722b-5404-406a-b571-ff79693fe980@gmail.com/3-alsa-info-6.12.5.txt
+> Working, kernel version 6.7.11:
+> https://lore.kernel.org/linux-sound/0625722b-5404-406a-b571-ff79693fe980@gmail.com/2-alsa-info-6.7.11.txt
+> 
+> Or do you need alsa-info with a new kernel, but with the offending
+> commit reverted?
 
+Yes, that'll be the best for eliminating other possible artifacts.
+
+
+thanks,
+
+Takashi
 
