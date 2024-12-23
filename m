@@ -1,76 +1,137 @@
-Return-Path: <stable+bounces-106014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEB19FB520
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 21:20:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1109FB5FF
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 22:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9AC0164A3F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 20:20:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F86A18835E8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 21:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774021BE871;
-	Mon, 23 Dec 2024 20:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3042D18052;
+	Mon, 23 Dec 2024 21:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iuHjCBim"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uNQO6UNX"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8FE38F82
-	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 20:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EF61B87CA;
+	Mon, 23 Dec 2024 21:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734985248; cv=none; b=swIKvu6gKrb7BSNDWjvw0OtL/bXKIz70pCGENEFfT2TJjUT+TwuFbPDtrd5rhSgHY5hd8s92067WoTWzEjBVMY/IX/dC+CURaob4JGl4GALJgBZTc3BGmbdTQEZ7nqPQreEGbed52liFc2ICl+WX+RbU/9MgZpjgh1S26B0LQVs=
+	t=1734988492; cv=none; b=rz5YI9r6wQXzbJaCqS1eCAXkDY2Pzx9cZBvvrS8/UvUGjxQP/MIrrGBK6P0wSfN+uncjYzpx68/e+YxrVQ3zkboPjTJdmRmYAl6JGG1XdtVfF6O2xBdO8Zubs9wH7VjUULQIUWyN+yEAL3sHmCyL67lX6t0BoLdL78Q3qdLR9YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734985248; c=relaxed/simple;
-	bh=f2z2BR8g6lK9CjbxurMGbf93qB3sfrD8plI6DvyUGwo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XC0TLkyO3Ffx2aYxtC76QEmjffRuRFbwDJXPsqt+0OR7G/HMaLiRpuQ/UJfvWu1y5J8OJgEesNUAafamrDZ8iAge5hAx1mL5G302Ztk8DwnDuAarB/leiQ1IZ4R/DMCnlyfQsCxWNQZiqYzcyXZ8KC6YkkoY1HceilS1Ct+MCk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=iuHjCBim; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Mkxv5xrUzEiKwh12aWokIMRnBqYKg+GZne1fzgylWCk=; b=iuHjCBim1vFCoUtx+wJ+cCfdb1
-	ZcAXXY1+MCM7MM1o7G7oXDusGyCq62+cntWllMZMYezOorxc0qibwntQV/NxpChQdYyD8V5QekqcB
-	uNHAChvx0S1FI0+neE1FfC1YtjQlkqswCemS3LXV1HzJ+Cg/qJEKOL4REU61cC4SCiUO/AjQWLYDU
-	oDiRFRuAtkAp3yrHERnekWj/nUrO8ABE16Zpmpm8es/tneUHLl/KI/8dW+nFh6UpyaRv2I7ufva1z
-	qfk7IbANvB7eHfKKsZkxUvgP+VuCfeakta0j4SkUad9YHV9HagfdrI3t6ioOP0Nx3/NUN+fxfBM83
-	G7zrCjIg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tPoux-0000000Gpix-2Zzj;
-	Mon, 23 Dec 2024 20:20:43 +0000
-Date: Mon, 23 Dec 2024 20:20:43 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org, balbirs@nvidia.com, hannes@cmpxchg.org,
-	hch@lst.de, mhocko@suse.com, muchun.song@linux.dev,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	stable@vger.kernel.org, urezki@gmail.com
-Subject: Re: FAILED: patch "[PATCH] vmalloc: fix accounting with i915" failed
- to apply to 5.10-stable tree
-Message-ID: <Z2nGG8WpNJB__fhR@casper.infradead.org>
-References: <2024122301-uncommon-enquirer-5f71@gregkh>
+	s=arc-20240116; t=1734988492; c=relaxed/simple;
+	bh=BLeE5UrwETd595fCIdmxeSKbvpgoQJj7lZNti+Snccc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Vm1huwEqVcBCsAtdW40dDfOSne3Sex8Jl8HrvpVGv6+MAM9smN8zkC1R8Bv2oWwcC7S3B5WmpTG15r8weERZjdgw23FeoEN1RfoHDjOEzvThODKsDGk5VWKfSg1FNhyqMqT/6tOW2VpdzUXiKtRTdbWyu+G66iev3GUSJUkItRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uNQO6UNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249F3C4CED3;
+	Mon, 23 Dec 2024 21:14:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734988491;
+	bh=BLeE5UrwETd595fCIdmxeSKbvpgoQJj7lZNti+Snccc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uNQO6UNXzuCY9kYkca9oqbR1b8ikCTXlVxDZkMjFhBKWGbwu0gTgkVrm3LSVNPSGZ
+	 VC3+AaEdlnxcK9OqkqnVKCgkb8iwYVwTaCadh61o49HlZu/qCiFRGpD2/mPQp2vPLU
+	 Id440WbP3D/loCYQtzjeKc1FTH0pYWjDQP7m5Bu+WO0ZH0H2xt6J/LHJte4z8vnWq0
+	 nPkAyo+G8txd2ix2XVV7p3OaBYBJFirpXkj9JxT2JOZT2rBsvmKNLu5bS5ADnS697g
+	 b9OucciqBZsrezHmMOzbM8A84l+EWDemDh1Nwaj/FSRraNx1GnivKvBPMq3pXMeigl
+	 OkHo7NLJRjfng==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	damon@lists.linux.dev
+Subject: Re: [PATCH 6.1 00/83] 6.1.122-rc1 review
+Date: Mon, 23 Dec 2024 13:14:46 -0800
+Message-Id: <20241223211446.83285-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024122301-uncommon-enquirer-5f71@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 23, 2024 at 11:18:01AM +0100, gregkh@linuxfoundation.org wrote:
+Hello,
+
+On Mon, 23 Dec 2024 16:58:39 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 6.1.122 release.
+> There are 83 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> The patch below does not apply to the 5.10-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> Responses should be made by Fri, 27 Dec 2024 15:53:30 +0000.
+> Anything received after that time might be too late.
 
-The 5.15 patch also applies to the 5.10-stable tree.  Thanks,
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/damonitor/damon-tests/tree/next/corr
+[2] 7823105d258c ("Linux 6.1.122-rc1")
+
+Thanks,
+SJ
+
+[...]
+
+---
+
+# .config:1427:warning: override: reassigning to symbol CGROUPS
+ok 15 selftests: damon-tests: build_nomemcg.sh
+# kselftest dir '/home/damian/damon-tests-cont/linux/tools/testing/selftests/damon-tests' is in dirty state.
+# the log is at '/home/damian/log'.
+ [32m
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: sysfs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh # SKIP
+ok 12 selftests: damon-tests: build_m68k.sh # SKIP
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
