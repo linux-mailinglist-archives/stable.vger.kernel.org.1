@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-105681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2059FB119
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:03:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868BB9FB101
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E6221883002
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0F0D7A1CD7
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4676019E971;
-	Mon, 23 Dec 2024 16:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8FC1B21B4;
+	Mon, 23 Dec 2024 16:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/zYk6Pu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCwPxWUQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057D12EAE6;
-	Mon, 23 Dec 2024 16:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F151AF0CE;
+	Mon, 23 Dec 2024 16:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969772; cv=none; b=L1GgGBF/FDtCGJyNf06EluMBK04+ux/uMmtKYWYFQgIOf731OiHBpjgqcQf9IvHyaDhkG3auOx0n9hQ7mRFPZNegvNzx7tYzSMKRYLUHZgZP7F9Ox5MB2GzM2SeR2QBB0U2BMA6cxysiqaMpvhU/FzsedgurRuZVekhrCJRZE5U=
+	t=1734969659; cv=none; b=fzYw7lbxBIYvl4ioAZz6vYM+hl/Wgxhx104GwLwsQ8Lm6Br7I9jSrYSNF9AGg9rHEMpECVs8AsJ/q8c1XsA5zQZkQeje6W31t1Eny7B+qdvfVevbA/sEECxX+mEWJ0CHtWrZ3wfqdf0Xqbo7hsre32VZVdE9NUMp3iEJRzFuLkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969772; c=relaxed/simple;
-	bh=vPcpSzNwUokAxg+KG05mgZh2qQcldibrB28cVAsa/x0=;
+	s=arc-20240116; t=1734969659; c=relaxed/simple;
+	bh=2/tDeGbuoocOTHC7qSAyCsyQsEBmBC6FP0ryIt0lSmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kzz4wC1aIrJJUlFj0huzkJRouBGh1AekdqpTcS9qoFd1LVddeu+aNRCFxlbYUOvWBZX7xsYEoMmM/5qFaM9B69b6atUnSSCSVlJRPSRwhuXm5s6GjhaqqnNs695abwTQF0o5if8Ji9j3I9H7fd7fawCmbtDLL1EiYdNiwOeHvhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/zYk6Pu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D09EC4CED3;
-	Mon, 23 Dec 2024 16:02:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NIYFtmsyos3LXCHATM84oC/SCjZWfDXb0GylFenKiU/bkZOY9M72tpVt7XLFnwgOJTLuoz2RqLtn3LUYVjA0d8nVA7jQTaps/MxMwJoQmaMGx+MSSZBv+en8d3qiHXWjuNO1kGM7cPMHdz+nGVDVnioBYQBVoyeQXe2YpTODG98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCwPxWUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5730AC4CED6;
+	Mon, 23 Dec 2024 16:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969771;
-	bh=vPcpSzNwUokAxg+KG05mgZh2qQcldibrB28cVAsa/x0=;
+	s=korg; t=1734969658;
+	bh=2/tDeGbuoocOTHC7qSAyCsyQsEBmBC6FP0ryIt0lSmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/zYk6Puko2g6dqDXyfPgSf3Qt3nzT+WdHqQ1fwytZLxPduz/fO+tBu30g3WfOjIS
-	 markolNFV8hMCss1xl4S7rg1u984L1/pC8jxHAMjioOtaawx+nf2Eaeupw8DD7lvw9
-	 4LL59HhL8LfgilURuW3Wp5nE7A3PKnAgKc3mmESM=
+	b=pCwPxWUQ9VBJcQK1SZuQ17E5y2yFLFgPBXlg6q4XRxgRwFbiPbAS+QlawmCUIhIlw
+	 +Rvd4cGg73y8vFgKkRK3QdWNvbboAjwWERUQghdVn1V+KotoGeaO+hewpP3uOtBuq0
+	 EXQ/dlhHmKzV5u820DpYfZKFmcZe8khqeM3e3+64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hans de Goede <hdegoede@redhat.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/160] p2sb: Factor out p2sb_read_from_cache()
-Date: Mon, 23 Dec 2024 16:57:00 +0100
-Message-ID: <20241223155409.000918054@linuxfoundation.org>
+Subject: [PATCH 6.12 010/160] p2sb: Introduce the global flag p2sb_hidden_by_bios
+Date: Mon, 23 Dec 2024 16:57:01 +0100
+Message-ID: <20241223155409.039142004@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
 References: <20241223155408.598780301@linuxfoundation.org>
@@ -70,75 +70,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-[ Upstream commit 9244524d60ddea55f4df54c51200e8fef2032447 ]
+[ Upstream commit ae3e6ebc5ab046d434c05c58a3e3f7e94441fec2 ]
 
-To prepare for the following fix, factor out the code to read the P2SB
-resource from the cache to the new function p2sb_read_from_cache().
+To prepare for the following fix, introduce the global flag
+p2sb_hidden_by_bios. Check if the BIOS hides the P2SB device and store
+the result in the flag. This allows to refer to the check result across
+functions.
 
 Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241128002836.373745-2-shinichiro.kawasaki@wdc.com
+Link: https://lore.kernel.org/r/20241128002836.373745-3-shinichiro.kawasaki@wdc.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/p2sb.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/platform/x86/p2sb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
-index 31f38309b389..aa34b8a69bc1 100644
+index aa34b8a69bc1..273ac90c8fbd 100644
 --- a/drivers/platform/x86/p2sb.c
 +++ b/drivers/platform/x86/p2sb.c
-@@ -171,6 +171,22 @@ static int p2sb_cache_resources(void)
- 	return ret;
- }
+@@ -42,6 +42,7 @@ struct p2sb_res_cache {
+ };
  
-+static int p2sb_read_from_cache(struct pci_bus *bus, unsigned int devfn,
-+				struct resource *mem)
-+{
-+	struct p2sb_res_cache *cache = &p2sb_resources[PCI_FUNC(devfn)];
-+
-+	if (cache->bus_dev_id != bus->dev.id)
-+		return -ENODEV;
-+
-+	if (!p2sb_valid_resource(&cache->res))
-+		return -ENOENT;
-+
-+	memcpy(mem, &cache->res, sizeof(*mem));
-+
-+	return 0;
-+}
-+
- /**
-  * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
-  * @bus: PCI bus to communicate with
-@@ -187,8 +203,6 @@ static int p2sb_cache_resources(void)
-  */
- int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
+ static struct p2sb_res_cache p2sb_resources[NR_P2SB_RES_CACHE];
++static bool p2sb_hidden_by_bios;
+ 
+ static void p2sb_get_devfn(unsigned int *devfn)
  {
--	struct p2sb_res_cache *cache;
--
- 	bus = p2sb_get_bus(bus);
- 	if (!bus)
- 		return -ENODEV;
-@@ -196,15 +210,7 @@ int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
- 	if (!devfn)
- 		p2sb_get_devfn(&devfn);
+@@ -157,13 +158,14 @@ static int p2sb_cache_resources(void)
+ 	 * Unhide the P2SB device here, if needed.
+ 	 */
+ 	pci_bus_read_config_dword(bus, devfn_p2sb, P2SBC, &value);
+-	if (value & P2SBC_HIDE)
++	p2sb_hidden_by_bios = value & P2SBC_HIDE;
++	if (p2sb_hidden_by_bios)
+ 		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, 0);
  
--	cache = &p2sb_resources[PCI_FUNC(devfn)];
--	if (cache->bus_dev_id != bus->dev.id)
--		return -ENODEV;
--
--	if (!p2sb_valid_resource(&cache->res))
--		return -ENOENT;
--
--	memcpy(mem, &cache->res, sizeof(*mem));
--	return 0;
-+	return p2sb_read_from_cache(bus, devfn, mem);
- }
- EXPORT_SYMBOL_GPL(p2sb_bar);
+ 	ret = p2sb_scan_and_cache(bus, devfn_p2sb);
  
+ 	/* Hide the P2SB device, if it was hidden */
+-	if (value & P2SBC_HIDE)
++	if (p2sb_hidden_by_bios)
+ 		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, P2SBC_HIDE);
+ 
+ 	pci_unlock_rescan_remove();
 -- 
 2.39.5
 
