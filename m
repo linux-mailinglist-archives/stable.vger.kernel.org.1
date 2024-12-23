@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-105670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97FD9FB122
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:03:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F92C9FB126
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:03:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14637166EEB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:02:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB866167363
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0C1189B94;
-	Mon, 23 Dec 2024 16:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9841D7E0FF;
+	Mon, 23 Dec 2024 16:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIcraKqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qb0LtLET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1BD2EAE6;
-	Mon, 23 Dec 2024 16:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576EB80C02;
+	Mon, 23 Dec 2024 16:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969734; cv=none; b=Q2oNMZkpwurT/0ldQ1M4q3Z1bMhKr6XAGoL58wcxMXTGggmJSkFWeOrJsdGD5Sen7L6w2KdZ+e1ru0/4uM5lDY67Tb5NLuVeIVxR4MiZoq7WlmwzxLL45oYtXdfIVw6cK0F61KqIh4pevxLrNYqmEpc+6hJ+AyE6YDhV1BZBYxI=
+	t=1734969751; cv=none; b=LUvBI5cV2JRyg3o7rx3oYKD4MHsgH4uwfAqgOXeeGhfGUMbGjMAjzN5UZtALbLdr6wiq2LjG+KgB7sZyEUsls5btBeNdiFE3Qqwrqiomr0qTT69YuZac0mg3t1rnURFWdQMYERkO5yh7D36GAAtiNkGDl5k1N7LXnliUzoHwRxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969734; c=relaxed/simple;
-	bh=jEH+sGE70N3CAp9aOuzxNWWN9R/vieu+uWQgr/YzoEc=;
+	s=arc-20240116; t=1734969751; c=relaxed/simple;
+	bh=yvFSZu73HNGc7af/a/WGB3eRKi3WEQv/7wiMUwE72qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=axm9euG4ToN7t7GQKV8NFb5TYHqgcoB/d2dJSAVDmW5as8jLW41e+rxp2kN1DQS78ieVUIYAyBN03FvuasX/W6CNTSc7C1+6/WwjRl3c33zeV1mG7nd2uVfL8/7aXQvQ2bHF2z8KOfd4H2p2Mf6uJ2iQxzRVfoU6Nm3Dc1sQh/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIcraKqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381C9C4CED3;
-	Mon, 23 Dec 2024 16:02:13 +0000 (UTC)
+	 MIME-Version; b=U0DyWWKcjgjM0igMFvj7B+rW94/PhJG1o/PvjDNxDfoL0pB8KDe5xvouMWnG7y+wTqBBxF0OOEy8CuersEmTVBKO/EY5NCIOj2oYSCLZ4g1vcGB0vGvdk0QvIJYJm4aJSTCLZCEyGg5iaJLA0BcATmoKXA7dBUOkapWey+bH+F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qb0LtLET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B230CC4CED3;
+	Mon, 23 Dec 2024 16:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969733;
-	bh=jEH+sGE70N3CAp9aOuzxNWWN9R/vieu+uWQgr/YzoEc=;
+	s=korg; t=1734969751;
+	bh=yvFSZu73HNGc7af/a/WGB3eRKi3WEQv/7wiMUwE72qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TIcraKqS/g/Ok737hhUM1OUkMQ68tfhax7RgWafCu9xjdfre5FYYkgNGBY2SbAGym
-	 eOyTdn5qfNQyWR1WzvIb4NPf8+m43o+TTWanaW56Aky+dXQQeaKph/62oJVn935WsM
-	 9hDGKHlc/bu3HbDlrNh6WXw9oJ//89nFxwyEqWb0=
+	b=Qb0LtLETNfO+z3o60OorTy4cNhAHUX8YA0l9k0SqCIRgUYrsP75ZqS9kGIgqpLjsL
+	 ppNAaXjJCTKaYiV60P5tFNZUqLk3CgxBVib6rhIh8+alkOSP+N9lwBVLRQJnFhf4qK
+	 x9Cl/R4LlIZMxXm9i1+YG7pyVkrWmn1NMOMMbgcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Daniel Walker (danielwa)" <danielwa@cisco.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/160] p2sb: Do not scan and remove the P2SB device when it is unhidden
-Date: Mon, 23 Dec 2024 16:57:03 +0100
-Message-ID: <20241223155409.125562084@linuxfoundation.org>
+Subject: [PATCH 6.12 013/160] i2c: pnx: Fix timeout in wait functions
+Date: Mon, 23 Dec 2024 16:57:04 +0100
+Message-ID: <20241223155409.160886965@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
 References: <20241223155408.598780301@linuxfoundation.org>
@@ -62,138 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
 
-[ Upstream commit 360c400d0f568636c1b98d1d5f9f49aa3d420c70 ]
+[ Upstream commit 7363f2d4c18557c99c536b70489187bb4e05c412 ]
 
-When drivers access P2SB device resources, it calls p2sb_bar(). Before
-the commit 5913320eb0b3 ("platform/x86: p2sb: Allow p2sb_bar() calls
-during PCI device probe"), p2sb_bar() obtained the resources and then
-called pci_stop_and_remove_bus_device() for clean up. Then the P2SB
-device disappeared. The commit 5913320eb0b3 introduced the P2SB device
-resource cache feature in the boot process. During the resource cache,
-pci_stop_and_remove_bus_device() is called for the P2SB device, then the
-P2SB device disappears regardless of whether p2sb_bar() is called or
-not. Such P2SB device disappearance caused a confusion [1]. To avoid the
-confusion, avoid the pci_stop_and_remove_bus_device() call when the BIOS
-does not hide the P2SB device.
+Since commit f63b94be6942 ("i2c: pnx: Fix potential deadlock warning
+from del_timer_sync() call in isr") jiffies are stored in
+i2c_pnx_algo_data.timeout, but wait_timeout and wait_reset are still
+using it as milliseconds. Convert jiffies back to milliseconds to wait
+for the expected amount of time.
 
-For that purpose, cache the P2SB device resources only if the BIOS hides
-the P2SB device. Call p2sb_scan_and_cache() only if p2sb_hidden_by_bios
-is true. This allows removing two branches from p2sb_scan_and_cache().
-When p2sb_bar() is called, get the resources from the cache if the P2SB
-device is hidden. Otherwise, read the resources from the unhidden P2SB
-device.
-
-Reported-by: Daniel Walker (danielwa) <danielwa@cisco.com>
-Closes: https://lore.kernel.org/lkml/ZzTI+biIUTvFT6NC@goliath/ [1]
-Fixes: 5913320eb0b3 ("platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241128002836.373745-5-shinichiro.kawasaki@wdc.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: f63b94be6942 ("i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr")
+Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/p2sb.c | 42 +++++++++++++++++++++++++++++--------
- 1 file changed, 33 insertions(+), 9 deletions(-)
+ drivers/i2c/busses/i2c-pnx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
-index 0bc6b21c4c20..c56650b9ff96 100644
---- a/drivers/platform/x86/p2sb.c
-+++ b/drivers/platform/x86/p2sb.c
-@@ -100,10 +100,8 @@ static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
- 	/*
- 	 * The BIOS prevents the P2SB device from being enumerated by the PCI
- 	 * subsystem, so we need to unhide and hide it back to lookup the BAR.
--	 * Unhide the P2SB device here, if needed.
- 	 */
--	if (p2sb_hidden_by_bios)
--		pci_bus_write_config_dword(bus, devfn, P2SBC, 0);
-+	pci_bus_write_config_dword(bus, devfn, P2SBC, 0);
+diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
+index 1dafadda73af..135300f3b534 100644
+--- a/drivers/i2c/busses/i2c-pnx.c
++++ b/drivers/i2c/busses/i2c-pnx.c
+@@ -95,7 +95,7 @@ enum {
  
- 	/* Scan the P2SB device and cache its BAR0 */
- 	p2sb_scan_and_cache_devfn(bus, devfn);
-@@ -112,9 +110,7 @@ static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
- 	if (devfn == P2SB_DEVFN_GOLDMONT)
- 		p2sb_scan_and_cache_devfn(bus, SPI_DEVFN_GOLDMONT);
+ static inline int wait_timeout(struct i2c_pnx_algo_data *data)
+ {
+-	long timeout = data->timeout;
++	long timeout = jiffies_to_msecs(data->timeout);
+ 	while (timeout > 0 &&
+ 			(ioread32(I2C_REG_STS(data)) & mstatus_active)) {
+ 		mdelay(1);
+@@ -106,7 +106,7 @@ static inline int wait_timeout(struct i2c_pnx_algo_data *data)
  
--	/* Hide the P2SB device, if it was hidden */
--	if (p2sb_hidden_by_bios)
--		pci_bus_write_config_dword(bus, devfn, P2SBC, P2SBC_HIDE);
-+	pci_bus_write_config_dword(bus, devfn, P2SBC, P2SBC_HIDE);
- 
- 	if (!p2sb_valid_resource(&p2sb_resources[PCI_FUNC(devfn)].res))
- 		return -ENOENT;
-@@ -141,7 +137,7 @@ static int p2sb_cache_resources(void)
- 	u32 value = P2SBC_HIDE;
- 	struct pci_bus *bus;
- 	u16 class;
--	int ret;
-+	int ret = 0;
- 
- 	/* Get devfn for P2SB device itself */
- 	p2sb_get_devfn(&devfn_p2sb);
-@@ -167,7 +163,12 @@ static int p2sb_cache_resources(void)
- 	pci_bus_read_config_dword(bus, devfn_p2sb, P2SBC, &value);
- 	p2sb_hidden_by_bios = value & P2SBC_HIDE;
- 
--	ret = p2sb_scan_and_cache(bus, devfn_p2sb);
-+	/*
-+	 * If the BIOS does not hide the P2SB device then its resources
-+	 * are accesilble. Cache them only if the P2SB device is hidden.
-+	 */
-+	if (p2sb_hidden_by_bios)
-+		ret = p2sb_scan_and_cache(bus, devfn_p2sb);
- 
- 	pci_unlock_rescan_remove();
- 
-@@ -190,6 +191,26 @@ static int p2sb_read_from_cache(struct pci_bus *bus, unsigned int devfn,
- 	return 0;
- }
- 
-+static int p2sb_read_from_dev(struct pci_bus *bus, unsigned int devfn,
-+			      struct resource *mem)
-+{
-+	struct pci_dev *pdev;
-+	int ret = 0;
-+
-+	pdev = pci_get_slot(bus, devfn);
-+	if (!pdev)
-+		return -ENODEV;
-+
-+	if (p2sb_valid_resource(pci_resource_n(pdev, 0)))
-+		p2sb_read_bar0(pdev, mem);
-+	else
-+		ret = -ENOENT;
-+
-+	pci_dev_put(pdev);
-+
-+	return ret;
-+}
-+
- /**
-  * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
-  * @bus: PCI bus to communicate with
-@@ -213,7 +234,10 @@ int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
- 	if (!devfn)
- 		p2sb_get_devfn(&devfn);
- 
--	return p2sb_read_from_cache(bus, devfn, mem);
-+	if (p2sb_hidden_by_bios)
-+		return p2sb_read_from_cache(bus, devfn, mem);
-+
-+	return p2sb_read_from_dev(bus, devfn, mem);
- }
- EXPORT_SYMBOL_GPL(p2sb_bar);
- 
+ static inline int wait_reset(struct i2c_pnx_algo_data *data)
+ {
+-	long timeout = data->timeout;
++	long timeout = jiffies_to_msecs(data->timeout);
+ 	while (timeout > 0 &&
+ 			(ioread32(I2C_REG_CTL(data)) & mcntrl_reset)) {
+ 		mdelay(1);
 -- 
 2.39.5
 
