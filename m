@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2868B9FB1FA
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAA39FB1BD
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C2371885097
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 305C11632D6
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942AD1B21B5;
-	Mon, 23 Dec 2024 16:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155031B21B4;
+	Mon, 23 Dec 2024 16:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4XYn4Bh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGH7N23R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534D57E0FF;
-	Mon, 23 Dec 2024 16:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FB3188733;
+	Mon, 23 Dec 2024 16:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970345; cv=none; b=F5pncAQ0Ws95PBYNPM1KmIiJTTdcybEMBP7ir0Pag3kYpaIwvaMWzs6jDJW8toT7yOqGjOPPh0g/nZSc+A874jIxUzGXZnue/09DTnNEBNqmchLovuprLCYr9ezTIoZqsuLK6pfRsKWsw7szZJoWJp+hRq7mhByN1ECOpvZ9hyI=
+	t=1734970105; cv=none; b=VvR/G/gBS/2CodQbpZlHkAGGuOsZH6VeeZxyY2J/mGLgBG7+GgAlCiGOls6ZDsCXAQyusYkyWMzltZ/roiqlxibpJwB57x1WyA5iTe7NnWbEZaH6IhaYnqbXX4WkkcuWOo2R/4Xx46hfeE3LtbhsZ6f+OuNXpI/WWEnKB0ELC+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970345; c=relaxed/simple;
-	bh=Ev5i+1oNZiIXrkI+PFbqL6AdFZqKhppTcrrpZoaLM94=;
+	s=arc-20240116; t=1734970105; c=relaxed/simple;
+	bh=TyFWlriFFh6C197+s0270gZmOe8YkHHt2dXiZD6Or9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcMZwF8UYklNkqKTPAOMRWq2LYUmIWqmTh+S3DxRhSYD5GtFH8lCWKBlLu0YcxRFODLGKFQF+vl3vNDDllEu4Uw9wVhYoyVvvZov+Lj71LWZZvMiu936IwOfwd28Nrx8MPVGQCnsFhJAQVa9I/adb+dgz+DGIveGi6CSZXW66OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4XYn4Bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FD8C4CED3;
-	Mon, 23 Dec 2024 16:12:24 +0000 (UTC)
+	 MIME-Version; b=Tnu2Z5sqBxaZI0eHgl4ObSAoUlnKOjncPktNscmU+B2poEqqUGIi9EjkLh9Rd5Qip0aeilQPXKsP2J1IKuuFfHY78ioyT4o7zcqAVU8LAn4SEbIjk8hlOhAMDIPL76SLSYEh4NH2E7SCUYEEdJO7KYetMExci52iypKpL51I+XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGH7N23R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38077C4CED3;
+	Mon, 23 Dec 2024 16:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970345;
-	bh=Ev5i+1oNZiIXrkI+PFbqL6AdFZqKhppTcrrpZoaLM94=;
+	s=korg; t=1734970105;
+	bh=TyFWlriFFh6C197+s0270gZmOe8YkHHt2dXiZD6Or9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4XYn4Bh6ZDOE+ZmgqV6rHzvfD3GFkQsgsCKHP92URmHwjd9Crx/m/CL0MRePov5J
-	 yuNvL1H0xIZcNgyrDTUCPV0v7mC219JP/ix61Vh8Py8uN6n4lzxiN7qHxS2IQBcVQp
-	 NPc+AqaBGNWjCPDXH5zrH5Cy+G+XUWEo4UE5+X8A=
+	b=yGH7N23ReL0rPnYJW2G3fyGHESmfNRVKCWY/jzHu4n04HAaZLRe1c8o2C9ZyXrova
+	 XlZ7AAx2FcePh1eX9ByfOFMBXBh7u8eL19ZDf1yUpplS6srqkbg7X9sBqt1MNJJVvm
+	 FBRLw7aEKsUp3I2iukEvzAhBrdK9MENpKP+e3gG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/116] netfilter: ipset: Fix for recursive locking warning
-Date: Mon, 23 Dec 2024 16:58:45 +0100
-Message-ID: <20241223155401.706166891@linuxfoundation.org>
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 115/160] btrfs: split bios to the fs sector size boundary
+Date: Mon, 23 Dec 2024 16:58:46 +0100
+Message-ID: <20241223155413.116555820@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 70b6f46a4ed8bd56c85ffff22df91e20e8c85e33 ]
+commit be691b5e593f2cc8cef67bbc59c1fb91b74a86a9 upstream.
 
-With CONFIG_PROVE_LOCKING, when creating a set of type bitmap:ip, adding
-it to a set of type list:set and populating it from iptables SET target
-triggers a kernel warning:
+Btrfs like other file systems can't really deal with I/O not aligned to
+it's internal block size (which strangely is called sector size in
+btrfs, for historical reasons), but the block layer split helper doesn't
+even know about that.
 
-| WARNING: possible recursive locking detected
-| 6.12.0-rc7-01692-g5e9a28f41134-dirty #594 Not tainted
-| --------------------------------------------
-| ping/4018 is trying to acquire lock:
-| ffff8881094a6848 (&set->lock){+.-.}-{2:2}, at: ip_set_add+0x28c/0x360 [ip_set]
-|
-| but task is already holding lock:
-| ffff88811034c048 (&set->lock){+.-.}-{2:2}, at: ip_set_add+0x28c/0x360 [ip_set]
+Round down the split boundary so that all I/Os are aligned.
 
-This is a false alarm: ipset does not allow nested list:set type, so the
-loop in list_set_kadd() can never encounter the outer set itself. No
-other set type supports embedded sets, so this is the only case to
-consider.
-
-To avoid the false report, create a distinct lock class for list:set
-type ipset locks.
-
-Fixes: f830837f0eed ("netfilter: ipset: list:set set type support")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d5e4377d5051 ("btrfs: split zone append bios in btrfs_submit_bio")
+CC: stable@vger.kernel.org # 6.12
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_list_set.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/bio.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
-index bfae7066936b..db794fe1300e 100644
---- a/net/netfilter/ipset/ip_set_list_set.c
-+++ b/net/netfilter/ipset/ip_set_list_set.c
-@@ -611,6 +611,8 @@ init_list_set(struct net *net, struct ip_set *set, u32 size)
- 	return true;
+--- a/fs/btrfs/bio.c
++++ b/fs/btrfs/bio.c
+@@ -649,8 +649,14 @@ static u64 btrfs_append_map_length(struc
+ 	map_length = min(map_length, bbio->fs_info->max_zone_append_size);
+ 	sector_offset = bio_split_rw_at(&bbio->bio, &bbio->fs_info->limits,
+ 					&nr_segs, map_length);
+-	if (sector_offset)
+-		return sector_offset << SECTOR_SHIFT;
++	if (sector_offset) {
++		/*
++		 * bio_split_rw_at() could split at a size smaller than our
++		 * sectorsize and thus cause unaligned I/Os.  Fix that by
++		 * always rounding down to the nearest boundary.
++		 */
++		return ALIGN_DOWN(sector_offset << SECTOR_SHIFT, bbio->fs_info->sectorsize);
++	}
+ 	return map_length;
  }
  
-+static struct lock_class_key list_set_lockdep_key;
-+
- static int
- list_set_create(struct net *net, struct ip_set *set, struct nlattr *tb[],
- 		u32 flags)
-@@ -627,6 +629,7 @@ list_set_create(struct net *net, struct ip_set *set, struct nlattr *tb[],
- 	if (size < IP_SET_LIST_MIN_SIZE)
- 		size = IP_SET_LIST_MIN_SIZE;
- 
-+	lockdep_set_class(&set->lock, &list_set_lockdep_key);
- 	set->variant = &set_variant;
- 	set->dsize = ip_set_elem_len(set, tb, sizeof(struct set_elem),
- 				     __alignof__(struct set_elem));
--- 
-2.39.5
-
 
 
 
