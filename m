@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-106030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD01E9FB74C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 23:53:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C60219FB74E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 23:53:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6A23188489E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 22:53:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C68C165025
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 22:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027EC1A8F74;
-	Mon, 23 Dec 2024 22:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FCD18A6D7;
+	Mon, 23 Dec 2024 22:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlTLy5kA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzyq8ZgR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C5A7462;
-	Mon, 23 Dec 2024 22:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5109E7462;
+	Mon, 23 Dec 2024 22:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734994396; cv=none; b=k21B7RfrVSkl17rjAik4StahpPaINfmV3NC/r60hoTWt9KiZdl5E6sPezR/d6E+qvE5ceFxnZj0DfDwzgYQ9VdOqnQo3k2XtDPm7cPVQATqJioTs61/5JbH7rNzMXZwO5AYGOZPTIqQny11necCN7gzoPvN8gOqTvizWfp2slPg=
+	t=1734994428; cv=none; b=J6u3/iKu5+nkdPh2FSBDLq4qfwfZAPqn+hB8WbgT3eQ8avkALAZDPjgH0+2ZX9aqRaCSNySwjvSU/Ug1oz4ss3LA7TFdL25cCD3cdwUFjYKp7WUxb4gNrsKF8fLjoB8a7nZW2vSERTc2qgnYhXn2uKhMqEBp4aRnxvF/gybpteE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734994396; c=relaxed/simple;
-	bh=DW4FCNsuu2MCfz/d4beeD+vZsbw48BowTsVezamCjBI=;
+	s=arc-20240116; t=1734994428; c=relaxed/simple;
+	bh=HA4XOeCq2CSwB1SCiIC5hUhYTpNQNBuvaPf1ozcEFI0=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SKwJgryJ6Vm7iSSU0ve9uUDs02aK89OTTohDBk6rgKFjk+Sp4/q11/Uyv8zg5iuSFQMFYVRvwc+hNZ7mwVx02Pf5aAZRZD/+929dKmx5XyN9akySlL0HRP2OLmfKxHzTewmLRWBNJOU/PR7sRwjHaP3QkuRDHoWu+0YZYq/Mmug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlTLy5kA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A037C4CED3;
-	Mon, 23 Dec 2024 22:53:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W1zzng+bI8yVubj8MVyqXNeQ8CKCmJtgkPIxNWIoEWnt+A3IyriBmD/xlz12nZ8V1YBuv6pFrxF96Gl2omYe/vhgNMW+mnPpFNzgII7kFt/9hlis/ayRWLGjuqyK+le6jQal3OjWzbp3iLxIhZAmbbE09MALtXNF2lykH7goKSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzyq8ZgR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB537C4CED3;
+	Mon, 23 Dec 2024 22:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734994396;
-	bh=DW4FCNsuu2MCfz/d4beeD+vZsbw48BowTsVezamCjBI=;
+	s=k20201202; t=1734994427;
+	bh=HA4XOeCq2CSwB1SCiIC5hUhYTpNQNBuvaPf1ozcEFI0=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=mlTLy5kAUHu06pwT/541i9z++hZHJzEZiUqKWEQBZejFzMWVYijSBeb5deCMrMC4k
-	 oMiES6RFHfblu4Rvx/aUeGWtAP8F/8LEAfKNVFWQMK5oNCI+c/iExFLoYo8kXBLI4p
-	 AwOzRlTmoJ1tiUrZzJYxR7tdkxQ8u+Dy56Ta5eVUPR1OJK2g1J2rpjfXhuQ2wBNCVw
-	 Ov/dG4ZTSN7/hSB8ztVviTnGoAJQ1CRfcSDqPGuXj1Atg0seQA/5hFCoWXbttullGv
-	 7rmgmb1v5LSWMtpDVa6kCaTJ5KmbzeRSXcLeEm+RYXkybjNMRcpDR36FQ1ffRW3B/+
-	 IDete6ii3gLlw==
-Date: Mon, 23 Dec 2024 14:53:16 -0800
-Subject: [PATCHSET v6.2 4/5] xfs: realtime reverse-mapping support
+	b=kzyq8ZgRTBizY9y0+sFR+Re/Udipyfw6KneLAk8YjeAtx3k6fUpXB07jxZu1YG4Y+
+	 dDXHg3plqfBTOlnZzEQ8KVd/eZngOzOh7bPDSDmzY7YxAwb7vdmcYQYET/XRDX34yj
+	 O0HAh0jOCr0k+4rQ8rjJVG66UTFVT90JsdbWZ5838QAXGGQ2cLBCFUoG95haxgbPuG
+	 Z/yPQ+mQPvYZYZrxR3rQbBu5ZxDynncEhW42CGfub7i6JCvKP0S5gqwSSelnbJx1Ee
+	 vWT505mxsVubHRhHfsUe7jo4ZtclcOGb+5/UOi799vHKOcEW0cy0y+OxG+G4kUMfZO
+	 oKDRTsHTcBd/A==
+Date: Mon, 23 Dec 2024 14:53:47 -0800
+Subject: [PATCH 1/2] xfs: don't over-report free space or inodes in statvfs
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, cem@kernel.org
-Cc: stable@vger.kernel.org, hch@lst.de, linux-xfs@vger.kernel.org
-Message-ID: <173499418610.2380130.12548657506222792394.stgit@frogsfrogsfrogs>
-In-Reply-To: <20241223224906.GS6174@frogsfrogsfrogs>
-References: <20241223224906.GS6174@frogsfrogsfrogs>
+Cc: stable@vger.kernel.org, eflorac@intellique.com, hch@lst.de,
+ linux-xfs@vger.kernel.org
+Message-ID: <173499417150.2379546.487719930933042459.stgit@frogsfrogsfrogs>
+In-Reply-To: <173499417129.2379546.10223550496728939171.stgit@frogsfrogsfrogs>
+References: <173499417129.2379546.10223550496728939171.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,178 +59,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Hi all,
+From: Darrick J. Wong <djwong@kernel.org>
 
-This is the latest revision of a patchset that adds to XFS kernel
-support for reverse mapping for the realtime device.  This time around
-I've fixed some of the bitrot that I've noticed over the past few
-months, and most notably have converted rtrmapbt to use the metadata
-inode directory feature instead of burning more space in the superblock.
+Emmanual Florac reports a strange occurrence when project quota limits
+are enabled, free space is lower than the remaining quota, and someone
+runs statvfs:
 
-At the beginning of the set are patches to implement storing B+tree
-leaves in an inode root, since the realtime rmapbt is rooted in an
-inode, unlike the regular rmapbt which is rooted in an AG block.
-Prior to this, the only btree that could be rooted in the inode fork
-was the block mapping btree; if all the extent records fit in the
-inode, format would be switched from 'btree' to 'extents'.
+  # mkfs.xfs -f /dev/sda
+  # mount /dev/sda /mnt -o prjquota
+  # xfs_quota  -x -c 'limit -p bhard=2G 55' /mnt
+  # mkdir /mnt/dir
+  # xfs_io -c 'chproj 55' -c 'chattr +P' -c 'stat -vvvv' /mnt/dir
+  # fallocate -l 19g /mnt/a
+  # df /mnt /mnt/dir
+  Filesystem      Size  Used Avail Use% Mounted on
+  /dev/sda         20G   20G  345M  99% /mnt
+  /dev/sda        2.0G     0  2.0G   0% /mnt
 
-The next few patches enhance the reverse mapping routines to handle
-the parts that are specific to rtgroups -- adding the new btree type,
-adding a new log intent item type, and wiring up the metadata directory
-tree entries.
+I think the bug here is that xfs_fill_statvfs_from_dquot unconditionally
+assigns to f_bfree without checking that the filesystem has enough free
+space to fill the remaining project quota.  However, this is a
+longstanding behavior of xfs so it's unclear what to do here.
 
-Finally, implement GETFSMAP with the rtrmapbt and scrub functionality
-for the rtrmapbt and rtbitmap and online fsck functionality.
-
-If you're going to start using this code, I strongly recommend pulling
-from my git trees, which are linked below.
-
-This has been running on the djcloud for months with no problems.  Enjoy!
-Comments and questions are, as always, welcome.
-
---D
-
-kernel git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=realtime-rmap
-
-xfsprogs git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfsprogs-dev.git/log/?h=realtime-rmap
-
-fstests git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfstests-dev.git/log/?h=realtime-rmap
-
-xfsdocs git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-documentation.git/log/?h=realtime-rmap
+Cc: <stable@vger.kernel.org> # v2.6.18
+Fixes: 932f2c323196c2 ("[XFS] statvfs component of directory/project quota support, code originally by Glen.")
+Reported-by: Emmanuel Florac <eflorac@intellique.com>
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
-Commits in this patchset:
- * xfs: add some rtgroup inode helpers
- * xfs: prepare rmap btree cursor tracepoints for realtime
- * xfs: simplify the xfs_rmap_{alloc,free}_extent calling conventions
- * xfs: introduce realtime rmap btree ondisk definitions
- * xfs: realtime rmap btree transaction reservations
- * xfs: add realtime rmap btree operations
- * xfs: prepare rmap functions to deal with rtrmapbt
- * xfs: add a realtime flag to the rmap update log redo items
- * xfs: support recovering rmap intent items targetting realtime extents
- * xfs: pretty print metadata file types in error messages
- * xfs: support file data forks containing metadata btrees
- * xfs: add realtime reverse map inode to metadata directory
- * xfs: add metadata reservations for realtime rmap btrees
- * xfs: wire up a new metafile type for the realtime rmap
- * xfs: wire up rmap map and unmap to the realtime rmapbt
- * xfs: create routine to allocate and initialize a realtime rmap btree inode
- * xfs: wire up getfsmap to the realtime reverse mapping btree
- * xfs: check that the rtrmapbt maxlevels doesn't increase when growing fs
- * xfs: report realtime rmap btree corruption errors to the health system
- * xfs: allow queued realtime intents to drain before scrubbing
- * xfs: scrub the realtime rmapbt
- * xfs: cross-reference realtime bitmap to realtime rmapbt scrubber
- * xfs: cross-reference the realtime rmapbt
- * xfs: scan rt rmap when we're doing an intense rmap check of bmbt mappings
- * xfs: scrub the metadir path of rt rmap btree files
- * xfs: walk the rt reverse mapping tree when rebuilding rmap
- * xfs: online repair of realtime file bmaps
- * xfs: repair inodes that have realtime extents
- * xfs: repair rmap btree inodes
- * xfs: online repair of realtime bitmaps for a realtime group
- * xfs: support repairing metadata btrees rooted in metadir inodes
- * xfs: online repair of the realtime rmap btree
- * xfs: create a shadow rmap btree during realtime rmap repair
- * xfs: hook live realtime rmap operations during a repair operation
- * xfs: don't shut down the filesystem for media failures beyond end of log
- * xfs: react to fsdax failure notifications on the rt device
- * xfs: enable realtime rmap btree
----
- fs/xfs/Makefile                   |    3 
- fs/xfs/libxfs/xfs_btree.c         |   73 +++
- fs/xfs/libxfs/xfs_btree.h         |    8 
- fs/xfs/libxfs/xfs_btree_mem.c     |    1 
- fs/xfs/libxfs/xfs_btree_staging.c |    1 
- fs/xfs/libxfs/xfs_defer.h         |    1 
- fs/xfs/libxfs/xfs_exchmaps.c      |    4 
- fs/xfs/libxfs/xfs_format.h        |   28 +
- fs/xfs/libxfs/xfs_fs.h            |    7 
- fs/xfs/libxfs/xfs_health.h        |    4 
- fs/xfs/libxfs/xfs_inode_buf.c     |   32 +
- fs/xfs/libxfs/xfs_inode_fork.c    |   25 +
- fs/xfs/libxfs/xfs_log_format.h    |    6 
- fs/xfs/libxfs/xfs_log_recover.h   |    2 
- fs/xfs/libxfs/xfs_metafile.c      |   18 +
- fs/xfs/libxfs/xfs_metafile.h      |    2 
- fs/xfs/libxfs/xfs_ondisk.h        |    2 
- fs/xfs/libxfs/xfs_refcount.c      |    6 
- fs/xfs/libxfs/xfs_rmap.c          |  171 +++++-
- fs/xfs/libxfs/xfs_rmap.h          |   12 
- fs/xfs/libxfs/xfs_rtbitmap.c      |    2 
- fs/xfs/libxfs/xfs_rtbitmap.h      |    9 
- fs/xfs/libxfs/xfs_rtgroup.c       |   53 +-
- fs/xfs/libxfs/xfs_rtgroup.h       |   49 ++
- fs/xfs/libxfs/xfs_rtrmap_btree.c  | 1011 +++++++++++++++++++++++++++++++++++++
- fs/xfs/libxfs/xfs_rtrmap_btree.h  |  210 ++++++++
- fs/xfs/libxfs/xfs_sb.c            |    6 
- fs/xfs/libxfs/xfs_shared.h        |   14 +
- fs/xfs/libxfs/xfs_trans_resv.c    |   12 
- fs/xfs/libxfs/xfs_trans_space.h   |   13 
- fs/xfs/scrub/alloc_repair.c       |    5 
- fs/xfs/scrub/bmap.c               |  108 +++-
- fs/xfs/scrub/bmap_repair.c        |  129 +++++
- fs/xfs/scrub/common.c             |  160 ++++++
- fs/xfs/scrub/common.h             |   23 +
- fs/xfs/scrub/health.c             |    1 
- fs/xfs/scrub/inode.c              |   10 
- fs/xfs/scrub/inode_repair.c       |  136 +++++
- fs/xfs/scrub/metapath.c           |    3 
- fs/xfs/scrub/newbt.c              |   42 ++
- fs/xfs/scrub/newbt.h              |    1 
- fs/xfs/scrub/reap.c               |   41 ++
- fs/xfs/scrub/reap.h               |    2 
- fs/xfs/scrub/repair.c             |  191 +++++++
- fs/xfs/scrub/repair.h             |   17 +
- fs/xfs/scrub/rgsuper.c            |    6 
- fs/xfs/scrub/rmap_repair.c        |   84 +++
- fs/xfs/scrub/rtbitmap.c           |   75 ++-
- fs/xfs/scrub/rtbitmap.h           |   55 ++
- fs/xfs/scrub/rtbitmap_repair.c    |  429 +++++++++++++++-
- fs/xfs/scrub/rtrmap.c             |  271 ++++++++++
- fs/xfs/scrub/rtrmap_repair.c      |  903 +++++++++++++++++++++++++++++++++
- fs/xfs/scrub/rtsummary.c          |   17 -
- fs/xfs/scrub/rtsummary_repair.c   |    3 
- fs/xfs/scrub/scrub.c              |   11 
- fs/xfs/scrub/scrub.h              |   14 +
- fs/xfs/scrub/stats.c              |    1 
- fs/xfs/scrub/tempexch.h           |    2 
- fs/xfs/scrub/tempfile.c           |   20 -
- fs/xfs/scrub/trace.c              |    1 
- fs/xfs/scrub/trace.h              |  228 ++++++++
- fs/xfs/xfs_buf.c                  |    1 
- fs/xfs/xfs_buf_item_recover.c     |    4 
- fs/xfs/xfs_drain.c                |   20 -
- fs/xfs/xfs_drain.h                |    7 
- fs/xfs/xfs_fsmap.c                |  174 ++++++
- fs/xfs/xfs_fsops.c                |   11 
- fs/xfs/xfs_health.c               |    1 
- fs/xfs/xfs_inode.c                |   19 +
- fs/xfs/xfs_inode_item.c           |    2 
- fs/xfs/xfs_inode_item_recover.c   |   44 +-
- fs/xfs/xfs_log_recover.c          |    2 
- fs/xfs/xfs_mount.c                |    5 
- fs/xfs/xfs_mount.h                |    9 
- fs/xfs/xfs_notify_failure.c       |  230 +++++---
- fs/xfs/xfs_notify_failure.h       |   11 
- fs/xfs/xfs_qm.c                   |    8 
- fs/xfs/xfs_rmap_item.c            |  216 +++++++-
- fs/xfs/xfs_rtalloc.c              |   82 ++-
- fs/xfs/xfs_rtalloc.h              |   10 
- fs/xfs/xfs_stats.c                |    4 
- fs/xfs/xfs_stats.h                |    2 
- fs/xfs/xfs_super.c                |    6 
- fs/xfs/xfs_super.h                |    1 
- fs/xfs/xfs_trace.h                |  104 ++--
- 85 files changed, 5381 insertions(+), 366 deletions(-)
- create mode 100644 fs/xfs/libxfs/xfs_rtrmap_btree.c
- create mode 100644 fs/xfs/libxfs/xfs_rtrmap_btree.h
- create mode 100644 fs/xfs/scrub/rtrmap.c
- create mode 100644 fs/xfs/scrub/rtrmap_repair.c
- create mode 100644 fs/xfs/xfs_notify_failure.h
+ fs/xfs/xfs_qm_bhv.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
+
+
+diff --git a/fs/xfs/xfs_qm_bhv.c b/fs/xfs/xfs_qm_bhv.c
+index 847ba29630e9d8..db5b8afd9d1b97 100644
+--- a/fs/xfs/xfs_qm_bhv.c
++++ b/fs/xfs/xfs_qm_bhv.c
+@@ -32,21 +32,28 @@ xfs_fill_statvfs_from_dquot(
+ 	limit = blkres->softlimit ?
+ 		blkres->softlimit :
+ 		blkres->hardlimit;
+-	if (limit && statp->f_blocks > limit) {
+-		statp->f_blocks = limit;
+-		statp->f_bfree = statp->f_bavail =
+-			(statp->f_blocks > blkres->reserved) ?
+-			 (statp->f_blocks - blkres->reserved) : 0;
++	if (limit) {
++		uint64_t	remaining = 0;
++
++		if (limit > blkres->reserved)
++			remaining = limit - blkres->reserved;
++
++		statp->f_blocks = min(statp->f_blocks, limit);
++		statp->f_bfree = min(statp->f_bfree, remaining);
++		statp->f_bavail = min(statp->f_bavail, remaining);
+ 	}
+ 
+ 	limit = dqp->q_ino.softlimit ?
+ 		dqp->q_ino.softlimit :
+ 		dqp->q_ino.hardlimit;
+-	if (limit && statp->f_files > limit) {
+-		statp->f_files = limit;
+-		statp->f_ffree =
+-			(statp->f_files > dqp->q_ino.reserved) ?
+-			 (statp->f_files - dqp->q_ino.reserved) : 0;
++	if (limit) {
++		uint64_t	remaining = 0;
++
++		if (limit > dqp->q_ino.reserved)
++			remaining = limit - dqp->q_ino.reserved;
++
++		statp->f_files = min(statp->f_files, limit);
++		statp->f_ffree = min(statp->f_ffree, remaining);
+ 	}
+ }
+ 
 
 
