@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-105716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2209FB144
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:04:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD759FB1D1
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C36E1881440
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 567B51884FBC
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2097F17A5A4;
-	Mon, 23 Dec 2024 16:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5BC1B2EEB;
+	Mon, 23 Dec 2024 16:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtPegxDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRtUY7ox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D113E186E58;
-	Mon, 23 Dec 2024 16:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21111AD41F;
+	Mon, 23 Dec 2024 16:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969897; cv=none; b=Yc/7sfUt/TAxI6m0dw8kKhJwlHGTacp8GCO+2K4bjq0Rtd3aA/D6TDZeCEue9l6c0l67i9DJYZXA9q64JHJPk2omLMS4Mb+9HyC3U8CfUVQmapWSWt1tEX6UIBHOj6ZmEhTwHyPYcPQn5onEO0mCe5h5EcsxyeQ4ZtEyGm7xc6I=
+	t=1734970249; cv=none; b=NTY9OzhNh3SwtvSz9c6i4EDPuxQPk8b060k19wYKEzJSnvksq2Zz4G18V4rwPd93pM6se7Dzs0KEiKRKDzM66qwYTBJWOVCDWVvbo6g82DeLydxanIFbfvKO+GyMJjlq5rndnKVaH7qR/4ZvIE5Abe1pveHo0ywVwL4pGQBi92I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969897; c=relaxed/simple;
-	bh=a/efwxgmfYB0YkWtuijBPUQJz1rNBRp5jdMfGr2tHSU=;
+	s=arc-20240116; t=1734970249; c=relaxed/simple;
+	bh=JYB4NhxSfMsUA7X+sOkxieBJvNW1BawlFz9qMBXNCbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxxRPunzQxwuIq521vlR9hsYVM3HPoik2zdJY/zSoxaIwudtB5L0zeG+UPO9wfmk3Af8wlOTWGltda9IK5wXwRFJ95G7IioYMzfXDgKIZ4f5vCghm+z49391C8PUB0tzUSIKmsJt1Sz33kpXHwb1tlL994s6IY5kr9axpCwOYYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtPegxDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C57C4CED4;
-	Mon, 23 Dec 2024 16:04:57 +0000 (UTC)
+	 MIME-Version; b=fytKmwr42MLHG2yCWeLyVQUeyNHmcbv6WDgoywzyrHGPV3aA9paFBLZ+wG6XNBjclW57J5g7StnrO15CTkHWQBkvjhIQL6amzPCiDn94ntDHCnMaxo0/YOdV20myW0+DlgCV15+j3+BQ7RB4naAuP9EB6kfMzar5vDBap5Av8Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRtUY7ox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622DDC4CED3;
+	Mon, 23 Dec 2024 16:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969897;
-	bh=a/efwxgmfYB0YkWtuijBPUQJz1rNBRp5jdMfGr2tHSU=;
+	s=korg; t=1734970248;
+	bh=JYB4NhxSfMsUA7X+sOkxieBJvNW1BawlFz9qMBXNCbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtPegxDYpRwv9bc+8QHDOA70+G+UMCtbipGdSFTFVUQ7rib/GyMf657QgnAcg5xut
-	 DYxpuuaXqj0WYqtQKqwTMG5HjqnhncBWW+aCdis1u/AVJtfJMJqhVD6eYxf0pIr1Mo
-	 GDTbEGI+56785eiWmsvmMnUYUbSHpWWuCwVcVBBQ=
+	b=VRtUY7oxYIEq4sMd+RzhpOLxSZ04NtEeyC8NHSis7wW5w6KxZP2E68VlnVlx0wetk
+	 Jf55JnL/posTC3pSfzJj4jH9DT7kkjBN3+rBym21pg6FKx52I07+Hm9Fkl0gpTrZQr
+	 anzuYAgzh80sZEfdMxjPVl8iRQt5RBKCaaj/lIYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Gabriel Marcano <gabemarcano@yahoo.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	ionut_n2001@yahoo.com
-Subject: [PATCH 6.12 086/160] drm/amd: Update strapping for NBIO 2.5.0
+	Chen Ni <nichen@iscas.ac.cn>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 027/116] xfs: convert comma to semicolon
 Date: Mon, 23 Dec 2024 16:58:17 +0100
-Message-ID: <20241223155412.023228610@linuxfoundation.org>
+Message-ID: <20241223155400.619801931@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit a7f9d98eb1202132014ba760c26ad8608ffc9caf upstream.
+commit 7bf888fa26e8f22bed4bc3965ab2a2953104ff96 upstream.
 
-This helps to avoid a spurious PME event on hotplug to Azalia.
+Replace a comma between expression statements by a semicolon.
 
-Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Reported-and-tested-by: ionut_n2001@yahoo.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=215884
-Tested-by: Gabriel Marcano <gabemarcano@yahoo.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20241211024414.7840-1-mario.limonciello@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3f6f237b9dd189e1fb85b8a3f7c97a8f27c1e49a)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 178b48d588ea ("xfs: remove the for_each_xbitmap_ helpers")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nbio_v7_0.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/xfs/scrub/agheader_repair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_0.c
-@@ -271,8 +271,19 @@ const struct nbio_hdp_flush_reg nbio_v7_
- 	.ref_and_mask_sdma1 = GPU_HDP_FLUSH_DONE__SDMA1_MASK,
- };
- 
-+#define regRCC_DEV0_EPF6_STRAP4                                                                         0xd304
-+#define regRCC_DEV0_EPF6_STRAP4_BASE_IDX                                                                5
-+
- static void nbio_v7_0_init_registers(struct amdgpu_device *adev)
- {
-+	uint32_t data;
-+
-+	switch (adev->ip_versions[NBIO_HWIP][0]) {
-+	case IP_VERSION(2, 5, 0):
-+		data = RREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF6_STRAP4) & ~BIT(23);
-+		WREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF6_STRAP4, data);
-+		break;
-+	}
- }
- 
- #define MMIO_REG_HOLE_OFFSET (0x80000 - PAGE_SIZE)
+diff --git a/fs/xfs/scrub/agheader_repair.c b/fs/xfs/scrub/agheader_repair.c
+index 876a2f41b063..058b6c305224 100644
+--- a/fs/xfs/scrub/agheader_repair.c
++++ b/fs/xfs/scrub/agheader_repair.c
+@@ -705,7 +705,7 @@ xrep_agfl_init_header(
+ 	 * step.
+ 	 */
+ 	xagb_bitmap_init(&af.used_extents);
+-	af.agfl_bno = xfs_buf_to_agfl_bno(agfl_bp),
++	af.agfl_bno = xfs_buf_to_agfl_bno(agfl_bp);
+ 	xagb_bitmap_walk(agfl_extents, xrep_agfl_fill, &af);
+ 	error = xagb_bitmap_disunion(agfl_extents, &af.used_extents);
+ 	if (error)
+-- 
+2.39.5
+
 
 
 
