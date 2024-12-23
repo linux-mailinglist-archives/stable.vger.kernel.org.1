@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-105936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEF89FB260
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB13A9FB192
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51F9B1885B23
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B81441884BD5
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38111B392B;
-	Mon, 23 Dec 2024 16:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500C81B0F2E;
+	Mon, 23 Dec 2024 16:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLeqgPmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2seAzAT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8091B1A8F80;
-	Mon, 23 Dec 2024 16:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C92B13BC0C;
+	Mon, 23 Dec 2024 16:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970641; cv=none; b=cSLVsrSkWZhDEZSUWoiGLGD6EB61C8xY5EWUNqiEw4oDhk2qJk2CBktWqR7Pw6u2unDK7KkepU8eNKZgATXYQcdE7XgrWSIIuhBrGchmWDKe0eN/50ONPoUJJFN9qZ8yC9xJdG15Eb1+sZsLpxBYxmwucF3LVeaI4UiOblgeZwY=
+	t=1734970067; cv=none; b=YfliNkXtwWFLGU5I5Jt5huBq69Kt8/EY+k/AFq3CDw7x1u+zvVIuzEYQrKlV1As9F0DubQYi1WboGACuaoCnfOp/fgWwJju3ffIEs3MyUcl4eFTyXir7GeNokftNJ238874v89c2iC26Mm5WFM7murY13Tvwl/mnJcsUsU8fGDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970641; c=relaxed/simple;
-	bh=oQTTH0+QCqlzFhzbwQQ7+aWW2ga9iK+RWFQxBpZSzu4=;
+	s=arc-20240116; t=1734970067; c=relaxed/simple;
+	bh=NkXV+M9tdckD4BMSPIu3/WqMIpYWnsJ7TiHHWratY2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIojzNjwGN0/zLDvVwzr+TTjHTOU8S2euKxQ3oLt5oKHY3EC0NHsC2MS1EIPv/L4WYYPsk29rnXjNkAPBVqKzrETpJinJVoO0oiA32odywvNHvFt16iaToTb6/LJ1GV7aEUVYcRW69fj0mqeFvhF3dwXZbTzgh6Fd9Lji/GP0lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLeqgPmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA830C4CED7;
-	Mon, 23 Dec 2024 16:17:20 +0000 (UTC)
+	 MIME-Version; b=HlBoWOq84Kvj7UMJBTvkVJ6QlMikBqFi8GyAXL8/JQj7iXSZw43IpPzX5T1yx90ku/oaG1E2pU6tlpw8L4o0sz9U0XEeriTRHRtCuwf9GNTU4HMo2UGdeQhXTaX1ljSqULeuDwplcYLlDXPFysK5eTtWH/CnebYrU22U5smUXL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2seAzAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83873C4CED3;
+	Mon, 23 Dec 2024 16:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970641;
-	bh=oQTTH0+QCqlzFhzbwQQ7+aWW2ga9iK+RWFQxBpZSzu4=;
+	s=korg; t=1734970066;
+	bh=NkXV+M9tdckD4BMSPIu3/WqMIpYWnsJ7TiHHWratY2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLeqgPmubLPQHr3SmazF2gAAt+WzblY3Yy295GLEoZXH8VKPdEKIIYxmNuwweFDud
-	 OrX/xNm9lqKhPo03PbqOoIPYUdzNdZ4iZbKP3OTLA11yMaEnZ1T2rt4U8Ssv/5TOhq
-	 nxXi6LvMksLvxpHJYkbUK7gLsqjEOhlhM1LqsJJo=
+	b=o2seAzATq8/6ii2EFlr0jc1XaiE0DZa/ROrNUtx8/6bMjYI3DmLjzBp6LNr4WmzWa
+	 aKrwR54Jidq7qCXLQzjKc6HSBAPOPZ2ar27vjedR94x6cf1h4bkvUCIn6F2trAaCTW
+	 DAvdoMxvo0VLS0AkcLgJ0w+CiCjJET2BVEE4YPt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ea40e4294e58b0292f74@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/83] netdevsim: prevent bad user input in nsim_dev_health_break_write()
-Date: Mon, 23 Dec 2024 16:59:04 +0100
-Message-ID: <20241223155354.609136115@linuxfoundation.org>
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	Jeff Xu <jeffxu@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 134/160] selftests/memfd: run sysctl tests when PID namespace support is enabled
+Date: Mon, 23 Dec 2024 16:59:05 +0100
+Message-ID: <20241223155413.963771777@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Isaac J. Manjarres <isaacmanjarres@google.com>
 
-[ Upstream commit ee76746387f6233bdfa93d7406990f923641568f ]
+commit 6a75f19af16ff482cfd6085c77123aa0f464f8dd upstream.
 
-If either a zero count or a large one is provided, kernel can crash.
+The sysctl tests for vm.memfd_noexec rely on the kernel to support PID
+namespaces (i.e.  the kernel is built with CONFIG_PID_NS=y).  If the
+kernel the test runs on does not support PID namespaces, the first sysctl
+test will fail when attempting to spawn a new thread in a new PID
+namespace, abort the test, preventing the remaining tests from being run.
 
-Fixes: 82c93a87bf8b ("netdevsim: implement couple of testing devlink health reporters")
-Reported-by: syzbot+ea40e4294e58b0292f74@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/675c6862.050a0220.37aaf.00b1.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20241213172518.2415666-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is not desirable, as not all kernels need PID namespaces, but can
+still use the other features provided by memfd.  Therefore, only run the
+sysctl tests if the kernel supports PID namespaces.  Otherwise, skip those
+tests and emit an informative message to let the user know why the sysctl
+tests are not being run.
+
+Link: https://lkml.kernel.org/r/20241205192943.3228757-1-isaacmanjarres@google.com
+Fixes: 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_EXEC")
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Reviewed-by: Jeff Xu <jeffxu@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/netdevsim/health.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/memfd/memfd_test.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/netdevsim/health.c b/drivers/net/netdevsim/health.c
-index aa77af4a68df..bc44462c70e2 100644
---- a/drivers/net/netdevsim/health.c
-+++ b/drivers/net/netdevsim/health.c
-@@ -203,6 +203,8 @@ static ssize_t nsim_dev_health_break_write(struct file *file,
- 	char *break_msg;
- 	int err;
+--- a/tools/testing/selftests/memfd/memfd_test.c
++++ b/tools/testing/selftests/memfd/memfd_test.c
+@@ -9,6 +9,7 @@
+ #include <fcntl.h>
+ #include <linux/memfd.h>
+ #include <sched.h>
++#include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <signal.h>
+@@ -1557,6 +1558,11 @@ static void test_share_fork(char *banner
+ 	close(fd);
+ }
  
-+	if (count == 0 || count > PAGE_SIZE)
-+		return -EINVAL;
- 	break_msg = memdup_user_nul(data, count);
- 	if (IS_ERR(break_msg))
- 		return PTR_ERR(break_msg);
--- 
-2.39.5
-
++static bool pid_ns_supported(void)
++{
++	return access("/proc/self/ns/pid", F_OK) == 0;
++}
++
+ int main(int argc, char **argv)
+ {
+ 	pid_t pid;
+@@ -1591,8 +1597,12 @@ int main(int argc, char **argv)
+ 	test_seal_grow();
+ 	test_seal_resize();
+ 
+-	test_sysctl_simple();
+-	test_sysctl_nested();
++	if (pid_ns_supported()) {
++		test_sysctl_simple();
++		test_sysctl_nested();
++	} else {
++		printf("PID namespaces are not supported; skipping sysctl tests\n");
++	}
+ 
+ 	test_share_dup("SHARE-DUP", "");
+ 	test_share_mmap("SHARE-MMAP", "");
 
 
 
