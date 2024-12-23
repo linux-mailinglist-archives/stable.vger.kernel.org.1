@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-105713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94329FB13D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:04:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A4C9FB11A
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:03:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386801883203
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:04:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7A418834E8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7879186E58;
-	Mon, 23 Dec 2024 16:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057F51B3937;
+	Mon, 23 Dec 2024 16:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gY1t2+rh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTWswjtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B7C2EAE6;
-	Mon, 23 Dec 2024 16:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C17189B94;
+	Mon, 23 Dec 2024 16:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969885; cv=none; b=knYByVJzacnQoBenPmOQm6LzAQctoBBl7GO0EJboes3KFuzU3B0uNpyfmr4QTuW3NXNQv9m9m5/+2QYtpojIyFKobMx5lV5W7UhPESHocuCsiGS/ihSVPGuoKRfUHKyN9cRVS7b1tCZkzjzQfnArDPJ8jOSCPSIj0itTYz8wYFA=
+	t=1734969778; cv=none; b=qrU24XHwvyvnkrYD/EjLAwZU/Vq/J2qgxaxRelIukf/YQc2JwDk8Z2d70b3nUrU96G5+yBAMrE1XqKyn3QyI1gsFk4z0/DuhDKUpRPcBHI4tnWMKhV/Jmk+xKMvVqkzics++SBgdkrslCpq7nzuleL0OCsNs1oCPIQuhROBO2wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969885; c=relaxed/simple;
-	bh=AkEdCqBkDTKb69fsXjkDhbelkaK920bn5bGMUcZf2Yo=;
+	s=arc-20240116; t=1734969778; c=relaxed/simple;
+	bh=Jj1MURUGEGNliuTUZOoKLEg0T1kG8Qcs2T8cQmsmsU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IITagVznCeztuJjas2VyABJnRUc/XnjE1/fWXmgZDfp6saU/dhhSzc6mgCC80I5Ds3ZUaG1t7NlMxu0+NOvIkADizyMo3gUYRgmi9BxamNTnt+angIycFnsxyrzbHbvkJYRqYrxm//1MLmv1Eh0evjGJ1G8+Xp5WZOruFgqJMu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gY1t2+rh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A83AC4CED3;
-	Mon, 23 Dec 2024 16:04:44 +0000 (UTC)
+	 MIME-Version; b=dh/bdIeX2DuwWmw/LDhlwtQlMjZ5VTwRcK4x8LMfTmwP75/PKot90619c3ZKVUYhe6UyqAeWV+aMP85eakNj58yPFNHkshr0FcksKQiSkUi46rgaWm5+GE96aJ70qzGzDQm3YGFe3v942XFT3FkzKYF5OphMKai04zm6dZS9QHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTWswjtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAB6C4CED6;
+	Mon, 23 Dec 2024 16:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969885;
-	bh=AkEdCqBkDTKb69fsXjkDhbelkaK920bn5bGMUcZf2Yo=;
+	s=korg; t=1734969778;
+	bh=Jj1MURUGEGNliuTUZOoKLEg0T1kG8Qcs2T8cQmsmsU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gY1t2+rhIvKROirzA0ga+7GqdohBvmTZDY7DiGdbPiRJRRquxfY/EODAmZUiXF51q
-	 udqF0+bnpXyKdPjZNBoTt9P4eEksDgwCmda4Ep4DD5CFV51kk/9enJvcMKRBSVScG1
-	 jCn2dpqkgUfF5DhDgZ1iI1EsEUhfsw+vkFWLGepA=
+	b=BTWswjtgQf7iw5JAViCaMlf0v4iZndNYhBi8QRmjDJbKlvJH8GGj5XhEZoKiBadbE
+	 79oDfUK3f2mpfv/65pzTEZn0p3hyg4I7p6jZ3hZWVtabZXKXhAC5U2lqSBJEPuva36
+	 jIL+syY3dIAqw62ww9M09VNy9iWM67lYSBmhUAjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/160] net: ethernet: bgmac-platform: fix an OF node reference leak
-Date: Mon, 23 Dec 2024 16:57:43 +0100
-Message-ID: <20241223155410.697103867@linuxfoundation.org>
+Subject: [PATCH 6.12 053/160] net: netdevsim: fix nsim_pp_hold_write()
+Date: Mon, 23 Dec 2024 16:57:44 +0100
+Message-ID: <20241223155410.734670223@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
 References: <20241223155408.598780301@linuxfoundation.org>
@@ -67,49 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0cb2c504d79e7caa3abade3f466750c82ad26f01 ]
+[ Upstream commit b9b8301d369b4c876de5255dbf067b19ba88ac71 ]
 
-The OF node obtained by of_parse_phandle() is not freed. Call
-of_node_put() to balance the refcount.
+nsim_pp_hold_write() has two problems:
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+1) It may return with rtnl held, as found by syzbot.
 
-Fixes: 1676aba5ef7e ("net: ethernet: bgmac: device tree phy enablement")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+2) Its return value does not propagate an error if any.
+
+Fixes: 1580cbcbfe77 ("net: netdevsim: add some fake page pool use")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241214014912.2810315-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20241216083703.1859921-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bgmac-platform.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/netdevsim/netdev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bgmac-platform.c b/drivers/net/ethernet/broadcom/bgmac-platform.c
-index 77425c7a32db..78f7862ca006 100644
---- a/drivers/net/ethernet/broadcom/bgmac-platform.c
-+++ b/drivers/net/ethernet/broadcom/bgmac-platform.c
-@@ -171,6 +171,7 @@ static int platform_phy_connect(struct bgmac *bgmac)
- static int bgmac_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-+	struct device_node *phy_node;
- 	struct bgmac *bgmac;
- 	struct resource *regs;
- 	int ret;
-@@ -236,7 +237,9 @@ static int bgmac_probe(struct platform_device *pdev)
- 	bgmac->cco_ctl_maskset = platform_bgmac_cco_ctl_maskset;
- 	bgmac->get_bus_clock = platform_bgmac_get_bus_clock;
- 	bgmac->cmn_maskset32 = platform_bgmac_cmn_maskset32;
--	if (of_parse_phandle(np, "phy-handle", 0)) {
-+	phy_node = of_parse_phandle(np, "phy-handle", 0);
-+	if (phy_node) {
-+		of_node_put(phy_node);
- 		bgmac->phy_connect = platform_phy_connect;
- 	} else {
- 		bgmac->phy_connect = bgmac_phy_connect_direct;
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 017a6102be0a..1b29d1d794a2 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -596,10 +596,10 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
+ 		page_pool_put_full_page(ns->page->pp, ns->page, false);
+ 		ns->page = NULL;
+ 	}
+-	rtnl_unlock();
+ 
+ exit:
+-	return count;
++	rtnl_unlock();
++	return ret;
+ }
+ 
+ static const struct file_operations nsim_pp_hold_fops = {
 -- 
 2.39.5
 
