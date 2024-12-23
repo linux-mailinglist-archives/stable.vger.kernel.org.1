@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-105818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B379FB1CF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:10:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2079FB189
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74D0418850D8
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FF9A166857
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BB81B21B4;
-	Mon, 23 Dec 2024 16:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB0819E971;
+	Mon, 23 Dec 2024 16:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkxr8sg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntVS+UqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223E713BC0C;
-	Mon, 23 Dec 2024 16:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9490188006;
+	Mon, 23 Dec 2024 16:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970242; cv=none; b=PMoXyc6JIUJB13AlVROG3vXnHZPNJqG1hW048bOO+uA32S/y2KIulgJOswYEQlR4gMWbxnafoTOIbrE3N2EHX8rOkzi00uD8ryr3M6kOxOsfgX/lHzRKTd+2R4h4MvFajH3GtOPPOnyRH/eXUvcw6/M//O3GdUDjHwuzXH7ML9M=
+	t=1734970001; cv=none; b=C2CbmP/k9p2URdLSO4CcSwx9vfmKdYTx1k3Brmil47huVdkWFQjwLjNs4Prh+qaUEuEI5lYyEc7ndI6kNKm6fg2lUq0B+Fj1rzeY4sF9YHhPdGhimyKCUvTi/9jeu1M3nEw7undC4xvLCl+L6WO6L2BFmQbWbNrthO0xQQkvJbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970242; c=relaxed/simple;
-	bh=1JXWG+53I5UOYZfXXM27f6QJqNqIFWYyzR99HKjM0bg=;
+	s=arc-20240116; t=1734970001; c=relaxed/simple;
+	bh=3fCJUcY8idZHLO0A9v8tfaV4ztUvPWik3UzDClEoJ6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5G87J6I7D4+HE7bNZjVvneVnJnK0tk/xM7cUtWqbb3dwEPSHDp3qflM7s20UtwVGCmv9GMjrwGyWQ4wZ8hdSl3f/Xvn6uVuTa9hnxUwBkYFnfcmKaDQ4FwKGtAGALTCD4JtyLpVypZmHTp3/6ezPRD3g/7vamForEjrpeElSU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkxr8sg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8103DC4CED3;
-	Mon, 23 Dec 2024 16:10:41 +0000 (UTC)
+	 MIME-Version; b=q3KmCd7AqP85T0BYGh/IDCQArRxUoIaceXgB071fXHMCMeX5jlbN/ERb8zUb1HDJvn44lJA+q0FZNyVPb3h4EnT4oDUzA+KA/RcdrnPVLCKFBbXKmoXx5XiMoutvB8mbjdDqE0ehVJaVxGlCz0i8ONeA8y/M7Xi12k7Sulf87KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntVS+UqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C2FC4CED3;
+	Mon, 23 Dec 2024 16:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970242;
-	bh=1JXWG+53I5UOYZfXXM27f6QJqNqIFWYyzR99HKjM0bg=;
+	s=korg; t=1734970001;
+	bh=3fCJUcY8idZHLO0A9v8tfaV4ztUvPWik3UzDClEoJ6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkxr8sg2XKW4DgIM9Y9uYv95RssmZjKS5I8vS4nc2ty8fOWojgIzvsDjt3dv6dIgC
-	 hBcw/YiRWlUjZ1C9QFgQQW4hzzGc6FGUgY/UUd3+CtBX7LVs/yvOOeohysRWX0G/ph
-	 7era/ZQlY0NpGQ5nHFtJ+VCvdWd0ORqS7i3725ko=
+	b=ntVS+UqMkQPZgR6kg1QlDg2xPc3kGWLe8Jbu2cDbdkM5jzf1APbJiAej0P9MEtcXy
+	 m9zQlhHVigV+rG/LKj7GDJMye+Y44tJt3BqHJuIBCbYaPTcB3GTHsHD2cgaGOv9YUW
+	 vdqB4+1FRkUgPbv7kGCvzC1jwYweiVeF05UeSzcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/116] xfs: Fix xfs_prepare_shift() range for RT
+	Richard Hughes <hughsient@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.12 084/160] thunderbolt: Dont display nvm_version unless upgrade supported
 Date: Mon, 23 Dec 2024 16:58:15 +0100
-Message-ID: <20241223155400.540797524@linuxfoundation.org>
+Message-ID: <20241223155411.942334827@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit f23660f059470ec7043748da7641e84183c23bc8 upstream.
+commit e34f1717ef0632fcec5cb827e5e0e9f223d70c9b upstream.
 
-The RT extent range must be considered in the xfs_flush_unmap_range() call
-to stabilize the boundary.
+The read will never succeed if NVM wasn't initialized due to an unknown
+format.
 
-This code change is originally from Dave Chinner.
+Add a new callback for visibility to only show when supported.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: aef9c693e7e5 ("thunderbolt: Move vendor specific NVM handling into nvm.c")
+Reported-by: Richard Hughes <hughsient@gmail.com>
+Closes: https://github.com/fwupd/fwupd/issues/8200
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_bmap_util.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/thunderbolt/retimer.c |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
-index 7336402f1efa..1fa10a83da0b 100644
---- a/fs/xfs/xfs_bmap_util.c
-+++ b/fs/xfs/xfs_bmap_util.c
-@@ -1059,7 +1059,7 @@ xfs_prepare_shift(
- 	struct xfs_inode	*ip,
- 	loff_t			offset)
- {
--	struct xfs_mount	*mp = ip->i_mount;
-+	unsigned int		rounding;
- 	int			error;
+--- a/drivers/thunderbolt/retimer.c
++++ b/drivers/thunderbolt/retimer.c
+@@ -103,6 +103,7 @@ static int tb_retimer_nvm_add(struct tb_
  
- 	/*
-@@ -1077,11 +1077,13 @@ xfs_prepare_shift(
- 	 * with the full range of the operation. If we don't, a COW writeback
- 	 * completion could race with an insert, front merge with the start
- 	 * extent (after split) during the shift and corrupt the file. Start
--	 * with the block just prior to the start to stabilize the boundary.
-+	 * with the allocation unit just prior to the start to stabilize the
-+	 * boundary.
- 	 */
--	offset = round_down(offset, mp->m_sb.sb_blocksize);
-+	rounding = xfs_inode_alloc_unitsize(ip);
-+	offset = rounddown_64(offset, rounding);
- 	if (offset)
--		offset -= mp->m_sb.sb_blocksize;
-+		offset -= rounding;
+ err_nvm:
+ 	dev_dbg(&rt->dev, "NVM upgrade disabled\n");
++	rt->no_nvm_upgrade = true;
+ 	if (!IS_ERR(nvm))
+ 		tb_nvm_free(nvm);
  
- 	/*
- 	 * Writeback and invalidate cache for the remainder of the file as we're
--- 
-2.39.5
-
+@@ -182,8 +183,6 @@ static ssize_t nvm_authenticate_show(str
+ 
+ 	if (!rt->nvm)
+ 		ret = -EAGAIN;
+-	else if (rt->no_nvm_upgrade)
+-		ret = -EOPNOTSUPP;
+ 	else
+ 		ret = sysfs_emit(buf, "%#x\n", rt->auth_status);
+ 
+@@ -323,8 +322,6 @@ static ssize_t nvm_version_show(struct d
+ 
+ 	if (!rt->nvm)
+ 		ret = -EAGAIN;
+-	else if (rt->no_nvm_upgrade)
+-		ret = -EOPNOTSUPP;
+ 	else
+ 		ret = sysfs_emit(buf, "%x.%x\n", rt->nvm->major, rt->nvm->minor);
+ 
+@@ -342,6 +339,19 @@ static ssize_t vendor_show(struct device
+ }
+ static DEVICE_ATTR_RO(vendor);
+ 
++static umode_t retimer_is_visible(struct kobject *kobj, struct attribute *attr,
++				  int n)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct tb_retimer *rt = tb_to_retimer(dev);
++
++	if (attr == &dev_attr_nvm_authenticate.attr ||
++	    attr == &dev_attr_nvm_version.attr)
++		return rt->no_nvm_upgrade ? 0 : attr->mode;
++
++	return attr->mode;
++}
++
+ static struct attribute *retimer_attrs[] = {
+ 	&dev_attr_device.attr,
+ 	&dev_attr_nvm_authenticate.attr,
+@@ -351,6 +361,7 @@ static struct attribute *retimer_attrs[]
+ };
+ 
+ static const struct attribute_group retimer_group = {
++	.is_visible = retimer_is_visible,
+ 	.attrs = retimer_attrs,
+ };
+ 
 
 
 
