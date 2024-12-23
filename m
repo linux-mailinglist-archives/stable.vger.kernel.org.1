@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-105731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD539FB17E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C779FB1ED
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F341604E7
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E344188548E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424871B4126;
-	Mon, 23 Dec 2024 16:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7322319E971;
+	Mon, 23 Dec 2024 16:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ln6lRAOF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muQ3hjNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D2A1B412B;
-	Mon, 23 Dec 2024 16:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F53C1B21BD;
+	Mon, 23 Dec 2024 16:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969951; cv=none; b=BjkKqfMWpq6WtsQl574lkNgn+9jHqgR9x1533mnUOEt1zRjdOUkGjlFa79DSp1isOJWCRBF3IGL/VchqLaJ3qfN0YEW98en7msW7OdVIMVrrX9hMRJB2TwIvYHTEDTXeVKa1FmS0HKAffmX/bk+qdTpC8i7nEQsDat7653KpOS8=
+	t=1734970296; cv=none; b=X0fveesamPMo2zudZ2q/yLE3seWr1aW8o/z1/YCS+8+1Gr9GTow/VLCMlQKS5svcn5y79Ofsgf7ogdXKIe/5D4hMv0+ui7mk+ty8zHkVhH9aJOyOWvw0ElyXs584Ft98rF49dWgymD7ifP1KQTiEVa87erspXVnf/f6lClwh08g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969951; c=relaxed/simple;
-	bh=hrolgPpUiFOgoPN6ky8oMNw/Us4d8jkJugQU2OHyDyU=;
+	s=arc-20240116; t=1734970296; c=relaxed/simple;
+	bh=PIoUtwInI+mddZv1h3boDUPeq6DILeraNGI78qSPJ1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hrKB8QumZyP0O9doH2SmCE7c/iMUt/4rxp6rGyJ0NMlfmqNNSYdUEK2JACZngDknuas6NBPnujhjFG3sDsje/yv6UjNlpXEOCbHncHcrDOfroPFSNWJgzyhxr61GT+5KG9kjZDY9b8o+XXIRU6oPC0mTyqBRO/Ih1s3xfDg5exc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ln6lRAOF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FEDC4CED4;
-	Mon, 23 Dec 2024 16:05:50 +0000 (UTC)
+	 MIME-Version; b=IhpdSbTxbAZzCqp9T8NFzHup7IOc7jbnL9UJOtYeDRhQFwnJxmZXyEC3uKsfof2VmJsddrjhQ8H4ZkNYqb/S904md+Ni/AFTUAqISColwuxs5s8EKiknRMBZrhErEEYa6ytW5eVxNyJiGUY7AYS4Kz4MsX+cLQtEb02e3ejb800=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muQ3hjNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9245AC4CED3;
+	Mon, 23 Dec 2024 16:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969950;
-	bh=hrolgPpUiFOgoPN6ky8oMNw/Us4d8jkJugQU2OHyDyU=;
+	s=korg; t=1734970296;
+	bh=PIoUtwInI+mddZv1h3boDUPeq6DILeraNGI78qSPJ1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ln6lRAOFvow6PiJ+pY+lPtfV66vhZyOV40BmP4JPRQaIzNzoYLlNulPGkZbnkYnM1
-	 61On3FGjaYV5Sb2BzVEKuSNHH6oqr6v3bR7kPfo3QrmsW3uofvZxxqQIjfN2LGElvS
-	 6emNduivSsCtaj5DwvDrp9srjNXudTSoZVCSaiy4=
+	b=muQ3hjNVmSW+IRQsujF3VMiJn6RnTcWzDJkMKI+O9nHkAkAOxr9UM4tb+7DtEyqVq
+	 6co/4IqpkxoUfM4oSwmH5f3zKFnO8iy7Jb4DstCyJn1H1z4pnEhOKAFoMJxJlMdiFK
+	 LycPbu+m5l+3RYQ3ZWciIDG73/1LZPmGdlOayMJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/160] drm/amdgpu: dont access invalid sched
-Date: Mon, 23 Dec 2024 16:58:31 +0100
-Message-ID: <20241223155412.545583711@linuxfoundation.org>
+Subject: [PATCH 6.6 042/116] net/smc: check v2_ext_offset/eid_cnt/ism_gid_cnt when receiving proposal msg
+Date: Mon, 23 Dec 2024 16:58:32 +0100
+Message-ID: <20241223155401.197798989@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit a93b1020eb9386d7da11608477121b10079c076a ]
+[ Upstream commit 7863c9f3d24ba49dbead7e03dfbe40deb5888fdf ]
 
-Since 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
-accessing job->base.sched can produce unexpected results as the initialisation
-of (*job)->base.sched done in amdgpu_job_alloc is overwritten by the
-memset.
+When receiving proposal msg in server, the fields v2_ext_offset/
+eid_cnt/ism_gid_cnt in proposal msg are from the remote client
+and can not be fully trusted. Especially the field v2_ext_offset,
+once exceed the max value, there has the chance to access wrong
+address, and crash may happen.
 
-This commit fixes an issue when a CS would fail validation and would
-be rejected after job->num_ibs is incremented. In this case,
-amdgpu_ib_free(ring->adev, ...) will be called, which would crash the
-machine because the ring value is bogus.
+This patch checks the fields v2_ext_offset/eid_cnt/ism_gid_cnt
+before using them.
 
-To fix this, pass a NULL pointer to amdgpu_ib_free(): we can do this
-because the device is actually not used in this function.
-
-The next commit will remove the ring argument completely.
-
-Fixes: 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2ae520cb12831d264ceb97c61f72c59d33c0dbd7)
+Fixes: 8c3dca341aea ("net/smc: build and send V2 CLC proposal")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/smc/af_smc.c  | 3 ++-
+ net/smc/smc_clc.c | 8 +++++++-
+ net/smc/smc_clc.h | 8 +++++++-
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-index 16f2605ac50b..1ce20a19be8b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-@@ -253,7 +253,6 @@ void amdgpu_job_set_resources(struct amdgpu_job *job, struct amdgpu_bo *gds,
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 8551e097ad33..079ca4f1077d 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2283,7 +2283,8 @@ static void smc_find_rdma_v2_device_serv(struct smc_sock *new_smc,
+ 		goto not_found;
  
- void amdgpu_job_free_resources(struct amdgpu_job *job)
+ 	smc_v2_ext = smc_get_clc_v2_ext(pclc);
+-	if (!smc_clc_match_eid(ini->negotiated_eid, smc_v2_ext, NULL, NULL))
++	if (!smc_v2_ext ||
++	    !smc_clc_match_eid(ini->negotiated_eid, smc_v2_ext, NULL, NULL))
+ 		goto not_found;
+ 
+ 	/* prepare RDMA check */
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index b8fd64392209..286d6b19a1f1 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -352,7 +352,6 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
+ 	struct smc_clc_msg_hdr *hdr = &pclc->hdr;
+ 	struct smc_clc_v2_extension *v2_ext;
+ 
+-	v2_ext = smc_get_clc_v2_ext(pclc);
+ 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
+ 	if (!pclc_prfx ||
+ 	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
+@@ -369,6 +368,13 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
+ 			sizeof(struct smc_clc_msg_trail))
+ 			return false;
+ 	} else {
++		v2_ext = smc_get_clc_v2_ext(pclc);
++		if ((hdr->typev2 != SMC_TYPE_N &&
++		     (!v2_ext || v2_ext->hdr.eid_cnt > SMC_CLC_MAX_UEID)) ||
++		    (smcd_indicated(hdr->typev2) &&
++		     v2_ext->hdr.ism_gid_cnt > SMCD_CLC_MAX_V2_GID_ENTRIES))
++			return false;
++
+ 		if (ntohs(hdr->length) !=
+ 			sizeof(*pclc) +
+ 			sizeof(struct smc_clc_msg_smcd) +
+diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
+index eb843907c9d0..a3706300e04f 100644
+--- a/net/smc/smc_clc.h
++++ b/net/smc/smc_clc.h
+@@ -364,8 +364,14 @@ static inline struct smc_clc_v2_extension *
+ smc_get_clc_v2_ext(struct smc_clc_msg_proposal *prop)
  {
--	struct amdgpu_ring *ring = to_amdgpu_ring(job->base.sched);
- 	struct dma_fence *f;
- 	unsigned i;
+ 	struct smc_clc_msg_smcd *prop_smcd = smc_get_clc_msg_smcd(prop);
++	u16 max_offset;
  
-@@ -266,7 +265,7 @@ void amdgpu_job_free_resources(struct amdgpu_job *job)
- 		f = NULL;
+-	if (!prop_smcd || !ntohs(prop_smcd->v2_ext_offset))
++	max_offset = offsetof(struct smc_clc_msg_proposal_area, pclc_v2_ext) -
++		     offsetof(struct smc_clc_msg_proposal_area, pclc_smcd) -
++		     offsetofend(struct smc_clc_msg_smcd, v2_ext_offset);
++
++	if (!prop_smcd || !ntohs(prop_smcd->v2_ext_offset) ||
++	    ntohs(prop_smcd->v2_ext_offset) > max_offset)
+ 		return NULL;
  
- 	for (i = 0; i < job->num_ibs; ++i)
--		amdgpu_ib_free(ring->adev, &job->ibs[i], f);
-+		amdgpu_ib_free(NULL, &job->ibs[i], f);
- }
- 
- static void amdgpu_job_free_cb(struct drm_sched_job *s_job)
+ 	return (struct smc_clc_v2_extension *)
 -- 
 2.39.5
 
