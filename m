@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF979FB258
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B9B9FB20C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BD85160880
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBAAD1885644
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9934619E98B;
-	Mon, 23 Dec 2024 16:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7D81B4120;
+	Mon, 23 Dec 2024 16:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrcJ9xJC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qF0Z2oQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C348827;
-	Mon, 23 Dec 2024 16:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0421B392B;
+	Mon, 23 Dec 2024 16:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970604; cv=none; b=pNBVoZvWdWMHzuwHhaO9iRLCkTcDhNFalpBcxQrKHELSXyrs96Nmm+8oFeSEHyNH1fC9YyxKj5Fmre0OZBhj0DWiys2kWJHzgaJ5ew5RedVjNkwz9uKJzwjR1lNJHGEgzvov0Vb6T0Rtiehd+F99ybaFTWNSM1YxE7/kTPjvpB4=
+	t=1734970399; cv=none; b=tMrClF4RJdRLRbB3BDA27JkGXayGc5RO0yqnTpDyKublqSy/SRAdvEW+5G4HeYMWDY0wbl3cxpzBqx71okTrI8l2Nk6dn+kPcFYdFZF5+j6a4DpJv/ZJnNOrAULCM0sCyNpmIel27SDmT3mdiD+6wYQDklZOcCa+CQmiSYKJIB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970604; c=relaxed/simple;
-	bh=XMo+w5QCm/dpnXlJqslBJhKSbunpp9YGTH9a0vp/IY8=;
+	s=arc-20240116; t=1734970399; c=relaxed/simple;
+	bh=ibyE78ACLR26I1AZfJ8/rX7/z3k9VNqNtvo2u1mPGpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fIo/bae2NYMmpYByzegkHOz5Zw7+b7d7eZeW3gJOxVwwgjoUtgejNiek/TPpJp/lVoqmHeBv/xBIlwCPUolPtM/uevv9ssVVMyq/zaZe9FZDQY7clPwp9z8dEcoN66SchWynafuLka/Yui8MhR4dOSPL3/Ez/1/8RbIe8/tcCL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrcJ9xJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D51C4CED3;
-	Mon, 23 Dec 2024 16:16:43 +0000 (UTC)
+	 MIME-Version; b=Znt3F2bafSgug1w3IgCtxeq6rMNNHPWNDlEME7cFjeUgSdjwXlhQPvE7v8gn2d7yynidCLJY+Y9gtBNJn1fly1m9o0oRKFXnziXgtYOSavKX1+smKer2qohiGiaviYbdFQv7a37ITlnKBWyygKhNk/2A4kKtxS2CChpd796zdF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qF0Z2oQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319EBC4CED3;
+	Mon, 23 Dec 2024 16:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970604;
-	bh=XMo+w5QCm/dpnXlJqslBJhKSbunpp9YGTH9a0vp/IY8=;
+	s=korg; t=1734970398;
+	bh=ibyE78ACLR26I1AZfJ8/rX7/z3k9VNqNtvo2u1mPGpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrcJ9xJC4Xs3Xgmk8jjyDpe1Hic4TYYUBb4PfTlzUerYLMDTxmdCKaanwwSYJxtkj
-	 lu+vWAT0+fMkih+9Oa0iqAiUF03uF/gwfOBD40JwIn+iuAf+BwLGOABN0R2t8YQLEb
-	 S1+zh1CAt9AAataKVSHBxSP+d8iZ2B+qV2hKQ/F8=
+	b=qF0Z2oQXd0EKhzZlzH+pchS1KoR0B1oPlF/wGsQZP+q3x0NIX/A2KTd9QJ3qcRXY1
+	 pMSyp/paMwXaqPg2a9TY1aSDCI6utNaNnEPEDW0ZmWqTuwYQ9klGrXomBG9sNIxnpq
+	 NJuzQefBOH1f6XvEDxPEDtm7OYmoaFIcl/VNutE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/83] p2sb: Move P2SB hide and unhide code to p2sb_scan_and_cache()
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 064/116] i2c: riic: Always round-up when calculating bus period
 Date: Mon, 23 Dec 2024 16:58:54 +0100
-Message-ID: <20241223155354.223869349@linuxfoundation.org>
+Message-ID: <20241223155402.048713033@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 0286070c74ee48391fc07f7f617460479472d221 ]
+commit de6b43798d9043a7c749a0428dbb02d5fff156e5 upstream.
 
-To prepare for the following fix, move the code to hide and unhide the
-P2SB device from p2sb_cache_resources() to p2sb_scan_and_cache().
+Currently, the RIIC driver may run the I2C bus faster than requested,
+which may cause subtle failures.  E.g. Biju reported a measured bus
+speed of 450 kHz instead of the expected maximum of 400 kHz on RZ/G2L.
 
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241128002836.373745-4-shinichiro.kawasaki@wdc.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The initial calculation of the bus period uses DIV_ROUND_UP(), to make
+sure the actual bus speed never becomes faster than the requested bus
+speed.  However, the subsequent division-by-two steps do not use
+round-up, which may lead to a too-small period, hence a too-fast and
+possible out-of-spec bus speed.  E.g. on RZ/Five, requesting a bus speed
+of 100 resp. 400 kHz will yield too-fast target bus speeds of 100806
+resp. 403226 Hz instead of 97656 resp. 390625 Hz.
+
+Fix this by using DIV_ROUND_UP() in the subsequent divisions, too.
+
+Tested on RZ/A1H, RZ/A2M, and RZ/Five.
+
+Fixes: d982d66514192cdb ("i2c: riic: remove clock and frequency restrictions")
+Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: <stable@vger.kernel.org> # v4.15+
+Link: https://lore.kernel.org/r/c59aea77998dfea1b4456c4b33b55ab216fcbf5e.1732284746.git.geert+renesas@glider.be
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/p2sb.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/i2c/busses/i2c-riic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
-index d015ddc9f30e..6fb76b82ecce 100644
---- a/drivers/platform/x86/p2sb.c
-+++ b/drivers/platform/x86/p2sb.c
-@@ -97,6 +97,14 @@ static void p2sb_scan_and_cache_devfn(struct pci_bus *bus, unsigned int devfn)
+--- a/drivers/i2c/busses/i2c-riic.c
++++ b/drivers/i2c/busses/i2c-riic.c
+@@ -324,7 +324,7 @@ static int riic_init_hw(struct riic_dev
+ 		if (brl <= (0x1F + 3))
+ 			break;
  
- static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
- {
-+	/*
-+	 * The BIOS prevents the P2SB device from being enumerated by the PCI
-+	 * subsystem, so we need to unhide and hide it back to lookup the BAR.
-+	 * Unhide the P2SB device here, if needed.
-+	 */
-+	if (p2sb_hidden_by_bios)
-+		pci_bus_write_config_dword(bus, devfn, P2SBC, 0);
-+
- 	/* Scan the P2SB device and cache its BAR0 */
- 	p2sb_scan_and_cache_devfn(bus, devfn);
+-		total_ticks /= 2;
++		total_ticks = DIV_ROUND_UP(total_ticks, 2);
+ 		rate /= 2;
+ 	}
  
-@@ -104,6 +112,10 @@ static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
- 	if (devfn == P2SB_DEVFN_GOLDMONT)
- 		p2sb_scan_and_cache_devfn(bus, SPI_DEVFN_GOLDMONT);
- 
-+	/* Hide the P2SB device, if it was hidden */
-+	if (p2sb_hidden_by_bios)
-+		pci_bus_write_config_dword(bus, devfn, P2SBC, P2SBC_HIDE);
-+
- 	if (!p2sb_valid_resource(&p2sb_resources[PCI_FUNC(devfn)].res))
- 		return -ENOENT;
- 
-@@ -152,22 +164,11 @@ static int p2sb_cache_resources(void)
- 	 */
- 	pci_lock_rescan_remove();
- 
--	/*
--	 * The BIOS prevents the P2SB device from being enumerated by the PCI
--	 * subsystem, so we need to unhide and hide it back to lookup the BAR.
--	 * Unhide the P2SB device here, if needed.
--	 */
- 	pci_bus_read_config_dword(bus, devfn_p2sb, P2SBC, &value);
- 	p2sb_hidden_by_bios = value & P2SBC_HIDE;
--	if (p2sb_hidden_by_bios)
--		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, 0);
- 
- 	ret = p2sb_scan_and_cache(bus, devfn_p2sb);
- 
--	/* Hide the P2SB device, if it was hidden */
--	if (p2sb_hidden_by_bios)
--		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, P2SBC_HIDE);
--
- 	pci_unlock_rescan_remove();
- 
- 	return ret;
--- 
-2.39.5
-
 
 
 
