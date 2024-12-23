@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-105825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D162F9FB1D6
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BAE9FB12D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:03:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324641885092
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:11:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1E07188013B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2747E1B392B;
-	Mon, 23 Dec 2024 16:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4824E17A5A4;
+	Mon, 23 Dec 2024 16:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trAmT6Pe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kq2WdqiV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3401AF0C7;
-	Mon, 23 Dec 2024 16:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048D012D1F1;
+	Mon, 23 Dec 2024 16:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970265; cv=none; b=THV7irqnS26Wc0qfS+V7NHNCE5ouxri9Av2R1I0lSv4KyCjO0YIXaUZYoZ2p3Ep6yuka3gorbdffphZa3tuOFcxdmYZOL2JBZwkGLpPYjGmPPY2hemk/3eogHcMoK4TCUTLn1QhLF5JoBv3hcGRD7GjzLAVQegZp3F0ufN9cj+Y=
+	t=1734969830; cv=none; b=cH5Yxjo1hWaxALI1JGCjnVEByAx9nvHzBSYTBbKMStkULuGDOPUu5mHG7fyboNX+8fMdhkC5L/gmjfN0IDVSpbiwuW58QUI2HxhmfpVfg5Pi5V1CEP6wrMcF68kNZKU4rK4wqAmby+3d/TT5cqcYu8O3Ftm27tRzxlA1zpaQuzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970265; c=relaxed/simple;
-	bh=eQKPLxKtHj+unAqRvdsiO/k//5orli0DPPpsHBMnE0I=;
+	s=arc-20240116; t=1734969830; c=relaxed/simple;
+	bh=htIJliPNJbYaKpf26269lnDHkWxSME7Zy3yFtxXelzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIoCb7Siygmn8E1VUKN71BMjnCSZWC9JDg36NFtE4dE6Ce81yFc32h0wmJQVUEAsIp2ZKLDClFwk4j/TqUkvm4viaRVgeonONT0qvm8fsXoIItWS5JS6mA1lVtk0QP8HvMwzOekzcqpNAkRxGaZ4ZW0zh8UAB5UDXke6wMxrbXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trAmT6Pe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48939C4CED3;
-	Mon, 23 Dec 2024 16:11:05 +0000 (UTC)
+	 MIME-Version; b=Yz3q8uZMT2dBG+90Bo0eayfdLYh8V6LqA6ZVSDDVE/xQoYc4sQJ+uhUFM5G00Sa0d5p04MBCNSddSpVqU1fPzT9+e5CBKGJKeATmEiopleDM1gpogPg1Wf7bH9AEBsc6Jcj6c3SkvIcF7KK4UIIwrj+6ldG0FVeGDPWKI+ZoTmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kq2WdqiV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74557C4CED3;
+	Mon, 23 Dec 2024 16:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970265;
-	bh=eQKPLxKtHj+unAqRvdsiO/k//5orli0DPPpsHBMnE0I=;
+	s=korg; t=1734969829;
+	bh=htIJliPNJbYaKpf26269lnDHkWxSME7Zy3yFtxXelzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trAmT6PeoKR5065J/jGWyAsvVIRsDA011pC2VzR/eZDDl+IBzEyem2IUP7iO7fouZ
-	 fx8vWkUZ7VRhulzE0qmgwft0I3H75k30v3q27WAnnQZCh/NdKSaGcgjmJPs+JLvk4X
-	 R6DZqDKYBvdEMW+CarKROgsWnN9fZPUFdeyRDsyg=
+	b=Kq2WdqiVEOLfTixMWrzg7QGrtnV9gsxt/mMIAxVpH/3M7FjNPirtRMIDkL228rwjP
+	 yR0zDIvvRLqNC0TFJEHhOvho6XT/+sr+nxpLXjuHUpPUMMhQ/hpY56LSkLaowqtA4A
+	 hJG+ollM8mUEhSpljb+c1b8xtjQcifayrRASg2s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/116] MIPS: Loongson64: DTS: Fix msi node for ls7a
-Date: Mon, 23 Dec 2024 16:57:56 +0100
-Message-ID: <20241223155359.792879614@linuxfoundation.org>
+	Avadhut Naik <avadhut.naik@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.12 066/160] EDAC/amd64: Simplify ECC check on unified memory controllers
+Date: Mon, 23 Dec 2024 16:57:57 +0100
+Message-ID: <20241223155411.223865716@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 98a9e2ac3755a353eefea8c52e23d5b0c50f3899 ]
+commit 747367340ca6b5070728b86ae36ad6747f66b2fb upstream.
 
-Add it to silent warning:
-arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
-arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts:32.31-40.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
-arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+The intent of the check is to see whether at least one UMC has ECC
+enabled. So do that instead of tracking which ones are enabled in masks
+which are too small in size anyway and lead to not loading the driver on
+Zen4 machines with UMCs enabled over UMC8.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2be5955a886 ("EDAC/amd64: Add support for AMD Family 19h Models 10h-1Fh and A0h-AFh")
+Reported-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Avadhut Naik <avadhut.naik@amd.com>
+Reviewed-by: Avadhut Naik <avadhut.naik@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241210212054.3895697-1-avadhut.naik@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/edac/amd64_edac.c |   34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
-index c945f8565d54..fb180cb2b8e2 100644
---- a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
-+++ b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
-@@ -33,6 +33,7 @@
- 		compatible = "loongson,pch-msi-1.0";
- 		reg = <0 0x2ff00000 0 0x8>;
- 		interrupt-controller;
-+		#interrupt-cells = <1>;
- 		msi-controller;
- 		loongson,msi-base-vec = <64>;
- 		loongson,msi-num-vecs = <192>;
--- 
-2.39.5
-
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -3362,36 +3362,24 @@ static bool dct_ecc_enabled(struct amd64
+ 
+ static bool umc_ecc_enabled(struct amd64_pvt *pvt)
+ {
+-	u8 umc_en_mask = 0, ecc_en_mask = 0;
+-	u16 nid = pvt->mc_node_id;
+ 	struct amd64_umc *umc;
+-	u8 ecc_en = 0, i;
++	bool ecc_en = false;
++	int i;
+ 
++	/* Check whether at least one UMC is enabled: */
+ 	for_each_umc(i) {
+ 		umc = &pvt->umc[i];
+ 
+-		/* Only check enabled UMCs. */
+-		if (!(umc->sdp_ctrl & UMC_SDP_INIT))
+-			continue;
+-
+-		umc_en_mask |= BIT(i);
+-
+-		if (umc->umc_cap_hi & UMC_ECC_ENABLED)
+-			ecc_en_mask |= BIT(i);
++		if (umc->sdp_ctrl & UMC_SDP_INIT &&
++		    umc->umc_cap_hi & UMC_ECC_ENABLED) {
++			ecc_en = true;
++			break;
++		}
+ 	}
+ 
+-	/* Check whether at least one UMC is enabled: */
+-	if (umc_en_mask)
+-		ecc_en = umc_en_mask == ecc_en_mask;
+-	else
+-		edac_dbg(0, "Node %d: No enabled UMCs.\n", nid);
+-
+-	edac_dbg(3, "Node %d: DRAM ECC %s.\n", nid, (ecc_en ? "enabled" : "disabled"));
+-
+-	if (!ecc_en)
+-		return false;
+-	else
+-		return true;
++	edac_dbg(3, "Node %d: DRAM ECC %s.\n", pvt->mc_node_id, (ecc_en ? "enabled" : "disabled"));
++
++	return ecc_en;
+ }
+ 
+ static inline void
 
 
 
