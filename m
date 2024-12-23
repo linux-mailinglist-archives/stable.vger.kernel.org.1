@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-105995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103269FB2A9
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:21:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A719FB240
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A21097A072A
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:21:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9433188592B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716CE1B87CA;
-	Mon, 23 Dec 2024 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAF419E98B;
+	Mon, 23 Dec 2024 16:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qThIiPHT"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKu5sN2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB941B85F6;
-	Mon, 23 Dec 2024 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F8D8827;
+	Mon, 23 Dec 2024 16:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970841; cv=none; b=XWr5/lssT52BANwS7rWoFQ29Q6BBjacJdKiIWJOzOrV5CwqU+s1b6cZEPmBfcNkOeV5DRLs3/VFk/VfKg60ZzQMegxYccsqWri7vteKfFkjBXuFa42U7cBKf44qAAzbepnxUeJEpXAvDkvAlhTSVQgYKBkQ2FcUpjEPVwcytIiw=
+	t=1734970546; cv=none; b=dUcxregsWEmIkDZkmmYWMEe955NZA/6S8eSd1OqHHYi8rO9NUinGwkYkUo2LfAs3We7DVwiy/lN4uVtMxJYWldAp/kZZzyZL7Hu741uwdXCHqZhhERpg03GspMq+my4w278Xq3snhI3h+IIgKsoaFTxbYVcpS1N4Xku8+iFG6GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970841; c=relaxed/simple;
-	bh=JrZjyas5v70HvsVDCoEnO36ISGT/pU4YD2mvPPhLhws=;
+	s=arc-20240116; t=1734970546; c=relaxed/simple;
+	bh=gClrYNXOj5THuZHeWB1QbP2+IAYKQCzR1s9lqSPb/e0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buDrTfZ41EJfL1icBEICeCH69TK65DLBn9exqjfhA0xohxrbLaFdv0lHZI2+NdzUFuFr3SYD1fn2CI6OOH5RBnWufMfAJ1L50dDFZROf0Is8S2qL3mjlRNa39QXkCqfrZfYODSGuEcuXuZn+VGd8hB8i3KWFchQwNff6dhT1mDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qThIiPHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2EFC4CED3;
-	Mon, 23 Dec 2024 16:20:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WXXYC3sZ0t3iWHizyShWsJMCEjPO+OHaQUHRKRXAcmB6rAsRNIHkj2DYG+m5p9cByMp3WEGuEdNfhOSt6nXxBDrmm9WoC+Tf5gxZXBno/vMaUMRQIM/FE9S1nM1qKXHmU1BJTF/Ew9umj9wxnoCiR8EniJXZ+YwRYjwFogP3tN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKu5sN2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A404C4CED3;
+	Mon, 23 Dec 2024 16:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970840;
-	bh=JrZjyas5v70HvsVDCoEnO36ISGT/pU4YD2mvPPhLhws=;
+	s=korg; t=1734970546;
+	bh=gClrYNXOj5THuZHeWB1QbP2+IAYKQCzR1s9lqSPb/e0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qThIiPHTyTh7meCtS0+7G4kLhvP1I6PaSsujn6o+B4LByZbY9UDaOkBaWtBcPN5v6
-	 VxvrIw4UexWTmNxzYpmys/s7ipGr61WjV/HiRQFbpDn3T2xCnGYIrenFXvlp0qIVL3
-	 ZWiI5F7WtYh+rQ4xJuXfg83xBPflYsNdCMKpWYFQ=
+	b=nKu5sN2VZZenjABQC+8K4y6ePrDq8laGOeZ9I3/FWDSZMP/D6I9qXv0/P0ystiuAi
+	 +/SO0LEmrRP1srMBBFXSJSbcSIkM70A5KwNtVW5DMkcxHRDsy+yRVCVi8RYNrA565F
+	 C2PBljYU14VDhNC9bw+WPVSg/pqAG1vIlGDO2PfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 66/83] io_uring: Fix registered ring file refcount leak
+	patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+	Rafael Beims <rafael.beims@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 115/116] net: fec: make PPS channel configurable
 Date: Mon, 23 Dec 2024 16:59:45 +0100
-Message-ID: <20241223155356.182815286@linuxfoundation.org>
+Message-ID: <20241223155404.024495438@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,71 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 12d908116f7efd34f255a482b9afc729d7a5fb78 upstream.
+commit 566c2d83887f0570056833102adc5b88e681b0c7 upstream.
 
-Currently, io_uring_unreg_ringfd() (which cleans up registered rings) is
-only called on exit, but __io_uring_free (which frees the tctx in which the
-registered ring pointers are stored) is also called on execve (via
-begin_new_exec -> io_uring_task_cancel -> __io_uring_cancel ->
-io_uring_cancel_generic -> __io_uring_free).
+Depending on the SoC where the FEC is integrated into the PPS channel
+might be routed to different timer instances. Make this configurable
+from the devicetree.
 
-This means: A process going through execve while having registered rings
-will leak references to the rings' `struct file`.
+When the related DT property is not present fallback to the previous
+default and use channel 0.
 
-Fix it by zapping registered rings on execve(). This is implemented by
-moving the io_uring_unreg_ringfd() from io_uring_files_cancel() into its
-callee __io_uring_cancel(), which is called from io_uring_task_cancel() on
-execve.
-
-This could probably be exploited *on 32-bit kernels* by leaking 2^32
-references to the same ring, because the file refcount is stored in a
-pointer-sized field and get_file() doesn't have protection against
-refcount overflow, just a WARN_ONCE(); but on 64-bit it should have no
-impact beyond a memory leak.
-
-Cc: stable@vger.kernel.org
-Fixes: e7a6c00dc77a ("io_uring: add support for registering ring file descriptors")
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20241218-uring-reg-ring-cleanup-v1-1-8f63e999045b@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Tested-by: Rafael Beims <rafael.beims@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring.h |    4 +---
- io_uring/io_uring.c      |    1 +
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_ptp.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/include/linux/io_uring.h
-+++ b/include/linux/io_uring.h
-@@ -50,10 +50,8 @@ bool io_is_uring_fops(struct file *file)
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clo
+ 	unsigned long flags;
+ 	int ret = 0;
  
- static inline void io_uring_files_cancel(void)
- {
--	if (current->io_uring) {
--		io_uring_unreg_ringfd();
-+	if (current->io_uring)
- 		__io_uring_cancel(false);
--	}
- }
- static inline void io_uring_task_cancel(void)
- {
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3085,6 +3085,7 @@ __cold void io_uring_cancel_generic(bool
+-	fep->pps_channel = DEFAULT_PPS_CHANNEL;
+-
+ 	if (rq->type == PTP_CLK_REQ_PPS) {
+ 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
  
- void __io_uring_cancel(bool cancel_all)
+@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device
  {
-+	io_uring_unreg_ringfd();
- 	io_uring_cancel_generic(cancel_all, NULL);
- }
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
++	struct device_node *np = fep->pdev->dev.of_node;
+ 	int irq;
+ 	int ret;
  
+ 	fep->ptp_caps.owner = THIS_MODULE;
+ 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
+ 
++	fep->pps_channel = DEFAULT_PPS_CHANNEL;
++	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
++
+ 	fep->ptp_caps.max_adj = 250000000;
+ 	fep->ptp_caps.n_alarm = 0;
+ 	fep->ptp_caps.n_ext_ts = 0;
 
 
 
