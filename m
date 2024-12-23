@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-105976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE629FB28D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE87F9FB1BC
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C64718811FB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97CD216289F
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A851A8F99;
-	Mon, 23 Dec 2024 16:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6691AF0CE;
+	Mon, 23 Dec 2024 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjgHOHx1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeMy70Xh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EE38827;
-	Mon, 23 Dec 2024 16:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E5B188733;
+	Mon, 23 Dec 2024 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970775; cv=none; b=MHBOj+YYNjBtZf18oz9HDLzJ3+tgTNTiztnae1k8o6OJ08baGZ8axIk47hvig5GbpRIuQqxYowu27lm96XQM2NYXe/JUbgoebXr8mD+ovtLk72o29dsDnxd8bYhMJPDsGgumrTzR6sIsWaatjRCJPoui7NYI8t0vykFP6unypvM=
+	t=1734970099; cv=none; b=m2W7AESZQPbu/A6JcWOcpMx1X5NHh8tyxD1aYkvVk76nu8Q8kNSUDC7nJFZ+fmRQRLCYKWVaRCS1uy+Z7E6fr3Ddv2TsfP1XoZrKA916C48WySOXuQzp1Pkprv6SHnnuBWveYMcBayRgecFKqmxb9BQIXklYknvv0cBE/tRW5lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970775; c=relaxed/simple;
-	bh=O7c/EVqemHcuEJ/V9Whq2AEAy/m3wRhgx6mzJ2BfDqA=;
+	s=arc-20240116; t=1734970099; c=relaxed/simple;
+	bh=Ih4eGGy2V14KKukndQNWdqQ3rt70/qHBOuN8GveacTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNjsSmpLfhKbJHCYK4hzCs7N6s4D2j3DvTFnKjPziRX0LRxl8l2cMziEuzW3QCoFfoD1P+ug31Mzu7BdVisLx2OkaOrva+lMw5nTERNQff/ST4t9qFFGBhGhbNpkeS2peXGc97c5/pxrGnWs2rtrlywjVMbCxQI6eTHvnpv0Utc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjgHOHx1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFF3C4CED3;
-	Mon, 23 Dec 2024 16:19:35 +0000 (UTC)
+	 MIME-Version; b=fiU4wBuPxg+ScFJ0Xrz7vX3B+Fs4AbBMR38lCqHJWTgfVEhGyknhhn+XD51Qcox6MmFeUMgo3E7ch5gkKPMyGPmhO/8hU4Vql1Gvm7SM9TPygJvSmt+RdwosB36/ExK59+nVTVnywD/zAYCu/cc9x7/5yJerIPErlgo5ASk+c2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeMy70Xh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A647AC4CED3;
+	Mon, 23 Dec 2024 16:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970775;
-	bh=O7c/EVqemHcuEJ/V9Whq2AEAy/m3wRhgx6mzJ2BfDqA=;
+	s=korg; t=1734970099;
+	bh=Ih4eGGy2V14KKukndQNWdqQ3rt70/qHBOuN8GveacTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjgHOHx10NZYaQuK24LsOvBhzkBKlR2QDNOqC6tAvb29wFPcjzP4lfgxcyr4a+t8U
-	 4gTnWMOMmFMpegofGS80ymoiouYmbCCjuxnZHdrFgt5Tc7JX0mcROFm1umJhGOukhU
-	 DEw8vRGfQhCMVlMzm4quQMFMztMOzwbwEjkvnTs4=
+	b=EeMy70XhhsfO9P90+C7tJUZ5wO/+h2vdi5PhqCmtgDNK2ZpiJeIaQzgWTy4wZzmBT
+	 D4QPiFSBMEJecvahWv1fTYwrtc7Pl8edmABcSaRGfXdqMhcFfEcYm7UntfdMZNI9hS
+	 J/6HSuxExEXGubE2MxqKCYF+wp8p0Y+FBtvpF0H4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 35/83] i2c: riic: Always round-up when calculating bus period
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 143/160] nilfs2: fix buffer head leaks in calls to truncate_inode_pages()
 Date: Mon, 23 Dec 2024 16:59:14 +0100
-Message-ID: <20241223155355.002200878@linuxfoundation.org>
+Message-ID: <20241223155414.326972501@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit de6b43798d9043a7c749a0428dbb02d5fff156e5 upstream.
+commit 6309b8ce98e9a18390b9fd8f03fc412f3c17aee9 upstream.
 
-Currently, the RIIC driver may run the I2C bus faster than requested,
-which may cause subtle failures.  E.g. Biju reported a measured bus
-speed of 450 kHz instead of the expected maximum of 400 kHz on RZ/G2L.
+When block_invalidatepage was converted to block_invalidate_folio, the
+fallback to block_invalidatepage in folio_invalidate() if the
+address_space_operations method invalidatepage (currently
+invalidate_folio) was not set, was removed.
 
-The initial calculation of the bus period uses DIV_ROUND_UP(), to make
-sure the actual bus speed never becomes faster than the requested bus
-speed.  However, the subsequent division-by-two steps do not use
-round-up, which may lead to a too-small period, hence a too-fast and
-possible out-of-spec bus speed.  E.g. on RZ/Five, requesting a bus speed
-of 100 resp. 400 kHz will yield too-fast target bus speeds of 100806
-resp. 403226 Hz instead of 97656 resp. 390625 Hz.
+Unfortunately, some pseudo-inodes in nilfs2 use empty_aops set by
+inode_init_always_gfp() as is, or explicitly set it to
+address_space_operations.  Therefore, with this change,
+block_invalidatepage() is no longer called from folio_invalidate(), and as
+a result, the buffer_head structures attached to these pages/folios are no
+longer freed via try_to_free_buffers().
 
-Fix this by using DIV_ROUND_UP() in the subsequent divisions, too.
+Thus, these buffer heads are now leaked by truncate_inode_pages(), which
+cleans up the page cache from inode evict(), etc.
 
-Tested on RZ/A1H, RZ/A2M, and RZ/Five.
+Three types of caches use empty_aops: gc inode caches and the DAT shadow
+inode used by GC, and b-tree node caches.  Of these, b-tree node caches
+explicitly call invalidate_mapping_pages() during cleanup, which involves
+calling try_to_free_buffers(), so the leak was not visible during normal
+operation but worsened when GC was performed.
 
-Fixes: d982d66514192cdb ("i2c: riic: remove clock and frequency restrictions")
-Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: <stable@vger.kernel.org> # v4.15+
-Link: https://lore.kernel.org/r/c59aea77998dfea1b4456c4b33b55ab216fcbf5e.1732284746.git.geert+renesas@glider.be
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fix this issue by using address_space_operations with invalidate_folio set
+to block_invalidate_folio instead of empty_aops, which will ensure the
+same behavior as before.
+
+Link: https://lkml.kernel.org/r/20241212164556.21338-1-konishi.ryusuke@gmail.com
+Fixes: 7ba13abbd31e ("fs: Turn block_invalidatepage into block_invalidate_folio")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>	[5.18+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-riic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/btnode.c  |    1 +
+ fs/nilfs2/gcinode.c |    2 +-
+ fs/nilfs2/inode.c   |    5 +++++
+ fs/nilfs2/nilfs.h   |    1 +
+ 4 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-riic.c
-+++ b/drivers/i2c/busses/i2c-riic.c
-@@ -325,7 +325,7 @@ static int riic_init_hw(struct riic_dev
- 		if (brl <= (0x1F + 3))
- 			break;
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -35,6 +35,7 @@ void nilfs_init_btnc_inode(struct inode
+ 	ii->i_flags = 0;
+ 	memset(&ii->i_bmap_data, 0, sizeof(struct nilfs_bmap));
+ 	mapping_set_gfp_mask(btnc_inode->i_mapping, GFP_NOFS);
++	btnc_inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
+ }
  
--		total_ticks /= 2;
-+		total_ticks = DIV_ROUND_UP(total_ticks, 2);
- 		rate /= 2;
- 	}
+ void nilfs_btnode_cache_clear(struct address_space *btnc)
+--- a/fs/nilfs2/gcinode.c
++++ b/fs/nilfs2/gcinode.c
+@@ -163,7 +163,7 @@ int nilfs_init_gcinode(struct inode *ino
  
+ 	inode->i_mode = S_IFREG;
+ 	mapping_set_gfp_mask(inode->i_mapping, GFP_NOFS);
+-	inode->i_mapping->a_ops = &empty_aops;
++	inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
+ 
+ 	ii->i_flags = 0;
+ 	nilfs_bmap_init_gc(ii->i_bmap);
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -307,6 +307,10 @@ const struct address_space_operations ni
+ 	.is_partially_uptodate  = block_is_partially_uptodate,
+ };
+ 
++const struct address_space_operations nilfs_buffer_cache_aops = {
++	.invalidate_folio	= block_invalidate_folio,
++};
++
+ static int nilfs_insert_inode_locked(struct inode *inode,
+ 				     struct nilfs_root *root,
+ 				     unsigned long ino)
+@@ -706,6 +710,7 @@ struct inode *nilfs_iget_for_shadow(stru
+ 	NILFS_I(s_inode)->i_flags = 0;
+ 	memset(NILFS_I(s_inode)->i_bmap, 0, sizeof(struct nilfs_bmap));
+ 	mapping_set_gfp_mask(s_inode->i_mapping, GFP_NOFS);
++	s_inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
+ 
+ 	err = nilfs_attach_btree_node_cache(s_inode);
+ 	if (unlikely(err)) {
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -401,6 +401,7 @@ extern const struct file_operations nilf
+ extern const struct inode_operations nilfs_file_inode_operations;
+ extern const struct file_operations nilfs_file_operations;
+ extern const struct address_space_operations nilfs_aops;
++extern const struct address_space_operations nilfs_buffer_cache_aops;
+ extern const struct inode_operations nilfs_dir_inode_operations;
+ extern const struct inode_operations nilfs_special_inode_operations;
+ extern const struct inode_operations nilfs_symlink_inode_operations;
 
 
 
