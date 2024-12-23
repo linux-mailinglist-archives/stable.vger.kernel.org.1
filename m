@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-105859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090AB9FB21A
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 730B89FB15B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8224168081
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEB0A7A03C4
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4781B412B;
-	Mon, 23 Dec 2024 16:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65524188006;
+	Mon, 23 Dec 2024 16:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVSeZ//T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lO4xzqNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A24C1B413C;
-	Mon, 23 Dec 2024 16:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233C312D1F1;
+	Mon, 23 Dec 2024 16:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970382; cv=none; b=qRKLZB0S7BKHBrhZLmpX53fHE6jxm2/23dBC0P4OaJxi2PM6JTGHeLayHxaJJJC79PvPGGlKzPm8iQFQQVUeMCFGnhqahsXCVDzeK9XLmZjgu/EmWTTYN4NGAuF/4HUywliYjlRDu1nxBspnbSMREW8zs1VqKQMab5nrNyfO6jk=
+	t=1734969927; cv=none; b=ISb8XekhgBeHvFv9kt7VLIy5k6tGLKQyo63nVcJLoxC9KFixmhRzJiewort0MhrhEgcNIneMeXsplJSgtPIucI1q7tJltoFTDv9YDBLzOECcK2tHABWODy/X+Gy4+xhlBpxbJARV2wfbdnzL2/Gqd0n6KHMSqxHOOBa0DqfzhvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970382; c=relaxed/simple;
-	bh=SHmEBL+6LgD3VG44UCMWinOrjrwNfKO0DUZJSz3+2N4=;
+	s=arc-20240116; t=1734969927; c=relaxed/simple;
+	bh=h2iJtfjmAA/scvpyJ3gcblJDCXhCn0KUvApTiD/tCN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fR9h0kw9esEcGJm+2UKUJ6BFoZxUJ53sl4pN7TBWD3lfjGMN9+9Sh8u7jwx7/LlEhGgssPnUXGN0xEkw7eLBts97CBbCnDBGi16ZcnX7MNNXIG+Bc/TIvAxI0n+cLpbgdWsxwmIq8s3SHutf3Ui78XRoKoeoyV/G14xGuEMF2tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVSeZ//T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072CBC4CED3;
-	Mon, 23 Dec 2024 16:13:01 +0000 (UTC)
+	 MIME-Version; b=AZL08l/aaeAX+AkTWmbrTWjfP9xQiZrVJe8CM+kkEeavXxnQKk6vFTIcLScUEzAx+jypAdZgB6aoZ15yolwVvPfvuTkTaJvy6mjjAJc8iqmCLnaRQ9GgT1Mrq0SP1dnItkD+1oVLi6co0VUmpUe7sfIkxyXGyGVdVjp/gayFHUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lO4xzqNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86076C4CED3;
+	Mon, 23 Dec 2024 16:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970382;
-	bh=SHmEBL+6LgD3VG44UCMWinOrjrwNfKO0DUZJSz3+2N4=;
+	s=korg; t=1734969927;
+	bh=h2iJtfjmAA/scvpyJ3gcblJDCXhCn0KUvApTiD/tCN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVSeZ//TcAwJ2n/MgNTbU6ksogz9erRGiJzfjwQJLGkNO1ceZoJaMgGoN4MKVfJbQ
-	 QecODSGsomagzdmufRqUiZKh+7ZU7oEqipXEO4bsqnIoq61K01voeocdRREEr0LzO1
-	 2H16nGb4MvwE927l9/uRj5yLtBCLk6hmwJ2fzNPA=
+	b=lO4xzqNS5RQzuaGnJMnDitSjdoEvhbHgyCJgQns5dZ9i7DWbd3rsxzEnBRDA8SC/Z
+	 spcKqNQx3aX7jLIyhlbRVRfhWIWluwuiVavT60maurtbtzJWCHrPWQ3e3qNQgurpLy
+	 qDZbTjP6iScgDq1O+UrFvlVwe1TzIuoTiJoYN9ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/116] xfs: reset rootdir extent size hint after growfsrt
+Subject: [PATCH 6.12 094/160] drm/panel: novatek-nt35950: fix return value check in nt35950_probe()
 Date: Mon, 23 Dec 2024 16:58:25 +0100
-Message-ID: <20241223155400.939681326@linuxfoundation.org>
+Message-ID: <20241223155412.321831494@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit a24cae8fc1f13f6f6929351309f248fd2e9351ce upstream.
+[ Upstream commit f8fd0968eff52cf092c0d517d17507ea2f6e5ea5 ]
 
-If growfsrt is run on a filesystem that doesn't have a rt volume, it's
-possible to change the rt extent size.  If the root directory was
-previously set up with an inherited extent size hint and rtinherit, it's
-possible that the hint is no longer a multiple of the rt extent size.
-Although the verifiers don't complain about this, xfs_repair will, so if
-we detect this situation, log the root directory to clean it up.  This
-is still racy, but it's better than nothing.
+mipi_dsi_device_register_full() never returns NULL pointer, it
+will return ERR_PTR() when it fails, so replace the check with
+IS_ERR().
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: 623a3531e9cf ("drm/panel: Add driver for Novatek NT35950 DSI DriverIC panels")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241029123957.1588-1-yangyingliang@huaweicloud.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241029123957.1588-1-yangyingliang@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ drivers/gpu/drm/panel/panel-novatek-nt35950.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 9268961d887c..ad828fbd5ce4 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -915,6 +915,39 @@ xfs_alloc_rsum_cache(
- 		xfs_warn(mp, "could not allocate realtime summary cache");
- }
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35950.c b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
+index b036208f9356..08b22b592ab0 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt35950.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
+@@ -481,9 +481,9 @@ static int nt35950_probe(struct mipi_dsi_device *dsi)
+ 			return dev_err_probe(dev, -EPROBE_DEFER, "Cannot get secondary DSI host\n");
  
-+/*
-+ * If we changed the rt extent size (meaning there was no rt volume previously)
-+ * and the root directory had EXTSZINHERIT and RTINHERIT set, it's possible
-+ * that the extent size hint on the root directory is no longer congruent with
-+ * the new rt extent size.  Log the rootdir inode to fix this.
-+ */
-+static int
-+xfs_growfs_rt_fixup_extsize(
-+	struct xfs_mount	*mp)
-+{
-+	struct xfs_inode	*ip = mp->m_rootip;
-+	struct xfs_trans	*tp;
-+	int			error = 0;
-+
-+	xfs_ilock(ip, XFS_IOLOCK_EXCL);
-+	if (!(ip->i_diflags & XFS_DIFLAG_RTINHERIT) ||
-+	    !(ip->i_diflags & XFS_DIFLAG_EXTSZINHERIT))
-+		goto out_iolock;
-+
-+	error = xfs_trans_alloc_inode(ip, &M_RES(mp)->tr_ichange, 0, 0, false,
-+			&tp);
-+	if (error)
-+		goto out_iolock;
-+
-+	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
-+	error = xfs_trans_commit(tp);
-+	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+
-+out_iolock:
-+	xfs_iunlock(ip, XFS_IOLOCK_EXCL);
-+	return error;
-+}
-+
- /*
-  * Visible (exported) functions.
-  */
-@@ -944,6 +977,7 @@ xfs_growfs_rt(
- 	xfs_sb_t	*sbp;		/* old superblock */
- 	xfs_fsblock_t	sumbno;		/* summary block number */
- 	uint8_t		*rsum_cache;	/* old summary cache */
-+	xfs_agblock_t	old_rextsize = mp->m_sb.sb_rextsize;
- 
- 	sbp = &mp->m_sb;
- 
-@@ -1177,6 +1211,12 @@ xfs_growfs_rt(
- 	if (error)
- 		goto out_free;
- 
-+	if (old_rextsize != in->extsize) {
-+		error = xfs_growfs_rt_fixup_extsize(mp);
-+		if (error)
-+			goto out_free;
-+	}
-+
- 	/* Update secondary superblocks now the physical grow has completed */
- 	error = xfs_update_secondary_sbs(mp);
- 
+ 		nt->dsi[1] = mipi_dsi_device_register_full(dsi_r_host, info);
+-		if (!nt->dsi[1]) {
++		if (IS_ERR(nt->dsi[1])) {
+ 			dev_err(dev, "Cannot get secondary DSI node\n");
+-			return -ENODEV;
++			return PTR_ERR(nt->dsi[1]);
+ 		}
+ 		num_dsis++;
+ 	}
 -- 
 2.39.5
 
