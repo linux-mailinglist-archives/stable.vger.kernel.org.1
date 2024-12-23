@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-105748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4A19FB191
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BF19FB1C7
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C8A16184D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 762C31882FB5
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ECD13BC0C;
-	Mon, 23 Dec 2024 16:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F89E1B3944;
+	Mon, 23 Dec 2024 16:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ev2fZKfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5aGDSj5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9040188733;
-	Mon, 23 Dec 2024 16:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06691B21B5;
+	Mon, 23 Dec 2024 16:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970008; cv=none; b=ZsvsX0rK+PvkLp+i6pKyiio/BFtiHBxv/gApKDxgg1oQJVwGvR3vBFSzlYvAdpcxDvnqMQrYXvw1Prpz+A7ZgbY2F6dgNlK66L5RZ1ZhKu5w+9ZNYulws3XWZ9IPBLCq+JY8bLZi/BLCod8B2cQky2b9jpIaPZCmWdp7oWqJvwg=
+	t=1734970211; cv=none; b=OppDfChVLZwI85QhUQlLOp+/OuMqQ2Mk6ooZgATLDTU8J15O4twMgXvVQaTYBSQj3sqPU1NOp2gUYwbewSwrYfClosYZTOf2BSUH3VCYbnpsBoG1CyYrfwQc7Qvlck+uybXAxVNnIjRu7iVSocPZQKg7ETAvpnR/e1kKebxXq0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970008; c=relaxed/simple;
-	bh=Ckt4R34BX9CVmuQeBuyyDlIzRg7m0r1QA9BgkwvrNiA=;
+	s=arc-20240116; t=1734970211; c=relaxed/simple;
+	bh=iS9TxazJzqYhywiZYyopdCKjcT9N7jfQDOBk8jbmGGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpJn/dzXCLFcNDRuSXhIy7ZZ5zaUMMhMuG5Nf0nmFwwK/2XLX3+7a8vOzsE50unCdQL9D3gFZ5j3Ki7YdVoL7bgz0X071SsRAp+TSpJ2ucsaG0UOAAEK5Fw4/97hjLFTZ6YfUVgkHOTwzvfSZsADlK+1Nr6H0sWmXwRC1fioU2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ev2fZKfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270B2C4CED3;
-	Mon, 23 Dec 2024 16:06:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G+CWQwQEFA0mj+sovF3rqnSSnkIRCll5O/eiehz5ixYm4y8T0KNbuPC5vzRcZ79CRTWdGeAKAnM/TD1SXNp8bdC88eYKpx+1C6WYgvIlb1o44sE1rFpXTxw0A0o+a2ptc3JR9hnuRkyKzDubqWI3P2f1aaNAsj/Zbh4P+PDgYi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5aGDSj5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6248BC4CED3;
+	Mon, 23 Dec 2024 16:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970008;
-	bh=Ckt4R34BX9CVmuQeBuyyDlIzRg7m0r1QA9BgkwvrNiA=;
+	s=korg; t=1734970210;
+	bh=iS9TxazJzqYhywiZYyopdCKjcT9N7jfQDOBk8jbmGGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ev2fZKfzppIybHjRg7LDobBxPJai+0ztDvvtR6ZqJ2K4TU4yPTGsKhFQJ7RAs/LYd
-	 U8z+0ACY7+/qF7cyJNFj7qEEiiIdzVQeNo1mqx/qXMYg2SZBBVlTQUQ/OIfkVIaZmj
-	 gx4dzP/pRCtmcR3qcWO12mRitZ1VwmCLaE2HdYbg=
+	b=w5aGDSj5yRXCxaQNLsxHGoqPDHCNZG+b7BWX790p1wpePVxeTLzOCtlrZ84rrcMhe
+	 6kRIebDZgD0jTpOJge8Pxyg110cjKN9T5v6z0NnMtJuT7naYaE/BwMbv7MKUZaUYUA
+	 cmUIW2pHc74R4F6BtltDcpI/uwVgwlqDMewcVrj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Swanemar <d.swanemar@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 076/160] USB: serial: option: add TCL IK512 MBIM & ECM
+	"Daniel Walker (danielwa)" <danielwa@cisco.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 017/116] p2sb: Do not scan and remove the P2SB device when it is unhidden
 Date: Mon, 23 Dec 2024 16:58:07 +0100
-Message-ID: <20241223155411.625946007@linuxfoundation.org>
+Message-ID: <20241223155400.224115804@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +62,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Swanemar <d.swanemar@gmail.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit fdad4fb7c506bea8b419f70ff2163d99962e8ede upstream.
+[ Upstream commit 360c400d0f568636c1b98d1d5f9f49aa3d420c70 ]
 
-Add the following TCL IK512 compositions:
+When drivers access P2SB device resources, it calls p2sb_bar(). Before
+the commit 5913320eb0b3 ("platform/x86: p2sb: Allow p2sb_bar() calls
+during PCI device probe"), p2sb_bar() obtained the resources and then
+called pci_stop_and_remove_bus_device() for clean up. Then the P2SB
+device disappeared. The commit 5913320eb0b3 introduced the P2SB device
+resource cache feature in the boot process. During the resource cache,
+pci_stop_and_remove_bus_device() is called for the P2SB device, then the
+P2SB device disappears regardless of whether p2sb_bar() is called or
+not. Such P2SB device disappearance caused a confusion [1]. To avoid the
+confusion, avoid the pci_stop_and_remove_bus_device() call when the BIOS
+does not hide the P2SB device.
 
-0x0530: Modem + Diag + AT + MBIM
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=10000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=1bbb ProdID=0530 Rev=05.04
-S:  Manufacturer=TCL
-S:  Product=TCL 5G USB Dongle
-S:  SerialNumber=3136b91a
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 4 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+For that purpose, cache the P2SB device resources only if the BIOS hides
+the P2SB device. Call p2sb_scan_and_cache() only if p2sb_hidden_by_bios
+is true. This allows removing two branches from p2sb_scan_and_cache().
+When p2sb_bar() is called, get the resources from the cache if the P2SB
+device is hidden. Otherwise, read the resources from the unhidden P2SB
+device.
 
-0x0640: ECM + Modem + Diag + AT
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=10000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=1bbb ProdID=0640 Rev=05.04
-S:  Manufacturer=TCL
-S:  Product=TCL 5G USB Dongle
-S:  SerialNumber=3136b91a
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Daniel Swanemar <d.swanemar@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Daniel Walker (danielwa) <danielwa@cisco.com>
+Closes: https://lore.kernel.org/lkml/ZzTI+biIUTvFT6NC@goliath/ [1]
+Fixes: 5913320eb0b3 ("platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241128002836.373745-5-shinichiro.kawasaki@wdc.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/p2sb.c | 42 +++++++++++++++++++++++++++++--------
+ 1 file changed, 33 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2385,6 +2385,10 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
-+	  .driver_info = NCTRL(1) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
-+	  .driver_info = NCTRL(3) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
+index 6fb76b82ecce..eff920de31c2 100644
+--- a/drivers/platform/x86/p2sb.c
++++ b/drivers/platform/x86/p2sb.c
+@@ -100,10 +100,8 @@ static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
+ 	/*
+ 	 * The BIOS prevents the P2SB device from being enumerated by the PCI
+ 	 * subsystem, so we need to unhide and hide it back to lookup the BAR.
+-	 * Unhide the P2SB device here, if needed.
+ 	 */
+-	if (p2sb_hidden_by_bios)
+-		pci_bus_write_config_dword(bus, devfn, P2SBC, 0);
++	pci_bus_write_config_dword(bus, devfn, P2SBC, 0);
+ 
+ 	/* Scan the P2SB device and cache its BAR0 */
+ 	p2sb_scan_and_cache_devfn(bus, devfn);
+@@ -112,9 +110,7 @@ static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
+ 	if (devfn == P2SB_DEVFN_GOLDMONT)
+ 		p2sb_scan_and_cache_devfn(bus, SPI_DEVFN_GOLDMONT);
+ 
+-	/* Hide the P2SB device, if it was hidden */
+-	if (p2sb_hidden_by_bios)
+-		pci_bus_write_config_dword(bus, devfn, P2SBC, P2SBC_HIDE);
++	pci_bus_write_config_dword(bus, devfn, P2SBC, P2SBC_HIDE);
+ 
+ 	if (!p2sb_valid_resource(&p2sb_resources[PCI_FUNC(devfn)].res))
+ 		return -ENOENT;
+@@ -141,7 +137,7 @@ static int p2sb_cache_resources(void)
+ 	u32 value = P2SBC_HIDE;
+ 	struct pci_bus *bus;
+ 	u16 class;
+-	int ret;
++	int ret = 0;
+ 
+ 	/* Get devfn for P2SB device itself */
+ 	p2sb_get_devfn(&devfn_p2sb);
+@@ -167,7 +163,12 @@ static int p2sb_cache_resources(void)
+ 	pci_bus_read_config_dword(bus, devfn_p2sb, P2SBC, &value);
+ 	p2sb_hidden_by_bios = value & P2SBC_HIDE;
+ 
+-	ret = p2sb_scan_and_cache(bus, devfn_p2sb);
++	/*
++	 * If the BIOS does not hide the P2SB device then its resources
++	 * are accesilble. Cache them only if the P2SB device is hidden.
++	 */
++	if (p2sb_hidden_by_bios)
++		ret = p2sb_scan_and_cache(bus, devfn_p2sb);
+ 
+ 	pci_unlock_rescan_remove();
+ 
+@@ -190,6 +191,26 @@ static int p2sb_read_from_cache(struct pci_bus *bus, unsigned int devfn,
+ 	return 0;
+ }
+ 
++static int p2sb_read_from_dev(struct pci_bus *bus, unsigned int devfn,
++			      struct resource *mem)
++{
++	struct pci_dev *pdev;
++	int ret = 0;
++
++	pdev = pci_get_slot(bus, devfn);
++	if (!pdev)
++		return -ENODEV;
++
++	if (p2sb_valid_resource(pci_resource_n(pdev, 0)))
++		p2sb_read_bar0(pdev, mem);
++	else
++		ret = -ENOENT;
++
++	pci_dev_put(pdev);
++
++	return ret;
++}
++
+ /**
+  * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
+  * @bus: PCI bus to communicate with
+@@ -213,7 +234,10 @@ int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
+ 	if (!devfn)
+ 		p2sb_get_devfn(&devfn);
+ 
+-	return p2sb_read_from_cache(bus, devfn, mem);
++	if (p2sb_hidden_by_bios)
++		return p2sb_read_from_cache(bus, devfn, mem);
++
++	return p2sb_read_from_dev(bus, devfn, mem);
+ }
+ EXPORT_SYMBOL_GPL(p2sb_bar);
+ 
+-- 
+2.39.5
+
 
 
 
