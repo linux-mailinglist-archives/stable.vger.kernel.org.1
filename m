@@ -1,243 +1,135 @@
-Return-Path: <stable+bounces-106035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C97D9FB7DA
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 00:18:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A0C9FB7E4
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 00:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACEA01661F5
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 23:18:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F77B16313D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 23:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31851C460A;
-	Mon, 23 Dec 2024 23:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADB01D04A4;
+	Mon, 23 Dec 2024 23:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4NoSeeB"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="MhLrA/nw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B033718A6D7;
-	Mon, 23 Dec 2024 23:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B35D18A6D7
+	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 23:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734995912; cv=none; b=kDzwM14LBlzHMekIDhHylq8Mzji5SyiEmyb8KHAf2FrTQuhNVK8kuZRCWYNcBcLqMckSYWf4BIYX2IYp/MGJdvmhJyKjgN2Qq+nMbu1sD3tr+0Sdh2E+RX2vJD0wbckbith8DV0dvsQcrPY+0Pso1L94KeY4DU3nZhAn7hoFiRY=
+	t=1734996241; cv=none; b=cTCFq+yIANVTsJD7GXng/UBZFWroS2g/VdktQOBvBlx+7pGeSS59FHtB0S08prd/5yjVO1H7HmmLjZTwvO8nDkh7m1YJejciZftiMua3jw5DbkR5Ae/DO6z/KDAgCfXC7+t5WZHTE8QY5mKcju6x2DVjo94qe5je8bH6uAsZOEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734995912; c=relaxed/simple;
-	bh=NcoRf7TwfIHicJvtCwxq4k871Edw73uuPcAVKmAb41g=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:In-Reply-To:
-	 References:Content-Type; b=X+x5Eg/cBDiL3wjqIsPgL4A6Ef7hfcjRjs2tS5/Ey5GhbXpXHlMwUnhBvAjres0p2qLi8rQ1qPlIC5x/DWPx7yQ1vc/IEm1dtqH157+SCBSuIp9gTuAI0b52qy99U1BvdEe5e45V/DxuU44hz6ZRiRH31amU3il/qzB8q3AmeOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4NoSeeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321C1C4CED3;
-	Mon, 23 Dec 2024 23:18:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734995912;
-	bh=NcoRf7TwfIHicJvtCwxq4k871Edw73uuPcAVKmAb41g=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=V4NoSeeBiPWVNq4NIYDfdKiHECENkTECdoL0DGzqJ56a9dNhV0W3tJoMOtpUHekHi
-	 5AgxRwmmMUtdLoHLLOL2cWEmUwSdXWlOkVzr7r9pJbHjy+D2PNuTN+cR0UGEXDfP8b
-	 smpZDmwkY1WJPFGlnEJGLZzHo06N2IQpbe++4fa1I9wNM1Ce/rJ7EPJAt4zkcBWULa
-	 SsUGwcviKE1ryJnsd5l+bncuL8nLnwieevZY15DQEpxIKVIC0dV5CvAw8V2Xi5BdlR
-	 qvLIf++TFzROMsIHHc6s/RSeFKzR9qxAJV3vqHK3J2sKIC8MJgkBgdLIUd0ZlHHV4j
-	 4zO5oQlEVfOlg==
-Date: Mon, 23 Dec 2024 15:18:31 -0800
-Subject: [GIT PULL 4/5] xfs: realtime reverse-mapping support
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: cem@kernel.org, djwong@kernel.org
-Cc: hch@lst.de, linux-xfs@vger.kernel.org, stable@vger.kernel.org
-Message-ID: <173499428975.2382820.17644608915723809135.stg-ugh@frogsfrogsfrogs>
+	s=arc-20240116; t=1734996241; c=relaxed/simple;
+	bh=XxRBMrZwBvgLFSVqcmdNITUgVenxPQ6jGTOI3cDVu+A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DvfK1bj1Cwol+OTDnSbuc4JxU2ZOzV1cW4GNn90tBsnl7Hq3fz/V7Vfk0xW4a06lIDltvmO6jsMFKOtoVKWn5il2y6sVXzVDh8cDW3wdgk+G/3Biz/s48XSG+aR1XAIwTi7RXTGruXwfyvP0knTsPLAHFBGOrx202nkE+MvuXXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=MhLrA/nw; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-215770613dbso32356895ad.2
+        for <stable@vger.kernel.org>; Mon, 23 Dec 2024 15:23:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1734996239; x=1735601039; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nu8BnE+0embuj0Jexzr2atsg2wE/YBGIbUUyn+izezU=;
+        b=MhLrA/nw6eiLxHewRDV7bMUIXraXE6mTNLyBCAM5fmgT/38O76hj+FF18eKdGfHDdg
+         VVW6Se4EscT+81f4p4cWbAIgimv61lsv0Q7ZIq0EaKae7jykT9amgjiOcTKXj5fFkqq3
+         4sYM3saAjwDGbT5R91RknWRmgPYndOccMEewyt7xypaIu6Phi8MQdC5mVzOni6oy31Ke
+         VKfpZiFdszzVWx+Nan0ioBkiIzEq1x3/LWHdNff4YzGoxWCWRSc+DkBjeUySI69t0r+m
+         pSOCXiO2wk500B1rJqU9JVHZh0FcCsVsIwc+OVIq7TjqG3v7jOi7AEbZX0FDmqrF2nIg
+         mvTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734996239; x=1735601039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Nu8BnE+0embuj0Jexzr2atsg2wE/YBGIbUUyn+izezU=;
+        b=Npoejd6sojkSEvxTFT4EJOsrm4GfLdHXeFAnptpdWjGF5K5mtkXGtKhXkwYE7cLwrs
+         LrcNoUFfVnlFqgVwwu8p0Jyyv9EOvh1dBQ8xiLJRM99EBSJfvgdFjNg5g4SJLPmzvnhb
+         1r82hOsTGwzitVFNhSjr6BXNysWaffop9iL2vXxxQ24aJccaj45cS9qQsvSitXDu758d
+         ugid/lNUYxAHzABVtBfs4VFWa5jLt07A82rQUh6FrJfaMPNaMttie2l2GDI4xs8i84eD
+         6bvPCK2CuFAgvfSqGeC8leVsN6xJPMlLJ0zsCNjoM0Lfvw203tekXc3mOtEx1+iuOJWH
+         08ig==
+X-Gm-Message-State: AOJu0YwfEfdoytP5rPkpoA9PYHQ4h/05Upwai7YMfhoZT6rkrSBLuzzf
+	Zfeb9Re4LD+o+SNM726uUEHW58cGyFajYzUt4mO6LwQFLrhUTLeNLj3b+mUw5IrAuZMfPUEcBdJ
+	1WhKm9ZjhvmLajxtjHiMZfqYhP0FkS4yOYwILBQ==
+X-Gm-Gg: ASbGnctqYGcQTkCQd+ft8UBqN5LpZ3RfFRXOEz0J5bdKQ5brnYBLJT5+xxebjVkcTAS
+	R7zDTcQvAYJOcSuyQNqz0Q4g0E8NUcd930q/l
+X-Google-Smtp-Source: AGHT+IHFm2Y/NQwVFIvuy9YKniReoPPy7ISeUyNFk29SB3r9RmBIqfjn2PVmpP7CAYc+6F8IqCch4cyqAhj/oNUAT6Y=
+X-Received: by 2002:a17:90a:d00b:b0:2ee:9a82:5a93 with SMTP id
+ 98e67ed59e1d1-2f452e1d13amr22438502a91.14.1734996238883; Mon, 23 Dec 2024
+ 15:23:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241223224906.GS6174@frogsfrogsfrogs>
-References: <20241223224906.GS6174@frogsfrogsfrogs>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 24 Dec 2024 08:23:48 +0900
+Message-ID: <CAKL4bV6N+Kj7_6VGOxKX3kom5Mj+H-GUwEbe2T0JN9c7D+LgEg@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/160] 6.12.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Carlos,
+Hi Greg
 
-Please pull this branch with changes for xfs.
+On Tue, Dec 24, 2024 at 1:00=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.7 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 27 Dec 2024 15:53:30 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.7-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-As usual, I did a test-merge with the main upstream branch as of a few
-minutes ago, and didn't see any conflicts.  Please let me know if you
-encounter any problems.
+6.12.7-rc1 tested.
 
---D
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-The following changes since commit 05290bd5c6236b8ad659157edb36bd2d38f46d3e:
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-xfs: allow inode-based btrees to reserve space in the data device (2024-12-23 13:06:03 -0800)
+[    0.000000] Linux version 6.12.7-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
+Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Tue Dec 24 07:47:05 JST 2024
 
-are available in the Git repository at:
+Thanks
 
-https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git tags/realtime-rmap_2024-12-23
-
-for you to fetch changes up to c2358439af374cad47f771797875d0beb8256738:
-
-xfs: enable realtime rmap btree (2024-12-23 13:06:09 -0800)
-
-----------------------------------------------------------------
-xfs: realtime reverse-mapping support [v6.2 04/14]
-
-This is the latest revision of a patchset that adds to XFS kernel
-support for reverse mapping for the realtime device.  This time around
-I've fixed some of the bitrot that I've noticed over the past few
-months, and most notably have converted rtrmapbt to use the metadata
-inode directory feature instead of burning more space in the superblock.
-
-At the beginning of the set are patches to implement storing B+tree
-leaves in an inode root, since the realtime rmapbt is rooted in an
-inode, unlike the regular rmapbt which is rooted in an AG block.
-Prior to this, the only btree that could be rooted in the inode fork
-was the block mapping btree; if all the extent records fit in the
-inode, format would be switched from 'btree' to 'extents'.
-
-The next few patches enhance the reverse mapping routines to handle
-the parts that are specific to rtgroups -- adding the new btree type,
-adding a new log intent item type, and wiring up the metadata directory
-tree entries.
-
-Finally, implement GETFSMAP with the rtrmapbt and scrub functionality
-for the rtrmapbt and rtbitmap and online fsck functionality.
-
-This has been running on the djcloud for months with no problems.  Enjoy!
-
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-
-----------------------------------------------------------------
-Darrick J. Wong (37):
-xfs: add some rtgroup inode helpers
-xfs: prepare rmap btree cursor tracepoints for realtime
-xfs: simplify the xfs_rmap_{alloc,free}_extent calling conventions
-xfs: introduce realtime rmap btree ondisk definitions
-xfs: realtime rmap btree transaction reservations
-xfs: add realtime rmap btree operations
-xfs: prepare rmap functions to deal with rtrmapbt
-xfs: add a realtime flag to the rmap update log redo items
-xfs: support recovering rmap intent items targetting realtime extents
-xfs: pretty print metadata file types in error messages
-xfs: support file data forks containing metadata btrees
-xfs: add realtime reverse map inode to metadata directory
-xfs: add metadata reservations for realtime rmap btrees
-xfs: wire up a new metafile type for the realtime rmap
-xfs: wire up rmap map and unmap to the realtime rmapbt
-xfs: create routine to allocate and initialize a realtime rmap btree inode
-xfs: wire up getfsmap to the realtime reverse mapping btree
-xfs: check that the rtrmapbt maxlevels doesn't increase when growing fs
-xfs: report realtime rmap btree corruption errors to the health system
-xfs: allow queued realtime intents to drain before scrubbing
-xfs: scrub the realtime rmapbt
-xfs: cross-reference realtime bitmap to realtime rmapbt scrubber
-xfs: cross-reference the realtime rmapbt
-xfs: scan rt rmap when we're doing an intense rmap check of bmbt mappings
-xfs: scrub the metadir path of rt rmap btree files
-xfs: walk the rt reverse mapping tree when rebuilding rmap
-xfs: online repair of realtime file bmaps
-xfs: repair inodes that have realtime extents
-xfs: repair rmap btree inodes
-xfs: online repair of realtime bitmaps for a realtime group
-xfs: support repairing metadata btrees rooted in metadir inodes
-xfs: online repair of the realtime rmap btree
-xfs: create a shadow rmap btree during realtime rmap repair
-xfs: hook live realtime rmap operations during a repair operation
-xfs: don't shut down the filesystem for media failures beyond end of log
-xfs: react to fsdax failure notifications on the rt device
-xfs: enable realtime rmap btree
-
-fs/xfs/Makefile                   |    3 +
-fs/xfs/libxfs/xfs_btree.c         |   73 +++
-fs/xfs/libxfs/xfs_btree.h         |    8 +-
-fs/xfs/libxfs/xfs_btree_mem.c     |    1 +
-fs/xfs/libxfs/xfs_btree_staging.c |    1 +
-fs/xfs/libxfs/xfs_defer.h         |    1 +
-fs/xfs/libxfs/xfs_exchmaps.c      |    4 +-
-fs/xfs/libxfs/xfs_format.h        |   28 +-
-fs/xfs/libxfs/xfs_fs.h            |    7 +-
-fs/xfs/libxfs/xfs_health.h        |    4 +-
-fs/xfs/libxfs/xfs_inode_buf.c     |   32 +-
-fs/xfs/libxfs/xfs_inode_fork.c    |   25 +
-fs/xfs/libxfs/xfs_log_format.h    |    6 +-
-fs/xfs/libxfs/xfs_log_recover.h   |    2 +
-fs/xfs/libxfs/xfs_metafile.c      |   18 +
-fs/xfs/libxfs/xfs_metafile.h      |    2 +
-fs/xfs/libxfs/xfs_ondisk.h        |    2 +
-fs/xfs/libxfs/xfs_refcount.c      |    6 +-
-fs/xfs/libxfs/xfs_rmap.c          |  171 +++++--
-fs/xfs/libxfs/xfs_rmap.h          |   12 +-
-fs/xfs/libxfs/xfs_rtbitmap.c      |    2 +-
-fs/xfs/libxfs/xfs_rtbitmap.h      |    9 +
-fs/xfs/libxfs/xfs_rtgroup.c       |   53 +-
-fs/xfs/libxfs/xfs_rtgroup.h       |   49 +-
-fs/xfs/libxfs/xfs_rtrmap_btree.c  | 1011 +++++++++++++++++++++++++++++++++++++
-fs/xfs/libxfs/xfs_rtrmap_btree.h  |  210 ++++++++
-fs/xfs/libxfs/xfs_sb.c            |    6 +
-fs/xfs/libxfs/xfs_shared.h        |   14 +
-fs/xfs/libxfs/xfs_trans_resv.c    |   12 +-
-fs/xfs/libxfs/xfs_trans_space.h   |   13 +
-fs/xfs/scrub/alloc_repair.c       |    5 +-
-fs/xfs/scrub/bmap.c               |  108 +++-
-fs/xfs/scrub/bmap_repair.c        |  129 ++++-
-fs/xfs/scrub/common.c             |  160 +++++-
-fs/xfs/scrub/common.h             |   23 +-
-fs/xfs/scrub/health.c             |    1 +
-fs/xfs/scrub/inode.c              |   10 +-
-fs/xfs/scrub/inode_repair.c       |  136 ++++-
-fs/xfs/scrub/metapath.c           |    3 +
-fs/xfs/scrub/newbt.c              |   42 ++
-fs/xfs/scrub/newbt.h              |    1 +
-fs/xfs/scrub/reap.c               |   41 ++
-fs/xfs/scrub/reap.h               |    2 +
-fs/xfs/scrub/repair.c             |  191 +++++++
-fs/xfs/scrub/repair.h             |   17 +
-fs/xfs/scrub/rgsuper.c            |    6 +-
-fs/xfs/scrub/rmap_repair.c        |   84 ++-
-fs/xfs/scrub/rtbitmap.c           |   75 ++-
-fs/xfs/scrub/rtbitmap.h           |   55 ++
-fs/xfs/scrub/rtbitmap_repair.c    |  429 +++++++++++++++-
-fs/xfs/scrub/rtrmap.c             |  271 ++++++++++
-fs/xfs/scrub/rtrmap_repair.c      |  903 +++++++++++++++++++++++++++++++++
-fs/xfs/scrub/rtsummary.c          |   17 +-
-fs/xfs/scrub/rtsummary_repair.c   |    3 +-
-fs/xfs/scrub/scrub.c              |   11 +-
-fs/xfs/scrub/scrub.h              |   14 +
-fs/xfs/scrub/stats.c              |    1 +
-fs/xfs/scrub/tempexch.h           |    2 +-
-fs/xfs/scrub/tempfile.c           |   20 +-
-fs/xfs/scrub/trace.c              |    1 +
-fs/xfs/scrub/trace.h              |  228 ++++++++-
-fs/xfs/xfs_buf.c                  |    1 +
-fs/xfs/xfs_buf_item_recover.c     |    4 +
-fs/xfs/xfs_drain.c                |   20 +-
-fs/xfs/xfs_drain.h                |    7 +-
-fs/xfs/xfs_fsmap.c                |  174 ++++++-
-fs/xfs/xfs_fsops.c                |   11 +
-fs/xfs/xfs_health.c               |    1 +
-fs/xfs/xfs_inode.c                |   19 +-
-fs/xfs/xfs_inode_item.c           |    2 +
-fs/xfs/xfs_inode_item_recover.c   |   44 +-
-fs/xfs/xfs_log_recover.c          |    2 +
-fs/xfs/xfs_mount.c                |    5 +-
-fs/xfs/xfs_mount.h                |    9 +
-fs/xfs/xfs_notify_failure.c       |  230 +++++----
-fs/xfs/xfs_notify_failure.h       |   11 +
-fs/xfs/xfs_qm.c                   |    8 +-
-fs/xfs/xfs_rmap_item.c            |  216 +++++++-
-fs/xfs/xfs_rtalloc.c              |   82 ++-
-fs/xfs/xfs_rtalloc.h              |   10 +
-fs/xfs/xfs_stats.c                |    4 +-
-fs/xfs/xfs_stats.h                |    2 +
-fs/xfs/xfs_super.c                |    6 -
-fs/xfs/xfs_super.h                |    1 -
-fs/xfs/xfs_trace.h                |  104 ++--
-85 files changed, 5381 insertions(+), 366 deletions(-)
-create mode 100644 fs/xfs/libxfs/xfs_rtrmap_btree.c
-create mode 100644 fs/xfs/libxfs/xfs_rtrmap_btree.h
-create mode 100644 fs/xfs/scrub/rtrmap.c
-create mode 100644 fs/xfs/scrub/rtrmap_repair.c
-create mode 100644 fs/xfs/xfs_notify_failure.h
-
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
