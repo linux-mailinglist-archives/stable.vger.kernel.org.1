@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-105760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537239FB18E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAE49FB1F8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8661884DBF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52BE51885692
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8963A1B395B;
-	Mon, 23 Dec 2024 16:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D281B21BD;
+	Mon, 23 Dec 2024 16:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHRoCZhh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvwvDYto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E6F1AF0CE;
-	Mon, 23 Dec 2024 16:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F18D19E971;
+	Mon, 23 Dec 2024 16:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970050; cv=none; b=opVD3vMGO3db/PQyy3Wd6LV7X8QC5+acLSVosPtluSVnes+1EczGDKdLbR3TpB7qwSMMYR7+X7LHtlLexzOWQocnXIexuC6IWn7Tr4mTmg6HqArZgWmCf94BVf0fjdOTtyOPeADh3/Wza/ux7vFWH0rTBayIjc4HgA+IqKXIUC4=
+	t=1734970338; cv=none; b=lBDPN02RUdHPlJIpOUz/FnctXqnBpsZz2YE02nFbCHKOda02vip2Hcm0riS9pZ1JxcizvHDg49bSTLyXXJf2gFq9cNtspkzlK9AqZJmvBFFwb+294tG2NDtVEVwtLB+xpd0mu3u/SNIok55FPqKnCmX/Q86rPOyp1PATmmDKu0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970050; c=relaxed/simple;
-	bh=75y4DFa4yGV5tEJnwZAq8E9vaKwpfaU/VBiVLl2xBEc=;
+	s=arc-20240116; t=1734970338; c=relaxed/simple;
+	bh=TJ9htrQv+R+xNOQ5N2sovEE1VI/zInGwkXYWrOlYSIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KqKyYBgnzd8LH64yT+9DjoKAgFNU9QDHDX5h6YH7I/8Zba7VxQICV0RU14rqQYSjLh5OMB7rNVpXB0eXSGeRWrSSFTZj0cEtXQgr8kM8Ysd9DovGJRCpzku++EWZno5v/2eYBrdcCm8rsZ1qrYLkkyxvsJaHdB4SBFLO5Fcq7Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHRoCZhh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11BFC4CED4;
-	Mon, 23 Dec 2024 16:07:29 +0000 (UTC)
+	 MIME-Version; b=tZV8qp9H1asQcjswlWNtd9Zi7oiMM3zfkstpW2YqRwC0+/vX77QQqN6hytU5tMEAhbFwVHQBKcrstWeXBfc6pg5zWPsh7ybIypR9QTq4BLyglCpHsULossrEoiuzSSiZztVfia7+o23xeSH4JgxhZ8/Fs3kzft6p5wBVwul83Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvwvDYto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C307AC4CED3;
+	Mon, 23 Dec 2024 16:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970050;
-	bh=75y4DFa4yGV5tEJnwZAq8E9vaKwpfaU/VBiVLl2xBEc=;
+	s=korg; t=1734970338;
+	bh=TJ9htrQv+R+xNOQ5N2sovEE1VI/zInGwkXYWrOlYSIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHRoCZhhinCa62U7Rbv4XCdf+giXEnFJged7I4nER1ZM0/okBKwhhphaUohekB6yW
-	 +SKVmnt3OMbWKbfHcULA95F3UtN7Y2EEXPQzz/T2Xkq0Vtc00cKw8DDvGHaVW7glxp
-	 WOGRZtDHY0jaDXY0K58U+F67um7CchWKGnT8x530=
+	b=uvwvDYtoDAgHwwQ4rbWcwRaB/5tssnLox4EMea2KTMzxYAGS6yI34xgqhnV6bkgzk
+	 7qyqAUScdB7u+85RgcmE/24TfFcjbY6ruMYcrrpgLzhlEJCarbrckWvzWxsGYFZSxe
+	 +3oN8oynmuP916Lkp40XYP568+kt1hYVLBwOsCDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 112/160] mm/page_alloc: dont call pfn_to_page() on possibly non-existent PFN in split_large_buddy()
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 053/116] net: ethernet: bgmac-platform: fix an OF node reference leak
 Date: Mon, 23 Dec 2024 16:58:43 +0100
-Message-ID: <20241223155413.002588034@linuxfoundation.org>
+Message-ID: <20241223155401.620803082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit faeec8e23c10bd30e8aa759a2eb3018dae00f924 upstream.
+[ Upstream commit 0cb2c504d79e7caa3abade3f466750c82ad26f01 ]
 
-In split_large_buddy(), we might call pfn_to_page() on a PFN that might
-not exist.  In corner cases, such as when freeing the highest pageblock in
-the last memory section, this could result with CONFIG_SPARSEMEM &&
-!CONFIG_SPARSEMEM_EXTREME in __pfn_to_section() returning NULL and and
-__section_mem_map_addr() dereferencing that NULL pointer.
+The OF node obtained by of_parse_phandle() is not freed. Call
+of_node_put() to balance the refcount.
 
-Let's fix it, and avoid doing a pfn_to_page() call for the first
-iteration, where we already have the page.
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-So far this was found by code inspection, but let's just CC stable as the
-fix is easy.
-
-Link: https://lkml.kernel.org/r/20241210093437.174413-1-david@redhat.com
-Fixes: fd919a85cd55 ("mm: page_isolation: prepare for hygienic freelists")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Vlastimil Babka <vbabka@suse.cz>
-Closes: https://lkml.kernel.org/r/e1a898ba-a717-4d20-9144-29df1a6c8813@suse.cz
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1676aba5ef7e ("net: ethernet: bgmac: device tree phy enablement")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241214014912.2810315-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bgmac-platform.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 1cb4b8c8886d..cae7b93864c2 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1238,13 +1238,15 @@ static void split_large_buddy(struct zone *zone, struct page *page,
- 	if (order > pageblock_order)
- 		order = pageblock_order;
- 
--	while (pfn != end) {
-+	do {
- 		int mt = get_pfnblock_migratetype(page, pfn);
- 
- 		__free_one_page(page, pfn, zone, order, mt, fpi);
- 		pfn += 1 << order;
-+		if (pfn == end)
-+			break;
- 		page = pfn_to_page(pfn);
--	}
-+	} while (1);
- }
- 
- static void free_one_page(struct zone *zone, struct page *page,
+diff --git a/drivers/net/ethernet/broadcom/bgmac-platform.c b/drivers/net/ethernet/broadcom/bgmac-platform.c
+index b4381cd41979..3f4e8bac40c1 100644
+--- a/drivers/net/ethernet/broadcom/bgmac-platform.c
++++ b/drivers/net/ethernet/broadcom/bgmac-platform.c
+@@ -171,6 +171,7 @@ static int platform_phy_connect(struct bgmac *bgmac)
+ static int bgmac_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
++	struct device_node *phy_node;
+ 	struct bgmac *bgmac;
+ 	struct resource *regs;
+ 	int ret;
+@@ -236,7 +237,9 @@ static int bgmac_probe(struct platform_device *pdev)
+ 	bgmac->cco_ctl_maskset = platform_bgmac_cco_ctl_maskset;
+ 	bgmac->get_bus_clock = platform_bgmac_get_bus_clock;
+ 	bgmac->cmn_maskset32 = platform_bgmac_cmn_maskset32;
+-	if (of_parse_phandle(np, "phy-handle", 0)) {
++	phy_node = of_parse_phandle(np, "phy-handle", 0);
++	if (phy_node) {
++		of_node_put(phy_node);
+ 		bgmac->phy_connect = platform_phy_connect;
+ 	} else {
+ 		bgmac->phy_connect = bgmac_phy_connect_direct;
 -- 
-2.47.1
+2.39.5
 
 
 
