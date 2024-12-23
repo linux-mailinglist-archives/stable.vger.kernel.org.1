@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-105808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904079FB1DB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4A19FB191
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7E52167A6F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C8A16184D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD891B395B;
-	Mon, 23 Dec 2024 16:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ECD13BC0C;
+	Mon, 23 Dec 2024 16:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqCoRbmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ev2fZKfz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D19C12D1F1;
-	Mon, 23 Dec 2024 16:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9040188733;
+	Mon, 23 Dec 2024 16:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970207; cv=none; b=jXVMpO2uamHKZW36PE1W0yZyOjtEAMRMppqT7LjnfxZ1BG6DbJhVVTwBgUwZVqg8NzdYDcFGQ7cIgNtGqzThE1Xc+HXWWixc63WkyaAX2nNl9rW0dr5B4b+GPs0IxYU72x436LJ0c3dl+xW/ErjhJhRAp5ZCzf5Kn4PBm1OqX+A=
+	t=1734970008; cv=none; b=ZsvsX0rK+PvkLp+i6pKyiio/BFtiHBxv/gApKDxgg1oQJVwGvR3vBFSzlYvAdpcxDvnqMQrYXvw1Prpz+A7ZgbY2F6dgNlK66L5RZ1ZhKu5w+9ZNYulws3XWZ9IPBLCq+JY8bLZi/BLCod8B2cQky2b9jpIaPZCmWdp7oWqJvwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970207; c=relaxed/simple;
-	bh=yJ70cLoTJCcTvffA3nBTAOHMDlyo/7JsMhHFqPgq05E=;
+	s=arc-20240116; t=1734970008; c=relaxed/simple;
+	bh=Ckt4R34BX9CVmuQeBuyyDlIzRg7m0r1QA9BgkwvrNiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DquRd+W7ukMGoK9yeea0xhOjD/oN8ZAkc42RfcJUk0AzWbr8p1lemGGnP+QdPa26P87zAEd4meK/uRN8Oyis4esIRQlrkM+1MuysZlIoNl4ebIZRNpvBj6hERajDBOgeT2eurmLvl+FHEIqP8rAXM3/fhNUVEnlwg7ra3sFzIrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqCoRbmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4921C4CED3;
-	Mon, 23 Dec 2024 16:10:06 +0000 (UTC)
+	 MIME-Version; b=PpJn/dzXCLFcNDRuSXhIy7ZZ5zaUMMhMuG5Nf0nmFwwK/2XLX3+7a8vOzsE50unCdQL9D3gFZ5j3Ki7YdVoL7bgz0X071SsRAp+TSpJ2ucsaG0UOAAEK5Fw4/97hjLFTZ6YfUVgkHOTwzvfSZsADlK+1Nr6H0sWmXwRC1fioU2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ev2fZKfz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270B2C4CED3;
+	Mon, 23 Dec 2024 16:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970207;
-	bh=yJ70cLoTJCcTvffA3nBTAOHMDlyo/7JsMhHFqPgq05E=;
+	s=korg; t=1734970008;
+	bh=Ckt4R34BX9CVmuQeBuyyDlIzRg7m0r1QA9BgkwvrNiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqCoRbmXsN2LXriSp2zvulyzZC+RAZONMd2PjPKTkgop0JI5oVc5WfkCHaV/lr2xF
-	 Bu7/9//ZuXXvL8q5s7L5Oa2I973dgfU0SqR3dEDshpfvNVKrszQtCYo87M1a4JfuED
-	 mrxJXOAbj5SYHPKYL2NFHagS9CurE9BHg49VnGYU=
+	b=Ev2fZKfzppIybHjRg7LDobBxPJai+0ztDvvtR6ZqJ2K4TU4yPTGsKhFQJ7RAs/LYd
+	 U8z+0ACY7+/qF7cyJNFj7qEEiiIdzVQeNo1mqx/qXMYg2SZBBVlTQUQ/OIfkVIaZmj
+	 gx4dzP/pRCtmcR3qcWO12mRitZ1VwmCLaE2HdYbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/116] p2sb: Move P2SB hide and unhide code to p2sb_scan_and_cache()
-Date: Mon, 23 Dec 2024 16:58:06 +0100
-Message-ID: <20241223155400.184079507@linuxfoundation.org>
+	Daniel Swanemar <d.swanemar@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 076/160] USB: serial: option: add TCL IK512 MBIM & ECM
+Date: Mon, 23 Dec 2024 16:58:07 +0100
+Message-ID: <20241223155411.625946007@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Daniel Swanemar <d.swanemar@gmail.com>
 
-[ Upstream commit 0286070c74ee48391fc07f7f617460479472d221 ]
+commit fdad4fb7c506bea8b419f70ff2163d99962e8ede upstream.
 
-To prepare for the following fix, move the code to hide and unhide the
-P2SB device from p2sb_cache_resources() to p2sb_scan_and_cache().
+Add the following TCL IK512 compositions:
 
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241128002836.373745-4-shinichiro.kawasaki@wdc.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x0530: Modem + Diag + AT + MBIM
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=10000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1bbb ProdID=0530 Rev=05.04
+S:  Manufacturer=TCL
+S:  Product=TCL 5G USB Dongle
+S:  SerialNumber=3136b91a
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 4 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+0x0640: ECM + Modem + Diag + AT
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=10000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1bbb ProdID=0640 Rev=05.04
+S:  Manufacturer=TCL
+S:  Product=TCL 5G USB Dongle
+S:  SerialNumber=3136b91a
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Daniel Swanemar <d.swanemar@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/p2sb.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
-index d015ddc9f30e..6fb76b82ecce 100644
---- a/drivers/platform/x86/p2sb.c
-+++ b/drivers/platform/x86/p2sb.c
-@@ -97,6 +97,14 @@ static void p2sb_scan_and_cache_devfn(struct pci_bus *bus, unsigned int devfn)
- 
- static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
- {
-+	/*
-+	 * The BIOS prevents the P2SB device from being enumerated by the PCI
-+	 * subsystem, so we need to unhide and hide it back to lookup the BAR.
-+	 * Unhide the P2SB device here, if needed.
-+	 */
-+	if (p2sb_hidden_by_bios)
-+		pci_bus_write_config_dword(bus, devfn, P2SBC, 0);
-+
- 	/* Scan the P2SB device and cache its BAR0 */
- 	p2sb_scan_and_cache_devfn(bus, devfn);
- 
-@@ -104,6 +112,10 @@ static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
- 	if (devfn == P2SB_DEVFN_GOLDMONT)
- 		p2sb_scan_and_cache_devfn(bus, SPI_DEVFN_GOLDMONT);
- 
-+	/* Hide the P2SB device, if it was hidden */
-+	if (p2sb_hidden_by_bios)
-+		pci_bus_write_config_dword(bus, devfn, P2SBC, P2SBC_HIDE);
-+
- 	if (!p2sb_valid_resource(&p2sb_resources[PCI_FUNC(devfn)].res))
- 		return -ENOENT;
- 
-@@ -152,22 +164,11 @@ static int p2sb_cache_resources(void)
- 	 */
- 	pci_lock_rescan_remove();
- 
--	/*
--	 * The BIOS prevents the P2SB device from being enumerated by the PCI
--	 * subsystem, so we need to unhide and hide it back to lookup the BAR.
--	 * Unhide the P2SB device here, if needed.
--	 */
- 	pci_bus_read_config_dword(bus, devfn_p2sb, P2SBC, &value);
- 	p2sb_hidden_by_bios = value & P2SBC_HIDE;
--	if (p2sb_hidden_by_bios)
--		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, 0);
- 
- 	ret = p2sb_scan_and_cache(bus, devfn_p2sb);
- 
--	/* Hide the P2SB device, if it was hidden */
--	if (p2sb_hidden_by_bios)
--		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, P2SBC_HIDE);
--
- 	pci_unlock_rescan_remove();
- 
- 	return ret;
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2385,6 +2385,10 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
++	  .driver_info = NCTRL(1) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
++	  .driver_info = NCTRL(3) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
