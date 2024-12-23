@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-105690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8F69FB125
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B217A9FB1C0
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22C25188176C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D8A1884BB8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653131AD41F;
-	Mon, 23 Dec 2024 16:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C591B21B4;
+	Mon, 23 Dec 2024 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsLjKxrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyMKEFFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D3A19E98B;
-	Mon, 23 Dec 2024 16:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE46912D1F1;
+	Mon, 23 Dec 2024 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969805; cv=none; b=cKa8clg8f5cNy3LcbfEwM/bqech9gpgVmHcql5kbos+Lyglf35vwpeOLS3nX4z9jPkIl0f/tL0bncFjYSiknkuWBO94PGDPFpY/3OsXVbcyaHeulMs88pDeX0DKgfnRKDDwooLOXeamlOBDaaGB91rCYBwo4UhLE3sifelihozk=
+	t=1734970183; cv=none; b=dZnzNCVQvC4Ga1bYRoH1oCTyHDlzV25yzc2iWB6X9p1xxMI7zN4EAOfHZHMjQ7em2MxjUHbCEB2v0xw6CZ3KkuYGMC8XwFZS9WV7Vj407U6IIKH+LfVOtSonWscHSG0N6z5N+NPBefvZxY5wgIKokNKmZ0jFjCKOBGoUrXg1t4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969805; c=relaxed/simple;
-	bh=sD/yvxoOmU1lmHTcZZkV/tdLQNsoV7oTuKkM9HM4X5M=;
+	s=arc-20240116; t=1734970183; c=relaxed/simple;
+	bh=njOSA0nFlQ+5MT4UB/3BPncbLrkMly9R6vVUN9ozMy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEOwUHqQdeQ+UrA9Ik+L33t2nWnjYzBmJn7JGdgCB10niSNIAr3aFtR7y2biV9hPpAxiQWQDa9NUbbJqQ2Rx37Tv5+7hmoS+GQl3z8yDSHO3nREnPHmtFrmta2uo0l6f8Ze98dqy0AHiV1BusA37TxuA2wqFRCs+dHyFzOkYPww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tsLjKxrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0335EC4CED3;
-	Mon, 23 Dec 2024 16:03:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pyXRzdEjc6W95cXQA928/Tzh/cgIYFRoQ+z0O0Y6dSr7y8FiQHNHGSCfhRgX0yP1MB9c3DFbx8orzYsvDZwfFUNHzod0LFx1ODeNz23pnmUPO3ns3aBEu3XM7SXWOMZ3VMgDuRDX5B+v9xAAmBQ2WEIxMwK6FtM2dikOpmxMSrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyMKEFFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92EBC4CED4;
+	Mon, 23 Dec 2024 16:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969804;
-	bh=sD/yvxoOmU1lmHTcZZkV/tdLQNsoV7oTuKkM9HM4X5M=;
+	s=korg; t=1734970183;
+	bh=njOSA0nFlQ+5MT4UB/3BPncbLrkMly9R6vVUN9ozMy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tsLjKxrTmvwXyDj87q+AfxQbiTvu95qTeuYp44TOh3ChCXbw5XxG1DAhhQZaWADf1
-	 GTqoWfGAeUk8tEdr9p/Mrldi/Bt/sftjGsoK+f5Zkf1teBQIDshffu4Y96zZXXUeR6
-	 jpKnGNZkAcmrwdtLZchnDtMuIpFPxNrbE1SSqwpQ=
+	b=XyMKEFFyMiz6VvPQdu3OmHgsz3veSDp1k52PSxJ2r78JdyeRcrph0MCrFXA4ckBL/
+	 8QFBqRmXWQpO0B4F8qKkJzuh3PZOQXcB4kmINCCI2bDXYy3COBF+QmBYKDbAp9FRlE
+	 eHe/TccOSpx41SQCxtdD0xf8P9XLv+P+MGWbaacs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0a884bc2d304ce4af70f@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/160] netdev-genl: avoid empty messages in queue dump
+	Lion Ackermann <nnamrec@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Artem Metla <ametla@google.com>
+Subject: [PATCH 6.6 001/116] net: sched: fix ordering of qlen adjustment
 Date: Mon, 23 Dec 2024 16:57:51 +0100
-Message-ID: <20241223155410.994785098@linuxfoundation.org>
+Message-ID: <20241223155359.598198928@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-[ Upstream commit 5eb70dbebf32c2fd1f2814c654ae17fc47d6e859 ]
+commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
 
-Empty netlink responses from do() are not correct (as opposed to
-dump() where not dumping anything is perfectly fine).
-We should return an error if the target object does not exist,
-in this case if the netdev is down it has no queues.
+Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
+_before_ a call to said function because otherwise it may fail to notify
+parent qdiscs when the child is about to become empty.
 
-Fixes: 6b6171db7fc8 ("netdev-genl: Add netlink framework functions for queue")
-Reported-by: syzbot+0a884bc2d304ce4af70f@syzkaller.appspotmail.com
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20241218022508.815344-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Artem Metla <ametla@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netdev-genl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_cake.c  |    2 +-
+ net/sched/sch_choke.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 224d1b5b79a7..7ce22f40db5b 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -359,10 +359,10 @@ static int
- netdev_nl_queue_fill(struct sk_buff *rsp, struct net_device *netdev, u32 q_idx,
- 		     u32 q_type, const struct genl_info *info)
- {
--	int err = 0;
-+	int err;
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1542,7 +1542,6 @@ static unsigned int cake_drop(struct Qdi
+ 	b->backlogs[idx]    -= len;
+ 	b->tin_backlog      -= len;
+ 	sch->qstats.backlog -= len;
+-	qdisc_tree_reduce_backlog(sch, 1, len);
  
- 	if (!(netdev->flags & IFF_UP))
--		return err;
-+		return -ENOENT;
+ 	flow->dropped++;
+ 	b->tin_dropped++;
+@@ -1553,6 +1552,7 @@ static unsigned int cake_drop(struct Qdi
  
- 	err = netdev_nl_queue_validate(netdev, q_idx, q_type);
- 	if (err)
--- 
-2.39.5
-
+ 	__qdisc_drop(skb, to_free);
+ 	sch->q.qlen--;
++	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	cake_heapify(q, 0);
+ 
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -123,10 +123,10 @@ static void choke_drop_by_idx(struct Qdi
+ 	if (idx == q->tail)
+ 		choke_zap_tail_holes(q);
+ 
++	--sch->q.qlen;
+ 	qdisc_qstats_backlog_dec(sch, skb);
+ 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
+ 	qdisc_drop(skb, sch, to_free);
+-	--sch->q.qlen;
+ }
+ 
+ struct choke_skb_cb {
 
 
 
