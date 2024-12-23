@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-105958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7139FB273
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A661E9FB236
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 252D77A10CB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F4F6162406
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA271B2EEB;
-	Mon, 23 Dec 2024 16:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220C11B4F02;
+	Mon, 23 Dec 2024 16:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHx3xtId"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjVQfZ7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EB517A597;
-	Mon, 23 Dec 2024 16:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29A91A4AAA;
+	Mon, 23 Dec 2024 16:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970715; cv=none; b=s17wFJ4HUq82p7Ee4sSa8B7QM0Qk93hwUU8V/smtRUB/J2rzvX8ZaHCEenRz3bV1FPC9X+ku6YrhmcZqG8fAIJb8PKIDFygtm2FJ5XRlsmxvshZ79IGEAmuJ5xsPGi33YuIG/qbQqfNrccnUu3anclu6Y1Hq/z87k11bVwtvzsg=
+	t=1734970510; cv=none; b=NA1KcQZ+wFWjJ9GeVl4pKsZVESUc+F4+AwJq6TkefpIfGVrnyCLXUJsIE7WGQx7NgLiZt0UFiue/oRGuk0oj46E9hhreHmWoHeI93Xr3ul/Kv/8KdOaf0DCgZg/Sg2Yna5Nudsn42zDZ4xtFZdpGzs//Dkdml4Uev/zhpjLfOIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970715; c=relaxed/simple;
-	bh=W4ORcxNRKmfo8LzkeigmN+tYYVFeBdyZzcyQj5kel+E=;
+	s=arc-20240116; t=1734970510; c=relaxed/simple;
+	bh=BPurqI2d55VlT3MYFIWPmTFt0OixaK+vlsGoXzskMiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNLxSDz5rUNKdUs13SJE6LTByVge66amIZtkD0zeJVdV6jMW5k62zc0TUgy8XjnKrxbGJYWhaIZ7stxBNcx0r1WpCnzJrMsdXpWwga53L72lb63l4e3aQ8WZBt0XgmOYGv0VVEMMgJwc4wEcG5C3pxo3NjJG00X+Gpc4/oAiNaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHx3xtId; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37F8C4CED3;
-	Mon, 23 Dec 2024 16:18:34 +0000 (UTC)
+	 MIME-Version; b=p+buP5sE4VsEsyaoFTLLkz05CoYgxGVTOed0dIwQ14rbW5mlgcBlewhUKO66iWz+p1iwPdqnfQyhFW3/xLUQKfvvVZ6u24JC5CGAoZU1ctV1VejGChbt3M8kKoT4afvPGgJDjmyfvNPLhbQgZvkqIPsZJZM7c6RFpyHo0/UBIFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjVQfZ7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3589CC4CED3;
+	Mon, 23 Dec 2024 16:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970715;
-	bh=W4ORcxNRKmfo8LzkeigmN+tYYVFeBdyZzcyQj5kel+E=;
+	s=korg; t=1734970510;
+	bh=BPurqI2d55VlT3MYFIWPmTFt0OixaK+vlsGoXzskMiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHx3xtId5Hb4pEJ55TmDtsXtXA+d3SWKo0t7bXMvrV0ZtqZtwm2wzmUCrezOeMzdc
-	 XQ0h8OLQlZMxcRIr+fJYv9SqFx4dWX3fSJB3/coeD5QTUm73vonFf6O8L6hmk+eA9q
-	 TxGWzXVYL/A2xOny1q6PAhrkL94WSZDrUIlh3WYc=
+	b=kjVQfZ7T+A0afXv55ANOuRPkWvuoO9Z9ywzqwd/YHhoGVhuo7LLw9EiWmix59KByP
+	 UwQl65uPRVfh8N9wKq6pKmjqMCRIcK/3CJ1x34lrWvnzxdzhDL12lccTFbYzlD7eZp
+	 irm4SkEPcuyordjTGwO17wDQN5wUuNaqlzmlJy1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 48/83] i915/guc: Accumulate active runtime on gt reset
+	Jann Horn <jannh@google.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 097/116] io_uring: Fix registered ring file refcount leak
 Date: Mon, 23 Dec 2024 16:59:27 +0100
-Message-ID: <20241223155355.490648459@linuxfoundation.org>
+Message-ID: <20241223155403.334058885@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 1622ed27d26ab4c234476be746aa55bcd39159dd ]
+commit 12d908116f7efd34f255a482b9afc729d7a5fb78 upstream.
 
-On gt reset, if a context is running, then accumulate it's active time
-into the busyness counter since there will be no chance for the context
-to switch out and update it's run time.
+Currently, io_uring_unreg_ringfd() (which cleans up registered rings) is
+only called on exit, but __io_uring_free (which frees the tctx in which the
+registered ring pointers are stored) is also called on execve (via
+begin_new_exec -> io_uring_task_cancel -> __io_uring_cancel ->
+io_uring_cancel_generic -> __io_uring_free).
 
-v2: Move comment right above the if (John)
+This means: A process going through execve while having registered rings
+will leak references to the rings' `struct file`.
 
-Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241127174006.190128-4-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 7ed047da59cfa1acb558b95169d347acc8d85da1)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by zapping registered rings on execve(). This is implemented by
+moving the io_uring_unreg_ringfd() from io_uring_files_cancel() into its
+callee __io_uring_cancel(), which is called from io_uring_task_cancel() on
+execve.
+
+This could probably be exploited *on 32-bit kernels* by leaking 2^32
+references to the same ring, because the file refcount is stored in a
+pointer-sized field and get_file() doesn't have protection against
+refcount overflow, just a WARN_ONCE(); but on 64-bit it should have no
+impact beyond a memory leak.
+
+Cc: stable@vger.kernel.org
+Fixes: e7a6c00dc77a ("io_uring: add support for registering ring file descriptors")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20241218-uring-reg-ring-cleanup-v1-1-8f63e999045b@google.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ include/linux/io_uring.h |    4 +---
+ io_uring/io_uring.c      |    1 +
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index 2cd1f43f8a3c..2e0eb6cb8eab 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -1368,8 +1368,21 @@ static void __reset_guc_busyness_stats(struct intel_guc *guc)
+--- a/include/linux/io_uring.h
++++ b/include/linux/io_uring.h
+@@ -65,10 +65,8 @@ static inline void io_uring_cmd_complete
  
- 	guc_update_pm_timestamp(guc, &unused);
- 	for_each_engine(engine, gt, id) {
-+		struct intel_engine_guc_stats *stats = &engine->stats.guc;
-+
- 		guc_update_engine_gt_clks(engine);
--		engine->stats.guc.prev_total = 0;
-+
-+		/*
-+		 * If resetting a running context, accumulate the active
-+		 * time as well since there will be no context switch.
-+		 */
-+		if (stats->running) {
-+			u64 clk = guc->timestamp.gt_stamp - stats->start_gt_clk;
-+
-+			stats->total_gt_clks += clk;
-+		}
-+		stats->prev_total = 0;
-+		stats->running = 0;
- 	}
+ static inline void io_uring_files_cancel(void)
+ {
+-	if (current->io_uring) {
+-		io_uring_unreg_ringfd();
++	if (current->io_uring)
+ 		__io_uring_cancel(false);
+-	}
+ }
+ static inline void io_uring_task_cancel(void)
+ {
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3431,6 +3431,7 @@ end_wait:
  
- 	spin_unlock_irqrestore(&guc->timestamp.lock, flags);
--- 
-2.39.5
-
+ void __io_uring_cancel(bool cancel_all)
+ {
++	io_uring_unreg_ringfd();
+ 	io_uring_cancel_generic(cancel_all, NULL);
+ }
+ 
 
 
 
