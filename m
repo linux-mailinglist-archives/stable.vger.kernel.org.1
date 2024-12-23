@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32D69FB188
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB49D9FB252
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42823188087E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4762C1885DEA
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F09189B94;
-	Mon, 23 Dec 2024 16:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF26187848;
+	Mon, 23 Dec 2024 16:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2Xylgni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwDnBOjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7148F186E58;
-	Mon, 23 Dec 2024 16:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6738827;
+	Mon, 23 Dec 2024 16:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970022; cv=none; b=aypo7mNKZJoFwfDvasJAFAHIGwlm8vSNCnW/niA16eVhoKb5dGlWPFdAVFUqlrLXHtXqIrCtF4FMAFE4curCHg1cUHbRRCg8hIt1aud+zzPLkdznQb+OpcnkNi79pZb+LDsFy28/pM5rk4FnTjz9RwGBhG9OJH00gq5Vf+PjcEw=
+	t=1734970601; cv=none; b=XHN73RGCcVYqeUvI8B5tFj0EilpByQtQju27nGdR3Aa8HC3Euk1keqBrwh7Oj5P7BZ0S2kdhKdfmOuW3aHpJbVRcRsoN1rlKqCLClUL4ogQVrIAbR0YhOcnNqHZ24z5j7xl+invVvwnVrthDfm5OLq7fg5lhkQ/Ok5Ccn7NQOG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970022; c=relaxed/simple;
-	bh=jqQjrR8W4zFLrLTytzvFhv7DWm1jnFDKYXsZpVym5JI=;
+	s=arc-20240116; t=1734970601; c=relaxed/simple;
+	bh=7eHUBS9r/nJYxSqX1myyx/F5N9/ramboR7GXB50q7Vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eRwKPFiTXQA7+WYczJ/RhfVfW8irSYqvdafQ9uS5lSO5uxjFV6BllfwucrDTEcNxxdlpW2HJ33VNGfuXn3GUqghzKjl29Y4DH6rR8DQBOHmMGxtkjzkk1P3DE3Lqqe8z3UpXZaKfs2z+wpe/Q0wVmm4mRwpBl++yX4BRmnXuGoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2Xylgni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B6FC4CED4;
-	Mon, 23 Dec 2024 16:07:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F/h8xCkrMufFnNuSYoqI5qPZBeuo3mjDygq5TuzDimW5q0PSXmWcpmQbME9fB+dR/WZiUU1hhQkxLiKcr41EpYVp7voNtLw/vkIcs96cVy1EgxJgT7HZ+ADaGPbS/hGdGEgXGYwUiQD1g56UWNpuZoeDpW+Q6O2KxVTN7ov0+Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwDnBOjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA5CC4CED3;
+	Mon, 23 Dec 2024 16:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970022;
-	bh=jqQjrR8W4zFLrLTytzvFhv7DWm1jnFDKYXsZpVym5JI=;
+	s=korg; t=1734970600;
+	bh=7eHUBS9r/nJYxSqX1myyx/F5N9/ramboR7GXB50q7Vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2Xylgni9/T0iBmrgk5yIq940AneOjrFYzVjiBWf1bQpY1MWZjDKkEyjoh/UFu1pQ
-	 Gb8Gckby4gu7ujkizkV1fYBmKsXuDixbpmuRKmf3IJH2xiRJ8CO49lIUg8VWbL5rgG
-	 OYusdPqKb8jYPxyUmJ8YXHey+xsWH9dYzwKTPlds=
+	b=lwDnBOjW9nNlwnHZ6YSYFoUC1deSniek32SSpw4HoPPgrv4yH/nOm0oaGUf0bNJyv
+	 AzSMx8M60Ltq/vWBc9a8laXTAynthhfSzjjaYn2nfY8/7VAlrrZ5DvmT33bWnHN/lf
+	 kdocebNIsJFNI+eGfz0AYsCPgHoeHk2liQNAYG8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 122/160] fgraph: Still initialize idle shadow stacks when starting
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 14/83] p2sb: Introduce the global flag p2sb_hidden_by_bios
 Date: Mon, 23 Dec 2024 16:58:53 +0100
-Message-ID: <20241223155413.478957830@linuxfoundation.org>
+Message-ID: <20241223155354.184101560@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit cc252bb592638e0f7aea40d580186c36d89526b8 upstream.
+[ Upstream commit ae3e6ebc5ab046d434c05c58a3e3f7e94441fec2 ]
 
-A bug was discovered where the idle shadow stacks were not initialized
-for offline CPUs when starting function graph tracer, and when they came
-online they were not traced due to the missing shadow stack. To fix
-this, the idle task shadow stack initialization was moved to using the
-CPU hotplug callbacks. But it removed the initialization when the
-function graph was enabled. The problem here is that the hotplug
-callbacks are called when the CPUs come online, but the idle shadow
-stack initialization only happens if function graph is currently
-active. This caused the online CPUs to not get their shadow stack
-initialized.
+To prepare for the following fix, introduce the global flag
+p2sb_hidden_by_bios. Check if the BIOS hides the P2SB device and store
+the result in the flag. This allows to refer to the check result across
+functions.
 
-The idle shadow stack initialization still needs to be done when the
-function graph is registered, as they will not be allocated if function
-graph is not registered.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241211135335.094ba282@batman.local.home
-Fixes: 2c02f7375e65 ("fgraph: Use CPU hotplug mechanism to initialize idle shadow stacks")
-Reported-by: Linus Walleij <linus.walleij@linaro.org>
-Tested-by: Linus Walleij <linus.walleij@linaro.org>
-Closes: https://lore.kernel.org/all/CACRpkdaTBrHwRbbrphVy-=SeDz6MSsXhTKypOtLrTQ+DgGAOcQ@mail.gmail.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241128002836.373745-3-shinichiro.kawasaki@wdc.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/fgraph.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/platform/x86/p2sb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/fgraph.c
-+++ b/kernel/trace/fgraph.c
-@@ -1160,7 +1160,7 @@ void fgraph_update_pid_func(void)
- static int start_graph_tracing(void)
+diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
+index d6ee4b34f911..d015ddc9f30e 100644
+--- a/drivers/platform/x86/p2sb.c
++++ b/drivers/platform/x86/p2sb.c
+@@ -42,6 +42,7 @@ struct p2sb_res_cache {
+ };
+ 
+ static struct p2sb_res_cache p2sb_resources[NR_P2SB_RES_CACHE];
++static bool p2sb_hidden_by_bios;
+ 
+ static void p2sb_get_devfn(unsigned int *devfn)
  {
- 	unsigned long **ret_stack_list;
--	int ret;
-+	int ret, cpu;
+@@ -157,13 +158,14 @@ static int p2sb_cache_resources(void)
+ 	 * Unhide the P2SB device here, if needed.
+ 	 */
+ 	pci_bus_read_config_dword(bus, devfn_p2sb, P2SBC, &value);
+-	if (value & P2SBC_HIDE)
++	p2sb_hidden_by_bios = value & P2SBC_HIDE;
++	if (p2sb_hidden_by_bios)
+ 		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, 0);
  
- 	ret_stack_list = kcalloc(FTRACE_RETSTACK_ALLOC_SIZE,
- 				 sizeof(*ret_stack_list), GFP_KERNEL);
-@@ -1168,6 +1168,12 @@ static int start_graph_tracing(void)
- 	if (!ret_stack_list)
- 		return -ENOMEM;
+ 	ret = p2sb_scan_and_cache(bus, devfn_p2sb);
  
-+	/* The cpu_boot init_task->ret_stack will never be freed */
-+	for_each_online_cpu(cpu) {
-+		if (!idle_task(cpu)->ret_stack)
-+			ftrace_graph_init_idle_task(idle_task(cpu), cpu);
-+	}
-+
- 	do {
- 		ret = alloc_retstack_tasklist(ret_stack_list);
- 	} while (ret == -EAGAIN);
+ 	/* Hide the P2SB device, if it was hidden */
+-	if (value & P2SBC_HIDE)
++	if (p2sb_hidden_by_bios)
+ 		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, P2SBC_HIDE);
+ 
+ 	pci_unlock_rescan_remove();
+-- 
+2.39.5
+
 
 
 
