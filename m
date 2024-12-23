@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-105894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD79B9FB233
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C7E9FB25A
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC11F161E5B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419F518858A9
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB3F1B393A;
-	Mon, 23 Dec 2024 16:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73F81A8F80;
+	Mon, 23 Dec 2024 16:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09my6WxT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bci2If7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2567E0FF;
-	Mon, 23 Dec 2024 16:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A628827;
+	Mon, 23 Dec 2024 16:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970500; cv=none; b=bKdflX/PMJ2pm/YygxNw5La//okpEeSRDFFObyek/K1Yxqe53yZufQUJOipO9n9yP0Ke84kWJWFkj/FL6MueWNjRis2y1OtfQlG8XUCUkUg1zZxpo2w6LHVJkHRXJAoFJoA6A+Mjxg8jhHDWhhRU48ZN+Axlzl405iQ3JiwlDMs=
+	t=1734970631; cv=none; b=PbwHe2gxpGZaCignljslruMGFOV7nNriXeuuCkOQhFJ51n+a7u2sh3dqMNI2OY9Guo54rvd5uxzIbPhhjwFoKEW4qvL0XPzxz8y5wz7vQzI1JE0uIuL0hpt15r7ICqQxrHknweQakwd1TxcjgXvg03AkQEZgTUcHyI5FTQdbK7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970500; c=relaxed/simple;
-	bh=WalpZYs5I2p1dPivJ7PBi8Aw9QJTPgpWn5DKDzfpEe0=;
+	s=arc-20240116; t=1734970631; c=relaxed/simple;
+	bh=TRWQ24fm+K9+EYpRzP0S3RbhFaDSvNtdqVx/f/TWAgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUafKDvQUbvP4RJNSlB86jyCELuFLMqOkNU25+/tIvtrIWTzXYb8vua/PcDQ6ftIVNhwlH0+ndag/RObBxwsirnIiHVRMoq05eeyn8ihC7QN7Xz80yzkH/+oEhp+bRi9C73OZnuu7PaWdEx5mhbsD0gJRTTyWPXPurGgv8qBXHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09my6WxT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311BAC4CED3;
-	Mon, 23 Dec 2024 16:15:00 +0000 (UTC)
+	 MIME-Version; b=QTEiRT1+MvNpZ9OxaIG1pFk9STw/GuJPAV1nFBo4i9fgRXGaBCJUhJVQ6vk5Jek38FpNpEYXYZcB8hb8/jzibjDtJHWSSn76hOcNRcyuKPMzeug/wT/SECIguy3lFepz2s8c197Bivow82SWOfdtVDOk2p+kiNnbKAnYSY6WDS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bci2If7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB51C4CED4;
+	Mon, 23 Dec 2024 16:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970500;
-	bh=WalpZYs5I2p1dPivJ7PBi8Aw9QJTPgpWn5DKDzfpEe0=;
+	s=korg; t=1734970631;
+	bh=TRWQ24fm+K9+EYpRzP0S3RbhFaDSvNtdqVx/f/TWAgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09my6WxTZPNNALIN/UQm8T2d15SHFjTrbwKzJ1noShfquA/++Zoj+/05nVLH5WIhZ
-	 d/IPL2L4E8HzLD/vZcc2pcfQtLUVI+9wvzON+Og/ndh/TK9fZTEUOIYSkm7S1SbAog
-	 3K1VhLcLySqN4diAbDA5w6WfFGYPrA7FN0CAtIE0=
+	b=Bci2If7ti+Ze3zg73uJiaTwrPvMUm5tGoiUlP15QlMRgfLQYAOuNgFgTFGqq5QgdF
+	 C0CQ0FjL1j7Pu7wjgfqcKIpwO4BEALy86S47Gq9YEy9S/nCyeuLvNrq66rMm9aUU7t
+	 bFNBSHJnSEGNUQ4s3uGvL6H+YkEbEPD7yLCzCEKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 071/116] USB: serial: option: add Telit FE910C04 rmnet compositions
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 22/83] net/smc: check smcd_v2_ext_offset when receiving proposal msg
 Date: Mon, 23 Dec 2024 16:59:01 +0100
-Message-ID: <20241223155402.323844094@linuxfoundation.org>
+Message-ID: <20241223155354.489903387@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-commit 8366e64a4454481339e7c56a8ad280161f2e441d upstream.
+[ Upstream commit 9ab332deb671d8f7e66d82a2ff2b3f715bc3a4ad ]
 
-Add the following Telit FE910C04 compositions:
+When receiving proposal msg in server, the field smcd_v2_ext_offset in
+proposal msg is from the remote client and can not be fully trusted.
+Once the value of smcd_v2_ext_offset exceed the max value, there has
+the chance to access wrong address, and crash may happen.
 
-0x10c0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 13 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This patch checks the value of smcd_v2_ext_offset before using it.
 
-0x10c4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x10c8: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c8 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5c21c4ccafe8 ("net/smc: determine accepted ISM devices")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/smc/af_smc.c  | 2 ++
+ net/smc/smc_clc.h | 8 +++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1397,6 +1397,12 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c0, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c4, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 889709c35b1f..e2bdd6aa3d89 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2096,6 +2096,8 @@ static void smc_find_ism_v2_device_serv(struct smc_sock *new_smc,
+ 	pclc_smcd = smc_get_clc_msg_smcd(pclc);
+ 	smc_v2_ext = smc_get_clc_v2_ext(pclc);
+ 	smcd_v2_ext = smc_get_clc_smcd_v2_ext(smc_v2_ext);
++	if (!pclc_smcd || !smc_v2_ext || !smcd_v2_ext)
++		goto not_found;
+ 
+ 	mutex_lock(&smcd_dev_list.mutex);
+ 	if (pclc_smcd->ism.chid)
+diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
+index 08279081d438..0f6102cd5de1 100644
+--- a/net/smc/smc_clc.h
++++ b/net/smc/smc_clc.h
+@@ -361,9 +361,15 @@ smc_get_clc_v2_ext(struct smc_clc_msg_proposal *prop)
+ static inline struct smc_clc_smcd_v2_extension *
+ smc_get_clc_smcd_v2_ext(struct smc_clc_v2_extension *prop_v2ext)
+ {
++	u16 max_offset = offsetof(struct smc_clc_msg_proposal_area, pclc_smcd_v2_ext) -
++		offsetof(struct smc_clc_msg_proposal_area, pclc_v2_ext) -
++		offsetof(struct smc_clc_v2_extension, hdr) -
++		offsetofend(struct smc_clnt_opts_area_hdr, smcd_v2_ext_offset);
++
+ 	if (!prop_v2ext)
+ 		return NULL;
+-	if (!ntohs(prop_v2ext->hdr.smcd_v2_ext_offset))
++	if (!ntohs(prop_v2ext->hdr.smcd_v2_ext_offset) ||
++	    ntohs(prop_v2ext->hdr.smcd_v2_ext_offset) > max_offset)
+ 		return NULL;
+ 
+ 	return (struct smc_clc_smcd_v2_extension *)
+-- 
+2.39.5
+
 
 
 
