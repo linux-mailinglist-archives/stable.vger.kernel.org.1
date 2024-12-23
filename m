@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41A09FB14D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D162F9FB1D6
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6558A16750E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324641885092
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188D31AB52D;
-	Mon, 23 Dec 2024 16:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2747E1B392B;
+	Mon, 23 Dec 2024 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vC9gkXwT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trAmT6Pe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9B82EAE6;
-	Mon, 23 Dec 2024 16:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3401AF0C7;
+	Mon, 23 Dec 2024 16:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969826; cv=none; b=pmmaepDgQV7JYciq5n7KizkqNrGWYC03YnXcIgj9W8uPVJQ94QxhftRIvvbJ3CcV2mLrTZjNtXq7iEwxHADLUIHHLqzLhIU77s8/h2naAjghBGsVGJ79Dggv8oES2sKif65VF+nW+CNRQx4K+sZgARLiK0mhvPmFpzrubkpZh6Q=
+	t=1734970265; cv=none; b=THV7irqnS26Wc0qfS+V7NHNCE5ouxri9Av2R1I0lSv4KyCjO0YIXaUZYoZ2p3Ep6yuka3gorbdffphZa3tuOFcxdmYZOL2JBZwkGLpPYjGmPPY2hemk/3eogHcMoK4TCUTLn1QhLF5JoBv3hcGRD7GjzLAVQegZp3F0ufN9cj+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969826; c=relaxed/simple;
-	bh=maM67o/x2IRaSYxY9kfXT2F8n6Hb7osqrUK6J+64yPU=;
+	s=arc-20240116; t=1734970265; c=relaxed/simple;
+	bh=eQKPLxKtHj+unAqRvdsiO/k//5orli0DPPpsHBMnE0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbHTLTZoywMZFjBtPuHdaFw8MwLfj3DCmpXB5qXcMh3E4cJMukuqmo2vG3V+A1Hp/SzAG7GmWX5TKwLAOMcMnd9UBbgewuTtq+6mWwra3ReWkjcY0wDVd722XeyEXdH6fB7EfKc6DWbPJvu/y3YV9Kb2bUHn7ul/UJQ9Ub/FPjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vC9gkXwT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F168AC4CED3;
-	Mon, 23 Dec 2024 16:03:45 +0000 (UTC)
+	 MIME-Version; b=UIoCb7Siygmn8E1VUKN71BMjnCSZWC9JDg36NFtE4dE6Ce81yFc32h0wmJQVUEAsIp2ZKLDClFwk4j/TqUkvm4viaRVgeonONT0qvm8fsXoIItWS5JS6mA1lVtk0QP8HvMwzOekzcqpNAkRxGaZ4ZW0zh8UAB5UDXke6wMxrbXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trAmT6Pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48939C4CED3;
+	Mon, 23 Dec 2024 16:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969826;
-	bh=maM67o/x2IRaSYxY9kfXT2F8n6Hb7osqrUK6J+64yPU=;
+	s=korg; t=1734970265;
+	bh=eQKPLxKtHj+unAqRvdsiO/k//5orli0DPPpsHBMnE0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vC9gkXwTRfSJ/uc4J3aSoK8ALz6fSm6sbyK+CyVjYChKXoLV3SjEYLpUXYRVlHA40
-	 i0Yi72hwUzanLXMop3Duuy1uyxyjhL/ryfxddQMrEPSgsUCmZRBU+msjI/oZY0gjFg
-	 27D6HfYEdCAp9HVrjvTgI++GDkHRoLFaMu37VC68=
+	b=trAmT6PeoKR5065J/jGWyAsvVIRsDA011pC2VzR/eZDDl+IBzEyem2IUP7iO7fouZ
+	 fx8vWkUZ7VRhulzE0qmgwft0I3H75k30v3q27WAnnQZCh/NdKSaGcgjmJPs+JLvk4X
+	 R6DZqDKYBvdEMW+CarKROgsWnN9fZPUFdeyRDsyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Kettenis <mark.kettenis@xs4all.nl>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.12 065/160] irqchip/gic-v3: Work around insecure GIC integrations
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 006/116] MIPS: Loongson64: DTS: Fix msi node for ls7a
 Date: Mon, 23 Dec 2024 16:57:56 +0100
-Message-ID: <20241223155411.185829814@linuxfoundation.org>
+Message-ID: <20241223155359.792879614@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 773c05f417fa14e1ac94776619e9c978ec001f0b upstream.
+[ Upstream commit 98a9e2ac3755a353eefea8c52e23d5b0c50f3899 ]
 
-It appears that the relatively popular RK3399 SoC has been put together
-using a large amount of illicit substances, as experiments reveal that its
-integration of GIC500 exposes the *secure* programming interface to
-non-secure.
+Add it to silent warning:
+arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
+arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts:32.31-40.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
+arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
 
-This has some pretty bad effects on the way priorities are handled, and
-results in a dead machine if booting with pseudo-NMI enabled
-(irqchip.gicv3_pseudo_nmi=1) if the kernel contains 18fdb6348c480 ("arm64:
-irqchip/gic-v3: Select priorities at boot time"), which relies on the
-priorities being programmed using the NS view.
-
-Let's restore some sanity by going one step further and disable security
-altogether in this case. This is not any worse, and puts us in a mode where
-priorities actually make some sense.
-
-Huge thanks to Mark Kettenis who initially identified this issue on
-OpenBSD, and to Chen-Yu Tsai who reported the problem in Linux.
-
-Fixes: 18fdb6348c480 ("arm64: irqchip/gic-v3: Select priorities at boot time")
-Reported-by: Mark Kettenis <mark.kettenis@xs4all.nl>
-Reported-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Chen-Yu Tsai <wens@csie.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241213141037.3995049-1-maz@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 34db379d066a..79d8cc80693c 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -161,7 +161,22 @@ static bool cpus_have_group0 __ro_after_init;
- 
- static void __init gic_prio_init(void)
- {
--	cpus_have_security_disabled = gic_dist_security_disabled();
-+	bool ds;
-+
-+	ds = gic_dist_security_disabled();
-+	if (!ds) {
-+		u32 val;
-+
-+		val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
-+		val |= GICD_CTLR_DS;
-+		writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
-+
-+		ds = gic_dist_security_disabled();
-+		if (ds)
-+			pr_warn("Broken GIC integration, security disabled");
-+	}
-+
-+	cpus_have_security_disabled = ds;
- 	cpus_have_group0 = gic_has_group0();
- 
- 	/*
+diff --git a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
+index c945f8565d54..fb180cb2b8e2 100644
+--- a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
++++ b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
+@@ -33,6 +33,7 @@
+ 		compatible = "loongson,pch-msi-1.0";
+ 		reg = <0 0x2ff00000 0 0x8>;
+ 		interrupt-controller;
++		#interrupt-cells = <1>;
+ 		msi-controller;
+ 		loongson,msi-base-vec = <64>;
+ 		loongson,msi-num-vecs = <192>;
 -- 
-2.47.1
+2.39.5
 
 
 
