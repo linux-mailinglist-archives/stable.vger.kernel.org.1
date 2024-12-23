@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-105872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF919FB223
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6805A9FB199
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BBEF1669BA
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209461884DD9
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09EB1B2EEB;
-	Mon, 23 Dec 2024 16:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF9F19E971;
+	Mon, 23 Dec 2024 16:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJ8tX47S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snHrE8bI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3597E0FF;
-	Mon, 23 Dec 2024 16:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DEF3D6D;
+	Mon, 23 Dec 2024 16:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970424; cv=none; b=S/Con2darKoUzHbHf5Tm+dOL0Nx9hUtHe0gXd34fVedxYHjwdLDq5NF2XtuJu2iF4bex2d0izonnTUM+wZb9BEqWS7ZhMPID08e2Vk5MkjVWl/tEod8tXMQrziXC1azU1dP9ofpFHKOFnQGqXPwQ2tsVHkKtiAbj/18wdVp20T8=
+	t=1734970089; cv=none; b=phbQn3M+VEctQPcWHTGoZo87e/nDMihVeZCNqforLwD020OqKaKUpPB9skY1gSSqKHixi5/PfpRNVNpiwe17+3bjqh79wbrT2ltyvaPmD9ynCfmSNfNwXXLxuJBXF+NGMCh/QQsftgA802uV5eqlyiV0+XJPwrFvVrQEjEtjthg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970424; c=relaxed/simple;
-	bh=JX4kdH2IRcWIyTNgyGR6Yx9gFGWQJrazI+wPZRRo+1Y=;
+	s=arc-20240116; t=1734970089; c=relaxed/simple;
+	bh=Ug6euxqdRtoERdsFM9TI5bIUMUWU9RiWChFVU+MzFR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8RJL8YrHYnuQl95Gu2nynbAWpaiO6inBdtiGuuNVT6tUJmTsuiH5lR16lG9DoRG51zSdAvqof3j4ICgs948+iLThPQCKj4Jh2G9KZ80kKUJ6uDUchILlDgRppzoqb9dv9yjHafYlQRo0P8ERD3pw5p2K6kohM93ojJucohVptI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJ8tX47S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD73C4CED3;
-	Mon, 23 Dec 2024 16:13:44 +0000 (UTC)
+	 MIME-Version; b=DcdBETKS6f1jro+tydcRppAF/77Fk5zp5W1ul16ViuHdth445ONOnUS3SvBKbfr7MbfytT5naI83r+4quY5+FAuAreYkpt10vrTpFyjpXW+cwABrlwLtIazftDFxE0iyZ3yct78OySq1Rc+3srNG3jRI8+uXYnbhDrY58keyOZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snHrE8bI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC60C4CED3;
+	Mon, 23 Dec 2024 16:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970424;
-	bh=JX4kdH2IRcWIyTNgyGR6Yx9gFGWQJrazI+wPZRRo+1Y=;
+	s=korg; t=1734970089;
+	bh=Ug6euxqdRtoERdsFM9TI5bIUMUWU9RiWChFVU+MzFR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJ8tX47SSvNUiV4k5TFIrKgvpE/k1AilE7z6cLczb5OodqZZF/o0X3oiDUMAqezgu
-	 Z+F7EhaHzrKHNFzSxNTgjpnVVokvtA4+zzPf6AWm5KPUSmxsAv2rDteOrxnJ3maGdW
-	 UxO0hQ91pYi8N0kN9yNPg8+N5HLfTfUQcnPum4pc=
+	b=snHrE8bI2J+WPYUuOR568S0b3dMZ+DZd8lJVe8qFq50IRgOpq0ThPKxPtxoJMemLp
+	 V/hf09ba8RHm6jMDU1vwNYLDTv5AG9msZQdbGyaO539TCgLJei4hm7y0CkNht/nEjq
+	 wRY/NCzlcBWUiz/Uu17gxrlvDz3wUirO7eVgYx7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/116] hwmon: (tmp513) Simplify with dev_err_probe()
-Date: Mon, 23 Dec 2024 16:59:10 +0100
-Message-ID: <20241223155402.681080209@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.12 140/160] of/irq: Fix interrupt-map cell length check in of_irq_parse_imap_parent()
+Date: Mon, 23 Dec 2024 16:59:11 +0100
+Message-ID: <20241223155414.206845249@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit df989762bc4b71068e6adc0c2b5ef6f76b6acf74 ]
+commit fec3edc47d5cfc2dd296a5141df887bf567944db upstream.
 
-Common pattern of handling deferred probe can be simplified with
-dev_err_probe().  Less code and also it prints the error value.
+On a malformed interrupt-map property which is shorter than expected by
+1 cell, we may read bogus data past the end of the property instead of
+returning an error in of_irq_parse_imap_parent().
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231128180654.395692-3-andriy.shevchenko@linux.intel.com
-[groeck: Fixed excessive line length]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 74d7e038fd07 ("hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Decrement the remaining length when skipping over the interrupt parent
+phandle cell.
+
+Fixes: 935df1bd40d4 ("of/irq: Factor out parsing of interrupt-map parent phandle+args from of_irq_parse_raw()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241209-of_irq_fix-v1-1-782f1419c8a1@quicinc.com
+[rh: reword commit msg]
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/tmp513.c | 35 +++++++++++++++--------------------
- 1 file changed, 15 insertions(+), 20 deletions(-)
+ drivers/of/irq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index ca665033fe52..67b13ac5512c 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -632,9 +632,9 @@ static int tmp51x_vbus_range_to_reg(struct device *dev,
- 	} else if (data->vbus_range_uvolt == TMP51X_VBUS_RANGE_16V) {
- 		data->shunt_config &= ~TMP51X_BUS_VOLTAGE_MASK;
- 	} else {
--		dev_err(dev, "ti,bus-range-microvolt is invalid: %u\n",
--			data->vbus_range_uvolt);
--		return -EINVAL;
-+		return dev_err_probe(dev, -EINVAL,
-+				     "ti,bus-range-microvolt is invalid: %u\n",
-+				     data->vbus_range_uvolt);
- 	}
- 	return 0;
- }
-@@ -650,8 +650,8 @@ static int tmp51x_pga_gain_to_reg(struct device *dev, struct tmp51x_data *data)
- 	} else if (data->pga_gain == 1) {
- 		data->shunt_config |= CURRENT_SENSE_VOLTAGE_40_MASK;
- 	} else {
--		dev_err(dev, "ti,pga-gain is invalid: %u\n", data->pga_gain);
--		return -EINVAL;
-+		return dev_err_probe(dev, -EINVAL,
-+				     "ti,pga-gain is invalid: %u\n", data->pga_gain);
- 	}
- 	return 0;
- }
-@@ -684,9 +684,9 @@ static int tmp51x_read_properties(struct device *dev, struct tmp51x_data *data)
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -111,6 +111,7 @@ const __be32 *of_irq_parse_imap_parent(c
+ 	else
+ 		np = of_find_node_by_phandle(be32_to_cpup(imap));
+ 	imap++;
++	len--;
  
- 	// Check if shunt value is compatible with pga-gain
- 	if (data->shunt_uohms > data->pga_gain * 40 * 1000 * 1000) {
--		dev_err(dev, "shunt-resistor: %u too big for pga_gain: %u\n",
--			data->shunt_uohms, data->pga_gain);
--		return -EINVAL;
-+		return dev_err_probe(dev, -EINVAL,
-+				     "shunt-resistor: %u too big for pga_gain: %u\n",
-+				     data->shunt_uohms, data->pga_gain);
- 	}
- 
- 	return 0;
-@@ -727,22 +727,17 @@ static int tmp51x_probe(struct i2c_client *client)
- 	data->id = (uintptr_t)i2c_get_match_data(client);
- 
- 	ret = tmp51x_configure(dev, data);
--	if (ret < 0) {
--		dev_err(dev, "error configuring the device: %d\n", ret);
--		return ret;
--	}
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "error configuring the device\n");
- 
- 	data->regmap = devm_regmap_init_i2c(client, &tmp51x_regmap_config);
--	if (IS_ERR(data->regmap)) {
--		dev_err(dev, "failed to allocate register map\n");
--		return PTR_ERR(data->regmap);
--	}
-+	if (IS_ERR(data->regmap))
-+		return dev_err_probe(dev, PTR_ERR(data->regmap),
-+				     "failed to allocate register map\n");
- 
- 	ret = tmp51x_init(data);
--	if (ret < 0) {
--		dev_err(dev, "error configuring the device: %d\n", ret);
--		return -ENODEV;
--	}
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "error configuring the device\n");
- 
- 	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
- 							 data,
--- 
-2.39.5
-
+ 	/* Check if not found */
+ 	if (!np) {
 
 
 
