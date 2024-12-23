@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-105723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7576E9FB159
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D959FB201
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 193161883272
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B25197A06D4
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A89D186E58;
-	Mon, 23 Dec 2024 16:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EB41B2EEB;
+	Mon, 23 Dec 2024 16:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oePSCWa2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hBSkiO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3A012D1F1;
-	Mon, 23 Dec 2024 16:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50C219E971;
+	Mon, 23 Dec 2024 16:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969924; cv=none; b=d8K3feujLhHlg5Iwl9nGzmqiexrZRIkKekbfjGHvB54vGHfBRz9ahp2iN2C2XdBLc537AG4hS4UjFmXmB0GPna3Jq4xtAOD4b6yufMhaPrYS+ZrhGkRw0hG5Tf+R+1lrZN0uyRmbQ8DQDy5oCuwG0JAA+oLSJVhbZIecLwfT9M4=
+	t=1734970379; cv=none; b=MaZ4UBN8+3e0BNb3y4IU/l0TMzsrs6ddhzoQi/lwzsYYW2x+U2UPwLSlhwjCpgra9B8I1Y2hN/LTUkSPAdEkZ2+6I4FcvZ9Cx3EG9DyrpaBBCyvGigHvsvAiUxfngod0ASzruGjiwlQiW9hR8svu+KscCbm/9Xaw49eQjXDoiZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969924; c=relaxed/simple;
-	bh=pUmTjMCXwZNBSStXSwTBgNp19Wz3VECA21ZB+Ppu/lc=;
+	s=arc-20240116; t=1734970379; c=relaxed/simple;
+	bh=eg94yYtfy8oi2iqHEAzr9gMx83vkFcbdmXACrxfpH3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XosUDYr60rcvvi2i5KSdhDOYuppEg3H/HV4oINyNV8qKIAKSofR09T/VVuAHi3qaQm3Pom6ucN0WJgnDMSF2Z8890kQTSv/WDwNTL2bgj4HOEnNfAfgO/OdRYlpiNhhk8H/dcbfFx301dw60YecMOGVUir85zE+jcGCgydFIhqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oePSCWa2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7ACC4CEDF;
-	Mon, 23 Dec 2024 16:05:23 +0000 (UTC)
+	 MIME-Version; b=muboeybDbBNd4MgG8E7eAeMNJTWlKm2yF54fRtBNiwasWNbvxkcXXXNzL02t2o17aLvSLfT3FNfO7TFgHixhD2jwHBMFhnANhOWDS8PBunGU9Evr6lBOnQSnL+V3InPFGKq9f+8CRWhOYQRhE7WO/gP0nUVsJTIVaQfhCHDWwk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hBSkiO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E547C4CED3;
+	Mon, 23 Dec 2024 16:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969923;
-	bh=pUmTjMCXwZNBSStXSwTBgNp19Wz3VECA21ZB+Ppu/lc=;
+	s=korg; t=1734970379;
+	bh=eg94yYtfy8oi2iqHEAzr9gMx83vkFcbdmXACrxfpH3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oePSCWa2tDPS0eyza/KWiYNBxGdK3BSP1ePaIghx/cOcyvaFAS59JwcvvBIqorHHv
-	 ye1qHG/oZ7knpFUEY72lZc6w52QAFuoTceSB+RVLTNRKTF4wuDkcuAV6a1luwwhiBK
-	 eoxoQ3uZ6NeQaKpXYDIq2ehugwkmprJtYftEpb9o=
+	b=1hBSkiO5UGurvifcDh0JaY9eWJBsQ851b+1uZ4VVnG6G4wOqeNhKtz1m00zRLSxH4
+	 iHRINVH5ivRk/C1HgRDaSAlPX5Hxi3lTX+BEEZO+ZT2aExkPPwGcXsTmNVwnJN7VFO
+	 gCqFva/ceFR7YmIllOqqvLNfQsf9id+GF71YgHOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/160] drm/panel: himax-hx83102: Add a check to prevent NULL pointer dereference
+Subject: [PATCH 6.6 034/116] xfs: take m_growlock when running growfsrt
 Date: Mon, 23 Dec 2024 16:58:24 +0100
-Message-ID: <20241223155412.284821550@linuxfoundation.org>
+Message-ID: <20241223155400.903663285@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit e1e1af9148dc4c866eda3fb59cd6ec3c7ea34b1d ]
+commit 16e1fbdce9c8d084863fd63cdaff8fb2a54e2f88 upstream.
 
-drm_mode_duplicate() could return NULL due to lack of memory,
-which will then call NULL pointer dereference. Add a check to
-prevent it.
+Take the grow lock when we're expanding the realtime volume, like we do
+for the other growfs calls.
 
-Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as separate driver")
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241025073408.27481-3-zhangzekun11@huawei.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241025073408.27481-3-zhangzekun11@huawei.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-himax-hx83102.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/xfs/xfs_rtalloc.c | 38 +++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-himax-hx83102.c b/drivers/gpu/drm/panel/panel-himax-hx83102.c
-index 8b48bba18131..3644a7544b93 100644
---- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
-+++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
-@@ -565,6 +565,8 @@ static int hx83102_get_modes(struct drm_panel *panel,
- 	struct drm_display_mode *mode;
+diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
+index 608db1ab88a4..9268961d887c 100644
+--- a/fs/xfs/xfs_rtalloc.c
++++ b/fs/xfs/xfs_rtalloc.c
+@@ -953,34 +953,39 @@ xfs_growfs_rt(
+ 	/* Needs to have been mounted with an rt device. */
+ 	if (!XFS_IS_REALTIME_MOUNT(mp))
+ 		return -EINVAL;
++
++	if (!mutex_trylock(&mp->m_growlock))
++		return -EWOULDBLOCK;
+ 	/*
+ 	 * Mount should fail if the rt bitmap/summary files don't load, but
+ 	 * we'll check anyway.
+ 	 */
++	error = -EINVAL;
+ 	if (!mp->m_rbmip || !mp->m_rsumip)
+-		return -EINVAL;
++		goto out_unlock;
  
- 	mode = drm_mode_duplicate(connector->dev, m);
-+	if (!mode)
-+		return -ENOMEM;
+ 	/* Shrink not supported. */
+ 	if (in->newblocks <= sbp->sb_rblocks)
+-		return -EINVAL;
++		goto out_unlock;
  
- 	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
- 	drm_mode_set_name(mode);
+ 	/* Can only change rt extent size when adding rt volume. */
+ 	if (sbp->sb_rblocks > 0 && in->extsize != sbp->sb_rextsize)
+-		return -EINVAL;
++		goto out_unlock;
+ 
+ 	/* Range check the extent size. */
+ 	if (XFS_FSB_TO_B(mp, in->extsize) > XFS_MAX_RTEXTSIZE ||
+ 	    XFS_FSB_TO_B(mp, in->extsize) < XFS_MIN_RTEXTSIZE)
+-		return -EINVAL;
++		goto out_unlock;
+ 
+ 	/* Unsupported realtime features. */
++	error = -EOPNOTSUPP;
+ 	if (xfs_has_rmapbt(mp) || xfs_has_reflink(mp) || xfs_has_quota(mp))
+-		return -EOPNOTSUPP;
++		goto out_unlock;
+ 
+ 	nrblocks = in->newblocks;
+ 	error = xfs_sb_validate_fsb_count(sbp, nrblocks);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 	/*
+ 	 * Read in the last block of the device, make sure it exists.
+ 	 */
+@@ -988,7 +993,7 @@ xfs_growfs_rt(
+ 				XFS_FSB_TO_BB(mp, nrblocks - 1),
+ 				XFS_FSB_TO_BB(mp, 1), 0, &bp, NULL);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 	xfs_buf_relse(bp);
+ 
+ 	/*
+@@ -996,8 +1001,10 @@ xfs_growfs_rt(
+ 	 */
+ 	nrextents = nrblocks;
+ 	do_div(nrextents, in->extsize);
+-	if (!xfs_validate_rtextents(nrextents))
+-		return -EINVAL;
++	if (!xfs_validate_rtextents(nrextents)) {
++		error = -EINVAL;
++		goto out_unlock;
++	}
+ 	nrbmblocks = howmany_64(nrextents, NBBY * sbp->sb_blocksize);
+ 	nrextslog = xfs_compute_rextslog(nrextents);
+ 	nrsumlevels = nrextslog + 1;
+@@ -1009,8 +1016,11 @@ xfs_growfs_rt(
+ 	 * the log.  This prevents us from getting a log overflow,
+ 	 * since we'll log basically the whole summary file at once.
+ 	 */
+-	if (nrsumblocks > (mp->m_sb.sb_logblocks >> 1))
+-		return -EINVAL;
++	if (nrsumblocks > (mp->m_sb.sb_logblocks >> 1)) {
++		error = -EINVAL;
++		goto out_unlock;
++	}
++
+ 	/*
+ 	 * Get the old block counts for bitmap and summary inodes.
+ 	 * These can't change since other growfs callers are locked out.
+@@ -1022,10 +1032,10 @@ xfs_growfs_rt(
+ 	 */
+ 	error = xfs_growfs_rt_alloc(mp, rbmblocks, nrbmblocks, mp->m_rbmip);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 	error = xfs_growfs_rt_alloc(mp, rsumblocks, nrsumblocks, mp->m_rsumip);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 
+ 	rsum_cache = mp->m_rsum_cache;
+ 	if (nrbmblocks != sbp->sb_rbmblocks)
+@@ -1190,6 +1200,8 @@ xfs_growfs_rt(
+ 		}
+ 	}
+ 
++out_unlock:
++	mutex_unlock(&mp->m_growlock);
+ 	return error;
+ }
+ 
 -- 
 2.39.5
 
