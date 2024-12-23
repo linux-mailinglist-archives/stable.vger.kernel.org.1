@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-105718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C519FB14E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EE09FB20B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 997B218832D3
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221C2188551F
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D9012D1F1;
-	Mon, 23 Dec 2024 16:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243601B3959;
+	Mon, 23 Dec 2024 16:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFoUHmae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eC+J/xnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208A817A5A4;
-	Mon, 23 Dec 2024 16:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D620E19E98B;
+	Mon, 23 Dec 2024 16:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969904; cv=none; b=AcpzsARoYLC7+zrZ00t+dzy2GgfSyqFF6soz3u6xmk+SN12rzkG3bRUjxazk5mU1sPPAU90cbxBcKCdVJCPUWSd8nk59ejx6USzT5sCpPX4fdPBlA8P9WqwGgdgw27be1YCsFXSfvclVBG1jZ5CJemUJmb0QVMvTqTK6KHhufZo=
+	t=1734970395; cv=none; b=sYoVaqwRMsU4BsgndTCOMe3FBfUZ/Cyb0hrgwJONa919cgLAG/Ub2IJeLiYYvSf3mnNc20Ko4St86WHZyel75Fy07+EnWU5dPR/9Bke3LneH1BTOiEnVKa6xmgdiFr4nfI/kEy/Hlh9UnajVz0SC8pAHMYaEphFB9PwamHNP59k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969904; c=relaxed/simple;
-	bh=c99J2B/in0b3FaynEb+6527N2b6SCzIxFOYUCopkYTg=;
+	s=arc-20240116; t=1734970395; c=relaxed/simple;
+	bh=5SE9YadBbSGWl5mRF2g7Rl6zCho/2d/GL4DgHI1BKVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sJ8q6pQdcjpc06xDO/lXuS7bHc+JRIi++kD+0CsUxHBxIfDrPGMQ59BQLrvpD4eVjIUDoyYqqT0r8sGw6SW8lX3vIdG5Jqk3MWCFxh63XoDNL5IUTEUJEeRsijK6CPGieloTztUUadmlwAtg0XLGfh86xGra9suvTqoqJ0yUU6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFoUHmae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2ECC4CED3;
-	Mon, 23 Dec 2024 16:05:03 +0000 (UTC)
+	 MIME-Version; b=fACplW9dwzO4J7QaGoKsmvxuXZbwSm0qTi8nZFltqTZfTLKdPuvNCQ8vS3DsocAUgTVJsldMbFGQNjlAsX+k8YPHnRjn+HM1NhSYIy0DRt3p2qySGH4H1DtjKQy4Dcfov6BByvBmRCalKpfMulAc7+dP67c2ZIU4V+FLhrNujjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eC+J/xnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B10C4CED3;
+	Mon, 23 Dec 2024 16:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969904;
-	bh=c99J2B/in0b3FaynEb+6527N2b6SCzIxFOYUCopkYTg=;
+	s=korg; t=1734970395;
+	bh=5SE9YadBbSGWl5mRF2g7Rl6zCho/2d/GL4DgHI1BKVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFoUHmaeYZwrGKTfSUlSe0qAumG1qNKHmi3Wiq1Vyct104Wys6MW3fNO75puG2aEb
-	 FZREaVu/nIW6ti4m8VivzMuFDH+9rLsRqpJ7xXoUzYSj1QDdBpdNQMSGwG0NdLOqKn
-	 CLlNgvdciTapqf1k9GCmwxbbyRCa9z468IsP9Uh8=
+	b=eC+J/xnvwjOHHz52iWXOXk+VYNE3fDziUsSJUTQ3vRuEKfi0L2+9fMnGFiDNlWaby
+	 tSnW+jnKEH9vQkj8/0o2P9C1GxMLeBub19jmgL2lC67TlPkY7C28zdQdM+eRCE8Mbf
+	 G21WUKjhDZ0y73tdtKOEhahHTHHp0dZ9ELIzrzZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 088/160] drm/amdgpu: fix amdgpu_coredump
+	Julian Sun <sunjunchao2870@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 029/116] xfs: remove unused parameter in macro XFS_DQUOT_LOGRES
 Date: Mon, 23 Dec 2024 16:58:19 +0100
-Message-ID: <20241223155412.095792901@linuxfoundation.org>
+Message-ID: <20241223155400.708012488@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +62,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Julian Sun <sunjunchao2870@gmail.com>
 
-commit 8d1a13816e59254bd3b18f5ae0895230922bd120 upstream.
+commit af5d92f2fad818663da2ce073b6fe15b9d56ffdc upstream.
 
-The VM pointer might already be outdated when that function is called.
-Use the PASID instead to gather the information instead.
+In the macro definition of XFS_DQUOT_LOGRES, a parameter is accepted,
+but it is not used. Hence, it should be removed.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 57f812d171af4ba233d3ed7c94dfa5b8e92dcc04)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch has only passed compilation test, but it should be fine.
+
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_dev_coredump.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/xfs/libxfs/xfs_quota_defs.h |  2 +-
+ fs/xfs/libxfs/xfs_trans_resv.c | 28 ++++++++++++++--------------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dev_coredump.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dev_coredump.c
-@@ -345,11 +345,10 @@ void amdgpu_coredump(struct amdgpu_devic
- 	coredump->skip_vram_check = skip_vram_check;
- 	coredump->reset_vram_lost = vram_lost;
+diff --git a/fs/xfs/libxfs/xfs_quota_defs.h b/fs/xfs/libxfs/xfs_quota_defs.h
+index cb035da3f990..fb05f44f6c75 100644
+--- a/fs/xfs/libxfs/xfs_quota_defs.h
++++ b/fs/xfs/libxfs/xfs_quota_defs.h
+@@ -56,7 +56,7 @@ typedef uint8_t		xfs_dqtype_t;
+  * And, of course, we also need to take into account the dquot log format item
+  * used to describe each dquot.
+  */
+-#define XFS_DQUOT_LOGRES(mp)	\
++#define XFS_DQUOT_LOGRES	\
+ 	((sizeof(struct xfs_dq_logformat) + sizeof(struct xfs_disk_dquot)) * 6)
  
--	if (job && job->vm) {
--		struct amdgpu_vm *vm = job->vm;
-+	if (job && job->pasid) {
- 		struct amdgpu_task_info *ti;
+ #define XFS_IS_QUOTA_ON(mp)		((mp)->m_qflags & XFS_ALL_QUOTA_ACCT)
+diff --git a/fs/xfs/libxfs/xfs_trans_resv.c b/fs/xfs/libxfs/xfs_trans_resv.c
+index 5b2f27cbdb80..1bb2891b26ff 100644
+--- a/fs/xfs/libxfs/xfs_trans_resv.c
++++ b/fs/xfs/libxfs/xfs_trans_resv.c
+@@ -334,11 +334,11 @@ xfs_calc_write_reservation(
+ 					blksz);
+ 		t1 += adj;
+ 		t3 += adj;
+-		return XFS_DQUOT_LOGRES(mp) + max3(t1, t2, t3);
++		return XFS_DQUOT_LOGRES + max3(t1, t2, t3);
+ 	}
  
--		ti = amdgpu_vm_get_task_info_vm(vm);
-+		ti = amdgpu_vm_get_task_info_pasid(adev, job->pasid);
- 		if (ti) {
- 			coredump->reset_task_info = *ti;
- 			amdgpu_vm_put_task_info(ti);
+ 	t4 = xfs_calc_refcountbt_reservation(mp, 1);
+-	return XFS_DQUOT_LOGRES(mp) + max(t4, max3(t1, t2, t3));
++	return XFS_DQUOT_LOGRES + max(t4, max3(t1, t2, t3));
+ }
+ 
+ unsigned int
+@@ -406,11 +406,11 @@ xfs_calc_itruncate_reservation(
+ 					xfs_refcountbt_block_count(mp, 4),
+ 					blksz);
+ 
+-		return XFS_DQUOT_LOGRES(mp) + max3(t1, t2, t3);
++		return XFS_DQUOT_LOGRES + max3(t1, t2, t3);
+ 	}
+ 
+ 	t4 = xfs_calc_refcountbt_reservation(mp, 2);
+-	return XFS_DQUOT_LOGRES(mp) + max(t4, max3(t1, t2, t3));
++	return XFS_DQUOT_LOGRES + max(t4, max3(t1, t2, t3));
+ }
+ 
+ unsigned int
+@@ -436,7 +436,7 @@ STATIC uint
+ xfs_calc_rename_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		max((xfs_calc_inode_res(mp, 5) +
+ 		     xfs_calc_buf_res(2 * XFS_DIROP_LOG_COUNT(mp),
+ 				      XFS_FSB_TO_B(mp, 1))),
+@@ -475,7 +475,7 @@ STATIC uint
+ xfs_calc_link_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_iunlink_remove_reservation(mp) +
+ 		max((xfs_calc_inode_res(mp, 2) +
+ 		     xfs_calc_buf_res(XFS_DIROP_LOG_COUNT(mp),
+@@ -513,7 +513,7 @@ STATIC uint
+ xfs_calc_remove_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_iunlink_add_reservation(mp) +
+ 		max((xfs_calc_inode_res(mp, 2) +
+ 		     xfs_calc_buf_res(XFS_DIROP_LOG_COUNT(mp),
+@@ -572,7 +572,7 @@ xfs_calc_icreate_resv_alloc(
+ STATIC uint
+ xfs_calc_icreate_reservation(xfs_mount_t *mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		max(xfs_calc_icreate_resv_alloc(mp),
+ 		    xfs_calc_create_resv_modify(mp));
+ }
+@@ -581,7 +581,7 @@ STATIC uint
+ xfs_calc_create_tmpfile_reservation(
+ 	struct xfs_mount        *mp)
+ {
+-	uint	res = XFS_DQUOT_LOGRES(mp);
++	uint	res = XFS_DQUOT_LOGRES;
+ 
+ 	res += xfs_calc_icreate_resv_alloc(mp);
+ 	return res + xfs_calc_iunlink_add_reservation(mp);
+@@ -630,7 +630,7 @@ STATIC uint
+ xfs_calc_ifree_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_inode_res(mp, 1) +
+ 		xfs_calc_buf_res(3, mp->m_sb.sb_sectsize) +
+ 		xfs_calc_iunlink_remove_reservation(mp) +
+@@ -647,7 +647,7 @@ STATIC uint
+ xfs_calc_ichange_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_inode_res(mp, 1) +
+ 		xfs_calc_buf_res(1, mp->m_sb.sb_sectsize);
+ 
+@@ -756,7 +756,7 @@ STATIC uint
+ xfs_calc_addafork_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_inode_res(mp, 1) +
+ 		xfs_calc_buf_res(2, mp->m_sb.sb_sectsize) +
+ 		xfs_calc_buf_res(1, mp->m_dir_geo->blksize) +
+@@ -804,7 +804,7 @@ STATIC uint
+ xfs_calc_attrsetm_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_inode_res(mp, 1) +
+ 		xfs_calc_buf_res(1, mp->m_sb.sb_sectsize) +
+ 		xfs_calc_buf_res(XFS_DA_NODE_MAXDEPTH, XFS_FSB_TO_B(mp, 1));
+@@ -844,7 +844,7 @@ STATIC uint
+ xfs_calc_attrrm_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		max((xfs_calc_inode_res(mp, 1) +
+ 		     xfs_calc_buf_res(XFS_DA_NODE_MAXDEPTH,
+ 				      XFS_FSB_TO_B(mp, 1)) +
+-- 
+2.39.5
+
 
 
 
