@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807BF9FB21D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1DD9FB1CE
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:10:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D223418820B3
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31DE1162E6C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C105E1B393A;
-	Mon, 23 Dec 2024 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486801AF0C7;
+	Mon, 23 Dec 2024 16:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmTOT5Pb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Um43NQDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA2019E98B;
-	Mon, 23 Dec 2024 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065BD3D6D;
+	Mon, 23 Dec 2024 16:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970444; cv=none; b=hjqa3TGEp8oBXKlTMyrpb/xD0Fw2TiufGHlHsCYzzvBGromKAkdYs170im/u4pPHhLY/cKwHFcVDvZDjwuZDcGmA7tknQb8znZcvtGwNK4Nm18mC/M1EB5MiRJOeHcH4SZfs5pbPgd+Uor3WH4lb7sQh7bK1JGk7p27FjZOaBqg=
+	t=1734970180; cv=none; b=QjgQyWHcz1bu+4PNDwO7cTiRizsTAtCaVyCYbErDE4+yxH04M4L/WoRpVxYawEFL4yibl6vYvI8xDy8zBFShFaMRAptr7rKZe/SfkdRK4udyN7NFS2eKR+fT+bFLGY20fqyF6NaFEWUBLuew1DaPLWeXe0kaLT/cquXXozedBDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970444; c=relaxed/simple;
-	bh=7UnvwAYfO5dPwS/vqPNNfn0+6IaVJktUkyj7sjNBY8o=;
+	s=arc-20240116; t=1734970180; c=relaxed/simple;
+	bh=0yAvLj9pyxsxv1sk3CT5ljHYywZsjUj9Al+yC1USBuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NN6ZRHlhnkbti1ipKAcmoUYxoutBSSMGom2dGtLfchiY1lrTe4YxA9fgax6CIagztpZjp8tqP741D/67WAIUDdpukCoc5JAFj8zE3ioMKlktLh0JwlrrnRBAftfIE48uJBxm6wv2UMm3zE3xDPSTqbWKKsYrG8UhHba54vpyXxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmTOT5Pb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD561C4CED3;
-	Mon, 23 Dec 2024 16:14:03 +0000 (UTC)
+	 MIME-Version; b=JJbUxQXwz6LJPKX3tpMgpIyA5bU7xMImmjiVxsJkUjAGIFsP1YQnGpzc6401WvdcyrAFK0YQDYg1ResZhLA85+eUsZX65wn3WHfnO5qma2i3dbO+xcm1OvvY6zVabhJeHZFB49NRxEXWDS+Vc9NFn4qGjfHZw1mBrMycfKgkPuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Um43NQDv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C19EC4CED3;
+	Mon, 23 Dec 2024 16:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970444;
-	bh=7UnvwAYfO5dPwS/vqPNNfn0+6IaVJktUkyj7sjNBY8o=;
+	s=korg; t=1734970179;
+	bh=0yAvLj9pyxsxv1sk3CT5ljHYywZsjUj9Al+yC1USBuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmTOT5Pb5YULQdP9osVqs6dAN+99aYakbf1SRYDLpfYcmreHgFwlUZyRiw1F+dzIi
-	 YGkg/oYkdvns8wZvtnS4ndTS06gCbQMF83tYwc1HhLmgvfjZUFGHatIoxw3dslWOxg
-	 BDcP0yvLXzieR/gb2q3TV+lIhQx3GgKYo+G5UBbU=
+	b=Um43NQDvSva1Een2QwmRdCRzExIUY2yboz8/2lNRXmp/Al58r5Os8raPFCicmOR3t
+	 G1JBhqiGKCwjI5/v0rCSIQJBs/VWSj+6EZuLytVSWjEnJL5Xga01S7+6BW071kIFzM
+	 yi2YAjDGYds+U3WlDb5Fa5hz2BzshaPJgcGynr1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	Desheng Wu <deshengwu@tencent.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9260555647a5132edd48@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 085/116] zram: refuse to use zero sized block device as backing device
+Subject: [PATCH 6.12 144/160] nilfs2: prevent use of deleted inode
 Date: Mon, 23 Dec 2024 16:59:15 +0100
-Message-ID: <20241223155402.869566616@linuxfoundation.org>
+Message-ID: <20241223155414.364580807@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kairui Song <kasong@tencent.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit be48c412f6ebf38849213c19547bc6d5b692b5e5 upstream.
+commit 901ce9705fbb9f330ff1f19600e5daf9770b0175 upstream.
 
-Patch series "zram: fix backing device setup issue", v2.
+syzbot reported a WARNING in nilfs_rmdir. [1]
 
-This series fixes two bugs of backing device setting:
+Because the inode bitmap is corrupted, an inode with an inode number that
+should exist as a ".nilfs" file was reassigned by nilfs_mkdir for "file0",
+causing an inode duplication during execution.  And this causes an
+underflow of i_nlink in rmdir operations.
 
-- ZRAM should reject using a zero sized (or the uninitialized ZRAM
-  device itself) as the backing device.
-- Fix backing device leaking when removing a uninitialized ZRAM
-  device.
+The inode is used twice by the same task to unmount and remove directories
+".nilfs" and "file0", it trigger warning in nilfs_rmdir.
 
+Avoid to this issue, check i_nlink in nilfs_iget(), if it is 0, it means
+that this inode has been deleted, and iput is executed to reclaim it.
 
-This patch (of 2):
+[1]
+WARNING: CPU: 1 PID: 5824 at fs/inode.c:407 drop_nlink+0xc4/0x110 fs/inode.c:407
+...
+Call Trace:
+ <TASK>
+ nilfs_rmdir+0x1b0/0x250 fs/nilfs2/namei.c:342
+ vfs_rmdir+0x3a3/0x510 fs/namei.c:4394
+ do_rmdir+0x3b5/0x580 fs/namei.c:4453
+ __do_sys_rmdir fs/namei.c:4472 [inline]
+ __se_sys_rmdir fs/namei.c:4470 [inline]
+ __x64_sys_rmdir+0x47/0x50 fs/namei.c:4470
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Setting a zero sized block device as backing device is pointless, and one
-can easily create a recursive loop by setting the uninitialized ZRAM
-device itself as its own backing device by (zram0 is uninitialized):
-
-    echo /dev/zram0 > /sys/block/zram0/backing_dev
-
-It's definitely a wrong config, and the module will pin itself, kernel
-should refuse doing so in the first place.
-
-By refusing to use zero sized device we avoided misuse cases including
-this one above.
-
-Link: https://lkml.kernel.org/r/20241209165717.94215-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20241209165717.94215-2-ryncsn@gmail.com
-Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reported-by: Desheng Wu <deshengwu@tencent.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Link: https://lkml.kernel.org/r/20241209065759.6781-1-konishi.ryusuke@gmail.com
+Fixes: d25006523d0b ("nilfs2: pathname operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9260555647a5132edd48
+Tested-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nilfs2/inode.c |    8 +++++++-
+ fs/nilfs2/namei.c |    5 +++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -538,6 +538,12 @@ static ssize_t backing_dev_store(struct
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -579,8 +579,14 @@ struct inode *nilfs_iget(struct super_bl
+ 	inode = nilfs_iget_locked(sb, root, ino);
+ 	if (unlikely(!inode))
+ 		return ERR_PTR(-ENOMEM);
+-	if (!(inode->i_state & I_NEW))
++
++	if (!(inode->i_state & I_NEW)) {
++		if (!inode->i_nlink) {
++			iput(inode);
++			return ERR_PTR(-ESTALE);
++		}
+ 		return inode;
++	}
+ 
+ 	err = __nilfs_read_inode(sb, root, ino, inode);
+ 	if (unlikely(err)) {
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -67,6 +67,11 @@ nilfs_lookup(struct inode *dir, struct d
+ 		inode = NULL;
+ 	} else {
+ 		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
++		if (inode == ERR_PTR(-ESTALE)) {
++			nilfs_error(dir->i_sb,
++					"deleted inode referenced: %lu", ino);
++			return ERR_PTR(-EIO);
++		}
  	}
  
- 	nr_pages = i_size_read(inode) >> PAGE_SHIFT;
-+	/* Refuse to use zero sized device (also prevents self reference) */
-+	if (!nr_pages) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	bitmap_sz = BITS_TO_LONGS(nr_pages) * sizeof(long);
- 	bitmap = kvzalloc(bitmap_sz, GFP_KERNEL);
- 	if (!bitmap) {
+ 	return d_splice_alias(inode, dentry);
 
 
 
