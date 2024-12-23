@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-105775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE87F9FB1BC
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089929FB227
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97CD216289F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7512116289E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6691AF0CE;
-	Mon, 23 Dec 2024 16:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6501B21B5;
+	Mon, 23 Dec 2024 16:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeMy70Xh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPElG2hA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E5B188733;
-	Mon, 23 Dec 2024 16:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F4A13BC0C;
+	Mon, 23 Dec 2024 16:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970099; cv=none; b=m2W7AESZQPbu/A6JcWOcpMx1X5NHh8tyxD1aYkvVk76nu8Q8kNSUDC7nJFZ+fmRQRLCYKWVaRCS1uy+Z7E6fr3Ddv2TsfP1XoZrKA916C48WySOXuQzp1Pkprv6SHnnuBWveYMcBayRgecFKqmxb9BQIXklYknvv0cBE/tRW5lQ=
+	t=1734970441; cv=none; b=XEplP6IPPFecWmM0VClrngxFrsc7hYW6HRx80uEyxSCVudwwcE2oLkCc1P090m4rhARmkUPH6zIeE90n6giV9CPET3lajeFDdkGW9+qWs43qTRuC8LqLnXts0Fd9uwEZ8O5mX/v76ZbIjeqrUY8YJ2rvMmwJ1HeDdzagmIrcLko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970099; c=relaxed/simple;
-	bh=Ih4eGGy2V14KKukndQNWdqQ3rt70/qHBOuN8GveacTQ=;
+	s=arc-20240116; t=1734970441; c=relaxed/simple;
+	bh=Ffy6Gt6KGidwSUM3tHDFo9vZyPaMsCOsdDJrpzWLagg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fiU4wBuPxg+ScFJ0Xrz7vX3B+Fs4AbBMR38lCqHJWTgfVEhGyknhhn+XD51Qcox6MmFeUMgo3E7ch5gkKPMyGPmhO/8hU4Vql1Gvm7SM9TPygJvSmt+RdwosB36/ExK59+nVTVnywD/zAYCu/cc9x7/5yJerIPErlgo5ASk+c2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeMy70Xh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A647AC4CED3;
-	Mon, 23 Dec 2024 16:08:18 +0000 (UTC)
+	 MIME-Version; b=XynfEEfKnvD+O27qdTU+fk0glRwLxwd68aR4rc2gxU/ts10dD50LlMyhh9SMT1XclVpabjhRyHiY7k5gEPDw46BJLTXS4WJ5at3LrMCEL/9YK+JTpgcdm5LYrLyVIkdg8D4lDdrdLPH0z1lOEdw63+KldfPMRvXZAaUHxvgmSWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPElG2hA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9423AC4CED3;
+	Mon, 23 Dec 2024 16:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970099;
-	bh=Ih4eGGy2V14KKukndQNWdqQ3rt70/qHBOuN8GveacTQ=;
+	s=korg; t=1734970441;
+	bh=Ffy6Gt6KGidwSUM3tHDFo9vZyPaMsCOsdDJrpzWLagg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeMy70XhhsfO9P90+C7tJUZ5wO/+h2vdi5PhqCmtgDNK2ZpiJeIaQzgWTy4wZzmBT
-	 D4QPiFSBMEJecvahWv1fTYwrtc7Pl8edmABcSaRGfXdqMhcFfEcYm7UntfdMZNI9hS
-	 J/6HSuxExEXGubE2MxqKCYF+wp8p0Y+FBtvpF0H4=
+	b=FPElG2hAeHq3lObuQi6BsxNdtX8GqDxC6+qb3hwFejn/hI37f1GVdJLErRkiP2zoB
+	 /BjAnlqspkklZmJWrapn8DNKV2elWMtB8htfAF10zRiVcER9c5Ud2UCferlYyLofm7
+	 azKWtgObCc6QhvfzvK9ES5EtH5N1wj9vwjhSaOOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 143/160] nilfs2: fix buffer head leaks in calls to truncate_inode_pages()
+	Murad Masimov <m.masimov@maxima.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 084/116] hwmon: (tmp513) Fix interpretation of values of Temperature Result and Limit Registers
 Date: Mon, 23 Dec 2024 16:59:14 +0100
-Message-ID: <20241223155414.326972501@linuxfoundation.org>
+Message-ID: <20241223155402.831681014@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Murad Masimov <m.masimov@maxima.ru>
 
-commit 6309b8ce98e9a18390b9fd8f03fc412f3c17aee9 upstream.
+[ Upstream commit dd471e25770e7e632f736b90db1e2080b2171668 ]
 
-When block_invalidatepage was converted to block_invalidate_folio, the
-fallback to block_invalidatepage in folio_invalidate() if the
-address_space_operations method invalidatepage (currently
-invalidate_folio) was not set, was removed.
+The values returned by the driver after processing the contents of the
+Temperature Result and the Temperature Limit Registers do not correspond to
+the TMP512/TMP513 specifications. A raw register value is converted to a
+signed integer value by a sign extension in accordance with the algorithm
+provided in the specification, but due to the off-by-one error in the sign
+bit index, the result is incorrect.
 
-Unfortunately, some pseudo-inodes in nilfs2 use empty_aops set by
-inode_init_always_gfp() as is, or explicitly set it to
-address_space_operations.  Therefore, with this change,
-block_invalidatepage() is no longer called from folio_invalidate(), and as
-a result, the buffer_head structures attached to these pages/folios are no
-longer freed via try_to_free_buffers().
+According to the TMP512 and TMP513 datasheets, the Temperature Result (08h
+to 0Bh) and Limit (11h to 14h) Registers are 13-bit two's complement
+integer values, shifted left by 3 bits. The value is scaled by 0.0625
+degrees Celsius per bit.  E.g., if regval = 1 1110 0111 0000 000, the
+output should be -25 degrees, but the driver will return +487 degrees.
 
-Thus, these buffer heads are now leaked by truncate_inode_pages(), which
-cleans up the page cache from inode evict(), etc.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Three types of caches use empty_aops: gc inode caches and the DAT shadow
-inode used by GC, and b-tree node caches.  Of these, b-tree node caches
-explicitly call invalidate_mapping_pages() during cleanup, which involves
-calling try_to_free_buffers(), so the leak was not visible during normal
-operation but worsened when GC was performed.
-
-Fix this issue by using address_space_operations with invalidate_folio set
-to block_invalidate_folio instead of empty_aops, which will ensure the
-same behavior as before.
-
-Link: https://lkml.kernel.org/r/20241212164556.21338-1-konishi.ryusuke@gmail.com
-Fixes: 7ba13abbd31e ("fs: Turn block_invalidatepage into block_invalidate_folio")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>	[5.18+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
+Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+Link: https://lore.kernel.org/r/20241216173648.526-4-m.masimov@maxima.ru
+[groeck: fixed description line length]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btnode.c  |    1 +
- fs/nilfs2/gcinode.c |    2 +-
- fs/nilfs2/inode.c   |    5 +++++
- fs/nilfs2/nilfs.h   |    1 +
- 4 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/hwmon/tmp513.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/btnode.c
-+++ b/fs/nilfs2/btnode.c
-@@ -35,6 +35,7 @@ void nilfs_init_btnc_inode(struct inode
- 	ii->i_flags = 0;
- 	memset(&ii->i_bmap_data, 0, sizeof(struct nilfs_bmap));
- 	mapping_set_gfp_mask(btnc_inode->i_mapping, GFP_NOFS);
-+	btnc_inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
- }
- 
- void nilfs_btnode_cache_clear(struct address_space *btnc)
---- a/fs/nilfs2/gcinode.c
-+++ b/fs/nilfs2/gcinode.c
-@@ -163,7 +163,7 @@ int nilfs_init_gcinode(struct inode *ino
- 
- 	inode->i_mode = S_IFREG;
- 	mapping_set_gfp_mask(inode->i_mapping, GFP_NOFS);
--	inode->i_mapping->a_ops = &empty_aops;
-+	inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
- 
- 	ii->i_flags = 0;
- 	nilfs_bmap_init_gc(ii->i_bmap);
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -307,6 +307,10 @@ const struct address_space_operations ni
- 	.is_partially_uptodate  = block_is_partially_uptodate,
- };
- 
-+const struct address_space_operations nilfs_buffer_cache_aops = {
-+	.invalidate_folio	= block_invalidate_folio,
-+};
-+
- static int nilfs_insert_inode_locked(struct inode *inode,
- 				     struct nilfs_root *root,
- 				     unsigned long ino)
-@@ -706,6 +710,7 @@ struct inode *nilfs_iget_for_shadow(stru
- 	NILFS_I(s_inode)->i_flags = 0;
- 	memset(NILFS_I(s_inode)->i_bmap, 0, sizeof(struct nilfs_bmap));
- 	mapping_set_gfp_mask(s_inode->i_mapping, GFP_NOFS);
-+	s_inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
- 
- 	err = nilfs_attach_btree_node_cache(s_inode);
- 	if (unlikely(err)) {
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -401,6 +401,7 @@ extern const struct file_operations nilf
- extern const struct inode_operations nilfs_file_inode_operations;
- extern const struct file_operations nilfs_file_operations;
- extern const struct address_space_operations nilfs_aops;
-+extern const struct address_space_operations nilfs_buffer_cache_aops;
- extern const struct inode_operations nilfs_dir_inode_operations;
- extern const struct inode_operations nilfs_special_inode_operations;
- extern const struct inode_operations nilfs_symlink_inode_operations;
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index 77dffbee8ebe..070f93226ed6 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -230,7 +230,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
+ 	case TMP51X_REMOTE_TEMP_LIMIT_2:
+ 	case TMP513_REMOTE_TEMP_LIMIT_3:
+ 		// 1lsb = 0.0625 degrees centigrade
+-		*val = sign_extend32(regval, 16) >> TMP51X_TEMP_SHIFT;
++		*val = sign_extend32(regval, 15) >> TMP51X_TEMP_SHIFT;
+ 		*val = DIV_ROUND_CLOSEST(*val * 625, 10);
+ 		break;
+ 	case TMP51X_N_FACTOR_AND_HYST_1:
+-- 
+2.39.5
+
 
 
 
