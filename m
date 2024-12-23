@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-105790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BF29FB1B2
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779599FB27D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE83C1882247
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7211881D47
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8885A1B0F30;
-	Mon, 23 Dec 2024 16:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AF01B2522;
+	Mon, 23 Dec 2024 16:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER1ZCYbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LahO58Yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DC01AD41F;
-	Mon, 23 Dec 2024 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570591A8F99;
+	Mon, 23 Dec 2024 16:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970146; cv=none; b=NvYKrMtZzUrpjoibCF5Vx14DHRuvHsqnbRTnk+vxE4QMPA9C/Z6I33fo8pXuFarx9/DC7krchBVhAb8OIDZcOwd0qNyKvD8V7oVSzrx341T/Wiwni14AD+kGJ1nhzeyNDqPh6qYDCD0NVLHJxGl8afFpiav2J5Np5Vvf1pQv+oA=
+	t=1734970728; cv=none; b=cDcDCHngPjoFs1gw5G2U1YLtWa/3Dl5HOH0Qk7STWqddRHxNI0xMo0zOag4asaCTIp5TMCADcez9L2reeh0nX3bVCrM1fVfdGumX2IlPJ7i82Y0F5Z2H2kIdFMNkRNGHFmUigh0OriA+zCRyP3WIRgPRKT0INwXG3u5zrPGqGiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970146; c=relaxed/simple;
-	bh=DztSW4tuK+jZUd5XqJ77zciMSgB6KR3YawOXRJwqm8s=;
+	s=arc-20240116; t=1734970728; c=relaxed/simple;
+	bh=sRpuoLDcA2jHeyI9VlibpxceD0B9cGPCnF1IEp0JX2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucbIpNbhN0LDob+BPbcpXMvw5OQPrwXQdnVrewhKmG2MiIMXofufu8KkkR05UI+iyt3UJguzeMNSU1rI2P58ojTNgzkfk/B8tvJ/ic0YUoPYd0AhgkMQDfVMgfmY/7B8RCY3TWAx0VoduYH3NgxYedzAIaiQC7D/Eu1DKu2M7ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER1ZCYbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39524C4CED3;
-	Mon, 23 Dec 2024 16:09:05 +0000 (UTC)
+	 MIME-Version; b=sKp+Af7qf5cn/ca/JBQlHODg9RQdQBSD+Cvy310KQcatsIpjmullHx6XSWhB8Y+CiqpyQbSN4oR7hI0FotH/xxRLExArhPlHs26xsxA9mMYv448tRN24xACHB4UF3nakv2RiY8BJJ1NGnoTxuKPk1zHWwpXa71USIaUyVhA1DMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LahO58Yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC4FC4CED3;
+	Mon, 23 Dec 2024 16:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970145;
-	bh=DztSW4tuK+jZUd5XqJ77zciMSgB6KR3YawOXRJwqm8s=;
+	s=korg; t=1734970728;
+	bh=sRpuoLDcA2jHeyI9VlibpxceD0B9cGPCnF1IEp0JX2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ER1ZCYbPBMA/q2KXi+9/3jP5+FNOQyE/7Qh0CDJUoCQoqYUiwh8r1NLutmklaf6wR
-	 zNJ8QAZLkLqTu7nD21rPWHWT1YGLJre83n9JgYs9LAOqkoowtdUWJPKQzVtq1rRGuF
-	 /ua6S2tjpkm/MLo8lf92TPVKaE4mkWMKU51iV340=
+	b=LahO58YqB5Qe0Lr/hhf+xh2kWCyHO56I92F2lvC5pf6SZ5MNdNItlbKDE32Zt6otr
+	 EEYHrdi+WH0F+JHEex+t6afzRPc/iAo9RS3MxF5tRlzJ7s9m0M+O5KfIW8NHfcI2Jv
+	 NZ8XyWLVK00eVTOQy9N8qaCRM5igogptXQO9BTV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Matthew Wilcox <willy@infradead.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Nico Pache <npache@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 159/160] mm: convert partially_mapped set/clear operations to be atomic
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 51/83] hwmon: (tmp513) Simplify with dev_err_probe()
 Date: Mon, 23 Dec 2024 16:59:30 +0100
-Message-ID: <20241223155414.961764620@linuxfoundation.org>
+Message-ID: <20241223155355.608361334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,106 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Usama Arif <usamaarif642@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 42b2eb69835b0fda797f70eb5b4fc213dbe3a7ea upstream.
+[ Upstream commit df989762bc4b71068e6adc0c2b5ef6f76b6acf74 ]
 
-Other page flags in the 2nd page, like PG_hwpoison and PG_anon_exclusive
-can get modified concurrently.  Changes to other page flags might be lost
-if they are happening at the same time as non-atomic partially_mapped
-operations.  Hence, make partially_mapped operations atomic.
+Common pattern of handling deferred probe can be simplified with
+dev_err_probe().  Less code and also it prints the error value.
 
-Link: https://lkml.kernel.org/r/20241212183351.1345389-1-usamaarif642@gmail.com
-Fixes: 8422acdc97ed ("mm: introduce a pageflag for partially mapped folios")
-Reported-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/all/e53b04ad-1827-43a2-a1ab-864c7efecf6e@redhat.com/
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231128180654.395692-3-andriy.shevchenko@linux.intel.com
+[groeck: Fixed excessive line length]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 74d7e038fd07 ("hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/page-flags.h |   12 ++----------
- mm/huge_memory.c           |    8 ++++----
- 2 files changed, 6 insertions(+), 14 deletions(-)
+ drivers/hwmon/tmp513.c | 35 +++++++++++++++--------------------
+ 1 file changed, 15 insertions(+), 20 deletions(-)
 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -860,18 +860,10 @@ static inline void ClearPageCompound(str
- 	ClearPageHead(page);
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index fe3f1113b64e..53525d3a32a0 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -632,9 +632,9 @@ static int tmp51x_vbus_range_to_reg(struct device *dev,
+ 	} else if (data->vbus_range_uvolt == TMP51X_VBUS_RANGE_16V) {
+ 		data->shunt_config &= ~TMP51X_BUS_VOLTAGE_MASK;
+ 	} else {
+-		dev_err(dev, "ti,bus-range-microvolt is invalid: %u\n",
+-			data->vbus_range_uvolt);
+-		return -EINVAL;
++		return dev_err_probe(dev, -EINVAL,
++				     "ti,bus-range-microvolt is invalid: %u\n",
++				     data->vbus_range_uvolt);
+ 	}
+ 	return 0;
  }
- FOLIO_FLAG(large_rmappable, FOLIO_SECOND_PAGE)
--FOLIO_TEST_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
--/*
-- * PG_partially_mapped is protected by deferred_split split_queue_lock,
-- * so its safe to use non-atomic set/clear.
-- */
--__FOLIO_SET_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
--__FOLIO_CLEAR_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
-+FOLIO_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
- #else
- FOLIO_FLAG_FALSE(large_rmappable)
--FOLIO_TEST_FLAG_FALSE(partially_mapped)
--__FOLIO_SET_FLAG_NOOP(partially_mapped)
--__FOLIO_CLEAR_FLAG_NOOP(partially_mapped)
-+FOLIO_FLAG_FALSE(partially_mapped)
- #endif
+@@ -650,8 +650,8 @@ static int tmp51x_pga_gain_to_reg(struct device *dev, struct tmp51x_data *data)
+ 	} else if (data->pga_gain == 1) {
+ 		data->shunt_config |= CURRENT_SENSE_VOLTAGE_40_MASK;
+ 	} else {
+-		dev_err(dev, "ti,pga-gain is invalid: %u\n", data->pga_gain);
+-		return -EINVAL;
++		return dev_err_probe(dev, -EINVAL,
++				     "ti,pga-gain is invalid: %u\n", data->pga_gain);
+ 	}
+ 	return 0;
+ }
+@@ -684,9 +684,9 @@ static int tmp51x_read_properties(struct device *dev, struct tmp51x_data *data)
  
- #define PG_head_mask ((1UL << PG_head))
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3503,7 +3503,7 @@ int split_huge_page_to_list_to_order(str
- 		    !list_empty(&folio->_deferred_list)) {
- 			ds_queue->split_queue_len--;
- 			if (folio_test_partially_mapped(folio)) {
--				__folio_clear_partially_mapped(folio);
-+				folio_clear_partially_mapped(folio);
- 				mod_mthp_stat(folio_order(folio),
- 					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 			}
-@@ -3615,7 +3615,7 @@ bool __folio_unqueue_deferred_split(stru
- 	if (!list_empty(&folio->_deferred_list)) {
- 		ds_queue->split_queue_len--;
- 		if (folio_test_partially_mapped(folio)) {
--			__folio_clear_partially_mapped(folio);
-+			folio_clear_partially_mapped(folio);
- 			mod_mthp_stat(folio_order(folio),
- 				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 		}
-@@ -3659,7 +3659,7 @@ void deferred_split_folio(struct folio *
- 	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
- 	if (partially_mapped) {
- 		if (!folio_test_partially_mapped(folio)) {
--			__folio_set_partially_mapped(folio);
-+			folio_set_partially_mapped(folio);
- 			if (folio_test_pmd_mappable(folio))
- 				count_vm_event(THP_DEFERRED_SPLIT_PAGE);
- 			count_mthp_stat(folio_order(folio), MTHP_STAT_SPLIT_DEFERRED);
-@@ -3752,7 +3752,7 @@ static unsigned long deferred_split_scan
- 		} else {
- 			/* We lost race with folio_put() */
- 			if (folio_test_partially_mapped(folio)) {
--				__folio_clear_partially_mapped(folio);
-+				folio_clear_partially_mapped(folio);
- 				mod_mthp_stat(folio_order(folio),
- 					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 			}
+ 	// Check if shunt value is compatible with pga-gain
+ 	if (data->shunt_uohms > data->pga_gain * 40 * 1000 * 1000) {
+-		dev_err(dev, "shunt-resistor: %u too big for pga_gain: %u\n",
+-			data->shunt_uohms, data->pga_gain);
+-		return -EINVAL;
++		return dev_err_probe(dev, -EINVAL,
++				     "shunt-resistor: %u too big for pga_gain: %u\n",
++				     data->shunt_uohms, data->pga_gain);
+ 	}
+ 
+ 	return 0;
+@@ -730,22 +730,17 @@ static int tmp51x_probe(struct i2c_client *client)
+ 		data->id = i2c_match_id(tmp51x_id, client)->driver_data;
+ 
+ 	ret = tmp51x_configure(dev, data);
+-	if (ret < 0) {
+-		dev_err(dev, "error configuring the device: %d\n", ret);
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "error configuring the device\n");
+ 
+ 	data->regmap = devm_regmap_init_i2c(client, &tmp51x_regmap_config);
+-	if (IS_ERR(data->regmap)) {
+-		dev_err(dev, "failed to allocate register map\n");
+-		return PTR_ERR(data->regmap);
+-	}
++	if (IS_ERR(data->regmap))
++		return dev_err_probe(dev, PTR_ERR(data->regmap),
++				     "failed to allocate register map\n");
+ 
+ 	ret = tmp51x_init(data);
+-	if (ret < 0) {
+-		dev_err(dev, "error configuring the device: %d\n", ret);
+-		return -ENODEV;
+-	}
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "error configuring the device\n");
+ 
+ 	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
+ 							 data,
+-- 
+2.39.5
+
 
 
 
