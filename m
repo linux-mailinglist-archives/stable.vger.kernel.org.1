@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DAE49FB1F8
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074889FB267
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52BE51885692
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E3E91885CF3
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D281B21BD;
-	Mon, 23 Dec 2024 16:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6F61B2522;
+	Mon, 23 Dec 2024 16:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvwvDYto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pt/yE61p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F18D19E971;
-	Mon, 23 Dec 2024 16:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0DF17A597;
+	Mon, 23 Dec 2024 16:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970338; cv=none; b=lBDPN02RUdHPlJIpOUz/FnctXqnBpsZz2YE02nFbCHKOda02vip2Hcm0riS9pZ1JxcizvHDg49bSTLyXXJf2gFq9cNtspkzlK9AqZJmvBFFwb+294tG2NDtVEVwtLB+xpd0mu3u/SNIok55FPqKnCmX/Q86rPOyp1PATmmDKu0o=
+	t=1734970665; cv=none; b=QuK2DgLvHDIZ9nxzMTDht/gH1aYMQo+b9Y/31EKoFkRvVnjpryOYpcVQy1URn36raZ0m//XgxiUYDvoU9EC8svBrRw9b+woErrgY0nvU+dc+0aAWGgoVly3vaIXOVDrUYW7JVqxPd+jxuUxD3ibyoix53OlgVWgUPF+W+Q5nygM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970338; c=relaxed/simple;
-	bh=TJ9htrQv+R+xNOQ5N2sovEE1VI/zInGwkXYWrOlYSIs=;
+	s=arc-20240116; t=1734970665; c=relaxed/simple;
+	bh=bqzvlGiuKXAPIEHsao8cjA7/9XaPSqAWkg99jcUt+74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZV8qp9H1asQcjswlWNtd9Zi7oiMM3zfkstpW2YqRwC0+/vX77QQqN6hytU5tMEAhbFwVHQBKcrstWeXBfc6pg5zWPsh7ybIypR9QTq4BLyglCpHsULossrEoiuzSSiZztVfia7+o23xeSH4JgxhZ8/Fs3kzft6p5wBVwul83Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvwvDYto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C307AC4CED3;
-	Mon, 23 Dec 2024 16:12:17 +0000 (UTC)
+	 MIME-Version; b=oXmrBeGqLyxEKIBYxQqfWIP9t5zQXLK476WxdHSl6WHgvrkBdEmtHt4xgtNRtRxgReMBu0iNyH55gAkwZ/+307EUKEbHqhzgrA5RlD5lxmbgR90KsQL+rlP+1duUaMcABhgYFBdWfuepkAUFxtMZZfnvZKMXt75QTHWtgGJsrq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pt/yE61p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB598C4CED3;
+	Mon, 23 Dec 2024 16:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970338;
-	bh=TJ9htrQv+R+xNOQ5N2sovEE1VI/zInGwkXYWrOlYSIs=;
+	s=korg; t=1734970665;
+	bh=bqzvlGiuKXAPIEHsao8cjA7/9XaPSqAWkg99jcUt+74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvwvDYtoDAgHwwQ4rbWcwRaB/5tssnLox4EMea2KTMzxYAGS6yI34xgqhnV6bkgzk
-	 7qyqAUScdB7u+85RgcmE/24TfFcjbY6ruMYcrrpgLzhlEJCarbrckWvzWxsGYFZSxe
-	 +3oN8oynmuP916Lkp40XYP568+kt1hYVLBwOsCDc=
+	b=pt/yE61pGrPdjGLqtiUx/w4Zg95TOosmP7zxpVljHT0QofCIInUM164aLlViGUZZi
+	 3s/eDMsfLWKxLrh6JqmWI/NURRulSfBiTQ5XZ78yTQL66TBrEPz64YIxPcBXwbt0cr
+	 INhZDVNwrnk/XxS7MOuhj7SuKDaaC+F8dzSfSlZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/116] net: ethernet: bgmac-platform: fix an OF node reference leak
-Date: Mon, 23 Dec 2024 16:58:43 +0100
-Message-ID: <20241223155401.620803082@linuxfoundation.org>
+Subject: [PATCH 6.1 05/83] usb: cdns3: Add quirk flag to enable suspend residency
+Date: Mon, 23 Dec 2024 16:58:44 +0100
+Message-ID: <20241223155353.849903022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 0cb2c504d79e7caa3abade3f466750c82ad26f01 ]
+[ Upstream commit 0aca19e4037a4143273e90f1b44666b78b4dde9b ]
 
-The OF node obtained by of_parse_phandle() is not freed. Call
-of_node_put() to balance the refcount.
+Some platforms (e.g. ti,j721e-usb, ti,am64-usb) require
+this bit to be set to workaround a lockup issue with PHY
+short suspend intervals [1]. Add a platform quirk flag
+to indicate if Suspend Residency should be enabled.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+[1] - https://www.ti.com/lit/er/sprz457h/sprz457h.pdf
+i2409 - USB: USB2 PHY locks up due to short suspend
 
-Fixes: 1676aba5ef7e ("net: ethernet: bgmac: device tree phy enablement")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241214014912.2810315-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240516044537.16801-2-r-gunasekaran@ti.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bgmac-platform.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/core.h |  1 +
+ drivers/usb/cdns3/drd.c  | 10 +++++++++-
+ drivers/usb/cdns3/drd.h  |  3 +++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bgmac-platform.c b/drivers/net/ethernet/broadcom/bgmac-platform.c
-index b4381cd41979..3f4e8bac40c1 100644
---- a/drivers/net/ethernet/broadcom/bgmac-platform.c
-+++ b/drivers/net/ethernet/broadcom/bgmac-platform.c
-@@ -171,6 +171,7 @@ static int platform_phy_connect(struct bgmac *bgmac)
- static int bgmac_probe(struct platform_device *pdev)
+diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
+index 81a9c9d6be08..57d47348dc19 100644
+--- a/drivers/usb/cdns3/core.h
++++ b/drivers/usb/cdns3/core.h
+@@ -44,6 +44,7 @@ struct cdns3_platform_data {
+ 			bool suspend, bool wakeup);
+ 	unsigned long quirks;
+ #define CDNS3_DEFAULT_PM_RUNTIME_ALLOW	BIT(0)
++#define CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE	BIT(1)
+ };
+ 
+ /**
+diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
+index 33ba30f79b33..8e19ee72c120 100644
+--- a/drivers/usb/cdns3/drd.c
++++ b/drivers/usb/cdns3/drd.c
+@@ -385,7 +385,7 @@ static irqreturn_t cdns_drd_irq(int irq, void *data)
+ int cdns_drd_init(struct cdns *cdns)
  {
- 	struct device_node *np = pdev->dev.of_node;
-+	struct device_node *phy_node;
- 	struct bgmac *bgmac;
- 	struct resource *regs;
+ 	void __iomem *regs;
+-	u32 state;
++	u32 state, reg;
  	int ret;
-@@ -236,7 +237,9 @@ static int bgmac_probe(struct platform_device *pdev)
- 	bgmac->cco_ctl_maskset = platform_bgmac_cco_ctl_maskset;
- 	bgmac->get_bus_clock = platform_bgmac_get_bus_clock;
- 	bgmac->cmn_maskset32 = platform_bgmac_cmn_maskset32;
--	if (of_parse_phandle(np, "phy-handle", 0)) {
-+	phy_node = of_parse_phandle(np, "phy-handle", 0);
-+	if (phy_node) {
-+		of_node_put(phy_node);
- 		bgmac->phy_connect = platform_phy_connect;
- 	} else {
- 		bgmac->phy_connect = bgmac_phy_connect_direct;
+ 
+ 	regs = devm_ioremap_resource(cdns->dev, &cdns->otg_res);
+@@ -429,6 +429,14 @@ int cdns_drd_init(struct cdns *cdns)
+ 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+ 					      &cdns->otg_v1_regs->ien;
+ 			writel(1, &cdns->otg_v1_regs->simulate);
++
++			if (cdns->pdata &&
++			    (cdns->pdata->quirks & CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE)) {
++				reg = readl(&cdns->otg_v1_regs->susp_ctrl);
++				reg |= SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE;
++				writel(reg, &cdns->otg_v1_regs->susp_ctrl);
++			}
++
+ 			cdns->version  = CDNS3_CONTROLLER_V1;
+ 		} else {
+ 			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
+diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
+index d72370c321d3..1e2aee14d629 100644
+--- a/drivers/usb/cdns3/drd.h
++++ b/drivers/usb/cdns3/drd.h
+@@ -193,6 +193,9 @@ struct cdns_otg_irq_regs {
+ /* OTGREFCLK - bitmasks */
+ #define OTGREFCLK_STB_CLK_SWITCH_EN	BIT(31)
+ 
++/* SUPS_CTRL - bitmasks */
++#define SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE	BIT(17)
++
+ /* OVERRIDE - bitmasks */
+ #define OVERRIDE_IDPULLUP		BIT(0)
+ /* Only for CDNS3_CONTROLLER_V0 version */
 -- 
 2.39.5
 
