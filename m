@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9BD9FB186
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C339FB24F
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8EF16214C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD2011885D85
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1136A12D1F1;
-	Mon, 23 Dec 2024 16:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97EC1B3952;
+	Mon, 23 Dec 2024 16:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaYExrwM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbSn/pZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10F713BC0C;
-	Mon, 23 Dec 2024 16:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58881A4AAA;
+	Mon, 23 Dec 2024 16:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969984; cv=none; b=fUfJJk8Hi5CR9xTOX1n0RXOOt6y0F6TLg4o3W+8szE3C4ulB9rh+eF4kLxAINnUqJ2MiNVh35K7q/BtZzcHHD8cy1zrvzZ+ZOQZQppgDjIYKZF7FDXWVupzj61WXs/1925yU1nJUNcWWq8JJxVSjFqeUqncGHUIiraM8r7mkzNo=
+	t=1734970583; cv=none; b=a3425Z+/0ZyniRYKskjEBb06HwASTn0G8Gv93/KuQvLvPESd6TsSFjxXNXDQPe5A9ot7HsM+h4wASqOIwv4qjScQRlpRRDV/eZDjTLm+lI4F5cYfrSCGdcrCgwRwGSYvkoucVxO3MQqqy/IWclJzrk4knv2Qyqm9S1YF3TLxGhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969984; c=relaxed/simple;
-	bh=/lM58sDIjCyGGpigyWk8t0IQ8UWVyq7M2g4uxZixp/s=;
+	s=arc-20240116; t=1734970583; c=relaxed/simple;
+	bh=vrHRSXIX4o+GbcMpKNnFazvzGPGUMtQ1QU69QNnohCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ii/9qIjIn2TpYKBDnF5IDDVj6ZTbaoIwLIZoqVFo83dFanPEg8a2VuTRRs+InE9YKwAj8SC09rPM7zPjk6LYdWHj4uKQJFfTT4eglwN5smfjNBLgH9jDYtN7D46hq47BtJ4Vj57Z4SpEwy5bW6TzVKWL1oGS1ZSUUPBbvAWjTEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaYExrwM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FD6C4CED3;
-	Mon, 23 Dec 2024 16:06:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=obEytar1zOQz7sj7Kdo7G/L8FUOg4cdx3GYrDc1+1KfaT1jiT5kY8TDsxs0nbzcs5Betvbln9qclHMI2K2mAVZf5l7Ae8Xmz3qOVei7XcS8G/GV+zEa1cdJrrAgAcxhka0PK30fPNf11+OrbDYLy9JQXgGAgVSyx3XPfmiVys5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbSn/pZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D70C4CED3;
+	Mon, 23 Dec 2024 16:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969984;
-	bh=/lM58sDIjCyGGpigyWk8t0IQ8UWVyq7M2g4uxZixp/s=;
+	s=korg; t=1734970583;
+	bh=vrHRSXIX4o+GbcMpKNnFazvzGPGUMtQ1QU69QNnohCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uaYExrwMaZ2cD+6Wt4gH5FZhGtaFu3oVvLDoK2DP3TI/vBnmFq+WsWIGgWP+PkDCJ
-	 VwGyoK8VxhzWwLgnVffa3ulZNrZh+vjdRT4NkEUz6LCO0dgnw1gJTPmaNBZrNmhAd7
-	 tCnKZxCCQYpUVnpePy1P//e+w0qzjVbHQEXuMDlQ=
+	b=wbSn/pZh7APK3JHFAAoZLMdTQFPGgCOIb4SiwTgUtvj4ldtTDCxW4Ith1cqGIE4gh
+	 zvJlRGgLg6r11bi9MrAY/MNwO7zNnKs82w1LwBGtEP9CfdszsjGn5Qo070tajv2eHT
+	 w3Zhp21hRSVjCsNHOqpQMKuJ4Gwu75Ncl2kKKwBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kairui Song <kasong@tencent.com>,
-	Desheng Wu <deshengwu@tencent.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 109/160] zram: refuse to use zero sized block device as backing device
+	Lion Ackermann <nnamrec@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Artem Metla <ametla@google.com>
+Subject: [PATCH 6.1 01/83] net: sched: fix ordering of qlen adjustment
 Date: Mon, 23 Dec 2024 16:58:40 +0100
-Message-ID: <20241223155412.889415988@linuxfoundation.org>
+Message-ID: <20241223155353.699990565@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kairui Song <kasong@tencent.com>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-commit be48c412f6ebf38849213c19547bc6d5b692b5e5 upstream.
+commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
 
-Patch series "zram: fix backing device setup issue", v2.
+Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
+_before_ a call to said function because otherwise it may fail to notify
+parent qdiscs when the child is about to become empty.
 
-This series fixes two bugs of backing device setting:
-
-- ZRAM should reject using a zero sized (or the uninitialized ZRAM
-  device itself) as the backing device.
-- Fix backing device leaking when removing a uninitialized ZRAM
-  device.
-
-
-This patch (of 2):
-
-Setting a zero sized block device as backing device is pointless, and one
-can easily create a recursive loop by setting the uninitialized ZRAM
-device itself as its own backing device by (zram0 is uninitialized):
-
-    echo /dev/zram0 > /sys/block/zram0/backing_dev
-
-It's definitely a wrong config, and the module will pin itself, kernel
-should refuse doing so in the first place.
-
-By refusing to use zero sized device we avoided misuse cases including
-this one above.
-
-Link: https://lkml.kernel.org/r/20241209165717.94215-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20241209165717.94215-2-ryncsn@gmail.com
-Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reported-by: Desheng Wu <deshengwu@tencent.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Artem Metla <ametla@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sched/sch_cake.c  |    2 +-
+ net/sched/sch_choke.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -524,6 +524,12 @@ static ssize_t backing_dev_store(struct
- 	}
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1541,7 +1541,6 @@ static unsigned int cake_drop(struct Qdi
+ 	b->backlogs[idx]    -= len;
+ 	b->tin_backlog      -= len;
+ 	sch->qstats.backlog -= len;
+-	qdisc_tree_reduce_backlog(sch, 1, len);
  
- 	nr_pages = i_size_read(inode) >> PAGE_SHIFT;
-+	/* Refuse to use zero sized device (also prevents self reference) */
-+	if (!nr_pages) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	bitmap_sz = BITS_TO_LONGS(nr_pages) * sizeof(long);
- 	bitmap = kvzalloc(bitmap_sz, GFP_KERNEL);
- 	if (!bitmap) {
+ 	flow->dropped++;
+ 	b->tin_dropped++;
+@@ -1552,6 +1551,7 @@ static unsigned int cake_drop(struct Qdi
+ 
+ 	__qdisc_drop(skb, to_free);
+ 	sch->q.qlen--;
++	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	cake_heapify(q, 0);
+ 
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -123,10 +123,10 @@ static void choke_drop_by_idx(struct Qdi
+ 	if (idx == q->tail)
+ 		choke_zap_tail_holes(q);
+ 
++	--sch->q.qlen;
+ 	qdisc_qstats_backlog_dec(sch, skb);
+ 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
+ 	qdisc_drop(skb, sch, to_free);
+-	--sch->q.qlen;
+ }
+ 
+ struct choke_skb_cb {
 
 
 
