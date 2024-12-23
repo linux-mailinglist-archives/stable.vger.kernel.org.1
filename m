@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-105826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB2B9FB1DA
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3566D9FB12E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2087B1884F3F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:11:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F8D67A1D69
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6581B3922;
-	Mon, 23 Dec 2024 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF773188006;
+	Mon, 23 Dec 2024 16:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RN+z6d7e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S28rKmmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E46188006;
-	Mon, 23 Dec 2024 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D92812D1F1;
+	Mon, 23 Dec 2024 16:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970269; cv=none; b=NDF8vkML5a66f4z4j0p4FXyY3l23shbm6Ms5lm+StErz2Gnok2+Z8ecfEP2XGKslWv8bpA5qznPeUsuzEH08LmQMhKYF9bBxzLKVjoPsmIkM16nm0DgQzDkS7e7Xuw6A/kq+MQ4y57oB4mQjwbP1Ff7uuMTo5JWupwMEelV2XO4=
+	t=1734969833; cv=none; b=dqklNZ/Pi3YHtUJ8qXWX/xRiGDapUugV5uuimokNUm8xZFrG/ux1nfKc4CyD1Tquu9CD9zw4ho/ccun5CxnPvyJQqJivSVCjmoMXrkF9X2aISDyxRmSAX5tIQRhszenF505X6jv8a+hqESwzr3asvPjMEPuD8+Po6cHHZI8+G5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970269; c=relaxed/simple;
-	bh=/AZ+8zcmY8jnh3AedagA/FtvFKi2xgA2+QWLuhqLtD4=;
+	s=arc-20240116; t=1734969833; c=relaxed/simple;
+	bh=apeAc3CvGqqqCct7uG+Tui3jlV1ueaNZ779EQcIgsuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ks1tTJAHAxUDeLbfsz8bqRS27zjwCOu4ixhNhjjqZsI97AuhxG6qUemDcR902tgNOaueAxPKz1+Y1JH4lUtUIwWjQIycfnM0YNOjk8d7y00KJ3rFpodKxfX35gEuBHouWFlANecmPs1XY1+lODlx/2kmh1rifjVqC/rySQqcGE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RN+z6d7e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900A0C4CED3;
-	Mon, 23 Dec 2024 16:11:08 +0000 (UTC)
+	 MIME-Version; b=n/SvCzsz9+hPHKUrYpiv2s7Pfg/ymt+pdxvUlAU0ODSh+v6GykwUcNfwUn32H3o0xj+VNlSvINTG4nxJLOsVHRDn1WCYfhr0h43CkOluGcb1iPQOgWWHgUB5joO5ev95p1ORDb+Y3En16EJ37idtRPpFFV3Fzao4O4LVbWBatdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S28rKmmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14B8C4CED3;
+	Mon, 23 Dec 2024 16:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970269;
-	bh=/AZ+8zcmY8jnh3AedagA/FtvFKi2xgA2+QWLuhqLtD4=;
+	s=korg; t=1734969833;
+	bh=apeAc3CvGqqqCct7uG+Tui3jlV1ueaNZ779EQcIgsuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RN+z6d7eJWJ+rcSDaFEs8Gq1ffvc6W5eJQbZ/32vtLOVBvcQusLl0EUnkiAnmaKgb
-	 TZS2z1p9NhvUwpxbnrucHJaFijcuRvShyjIG8Z9oJmKLy1XxjXvFqw1P40XYJa9P2K
-	 hUl9cgItpAV848vxaTn2uhJRqIDPVA0QjNaUyKtI=
+	b=S28rKmmn3rti2QqI1WOFobwxGROL5BMEcnQtZzMU9cNnWfBxDxIb9o0QHcfgGM6/L
+	 XGSwRUHyRNiqQ9x1d+r16LLuYoVtybDFkQTlqaSO5Qlpp9jRVOlB4cYqMFDgyBIw5l
+	 dOK5EcoUwEyRhNk+tvBuDHF9sc9bea20fsYyucUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/116] ASoC: Intel: sof_sdw: fix jack detection on ADL-N variant RVP
-Date: Mon, 23 Dec 2024 16:57:57 +0100
-Message-ID: <20241223155359.828219272@linuxfoundation.org>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.12 067/160] KVM: arm64: Do not allow ID_AA64MMFR0_EL1.ASIDbits to be overridden
+Date: Mon, 23 Dec 2024 16:57:58 +0100
+Message-ID: <20241223155411.267211510@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 65c90df918205bc84f5448550cde76a54dae5f52 ]
+commit 03c7527e97f73081633d773f9f8c2373f9854b25 upstream.
 
-Experimental tests show that JD2_100K is required, otherwise the jack
-is detected always even with nothing plugged-in.
+Catalin reports that a hypervisor lying to a guest about the size
+of the ASID field may result in unexpected issues:
 
-To avoid matching with other known quirks the SKU information is used.
+- if the underlying HW does only supports 8 bit ASIDs, the ASID
+  field in a TLBI VAE1* operation is only 8 bits, and the HW will
+  ignore the other 8 bits
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://patch.msgid.link/20240624121119.91552-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- if on the contrary the HW is 16 bit capable, the ASID field
+  in the same TLBI operation is always 16 bits, irrespective of
+  the value of TCR_ELx.AS.
+
+This could lead to missed invalidations if the guest was lead to
+assume that the HW had 8 bit ASIDs while they really are 16 bit wide.
+
+In order to avoid any potential disaster that would be hard to debug,
+prenent the migration between a host with 8 bit ASIDs to one with
+wider ASIDs (the converse was obviously always forbidden). This is
+also consistent with what we already do for VMIDs.
+
+If it becomes absolutely mandatory to support such a migration path
+in the future, we will have to trap and emulate all TLBIs, something
+that nobody should look forward to.
+
+Fixes: d5a32b60dc18 ("KVM: arm64: Allow userspace to change ID_AA64MMFR{0-2}_EL1")
+Reported-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: James Morse <james.morse@arm.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20241203190236.505759-1-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/kvm/sys_regs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 5980fce81797..dc144cd7e0e3 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -286,6 +286,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_BT_OFFLOAD_SSP(2) |
- 					SOF_SSP_BT_OFFLOAD_PRESENT),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_SKU, "0000000000070000"),
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					RT711_JD2_100K),
-+	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
--- 
-2.39.5
-
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -2503,7 +2503,8 @@ static const struct sys_reg_desc sys_reg
+ 	ID_WRITABLE(ID_AA64MMFR0_EL1, ~(ID_AA64MMFR0_EL1_RES0 |
+ 					ID_AA64MMFR0_EL1_TGRAN4_2 |
+ 					ID_AA64MMFR0_EL1_TGRAN64_2 |
+-					ID_AA64MMFR0_EL1_TGRAN16_2)),
++					ID_AA64MMFR0_EL1_TGRAN16_2 |
++					ID_AA64MMFR0_EL1_ASIDBITS)),
+ 	ID_WRITABLE(ID_AA64MMFR1_EL1, ~(ID_AA64MMFR1_EL1_RES0 |
+ 					ID_AA64MMFR1_EL1_HCX |
+ 					ID_AA64MMFR1_EL1_TWED |
 
 
 
