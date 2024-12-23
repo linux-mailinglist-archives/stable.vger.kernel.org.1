@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-105982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CB89FB293
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FBB9FB23E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97C5918816B1
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAB141885799
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920771A4AAA;
-	Mon, 23 Dec 2024 16:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788B81A4AAA;
+	Mon, 23 Dec 2024 16:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHohaCNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSyhNSFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5063617A597;
-	Mon, 23 Dec 2024 16:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3671917A597;
+	Mon, 23 Dec 2024 16:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970796; cv=none; b=MscfVvBYu5OEgjZp3SV4wKZVM3jVUAmcJgq/KcUL0WLX/Q8WDeLtgKWts8atx6J7ZVYKQN56+loMSdv7iZPFbT/f9jYdnS1rJ0rgOVSVzhPv9jRt7qS7b8zJQcPq7qIPgjLvWyYtOuGw3b1YbPzMNV9bvG8O0Msf2uttqL+UCyA=
+	t=1734970539; cv=none; b=Hi8pSOly3jf5xVm6i6fAzA4xUMkVuh/Qxtpl+PHqF4jxFJGUSFiUvNL1+LO01995aDBp7yvQJQciyBoX9Ws5QIb/rR2CvOW+ebLwv3+q9OU7Ylqd7Zth29OGmSeg/ucg2C02Kiw4DPe1DqG1X8htI+5M5g6bAqz/Vjl/8oLVoSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970796; c=relaxed/simple;
-	bh=lqbCFcPji1zskPH4Fb0i82rIiOE3gZkzq+tI+dkJF5M=;
+	s=arc-20240116; t=1734970539; c=relaxed/simple;
+	bh=qt3tqmsbToMmp6J+ObtYB27KZgBJwSXaS0GcUQwzMW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+jSYWkDnjs+fk4z9mnwEUR8pE/bcAY1gr8LfRzwhH0fLwpQ2tRvHU2hJvnWo9W+WuRALKRWsqHtgwmk7zBDb4iCadFrV6QdsWtaq17pBspoUhFSsUJLrGRK/gBIx+TqDtd7TWYvKH4q/Iqc7oRw/4eJWE9ucRWvnmw8tLExb0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHohaCNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D0CC4CED3;
-	Mon, 23 Dec 2024 16:19:55 +0000 (UTC)
+	 MIME-Version; b=Dmy+to3MT13CswmdfIBEMHtMC5fgAFDCX/OaKo5DfLD2kY1naBuaTBD/fK2HrAQeAjLiwRx8/62SEIsCl7TnLHW+GZ92TDIguBNi3Ov5XM7nNYaGFyanHwITh7MYHFt7y98xB1tpuMhr4GK38hdyJmt2N8XhNK39aZemka03drk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSyhNSFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BDAC4CED3;
+	Mon, 23 Dec 2024 16:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970796;
-	bh=lqbCFcPji1zskPH4Fb0i82rIiOE3gZkzq+tI+dkJF5M=;
+	s=korg; t=1734970538;
+	bh=qt3tqmsbToMmp6J+ObtYB27KZgBJwSXaS0GcUQwzMW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHohaCNI7zlcMUf+eHUYCDnyn7SSgd9h/QRWZ8rAFwKM3DJlGZ99cIOIzliIecNY3
-	 NereaA0zZjOaQ2WnR23bCAe4vt1puuoFQbJPDUPvKoObnU07slj1SEdMPtOQwkMSsT
-	 Z4oqjcDkjHOiKAOeggA6tEgmsQRfnSoufHstU/ks=
+	b=VSyhNSFpZ+2SujoKfZTnQ61FXHEztkgEu0fjEtaofqtH6zZl12P8qgm/Cw2DMvcYB
+	 DKhNM2hMSWQ5FSw14u4Ba8ttcRou+xF7Mg8/Df02YuWiqZb1brDF1PYNy03Lsdr5V0
+	 tEwdXzORCFQFk+X5uYvw02vUbwYVU8tRDOJMhQwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 64/83] tracing: Add "%s" check in test_event_printk()
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 113/116] io_uring/rw: avoid punting to io-wq directly
 Date: Mon, 23 Dec 2024 16:59:43 +0100
-Message-ID: <20241223155356.105612221@linuxfoundation.org>
+Message-ID: <20241223155403.945367852@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,211 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 65a25d9f7ac02e0cf361356e834d1c71d36acca9 upstream.
+Commit 6e6b8c62120a22acd8cb759304e4cd2e3215d488 upstream.
 
-The test_event_printk() code makes sure that when a trace event is
-registered, any dereferenced pointers in from the event's TP_printk() are
-pointing to content in the ring buffer. But currently it does not handle
-"%s", as there's cases where the string pointer saved in the ring buffer
-points to a static string in the kernel that will never be freed. As that
-is a valid case, the pointer needs to be checked at runtime.
+kiocb_done() should care to specifically redirecting requests to io-wq.
+Remove the hopping to tw to then queue an io-wq, return -EAGAIN and let
+the core code io_uring handle offloading.
 
-Currently the runtime check is done via trace_check_vprintf(), but to not
-have to replicate everything in vsnprintf() it does some logic with the
-va_list that may not be reliable across architectures. In order to get rid
-of that logic, more work in the test_event_printk() needs to be done. Some
-of the strings can be validated at this time when it is obvious the string
-is valid because the string will be saved in the ring buffer content.
-
-Do all the validation of strings in the ring buffer at boot in
-test_event_printk(), and make sure that the field of the strings that
-point into the kernel are accessible. This will allow adding checks at
-runtime that will validate the fields themselves and not rely on paring
-the TP_printk() format at runtime.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20241217024720.685917008@goodmis.org
-Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Tested-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/413564e550fe23744a970e1783dfa566291b0e6f.1710799188.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+(cherry picked from commit 6e6b8c62120a22acd8cb759304e4cd2e3215d488)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |  104 +++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 89 insertions(+), 15 deletions(-)
+ io_uring/io_uring.c |    8 ++++----
+ io_uring/io_uring.h |    1 -
+ io_uring/rw.c       |    8 +-------
+ 3 files changed, 5 insertions(+), 12 deletions(-)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -242,19 +242,16 @@ int trace_event_get_offsets(struct trace
- 	return tail->offset + tail->size;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -492,7 +492,7 @@ static void io_prep_async_link(struct io
+ 	}
  }
  
--/*
-- * Check if the referenced field is an array and return true,
-- * as arrays are OK to dereference.
-- */
--static bool test_field(const char *fmt, struct trace_event_call *call)
-+
-+static struct trace_event_fields *find_event_field(const char *fmt,
-+						   struct trace_event_call *call)
+-void io_queue_iowq(struct io_kiocb *req, struct io_tw_state *ts_dont_use)
++static void io_queue_iowq(struct io_kiocb *req)
  {
- 	struct trace_event_fields *field = call->class->fields_array;
--	const char *array_descriptor;
- 	const char *p = fmt;
- 	int len;
- 
- 	if (!(len = str_has_prefix(fmt, "REC->")))
--		return false;
-+		return NULL;
- 	fmt += len;
- 	for (p = fmt; *p; p++) {
- 		if (!isalnum(*p) && *p != '_')
-@@ -265,11 +262,26 @@ static bool test_field(const char *fmt,
- 	for (; field->type; field++) {
- 		if (strncmp(field->name, fmt, len) || field->name[len])
- 			continue;
--		array_descriptor = strchr(field->type, '[');
--		/* This is an array and is OK to dereference. */
--		return array_descriptor != NULL;
-+
-+		return field;
+ 	struct io_kiocb *link = io_prep_linked_timeout(req);
+ 	struct io_uring_task *tctx = req->task->io_uring;
+@@ -1479,7 +1479,7 @@ void io_req_task_submit(struct io_kiocb
+ 	if (unlikely(req->task->flags & PF_EXITING))
+ 		io_req_defer_failed(req, -EFAULT);
+ 	else if (req->flags & REQ_F_FORCE_ASYNC)
+-		io_queue_iowq(req, ts);
++		io_queue_iowq(req);
+ 	else
+ 		io_queue_sqe(req);
+ }
+@@ -2044,7 +2044,7 @@ static void io_queue_async(struct io_kio
+ 		break;
+ 	case IO_APOLL_ABORTED:
+ 		io_kbuf_recycle(req, 0);
+-		io_queue_iowq(req, NULL);
++		io_queue_iowq(req);
+ 		break;
+ 	case IO_APOLL_OK:
+ 		break;
+@@ -2093,7 +2093,7 @@ static void io_queue_sqe_fallback(struct
+ 		if (unlikely(req->ctx->drain_active))
+ 			io_drain_req(req);
+ 		else
+-			io_queue_iowq(req, NULL);
++			io_queue_iowq(req);
  	}
--	return false;
-+	return NULL;
-+}
-+
-+/*
-+ * Check if the referenced field is an array and return true,
-+ * as arrays are OK to dereference.
-+ */
-+static bool test_field(const char *fmt, struct trace_event_call *call)
-+{
-+	struct trace_event_fields *field;
-+
-+	field = find_event_field(fmt, call);
-+	if (!field)
-+		return false;
-+
-+	/* This is an array and is OK to dereference. */
-+	return strchr(field->type, '[') != NULL;
  }
  
- /* Look for a string within an argument */
-@@ -315,6 +327,53 @@ static bool process_pointer(const char *
- 	return false;
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -63,7 +63,6 @@ struct file *io_file_get_fixed(struct io
+ void __io_req_task_work_add(struct io_kiocb *req, unsigned flags);
+ bool io_alloc_async_data(struct io_kiocb *req);
+ void io_req_task_queue(struct io_kiocb *req);
+-void io_queue_iowq(struct io_kiocb *req, struct io_tw_state *ts_dont_use);
+ void io_req_task_complete(struct io_kiocb *req, struct io_tw_state *ts);
+ void io_req_task_queue_fail(struct io_kiocb *req, int ret);
+ void io_req_task_submit(struct io_kiocb *req, struct io_tw_state *ts);
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -168,12 +168,6 @@ static inline loff_t *io_kiocb_update_po
+ 	return NULL;
  }
  
-+/* Return true if the string is safe */
-+static bool process_string(const char *fmt, int len, struct trace_event_call *call)
-+{
-+	const char *r, *e, *s;
-+
-+	e = fmt + len;
-+
-+	/*
-+	 * There are several helper functions that return strings.
-+	 * If the argument contains a function, then assume its field is valid.
-+	 * It is considered that the argument has a function if it has:
-+	 *   alphanumeric or '_' before a parenthesis.
-+	 */
-+	s = fmt;
-+	do {
-+		r = strstr(s, "(");
-+		if (!r || r >= e)
-+			break;
-+		for (int i = 1; r - i >= s; i++) {
-+			char ch = *(r - i);
-+			if (isspace(ch))
-+				continue;
-+			if (isalnum(ch) || ch == '_')
-+				return true;
-+			/* Anything else, this isn't a function */
-+			break;
-+		}
-+		/* A function could be wrapped in parethesis, try the next one */
-+		s = r + 1;
-+	} while (s < e);
-+
-+	/*
-+	 * If there's any strings in the argument consider this arg OK as it
-+	 * could be: REC->field ? "foo" : "bar" and we don't want to get into
-+	 * verifying that logic here.
-+	 */
-+	if (find_print_string(fmt, "\"", e))
-+		return true;
-+
-+	/* Dereferenced strings are also valid like any other pointer */
-+	if (process_pointer(fmt, len, call))
-+		return true;
-+
-+	/* Make sure the field is found, and consider it OK for now if it is */
-+	return find_event_field(fmt, call) != NULL;
-+}
-+
- /*
-  * Examine the print fmt of the event looking for unsafe dereference
-  * pointers using %p* that could be recorded in the trace event and
-@@ -324,6 +383,7 @@ static bool process_pointer(const char *
- static void test_event_printk(struct trace_event_call *call)
+-static void io_req_task_queue_reissue(struct io_kiocb *req)
+-{
+-	req->io_task_work.func = io_queue_iowq;
+-	io_req_task_work_add(req);
+-}
+-
+ #ifdef CONFIG_BLOCK
+ static bool io_resubmit_prep(struct io_kiocb *req)
  {
- 	u64 dereference_flags = 0;
-+	u64 string_flags = 0;
- 	bool first = true;
- 	const char *fmt;
- 	int parens = 0;
-@@ -414,8 +474,16 @@ static void test_event_printk(struct tra
- 						star = true;
- 						continue;
- 					}
--					if ((fmt[i + j] == 's') && star)
--						arg++;
-+					if ((fmt[i + j] == 's')) {
-+						if (star)
-+							arg++;
-+						if (WARN_ONCE(arg == 63,
-+							      "Too many args for event: %s",
-+							      trace_event_name(call)))
-+							return;
-+						dereference_flags |= 1ULL << arg;
-+						string_flags |= 1ULL << arg;
-+					}
- 					break;
- 				}
- 				break;
-@@ -462,7 +530,10 @@ static void test_event_printk(struct tra
- 			}
- 
- 			if (dereference_flags & (1ULL << arg)) {
--				if (process_pointer(fmt + start_arg, e - start_arg, call))
-+				if (string_flags & (1ULL << arg)) {
-+					if (process_string(fmt + start_arg, e - start_arg, call))
-+						dereference_flags &= ~(1ULL << arg);
-+				} else if (process_pointer(fmt + start_arg, e - start_arg, call))
- 					dereference_flags &= ~(1ULL << arg);
- 			}
- 
-@@ -474,7 +545,10 @@ static void test_event_printk(struct tra
+@@ -359,7 +353,7 @@ static int kiocb_done(struct io_kiocb *r
+ 	if (req->flags & REQ_F_REISSUE) {
+ 		req->flags &= ~REQ_F_REISSUE;
+ 		if (io_resubmit_prep(req))
+-			io_req_task_queue_reissue(req);
++			return -EAGAIN;
+ 		else
+ 			io_req_task_queue_fail(req, final_ret);
  	}
- 
- 	if (dereference_flags & (1ULL << arg)) {
--		if (process_pointer(fmt + start_arg, i - start_arg, call))
-+		if (string_flags & (1ULL << arg)) {
-+			if (process_string(fmt + start_arg, i - start_arg, call))
-+				dereference_flags &= ~(1ULL << arg);
-+		} else if (process_pointer(fmt + start_arg, i - start_arg, call))
- 			dereference_flags &= ~(1ULL << arg);
- 	}
- 
 
 
 
