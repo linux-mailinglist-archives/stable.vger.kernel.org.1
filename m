@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C339FB24F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F350E9FB206
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD2011885D85
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84DA3167715
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97EC1B3952;
-	Mon, 23 Dec 2024 16:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB0A1AF0C7;
+	Mon, 23 Dec 2024 16:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbSn/pZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSXOQnwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58881A4AAA;
-	Mon, 23 Dec 2024 16:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B1B1B392B;
+	Mon, 23 Dec 2024 16:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970583; cv=none; b=a3425Z+/0ZyniRYKskjEBb06HwASTn0G8Gv93/KuQvLvPESd6TsSFjxXNXDQPe5A9ot7HsM+h4wASqOIwv4qjScQRlpRRDV/eZDjTLm+lI4F5cYfrSCGdcrCgwRwGSYvkoucVxO3MQqqy/IWclJzrk4knv2Qyqm9S1YF3TLxGhc=
+	t=1734970328; cv=none; b=AihIHdBRu2A5WlZzJYzIOoL8rKzTqwJmXC1HwLfyUBgcctL+523ilxJlbMPxpsMskPLnVJJH2MbCFJSoGqD8zmscHJhKoaXXUaIMCJUhcsmM/reVrQ4doBzoLz8cqq1Lp4Nx3M2lxEctbTuKWV8jpKPJedeJwwJclD0rj2fs/zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970583; c=relaxed/simple;
-	bh=vrHRSXIX4o+GbcMpKNnFazvzGPGUMtQ1QU69QNnohCY=;
+	s=arc-20240116; t=1734970328; c=relaxed/simple;
+	bh=kHDjfvZp4ktDU5JyH/5+x2Frm6rgQAkDLxvXrUrmNqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=obEytar1zOQz7sj7Kdo7G/L8FUOg4cdx3GYrDc1+1KfaT1jiT5kY8TDsxs0nbzcs5Betvbln9qclHMI2K2mAVZf5l7Ae8Xmz3qOVei7XcS8G/GV+zEa1cdJrrAgAcxhka0PK30fPNf11+OrbDYLy9JQXgGAgVSyx3XPfmiVys5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbSn/pZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D70C4CED3;
-	Mon, 23 Dec 2024 16:16:22 +0000 (UTC)
+	 MIME-Version; b=gOP5fPlsUpRDlU4LD/VxWeeKP8W6ZF63Y3+ooL0GOepvhU2qLYa0GUaHQdP66nMKpChpVesPxhgm87yGCCIAsXumHCwEqXIG138q6q3b5dlyhGx5clPDW0C8mPC1qSHCl14V352faZejHZdeSWFp3FDloJEphZJ6qEi0cqQwmLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSXOQnwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D6BC4CED3;
+	Mon, 23 Dec 2024 16:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970583;
-	bh=vrHRSXIX4o+GbcMpKNnFazvzGPGUMtQ1QU69QNnohCY=;
+	s=korg; t=1734970327;
+	bh=kHDjfvZp4ktDU5JyH/5+x2Frm6rgQAkDLxvXrUrmNqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbSn/pZh7APK3JHFAAoZLMdTQFPGgCOIb4SiwTgUtvj4ldtTDCxW4Ith1cqGIE4gh
-	 zvJlRGgLg6r11bi9MrAY/MNwO7zNnKs82w1LwBGtEP9CfdszsjGn5Qo070tajv2eHT
-	 w3Zhp21hRSVjCsNHOqpQMKuJ4Gwu75Ncl2kKKwBs=
+	b=VSXOQnwc8gU4B9Jly+gthHJzJEkORnzcm92L9CA0G2beDV4rS8JztCAsqvd4R5Gz8
+	 DYwZa5vbBLLD0B3RTBObALpntHxTzxSqJNQL8nFzK46bpPcILahhB3XHDwT8fsdAnj
+	 ZWOF4qK+kE9y729vi3HVP7zXeUVq87/4Rs7ag4dA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lion Ackermann <nnamrec@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Artem Metla <ametla@google.com>
-Subject: [PATCH 6.1 01/83] net: sched: fix ordering of qlen adjustment
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 050/116] ksmbd: count all requests in req_running counter
 Date: Mon, 23 Dec 2024 16:58:40 +0100
-Message-ID: <20241223155353.699990565@linuxfoundation.org>
+Message-ID: <20241223155401.502701108@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
+[ Upstream commit 83c47d9e0ce79b5d7c0b21b9f35402dbde0fa15c ]
 
-Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
-_before_ a call to said function because otherwise it may fail to notify
-parent qdiscs when the child is about to become empty.
+This changes the semantics of req_running to count all in-flight
+requests on a given connection, rather than the number of elements
+in the conn->request list. The latter is used only in smb2_cancel,
+and the counter is not used
 
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Cc: Artem Metla <ametla@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 43fb7bce8866 ("ksmbd: fix broken transfers when exceeding max simultaneous operations")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c  |    2 +-
- net/sched/sch_choke.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/connection.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1541,7 +1541,6 @@ static unsigned int cake_drop(struct Qdi
- 	b->backlogs[idx]    -= len;
- 	b->tin_backlog      -= len;
- 	sch->qstats.backlog -= len;
--	qdisc_tree_reduce_backlog(sch, 1, len);
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index a751793c4512..5ded9372b2fb 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -120,8 +120,8 @@ void ksmbd_conn_enqueue_request(struct ksmbd_work *work)
+ 	if (conn->ops->get_cmd_val(work) != SMB2_CANCEL_HE)
+ 		requests_queue = &conn->requests;
  
- 	flow->dropped++;
- 	b->tin_dropped++;
-@@ -1552,6 +1551,7 @@ static unsigned int cake_drop(struct Qdi
++	atomic_inc(&conn->req_running);
+ 	if (requests_queue) {
+-		atomic_inc(&conn->req_running);
+ 		spin_lock(&conn->request_lock);
+ 		list_add_tail(&work->request_entry, requests_queue);
+ 		spin_unlock(&conn->request_lock);
+@@ -132,11 +132,12 @@ void ksmbd_conn_try_dequeue_request(struct ksmbd_work *work)
+ {
+ 	struct ksmbd_conn *conn = work->conn;
  
- 	__qdisc_drop(skb, to_free);
- 	sch->q.qlen--;
-+	qdisc_tree_reduce_backlog(sch, 1, len);
++	atomic_dec(&conn->req_running);
++
+ 	if (list_empty(&work->request_entry) &&
+ 	    list_empty(&work->async_request_entry))
+ 		return;
  
- 	cake_heapify(q, 0);
- 
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -123,10 +123,10 @@ static void choke_drop_by_idx(struct Qdi
- 	if (idx == q->tail)
- 		choke_zap_tail_holes(q);
- 
-+	--sch->q.qlen;
- 	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 	qdisc_drop(skb, sch, to_free);
--	--sch->q.qlen;
- }
- 
- struct choke_skb_cb {
+-	atomic_dec(&conn->req_running);
+ 	spin_lock(&conn->request_lock);
+ 	list_del_init(&work->request_entry);
+ 	spin_unlock(&conn->request_lock);
+-- 
+2.39.5
+
 
 
 
