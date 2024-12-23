@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266899FB228
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8079FB1B5
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F2001631D5
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59ACB1884ED3
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34E413BC0C;
-	Mon, 23 Dec 2024 16:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751921B3931;
+	Mon, 23 Dec 2024 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXRZNGCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6F1j41K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6052019E98B;
-	Mon, 23 Dec 2024 16:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3220A3D6D;
+	Mon, 23 Dec 2024 16:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970454; cv=none; b=iScyQiRYPgeixDGhGb2vSC3Sg9V3aqWJUMdjWhQy1u11yVk17CjvDwCf33RTBaWn5Rtr7kafaERLvvN46V1Wyn7NTfy++6+jJgQKcqp5vndrRuXsrdVzdTSrbD1GjM+NlZpMOurf/gmIF5SVOWT2A8eYixknU/vsKpFeYYS1oJM=
+	t=1734970156; cv=none; b=oysUAqL7gKx1EbGhQPCB5mGJ7ms5txHdHoymCCpNtnBJ5WfcjhdKrwV8AwhbDNsP0lw6L3ccutnpcqyFddAMZr4qaYpC/JEy6Fy+aetU25Ui7W3j2PdQkCwJ3+M96DWC3BV0iY48AKgT+SDJErJyBg2nkmIwdOqqAYqTgsnmoFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970454; c=relaxed/simple;
-	bh=Jlc0m7H3kwhidzTP2//NXQXu3OMXePg8k1giyMXMqes=;
+	s=arc-20240116; t=1734970156; c=relaxed/simple;
+	bh=Xtb7bF1MqeiBZYur+J3X3i/MEdUoanI0m5B3mklA2uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVPsMMcNAkiVfRnObwJtORTrsgEgGuuNLMz+6PdwggxUqfIQB+3w3MztZb9nQOBnzrzRjP5lk7hPEh3j21veFbaDn+/fsJT2/91hpukSAUof4VZ8+nq4Kgw81g+kdoZZfiAW77WITjxs1n41CKzWysp9z3HPhYwMCTTKwEfZvQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXRZNGCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4661C4CED3;
-	Mon, 23 Dec 2024 16:14:13 +0000 (UTC)
+	 MIME-Version; b=igjcmjzA7v4s+yOgedjdwkrqSAQlsu4vjwLhm1GlFMdKrWEVQGucAXNucTRmj+lw+TT7P95xo55fR4F7WLF0c3WcYaqNaNCeFQ7wvw+odj7Dzo2jEWttVg2jn2nfM3UzhWhFqXH7qsDkzXn/2hJwCyUfZM8vY3nX8OwrCazZJSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6F1j41K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97721C4CED3;
+	Mon, 23 Dec 2024 16:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970454;
-	bh=Jlc0m7H3kwhidzTP2//NXQXu3OMXePg8k1giyMXMqes=;
+	s=korg; t=1734970156;
+	bh=Xtb7bF1MqeiBZYur+J3X3i/MEdUoanI0m5B3mklA2uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXRZNGCPwvDSlg/q8U++L89beFjEWBv/13WMPp+RwauPHyl4cERlL+cKRuukI6uTM
-	 TEVBM6Z3amNt2UTT6sW/kYizbT0NwqR6paE1q3EWPvGSb8QzY3V8jiTITknr4isbDa
-	 VXziLt5fg01SHZ0QgbrC7oFmIxPbA4AGo8P8Rcik=
+	b=c6F1j41KQEcC3evt1TFtxa8dR7vlZqDQ2yffvbcz9f3dLKYKVg8+H6XwmlDiBDhm2
+	 IriP0fzvwBHh0ZAabgL9CtzrkAhU5hArzK1/lW/aQqakxgWcCNOTe++W8RFLTA0V5c
+	 rvSrSdThGHl4BVifrscTPEa7QEwDK5ti5UDgcKMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frankie Fisher <frankie@terrorise.me.uk>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 088/116] btrfs: tree-checker: reject inline extent items with 0 ref count
+	Marc Zyngier <maz@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.12 147/160] of: property: fw_devlink: Do not use interrupt-parent directly
 Date: Mon, 23 Dec 2024 16:59:18 +0100
-Message-ID: <20241223155402.983205079@linuxfoundation.org>
+Message-ID: <20241223155414.492883920@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit dfb92681a19e1d5172420baa242806414b3eff6f upstream.
+commit bc7acc0bd0f94c26bc0defc902311794a3d0fae9 upstream.
 
-[BUG]
-There is a bug report in the mailing list where btrfs_run_delayed_refs()
-failed to drop the ref count for logical 25870311358464 num_bytes
-2113536.
+commit 7f00be96f125 ("of: property: Add device link support for
+interrupt-parent, dmas and -gpio(s)") started adding device links for
+the interrupt-parent property. commit 4104ca776ba3 ("of: property: Add
+fw_devlink support for interrupts") and commit f265f06af194 ("of:
+property: Fix fw_devlink handling of interrupts/interrupts-extended")
+later added full support for parsing the interrupts and
+interrupts-extended properties, which includes looking up the node of
+the parent domain. This made the handler for the interrupt-parent
+property redundant.
 
-The involved leaf dump looks like this:
+In fact, creating device links based solely on interrupt-parent is
+problematic, because it can create spurious cycles. A node may have
+this property without itself being an interrupt controller or consumer.
+For example, this property is often present in the root node or a /soc
+bus node to set the default interrupt parent for child nodes. However,
+it is incorrect for the bus to depend on the interrupt controller, as
+some of the bus's children may not be interrupt consumers at all or may
+have a different interrupt parent.
 
-  item 166 key (25870311358464 168 2113536) itemoff 10091 itemsize 50
-    extent refs 1 gen 84178 flags 1
-    ref#0: shared data backref parent 32399126528000 count 0 <<<
-    ref#1: shared data backref parent 31808973717504 count 1
+Resolving these spurious dependency cycles can cause an incorrect probe
+order for interrupt controller drivers. This was observed on a RISC-V
+system with both an APLIC and IMSIC under /soc, where interrupt-parent
+in /soc points to the APLIC, and the APLIC msi-parent points to the
+IMSIC. fw_devlink found three dependency cycles and attempted to probe
+the APLIC before the IMSIC. After applying this patch, there were no
+dependency cycles and the probe order was correct.
 
-Notice the count number is 0.
-
-[CAUSE]
-There is no concrete evidence yet, but considering 0 -> 1 is also a
-single bit flipped, it's possible that hardware memory bitflip is
-involved, causing the on-disk extent tree to be corrupted.
-
-[FIX]
-To prevent us reading such corrupted extent item, or writing such
-damaged extent item back to disk, enhance the handling of
-BTRFS_EXTENT_DATA_REF_KEY and BTRFS_SHARED_DATA_REF_KEY keys for both
-inlined and key items, to detect such 0 ref count and reject them.
-
-CC: stable@vger.kernel.org # 5.4+
-Link: https://lore.kernel.org/linux-btrfs/7c69dd49-c346-4806-86e7-e6f863a66f48@app.fastmail.com/
-Reported-by: Frankie Fisher <frankie@terrorise.me.uk>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4104ca776ba3 ("of: property: Add fw_devlink support for interrupts")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20241120233124.3649382-1-samuel.holland@sifive.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-checker.c |   27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/of/property.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1503,6 +1503,11 @@ static int check_extent_item(struct exte
- 					   dref_offset, fs_info->sectorsize);
- 				return -EUCLEAN;
- 			}
-+			if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
-+				extent_err(leaf, slot,
-+			"invalid data ref count, should have non-zero value");
-+				return -EUCLEAN;
-+			}
- 			inline_refs += btrfs_extent_data_ref_count(leaf, dref);
- 			break;
- 		/* Contains parent bytenr and ref count */
-@@ -1515,6 +1520,11 @@ static int check_extent_item(struct exte
- 					   inline_offset, fs_info->sectorsize);
- 				return -EUCLEAN;
- 			}
-+			if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
-+				extent_err(leaf, slot,
-+			"invalid shared data ref count, should have non-zero value");
-+				return -EUCLEAN;
-+			}
- 			inline_refs += btrfs_shared_data_ref_count(leaf, sref);
- 			break;
- 		default:
-@@ -1584,8 +1594,18 @@ static int check_simple_keyed_refs(struc
- {
- 	u32 expect_item_size = 0;
- 
--	if (key->type == BTRFS_SHARED_DATA_REF_KEY)
-+	if (key->type == BTRFS_SHARED_DATA_REF_KEY) {
-+		struct btrfs_shared_data_ref *sref;
-+
-+		sref = btrfs_item_ptr(leaf, slot, struct btrfs_shared_data_ref);
-+		if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
-+			extent_err(leaf, slot,
-+		"invalid shared data backref count, should have non-zero value");
-+			return -EUCLEAN;
-+		}
-+
- 		expect_item_size = sizeof(struct btrfs_shared_data_ref);
-+	}
- 
- 	if (unlikely(btrfs_item_size(leaf, slot) != expect_item_size)) {
- 		generic_err(leaf, slot,
-@@ -1662,6 +1682,11 @@ static int check_extent_data_ref(struct
- 				   offset, leaf->fs_info->sectorsize);
- 			return -EUCLEAN;
- 		}
-+		if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
-+			extent_err(leaf, slot,
-+	"invalid extent data backref count, should have non-zero value");
-+			return -EUCLEAN;
-+		}
- 	}
- 	return 0;
- }
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1213,7 +1213,6 @@ DEFINE_SIMPLE_PROP(iommus, "iommus", "#i
+ DEFINE_SIMPLE_PROP(mboxes, "mboxes", "#mbox-cells")
+ DEFINE_SIMPLE_PROP(io_channels, "io-channels", "#io-channel-cells")
+ DEFINE_SIMPLE_PROP(io_backends, "io-backends", "#io-backend-cells")
+-DEFINE_SIMPLE_PROP(interrupt_parent, "interrupt-parent", NULL)
+ DEFINE_SIMPLE_PROP(dmas, "dmas", "#dma-cells")
+ DEFINE_SIMPLE_PROP(power_domains, "power-domains", "#power-domain-cells")
+ DEFINE_SIMPLE_PROP(hwlocks, "hwlocks", "#hwlock-cells")
+@@ -1359,7 +1358,6 @@ static const struct supplier_bindings of
+ 	{ .parse_prop = parse_mboxes, },
+ 	{ .parse_prop = parse_io_channels, },
+ 	{ .parse_prop = parse_io_backends, },
+-	{ .parse_prop = parse_interrupt_parent, },
+ 	{ .parse_prop = parse_dmas, .optional = true, },
+ 	{ .parse_prop = parse_power_domains, },
+ 	{ .parse_prop = parse_hwlocks, },
 
 
 
