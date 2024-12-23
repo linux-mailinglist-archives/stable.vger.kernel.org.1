@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-105754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F729FB1A0
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81A69FB22B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E80166F0B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D138A162F1E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0675F1B4131;
-	Mon, 23 Dec 2024 16:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179A91B21BD;
+	Mon, 23 Dec 2024 16:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWtESyiF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOuVbtii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98BD1B4121;
-	Mon, 23 Dec 2024 16:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AEB7E0FF;
+	Mon, 23 Dec 2024 16:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970029; cv=none; b=Beo0DOLGH5vOeAtnN4E4jEykynF374A+xDJtFo4Wj0cK/zfAROuT6UTYxvO9qGvLI3/8mcLcDLil1urBL0oPPuQeq/VskUaPpEWSFoIK6xScUkj4qBaK4ZO5uCCCrlRXV6MAxEfEgD683jJSX3VOgrEEPeB7PGWR5sL9/fxvEZQ=
+	t=1734970471; cv=none; b=ZnaUICMeX2HSDVgsWKIYyimzVUzEwTb3TxBRfQVh+vVVyv8T4T/2xUcbmFkKD0deYGW9zy69xLAHvpaZeu47E6aO+VRDJdTsqLDK5/5jOS+hxa8dbT+BOk3iBDtf1M945/KD2KBqPlOf+XHwYLHk70q7pVlHGOtbyBu1m8eLw8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970029; c=relaxed/simple;
-	bh=rgX45OdS9AcwLF1WE9on6tBdQ/QkxP6T6U2XLcRm8io=;
+	s=arc-20240116; t=1734970471; c=relaxed/simple;
+	bh=F5PujeQGoYGJ4kPLuSYT4xVLamYbPvhRYQAqbPlU56c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQXLST1XCKU2xHMXfJ271PILGpJi+nNbesgFMUnNYHaJVl2OWIuikE6rhYgsMh+I7+tDJyBXJMdMAanIf9QT7rxmR3rO/jzq3HtPJRfJNGt7LJqfqrCCUUTdcPeKESMPYObB13RIro2f7TKFwEe+Yi/9E8ADBU6QTYlWyA9NBEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWtESyiF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AFDC4CED6;
-	Mon, 23 Dec 2024 16:07:08 +0000 (UTC)
+	 MIME-Version; b=rYXgBzWhWf83O+e0H5qsD961dv9n5xnANGNnL3QTYxjruTIE5mXe7Em7FJbxZhq8NXifIc3MPKYWccJXdPlFm7HWofwuwAYVBBR5Mr4rnIqanInIzGQvYu3Opw8PXEmqMug+SQ8Rspl96JONolGwC2LVIP6ToCFifIr7YWUPKXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOuVbtii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EB5C4CED3;
+	Mon, 23 Dec 2024 16:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970029;
-	bh=rgX45OdS9AcwLF1WE9on6tBdQ/QkxP6T6U2XLcRm8io=;
+	s=korg; t=1734970471;
+	bh=F5PujeQGoYGJ4kPLuSYT4xVLamYbPvhRYQAqbPlU56c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWtESyiFnPdhPcGOY5AlQLCMqR04Ex7cg9TTqs10Tgczf8rFAy2uPbfMUv29ocmHD
-	 9Y7gl3jvGypnGb1vmaFLW3eTYM8oU2WxYiPi4v45sNFlOtuVinT7t7/GWaa955wQM7
-	 BQxVTYWYybFViqqyi3wx89OyJr9IsGAe/qNzpU+E=
+	b=gOuVbtiisR4K3QuI+kzy/M8soZ/wov1eQr9pHuYwiKgDG9ws0dpqTDwu4to2Uj3Hw
+	 LsmZ8tBex6X9P3r0xHbuhoWxCgQTgtd0M6Hffg0mY8ozaWvszmDFM/8UgUwp9c/Jms
+	 ZHsvlX/K6Gw1h0mLMIJBOlRpPgFS+49nSc3X/4+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.12 124/160] tools: hv: Fix a complier warning in the fcopy uio daemon
-Date: Mon, 23 Dec 2024 16:58:55 +0100
-Message-ID: <20241223155413.569153203@linuxfoundation.org>
+	Brian Cain <bcain@quicinc.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 066/116] hexagon: Disable constant extender optimization for LLVM prior to 19.1.0
+Date: Mon, 23 Dec 2024 16:58:56 +0100
+Message-ID: <20241223155402.126710782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit cb1b78f1c726c938bd47497c1ab16b01ce967f37 upstream.
+commit aef25be35d23ec768eed08bfcf7ca3cf9685bc28 upstream.
 
-hv_fcopy_uio_daemon.c:436:53: warning: '%s' directive output may be truncated
-writing up to 14 bytes into a region of size 10 [-Wformat-truncation=]
-  436 |  snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s", uio_name);
+The Hexagon-specific constant extender optimization in LLVM may crash on
+Linux kernel code [1], such as fs/bcache/btree_io.c after
+commit 32ed4a620c54 ("bcachefs: Btree path tracepoints") in 6.12:
 
-Also added 'static' for the array 'desc[]'.
+  clang: llvm/lib/Target/Hexagon/HexagonConstExtenders.cpp:745: bool (anonymous namespace)::HexagonConstExtenders::ExtRoot::operator<(const HCE::ExtRoot &) const: Assertion `ThisB->getParent() == OtherB->getParent()' failed.
+  Stack dump:
+  0.      Program arguments: clang --target=hexagon-linux-musl ... fs/bcachefs/btree_io.c
+  1.      <eof> parser at end of file
+  2.      Code generation
+  3.      Running pass 'Function Pass Manager' on module 'fs/bcachefs/btree_io.c'.
+  4.      Running pass 'Hexagon constant-extender optimization' on function '@__btree_node_lock_nopath'
 
-Fixes: 82b0945ce2c2 ("tools: hv: Add new fcopy application based on uio driver")
-Cc: stable@vger.kernel.org # 6.10+
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240910004433.50254-1-decui@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240910004433.50254-1-decui@microsoft.com>
+Without assertions enabled, there is just a hang during compilation.
+
+This has been resolved in LLVM main (20.0.0) [2] and backported to LLVM
+19.1.0 but the kernel supports LLVM 13.0.1 and newer, so disable the
+constant expander optimization using the '-mllvm' option when using a
+toolchain that is not fixed.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/issues/99714 [1]
+Link: https://github.com/llvm/llvm-project/commit/68df06a0b2998765cb0a41353fcf0919bbf57ddb [2]
+Link: https://github.com/llvm/llvm-project/commit/2ab8d93061581edad3501561722ebd5632d73892 [3]
+Reviewed-by: Brian Cain <bcain@quicinc.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/hv/hv_fcopy_uio_daemon.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/hexagon/Makefile |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/hv/hv_fcopy_uio_daemon.c b/tools/hv/hv_fcopy_uio_daemon.c
-index 7a00f3066a98..12743d7f164f 100644
---- a/tools/hv/hv_fcopy_uio_daemon.c
-+++ b/tools/hv/hv_fcopy_uio_daemon.c
-@@ -35,8 +35,6 @@
- #define WIN8_SRV_MINOR		1
- #define WIN8_SRV_VERSION	(WIN8_SRV_MAJOR << 16 | WIN8_SRV_MINOR)
- 
--#define MAX_FOLDER_NAME		15
--#define MAX_PATH_LEN		15
- #define FCOPY_UIO		"/sys/bus/vmbus/devices/eb765408-105f-49b6-b4aa-c123b64d17d4/uio"
- 
- #define FCOPY_VER_COUNT		1
-@@ -51,7 +49,7 @@ static const int fw_versions[] = {
- 
- #define HV_RING_SIZE		0x4000 /* 16KB ring buffer size */
- 
--unsigned char desc[HV_RING_SIZE];
-+static unsigned char desc[HV_RING_SIZE];
- 
- static int target_fd;
- static char target_fname[PATH_MAX];
-@@ -409,8 +407,8 @@ int main(int argc, char *argv[])
- 	struct vmbus_br txbr, rxbr;
- 	void *ring;
- 	uint32_t len = HV_RING_SIZE;
--	char uio_name[MAX_FOLDER_NAME] = {0};
--	char uio_dev_path[MAX_PATH_LEN] = {0};
-+	char uio_name[NAME_MAX] = {0};
-+	char uio_dev_path[PATH_MAX] = {0};
- 
- 	static struct option long_options[] = {
- 		{"help",	no_argument,	   0,  'h' },
--- 
-2.47.1
-
+--- a/arch/hexagon/Makefile
++++ b/arch/hexagon/Makefile
+@@ -32,3 +32,9 @@ KBUILD_LDFLAGS += $(ldflags-y)
+ TIR_NAME := r19
+ KBUILD_CFLAGS += -ffixed-$(TIR_NAME) -DTHREADINFO_REG=$(TIR_NAME) -D__linux__
+ KBUILD_AFLAGS += -DTHREADINFO_REG=$(TIR_NAME)
++
++# Disable HexagonConstExtenders pass for LLVM versions prior to 19.1.0
++# https://github.com/llvm/llvm-project/issues/99714
++ifneq ($(call clang-min-version, 190100),y)
++KBUILD_CFLAGS += -mllvm -hexagon-cext=false
++endif
 
 
 
