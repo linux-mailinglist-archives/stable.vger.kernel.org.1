@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-105765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB13A9FB192
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD219FB220
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B81441884BD5
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAF01163203
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500C81B0F2E;
-	Mon, 23 Dec 2024 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC161B393A;
+	Mon, 23 Dec 2024 16:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2seAzAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpVrEu0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C92B13BC0C;
-	Mon, 23 Dec 2024 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02C81B21B5;
+	Mon, 23 Dec 2024 16:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970067; cv=none; b=YfliNkXtwWFLGU5I5Jt5huBq69Kt8/EY+k/AFq3CDw7x1u+zvVIuzEYQrKlV1As9F0DubQYi1WboGACuaoCnfOp/fgWwJju3ffIEs3MyUcl4eFTyXir7GeNokftNJ238874v89c2iC26Mm5WFM7murY13Tvwl/mnJcsUsU8fGDc=
+	t=1734970408; cv=none; b=nK8EhSBVnvC17fZLRwicVF5VD1pocvDENq+w5LbFLV2tKxEAk7vbsNRidbxMjQ4Jv/zI60Wjt3NSvwFeZKMNfnzAwn5o94R4v73v+Ftc3UQymLJ1afSvtAyWyYJSOKuIK71A9LQ0FE1Z57EaoLMwZnuvbewqv2IlsghYaSDXCWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970067; c=relaxed/simple;
-	bh=NkXV+M9tdckD4BMSPIu3/WqMIpYWnsJ7TiHHWratY2Q=;
+	s=arc-20240116; t=1734970408; c=relaxed/simple;
+	bh=58dRHttiB2+OgnNSCklTEpZsRp3Yb6OQmZ/NEaLcq4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlBoWOq84Kvj7UMJBTvkVJ6QlMikBqFi8GyAXL8/JQj7iXSZw43IpPzX5T1yx90ku/oaG1E2pU6tlpw8L4o0sz9U0XEeriTRHRtCuwf9GNTU4HMo2UGdeQhXTaX1ljSqULeuDwplcYLlDXPFysK5eTtWH/CnebYrU22U5smUXL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2seAzAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83873C4CED3;
-	Mon, 23 Dec 2024 16:07:46 +0000 (UTC)
+	 MIME-Version; b=nRT05qYjOZ2VmsdRuNVor2yhPusJDM2li6KRwfRrmpWDB3gyigpM6vUhTdfEvbnj+lf2u/chB4HUv3MI9j+R+2M5l51jbBwfZOm2E34t2FQ8VPWnE76UJJmvGUYTiD/JQH+xBcSeSnWneBrlBK2NwfLdgBSqzWh0SjEOmcQa52c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpVrEu0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4726C4CED3;
+	Mon, 23 Dec 2024 16:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970066;
-	bh=NkXV+M9tdckD4BMSPIu3/WqMIpYWnsJ7TiHHWratY2Q=;
+	s=korg; t=1734970408;
+	bh=58dRHttiB2+OgnNSCklTEpZsRp3Yb6OQmZ/NEaLcq4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2seAzATq8/6ii2EFlr0jc1XaiE0DZa/ROrNUtx8/6bMjYI3DmLjzBp6LNr4WmzWa
-	 aKrwR54Jidq7qCXLQzjKc6HSBAPOPZ2ar27vjedR94x6cf1h4bkvUCIn6F2trAaCTW
-	 DAvdoMxvo0VLS0AkcLgJ0w+CiCjJET2BVEE4YPt8=
+	b=QpVrEu0hbu4Cg7Ym1vCZrVcCvlb9cf0R4kyaHyoRnD3iAMneI34ScwhwELH8nL/Qu
+	 VAd4WjimlZIe2MrVIhg+pXaiEW5B0D90Y+gj1SPz/41JEGW0OwirYUgljxU3lksjlC
+	 NQF7TSZAWcWgnqvLt5gOBLyLVEKxb8rE+8ZqqxCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	Jeff Xu <jeffxu@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 134/160] selftests/memfd: run sysctl tests when PID namespace support is enabled
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 075/116] i915/guc: Reset engine utilization buffer before registration
 Date: Mon, 23 Dec 2024 16:59:05 +0100
-Message-ID: <20241223155413.963771777@linuxfoundation.org>
+Message-ID: <20241223155402.479123839@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-commit 6a75f19af16ff482cfd6085c77123aa0f464f8dd upstream.
+[ Upstream commit abcc2ddae5f82aa6cfca162e3db643dd33f0a2e8 ]
 
-The sysctl tests for vm.memfd_noexec rely on the kernel to support PID
-namespaces (i.e.  the kernel is built with CONFIG_PID_NS=y).  If the
-kernel the test runs on does not support PID namespaces, the first sysctl
-test will fail when attempting to spawn a new thread in a new PID
-namespace, abort the test, preventing the remaining tests from being run.
+On GT reset, we store total busyness counts for all engines and
+re-register the utilization buffer with GuC. At that time we should
+reset the buffer, so that we don't get spurious busyness counts on
+subsequent queries.
 
-This is not desirable, as not all kernels need PID namespaces, but can
-still use the other features provided by memfd.  Therefore, only run the
-sysctl tests if the kernel supports PID namespaces.  Otherwise, skip those
-tests and emit an informative message to let the user know why the sysctl
-tests are not being run.
+To repro this issue, run igt@perf_pmu@busy-hang followed by
+igt@perf_pmu@most-busy-idle-check-all for a couple iterations.
 
-Link: https://lkml.kernel.org/r/20241205192943.3228757-1-isaacmanjarres@google.com
-Fixes: 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_EXEC")
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Reviewed-by: Jeff Xu <jeffxu@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241127174006.190128-2-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit abd318237fa6556c1e5225529af145ef15d5ff0d)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/memfd/memfd_test.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ .../gpu/drm/i915/gt/uc/intel_guc_submission.c | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/tools/testing/selftests/memfd/memfd_test.c
-+++ b/tools/testing/selftests/memfd/memfd_test.c
-@@ -9,6 +9,7 @@
- #include <fcntl.h>
- #include <linux/memfd.h>
- #include <sched.h>
-+#include <stdbool.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <signal.h>
-@@ -1557,6 +1558,11 @@ static void test_share_fork(char *banner
- 	close(fd);
+diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+index 236dfff81fea..44610c739fe7 100644
+--- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+@@ -1229,6 +1229,21 @@ static void __get_engine_usage_record(struct intel_engine_cs *engine,
+ 	} while (++i < 6);
  }
  
-+static bool pid_ns_supported(void)
++static void __set_engine_usage_record(struct intel_engine_cs *engine,
++				      u32 last_in, u32 id, u32 total)
 +{
-+	return access("/proc/self/ns/pid", F_OK) == 0;
++	struct iosys_map rec_map = intel_guc_engine_usage_record_map(engine);
++
++#define record_write(map_, field_, val_) \
++	iosys_map_wr_field(map_, 0, struct guc_engine_usage_record, field_, val_)
++
++	record_write(&rec_map, last_switch_in_stamp, last_in);
++	record_write(&rec_map, current_context_index, id);
++	record_write(&rec_map, total_runtime, total);
++
++#undef record_write
 +}
 +
- int main(int argc, char **argv)
+ static void guc_update_engine_gt_clks(struct intel_engine_cs *engine)
  {
- 	pid_t pid;
-@@ -1591,8 +1597,12 @@ int main(int argc, char **argv)
- 	test_seal_grow();
- 	test_seal_resize();
+ 	struct intel_engine_guc_stats *stats = &engine->stats.guc;
+@@ -1488,6 +1503,9 @@ static void guc_timestamp_ping(struct work_struct *wrk)
  
--	test_sysctl_simple();
--	test_sysctl_nested();
-+	if (pid_ns_supported()) {
-+		test_sysctl_simple();
-+		test_sysctl_nested();
-+	} else {
-+		printf("PID namespaces are not supported; skipping sysctl tests\n");
-+	}
+ static int guc_action_enable_usage_stats(struct intel_guc *guc)
+ {
++	struct intel_gt *gt = guc_to_gt(guc);
++	struct intel_engine_cs *engine;
++	enum intel_engine_id id;
+ 	u32 offset = intel_guc_engine_usage_offset(guc);
+ 	u32 action[] = {
+ 		INTEL_GUC_ACTION_SET_ENG_UTIL_BUFF,
+@@ -1495,6 +1513,9 @@ static int guc_action_enable_usage_stats(struct intel_guc *guc)
+ 		0,
+ 	};
  
- 	test_share_dup("SHARE-DUP", "");
- 	test_share_mmap("SHARE-MMAP", "");
++	for_each_engine(engine, gt, id)
++		__set_engine_usage_record(engine, 0, 0xffffffff, 0);
++
+ 	return intel_guc_send(guc, action, ARRAY_SIZE(action));
+ }
+ 
+-- 
+2.39.5
+
 
 
 
