@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638DD9FB235
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32D69FB188
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 076317A1679
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42823188087E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3D21B4145;
-	Mon, 23 Dec 2024 16:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F09189B94;
+	Mon, 23 Dec 2024 16:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUYejeuZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2Xylgni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6871B4139;
-	Mon, 23 Dec 2024 16:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7148F186E58;
+	Mon, 23 Dec 2024 16:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970507; cv=none; b=m0y2BB0fq6Y/tpjOA18dAwDocBdBEFhB+dVBFj7AGuIKvXDtKQ1p58tOauS3gepunj8tA69bd6W6uY1vRzzHg89Yn76jGO2Xd52ho7DvUqzgxi36ODSQht/od7cgD6hgZIOWqqSatfR/3IJPhF1estD3GIF+Mva2AuzlbAE2caE=
+	t=1734970022; cv=none; b=aypo7mNKZJoFwfDvasJAFAHIGwlm8vSNCnW/niA16eVhoKb5dGlWPFdAVFUqlrLXHtXqIrCtF4FMAFE4curCHg1cUHbRRCg8hIt1aud+zzPLkdznQb+OpcnkNi79pZb+LDsFy28/pM5rk4FnTjz9RwGBhG9OJH00gq5Vf+PjcEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970507; c=relaxed/simple;
-	bh=ZL4iX1fIgX09k8RWF2m6gE8UyY781GBgi2h2Drvi5rU=;
+	s=arc-20240116; t=1734970022; c=relaxed/simple;
+	bh=jqQjrR8W4zFLrLTytzvFhv7DWm1jnFDKYXsZpVym5JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERV5VgafwkbCebShmtTDnef1wWD0WzQO16hI1QPy/2cnjyNWWvaZBMHSjsFBBzUNnemZOikI5g8mqPKIQhp4CsIuHofAoB2X6tbFS1k4YmThPW88/VOpFE1iNCUGxp+AcMyzSStqlV24zIal+dhDklaUNulOTI8JAqjWVr69P5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUYejeuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EB8C4CED3;
-	Mon, 23 Dec 2024 16:15:06 +0000 (UTC)
+	 MIME-Version; b=eRwKPFiTXQA7+WYczJ/RhfVfW8irSYqvdafQ9uS5lSO5uxjFV6BllfwucrDTEcNxxdlpW2HJ33VNGfuXn3GUqghzKjl29Y4DH6rR8DQBOHmMGxtkjzkk1P3DE3Lqqe8z3UpXZaKfs2z+wpe/Q0wVmm4mRwpBl++yX4BRmnXuGoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2Xylgni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B6FC4CED4;
+	Mon, 23 Dec 2024 16:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970507;
-	bh=ZL4iX1fIgX09k8RWF2m6gE8UyY781GBgi2h2Drvi5rU=;
+	s=korg; t=1734970022;
+	bh=jqQjrR8W4zFLrLTytzvFhv7DWm1jnFDKYXsZpVym5JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUYejeuZKb27Mm3mny4wkY8aJZKaw/5jPmSgPx/H4PJ5J1/94PrwAVZWxfF1A2bXd
-	 xhUVrsemV87RfD9ACxT/u0hNNIMCamISlogc8lsxmkdF6J/H0wSZwUr0tRtZJ6NkUy
-	 3r6J17HRBMprwNwexySCEkxUCnBtNGRefLQpGLrQ=
+	b=I2Xylgni9/T0iBmrgk5yIq940AneOjrFYzVjiBWf1bQpY1MWZjDKkEyjoh/UFu1pQ
+	 Gb8Gckby4gu7ujkizkV1fYBmKsXuDixbpmuRKmf3IJH2xiRJ8CO49lIUg8VWbL5rgG
+	 OYusdPqKb8jYPxyUmJ8YXHey+xsWH9dYzwKTPlds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 063/116] chelsio/chtls: prevent potential integer overflow on 32bit
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 122/160] fgraph: Still initialize idle shadow stacks when starting
 Date: Mon, 23 Dec 2024 16:58:53 +0100
-Message-ID: <20241223155402.008710985@linuxfoundation.org>
+Message-ID: <20241223155413.478957830@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit fbbd84af6ba70334335bdeba3ae536cf751c14c6 upstream.
+commit cc252bb592638e0f7aea40d580186c36d89526b8 upstream.
 
-The "gl->tot_len" variable is controlled by the user.  It comes from
-process_responses().  On 32bit systems, the "gl->tot_len +
-sizeof(struct cpl_pass_accept_req) + sizeof(struct rss_header)" addition
-could have an integer wrapping bug.  Use size_add() to prevent this.
+A bug was discovered where the idle shadow stacks were not initialized
+for offline CPUs when starting function graph tracer, and when they came
+online they were not traced due to the missing shadow stack. To fix
+this, the idle task shadow stack initialization was moved to using the
+CPU hotplug callbacks. But it removed the initialization when the
+function graph was enabled. The problem here is that the hotplug
+callbacks are called when the CPUs come online, but the idle shadow
+stack initialization only happens if function graph is currently
+active. This caused the online CPUs to not get their shadow stack
+initialized.
 
-Fixes: a08943947873 ("crypto: chtls - Register chtls with net tls")
+The idle shadow stack initialization still needs to be done when the
+function graph is registered, as they will not be allocated if function
+graph is not registered.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/c6bfb23c-2db2-4e1b-b8ab-ba3925c82ef5@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241211135335.094ba282@batman.local.home
+Fixes: 2c02f7375e65 ("fgraph: Use CPU hotplug mechanism to initialize idle shadow stacks")
+Reported-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
+Closes: https://lore.kernel.org/all/CACRpkdaTBrHwRbbrphVy-=SeDz6MSsXhTKypOtLrTQ+DgGAOcQ@mail.gmail.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_main.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/trace/fgraph.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_main.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_main.c
-@@ -346,8 +346,9 @@ static struct sk_buff *copy_gl_to_skb_pk
- 	 * driver. Once driver synthesizes cpl_pass_accpet_req the skb will go
- 	 * through the regular cpl_pass_accept_req processing in TOM.
- 	 */
--	skb = alloc_skb(gl->tot_len + sizeof(struct cpl_pass_accept_req)
--			- pktshift, GFP_ATOMIC);
-+	skb = alloc_skb(size_add(gl->tot_len,
-+				 sizeof(struct cpl_pass_accept_req)) -
-+			pktshift, GFP_ATOMIC);
- 	if (unlikely(!skb))
- 		return NULL;
- 	__skb_put(skb, gl->tot_len + sizeof(struct cpl_pass_accept_req)
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -1160,7 +1160,7 @@ void fgraph_update_pid_func(void)
+ static int start_graph_tracing(void)
+ {
+ 	unsigned long **ret_stack_list;
+-	int ret;
++	int ret, cpu;
+ 
+ 	ret_stack_list = kcalloc(FTRACE_RETSTACK_ALLOC_SIZE,
+ 				 sizeof(*ret_stack_list), GFP_KERNEL);
+@@ -1168,6 +1168,12 @@ static int start_graph_tracing(void)
+ 	if (!ret_stack_list)
+ 		return -ENOMEM;
+ 
++	/* The cpu_boot init_task->ret_stack will never be freed */
++	for_each_online_cpu(cpu) {
++		if (!idle_task(cpu)->ret_stack)
++			ftrace_graph_init_idle_task(idle_task(cpu), cpu);
++	}
++
+ 	do {
+ 		ret = alloc_retstack_tasklist(ret_stack_list);
+ 	} while (ret == -EAGAIN);
 
 
 
