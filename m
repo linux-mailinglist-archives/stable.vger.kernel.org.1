@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6B99FB212
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599359FB263
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA08F7A06DB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 679DA18859DA
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762021B21BD;
-	Mon, 23 Dec 2024 16:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9142E1B3922;
+	Mon, 23 Dec 2024 16:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxlq9lWo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJYetiyW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AC219E971;
-	Mon, 23 Dec 2024 16:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4C31A8F80;
+	Mon, 23 Dec 2024 16:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970418; cv=none; b=gfYxRYWGBmG69GSRVje1UQxD1Hr4v4P8g5Iq8OdZX3YQjFpSOYkozU1OK8JYUd8Utl1xPMtTroVMB4We0w3xaE1KWxBA7hVd0I1qI9m5AHGZiC1tdRWVMOyiNIeOhdqCUzL8Luf85ghrJyQ0iGAaFHTpuAz1TPM4EaTunqj3kO0=
+	t=1734970655; cv=none; b=jnElvrQfh+hE1doGB5tb7z7lxb0T7xKMPlS9iMMfxZQyM9KwvF99a93+iVVzwxILcIj/Xto75iEtTCmb04VO2rS2TUV3fIWScvktRnzD0FmtjW7z7cUihm5b3eAnSn2Mry/9Wudp6Z/5pFISF68USEaLkAtkiX/hekCZLP63BwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970418; c=relaxed/simple;
-	bh=bHr9/ewiTXXlllNtB/ksElHGSbWXKrCpP4BTR6mwfIQ=;
+	s=arc-20240116; t=1734970655; c=relaxed/simple;
+	bh=VBvn5aiNh1xc1Y8rH6GuFUqdLkiQXWaqq0pfyZehzMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mTv6BHXYDNdKe9SubIhy4uGz5Jh2TcRHGriVf69KeZWoLtHEMzYCLlxL/0t4ThgY4fzXkP2I4w6Rr+LTklOYdM/Fr+lx3irz1lfw7ZCpclhbPXGsKAzy+yUE3FCH8kiKuysKhWWD8dMcbGWzz11+AGM4e5KJqWU0oivMqfauuhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxlq9lWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A438BC4CED3;
-	Mon, 23 Dec 2024 16:13:37 +0000 (UTC)
+	 MIME-Version; b=DV8SCTukRp18jJNIJPMYMcBsB+j41B70g0RicJwPVjakLYiq1iIf5bqqEmWTPfFQXi3n1NXjWy3xnzThDGlnYQ9buygZAF+cj15dEHgOIOfMQX1CZbLmooSXYbIQZgMggL47p3ANgdQC9NMaj/+RYxBrnQxvsbGktymiTZpaVFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJYetiyW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C65C4CED3;
+	Mon, 23 Dec 2024 16:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970418;
-	bh=bHr9/ewiTXXlllNtB/ksElHGSbWXKrCpP4BTR6mwfIQ=;
+	s=korg; t=1734970655;
+	bh=VBvn5aiNh1xc1Y8rH6GuFUqdLkiQXWaqq0pfyZehzMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxlq9lWoDe6XtYDUCpGdPrvPqJ3ZqRbEDr0omEJpE+E6JL7l6ccW4wOsyZ2yqIi+0
-	 1/x3NVZtyheP4JqDkBCeYtTHKw1Yf0j/aEsW/v9mn7LGFvssOSHUoaj09oc+TJUuP5
-	 JY5GSnntzDMTeD1NcBouIwv6onfSGvWrcPMbIYPs=
+	b=AJYetiyW+Wp0R+iFtQycuGkrLZ3X4dFjbSookxPkYLPyDSXT2aW3PhCYtvoxdbfVH
+	 yrB9Y8c6j8gCSYXAJtiylj/ZdSUfem7uAMJs/WWmlHQ62S6LL5wqyzKXUBUEneyMuz
+	 y3nBecCyTQ4Qx6OzkJNNBaVR1wBBFU+KANu12ITg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/116] drm/amdgpu: dont access invalid sched
+Subject: [PATCH 6.1 29/83] net: ethernet: bgmac-platform: fix an OF node reference leak
 Date: Mon, 23 Dec 2024 16:59:08 +0100
-Message-ID: <20241223155402.594895959@linuxfoundation.org>
+Message-ID: <20241223155354.774851160@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit a93b1020eb9386d7da11608477121b10079c076a ]
+[ Upstream commit 0cb2c504d79e7caa3abade3f466750c82ad26f01 ]
 
-Since 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
-accessing job->base.sched can produce unexpected results as the initialisation
-of (*job)->base.sched done in amdgpu_job_alloc is overwritten by the
-memset.
+The OF node obtained by of_parse_phandle() is not freed. Call
+of_node_put() to balance the refcount.
 
-This commit fixes an issue when a CS would fail validation and would
-be rejected after job->num_ibs is incremented. In this case,
-amdgpu_ib_free(ring->adev, ...) will be called, which would crash the
-machine because the ring value is bogus.
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-To fix this, pass a NULL pointer to amdgpu_ib_free(): we can do this
-because the device is actually not used in this function.
-
-The next commit will remove the ring argument completely.
-
-Fixes: 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2ae520cb12831d264ceb97c61f72c59d33c0dbd7)
+Fixes: 1676aba5ef7e ("net: ethernet: bgmac: device tree phy enablement")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241214014912.2810315-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bgmac-platform.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-index 99dd86337e84..49a6b6b88843 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
-@@ -159,7 +159,6 @@ void amdgpu_job_set_resources(struct amdgpu_job *job, struct amdgpu_bo *gds,
- 
- void amdgpu_job_free_resources(struct amdgpu_job *job)
+diff --git a/drivers/net/ethernet/broadcom/bgmac-platform.c b/drivers/net/ethernet/broadcom/bgmac-platform.c
+index b4381cd41979..3f4e8bac40c1 100644
+--- a/drivers/net/ethernet/broadcom/bgmac-platform.c
++++ b/drivers/net/ethernet/broadcom/bgmac-platform.c
+@@ -171,6 +171,7 @@ static int platform_phy_connect(struct bgmac *bgmac)
+ static int bgmac_probe(struct platform_device *pdev)
  {
--	struct amdgpu_ring *ring = to_amdgpu_ring(job->base.sched);
- 	struct dma_fence *f;
- 	unsigned i;
- 
-@@ -172,7 +171,7 @@ void amdgpu_job_free_resources(struct amdgpu_job *job)
- 		f = NULL;
- 
- 	for (i = 0; i < job->num_ibs; ++i)
--		amdgpu_ib_free(ring->adev, &job->ibs[i], f);
-+		amdgpu_ib_free(NULL, &job->ibs[i], f);
- }
- 
- static void amdgpu_job_free_cb(struct drm_sched_job *s_job)
+ 	struct device_node *np = pdev->dev.of_node;
++	struct device_node *phy_node;
+ 	struct bgmac *bgmac;
+ 	struct resource *regs;
+ 	int ret;
+@@ -236,7 +237,9 @@ static int bgmac_probe(struct platform_device *pdev)
+ 	bgmac->cco_ctl_maskset = platform_bgmac_cco_ctl_maskset;
+ 	bgmac->get_bus_clock = platform_bgmac_get_bus_clock;
+ 	bgmac->cmn_maskset32 = platform_bgmac_cmn_maskset32;
+-	if (of_parse_phandle(np, "phy-handle", 0)) {
++	phy_node = of_parse_phandle(np, "phy-handle", 0);
++	if (phy_node) {
++		of_node_put(phy_node);
+ 		bgmac->phy_connect = platform_phy_connect;
+ 	} else {
+ 		bgmac->phy_connect = bgmac_phy_connect_direct;
 -- 
 2.39.5
 
