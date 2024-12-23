@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD529FB269
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CF69FB18D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEF22164C89
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D73B7A0362
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FAD187848;
-	Mon, 23 Dec 2024 16:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EED1B3943;
+	Mon, 23 Dec 2024 16:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHQ+hRr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvV9ZUfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B6D8827;
-	Mon, 23 Dec 2024 16:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEC51B3942;
+	Mon, 23 Dec 2024 16:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970624; cv=none; b=u9X3zJp9KByKtBL01pPeLq0+L8RmvLewAGG7ehXXWlwKQIFZSoarbBvR8DTj2BNMNNGlx7QD/kXoRUElLi9di4DeaxW2mUzxhhsk6Jl0HPmEGYWip47Hg9rCoA4FtRnurLJikrfCXgSCfxsAKN13FmT8krLJy3/VBmm3qyh/DCw=
+	t=1734970044; cv=none; b=mizj6ZORVzzQPvyh/2avQ+vCERROtAbn+V21ei0pzqinhpfikBf/zW9PaoUE6gTSHebH0wEYY0bzKYgqQ9w6SFf7PhB2VIObS0rESh+N5za3lX/Pt1F7hyvX7Y1Fn3VRYxacYAMsbH8YLVUPRqKcEg3WbrotXQSRO12T+ucFdJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970624; c=relaxed/simple;
-	bh=f44IOrbwDtJJXnE1grl98VTcoxX2Ho9f0hALF76TW6Y=;
+	s=arc-20240116; t=1734970044; c=relaxed/simple;
+	bh=IMKBBwt2Hn9xoZXoq5LjlqVMpajwo+uHZX1hB5gHb4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V66voXo8ofNIOgCbcyJUCcuv1msjhaQqoHW37A921GTYG3/JIxAv+YYWJXhhe5u475xo7p88ZIugtQv9VaAnDhoDjNeaUbX7dR2Us+xL2RseT26j5h6ow0yBabc4AM16lMvsBodqkixleOOX8PYApnx7S4JodejRfpBolb+L/kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHQ+hRr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FACC4CED3;
-	Mon, 23 Dec 2024 16:17:03 +0000 (UTC)
+	 MIME-Version; b=BSzBUFh/8Qh34/kue2TNv1rj7RV3R0grW/IWCDOP7ecNZYUOcSB5TgXF0axrb0XVSrjKwwWjhJwZlyge7XUXPE0iKWdGGq0gOd/0uZXahgjDPdGLvj8VqA/S1gQsZABRuYuAcbZFdXdWk5Fhh7IFU4ztbb1bidjeWHWqvr/Z5MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvV9ZUfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF52C4CED4;
+	Mon, 23 Dec 2024 16:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970624;
-	bh=f44IOrbwDtJJXnE1grl98VTcoxX2Ho9f0hALF76TW6Y=;
+	s=korg; t=1734970043;
+	bh=IMKBBwt2Hn9xoZXoq5LjlqVMpajwo+uHZX1hB5gHb4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHQ+hRr5JhntSF2FaWxFCzWhhdlzIr8Ud44ruB887VkLgU3isWYTxRg+2WR+bA4tS
-	 y2f/vX0oYbBd8EIZH7rfOe+u3NZroVnh93NE+aICgYa5ocIwR3Zk94/tXyTSSDdTfd
-	 vP4ss6H4qIE7z/lPb0wok4zLduJO3qR5mTkdTaGA=
+	b=XvV9ZUfL4KPx5U4u/CEMqPXxS8IEhBN/hNmlMuRTIm7zVJYwBGQRk4G1p7a/APe5F
+	 x6AgMDEQXBR9kHoKFTSM4MqSVBwVjJTsWUE/0IDmgBN4Q2TEXfFj+ltD2jeKT8H2mW
+	 UEWyoXSd43PIflVPA9Qh/ym/YHk2hC9omsdY/fto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 20/83] net/smc: check sndbuf_space again after NOSPACE flag is set in smc_poll
+	Karol Wachowski <karol.wachowski@intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.12 128/160] accel/ivpu: Fix general protection fault in ivpu_bo_list()
 Date: Mon, 23 Dec 2024 16:58:59 +0100
-Message-ID: <20241223155354.413810252@linuxfoundation.org>
+Message-ID: <20241223155413.732331420@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-[ Upstream commit 679e9ddcf90dbdf98aaaa71a492454654b627bcb ]
+commit 4b2efb9db0c22a130bbd1275e489b42c02d08050 upstream.
 
-When application sending data more than sndbuf_space, there have chances
-application will sleep in epoll_wait, and will never be wakeup again. This
-is caused by a race between smc_poll and smc_cdc_tx_handler.
+Check if ctx is not NULL before accessing its fields.
 
-application                                      tasklet
-smc_tx_sendmsg(len > sndbuf_space)   |
-epoll_wait for EPOLL_OUT,timeout=0   |
-  smc_poll                           |
-    if (!smc->conn.sndbuf_space)     |
-                                     |  smc_cdc_tx_handler
-                                     |    atomic_add sndbuf_space
-                                     |    smc_tx_sndbuf_nonfull
-                                     |      if (!test_bit SOCK_NOSPACE)
-                                     |        do not sk_write_space;
-      set_bit SOCK_NOSPACE;          |
-    return mask=0;                   |
-
-Application will sleep in epoll_wait as smc_poll returns 0. And
-smc_cdc_tx_handler will not call sk_write_space because the SOCK_NOSPACE
-has not be set. If there is no inflight cdc msg, sk_write_space will not be
-called any more, and application will sleep in epoll_wait forever.
-So check sndbuf_space again after NOSPACE flag is set to break the race.
-
-Fixes: 8dce2786a290 ("net/smc: smc_poll improvements")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37dee2a2f433 ("accel/ivpu: Improve buffer object debug logs")
+Cc: stable@vger.kernel.org # v6.8
+Reviewed-by: Karol Wachowski <karol.wachowski@intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241210130939.1575610-2-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/accel/ivpu/ivpu_gem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 868e722aef06..aeeb6e62361f 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2789,6 +2789,13 @@ static __poll_t smc_poll(struct file *file, struct socket *sock,
- 			} else {
- 				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
- 				set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-+
-+				if (sk->sk_state != SMC_INIT) {
-+					/* Race breaker the same way as tcp_poll(). */
-+					smp_mb__after_atomic();
-+					if (atomic_read(&smc->conn.sndbuf_space))
-+						mask |= EPOLLOUT | EPOLLWRNORM;
-+				}
- 			}
- 			if (atomic_read(&smc->conn.bytes_to_rcv))
- 				mask |= EPOLLIN | EPOLLRDNORM;
--- 
-2.39.5
-
+--- a/drivers/accel/ivpu/ivpu_gem.c
++++ b/drivers/accel/ivpu/ivpu_gem.c
+@@ -406,7 +406,7 @@ static void ivpu_bo_print_info(struct iv
+ 	mutex_lock(&bo->lock);
+ 
+ 	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
+-		   bo, bo->ctx->id, bo->vpu_addr, bo->base.base.size,
++		   bo, bo->ctx ? bo->ctx->id : 0, bo->vpu_addr, bo->base.base.size,
+ 		   bo->flags, kref_read(&bo->base.base.refcount));
+ 
+ 	if (bo->base.pages)
 
 
 
