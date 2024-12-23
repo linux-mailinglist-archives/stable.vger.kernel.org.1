@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-105761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B836C9FB18F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85779FB234
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FED41884BFC
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EEDD1618BF
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D881E1B4120;
-	Mon, 23 Dec 2024 16:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431BD1B3725;
+	Mon, 23 Dec 2024 16:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGTmDHz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/E6T/Oo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CF81B3959;
-	Mon, 23 Dec 2024 16:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B231B4135;
+	Mon, 23 Dec 2024 16:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970053; cv=none; b=es2Q9zh520uxKz9Eg3XWmQCEW7BGkXdW/oj4LY2clVrh6oCqiQk48JsIX4O30o0CZI4lZPZIpqfWAGJ/S1vicJGZIICT2UF6ogxI5oK3BhzvgH6S1v1Yw2bY0Wb84Lep2Vu8jTLvC29EslioL+s40imUqilUs71gTTcy0BYcH+Y=
+	t=1734970504; cv=none; b=DAwF6Q0ent2nr2MgfOS8eGAjuQQAcxwuGI8GjaYDf22n4qbzkRggtuVRyRe5hfwfAnjNpjRgvsoijTeQEfNEkEvMtPW6Fj3XDIMK0AnKRcabZnH435PSdG1QGbOGo+DmzZHVKeoHbch3QiaINqvx4beqWmRp8TeL88AjHDvoJ1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970053; c=relaxed/simple;
-	bh=1w/QeFMNkmlqyosaPkKeBh//C0gRK1OdBNZdgZUdCHY=;
+	s=arc-20240116; t=1734970504; c=relaxed/simple;
+	bh=KWhwHZVLkSshjyOjPGTLHCztpAspSpnrJpgnmIbdpqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jk1d0sGILlqkPxtl7tvNYWjhW5jVMj+vXiIlW+S5Gu6wGEIGkSfUB/lJdNuqoWUPjwjj9139CSYgDco2NDFBTbYe8xZbCydDmmWbidVB2zN4FxpXfu9ErLsC4EaBT5XbnICOgykl3pS4KKMqhZDwIHUoFxTgMur3ZBAwZVUuUqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGTmDHz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02940C4CED3;
-	Mon, 23 Dec 2024 16:07:32 +0000 (UTC)
+	 MIME-Version; b=QSIvhkCxZuzEmWmLdAixThsn3RTzXWF++zCvv1+Wlvm/if6G+j5gGZ7JaYdCAXOZYakBzj+mOrqE3a19CP+TEw7WC++1LRa82UsXqe2x5UVdwB9q6mnwuzGjufhp8z6fiebYt7G6qzBQsANGwafQ50a50n7btRji3WRxr8Gxl4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/E6T/Oo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7276CC4CED3;
+	Mon, 23 Dec 2024 16:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970053;
-	bh=1w/QeFMNkmlqyosaPkKeBh//C0gRK1OdBNZdgZUdCHY=;
+	s=korg; t=1734970503;
+	bh=KWhwHZVLkSshjyOjPGTLHCztpAspSpnrJpgnmIbdpqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGTmDHz1xu+vBKreqh9wRQusG5RZWADm+epqP8XB/pu15kyei66pIRxKaWAjjLgG9
-	 CbC8+KCU5xcen24/xyvHDLJNMt0pv9/zRHt2qaYtu24vPSZTDORJtS19nFCcSmGS70
-	 lJpAPgSE8cLUlXevKlMQ+zft14NAM9v8yx14cWmY=
+	b=Z/E6T/Oo4dyDHVYV5x2mFLFbGAXv5MP11gfBd3jdtoDctuAbp2BvY5JzihLMIHyDq
+	 aXm12uD0ga2cZ9gPtOK/WWUTUyHLbmCTHDKMePkTWNtXjLTLmXnNJNXtPkQPFywBZt
+	 JWO+0n1JNgCOiJRTLc2/OHRWO9CD/naPILN17yYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 130/160] tracing: Fix test_event_printk() to process entire print argument
-Date: Mon, 23 Dec 2024 16:59:01 +0100
-Message-ID: <20241223155413.811435292@linuxfoundation.org>
+	Aaron Rainbolt <arainbolt@kfocus.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.6 072/116] thunderbolt: Improve redrive mode handling
+Date: Mon, 23 Dec 2024 16:59:02 +0100
+Message-ID: <20241223155402.361448789@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,189 +61,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit a6629626c584200daf495cc9a740048b455addcd upstream.
+commit 24740385cb0d6d22ab7fa7adf36546d5b3cdcf73 upstream.
 
-The test_event_printk() analyzes print formats of trace events looking for
-cases where it may dereference a pointer that is not in the ring buffer
-which can possibly be a bug when the trace event is read from the ring
-buffer and the content of that pointer no longer exists.
+When USB-C monitor is connected directly to Intel Barlow Ridge host, it
+goes into "redrive" mode that basically routes the DisplayPort signals
+directly from the GPU to the USB-C monitor without any tunneling needed.
+However, the host router must be powered on for this to work. Aaron
+reported that there are a couple of cases where this will not work with
+the current code:
 
-The function needs to accurately go from one print format argument to the
-next. It handles quotes and parenthesis that may be included in an
-argument. When it finds the start of the next argument, it uses a simple
-"c = strstr(fmt + i, ',')" to find the end of that argument!
+  - Booting with USB-C monitor plugged in.
+  - Plugging in USB-C monitor when the host router is in sleep state
+    (runtime suspended).
+  - Plugging in USB-C device while the system is in system sleep state.
 
-In order to include "%s" dereferencing, it needs to process the entire
-content of the print format argument and not just the content of the first
-',' it finds. As there may be content like:
+In all these cases once the host router is runtime suspended the picture
+on the connected USB-C display disappears too. This is certainly not
+what the user expected.
 
- ({ const char *saved_ptr = trace_seq_buffer_ptr(p); static const char
-   *access_str[] = { "---", "--x", "w--", "w-x", "-u-", "-ux", "wu-", "wux"
-   }; union kvm_mmu_page_role role; role.word = REC->role;
-   trace_seq_printf(p, "sp gen %u gfn %llx l%u %u-byte q%u%s %s%s" " %snxe
-   %sad root %u %s%c", REC->mmu_valid_gen, REC->gfn, role.level,
-   role.has_4_byte_gpte ? 4 : 8, role.quadrant, role.direct ? " direct" : "",
-   access_str[role.access], role.invalid ? " invalid" : "", role.efer_nx ? ""
-   : "!", role.ad_disabled ? "!" : "", REC->root_count, REC->unsync ?
-   "unsync" : "sync", 0); saved_ptr; })
+For this reason improve the redrive mode handling to keep the host
+router from runtime suspending when detect that any of the above cases
+is happening.
 
-Which is an example of a full argument of an existing event. As the code
-already handles finding the next print format argument, process the
-argument at the end of it and not the start of it. This way it has both
-the start of the argument as well as the end of it.
-
-Add a helper function "process_pointer()" that will do the processing during
-the loop as well as at the end. It also makes the code cleaner and easier
-to read.
-
+Fixes: a75e0684efe5 ("thunderbolt: Keep the domain powered when USB4 port is in redrive mode")
+Reported-by: Aaron Rainbolt <arainbolt@kfocus.org>
+Closes: https://lore.kernel.org/linux-usb/20241009220118.70bfedd0@kf-ir16/
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20241217024720.362271189@goodmis.org
-Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |   82 ++++++++++++++++++++++++++++----------------
- 1 file changed, 53 insertions(+), 29 deletions(-)
+ drivers/thunderbolt/tb.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -265,8 +265,7 @@ static bool test_field(const char *fmt,
- 	len = p - fmt;
- 
- 	for (; field->type; field++) {
--		if (strncmp(field->name, fmt, len) ||
--		    field->name[len])
-+		if (strncmp(field->name, fmt, len) || field->name[len])
- 			continue;
- 		array_descriptor = strchr(field->type, '[');
- 		/* This is an array and is OK to dereference. */
-@@ -275,6 +274,32 @@ static bool test_field(const char *fmt,
- 	return false;
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -1930,6 +1930,37 @@ static void tb_exit_redrive(struct tb_po
+ 	}
  }
  
-+/* Return true if the argument pointer is safe */
-+static bool process_pointer(const char *fmt, int len, struct trace_event_call *call)
++static void tb_switch_enter_redrive(struct tb_switch *sw)
 +{
-+	const char *r, *e, *a;
++	struct tb_port *port;
 +
-+	e = fmt + len;
-+
-+	/* Find the REC-> in the argument */
-+	r = strstr(fmt, "REC->");
-+	if (r && r < e) {
-+		/*
-+		 * Addresses of events on the buffer, or an array on the buffer is
-+		 * OK to dereference. There's ways to fool this, but
-+		 * this is to catch common mistakes, not malicious code.
-+		 */
-+		a = strchr(fmt, '&');
-+		if ((a && (a < r)) || test_field(r, call))
-+			return true;
-+	} else if ((r = strstr(fmt, "__get_dynamic_array(")) && r < e) {
-+		return true;
-+	} else if ((r = strstr(fmt, "__get_sockaddr(")) && r < e) {
-+		return true;
-+	}
-+	return false;
++	tb_switch_for_each_port(sw, port)
++		tb_enter_redrive(port);
 +}
 +
- /*
-  * Examine the print fmt of the event looking for unsafe dereference
-  * pointers using %p* that could be recorded in the trace event and
-@@ -285,12 +310,12 @@ static void test_event_printk(struct tra
- {
- 	u64 dereference_flags = 0;
- 	bool first = true;
--	const char *fmt, *c, *r, *a;
-+	const char *fmt;
- 	int parens = 0;
- 	char in_quote = 0;
- 	int start_arg = 0;
- 	int arg = 0;
--	int i;
-+	int i, e;
- 
- 	fmt = call->print_fmt;
- 
-@@ -403,42 +428,41 @@ static void test_event_printk(struct tra
- 		case ',':
- 			if (in_quote || parens)
- 				continue;
-+			e = i;
- 			i++;
- 			while (isspace(fmt[i]))
- 				i++;
--			start_arg = i;
--			if (!(dereference_flags & (1ULL << arg)))
--				goto next_arg;
- 
--			/* Find the REC-> in the argument */
--			c = strchr(fmt + i, ',');
--			r = strstr(fmt + i, "REC->");
--			if (r && (!c || r < c)) {
--				/*
--				 * Addresses of events on the buffer,
--				 * or an array on the buffer is
--				 * OK to dereference.
--				 * There's ways to fool this, but
--				 * this is to catch common mistakes,
--				 * not malicious code.
--				 */
--				a = strchr(fmt + i, '&');
--				if ((a && (a < r)) || test_field(r, call))
-+			/*
-+			 * If start_arg is zero, then this is the start of the
-+			 * first argument. The processing of the argument happens
-+			 * when the end of the argument is found, as it needs to
-+			 * handle paranthesis and such.
-+			 */
-+			if (!start_arg) {
-+				start_arg = i;
-+				/* Balance out the i++ in the for loop */
-+				i--;
-+				continue;
-+			}
++/*
++ * Called during system and runtime suspend to forcefully exit redrive
++ * mode without querying whether the resource is available.
++ */
++static void tb_switch_exit_redrive(struct tb_switch *sw)
++{
++	struct tb_port *port;
 +
-+			if (dereference_flags & (1ULL << arg)) {
-+				if (process_pointer(fmt + start_arg, e - start_arg, call))
- 					dereference_flags &= ~(1ULL << arg);
--			} else if ((r = strstr(fmt + i, "__get_dynamic_array(")) &&
--				   (!c || r < c)) {
--				dereference_flags &= ~(1ULL << arg);
--			} else if ((r = strstr(fmt + i, "__get_sockaddr(")) &&
--				   (!c || r < c)) {
--				dereference_flags &= ~(1ULL << arg);
- 			}
- 
--		next_arg:
--			i--;
-+			start_arg = i;
- 			arg++;
-+			/* Balance out the i++ in the for loop */
-+			i--;
- 		}
- 	}
- 
-+	if (dereference_flags & (1ULL << arg)) {
-+		if (process_pointer(fmt + start_arg, i - start_arg, call))
-+			dereference_flags &= ~(1ULL << arg);
++	if (!(sw->quirks & QUIRK_KEEP_POWER_IN_DP_REDRIVE))
++		return;
++
++	tb_switch_for_each_port(sw, port) {
++		if (!tb_port_is_dpin(port))
++			continue;
++
++		if (port->redrive) {
++			port->redrive = false;
++			pm_runtime_put(&sw->dev);
++			tb_port_dbg(port, "exit redrive mode\n");
++		}
 +	}
++}
 +
- 	/*
- 	 * If you triggered the below warning, the trace event reported
- 	 * uses an unsafe dereference pointer %p*. As the data stored
+ static void tb_dp_resource_unavailable(struct tb *tb, struct tb_port *port)
+ {
+ 	struct tb_port *in, *out;
+@@ -2690,6 +2721,7 @@ static int tb_start(struct tb *tb, bool
+ 	tb_create_usb3_tunnels(tb->root_switch);
+ 	/* Add DP IN resources for the root switch */
+ 	tb_add_dp_resources(tb->root_switch);
++	tb_switch_enter_redrive(tb->root_switch);
+ 	/* Make the discovered switches available to the userspace */
+ 	device_for_each_child(&tb->root_switch->dev, NULL,
+ 			      tb_scan_finalize_switch);
+@@ -2705,6 +2737,7 @@ static int tb_suspend_noirq(struct tb *t
+ 
+ 	tb_dbg(tb, "suspending...\n");
+ 	tb_disconnect_and_release_dp(tb);
++	tb_switch_exit_redrive(tb->root_switch);
+ 	tb_switch_suspend(tb->root_switch, false);
+ 	tcm->hotplug_active = false; /* signal tb_handle_hotplug to quit */
+ 	tb_dbg(tb, "suspend finished\n");
+@@ -2797,6 +2830,7 @@ static int tb_resume_noirq(struct tb *tb
+ 		tb_dbg(tb, "tunnels restarted, sleeping for 100ms\n");
+ 		msleep(100);
+ 	}
++	tb_switch_enter_redrive(tb->root_switch);
+ 	 /* Allow tb_handle_hotplug to progress events */
+ 	tcm->hotplug_active = true;
+ 	tb_dbg(tb, "resume finished\n");
+@@ -2860,6 +2894,12 @@ static int tb_runtime_suspend(struct tb
+ 	struct tb_cm *tcm = tb_priv(tb);
+ 
+ 	mutex_lock(&tb->lock);
++	/*
++	 * The below call only releases DP resources to allow exiting and
++	 * re-entering redrive mode.
++	 */
++	tb_disconnect_and_release_dp(tb);
++	tb_switch_exit_redrive(tb->root_switch);
+ 	tb_switch_suspend(tb->root_switch, true);
+ 	tcm->hotplug_active = false;
+ 	mutex_unlock(&tb->lock);
+@@ -2891,6 +2931,7 @@ static int tb_runtime_resume(struct tb *
+ 	tb_restore_children(tb->root_switch);
+ 	list_for_each_entry_safe(tunnel, n, &tcm->tunnel_list, list)
+ 		tb_tunnel_restart(tunnel);
++	tb_switch_enter_redrive(tb->root_switch);
+ 	tcm->hotplug_active = true;
+ 	mutex_unlock(&tb->lock);
+ 
 
 
 
