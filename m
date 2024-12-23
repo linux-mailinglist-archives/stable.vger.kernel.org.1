@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-105996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F799FB2AC
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:21:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2B49FB242
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C4797A03BE
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:21:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23F7A16316B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1221BC9F4;
-	Mon, 23 Dec 2024 16:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEF01A4AAA;
+	Mon, 23 Dec 2024 16:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNIz63+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTs/HkSD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F611BBBEE;
-	Mon, 23 Dec 2024 16:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03068827;
+	Mon, 23 Dec 2024 16:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970844; cv=none; b=ilKRVmhEQeHWhHoRcLzevQCv2yKAFjtbYyAJFqHW/cv7tdoh2Q9Pr3WsTThdowU0zwx0AEP5Z+YYnSJAYmPzwgJVEvPMT7uhmERJxBmAc/g6NweXj8oAshNINB8l9RDIiiqnLtvYk62ACRjKCZmcN0LGNhEDH+/Ig8P1qYyUQyI=
+	t=1734970553; cv=none; b=SCCC2+DROwHj2b8vArVUsNw1tkghbnZYtyPhWYNytEmgNN4ZjprH+PIBvD7WuHo68vgOmfHSEWqRFgx0ceW0EGZvEOnIqPAo4egbYEDzFg7xDPfoZMMiSzfNO9bill1LLVvbQAqpUZXrcjdzdTpVBvFGljwAueICJCxWj9gWftU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970844; c=relaxed/simple;
-	bh=+xh5w9aZBjaKSue1qs48gHlTIXOXGaXb4BdsYXUZpPM=;
+	s=arc-20240116; t=1734970553; c=relaxed/simple;
+	bh=F9DjLvZuw4yeqNtQAgcb1BLTUbjIwYtqWWbB85xJWRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1IFfIUqkUfyF1hulW5hn4soXM0Pm7Cj+lw5LTIMkgwRQOVOERZJ/VfFLp5nx4Tcu8jWO7Bp+nNOal2qQNa2o6rgasrOObo3NdIG1BM1BhK1lBRB1Lh6vrIeJTYa7kvbOOdx82aaQKJ42qPvTVAA3Jq0P8+4pRc1H+XN1MXSJ1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNIz63+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B957CC4CED7;
-	Mon, 23 Dec 2024 16:20:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r0lGN302VrNByjhBmXPbAWfI8KLyfvuQ7pAzkGlpHJae1XxiEr79eb8s4tuGJ8PH5cQknl9a5wzOuVykqtLrejKt3ZoS3EeUWb27wY1Q7bLm/cNPKbH+R49DXBF+4AZ70Q9mm315qAool6md4GoDEq7TV9h6+Nek+0OMTN2NujI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTs/HkSD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E83C4CED3;
+	Mon, 23 Dec 2024 16:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970844;
-	bh=+xh5w9aZBjaKSue1qs48gHlTIXOXGaXb4BdsYXUZpPM=;
+	s=korg; t=1734970552;
+	bh=F9DjLvZuw4yeqNtQAgcb1BLTUbjIwYtqWWbB85xJWRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNIz63+ccGlqYjD+4c0jehckyHpfSGoy6ggU3X/2rFqe6vBKibxPFM8POMPvTsMqa
-	 T5OYPaViTaX3Lk3fYSEJNJ7BDHDNas8rW3VYe+3dAbhKp0K7oI5PvzDqmATMWHBKRj
-	 UVxMGYDGv/i98ldOb4aIccnhxAc0ukJuq7QPiGrU=
+	b=dTs/HkSDJn09vvynGiCLCF4AMTk3WuKFVvc4YzsRfDzcTojgwxCMZluhQ9/xLUZMu
+	 OFeavgPpOPMJ4hNfOQjipsK2UEJ2Hkj7tsPtwJt12w9DPxwr8XG3UPJnex7S04DPvx
+	 DC8vdATVlegjnVp1HrcOTaJkGsmQ1FLDInRiWIqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will <willsroot@protonmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 67/83] io_uring: check if iowq is killed before queuing
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	=?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 116/116] drm/amdgpu: Handle NULL bo->tbo.resource (again) in amdgpu_vm_bo_update
 Date: Mon, 23 Dec 2024 16:59:46 +0100
-Message-ID: <20241223155356.220129272@linuxfoundation.org>
+Message-ID: <20241223155404.062703866@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Michel Dänzer <mdaenzer@redhat.com>
 
-commit dbd2ca9367eb19bc5e269b8c58b0b1514ada9156 upstream.
+commit 85230ee36d88e7a09fb062d43203035659dd10a5 upstream.
 
-task work can be executed after the task has gone through io_uring
-termination, whether it's the final task_work run or the fallback path.
-In this case, task work will find ->io_wq being already killed and
-null'ed, which is a problem if it then tries to forward the request to
-io_queue_iowq(). Make io_queue_iowq() fail requests in this case.
+Third time's the charm, I hope?
 
-Note that it also checks PF_KTHREAD, because the user can first close
-a DEFER_TASKRUN ring and shortly after kill the task, in which case
-->iowq check would race.
-
+Fixes: d3116756a710 ("drm/ttm: rename bo->mem and make it a pointer")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3837
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 695c2c745e5dff201b75da8a1d237ce403600d04)
 Cc: stable@vger.kernel.org
-Fixes: 50c52250e2d74 ("block: implement async io_uring discard cmd")
-Fixes: 773af69121ecc ("io_uring: always reissue from task_work context")
-Reported-by: Will <willsroot@protonmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/63312b4a2c2bb67ad67b857d17a300e1d3b078e8.1734637909.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -440,7 +440,11 @@ void io_queue_iowq(struct io_kiocb *req,
- 	struct io_uring_task *tctx = req->task->io_uring;
- 
- 	BUG_ON(!tctx);
--	BUG_ON(!tctx->io_wq);
-+
-+	if ((current->flags & PF_KTHREAD) || !tctx->io_wq) {
-+		io_req_task_queue_fail(req, -ECANCELED);
-+		return;
-+	}
- 
- 	/* init ->work of the whole link before punting */
- 	io_prep_async_link(req);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1161,10 +1161,9 @@ int amdgpu_vm_bo_update(struct amdgpu_de
+ 	 * next command submission.
+ 	 */
+ 	if (bo && bo->tbo.base.resv == vm->root.bo->tbo.base.resv) {
+-		uint32_t mem_type = bo->tbo.resource->mem_type;
+-
+-		if (!(bo->preferred_domains &
+-		      amdgpu_mem_type_to_domain(mem_type)))
++		if (bo->tbo.resource &&
++		    !(bo->preferred_domains &
++		      amdgpu_mem_type_to_domain(bo->tbo.resource->mem_type)))
+ 			amdgpu_vm_bo_evicted(&bo_va->base);
+ 		else
+ 			amdgpu_vm_bo_idle(&bo_va->base);
 
 
 
