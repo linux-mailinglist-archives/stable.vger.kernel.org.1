@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-105750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213509FB195
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04369FB250
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3853C161D5A
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 974F61885BB8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA16189B94;
-	Mon, 23 Dec 2024 16:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6737C19E98B;
+	Mon, 23 Dec 2024 16:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQNZbpSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2dWd44n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DF213BC0C;
-	Mon, 23 Dec 2024 16:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257C78827;
+	Mon, 23 Dec 2024 16:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970015; cv=none; b=QzQVRQK1/vCooudyH0aurF/xDSsIuRgFNIUg0Vjgm8FnbGTM18Pb3TEJoRi3OrtP/aLmYmI1pRg+0vVyGFTTkAYTts465Q8f389YDqUM9duZMvUgo44MSlDK45ogQzVqbbVM6I1krjRrepbiS+P7+8T7wBePXLHJoe6w5diYsk8=
+	t=1734970594; cv=none; b=Nt3JRrIn9ryRplaT+KSL5DK9EAhNJQ/ftQBrZkTZ8PTSJSlZEJKQkmUGQ//axRrAd5CsnN5dEL22adl9Nb9SNazvMR5cEYmMcHUpYPAmFl8PxrwHAMQ9G45gLohpXKgQUTWGcuSCoCbrB0ZwIluDEGFb6HNrG6iw39cmpKiK5G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970015; c=relaxed/simple;
-	bh=PB9GSeIolkF9ED+1V6Wkz/KjC06E4bPi3YGnANygt70=;
+	s=arc-20240116; t=1734970594; c=relaxed/simple;
+	bh=0/gjQt8QUuPuSjRkwlz8VjrCDQmd6k/U+PnlW8r5VxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMVGmcHD8imGuH00fGzUJp7dz10Kvz9wfX9w70PRIKvmSTs1NKGGq4uUleOyAVuvGJF6HDOpV3cutqbyvTeolA5cT+EkCzRn+kW+VLDv1qbnBvrIOdMpmo5JWAm4tztdgJbvZUIsiohYKe8wecdNdjv2+belr7l2SzF2QaXqS+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQNZbpSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0565FC4CED3;
-	Mon, 23 Dec 2024 16:06:54 +0000 (UTC)
+	 MIME-Version; b=qdWPL52RCG+S07JPCiXSYUoDcUecCV9KaXl2wliDmsZK0/Ot1Eu8ImZDcqEA/NTafves8DzSFJFa3GIW/uIwkvt3VUyK7gvJFmkkK5QWFfeWRl5jQY4EwT2fSWCpkTvjT0XFfl53d8vDG5o9EbW8faGSBt33KLz36FQ2vgOERVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2dWd44n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3DFC4CED3;
+	Mon, 23 Dec 2024 16:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970015;
-	bh=PB9GSeIolkF9ED+1V6Wkz/KjC06E4bPi3YGnANygt70=;
+	s=korg; t=1734970593;
+	bh=0/gjQt8QUuPuSjRkwlz8VjrCDQmd6k/U+PnlW8r5VxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQNZbpSGZ1ln4jj29DrNBYWF3HAXfbGil6srOL8CyzLXw7h/8Zi3yvTvcUgPTo+XN
-	 rzbjGRLlI2GX5D+HKTJjnJ8LWD7tlTu64McUIQvQQOvdZ6jBV3+tG+Iw88Amye3aIL
-	 4icgZg6qTwZb6ABsrKqklkNBSLHUIAlNKkJtdk+k=
+	b=B2dWd44nISY2oHoK0e+8w70DgkMcRneAfUTagxlgBfTYeFLAB5umHsktEtreGeOdD
+	 AOlWOsu0G+KKHkZQOWVCTX8tyU0nKB58va/DcDj+iWRPovCp3qCKefA2MFC02ZRir+
+	 +V3oFkLYQNWg4JYLZCQTzwCaBIIKSNhSu6BVG5BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 120/160] drm/amdgpu/gfx12: fix IP version check
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 12/83] platform/x86: p2sb: Make p2sb_get_devfn() return void
 Date: Mon, 23 Dec 2024 16:58:51 +0100
-Message-ID: <20241223155413.405167863@linuxfoundation.org>
+Message-ID: <20241223155354.108627618@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 41be00f839e9ee7753892a73a36ce4c14c6f5cbf upstream.
+[ Upstream commit 3ff5873602a874035ba28826852bd45393002a08 ]
 
-Use the helper function rather than reading it directly.
+p2sb_get_devfn() always succeeds, make it return void and
+remove error checking from its callers.
 
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f1fd1d0f40272948aa6ab82a3a82ecbbc76dff53)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240305094500.23778-1-hdegoede@redhat.com
+Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/p2sb.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-@@ -4105,7 +4105,7 @@ static int gfx_v12_0_set_clockgating_sta
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
+diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
+index 053be5c5e0ca..687e341e3206 100644
+--- a/drivers/platform/x86/p2sb.c
++++ b/drivers/platform/x86/p2sb.c
+@@ -43,7 +43,7 @@ struct p2sb_res_cache {
  
--	switch (adev->ip_versions[GC_HWIP][0]) {
-+	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
- 	case IP_VERSION(12, 0, 0):
- 	case IP_VERSION(12, 0, 1):
- 		gfx_v12_0_update_gfx_clock_gating(adev,
+ static struct p2sb_res_cache p2sb_resources[NR_P2SB_RES_CACHE];
+ 
+-static int p2sb_get_devfn(unsigned int *devfn)
++static void p2sb_get_devfn(unsigned int *devfn)
+ {
+ 	unsigned int fn = P2SB_DEVFN_DEFAULT;
+ 	const struct x86_cpu_id *id;
+@@ -53,7 +53,6 @@ static int p2sb_get_devfn(unsigned int *devfn)
+ 		fn = (unsigned int)id->driver_data;
+ 
+ 	*devfn = fn;
+-	return 0;
+ }
+ 
+ static bool p2sb_valid_resource(const struct resource *res)
+@@ -132,9 +131,7 @@ static int p2sb_cache_resources(void)
+ 	int ret;
+ 
+ 	/* Get devfn for P2SB device itself */
+-	ret = p2sb_get_devfn(&devfn_p2sb);
+-	if (ret)
+-		return ret;
++	p2sb_get_devfn(&devfn_p2sb);
+ 
+ 	bus = p2sb_get_bus(NULL);
+ 	if (!bus)
+@@ -191,17 +188,13 @@ static int p2sb_cache_resources(void)
+ int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
+ {
+ 	struct p2sb_res_cache *cache;
+-	int ret;
+ 
+ 	bus = p2sb_get_bus(bus);
+ 	if (!bus)
+ 		return -ENODEV;
+ 
+-	if (!devfn) {
+-		ret = p2sb_get_devfn(&devfn);
+-		if (ret)
+-			return ret;
+-	}
++	if (!devfn)
++		p2sb_get_devfn(&devfn);
+ 
+ 	cache = &p2sb_resources[PCI_FUNC(devfn)];
+ 	if (cache->bus_dev_id != bus->dev.id)
+-- 
+2.39.5
+
 
 
 
