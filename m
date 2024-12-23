@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-105945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D04E9FB26A
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1FE9FB208
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1F1D1885C43
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36375167E93
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDFC1AAE0B;
-	Mon, 23 Dec 2024 16:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175C21AF0C7;
+	Mon, 23 Dec 2024 16:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFELriv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJZgLkoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522128827;
-	Mon, 23 Dec 2024 16:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F497E0FF;
+	Mon, 23 Dec 2024 16:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970672; cv=none; b=pRTZMbqjZ52uy8sZot3KbadeqnsYghechej0/iaDdijyAfWDXlwa4gNAjGTII4YhAs17VzvV+fX84EEBYA3LmBerR01UAcAR3gZZwIaKb1JrIsJgCKWskTkT7CG0g0oM0mBObQxnZ3JmeFizc3RZr5Kh8i9B0REVGtqhKozePyI=
+	t=1734970348; cv=none; b=EhsH0Ldd9IB8noIrvaWEu3bbcHrY9e4ujrR6w0TZjoZMa/BiIFhaZBLl1Bhb4+RG/fAxNiVJlYNILIvHl23ekH7pxEjFTezOx0GQhq0MLJHE/mYSxcKghg9k3V7+yWHJobYBtODQbsXJdehqw3RwRk3MNb5OZKiFNe4QvnfX4Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970672; c=relaxed/simple;
-	bh=p1mGlyIeGlUIzmkCDfRMro/h7WRHlI5UaaAzcAq9+3Y=;
+	s=arc-20240116; t=1734970348; c=relaxed/simple;
+	bh=SWIpKXi145m9gcXspmBaZCS42bYaAnUyocuhH7C/wWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s//QEFmA7IpV1lHJbAftBv65hF3y3uM4tjbWG8UVQHLTwXWbqcsZfFEQBACpfj53uqMN3tgJoXKu0LVq39NJPgBxleTNPnOD822wUKAd7mQRsnD2Kuel7mIWw/8+fqUS05UzyteIGXSf1KNS6DWgZ7iPI7HzLYtS9TqlnSdoZu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFELriv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94D1C4CED3;
-	Mon, 23 Dec 2024 16:17:51 +0000 (UTC)
+	 MIME-Version; b=bjGCB2zuIwDs+/+arWY7KjZd9Ts4PtD4tUY7/MMjX9vI7lEcEtEgodmVbK9MHRw3NzvOH7kXAZCy5y7bYfOHGL1iXxURiULejji2E6LEZomKOWyNdwd+3OhpIzOOUaYax86XNzi4NN7dLH+BD18G6zZBd56+ucs5sCR6zJdL0Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJZgLkoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B7DC4CED3;
+	Mon, 23 Dec 2024 16:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970672;
-	bh=p1mGlyIeGlUIzmkCDfRMro/h7WRHlI5UaaAzcAq9+3Y=;
+	s=korg; t=1734970348;
+	bh=SWIpKXi145m9gcXspmBaZCS42bYaAnUyocuhH7C/wWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFELriv46BcnOhwNFWHZvm7V1ov4uaJp1t7vStqiVkjmgGk6gjjkNH77Nlgt5czt7
-	 KYtGRCH6+EP26gmy+mdSvErv0NR4W6C6pL7+9Oo3d4/HuAt5SUVYIpLRySmFdoYSBn
-	 q26ny9jomDr4OV3hNhGOz4qdLVfbENWaIN8CuS+g=
+	b=WJZgLkoNe3n9b6KFtVXqkRfGTTcGzWgFi6PNPBv102WO4W7iXOAYCYb0SdMcRwaGH
+	 2sqpfA19UFjg1uXDjvHeRr84k2FbzWONtENkh12xgZilpTrN5Oq62YcJGuWqGn3fa9
+	 wDyBtyM6j03ORzA/CCod2IZQ+1wwa+GcUPiBXXaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Adrian Moreno <amorenoz@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/83] ASoC: Intel: sof_sdw: add quirk for Dell SKU 0B8C
+Subject: [PATCH 6.6 056/116] selftests: openvswitch: fix tcpdump execution
 Date: Mon, 23 Dec 2024 16:58:46 +0100
-Message-ID: <20241223155353.923708441@linuxfoundation.org>
+Message-ID: <20241223155401.744217061@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Adrian Moreno <amorenoz@redhat.com>
 
-[ Upstream commit 92d5b5930e7d55ca07b483490d6298eee828bbe4 ]
+[ Upstream commit a17975992cc11588767175247ccaae1213a8b582 ]
 
-Jack detection needs to rely on JD2, as most other Dell
-AlderLake-based devices.
+Fix the way tcpdump is executed by:
+- Using the right variable for the namespace. Currently the use of the
+  empty "ns" makes the command fail.
+- Waiting until it starts to capture to ensure the interesting traffic
+  is caught on slow systems.
+- Using line-buffered output to ensure logs are available when the test
+  is paused with "-p". Otherwise the last chunk of data might only be
+  written when tcpdump is killed.
 
-Closes: https://github.com/thesofproject/linux/issues/5021
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20240624121119.91552-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 74cc26f416b9 ("selftests: openvswitch: add interface support")
+Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Link: https://patch.msgid.link/20241217211652.483016-1-amorenoz@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/testing/selftests/net/openvswitch/openvswitch.sh | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index cf501baf6f14..9cd85ab19c55 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -387,6 +387,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					RT711_JD2 |
- 					SOF_SDW_FOUR_SPK),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0B8C"),
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					RT711_JD2),
-+	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index bab7436c6834..a0f4764ad0af 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -128,8 +128,10 @@ ovs_add_netns_and_veths () {
+ 		ovs_add_if "$1" "$2" "$4" -u || return 1
+ 	fi
+ 
+-	[ $TRACING -eq 1 ] && ovs_netns_spawn_daemon "$1" "$ns" \
+-			tcpdump -i any -s 65535
++	if [ $TRACING -eq 1 ]; then
++		ovs_netns_spawn_daemon "$1" "$3" tcpdump -l -i any -s 6553
++		ovs_wait grep -q "listening on any" ${ovs_dir}/stderr
++	fi
+ 
+ 	return 0
+ }
 -- 
 2.39.5
 
