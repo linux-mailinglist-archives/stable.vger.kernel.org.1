@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B2C9FB25F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150319FB20E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B21211885C84
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2135A1885097
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEEA1A4AAA;
-	Mon, 23 Dec 2024 16:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1A11B4126;
+	Mon, 23 Dec 2024 16:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3rMkQ6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXJcGQfo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0178827;
-	Mon, 23 Dec 2024 16:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CCB19E98B;
+	Mon, 23 Dec 2024 16:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970638; cv=none; b=JKJetIaIXqWekwObGRf0gNOuLndImzS0LwqJ1RT/C3itovspxQN8NuLyOjx2pzd9hLbXIP09/ms4PPMqBQkDjK08zvsQtmCh25tRnje1QrOm2aIposF7s1qJCY7NGXGuKStrgdYpQxVKGGvKv5MqWw+Iq5IMYeRzCpPXRn6NGT8=
+	t=1734970402; cv=none; b=PHMGahUnIpz6mI0AuTqMfmHg/IwDKR6wJk+a68FkHPVOEEa7VFJcAPGFTbHjYKmjb6cEHgmuYsc5PfWxNlxA6mU+4mUWKWNaVqD9NIgTGKZ7mrKDSzd5fWa0gRKsacMfGsk2aP85A4ii6MBefNmJKxsqbjfg7Xq1EvlA64ztvZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970638; c=relaxed/simple;
-	bh=HZdZDargUMDSEx/YmqmlqccaHDoo6H+16sba+BLZqAE=;
+	s=arc-20240116; t=1734970402; c=relaxed/simple;
+	bh=0/3/DoYOsdoDUtbPUXYVigoKSE0LZmq0uJK4EPRbaJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ng8HgT7FpU8wWkgNPe75rGDKbkCxtqtwnDA6AYnzeHlO5rYNfeTfibv+s+1oQy2evKHkMi3cnf3Oge4RlgJ7Ek3io/bN1XiyogByLR0288s9Lyqzux8TkooixskKN1LTaP4aP+/2IhoeI+rrj5LOzswP4Qh+1+pVl90+cenbRAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3rMkQ6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE2FC4CED4;
-	Mon, 23 Dec 2024 16:17:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TNMmQ4T1NIPkqXFUQHbt1mydoUJzwDQT5uQsIMh9EzBPbedn9kPkqLceZqotChq4pDB7Bp5FymD0L91MjdjraN28jVlojLs4m7vYPVTtCVR9PGcq8ASpv1BGZNA6NDWy5EdasvIuBk0ax1IqMWiIC5G1VcC/U/hJ/XuRuKpkyoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXJcGQfo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D8EC4CED3;
+	Mon, 23 Dec 2024 16:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970638;
-	bh=HZdZDargUMDSEx/YmqmlqccaHDoo6H+16sba+BLZqAE=;
+	s=korg; t=1734970402;
+	bh=0/3/DoYOsdoDUtbPUXYVigoKSE0LZmq0uJK4EPRbaJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3rMkQ6jNQPVvCgNjle79RLWSbJv2egeFHxO+35TuDFm7w2DAr0AHmN2FS001MYO8
-	 +QbAlDISSkDY7Zv+j5tDU45pOpRswcI9N3gH971z/Q6SUIcTZ5kIKHXzizMd/WbEPn
-	 Ee1fIg2u1z7xoAJ5RMo49Fl6KGXPoe7vqSMnylgs=
+	b=cXJcGQfooQOsEt7tjwWsgzb0d7R3niZi278vtG/TN3a2TPORcyPqBi5ILm6fnVDKX
+	 LYZM2lju884T4kaeT9dgR41ueqCMNO+YiA+40zur3XmG4QJc9Dn7w6pYPxjwK9e2qN
+	 neu8qXLxYTnTOk3uA2LvJ3rTJjlxm/PKnZF9E0OU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/83] net: mscc: ocelot: fix incorrect IFH SRC_PORT field in ocelot_ifh_set_basic()
+	syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 073/116] drm/modes: Avoid divide by zero harder in drm_mode_vrefresh()
 Date: Mon, 23 Dec 2024 16:59:03 +0100
-Message-ID: <20241223155354.570553334@linuxfoundation.org>
+Message-ID: <20241223155402.402267487@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 2d5df3a680ffdaf606baa10636bdb1daf757832e ]
+commit 9398332f23fab10c5ec57c168b44e72997d6318e upstream.
 
-Packets injected by the CPU should have a SRC_PORT field equal to the
-CPU port module index in the Analyzer block (ocelot->num_phys_ports).
+drm_mode_vrefresh() is trying to avoid divide by zero
+by checking whether htotal or vtotal are zero. But we may
+still end up with a div-by-zero of vtotal*htotal*...
 
-The blamed commit copied the ocelot_ifh_set_basic() call incorrectly
-from ocelot_xmit_common() in net/dsa/tag_ocelot.c. Instead of calling
-with "x", it calls with BIT_ULL(x), but the field is not a port mask,
-but rather a single port index.
-
-[ side note: this is the technical debt of code duplication :( ]
-
-The error used to be silent and doesn't appear to have other
-user-visible manifestations, but with new changes in the packing
-library, it now fails loudly as follows:
-
-------------[ cut here ]------------
-Cannot store 0x40 inside bits 46-43 - will truncate
-sja1105 spi2.0: xmit timed out
-WARNING: CPU: 1 PID: 102 at lib/packing.c:98 __pack+0x90/0x198
-sja1105 spi2.0: timed out polling for tstamp
-CPU: 1 UID: 0 PID: 102 Comm: felix_xmit
-Tainted: G        W        N 6.13.0-rc1-00372-gf706b85d972d-dirty #2605
-Call trace:
- __pack+0x90/0x198 (P)
- __pack+0x90/0x198 (L)
- packing+0x78/0x98
- ocelot_ifh_set_basic+0x260/0x368
- ocelot_port_inject_frame+0xa8/0x250
- felix_port_deferred_xmit+0x14c/0x258
- kthread_worker_fn+0x134/0x350
- kthread+0x114/0x138
-
-The code path pertains to the ocelot switchdev driver and to the felix
-secondary DSA tag protocol, ocelot-8021q. Here seen with ocelot-8021q.
-
-The messenger (packing) is not really to blame, so fix the original
-commit instead.
-
-Fixes: e1b9e80236c5 ("net: mscc: ocelot: fix QoS class for injected packets with "ocelot-8021q"")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241212165546.879567-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=622bba18029bcde672e1
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241129042629.18280-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mscc/ocelot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_modes.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
-index 310a36356f56..71dbdac38020 100644
---- a/drivers/net/ethernet/mscc/ocelot.c
-+++ b/drivers/net/ethernet/mscc/ocelot.c
-@@ -1161,7 +1161,7 @@ void ocelot_ifh_set_basic(void *ifh, struct ocelot *ocelot, int port,
+--- a/drivers/gpu/drm/drm_modes.c
++++ b/drivers/gpu/drm/drm_modes.c
+@@ -1285,14 +1285,11 @@ EXPORT_SYMBOL(drm_mode_set_name);
+  */
+ int drm_mode_vrefresh(const struct drm_display_mode *mode)
+ {
+-	unsigned int num, den;
++	unsigned int num = 1, den = 1;
  
- 	memset(ifh, 0, OCELOT_TAG_LEN);
- 	ocelot_ifh_set_bypass(ifh, 1);
--	ocelot_ifh_set_src(ifh, BIT_ULL(ocelot->num_phys_ports));
-+	ocelot_ifh_set_src(ifh, ocelot->num_phys_ports);
- 	ocelot_ifh_set_dest(ifh, BIT_ULL(port));
- 	ocelot_ifh_set_qos_class(ifh, qos_class);
- 	ocelot_ifh_set_tag_type(ifh, tag_type);
--- 
-2.39.5
-
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return 0;
+ 
+-	num = mode->clock;
+-	den = mode->htotal * mode->vtotal;
+-
+ 	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+ 		num *= 2;
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+@@ -1300,6 +1297,12 @@ int drm_mode_vrefresh(const struct drm_d
+ 	if (mode->vscan > 1)
+ 		den *= mode->vscan;
+ 
++	if (check_mul_overflow(mode->clock, num, &num))
++		return 0;
++
++	if (check_mul_overflow(mode->htotal * mode->vtotal, den, &den))
++		return 0;
++
+ 	return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(num, 1000), den);
+ }
+ EXPORT_SYMBOL(drm_mode_vrefresh);
 
 
 
