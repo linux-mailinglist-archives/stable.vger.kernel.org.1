@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-105758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CF69FB18D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740459FB231
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D73B7A0362
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEEA5160497
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EED1B3943;
-	Mon, 23 Dec 2024 16:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD6419E971;
+	Mon, 23 Dec 2024 16:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvV9ZUfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j64xHVae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEC51B3942;
-	Mon, 23 Dec 2024 16:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C6713BC0C;
+	Mon, 23 Dec 2024 16:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970044; cv=none; b=mizj6ZORVzzQPvyh/2avQ+vCERROtAbn+V21ei0pzqinhpfikBf/zW9PaoUE6gTSHebH0wEYY0bzKYgqQ9w6SFf7PhB2VIObS0rESh+N5za3lX/Pt1F7hyvX7Y1Fn3VRYxacYAMsbH8YLVUPRqKcEg3WbrotXQSRO12T+ucFdJ8=
+	t=1734970494; cv=none; b=JMewk/GmuPKcnLatIrpwNTkiVNNskhYsYCFvyOPEAkIXTGD22bwlD2SB8B2RBDMr3oa3uZJWJAAJdQDC6jI1QcLwZnEKyVTbpxkwdpOjH+UvfOAmV8/6nlNelxbDu/x13lO6Y41ZsTT7QR57EtGJCHvbXSm/LXFgAKF1dnTbfCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970044; c=relaxed/simple;
-	bh=IMKBBwt2Hn9xoZXoq5LjlqVMpajwo+uHZX1hB5gHb4Q=;
+	s=arc-20240116; t=1734970494; c=relaxed/simple;
+	bh=oybd1D5gMB+s9stDGpy6b9S28kVz+YJvm/NBxdh7gZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSzBUFh/8Qh34/kue2TNv1rj7RV3R0grW/IWCDOP7ecNZYUOcSB5TgXF0axrb0XVSrjKwwWjhJwZlyge7XUXPE0iKWdGGq0gOd/0uZXahgjDPdGLvj8VqA/S1gQsZABRuYuAcbZFdXdWk5Fhh7IFU4ztbb1bidjeWHWqvr/Z5MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvV9ZUfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF52C4CED4;
-	Mon, 23 Dec 2024 16:07:22 +0000 (UTC)
+	 MIME-Version; b=asFB9qVzi5fwE3bQWT8EIGxv56GhwBfppmYUAn0E3sV5Qlq3JD6ybWTASV3AkvFBRcuSChfwmkJhhUUySusArIuZrg7HzJy0KkU23uWepYW0TaE8JrlxzXFSG8+JPVZk2UAKUvz42OAIUN+TEqd/yuw0URNc+hvDC7MnG+1RXK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j64xHVae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECE2C4CED3;
+	Mon, 23 Dec 2024 16:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970043;
-	bh=IMKBBwt2Hn9xoZXoq5LjlqVMpajwo+uHZX1hB5gHb4Q=;
+	s=korg; t=1734970494;
+	bh=oybd1D5gMB+s9stDGpy6b9S28kVz+YJvm/NBxdh7gZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvV9ZUfL4KPx5U4u/CEMqPXxS8IEhBN/hNmlMuRTIm7zVJYwBGQRk4G1p7a/APe5F
-	 x6AgMDEQXBR9kHoKFTSM4MqSVBwVjJTsWUE/0IDmgBN4Q2TEXfFj+ltD2jeKT8H2mW
-	 UEWyoXSd43PIflVPA9Qh/ym/YHk2hC9omsdY/fto=
+	b=j64xHVae3LarfSGFEuwCpbGGleQzK4l/niG1WGYoYzFIRUcin7Vjejjr49oFwfgwL
+	 1vhvBH0i3sB6vXg+JejHIIqRhnE73gindwAHaexFJSLSUFdZUlqjLpnDRqJJMS0vRk
+	 swJLC8F26JCQZmar3rqNaEGe3ETjKlx5oH6kGfHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Wachowski <karol.wachowski@intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.12 128/160] accel/ivpu: Fix general protection fault in ivpu_bo_list()
+	Mank Wang <mank.wang@netprisma.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 069/116] USB: serial: option: add Netprisma LCUK54 modules for WWAN Ready
 Date: Mon, 23 Dec 2024 16:58:59 +0100
-Message-ID: <20241223155413.732331420@linuxfoundation.org>
+Message-ID: <20241223155402.249181470@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Mank Wang <mank.wang@netprisma.com>
 
-commit 4b2efb9db0c22a130bbd1275e489b42c02d08050 upstream.
+commit aa954ae08262bb5cd6ab18dd56a0b58c1315db8b upstream.
 
-Check if ctx is not NULL before accessing its fields.
+LCUK54-WRD's pid/vid
+0x3731/0x010a
+0x3731/0x010c
 
-Fixes: 37dee2a2f433 ("accel/ivpu: Improve buffer object debug logs")
-Cc: stable@vger.kernel.org # v6.8
-Reviewed-by: Karol Wachowski <karol.wachowski@intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241210130939.1575610-2-jacek.lawrynowicz@linux.intel.com
+LCUK54-WWD's pid/vid
+0x3731/0x010b
+0x3731/0x010d
+
+Above products use the exact same interface layout and option
+driver:
+MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=3731 ProdID=0101 Rev= 5.04
+S:  Manufacturer=NetPrisma
+S:  Product=LCUK54-WRD
+S:  SerialNumber=feeba631
+C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Mank Wang <mank.wang@netprisma.com>
+[ johan: use lower case hex notation ]
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_gem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -406,7 +406,7 @@ static void ivpu_bo_print_info(struct iv
- 	mutex_lock(&bo->lock);
- 
- 	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
--		   bo, bo->ctx->id, bo->vpu_addr, bo->base.base.size,
-+		   bo, bo->ctx ? bo->ctx->id : 0, bo->vpu_addr, bo->base.base.size,
- 		   bo->flags, kref_read(&bo->base.base.refcount));
- 
- 	if (bo->base.pages)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2377,6 +2377,18 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Golbal EDU */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for WWAN Ready */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for WWAN Ready */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for WWAN Ready */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for WWAN Ready */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
 
 
 
