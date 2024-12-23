@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-105893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E657D9FB232
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F68C9FB259
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 652FB161848
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A270D188591D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADA91B21BD;
-	Mon, 23 Dec 2024 16:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512A61AAE0B;
+	Mon, 23 Dec 2024 16:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjuZGw6t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGG9/JYn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BAB13BC0C;
-	Mon, 23 Dec 2024 16:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9928827;
+	Mon, 23 Dec 2024 16:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970497; cv=none; b=RVkpAqiT5LOtR5l4ldLKO3auvGa0J7vfy6bEMlvCE2TftiippHUjhbQBf33O6NvPVqdv93cdkZ9zxWWuyDLsOMbtrKT75XKaZYeOwvBCeizN27B4eZFXHF4gxHwiERnC3FWcBR7fPrdKl0VX94Byk0IUGbMgYyY/r+tgPpKjbUg=
+	t=1734970628; cv=none; b=RwAo2NRxeUHXB8zyCy4kJYWk4Xm7JuCGGQ13gRyMuzOJ3/x0+Y20sm86twtv6QAN21fAgXFng35De/rcLv2QptDYz0RRjL1L/gL32Vzg36wqMRfKoOr0RSNSbbWOcHx2+/N+Dl5DMmdgDmHUZc3vUjWE5d6hV9Mk+3umNwfv+Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970497; c=relaxed/simple;
-	bh=Zz5+XI4lqgUOQPdlugVT9uqwj7e5yLwWxXvYUBzZTPw=;
+	s=arc-20240116; t=1734970628; c=relaxed/simple;
+	bh=wrCqJCrDNR7us6BAOEX61IibJMSNWuLa+pyLyWwXtYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aAi+dj62QLvrUB7/Tt1x64SPwXwja9ZNteNuzgFoU3oBPY8+AUCUGaaXmI2893whFDJCGqXY6etHnGW+8Psv6+mCJ8h0/pLSRoNXHO6OieXA63yUM23YQ/B1hPEV0CtPhOPDEazZ6BuIfWXo/J8oKmIcBFL6Z063juNV2/MnbQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjuZGw6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE10C4CED3;
-	Mon, 23 Dec 2024 16:14:56 +0000 (UTC)
+	 MIME-Version; b=DypxqnDr1+dlX4Z2p/zSvXfW/dfSriWevCgMAnZPQWxgypWQDxmbFvVjwenL+gWUHcViSryNzWEAmISCy3tWVdLjjQNR5HyNDjj7ES3w3C40iDgBE0o/E74rT5Xs3mU/WEdkbFu0hDOI5/3kZokddQwmAIjQC8yhxTFWaJCrlao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGG9/JYn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A66C4CED4;
+	Mon, 23 Dec 2024 16:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970497;
-	bh=Zz5+XI4lqgUOQPdlugVT9uqwj7e5yLwWxXvYUBzZTPw=;
+	s=korg; t=1734970627;
+	bh=wrCqJCrDNR7us6BAOEX61IibJMSNWuLa+pyLyWwXtYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjuZGw6tpDrgkQIm79O3eYthw+cpkc/azJdSclb+NzWcwBIBRAndEjd2H2Ce7RlMk
-	 JqzastHrlkrShqQhYRocIQuQzXpDGVxkYsgG4fiE6XfjKzml/szZQjpmGqtbuc6Snk
-	 +1fpgc3P5JF0c96y8nVVVqSl1iaatajnoIJVAfxk=
+	b=ZGG9/JYntugl8DKtN4t3FuY4WdD+rbZAJcxuvkwLaY3YMwSQUJF9dtydYZfdbxp5f
+	 1NaLTVeqZuND+K7OStpHlDMgS+gQxPiPAm6l+UbE+1yj7EgJ/K5ZocBxEgRFGVij1y
+	 fq88/AXH85SIrBnOsKLCskCW848Bg+yTawquMoPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wu <wojackbb@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 070/116] USB: serial: option: add MediaTek T7XX compositions
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 21/83] net/smc: check iparea_offset and ipv6_prefixes_cnt when receiving proposal msg
 Date: Mon, 23 Dec 2024 16:59:00 +0100
-Message-ID: <20241223155402.286501646@linuxfoundation.org>
+Message-ID: <20241223155354.453180025@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wu <wojackbb@gmail.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-commit f07dfa6a1b65034a5c3ba3a555950d972f252757 upstream.
+[ Upstream commit a29e220d3c8edbf0e1beb0f028878a4a85966556 ]
 
-Add the MediaTek T7XX compositions:
+When receiving proposal msg in server, the field iparea_offset
+and the field ipv6_prefixes_cnt in proposal msg are from the
+remote client and can not be fully trusted. Especially the
+field iparea_offset, once exceed the max value, there has the
+chance to access wrong address, and crash may happen.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 74 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0e8d ProdID=7129 Rev= 0.01
-S:  Manufacturer=MediaTek Inc.
-S:  Product=USB DATA CARD
-S:  SerialNumber=004402459035402
-C:* #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This patch checks iparea_offset and ipv6_prefixes_cnt before using them.
 
--------------------------------
-| If Number | Function        |
--------------------------------
-| 2         | USB AP Log Port |
--------------------------------
-| 3         | USB AP GNSS Port|
--------------------------------
-| 4         | USB AP META Port|
--------------------------------
-| 5         | ADB port        |
--------------------------------
-| 6         | USB MD AT Port  |
-------------------------------
-| 7         | USB MD META Port|
--------------------------------
-| 8         | USB NTZ Port    |
--------------------------------
-| 9         | USB Debug port  |
--------------------------------
-
-Signed-off-by: Jack Wu <wojackbb@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e7b7a64a8493 ("smc: support variable CLC proposal messages")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/smc/af_smc.c  | 6 +++++-
+ net/smc/smc_clc.c | 4 ++++
+ net/smc/smc_clc.h | 6 +++++-
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2249,6 +2249,8 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7127, 0xff, 0x00, 0x00),
- 	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7129, 0xff, 0x00, 0x00),        /* MediaTek T7XX  */
-+	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
- 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MEN200) },
- 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MPL200),
- 	  .driver_info = RSVD(1) | RSVD(4) },
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index aeeb6e62361f..889709c35b1f 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -1988,6 +1988,8 @@ static int smc_listen_prfx_check(struct smc_sock *new_smc,
+ 	if (pclc->hdr.typev1 == SMC_TYPE_N)
+ 		return 0;
+ 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
++	if (!pclc_prfx)
++		return -EPROTO;
+ 	if (smc_clc_prfx_match(newclcsock, pclc_prfx))
+ 		return SMC_CLC_DECL_DIFFPREFIX;
+ 
+@@ -2153,7 +2155,9 @@ static void smc_find_ism_v1_device_serv(struct smc_sock *new_smc,
+ 	int rc = 0;
+ 
+ 	/* check if ISM V1 is available */
+-	if (!(ini->smcd_version & SMC_V1) || !smcd_indicated(ini->smc_type_v1))
++	if (!(ini->smcd_version & SMC_V1) ||
++	    !smcd_indicated(ini->smc_type_v1) ||
++	    !pclc_smcd)
+ 		goto not_found;
+ 	ini->is_smcd = true; /* prepare ISM check */
+ 	ini->ism_peer_gid[0] = ntohll(pclc_smcd->ism.gid);
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index 867df4522815..f734fdd90c81 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -354,6 +354,10 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
+ 
+ 	v2_ext = smc_get_clc_v2_ext(pclc);
+ 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
++	if (!pclc_prfx ||
++	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
++		return false;
++
+ 	if (hdr->version == SMC_V1) {
+ 		if (hdr->typev1 == SMC_TYPE_N)
+ 			return false;
+diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
+index 5fee545c9a10..08279081d438 100644
+--- a/net/smc/smc_clc.h
++++ b/net/smc/smc_clc.h
+@@ -303,8 +303,12 @@ struct smc_clc_msg_decline_v2 {	/* clc decline message */
+ static inline struct smc_clc_msg_proposal_prefix *
+ smc_clc_proposal_get_prefix(struct smc_clc_msg_proposal *pclc)
+ {
++	u16 offset = ntohs(pclc->iparea_offset);
++
++	if (offset > sizeof(struct smc_clc_msg_smcd))
++		return NULL;
+ 	return (struct smc_clc_msg_proposal_prefix *)
+-	       ((u8 *)pclc + sizeof(*pclc) + ntohs(pclc->iparea_offset));
++	       ((u8 *)pclc + sizeof(*pclc) + offset);
+ }
+ 
+ static inline bool smcr_indicated(int smc_type)
+-- 
+2.39.5
+
 
 
 
