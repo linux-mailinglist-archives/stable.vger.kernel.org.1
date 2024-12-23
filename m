@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-105932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F68C9FB259
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16779FB1AD
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A270D188591D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B3AF167F54
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512A61AAE0B;
-	Mon, 23 Dec 2024 16:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA151B3948;
+	Mon, 23 Dec 2024 16:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGG9/JYn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSZgRzE3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9928827;
-	Mon, 23 Dec 2024 16:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDADB3D6D;
+	Mon, 23 Dec 2024 16:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970628; cv=none; b=RwAo2NRxeUHXB8zyCy4kJYWk4Xm7JuCGGQ13gRyMuzOJ3/x0+Y20sm86twtv6QAN21fAgXFng35De/rcLv2QptDYz0RRjL1L/gL32Vzg36wqMRfKoOr0RSNSbbWOcHx2+/N+Dl5DMmdgDmHUZc3vUjWE5d6hV9Mk+3umNwfv+Qo=
+	t=1734970046; cv=none; b=B63Vu4CRBYQiiiYaJQ/QKqEKZaZfCH9XnwTbO4XTnRqcNtfum3MSp+gaciPUJuYoK9koHOpN7Rcs3dHYQo0pdLP6CslChMIFTDdi9Uc71XyQsGxqX2xcUvV/g7VO0Ve225Cx07xt3XCBYzj9lbSgXI5yrIMcH1Qug2s/McxyV/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970628; c=relaxed/simple;
-	bh=wrCqJCrDNR7us6BAOEX61IibJMSNWuLa+pyLyWwXtYQ=;
+	s=arc-20240116; t=1734970046; c=relaxed/simple;
+	bh=DEno4ts14ThKMRhVzmmdbYHOHu7TfcXZCn30hXI+oLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DypxqnDr1+dlX4Z2p/zSvXfW/dfSriWevCgMAnZPQWxgypWQDxmbFvVjwenL+gWUHcViSryNzWEAmISCy3tWVdLjjQNR5HyNDjj7ES3w3C40iDgBE0o/E74rT5Xs3mU/WEdkbFu0hDOI5/3kZokddQwmAIjQC8yhxTFWaJCrlao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGG9/JYn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A66C4CED4;
-	Mon, 23 Dec 2024 16:17:07 +0000 (UTC)
+	 MIME-Version; b=u8e8BOZJDPuKKZJxWRjVoFSCX2e6FJ3cb2mIKoyyfJN6dDotbdNo50MPfXDpAdFipNnphJ4GgJDpoosUQGYQP4DkpvfRD5l0qYUC55ITTnOyq3aVbwg5D5hRiJMNevWth3TQvTB9iqMhhL78R3w7ct1Rk9Vh3nk/xOSmvK2nqVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSZgRzE3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CFBC4CED3;
+	Mon, 23 Dec 2024 16:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970627;
-	bh=wrCqJCrDNR7us6BAOEX61IibJMSNWuLa+pyLyWwXtYQ=;
+	s=korg; t=1734970046;
+	bh=DEno4ts14ThKMRhVzmmdbYHOHu7TfcXZCn30hXI+oLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGG9/JYntugl8DKtN4t3FuY4WdD+rbZAJcxuvkwLaY3YMwSQUJF9dtydYZfdbxp5f
-	 1NaLTVeqZuND+K7OStpHlDMgS+gQxPiPAm6l+UbE+1yj7EgJ/K5ZocBxEgRFGVij1y
-	 fq88/AXH85SIrBnOsKLCskCW848Bg+yTawquMoPY=
+	b=cSZgRzE3pObxrmutsTS1I1B6ewJ0LBxFvJ0Hc239iDXwDSm1FNT91joqvyBxFMzbW
+	 kD8Qxs0v05u1p8JI+McfYT1kwgNqv9x6nTwXMkLqb50ghSEDrcgPwh0TkMkrFiG21p
+	 9TG23V/9OaSxB+Pf+vDLjrSdfl/hx2UUD2NiDjFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/83] net/smc: check iparea_offset and ipv6_prefixes_cnt when receiving proposal msg
+	Karol Wachowski <karol.wachowski@intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.12 129/160] accel/ivpu: Fix WARN in ivpu_ipc_send_receive_internal()
 Date: Mon, 23 Dec 2024 16:59:00 +0100
-Message-ID: <20241223155354.453180025@linuxfoundation.org>
+Message-ID: <20241223155413.773654198@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-[ Upstream commit a29e220d3c8edbf0e1beb0f028878a4a85966556 ]
+commit 0f6482caa6acdfdfc744db7430771fe7e6c4e787 upstream.
 
-When receiving proposal msg in server, the field iparea_offset
-and the field ipv6_prefixes_cnt in proposal msg are from the
-remote client and can not be fully trusted. Especially the
-field iparea_offset, once exceed the max value, there has the
-chance to access wrong address, and crash may happen.
+Move pm_runtime_set_active() to ivpu_pm_init() so when
+ivpu_ipc_send_receive_internal() is executed before ivpu_pm_enable()
+it already has correct runtime state, even if last resume was
+not successful.
 
-This patch checks iparea_offset and ipv6_prefixes_cnt before using them.
-
-Fixes: e7b7a64a8493 ("smc: support variable CLC proposal messages")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8ed520ff4682 ("accel/ivpu: Move set autosuspend delay to HW specific code")
+Cc: stable@vger.kernel.org # v6.7+
+Reviewed-by: Karol Wachowski <karol.wachowski@intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241210130939.1575610-4-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c  | 6 +++++-
- net/smc/smc_clc.c | 4 ++++
- net/smc/smc_clc.h | 6 +++++-
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/accel/ivpu/ivpu_pm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index aeeb6e62361f..889709c35b1f 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1988,6 +1988,8 @@ static int smc_listen_prfx_check(struct smc_sock *new_smc,
- 	if (pclc->hdr.typev1 == SMC_TYPE_N)
- 		return 0;
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
-+	if (!pclc_prfx)
-+		return -EPROTO;
- 	if (smc_clc_prfx_match(newclcsock, pclc_prfx))
- 		return SMC_CLC_DECL_DIFFPREFIX;
+--- a/drivers/accel/ivpu/ivpu_pm.c
++++ b/drivers/accel/ivpu/ivpu_pm.c
+@@ -364,6 +364,7 @@ void ivpu_pm_init(struct ivpu_device *vd
  
-@@ -2153,7 +2155,9 @@ static void smc_find_ism_v1_device_serv(struct smc_sock *new_smc,
- 	int rc = 0;
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_set_autosuspend_delay(dev, delay);
++	pm_runtime_set_active(dev);
  
- 	/* check if ISM V1 is available */
--	if (!(ini->smcd_version & SMC_V1) || !smcd_indicated(ini->smc_type_v1))
-+	if (!(ini->smcd_version & SMC_V1) ||
-+	    !smcd_indicated(ini->smc_type_v1) ||
-+	    !pclc_smcd)
- 		goto not_found;
- 	ini->is_smcd = true; /* prepare ISM check */
- 	ini->ism_peer_gid[0] = ntohll(pclc_smcd->ism.gid);
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 867df4522815..f734fdd90c81 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -354,6 +354,10 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
- 
- 	v2_ext = smc_get_clc_v2_ext(pclc);
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
-+	if (!pclc_prfx ||
-+	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
-+		return false;
-+
- 	if (hdr->version == SMC_V1) {
- 		if (hdr->typev1 == SMC_TYPE_N)
- 			return false;
-diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
-index 5fee545c9a10..08279081d438 100644
---- a/net/smc/smc_clc.h
-+++ b/net/smc/smc_clc.h
-@@ -303,8 +303,12 @@ struct smc_clc_msg_decline_v2 {	/* clc decline message */
- static inline struct smc_clc_msg_proposal_prefix *
- smc_clc_proposal_get_prefix(struct smc_clc_msg_proposal *pclc)
- {
-+	u16 offset = ntohs(pclc->iparea_offset);
-+
-+	if (offset > sizeof(struct smc_clc_msg_smcd))
-+		return NULL;
- 	return (struct smc_clc_msg_proposal_prefix *)
--	       ((u8 *)pclc + sizeof(*pclc) + ntohs(pclc->iparea_offset));
-+	       ((u8 *)pclc + sizeof(*pclc) + offset);
+ 	ivpu_dbg(vdev, PM, "Autosuspend delay = %d\n", delay);
  }
+@@ -378,7 +379,6 @@ void ivpu_pm_enable(struct ivpu_device *
+ {
+ 	struct device *dev = vdev->drm.dev;
  
- static inline bool smcr_indicated(int smc_type)
--- 
-2.39.5
-
+-	pm_runtime_set_active(dev);
+ 	pm_runtime_allow(dev);
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
 
 
 
