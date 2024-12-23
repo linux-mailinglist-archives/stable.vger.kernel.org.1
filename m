@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-105816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC089FB1CD
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799AE9FB180
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C136618850A1
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD30918833D8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1CF1B21B5;
-	Mon, 23 Dec 2024 16:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08B91B0F2E;
+	Mon, 23 Dec 2024 16:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynFp9NlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyCSsQwf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5DC188006;
-	Mon, 23 Dec 2024 16:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D36E189B94;
+	Mon, 23 Dec 2024 16:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970235; cv=none; b=lMSp+PL8q0YsJvH3lb5g7NeJyoLNu6JDcBq4FaaYP2LVlwm76aSSZzH73Kqec1r44zz6hJpUin+uAeo47vampEio0d1SpevsSrIocBb7Zz69Eqod756fByrAA1v4XQEsSznvVgrJUS77qyxiX4Pzq5RcNXEo4l+UG00XRD5KyAY=
+	t=1734969998; cv=none; b=Tp89t8W/XVCGfMgVmEtaWgUR3NsSE1QMOZzNAuH8/d8JSaLsBwBNeHnWxI0Uneskw7+/obCnG7EEcHjl4oq2uQ+ikr3qVxV3QmkPevXUSX7cXFXKbuB23vDIIYBSPaRgcEiID5/MgBbCrqkseZxqxTPng7pLLO5AQ3kYE30EwYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970235; c=relaxed/simple;
-	bh=9y2k0lQM4tBgkHNci8ue6riQLtZ57syx+IraRiatudA=;
+	s=arc-20240116; t=1734969998; c=relaxed/simple;
+	bh=7yH6SpUiQv7n2bvwZDryvnymHuqi/lA4kJR8C6P/beA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDJzhnih0fTEEwljW++86xrMszTb2//Rr0altOG5xXcEasp2210jmIy3k/QzTPmJXHv3KtnM9E8zlIVE5gCDkHXvoZYLvkIfIgAh1xtsxJ6ZoXnlaLuxDN1wVcSjlNp6HIfjaVs6PFFkrRvtUCENyFqnIcgFezqUEphdOHUgxcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynFp9NlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6ADC4CED3;
-	Mon, 23 Dec 2024 16:10:34 +0000 (UTC)
+	 MIME-Version; b=BNtuTaFrdzrYq/s5hdX1yBMVtJ1N6aeMnu2tG07cfQv2G3LAOtTM8ZNWEgm23WcPJtSoKGpjlYUh6l3CWZ69tT6CSY3xCxFuKcDFItvxJ8qZL4TazVqYGroCEAnMd0vyZdILKV7pqEKnb1O+6Q/McDN/IGz6exzCNaoMOaeFgbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyCSsQwf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11DFC4CED3;
+	Mon, 23 Dec 2024 16:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970235;
-	bh=9y2k0lQM4tBgkHNci8ue6riQLtZ57syx+IraRiatudA=;
+	s=korg; t=1734969998;
+	bh=7yH6SpUiQv7n2bvwZDryvnymHuqi/lA4kJR8C6P/beA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynFp9NlNHLxJ/o5dccmMp8ZVYkDC8ghkFkietURVutEHA3db3far+iL2JWuuE8CrM
-	 VYAvSX01juVPoP/pF4ENGe3H0EesfUz77NFOiFXgXF4WPogZ7eNU4JwD6xagzlttRb
-	 TPDGB+BgxD9/SHZsQWs2rMSO6Fzqn4YcK4RQ36mY=
+	b=NyCSsQwfKsP5zQRHUrP+VNciZa1mtFWJTduJbim4Om3Jh/nHLt8ewUiyQ4dm3wnmN
+	 CT4mgUeGxkvAcxjpHp3zR6DAFfbhSzGam8fpekA13CFRSltPuf8FM1S5M6TfbC6UiE
+	 xYfERziiRoUI6aNO8rdYBqELZB4RDHLdJpBPiZdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/116] xfs: create a new helper to return a files allocation unit
-Date: Mon, 23 Dec 2024 16:58:13 +0100
-Message-ID: <20241223155400.462973906@linuxfoundation.org>
+	Aaron Rainbolt <arainbolt@kfocus.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.12 083/160] thunderbolt: Improve redrive mode handling
+Date: Mon, 23 Dec 2024 16:58:14 +0100
+Message-ID: <20241223155411.905971358@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +61,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit ee20808d848c87a51e176706d81b95a21747d6cf upstream.
+commit 24740385cb0d6d22ab7fa7adf36546d5b3cdcf73 upstream.
 
-[backport: dependency of d3b689d and f23660f]
+When USB-C monitor is connected directly to Intel Barlow Ridge host, it
+goes into "redrive" mode that basically routes the DisplayPort signals
+directly from the GPU to the USB-C monitor without any tunneling needed.
+However, the host router must be powered on for this to work. Aaron
+reported that there are a couple of cases where this will not work with
+the current code:
 
-Create a new helper function to calculate the fundamental allocation
-unit (i.e. the smallest unit of space we can allocate) of a file.
-Things are going to get hairy with range-exchange on the realtime
-device, so prepare for this now.
+  - Booting with USB-C monitor plugged in.
+  - Plugging in USB-C monitor when the host router is in sleep state
+    (runtime suspended).
+  - Plugging in USB-C device while the system is in system sleep state.
 
-Remove the static attribute from xfs_is_falloc_aligned since the next
-patch will need it.
+In all these cases once the host router is runtime suspended the picture
+on the connected USB-C display disappears too. This is certainly not
+what the user expected.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For this reason improve the redrive mode handling to keep the host
+router from runtime suspending when detect that any of the above cases
+is happening.
+
+Fixes: a75e0684efe5 ("thunderbolt: Keep the domain powered when USB4 port is in redrive mode")
+Reported-by: Aaron Rainbolt <arainbolt@kfocus.org>
+Closes: https://lore.kernel.org/linux-usb/20241009220118.70bfedd0@kf-ir16/
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_file.c  | 32 ++++++++++++--------------------
- fs/xfs/xfs_file.h  |  3 +++
- fs/xfs/xfs_inode.c | 13 +++++++++++++
- fs/xfs/xfs_inode.h |  2 ++
- 4 files changed, 30 insertions(+), 20 deletions(-)
+ drivers/thunderbolt/tb.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-index 8dcbcf965b2c..3b9d43d5c746 100644
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -39,33 +39,25 @@ static const struct vm_operations_struct xfs_file_vm_ops;
-  * Decide if the given file range is aligned to the size of the fundamental
-  * allocation unit for the file.
-  */
--static bool
-+bool
- xfs_is_falloc_aligned(
- 	struct xfs_inode	*ip,
- 	loff_t			pos,
- 	long long int		len)
- {
--	struct xfs_mount	*mp = ip->i_mount;
--	uint64_t		mask;
--
--	if (XFS_IS_REALTIME_INODE(ip)) {
--		if (!is_power_of_2(mp->m_sb.sb_rextsize)) {
--			u64	rextbytes;
--			u32	mod;
--
--			rextbytes = XFS_FSB_TO_B(mp, mp->m_sb.sb_rextsize);
--			div_u64_rem(pos, rextbytes, &mod);
--			if (mod)
--				return false;
--			div_u64_rem(len, rextbytes, &mod);
--			return mod == 0;
--		}
--		mask = XFS_FSB_TO_B(mp, mp->m_sb.sb_rextsize) - 1;
--	} else {
--		mask = mp->m_sb.sb_blocksize - 1;
-+	unsigned int		alloc_unit = xfs_inode_alloc_unitsize(ip);
-+
-+	if (!is_power_of_2(alloc_unit)) {
-+		u32	mod;
-+
-+		div_u64_rem(pos, alloc_unit, &mod);
-+		if (mod)
-+			return false;
-+		div_u64_rem(len, alloc_unit, &mod);
-+		return mod == 0;
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -2059,6 +2059,37 @@ static void tb_exit_redrive(struct tb_po
  	}
- 
--	return !((pos | len) & mask);
-+	return !((pos | len) & (alloc_unit - 1));
  }
  
- /*
-diff --git a/fs/xfs/xfs_file.h b/fs/xfs/xfs_file.h
-index 7d39e3eca56d..2ad91f755caf 100644
---- a/fs/xfs/xfs_file.h
-+++ b/fs/xfs/xfs_file.h
-@@ -9,4 +9,7 @@
- extern const struct file_operations xfs_file_operations;
- extern const struct file_operations xfs_dir_file_operations;
- 
-+bool xfs_is_falloc_aligned(struct xfs_inode *ip, loff_t pos,
-+		long long int len);
-+
- #endif /* __XFS_FILE_H__ */
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index 1e50cc9a29db..6f7dca1c14c7 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -3782,3 +3782,16 @@ xfs_inode_reload_unlinked(
- 
- 	return error;
- }
-+
-+/* Returns the size of fundamental allocation unit for a file, in bytes. */
-+unsigned int
-+xfs_inode_alloc_unitsize(
-+	struct xfs_inode	*ip)
++static void tb_switch_enter_redrive(struct tb_switch *sw)
 +{
-+	unsigned int		blocks = 1;
++	struct tb_port *port;
 +
-+	if (XFS_IS_REALTIME_INODE(ip))
-+		blocks = ip->i_mount->m_sb.sb_rextsize;
-+
-+	return XFS_FSB_TO_B(ip->i_mount, blocks);
++	tb_switch_for_each_port(sw, port)
++		tb_enter_redrive(port);
 +}
-diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
-index 3beb470f1892..0f2999b84e7d 100644
---- a/fs/xfs/xfs_inode.h
-+++ b/fs/xfs/xfs_inode.h
-@@ -622,4 +622,6 @@ xfs_inode_unlinked_incomplete(
- int xfs_inode_reload_unlinked_bucket(struct xfs_trans *tp, struct xfs_inode *ip);
- int xfs_inode_reload_unlinked(struct xfs_inode *ip);
- 
-+unsigned int xfs_inode_alloc_unitsize(struct xfs_inode *ip);
 +
- #endif	/* __XFS_INODE_H__ */
--- 
-2.39.5
-
++/*
++ * Called during system and runtime suspend to forcefully exit redrive
++ * mode without querying whether the resource is available.
++ */
++static void tb_switch_exit_redrive(struct tb_switch *sw)
++{
++	struct tb_port *port;
++
++	if (!(sw->quirks & QUIRK_KEEP_POWER_IN_DP_REDRIVE))
++		return;
++
++	tb_switch_for_each_port(sw, port) {
++		if (!tb_port_is_dpin(port))
++			continue;
++
++		if (port->redrive) {
++			port->redrive = false;
++			pm_runtime_put(&sw->dev);
++			tb_port_dbg(port, "exit redrive mode\n");
++		}
++	}
++}
++
+ static void tb_dp_resource_unavailable(struct tb *tb, struct tb_port *port)
+ {
+ 	struct tb_port *in, *out;
+@@ -2909,6 +2940,7 @@ static int tb_start(struct tb *tb, bool
+ 	tb_create_usb3_tunnels(tb->root_switch);
+ 	/* Add DP IN resources for the root switch */
+ 	tb_add_dp_resources(tb->root_switch);
++	tb_switch_enter_redrive(tb->root_switch);
+ 	/* Make the discovered switches available to the userspace */
+ 	device_for_each_child(&tb->root_switch->dev, NULL,
+ 			      tb_scan_finalize_switch);
+@@ -2924,6 +2956,7 @@ static int tb_suspend_noirq(struct tb *t
+ 
+ 	tb_dbg(tb, "suspending...\n");
+ 	tb_disconnect_and_release_dp(tb);
++	tb_switch_exit_redrive(tb->root_switch);
+ 	tb_switch_suspend(tb->root_switch, false);
+ 	tcm->hotplug_active = false; /* signal tb_handle_hotplug to quit */
+ 	tb_dbg(tb, "suspend finished\n");
+@@ -3016,6 +3049,7 @@ static int tb_resume_noirq(struct tb *tb
+ 		tb_dbg(tb, "tunnels restarted, sleeping for 100ms\n");
+ 		msleep(100);
+ 	}
++	tb_switch_enter_redrive(tb->root_switch);
+ 	 /* Allow tb_handle_hotplug to progress events */
+ 	tcm->hotplug_active = true;
+ 	tb_dbg(tb, "resume finished\n");
+@@ -3079,6 +3113,12 @@ static int tb_runtime_suspend(struct tb
+ 	struct tb_cm *tcm = tb_priv(tb);
+ 
+ 	mutex_lock(&tb->lock);
++	/*
++	 * The below call only releases DP resources to allow exiting and
++	 * re-entering redrive mode.
++	 */
++	tb_disconnect_and_release_dp(tb);
++	tb_switch_exit_redrive(tb->root_switch);
+ 	tb_switch_suspend(tb->root_switch, true);
+ 	tcm->hotplug_active = false;
+ 	mutex_unlock(&tb->lock);
+@@ -3110,6 +3150,7 @@ static int tb_runtime_resume(struct tb *
+ 	tb_restore_children(tb->root_switch);
+ 	list_for_each_entry_safe(tunnel, n, &tcm->tunnel_list, list)
+ 		tb_tunnel_restart(tunnel);
++	tb_switch_enter_redrive(tb->root_switch);
+ 	tcm->hotplug_active = true;
+ 	mutex_unlock(&tb->lock);
+ 
 
 
 
