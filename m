@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-105944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339EA9FB268
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2868B9FB1FA
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 859B97A06B8
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C2371885097
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3371A8F80;
-	Mon, 23 Dec 2024 16:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942AD1B21B5;
+	Mon, 23 Dec 2024 16:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEM0MYQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4XYn4Bh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7228827;
-	Mon, 23 Dec 2024 16:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534D57E0FF;
+	Mon, 23 Dec 2024 16:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970669; cv=none; b=YOPsd7KSmvS1IaZIQ6f+A+Ft7WvTife99FiHVRKmykl6uco1FuBjBbjtnwxtktRPQvzjqtEIcdWJSE5Mu1PI9NmU9TdZzV6+bUi/mzPcEvLqHbcBzfFP4ycSOnCH+BjEglzrr0qnJcZtbQBoZRSRXeoi00JgKyKB7lS4+C1J160=
+	t=1734970345; cv=none; b=F5pncAQ0Ws95PBYNPM1KmIiJTTdcybEMBP7ir0Pag3kYpaIwvaMWzs6jDJW8toT7yOqGjOPPh0g/nZSc+A874jIxUzGXZnue/09DTnNEBNqmchLovuprLCYr9ezTIoZqsuLK6pfRsKWsw7szZJoWJp+hRq7mhByN1ECOpvZ9hyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970669; c=relaxed/simple;
-	bh=fSx7AfLy4R3jM5HOHi5jHv6CsP9BIhLdhfdCq3urmWw=;
+	s=arc-20240116; t=1734970345; c=relaxed/simple;
+	bh=Ev5i+1oNZiIXrkI+PFbqL6AdFZqKhppTcrrpZoaLM94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=it9SrNvMiR8eHHj/11VBCSMLE3kPtcGtvTBEe9mlLTQt/6Uew/lBL/cKjZ2mkZrISM/WsYliU6o7D994wtbR2m+r6wRPjJN586BR6/OxmjkAUVTA3w6SuG6snAy5kEqgCfpKkHCw93EskGyjfLi1QpFh5G0yWB9lZsYNSv005Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEM0MYQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3AAC4CED3;
-	Mon, 23 Dec 2024 16:17:48 +0000 (UTC)
+	 MIME-Version; b=ZcMZwF8UYklNkqKTPAOMRWq2LYUmIWqmTh+S3DxRhSYD5GtFH8lCWKBlLu0YcxRFODLGKFQF+vl3vNDDllEu4Uw9wVhYoyVvvZov+Lj71LWZZvMiu936IwOfwd28Nrx8MPVGQCnsFhJAQVa9I/adb+dgz+DGIveGi6CSZXW66OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4XYn4Bh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FD8C4CED3;
+	Mon, 23 Dec 2024 16:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970669;
-	bh=fSx7AfLy4R3jM5HOHi5jHv6CsP9BIhLdhfdCq3urmWw=;
+	s=korg; t=1734970345;
+	bh=Ev5i+1oNZiIXrkI+PFbqL6AdFZqKhppTcrrpZoaLM94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEM0MYQ3PP0cjqyzRMXWXPmFZopM6xwimumd4ILAesqXiOs/e/nRlQFpv7Oh0Z1Bk
-	 pLZGsQUjtWy8vK3G93vZmRYex6Yw26Aue2zWnsZYOwghsiKCq2LPyJ54JJI8yDMqOk
-	 ZM5hlA37Kg6zWKZDygAdcWh7JostBzRfab3cugKE=
+	b=R4XYn4Bh6ZDOE+ZmgqV6rHzvfD3GFkQsgsCKHP92URmHwjd9Crx/m/CL0MRePov5J
+	 yuNvL1H0xIZcNgyrDTUCPV0v7mC219JP/ix61Vh8Py8uN6n4lzxiN7qHxS2IQBcVQp
+	 NPc+AqaBGNWjCPDXH5zrH5Cy+G+XUWEo4UE5+X8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/83] ASoC: Intel: sof_sdw: fix jack detection on ADL-N variant RVP
+Subject: [PATCH 6.6 055/116] netfilter: ipset: Fix for recursive locking warning
 Date: Mon, 23 Dec 2024 16:58:45 +0100
-Message-ID: <20241223155353.887403385@linuxfoundation.org>
+Message-ID: <20241223155401.706166891@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 65c90df918205bc84f5448550cde76a54dae5f52 ]
+[ Upstream commit 70b6f46a4ed8bd56c85ffff22df91e20e8c85e33 ]
 
-Experimental tests show that JD2_100K is required, otherwise the jack
-is detected always even with nothing plugged-in.
+With CONFIG_PROVE_LOCKING, when creating a set of type bitmap:ip, adding
+it to a set of type list:set and populating it from iptables SET target
+triggers a kernel warning:
 
-To avoid matching with other known quirks the SKU information is used.
+| WARNING: possible recursive locking detected
+| 6.12.0-rc7-01692-g5e9a28f41134-dirty #594 Not tainted
+| --------------------------------------------
+| ping/4018 is trying to acquire lock:
+| ffff8881094a6848 (&set->lock){+.-.}-{2:2}, at: ip_set_add+0x28c/0x360 [ip_set]
+|
+| but task is already holding lock:
+| ffff88811034c048 (&set->lock){+.-.}-{2:2}, at: ip_set_add+0x28c/0x360 [ip_set]
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://patch.msgid.link/20240624121119.91552-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is a false alarm: ipset does not allow nested list:set type, so the
+loop in list_set_kadd() can never encounter the outer set itself. No
+other set type supports embedded sets, so this is the only case to
+consider.
+
+To avoid the false report, create a distinct lock class for list:set
+type ipset locks.
+
+Fixes: f830837f0eed ("netfilter: ipset: list:set set type support")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/netfilter/ipset/ip_set_list_set.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index d03de37e3578..cf501baf6f14 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -267,6 +267,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_BT_OFFLOAD_SSP(2) |
- 					SOF_SSP_BT_OFFLOAD_PRESENT),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_SKU, "0000000000070000"),
-+		},
-+		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
-+					RT711_JD2_100K),
-+	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index bfae7066936b..db794fe1300e 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -611,6 +611,8 @@ init_list_set(struct net *net, struct ip_set *set, u32 size)
+ 	return true;
+ }
+ 
++static struct lock_class_key list_set_lockdep_key;
++
+ static int
+ list_set_create(struct net *net, struct ip_set *set, struct nlattr *tb[],
+ 		u32 flags)
+@@ -627,6 +629,7 @@ list_set_create(struct net *net, struct ip_set *set, struct nlattr *tb[],
+ 	if (size < IP_SET_LIST_MIN_SIZE)
+ 		size = IP_SET_LIST_MIN_SIZE;
+ 
++	lockdep_set_class(&set->lock, &list_set_lockdep_key);
+ 	set->variant = &set_variant;
+ 	set->dsize = ip_set_elem_len(set, tb, sizeof(struct set_elem),
+ 				     __alignof__(struct set_elem));
 -- 
 2.39.5
 
