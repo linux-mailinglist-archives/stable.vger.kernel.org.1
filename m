@@ -1,87 +1,55 @@
-Return-Path: <stable+bounces-105596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A061D9FAD55
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 11:53:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1265D9FAD82
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 12:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 044E87A1F23
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 10:52:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54E6C161667
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 11:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC762195985;
-	Mon, 23 Dec 2024 10:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A3219995A;
+	Mon, 23 Dec 2024 11:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="n7kH3aJC"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="owpGwXqO"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7AD2F3E
-	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 10:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEFC1991BA;
+	Mon, 23 Dec 2024 11:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734951169; cv=none; b=FijGaDTxXWaF76fx4o0WeBJzVf7JmuQX3lemEc1YnJ/PPJ9v4Q+Mh6L6LJll8YuMk+cAh2Mr3iIM3iQEVa5OfZDRWGEctxxjsK/AI8Arb5GkyaEwWvHoN5+kHk+IWbIayuSlhR48xJ2tLDYLid1WXvOoIWwiIQnEQ73niX9p/Jg=
+	t=1734952294; cv=none; b=JfGvAwOWXVbMkeW+uOomtbutkDVoj6GyYmfLlILRvDzL6ZTgb3ye5zVzb2TLDcRO0HAz1bc3QkInFScjLxvSUniy01Gx+xW+u124AQ6xtC8NNtnjpqPQFgNBuK5PGauJK9LNOLAkXXks1beeCyfWNkXvLWbV4/vN/p2BxriTHIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734951169; c=relaxed/simple;
-	bh=LM8OSrUOYwCNDYvcciKV3jtUOXdDHD5fBI8wPPy/WcQ=;
+	s=arc-20240116; t=1734952294; c=relaxed/simple;
+	bh=09Szq+5ED+uJC+jXFmk42U3WThXQRASetEvE4j3m3ag=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RvEt9LA1Xx1Hmk776f3sptwTU5Ca5SL0L3df7CwqR26fK7ifNNhyZ5J/1i1wJeoOyMtm002Kg+csMZEgeIkJ7OI4XsXGClvk9qX+Z3JR27Mar/H6IKqNefJEDNc3HJpLc56b130knymx4JaD0xmW+9vvO5iI/zjNunTQvjX3554=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=n7kH3aJC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BN8oUSp026562
-	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 10:52:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	EMRdg/OIqQNr7xAUZNOe3kvtmJPvcVqbFUcCeJgfvLc=; b=n7kH3aJCy/Ag6ORj
-	h2VESAr8H2fIwzzlcs1NnjhUnsY2gRho6saG11RgqmNZBeTh6OfG6i7zfqHoauVA
-	gJRq71lMsvfBngJlg/KMNbqCBIhewI0SWfKqHPfUYchPyIeux1QX0+Xxr+isypQ9
-	BLKvxqwU9zKOQhN7685OWjjkIytLKTKYPjRhukmuztT3LJCaweW75OCJ8md1fRaU
-	J5I4ArYcR+BRYOP933wUpHWEwlVFcIftV3y0prSBAcaeyVQAn1Z8aif5SOKpSxaV
-	rYhIiwquAKoQcaiDs1Li7hQWp/R7le6rxwUa4kInvQfL/RsjtdjGWP8NHCao1ejJ
-	V9FiSg==
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43q4q4rac0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 10:52:47 +0000 (GMT)
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6d8824c96cdso15013026d6.2
-        for <stable@vger.kernel.org>; Mon, 23 Dec 2024 02:52:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734951166; x=1735555966;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EMRdg/OIqQNr7xAUZNOe3kvtmJPvcVqbFUcCeJgfvLc=;
-        b=JnLR/uhkl05TTKftABfabDoe1tv49jk9hlpl3wrX26+3WahnUqO3JFTuEIABB9X23k
-         fz7ljuwQAWp5O2dD1JPoBVsgX3TyyS2H1WVQUvJGRAkg9eAZQjmcRQc6FCcJePoFxaNO
-         B8Y8wuh+PUW5mfJL1XkE+OOK0asdLyRAwF8bExvndNWzX0p3cVDnHPsClomRSCGDR8K5
-         9rxNV2uk/Jy2MoUJX8eHU2LGFRLxIH09hgSNZ6q3PlAGCp+xHaJh4+3CHdcPsxpSYSJz
-         6iquQxrDgwBMJ/x3DLImECNBMQINsXfVMumRYORqxoVGy2LfSUgbPkSbAjzlKO+dp+Pv
-         hBJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWBOjrK9NGkxkxIjFt+wLcTg8GkAQ43yb2iDbs0Jo1Hl64EwfCNXLKS/p6o07n16w4TEo6PrbM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxb3s4f6Wgd2NEZICqMazPZW0yALEp6gJp55cNUaxkFT/168V+I
-	wGUaqZA9U5kNjmu2QKPZh29GH/mHTct9pcievKRDpWza+qeXOVZ/Sdb41mD4/dB3JDnZAb/B9U0
-	cM2Kodjlazr9jQd8CqfXPx9N+fFhofYvXVcTBfS2UPiBs4untHhoQaok=
-X-Gm-Gg: ASbGncvbmaGWHezePnSvRvA0E6i5/DoMjLtky29eWQ9MB6/HZ2bGI9qVTqxqUzQkc50
-	EujV1gspn7Rk99G/9QM0tksayIJPoyGVasMkvB2fqdL+X/mwSwQc71mNINcnISeyKveJFzDkO9S
-	G0tbhcN3gvzaLNFgmPvSC1YpcVwXrQC6s2yGFrD85jkI8EMZg0KAUAMyJSNlzMyMTezyQQMW1wx
-	EKBPe8EJNsy5LMlzVP/Q4exOxfkADRTVEKuj+GNQJWavl2ObRWjB0hnCsMD2gMV+B6XDCoQNzUf
-	A+CMv54FaGHn0wxtzMbAzWoKz2cS4zRarew=
-X-Received: by 2002:a05:622a:607:b0:467:58ae:b8dd with SMTP id d75a77b69052e-46a4a8cddb2mr80286301cf.4.1734951166053;
-        Mon, 23 Dec 2024 02:52:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHsvK7GklQCrRrb7YKGrDVuB/HHc6ybyiUNNilnmdUhns0V0MSYgjIsvc5OHNCe50TBFwWtNA==
-X-Received: by 2002:a05:622a:607:b0:467:58ae:b8dd with SMTP id d75a77b69052e-46a4a8cddb2mr80286201cf.4.1734951165621;
-        Mon, 23 Dec 2024 02:52:45 -0800 (PST)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0eae4369sm502017266b.87.2024.12.23.02.52.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Dec 2024 02:52:45 -0800 (PST)
-Message-ID: <253e7889-bef4-453c-9f39-19ba0a6dd5b0@oss.qualcomm.com>
-Date: Mon, 23 Dec 2024 11:52:42 +0100
+	 In-Reply-To:Content-Type; b=Xo8QkZanG9WlRh2qV8f2MiSE0JakCU5xU+cAhoOPCNqhuHBCiuaOBkijc9MHdlSxx3LFiPqWJGinoJ4eOc8xlJTqTnxCmzo/ySDY5OwBy/F4VF2bBWYvhz42GzeRP67VkcQOClWX/X/xxqixhCqCP7T+MrHGVuICkfeXsHiNMIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=owpGwXqO; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1734952290;
+	bh=09Szq+5ED+uJC+jXFmk42U3WThXQRASetEvE4j3m3ag=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=owpGwXqOVkNyohhBx6ON/khFurTZ0K+k1gp0sCEkTblE7f4R9OGRI88ETZAWKJKA4
+	 rLPYj6Kc48ezBk8f66XBOIyKCWB03beLbfbk9VB/9ghMl6+GUgfADtyEXHAPsS3VPR
+	 I1Pf+bhz3NdROPdOsKNoBaDDQAfQxgs0LX8iwyR0DeOLnrG6uTE+CKsSuXom84T2S1
+	 s3/2CVkY+8immgVaviZ6/t+il8qAi+rBjedwMXWfD6PchuEzZSi5XP5OrNuZ90T3wg
+	 WeLCcMXr9VaErC1bKGN3xTLMumDjs8g0LmnhxLI4tD7mQU+ZpfaH+pLhrBS/ueo3CO
+	 ZgC43l1TydyzA==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1B67417E362F;
+	Mon, 23 Dec 2024 12:11:30 +0100 (CET)
+Message-ID: <481a6eec-c428-45cd-98a6-5a91f3ceb187@collabora.com>
+Date: Mon, 23 Dec 2024 12:11:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,81 +57,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/23] arm64: dts: qcom: Fix remoteproc memory base and
- length
-To: "Aiqun(Maria) Yu" <quic_aiquny@quicinc.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Abel Vesa
- <abel.vesa@linaro.org>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-References: <20241213-dts-qcom-cdsp-mpss-base-address-v3-0-2e0036fccd8d@linaro.org>
- <94a6b2ba-fa52-42d0-a60d-9dc31e37057c@quicinc.com>
+Subject: Re: [PATCH] nvmem: mtk-efuse: Enable GPU speed bin post-processing
+ for MT8188
+To: Chen-Yu Tsai <wenst@chromium.org>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, stable@vger.kernel.org
+References: <20241223100648.2166754-1-wenst@chromium.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <94a6b2ba-fa52-42d0-a60d-9dc31e37057c@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20241223100648.2166754-1-wenst@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: Bg311bH8d8_dOBcZuNQVOke392qvGFn7
-X-Proofpoint-ORIG-GUID: Bg311bH8d8_dOBcZuNQVOke392qvGFn7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- mlxlogscore=999 clxscore=1015 bulkscore=0 mlxscore=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 spamscore=0 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412230097
 
-On 23.12.2024 10:21 AM, Aiqun(Maria) Yu wrote:
-> On 12/13/2024 10:53 PM, Krzysztof Kozlowski wrote:
->> Changes in v3:
->> - Add Rb tags
->> - Add four new patches (at the end) for sdx75 and sm6115
->> - Link to v2: https://lore.kernel.org/r/20241209-dts-qcom-cdsp-mpss-base-address-v2-0-d85a3bd5cced@linaro.org
->>
->> Changes in v2:
->> - arm64: dts: qcom: x1e80100: Fix ADSP...:
->>   Commit msg corrections, second paragraph (Johan)
->> - Add tags
->> - Link to v1: https://lore.kernel.org/r/20241206-dts-qcom-cdsp-mpss-base-address-v1-0-2f349e4d5a63@linaro.org
->>
->> Konrad pointed out during SM8750 review, that numbers are odd, so I
->> looked at datasheets and downstream DTS for all previous platforms.
->>
->> Most numbers are odd.
->>
->> Older platforms like SM8150, SM8250, SC7280, SC8180X seem fine. I could
->> not check few like SDX75 or SM6115, due to lack of access to datasheets.
->>
->> SM8350, SM8450, SM8550 tested on hardware. Others not, but I don't
->> expect any failures because PAS drivers do not use the address space.
->> Which also explains why odd numbers did not result in any failures.
+Il 23/12/24 11:06, Chen-Yu Tsai ha scritto:
+> Like the MT8186, the MT8188 stores GPU speed binning data in its efuse.
+> The data needs post-processing into a format that the OPP framework can
+> use.
 > 
-> In my opinion, the "QCOM_Q6V5_PAS" based Peripheral Authentication
-> platforms may have the register information completely removed.
+> Add a compatible match for MT8188 efuse with post-processing enabled.
 > 
-> There are two types of Peripheral Authentication supported:
->   "QCOM_Q6V5_MSS" (self-authenticating)
->   "QCOM_Q6V5_PAS" (trust-zone based Authentication)
-> For "QCOM_Q6V5_PAS" based Peripheral Authentication platforms, use SCM
-> calls instead of the register-based mechanism. So it is no need to
-> expose the PUB reg addresses for those platforms.
 
-(Unfortunately) not all boards using the same SoC have the same
-firmware stack, and it's not obvious that self-authentication is not
-useful. Plus having an accurate register space description in the
-DT is "nice".
+Let's just change the MT8188 compatible list to
 
-Konrad
+compatible = "mediatek,mt8188-efuse", "mediatek,mt8186-efuse";
+
+instead :-)
+
+Cheers,
+Angelo
+
+> Cc: <stable@vger.kernel.org>
+> Fixes: ff1df1886f43 ("dt-bindings: nvmem: mediatek: efuse: Add support for MT8188")
+> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+> ---
+> 
+> I'm not exactly sure about pointing to the dt bindings commit for the
+> fixes tag.
+> ---
+>   drivers/nvmem/mtk-efuse.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/nvmem/mtk-efuse.c b/drivers/nvmem/mtk-efuse.c
+> index af953e1d9230..e8409e1e7fac 100644
+> --- a/drivers/nvmem/mtk-efuse.c
+> +++ b/drivers/nvmem/mtk-efuse.c
+> @@ -112,6 +112,7 @@ static const struct mtk_efuse_pdata mtk_efuse_pdata = {
+>   static const struct of_device_id mtk_efuse_of_match[] = {
+>   	{ .compatible = "mediatek,mt8173-efuse", .data = &mtk_efuse_pdata },
+>   	{ .compatible = "mediatek,mt8186-efuse", .data = &mtk_mt8186_efuse_pdata },
+> +	{ .compatible = "mediatek,mt8188-efuse", .data = &mtk_mt8186_efuse_pdata },
+>   	{ .compatible = "mediatek,efuse", .data = &mtk_efuse_pdata },
+>   	{/* sentinel */},
+>   };
+
 
