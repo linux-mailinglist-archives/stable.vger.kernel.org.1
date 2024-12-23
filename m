@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-105693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3280E9FB146
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8839FB152
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2757E16733F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A641621E4
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6B3189B94;
-	Mon, 23 Dec 2024 16:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BABF188006;
+	Mon, 23 Dec 2024 16:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCIUIz6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAZh5JgN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0981C186E58;
-	Mon, 23 Dec 2024 16:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE15417A5A4;
+	Mon, 23 Dec 2024 16:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969815; cv=none; b=hEPdxjhuxkJnWgM0ltlpCl+cJPxAcHUo2pOufPQPwQxW3MPSqY19wLx/QMempHy01f9cfNqNAJTNzUDkB0Im9swXwbaDbc/MGo12T3z2s+6NIUk978BdYzj60K0B0SsLV0+f90QRGue6j5vfCjWMiWfuIAHYT1l4EGSJj5uYTbM=
+	t=1734969854; cv=none; b=YAaxItwoRqTfSkNTqJLRtJW2sWgCjejRRCrb+Yhad7WgwjOfEUDuV3n0eANcS/5VY3JT2VH2NR7L2fcAhgtPIPv8iL+eD8f0P1JU9iDAFXekH3g0wfI5hPa60xHkhr95jzd9iBQw+ZPq7tN1+RGLyrGyiNW918kEKvIULxXK5Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969815; c=relaxed/simple;
-	bh=Pz+r/9jXnV9601HKBJRgjEIoOsIMiJACA+c7dvmWCVQ=;
+	s=arc-20240116; t=1734969854; c=relaxed/simple;
+	bh=A8wnwEOch3UngFRKmblDYPgQHvkRI1dxpZxoJsyI5zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuruK9iqHTfJXeb3H9u7G3UzF3iMUSsz3/lhpUbsECdACGYCoZpoIfv1kDxVklNqMDHcWbzFlIPSz8yMugZgDgVR8BQreWvSSNdUDYlM9vsoR/lnJvfX6AQFvGAJMAls1XDmOlqazZ9au8RuUZGRTr74Dw84CPb6Lt4s0gGkC1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCIUIz6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8743DC4CED3;
-	Mon, 23 Dec 2024 16:03:34 +0000 (UTC)
+	 MIME-Version; b=K9fd+a5CM2GFN9EzcR2vtkWT1VgaPt4omLIxEWo584qRlQ6qW/1f7Dr2mkCdoFWXZf/nqN/LjpE9fxUSH3/tTOmUvD44hxyv1abFc6oeUoRFQ01Id5OpoWqSCROfbwLCHnMdwg2R3IcnCqH69k2LLuZyVqF1TQiqfMWaVZnQDrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAZh5JgN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D15EC4CED3;
+	Mon, 23 Dec 2024 16:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969814;
-	bh=Pz+r/9jXnV9601HKBJRgjEIoOsIMiJACA+c7dvmWCVQ=;
+	s=korg; t=1734969854;
+	bh=A8wnwEOch3UngFRKmblDYPgQHvkRI1dxpZxoJsyI5zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCIUIz6PYy/vr9mok3L1dlVUsD/5iAfnIay16PUEVIbt+yl2KV6p8dsEqClLpZQZh
-	 o6O/YPS521GyTYNkDkAYzmPvBdEzunuR/bUMq3t0W4B03pSEh5dxME/dX5MRi9dVdE
-	 qx0DIECfebPh7XWawJnFfTPWeav6H0lVKl+2JvL4=
+	b=XAZh5JgNB/ofq2Oq/HB9lbul8yPqpril1HS8YHOXWAfYw4eKJwOAUuZTf8ApPiIiA
+	 gvAEIGmWUnPSp97hvHRGfXidxU6ed/JDoBVqwEQyt/vb5IN4xqE0hoLlkNk0e+KAdj
+	 k35vTHYLogo1koqliQINF62l515QPuZlJi2do+B8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/160] ksmbd: fix broken transfers when exceeding max simultaneous operations
-Date: Mon, 23 Dec 2024 16:57:36 +0100
-Message-ID: <20241223155410.418616001@linuxfoundation.org>
+Subject: [PATCH 6.12 046/160] netdev: fix repeated netlink messages in queue dump
+Date: Mon, 23 Dec 2024 16:57:37 +0100
+Message-ID: <20241223155410.455879601@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
 References: <20241223155408.598780301@linuxfoundation.org>
@@ -67,174 +66,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 43fb7bce8866e793275c4f9f25af6a37745f3416 ]
+[ Upstream commit b1f3a2f5a742c1e939a73031bd31b9e557a2d77d ]
 
-Since commit 0a77d947f599 ("ksmbd: check outstanding simultaneous SMB
-operations"), ksmbd enforces a maximum number of simultaneous operations
-for a connection. The problem is that reaching the limit causes ksmbd to
-close the socket, and the client has no indication that it should have
-slowed down.
+The context is supposed to record the next queue to dump,
+not last dumped. If the dump doesn't fit we will restart
+from the already-dumped queue, duplicating the message.
 
-This behaviour can be reproduced by setting "smb2 max credits = 128" (or
-lower), and transferring a large file (25GB).
+Before this fix and with the selftest improvements later
+in this series we see:
 
-smbclient fails as below:
+  # ./run_kselftest.sh -t drivers/net:queues.py
+  timeout set to 45
+  selftests: drivers/net: queues.py
+  KTAP version 1
+  1..2
+  # Check| At /root/ksft-net-drv/drivers/net/./queues.py, line 32, in get_queues:
+  # Check|     ksft_eq(queues, expected)
+  # Check failed 102 != 100
+  # Check| At /root/ksft-net-drv/drivers/net/./queues.py, line 32, in get_queues:
+  # Check|     ksft_eq(queues, expected)
+  # Check failed 101 != 100
+  not ok 1 queues.get_queues
+  ok 2 queues.addremove_queues
+  # Totals: pass:1 fail:1 xfail:0 xpass:0 skip:0 error:0
+  not ok 1 selftests: drivers/net: queues.py # exit=1
 
-  $ smbclient //192.168.1.254/testshare -U user%pass
-  smb: \> put file.bin
-  cli_push returned NT_STATUS_USER_SESSION_DELETED
-  putting file file.bin as \file.bin smb2cli_req_compound_submit:
-  Insufficient credits. 0 available, 1 needed
-  NT_STATUS_INTERNAL_ERROR closing remote file \file.bin
-  smb: \> smb2cli_req_compound_submit: Insufficient credits. 0 available,
-  1 needed
+With the fix:
 
-Windows clients fail with 0x8007003b (with smaller files even).
+  # ./ksft-net-drv/run_kselftest.sh -t drivers/net:queues.py
+  timeout set to 45
+  selftests: drivers/net: queues.py
+  KTAP version 1
+  1..2
+  ok 1 queues.get_queues
+  ok 2 queues.addremove_queues
+  # Totals: pass:2 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-Fix this by delaying reading from the socket until there's room to
-allocate a request. This effectively applies backpressure on the client,
-so the transfer completes, albeit at a slower rate.
-
-Fixes: 0a77d947f599 ("ksmbd: check outstanding simultaneous SMB operations")
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 6b6171db7fc8 ("netdev-genl: Add netlink framework functions for queue")
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20241213152244.3080955-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.c    | 13 +++++++++++--
- fs/smb/server/connection.h    |  1 -
- fs/smb/server/server.c        |  7 +------
- fs/smb/server/server.h        |  1 +
- fs/smb/server/transport_ipc.c |  5 ++++-
- 5 files changed, 17 insertions(+), 10 deletions(-)
+ net/core/netdev-genl.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 3980645085ed..bf45822db5d5 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -70,7 +70,6 @@ struct ksmbd_conn *ksmbd_conn_alloc(void)
- 	atomic_set(&conn->req_running, 0);
- 	atomic_set(&conn->r_count, 0);
- 	atomic_set(&conn->refcnt, 1);
--	atomic_set(&conn->mux_smb_requests, 0);
- 	conn->total_credits = 1;
- 	conn->outstanding_credits = 0;
- 
-@@ -133,6 +132,8 @@ void ksmbd_conn_try_dequeue_request(struct ksmbd_work *work)
- 	struct ksmbd_conn *conn = work->conn;
- 
- 	atomic_dec(&conn->req_running);
-+	if (waitqueue_active(&conn->req_running_q))
-+		wake_up(&conn->req_running_q);
- 
- 	if (list_empty(&work->request_entry) &&
- 	    list_empty(&work->async_request_entry))
-@@ -309,7 +310,7 @@ int ksmbd_conn_handler_loop(void *p)
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index d2baa1af9df0..71359922ae8b 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -417,24 +417,21 @@ netdev_nl_queue_dump_one(struct net_device *netdev, struct sk_buff *rsp,
+ 			 struct netdev_nl_dump_ctx *ctx)
  {
- 	struct ksmbd_conn *conn = (struct ksmbd_conn *)p;
- 	struct ksmbd_transport *t = conn->transport;
--	unsigned int pdu_size, max_allowed_pdu_size;
-+	unsigned int pdu_size, max_allowed_pdu_size, max_req;
- 	char hdr_buf[4] = {0,};
- 	int size;
+ 	int err = 0;
+-	int i;
  
-@@ -319,6 +320,7 @@ int ksmbd_conn_handler_loop(void *p)
- 	if (t->ops->prepare && t->ops->prepare(t))
- 		goto out;
+ 	if (!(netdev->flags & IFF_UP))
+ 		return err;
  
-+	max_req = server_conf.max_inflight_req;
- 	conn->last_active = jiffies;
- 	set_freezable();
- 	while (ksmbd_conn_alive(conn)) {
-@@ -328,6 +330,13 @@ int ksmbd_conn_handler_loop(void *p)
- 		kvfree(conn->request_buf);
- 		conn->request_buf = NULL;
+-	for (i = ctx->rxq_idx; i < netdev->real_num_rx_queues;) {
+-		err = netdev_nl_queue_fill_one(rsp, netdev, i,
++	for (; ctx->rxq_idx < netdev->real_num_rx_queues; ctx->rxq_idx++) {
++		err = netdev_nl_queue_fill_one(rsp, netdev, ctx->rxq_idx,
+ 					       NETDEV_QUEUE_TYPE_RX, info);
+ 		if (err)
+ 			return err;
+-		ctx->rxq_idx = i++;
+ 	}
+-	for (i = ctx->txq_idx; i < netdev->real_num_tx_queues;) {
+-		err = netdev_nl_queue_fill_one(rsp, netdev, i,
++	for (; ctx->txq_idx < netdev->real_num_tx_queues; ctx->txq_idx++) {
++		err = netdev_nl_queue_fill_one(rsp, netdev, ctx->txq_idx,
+ 					       NETDEV_QUEUE_TYPE_TX, info);
+ 		if (err)
+ 			return err;
+-		ctx->txq_idx = i++;
+ 	}
  
-+recheck:
-+		if (atomic_read(&conn->req_running) + 1 > max_req) {
-+			wait_event_interruptible(conn->req_running_q,
-+				atomic_read(&conn->req_running) < max_req);
-+			goto recheck;
-+		}
-+
- 		size = t->ops->read(t, hdr_buf, sizeof(hdr_buf), -1);
- 		if (size != sizeof(hdr_buf))
- 			break;
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index 8ddd5a3c7baf..b379ae4fdcdf 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -107,7 +107,6 @@ struct ksmbd_conn {
- 	__le16				signing_algorithm;
- 	bool				binding;
- 	atomic_t			refcnt;
--	atomic_t			mux_smb_requests;
- };
- 
- struct ksmbd_conn_ops {
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 698af37e988d..d146b0e7c3a9 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -270,7 +270,6 @@ static void handle_ksmbd_work(struct work_struct *wk)
- 
- 	ksmbd_conn_try_dequeue_request(work);
- 	ksmbd_free_work_struct(work);
--	atomic_dec(&conn->mux_smb_requests);
- 	/*
- 	 * Checking waitqueue to dropping pending requests on
- 	 * disconnection. waitqueue_active is safe because it
-@@ -300,11 +299,6 @@ static int queue_ksmbd_work(struct ksmbd_conn *conn)
- 	if (err)
- 		return 0;
- 
--	if (atomic_inc_return(&conn->mux_smb_requests) >= conn->vals->max_credits) {
--		atomic_dec_return(&conn->mux_smb_requests);
--		return -ENOSPC;
--	}
--
- 	work = ksmbd_alloc_work_struct();
- 	if (!work) {
- 		pr_err("allocation for work failed\n");
-@@ -367,6 +361,7 @@ static int server_conf_init(void)
- 	server_conf.auth_mechs |= KSMBD_AUTH_KRB5 |
- 				KSMBD_AUTH_MSKRB5;
- #endif
-+	server_conf.max_inflight_req = SMB2_MAX_CREDITS;
- 	return 0;
- }
- 
-diff --git a/fs/smb/server/server.h b/fs/smb/server/server.h
-index 4fc529335271..94187628ff08 100644
---- a/fs/smb/server/server.h
-+++ b/fs/smb/server/server.h
-@@ -42,6 +42,7 @@ struct ksmbd_server_config {
- 	struct smb_sid		domain_sid;
- 	unsigned int		auth_mechs;
- 	unsigned int		max_connections;
-+	unsigned int		max_inflight_req;
- 
- 	char			*conf[SERVER_CONF_WORK_GROUP + 1];
- 	struct task_struct	*dh_task;
-diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
-index 2f27afb695f6..6de351cc2b60 100644
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -319,8 +319,11 @@ static int ipc_server_config_on_startup(struct ksmbd_startup_request *req)
- 		init_smb2_max_write_size(req->smb2_max_write);
- 	if (req->smb2_max_trans)
- 		init_smb2_max_trans_size(req->smb2_max_trans);
--	if (req->smb2_max_credits)
-+	if (req->smb2_max_credits) {
- 		init_smb2_max_credits(req->smb2_max_credits);
-+		server_conf.max_inflight_req =
-+			req->smb2_max_credits;
-+	}
- 	if (req->smbd_max_io_size)
- 		init_smbd_max_io_size(req->smbd_max_io_size);
- 
+ 	return err;
 -- 
 2.39.5
 
