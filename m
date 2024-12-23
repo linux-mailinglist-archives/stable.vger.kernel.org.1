@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-105880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8319FB221
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20D39FB1CA
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71E7B1881FDF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80520161989
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A7E7E0FF;
-	Mon, 23 Dec 2024 16:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207571B393A;
+	Mon, 23 Dec 2024 16:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2aZo78h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOsd3tKH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2104519E98B;
-	Mon, 23 Dec 2024 16:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35311B3922;
+	Mon, 23 Dec 2024 16:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970451; cv=none; b=qloeCwiDxfeNUWJ02YOMIQNkCUMybJ8r+OJVO+jg4+5CCiAZ6Un/spl87K60wpVXujGhv3fDjymoCRuO1xlWMBQs1dDqp+1cHgyFAm03pZXRX8+bw6yd9Fv0q6yVMw6T0PBk2NR8jkuMeukgkE9meyZd+V0BYSk/OjUBjiVTzLg=
+	t=1734970152; cv=none; b=jzuYxtd6D288DApkX9OMyzkLWKNwr76AGdcZpYLQ49+eXwpl/TCzKyqXzBA1jHdYuqPlpEKHlFY6kXqoiaU7rppzJNYzkG5abZP6buiookRl9KQTMXbj7fHvGj4XbyosJhKGWTVOgbCY37Oq1uwh7NZVH15R1bLs5ME1iZ9Xb38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970451; c=relaxed/simple;
-	bh=yZZh1jJDUgTfzZtAsmdU2JuwBIfW3vq4nr4MkrOb3lQ=;
+	s=arc-20240116; t=1734970152; c=relaxed/simple;
+	bh=FLi3OEag2nMlhwJiTtjlx55glieJ4Z7+MFshq2nEC44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/D59ByA/WV2XNzSyLNcc8SJSYW7fvZa2OKnKYsersGfkJ8/9PvF7y+7TT27eAPd3MbHhPjmrPTxqjf9Cot7mnX8PFlfmBBqGCqhE16tVSoeBjgpIJjEfrZvPJRsOwh/+zUrAAVkYQgysNhPLTLOQB/RLQXNy3t10I4UKLL+25A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2aZo78h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0E8C4CED3;
-	Mon, 23 Dec 2024 16:14:10 +0000 (UTC)
+	 MIME-Version; b=P+PiAz33WUE2uSvhSexAFHP0YqXKB7Mh8NpsZGZVrWL8/YnZeYLQj38Am8ESwy0Qo460Xr2Yq3zlJNvSx8XU8I081An9Uam5uhc6EzTgwxw48snwhnhlLOge1ABlIZ0pSDOPq2WmNz51jOyTYAeJ1wvHDiqf1LiVxiEQNNcZrMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOsd3tKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B837C4CED3;
+	Mon, 23 Dec 2024 16:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970451;
-	bh=yZZh1jJDUgTfzZtAsmdU2JuwBIfW3vq4nr4MkrOb3lQ=;
+	s=korg; t=1734970152;
+	bh=FLi3OEag2nMlhwJiTtjlx55glieJ4Z7+MFshq2nEC44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2aZo78httDjOvsWF6awq7w1+ZSUOIweKbaXwOyOsv6pyxWVcZq/FHetoCOJ/61Oe
-	 s0+h2S0BPJx5Igz4jKcMPHX+v/mqS4EdZ6+/YrTZGO//Mu6iaUHQh+Yhojyjp/3NXQ
-	 L5dkvqO+IOWhWdRQKntmFLHZSrLDq6jGGvfOhYGk=
+	b=EOsd3tKHakTlDPl1PPl+drPRe5e23ULqEhanJ2Q2q4AjZE9kfssaQJ7D/cOZ2tF4G
+	 ckGzRVK5xImDlflTLedWEfX8rfMDWfDyxXSwKqDz+v7LTfyWdqu++hDjTJYlcd4LTA
+	 PijCPCAcoGIXDg2OVMByhYKV81dq0cZXL+tyT3MU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 087/116] vmalloc: fix accounting with i915
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Jann Horn <jannh@google.com>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>
+Subject: [PATCH 6.12 146/160] udmabuf: also check for F_SEAL_FUTURE_WRITE
 Date: Mon, 23 Dec 2024 16:59:17 +0100
-Message-ID: <20241223155402.943868423@linuxfoundation.org>
+Message-ID: <20241223155414.454177066@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Jann Horn <jannh@google.com>
 
-commit a2e740e216f5bf49ccb83b6d490c72a340558a43 upstream.
+commit 0a16e24e34f28210f68195259456c73462518597 upstream.
 
-If the caller of vmap() specifies VM_MAP_PUT_PAGES (currently only the
-i915 driver), we will decrement nr_vmalloc_pages and MEMCG_VMALLOC in
-vfree().  These counters are incremented by vmalloc() but not by vmap() so
-this will cause an underflow.  Check the VM_MAP_PUT_PAGES flag before
-decrementing either counter.
+When F_SEAL_FUTURE_WRITE was introduced, it was overlooked that udmabuf
+must reject memfds with this flag, just like ones with F_SEAL_WRITE.
+Fix it by adding F_SEAL_FUTURE_WRITE to SEALS_DENIED.
 
-Link: https://lkml.kernel.org/r/20241211202538.168311-1-willy@infradead.org
-Fixes: b944afc9d64d ("mm: add a VM_MAP_PUT_PAGES flag for vmap")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ab3948f58ff8 ("mm/memfd: add an F_SEAL_FUTURE_WRITE seal to memfd")
+Cc: stable@vger.kernel.org
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241204-udmabuf-fixes-v2-2-23887289de1c@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmalloc.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/dma-buf/udmabuf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2851,7 +2851,8 @@ void vfree(const void *addr)
- 		struct page *page = vm->pages[i];
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -256,7 +256,7 @@ static const struct dma_buf_ops udmabuf_
+ };
  
- 		BUG_ON(!page);
--		mod_memcg_page_state(page, MEMCG_VMALLOC, -1);
-+		if (!(vm->flags & VM_MAP_PUT_PAGES))
-+			mod_memcg_page_state(page, MEMCG_VMALLOC, -1);
- 		/*
- 		 * High-order allocs for huge vmallocs are split, so
- 		 * can be freed as an array of order-0 allocations
-@@ -2859,7 +2860,8 @@ void vfree(const void *addr)
- 		__free_page(page);
- 		cond_resched();
- 	}
--	atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
-+	if (!(vm->flags & VM_MAP_PUT_PAGES))
-+		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
- 	kvfree(vm->pages);
- 	kfree(vm);
- }
+ #define SEALS_WANTED (F_SEAL_SHRINK)
+-#define SEALS_DENIED (F_SEAL_WRITE)
++#define SEALS_DENIED (F_SEAL_WRITE|F_SEAL_FUTURE_WRITE)
+ 
+ static int check_memfd_seals(struct file *memfd)
+ {
 
 
 
