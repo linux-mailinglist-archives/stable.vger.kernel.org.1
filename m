@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-105942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D579FB265
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 537239FB18E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5CD71885DB3
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8661884DBF
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A481A8F80;
-	Mon, 23 Dec 2024 16:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8963A1B395B;
+	Mon, 23 Dec 2024 16:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NmqkpS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHRoCZhh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365951AAE0B;
-	Mon, 23 Dec 2024 16:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E6F1AF0CE;
+	Mon, 23 Dec 2024 16:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970662; cv=none; b=OVcVfhjm0r/baHE1cik6ypDFLh6SnUEqed/o8mTdBjoFBkwrWsZbMldfgxJRkxJk1dr/VstL40uEZIFZk0CyakZ2b1u7z/7an0WCZNEiPPRdsizwbGbsMmk34QYTUdx/MaSk11megn6vv+gmbItjvICk3xkfpMv6OVLpMmRxIbQ=
+	t=1734970050; cv=none; b=opVD3vMGO3db/PQyy3Wd6LV7X8QC5+acLSVosPtluSVnes+1EczGDKdLbR3TpB7qwSMMYR7+X7LHtlLexzOWQocnXIexuC6IWn7Tr4mTmg6HqArZgWmCf94BVf0fjdOTtyOPeADh3/Wza/ux7vFWH0rTBayIjc4HgA+IqKXIUC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970662; c=relaxed/simple;
-	bh=dgCuAifAtxzlohJAOr8075EHJAiMJiEyU4PD70cmCzU=;
+	s=arc-20240116; t=1734970050; c=relaxed/simple;
+	bh=75y4DFa4yGV5tEJnwZAq8E9vaKwpfaU/VBiVLl2xBEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eJ4Kl8s3Fl4L5vY6+fKaKRkhRugZ7Ua0nyiuagCCoNF4TZVrQLTOpofqUrF2RkGfFHm0AeN1PEpnZFkbeCetywNcog3Dj/v1h3cfILfDscd1FZ1mGxuvUjRg5jXJsI5YL1TrT8ewfJSf8qSkKNhG0Yj5yddafTMzuUWbH/k2eQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NmqkpS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA097C4CED3;
-	Mon, 23 Dec 2024 16:17:41 +0000 (UTC)
+	 MIME-Version; b=KqKyYBgnzd8LH64yT+9DjoKAgFNU9QDHDX5h6YH7I/8Zba7VxQICV0RU14rqQYSjLh5OMB7rNVpXB0eXSGeRWrSSFTZj0cEtXQgr8kM8Ysd9DovGJRCpzku++EWZno5v/2eYBrdcCm8rsZ1qrYLkkyxvsJaHdB4SBFLO5Fcq7Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHRoCZhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11BFC4CED4;
+	Mon, 23 Dec 2024 16:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970662;
-	bh=dgCuAifAtxzlohJAOr8075EHJAiMJiEyU4PD70cmCzU=;
+	s=korg; t=1734970050;
+	bh=75y4DFa4yGV5tEJnwZAq8E9vaKwpfaU/VBiVLl2xBEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NmqkpS4Ks+DqE7jMxEZor9IcUCj1faV+EJkolh+nUKtsgvVDbqyhaOXx5cA1Ptvv
-	 5ezF6cMs2dSCDpQ+r2AQ8G4KsCcFQGLsWViRLZ3kr+C04q67vKpEgRpetHsuWUx9Nn
-	 8XuyAk4aEAtUkntFdXPUYJuKuFEI2I9j4Mr2r63c=
+	b=JHRoCZhhinCa62U7Rbv4XCdf+giXEnFJged7I4nER1ZM0/okBKwhhphaUohekB6yW
+	 +SKVmnt3OMbWKbfHcULA95F3UtN7Y2EEXPQzz/T2Xkq0Vtc00cKw8DDvGHaVW7glxp
+	 WOGRZtDHY0jaDXY0K58U+F67um7CchWKGnT8x530=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Huang <ahuang12@lenovo.com>,
-	Jiwei Sun <sunjw10@lenovo.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Nirmal Patel <nirmal.patel@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 04/83] PCI: vmd: Create domain symlink before pci_bus_add_devices()
+	David Hildenbrand <david@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 112/160] mm/page_alloc: dont call pfn_to_page() on possibly non-existent PFN in split_large_buddy()
 Date: Mon, 23 Dec 2024 16:58:43 +0100
-Message-ID: <20241223155353.812610565@linuxfoundation.org>
+Message-ID: <20241223155413.002588034@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +63,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiwei Sun <sunjw10@lenovo.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit f24c9bfcd423e2b2bb0d198456412f614ec2030a ]
+commit faeec8e23c10bd30e8aa759a2eb3018dae00f924 upstream.
 
-The vmd driver creates a "domain" symlink in sysfs for each VMD bridge.
-Previously this symlink was created after pci_bus_add_devices() added
-devices below the VMD bridge and emitted udev events to announce them to
-userspace.
+In split_large_buddy(), we might call pfn_to_page() on a PFN that might
+not exist.  In corner cases, such as when freeing the highest pageblock in
+the last memory section, this could result with CONFIG_SPARSEMEM &&
+!CONFIG_SPARSEMEM_EXTREME in __pfn_to_section() returning NULL and and
+__section_mem_map_addr() dereferencing that NULL pointer.
 
-This led to a race between userspace consumers of the udev events and the
-kernel creation of the symlink.  One such consumer is mdadm, which
-assembles block devices into a RAID array, and for devices below a VMD
-bridge, mdadm depends on the "domain" symlink.
+Let's fix it, and avoid doing a pfn_to_page() call for the first
+iteration, where we already have the page.
 
-If mdadm loses the race, it may be unable to assemble a RAID array, which
-may cause a boot failure or other issues, with complaints like this:
+So far this was found by code inspection, but let's just CC stable as the
+fix is easy.
 
-  (udev-worker)[2149]: nvme1n1: '/sbin/mdadm -I /dev/nvme1n1'(err) 'mdadm: Unable to get real path for '/sys/bus/pci/drivers/vmd/0000:c7:00.5/domain/device''
-  (udev-worker)[2149]: nvme1n1: '/sbin/mdadm -I /dev/nvme1n1'(err) 'mdadm: /dev/nvme1n1 is not attached to Intel(R) RAID controller.'
-  (udev-worker)[2149]: nvme1n1: '/sbin/mdadm -I /dev/nvme1n1'(err) 'mdadm: No OROM/EFI properties for /dev/nvme1n1'
-  (udev-worker)[2149]: nvme1n1: '/sbin/mdadm -I /dev/nvme1n1'(err) 'mdadm: no RAID superblock on /dev/nvme1n1.'
-  (udev-worker)[2149]: nvme1n1: Process '/sbin/mdadm -I /dev/nvme1n1' failed with exit code 1.
-
-This symptom prevents the OS from booting successfully.
-
-After a NVMe disk is probed/added by the nvme driver, udevd invokes mdadm
-to detect if there is a mdraid associated with this NVMe disk, and mdadm
-determines if a NVMe device is connected to a particular VMD domain by
-checking the "domain" symlink. For example:
-
-  Thread A                   Thread B             Thread mdadm
-  vmd_enable_domain
-    pci_bus_add_devices
-      __driver_probe_device
-       ...
-       work_on_cpu
-         schedule_work_on
-         : wakeup Thread B
-                             nvme_probe
-                             : wakeup scan_work
-                               to scan nvme disk
-                               and add nvme disk
-                               then wakeup udevd
-                                                  : udevd executes
-                                                    mdadm command
-         flush_work                               main
-         : wait for nvme_probe done                ...
-      __driver_probe_device                        find_driver_devices
-      : probe next nvme device                     : 1) Detect domain symlink
-      ...                                            2) Find domain symlink
-      ...                                               from vmd sysfs
-      ...                                            3) Domain symlink not
-      ...                                               created yet; failed
-    sysfs_create_link
-    : create domain symlink
-
-Create the VMD "domain" symlink before invoking pci_bus_add_devices() to
-avoid this race.
-
-Suggested-by: Adrian Huang <ahuang12@lenovo.com>
-Link: https://lore.kernel.org/linux-pci/20240605124844.24293-1-sjiwei@163.com
-Signed-off-by: Jiwei Sun <sunjw10@lenovo.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Nirmal Patel <nirmal.patel@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241210093437.174413-1-david@redhat.com
+Fixes: fd919a85cd55 ("mm: page_isolation: prepare for hygienic freelists")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Vlastimil Babka <vbabka@suse.cz>
+Closes: https://lkml.kernel.org/r/e1a898ba-a717-4d20-9144-29df1a6c8813@suse.cz
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/vmd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/page_alloc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 5c35884c226e..a1dd614bdc32 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -870,6 +870,9 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsigned long features)
- 		dev_set_msi_domain(&vmd->bus->dev,
- 				   dev_get_msi_domain(&vmd->dev->dev));
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 1cb4b8c8886d..cae7b93864c2 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1238,13 +1238,15 @@ static void split_large_buddy(struct zone *zone, struct page *page,
+ 	if (order > pageblock_order)
+ 		order = pageblock_order;
  
-+	WARN(sysfs_create_link(&vmd->dev->dev.kobj, &vmd->bus->dev.kobj,
-+			       "domain"), "Can't create symlink to domain\n");
-+
- 	vmd_acpi_begin();
+-	while (pfn != end) {
++	do {
+ 		int mt = get_pfnblock_migratetype(page, pfn);
  
- 	pci_scan_child_bus(vmd->bus);
-@@ -907,9 +910,6 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsigned long features)
- 	pci_bus_add_devices(vmd->bus);
- 
- 	vmd_acpi_end();
--
--	WARN(sysfs_create_link(&vmd->dev->dev.kobj, &vmd->bus->dev.kobj,
--			       "domain"), "Can't create symlink to domain\n");
- 	return 0;
+ 		__free_one_page(page, pfn, zone, order, mt, fpi);
+ 		pfn += 1 << order;
++		if (pfn == end)
++			break;
+ 		page = pfn_to_page(pfn);
+-	}
++	} while (1);
  }
  
-@@ -985,8 +985,8 @@ static void vmd_remove(struct pci_dev *dev)
- {
- 	struct vmd_dev *vmd = pci_get_drvdata(dev);
- 
--	sysfs_remove_link(&vmd->dev->dev.kobj, "domain");
- 	pci_stop_root_bus(vmd->bus);
-+	sysfs_remove_link(&vmd->dev->dev.kobj, "domain");
- 	pci_remove_root_bus(vmd->bus);
- 	vmd_cleanup_srcu(vmd);
- 	vmd_detach_resources(vmd);
+ static void free_one_page(struct zone *zone, struct page *page,
 -- 
-2.39.5
+2.47.1
 
 
 
