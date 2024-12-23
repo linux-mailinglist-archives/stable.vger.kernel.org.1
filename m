@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062BE9FB239
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A599FB289
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72B9E1881936
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00769160ADC
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FA91B3925;
-	Mon, 23 Dec 2024 16:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1521919E98B;
+	Mon, 23 Dec 2024 16:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rKBygtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTCjJWmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6B48827;
-	Mon, 23 Dec 2024 16:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C762F17A597;
+	Mon, 23 Dec 2024 16:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970521; cv=none; b=IUQlSOzUIDjhveh5d8+3ZvPBdwwUMUHS4JYyTJWq4RQquuCBTCgrX0+Qrpprt4Uq6NHWy4gkrqv5R7GjVBivRZgX3Fg/yTvW0e46vbCVYlDbjLsJBAhXvrPVxquHSK1zbyjtzZbaPLdzYeR0HrBtiVwkXnSvkl8toqSHVrF3qFo=
+	t=1734970761; cv=none; b=Va/xVSgnRirFkksSaBvud+3+CdkxP05ROYN8tW94ehelTeSwQAc/R36EIbFrKbFfdMVcRoLEYeHwYeueTKCJezlEfgY+B31VmqlSd+oc8WnIxQRESJkqk2k5APPbL06TYaDQLqdFcdH+hR1S8RCWFAk0HPmaR6sbevBsBBdhH7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970521; c=relaxed/simple;
-	bh=xv8IoLiCmkK1nTTfzEX5pelM5UqQKym006fgRBIrwB4=;
+	s=arc-20240116; t=1734970761; c=relaxed/simple;
+	bh=vgoCrlvSW/8GY9U9dbaEHgooTugww803Ag2CQ2HvHV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fsZh6zs1n/VT9NAclcCn9yjD9ZhMXL7XJAiargcmO1tU3dX7+rJQEhWK7H5uaL0V02o46Cc+cR5vGATnPn6W8hIeoNDR+bb3A/QuJ7AuiPsYJWsWO3aYEmSXAz/kYqBRB2F4+qEieRF70fetfCaqfXhR7AP4lk6W+JAMR3QraNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rKBygtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753EAC4CED3;
-	Mon, 23 Dec 2024 16:15:20 +0000 (UTC)
+	 MIME-Version; b=G4m0Vbe0ueZD8O9od6SCwWLElJfgTb5gA4TIrjxPjACQ0Sfx5AIo3WCdr5iKH52T0mjsR6LfD+8dulnYWww86ocfsMuyyv1Rei4/JvAP96fM3sdQK6XFK8Ts8xh+e2zfijtjR6+u+1gOQzTmOwee3jLy23Es24VWPis8Sj354LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTCjJWmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3501BC4CED3;
+	Mon, 23 Dec 2024 16:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970520;
-	bh=xv8IoLiCmkK1nTTfzEX5pelM5UqQKym006fgRBIrwB4=;
+	s=korg; t=1734970761;
+	bh=vgoCrlvSW/8GY9U9dbaEHgooTugww803Ag2CQ2HvHV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1rKBygtX1Ts4sJDSomBOJj3nwFpBTlzusq/iNnDuQzBncs9wITB55+0SqgW4yMCAR
-	 vWIknpZdavDua1Mji4vJptREnwnQ5k47dHnF58d/lETgbGRo31zfp4ZEz479SvxF96
-	 TNKUl73mEJF56y8excQaPCVTBP8OpiDb61/FFL7g=
+	b=KTCjJWmPCF0OXaXKLL57i0oM8PNODsq/CVINsUok+glwa+ePeurBFTwKtao7tYlOU
+	 7kaoWZDnpl6B/vPDWs82h7SgRHXUMZCBcPA4XXcc71Qw43ng2kJ6XpYXqAYKLe8Q92
+	 J1DWIRw/aJgUK1sUXLYobUlhB0xKrVy9EJ+kooOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 108/116] ceph: improve error handling and short/overflow-read logic in __ceph_sync_read()
-Date: Mon, 23 Dec 2024 16:59:38 +0100
-Message-ID: <20241223155403.746316379@linuxfoundation.org>
+	Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.1 60/83] Drivers: hv: util: Avoid accessing a ringbuffer not initialized yet
+Date: Mon, 23 Dec 2024 16:59:39 +0100
+Message-ID: <20241223155355.952185182@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Markuze <amarkuze@redhat.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit 9abee475803fab6ad59d4f4fc59c6a75374a7d9d upstream.
+commit 07a756a49f4b4290b49ea46e089cbe6f79ff8d26 upstream.
 
-This patch refines the read logic in __ceph_sync_read() to ensure more
-predictable and efficient behavior in various edge cases.
+If the KVP (or VSS) daemon starts before the VMBus channel's ringbuffer is
+fully initialized, we can hit the panic below:
 
-- Return early if the requested read length is zero or if the file size
-  (`i_size`) is zero.
-- Initialize the index variable (`idx`) where needed and reorder some
-  code to ensure it is always set before use.
-- Improve error handling by checking for negative return values earlier.
-- Remove redundant encrypted file checks after failures. Only attempt
-  filesystem-level decryption if the read succeeded.
-- Simplify leftover calculations to correctly handle cases where the
-  read extends beyond the end of the file or stops short.  This can be
-  hit by continuously reading a file while, on another client, we keep
-  truncating and writing new data into it.
-- This resolves multiple issues caused by integer and consequent buffer
-  overflow (`pages` array being accessed beyond `num_pages`):
-  - https://tracker.ceph.com/issues/67524
-  - https://tracker.ceph.com/issues/68980
-  - https://tracker.ceph.com/issues/68981
+hv_utils: Registering HyperV Utility Driver
+hv_vmbus: registering driver hv_utils
+...
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+CPU: 44 UID: 0 PID: 2552 Comm: hv_kvp_daemon Tainted: G E 6.11.0-rc3+ #1
+RIP: 0010:hv_pkt_iter_first+0x12/0xd0
+Call Trace:
+...
+ vmbus_recvpacket
+ hv_kvp_onchannelcallback
+ vmbus_on_event
+ tasklet_action_common
+ tasklet_action
+ handle_softirqs
+ irq_exit_rcu
+ sysvec_hyperv_stimer0
+ </IRQ>
+ <TASK>
+ asm_sysvec_hyperv_stimer0
+...
+ kvp_register_done
+ hvt_op_read
+ vfs_read
+ ksys_read
+ __x64_sys_read
 
+This can happen because the KVP/VSS channel callback can be invoked
+even before the channel is fully opened:
+1) as soon as hv_kvp_init() -> hvutil_transport_init() creates
+/dev/vmbus/hv_kvp, the kvp daemon can open the device file immediately and
+register itself to the driver by writing a message KVP_OP_REGISTER1 to the
+file (which is handled by kvp_on_msg() ->kvp_handle_handshake()) and
+reading the file for the driver's response, which is handled by
+hvt_op_read(), which calls hvt->on_read(), i.e. kvp_register_done().
+
+2) the problem with kvp_register_done() is that it can cause the
+channel callback to be called even before the channel is fully opened,
+and when the channel callback is starting to run, util_probe()->
+vmbus_open() may have not initialized the ringbuffer yet, so the
+callback can hit the panic of NULL pointer dereference.
+
+To reproduce the panic consistently, we can add a "ssleep(10)" for KVP in
+__vmbus_open(), just before the first hv_ringbuffer_init(), and then we
+unload and reload the driver hv_utils, and run the daemon manually within
+the 10 seconds.
+
+Fix the panic by reordering the steps in util_probe() so the char dev
+entry used by the KVP or VSS daemon is not created until after
+vmbus_open() has completed. This reordering prevents the race condition
+from happening.
+
+Reported-by: Dexuan Cui <decui@microsoft.com>
+Fixes: e0fa3e5e7df6 ("Drivers: hv: utils: fix a race on userspace daemons registration")
 Cc: stable@vger.kernel.org
-Fixes: 1065da21e5df ("ceph: stop copying to iter at EOF on sync reads")
-Reported-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Signed-off-by: Alex Markuze <amarkuze@redhat.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Acked-by: Wei Liu <wei.liu@kernel.org>
+Link: https://lore.kernel.org/r/20241106154247.2271-3-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20241106154247.2271-3-mhklinux@outlook.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/file.c |   29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ drivers/hv/hv_kvp.c       |    6 ++++++
+ drivers/hv/hv_snapshot.c  |    6 ++++++
+ drivers/hv/hv_util.c      |    9 +++++++++
+ drivers/hv/hyperv_vmbus.h |    2 ++
+ include/linux/hyperv.h    |    1 +
+ 5 files changed, 24 insertions(+)
 
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -976,7 +976,7 @@ ssize_t __ceph_sync_read(struct inode *i
- 	if (ceph_inode_is_shutdown(inode))
- 		return -EIO;
+--- a/drivers/hv/hv_kvp.c
++++ b/drivers/hv/hv_kvp.c
+@@ -767,6 +767,12 @@ hv_kvp_init(struct hv_util_service *srv)
+ 	 */
+ 	kvp_transaction.state = HVUTIL_DEVICE_INIT;
  
--	if (!len)
-+	if (!len || !i_size)
- 		return 0;
- 	/*
- 	 * flush any page cache pages in this range.  this
-@@ -996,7 +996,7 @@ ssize_t __ceph_sync_read(struct inode *i
- 		int num_pages;
- 		size_t page_off;
- 		bool more;
--		int idx;
-+		int idx = 0;
- 		size_t left;
- 		struct ceph_osd_req_op *op;
- 		u64 read_off = off;
-@@ -1068,7 +1068,14 @@ ssize_t __ceph_sync_read(struct inode *i
- 		else if (ret == -ENOENT)
- 			ret = 0;
++	return 0;
++}
++
++int
++hv_kvp_init_transport(void)
++{
+ 	hvt = hvutil_transport_init(kvp_devname, CN_KVP_IDX, CN_KVP_VAL,
+ 				    kvp_on_msg, kvp_on_reset);
+ 	if (!hvt)
+--- a/drivers/hv/hv_snapshot.c
++++ b/drivers/hv/hv_snapshot.c
+@@ -388,6 +388,12 @@ hv_vss_init(struct hv_util_service *srv)
+ 	 */
+ 	vss_transaction.state = HVUTIL_DEVICE_INIT;
  
--		if (ret > 0 && IS_ENCRYPTED(inode)) {
-+		if (ret < 0) {
-+			ceph_osdc_put_request(req);
-+			if (ret == -EBLOCKLISTED)
-+				fsc->blocklisted = true;
-+			break;
++	return 0;
++}
++
++int
++hv_vss_init_transport(void)
++{
+ 	hvt = hvutil_transport_init(vss_devname, CN_VSS_IDX, CN_VSS_VAL,
+ 				    vss_on_msg, vss_on_reset);
+ 	if (!hvt) {
+--- a/drivers/hv/hv_util.c
++++ b/drivers/hv/hv_util.c
+@@ -141,6 +141,7 @@ static struct hv_util_service util_heart
+ static struct hv_util_service util_kvp = {
+ 	.util_cb = hv_kvp_onchannelcallback,
+ 	.util_init = hv_kvp_init,
++	.util_init_transport = hv_kvp_init_transport,
+ 	.util_pre_suspend = hv_kvp_pre_suspend,
+ 	.util_pre_resume = hv_kvp_pre_resume,
+ 	.util_deinit = hv_kvp_deinit,
+@@ -149,6 +150,7 @@ static struct hv_util_service util_kvp =
+ static struct hv_util_service util_vss = {
+ 	.util_cb = hv_vss_onchannelcallback,
+ 	.util_init = hv_vss_init,
++	.util_init_transport = hv_vss_init_transport,
+ 	.util_pre_suspend = hv_vss_pre_suspend,
+ 	.util_pre_resume = hv_vss_pre_resume,
+ 	.util_deinit = hv_vss_deinit,
+@@ -592,6 +594,13 @@ static int util_probe(struct hv_device *
+ 	if (ret)
+ 		goto error;
+ 
++	if (srv->util_init_transport) {
++		ret = srv->util_init_transport();
++		if (ret) {
++			vmbus_close(dev->channel);
++			goto error;
 +		}
-+
-+		if (IS_ENCRYPTED(inode)) {
- 			int fret;
++	}
+ 	return 0;
  
- 			fret = ceph_fscrypt_decrypt_extents(inode, pages,
-@@ -1097,7 +1104,7 @@ ssize_t __ceph_sync_read(struct inode *i
- 		ceph_osdc_put_request(req);
+ error:
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -365,12 +365,14 @@ void vmbus_on_event(unsigned long data);
+ void vmbus_on_msg_dpc(unsigned long data);
  
- 		/* Short read but not EOF? Zero out the remainder. */
--		if (ret >= 0 && ret < len && (off + ret < i_size)) {
-+		if (ret < len && (off + ret < i_size)) {
- 			int zlen = min(len - ret, i_size - off - ret);
- 			int zoff = page_off + ret;
+ int hv_kvp_init(struct hv_util_service *srv);
++int hv_kvp_init_transport(void);
+ void hv_kvp_deinit(void);
+ int hv_kvp_pre_suspend(void);
+ int hv_kvp_pre_resume(void);
+ void hv_kvp_onchannelcallback(void *context);
  
-@@ -1107,13 +1114,11 @@ ssize_t __ceph_sync_read(struct inode *i
- 			ret += zlen;
- 		}
- 
--		idx = 0;
--		if (ret <= 0)
--			left = 0;
--		else if (off + ret > i_size)
--			left = i_size - off;
-+		if (off + ret > i_size)
-+			left = (i_size > off) ? i_size - off : 0;
- 		else
- 			left = ret;
-+
- 		while (left > 0) {
- 			size_t plen, copied;
- 
-@@ -1131,12 +1136,6 @@ ssize_t __ceph_sync_read(struct inode *i
- 		}
- 		ceph_release_page_vector(pages, num_pages);
- 
--		if (ret < 0) {
--			if (ret == -EBLOCKLISTED)
--				fsc->blocklisted = true;
--			break;
--		}
--
- 		if (off >= i_size || !more)
- 			break;
- 	}
+ int hv_vss_init(struct hv_util_service *srv);
++int hv_vss_init_transport(void);
+ void hv_vss_deinit(void);
+ int hv_vss_pre_suspend(void);
+ int hv_vss_pre_resume(void);
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1567,6 +1567,7 @@ struct hv_util_service {
+ 	void *channel;
+ 	void (*util_cb)(void *);
+ 	int (*util_init)(struct hv_util_service *);
++	int (*util_init_transport)(void);
+ 	void (*util_deinit)(void);
+ 	int (*util_pre_suspend)(void);
+ 	int (*util_pre_resume)(void);
 
 
 
