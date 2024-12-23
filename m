@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-105933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C7E9FB25A
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B836C9FB18F
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419F518858A9
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FED41884BFC
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73F81A8F80;
-	Mon, 23 Dec 2024 16:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D881E1B4120;
+	Mon, 23 Dec 2024 16:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bci2If7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGTmDHz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A628827;
-	Mon, 23 Dec 2024 16:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CF81B3959;
+	Mon, 23 Dec 2024 16:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970631; cv=none; b=PbwHe2gxpGZaCignljslruMGFOV7nNriXeuuCkOQhFJ51n+a7u2sh3dqMNI2OY9Guo54rvd5uxzIbPhhjwFoKEW4qvL0XPzxz8y5wz7vQzI1JE0uIuL0hpt15r7ICqQxrHknweQakwd1TxcjgXvg03AkQEZgTUcHyI5FTQdbK7s=
+	t=1734970053; cv=none; b=es2Q9zh520uxKz9Eg3XWmQCEW7BGkXdW/oj4LY2clVrh6oCqiQk48JsIX4O30o0CZI4lZPZIpqfWAGJ/S1vicJGZIICT2UF6ogxI5oK3BhzvgH6S1v1Yw2bY0Wb84Lep2Vu8jTLvC29EslioL+s40imUqilUs71gTTcy0BYcH+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970631; c=relaxed/simple;
-	bh=TRWQ24fm+K9+EYpRzP0S3RbhFaDSvNtdqVx/f/TWAgY=;
+	s=arc-20240116; t=1734970053; c=relaxed/simple;
+	bh=1w/QeFMNkmlqyosaPkKeBh//C0gRK1OdBNZdgZUdCHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTEiRT1+MvNpZ9OxaIG1pFk9STw/GuJPAV1nFBo4i9fgRXGaBCJUhJVQ6vk5Jek38FpNpEYXYZcB8hb8/jzibjDtJHWSSn76hOcNRcyuKPMzeug/wT/SECIguy3lFepz2s8c197Bivow82SWOfdtVDOk2p+kiNnbKAnYSY6WDS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bci2If7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB51C4CED4;
-	Mon, 23 Dec 2024 16:17:10 +0000 (UTC)
+	 MIME-Version; b=jk1d0sGILlqkPxtl7tvNYWjhW5jVMj+vXiIlW+S5Gu6wGEIGkSfUB/lJdNuqoWUPjwjj9139CSYgDco2NDFBTbYe8xZbCydDmmWbidVB2zN4FxpXfu9ErLsC4EaBT5XbnICOgykl3pS4KKMqhZDwIHUoFxTgMur3ZBAwZVUuUqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGTmDHz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02940C4CED3;
+	Mon, 23 Dec 2024 16:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970631;
-	bh=TRWQ24fm+K9+EYpRzP0S3RbhFaDSvNtdqVx/f/TWAgY=;
+	s=korg; t=1734970053;
+	bh=1w/QeFMNkmlqyosaPkKeBh//C0gRK1OdBNZdgZUdCHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bci2If7ti+Ze3zg73uJiaTwrPvMUm5tGoiUlP15QlMRgfLQYAOuNgFgTFGqq5QgdF
-	 C0CQ0FjL1j7Pu7wjgfqcKIpwO4BEALy86S47Gq9YEy9S/nCyeuLvNrq66rMm9aUU7t
-	 bFNBSHJnSEGNUQ4s3uGvL6H+YkEbEPD7yLCzCEKo=
+	b=CGTmDHz1xu+vBKreqh9wRQusG5RZWADm+epqP8XB/pu15kyei66pIRxKaWAjjLgG9
+	 CbC8+KCU5xcen24/xyvHDLJNMt0pv9/zRHt2qaYtu24vPSZTDORJtS19nFCcSmGS70
+	 lJpAPgSE8cLUlXevKlMQ+zft14NAM9v8yx14cWmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/83] net/smc: check smcd_v2_ext_offset when receiving proposal msg
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 130/160] tracing: Fix test_event_printk() to process entire print argument
 Date: Mon, 23 Dec 2024 16:59:01 +0100
-Message-ID: <20241223155354.489903387@linuxfoundation.org>
+Message-ID: <20241223155413.811435292@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +66,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 9ab332deb671d8f7e66d82a2ff2b3f715bc3a4ad ]
+commit a6629626c584200daf495cc9a740048b455addcd upstream.
 
-When receiving proposal msg in server, the field smcd_v2_ext_offset in
-proposal msg is from the remote client and can not be fully trusted.
-Once the value of smcd_v2_ext_offset exceed the max value, there has
-the chance to access wrong address, and crash may happen.
+The test_event_printk() analyzes print formats of trace events looking for
+cases where it may dereference a pointer that is not in the ring buffer
+which can possibly be a bug when the trace event is read from the ring
+buffer and the content of that pointer no longer exists.
 
-This patch checks the value of smcd_v2_ext_offset before using it.
+The function needs to accurately go from one print format argument to the
+next. It handles quotes and parenthesis that may be included in an
+argument. When it finds the start of the next argument, it uses a simple
+"c = strstr(fmt + i, ',')" to find the end of that argument!
 
-Fixes: 5c21c4ccafe8 ("net/smc: determine accepted ISM devices")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In order to include "%s" dereferencing, it needs to process the entire
+content of the print format argument and not just the content of the first
+',' it finds. As there may be content like:
+
+ ({ const char *saved_ptr = trace_seq_buffer_ptr(p); static const char
+   *access_str[] = { "---", "--x", "w--", "w-x", "-u-", "-ux", "wu-", "wux"
+   }; union kvm_mmu_page_role role; role.word = REC->role;
+   trace_seq_printf(p, "sp gen %u gfn %llx l%u %u-byte q%u%s %s%s" " %snxe
+   %sad root %u %s%c", REC->mmu_valid_gen, REC->gfn, role.level,
+   role.has_4_byte_gpte ? 4 : 8, role.quadrant, role.direct ? " direct" : "",
+   access_str[role.access], role.invalid ? " invalid" : "", role.efer_nx ? ""
+   : "!", role.ad_disabled ? "!" : "", REC->root_count, REC->unsync ?
+   "unsync" : "sync", 0); saved_ptr; })
+
+Which is an example of a full argument of an existing event. As the code
+already handles finding the next print format argument, process the
+argument at the end of it and not the start of it. This way it has both
+the start of the argument as well as the end of it.
+
+Add a helper function "process_pointer()" that will do the processing during
+the loop as well as at the end. It also makes the code cleaner and easier
+to read.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20241217024720.362271189@goodmis.org
+Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c  | 2 ++
- net/smc/smc_clc.h | 8 +++++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events.c |   82 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 53 insertions(+), 29 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 889709c35b1f..e2bdd6aa3d89 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2096,6 +2096,8 @@ static void smc_find_ism_v2_device_serv(struct smc_sock *new_smc,
- 	pclc_smcd = smc_get_clc_msg_smcd(pclc);
- 	smc_v2_ext = smc_get_clc_v2_ext(pclc);
- 	smcd_v2_ext = smc_get_clc_smcd_v2_ext(smc_v2_ext);
-+	if (!pclc_smcd || !smc_v2_ext || !smcd_v2_ext)
-+		goto not_found;
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -265,8 +265,7 @@ static bool test_field(const char *fmt,
+ 	len = p - fmt;
  
- 	mutex_lock(&smcd_dev_list.mutex);
- 	if (pclc_smcd->ism.chid)
-diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
-index 08279081d438..0f6102cd5de1 100644
---- a/net/smc/smc_clc.h
-+++ b/net/smc/smc_clc.h
-@@ -361,9 +361,15 @@ smc_get_clc_v2_ext(struct smc_clc_msg_proposal *prop)
- static inline struct smc_clc_smcd_v2_extension *
- smc_get_clc_smcd_v2_ext(struct smc_clc_v2_extension *prop_v2ext)
- {
-+	u16 max_offset = offsetof(struct smc_clc_msg_proposal_area, pclc_smcd_v2_ext) -
-+		offsetof(struct smc_clc_msg_proposal_area, pclc_v2_ext) -
-+		offsetof(struct smc_clc_v2_extension, hdr) -
-+		offsetofend(struct smc_clnt_opts_area_hdr, smcd_v2_ext_offset);
+ 	for (; field->type; field++) {
+-		if (strncmp(field->name, fmt, len) ||
+-		    field->name[len])
++		if (strncmp(field->name, fmt, len) || field->name[len])
+ 			continue;
+ 		array_descriptor = strchr(field->type, '[');
+ 		/* This is an array and is OK to dereference. */
+@@ -275,6 +274,32 @@ static bool test_field(const char *fmt,
+ 	return false;
+ }
+ 
++/* Return true if the argument pointer is safe */
++static bool process_pointer(const char *fmt, int len, struct trace_event_call *call)
++{
++	const char *r, *e, *a;
 +
- 	if (!prop_v2ext)
- 		return NULL;
--	if (!ntohs(prop_v2ext->hdr.smcd_v2_ext_offset))
-+	if (!ntohs(prop_v2ext->hdr.smcd_v2_ext_offset) ||
-+	    ntohs(prop_v2ext->hdr.smcd_v2_ext_offset) > max_offset)
- 		return NULL;
++	e = fmt + len;
++
++	/* Find the REC-> in the argument */
++	r = strstr(fmt, "REC->");
++	if (r && r < e) {
++		/*
++		 * Addresses of events on the buffer, or an array on the buffer is
++		 * OK to dereference. There's ways to fool this, but
++		 * this is to catch common mistakes, not malicious code.
++		 */
++		a = strchr(fmt, '&');
++		if ((a && (a < r)) || test_field(r, call))
++			return true;
++	} else if ((r = strstr(fmt, "__get_dynamic_array(")) && r < e) {
++		return true;
++	} else if ((r = strstr(fmt, "__get_sockaddr(")) && r < e) {
++		return true;
++	}
++	return false;
++}
++
+ /*
+  * Examine the print fmt of the event looking for unsafe dereference
+  * pointers using %p* that could be recorded in the trace event and
+@@ -285,12 +310,12 @@ static void test_event_printk(struct tra
+ {
+ 	u64 dereference_flags = 0;
+ 	bool first = true;
+-	const char *fmt, *c, *r, *a;
++	const char *fmt;
+ 	int parens = 0;
+ 	char in_quote = 0;
+ 	int start_arg = 0;
+ 	int arg = 0;
+-	int i;
++	int i, e;
  
- 	return (struct smc_clc_smcd_v2_extension *)
--- 
-2.39.5
-
+ 	fmt = call->print_fmt;
+ 
+@@ -403,42 +428,41 @@ static void test_event_printk(struct tra
+ 		case ',':
+ 			if (in_quote || parens)
+ 				continue;
++			e = i;
+ 			i++;
+ 			while (isspace(fmt[i]))
+ 				i++;
+-			start_arg = i;
+-			if (!(dereference_flags & (1ULL << arg)))
+-				goto next_arg;
+ 
+-			/* Find the REC-> in the argument */
+-			c = strchr(fmt + i, ',');
+-			r = strstr(fmt + i, "REC->");
+-			if (r && (!c || r < c)) {
+-				/*
+-				 * Addresses of events on the buffer,
+-				 * or an array on the buffer is
+-				 * OK to dereference.
+-				 * There's ways to fool this, but
+-				 * this is to catch common mistakes,
+-				 * not malicious code.
+-				 */
+-				a = strchr(fmt + i, '&');
+-				if ((a && (a < r)) || test_field(r, call))
++			/*
++			 * If start_arg is zero, then this is the start of the
++			 * first argument. The processing of the argument happens
++			 * when the end of the argument is found, as it needs to
++			 * handle paranthesis and such.
++			 */
++			if (!start_arg) {
++				start_arg = i;
++				/* Balance out the i++ in the for loop */
++				i--;
++				continue;
++			}
++
++			if (dereference_flags & (1ULL << arg)) {
++				if (process_pointer(fmt + start_arg, e - start_arg, call))
+ 					dereference_flags &= ~(1ULL << arg);
+-			} else if ((r = strstr(fmt + i, "__get_dynamic_array(")) &&
+-				   (!c || r < c)) {
+-				dereference_flags &= ~(1ULL << arg);
+-			} else if ((r = strstr(fmt + i, "__get_sockaddr(")) &&
+-				   (!c || r < c)) {
+-				dereference_flags &= ~(1ULL << arg);
+ 			}
+ 
+-		next_arg:
+-			i--;
++			start_arg = i;
+ 			arg++;
++			/* Balance out the i++ in the for loop */
++			i--;
+ 		}
+ 	}
+ 
++	if (dereference_flags & (1ULL << arg)) {
++		if (process_pointer(fmt + start_arg, i - start_arg, call))
++			dereference_flags &= ~(1ULL << arg);
++	}
++
+ 	/*
+ 	 * If you triggered the below warning, the trace event reported
+ 	 * uses an unsafe dereference pointer %p*. As the data stored
 
 
 
