@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-105786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 073909FB1A7
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A609FB241
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FFB41884624
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E23162178
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8A01B0F30;
-	Mon, 23 Dec 2024 16:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E1D187848;
+	Mon, 23 Dec 2024 16:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRYCG++a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVO76wpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C841AF0CE;
-	Mon, 23 Dec 2024 16:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DBB8827;
+	Mon, 23 Dec 2024 16:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970136; cv=none; b=twzuvbDllg1XPKJLxGFhhftMvnVV7sPBXLWqmxeuDAl1YphiTdheZxHRULmyTVjtw9A+9EndF/oAirOV6ilbmh1Pb+TJhprap088QKbZ3BjkIYUm0b58LOcHB/axp1hk1/KIO+MrtlPOz2OCq625ssoQwkDE5x9J7cLCmz4c8Q0=
+	t=1734970549; cv=none; b=iSqPL6/6UXkS/cyDT02C7S07Fsty1mBbK/M+Xtpd4kStILDExURtcdgpPf0vABl8p+wJWIW7yzbi+ANSk3wlS+xodwr71m31SWswyptxlr8SH5O2Eqkd91T6vIupA73efXYwwE2k62bbdVArth/fhDklNOJ1fwTLtipvHGei7ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970136; c=relaxed/simple;
-	bh=BzStACEq2xd8MfVTsEoNkTBxzYQZQv0yMyVV8A/Qk18=;
+	s=arc-20240116; t=1734970549; c=relaxed/simple;
+	bh=VGE1m+vaGoAHYdxWO5l/w06P3zFNHkbA31looErgutQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPUx6thrW/eTINkqb/4TWSVjjdwFBMC1m0N2Tz3hPxBib9M2TrIi+6OEVt29FE2vnoa6zRSKrDzsAfA0u2ldmpLhoL4KXPW5e1k4slCP6AHK4CXD0BDnw1LVjscBwecYRnT7pd5nmzdfU8fTWB1qbEPRET2lVM9b2aPlpvqdVaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRYCG++a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FC0C4CED3;
-	Mon, 23 Dec 2024 16:08:54 +0000 (UTC)
+	 MIME-Version; b=GtS6Ui+13IL4m4nCPVEPkKddKYUqSsEaW8FGNWP9wDYGfa1zZkVyphuVjL0GsF7aS/AwLk/QR8oBxdsVi2xOB9sb2iw2cVj3YXQhm/TbCCCBwkz+r1sql740PUddhX/nb6OD+bvHGIXKfkdK5WRGq7Xg404kwwrSIrNBLUJ0zbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVO76wpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A5AC4CED3;
+	Mon, 23 Dec 2024 16:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970135;
-	bh=BzStACEq2xd8MfVTsEoNkTBxzYQZQv0yMyVV8A/Qk18=;
+	s=korg; t=1734970549;
+	bh=VGE1m+vaGoAHYdxWO5l/w06P3zFNHkbA31looErgutQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lRYCG++a2FQjD1UYsNLryh62aiYyNEqeU7YUon/aJjWIAdB1HIEsuV+ShNAqgocYf
-	 TDXjBhd3plx5h+SIrx2fgUfXFnKXeU/+tKmBlleDilL9c8ewfictGFmLpwZ7K0cf3C
-	 OmYMvpn0nfVptbbXygPVIFUsnCpM+8lgTkBd3xEs=
+	b=nVO76wpRvjFweFPclszyNpwananGr8s3DosCq4OWrosXWx2TB2AifaAqmvf+NKDHY
+	 Hf6TC9+BqSqJYwJvREd5Sxb0colJ/Wfot/q3HJ+zB96oOzRidIjU2OG5kqqozBLRrG
+	 1EEKEkNbNTnxz3EeIZPMfXPmPioGDiaQtRpW+mmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 156/160] mm: use aligned address in clear_gigantic_page()
-Date: Mon, 23 Dec 2024 16:59:27 +0100
-Message-ID: <20241223155414.842344061@linuxfoundation.org>
+	Will <willsroot@protonmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 098/116] io_uring: check if iowq is killed before queuing
+Date: Mon, 23 Dec 2024 16:59:28 +0100
+Message-ID: <20241223155403.372235093@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 8aca2bc96c833ba695ede7a45ad7784c836a262e upstream.
+commit dbd2ca9367eb19bc5e269b8c58b0b1514ada9156 upstream.
 
-In current kernel, hugetlb_no_page() calls folio_zero_user() with the
-fault address.  Where the fault address may be not aligned with the huge
-page size.  Then, folio_zero_user() may call clear_gigantic_page() with
-the address, while clear_gigantic_page() requires the address to be huge
-page size aligned.  So, this may cause memory corruption or information
-leak, addtional, use more obvious naming 'addr_hint' instead of 'addr' for
-clear_gigantic_page().
+task work can be executed after the task has gone through io_uring
+termination, whether it's the final task_work run or the fallback path.
+In this case, task work will find ->io_wq being already killed and
+null'ed, which is a problem if it then tries to forward the request to
+io_queue_iowq(). Make io_queue_iowq() fail requests in this case.
 
-Link: https://lkml.kernel.org/r/20241028145656.932941-1-wangkefeng.wang@huawei.com
-Fixes: 78fefd04c123 ("mm: memory: convert clear_huge_page() to folio_zero_user()")
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Note that it also checks PF_KTHREAD, because the user can first close
+a DEFER_TASKRUN ring and shortly after kill the task, in which case
+->iowq check would race.
+
+Cc: stable@vger.kernel.org
+Fixes: 50c52250e2d74 ("block: implement async io_uring discard cmd")
+Fixes: 773af69121ecc ("io_uring: always reissue from task_work context")
+Reported-by: Will <willsroot@protonmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/63312b4a2c2bb67ad67b857d17a300e1d3b078e8.1734637909.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |    2 +-
- mm/memory.c          |    3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -893,7 +893,7 @@ static long hugetlbfs_fallocate(struct f
- 			error = PTR_ERR(folio);
- 			goto out;
- 		}
--		folio_zero_user(folio, ALIGN_DOWN(addr, hpage_size));
-+		folio_zero_user(folio, addr);
- 		__folio_mark_uptodate(folio);
- 		error = hugetlb_add_to_page_cache(folio, mapping, index);
- 		if (unlikely(error)) {
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6780,9 +6780,10 @@ static inline int process_huge_page(
- 	return 0;
- }
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -498,7 +498,11 @@ void io_queue_iowq(struct io_kiocb *req,
+ 	struct io_uring_task *tctx = req->task->io_uring;
  
--static void clear_gigantic_page(struct folio *folio, unsigned long addr,
-+static void clear_gigantic_page(struct folio *folio, unsigned long addr_hint,
- 				unsigned int nr_pages)
- {
-+	unsigned long addr = ALIGN_DOWN(addr_hint, folio_size(folio));
- 	int i;
+ 	BUG_ON(!tctx);
+-	BUG_ON(!tctx->io_wq);
++
++	if ((current->flags & PF_KTHREAD) || !tctx->io_wq) {
++		io_req_task_queue_fail(req, -ECANCELED);
++		return;
++	}
  
- 	might_sleep();
+ 	/* init ->work of the whole link before punting */
+ 	io_prep_async_link(req);
 
 
 
