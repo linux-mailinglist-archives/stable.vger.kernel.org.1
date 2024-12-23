@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-105888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673579FB22E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8D69FB275
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA93B161372
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E0C218812B7
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6357E0FF;
-	Mon, 23 Dec 2024 16:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990AC1B4127;
+	Mon, 23 Dec 2024 16:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRv0qY8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P46Ug9mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC53519E98B;
-	Mon, 23 Dec 2024 16:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571331B3928;
+	Mon, 23 Dec 2024 16:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970478; cv=none; b=HEdv5CIlsqh9FqSm+2eRAW+B4XtM7rHSXodQzIqRtllP0sxU0/vFvhiphYDjR2CSz2DAsO64897CJD3BTdNO/4iQ6Ucf3nuwwQTk/jP0X6EvquqKToTYdwa+zZsPsCGw+zkTVTnxW7++G9cgSR2wYyf27TUrtj2V6YHYfihN5Yk=
+	t=1734970705; cv=none; b=Si1hBMKi7UO5QpyRANh9tsQ0Y9b/f8VZfxA21bE9WBfggNAtXEyBPOD3mIxWyz/6bGnbrry2DSGEaJcE5dlVlOTnLV/sTC92v9t/W8+Z+QVV6KtQy1q/E2/QRBUKh6SNTwyfde6K0h3dBdrjARhUIY+xIykRBrxAh13/CPV6rT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970478; c=relaxed/simple;
-	bh=3SxxkRfrrVKlk2CtD2MnsepA7357MizlKRqelOW2DWA=;
+	s=arc-20240116; t=1734970705; c=relaxed/simple;
+	bh=mtisTr0MCmSrpP6vcSrQHBeVsXONs1zu/f+1UJVteks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2Cp5kAIHMd/KZVhe1l5HOG52EKbZrRHdO0vUTq0hzIGRx/Qx+HgG42UwTFeshvEmguQkG2AlbTP9OfrVMxMCPngm141X1xKbi18qKrrJ25rKwiscQXI/94jCIW8+gLHyuOrr+a/CZq0Q22gN9t+bDiPKlNMfK/6xMV28xzE0Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRv0qY8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEE3C4CED3;
-	Mon, 23 Dec 2024 16:14:37 +0000 (UTC)
+	 MIME-Version; b=LswpydqgV1wF60q1ydveN7kMQl7Uug975ahTlfCczTUuU5KvFoI3Ocnz1wglQaAnaKQI4mK6vwgPRr/ZZMg5OGgsavAI5KEYvujTpSNtkH7X72T6mDMjTbKoimPfk/XZgeoJENFzlIzCW+RT1hCX5DoBFV7Mnj9XTdMl312fyCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P46Ug9mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0552C4CED3;
+	Mon, 23 Dec 2024 16:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970478;
-	bh=3SxxkRfrrVKlk2CtD2MnsepA7357MizlKRqelOW2DWA=;
+	s=korg; t=1734970705;
+	bh=mtisTr0MCmSrpP6vcSrQHBeVsXONs1zu/f+1UJVteks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRv0qY8B6dRgwc3PNlvX3CiLjCKjhH2Uf9njh1KkGVOXfkdOsVXk069F+wg3ml3Za
-	 d/YvQo0myJ0a/bptdWpR7GOCY/pCLGdTr3gyHNqj+xuPZ02DPF5mNROhC1BPK5djjI
-	 /IvVEvD7ObJfzaRN9X4ofOD5fycHEGj5tCMzaxms=
+	b=P46Ug9mmlxWWrNu6o7PX7IT3zomvugjcsybCw8KMDOOiCDkek3mJxUFPDyUtGaY4v
+	 IYOuWsA4HfKoGlzgwn/g9mvVWVBX2/YJMkPEurjd7i2rWzwmIn0VKI3kWPmdBCUQLu
+	 1e8AT0VYF33RO0PhbCBQ/8LZV487xtt589gnX6Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 094/116] tracing: Add "%s" check in test_event_printk()
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 45/83] drm/panel: novatek-nt35950: fix return value check in nt35950_probe()
 Date: Mon, 23 Dec 2024 16:59:24 +0100
-Message-ID: <20241223155403.216513573@linuxfoundation.org>
+Message-ID: <20241223155355.375873912@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,211 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit 65a25d9f7ac02e0cf361356e834d1c71d36acca9 upstream.
+[ Upstream commit f8fd0968eff52cf092c0d517d17507ea2f6e5ea5 ]
 
-The test_event_printk() code makes sure that when a trace event is
-registered, any dereferenced pointers in from the event's TP_printk() are
-pointing to content in the ring buffer. But currently it does not handle
-"%s", as there's cases where the string pointer saved in the ring buffer
-points to a static string in the kernel that will never be freed. As that
-is a valid case, the pointer needs to be checked at runtime.
+mipi_dsi_device_register_full() never returns NULL pointer, it
+will return ERR_PTR() when it fails, so replace the check with
+IS_ERR().
 
-Currently the runtime check is done via trace_check_vprintf(), but to not
-have to replicate everything in vsnprintf() it does some logic with the
-va_list that may not be reliable across architectures. In order to get rid
-of that logic, more work in the test_event_printk() needs to be done. Some
-of the strings can be validated at this time when it is obvious the string
-is valid because the string will be saved in the ring buffer content.
-
-Do all the validation of strings in the ring buffer at boot in
-test_event_printk(), and make sure that the field of the strings that
-point into the kernel are accessible. This will allow adding checks at
-runtime that will validate the fields themselves and not rely on paring
-the TP_printk() format at runtime.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20241217024720.685917008@goodmis.org
-Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 623a3531e9cf ("drm/panel: Add driver for Novatek NT35950 DSI DriverIC panels")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241029123957.1588-1-yangyingliang@huaweicloud.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241029123957.1588-1-yangyingliang@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c |  104 +++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 89 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/panel/panel-novatek-nt35950.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -244,19 +244,16 @@ int trace_event_get_offsets(struct trace
- 	return tail->offset + tail->size;
- }
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35950.c b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
+index ec2780be74d1..a92a7cd697f4 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt35950.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
+@@ -577,9 +577,9 @@ static int nt35950_probe(struct mipi_dsi_device *dsi)
+ 			return dev_err_probe(dev, -EPROBE_DEFER, "Cannot get secondary DSI host\n");
  
--/*
-- * Check if the referenced field is an array and return true,
-- * as arrays are OK to dereference.
-- */
--static bool test_field(const char *fmt, struct trace_event_call *call)
-+
-+static struct trace_event_fields *find_event_field(const char *fmt,
-+						   struct trace_event_call *call)
- {
- 	struct trace_event_fields *field = call->class->fields_array;
--	const char *array_descriptor;
- 	const char *p = fmt;
- 	int len;
- 
- 	if (!(len = str_has_prefix(fmt, "REC->")))
--		return false;
-+		return NULL;
- 	fmt += len;
- 	for (p = fmt; *p; p++) {
- 		if (!isalnum(*p) && *p != '_')
-@@ -267,11 +264,26 @@ static bool test_field(const char *fmt,
- 	for (; field->type; field++) {
- 		if (strncmp(field->name, fmt, len) || field->name[len])
- 			continue;
--		array_descriptor = strchr(field->type, '[');
--		/* This is an array and is OK to dereference. */
--		return array_descriptor != NULL;
-+
-+		return field;
+ 		nt->dsi[1] = mipi_dsi_device_register_full(dsi_r_host, info);
+-		if (!nt->dsi[1]) {
++		if (IS_ERR(nt->dsi[1])) {
+ 			dev_err(dev, "Cannot get secondary DSI node\n");
+-			return -ENODEV;
++			return PTR_ERR(nt->dsi[1]);
+ 		}
+ 		num_dsis++;
  	}
--	return false;
-+	return NULL;
-+}
-+
-+/*
-+ * Check if the referenced field is an array and return true,
-+ * as arrays are OK to dereference.
-+ */
-+static bool test_field(const char *fmt, struct trace_event_call *call)
-+{
-+	struct trace_event_fields *field;
-+
-+	field = find_event_field(fmt, call);
-+	if (!field)
-+		return false;
-+
-+	/* This is an array and is OK to dereference. */
-+	return strchr(field->type, '[') != NULL;
- }
- 
- /* Look for a string within an argument */
-@@ -317,6 +329,53 @@ static bool process_pointer(const char *
- 	return false;
- }
- 
-+/* Return true if the string is safe */
-+static bool process_string(const char *fmt, int len, struct trace_event_call *call)
-+{
-+	const char *r, *e, *s;
-+
-+	e = fmt + len;
-+
-+	/*
-+	 * There are several helper functions that return strings.
-+	 * If the argument contains a function, then assume its field is valid.
-+	 * It is considered that the argument has a function if it has:
-+	 *   alphanumeric or '_' before a parenthesis.
-+	 */
-+	s = fmt;
-+	do {
-+		r = strstr(s, "(");
-+		if (!r || r >= e)
-+			break;
-+		for (int i = 1; r - i >= s; i++) {
-+			char ch = *(r - i);
-+			if (isspace(ch))
-+				continue;
-+			if (isalnum(ch) || ch == '_')
-+				return true;
-+			/* Anything else, this isn't a function */
-+			break;
-+		}
-+		/* A function could be wrapped in parethesis, try the next one */
-+		s = r + 1;
-+	} while (s < e);
-+
-+	/*
-+	 * If there's any strings in the argument consider this arg OK as it
-+	 * could be: REC->field ? "foo" : "bar" and we don't want to get into
-+	 * verifying that logic here.
-+	 */
-+	if (find_print_string(fmt, "\"", e))
-+		return true;
-+
-+	/* Dereferenced strings are also valid like any other pointer */
-+	if (process_pointer(fmt, len, call))
-+		return true;
-+
-+	/* Make sure the field is found, and consider it OK for now if it is */
-+	return find_event_field(fmt, call) != NULL;
-+}
-+
- /*
-  * Examine the print fmt of the event looking for unsafe dereference
-  * pointers using %p* that could be recorded in the trace event and
-@@ -326,6 +385,7 @@ static bool process_pointer(const char *
- static void test_event_printk(struct trace_event_call *call)
- {
- 	u64 dereference_flags = 0;
-+	u64 string_flags = 0;
- 	bool first = true;
- 	const char *fmt;
- 	int parens = 0;
-@@ -416,8 +476,16 @@ static void test_event_printk(struct tra
- 						star = true;
- 						continue;
- 					}
--					if ((fmt[i + j] == 's') && star)
--						arg++;
-+					if ((fmt[i + j] == 's')) {
-+						if (star)
-+							arg++;
-+						if (WARN_ONCE(arg == 63,
-+							      "Too many args for event: %s",
-+							      trace_event_name(call)))
-+							return;
-+						dereference_flags |= 1ULL << arg;
-+						string_flags |= 1ULL << arg;
-+					}
- 					break;
- 				}
- 				break;
-@@ -464,7 +532,10 @@ static void test_event_printk(struct tra
- 			}
- 
- 			if (dereference_flags & (1ULL << arg)) {
--				if (process_pointer(fmt + start_arg, e - start_arg, call))
-+				if (string_flags & (1ULL << arg)) {
-+					if (process_string(fmt + start_arg, e - start_arg, call))
-+						dereference_flags &= ~(1ULL << arg);
-+				} else if (process_pointer(fmt + start_arg, e - start_arg, call))
- 					dereference_flags &= ~(1ULL << arg);
- 			}
- 
-@@ -476,7 +547,10 @@ static void test_event_printk(struct tra
- 	}
- 
- 	if (dereference_flags & (1ULL << arg)) {
--		if (process_pointer(fmt + start_arg, i - start_arg, call))
-+		if (string_flags & (1ULL << arg)) {
-+			if (process_string(fmt + start_arg, i - start_arg, call))
-+				dereference_flags &= ~(1ULL << arg);
-+		} else if (process_pointer(fmt + start_arg, i - start_arg, call))
- 			dereference_flags &= ~(1ULL << arg);
- 	}
- 
+-- 
+2.39.5
+
 
 
 
