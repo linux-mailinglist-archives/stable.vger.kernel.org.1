@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F350E9FB206
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3359FB257
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84DA3167715
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 087817A00EB
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB0A1AF0C7;
-	Mon, 23 Dec 2024 16:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBAD1A4AAA;
+	Mon, 23 Dec 2024 16:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSXOQnwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8NQuT8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B1B1B392B;
-	Mon, 23 Dec 2024 16:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C248827;
+	Mon, 23 Dec 2024 16:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970328; cv=none; b=AihIHdBRu2A5WlZzJYzIOoL8rKzTqwJmXC1HwLfyUBgcctL+523ilxJlbMPxpsMskPLnVJJH2MbCFJSoGqD8zmscHJhKoaXXUaIMCJUhcsmM/reVrQ4doBzoLz8cqq1Lp4Nx3M2lxEctbTuKWV8jpKPJedeJwwJclD0rj2fs/zo=
+	t=1734970621; cv=none; b=Lfs5vi24sLGoRWaba0aKUE9SE4zhifGfc1UauSz+Xu8shMh21epriIhof1ZnpNbNbfF3YboT8DLfHJXHtpQGUSSYxo74XMncvxFwGgCezFSRA0XQVdAaOCSJkWC/uxhV6DWoRjn1qYrlKLH8Oj/6budzSfYTbC2f91I1R8UpLYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970328; c=relaxed/simple;
-	bh=kHDjfvZp4ktDU5JyH/5+x2Frm6rgQAkDLxvXrUrmNqg=;
+	s=arc-20240116; t=1734970621; c=relaxed/simple;
+	bh=0Kkv3jMIHUf9qzy2q7zee/u4d0te9e4mJkFemGTK8LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOP5fPlsUpRDlU4LD/VxWeeKP8W6ZF63Y3+ooL0GOepvhU2qLYa0GUaHQdP66nMKpChpVesPxhgm87yGCCIAsXumHCwEqXIG138q6q3b5dlyhGx5clPDW0C8mPC1qSHCl14V352faZejHZdeSWFp3FDloJEphZJ6qEi0cqQwmLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSXOQnwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D6BC4CED3;
-	Mon, 23 Dec 2024 16:12:07 +0000 (UTC)
+	 MIME-Version; b=kPENkoS5SerSovSoQ3nsjctC/lJ/W/K5IrA3V2/73CqJjs7GgBEUaEYczv8o/Kue8pMw6pQ46W1lS5UuZj/1XwhpSCLIIA5bxjr/s3GoAl5cpR2UjuVp7NMFOx/1G+21bJPgU3S4aUVmiisYa56L6Za/22ob1mKIw0AqM2L3c9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8NQuT8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A552C4CED3;
+	Mon, 23 Dec 2024 16:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970327;
-	bh=kHDjfvZp4ktDU5JyH/5+x2Frm6rgQAkDLxvXrUrmNqg=;
+	s=korg; t=1734970620;
+	bh=0Kkv3jMIHUf9qzy2q7zee/u4d0te9e4mJkFemGTK8LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSXOQnwc8gU4B9Jly+gthHJzJEkORnzcm92L9CA0G2beDV4rS8JztCAsqvd4R5Gz8
-	 DYwZa5vbBLLD0B3RTBObALpntHxTzxSqJNQL8nFzK46bpPcILahhB3XHDwT8fsdAnj
-	 ZWOF4qK+kE9y729vi3HVP7zXeUVq87/4Rs7ag4dA=
+	b=g8NQuT8YGRkMaoqwKseGv0LiPh6ELBLk2X3HHccEj6liMlZPxGPGdWBBbihnlZ23M
+	 6al2pQ0J85QBcaoa3QXmVxPfcPn8s7FMdmsP9cB1xnqrkoOg17aN606OJbziVJoz7A
+	 jJHWfxrZTxDLxWQlajMEATx1NAFn931P7fYiFgY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/116] ksmbd: count all requests in req_running counter
-Date: Mon, 23 Dec 2024 16:58:40 +0100
-Message-ID: <20241223155401.502701108@linuxfoundation.org>
+Subject: [PATCH 6.1 02/83] PCI/AER: Disable AER service on suspend
+Date: Mon, 23 Dec 2024 16:58:41 +0100
+Message-ID: <20241223155353.738078843@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-[ Upstream commit 83c47d9e0ce79b5d7c0b21b9f35402dbde0fa15c ]
+[ Upstream commit 5afc2f763edc5daae4722ee46fea4e627d01fa90 ]
 
-This changes the semantics of req_running to count all in-flight
-requests on a given connection, rather than the number of elements
-in the conn->request list. The latter is used only in smb2_cancel,
-and the counter is not used
+If the link is powered off during suspend, electrical noise may cause
+errors that are logged via AER.  If the AER interrupt is enabled and shares
+an IRQ with PME, that causes a spurious wakeup during suspend.
 
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 43fb7bce8866 ("ksmbd: fix broken transfers when exceeding max simultaneous operations")
+Disable the AER interrupt during suspend to prevent this.  Clear error
+status before re-enabling IRQ interrupts during resume so we don't get an
+interrupt for errors that occurred during the suspend/resume process.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
+Link: https://lore.kernel.org/r/20240416043225.1462548-2-kai.heng.feng@canonical.com
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+[bhelgaas: drop pci_ancestor_pr3_present() etc, commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index a751793c4512..5ded9372b2fb 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -120,8 +120,8 @@ void ksmbd_conn_enqueue_request(struct ksmbd_work *work)
- 	if (conn->ops->get_cmd_val(work) != SMB2_CANCEL_HE)
- 		requests_queue = &conn->requests;
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 5426f450ce91..1b59e6fc7439 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1384,6 +1384,22 @@ static int aer_probe(struct pcie_device *dev)
+ 	return 0;
+ }
  
-+	atomic_inc(&conn->req_running);
- 	if (requests_queue) {
--		atomic_inc(&conn->req_running);
- 		spin_lock(&conn->request_lock);
- 		list_add_tail(&work->request_entry, requests_queue);
- 		spin_unlock(&conn->request_lock);
-@@ -132,11 +132,12 @@ void ksmbd_conn_try_dequeue_request(struct ksmbd_work *work)
- {
- 	struct ksmbd_conn *conn = work->conn;
- 
-+	atomic_dec(&conn->req_running);
++static int aer_suspend(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
 +
- 	if (list_empty(&work->request_entry) &&
- 	    list_empty(&work->async_request_entry))
- 		return;
++	aer_disable_rootport(rpc);
++	return 0;
++}
++
++static int aer_resume(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_enable_rootport(rpc);
++	return 0;
++}
++
+ /**
+  * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+  * @dev: pointer to Root Port, RCEC, or RCiEP
+@@ -1455,6 +1471,8 @@ static struct pcie_port_service_driver aerdriver = {
+ 	.service	= PCIE_PORT_SERVICE_AER,
  
--	atomic_dec(&conn->req_running);
- 	spin_lock(&conn->request_lock);
- 	list_del_init(&work->request_entry);
- 	spin_unlock(&conn->request_lock);
+ 	.probe		= aer_probe,
++	.suspend	= aer_suspend,
++	.resume		= aer_resume,
+ 	.remove		= aer_remove,
+ };
+ 
 -- 
 2.39.5
 
