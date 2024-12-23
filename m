@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-105815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607EB9FB1E1
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2459FB17F
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02762161CE6
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E5021883147
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174951B21BD;
-	Mon, 23 Dec 2024 16:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0ED188006;
+	Mon, 23 Dec 2024 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPn1CIG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJwL6Wde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84B813BC0C;
-	Mon, 23 Dec 2024 16:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0799212D1F1;
+	Mon, 23 Dec 2024 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970231; cv=none; b=nSJtYEPJRqJCXj2fW55Ci8JDuHSWNDt2DWww59F3y8wekbpKvhOYXvqdqTdRABKuJTguhDUkMzJuH9pEhX/QJd8EUV1EOqIys1VpGWjM39F026cNOpsJAMeSXkDGBFViQ5lZB+h8DeRcZwfuzsHpcpUp6DafGj4NRpwZH+CqOW8=
+	t=1734969995; cv=none; b=edcY+p6IoOF2ot0vZAdMUp0tbrmsGy1sjF6JGKhd46D57Xpk8sT2c7RLW9r9q9IvO6wn27LbLryEk8oLlaGXUDJ181bGPRZDewW2fHQxk0XNp/f8pMNNUi3XKzPNJKHB3twayj0j5EzJVddoYwXVRHRORtl2fpcyKhpf8wwECNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970231; c=relaxed/simple;
-	bh=k4OQzXeYOi61151aLC3fjg+TDFOY9ReH/XcCveMmgE8=;
+	s=arc-20240116; t=1734969995; c=relaxed/simple;
+	bh=GKqnGXR8M2I0rMB9J4mE+5zgyFA6rB/lPOIA1wkUrwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AT94C7F3QSB1ha45DZ0Pixsrb2BvEUwdc/kozVicoUusD5OHodg3Mh9LuAGDpplVmfAiIUKwxrhqi7bm+4frudkR1kO2uXTXicmbsQa8ZpJiWeKukEPG4/0+nWB99/og8FMts0rQhJzeyR8YtmVkG2xQO8UPiWDqh6lS0tZtQdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPn1CIG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D75C4CED4;
-	Mon, 23 Dec 2024 16:10:30 +0000 (UTC)
+	 MIME-Version; b=b9pEwXcEAkbNuKuycJH+tetVZ1Bpl83tUAC0zc9YLWONfaE3t4s5emE0acL3Ar6ewXEDt7Nc+b2ppp0U2fZKSdKfpJtHzOYfNn5yKG9w8R5m4Ki1icjcMkj5rz8hOjWymKUdldrvPsB7h+6V4IFHOxyh621OPvdtVZvqJ3BUnFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJwL6Wde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 833F9C4CED3;
+	Mon, 23 Dec 2024 16:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970231;
-	bh=k4OQzXeYOi61151aLC3fjg+TDFOY9ReH/XcCveMmgE8=;
+	s=korg; t=1734969994;
+	bh=GKqnGXR8M2I0rMB9J4mE+5zgyFA6rB/lPOIA1wkUrwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zPn1CIG71EYZ5sVJz1oW3EYbql1CWZl4EPHiwyQh/zUmBIZ7bQulnqinyUejmoZVv
-	 wrdlld2El+QWHm29rl24ChkP0ywAULDi5l4Sec/hIdoFldNvPYd6Uc01t7Web8rWKP
-	 Yg9Tckm6Zxz+NF1YJeBIyPF36gNmQRnamcTKbQ9o=
+	b=rJwL6WdeCDChHCDlu8p+VJaptf7qPoEBRFCqCxy8Le2/ABYbg50f9AZi/lAm7WlM0
+	 a/8ma5Js4L0EuF3cUVn0Yh3/y7dQIOLk2EgQcP705hdfH+kXnWYidcsjZlegHM49j+
+	 CHJgh5h+m77kKR0/qYr0Hs7ihhPJC2fR04Yz3ffQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/116] xfs: declare xfs_file.c symbols in xfs_file.h
-Date: Mon, 23 Dec 2024 16:58:12 +0100
-Message-ID: <20241223155400.424893516@linuxfoundation.org>
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.12 082/160] thunderbolt: Add support for Intel Panther Lake-M/P
+Date: Mon, 23 Dec 2024 16:58:13 +0100
+Message-ID: <20241223155411.861068420@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 00acb28d96746f78389f23a7b5309a917b45c12f upstream.
+commit 8644b48714dca8bf2f42a4ff8311de8efc9bd8c3 upstream.
 
-[backport: dependency of d3b689d and f23660f]
+Intel Panther Lake-M/P has the same integrated Thunderbolt/USB4
+controller as Lunar Lake. Add these PCI IDs to the driver list of
+supported devices.
 
-Move the two public symbols in xfs_file.c to xfs_file.h.  We're about to
-add more public symbols in that source file, so let's finally create the
-header file.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_file.c  |  1 +
- fs/xfs/xfs_file.h  | 12 ++++++++++++
- fs/xfs/xfs_ioctl.c |  1 +
- fs/xfs/xfs_iops.c  |  1 +
- fs/xfs/xfs_iops.h  |  3 ---
- 5 files changed, 15 insertions(+), 3 deletions(-)
- create mode 100644 fs/xfs/xfs_file.h
+ drivers/thunderbolt/nhi.c |    8 ++++++++
+ drivers/thunderbolt/nhi.h |    4 ++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-index 16769c22c070..8dcbcf965b2c 100644
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -24,6 +24,7 @@
- #include "xfs_pnfs.h"
- #include "xfs_iomap.h"
- #include "xfs_reflink.h"
-+#include "xfs_file.h"
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1520,6 +1520,14 @@ static struct pci_device_id nhi_ids[] =
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_M_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_M_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
  
- #include <linux/dax.h>
- #include <linux/falloc.h>
-diff --git a/fs/xfs/xfs_file.h b/fs/xfs/xfs_file.h
-new file mode 100644
-index 000000000000..7d39e3eca56d
---- /dev/null
-+++ b/fs/xfs/xfs_file.h
-@@ -0,0 +1,12 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2000-2005 Silicon Graphics, Inc.
-+ * All Rights Reserved.
-+ */
-+#ifndef __XFS_FILE_H__
-+#define __XFS_FILE_H__
-+
-+extern const struct file_operations xfs_file_operations;
-+extern const struct file_operations xfs_dir_file_operations;
-+
-+#endif /* __XFS_FILE_H__ */
-diff --git a/fs/xfs/xfs_ioctl.c b/fs/xfs/xfs_ioctl.c
-index 535f6d38cdb5..df4bf0d56aad 100644
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -38,6 +38,7 @@
- #include "xfs_reflink.h"
- #include "xfs_ioctl.h"
- #include "xfs_xattr.h"
-+#include "xfs_file.h"
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -92,6 +92,10 @@ extern const struct tb_nhi_ops icl_nhi_o
+ #define PCI_DEVICE_ID_INTEL_RPL_NHI1			0xa76d
+ #define PCI_DEVICE_ID_INTEL_LNL_NHI0			0xa833
+ #define PCI_DEVICE_ID_INTEL_LNL_NHI1			0xa834
++#define PCI_DEVICE_ID_INTEL_PTL_M_NHI0			0xe333
++#define PCI_DEVICE_ID_INTEL_PTL_M_NHI1			0xe334
++#define PCI_DEVICE_ID_INTEL_PTL_P_NHI0			0xe433
++#define PCI_DEVICE_ID_INTEL_PTL_P_NHI1			0xe434
  
- #include <linux/mount.h>
- #include <linux/namei.h>
-diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-index b8ec045708c3..f9466311dfea 100644
---- a/fs/xfs/xfs_iops.c
-+++ b/fs/xfs/xfs_iops.c
-@@ -25,6 +25,7 @@
- #include "xfs_error.h"
- #include "xfs_ioctl.h"
- #include "xfs_xattr.h"
-+#include "xfs_file.h"
+ #define PCI_CLASS_SERIAL_USB_USB4			0x0c0340
  
- #include <linux/posix_acl.h>
- #include <linux/security.h>
-diff --git a/fs/xfs/xfs_iops.h b/fs/xfs/xfs_iops.h
-index 7f84a0843b24..52d6d510a21d 100644
---- a/fs/xfs/xfs_iops.h
-+++ b/fs/xfs/xfs_iops.h
-@@ -8,9 +8,6 @@
- 
- struct xfs_inode;
- 
--extern const struct file_operations xfs_file_operations;
--extern const struct file_operations xfs_dir_file_operations;
--
- extern ssize_t xfs_vn_listxattr(struct dentry *, char *data, size_t size);
- 
- int xfs_vn_setattr_size(struct mnt_idmap *idmap,
--- 
-2.39.5
-
 
 
 
