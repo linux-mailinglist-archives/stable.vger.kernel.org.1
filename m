@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-105853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EB29FB1FE
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066029FB1A2
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49A0C7A06D4
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 592A41882689
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522351AF0C7;
-	Mon, 23 Dec 2024 16:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54B719E98B;
+	Mon, 23 Dec 2024 16:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR0bPpFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TopBEIIK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F857E0FF;
-	Mon, 23 Dec 2024 16:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88305188006;
+	Mon, 23 Dec 2024 16:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970363; cv=none; b=LEdb9TsB6j53NZ/fL4VQ7oWvYzABy6qTNjF9PxN7ooa8BMMYq+vifORvRy3iIX7u04aQy4hHmGcAipixbqHlvsnHLvG6aok48Jnz2Pno1RK7/AUTT2WzhdTIQjnbu2NCQtT5GYT/m6le6igZQpyL9/gfefrdRlYHO4hrwMFkdgY=
+	t=1734970115; cv=none; b=qN70BqGQSYW46cV2IpmRTMCGFQnCgRBXxDYPJrmu8NjzuWzPQU0Oj5Tei75rgehd38vwQ4436ofrw1pIcnXXN9oEw687Dg1McraciSUlMVe4cXEPSGF/ifjsYbrZn8PN2BvVlahkG0QLK2WtHGjTj3g8+6Ln2i70wTshDdnjib4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970363; c=relaxed/simple;
-	bh=rHMQIh/UaeHXbfgnbtwKjrxueJJlVuW1JI3mjMKig5M=;
+	s=arc-20240116; t=1734970115; c=relaxed/simple;
+	bh=Tcxagf8i0yLnTf+6hNMmKYtDcb9/TdUcryd6w16jk5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9FGgW7GJXDcYI+XMrTzjP5jDg0fqLwSQsSYem28XQNGJP1MXpSZqx8gvP0MLSQNYkHH9Z21cSWXhRSz9HW/FdcF+CZaFLkdGr1jDa+XqaKP5idgsPPXQJoBbhuyT4FZZCE1cQgIfTnxEyw9cNeeb16CEuGL2lI4y0nYHwkGImo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR0bPpFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806C4C4CED3;
-	Mon, 23 Dec 2024 16:12:42 +0000 (UTC)
+	 MIME-Version; b=upSSJqZOsFB2NTvE7pUehk0xLrYmCC+6fVRIF4eTRtJMX9G/SxAFmlpr6ovAUJ37QgVDcdGOzI9qR41YUPdYw+cO+yQDPj25L2yVNKwA2kQp2DKGyl5nUW/w5qEJInF8xz4GLaR+xunzhOjuDSpTB3X459njY9IjXdyfEFu/x5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TopBEIIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA86DC4CED3;
+	Mon, 23 Dec 2024 16:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970362;
-	bh=rHMQIh/UaeHXbfgnbtwKjrxueJJlVuW1JI3mjMKig5M=;
+	s=korg; t=1734970115;
+	bh=Tcxagf8i0yLnTf+6hNMmKYtDcb9/TdUcryd6w16jk5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fR0bPpFNKfEHUwQqAdnkbWpxy6dHRGKVjgVqG7MBapg9yQInPLqJuBQFdKtxO2L9v
-	 wEZ0b0gq1y9IHjfxlZd7aEUOly7TADcY84iJ+NMuFuT6iy2FPPa3HBZ/RlwIyrsx91
-	 B10TMekcX4t86U0qfyOanNj1wUeSaalxMdoLcXH8=
+	b=TopBEIIKy/x29UEND6IkNt1PXImnesnDPL7dP7NcAaPdN1aD4XNmbeJSU6PZlhOGS
+	 aYvJLsCsTIJuXzipSy4rMn+9o7asldYis7Ju9ei8KAumL8dq6oQewyQlDTNvp9Pz0Y
+	 b7IlBL4MloobJLeqSPZWd8EAjsKb7jhL6jiF5ZEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 059/116] mmc: mtk-sd: disable wakeup in .remove() and in the error path of .probe()
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.12 118/160] s390/mm: Fix DirectMap accounting
 Date: Mon, 23 Dec 2024 16:58:49 +0100
-Message-ID: <20241223155401.860270567@linuxfoundation.org>
+Message-ID: <20241223155413.321697218@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit f3d87abe11ed04d1b23a474a212f0e5deeb50892 upstream.
+commit 41856638e6c4ed51d8aa9e54f70059d1e357b46e upstream.
 
-Current implementation leaves pdev->dev as a wakeup source. Add a
-device_init_wakeup(&pdev->dev, false) call in the .remove() function and
-in the error path of the .probe() function.
+With uncoupling of physical and virtual address spaces population of
+the identity mapping was changed to use the type POPULATE_IDENTITY
+instead of POPULATE_DIRECT. This breaks DirectMap accounting:
 
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Fixes: 527f36f5efa4 ("mmc: mediatek: add support for SDIO eint wakup IRQ")
+> cat /proc/meminfo
+DirectMap4k:       55296 kB
+DirectMap1M:    18446744073709496320 kB
+
+Adjust all locations of update_page_count() in vmem.c to use
+POPULATE_IDENTITY instead of POPULATE_DIRECT as well. With this
+accounting is correct again:
+
+> cat /proc/meminfo
+DirectMap4k:       54264 kB
+DirectMap1M:     8334336 kB
+
+Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
 Cc: stable@vger.kernel.org
-Message-ID: <20241203023442.2434018-1-joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mtk-sd.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/boot/vmem.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -2862,6 +2862,7 @@ release_clk:
- 	msdc_gate_clock(host);
- 	platform_set_drvdata(pdev, NULL);
- release_mem:
-+	device_init_wakeup(&pdev->dev, false);
- 	if (host->dma.gpd)
- 		dma_free_coherent(&pdev->dev,
- 			2 * sizeof(struct mt_gpdma_desc),
-@@ -2895,6 +2896,7 @@ static void msdc_drv_remove(struct platf
- 			host->dma.gpd, host->dma.gpd_addr);
- 	dma_free_coherent(&pdev->dev, MAX_BD_NUM * sizeof(struct mt_bdma_desc),
- 			  host->dma.bd, host->dma.bd_addr);
-+	device_init_wakeup(&pdev->dev, false);
+--- a/arch/s390/boot/vmem.c
++++ b/arch/s390/boot/vmem.c
+@@ -306,7 +306,7 @@ static void pgtable_pte_populate(pmd_t *
+ 			pages++;
+ 		}
+ 	}
+-	if (mode == POPULATE_DIRECT)
++	if (mode == POPULATE_IDENTITY)
+ 		update_page_count(PG_DIRECT_MAP_4K, pages);
  }
  
- static void msdc_save_reg(struct msdc_host *host)
+@@ -339,7 +339,7 @@ static void pgtable_pmd_populate(pud_t *
+ 		}
+ 		pgtable_pte_populate(pmd, addr, next, mode);
+ 	}
+-	if (mode == POPULATE_DIRECT)
++	if (mode == POPULATE_IDENTITY)
+ 		update_page_count(PG_DIRECT_MAP_1M, pages);
+ }
+ 
+@@ -372,7 +372,7 @@ static void pgtable_pud_populate(p4d_t *
+ 		}
+ 		pgtable_pmd_populate(pud, addr, next, mode);
+ 	}
+-	if (mode == POPULATE_DIRECT)
++	if (mode == POPULATE_IDENTITY)
+ 		update_page_count(PG_DIRECT_MAP_2G, pages);
+ }
+ 
 
 
 
