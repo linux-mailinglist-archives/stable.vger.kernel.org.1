@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-105851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3DB9FB209
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1EB29FB1FE
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F04EE164198
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49A0C7A06D4
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161461AF0C7;
-	Mon, 23 Dec 2024 16:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522351AF0C7;
+	Mon, 23 Dec 2024 16:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfAaV91i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR0bPpFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93A519E971;
-	Mon, 23 Dec 2024 16:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F857E0FF;
+	Mon, 23 Dec 2024 16:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970356; cv=none; b=is6yiX0kQWrYXrRn0J8I/tbo4m0/JJygiPh9X6L3luZnUkhuXPmI5cM7VdZ16d0ajtYC5sKcORWDZVM/jphgybzApx7mHgkJbPTYapTG06UrBTW1Ynyj94hFgvQODd/mJzUBQoPi3IRCwk6NC5Ld8SadTRqVxjEiHzimEUY6xr4=
+	t=1734970363; cv=none; b=LEdb9TsB6j53NZ/fL4VQ7oWvYzABy6qTNjF9PxN7ooa8BMMYq+vifORvRy3iIX7u04aQy4hHmGcAipixbqHlvsnHLvG6aok48Jnz2Pno1RK7/AUTT2WzhdTIQjnbu2NCQtT5GYT/m6le6igZQpyL9/gfefrdRlYHO4hrwMFkdgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970356; c=relaxed/simple;
-	bh=08kyJ0PIHMip0vHw8IEBoA5qVlocd46ihVJsE1rqGrk=;
+	s=arc-20240116; t=1734970363; c=relaxed/simple;
+	bh=rHMQIh/UaeHXbfgnbtwKjrxueJJlVuW1JI3mjMKig5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvVx6odE+Eoy7lEVbXcsoDXG8qsZypJkC91/ONiRcgau44VdhyRKfolBOt+7iCO6KEaQTniuD8E15apQNgtC6VmjIgMMy0f0u7+NUgeSKermTbHFhA30NpqMUvUQBJ2cqoteHLwGSRnnyc/Xob8qkQxF0wVGbySaqIlB9aw7XxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfAaV91i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3896FC4CED3;
-	Mon, 23 Dec 2024 16:12:35 +0000 (UTC)
+	 MIME-Version; b=N9FGgW7GJXDcYI+XMrTzjP5jDg0fqLwSQsSYem28XQNGJP1MXpSZqx8gvP0MLSQNYkHH9Z21cSWXhRSz9HW/FdcF+CZaFLkdGr1jDa+XqaKP5idgsPPXQJoBbhuyT4FZZCE1cQgIfTnxEyw9cNeeb16CEuGL2lI4y0nYHwkGImo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR0bPpFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806C4C4CED3;
+	Mon, 23 Dec 2024 16:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970356;
-	bh=08kyJ0PIHMip0vHw8IEBoA5qVlocd46ihVJsE1rqGrk=;
+	s=korg; t=1734970362;
+	bh=rHMQIh/UaeHXbfgnbtwKjrxueJJlVuW1JI3mjMKig5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfAaV91iTQ7DswZZgVaRQZl96bl20mHjDzlA19eSDEYuVrcc1x0ruMls5xoOIfLo9
-	 ZrV5iVcb5AtFuRohN/ZxtyfTogLsJdKTgvJNXHp+j0m+LDw5qz4oy3LexSlfp/9FZr
-	 8qPtQLu4rnyIZ6juPIViPk543NzODaq/b8giM1eA=
+	b=fR0bPpFNKfEHUwQqAdnkbWpxy6dHRGKVjgVqG7MBapg9yQInPLqJuBQFdKtxO2L9v
+	 wEZ0b0gq1y9IHjfxlZd7aEUOly7TADcY84iJ+NMuFuT6iy2FPPa3HBZ/RlwIyrsx91
+	 B10TMekcX4t86U0qfyOanNj1wUeSaalxMdoLcXH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prathamesh Shete <pshete@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 058/116] mmc: sdhci-tegra: Remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk
-Date: Mon, 23 Dec 2024 16:58:48 +0100
-Message-ID: <20241223155401.821713984@linuxfoundation.org>
+Subject: [PATCH 6.6 059/116] mmc: mtk-sd: disable wakeup in .remove() and in the error path of .probe()
+Date: Mon, 23 Dec 2024 16:58:49 +0100
+Message-ID: <20241223155401.860270567@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
 References: <20241223155359.534468176@linuxfoundation.org>
@@ -67,36 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Prathamesh Shete <pshete@nvidia.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit a56335c85b592cb2833db0a71f7112b7d9f0d56b upstream.
+commit f3d87abe11ed04d1b23a474a212f0e5deeb50892 upstream.
 
-Value 0 in ADMA length descriptor is interpreted as 65536 on new Tegra
-chips, remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk to make sure max
-ADMA2 length is 65536.
+Current implementation leaves pdev->dev as a wakeup source. Add a
+device_init_wakeup(&pdev->dev, false) call in the .remove() function and
+in the error path of the .probe() function.
 
-Fixes: 4346b7c7941d ("mmc: tegra: Add Tegra186 support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Fixes: 527f36f5efa4 ("mmc: mediatek: add support for SDIO eint wakup IRQ")
 Cc: stable@vger.kernel.org
-Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Message-ID: <20241209101009.22710-1-pshete@nvidia.com>
+Message-ID: <20241203023442.2434018-1-joe@pf.is.s.u-tokyo.ac.jp>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-tegra.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/mmc/host/mtk-sd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -1525,7 +1525,6 @@ static const struct sdhci_pltfm_data sdh
- 	.quirks = SDHCI_QUIRK_BROKEN_TIMEOUT_VAL |
- 		  SDHCI_QUIRK_SINGLE_POWER_WRITE |
- 		  SDHCI_QUIRK_NO_HISPD_BIT |
--		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
- 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
- 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
- 		   SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER,
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2862,6 +2862,7 @@ release_clk:
+ 	msdc_gate_clock(host);
+ 	platform_set_drvdata(pdev, NULL);
+ release_mem:
++	device_init_wakeup(&pdev->dev, false);
+ 	if (host->dma.gpd)
+ 		dma_free_coherent(&pdev->dev,
+ 			2 * sizeof(struct mt_gpdma_desc),
+@@ -2895,6 +2896,7 @@ static void msdc_drv_remove(struct platf
+ 			host->dma.gpd, host->dma.gpd_addr);
+ 	dma_free_coherent(&pdev->dev, MAX_BD_NUM * sizeof(struct mt_bdma_desc),
+ 			  host->dma.bd, host->dma.bd_addr);
++	device_init_wakeup(&pdev->dev, false);
+ }
+ 
+ static void msdc_save_reg(struct msdc_host *host)
 
 
 
