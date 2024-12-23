@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-105781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C4F9FB1A3
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB5C9FB1FF
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28DEB1883023
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 002D5188538D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3B51AF0CE;
-	Mon, 23 Dec 2024 16:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E13F1B392B;
+	Mon, 23 Dec 2024 16:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVnSyEQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Chpo8G39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE85188006;
-	Mon, 23 Dec 2024 16:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCA113BC0C;
+	Mon, 23 Dec 2024 16:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970118; cv=none; b=WEJNH6JGGtupJqyM5myaxCKoFU2ZC2rbPkQmQCCgkEWg5iwTFmHE67zb3wmdWiAzZ2ZHu0deVj7VmSoh/i5P6WVpyQS6nJ4AGH4b3vGdcAjphucmiqlOLpAJ4FKn7V04m1zlu5rR+BUzGVuJw11SShGmSLk61ym6LHr9lheOlY0=
+	t=1734970366; cv=none; b=anlrMZO2kb2+BM1KwwWjuo9NIHn4DyTc1NSLFLxdWWDwUSwx1ht32tfXLD0XWnn8deO6FpZ1YqhOCeIxUsYX7318NpzK6jEQPufduK0Zhn8UzRBBUuvcgvcsa3mkgwwtyRjBqlm6gumjSbsuwdv5aODVS/B/yttLa2QcFk52UJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970118; c=relaxed/simple;
-	bh=mtTJbw0rJCG8vaMWdsRs3S3ndik3R4P73P8AV5EVuOk=;
+	s=arc-20240116; t=1734970366; c=relaxed/simple;
+	bh=YtRn3dB3TJ1s/QL/IMYMVW8nZDl9LPsPizDc+oStKeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNFK6Qw4jOehXAPa41bR86AWa3IMGbENnhVoN5kE8eS+xaEz/fPRSEqRiuGDGhnoMUdQDAyKHwn8m7Lz7IrB2hdrJZL1miCC1Icmq0eZSb8Afg6cUhMnDXACw27CvK9XTokLg7tkk3IYgfBqQPv/dH0nKvsNP4GDUka7DSh8fCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVnSyEQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484B4C4CED3;
-	Mon, 23 Dec 2024 16:08:38 +0000 (UTC)
+	 MIME-Version; b=CS7uRxXylOiwXjy0mmyPoGWvWph6QjfvpvCfBCq5FP5fX95ci+F48KNUm+Kw7X/3SbZlcAPJ5ewMirNaDmy5Hhxe4rkxRespvrX8+4V+vif29qW14MyMQ2QS5VdWOl5HQpWzAFke1REZi/dfbsRBYyqGUow4AzqjItAZgueOnuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Chpo8G39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D1DC4CED3;
+	Mon, 23 Dec 2024 16:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970118;
-	bh=mtTJbw0rJCG8vaMWdsRs3S3ndik3R4P73P8AV5EVuOk=;
+	s=korg; t=1734970366;
+	bh=YtRn3dB3TJ1s/QL/IMYMVW8nZDl9LPsPizDc+oStKeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVnSyEQOfWrybO8LI7KXYcqKFX8zNAgQh16DEHNPhhik4eTZ0LMxteW537EYn8GXv
-	 dvE4qJ2KGjecY38I186oJ3TPgA15TzakywqtEcase//9HPvFRYh/AcB9oLZ8TQyOmn
-	 WV9NgVHWBpZzDV0zHrmEwUtXw2nwpFO0rnt3kK08=
+	b=Chpo8G39GcTWDwOfZrhWyTo73aEkljVn9A8fG03RIzEzFbhTftiqXV8kD3BEQqRGz
+	 EhCimS5rJQ/z/2RNgPIAFtz2RnKdwZJzL3C1aoePRfSrlKZ3dawRb5zMG1HM1qIOF5
+	 BnRMFIuPeQZNwSWzhtI/Ip0fAuC4xEZUl89L0f60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 119/160] drm/amdgpu/nbio7.0: fix IP version check
+	Avadhut Naik <avadhut.naik@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.6 060/116] EDAC/amd64: Simplify ECC check on unified memory controllers
 Date: Mon, 23 Dec 2024 16:58:50 +0100
-Message-ID: <20241223155413.362102684@linuxfoundation.org>
+Message-ID: <20241223155401.898552194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 3abb660f9e18925468685591a3702bda05faba4f upstream.
+commit 747367340ca6b5070728b86ae36ad6747f66b2fb upstream.
 
-Use the helper function rather than reading it directly.
+The intent of the check is to see whether at least one UMC has ECC
+enabled. So do that instead of tracking which ones are enabled in masks
+which are too small in size anyway and lead to not loading the driver on
+Zen4 machines with UMCs enabled over UMC8.
 
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0ec43fbece784215d3c4469973e4556d70bce915)
-Cc: stable@vger.kernel.org
+Fixes: e2be5955a886 ("EDAC/amd64: Add support for AMD Family 19h Models 10h-1Fh and A0h-AFh")
+Reported-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Avadhut Naik <avadhut.naik@amd.com>
+Reviewed-by: Avadhut Naik <avadhut.naik@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241210212054.3895697-1-avadhut.naik@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nbio_v7_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/amd64_edac.c |   34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_0.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_0.c
-index 49e953f86ced..d1032e9992b4 100644
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_0.c
-@@ -278,7 +278,7 @@ static void nbio_v7_0_init_registers(struct amdgpu_device *adev)
- {
- 	uint32_t data;
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -3620,36 +3620,24 @@ static bool dct_ecc_enabled(struct amd64
  
--	switch (adev->ip_versions[NBIO_HWIP][0]) {
-+	switch (amdgpu_ip_version(adev, NBIO_HWIP, 0)) {
- 	case IP_VERSION(2, 5, 0):
- 		data = RREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF6_STRAP4) & ~BIT(23);
- 		WREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF6_STRAP4, data);
--- 
-2.47.1
-
+ static bool umc_ecc_enabled(struct amd64_pvt *pvt)
+ {
+-	u8 umc_en_mask = 0, ecc_en_mask = 0;
+-	u16 nid = pvt->mc_node_id;
+ 	struct amd64_umc *umc;
+-	u8 ecc_en = 0, i;
++	bool ecc_en = false;
++	int i;
+ 
++	/* Check whether at least one UMC is enabled: */
+ 	for_each_umc(i) {
+ 		umc = &pvt->umc[i];
+ 
+-		/* Only check enabled UMCs. */
+-		if (!(umc->sdp_ctrl & UMC_SDP_INIT))
+-			continue;
+-
+-		umc_en_mask |= BIT(i);
+-
+-		if (umc->umc_cap_hi & UMC_ECC_ENABLED)
+-			ecc_en_mask |= BIT(i);
++		if (umc->sdp_ctrl & UMC_SDP_INIT &&
++		    umc->umc_cap_hi & UMC_ECC_ENABLED) {
++			ecc_en = true;
++			break;
++		}
+ 	}
+ 
+-	/* Check whether at least one UMC is enabled: */
+-	if (umc_en_mask)
+-		ecc_en = umc_en_mask == ecc_en_mask;
+-	else
+-		edac_dbg(0, "Node %d: No enabled UMCs.\n", nid);
+-
+-	edac_dbg(3, "Node %d: DRAM ECC %s.\n", nid, (ecc_en ? "enabled" : "disabled"));
+-
+-	if (!ecc_en)
+-		return false;
+-	else
+-		return true;
++	edac_dbg(3, "Node %d: DRAM ECC %s.\n", pvt->mc_node_id, (ecc_en ? "enabled" : "disabled"));
++
++	return ecc_en;
+ }
+ 
+ static inline void
 
 
 
