@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-105799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF369FB1BF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673579FB22E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3391F7A1185
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA93B161372
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0ED188006;
-	Mon, 23 Dec 2024 16:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6357E0FF;
+	Mon, 23 Dec 2024 16:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SK8k0vb/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRv0qY8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7B19E971;
-	Mon, 23 Dec 2024 16:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC53519E98B;
+	Mon, 23 Dec 2024 16:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970176; cv=none; b=Qo2qzY3JiU58A6wOnThYRsGF4sCR6aFzQZ1qMlWZcuc6xfb10b+HUSjS+aQj+GGIwKixSgCA1BTOeHTe9Eo9OLvm1zYrXs7tPslT5y+aEOIxwDkxYMV/maQnJurqNr6pfY8TNta86gdP5Up7sCjHauc+nla8/IvbgdRh5Sc6sgQ=
+	t=1734970478; cv=none; b=HEdv5CIlsqh9FqSm+2eRAW+B4XtM7rHSXodQzIqRtllP0sxU0/vFvhiphYDjR2CSz2DAsO64897CJD3BTdNO/4iQ6Ucf3nuwwQTk/jP0X6EvquqKToTYdwa+zZsPsCGw+zkTVTnxW7++G9cgSR2wYyf27TUrtj2V6YHYfihN5Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970176; c=relaxed/simple;
-	bh=6nytv55gEgzgeFhznbnEEVuuZHhmKQMf0xK/XozFAkk=;
+	s=arc-20240116; t=1734970478; c=relaxed/simple;
+	bh=3SxxkRfrrVKlk2CtD2MnsepA7357MizlKRqelOW2DWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6YiPnVa621a6isAnmjL0LZHwMMsgSiabmAuBqZfMMc48TGyzMHpUyOXLSUunJ8C+cpxmmsyWoUxRCtsougvKUT5qmanNxOMuEvGfsd+T9sG1LbSgrm1PXvG8vGjsnM163qkhcaNJlt20Rp9ekKDwwffzliBNiAG3T7PDUt7YuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SK8k0vb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAC9C4CED3;
-	Mon, 23 Dec 2024 16:09:35 +0000 (UTC)
+	 MIME-Version; b=Q2Cp5kAIHMd/KZVhe1l5HOG52EKbZrRHdO0vUTq0hzIGRx/Qx+HgG42UwTFeshvEmguQkG2AlbTP9OfrVMxMCPngm141X1xKbi18qKrrJ25rKwiscQXI/94jCIW8+gLHyuOrr+a/CZq0Q22gN9t+bDiPKlNMfK/6xMV28xzE0Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRv0qY8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEE3C4CED3;
+	Mon, 23 Dec 2024 16:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970176;
-	bh=6nytv55gEgzgeFhznbnEEVuuZHhmKQMf0xK/XozFAkk=;
+	s=korg; t=1734970478;
+	bh=3SxxkRfrrVKlk2CtD2MnsepA7357MizlKRqelOW2DWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SK8k0vb/iMJLsXpRsTqUrhHcSm/AVmjpM2y+hT7cdLHaEFhalyxR/GOide681r3eG
-	 uElrWlw8lRRBa2sEb+7F52wJozBM65JpuGsxnB3ueHBoaGOXJGQde7J7Z6C6a7k70R
-	 fS8PhBAcavPHw5QEPw+MKrwLRthucHHfN0ouRwgo=
+	b=dRv0qY8B6dRgwc3PNlvX3CiLjCKjhH2Uf9njh1KkGVOXfkdOsVXk069F+wg3ml3Za
+	 d/YvQo0myJ0a/bptdWpR7GOCY/pCLGdTr3gyHNqj+xuPZ02DPF5mNROhC1BPK5djjI
+	 /IvVEvD7ObJfzaRN9X4ofOD5fycHEGj5tCMzaxms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 153/160] ceph: improve error handling and short/overflow-read logic in __ceph_sync_read()
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 094/116] tracing: Add "%s" check in test_event_printk()
 Date: Mon, 23 Dec 2024 16:59:24 +0100
-Message-ID: <20241223155414.726767191@linuxfoundation.org>
+Message-ID: <20241223155403.216513573@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +66,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Markuze <amarkuze@redhat.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 9abee475803fab6ad59d4f4fc59c6a75374a7d9d upstream.
+commit 65a25d9f7ac02e0cf361356e834d1c71d36acca9 upstream.
 
-This patch refines the read logic in __ceph_sync_read() to ensure more
-predictable and efficient behavior in various edge cases.
+The test_event_printk() code makes sure that when a trace event is
+registered, any dereferenced pointers in from the event's TP_printk() are
+pointing to content in the ring buffer. But currently it does not handle
+"%s", as there's cases where the string pointer saved in the ring buffer
+points to a static string in the kernel that will never be freed. As that
+is a valid case, the pointer needs to be checked at runtime.
 
-- Return early if the requested read length is zero or if the file size
-  (`i_size`) is zero.
-- Initialize the index variable (`idx`) where needed and reorder some
-  code to ensure it is always set before use.
-- Improve error handling by checking for negative return values earlier.
-- Remove redundant encrypted file checks after failures. Only attempt
-  filesystem-level decryption if the read succeeded.
-- Simplify leftover calculations to correctly handle cases where the
-  read extends beyond the end of the file or stops short.  This can be
-  hit by continuously reading a file while, on another client, we keep
-  truncating and writing new data into it.
-- This resolves multiple issues caused by integer and consequent buffer
-  overflow (`pages` array being accessed beyond `num_pages`):
-  - https://tracker.ceph.com/issues/67524
-  - https://tracker.ceph.com/issues/68980
-  - https://tracker.ceph.com/issues/68981
+Currently the runtime check is done via trace_check_vprintf(), but to not
+have to replicate everything in vsnprintf() it does some logic with the
+va_list that may not be reliable across architectures. In order to get rid
+of that logic, more work in the test_event_printk() needs to be done. Some
+of the strings can be validated at this time when it is obvious the string
+is valid because the string will be saved in the ring buffer content.
+
+Do all the validation of strings in the ring buffer at boot in
+test_event_printk(), and make sure that the field of the strings that
+point into the kernel are accessible. This will allow adding checks at
+runtime that will validate the fields themselves and not rely on paring
+the TP_printk() format at runtime.
 
 Cc: stable@vger.kernel.org
-Fixes: 1065da21e5df ("ceph: stop copying to iter at EOF on sync reads")
-Reported-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Signed-off-by: Alex Markuze <amarkuze@redhat.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20241217024720.685917008@goodmis.org
+Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/file.c |   29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ kernel/trace/trace_events.c |  104 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 89 insertions(+), 15 deletions(-)
 
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -1066,7 +1066,7 @@ ssize_t __ceph_sync_read(struct inode *i
- 	if (ceph_inode_is_shutdown(inode))
- 		return -EIO;
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -244,19 +244,16 @@ int trace_event_get_offsets(struct trace
+ 	return tail->offset + tail->size;
+ }
  
--	if (!len)
-+	if (!len || !i_size)
- 		return 0;
- 	/*
- 	 * flush any page cache pages in this range.  this
-@@ -1086,7 +1086,7 @@ ssize_t __ceph_sync_read(struct inode *i
- 		int num_pages;
- 		size_t page_off;
- 		bool more;
--		int idx;
-+		int idx = 0;
- 		size_t left;
- 		struct ceph_osd_req_op *op;
- 		u64 read_off = off;
-@@ -1160,7 +1160,14 @@ ssize_t __ceph_sync_read(struct inode *i
- 		else if (ret == -ENOENT)
- 			ret = 0;
+-/*
+- * Check if the referenced field is an array and return true,
+- * as arrays are OK to dereference.
+- */
+-static bool test_field(const char *fmt, struct trace_event_call *call)
++
++static struct trace_event_fields *find_event_field(const char *fmt,
++						   struct trace_event_call *call)
+ {
+ 	struct trace_event_fields *field = call->class->fields_array;
+-	const char *array_descriptor;
+ 	const char *p = fmt;
+ 	int len;
  
--		if (ret > 0 && IS_ENCRYPTED(inode)) {
-+		if (ret < 0) {
-+			ceph_osdc_put_request(req);
-+			if (ret == -EBLOCKLISTED)
-+				fsc->blocklisted = true;
+ 	if (!(len = str_has_prefix(fmt, "REC->")))
+-		return false;
++		return NULL;
+ 	fmt += len;
+ 	for (p = fmt; *p; p++) {
+ 		if (!isalnum(*p) && *p != '_')
+@@ -267,11 +264,26 @@ static bool test_field(const char *fmt,
+ 	for (; field->type; field++) {
+ 		if (strncmp(field->name, fmt, len) || field->name[len])
+ 			continue;
+-		array_descriptor = strchr(field->type, '[');
+-		/* This is an array and is OK to dereference. */
+-		return array_descriptor != NULL;
++
++		return field;
+ 	}
+-	return false;
++	return NULL;
++}
++
++/*
++ * Check if the referenced field is an array and return true,
++ * as arrays are OK to dereference.
++ */
++static bool test_field(const char *fmt, struct trace_event_call *call)
++{
++	struct trace_event_fields *field;
++
++	field = find_event_field(fmt, call);
++	if (!field)
++		return false;
++
++	/* This is an array and is OK to dereference. */
++	return strchr(field->type, '[') != NULL;
+ }
+ 
+ /* Look for a string within an argument */
+@@ -317,6 +329,53 @@ static bool process_pointer(const char *
+ 	return false;
+ }
+ 
++/* Return true if the string is safe */
++static bool process_string(const char *fmt, int len, struct trace_event_call *call)
++{
++	const char *r, *e, *s;
++
++	e = fmt + len;
++
++	/*
++	 * There are several helper functions that return strings.
++	 * If the argument contains a function, then assume its field is valid.
++	 * It is considered that the argument has a function if it has:
++	 *   alphanumeric or '_' before a parenthesis.
++	 */
++	s = fmt;
++	do {
++		r = strstr(s, "(");
++		if (!r || r >= e)
++			break;
++		for (int i = 1; r - i >= s; i++) {
++			char ch = *(r - i);
++			if (isspace(ch))
++				continue;
++			if (isalnum(ch) || ch == '_')
++				return true;
++			/* Anything else, this isn't a function */
 +			break;
 +		}
++		/* A function could be wrapped in parethesis, try the next one */
++		s = r + 1;
++	} while (s < e);
 +
-+		if (IS_ENCRYPTED(inode)) {
- 			int fret;
- 
- 			fret = ceph_fscrypt_decrypt_extents(inode, pages,
-@@ -1189,7 +1196,7 @@ ssize_t __ceph_sync_read(struct inode *i
- 		ceph_osdc_put_request(req);
- 
- 		/* Short read but not EOF? Zero out the remainder. */
--		if (ret >= 0 && ret < len && (off + ret < i_size)) {
-+		if (ret < len && (off + ret < i_size)) {
- 			int zlen = min(len - ret, i_size - off - ret);
- 			int zoff = page_off + ret;
- 
-@@ -1199,13 +1206,11 @@ ssize_t __ceph_sync_read(struct inode *i
- 			ret += zlen;
- 		}
- 
--		idx = 0;
--		if (ret <= 0)
--			left = 0;
--		else if (off + ret > i_size)
--			left = i_size - off;
-+		if (off + ret > i_size)
-+			left = (i_size > off) ? i_size - off : 0;
- 		else
- 			left = ret;
++	/*
++	 * If there's any strings in the argument consider this arg OK as it
++	 * could be: REC->field ? "foo" : "bar" and we don't want to get into
++	 * verifying that logic here.
++	 */
++	if (find_print_string(fmt, "\"", e))
++		return true;
 +
- 		while (left > 0) {
- 			size_t plen, copied;
++	/* Dereferenced strings are also valid like any other pointer */
++	if (process_pointer(fmt, len, call))
++		return true;
++
++	/* Make sure the field is found, and consider it OK for now if it is */
++	return find_event_field(fmt, call) != NULL;
++}
++
+ /*
+  * Examine the print fmt of the event looking for unsafe dereference
+  * pointers using %p* that could be recorded in the trace event and
+@@ -326,6 +385,7 @@ static bool process_pointer(const char *
+ static void test_event_printk(struct trace_event_call *call)
+ {
+ 	u64 dereference_flags = 0;
++	u64 string_flags = 0;
+ 	bool first = true;
+ 	const char *fmt;
+ 	int parens = 0;
+@@ -416,8 +476,16 @@ static void test_event_printk(struct tra
+ 						star = true;
+ 						continue;
+ 					}
+-					if ((fmt[i + j] == 's') && star)
+-						arg++;
++					if ((fmt[i + j] == 's')) {
++						if (star)
++							arg++;
++						if (WARN_ONCE(arg == 63,
++							      "Too many args for event: %s",
++							      trace_event_name(call)))
++							return;
++						dereference_flags |= 1ULL << arg;
++						string_flags |= 1ULL << arg;
++					}
+ 					break;
+ 				}
+ 				break;
+@@ -464,7 +532,10 @@ static void test_event_printk(struct tra
+ 			}
  
-@@ -1223,12 +1228,6 @@ ssize_t __ceph_sync_read(struct inode *i
- 		}
- 		ceph_release_page_vector(pages, num_pages);
+ 			if (dereference_flags & (1ULL << arg)) {
+-				if (process_pointer(fmt + start_arg, e - start_arg, call))
++				if (string_flags & (1ULL << arg)) {
++					if (process_string(fmt + start_arg, e - start_arg, call))
++						dereference_flags &= ~(1ULL << arg);
++				} else if (process_pointer(fmt + start_arg, e - start_arg, call))
+ 					dereference_flags &= ~(1ULL << arg);
+ 			}
  
--		if (ret < 0) {
--			if (ret == -EBLOCKLISTED)
--				fsc->blocklisted = true;
--			break;
--		}
--
- 		if (off >= i_size || !more)
- 			break;
+@@ -476,7 +547,10 @@ static void test_event_printk(struct tra
  	}
+ 
+ 	if (dereference_flags & (1ULL << arg)) {
+-		if (process_pointer(fmt + start_arg, i - start_arg, call))
++		if (string_flags & (1ULL << arg)) {
++			if (process_string(fmt + start_arg, i - start_arg, call))
++				dereference_flags &= ~(1ULL << arg);
++		} else if (process_pointer(fmt + start_arg, i - start_arg, call))
+ 			dereference_flags &= ~(1ULL << arg);
+ 	}
+ 
 
 
 
