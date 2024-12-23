@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-105802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555B89FB1C1
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C469FB130
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0B861884B2E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0201188145C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327771AD41F;
-	Mon, 23 Dec 2024 16:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E63188733;
+	Mon, 23 Dec 2024 16:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxeKomhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuTjr0iF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48643D6D;
-	Mon, 23 Dec 2024 16:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E5B13BC0C;
+	Mon, 23 Dec 2024 16:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970187; cv=none; b=ju+c6qhrjGUd3xY5wG7uuq/viwOqdHDh/ZUoYicMgNgmR8p47j454bmmnO3ajGBhKrmHFuKKfDuoL5kFe7LRun0rPlP9l/Sfy2TXIFGkRdfnqWO+2IJoXi7zwNvy17Gdj4Ju6/aeZbpe2QqD7jslkjp3ZL9uaypKebPyK9iBa64=
+	t=1734969840; cv=none; b=Aj8ZJmbgk4tNfXgsri7fUDVf5J/WEnffsNR29Yt9cAbusio9wAA2pP72dtF2ZZYDzdIcUrXPLl5kW4S/c9EyMGwee8Qs1alfYFGdIhDrDUUHag7JxNHWLguiZgSdJQ97e0JlONTwJHx9tT4O6EpM2I1UNMeTSatguW2BW2BtxLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970187; c=relaxed/simple;
-	bh=LvvrCMPI0EH8qeGw+NVSMBfdWx0GG7xhW1zLDNFgVh0=;
+	s=arc-20240116; t=1734969840; c=relaxed/simple;
+	bh=loOyEvHO5L8u9eCpP/fp9Up7y1s90M3zyQh4/vIH2nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Me1mEaBkY8/nQ6Ft5SgUv/mi5/uGxBj2MdaxAOgEo4FAr/pOJN/0hfW6bBdF7DdmnO/YDAfKw/bCxodrhnSi2OAMYO8QaU3lgjPC0SoedKShwQVai8YMpwOUCzQpsFvuEUES1eSdA3mmBR/b4FKbgTK+3XPVqzidG1AvpYug7NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxeKomhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C20C4CED4;
-	Mon, 23 Dec 2024 16:09:46 +0000 (UTC)
+	 MIME-Version; b=b7KKjrQl7nD7McJ/SiyedxaVT0QfsYEMlSNndMLYPXFAFMMdw8EttOPWOSU3tT+w0Zm7qSBxGt07c8Rtb1SgkV0dsZrZ2/9UR7c9tk53zsbQQZ+hdgdsLSA1yocCAm0MNbSqmz69t5hSn7tRsDDdn5GTZyT+qZyrxG6VTcGmuog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuTjr0iF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84EBC4CED3;
+	Mon, 23 Dec 2024 16:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970186;
-	bh=LvvrCMPI0EH8qeGw+NVSMBfdWx0GG7xhW1zLDNFgVh0=;
+	s=korg; t=1734969840;
+	bh=loOyEvHO5L8u9eCpP/fp9Up7y1s90M3zyQh4/vIH2nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxeKomhU1nvuxjjuRAobi0guW0Tq6o/2LCztzpk3mfFzvm04POsTa+eRur+P1MWFi
-	 kFDYYHHkSBE5acom3IB4A+VC17DZXUhohckMH8GornFW4X6RPut4v3R1qLpawKCzpi
-	 MQ/ogmYcLpz2bEWqHhXZMLoIDzSdla1krLDTAORU=
+	b=TuTjr0iFoXBA9Ip00M50FkRDy4xTOvl8k7F1c0gwHd8xPr1MSYOAwQjmd+Kced4OC
+	 n/XCcK+9JSGtGGZGciF/Yfy8QV/9WD/gj4YatqDo3EGBgGotxk2Vrl4SmVbHgAlBh2
+	 fIAt2M1z3QicLd+0EsJxHSgXyXn6zAAZ3PCFupH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/116] PCI/AER: Disable AER service on suspend
+	syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Willem de Bruijn <willemb@google.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 069/160] net: tun: fix tun_napi_alloc_frags()
 Date: Mon, 23 Dec 2024 16:58:00 +0100
-Message-ID: <20241223155359.943043081@linuxfoundation.org>
+Message-ID: <20241223155411.342176205@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +66,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5afc2f763edc5daae4722ee46fea4e627d01fa90 ]
+commit 429fde2d81bcef0ebab002215358955704586457 upstream.
 
-If the link is powered off during suspend, electrical noise may cause
-errors that are logged via AER.  If the AER interrupt is enabled and shares
-an IRQ with PME, that causes a spurious wakeup during suspend.
+syzbot reported the following crash [1]
 
-Disable the AER interrupt during suspend to prevent this.  Clear error
-status before re-enabling IRQ interrupts during resume so we don't get an
-interrupt for errors that occurred during the suspend/resume process.
+Issue came with the blamed commit. Instead of going through
+all the iov components, we keep using the first one
+and end up with a malformed skb.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
-Link: https://lore.kernel.org/r/20240416043225.1462548-2-kai.heng.feng@canonical.com
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-[bhelgaas: drop pci_ancestor_pr3_present() etc, commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]
+
+kernel BUG at net/core/skbuff.c:2849 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6230 Comm: syz-executor132 Not tainted 6.13.0-rc1-syzkaller-00407-g96b6fcc0ee41 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
+ RIP: 0010:__pskb_pull_tail+0x1568/0x1570 net/core/skbuff.c:2848
+Code: 38 c1 0f 8c 32 f1 ff ff 4c 89 f7 e8 92 96 74 f8 e9 25 f1 ff ff e8 e8 ae 09 f8 48 8b 5c 24 08 e9 eb fb ff ff e8 d9 ae 09 f8 90 <0f> 0b 66 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffc90004cbef30 EFLAGS: 00010293
+RAX: ffffffff8995c347 RBX: 00000000fffffff2 RCX: ffff88802cf45a00
+RDX: 0000000000000000 RSI: 00000000fffffff2 RDI: 0000000000000000
+RBP: ffff88807df0c06a R08: ffffffff8995b084 R09: 1ffff1100fbe185c
+R10: dffffc0000000000 R11: ffffed100fbe185d R12: ffff888076e85d50
+R13: ffff888076e85c80 R14: ffff888076e85cf4 R15: ffff888076e85c80
+FS:  00007f0dca6ea6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f0dca6ead58 CR3: 00000000119da000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_cow_data+0x2da/0xcb0 net/core/skbuff.c:5284
+  tipc_aead_decrypt net/tipc/crypto.c:894 [inline]
+  tipc_crypto_rcv+0x402/0x24e0 net/tipc/crypto.c:1844
+  tipc_rcv+0x57e/0x12a0 net/tipc/node.c:2109
+  tipc_l2_rcv_msg+0x2bd/0x450 net/tipc/bearer.c:668
+  __netif_receive_skb_list_ptype net/core/dev.c:5720 [inline]
+  __netif_receive_skb_list_core+0x8b7/0x980 net/core/dev.c:5762
+  __netif_receive_skb_list net/core/dev.c:5814 [inline]
+  netif_receive_skb_list_internal+0xa51/0xe30 net/core/dev.c:5905
+  gro_normal_list include/net/gro.h:515 [inline]
+  napi_complete_done+0x2b5/0x870 net/core/dev.c:6256
+  napi_complete include/linux/netdevice.h:567 [inline]
+  tun_get_user+0x2ea0/0x4890 drivers/net/tun.c:1982
+  tun_chr_write_iter+0x10d/0x1f0 drivers/net/tun.c:2057
+ do_iter_readv_writev+0x600/0x880
+  vfs_writev+0x376/0xba0 fs/read_write.c:1050
+  do_writev+0x1b6/0x360 fs/read_write.c:1096
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: de4f5fed3f23 ("iov_iter: add iter_iovec() helper")
+Reported-by: syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/675b61aa.050a0220.599f4.00bb.GAE@google.com/T/#u
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Acked-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20241212222247.724674-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/tun.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index c9afe4362835..eeb9ea9044b4 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1342,6 +1342,22 @@ static int aer_probe(struct pcie_device *dev)
- 	return 0;
- }
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1481,7 +1481,7 @@ static struct sk_buff *tun_napi_alloc_fr
+ 	skb->truesize += skb->data_len;
  
-+static int aer_suspend(struct pcie_device *dev)
-+{
-+	struct aer_rpc *rpc = get_service_data(dev);
-+
-+	aer_disable_rootport(rpc);
-+	return 0;
-+}
-+
-+static int aer_resume(struct pcie_device *dev)
-+{
-+	struct aer_rpc *rpc = get_service_data(dev);
-+
-+	aer_enable_rootport(rpc);
-+	return 0;
-+}
-+
- /**
-  * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
-  * @dev: pointer to Root Port, RCEC, or RCiEP
-@@ -1413,6 +1429,8 @@ static struct pcie_port_service_driver aerdriver = {
- 	.service	= PCIE_PORT_SERVICE_AER,
- 
- 	.probe		= aer_probe,
-+	.suspend	= aer_suspend,
-+	.resume		= aer_resume,
- 	.remove		= aer_remove,
- };
- 
--- 
-2.39.5
-
+ 	for (i = 1; i < it->nr_segs; i++) {
+-		const struct iovec *iov = iter_iov(it);
++		const struct iovec *iov = iter_iov(it) + i;
+ 		size_t fragsz = iov->iov_len;
+ 		struct page *page;
+ 		void *frag;
 
 
 
