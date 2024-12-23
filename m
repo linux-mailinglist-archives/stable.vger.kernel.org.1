@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB0A9FB21B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED5B9FB16F
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E556163B22
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7FB7162DA0
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A8019E971;
-	Mon, 23 Dec 2024 16:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19D019E98B;
+	Mon, 23 Dec 2024 16:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKlsLpZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGFIPKtw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66677E0FF;
-	Mon, 23 Dec 2024 16:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D06189B94;
+	Mon, 23 Dec 2024 16:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970385; cv=none; b=APeJ1+7Oq2Q0Izf9TlvONtoCZ2XegCC3wqC3j9l1msbvJep7L6t0rvRROnXZlM/XjdSiZUiS05UEg7YhM0gtsdF1W3gRdtyDQeEh1P0lB6gUhe8/fvyiLyKyKaUjWybY4YUggjPABdggnfBol0kwxuV10/aVqluQVGpZilDM3rw=
+	t=1734969930; cv=none; b=j/zXTu2zCOqEki4GPy5i2CWPHLXckHMKt3klDT36sXevBYqtuziElsQ75dfvxK/hdF0rQIm7cNuURA6UdUq0qiqYiPQ5ciwJwUv86Nxiaz4F7L7evAYSzYnp74au4SLRygM7ZgSdo4dRhnwgNn71sM8kiEYji3MYS6GGLRD5ozI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970385; c=relaxed/simple;
-	bh=DgD3Sojd5H7hq9jWxP9R4WdwQZehzngsfUCRGyHMf2U=;
+	s=arc-20240116; t=1734969930; c=relaxed/simple;
+	bh=rKVny4zwZIMlQ5Z+zI+7xIePG2O6RM3hTRVtAHuUGh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTRxeSPwU8JQTHq1ixQp0bw4LmcTmLE0p0SD/+uPRKiGzuEXG52BSpVxfPCC9N58cr/kSll5A+JZ1bKX9ajoHoBu6fzV48WRIUIAg50kpg3tMFPc7XJ6XX25/Y4SDf7g4534GQ0p5ZnuUvLRCD4NOnuPV7tD89y1lwmxhiHZhtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKlsLpZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC6CC4CED3;
-	Mon, 23 Dec 2024 16:13:05 +0000 (UTC)
+	 MIME-Version; b=jqk0wGHcnvtoJOFEbHvhgRTLyX59bv8Z9/P6LGEPi3ZIA36nirAZIMs+1quAuq1ilULoPF/0f/peHZ5e21VQyzkQxwoCKmy0avY0b+AmquFGhhSP8N/OtTA2QbKMPB3A5xiw5MHf1u3nOP/VLEo13qMCSpSlRKkdgWySvyoGCak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGFIPKtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B6BC4CED3;
+	Mon, 23 Dec 2024 16:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970385;
-	bh=DgD3Sojd5H7hq9jWxP9R4WdwQZehzngsfUCRGyHMf2U=;
+	s=korg; t=1734969930;
+	bh=rKVny4zwZIMlQ5Z+zI+7xIePG2O6RM3hTRVtAHuUGh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKlsLpZVxgEUuzB9I02muzJKAvvh160aUBI5ovOIgOYGfn1KsX0c1n0iAS1P+QtRZ
-	 72cBQL5GwAZZ0BWPN8xFtU4wUPobMM3454oRG28VjwuV8rZzeSUidhmK/k4zuUGVu2
-	 LSHO9LHatGa9WerYg3mZh50ed0WKJPWKUy/EmR7w=
+	b=IGFIPKtw7gP5MK4blNkltSbhkIMUKWbzWI2HUuJbK2cZJh8fKCgp4iKD9BuJba0w3
+	 23q7pnC4o0sDP1DhnFa13lAJOq04OFrH5LvaghXRCCMUsON6VorO4xIRBAq1yfhEyM
+	 5zmSTYQiOso2uNZzSNzgkIeVzaz1LdiUnqzSAB64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olaf Hering <olaf@aepfle.de>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/116] tools: hv: change permissions of NetworkManager configuration file
+Subject: [PATCH 6.12 095/160] drm/panel: st7701: Add prepare_prev_first flag to drm_panel
 Date: Mon, 23 Dec 2024 16:58:26 +0100
-Message-ID: <20241223155400.976151573@linuxfoundation.org>
+Message-ID: <20241223155412.358478601@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olaf Hering <olaf@aepfle.de>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 91ae69c7ed9e262f24240c425ad1eef2cf6639b7 ]
+[ Upstream commit 406dd4c7984a457567ca652455d5efad81983f02 ]
 
-Align permissions of the resulting .nmconnection file, instead of
-the input file from hv_kvp_daemon. To avoid the tiny time frame
-where the output file is world-readable, use umask instead of chmod.
+The DSI host must be enabled for the panel to be initialized in
+prepare(). Set the prepare_prev_first flag to guarantee this.
+This fixes the panel operation on NXP i.MX8MP SoC / Samsung DSIM
+DSI host.
 
-Fixes: 42999c904612 ("hv/hv_kvp_daemon:Support for keyfile based connection profile")
-Signed-off-by: Olaf Hering <olaf@aepfle.de>
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20241016143521.3735-1-olaf@aepfle.de
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20241016143521.3735-1-olaf@aepfle.de>
+Fixes: 849b2e3ff969 ("drm/panel: Add Sitronix ST7701 panel driver")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://lore.kernel.org/r/20241124224812.150263-1-marex@denx.de
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241124224812.150263-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/hv/hv_set_ifconfig.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-sitronix-st7701.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/hv/hv_set_ifconfig.sh b/tools/hv/hv_set_ifconfig.sh
-index 440a91b35823..2f8baed2b8f7 100755
---- a/tools/hv/hv_set_ifconfig.sh
-+++ b/tools/hv/hv_set_ifconfig.sh
-@@ -81,7 +81,7 @@ echo "ONBOOT=yes" >> $1
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7701.c b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
+index eef03d04e0cd..1f72ef7ca74c 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7701.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
+@@ -1177,6 +1177,7 @@ static int st7701_probe(struct device *dev, int connector_type)
+ 		return dev_err_probe(dev, ret, "Failed to get orientation\n");
  
- cp $1 /etc/sysconfig/network-scripts/
+ 	drm_panel_init(&st7701->panel, dev, &st7701_funcs, connector_type);
++	st7701->panel.prepare_prev_first = true;
  
--chmod 600 $2
-+umask 0177
- interface=$(echo $2 | awk -F - '{ print $2 }')
- filename="${2##*/}"
- 
+ 	/**
+ 	 * Once sleep out has been issued, ST7701 IC required to wait 120ms
 -- 
 2.39.5
 
