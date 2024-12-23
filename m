@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-105789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B4C9FB1B1
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52AF49FB278
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 854081882E30
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC0E27A1115
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264071B21BD;
-	Mon, 23 Dec 2024 16:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4161AF0B9;
+	Mon, 23 Dec 2024 16:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSYQKCBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpL7er9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76941B0F30;
-	Mon, 23 Dec 2024 16:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4EF8827;
+	Mon, 23 Dec 2024 16:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970142; cv=none; b=Bsn2PxNwqmUcZ7oYXOeHkUvbMFNGNs5+YTgY/JTaDOYpDS2NNi3bXawDugYDod2Xpu2dWsiyMpRPcMOKlQehtpt4LtpcbRc5qTr/qLu+l6sltCt1sXEytCcolaHF1MA+sgin9Z2AqTIAmnjAclT/AEWQ1a+qmd/ox/vL9DUsMRI=
+	t=1734970725; cv=none; b=PLiqxtY7ZYzO9NYTFOlyhbYMgo+QXJyiWU6WYMRZRMK70eG2DSTMJZlv9OkUMBXWdrik3Vc23H3gzx9h1xvnmHorTZ/s1UckPvzP9IIDM/dv0hpIk9L0wMcI6qRAIvurfPMF8KgbcCLeZ4Y6gpqaF21bQ+p3WtsXRXw9c797x+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970142; c=relaxed/simple;
-	bh=NsZR7XyCx93oX5pX4NKgkNebQB7EYtKnspcnBuWJCqw=;
+	s=arc-20240116; t=1734970725; c=relaxed/simple;
+	bh=L9ehiYDs7N43ubJtcsxa4ddPVySN6erWvdc2P32LIDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsSY0PUThQdeRURnM2lNk+PyTuz0R7Z3ikUt3Ivyka3jjVEFBS9jK08RYFF/79e+jDFf4WxsyGI7UeKxKkqNLfu5aNQ/6eAE83N55ucaXaS5gT223zkcGNzPGTurX8Ni6Uz2HZ7saxAhePle0NrfMTglnQdb4zHDcB8AgnEwJec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSYQKCBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF583C4CED3;
-	Mon, 23 Dec 2024 16:09:01 +0000 (UTC)
+	 MIME-Version; b=EbPnae9nWM3BDJegleLpcN0kaE9svhdP/5ks7pcUbr4T+YvjLc9Z8lc1uDtymlhnqJPRk32KHas7J7002uGzoy7vLMNA9H3k60IWxAkLxvbiCPLWsRGdOjpbtBo4Td2n1TpBlktuzg18UPP7SnA/AJqIeDMmNKwHpaXHjL5iua4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpL7er9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ABBC4CED3;
+	Mon, 23 Dec 2024 16:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970142;
-	bh=NsZR7XyCx93oX5pX4NKgkNebQB7EYtKnspcnBuWJCqw=;
+	s=korg; t=1734970724;
+	bh=L9ehiYDs7N43ubJtcsxa4ddPVySN6erWvdc2P32LIDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSYQKCBxLVidGebNgUoYUUlnNnPC5RPOCvnLFrtP4rO2h1V3g9NHiOgi3UFfSQNcD
-	 ebaVfr7CerqC/cvvuuXDf9/SqMjenu1l1OOCihvtFEV6uZHGVCaPEVUZYr+s0DzR03
-	 YD718Wq6xQtmBQPiBKc0wORbd/1u9TZ5yCgN9BgQ=
+	b=xpL7er9gtrNAFMQ2kuvLMnYoQkUyuWV29WInZfk53vkmx1KlwdwToTEIe6f44OlCq
+	 aOBgBLH38lATt10BU3oUCxW1ULwYBmcofIl9vqLB7gmu+GGm/sZoZXgVA/RcI82qeg
+	 smk84F8+PQMzIW94zBCsK7u4NTlC8ANs5oVrbZCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 158/160] mm: shmem: fix ShmemHugePages at swapout
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 50/83] hwmon: (tmp513) Dont use "proxy" headers
 Date: Mon, 23 Dec 2024 16:59:29 +0100
-Message-ID: <20241223155414.924886846@linuxfoundation.org>
+Message-ID: <20241223155355.562699319@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit dad2dc9c92e0f93f33cebcb0595b8daa3d57473f upstream.
+[ Upstream commit 5d9ad4e0fa7cc27199fdb94beb6ec5f655ba9489 ]
 
-/proc/meminfo ShmemHugePages has been showing overlarge amounts (more than
-Shmem) after swapping out THPs: we forgot to update NR_SHMEM_THPS.
+The driver uses math.h and not util_macros.h.
 
-Add shmem_update_stats(), to avoid repetition, and risk of making that
-mistake again: the call from shmem_delete_from_page_cache() is the bugfix;
-the call from shmem_replace_folio() is reassuring, but not really a bugfix
-(replace corrects misplaced swapin readahead, but huge swapin readahead
-would be a mistake).
+All the same for the kernel.h, replace it with what the driver is using.
 
-Link: https://lkml.kernel.org/r/5ba477c8-a569-70b5-923e-09ab221af45b@google.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231128180654.395692-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 74d7e038fd07 ("hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c |   22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/hwmon/tmp513.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -779,6 +779,14 @@ static bool shmem_huge_global_enabled(st
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-+static void shmem_update_stats(struct folio *folio, int nr_pages)
-+{
-+	if (folio_test_pmd_mappable(folio))
-+		__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, nr_pages);
-+	__lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
-+	__lruvec_stat_mod_folio(folio, NR_SHMEM, nr_pages);
-+}
-+
- /*
-  * Somewhat like filemap_add_folio, but error if expected item has gone.
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index b9a93ee9c236..fe3f1113b64e 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -19,15 +19,19 @@
+  * the Free Software Foundation; version 2 of the License.
   */
-@@ -813,10 +821,7 @@ static int shmem_add_to_page_cache(struc
- 		xas_store(&xas, folio);
- 		if (xas_error(&xas))
- 			goto unlock;
--		if (folio_test_pmd_mappable(folio))
--			__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, nr);
--		__lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
--		__lruvec_stat_mod_folio(folio, NR_SHMEM, nr);
-+		shmem_update_stats(folio, nr);
- 		mapping->nrpages += nr;
- unlock:
- 		xas_unlock_irq(&xas);
-@@ -844,8 +849,7 @@ static void shmem_delete_from_page_cache
- 	error = shmem_replace_entry(mapping, folio->index, folio, radswap);
- 	folio->mapping = NULL;
- 	mapping->nrpages -= nr;
--	__lruvec_stat_mod_folio(folio, NR_FILE_PAGES, -nr);
--	__lruvec_stat_mod_folio(folio, NR_SHMEM, -nr);
-+	shmem_update_stats(folio, -nr);
- 	xa_unlock_irq(&mapping->i_pages);
- 	folio_put_refs(folio, nr);
- 	BUG_ON(error);
-@@ -1944,10 +1948,8 @@ static int shmem_replace_folio(struct fo
- 	}
- 	if (!error) {
- 		mem_cgroup_replace_folio(old, new);
--		__lruvec_stat_mod_folio(new, NR_FILE_PAGES, nr_pages);
--		__lruvec_stat_mod_folio(new, NR_SHMEM, nr_pages);
--		__lruvec_stat_mod_folio(old, NR_FILE_PAGES, -nr_pages);
--		__lruvec_stat_mod_folio(old, NR_SHMEM, -nr_pages);
-+		shmem_update_stats(new, nr_pages);
-+		shmem_update_stats(old, -nr_pages);
- 	}
- 	xa_unlock_irq(&swap_mapping->i_pages);
  
++#include <linux/bitops.h>
++#include <linux/bug.h>
++#include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/hwmon.h>
+ #include <linux/i2c.h>
+ #include <linux/init.h>
+-#include <linux/kernel.h>
++#include <linux/math.h>
+ #include <linux/module.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+-#include <linux/util_macros.h>
++#include <linux/types.h>
+ 
+ // Common register definition
+ #define TMP51X_SHUNT_CONFIG		0x00
+-- 
+2.39.5
+
 
 
 
