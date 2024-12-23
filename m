@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-105725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED5B9FB16F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A359C9FB163
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7FB7162DA0
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2E618831FB
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19D019E98B;
-	Mon, 23 Dec 2024 16:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE10D186E58;
+	Mon, 23 Dec 2024 16:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGFIPKtw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+adBZ0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D06189B94;
-	Mon, 23 Dec 2024 16:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990402EAE6;
+	Mon, 23 Dec 2024 16:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969930; cv=none; b=j/zXTu2zCOqEki4GPy5i2CWPHLXckHMKt3klDT36sXevBYqtuziElsQ75dfvxK/hdF0rQIm7cNuURA6UdUq0qiqYiPQ5ciwJwUv86Nxiaz4F7L7evAYSzYnp74au4SLRygM7ZgSdo4dRhnwgNn71sM8kiEYji3MYS6GGLRD5ozI=
+	t=1734969937; cv=none; b=rky1e4OvVNBu7g2yqWBekArWeyZW3x86hqaz/iGHFYyNkMTnyzZjblmXdeuVvkky/1MkZW35o2wb1r8TdnooUS1u6qEfVimXKltw5GHtT/wRFbi/9G7WhL1pTMCsDGyNLw7LDW40vfsaeNlRmXlZHtZ1l27E1y3zb5t9boNh8m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969930; c=relaxed/simple;
-	bh=rKVny4zwZIMlQ5Z+zI+7xIePG2O6RM3hTRVtAHuUGh0=;
+	s=arc-20240116; t=1734969937; c=relaxed/simple;
+	bh=y4Ogqgh4dbF4pnUIM3ZH1tTGRZ71AptGOj6VAhuhnwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqk0wGHcnvtoJOFEbHvhgRTLyX59bv8Z9/P6LGEPi3ZIA36nirAZIMs+1quAuq1ilULoPF/0f/peHZ5e21VQyzkQxwoCKmy0avY0b+AmquFGhhSP8N/OtTA2QbKMPB3A5xiw5MHf1u3nOP/VLEo13qMCSpSlRKkdgWySvyoGCak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGFIPKtw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B6BC4CED3;
-	Mon, 23 Dec 2024 16:05:29 +0000 (UTC)
+	 MIME-Version; b=qHMstPJ5wTFdKs3CIN2dk1B0OSW2hrLd7l0CNoAIf//1ch4bmuhpmYSIyKhVgaenQcrc9NzxKDcugrHlUQzFJaHWMCr9YCHehNTcLdJ+WJOCA66Ja0wV+Wx2BPcZ+fPgTHCYrsv6QFALGRwcn0zQYVYzC5Ig12NsC04pq/kkd2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+adBZ0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B3DC4CED3;
+	Mon, 23 Dec 2024 16:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969930;
-	bh=rKVny4zwZIMlQ5Z+zI+7xIePG2O6RM3hTRVtAHuUGh0=;
+	s=korg; t=1734969937;
+	bh=y4Ogqgh4dbF4pnUIM3ZH1tTGRZ71AptGOj6VAhuhnwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGFIPKtw7gP5MK4blNkltSbhkIMUKWbzWI2HUuJbK2cZJh8fKCgp4iKD9BuJba0w3
-	 23q7pnC4o0sDP1DhnFa13lAJOq04OFrH5LvaghXRCCMUsON6VorO4xIRBAq1yfhEyM
-	 5zmSTYQiOso2uNZzSNzgkIeVzaz1LdiUnqzSAB64=
+	b=z+adBZ0c4Rye4jM8vsO46wYwUpVUX3zVMvCGX0BWfyFXl3iwMa/hpEAnLFvwKn0Jy
+	 GxDtOU5GR4U6XsAGnSuvwvPXDZRujaIxKJ9ni87y5wnvexsQIjM3fNDaPhgLEuNEc5
+	 H28nlB05gxVt54qGg/4xBhH4EkRux6a9XQgTG3Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/160] drm/panel: st7701: Add prepare_prev_first flag to drm_panel
-Date: Mon, 23 Dec 2024 16:58:26 +0100
-Message-ID: <20241223155412.358478601@linuxfoundation.org>
+Subject: [PATCH 6.12 096/160] drm/panel: synaptics-r63353: Fix regulator unbalance
+Date: Mon, 23 Dec 2024 16:58:27 +0100
+Message-ID: <20241223155412.400696667@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
 References: <20241223155408.598780301@linuxfoundation.org>
@@ -67,38 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Michael Trimarchi <michael@amarulasolutions.com>
 
-[ Upstream commit 406dd4c7984a457567ca652455d5efad81983f02 ]
+[ Upstream commit d2bd3fcb825725a59c8880070b1206b1710922bd ]
 
-The DSI host must be enabled for the panel to be initialized in
-prepare(). Set the prepare_prev_first flag to guarantee this.
-This fixes the panel operation on NXP i.MX8MP SoC / Samsung DSIM
-DSI host.
+The shutdown function can be called when the display is already
+unprepared. For example during reboot this trigger a kernel
+backlog. Calling the drm_panel_unprepare, allow us to avoid
+to trigger the kernel warning.
 
-Fixes: 849b2e3ff969 ("drm/panel: Add Sitronix ST7701 panel driver")
-Signed-off-by: Marek Vasut <marex@denx.de>
+Fixes: 2e87bad7cd33 ("drm/panel: Add Synaptics R63353 panel driver")
+Tested-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://lore.kernel.org/r/20241124224812.150263-1-marex@denx.de
+Link: https://lore.kernel.org/r/20241205163002.1804784-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241124224812.150263-1-marex@denx.de
+Link: https://patchwork.freedesktop.org/patch/msgid/20241205163002.1804784-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-sitronix-st7701.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/panel/panel-synaptics-r63353.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7701.c b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
-index eef03d04e0cd..1f72ef7ca74c 100644
---- a/drivers/gpu/drm/panel/panel-sitronix-st7701.c
-+++ b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
-@@ -1177,6 +1177,7 @@ static int st7701_probe(struct device *dev, int connector_type)
- 		return dev_err_probe(dev, ret, "Failed to get orientation\n");
+diff --git a/drivers/gpu/drm/panel/panel-synaptics-r63353.c b/drivers/gpu/drm/panel/panel-synaptics-r63353.c
+index 169c629746c7..17349825543f 100644
+--- a/drivers/gpu/drm/panel/panel-synaptics-r63353.c
++++ b/drivers/gpu/drm/panel/panel-synaptics-r63353.c
+@@ -325,7 +325,7 @@ static void r63353_panel_shutdown(struct mipi_dsi_device *dsi)
+ {
+ 	struct r63353_panel *rpanel = mipi_dsi_get_drvdata(dsi);
  
- 	drm_panel_init(&st7701->panel, dev, &st7701_funcs, connector_type);
-+	st7701->panel.prepare_prev_first = true;
+-	r63353_panel_unprepare(&rpanel->base);
++	drm_panel_unprepare(&rpanel->base);
+ }
  
- 	/**
- 	 * Once sleep out has been issued, ST7701 IC required to wait 120ms
+ static const struct r63353_desc sharp_ls068b3sx02_data = {
 -- 
 2.39.5
 
