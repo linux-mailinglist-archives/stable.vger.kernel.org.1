@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074889FB267
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA989FB1B8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E3E91885CF3
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613D61684FE
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6F61B2522;
-	Mon, 23 Dec 2024 16:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0DE188006;
+	Mon, 23 Dec 2024 16:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pt/yE61p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Io4RW+YQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0DF17A597;
-	Mon, 23 Dec 2024 16:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453FA19E971;
+	Mon, 23 Dec 2024 16:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970665; cv=none; b=QuK2DgLvHDIZ9nxzMTDht/gH1aYMQo+b9Y/31EKoFkRvVnjpryOYpcVQy1URn36raZ0m//XgxiUYDvoU9EC8svBrRw9b+woErrgY0nvU+dc+0aAWGgoVly3vaIXOVDrUYW7JVqxPd+jxuUxD3ibyoix53OlgVWgUPF+W+Q5nygM=
+	t=1734970086; cv=none; b=ktsl9NAYCNGaJcp3URMjKfvGWVB2CQ4+ttXkwsmtyGpUkxSGPBe7WODCQB9n3nptoCD4vycI95vhEesM8GRdWSrzGfvbQ1GGhdXhPEqTj5yvtLCUQ5Vt4Tuk26sANTaOXcWKXiZXjeiwKtZW3XmAH3d8KHzs/gJvGjct2SA7Hxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970665; c=relaxed/simple;
-	bh=bqzvlGiuKXAPIEHsao8cjA7/9XaPSqAWkg99jcUt+74=;
+	s=arc-20240116; t=1734970086; c=relaxed/simple;
+	bh=IIW5NBremAyTO8O+KFXm8Nzp5a6D5QObueJ2+Qp+6/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXmrBeGqLyxEKIBYxQqfWIP9t5zQXLK476WxdHSl6WHgvrkBdEmtHt4xgtNRtRxgReMBu0iNyH55gAkwZ/+307EUKEbHqhzgrA5RlD5lxmbgR90KsQL+rlP+1duUaMcABhgYFBdWfuepkAUFxtMZZfnvZKMXt75QTHWtgGJsrq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pt/yE61p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB598C4CED3;
-	Mon, 23 Dec 2024 16:17:44 +0000 (UTC)
+	 MIME-Version; b=cbu3JBAkP9XN1mIeyts+Lxt1xsch2XcLAXwrbsdxDZbsuyvsJlahj1H7Eur8v6BNMTYlZ3UwLWYd6bzyqWyqfm28dx9qoCpRwDimtwyz+G5fzAg1zNFCzS0x3ZlUEgZBvFXiVDkCDhAs/ZztEHqL9nJc/RN6A6IHWeTofb0KykA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Io4RW+YQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF892C4CED3;
+	Mon, 23 Dec 2024 16:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970665;
-	bh=bqzvlGiuKXAPIEHsao8cjA7/9XaPSqAWkg99jcUt+74=;
+	s=korg; t=1734970086;
+	bh=IIW5NBremAyTO8O+KFXm8Nzp5a6D5QObueJ2+Qp+6/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pt/yE61pGrPdjGLqtiUx/w4Zg95TOosmP7zxpVljHT0QofCIInUM164aLlViGUZZi
-	 3s/eDMsfLWKxLrh6JqmWI/NURRulSfBiTQ5XZ78yTQL66TBrEPz64YIxPcBXwbt0cr
-	 INhZDVNwrnk/XxS7MOuhj7SuKDaaC+F8dzSfSlZQ=
+	b=Io4RW+YQNkcm6wIOqwPvXlYTOADUNR6qlgBipFQ5ORgWB68vrgBYRGQQMUv81lHTw
+	 rbf4BqOwBZ04xYXFPGlKwzsWaT0OjbyrMmhkHlK3xkjtBhIDIEJy/LO71dNQPB20JQ
+	 +PWeWATfRn5/Z8cesENibORW4RwBcRhCHI0lfquU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 05/83] usb: cdns3: Add quirk flag to enable suspend residency
+	syzbot+345e4443a21200874b18@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 113/160] ring-buffer: Fix overflow in __rb_map_vma
 Date: Mon, 23 Dec 2024 16:58:44 +0100
-Message-ID: <20241223155353.849903022@linuxfoundation.org>
+Message-ID: <20241223155413.040678705@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 0aca19e4037a4143273e90f1b44666b78b4dde9b ]
+commit c58a812c8e49ad688f94f4b050ad5c5b388fc5d2 upstream.
 
-Some platforms (e.g. ti,j721e-usb, ti,am64-usb) require
-this bit to be set to workaround a lockup issue with PHY
-short suspend intervals [1]. Add a platform quirk flag
-to indicate if Suspend Residency should be enabled.
+An overflow occurred when performing the following calculation:
 
-[1] - https://www.ti.com/lit/er/sprz457h/sprz457h.pdf
-i2409 - USB: USB2 PHY locks up due to short suspend
+   nr_pages = ((nr_subbufs + 1) << subbuf_order) - pgoff;
 
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240516044537.16801-2-r-gunasekaran@ti.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/cdns3/core.h |  1 +
- drivers/usb/cdns3/drd.c  | 10 +++++++++-
- drivers/usb/cdns3/drd.h  |  3 +++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+Add a check before the calculation to avoid this problem.
 
-diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
-index 81a9c9d6be08..57d47348dc19 100644
---- a/drivers/usb/cdns3/core.h
-+++ b/drivers/usb/cdns3/core.h
-@@ -44,6 +44,7 @@ struct cdns3_platform_data {
- 			bool suspend, bool wakeup);
- 	unsigned long quirks;
- #define CDNS3_DEFAULT_PM_RUNTIME_ALLOW	BIT(0)
-+#define CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE	BIT(1)
- };
- 
- /**
-diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
-index 33ba30f79b33..8e19ee72c120 100644
---- a/drivers/usb/cdns3/drd.c
-+++ b/drivers/usb/cdns3/drd.c
-@@ -385,7 +385,7 @@ static irqreturn_t cdns_drd_irq(int irq, void *data)
- int cdns_drd_init(struct cdns *cdns)
+syzbot reported this as a slab-out-of-bounds in __rb_map_vma:
+
+BUG: KASAN: slab-out-of-bounds in __rb_map_vma+0x9ab/0xae0 kernel/trace/ring_buffer.c:7058
+Read of size 8 at addr ffff8880767dd2b8 by task syz-executor187/5836
+
+CPU: 0 UID: 0 PID: 5836 Comm: syz-executor187 Not tainted 6.13.0-rc2-syzkaller-00159-gf932fb9b4074 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xc3/0x620 mm/kasan/report.c:489
+ kasan_report+0xd9/0x110 mm/kasan/report.c:602
+ __rb_map_vma+0x9ab/0xae0 kernel/trace/ring_buffer.c:7058
+ ring_buffer_map+0x56e/0x9b0 kernel/trace/ring_buffer.c:7138
+ tracing_buffers_mmap+0xa6/0x120 kernel/trace/trace.c:8482
+ call_mmap include/linux/fs.h:2183 [inline]
+ mmap_file mm/internal.h:124 [inline]
+ __mmap_new_file_vma mm/vma.c:2291 [inline]
+ __mmap_new_vma mm/vma.c:2355 [inline]
+ __mmap_region+0x1786/0x2670 mm/vma.c:2456
+ mmap_region+0x127/0x320 mm/mmap.c:1348
+ do_mmap+0xc00/0xfc0 mm/mmap.c:496
+ vm_mmap_pgoff+0x1ba/0x360 mm/util.c:580
+ ksys_mmap_pgoff+0x32c/0x5c0 mm/mmap.c:542
+ __do_sys_mmap arch/x86/kernel/sys_x86_64.c:89 [inline]
+ __se_sys_mmap arch/x86/kernel/sys_x86_64.c:82 [inline]
+ __x64_sys_mmap+0x125/0x190 arch/x86/kernel/sys_x86_64.c:82
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The reproducer for this bug is:
+
+------------------------8<-------------------------
+ #include <fcntl.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <asm/types.h>
+ #include <sys/mman.h>
+
+ int main(int argc, char **argv)
  {
- 	void __iomem *regs;
--	u32 state;
-+	u32 state, reg;
- 	int ret;
+	int page_size = getpagesize();
+	int fd;
+	void *meta;
+
+	system("echo 1 > /sys/kernel/tracing/buffer_size_kb");
+	fd = open("/sys/kernel/tracing/per_cpu/cpu0/trace_pipe_raw", O_RDONLY);
+
+	meta = mmap(NULL, page_size, PROT_READ, MAP_SHARED, fd, page_size * 5);
+ }
+------------------------>8-------------------------
+
+Cc: stable@vger.kernel.org
+Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
+Link: https://lore.kernel.org/tencent_06924B6674ED771167C23CC336C097223609@qq.com
+Reported-by: syzbot+345e4443a21200874b18@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=345e4443a21200874b18
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ kernel/trace/ring_buffer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 7e257e855dd1..60210fb5b211 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -7019,7 +7019,11 @@ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
+ 	lockdep_assert_held(&cpu_buffer->mapping_lock);
  
- 	regs = devm_ioremap_resource(cdns->dev, &cdns->otg_res);
-@@ -429,6 +429,14 @@ int cdns_drd_init(struct cdns *cdns)
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_v1_regs->ien;
- 			writel(1, &cdns->otg_v1_regs->simulate);
+ 	nr_subbufs = cpu_buffer->nr_pages + 1; /* + reader-subbuf */
+-	nr_pages = ((nr_subbufs + 1) << subbuf_order) - pgoff; /* + meta-page */
++	nr_pages = ((nr_subbufs + 1) << subbuf_order); /* + meta-page */
++	if (nr_pages <= pgoff)
++		return -EINVAL;
 +
-+			if (cdns->pdata &&
-+			    (cdns->pdata->quirks & CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE)) {
-+				reg = readl(&cdns->otg_v1_regs->susp_ctrl);
-+				reg |= SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE;
-+				writel(reg, &cdns->otg_v1_regs->susp_ctrl);
-+			}
-+
- 			cdns->version  = CDNS3_CONTROLLER_V1;
- 		} else {
- 			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
-diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
-index d72370c321d3..1e2aee14d629 100644
---- a/drivers/usb/cdns3/drd.h
-+++ b/drivers/usb/cdns3/drd.h
-@@ -193,6 +193,9 @@ struct cdns_otg_irq_regs {
- /* OTGREFCLK - bitmasks */
- #define OTGREFCLK_STB_CLK_SWITCH_EN	BIT(31)
++	nr_pages -= pgoff;
  
-+/* SUPS_CTRL - bitmasks */
-+#define SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE	BIT(17)
-+
- /* OVERRIDE - bitmasks */
- #define OVERRIDE_IDPULLUP		BIT(0)
- /* Only for CDNS3_CONTROLLER_V0 version */
+ 	nr_vma_pages = vma_pages(vma);
+ 	if (!nr_vma_pages || nr_vma_pages > nr_pages)
 -- 
-2.39.5
+2.47.1
 
 
 
