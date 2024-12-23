@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-105784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295F99FB1A6
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A759FB280
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7294218828F5
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3543F164436
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6991D1B3922;
-	Mon, 23 Dec 2024 16:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBAE1B3725;
+	Mon, 23 Dec 2024 16:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3eWH2EG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF/ei8iB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2395C1AF0CE;
-	Mon, 23 Dec 2024 16:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C271A8F80;
+	Mon, 23 Dec 2024 16:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970129; cv=none; b=Xqi7Xt7guDxuSwO5uVd0/qEZqex1/jysFtFCFb+xlWnfMlA1dtBVyZ2CduOpTCgmw8C6PVuxEsZUy6FL9aVozlpyjBkXqCM9zIMtzx6xAc3Dw1617QVMlzS3rHNqSKwrvPrkGaxzANYvZzGCkf1fZS7gxQfxvtwIhCKbLWkuZCw=
+	t=1734970712; cv=none; b=Mbc2jTqY4bF073UHcv8UhX8UESIGrZ17SVl37QRoPIIHo3ml0XlWY4nL4tU1ibj5woXHCZ2cxTlKyEs95wsLhAwrJO+hSyd1Rci49ACRFaz/AJnd/dCTaFN6WNGkfGJmhGrIiHHONj4Mt9c3ETbD+WKjKEyuDVLD9SEqkGWjA5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970129; c=relaxed/simple;
-	bh=q2NlPwRtCd0JlN8SCTEN9b/NXDGi0DCarj/tpXNr2lY=;
+	s=arc-20240116; t=1734970712; c=relaxed/simple;
+	bh=MBws/I1mgIK/yIXaj9d2WRGxSFLtWhzFReNcw8DzXQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVVgzdLtAVCOISQILy/jzGD/6ujTq3vHhrt4nsq0u8OBrvkjNUNrYKy55FZyiOd4kzk8tM9RGRaupa3KcMH/yrtVQ86eu/IcdElE6DKNFXp14RipfkPOo4lflaoYwAMcxxmiFQd5uc7/QCuGKDULt++U2MnEy/TQtxJbffU4c+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3eWH2EG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43038C4CED3;
-	Mon, 23 Dec 2024 16:08:48 +0000 (UTC)
+	 MIME-Version; b=MC7N9EY16T9viIr+aZTbmidYorgYQXKjUyB1DID0XlGKeTQpAwHBqyCa8NeewR9mqG86HRDoxIKOwEH/PHA5u7kKPNc8a9zFzheGOySWRF8TIvste+4Yr85WnpWMcduZY4+fMisujsKebBiwONSUfYNQYtvdLYeOEejBTyFhTuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF/ei8iB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C75CC4CED3;
+	Mon, 23 Dec 2024 16:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970128;
-	bh=q2NlPwRtCd0JlN8SCTEN9b/NXDGi0DCarj/tpXNr2lY=;
+	s=korg; t=1734970711;
+	bh=MBws/I1mgIK/yIXaj9d2WRGxSFLtWhzFReNcw8DzXQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3eWH2EGbKjEAywHjr9VWZMqIm9wuqLp/Xw1aGb60ExwFtEkOS1jCUg2104sYbj4t
-	 Ch2FGCshl5g7VhyhNkTPtXALaC9SpeYXzKWJMdubuDfquMOFxmwQPftGbH+AZMOO41
-	 hXW1Up0ltQydNnnH5m+brafWRM01tojwkbjs54gw=
+	b=pF/ei8iB3lX9CEtrysecjPp35rtPdnatjfwMb2Y8Rlqeqxtz9iu8k6B9xqCFGV+bB
+	 ovbas4UOli4rMkHioradxaMrraJ0T5owt4zWoERSnT6u0zko2Dt/td9U/Im91I2Lrj
+	 elslsKCFvfIxpAXLY8oCk+YM23RWBLXLrA27/owI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 154/160] ceph: fix memory leaks in __ceph_sync_read()
-Date: Mon, 23 Dec 2024 16:59:25 +0100
-Message-ID: <20241223155414.764578425@linuxfoundation.org>
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 47/83] i915/guc: Ensure busyness counter increases motonically
+Date: Mon, 23 Dec 2024 16:59:26 +0100
+Message-ID: <20241223155355.453771248@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-commit d6fd6f8280f0257ba93f16900a0d3d3912f32c79 upstream.
+[ Upstream commit 59a0b46788d58fdcee8d2f6b4e619d264a1799bf ]
 
-In two `break` statements, the call to ceph_release_page_vector() was
-missing, leaking the allocation from ceph_alloc_page_vector().
+Active busyness of an engine is calculated using gt timestamp and the
+context switch in time. While capturing the gt timestamp, it's possible
+that the context switches out. This race could result in an active
+busyness value that is greater than the actual context runtime value by a
+small amount. This leads to a negative delta and throws off busyness
+calculations for the user.
 
-Instead of adding the missing ceph_release_page_vector() calls, the
-Ceph maintainers preferred to transfer page ownership to the
-`ceph_osd_request` by passing `own_pages=true` to
-osd_req_op_extent_osd_data_pages().  This requires postponing the
-ceph_osdc_put_request() call until after the block that accesses the
-`pages`.
+If a subsequent count is smaller than the previous one, just return the
+previous one, since we expect the busyness to catch up.
 
-Cc: stable@vger.kernel.org
-Fixes: 03bc06c7b0bd ("ceph: add new mount option to enable sparse reads")
-Fixes: f0fe1e54cfcf ("ceph: plumb in decryption during reads")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241127174006.190128-3-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit cf907f6d294217985e9dafd9985dce874e04ca37)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/file.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_engine_types.h      | 5 +++++
+ drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 5 ++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -1127,7 +1127,7 @@ ssize_t __ceph_sync_read(struct inode *i
- 
- 		osd_req_op_extent_osd_data_pages(req, 0, pages, read_len,
- 						 offset_in_page(read_off),
--						 false, false);
-+						 false, true);
- 
- 		op = &req->r_ops[0];
- 		if (sparse) {
-@@ -1193,8 +1193,6 @@ ssize_t __ceph_sync_read(struct inode *i
- 			ret = min_t(ssize_t, fret, len);
- 		}
- 
--		ceph_osdc_put_request(req);
--
- 		/* Short read but not EOF? Zero out the remainder. */
- 		if (ret < len && (off + ret < i_size)) {
- 			int zlen = min(len - ret, i_size - off - ret);
-@@ -1226,7 +1224,8 @@ ssize_t __ceph_sync_read(struct inode *i
- 				break;
- 			}
- 		}
--		ceph_release_page_vector(pages, num_pages);
+diff --git a/drivers/gpu/drm/i915/gt/intel_engine_types.h b/drivers/gpu/drm/i915/gt/intel_engine_types.h
+index 107f465a27b9..458320d28e27 100644
+--- a/drivers/gpu/drm/i915/gt/intel_engine_types.h
++++ b/drivers/gpu/drm/i915/gt/intel_engine_types.h
+@@ -339,6 +339,11 @@ struct intel_engine_guc_stats {
+ 	 * @start_gt_clk: GT clock time of last idle to active transition.
+ 	 */
+ 	u64 start_gt_clk;
 +
-+		ceph_osdc_put_request(req);
++	/**
++	 * @total: The last value of total returned
++	 */
++	u64 total;
+ };
  
- 		if (off >= i_size || !more)
- 			break;
+ struct intel_engine_cs {
+diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+index 4bfc1131b4f0..2cd1f43f8a3c 100644
+--- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+@@ -1346,9 +1346,12 @@ static ktime_t guc_engine_busyness(struct intel_engine_cs *engine, ktime_t *now)
+ 		total += intel_gt_clock_interval_to_ns(gt, clk);
+ 	}
+ 
++	if (total > stats->total)
++		stats->total = total;
++
+ 	spin_unlock_irqrestore(&guc->timestamp.lock, flags);
+ 
+-	return ns_to_ktime(total);
++	return ns_to_ktime(stats->total);
+ }
+ 
+ static void __reset_guc_busyness_stats(struct intel_guc *guc)
+-- 
+2.39.5
+
 
 
 
