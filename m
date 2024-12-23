@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AEEC9FB216
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A849FB277
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17C41881AFB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5B3A16742C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07EE1B21B4;
-	Mon, 23 Dec 2024 16:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4E51B4130;
+	Mon, 23 Dec 2024 16:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sArZ05yW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/IgZfy6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF3F7E0FF;
-	Mon, 23 Dec 2024 16:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081861B4120;
+	Mon, 23 Dec 2024 16:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970421; cv=none; b=WJGgnCNf3K5BbJA9PssZxh1bnScaKufkJGobx7oW+/jg9fUXGISFOAxrXY2i3fi0Y78jp3v1dGCAHFBHIkMz0yZNbwpzFOuu+CnjPzGDo8ixzg4v6WnkkmSgKyIIq0cQeEraIR5+LRoAWyERA0xXeVVbD3eSmD2luJyIMdAvrNc=
+	t=1734970686; cv=none; b=g0XuJ/GCDIo7YHahFi9Ivje7o9HvIgyid05qR2d1qV6eEI++BJBf9wWGmCJ04j9coYb/X97RWJIecN5UDnWOCyQ8iEfHturKuskfD3wy7pJq7pbKmNr6CniLeQq2JswPrp01CF8dpnMz8T+a5N5dZGY32E1iKcsLpafAZbnuDnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970421; c=relaxed/simple;
-	bh=qQSVFWsV69ma8Q03GPYITRY/MNxMXKZ5itytjUFvuV4=;
+	s=arc-20240116; t=1734970686; c=relaxed/simple;
+	bh=PxjRoWHyQ66bQWifQkZ9B9uAkaq8O5xQc/if2pmi/Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkRgQjowmQrvblw6CAjVaWISF1JHrcvoll+1oh8ocKTTaxOII6Sl2fGrCLogHnhNah1k5+I6HeJkAVfPiaMSEBSs6WSK9ZeYk3nVNOsdPrQMqErbglY5CpuwyvBSdJt3XDV3D0DGLVDjJlOhWp3rfoAVV2X3ABHwmZVjrTTn3UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sArZ05yW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FB5C4CED3;
-	Mon, 23 Dec 2024 16:13:40 +0000 (UTC)
+	 MIME-Version; b=aS606gvWdeuDLktK+KbS5J4diBHqQqNwKUwFpfm2aAjUvFLICeIihlhi0HgerocViDf+NvexuwRAZf/w1iV9D/KoiQiOPssIrrNP/I/0hMab+8Jril/6F1adR6oE7uNhn/N0ggOpgSfVDXzd55IfTBF+dJvVjHMcMgxiy1h+lm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/IgZfy6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CABBC4CEDC;
+	Mon, 23 Dec 2024 16:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970421;
-	bh=qQSVFWsV69ma8Q03GPYITRY/MNxMXKZ5itytjUFvuV4=;
+	s=korg; t=1734970685;
+	bh=PxjRoWHyQ66bQWifQkZ9B9uAkaq8O5xQc/if2pmi/Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sArZ05yW38kv+OuChPD/DuNgtjzGJ4TB7Ouet6TwfWidje0cMRtFCD0lb6MJ2zwRA
-	 Z9RWlMNHG0CjF8sO/8VNKTqf84hs4a19QM6aY/YpC0dARYwdJQbzkkZ/792/I7TTMN
-	 ihlnRvvI7xbp1C3Ho2WFvi1cfkHJGEszEAzzLVp4=
+	b=G/IgZfy6UB3wA7+v3yVE1WdPgO3b8MHIOUOO6+iWBzCeHx2uPYhkcYBfACnHMZYnh
+	 UlS7Y9eCF1iErZQt+hzIRbNAiqiW2QEJ6fMy8cKUHAzUDW20cwQbc+fP8jV3rF36Wm
+	 JC5lVOl/XGwRUl7guaLeS+NRIfRntKqGP+UHvqNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/116] hwmon: (tmp513) Dont use "proxy" headers
-Date: Mon, 23 Dec 2024 16:59:09 +0100
-Message-ID: <20241223155402.637196063@linuxfoundation.org>
+Subject: [PATCH 6.1 31/83] net: mdiobus: fix an OF node reference leak
+Date: Mon, 23 Dec 2024 16:59:10 +0100
+Message-ID: <20241223155354.855533926@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 5d9ad4e0fa7cc27199fdb94beb6ec5f655ba9489 ]
+[ Upstream commit 572af9f284669d31d9175122bbef9bc62cea8ded ]
 
-The driver uses math.h and not util_macros.h.
+fwnode_find_mii_timestamper() calls of_parse_phandle_with_fixed_args()
+but does not decrement the refcount of the obtained OF node. Add an
+of_node_put() call before returning from the function.
 
-All the same for the kernel.h, replace it with what the driver is using.
+This bug was detected by an experimental static analysis tool that I am
+developing.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231128180654.395692-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 74d7e038fd07 ("hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers")
+Fixes: bc1bee3b87ee ("net: mdiobus: Introduce fwnode_mdiobus_register_phy()")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241218035106.1436405-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/tmp513.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/mdio/fwnode_mdio.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index 9a180b1030c9..ca665033fe52 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -19,15 +19,19 @@
-  * the Free Software Foundation; version 2 of the License.
-  */
+diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
+index b782c35c4ac1..8ada397bc357 100644
+--- a/drivers/net/mdio/fwnode_mdio.c
++++ b/drivers/net/mdio/fwnode_mdio.c
+@@ -38,6 +38,7 @@ fwnode_find_pse_control(struct fwnode_handle *fwnode)
+ static struct mii_timestamper *
+ fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
+ {
++	struct mii_timestamper *mii_ts;
+ 	struct of_phandle_args arg;
+ 	int err;
  
-+#include <linux/bitops.h>
-+#include <linux/bug.h>
-+#include <linux/device.h>
- #include <linux/err.h>
- #include <linux/hwmon.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
--#include <linux/kernel.h>
-+#include <linux/math.h>
- #include <linux/module.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
--#include <linux/util_macros.h>
-+#include <linux/types.h>
+@@ -51,10 +52,16 @@ fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
+ 	else if (err)
+ 		return ERR_PTR(err);
  
- // Common register definition
- #define TMP51X_SHUNT_CONFIG		0x00
+-	if (arg.args_count != 1)
+-		return ERR_PTR(-EINVAL);
++	if (arg.args_count != 1) {
++		mii_ts = ERR_PTR(-EINVAL);
++		goto put_node;
++	}
++
++	mii_ts = register_mii_timestamper(arg.np, arg.args[0]);
+ 
+-	return register_mii_timestamper(arg.np, arg.args[0]);
++put_node:
++	of_node_put(arg.np);
++	return mii_ts;
+ }
+ 
+ int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
 -- 
 2.39.5
 
