@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-105940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599359FB263
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D329FB196
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 679DA18859DA
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A769118848A7
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9142E1B3922;
-	Mon, 23 Dec 2024 16:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCCE1B3944;
+	Mon, 23 Dec 2024 16:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJYetiyW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqIifsAn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4C31A8F80;
-	Mon, 23 Dec 2024 16:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05531B3943;
+	Mon, 23 Dec 2024 16:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970655; cv=none; b=jnElvrQfh+hE1doGB5tb7z7lxb0T7xKMPlS9iMMfxZQyM9KwvF99a93+iVVzwxILcIj/Xto75iEtTCmb04VO2rS2TUV3fIWScvktRnzD0FmtjW7z7cUihm5b3eAnSn2Mry/9Wudp6Z/5pFISF68USEaLkAtkiX/hekCZLP63BwY=
+	t=1734970079; cv=none; b=FjrFOmhC5vy/Mp4NUKHjyT2UJA+0AgX4CRxRl22LYrFnGkxjMm0HPCMlcLGIythFp2DvFBeTtsSTeRRWFXoFKT6hahu+0cOfjyqniWTTkyTovy+G2sBA1y7Ttk2K560838mrBlKU4aPeaursHU2PYnoJUJhg3aUbUCmaAE7kTPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970655; c=relaxed/simple;
-	bh=VBvn5aiNh1xc1Y8rH6GuFUqdLkiQXWaqq0pfyZehzMc=;
+	s=arc-20240116; t=1734970079; c=relaxed/simple;
+	bh=4u0pgSurh8SPjCMiS3+ocJr+rEK+R6UjREaj39scb8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DV8SCTukRp18jJNIJPMYMcBsB+j41B70g0RicJwPVjakLYiq1iIf5bqqEmWTPfFQXi3n1NXjWy3xnzThDGlnYQ9buygZAF+cj15dEHgOIOfMQX1CZbLmooSXYbIQZgMggL47p3ANgdQC9NMaj/+RYxBrnQxvsbGktymiTZpaVFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJYetiyW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C65C4CED3;
-	Mon, 23 Dec 2024 16:17:34 +0000 (UTC)
+	 MIME-Version; b=NzwHwVA4chhawdFRQ21F3+A42hLWfXJ6FPfsuMzozCOOth/Dow39tc6+Ukl4KC7/0jdtcRduP4vBKWQ2jnMqGCegBlQoAqYCkUqdJjfGnEVpFCMHrQ3c/1U5ciWbwhF+9fVBLIdXhqI2X2xm2fBbwk4C3SSUVDR/jj1drFedbIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqIifsAn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4CFC4CED3;
+	Mon, 23 Dec 2024 16:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970655;
-	bh=VBvn5aiNh1xc1Y8rH6GuFUqdLkiQXWaqq0pfyZehzMc=;
+	s=korg; t=1734970079;
+	bh=4u0pgSurh8SPjCMiS3+ocJr+rEK+R6UjREaj39scb8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJYetiyW+Wp0R+iFtQycuGkrLZ3X4dFjbSookxPkYLPyDSXT2aW3PhCYtvoxdbfVH
-	 yrB9Y8c6j8gCSYXAJtiylj/ZdSUfem7uAMJs/WWmlHQ62S6LL5wqyzKXUBUEneyMuz
-	 y3nBecCyTQ4Qx6OzkJNNBaVR1wBBFU+KANu12ITg=
+	b=iqIifsAnL1KRN0MAR934f82Ilou7c64Kvo6N1jfKKQSU3E4JIFXS0tghJ0nrg4psV
+	 lK9wz2zhaCoXHeGxfXlm4PZ4w0YpaWMUrNK5UhHqQVZdnbVAE4CWseGHtlpHEbWEjc
+	 W2cuAaNBVoUiIOVK5OG5A7VUWr+UALUPazIhwwzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/83] net: ethernet: bgmac-platform: fix an OF node reference leak
-Date: Mon, 23 Dec 2024 16:59:08 +0100
-Message-ID: <20241223155354.774851160@linuxfoundation.org>
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 6.12 138/160] NFS/pnfs: Fix a live lock between recalled layouts and layoutget
+Date: Mon, 23 Dec 2024 16:59:09 +0100
+Message-ID: <20241223155414.130334920@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 0cb2c504d79e7caa3abade3f466750c82ad26f01 ]
+commit 62e2a47ceab8f3f7d2e3f0e03fdd1c5e0059fd8b upstream.
 
-The OF node obtained by of_parse_phandle() is not freed. Call
-of_node_put() to balance the refcount.
+When the server is recalling a layout, we should ignore the count of
+outstanding layoutget calls, since the server is expected to return
+either NFS4ERR_RECALLCONFLICT or NFS4ERR_RETURNCONFLICT for as long as
+the recall is outstanding.
+Currently, we may end up livelocking, causing the layout to eventually
+be forcibly revoked.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
-
-Fixes: 1676aba5ef7e ("net: ethernet: bgmac: device tree phy enablement")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241214014912.2810315-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf0291dd2267 ("pNFS: Ensure LAYOUTGET and LAYOUTRETURN are properly serialised")
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bgmac-platform.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/nfs/pnfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bgmac-platform.c b/drivers/net/ethernet/broadcom/bgmac-platform.c
-index b4381cd41979..3f4e8bac40c1 100644
---- a/drivers/net/ethernet/broadcom/bgmac-platform.c
-+++ b/drivers/net/ethernet/broadcom/bgmac-platform.c
-@@ -171,6 +171,7 @@ static int platform_phy_connect(struct bgmac *bgmac)
- static int bgmac_probe(struct platform_device *pdev)
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1308,7 +1308,7 @@ pnfs_prepare_layoutreturn(struct pnfs_la
+ 		enum pnfs_iomode *iomode)
  {
- 	struct device_node *np = pdev->dev.of_node;
-+	struct device_node *phy_node;
- 	struct bgmac *bgmac;
- 	struct resource *regs;
- 	int ret;
-@@ -236,7 +237,9 @@ static int bgmac_probe(struct platform_device *pdev)
- 	bgmac->cco_ctl_maskset = platform_bgmac_cco_ctl_maskset;
- 	bgmac->get_bus_clock = platform_bgmac_get_bus_clock;
- 	bgmac->cmn_maskset32 = platform_bgmac_cmn_maskset32;
--	if (of_parse_phandle(np, "phy-handle", 0)) {
-+	phy_node = of_parse_phandle(np, "phy-handle", 0);
-+	if (phy_node) {
-+		of_node_put(phy_node);
- 		bgmac->phy_connect = platform_phy_connect;
- 	} else {
- 		bgmac->phy_connect = bgmac_phy_connect_direct;
--- 
-2.39.5
-
+ 	/* Serialise LAYOUTGET/LAYOUTRETURN */
+-	if (atomic_read(&lo->plh_outstanding) != 0)
++	if (atomic_read(&lo->plh_outstanding) != 0 && lo->plh_return_seq == 0)
+ 		return false;
+ 	if (test_and_set_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags))
+ 		return false;
 
 
 
