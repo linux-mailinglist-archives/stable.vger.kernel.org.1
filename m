@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-105736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E1E9FB17A
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054B59FB1F3
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 578607A21BF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39AC018856E4
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8E11AB52D;
-	Mon, 23 Dec 2024 16:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D06F1B412F;
+	Mon, 23 Dec 2024 16:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTx9NbE8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8IoKhZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF54C188006;
-	Mon, 23 Dec 2024 16:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081981B395C;
+	Mon, 23 Dec 2024 16:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969967; cv=none; b=MHKuuN7NceGfQp75BKu+4VY7lJkHdnygEjMHvVgqM4yP9W7ZSEGbXmyKd5tRgRWR8zS0kc+TENefTaGGm1c+930q60wzIaTeKB5Xj+/JBOuSMXIQosZzbvijE/IpO6NC32F8TPh6vu4j8RkLdRVUcpP5MAyl6EWuXPzpywqhgdY=
+	t=1734970311; cv=none; b=VscZbLOPU8Kk9v5kypwrLFvSMujV8SQpmOzkKLiVGV0WRF/3KfYxcFoMVPIWh1Gw6FwZ9ow+YbOQHhm8AxKSD12nFuFpaGgTjA5xBe3C5GXky15k8THh2O6FonPUiExA3nRizUcPmnG1ety6fcnJU9kLbRMjcu/l5Iqi/eFv3bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969967; c=relaxed/simple;
-	bh=+SKNky6p52CItMrDoyDR0lFQVh4NAS/pFzkizuMG+7M=;
+	s=arc-20240116; t=1734970311; c=relaxed/simple;
+	bh=ioZhWNy86KMV87E3tFyj08L3AGjcohRuzob45fJRlic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GH66ngQBCQJNpzL6cY81zItfGiDBUYQMEdXILHrCwsca5eJ4xN/x7w4JqegtHpgiXct1S7rIOPBz6GfPHX4jVkXVctYmfEaJOTxw0MqAdJBmoguByJ5JkmyowWu2dkVB/WiMP5CvzLJexxAfqDJOBLgmShTa0ekrZ7a83W/dnvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTx9NbE8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3211BC4CED3;
-	Mon, 23 Dec 2024 16:06:06 +0000 (UTC)
+	 MIME-Version; b=sU0HmNZtM+Nmu4lABmoOY+7RZc3NaBU1Kij4YB3ji9yXIAoO4Qkh55BvTp0ncSkHGqKce4yoyjBR3/B7HCW2RZQe4ELpv5d0kUgRD4LiVW4Oxqx97hqzeOJ3H85EQAVTrcP+c204wVnEKfQhEGD2JJFHLTuDxnM+I7cftnjMTtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8IoKhZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0D5C4CED3;
+	Mon, 23 Dec 2024 16:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969967;
-	bh=+SKNky6p52CItMrDoyDR0lFQVh4NAS/pFzkizuMG+7M=;
+	s=korg; t=1734970310;
+	bh=ioZhWNy86KMV87E3tFyj08L3AGjcohRuzob45fJRlic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTx9NbE8H7Iz0UXXlYplHWbIMo5Ssehj9MKUWMxgrzRl2fzrU1eMedFyCJ+LiCOhm
-	 4T2zChS/Y9/xclhdhnJsQlA6W2FhGEvdPPrfDxNE9AxC4bR8cWdQlZm9PnTDKY50Tq
-	 p5MuBvh7mlOJrCCl1jJ3Yp7/Rn2iY+W053XJOns0=
+	b=E8IoKhZ6Q/maveT3JBUB8h3PVOuFdRR3MH9SX+fjZZv1A+PSjAe9bOwZvfe6Y9vrv
+	 ro2u7ab3uaRnw0boOV0zGd/OqGu9b6OZQyjL6SuD+Z+gg+tTALvf0X8U/g3gCUCZ6j
+	 WttjP3w4Cxwq5hsewC9ksR8sO1gWuLz1cHJ4dUL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 105/160] trace/ring-buffer: Do not use TP_printk() formatting for boot mapped buffers
+	syzbot+ea40e4294e58b0292f74@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 046/116] netdevsim: prevent bad user input in nsim_dev_health_break_write()
 Date: Mon, 23 Dec 2024 16:58:36 +0100
-Message-ID: <20241223155412.738603698@linuxfoundation.org>
+Message-ID: <20241223155401.348669640@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 8cd63406d08110c8098e1efda8aef7ddab4db348 upstream.
+[ Upstream commit ee76746387f6233bdfa93d7406990f923641568f ]
 
-The TP_printk() of a TRACE_EVENT() is a generic printf format that any
-developer can create for their event. It may include pointers to strings
-and such. A boot mapped buffer may contain data from a previous kernel
-where the strings addresses are different.
+If either a zero count or a large one is provided, kernel can crash.
 
-One solution is to copy the event content and update the pointers by the
-recorded delta, but a simpler solution (for now) is to just use the
-print_fields() function to print these events. The print_fields() function
-just iterates the fields and prints them according to what type they are,
-and ignores the TP_printk() format from the event itself.
-
-To understand the difference, when printing via TP_printk() the output
-looks like this:
-
-  4582.696626: kmem_cache_alloc: call_site=getname_flags+0x47/0x1f0 ptr=00000000e70e10e0 bytes_req=4096 bytes_alloc=4096 gfp_flags=GFP_KERNEL node=-1 accounted=false
-  4582.696629: kmem_cache_alloc: call_site=alloc_empty_file+0x6b/0x110 ptr=0000000095808002 bytes_req=360 bytes_alloc=384 gfp_flags=GFP_KERNEL node=-1 accounted=false
-  4582.696630: kmem_cache_alloc: call_site=security_file_alloc+0x24/0x100 ptr=00000000576339c3 bytes_req=16 bytes_alloc=16 gfp_flags=GFP_KERNEL|__GFP_ZERO node=-1 accounted=false
-  4582.696653: kmem_cache_free: call_site=do_sys_openat2+0xa7/0xd0 ptr=00000000e70e10e0 name=names_cache
-
-But when printing via print_fields() (echo 1 > /sys/kernel/tracing/options/fields)
-the same event output looks like this:
-
-  4582.696626: kmem_cache_alloc: call_site=0xffffffff92d10d97 (-1831793257) ptr=0xffff9e0e8571e000 (-107689771147264) bytes_req=0x1000 (4096) bytes_alloc=0x1000 (4096) gfp_flags=0xcc0 (3264) node=0xffffffff (-1) accounted=(0)
-  4582.696629: kmem_cache_alloc: call_site=0xffffffff92d0250b (-1831852789) ptr=0xffff9e0e8577f800 (-107689770747904) bytes_req=0x168 (360) bytes_alloc=0x180 (384) gfp_flags=0xcc0 (3264) node=0xffffffff (-1) accounted=(0)
-  4582.696630: kmem_cache_alloc: call_site=0xffffffff92efca74 (-1829778828) ptr=0xffff9e0e8d35d3b0 (-107689640864848) bytes_req=0x10 (16) bytes_alloc=0x10 (16) gfp_flags=0xdc0 (3520) node=0xffffffff (-1) accounted=(0)
-  4582.696653: kmem_cache_free: call_site=0xffffffff92cfbea7 (-1831879001) ptr=0xffff9e0e8571e000 (-107689771147264) name=names_cache
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20241218141507.28389a1d@gandalf.local.home
-Fixes: 07714b4bb3f98 ("tracing: Handle old buffer mappings for event strings and functions")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82c93a87bf8b ("netdevsim: implement couple of testing devlink health reporters")
+Reported-by: syzbot+ea40e4294e58b0292f74@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/675c6862.050a0220.37aaf.00b1.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20241213172518.2415666-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/netdevsim/health.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4377,6 +4377,15 @@ static enum print_line_t print_trace_fmt
- 	if (event) {
- 		if (tr->trace_flags & TRACE_ITER_FIELDS)
- 			return print_event_fields(iter, event);
-+		/*
-+		 * For TRACE_EVENT() events, the print_fmt is not
-+		 * safe to use if the array has delta offsets
-+		 * Force printing via the fields.
-+		 */
-+		if ((tr->text_delta || tr->data_delta) &&
-+		    event->type > __TRACE_LAST_TYPE)
-+			return print_event_fields(iter, event);
-+
- 		return event->funcs->trace(iter, sym_flags, event);
- 	}
+diff --git a/drivers/net/netdevsim/health.c b/drivers/net/netdevsim/health.c
+index eb04ed715d2d..c63427b71898 100644
+--- a/drivers/net/netdevsim/health.c
++++ b/drivers/net/netdevsim/health.c
+@@ -203,6 +203,8 @@ static ssize_t nsim_dev_health_break_write(struct file *file,
+ 	char *break_msg;
+ 	int err;
  
++	if (count == 0 || count > PAGE_SIZE)
++		return -EINVAL;
+ 	break_msg = memdup_user_nul(data, count);
+ 	if (IS_ERR(break_msg))
+ 		return PTR_ERR(break_msg);
+-- 
+2.39.5
+
 
 
 
