@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-105788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D93D9FB1AF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F9C9FB279
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549851884D30
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8322A1884F86
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2961B4127;
-	Mon, 23 Dec 2024 16:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D758E1B3925;
+	Mon, 23 Dec 2024 16:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOgO2lXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMQHIHMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE85C1B395C;
-	Mon, 23 Dec 2024 16:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951761865EB;
+	Mon, 23 Dec 2024 16:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970139; cv=none; b=J+xyTPNDLwJFoSCSBzGrs+qJRqi5oLgt4tzkVZwrqf0axvGlXtDIHqipt2WYHd4PW8y0f96X5AroHJ2lSnlRYSY6nLx9xH/M08pCAGsP72XROtFqPB6nvvvBByhMS/wggYsVTlC+P6DgVGuiO21uhvZusmGTAHdGQDHFGu8kewo=
+	t=1734970718; cv=none; b=mOTwZd38SdRwT8cbipdcesZexuCGIDA/YwWilKMscj2TfHW/Fh7GMhboMQ1i0g7C8mx7Cite6T2iILrr2rIJmrnoyz9gvk6E+ihUdO/IIFVhuE5iR4YbvIOAARnsOTnNXKYLlxe3w/xTc92keU4h+DCNDEC7f+oRB5Ue0tinaPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970139; c=relaxed/simple;
-	bh=8jctfwiTah3S2Qtr9MahY1v3MUyRd3hI9HtnU4b9e/A=;
+	s=arc-20240116; t=1734970718; c=relaxed/simple;
+	bh=byzeVrUNOgGEIkSrkpqRsY0r2SmAYx1KCDSvMEgMsQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyJ9wLv0RH/6iBXERC/i4jaXGgusfjlWSCMzsOo8mDmsJKSdXMEotvSr+rtbPTGrGBN7jaK7d4ko2NH4Liex9swvmK1DhYRzxB1uxaDKEWxzBq7o/3xNl1Kwtn3+P+cEKN66DaHgCKCt3bCa3jbAwqexn3yIVfH0wZd8j/vtBrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOgO2lXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4633BC4CED6;
-	Mon, 23 Dec 2024 16:08:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WoGMjcOk8N5qFKGcCTNXt44T1pt5VH3SHq5v9b6qavHMXBaMVled1OPafIo5kkTAlC1bFDNEpV5Fw4zrnzYfjabEiqjxvvXnf7O51ukysfSCffvifiBrn3j5Rl+12NL9uRxXsfEE5QnghtMIhcIuFdroYZcujy92yRJpzTPR554=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMQHIHMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A82BC4CED3;
+	Mon, 23 Dec 2024 16:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970138;
-	bh=8jctfwiTah3S2Qtr9MahY1v3MUyRd3hI9HtnU4b9e/A=;
+	s=korg; t=1734970718;
+	bh=byzeVrUNOgGEIkSrkpqRsY0r2SmAYx1KCDSvMEgMsQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xOgO2lXQ03s0ZBWqdCNl+9dv5xk2MTxZfDmJjA7zhmghL0jD1YtOegVbsIRV3bgjF
-	 A13u54M4ea2JzlkT2brzqa1XSYqd5dls4EYfFkgevwSrY0/eOxIrKGvsvW0XrGHmeE
-	 fi7NeHhNpGn7TCMd9F4wh2kq1r4A6sWgoqcndKw4=
+	b=NMQHIHMljeSSm68bTxE55ouUeyOIcYvtBeW/QC9W2Zm4VjtHOVk/r6+6kAqC4eeIU
+	 0quIGy4yXEkji1r8M/Aq9QQ1f9bwVRE3VgYCCVceFR4Kzs8Ii0Joy7WEYZvN2UUyaF
+	 kMfg91XHJp8GivxS4jUdFrmfoOudPg6KdTBaKglI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Huang Ying <ying.huang@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 157/160] mm: use aligned address in copy_user_gigantic_page()
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 49/83] drm/amdgpu: dont access invalid sched
 Date: Mon, 23 Dec 2024 16:59:28 +0100
-Message-ID: <20241223155414.889533845@linuxfoundation.org>
+Message-ID: <20241223155355.526931856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
+From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 
-commit f5d09de9f1bf9674c6418ff10d0a40cfe29268e1 upstream.
+[ Upstream commit a93b1020eb9386d7da11608477121b10079c076a ]
 
-In current kernel, hugetlb_wp() calls copy_user_large_folio() with the
-fault address.  Where the fault address may be not aligned with the huge
-page size.  Then, copy_user_large_folio() may call
-copy_user_gigantic_page() with the address, while
-copy_user_gigantic_page() requires the address to be huge page size
-aligned.  So, this may cause memory corruption or information leak,
-addtional, use more obvious naming 'addr_hint' instead of 'addr' for
-copy_user_gigantic_page().
+Since 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
+accessing job->base.sched can produce unexpected results as the initialisation
+of (*job)->base.sched done in amdgpu_job_alloc is overwritten by the
+memset.
 
-Link: https://lkml.kernel.org/r/20241028145656.932941-2-wangkefeng.wang@huawei.com
-Fixes: 530dd9926dc1 ("mm: memory: improve copy_user_large_folio()")
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Huang Ying <ying.huang@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit fixes an issue when a CS would fail validation and would
+be rejected after job->num_ibs is incremented. In this case,
+amdgpu_ib_free(ring->adev, ...) will be called, which would crash the
+machine because the ring value is bogus.
+
+To fix this, pass a NULL pointer to amdgpu_ib_free(): we can do this
+because the device is actually not used in this function.
+
+The next commit will remove the ring argument completely.
+
+Fixes: 2320c9e6a768 ("drm/sched: memset() 'job' in drm_sched_job_init()")
+Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2ae520cb12831d264ceb97c61f72c59d33c0dbd7)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |    5 ++---
- mm/memory.c  |    5 +++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5333,7 +5333,7 @@ again:
- 					break;
- 				}
- 				ret = copy_user_large_folio(new_folio, pte_folio,
--						ALIGN_DOWN(addr, sz), dst_vma);
-+							    addr, dst_vma);
- 				folio_put(pte_folio);
- 				if (ret) {
- 					folio_put(new_folio);
-@@ -6632,8 +6632,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
- 			*foliop = NULL;
- 			goto out;
- 		}
--		ret = copy_user_large_folio(folio, *foliop,
--					    ALIGN_DOWN(dst_addr, size), dst_vma);
-+		ret = copy_user_large_folio(folio, *foliop, dst_addr, dst_vma);
- 		folio_put(*foliop);
- 		*foliop = NULL;
- 		if (ret) {
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6817,13 +6817,14 @@ void folio_zero_user(struct folio *folio
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+index f34bc9bb7045..7f1e92110dd1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+@@ -150,7 +150,6 @@ void amdgpu_job_set_resources(struct amdgpu_job *job, struct amdgpu_bo *gds,
+ 
+ void amdgpu_job_free_resources(struct amdgpu_job *job)
+ {
+-	struct amdgpu_ring *ring = to_amdgpu_ring(job->base.sched);
+ 	struct dma_fence *f;
+ 	unsigned i;
+ 
+@@ -163,7 +162,7 @@ void amdgpu_job_free_resources(struct amdgpu_job *job)
+ 		f = NULL;
+ 
+ 	for (i = 0; i < job->num_ibs; ++i)
+-		amdgpu_ib_free(ring->adev, &job->ibs[i], f);
++		amdgpu_ib_free(NULL, &job->ibs[i], f);
  }
  
- static int copy_user_gigantic_page(struct folio *dst, struct folio *src,
--				   unsigned long addr,
-+				   unsigned long addr_hint,
- 				   struct vm_area_struct *vma,
- 				   unsigned int nr_pages)
- {
--	int i;
-+	unsigned long addr = ALIGN_DOWN(addr_hint, folio_size(dst));
- 	struct page *dst_page;
- 	struct page *src_page;
-+	int i;
- 
- 	for (i = 0; i < nr_pages; i++) {
- 		dst_page = folio_page(dst, i);
+ static void amdgpu_job_free_cb(struct drm_sched_job *s_job)
+-- 
+2.39.5
+
 
 
 
