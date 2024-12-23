@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-105918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F3C9FB24B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E946A9FB1C5
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A54C164229
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F3FA167103
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CEA12C544;
-	Mon, 23 Dec 2024 16:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8670819E971;
+	Mon, 23 Dec 2024 16:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPzaJ6RD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9WGx4nc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D25615C14B;
-	Mon, 23 Dec 2024 16:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FF613BC0C;
+	Mon, 23 Dec 2024 16:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970580; cv=none; b=YmDYAIGbHRK3kRp+aZOXSXCHmbeqoGm6iBpC3wM7ctlKrUvpAzT1okj9tOxOm5AQXi6EceruX5Ul9+5GUn014qdqo3IB+mAMgf9z/JOM48MklvU/e/cOf4kZ4GK8g8Wg2jwuHu1VDvSt4xSn4gCRXF7Bq7qGHm/cSoWh8NHeiB4=
+	t=1734970132; cv=none; b=ofYnt7B3AvMdaBF+c7Otx6trJoOW9jCVwXVyKaWL4lGdrMlaoQlZfUDfpBLGnh09vTP9gdHcMPS9hGNqrD7aDt7Wq7r0w0d4u+ACdU6iMPRBKee2Pah+SF6qgpmRT/dHk4K56Uqr4J9wnZowGy7+adsLyPQC8r1ge14+z/ZWqCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970580; c=relaxed/simple;
-	bh=tTb+TFVTD0INmTuqT7feVXs3QrIOeNKG0WjwUye2hss=;
+	s=arc-20240116; t=1734970132; c=relaxed/simple;
+	bh=VwPfrVcEePlL6nSJAsOo+XyzbiQwtkybrvArzW1AB/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPnFdr6xE3D2IR/fwbcFmlESYZtAmgEhXoHmCzY8BHUPtWl+CRnUuau0KUQGxa3a8vEs+zFlspQP1rxVgPRNWKR5dO15gcj2wpuQLp+9J6Wev+EyO835bFgVW2QynvBZIEgg+r+2C1vJ55AHncs0rp5lkKGwEXf2OC8qJzvKiJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPzaJ6RD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9F5C4CED3;
-	Mon, 23 Dec 2024 16:16:19 +0000 (UTC)
+	 MIME-Version; b=gkVFxgnTUUYJFWGr4LTOc/GqSFBQ5KHAADVMKqi/ShU/zUSaW/v7hStDKtarbEjsLoP/HIytcPjiLzbrHUvVDYqCQ6DLuit6OpXxG8Rrxon3M7fzUTu+HtS4c87rWgGnHLrM1EWI8wvkEEy5Zoh6pqxO9vtJ/VDcoOwa7aJbbPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9WGx4nc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6185DC4CED3;
+	Mon, 23 Dec 2024 16:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970579;
-	bh=tTb+TFVTD0INmTuqT7feVXs3QrIOeNKG0WjwUye2hss=;
+	s=korg; t=1734970131;
+	bh=VwPfrVcEePlL6nSJAsOo+XyzbiQwtkybrvArzW1AB/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPzaJ6RDn4z9Wzu54HFJnmoEupULHvQZeuQfi5ZEyKH/bMumooJtm07NuZIy5h60B
-	 yMOEAfBQy3IZ97ykzO1LiJSHUYcU2MohaDqEi2y2QgsWgOsao85wdo+nO71GisxITM
-	 q8O01/pNycS6hjKU/BMzOr/Es62slfVYBImMEFHY=
+	b=l9WGx4ncwFyNYkAUkoMez9NYRk9wa893h5VmWvlWp/1zRv8tnjuhwOD7h1ykPO1MC
+	 Xl/Xu2IDW0qhGjDmQCZysS7RK+3+hrYKOAp6bP6jAWtroFqQEBS22g00256rguTAyj
+	 GKyngcVP/dLqa8NuMe0ufaU8kYgyeVskpchgCtHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weining Lu <luweining@loongson.cn>,
-	Li Chen <chenli@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 096/116] selftests/bpf: Use asm constraint "m" for LoongArch
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>
+Subject: [PATCH 6.12 155/160] ceph: fix memory leak in ceph_direct_read_write()
 Date: Mon, 23 Dec 2024 16:59:26 +0100
-Message-ID: <20241223155403.296882886@linuxfoundation.org>
+Message-ID: <20241223155414.806006311@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 29d44cce324dab2bd86c447071a596262e7109b6 upstream.
+commit 66e0c4f91461d17d48071695271c824620bed4ef upstream.
 
-Currently, LoongArch LLVM does not support the constraint "o" and no plan
-to support it, it only supports the similar constraint "m", so change the
-constraints from "nor" in the "else" case to arch-specific "nmr" to avoid
-the build error such as "unexpected asm memory constraint" for LoongArch.
+The bvecs array which is allocated in iter_get_bvecs_alloc() is leaked
+and pages remain pinned if ceph_alloc_sparse_ext_map() fails.
 
-Fixes: 630301b0d59d ("selftests/bpf: Add basic USDT selftests")
-Suggested-by: Weining Lu <luweining@loongson.cn>
-Suggested-by: Li Chen <chenli@loongson.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+There is no need to delay the allocation of sparse_ext map until after
+the bvecs array is set up, so fix this by moving sparse_ext allocation
+a bit earlier.  Also, make a similar adjustment in __ceph_sync_read()
+for consistency (a leak of the same kind in __ceph_sync_read() has been
+addressed differently).
+
 Cc: stable@vger.kernel.org
-Link: https://llvm.org/docs/LangRef.html#supported-constraint-code-list
-Link: https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/LoongArch/LoongArchISelDAGToDAG.cpp#L172
-Link: https://lore.kernel.org/bpf/20241219111506.20643-1-yangtiezhu@loongson.cn
+Fixes: 03bc06c7b0bd ("ceph: add new mount option to enable sparse reads")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/sdt.h |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ceph/file.c |   43 ++++++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 21 deletions(-)
 
---- a/tools/testing/selftests/bpf/sdt.h
-+++ b/tools/testing/selftests/bpf/sdt.h
-@@ -102,6 +102,8 @@
- # define STAP_SDT_ARG_CONSTRAINT        nZr
- # elif defined __arm__
- # define STAP_SDT_ARG_CONSTRAINT        g
-+# elif defined __loongarch__
-+# define STAP_SDT_ARG_CONSTRAINT        nmr
- # else
- # define STAP_SDT_ARG_CONSTRAINT        nor
- # endif
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -1116,6 +1116,16 @@ ssize_t __ceph_sync_read(struct inode *i
+ 			len = read_off + read_len - off;
+ 		more = len < iov_iter_count(to);
+ 
++		op = &req->r_ops[0];
++		if (sparse) {
++			extent_cnt = __ceph_sparse_read_ext_count(inode, read_len);
++			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
++			if (ret) {
++				ceph_osdc_put_request(req);
++				break;
++			}
++		}
++
+ 		num_pages = calc_pages_for(read_off, read_len);
+ 		page_off = offset_in_page(off);
+ 		pages = ceph_alloc_page_vector(num_pages, GFP_KERNEL);
+@@ -1129,16 +1139,6 @@ ssize_t __ceph_sync_read(struct inode *i
+ 						 offset_in_page(read_off),
+ 						 false, true);
+ 
+-		op = &req->r_ops[0];
+-		if (sparse) {
+-			extent_cnt = __ceph_sparse_read_ext_count(inode, read_len);
+-			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
+-			if (ret) {
+-				ceph_osdc_put_request(req);
+-				break;
+-			}
+-		}
+-
+ 		ceph_osdc_start_request(osdc, req);
+ 		ret = ceph_osdc_wait_request(osdc, req);
+ 
+@@ -1551,6 +1551,16 @@ ceph_direct_read_write(struct kiocb *ioc
+ 			break;
+ 		}
+ 
++		op = &req->r_ops[0];
++		if (sparse) {
++			extent_cnt = __ceph_sparse_read_ext_count(inode, size);
++			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
++			if (ret) {
++				ceph_osdc_put_request(req);
++				break;
++			}
++		}
++
+ 		len = iter_get_bvecs_alloc(iter, size, &bvecs, &num_pages);
+ 		if (len < 0) {
+ 			ceph_osdc_put_request(req);
+@@ -1560,6 +1570,8 @@ ceph_direct_read_write(struct kiocb *ioc
+ 		if (len != size)
+ 			osd_req_op_extent_update(req, 0, len);
+ 
++		osd_req_op_extent_osd_data_bvecs(req, 0, bvecs, num_pages, len);
++
+ 		/*
+ 		 * To simplify error handling, allow AIO when IO within i_size
+ 		 * or IO can be satisfied by single OSD request.
+@@ -1591,17 +1603,6 @@ ceph_direct_read_write(struct kiocb *ioc
+ 			req->r_mtime = mtime;
+ 		}
+ 
+-		osd_req_op_extent_osd_data_bvecs(req, 0, bvecs, num_pages, len);
+-		op = &req->r_ops[0];
+-		if (sparse) {
+-			extent_cnt = __ceph_sparse_read_ext_count(inode, size);
+-			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
+-			if (ret) {
+-				ceph_osdc_put_request(req);
+-				break;
+-			}
+-		}
+-
+ 		if (aio_req) {
+ 			aio_req->total_len += len;
+ 			aio_req->num_reqs++;
 
 
 
