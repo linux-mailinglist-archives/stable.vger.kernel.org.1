@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C1C9FB1C2
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE629FB21E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14188166D77
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12FEA18820B3
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8581AD41F;
-	Mon, 23 Dec 2024 16:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6051AF0C7;
+	Mon, 23 Dec 2024 16:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFONzzJW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYZpftnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96103D6D;
-	Mon, 23 Dec 2024 16:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFD37E0FF;
+	Mon, 23 Dec 2024 16:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970125; cv=none; b=YivgAr4W5gzpoe+QHc4QAOig1Ye1a0nprK8nEkGMv/EAVtyO5OgfX0ojXscqog7k1JTVyI+J2qT+H/jdJNLUSjf9E28STSUvq4QvgOHegn4gFsw+3iMUcqW8elES2z3ttXmUgcyx9MXJOoofkfm/5VdfjWc4ohFDGXRnXxFPwAM=
+	t=1734970447; cv=none; b=H7f5WVzecPn7MclB0CVUwzlatsTwACpYoF4JqpnhWaToLw/83rhJNs+ud0dJA42jrSa8ALLUBUV8mSjsthf7M7TWxo3nhO65lWgAr+hAV8GSu5du2mlbkUsvE0nT33bQOxcI1LnhSvH/InjI3j+09LqL8j+hUrYtVLMCOx8JbiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970125; c=relaxed/simple;
-	bh=eiT3Jap8GrEEMZS1Z+JnJbeR08vSggWLQFtDIJMGSlg=;
+	s=arc-20240116; t=1734970447; c=relaxed/simple;
+	bh=Jx9KXYHw6VM2LGFQR6Lhndi20AA3B4fh1D3by7l4wj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kIZaFNrmb0jhlbe8OwVRyaO9LtyYiSpDxrVnIsNaC2Cyti+oxTlBjeEBt2o3TwYinnM+wNiFtPgvv8H3WrK6dN/820DWlxJT+kuX0prjcDVfdwwB5cOrTrvw2HpQc+U0h5ul57S5f2Nd5KTexXJgekXsCC3JML4vdcxpmMNWMWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFONzzJW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6FDC4CED3;
-	Mon, 23 Dec 2024 16:08:44 +0000 (UTC)
+	 MIME-Version; b=COcY9oQwEICuRYnDffCT1SGsSVhnfbbFotqzU731909512o/X1m2WeED7ErpYWBvaYhsk9cRnJL+yc3AwqXatyrbX6cLyAKMMUv2CRq8sjvwjFifEOXAEsTm9rPHTvir7DPLkyoOLe8S3tAqsjPwsu+lK854855+2Xz9hLgaM/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYZpftnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242CDC4CED3;
+	Mon, 23 Dec 2024 16:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970125;
-	bh=eiT3Jap8GrEEMZS1Z+JnJbeR08vSggWLQFtDIJMGSlg=;
+	s=korg; t=1734970447;
+	bh=Jx9KXYHw6VM2LGFQR6Lhndi20AA3B4fh1D3by7l4wj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFONzzJWHoVUkYlUQn6+LsWOv55wZA3otGDxacPjmaFdsMhF45esVlmmyyQMbSpt3
-	 uvllJAWJPlWoJQJizM4cwKhqzSQPN3x1wCjFfi8zZ83ixdvP43ecwYWqDIpRnn87do
-	 /04TPDtDO7G1jEMQq413yNQZBEw35q0CIGha24tg=
+	b=PYZpftnN+ZSrbiM4Y/GwfFLw9CmMRXKo7/YdJcaGy8J6LJtwxqohq2oJxov47tgjy
+	 Lr8NlX2N5rGKXjp1hFpuou8QTEERX4xuXLugz3tr9P7rfyR665J7wklo7+W19+NuiT
+	 YoUGaS9CKrbmBSF1bbTV2QdsXqIbZXpesjG8N9uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Orth <ju.orth@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PATCH 6.12 145/160] udmabuf: fix racy memfd sealing check
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 086/116] zram: fix uninitialized ZRAM not releasing backing device
 Date: Mon, 23 Dec 2024 16:59:16 +0100
-Message-ID: <20241223155414.407956911@linuxfoundation.org>
+Message-ID: <20241223155402.907380237@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Kairui Song <kasong@tencent.com>
 
-commit 9cb189a882738c1d28b349d4e7c6a1ef9b3d8f87 upstream.
+commit 74363ec674cb172d8856de25776c8f3103f05e2f upstream.
 
-The current check_memfd_seals() is racy: Since we first do
-check_memfd_seals() and then udmabuf_pin_folios() without holding any
-relevant lock across both, F_SEAL_WRITE can be set in between.
-This is problematic because we can end up holding pins to pages in a
-write-sealed memfd.
+Setting backing device is done before ZRAM initialization.  If we set the
+backing device, then remove the ZRAM module without initializing the
+device, the backing device reference will be leaked and the device will be
+hold forever.
 
-Fix it using the inode lock, that's probably the easiest way.
-In the future, we might want to consider moving this logic into memfd,
-especially if anyone else wants to use memfd_pin_folios().
+Fix this by always reset the ZRAM fully on rmmod or reset store.
 
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219106
-Closes: https://lore.kernel.org/r/CAG48ez0w8HrFEZtJkfmkVKFDhE5aP7nz=obrimeTgpD+StkV9w@mail.gmail.com
-Fixes: fbb0de795078 ("Add udmabuf misc device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241204-udmabuf-fixes-v2-1-23887289de1c@google.com
+Link: https://lkml.kernel.org/r/20241209165717.94215-3-ryncsn@gmail.com
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/udmabuf.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/block/zram/zram_drv.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -394,14 +394,19 @@ static long udmabuf_create(struct miscde
- 			goto err;
- 		}
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1238,12 +1238,16 @@ static void zram_meta_free(struct zram *
+ 	size_t num_pages = disksize >> PAGE_SHIFT;
+ 	size_t index;
  
-+		/*
-+		 * Take the inode lock to protect against concurrent
-+		 * memfd_add_seals(), which takes this lock in write mode.
-+		 */
-+		inode_lock_shared(file_inode(memfd));
- 		ret = check_memfd_seals(memfd);
--		if (ret < 0) {
--			fput(memfd);
--			goto err;
--		}
-+		if (ret)
-+			goto out_unlock;
++	if (!zram->table)
++		return;
++
+ 	/* Free all pages that are still in this zram device */
+ 	for (index = 0; index < num_pages; index++)
+ 		zram_free_page(zram, index);
  
- 		ret = udmabuf_pin_folios(ubuf, memfd, list[i].offset,
- 					 list[i].size);
-+out_unlock:
-+		inode_unlock_shared(file_inode(memfd));
- 		fput(memfd);
- 		if (ret)
- 			goto err;
+ 	zs_destroy_pool(zram->mem_pool);
+ 	vfree(zram->table);
++	zram->table = NULL;
+ }
+ 
+ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+@@ -2023,11 +2027,6 @@ static void zram_reset_device(struct zra
+ 
+ 	zram->limit_pages = 0;
+ 
+-	if (!init_done(zram)) {
+-		up_write(&zram->init_lock);
+-		return;
+-	}
+-
+ 	set_capacity_and_notify(zram->disk, 0);
+ 	part_stat_set_all(zram->disk->part0, 0);
+ 
 
 
 
