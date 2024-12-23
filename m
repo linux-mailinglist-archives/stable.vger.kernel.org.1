@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-105961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AF49FB278
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833569FB243
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC0E27A1115
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8A801885AF9
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4161AF0B9;
-	Mon, 23 Dec 2024 16:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEA819E98B;
+	Mon, 23 Dec 2024 16:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpL7er9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEltHLG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4EF8827;
-	Mon, 23 Dec 2024 16:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C98F12C544;
+	Mon, 23 Dec 2024 16:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970725; cv=none; b=PLiqxtY7ZYzO9NYTFOlyhbYMgo+QXJyiWU6WYMRZRMK70eG2DSTMJZlv9OkUMBXWdrik3Vc23H3gzx9h1xvnmHorTZ/s1UckPvzP9IIDM/dv0hpIk9L0wMcI6qRAIvurfPMF8KgbcCLeZ4Y6gpqaF21bQ+p3WtsXRXw9c797x+I=
+	t=1734970556; cv=none; b=STD/Uy+PvCXqKSOmoA2isNEEZzuo7CqVppKFHs0htS0BAXROMZKirQKaEUeITMA1/e3K6NU1BvOILbcwFCuQcvLFv1R3NvZKeh/Y78GjHEPYMKgfU3cTgk7wad5nE+q31ck5nO7HzXfmVnT8fdTgkkXX09Xg5gG3iUflJQ5/lqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970725; c=relaxed/simple;
-	bh=L9ehiYDs7N43ubJtcsxa4ddPVySN6erWvdc2P32LIDk=;
+	s=arc-20240116; t=1734970556; c=relaxed/simple;
+	bh=izV76XIKgDDhOZWP7qWKc4guhlsmm3WMrnEZ7QcLwrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbPnae9nWM3BDJegleLpcN0kaE9svhdP/5ks7pcUbr4T+YvjLc9Z8lc1uDtymlhnqJPRk32KHas7J7002uGzoy7vLMNA9H3k60IWxAkLxvbiCPLWsRGdOjpbtBo4Td2n1TpBlktuzg18UPP7SnA/AJqIeDMmNKwHpaXHjL5iua4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpL7er9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ABBC4CED3;
-	Mon, 23 Dec 2024 16:18:44 +0000 (UTC)
+	 MIME-Version; b=anzszTTMDH9Z6c1MEQILHxHjY3i6TvEtEVUi4ZFtYy98UBROqpSM/Kv3jSwk+NeLo7DB9d5kuq8uMqVrr6C0PCMYnflmZ2SB96TS6oJ3liUen6H8RVMBZdeIwhAiN14SaSGXjVhIP54ON0JHVMExyNGesnbiLHZt4Cq2zMj2wks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEltHLG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E62C4CED3;
+	Mon, 23 Dec 2024 16:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970724;
-	bh=L9ehiYDs7N43ubJtcsxa4ddPVySN6erWvdc2P32LIDk=;
+	s=korg; t=1734970556;
+	bh=izV76XIKgDDhOZWP7qWKc4guhlsmm3WMrnEZ7QcLwrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpL7er9gtrNAFMQ2kuvLMnYoQkUyuWV29WInZfk53vkmx1KlwdwToTEIe6f44OlCq
-	 aOBgBLH38lATt10BU3oUCxW1ULwYBmcofIl9vqLB7gmu+GGm/sZoZXgVA/RcI82qeg
-	 smk84F8+PQMzIW94zBCsK7u4NTlC8ANs5oVrbZCk=
+	b=QEltHLG38+rfd3FCfZQkJO19vaSE4o61vr4bm+noRkwGnJDDkBxO7//WjwThw2e6l
+	 u++2n7GG0LHa75Gy34aFb/M270OKSVkI8WC+rAqiL5tXYozpH9RYaRFL76htrcGYyw
+	 GXpXqDke/qxrmadG7XDEzDPxubewjWCT3MsYeWCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 50/83] hwmon: (tmp513) Dont use "proxy" headers
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 6.6 099/116] NFS/pnfs: Fix a live lock between recalled layouts and layoutget
 Date: Mon, 23 Dec 2024 16:59:29 +0100
-Message-ID: <20241223155355.562699319@linuxfoundation.org>
+Message-ID: <20241223155403.409744429@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 5d9ad4e0fa7cc27199fdb94beb6ec5f655ba9489 ]
+commit 62e2a47ceab8f3f7d2e3f0e03fdd1c5e0059fd8b upstream.
 
-The driver uses math.h and not util_macros.h.
+When the server is recalling a layout, we should ignore the count of
+outstanding layoutget calls, since the server is expected to return
+either NFS4ERR_RECALLCONFLICT or NFS4ERR_RETURNCONFLICT for as long as
+the recall is outstanding.
+Currently, we may end up livelocking, causing the layout to eventually
+be forcibly revoked.
 
-All the same for the kernel.h, replace it with what the driver is using.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231128180654.395692-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 74d7e038fd07 ("hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf0291dd2267 ("pNFS: Ensure LAYOUTGET and LAYOUTRETURN are properly serialised")
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/tmp513.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/nfs/pnfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index b9a93ee9c236..fe3f1113b64e 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -19,15 +19,19 @@
-  * the Free Software Foundation; version 2 of the License.
-  */
- 
-+#include <linux/bitops.h>
-+#include <linux/bug.h>
-+#include <linux/device.h>
- #include <linux/err.h>
- #include <linux/hwmon.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
--#include <linux/kernel.h>
-+#include <linux/math.h>
- #include <linux/module.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
--#include <linux/util_macros.h>
-+#include <linux/types.h>
- 
- // Common register definition
- #define TMP51X_SHUNT_CONFIG		0x00
--- 
-2.39.5
-
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1196,7 +1196,7 @@ pnfs_prepare_layoutreturn(struct pnfs_la
+ 		enum pnfs_iomode *iomode)
+ {
+ 	/* Serialise LAYOUTGET/LAYOUTRETURN */
+-	if (atomic_read(&lo->plh_outstanding) != 0)
++	if (atomic_read(&lo->plh_outstanding) != 0 && lo->plh_return_seq == 0)
+ 		return false;
+ 	if (test_and_set_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags))
+ 		return false;
 
 
 
