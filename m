@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-105805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D0669FB1D7
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDEC9FB155
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84AA6167798
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1AF4162EF0
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95B61B21BD;
-	Mon, 23 Dec 2024 16:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BD0188733;
+	Mon, 23 Dec 2024 16:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZ+Wi4Ae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb8bn1wD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7616912D1F1;
-	Mon, 23 Dec 2024 16:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9485112D1F1;
+	Mon, 23 Dec 2024 16:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970197; cv=none; b=SUQ96udF4Mdw+eCEpi/LhGAgS1lwQhVHNQxhP4KmJBliaLTBVNOjYnvu9+7FCyDC/q/CpbI+BxBDnmSCLqvuVb7HHQsxKivBQhQ6D92GN+ogyXjDmLIlCYTjZNKysLT6kTKk8L++v2WnKypCNIL3HTs8Wr0snlUTkzh9fn1be9E=
+	t=1734969858; cv=none; b=oboDgXRBShkneM4DeHG9J7k4H2AQ1KLp6+jQgBOJZjb/y54IyzuUr+C2SWAAO3TIjVxGs822UrFcYColjMokWvdqMiYVXGy7lMkdgvVR+HmuGCYTfkmNMw6znCVli8jjTLM393yUKJ9tnfzg/goeIxFvfaHr2Z9EA1RwijbAuX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970197; c=relaxed/simple;
-	bh=gR9jEeM6bO6MqLwooFV5h6KRhXev4G1t1Y5MKagtcmA=;
+	s=arc-20240116; t=1734969858; c=relaxed/simple;
+	bh=KZrhOPLOu4l41oix0Dt81NRuS1yUFhXigN0hMrdbltY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alcHaXl5ncPcs9t6BSnUNjyewJ7wJYF8NwnasrM7e4kBwjyYiUssuLHWYtbHNDC8Ffj6Vxx8lBcjYUx3C9M43PuNlTmNeJr0nrKvpitw65C8dSTyEQO7BzFtYsCodcMk/EVEXoOm1Sq3WkXLy+ReXycySizrGz9K/4xKGMowox4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZ+Wi4Ae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D988CC4CED3;
-	Mon, 23 Dec 2024 16:09:56 +0000 (UTC)
+	 MIME-Version; b=eJ9lmDeg/d04iVpxhy0DwxbndsbQgPT7BJ0D6nlZovHNxUH75emD7o8/LHnysERb8/TJUo0TfHbkDpZXYrUljNMiFd+7aFspAyVeNJ8Y35/hQLDnUCUWqp27aYvkhrpY2LrBKI5VTv+4Gg6bGo5RYUINpbJrCD55/UajVJblVfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb8bn1wD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A89C4CED3;
+	Mon, 23 Dec 2024 16:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970197;
-	bh=gR9jEeM6bO6MqLwooFV5h6KRhXev4G1t1Y5MKagtcmA=;
+	s=korg; t=1734969858;
+	bh=KZrhOPLOu4l41oix0Dt81NRuS1yUFhXigN0hMrdbltY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZ+Wi4AefcrB36wo/oKV+3eU252YDfA4eSss11l7hdMbTtoZPoP/hp46ZBWIQsZ03
-	 o0IGvhC2uzXnsxJpFH4H6D6JNxruhtjw3kmci3caShQnMGHATQAm9MqLGKqLi8T7dd
-	 pFwwkA+Yzr/L8Lz9N0zjJA5bpxCGK/MyKgI23fWw=
+	b=Cb8bn1wDb06fiz1Tv5NfrBV21v3Jy/QM3zCVnhHaWhnZL8rtLrLGkwKNL0JAE4kfq
+	 VtcCuVsYuO8Tt4tevC1djHccj4yqGrqk2axJM1E2XrNPasypx/jMauOIZtCcn5YQa8
+	 dnX+ZJUFDxvEs7XM1hyvy05gIXvl+pnH8YfRjKi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/116] platform/x86: p2sb: Make p2sb_get_devfn() return void
-Date: Mon, 23 Dec 2024 16:58:03 +0100
-Message-ID: <20241223155400.057672763@linuxfoundation.org>
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.12 073/160] i2c: riic: Always round-up when calculating bus period
+Date: Mon, 23 Dec 2024 16:58:04 +0100
+Message-ID: <20241223155411.507576309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 3ff5873602a874035ba28826852bd45393002a08 ]
+commit de6b43798d9043a7c749a0428dbb02d5fff156e5 upstream.
 
-p2sb_get_devfn() always succeeds, make it return void and
-remove error checking from its callers.
+Currently, the RIIC driver may run the I2C bus faster than requested,
+which may cause subtle failures.  E.g. Biju reported a measured bus
+speed of 450 kHz instead of the expected maximum of 400 kHz on RZ/G2L.
 
-Reviewed-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240305094500.23778-1-hdegoede@redhat.com
-Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The initial calculation of the bus period uses DIV_ROUND_UP(), to make
+sure the actual bus speed never becomes faster than the requested bus
+speed.  However, the subsequent division-by-two steps do not use
+round-up, which may lead to a too-small period, hence a too-fast and
+possible out-of-spec bus speed.  E.g. on RZ/Five, requesting a bus speed
+of 100 resp. 400 kHz will yield too-fast target bus speeds of 100806
+resp. 403226 Hz instead of 97656 resp. 390625 Hz.
+
+Fix this by using DIV_ROUND_UP() in the subsequent divisions, too.
+
+Tested on RZ/A1H, RZ/A2M, and RZ/Five.
+
+Fixes: d982d66514192cdb ("i2c: riic: remove clock and frequency restrictions")
+Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: <stable@vger.kernel.org> # v4.15+
+Link: https://lore.kernel.org/r/c59aea77998dfea1b4456c4b33b55ab216fcbf5e.1732284746.git.geert+renesas@glider.be
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/p2sb.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/i2c/busses/i2c-riic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
-index 053be5c5e0ca..687e341e3206 100644
---- a/drivers/platform/x86/p2sb.c
-+++ b/drivers/platform/x86/p2sb.c
-@@ -43,7 +43,7 @@ struct p2sb_res_cache {
+--- a/drivers/i2c/busses/i2c-riic.c
++++ b/drivers/i2c/busses/i2c-riic.c
+@@ -352,7 +352,7 @@ static int riic_init_hw(struct riic_dev
+ 		if (brl <= (0x1F + 3))
+ 			break;
  
- static struct p2sb_res_cache p2sb_resources[NR_P2SB_RES_CACHE];
+-		total_ticks /= 2;
++		total_ticks = DIV_ROUND_UP(total_ticks, 2);
+ 		rate /= 2;
+ 	}
  
--static int p2sb_get_devfn(unsigned int *devfn)
-+static void p2sb_get_devfn(unsigned int *devfn)
- {
- 	unsigned int fn = P2SB_DEVFN_DEFAULT;
- 	const struct x86_cpu_id *id;
-@@ -53,7 +53,6 @@ static int p2sb_get_devfn(unsigned int *devfn)
- 		fn = (unsigned int)id->driver_data;
- 
- 	*devfn = fn;
--	return 0;
- }
- 
- static bool p2sb_valid_resource(const struct resource *res)
-@@ -132,9 +131,7 @@ static int p2sb_cache_resources(void)
- 	int ret;
- 
- 	/* Get devfn for P2SB device itself */
--	ret = p2sb_get_devfn(&devfn_p2sb);
--	if (ret)
--		return ret;
-+	p2sb_get_devfn(&devfn_p2sb);
- 
- 	bus = p2sb_get_bus(NULL);
- 	if (!bus)
-@@ -191,17 +188,13 @@ static int p2sb_cache_resources(void)
- int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
- {
- 	struct p2sb_res_cache *cache;
--	int ret;
- 
- 	bus = p2sb_get_bus(bus);
- 	if (!bus)
- 		return -ENODEV;
- 
--	if (!devfn) {
--		ret = p2sb_get_devfn(&devfn);
--		if (ret)
--			return ret;
--	}
-+	if (!devfn)
-+		p2sb_get_devfn(&devfn);
- 
- 	cache = &p2sb_resources[PCI_FUNC(devfn)];
- 	if (cache->bus_dev_id != bus->dev.id)
--- 
-2.39.5
-
 
 
 
