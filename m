@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-105899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FDE9FB238
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D729FB287
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB7A4163180
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0995164ACE
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B50B1B21BD;
-	Mon, 23 Dec 2024 16:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F5D1AAE0B;
+	Mon, 23 Dec 2024 16:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCemoz9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwQ2kliW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECADD12C544;
-	Mon, 23 Dec 2024 16:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767FF17A597;
+	Mon, 23 Dec 2024 16:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970519; cv=none; b=B1ZbeWTZdjjV+q3gDcIlWVQ8ys70GSc/G7xFPg6WfxKGuqVH8PUoczDjbZ+zVcfEvNvkDb9ZZO3HzauD+sPCdRfYwBYRnh8qpp+ySsF0EFMMuA9n8FEpgxytoelgJRKVegzBx8XIkuQ9qRiogevSR5HYFhiiU7YGUbAvhWnpa+I=
+	t=1734970751; cv=none; b=X0wQGUQFur5MR6Q4NQGjeQ+184ddhxIIoe8eF6uPR18uOnUEEDNKorNHIPqxts+rqDLrj43tDHgLEoek8akVigHebvaaNg4KvZsy+jk6mW7Uq2CmiSCQMe0Fy0gXULZ+T33wUe0e8tQfNxWVslRlzqMRItXStkjnf8Ue/bOlBJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970519; c=relaxed/simple;
-	bh=gTGVipsKljuXB60K+PG7R7au31EMMCWknWR9w6t5Ue4=;
+	s=arc-20240116; t=1734970751; c=relaxed/simple;
+	bh=bGrEaQhdqiiIQIBgk9j6V4P/EWQBDZGNBL99afOhy1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQqbzsDDlHD3BlFfRc1Z+CxpHSZlZExRSsvB8ktit6D8oA7AnxmPvXYCYFY6qKWqDQKW/YCcrEm0paLKLLwe92cIs0md3FJUrd0yoDglnp4TWedwnnw/JVhiZX0wg/9bVwvB6PRXkqbhrYTUugy4UbGR2kY58Mw/CJU+ImEsp5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCemoz9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EC8C4CED3;
-	Mon, 23 Dec 2024 16:15:16 +0000 (UTC)
+	 MIME-Version; b=TF3XTVSxP6cvePG4bYE/ZLaOg6TrTHh3RfxhGf0fR/eDk1Y0IfuX0Ijy1YgKiH++OnBJ8JY5UBn1QXLZ4Xyw4EsX2juWFIEcNsrR++P032gv5R7wer86lgKD4hw+4UDbACMRge7xyFrDT2P9QF2Yo9kSMK5eiLYjNYv7WHu0Gag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwQ2kliW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6573C4CED3;
+	Mon, 23 Dec 2024 16:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970517;
-	bh=gTGVipsKljuXB60K+PG7R7au31EMMCWknWR9w6t5Ue4=;
+	s=korg; t=1734970751;
+	bh=bGrEaQhdqiiIQIBgk9j6V4P/EWQBDZGNBL99afOhy1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vCemoz9+dJswTqqwB6HZ6DApavzZObdxt9fLK5H5F335FHpgeYf36Gpbx2RYrdegg
-	 S+vZdIcsQCDwR+ELE/Cq+BDctnVRHAgVxcPFa5JW9ykhV6FH4iBNGu9aTmxyB+oywg
-	 xRA3ROBQM5yPvRj+mCvVVyJV+99Layk6m0sMU7Bc=
+	b=TwQ2kliWCTT5KSgS8eIfXYu10nDYJYQMsQvusJSMoGebUNseQiR9dh0yvT6oCcqzW
+	 stvJioRt94jkk+lT9sK1BGKjRJrXOZCYsbG4zRjPBDl1FdFg8x6VfAJH9zLlUA+tPr
+	 EdO0BgDimxK5FUncwPo8odktbLxpfWtupqj6LbL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>
-Subject: [PATCH 6.6 107/116] ceph: validate snapdirname option length when mounting
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 58/83] zram: fix uninitialized ZRAM not releasing backing device
 Date: Mon, 23 Dec 2024 16:59:37 +0100
-Message-ID: <20241223155403.709830093@linuxfoundation.org>
+Message-ID: <20241223155355.874444273@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Kairui Song <kasong@tencent.com>
 
-commit 12eb22a5a609421b380c3c6ca887474fb2089b2c upstream.
+commit 74363ec674cb172d8856de25776c8f3103f05e2f upstream.
 
-It becomes a path component, so it shouldn't exceed NAME_MAX
-characters.  This was hardened in commit c152737be22b ("ceph: Use
-strscpy() instead of strcpy() in __get_snap_name()"), but no actual
-check was put in place.
+Setting backing device is done before ZRAM initialization.  If we set the
+backing device, then remove the ZRAM module without initializing the
+device, the backing device reference will be leaked and the device will be
+hold forever.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Fix this by always reset the ZRAM fully on rmmod or reset store.
+
+Link: https://lkml.kernel.org/r/20241209165717.94215-3-ryncsn@gmail.com
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/super.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/zram/zram_drv.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -427,6 +427,8 @@ static int ceph_parse_mount_param(struct
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1168,12 +1168,16 @@ static void zram_meta_free(struct zram *
+ 	size_t num_pages = disksize >> PAGE_SHIFT;
+ 	size_t index;
  
- 	switch (token) {
- 	case Opt_snapdirname:
-+		if (strlen(param->string) > NAME_MAX)
-+			return invalfc(fc, "snapdirname too long");
- 		kfree(fsopt->snapdir_name);
- 		fsopt->snapdir_name = param->string;
- 		param->string = NULL;
++	if (!zram->table)
++		return;
++
+ 	/* Free all pages that are still in this zram device */
+ 	for (index = 0; index < num_pages; index++)
+ 		zram_free_page(zram, index);
+ 
+ 	zs_destroy_pool(zram->mem_pool);
+ 	vfree(zram->table);
++	zram->table = NULL;
+ }
+ 
+ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+@@ -1722,11 +1726,6 @@ static void zram_reset_device(struct zra
+ 
+ 	zram->limit_pages = 0;
+ 
+-	if (!init_done(zram)) {
+-		up_write(&zram->init_lock);
+-		return;
+-	}
+-
+ 	set_capacity_and_notify(zram->disk, 0);
+ 	part_stat_set_all(zram->disk->part0, 0);
+ 
 
 
 
