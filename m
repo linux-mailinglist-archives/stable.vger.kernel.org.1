@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-105993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEED9FB29E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:20:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103269FB2A9
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B71318818ED
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:20:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A21097A072A
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117571A8F80;
-	Mon, 23 Dec 2024 16:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716CE1B87CA;
+	Mon, 23 Dec 2024 16:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm00i1aZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qThIiPHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E388827;
-	Mon, 23 Dec 2024 16:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB941B85F6;
+	Mon, 23 Dec 2024 16:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970833; cv=none; b=Yig8uY5jwrvRlTPHzhXZpSPoxzy4qgOCpltxwUinzSDqHZa/18zs40YLoVO7NqDUZAkYuEJGAG2IcIKjqwQpXfvhzNY5Gu5tPeWZcC1CIfAQJzCz5lEvx4roKDh297llE2lu1K7rIIDcew3W2lEcZoZMWdzkJa5qi4A40noDvpA=
+	t=1734970841; cv=none; b=XWr5/lssT52BANwS7rWoFQ29Q6BBjacJdKiIWJOzOrV5CwqU+s1b6cZEPmBfcNkOeV5DRLs3/VFk/VfKg60ZzQMegxYccsqWri7vteKfFkjBXuFa42U7cBKf44qAAzbepnxUeJEpXAvDkvAlhTSVQgYKBkQ2FcUpjEPVwcytIiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970833; c=relaxed/simple;
-	bh=6YXyz/solEWs1CY3RlvTI08WHD1gvfrudJ4MIIACxVo=;
+	s=arc-20240116; t=1734970841; c=relaxed/simple;
+	bh=JrZjyas5v70HvsVDCoEnO36ISGT/pU4YD2mvPPhLhws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpF5gRY0I4j6cB80Oq3f0sUzWMetHaTJ6IFCSwBFVyXduyCAm4deN5gRfQCFJDMX9XD8LxelRCIPBYWNL/n8iXo1SmC1bVzQczgr3Ade+/83do5WwTvuOgidIWUmMEAzkWrKJ4FTn8Hj7siQh2A59fCJfcqu7aGJdMGfxWW5BVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm00i1aZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AF8C4CED4;
-	Mon, 23 Dec 2024 16:20:33 +0000 (UTC)
+	 MIME-Version; b=buDrTfZ41EJfL1icBEICeCH69TK65DLBn9exqjfhA0xohxrbLaFdv0lHZI2+NdzUFuFr3SYD1fn2CI6OOH5RBnWufMfAJ1L50dDFZROf0Is8S2qL3mjlRNa39QXkCqfrZfYODSGuEcuXuZn+VGd8hB8i3KWFchQwNff6dhT1mDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qThIiPHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2EFC4CED3;
+	Mon, 23 Dec 2024 16:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970833;
-	bh=6YXyz/solEWs1CY3RlvTI08WHD1gvfrudJ4MIIACxVo=;
+	s=korg; t=1734970840;
+	bh=JrZjyas5v70HvsVDCoEnO36ISGT/pU4YD2mvPPhLhws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fm00i1aZJRfjI8MV98EC3sgbx+KLXAHza4A2RI2nxKB7eGLxIj5fgvZrVzEVf6wIG
-	 15SKH24ZTGW/CLAnZ5nQAgxHe1+PLcf3dfZXrROK0Ytc6WllCMtRxaG1bp04cI7vjj
-	 IcUd9Faps/7Q59atNB+OF0NdNcZ4csyzBTMwh/9k=
+	b=qThIiPHTyTh7meCtS0+7G4kLhvP1I6PaSsujn6o+B4LByZbY9UDaOkBaWtBcPN5v6
+	 VxvrIw4UexWTmNxzYpmys/s7ipGr61WjV/HiRQFbpDn3T2xCnGYIrenFXvlp0qIVL3
+	 ZWiI5F7WtYh+rQ4xJuXfg83xBPflYsNdCMKpWYFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weining Lu <luweining@loongson.cn>,
-	Li Chen <chenli@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 65/83] selftests/bpf: Use asm constraint "m" for LoongArch
-Date: Mon, 23 Dec 2024 16:59:44 +0100
-Message-ID: <20241223155356.142240354@linuxfoundation.org>
+	Jann Horn <jannh@google.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 66/83] io_uring: Fix registered ring file refcount leak
+Date: Mon, 23 Dec 2024 16:59:45 +0100
+Message-ID: <20241223155356.182815286@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
 References: <20241223155353.641267612@linuxfoundation.org>
@@ -68,41 +65,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Jann Horn <jannh@google.com>
 
-commit 29d44cce324dab2bd86c447071a596262e7109b6 upstream.
+commit 12d908116f7efd34f255a482b9afc729d7a5fb78 upstream.
 
-Currently, LoongArch LLVM does not support the constraint "o" and no plan
-to support it, it only supports the similar constraint "m", so change the
-constraints from "nor" in the "else" case to arch-specific "nmr" to avoid
-the build error such as "unexpected asm memory constraint" for LoongArch.
+Currently, io_uring_unreg_ringfd() (which cleans up registered rings) is
+only called on exit, but __io_uring_free (which frees the tctx in which the
+registered ring pointers are stored) is also called on execve (via
+begin_new_exec -> io_uring_task_cancel -> __io_uring_cancel ->
+io_uring_cancel_generic -> __io_uring_free).
 
-Fixes: 630301b0d59d ("selftests/bpf: Add basic USDT selftests")
-Suggested-by: Weining Lu <luweining@loongson.cn>
-Suggested-by: Li Chen <chenli@loongson.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+This means: A process going through execve while having registered rings
+will leak references to the rings' `struct file`.
+
+Fix it by zapping registered rings on execve(). This is implemented by
+moving the io_uring_unreg_ringfd() from io_uring_files_cancel() into its
+callee __io_uring_cancel(), which is called from io_uring_task_cancel() on
+execve.
+
+This could probably be exploited *on 32-bit kernels* by leaking 2^32
+references to the same ring, because the file refcount is stored in a
+pointer-sized field and get_file() doesn't have protection against
+refcount overflow, just a WARN_ONCE(); but on 64-bit it should have no
+impact beyond a memory leak.
+
 Cc: stable@vger.kernel.org
-Link: https://llvm.org/docs/LangRef.html#supported-constraint-code-list
-Link: https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/LoongArch/LoongArchISelDAGToDAG.cpp#L172
-Link: https://lore.kernel.org/bpf/20241219111506.20643-1-yangtiezhu@loongson.cn
+Fixes: e7a6c00dc77a ("io_uring: add support for registering ring file descriptors")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20241218-uring-reg-ring-cleanup-v1-1-8f63e999045b@google.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/sdt.h |    2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/io_uring.h |    4 +---
+ io_uring/io_uring.c      |    1 +
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/bpf/sdt.h
-+++ b/tools/testing/selftests/bpf/sdt.h
-@@ -102,6 +102,8 @@
- # define STAP_SDT_ARG_CONSTRAINT        nZr
- # elif defined __arm__
- # define STAP_SDT_ARG_CONSTRAINT        g
-+# elif defined __loongarch__
-+# define STAP_SDT_ARG_CONSTRAINT        nmr
- # else
- # define STAP_SDT_ARG_CONSTRAINT        nor
- # endif
+--- a/include/linux/io_uring.h
++++ b/include/linux/io_uring.h
+@@ -50,10 +50,8 @@ bool io_is_uring_fops(struct file *file)
+ 
+ static inline void io_uring_files_cancel(void)
+ {
+-	if (current->io_uring) {
+-		io_uring_unreg_ringfd();
++	if (current->io_uring)
+ 		__io_uring_cancel(false);
+-	}
+ }
+ static inline void io_uring_task_cancel(void)
+ {
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3085,6 +3085,7 @@ __cold void io_uring_cancel_generic(bool
+ 
+ void __io_uring_cancel(bool cancel_all)
+ {
++	io_uring_unreg_ringfd();
+ 	io_uring_cancel_generic(cancel_all, NULL);
+ }
+ 
 
 
 
