@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB5C9FB1FF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4249FB24E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 002D5188538D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C58CC1634F3
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E13F1B392B;
-	Mon, 23 Dec 2024 16:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958D31A4AAA;
+	Mon, 23 Dec 2024 16:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Chpo8G39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJ+gZlKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCA113BC0C;
-	Mon, 23 Dec 2024 16:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4998412C544;
+	Mon, 23 Dec 2024 16:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970366; cv=none; b=anlrMZO2kb2+BM1KwwWjuo9NIHn4DyTc1NSLFLxdWWDwUSwx1ht32tfXLD0XWnn8deO6FpZ1YqhOCeIxUsYX7318NpzK6jEQPufduK0Zhn8UzRBBUuvcgvcsa3mkgwwtyRjBqlm6gumjSbsuwdv5aODVS/B/yttLa2QcFk52UJw=
+	t=1734970590; cv=none; b=AJIcsMaQV8g6QlqqwXh4/A8zevuvaI8e7zGo3UCCaRa1QhOBWvFDYw18R+wES3GNKZxTpKnYBFgb5bCUGg3gGmvTT302q0+6zxTnMN7JQr+OJqT6IOde1xUCyHpOV/yO9y4GiAGvhqOZSse8VWsU9rHkxfeLtMJbVdRtT7y0MnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970366; c=relaxed/simple;
-	bh=YtRn3dB3TJ1s/QL/IMYMVW8nZDl9LPsPizDc+oStKeY=;
+	s=arc-20240116; t=1734970590; c=relaxed/simple;
+	bh=m7Ji/F3kZODuJRynJRVsgp9UyTaZY+q7488w0/jSk6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CS7uRxXylOiwXjy0mmyPoGWvWph6QjfvpvCfBCq5FP5fX95ci+F48KNUm+Kw7X/3SbZlcAPJ5ewMirNaDmy5Hhxe4rkxRespvrX8+4V+vif29qW14MyMQ2QS5VdWOl5HQpWzAFke1REZi/dfbsRBYyqGUow4AzqjItAZgueOnuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Chpo8G39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D1DC4CED3;
-	Mon, 23 Dec 2024 16:12:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r2fRqq25U2zkzvBCiGxNdET9mUTQDgmzOZ/s/yjZywySzW/VAT4xPw0Fo8H61TMvdaHgW8DGps3PAaTLQiQ7sgBMoEABANlNQZX1SjVbxA4F6cutcWy8ALAUERyb3GQGvaKcWTnDbK7Pcs/JYTCOOWxyK8jgl35QbCUeOY3gDuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJ+gZlKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA92C4CED3;
+	Mon, 23 Dec 2024 16:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970366;
-	bh=YtRn3dB3TJ1s/QL/IMYMVW8nZDl9LPsPizDc+oStKeY=;
+	s=korg; t=1734970590;
+	bh=m7Ji/F3kZODuJRynJRVsgp9UyTaZY+q7488w0/jSk6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Chpo8G39GcTWDwOfZrhWyTo73aEkljVn9A8fG03RIzEzFbhTftiqXV8kD3BEQqRGz
-	 EhCimS5rJQ/z/2RNgPIAFtz2RnKdwZJzL3C1aoePRfSrlKZ3dawRb5zMG1HM1qIOF5
-	 BnRMFIuPeQZNwSWzhtI/Ip0fAuC4xEZUl89L0f60=
+	b=wJ+gZlKe43c+zF5o4/k49tmaWmQdQSjLSWKmxiUWRT/noQKblfOKJYvZ49Xx4IJ2i
+	 eEAip/8Uw8oW8ODYMG22SsSlm5MDEQxPkISPoyX/piLTLH1XrKNmGrhjCUf0WOQ0bn
+	 6RPwIWeV1LX/bRh2jkPXd2AJd5EPt067TCkbq+ZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.6 060/116] EDAC/amd64: Simplify ECC check on unified memory controllers
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 11/83] PCI: Introduce pci_resource_n()
 Date: Mon, 23 Dec 2024 16:58:50 +0100
-Message-ID: <20241223155401.898552194@linuxfoundation.org>
+Message-ID: <20241223155354.072348941@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 747367340ca6b5070728b86ae36ad6747f66b2fb upstream.
+[ Upstream commit 144d204df78e40e6250201e71ef7d0e42d2a13fc ]
 
-The intent of the check is to see whether at least one UMC has ECC
-enabled. So do that instead of tracking which ones are enabled in masks
-which are too small in size anyway and lead to not loading the driver on
-Zen4 machines with UMCs enabled over UMC8.
+Introduce pci_resource_n() and replace open-coded implementations of it
+in pci.h.
 
-Fixes: e2be5955a886 ("EDAC/amd64: Add support for AMD Family 19h Models 10h-1Fh and A0h-AFh")
-Reported-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Avadhut Naik <avadhut.naik@amd.com>
-Reviewed-by: Avadhut Naik <avadhut.naik@amd.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20241210212054.3895697-1-avadhut.naik@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230330162434.35055-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/amd64_edac.c |   34 +++++++++++-----------------------
- 1 file changed, 11 insertions(+), 23 deletions(-)
+ include/linux/pci.h | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -3620,36 +3620,24 @@ static bool dct_ecc_enabled(struct amd64
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 9e58e5400d78..28f91982402a 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1996,14 +1996,13 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma);
+  * These helpers provide future and backwards compatibility
+  * for accessing popular PCI BAR info
+  */
+-#define pci_resource_start(dev, bar)	((dev)->resource[(bar)].start)
+-#define pci_resource_end(dev, bar)	((dev)->resource[(bar)].end)
+-#define pci_resource_flags(dev, bar)	((dev)->resource[(bar)].flags)
+-#define pci_resource_len(dev,bar) \
+-	((pci_resource_end((dev), (bar)) == 0) ? 0 :	\
+-							\
+-	 (pci_resource_end((dev), (bar)) -		\
+-	  pci_resource_start((dev), (bar)) + 1))
++#define pci_resource_n(dev, bar)	(&(dev)->resource[(bar)])
++#define pci_resource_start(dev, bar)	(pci_resource_n(dev, bar)->start)
++#define pci_resource_end(dev, bar)	(pci_resource_n(dev, bar)->end)
++#define pci_resource_flags(dev, bar)	(pci_resource_n(dev, bar)->flags)
++#define pci_resource_len(dev,bar)					\
++	(pci_resource_end((dev), (bar)) ? 				\
++	 resource_size(pci_resource_n((dev), (bar))) : 0)
  
- static bool umc_ecc_enabled(struct amd64_pvt *pvt)
- {
--	u8 umc_en_mask = 0, ecc_en_mask = 0;
--	u16 nid = pvt->mc_node_id;
- 	struct amd64_umc *umc;
--	u8 ecc_en = 0, i;
-+	bool ecc_en = false;
-+	int i;
- 
-+	/* Check whether at least one UMC is enabled: */
- 	for_each_umc(i) {
- 		umc = &pvt->umc[i];
- 
--		/* Only check enabled UMCs. */
--		if (!(umc->sdp_ctrl & UMC_SDP_INIT))
--			continue;
--
--		umc_en_mask |= BIT(i);
--
--		if (umc->umc_cap_hi & UMC_ECC_ENABLED)
--			ecc_en_mask |= BIT(i);
-+		if (umc->sdp_ctrl & UMC_SDP_INIT &&
-+		    umc->umc_cap_hi & UMC_ECC_ENABLED) {
-+			ecc_en = true;
-+			break;
-+		}
- 	}
- 
--	/* Check whether at least one UMC is enabled: */
--	if (umc_en_mask)
--		ecc_en = umc_en_mask == ecc_en_mask;
--	else
--		edac_dbg(0, "Node %d: No enabled UMCs.\n", nid);
--
--	edac_dbg(3, "Node %d: DRAM ECC %s.\n", nid, (ecc_en ? "enabled" : "disabled"));
--
--	if (!ecc_en)
--		return false;
--	else
--		return true;
-+	edac_dbg(3, "Node %d: DRAM ECC %s.\n", pvt->mc_node_id, (ecc_en ? "enabled" : "disabled"));
-+
-+	return ecc_en;
- }
- 
- static inline void
+ /*
+  * Similar to the helpers above, these manipulate per-pci_dev
+-- 
+2.39.5
+
 
 
 
