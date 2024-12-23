@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-105730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1F09FB173
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1C39FB1FC
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38F961669F1
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF9DC16474E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200AF186E58;
-	Mon, 23 Dec 2024 16:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DC61B415E;
+	Mon, 23 Dec 2024 16:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7h/FD1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBVVGRc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ED22EAE6;
-	Mon, 23 Dec 2024 16:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90161B4149;
+	Mon, 23 Dec 2024 16:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969947; cv=none; b=ixCkj6ewoSV7v+TMUg5mN21euUOtQL0OK5QfV3274nAy9I7cFE6ewUcAQzV/9lcokKneley+jI2XSkWTwYoUCnHhQyVLcax331sbQll6JCX8RbsVxofamJ6AJl7jzOVIMS4TIoKpCwQIdiAI//pXgduY9f0UH5NMxycfIObgrYc=
+	t=1734970292; cv=none; b=SbSA6/SjdF/guBsCdjJ4t41HO5TdqErsoW0FH0L0CGkPpKrM/MfZ4TGeLxXO1aHy7q5gQJxI3tQ/NDTDpnh8Syma0D3X5VfWk1ww8W6WqAVqANj6ojKHWo+xD4WZNGmNdN/oYDE1JF9gwQGnGnGxGN3O5VO2m2su0zWdTINBV90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969947; c=relaxed/simple;
-	bh=1Zb3tLXZCBXt9XWoCcR4TtbsrfuiQKhiFSj2wfTup38=;
+	s=arc-20240116; t=1734970292; c=relaxed/simple;
+	bh=PVnKulMMPKF7kSE1DDKjWbC7xZL9euiwZuO0eR7Kz+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exL3Fr/GB6p5ZUnw8pvtC6e46tvaleGdHpbz4lv2StVWXCVwYqS1a2qVhyzxw1eV5PHrbrkf+HTEqGP16geDjuAH0gARTDEDX60afsRPXEJl2KqEJ/L+iHAxlOhK/858E9sNi1i8nmc/9WeMotVNVRWbsc+dO9yALDo1V1Rlmc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7h/FD1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC09C4CED3;
-	Mon, 23 Dec 2024 16:05:46 +0000 (UTC)
+	 MIME-Version; b=bUOFM0H0Zu3I7C01t/sOifGLYH62QqM9dhiGyrIstDjK8P1HFdtK7U8gVsPw93Q7mXRMmDVkpzzjY5Mk+ZMqCdafPsHpFwZpFcC3kqpLqVQzz09dc/AN76YsCcH+zufN9lcyVa3kWXPljH2ozOmEwD9Z9SPCPlB+KUqlSJ/Vav8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBVVGRc6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337D5C4CED3;
+	Mon, 23 Dec 2024 16:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969947;
-	bh=1Zb3tLXZCBXt9XWoCcR4TtbsrfuiQKhiFSj2wfTup38=;
+	s=korg; t=1734970292;
+	bh=PVnKulMMPKF7kSE1DDKjWbC7xZL9euiwZuO0eR7Kz+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7h/FD1nu+JVcFHvXo9UZPzSZQWC++4gDzviaz1dhSb2AeRVUeWk+6qOaylzsPw3Z
-	 KyBMZa5CxYSIE0Bz5MfpTWFpgK7qU7w4cePTmx8XAu4SJUKzyILbm6omMOHC6AGaoS
-	 8zPZ0W8vrJ5JmLVTQK2MBZOCulArpvqpK+6kMfI8=
+	b=RBVVGRc6eBewUKsw5nTzQS1udxurvrw+fpERiVOaCn13zGtmfOOS4V/3TniJESIDF
+	 Diq1sUh7xL1Xj77lL9opzwXBAtWVsNDLodiGzua34mhqz+2vK/1Lvj4r5ialibCNaZ
+	 jacVktwkqKB4DFt4RoJeUjBJSlx+I2Bq9CbaZOLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/160] i915/guc: Accumulate active runtime on gt reset
-Date: Mon, 23 Dec 2024 16:58:30 +0100
-Message-ID: <20241223155412.509198262@linuxfoundation.org>
+Subject: [PATCH 6.6 041/116] net/smc: check iparea_offset and ipv6_prefixes_cnt when receiving proposal msg
+Date: Mon, 23 Dec 2024 16:58:31 +0100
+Message-ID: <20241223155401.161663489@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit 1622ed27d26ab4c234476be746aa55bcd39159dd ]
+[ Upstream commit a29e220d3c8edbf0e1beb0f028878a4a85966556 ]
 
-On gt reset, if a context is running, then accumulate it's active time
-into the busyness counter since there will be no chance for the context
-to switch out and update it's run time.
+When receiving proposal msg in server, the field iparea_offset
+and the field ipv6_prefixes_cnt in proposal msg are from the
+remote client and can not be fully trusted. Especially the
+field iparea_offset, once exceed the max value, there has the
+chance to access wrong address, and crash may happen.
 
-v2: Move comment right above the if (John)
+This patch checks iparea_offset and ipv6_prefixes_cnt before using them.
 
-Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241127174006.190128-4-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 7ed047da59cfa1acb558b95169d347acc8d85da1)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Fixes: e7b7a64a8493 ("smc: support variable CLC proposal messages")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ net/smc/af_smc.c  | 6 +++++-
+ net/smc/smc_clc.c | 4 ++++
+ net/smc/smc_clc.h | 6 +++++-
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index fbff9b9a067c..ee12ee0ed418 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -1449,8 +1449,21 @@ static void __reset_guc_busyness_stats(struct intel_guc *guc)
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 06d607e676f6..8551e097ad33 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2039,6 +2039,8 @@ static int smc_listen_prfx_check(struct smc_sock *new_smc,
+ 	if (pclc->hdr.typev1 == SMC_TYPE_N)
+ 		return 0;
+ 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
++	if (!pclc_prfx)
++		return -EPROTO;
+ 	if (smc_clc_prfx_match(newclcsock, pclc_prfx))
+ 		return SMC_CLC_DECL_DIFFPREFIX;
  
- 	guc_update_pm_timestamp(guc, &unused);
- 	for_each_engine(engine, gt, id) {
-+		struct intel_engine_guc_stats *stats = &engine->stats.guc;
-+
- 		guc_update_engine_gt_clks(engine);
--		engine->stats.guc.prev_total = 0;
-+
-+		/*
-+		 * If resetting a running context, accumulate the active
-+		 * time as well since there will be no context switch.
-+		 */
-+		if (stats->running) {
-+			u64 clk = guc->timestamp.gt_stamp - stats->start_gt_clk;
-+
-+			stats->total_gt_clks += clk;
-+		}
-+		stats->prev_total = 0;
-+		stats->running = 0;
- 	}
+@@ -2228,7 +2230,9 @@ static void smc_find_ism_v1_device_serv(struct smc_sock *new_smc,
+ 	int rc = 0;
  
- 	spin_unlock_irqrestore(&guc->timestamp.lock, flags);
+ 	/* check if ISM V1 is available */
+-	if (!(ini->smcd_version & SMC_V1) || !smcd_indicated(ini->smc_type_v1))
++	if (!(ini->smcd_version & SMC_V1) ||
++	    !smcd_indicated(ini->smc_type_v1) ||
++	    !pclc_smcd)
+ 		goto not_found;
+ 	ini->is_smcd = true; /* prepare ISM check */
+ 	ini->ism_peer_gid[0].gid = ntohll(pclc_smcd->ism.gid);
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index 0084960a203d..b8fd64392209 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -354,6 +354,10 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
+ 
+ 	v2_ext = smc_get_clc_v2_ext(pclc);
+ 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
++	if (!pclc_prfx ||
++	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
++		return false;
++
+ 	if (hdr->version == SMC_V1) {
+ 		if (hdr->typev1 == SMC_TYPE_N)
+ 			return false;
+diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
+index c8d6282ec9c0..eb843907c9d0 100644
+--- a/net/smc/smc_clc.h
++++ b/net/smc/smc_clc.h
+@@ -320,8 +320,12 @@ struct smc_clc_msg_decline_v2 {	/* clc decline message */
+ static inline struct smc_clc_msg_proposal_prefix *
+ smc_clc_proposal_get_prefix(struct smc_clc_msg_proposal *pclc)
+ {
++	u16 offset = ntohs(pclc->iparea_offset);
++
++	if (offset > sizeof(struct smc_clc_msg_smcd))
++		return NULL;
+ 	return (struct smc_clc_msg_proposal_prefix *)
+-	       ((u8 *)pclc + sizeof(*pclc) + ntohs(pclc->iparea_offset));
++	       ((u8 *)pclc + sizeof(*pclc) + offset);
+ }
+ 
+ static inline bool smcr_indicated(int smc_type)
 -- 
 2.39.5
 
