@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-105776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC28D9FB19D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339EA9FB268
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D559C188499B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 859B97A06B8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA62619E98B;
-	Mon, 23 Dec 2024 16:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3371A8F80;
+	Mon, 23 Dec 2024 16:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPQf9R+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEM0MYQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889B03D6D;
-	Mon, 23 Dec 2024 16:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7228827;
+	Mon, 23 Dec 2024 16:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970102; cv=none; b=pzOULU8CHIThL2fhdiaqRC35pA5GpzKlCtMSOIz9Ljg+GScwhnLLSKPCW1QU9BplwG5PQG32XAwe9o1mrGgsnLceNGZUTWAAn9H1aK2FX4pPTQojRf9pcAhQ/gdrqPeEe98jT1aBr1KPoxajsYIY/tLSnCJXFzMGxshsPVEmg5E=
+	t=1734970669; cv=none; b=YOPsd7KSmvS1IaZIQ6f+A+Ft7WvTife99FiHVRKmykl6uco1FuBjBbjtnwxtktRPQvzjqtEIcdWJSE5Mu1PI9NmU9TdZzV6+bUi/mzPcEvLqHbcBzfFP4ycSOnCH+BjEglzrr0qnJcZtbQBoZRSRXeoi00JgKyKB7lS4+C1J160=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970102; c=relaxed/simple;
-	bh=mWNBrBxMau4yJYJn1aYcb7rnzUOiaCe6s984NcT98mw=;
+	s=arc-20240116; t=1734970669; c=relaxed/simple;
+	bh=fSx7AfLy4R3jM5HOHi5jHv6CsP9BIhLdhfdCq3urmWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kn7uFUw7wpLSmOVfnmj4XcwFOXua62zvgAAYZIsZXQwfunISDAV9vN8Z3PWdxM/FmvUX6yA//99EYIyN4jdk42s19EJEdsXyQzj52g0w5FyzikuZkFBzNJfEa55AeCy/WVb28Q4M6wpEqdRg8BY2TDXvlaCT3AmXRTN+LZ/lWb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPQf9R+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA24C4CED3;
-	Mon, 23 Dec 2024 16:08:21 +0000 (UTC)
+	 MIME-Version; b=it9SrNvMiR8eHHj/11VBCSMLE3kPtcGtvTBEe9mlLTQt/6Uew/lBL/cKjZ2mkZrISM/WsYliU6o7D994wtbR2m+r6wRPjJN586BR6/OxmjkAUVTA3w6SuG6snAy5kEqgCfpKkHCw93EskGyjfLi1QpFh5G0yWB9lZsYNSv005Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEM0MYQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3AAC4CED3;
+	Mon, 23 Dec 2024 16:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970102;
-	bh=mWNBrBxMau4yJYJn1aYcb7rnzUOiaCe6s984NcT98mw=;
+	s=korg; t=1734970669;
+	bh=fSx7AfLy4R3jM5HOHi5jHv6CsP9BIhLdhfdCq3urmWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPQf9R+4fBrCC7pj0i7zC5/8N4zKqPNCONXy1gkLaYNdB5JuN3RCc/VcRYkwHlMcF
-	 YzE6+wQpBlpkPSsWxBdpUrMugk0CslUJ2GZ8fnUew9ZIX8l8jXZZa2KZKNb/uphMrv
-	 ZGcGz7JCjpdpqRw1JTCfiBYQIuDJxHPRXMCve3cM=
+	b=dEM0MYQ3PP0cjqyzRMXWXPmFZopM6xwimumd4ILAesqXiOs/e/nRlQFpv7Oh0Z1Bk
+	 pLZGsQUjtWy8vK3G93vZmRYex6Yw26Aue2zWnsZYOwghsiKCq2LPyJ54JJI8yDMqOk
+	 ZM5hlA37Kg6zWKZDygAdcWh7JostBzRfab3cugKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	David Wang <00107082@163.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Sourav Panda <souravpanda@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 114/160] alloc_tag: fix set_codetag_empty() when !CONFIG_MEM_ALLOC_PROFILING_DEBUG
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 06/83] ASoC: Intel: sof_sdw: fix jack detection on ADL-N variant RVP
 Date: Mon, 23 Dec 2024 16:58:45 +0100
-Message-ID: <20241223155413.077325971@linuxfoundation.org>
+Message-ID: <20241223155353.887403385@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,55 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 60da7445a142bd15e67f3cda915497781c3f781f upstream.
+[ Upstream commit 65c90df918205bc84f5448550cde76a54dae5f52 ]
 
-It was recently noticed that set_codetag_empty() might be used not only to
-mark NULL alloctag references as empty to avoid warnings but also to reset
-valid tags (in clear_page_tag_ref()).  Since set_codetag_empty() is
-defined as NOOP for CONFIG_MEM_ALLOC_PROFILING_DEBUG=n, such use of
-set_codetag_empty() leads to subtle bugs.  Fix set_codetag_empty() for
-CONFIG_MEM_ALLOC_PROFILING_DEBUG=n to reset the tag reference.
+Experimental tests show that JD2_100K is required, otherwise the jack
+is detected always even with nothing plugged-in.
 
-Link: https://lkml.kernel.org/r/20241130001423.1114965-2-surenb@google.com
-Fixes: a8fc28dad6d5 ("alloc_tag: introduce clear_page_tag_ref() helper function")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/lkml/20241124074318.399027-1-00107082@163.com/
-Cc: David Wang <00107082@163.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To avoid matching with other known quirks the SKU information is used.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240624121119.91552-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/alloc_tag.h |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/include/linux/alloc_tag.h
-+++ b/include/linux/alloc_tag.h
-@@ -48,7 +48,12 @@ static inline void set_codetag_empty(uni
- #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
- 
- static inline bool is_codetag_empty(union codetag_ref *ref) { return false; }
--static inline void set_codetag_empty(union codetag_ref *ref) {}
-+
-+static inline void set_codetag_empty(union codetag_ref *ref)
-+{
-+	if (ref)
-+		ref->ct = NULL;
-+}
- 
- #endif /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
- 
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index d03de37e3578..cf501baf6f14 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -267,6 +267,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 					SOF_BT_OFFLOAD_SSP(2) |
+ 					SOF_SSP_BT_OFFLOAD_PRESENT),
+ 	},
++	{
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "0000000000070000"),
++		},
++		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
++					RT711_JD2_100K),
++	},
+ 	{
+ 		.callback = sof_sdw_quirk_cb,
+ 		.matches = {
+-- 
+2.39.5
+
 
 
 
