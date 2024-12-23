@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-105852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D079FB1FD
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 510A49FB16C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C463E7A0698
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC65D161D3C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A6C1B21BD;
-	Mon, 23 Dec 2024 16:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96EF188733;
+	Mon, 23 Dec 2024 16:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAD8ZrEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adOLRZsY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167BF7E0FF;
-	Mon, 23 Dec 2024 16:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7878812D1F1;
+	Mon, 23 Dec 2024 16:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970360; cv=none; b=m2Pp/exg0DurP5UYdh+tD2IIQsUA0eNOb/D783Xzbk5jErUsK40k3cagxIjQAyVyI35sZf29mEAtisnl6anWZJsFzvK/KIzDXVaCmD6NXmSUQgH0pPdIq65d5yXmOZw9gnd8Xqe4HE5fWfvmc67HWgSAwmQtNywr+VIbd1RD23U=
+	t=1734969920; cv=none; b=H1rOFZbfoC4l0Uczh5h8qZnRWuL3EcgQE61B2jKbr72cyU9YSNWXMmVyguz+81HgwZ3mCpA6Mb5M6nF+MRUYgJaWbTl52Aj7dhZIPaSj7n6bEaVoIAr1YEW7Lz3MzShMmJ3d+UCEs9BeQfXGyzjP0c9rlcaVw+NXPonUjUk5Yjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970360; c=relaxed/simple;
-	bh=jF5LE5eSFLee/quwe0dBfm7VPBwLMZ70CJWnjhvCp8A=;
+	s=arc-20240116; t=1734969920; c=relaxed/simple;
+	bh=jilrfThkiWKeO/nHX6uhQf7bcdaqJ2VwDg3itSA3ORE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZM4iyNXkof7p7wX/m5mbg3mAhV6uFWQFdmICsgAC7usWtk+Ji3b2OeRxwem+c4mXyH25GMF+cAn/nlM186GQt9iRD6i+f6t2WsEjYnTJ7SaLKtiFbIBO/qT/zuoeGAGo5Te7BiYgbhtLTLa3ELibOajI9TcUuDzQO+iPfC/cJjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAD8ZrEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77566C4CED3;
-	Mon, 23 Dec 2024 16:12:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WDVSkQ0T8DB5jR5ZYpg1k4UfJBQ7srdp0bx4KB0+ngnai5P/wuvuy8h+Co65FkSLRt5TZuqSNaiyU1kLBe3kMU3R2Ae9Cl81tu9ZYNMp1+TO5GBXoBNOOWapk8sN37Z2qLAYSy3mXTvndRaSdlyEq/edm66uvUPp7z7BM4cA3aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adOLRZsY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE59C4CED3;
+	Mon, 23 Dec 2024 16:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970360;
-	bh=jF5LE5eSFLee/quwe0dBfm7VPBwLMZ70CJWnjhvCp8A=;
+	s=korg; t=1734969920;
+	bh=jilrfThkiWKeO/nHX6uhQf7bcdaqJ2VwDg3itSA3ORE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xAD8ZrEBOXDqZyc/Dk8CKzSNBUc+vWyI0jyfM2TbEfUcM7UIVC6kDVTdRBGtWvZGx
-	 j8cVVtMeTrg+gOR9BuMA3gDFLKqYsNF4Q/sk0jU1BZfGbTLEbRddyS9RhbjQIxUxHj
-	 LdCn98x9FqB01CQU5AFzcWd+Qhui9aKj/5tm+wvU=
+	b=adOLRZsY1ohALSWmEwWFVlpBod7elGnzwYuK4F+NJASEyZlRB2LesS8rzBvKg/J8P
+	 2DBr6WxnS9pKKEmKeMttFJ3N40LRXqmqBZWRMkTTfuf3fxhgMu6tsaI8/1wuM+45dE
+	 /wAcatqMpb2uIylw7OpDDkOR4Vg3IwP9od23bL3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/116] xfs: Fix the owner setting issue for rmap query in xfs fsmap
-Date: Mon, 23 Dec 2024 16:58:22 +0100
-Message-ID: <20241223155400.827809215@linuxfoundation.org>
+Subject: [PATCH 6.12 092/160] dma-buf: Fix __dma_buf_debugfs_list_del argument for !CONFIG_DEBUG_FS
+Date: Mon, 23 Dec 2024 16:58:23 +0100
+Message-ID: <20241223155412.245133937@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: T.J. Mercier <tjmercier@google.com>
 
-commit 68415b349f3f16904f006275757f4fcb34b8ee43 upstream.
+[ Upstream commit 0cff90dec63da908fb16d9ea2872ebbcd2d18e6a ]
 
-I notice a rmap query bug in xfs_io fsmap:
-[root@fedora ~]# xfs_io -c 'fsmap -vvvv' /mnt
- EXT: DEV    BLOCK-RANGE           OWNER              FILE-OFFSET      AG AG-OFFSET             TOTAL
-   0: 253:16 [0..7]:               static fs metadata                  0  (0..7)                    8
-   1: 253:16 [8..23]:              per-AG metadata                     0  (8..23)                  16
-   2: 253:16 [24..39]:             inode btree                         0  (24..39)                 16
-   3: 253:16 [40..47]:             per-AG metadata                     0  (40..47)                  8
-   4: 253:16 [48..55]:             refcount btree                      0  (48..55)                  8
-   5: 253:16 [56..103]:            per-AG metadata                     0  (56..103)                48
-   6: 253:16 [104..127]:           free space                          0  (104..127)               24
-   ......
+The arguments for __dma_buf_debugfs_list_del do not match for both the
+CONFIG_DEBUG_FS case and the !CONFIG_DEBUG_FS case. The !CONFIG_DEBUG_FS
+case should take a struct dma_buf *, but it's currently struct file *.
+This can lead to the build error:
 
-Bug:
-[root@fedora ~]# xfs_io -c 'fsmap -vvvv -d 0 3' /mnt
-[root@fedora ~]#
-Normally, we should be able to get one record, but we got nothing.
+error: passing argument 1 of ‘__dma_buf_debugfs_list_del’ from
+incompatible pointer type [-Werror=incompatible-pointer-types]
 
-The root cause of this problem lies in the incorrect setting of rm_owner in
-the rmap query. In the case of the initial query where the owner is not
-set, __xfs_getfsmap_datadev() first sets info->high.rm_owner to ULLONG_MAX.
-This is done to prevent any omissions when comparing rmap items. However,
-if the current ag is detected to be the last one, the function sets info's
-high_irec based on the provided key. If high->rm_owner is not specified, it
-should continue to be set to ULLONG_MAX; otherwise, there will be issues
-with interval omissions. For example, consider "start" and "end" within the
-same block. If high->rm_owner == 0, it will be smaller than the founded
-record in rmapbt, resulting in a query with no records. The main call stack
-is as follows:
+dma-buf.c:63:53: note: expected ‘struct file *’ but argument is of
+type ‘struct dma_buf *’
+   63 | static void __dma_buf_debugfs_list_del(struct file *file)
 
-xfs_ioc_getfsmap
-  xfs_getfsmap
-    xfs_getfsmap_datadev_rmapbt
-      __xfs_getfsmap_datadev
-        info->high.rm_owner = ULLONG_MAX
-        if (pag->pag_agno == end_ag)
-	  xfs_fsmap_owner_to_rmap
-	    // set info->high.rm_owner = 0 because fmr_owner == -1ULL
-	    dest->rm_owner = 0
-	// get nothing
-	xfs_getfsmap_datadev_rmapbt_query
-
-The problem can be resolved by simply modify the xfs_fsmap_owner_to_rmap
-function internal logic to achieve.
-
-After applying this patch, the above problem have been solved:
-[root@fedora ~]# xfs_io -c 'fsmap -vvvv -d 0 3' /mnt
- EXT: DEV    BLOCK-RANGE      OWNER              FILE-OFFSET      AG AG-OFFSET        TOTAL
-   0: 253:16 [0..7]:          static fs metadata                  0  (0..7)               8
-
-Fixes: e89c041338ed ("xfs: implement the GETFSMAP ioctl")
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: bfc7bc539392 ("dma-buf: Do not build debugfs related code when !CONFIG_DEBUG_FS")
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241117170326.1971113-1-tjmercier@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_fsmap.c | 2 +-
+ drivers/dma-buf/dma-buf.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index 8982c5d6cbd0..85953dbd4283 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -71,7 +71,7 @@ xfs_fsmap_owner_to_rmap(
- 	switch (src->fmr_owner) {
- 	case 0:			/* "lowest owner id possible" */
- 	case -1ULL:		/* "highest owner id possible" */
--		dest->rm_owner = 0;
-+		dest->rm_owner = src->fmr_owner;
- 		break;
- 	case XFS_FMR_OWN_FREE:
- 		dest->rm_owner = XFS_RMAP_OWN_NULL;
+diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+index 8892bc701a66..afb8c1c50107 100644
+--- a/drivers/dma-buf/dma-buf.c
++++ b/drivers/dma-buf/dma-buf.c
+@@ -60,7 +60,7 @@ static void __dma_buf_debugfs_list_add(struct dma_buf *dmabuf)
+ {
+ }
+ 
+-static void __dma_buf_debugfs_list_del(struct file *file)
++static void __dma_buf_debugfs_list_del(struct dma_buf *dmabuf)
+ {
+ }
+ #endif
 -- 
 2.39.5
 
