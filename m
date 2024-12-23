@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730B89FB15B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB0A9FB21B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEB0A7A03C4
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E556163B22
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65524188006;
-	Mon, 23 Dec 2024 16:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A8019E971;
+	Mon, 23 Dec 2024 16:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lO4xzqNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKlsLpZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233C312D1F1;
-	Mon, 23 Dec 2024 16:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66677E0FF;
+	Mon, 23 Dec 2024 16:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969927; cv=none; b=ISb8XekhgBeHvFv9kt7VLIy5k6tGLKQyo63nVcJLoxC9KFixmhRzJiewort0MhrhEgcNIneMeXsplJSgtPIucI1q7tJltoFTDv9YDBLzOECcK2tHABWODy/X+Gy4+xhlBpxbJARV2wfbdnzL2/Gqd0n6KHMSqxHOOBa0DqfzhvY=
+	t=1734970385; cv=none; b=APeJ1+7Oq2Q0Izf9TlvONtoCZ2XegCC3wqC3j9l1msbvJep7L6t0rvRROnXZlM/XjdSiZUiS05UEg7YhM0gtsdF1W3gRdtyDQeEh1P0lB6gUhe8/fvyiLyKyKaUjWybY4YUggjPABdggnfBol0kwxuV10/aVqluQVGpZilDM3rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969927; c=relaxed/simple;
-	bh=h2iJtfjmAA/scvpyJ3gcblJDCXhCn0KUvApTiD/tCN4=;
+	s=arc-20240116; t=1734970385; c=relaxed/simple;
+	bh=DgD3Sojd5H7hq9jWxP9R4WdwQZehzngsfUCRGyHMf2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZL08l/aaeAX+AkTWmbrTWjfP9xQiZrVJe8CM+kkEeavXxnQKk6vFTIcLScUEzAx+jypAdZgB6aoZ15yolwVvPfvuTkTaJvy6mjjAJc8iqmCLnaRQ9GgT1Mrq0SP1dnItkD+1oVLi6co0VUmpUe7sfIkxyXGyGVdVjp/gayFHUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lO4xzqNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86076C4CED3;
-	Mon, 23 Dec 2024 16:05:26 +0000 (UTC)
+	 MIME-Version; b=ZTRxeSPwU8JQTHq1ixQp0bw4LmcTmLE0p0SD/+uPRKiGzuEXG52BSpVxfPCC9N58cr/kSll5A+JZ1bKX9ajoHoBu6fzV48WRIUIAg50kpg3tMFPc7XJ6XX25/Y4SDf7g4534GQ0p5ZnuUvLRCD4NOnuPV7tD89y1lwmxhiHZhtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKlsLpZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC6CC4CED3;
+	Mon, 23 Dec 2024 16:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969927;
-	bh=h2iJtfjmAA/scvpyJ3gcblJDCXhCn0KUvApTiD/tCN4=;
+	s=korg; t=1734970385;
+	bh=DgD3Sojd5H7hq9jWxP9R4WdwQZehzngsfUCRGyHMf2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lO4xzqNS5RQzuaGnJMnDitSjdoEvhbHgyCJgQns5dZ9i7DWbd3rsxzEnBRDA8SC/Z
-	 spcKqNQx3aX7jLIyhlbRVRfhWIWluwuiVavT60maurtbtzJWCHrPWQ3e3qNQgurpLy
-	 qDZbTjP6iScgDq1O+UrFvlVwe1TzIuoTiJoYN9ec=
+	b=dKlsLpZVxgEUuzB9I02muzJKAvvh160aUBI5ovOIgOYGfn1KsX0c1n0iAS1P+QtRZ
+	 72cBQL5GwAZZ0BWPN8xFtU4wUPobMM3454oRG28VjwuV8rZzeSUidhmK/k4zuUGVu2
+	 LSHO9LHatGa9WerYg3mZh50ed0WKJPWKUy/EmR7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Olaf Hering <olaf@aepfle.de>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/160] drm/panel: novatek-nt35950: fix return value check in nt35950_probe()
-Date: Mon, 23 Dec 2024 16:58:25 +0100
-Message-ID: <20241223155412.321831494@linuxfoundation.org>
+Subject: [PATCH 6.6 036/116] tools: hv: change permissions of NetworkManager configuration file
+Date: Mon, 23 Dec 2024 16:58:26 +0100
+Message-ID: <20241223155400.976151573@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Olaf Hering <olaf@aepfle.de>
 
-[ Upstream commit f8fd0968eff52cf092c0d517d17507ea2f6e5ea5 ]
+[ Upstream commit 91ae69c7ed9e262f24240c425ad1eef2cf6639b7 ]
 
-mipi_dsi_device_register_full() never returns NULL pointer, it
-will return ERR_PTR() when it fails, so replace the check with
-IS_ERR().
+Align permissions of the resulting .nmconnection file, instead of
+the input file from hv_kvp_daemon. To avoid the tiny time frame
+where the output file is world-readable, use umask instead of chmod.
 
-Fixes: 623a3531e9cf ("drm/panel: Add driver for Novatek NT35950 DSI DriverIC panels")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241029123957.1588-1-yangyingliang@huaweicloud.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241029123957.1588-1-yangyingliang@huaweicloud.com
+Fixes: 42999c904612 ("hv/hv_kvp_daemon:Support for keyfile based connection profile")
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
+Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20241016143521.3735-1-olaf@aepfle.de
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20241016143521.3735-1-olaf@aepfle.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt35950.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/hv/hv_set_ifconfig.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35950.c b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-index b036208f9356..08b22b592ab0 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt35950.c
-@@ -481,9 +481,9 @@ static int nt35950_probe(struct mipi_dsi_device *dsi)
- 			return dev_err_probe(dev, -EPROBE_DEFER, "Cannot get secondary DSI host\n");
+diff --git a/tools/hv/hv_set_ifconfig.sh b/tools/hv/hv_set_ifconfig.sh
+index 440a91b35823..2f8baed2b8f7 100755
+--- a/tools/hv/hv_set_ifconfig.sh
++++ b/tools/hv/hv_set_ifconfig.sh
+@@ -81,7 +81,7 @@ echo "ONBOOT=yes" >> $1
  
- 		nt->dsi[1] = mipi_dsi_device_register_full(dsi_r_host, info);
--		if (!nt->dsi[1]) {
-+		if (IS_ERR(nt->dsi[1])) {
- 			dev_err(dev, "Cannot get secondary DSI node\n");
--			return -ENODEV;
-+			return PTR_ERR(nt->dsi[1]);
- 		}
- 		num_dsis++;
- 	}
+ cp $1 /etc/sysconfig/network-scripts/
+ 
+-chmod 600 $2
++umask 0177
+ interface=$(echo $2 | awk -F - '{ print $2 }')
+ filename="${2##*/}"
+ 
 -- 
 2.39.5
 
