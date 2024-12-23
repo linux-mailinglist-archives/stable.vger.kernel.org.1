@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-105727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A359C9FB163
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E8D9FB20A
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2E618831FB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13F81188568B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE10D186E58;
-	Mon, 23 Dec 2024 16:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512871B393A;
+	Mon, 23 Dec 2024 16:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+adBZ0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkqH47zx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990402EAE6;
-	Mon, 23 Dec 2024 16:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA4E7E0FF;
+	Mon, 23 Dec 2024 16:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969937; cv=none; b=rky1e4OvVNBu7g2yqWBekArWeyZW3x86hqaz/iGHFYyNkMTnyzZjblmXdeuVvkky/1MkZW35o2wb1r8TdnooUS1u6qEfVimXKltw5GHtT/wRFbi/9G7WhL1pTMCsDGyNLw7LDW40vfsaeNlRmXlZHtZ1l27E1y3zb5t9boNh8m8=
+	t=1734970389; cv=none; b=OyvHPewYibGjAKN9CXl24vnWYSw0cI/uK9ZcYDNHmZ9wTpLercHSkTnYa1BDJ3oxfJCecZZL+MiV6RNtx4jMy4CTSOBaknTjDHQUWklQScnlFWY87wcYhqvorp/YswarIlQOdkoIfSHQ39+9hwDIOwygmiZ2QoqNfiMfUVovn70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969937; c=relaxed/simple;
-	bh=y4Ogqgh4dbF4pnUIM3ZH1tTGRZ71AptGOj6VAhuhnwU=;
+	s=arc-20240116; t=1734970389; c=relaxed/simple;
+	bh=YoFy0nkjFEywrECaM/z6KwwoqOIUPbjhtO211Hx8gSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHMstPJ5wTFdKs3CIN2dk1B0OSW2hrLd7l0CNoAIf//1ch4bmuhpmYSIyKhVgaenQcrc9NzxKDcugrHlUQzFJaHWMCr9YCHehNTcLdJ+WJOCA66Ja0wV+Wx2BPcZ+fPgTHCYrsv6QFALGRwcn0zQYVYzC5Ig12NsC04pq/kkd2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+adBZ0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B3DC4CED3;
-	Mon, 23 Dec 2024 16:05:36 +0000 (UTC)
+	 MIME-Version; b=BF+F3CYwWzLT0EaIjq456BSOzam9u7X6Ftccb5HHnXgHJrl6eaMgRL7+ahDxJvYux/SwlJL2AkNa6c3/Ja8zcRMjEuZoh3Uu9Lj5ch+kQ2LKcp43j3dMvaFjubkuyamBXXXOKgunZtU3sFT2UBs6Wk1lVycgLD0DLnXNlkLkzjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkqH47zx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75087C4CED3;
+	Mon, 23 Dec 2024 16:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969937;
-	bh=y4Ogqgh4dbF4pnUIM3ZH1tTGRZ71AptGOj6VAhuhnwU=;
+	s=korg; t=1734970388;
+	bh=YoFy0nkjFEywrECaM/z6KwwoqOIUPbjhtO211Hx8gSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+adBZ0c4Rye4jM8vsO46wYwUpVUX3zVMvCGX0BWfyFXl3iwMa/hpEAnLFvwKn0Jy
-	 GxDtOU5GR4U6XsAGnSuvwvPXDZRujaIxKJ9ni87y5wnvexsQIjM3fNDaPhgLEuNEc5
-	 H28nlB05gxVt54qGg/4xBhH4EkRux6a9XQgTG3Nc=
+	b=BkqH47zxX2P+2fO73BKl7p+YY6QZxa/iHQjSrxYjfb/Nk+L9E5GS+mLtxdznvDouE
+	 dxMc8PaRPD8gfx3I/VfAX0rATZ936a60mzR3YvBS3NHZCc21cRKiohfAPzrvxzCEwi
+	 g+GyiVKjKCQS4c+hfnSY7WN8kG5dKedpnnHyB1yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Fan Ni <fan.ni@samsung.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/160] drm/panel: synaptics-r63353: Fix regulator unbalance
+Subject: [PATCH 6.6 037/116] cxl/pci: Fix potential bogus return value upon successful probing
 Date: Mon, 23 Dec 2024 16:58:27 +0100
-Message-ID: <20241223155412.400696667@linuxfoundation.org>
+Message-ID: <20241223155401.012691227@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Trimarchi <michael@amarulasolutions.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-[ Upstream commit d2bd3fcb825725a59c8880070b1206b1710922bd ]
+[ Upstream commit da4d8c83358163df9a4addaeba0ef8bcb03b22e8 ]
 
-The shutdown function can be called when the display is already
-unprepared. For example during reboot this trigger a kernel
-backlog. Calling the drm_panel_unprepare, allow us to avoid
-to trigger the kernel warning.
+If cxl_pci_ras_unmask() returns non-zero, cxl_pci_probe() will end up
+returning that value, instead of zero.
 
-Fixes: 2e87bad7cd33 ("drm/panel: Add Synaptics R63353 panel driver")
-Tested-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://lore.kernel.org/r/20241205163002.1804784-1-dario.binacchi@amarulasolutions.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241205163002.1804784-1-dario.binacchi@amarulasolutions.com
+Fixes: 248529edc86f ("cxl: add RAS status unmasking for CXL")
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20241115170032.108445-1-dave@stgolabs.net
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-synaptics-r63353.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cxl/pci.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-synaptics-r63353.c b/drivers/gpu/drm/panel/panel-synaptics-r63353.c
-index 169c629746c7..17349825543f 100644
---- a/drivers/gpu/drm/panel/panel-synaptics-r63353.c
-+++ b/drivers/gpu/drm/panel/panel-synaptics-r63353.c
-@@ -325,7 +325,7 @@ static void r63353_panel_shutdown(struct mipi_dsi_device *dsi)
- {
- 	struct r63353_panel *rpanel = mipi_dsi_get_drvdata(dsi);
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index 8bece1e2e249..aacd93f9067d 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -911,8 +911,7 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (rc)
+ 		return rc;
  
--	r63353_panel_unprepare(&rpanel->base);
-+	drm_panel_unprepare(&rpanel->base);
- }
+-	rc = cxl_pci_ras_unmask(pdev);
+-	if (rc)
++	if (cxl_pci_ras_unmask(pdev))
+ 		dev_dbg(&pdev->dev, "No RAS reporting unmasked\n");
  
- static const struct r63353_desc sharp_ls068b3sx02_data = {
+ 	pci_save_state(pdev);
 -- 
 2.39.5
 
