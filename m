@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-105850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8823A9FB1FB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E26A9FB26B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9CA018848A1
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62CA91885C43
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972A51B21BD;
-	Mon, 23 Dec 2024 16:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EDF1A4AAA;
+	Mon, 23 Dec 2024 16:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlWIRs6/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWh180LD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EA47E0FF;
-	Mon, 23 Dec 2024 16:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C9617A597;
+	Mon, 23 Dec 2024 16:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970353; cv=none; b=eCJ8WEM0QOXRxPQF98rb5x6R6wSqVR4zfmWyUEu+O09HcM5Jn5pljauL81ZG6qt921GNPmmMVqJOyvz+Et5v3XotN4nHVswApu14OgjpGrik0w00pOFnLgQFeCvxGS7DoAW/IQEb9irdIwrmvKZ7fpZtxBaQPMGfuDDZ15c+oAw=
+	t=1734970676; cv=none; b=LZqtpChh7UtbzkWmMSSg+I6DFnmx084VpVYQjpJvM3I+Sun5G/WyyVD0Axh/hVaYY4RniLFv0TotKkrjFJdpcdO8qftwqMsA/3teC4vPv2hc3vP2papLc0HBKI+hThhgSDyVKK7eJ4y5ErqRF2r1jzvqoSCAbsqSSII22CW16eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970353; c=relaxed/simple;
-	bh=XHXBChGhzJh5HjFY5vZjjAmrAcgcrtdDYwmymElp/aU=;
+	s=arc-20240116; t=1734970676; c=relaxed/simple;
+	bh=E+POcQj9O8gUZhC2/2otL8cPM4k7tL6r9A/3/hd4w44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nmsfKVjc6H/JaEGesKhEJXEffeoaoiougzkLpzwM0rTVMO0d6/nay724qwEJfoVuE4oXt28cKeX3O2hHHAq8wCVvOsgTbRL825aS4x5y7aeSRR/W49ooSo3prP985J0HtS/DyyPLPB4cEhn+CvzuB4PL+tfdnxmrJiOa1+Fu9iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlWIRs6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51C5C4CED3;
-	Mon, 23 Dec 2024 16:12:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EKAFi5rFD+5z5yY1xNqFyCQP6dJU7OYdQ9a2tsWnU6oXvhRn+irFOc9MzCstLGbEMTQpsVPh0DpFw8c77HrwjtAJhnpXBRfRJsqnitw9RRar1yUUi9rW71I6nianuTc05gBHqOHiNHuOLW+uo+yzgfUvs46HZV4RZKiHoe+PmzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWh180LD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A02C4CED3;
+	Mon, 23 Dec 2024 16:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970353;
-	bh=XHXBChGhzJh5HjFY5vZjjAmrAcgcrtdDYwmymElp/aU=;
+	s=korg; t=1734970675;
+	bh=E+POcQj9O8gUZhC2/2otL8cPM4k7tL6r9A/3/hd4w44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NlWIRs6/gFkmxwLXk1Tf8Co3V3/LtRtBMAgZvvhmCAmTFbAlnAZQeHH794WWj4Lz6
-	 36oINrfTDlQFOV/ccH0mwuILETW7nhZto904KQm4sKhvf/Yy6BQYnf6RN3JXiACK7n
-	 3ndyyLT9S6lO3KaZq0AAU0Az9QVkruGn9Gqg0oIw=
+	b=BWh180LDIKBapu5t/fYsMTbsQli+KakUPwteHqoNbheDj6zFuO4AIlJI51BuJrEAw
+	 Ykm4d2NSa3EWKx5D8LpGJ9/xifh2ijCw48u4Z4RLJna24sFvXxuv9doa7YlIgTmToG
+	 hyv1/4N5cme+zHZmsLJjtoOckzx3wjRzDPsHRyFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Andy Gospodarek <gospo@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/116] net: mdiobus: fix an OF node reference leak
+Subject: [PATCH 6.1 08/83] PCI: Add ACS quirk for Broadcom BCM5760X NIC
 Date: Mon, 23 Dec 2024 16:58:47 +0100
-Message-ID: <20241223155401.780789065@linuxfoundation.org>
+Message-ID: <20241223155353.964022454@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Ajit Khaparde <ajit.khaparde@broadcom.com>
 
-[ Upstream commit 572af9f284669d31d9175122bbef9bc62cea8ded ]
+[ Upstream commit 524e057b2d66b61f9b63b6db30467ab7b0bb4796 ]
 
-fwnode_find_mii_timestamper() calls of_parse_phandle_with_fixed_args()
-but does not decrement the refcount of the obtained OF node. Add an
-of_node_put() call before returning from the function.
+The Broadcom BCM5760X NIC may be a multi-function device.
 
-This bug was detected by an experimental static analysis tool that I am
-developing.
+While it does not advertise an ACS capability, peer-to-peer transactions
+are not possible between the individual functions. So it is ok to treat
+them as fully isolated.
 
-Fixes: bc1bee3b87ee ("net: mdiobus: Introduce fwnode_mdiobus_register_phy()")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241218035106.1436405-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add an ACS quirk for this device so the functions can be in independent
+IOMMU groups and attached individually to userspace applications using
+VFIO.
+
+[kwilczynski: commit log]
+Link: https://lore.kernel.org/linux-pci/20240510204228.73435-1-ajit.khaparde@broadcom.com
+Signed-off-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/fwnode_mdio.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/pci/quirks.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
-index 1183ef5e203e..c62f2e85414d 100644
---- a/drivers/net/mdio/fwnode_mdio.c
-+++ b/drivers/net/mdio/fwnode_mdio.c
-@@ -38,6 +38,7 @@ fwnode_find_pse_control(struct fwnode_handle *fwnode)
- static struct mii_timestamper *
- fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
- {
-+	struct mii_timestamper *mii_ts;
- 	struct of_phandle_args arg;
- 	int err;
- 
-@@ -51,10 +52,16 @@ fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
- 	else if (err)
- 		return ERR_PTR(err);
- 
--	if (arg.args_count != 1)
--		return ERR_PTR(-EINVAL);
-+	if (arg.args_count != 1) {
-+		mii_ts = ERR_PTR(-EINVAL);
-+		goto put_node;
-+	}
-+
-+	mii_ts = register_mii_timestamper(arg.np, arg.args[0]);
- 
--	return register_mii_timestamper(arg.np, arg.args[0]);
-+put_node:
-+	of_node_put(arg.np);
-+	return mii_ts;
- }
- 
- int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index d0da564ac94b..2b3df65005ca 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5008,6 +5008,10 @@ static const struct pci_dev_acs_enabled {
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1750, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1751, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1752, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1760, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1761, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
++	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
 -- 
 2.39.5
 
