@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-105951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8B79FB272
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B7D9FB229
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF70B1885E5D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC6F71655B0
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F271B3725;
-	Mon, 23 Dec 2024 16:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1525D1B21BD;
+	Mon, 23 Dec 2024 16:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYQ++L9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHgx6AUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEB11865EB;
-	Mon, 23 Dec 2024 16:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A1219E98B;
+	Mon, 23 Dec 2024 16:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970692; cv=none; b=ORV8d9XZOX0ZqRDM7cz1eRCCEJ4vrW/vlQLtnHPSK7qMBd21siQB5pUf2Ci31g795jjovwCtLsjBWF/882CSPB2yUU9omQQzIu+nLpr1O0f14WNmxCRmaJTCS7ZU7labVWgpMjKUOjwsByLYBkP2av93UucHEAafN3i7tNVGtNc=
+	t=1734970461; cv=none; b=regxBhrgNzGB3RVr1oYFG7SGDQrDYjyHpcD35fVjjYjlC0eYzCIx+2krxFOt50Hoa/m8wlPdi+5vT1FuTjH3SO+m3uDCpyKBUApDlTDCGxq5kTmYwXY3v5n7mBS4mtNZ0n9YDb3n7pGe82DEHbietD2we3yV/en8fuzVtxq0Mnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970692; c=relaxed/simple;
-	bh=yMlzlYyBtLTj9bmDOhr1VwxPcgAR0/BqzQ/GraHES4Q=;
+	s=arc-20240116; t=1734970461; c=relaxed/simple;
+	bh=16coeFHH6OoD3q+8q/7lBifuIDHFwXRtFk6IrvYQloc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vi2WIH+vXejily9bLY/ssb13c0pUJ+CJ3QdcUVmBko/Zetv1sKq8e0AUyTsXyhakLyR9MI/sXIoyCLfXcL4XcH8cp9yN3oXEvMy0aPOrtNk+31PVYxMbgAJUf/6aKyZ7GbroFgH4KgNq6yryay6VsGJM71GYMbuh94NSrzfXoEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYQ++L9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C189EC4CED3;
-	Mon, 23 Dec 2024 16:18:11 +0000 (UTC)
+	 MIME-Version; b=Hc3HpYW+auehpEUVknqX0UhBpmIoHoBdv2O0IXUkfJz16h7v6ja+qRthMEeXMRMpNvSIIbaM6/aKfQcLrP0K5CAtYquwCnF90tmFf/6lVIVdMrQ/2qgXJ2/+9PsWXN5xkJMUDAFpIv18GQKf3XkBk9EFed2Mvxb06duVnpsUhKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHgx6AUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D731FC4CED3;
+	Mon, 23 Dec 2024 16:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970692;
-	bh=yMlzlYyBtLTj9bmDOhr1VwxPcgAR0/BqzQ/GraHES4Q=;
+	s=korg; t=1734970461;
+	bh=16coeFHH6OoD3q+8q/7lBifuIDHFwXRtFk6IrvYQloc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYQ++L9hx8YrENolIlyuvrmjE8bbTOjZHGMWAozdja3jXcaXN1eFmSCd7E3sHr4ct
-	 37i2KHE8HICAkbugXUEyL5afcV/5bFikhKW6MDgAC9TB4BO3L8zIE4LSVHiVt+z9zV
-	 ZefvGNIRGgoFe/NTqdjAgdQyV1H3TFhXCtBl05UQ=
+	b=xHgx6AUMeIDG02+RIu6kYVMO2juO3Blq4oqyerNq1jiIhCtYxU4/X8WDCX1aCIljX
+	 cmCHzq77pg2cyTICfz7HUy1zBYXIODB9aLeDahbhbserOANpYsrDQ1kuM/CF6tvaQ9
+	 H0uxGBIvPdgqKs4eObyj3VUhIKEbwFcBeJhc392E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wu <wojackbb@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 41/83] USB: serial: option: add MediaTek T7XX compositions
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 090/116] KVM: x86: Play nice with protected guests in complete_hypercall_exit()
 Date: Mon, 23 Dec 2024 16:59:20 +0100
-Message-ID: <20241223155355.228443157@linuxfoundation.org>
+Message-ID: <20241223155403.063849539@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wu <wojackbb@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit f07dfa6a1b65034a5c3ba3a555950d972f252757 upstream.
+commit 9b42d1e8e4fe9dc631162c04caa69b0d1860b0f0 upstream.
 
-Add the MediaTek T7XX compositions:
+Use is_64_bit_hypercall() instead of is_64_bit_mode() to detect a 64-bit
+hypercall when completing said hypercall.  For guests with protected state,
+e.g. SEV-ES and SEV-SNP, KVM must assume the hypercall was made in 64-bit
+mode as the vCPU state needed to detect 64-bit mode is unavailable.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#= 74 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0e8d ProdID=7129 Rev= 0.01
-S:  Manufacturer=MediaTek Inc.
-S:  Product=USB DATA CARD
-S:  SerialNumber=004402459035402
-C:* #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=08(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=8a(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Hacking the sev_smoke_test selftest to generate a KVM_HC_MAP_GPA_RANGE
+hypercall via VMGEXIT trips the WARN:
 
--------------------------------
-| If Number | Function        |
--------------------------------
-| 2         | USB AP Log Port |
--------------------------------
-| 3         | USB AP GNSS Port|
--------------------------------
-| 4         | USB AP META Port|
--------------------------------
-| 5         | ADB port        |
--------------------------------
-| 6         | USB MD AT Port  |
-------------------------------
-| 7         | USB MD META Port|
--------------------------------
-| 8         | USB NTZ Port    |
--------------------------------
-| 9         | USB Debug port  |
--------------------------------
+  ------------[ cut here ]------------
+  WARNING: CPU: 273 PID: 326626 at arch/x86/kvm/x86.h:180 complete_hypercall_exit+0x44/0xe0 [kvm]
+  Modules linked in: kvm_amd kvm ... [last unloaded: kvm]
+  CPU: 273 UID: 0 PID: 326626 Comm: sev_smoke_test Not tainted 6.12.0-smp--392e932fa0f3-feat #470
+  Hardware name: Google Astoria/astoria, BIOS 0.20240617.0-0 06/17/2024
+  RIP: 0010:complete_hypercall_exit+0x44/0xe0 [kvm]
+  Call Trace:
+   <TASK>
+   kvm_arch_vcpu_ioctl_run+0x2400/0x2720 [kvm]
+   kvm_vcpu_ioctl+0x54f/0x630 [kvm]
+   __se_sys_ioctl+0x6b/0xc0
+   do_syscall_64+0x83/0x160
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-Signed-off-by: Jack Wu <wojackbb@gmail.com>
+Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/r/20241128004344.4072099-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/x86.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2249,6 +2249,8 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7127, 0xff, 0x00, 0x00),
- 	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEDIATEK_VENDOR_ID, 0x7129, 0xff, 0x00, 0x00),        /* MediaTek T7XX  */
-+	  .driver_info = NCTRL(2) | NCTRL(3) | NCTRL(4) },
- 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MEN200) },
- 	{ USB_DEVICE(CELLIENT_VENDOR_ID, CELLIENT_PRODUCT_MPL200),
- 	  .driver_info = RSVD(1) | RSVD(4) },
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9825,7 +9825,7 @@ static int complete_hypercall_exit(struc
+ {
+ 	u64 ret = vcpu->run->hypercall.ret;
+ 
+-	if (!is_64_bit_mode(vcpu))
++	if (!is_64_bit_hypercall(vcpu))
+ 		ret = (u32)ret;
+ 	kvm_rax_write(vcpu, ret);
+ 	++vcpu->stat.hypercalls;
 
 
 
