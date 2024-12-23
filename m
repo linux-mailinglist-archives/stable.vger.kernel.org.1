@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8549FB176
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C769FB1F0
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D05101883BB3
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C414F1884934
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D021B21BD;
-	Mon, 23 Dec 2024 16:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC84B1B3944;
+	Mon, 23 Dec 2024 16:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cizvLaq8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwRV0/t+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7008013BC0C;
-	Mon, 23 Dec 2024 16:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C1019E98B;
+	Mon, 23 Dec 2024 16:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969964; cv=none; b=diR8xb0pEWJLzhwOGmbdm2mQhZxvVv0Yj801hyM1a3Y6qfME47cZ4+xVvy8odXBZRhwRD/PzxJEqdytTFHgK+99PyMD9riTBhT6M8AyGUtKaetLWDR0CiX/tPT3Qnw27df1eGMdZeqjsD55XQDCSFf4kTgYBTLgJgm3m+VNOM4Y=
+	t=1734970307; cv=none; b=d4tog1CifDc0RwpWq3SLrtN3ppILxljs8Jc0bIdUzPGmdRwSBsSuo8AXw4NILh2xzwwhU6zLERb+JDJCBenfXj0/kRJIFj+t0bqC8bgIDxVeSn8Q+JhMdfCPdhAg3IRjKUzvxtluWAGZ7UjH25RepnYWElhNSDNOXzWYCCRNZnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969964; c=relaxed/simple;
-	bh=rdiHS0AZ1fDpKcfplnNAD9VIXzSVQ9Mx3h3d+wVlxRs=;
+	s=arc-20240116; t=1734970307; c=relaxed/simple;
+	bh=f5ifwCGm5FbhmLwENMsjpWGvOr91tY6keXSLloSRlN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Du5uLGSCrS27Ez8XGYMpkV+eMWR5OQoEUgEjdhHhOYDb36SrW2BwtNY4FjWgfAJ+t6A/eE6FKs5XIhwmwlaRLFJapk8USlelzbAWB1deuiNhApCjGZprInNwHvtXPDgzKRVcnu12EzCxbVBUvweOXAPkMv6aWCGrbaiAPWi/Y9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cizvLaq8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0453DC4CED3;
-	Mon, 23 Dec 2024 16:06:03 +0000 (UTC)
+	 MIME-Version; b=dTh/1uzfPuy5K+ylLLPu0Gch/h5v1CanrE13yj3QQDbwX53Sd6g0RFCoqmXh4/crg8OpVfRgto4uiGCe/g+tvCTEIgNvbgWFss70RqGG8R6KYE5amvMKDOXm7zJip1gwXE1N4npNyGmUF24W9ph4RAGR/YBd/DlguYX4jIjfaQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwRV0/t+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC682C4CED3;
+	Mon, 23 Dec 2024 16:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969964;
-	bh=rdiHS0AZ1fDpKcfplnNAD9VIXzSVQ9Mx3h3d+wVlxRs=;
+	s=korg; t=1734970307;
+	bh=f5ifwCGm5FbhmLwENMsjpWGvOr91tY6keXSLloSRlN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cizvLaq8FGZISRrSAE0JFnSHlQapHdP6uxzRGT6HRus6b8cGK7AfOEx7IuWVBa/Tk
-	 dXJ5ZjYz4LX6I7krSpP24G7mmcGX8sJTFZzuQrjlBFa4libZyoGoIUqwFFEMd6HhgH
-	 gWBNR+zigkuZDWUVHq7Pxq0hKAuplRYU/Mr6zGf0=
+	b=AwRV0/t+VXTFF6fKvY8Y7OklYlowBrbgnq1nSy64PUQYhuhoY73yZqhKnFffhp+b+
+	 tqqJ1GwxkXdjPlAT483nxcKL1G4tMOypRhhYQz0xdpMhEAg1NGlHy6xjMNt1MI813j
+	 /Mwm3dAkg0ZU8U60qowCLJq/8RxUb7gJsZ8pBTmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/160] block: avoid to reuse `hctx` not removed from cpuhp callback list
+Subject: [PATCH 6.6 045/116] net: mscc: ocelot: fix incorrect IFH SRC_PORT field in ocelot_ifh_set_basic()
 Date: Mon, 23 Dec 2024 16:58:35 +0100
-Message-ID: <20241223155412.697000695@linuxfoundation.org>
+Message-ID: <20241223155401.311708850@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 85672ca9ceeaa1dcf2777a7048af5f4aee3fd02b ]
+[ Upstream commit 2d5df3a680ffdaf606baa10636bdb1daf757832e ]
 
-If the 'hctx' isn't removed from cpuhp callback list, we can't reuse it,
-otherwise use-after-free may be triggered.
+Packets injected by the CPU should have a SRC_PORT field equal to the
+CPU port module index in the Analyzer block (ocelot->num_phys_ports).
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202412172217.b906db7c-lkp@intel.com
-Tested-by: kernel test robot <oliver.sang@intel.com>
-Fixes: 22465bbac53c ("blk-mq: move cpuhp callback registering out of q->sysfs_lock")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241218101617.3275704-3-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The blamed commit copied the ocelot_ifh_set_basic() call incorrectly
+from ocelot_xmit_common() in net/dsa/tag_ocelot.c. Instead of calling
+with "x", it calls with BIT_ULL(x), but the field is not a port mask,
+but rather a single port index.
+
+[ side note: this is the technical debt of code duplication :( ]
+
+The error used to be silent and doesn't appear to have other
+user-visible manifestations, but with new changes in the packing
+library, it now fails loudly as follows:
+
+------------[ cut here ]------------
+Cannot store 0x40 inside bits 46-43 - will truncate
+sja1105 spi2.0: xmit timed out
+WARNING: CPU: 1 PID: 102 at lib/packing.c:98 __pack+0x90/0x198
+sja1105 spi2.0: timed out polling for tstamp
+CPU: 1 UID: 0 PID: 102 Comm: felix_xmit
+Tainted: G        W        N 6.13.0-rc1-00372-gf706b85d972d-dirty #2605
+Call trace:
+ __pack+0x90/0x198 (P)
+ __pack+0x90/0x198 (L)
+ packing+0x78/0x98
+ ocelot_ifh_set_basic+0x260/0x368
+ ocelot_port_inject_frame+0xa8/0x250
+ felix_port_deferred_xmit+0x14c/0x258
+ kthread_worker_fn+0x134/0x350
+ kthread+0x114/0x138
+
+The code path pertains to the ocelot switchdev driver and to the felix
+secondary DSA tag protocol, ocelot-8021q. Here seen with ocelot-8021q.
+
+The messenger (packing) is not really to blame, so fix the original
+commit instead.
+
+Fixes: e1b9e80236c5 ("net: mscc: ocelot: fix QoS class for injected packets with "ocelot-8021q"")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241212165546.879567-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mscc/ocelot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 1030875a3e95..d5995021815d 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4421,6 +4421,15 @@ struct gendisk *blk_mq_alloc_disk_for_queue(struct request_queue *q,
- }
- EXPORT_SYMBOL(blk_mq_alloc_disk_for_queue);
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index c2118bde908b..f6aa5d6b6597 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -1266,7 +1266,7 @@ void ocelot_ifh_set_basic(void *ifh, struct ocelot *ocelot, int port,
  
-+/*
-+ * Only hctx removed from cpuhp list can be reused
-+ */
-+static bool blk_mq_hctx_is_reusable(struct blk_mq_hw_ctx *hctx)
-+{
-+	return hlist_unhashed(&hctx->cpuhp_online) &&
-+		hlist_unhashed(&hctx->cpuhp_dead);
-+}
-+
- static struct blk_mq_hw_ctx *blk_mq_alloc_and_init_hctx(
- 		struct blk_mq_tag_set *set, struct request_queue *q,
- 		int hctx_idx, int node)
-@@ -4430,7 +4439,7 @@ static struct blk_mq_hw_ctx *blk_mq_alloc_and_init_hctx(
- 	/* reuse dead hctx first */
- 	spin_lock(&q->unused_hctx_lock);
- 	list_for_each_entry(tmp, &q->unused_hctx_list, hctx_list) {
--		if (tmp->numa_node == node) {
-+		if (tmp->numa_node == node && blk_mq_hctx_is_reusable(tmp)) {
- 			hctx = tmp;
- 			break;
- 		}
+ 	memset(ifh, 0, OCELOT_TAG_LEN);
+ 	ocelot_ifh_set_bypass(ifh, 1);
+-	ocelot_ifh_set_src(ifh, BIT_ULL(ocelot->num_phys_ports));
++	ocelot_ifh_set_src(ifh, ocelot->num_phys_ports);
+ 	ocelot_ifh_set_dest(ifh, BIT_ULL(port));
+ 	ocelot_ifh_set_qos_class(ifh, qos_class);
+ 	ocelot_ifh_set_tag_type(ifh, tag_type);
 -- 
 2.39.5
 
