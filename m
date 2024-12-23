@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-106002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388CE9FB2B2
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:22:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CB89FB293
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AB321885C6B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:22:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97C5918816B1
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA411B4151;
-	Mon, 23 Dec 2024 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920771A4AAA;
+	Mon, 23 Dec 2024 16:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iZn6ALU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHohaCNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE26A1B413F;
-	Mon, 23 Dec 2024 16:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5063617A597;
+	Mon, 23 Dec 2024 16:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970864; cv=none; b=M7ayAwRf3KDuTiuE/DpYY5XMKiAvE5PI17QI4HkRaIJjI6adBf4OhmvCM1NbPYl6K9mdZPLC421t5uo1BiyKn+UoA1DqUxR7YHH4LPGZxhY8zkojK6lQSnAZZSYcxEfo4wVaULADCjrQ3EM/5Y0glX+oPsdR70FBYvz8/BCrQJk=
+	t=1734970796; cv=none; b=MscfVvBYu5OEgjZp3SV4wKZVM3jVUAmcJgq/KcUL0WLX/Q8WDeLtgKWts8atx6J7ZVYKQN56+loMSdv7iZPFbT/f9jYdnS1rJ0rgOVSVzhPv9jRt7qS7b8zJQcPq7qIPgjLvWyYtOuGw3b1YbPzMNV9bvG8O0Msf2uttqL+UCyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970864; c=relaxed/simple;
-	bh=sU/hGM0VSC5OfwWsy+XbMQPlzwK1h240p6tMGWY545k=;
+	s=arc-20240116; t=1734970796; c=relaxed/simple;
+	bh=lqbCFcPji1zskPH4Fb0i82rIiOE3gZkzq+tI+dkJF5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYLj8CYfvJW/O+E5S1MlM/zqDCf+FwPNdI+1/1xBg+jlMJiDuHmgkqiw5lx4Q3tSR+/C5SRZYDNYQphLC7DJz/YH1n0wFTvUeKVbBGLRiaeKXU9w/BHtAtwfvtfawj6QJ3LgM9IjZle27dwDNXq1wxIoKKd5ZK9oDGvYyLyW9AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iZn6ALU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0859BC4CED4;
-	Mon, 23 Dec 2024 16:21:03 +0000 (UTC)
+	 MIME-Version; b=O+jSYWkDnjs+fk4z9mnwEUR8pE/bcAY1gr8LfRzwhH0fLwpQ2tRvHU2hJvnWo9W+WuRALKRWsqHtgwmk7zBDb4iCadFrV6QdsWtaq17pBspoUhFSsUJLrGRK/gBIx+TqDtd7TWYvKH4q/Iqc7oRw/4eJWE9ucRWvnmw8tLExb0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHohaCNI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D0CC4CED3;
+	Mon, 23 Dec 2024 16:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970864;
-	bh=sU/hGM0VSC5OfwWsy+XbMQPlzwK1h240p6tMGWY545k=;
+	s=korg; t=1734970796;
+	bh=lqbCFcPji1zskPH4Fb0i82rIiOE3gZkzq+tI+dkJF5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iZn6ALUH8f3/RMrZnl5jx27vyAu6wLpwIeFL2mOVI7CDZTw+nC8q+w1jNgqtKjb6
-	 rwyIQk29GTCoxQ+KeM4KUbVIoDZ49LW/LWPdv5TPbVutAVR41Dm0/uRRnA1/8zoRoz
-	 Nhgux3lzOcoqMRXcm+LfChkIG03GNVGoM28TvgFE=
+	b=gHohaCNI7zlcMUf+eHUYCDnyn7SSgd9h/QRWZ8rAFwKM3DJlGZ99cIOIzliIecNY3
+	 NereaA0zZjOaQ2WnR23bCAe4vt1puuoFQbJPDUPvKoObnU07slj1SEdMPtOQwkMSsT
+	 Z4oqjcDkjHOiKAOeggA6tEgmsQRfnSoufHstU/ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Al Viro <viro@ZenIV.linux.org.uk>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 63/83] tracing: Add missing helper functions in event pointer dereference check
-Date: Mon, 23 Dec 2024 16:59:42 +0100
-Message-ID: <20241223155356.067401314@linuxfoundation.org>
+Subject: [PATCH 6.1 64/83] tracing: Add "%s" check in test_event_printk()
+Date: Mon, 23 Dec 2024 16:59:43 +0100
+Message-ID: <20241223155356.105612221@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
 References: <20241223155353.641267612@linuxfoundation.org>
@@ -72,23 +72,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 917110481f6bc1c96b1e54b62bb114137fbc6d17 upstream.
+commit 65a25d9f7ac02e0cf361356e834d1c71d36acca9 upstream.
 
-The process_pointer() helper function looks to see if various trace event
-macros are used. These macros are for storing data in the event. This
-makes it safe to dereference as the dereference will then point into the
-event on the ring buffer where the content of the data stays with the
-event itself.
+The test_event_printk() code makes sure that when a trace event is
+registered, any dereferenced pointers in from the event's TP_printk() are
+pointing to content in the ring buffer. But currently it does not handle
+"%s", as there's cases where the string pointer saved in the ring buffer
+points to a static string in the kernel that will never be freed. As that
+is a valid case, the pointer needs to be checked at runtime.
 
-A few helper functions were missing. Those were:
+Currently the runtime check is done via trace_check_vprintf(), but to not
+have to replicate everything in vsnprintf() it does some logic with the
+va_list that may not be reliable across architectures. In order to get rid
+of that logic, more work in the test_event_printk() needs to be done. Some
+of the strings can be validated at this time when it is obvious the string
+is valid because the string will be saved in the ring buffer content.
 
-  __get_rel_dynamic_array()
-  __get_dynamic_array_len()
-  __get_rel_dynamic_array_len()
-  __get_rel_sockaddr()
-
-Also add a helper function find_print_string() to not need to use a middle
-man variable to test if the string exists.
+Do all the validation of strings in the ring buffer at boot in
+test_event_printk(), and make sure that the field of the strings that
+point into the kernel are accessible. This will allow adding checks at
+runtime that will validate the fields themselves and not rely on paring
+the TP_printk() format at runtime.
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
@@ -97,52 +101,176 @@ Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Al Viro <viro@ZenIV.linux.org.uk>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/20241217024720.521836792@goodmis.org
+Link: https://lore.kernel.org/20241217024720.685917008@goodmis.org
 Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events.c |  104 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 89 insertions(+), 15 deletions(-)
 
 --- a/kernel/trace/trace_events.c
 +++ b/kernel/trace/trace_events.c
-@@ -272,6 +272,15 @@ static bool test_field(const char *fmt,
+@@ -242,19 +242,16 @@ int trace_event_get_offsets(struct trace
+ 	return tail->offset + tail->size;
+ }
+ 
+-/*
+- * Check if the referenced field is an array and return true,
+- * as arrays are OK to dereference.
+- */
+-static bool test_field(const char *fmt, struct trace_event_call *call)
++
++static struct trace_event_fields *find_event_field(const char *fmt,
++						   struct trace_event_call *call)
+ {
+ 	struct trace_event_fields *field = call->class->fields_array;
+-	const char *array_descriptor;
+ 	const char *p = fmt;
+ 	int len;
+ 
+ 	if (!(len = str_has_prefix(fmt, "REC->")))
+-		return false;
++		return NULL;
+ 	fmt += len;
+ 	for (p = fmt; *p; p++) {
+ 		if (!isalnum(*p) && *p != '_')
+@@ -265,11 +262,26 @@ static bool test_field(const char *fmt,
+ 	for (; field->type; field++) {
+ 		if (strncmp(field->name, fmt, len) || field->name[len])
+ 			continue;
+-		array_descriptor = strchr(field->type, '[');
+-		/* This is an array and is OK to dereference. */
+-		return array_descriptor != NULL;
++
++		return field;
+ 	}
+-	return false;
++	return NULL;
++}
++
++/*
++ * Check if the referenced field is an array and return true,
++ * as arrays are OK to dereference.
++ */
++static bool test_field(const char *fmt, struct trace_event_call *call)
++{
++	struct trace_event_fields *field;
++
++	field = find_event_field(fmt, call);
++	if (!field)
++		return false;
++
++	/* This is an array and is OK to dereference. */
++	return strchr(field->type, '[') != NULL;
+ }
+ 
+ /* Look for a string within an argument */
+@@ -315,6 +327,53 @@ static bool process_pointer(const char *
  	return false;
  }
  
-+/* Look for a string within an argument */
-+static bool find_print_string(const char *arg, const char *str, const char *end)
++/* Return true if the string is safe */
++static bool process_string(const char *fmt, int len, struct trace_event_call *call)
 +{
-+	const char *r;
++	const char *r, *e, *s;
 +
-+	r = strstr(arg, str);
-+	return r && r < end;
++	e = fmt + len;
++
++	/*
++	 * There are several helper functions that return strings.
++	 * If the argument contains a function, then assume its field is valid.
++	 * It is considered that the argument has a function if it has:
++	 *   alphanumeric or '_' before a parenthesis.
++	 */
++	s = fmt;
++	do {
++		r = strstr(s, "(");
++		if (!r || r >= e)
++			break;
++		for (int i = 1; r - i >= s; i++) {
++			char ch = *(r - i);
++			if (isspace(ch))
++				continue;
++			if (isalnum(ch) || ch == '_')
++				return true;
++			/* Anything else, this isn't a function */
++			break;
++		}
++		/* A function could be wrapped in parethesis, try the next one */
++		s = r + 1;
++	} while (s < e);
++
++	/*
++	 * If there's any strings in the argument consider this arg OK as it
++	 * could be: REC->field ? "foo" : "bar" and we don't want to get into
++	 * verifying that logic here.
++	 */
++	if (find_print_string(fmt, "\"", e))
++		return true;
++
++	/* Dereferenced strings are also valid like any other pointer */
++	if (process_pointer(fmt, len, call))
++		return true;
++
++	/* Make sure the field is found, and consider it OK for now if it is */
++	return find_event_field(fmt, call) != NULL;
 +}
 +
- /* Return true if the argument pointer is safe */
- static bool process_pointer(const char *fmt, int len, struct trace_event_call *call)
+ /*
+  * Examine the print fmt of the event looking for unsafe dereference
+  * pointers using %p* that could be recorded in the trace event and
+@@ -324,6 +383,7 @@ static bool process_pointer(const char *
+ static void test_event_printk(struct trace_event_call *call)
  {
-@@ -290,9 +299,17 @@ static bool process_pointer(const char *
- 		a = strchr(fmt, '&');
- 		if ((a && (a < r)) || test_field(r, call))
- 			return true;
--	} else if ((r = strstr(fmt, "__get_dynamic_array(")) && r < e) {
-+	} else if (find_print_string(fmt, "__get_dynamic_array(", e)) {
-+		return true;
-+	} else if (find_print_string(fmt, "__get_rel_dynamic_array(", e)) {
-+		return true;
-+	} else if (find_print_string(fmt, "__get_dynamic_array_len(", e)) {
-+		return true;
-+	} else if (find_print_string(fmt, "__get_rel_dynamic_array_len(", e)) {
-+		return true;
-+	} else if (find_print_string(fmt, "__get_sockaddr(", e)) {
- 		return true;
--	} else if ((r = strstr(fmt, "__get_sockaddr(")) && r < e) {
-+	} else if (find_print_string(fmt, "__get_rel_sockaddr(", e)) {
- 		return true;
+ 	u64 dereference_flags = 0;
++	u64 string_flags = 0;
+ 	bool first = true;
+ 	const char *fmt;
+ 	int parens = 0;
+@@ -414,8 +474,16 @@ static void test_event_printk(struct tra
+ 						star = true;
+ 						continue;
+ 					}
+-					if ((fmt[i + j] == 's') && star)
+-						arg++;
++					if ((fmt[i + j] == 's')) {
++						if (star)
++							arg++;
++						if (WARN_ONCE(arg == 63,
++							      "Too many args for event: %s",
++							      trace_event_name(call)))
++							return;
++						dereference_flags |= 1ULL << arg;
++						string_flags |= 1ULL << arg;
++					}
+ 					break;
+ 				}
+ 				break;
+@@ -462,7 +530,10 @@ static void test_event_printk(struct tra
+ 			}
+ 
+ 			if (dereference_flags & (1ULL << arg)) {
+-				if (process_pointer(fmt + start_arg, e - start_arg, call))
++				if (string_flags & (1ULL << arg)) {
++					if (process_string(fmt + start_arg, e - start_arg, call))
++						dereference_flags &= ~(1ULL << arg);
++				} else if (process_pointer(fmt + start_arg, e - start_arg, call))
+ 					dereference_flags &= ~(1ULL << arg);
+ 			}
+ 
+@@ -474,7 +545,10 @@ static void test_event_printk(struct tra
  	}
- 	return false;
+ 
+ 	if (dereference_flags & (1ULL << arg)) {
+-		if (process_pointer(fmt + start_arg, i - start_arg, call))
++		if (string_flags & (1ULL << arg)) {
++			if (process_string(fmt + start_arg, i - start_arg, call))
++				dereference_flags &= ~(1ULL << arg);
++		} else if (process_pointer(fmt + start_arg, i - start_arg, call))
+ 			dereference_flags &= ~(1ULL << arg);
+ 	}
+ 
 
 
 
