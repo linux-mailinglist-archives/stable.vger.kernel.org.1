@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-105801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B217A9FB1C0
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1AE69FB1DF
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D8A1884BB8
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 057E8167D4C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C591B21B4;
-	Mon, 23 Dec 2024 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C1C1B3931;
+	Mon, 23 Dec 2024 16:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyMKEFFy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kyM9mSu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE46912D1F1;
-	Mon, 23 Dec 2024 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A601B392B;
+	Mon, 23 Dec 2024 16:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970183; cv=none; b=dZnzNCVQvC4Ga1bYRoH1oCTyHDlzV25yzc2iWB6X9p1xxMI7zN4EAOfHZHMjQ7em2MxjUHbCEB2v0xw6CZ3KkuYGMC8XwFZS9WV7Vj407U6IIKH+LfVOtSonWscHSG0N6z5N+NPBefvZxY5wgIKokNKmZ0jFjCKOBGoUrXg1t4A=
+	t=1734970221; cv=none; b=oU6dL13RVQ65zbvCV/pggQKNQHzj3VM6iTmAKOrfAg6OtmLD8856QkSlxhvazbyiOQ3ayss8Iht/bI1huxOWhE/ZN/kaaNHhG7BFle5Mf4YkPT3Qx90p0YnE9KBvcLZifVt71O/leXoCPJpxNRFEueRkRDyE1F7g32ADjFlWbdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970183; c=relaxed/simple;
-	bh=njOSA0nFlQ+5MT4UB/3BPncbLrkMly9R6vVUN9ozMy4=;
+	s=arc-20240116; t=1734970221; c=relaxed/simple;
+	bh=iKahr5qoQxN73DqM7VSADJj/irzMlTJ2TCE6HxuZoJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pyXRzdEjc6W95cXQA928/Tzh/cgIYFRoQ+z0O0Y6dSr7y8FiQHNHGSCfhRgX0yP1MB9c3DFbx8orzYsvDZwfFUNHzod0LFx1ODeNz23pnmUPO3ns3aBEu3XM7SXWOMZ3VMgDuRDX5B+v9xAAmBQ2WEIxMwK6FtM2dikOpmxMSrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyMKEFFy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92EBC4CED4;
-	Mon, 23 Dec 2024 16:09:42 +0000 (UTC)
+	 MIME-Version; b=ItVB3GkF9i06MigM9C2UvxMCN9Wv0Lx9SdYbjOzbSG64wzu/Eba2+rd88Z1/6p5Gl22GfXmy/z4mO0wLzOrViwiWMygo7pbUt4faYQAYKWI4ZVV8wzr+uU3cfjJU/7t5mj57MQEw1O0Khmbiafr4mlkM0DiwpdE/EoPN7S+MFrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kyM9mSu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBB6C4CED3;
+	Mon, 23 Dec 2024 16:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970183;
-	bh=njOSA0nFlQ+5MT4UB/3BPncbLrkMly9R6vVUN9ozMy4=;
+	s=korg; t=1734970221;
+	bh=iKahr5qoQxN73DqM7VSADJj/irzMlTJ2TCE6HxuZoJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyMKEFFyMiz6VvPQdu3OmHgsz3veSDp1k52PSxJ2r78JdyeRcrph0MCrFXA4ckBL/
-	 8QFBqRmXWQpO0B4F8qKkJzuh3PZOQXcB4kmINCCI2bDXYy3COBF+QmBYKDbAp9FRlE
-	 eHe/TccOSpx41SQCxtdD0xf8P9XLv+P+MGWbaacs=
+	b=0kyM9mSumKc2iLDP7tdpYApdYpa4Cy8tRJpH8IUoYtgKdQ+bYMRwRiDKeOVHHYp+R
+	 tGpxgiqdAuX7NLj9v04bhNG81O0DtjYelu8uj8F7rylTCHOaYCSDDLhrzJFe3jxXkA
+	 qdObiePUKwNZWRm75aXBYa/ngp2FWMOpbfTZHnWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lion Ackermann <nnamrec@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Artem Metla <ametla@google.com>
-Subject: [PATCH 6.6 001/116] net: sched: fix ordering of qlen adjustment
-Date: Mon, 23 Dec 2024 16:57:51 +0100
-Message-ID: <20241223155359.598198928@linuxfoundation.org>
+	Peng Hongchi <hongchi.peng@siengine.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 002/116] usb: dwc2: gadget: Dont write invalid mapped sg entries into dma_desc with iommu enabled
+Date: Mon, 23 Dec 2024 16:57:52 +0100
+Message-ID: <20241223155359.639122376@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
 References: <20241223155359.534468176@linuxfoundation.org>
@@ -61,63 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Peng Hongchi <hongchi.peng@siengine.com>
 
-commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
+[ Upstream commit 1134289b6b93d73721340b66c310fd985385e8fa ]
 
-Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
-_before_ a call to said function because otherwise it may fail to notify
-parent qdiscs when the child is about to become empty.
+When using dma_map_sg() to map the scatterlist with iommu enabled,
+the entries in the scatterlist can be mergerd into less but longer
+entries in the function __finalise_sg(). So that the number of
+valid mapped entries is actually smaller than ureq->num_reqs,and
+there are still some invalid entries in the scatterlist with
+dma_addr=0xffffffff and len=0. Writing these invalid sg entries
+into the dma_desc can cause a data transmission error.
 
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Cc: Artem Metla <ametla@google.com>
+The function dma_map_sg() returns the number of valid map entries
+and the return value is assigned to usb_request::num_mapped_sgs in
+function usb_gadget_map_request_by_dev(). So that just write valid
+mapped entries into dma_desc according to the usb_request::num_mapped_sgs,
+and set the IOC bit if it's the last valid mapped entry.
+
+This patch poses no risk to no-iommu situation, cause
+ureq->num_mapped_sgs equals ureq->num_sgs while using dma_direct_map_sg()
+to map the scatterlist whith iommu disabled.
+
+Signed-off-by: Peng Hongchi <hongchi.peng@siengine.com>
+Link: https://lore.kernel.org/r/20240523100315.7226-1-hongchi.peng@siengine.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c  |    2 +-
- net/sched/sch_choke.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc2/gadget.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1542,7 +1542,6 @@ static unsigned int cake_drop(struct Qdi
- 	b->backlogs[idx]    -= len;
- 	b->tin_backlog      -= len;
- 	sch->qstats.backlog -= len;
--	qdisc_tree_reduce_backlog(sch, 1, len);
+diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
+index b2f6da5b65cc..b26de09f6b6d 100644
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -885,10 +885,10 @@ static void dwc2_gadget_config_nonisoc_xfer_ddma(struct dwc2_hsotg_ep *hs_ep,
+ 	}
  
- 	flow->dropped++;
- 	b->tin_dropped++;
-@@ -1553,6 +1552,7 @@ static unsigned int cake_drop(struct Qdi
+ 	/* DMA sg buffer */
+-	for_each_sg(ureq->sg, sg, ureq->num_sgs, i) {
++	for_each_sg(ureq->sg, sg, ureq->num_mapped_sgs, i) {
+ 		dwc2_gadget_fill_nonisoc_xfer_ddma_one(hs_ep, &desc,
+ 			sg_dma_address(sg) + sg->offset, sg_dma_len(sg),
+-			sg_is_last(sg));
++			(i == (ureq->num_mapped_sgs - 1)));
+ 		desc_count += hs_ep->desc_count;
+ 	}
  
- 	__qdisc_drop(skb, to_free);
- 	sch->q.qlen--;
-+	qdisc_tree_reduce_backlog(sch, 1, len);
- 
- 	cake_heapify(q, 0);
- 
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -123,10 +123,10 @@ static void choke_drop_by_idx(struct Qdi
- 	if (idx == q->tail)
- 		choke_zap_tail_holes(q);
- 
-+	--sch->q.qlen;
- 	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 	qdisc_drop(skb, sch, to_free);
--	--sch->q.qlen;
- }
- 
- struct choke_skb_cb {
+-- 
+2.39.5
+
 
 
 
