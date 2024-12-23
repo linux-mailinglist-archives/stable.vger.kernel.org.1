@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-105834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C779FB1ED
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 785939FB172
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E344188548E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD01B188234E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7322319E971;
-	Mon, 23 Dec 2024 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744B91B0F2E;
+	Mon, 23 Dec 2024 16:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muQ3hjNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tz+/AFzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F53C1B21BD;
-	Mon, 23 Dec 2024 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2999419E971;
+	Mon, 23 Dec 2024 16:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970296; cv=none; b=X0fveesamPMo2zudZ2q/yLE3seWr1aW8o/z1/YCS+8+1Gr9GTow/VLCMlQKS5svcn5y79Ofsgf7ogdXKIe/5D4hMv0+ui7mk+ty8zHkVhH9aJOyOWvw0ElyXs584Ft98rF49dWgymD7ifP1KQTiEVa87erspXVnf/f6lClwh08g=
+	t=1734969954; cv=none; b=Ep2iaOkDQsCadP/UsZt6u16Bq1yIR/2mL9iB+6M4YQxz2UsX9emdZT1Flgp0qWtKuYk2WIYeLTPu+bkfHc14xPt6oqGBQvWnDMgmthiN25G25uk7rI3DWY7dWyTEeLDO/mTQgQ02qFo4Ckhmf8afi3hGeECF3FSgigfxTUa+ELc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970296; c=relaxed/simple;
-	bh=PIoUtwInI+mddZv1h3boDUPeq6DILeraNGI78qSPJ1o=;
+	s=arc-20240116; t=1734969954; c=relaxed/simple;
+	bh=+BcYVThS4MoR0c8MRTmNATvdt0JoYu61GfXqloSnP/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhpdSbTxbAZzCqp9T8NFzHup7IOc7jbnL9UJOtYeDRhQFwnJxmZXyEC3uKsfof2VmJsddrjhQ8H4ZkNYqb/S904md+Ni/AFTUAqISColwuxs5s8EKiknRMBZrhErEEYa6ytW5eVxNyJiGUY7AYS4Kz4MsX+cLQtEb02e3ejb800=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muQ3hjNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9245AC4CED3;
-	Mon, 23 Dec 2024 16:11:35 +0000 (UTC)
+	 MIME-Version; b=b16ZVXJS3zAzlj6+WNphBv2aFlfSl4SQmL3MVFWU2PTT4LepPVw5dNNdb03tyhBa6DeqKJJxDneQyllUFI1ve/iTuTWS6V0Qekt/DY+54ViBXJv8k40Va1ulx6knn4SABGJ5HG4TvgeuE9WHvrY/dPTQ/9q+2gya3vNLe+frkug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tz+/AFzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50B0C4CED4;
+	Mon, 23 Dec 2024 16:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970296;
-	bh=PIoUtwInI+mddZv1h3boDUPeq6DILeraNGI78qSPJ1o=;
+	s=korg; t=1734969954;
+	bh=+BcYVThS4MoR0c8MRTmNATvdt0JoYu61GfXqloSnP/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muQ3hjNVmSW+IRQsujF3VMiJn6RnTcWzDJkMKI+O9nHkAkAOxr9UM4tb+7DtEyqVq
-	 6co/4IqpkxoUfM4oSwmH5f3zKFnO8iy7Jb4DstCyJn1H1z4pnEhOKAFoMJxJlMdiFK
-	 LycPbu+m5l+3RYQ3ZWciIDG73/1LZPmGdlOayMJk=
+	b=Tz+/AFzUEigfIGV9YmZmMJc5xupodsmhJjI6TSHRxq38OO9TZFjaWuElpGT+D8chb
+	 SS1NIADtmqbfoLkpr88PufSSMG3b4fzMYAcl3mhFLetsx36nlKJxLvL+OCR4AI8TSf
+	 F+iTzX72vtJ+3vOFlVgcQy7hWf8d4DTFggxi6jXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Murad Masimov <m.masimov@maxima.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/116] net/smc: check v2_ext_offset/eid_cnt/ism_gid_cnt when receiving proposal msg
+Subject: [PATCH 6.12 101/160] hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers
 Date: Mon, 23 Dec 2024 16:58:32 +0100
-Message-ID: <20241223155401.197798989@linuxfoundation.org>
+Message-ID: <20241223155412.583330486@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Murad Masimov <m.masimov@maxima.ru>
 
-[ Upstream commit 7863c9f3d24ba49dbead7e03dfbe40deb5888fdf ]
+[ Upstream commit 74d7e038fd072635d21e4734e3223378e09168d3 ]
 
-When receiving proposal msg in server, the fields v2_ext_offset/
-eid_cnt/ism_gid_cnt in proposal msg are from the remote client
-and can not be fully trusted. Especially the field v2_ext_offset,
-once exceed the max value, there has the chance to access wrong
-address, and crash may happen.
+The values returned by the driver after processing the contents of the
+Shunt Voltage Register and the Shunt Limit Registers do not correspond to
+the TMP512/TMP513 specifications. A raw register value is converted to a
+signed integer value by a sign extension in accordance with the algorithm
+provided in the specification, but due to the off-by-one error in the sign
+bit index, the result is incorrect. Moreover, the PGA shift calculated with
+the tmp51x_get_pga_shift function is relevant only to the Shunt Voltage
+Register, but is also applied to the Shunt Limit Registers.
 
-This patch checks the fields v2_ext_offset/eid_cnt/ism_gid_cnt
-before using them.
+According to the TMP512 and TMP513 datasheets, the Shunt Voltage Register
+(04h) is 13 to 16 bit two's complement integer value, depending on the PGA
+setting.  The Shunt Positive (0Ch) and Negative (0Dh) Limit Registers are
+16-bit two's complement integer values. Below are some examples:
 
-Fixes: 8c3dca341aea ("net/smc: build and send V2 CLC proposal")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+* Shunt Voltage Register
+If PGA = 8, and regval = 1000 0011 0000 0000, then the decimal value must
+be -32000, but the value calculated by the driver will be 33536.
+
+* Shunt Limit Register
+If regval = 1000 0011 0000 0000, then the decimal value must be -32000, but
+the value calculated by the driver will be 768, if PGA = 1.
+
+Fix sign bit index, and also correct misleading comment describing the
+tmp51x_get_pga_shift function.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
+Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+Link: https://lore.kernel.org/r/20241216173648.526-2-m.masimov@maxima.ru
+[groeck: Fixed description and multi-line alignments]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c  | 3 ++-
- net/smc/smc_clc.c | 8 +++++++-
- net/smc/smc_clc.h | 8 +++++++-
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/hwmon/tmp513.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 8551e097ad33..079ca4f1077d 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2283,7 +2283,8 @@ static void smc_find_rdma_v2_device_serv(struct smc_sock *new_smc,
- 		goto not_found;
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index 926d28cd3fab..d87fcea3ef24 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -182,7 +182,7 @@ struct tmp51x_data {
+ 	struct regmap *regmap;
+ };
  
- 	smc_v2_ext = smc_get_clc_v2_ext(pclc);
--	if (!smc_clc_match_eid(ini->negotiated_eid, smc_v2_ext, NULL, NULL))
-+	if (!smc_v2_ext ||
-+	    !smc_clc_match_eid(ini->negotiated_eid, smc_v2_ext, NULL, NULL))
- 		goto not_found;
- 
- 	/* prepare RDMA check */
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index b8fd64392209..286d6b19a1f1 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -352,7 +352,6 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
- 	struct smc_clc_msg_hdr *hdr = &pclc->hdr;
- 	struct smc_clc_v2_extension *v2_ext;
- 
--	v2_ext = smc_get_clc_v2_ext(pclc);
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
- 	if (!pclc_prfx ||
- 	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
-@@ -369,6 +368,13 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
- 			sizeof(struct smc_clc_msg_trail))
- 			return false;
- 	} else {
-+		v2_ext = smc_get_clc_v2_ext(pclc);
-+		if ((hdr->typev2 != SMC_TYPE_N &&
-+		     (!v2_ext || v2_ext->hdr.eid_cnt > SMC_CLC_MAX_UEID)) ||
-+		    (smcd_indicated(hdr->typev2) &&
-+		     v2_ext->hdr.ism_gid_cnt > SMCD_CLC_MAX_V2_GID_ENTRIES))
-+			return false;
-+
- 		if (ntohs(hdr->length) !=
- 			sizeof(*pclc) +
- 			sizeof(struct smc_clc_msg_smcd) +
-diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
-index eb843907c9d0..a3706300e04f 100644
---- a/net/smc/smc_clc.h
-+++ b/net/smc/smc_clc.h
-@@ -364,8 +364,14 @@ static inline struct smc_clc_v2_extension *
- smc_get_clc_v2_ext(struct smc_clc_msg_proposal *prop)
+-// Set the shift based on the gain 8=4, 4=3, 2=2, 1=1
++// Set the shift based on the gain: 8 -> 1, 4 -> 2, 2 -> 3, 1 -> 4
+ static inline u8 tmp51x_get_pga_shift(struct tmp51x_data *data)
  {
- 	struct smc_clc_msg_smcd *prop_smcd = smc_get_clc_msg_smcd(prop);
-+	u16 max_offset;
- 
--	if (!prop_smcd || !ntohs(prop_smcd->v2_ext_offset))
-+	max_offset = offsetof(struct smc_clc_msg_proposal_area, pclc_v2_ext) -
-+		     offsetof(struct smc_clc_msg_proposal_area, pclc_smcd) -
-+		     offsetofend(struct smc_clc_msg_smcd, v2_ext_offset);
-+
-+	if (!prop_smcd || !ntohs(prop_smcd->v2_ext_offset) ||
-+	    ntohs(prop_smcd->v2_ext_offset) > max_offset)
- 		return NULL;
- 
- 	return (struct smc_clc_v2_extension *)
+ 	return 5 - ffs(data->pga_gain);
+@@ -204,7 +204,9 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
+ 		 * 2's complement number shifted by one to four depending
+ 		 * on the pga gain setting. 1lsb = 10uV
+ 		 */
+-		*val = sign_extend32(regval, 17 - tmp51x_get_pga_shift(data));
++		*val = sign_extend32(regval,
++				     reg == TMP51X_SHUNT_CURRENT_RESULT ?
++				     16 - tmp51x_get_pga_shift(data) : 15);
+ 		*val = DIV_ROUND_CLOSEST(*val * 10 * MILLI, data->shunt_uohms);
+ 		break;
+ 	case TMP51X_BUS_VOLTAGE_RESULT:
 -- 
 2.39.5
 
