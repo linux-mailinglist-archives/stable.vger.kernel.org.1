@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-105806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6899FB1D8
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DF89FB156
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0438D16167D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C076D1636A9
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123471B393A;
-	Mon, 23 Dec 2024 16:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EEA12D1F1;
+	Mon, 23 Dec 2024 16:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNpMQn2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQ8Xb5C4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31B512D1F1;
-	Mon, 23 Dec 2024 16:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916582EAE6;
+	Mon, 23 Dec 2024 16:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970200; cv=none; b=Dsv1ptswqY5Qlp18z2JSjUhtr3H/aRWTmwt5afx9/PhiEwG50aqCdsywS/SJa7aEnxN4LwmxyoqO6jRi1VUfY1GWzqkjkPGGkpJ5Uitw6zjklgXNqc2RFkQLWO82/8Kses5kqjDUSmYh7Br94QIJ02Hwt4gMQaBTTbptS8V+kro=
+	t=1734969861; cv=none; b=uJ9Qc0dGmq/B5/JTPWfjFK1J7LN0Rd8+Av+Acgw9QxO6hX8SzEwRCIXjC1z/o/DGbqdmjfbE2aAX9xxt7Y4eckHhjXx+wiVDWltIPBpESSLY50TI8mkdD8nyWdSsAMZTTgO1H6NBueDW+HKXkSmEAkRxZx0SbLxIiGguVQhDxvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970200; c=relaxed/simple;
-	bh=/KrBNUcoRigN3ec2UMScbe9+t+bOPlxFqMstLqvpr1c=;
+	s=arc-20240116; t=1734969861; c=relaxed/simple;
+	bh=uKn40OM2WZzfJ7VclY+hruiL887rJCEtydJr327J0RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l4A6wdkZJ1JaiyXnUcHCaWeV6BzHwU4E9IhgcOugCrISJ5Td4nZVIh/Ipp46Uv32LPecCT2kY3JSNLqpov62QeP141IuT9pTAeVdy/zLuAte9zg0cPzg0tjDLyn7OzaLSabVzeDq9Ub0B301mEC0FmbCMv1rQTWOs0o4jbDauq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNpMQn2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B71C4CED3;
-	Mon, 23 Dec 2024 16:09:59 +0000 (UTC)
+	 MIME-Version; b=HHzwS96SzCXVlpSC0+XsYCC0Z+NdvxUB0j3a1jJfdJ0P6zAQQfYVYucwxVVVuWUwFcXuqUoYzGYSj/iDlj0oQEGntdcm63ZT+MSSqXsQRU8Tc4/TQ4JL0habKrNTgblNjFHEe3gpD0H6LVcJQVXfDSVqkfzhy13v6tA2tgk5RVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQ8Xb5C4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A61C4CED3;
+	Mon, 23 Dec 2024 16:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970200;
-	bh=/KrBNUcoRigN3ec2UMScbe9+t+bOPlxFqMstLqvpr1c=;
+	s=korg; t=1734969861;
+	bh=uKn40OM2WZzfJ7VclY+hruiL887rJCEtydJr327J0RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNpMQn2DWTmaTg1SeJu9TnRu4mfhbewI35mWpKuYHWKx4ANzFitqUoPZ4OULE2AHs
-	 kh6+m+aOOhqF2gyi2u1JM3tWC5hz8K4XZOeJZPcgZhJlD+SpL4DCJgnp3yAlj1q4RH
-	 jZzfRgQHfX3ao0akoNayNS45awYpGhJFgl6brmaQ=
+	b=IQ8Xb5C4mjyUVsgyPXxh1rxo8abgQmfNljbvgDSQVuN+nzNlo+Klzv4+lvKpJwfDW
+	 0G1Y/L8L47j75aM3yEZTk3ZKtQeT4azolgrg9nPHTiAjeKOGMLnLkSD2t7TnGrNLL0
+	 LvtXp+pDrdmn1b69ovcmsegro5J9rVyyrvXG/9js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/116] p2sb: Factor out p2sb_read_from_cache()
-Date: Mon, 23 Dec 2024 16:58:04 +0100
-Message-ID: <20241223155400.107652643@linuxfoundation.org>
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.12 074/160] efivarfs: Fix error on non-existent file
+Date: Mon, 23 Dec 2024 16:58:05 +0100
+Message-ID: <20241223155411.546174684@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +59,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-[ Upstream commit 9244524d60ddea55f4df54c51200e8fef2032447 ]
+commit 2ab0837cb91b7de507daa145d17b3b6b2efb3abf upstream.
 
-To prepare for the following fix, factor out the code to read the P2SB
-resource from the cache to the new function p2sb_read_from_cache().
+When looking up a non-existent file, efivarfs returns -EINVAL if the
+file does not conform to the NAME-GUID format and -ENOENT if it does.
+This is caused by efivars_d_hash() returning -EINVAL if the name is not
+formatted correctly.  This error is returned before simple_lookup()
+returns a negative dentry, and is the error value that the user sees.
 
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241128002836.373745-2-shinichiro.kawasaki@wdc.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by removing this check.  If the file does not exist, simple_lookup()
+will return a negative dentry leading to -ENOENT and efivarfs_create()
+already has a validity check before it creates an entry (and will
+correctly return -EINVAL)
+
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: <stable@vger.kernel.org>
+[ardb: make efivarfs_valid_name() static]
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/p2sb.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ fs/efivarfs/inode.c    |    2 +-
+ fs/efivarfs/internal.h |    1 -
+ fs/efivarfs/super.c    |    3 ---
+ 3 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
-index 687e341e3206..d6ee4b34f911 100644
---- a/drivers/platform/x86/p2sb.c
-+++ b/drivers/platform/x86/p2sb.c
-@@ -171,6 +171,22 @@ static int p2sb_cache_resources(void)
- 	return ret;
- }
- 
-+static int p2sb_read_from_cache(struct pci_bus *bus, unsigned int devfn,
-+				struct resource *mem)
-+{
-+	struct p2sb_res_cache *cache = &p2sb_resources[PCI_FUNC(devfn)];
-+
-+	if (cache->bus_dev_id != bus->dev.id)
-+		return -ENODEV;
-+
-+	if (!p2sb_valid_resource(&cache->res))
-+		return -ENOENT;
-+
-+	memcpy(mem, &cache->res, sizeof(*mem));
-+
-+	return 0;
-+}
-+
- /**
-  * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
-  * @bus: PCI bus to communicate with
-@@ -187,8 +203,6 @@ static int p2sb_cache_resources(void)
+--- a/fs/efivarfs/inode.c
++++ b/fs/efivarfs/inode.c
+@@ -51,7 +51,7 @@ struct inode *efivarfs_get_inode(struct
+  *
+  *	VariableName-12345678-1234-1234-1234-1234567891bc
   */
- int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
+-bool efivarfs_valid_name(const char *str, int len)
++static bool efivarfs_valid_name(const char *str, int len)
  {
--	struct p2sb_res_cache *cache;
--
- 	bus = p2sb_get_bus(bus);
- 	if (!bus)
- 		return -ENODEV;
-@@ -196,15 +210,7 @@ int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
- 	if (!devfn)
- 		p2sb_get_devfn(&devfn);
+ 	const char *s = str + len - EFI_VARIABLE_GUID_LEN;
  
--	cache = &p2sb_resources[PCI_FUNC(devfn)];
--	if (cache->bus_dev_id != bus->dev.id)
--		return -ENODEV;
--
--	if (!p2sb_valid_resource(&cache->res))
--		return -ENOENT;
--
--	memcpy(mem, &cache->res, sizeof(*mem));
--	return 0;
-+	return p2sb_read_from_cache(bus, devfn, mem);
- }
- EXPORT_SYMBOL_GPL(p2sb_bar);
+--- a/fs/efivarfs/internal.h
++++ b/fs/efivarfs/internal.h
+@@ -60,7 +60,6 @@ bool efivar_variable_is_removable(efi_gu
  
--- 
-2.39.5
-
+ extern const struct file_operations efivarfs_file_operations;
+ extern const struct inode_operations efivarfs_dir_inode_operations;
+-extern bool efivarfs_valid_name(const char *str, int len);
+ extern struct inode *efivarfs_get_inode(struct super_block *sb,
+ 			const struct inode *dir, int mode, dev_t dev,
+ 			bool is_removable);
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -144,9 +144,6 @@ static int efivarfs_d_hash(const struct
+ 	const unsigned char *s = qstr->name;
+ 	unsigned int len = qstr->len;
+ 
+-	if (!efivarfs_valid_name(s, len))
+-		return -EINVAL;
+-
+ 	while (len-- > EFI_VARIABLE_GUID_LEN)
+ 		hash = partial_name_hash(*s++, hash);
+ 
 
 
 
