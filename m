@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-105977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE939FB28E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807BF9FB21D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8885E1881173
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D223418820B3
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BDF1A4AAA;
-	Mon, 23 Dec 2024 16:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C105E1B393A;
+	Mon, 23 Dec 2024 16:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/NkzpxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmTOT5Pb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382A78827;
-	Mon, 23 Dec 2024 16:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA2019E98B;
+	Mon, 23 Dec 2024 16:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970779; cv=none; b=N4VZoNoiztQk/L2z5Z0qRfWxM1tV15s9KLxEWw8CcwobZ9rE0LRjFc2DcT+PI6gTsyhpzTxVfl7dG2fHWy7PsSihkvcxzC1tXIso4QoRGQqFsbZyaiHG0HkLaXOjndmOYG8IMm5kjKVPs1hztGsxcyhMU0XzRaU7NFABQUVprZ4=
+	t=1734970444; cv=none; b=hjqa3TGEp8oBXKlTMyrpb/xD0Fw2TiufGHlHsCYzzvBGromKAkdYs170im/u4pPHhLY/cKwHFcVDvZDjwuZDcGmA7tknQb8znZcvtGwNK4Nm18mC/M1EB5MiRJOeHcH4SZfs5pbPgd+Uor3WH4lb7sQh7bK1JGk7p27FjZOaBqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970779; c=relaxed/simple;
-	bh=Q/n1STPD1gNQIhyh4sETDsVT19dZPZzgeg8odJKWwM8=;
+	s=arc-20240116; t=1734970444; c=relaxed/simple;
+	bh=7UnvwAYfO5dPwS/vqPNNfn0+6IaVJktUkyj7sjNBY8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfqzab+AhXWAl0jbthN633GIzsNW6EtHlAdZ1yJ5UmnLWyZYOcb5hXwbbOi2ckXQ0gdxQD1FP3IeQfgPxS7DjXmAA3bMJmFZoxIumzTdxR6EekqIJhj+MxR5bCVM7mMD2dzP65cC6oUK2oUbDMdvZgv1ORxoMeAQ8yqmbe/YlVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/NkzpxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AF6C4CED3;
-	Mon, 23 Dec 2024 16:19:38 +0000 (UTC)
+	 MIME-Version; b=NN6ZRHlhnkbti1ipKAcmoUYxoutBSSMGom2dGtLfchiY1lrTe4YxA9fgax6CIagztpZjp8tqP741D/67WAIUDdpukCoc5JAFj8zE3ioMKlktLh0JwlrrnRBAftfIE48uJBxm6wv2UMm3zE3xDPSTqbWKKsYrG8UhHba54vpyXxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmTOT5Pb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD561C4CED3;
+	Mon, 23 Dec 2024 16:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970779;
-	bh=Q/n1STPD1gNQIhyh4sETDsVT19dZPZzgeg8odJKWwM8=;
+	s=korg; t=1734970444;
+	bh=7UnvwAYfO5dPwS/vqPNNfn0+6IaVJktUkyj7sjNBY8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/NkzpxYQIy1B3O8SBW2Xvd0fAmL+rG0WNVdhnN/M8NgL3RtiT8Q3mQBpvNTsBdhD
-	 PZHo3QTyEgnY5BOmFDtbiYuqha1rqTaSUpvkaCKpAGxbVIQQUmVac25k05+oLyCIW0
-	 IAeKqa6ZK38uTxjrD/FZU2w5mqTeukYlHIlRbPs0=
+	b=QmTOT5Pb5YULQdP9osVqs6dAN+99aYakbf1SRYDLpfYcmreHgFwlUZyRiw1F+dzIi
+	 YGkg/oYkdvns8wZvtnS4ndTS06gCbQMF83tYwc1HhLmgvfjZUFGHatIoxw3dslWOxg
+	 BDcP0yvLXzieR/gb2q3TV+lIhQx3GgKYo+G5UBbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 36/83] efivarfs: Fix error on non-existent file
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 085/116] zram: refuse to use zero sized block device as backing device
 Date: Mon, 23 Dec 2024 16:59:15 +0100
-Message-ID: <20241223155355.041993326@linuxfoundation.org>
+Message-ID: <20241223155402.869566616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
+From: Kairui Song <kasong@tencent.com>
 
-commit 2ab0837cb91b7de507daa145d17b3b6b2efb3abf upstream.
+commit be48c412f6ebf38849213c19547bc6d5b692b5e5 upstream.
 
-When looking up a non-existent file, efivarfs returns -EINVAL if the
-file does not conform to the NAME-GUID format and -ENOENT if it does.
-This is caused by efivars_d_hash() returning -EINVAL if the name is not
-formatted correctly.  This error is returned before simple_lookup()
-returns a negative dentry, and is the error value that the user sees.
+Patch series "zram: fix backing device setup issue", v2.
 
-Fix by removing this check.  If the file does not exist, simple_lookup()
-will return a negative dentry leading to -ENOENT and efivarfs_create()
-already has a validity check before it creates an entry (and will
-correctly return -EINVAL)
+This series fixes two bugs of backing device setting:
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+- ZRAM should reject using a zero sized (or the uninitialized ZRAM
+  device itself) as the backing device.
+- Fix backing device leaking when removing a uninitialized ZRAM
+  device.
+
+
+This patch (of 2):
+
+Setting a zero sized block device as backing device is pointless, and one
+can easily create a recursive loop by setting the uninitialized ZRAM
+device itself as its own backing device by (zram0 is uninitialized):
+
+    echo /dev/zram0 > /sys/block/zram0/backing_dev
+
+It's definitely a wrong config, and the module will pin itself, kernel
+should refuse doing so in the first place.
+
+By refusing to use zero sized device we avoided misuse cases including
+this one above.
+
+Link: https://lkml.kernel.org/r/20241209165717.94215-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20241209165717.94215-2-ryncsn@gmail.com
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: <stable@vger.kernel.org>
-[ardb: make efivarfs_valid_name() static]
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/efivarfs/inode.c    |    2 +-
- fs/efivarfs/internal.h |    1 -
- fs/efivarfs/super.c    |    3 ---
- 3 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/block/zram/zram_drv.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/efivarfs/inode.c
-+++ b/fs/efivarfs/inode.c
-@@ -47,7 +47,7 @@ struct inode *efivarfs_get_inode(struct
-  *
-  *	VariableName-12345678-1234-1234-1234-1234567891bc
-  */
--bool efivarfs_valid_name(const char *str, int len)
-+static bool efivarfs_valid_name(const char *str, int len)
- {
- 	const char *s = str + len - EFI_VARIABLE_GUID_LEN;
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -538,6 +538,12 @@ static ssize_t backing_dev_store(struct
+ 	}
  
---- a/fs/efivarfs/internal.h
-+++ b/fs/efivarfs/internal.h
-@@ -50,7 +50,6 @@ bool efivar_variable_is_removable(efi_gu
- 
- extern const struct file_operations efivarfs_file_operations;
- extern const struct inode_operations efivarfs_dir_inode_operations;
--extern bool efivarfs_valid_name(const char *str, int len);
- extern struct inode *efivarfs_get_inode(struct super_block *sb,
- 			const struct inode *dir, int mode, dev_t dev,
- 			bool is_removable);
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -64,9 +64,6 @@ static int efivarfs_d_hash(const struct
- 	const unsigned char *s = qstr->name;
- 	unsigned int len = qstr->len;
- 
--	if (!efivarfs_valid_name(s, len))
--		return -EINVAL;
--
- 	while (len-- > EFI_VARIABLE_GUID_LEN)
- 		hash = partial_name_hash(*s++, hash);
- 
+ 	nr_pages = i_size_read(inode) >> PAGE_SHIFT;
++	/* Refuse to use zero sized device (also prevents self reference) */
++	if (!nr_pages) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	bitmap_sz = BITS_TO_LONGS(nr_pages) * sizeof(long);
+ 	bitmap = kvzalloc(bitmap_sz, GFP_KERNEL);
+ 	if (!bitmap) {
 
 
 
