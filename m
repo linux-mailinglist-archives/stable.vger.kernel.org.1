@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-105979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB2B9FB290
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 266899FB228
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89AFC161956
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F2001631D5
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E6D1A4AAA;
-	Mon, 23 Dec 2024 16:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34E413BC0C;
+	Mon, 23 Dec 2024 16:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sr0+7H/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXRZNGCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFB98827;
-	Mon, 23 Dec 2024 16:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6052019E98B;
+	Mon, 23 Dec 2024 16:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970786; cv=none; b=YBgWb8c4LfM4/xiwLidkKYLZCVLn6CgHUfKf15V94xk2Eb1E9OHpCJOGvlym9VIZXcOPTjYQYGgamqzOY/KmekS6MBVzj5+dH+U2MeP5hkw8tA+Ugu55aKvrTRoQSfQFqovWY/RoeSv3nNcZbbh4O5D3wtxYUfgRLCzpRTpSOtI=
+	t=1734970454; cv=none; b=iScyQiRYPgeixDGhGb2vSC3Sg9V3aqWJUMdjWhQy1u11yVk17CjvDwCf33RTBaWn5Rtr7kafaERLvvN46V1Wyn7NTfy++6+jJgQKcqp5vndrRuXsrdVzdTSrbD1GjM+NlZpMOurf/gmIF5SVOWT2A8eYixknU/vsKpFeYYS1oJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970786; c=relaxed/simple;
-	bh=RSraYGG/gShY3M8+zFgK76Fpqq3OAbspxwhMzKRaypI=;
+	s=arc-20240116; t=1734970454; c=relaxed/simple;
+	bh=Jlc0m7H3kwhidzTP2//NXQXu3OMXePg8k1giyMXMqes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukHs6RFFQ6hAeMlma0iaPhTgeBMFd9APsv/yXQ8zKZjnVaAN8wccoeQv2Z0qJtP259Xdi7DSb9dfo/gBszcqM5SfLvOxAcag+Dsy+WDDsO1WG0JllzwcNw5aBlRU+S7yDq1RECJ4VDK83C1Tsun6CsnLjE6d+sPHo+lRXSdJ1Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sr0+7H/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921B1C4CED3;
-	Mon, 23 Dec 2024 16:19:45 +0000 (UTC)
+	 MIME-Version; b=DVPsMMcNAkiVfRnObwJtORTrsgEgGuuNLMz+6PdwggxUqfIQB+3w3MztZb9nQOBnzrzRjP5lk7hPEh3j21veFbaDn+/fsJT2/91hpukSAUof4VZ8+nq4Kgw81g+kdoZZfiAW77WITjxs1n41CKzWysp9z3HPhYwMCTTKwEfZvQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXRZNGCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4661C4CED3;
+	Mon, 23 Dec 2024 16:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970786;
-	bh=RSraYGG/gShY3M8+zFgK76Fpqq3OAbspxwhMzKRaypI=;
+	s=korg; t=1734970454;
+	bh=Jlc0m7H3kwhidzTP2//NXQXu3OMXePg8k1giyMXMqes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sr0+7H/1I+rF8vGtGcV7jLxj7G1lsMhGwtKm0im4q1U+p+kLBFZ1aASHZI/MNvNfq
-	 d3Dx8ixUplJXws7xHUXEyneDY94yeieOiBZbqyA4iH5c7OBdL0gtP/us5J1L9dJ19o
-	 BKJYt9HwyQOvSx59ldL3r7goKvqJmSx8tuGI3FS0=
+	b=FXRZNGCPwvDSlg/q8U++L89beFjEWBv/13WMPp+RwauPHyl4cERlL+cKRuukI6uTM
+	 TEVBM6Z3amNt2UTT6sW/kYizbT0NwqR6paE1q3EWPvGSb8QzY3V8jiTITknr4isbDa
+	 VXziLt5fg01SHZ0QgbrC7oFmIxPbA4AGo8P8Rcik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Swanemar <d.swanemar@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 38/83] USB: serial: option: add TCL IK512 MBIM & ECM
-Date: Mon, 23 Dec 2024 16:59:17 +0100
-Message-ID: <20241223155355.120857043@linuxfoundation.org>
+	Frankie Fisher <frankie@terrorise.me.uk>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 088/116] btrfs: tree-checker: reject inline extent items with 0 ref count
+Date: Mon, 23 Dec 2024 16:59:18 +0100
+Message-ID: <20241223155402.983205079@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Swanemar <d.swanemar@gmail.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit fdad4fb7c506bea8b419f70ff2163d99962e8ede upstream.
+commit dfb92681a19e1d5172420baa242806414b3eff6f upstream.
 
-Add the following TCL IK512 compositions:
+[BUG]
+There is a bug report in the mailing list where btrfs_run_delayed_refs()
+failed to drop the ref count for logical 25870311358464 num_bytes
+2113536.
 
-0x0530: Modem + Diag + AT + MBIM
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=10000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=1bbb ProdID=0530 Rev=05.04
-S:  Manufacturer=TCL
-S:  Product=TCL 5G USB Dongle
-S:  SerialNumber=3136b91a
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 4 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+The involved leaf dump looks like this:
 
-0x0640: ECM + Modem + Diag + AT
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=10000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=1bbb ProdID=0640 Rev=05.04
-S:  Manufacturer=TCL
-S:  Product=TCL 5G USB Dongle
-S:  SerialNumber=3136b91a
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+  item 166 key (25870311358464 168 2113536) itemoff 10091 itemsize 50
+    extent refs 1 gen 84178 flags 1
+    ref#0: shared data backref parent 32399126528000 count 0 <<<
+    ref#1: shared data backref parent 31808973717504 count 1
 
-Signed-off-by: Daniel Swanemar <d.swanemar@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Notice the count number is 0.
+
+[CAUSE]
+There is no concrete evidence yet, but considering 0 -> 1 is also a
+single bit flipped, it's possible that hardware memory bitflip is
+involved, causing the on-disk extent tree to be corrupted.
+
+[FIX]
+To prevent us reading such corrupted extent item, or writing such
+damaged extent item back to disk, enhance the handling of
+BTRFS_EXTENT_DATA_REF_KEY and BTRFS_SHARED_DATA_REF_KEY keys for both
+inlined and key items, to detect such 0 ref count and reject them.
+
+CC: stable@vger.kernel.org # 5.4+
+Link: https://lore.kernel.org/linux-btrfs/7c69dd49-c346-4806-86e7-e6f863a66f48@app.fastmail.com/
+Reported-by: Frankie Fisher <frankie@terrorise.me.uk>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/tree-checker.c |   27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2385,6 +2385,10 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
-+	  .driver_info = NCTRL(1) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
-+	  .driver_info = NCTRL(3) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1503,6 +1503,11 @@ static int check_extent_item(struct exte
+ 					   dref_offset, fs_info->sectorsize);
+ 				return -EUCLEAN;
+ 			}
++			if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
++				extent_err(leaf, slot,
++			"invalid data ref count, should have non-zero value");
++				return -EUCLEAN;
++			}
+ 			inline_refs += btrfs_extent_data_ref_count(leaf, dref);
+ 			break;
+ 		/* Contains parent bytenr and ref count */
+@@ -1515,6 +1520,11 @@ static int check_extent_item(struct exte
+ 					   inline_offset, fs_info->sectorsize);
+ 				return -EUCLEAN;
+ 			}
++			if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
++				extent_err(leaf, slot,
++			"invalid shared data ref count, should have non-zero value");
++				return -EUCLEAN;
++			}
+ 			inline_refs += btrfs_shared_data_ref_count(leaf, sref);
+ 			break;
+ 		default:
+@@ -1584,8 +1594,18 @@ static int check_simple_keyed_refs(struc
+ {
+ 	u32 expect_item_size = 0;
+ 
+-	if (key->type == BTRFS_SHARED_DATA_REF_KEY)
++	if (key->type == BTRFS_SHARED_DATA_REF_KEY) {
++		struct btrfs_shared_data_ref *sref;
++
++		sref = btrfs_item_ptr(leaf, slot, struct btrfs_shared_data_ref);
++		if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
++			extent_err(leaf, slot,
++		"invalid shared data backref count, should have non-zero value");
++			return -EUCLEAN;
++		}
++
+ 		expect_item_size = sizeof(struct btrfs_shared_data_ref);
++	}
+ 
+ 	if (unlikely(btrfs_item_size(leaf, slot) != expect_item_size)) {
+ 		generic_err(leaf, slot,
+@@ -1662,6 +1682,11 @@ static int check_extent_data_ref(struct
+ 				   offset, leaf->fs_info->sectorsize);
+ 			return -EUCLEAN;
+ 		}
++		if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
++			extent_err(leaf, slot,
++	"invalid extent data backref count, should have non-zero value");
++			return -EUCLEAN;
++		}
+ 	}
+ 	return 0;
+ }
 
 
 
