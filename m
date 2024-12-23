@@ -1,126 +1,98 @@
-Return-Path: <stable+bounces-105632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7709D9FB0BA
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:27:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E379FB0D2
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F10FA1634D0
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 15:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B87B3188350A
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 15:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A91E13BC0C;
-	Mon, 23 Dec 2024 15:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HS9XeUBk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C20E13BAE3;
+	Mon, 23 Dec 2024 15:40:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ms7.webland.ch (ms7.webland.ch [92.43.217.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0B8632;
-	Mon, 23 Dec 2024 15:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090E8182BC
+	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 15:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.43.217.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734967671; cv=none; b=E4/OjfXMcx8HGT3wMhiqkfuwZEK7cAUwZuH9OkKcN2jpLcwXiVmV8y3DB1Qrm4UcKuQ9nE4TB21hzdV5fSWlVV8G6cGzwgugkDaG68DbD/lPI2XJt1bcwCXlR1SUmugfMUj6XY4ZACydz+XQFkFjZVFrOLzDjURTHrqkFzLiVO0=
+	t=1734968428; cv=none; b=LYf1aT9VVexRXFKGRSDKEUYZCEx+c1cfNZxVHUSLjwlO60nrrM6r0cqlGOHigp1jil34tnWpN3ba78j4a4hog2dBiBF9FMqHfEj5B5qJ+mdt9fzuWtpBag46S0qlDRoH0dasJYtTy4AUYgW00D5HyR4W2CEN2ONAIG3f6byY2ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734967671; c=relaxed/simple;
-	bh=JyH1FAdbSmm3pLOkb+mbQ89WYP/YUmQ97qwMR+LlnLA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r8Tbo46VWqpUeHN4R+UccCu0f+CpMdX9QbNUU/nvH0sU8Iym9BNADRKUBsADS5crJaYLpIo/P24lkK69yTHfR+PuAMK0EralMTAp6lYd3wE5cO6osv6MkN7zVeqtSW81yi0AezDvU+QPpRz/6irr5EFUKulHhBppg6HWqudbQKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HS9XeUBk; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3a815ed5acfso14180095ab.0;
-        Mon, 23 Dec 2024 07:27:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734967668; x=1735572468; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PJliU74WixiH/rdJlK8HJAJqnkGXZXBJ10gnZhmP0p0=;
-        b=HS9XeUBk3eIKZ5smskF6TWme4j05QsoprDZgw2/YtWWHz78+vWcEU3tscLmx5BhI6Y
-         LpXoJLvmu+Gu3dDIkr/utww8O+6ybWUYnh2qGkNv3qYmRMcrTHVAm9eUw3utH7Di/5CH
-         Byq9nP38ughkBI+XpRWXPeKnwVmJvCJpqz4yep2pSEX3rcL4CFGJASeNOUG9i68XBuMV
-         tEYjes6uvr1p1RhjaFATtqzwZLXu4WPCq9EAPeT9xu0UEfgUKrUY9W2SbmNOEgbmNxN6
-         UbMcHjrv6mt+2olIcGg3oa+WALYlpmslmEDL/LXOM2chaDHHQab1Zk7h//mQazh6QUj6
-         ZWWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734967668; x=1735572468;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PJliU74WixiH/rdJlK8HJAJqnkGXZXBJ10gnZhmP0p0=;
-        b=SamLV2ZXfvutxep6cbzUPgEahWhl1Ad9heVvzECUe+keOnX1TEng5r9X30scpTO90e
-         7lAoIQGjVxQA/fgjpFhPq0g1d2L//Ef1Sdm6oEHqfOA7MNJltuvIUHv6aSNKCpFRc7wA
-         Uj2wAAg7yijccvnDXf8lbfj3rstDB8TftN92XZPU0aXsYvQ+GD9kya17fYsCUsYGhzn/
-         L465UvQZ8IUpr7rBkHlfbOhHAJXVkz6A1JP/frSiJfQL0gVIzcZBVqhl/ok9gQHZwzlr
-         e+R6iKWm+7G9T6VYRTlgxe6mL+sqOMdfh5ebvdA7pJw9RZw9gghn9QVC/sY3yd+7vvlJ
-         3m9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCURHDOuk6lNcWaKyT0hAWW6TiB97YLftN54AcQTSGrS8QfsN7nkV5Nej+//aUaW9djcdjwY08esVVqQ@vger.kernel.org, AJvYcCUnvsdKQZjhfGlCtB+9+a0QbuF6ww8HSjOS0xm0bfNrnIsNkMos/mPAXynXs/N1ZoYWNMxqvq9r@vger.kernel.org, AJvYcCVBdJVyHFhLnP7VpgxgOxVMA3eB5VPUlXHMtW1nfbJmzrtTYHoOj++PTJgkJaNNZQBm4r3K0Y48@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFHWFi5Ah/eg3r67W8wa87SqzEMPhrgT3pHUCQbAafRq2Hie05
-	g+Ya8H0+rneECxGUTFA33AgK3xx18SoOc3BswKdZGt5VMocw9uuPcQ7CCl6kaaiNF0BJQnYuEJN
-	WTymTbYPV560+/qmouJDLBPMz7OQ=
-X-Gm-Gg: ASbGncsFsnUl+B28irm1wqpPBqh5EA5rGFS0mDwJo5elSrdFOU5iIgN0NGwgd98Aaim
-	jftOAbSDaVnNfSDWGi+1cEGBWl2Lkzuu8U6jLbg==
-X-Google-Smtp-Source: AGHT+IH/yd2/FRMjA6DqP7gtA7Niuqm2CSRtuz1jCIPMRQ0s/FjoRYREsTsJwRxjlEcf4N0djY9BgQY+71+z/lM2LoY=
-X-Received: by 2002:a05:6e02:180d:b0:3a7:d792:d6c0 with SMTP id
- e9e14a558f8ab-3c2d5918a9bmr128839685ab.20.1734967668519; Mon, 23 Dec 2024
- 07:27:48 -0800 (PST)
+	s=arc-20240116; t=1734968428; c=relaxed/simple;
+	bh=mebQfZipErWAfl9krYwUCtINFgnjKagl2c6Up302Ag8=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IaDY5c9SJeHDyVbGsQE4IiaWuqSmnabo+QSwt4XKgTwssD8Nha+mUXECDUMRyXZCFtUtOkwEtaFk5LSihKaMYKp+euVD7GrBlQG9mY33/8Su8Z50iBftF+t59jQ0xMQIdjSjMQ0LkiVWqfmMWuWYyIW/pKGlP/c2aQia65P4qO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daenzer.net; spf=pass smtp.mailfrom=ms7.webland.ch; arc=none smtp.client-ip=92.43.217.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daenzer.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms7.webland.ch
+Received: from kaveri ([213.144.156.170])
+        by ms7.webland.ch (12.3.0 build 2 x64) with ASMTP (SSL) id 01202412231638081656
+        for <stable@vger.kernel.org>; Mon, 23 Dec 2024 16:38:08 +0100
+Received: from daenzer by kaveri with local (Exim 4.98)
+	(envelope-from <michel@daenzer.net>)
+	id 1tPkVT-00000004T3n-0d5K
+	for stable@vger.kernel.org;
+	Mon, 23 Dec 2024 16:38:07 +0100
+From: =?UTF-8?q?Michel=20D=C3=A4nzer?= <michel@daenzer.net>
+To: stable@vger.kernel.org
+Subject: [PATCH 6.6.y] drm/amdgpu: Handle NULL bo->tbo.resource (again) in amdgpu_vm_bo_update
+Date: Mon, 23 Dec 2024 16:38:07 +0100
+Message-ID: <20241223153807.1065011-1-michel@daenzer.net>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024122229-excusable-sample-91cf@gregkh>
+References: <2024122229-excusable-sample-91cf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241219162114.2863827-1-kniv@yandex-team.ru>
-In-Reply-To: <20241219162114.2863827-1-kniv@yandex-team.ru>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 23 Dec 2024 10:27:37 -0500
-Message-ID: <CADvbK_dcUiBQLCte44PxS3HNNogzHys=cL3v1=Ukm+_xMtvMAA@mail.gmail.com>
-Subject: Re: [PATCH] net/sctp: Prevent autoclose integer overflow in sctp_association_init()
-To: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-sctp@vger.kernel.org, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xi Wang <xi.wang@gmail.com>, 
-	Neil Horman <nhorman@tuxdriver.com>, Vlad Yasevich <vyasevich@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CTCH: RefID="str=0001.0A682F17.676983E0.0067,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
 
-On Thu, Dec 19, 2024 at 11:21=E2=80=AFAM Nikolay Kuratov <kniv@yandex-team.=
-ru> wrote:
->
-> While by default max_autoclose equals to INT_MAX / HZ, one may set
-> net.sctp.max_autoclose to UINT_MAX. There is code in
-> sctp_association_init() that can consequently trigger overflow.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 9f70f46bd4c7 ("sctp: properly latch and use autoclose value from s=
-ock to association")
-> Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-> ---
->  net/sctp/associola.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-> index c45c192b7878..0b0794f164cf 100644
-> --- a/net/sctp/associola.c
-> +++ b/net/sctp/associola.c
-> @@ -137,7 +137,8 @@ static struct sctp_association *sctp_association_init=
-(
->                 =3D 5 * asoc->rto_max;
->
->         asoc->timeouts[SCTP_EVENT_TIMEOUT_SACK] =3D asoc->sackdelay;
-> -       asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] =3D sp->autoclose * =
-HZ;
-> +       asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] =3D
-> +               (unsigned long)sp->autoclose * HZ;
->
->         /* Initializes the timers */
->         for (i =3D SCTP_EVENT_TIMEOUT_NONE; i < SCTP_NUM_TIMEOUT_TYPES; +=
-+i)
-> --
-> 2.34.1
->
-Acked-by: Xin Long <lucien.xin@gmail.com>
+From: Michel Dänzer <mdaenzer@redhat.com>
+
+Third time's the charm, I hope?
+
+Fixes: d3116756a710 ("drm/ttm: rename bo->mem and make it a pointer")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3837
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 695c2c745e5dff201b75da8a1d237ce403600d04)
+Cc: stable@vger.kernel.org
+(cherry picked from commit 85230ee36d88e7a09fb062d43203035659dd10a5)
+---
+
+This should apply to the 6.6 and older stable trees.
+
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index f02b6232680f..2992ce494e00 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1161,10 +1161,9 @@ int amdgpu_vm_bo_update(struct amdgpu_device *adev, struct amdgpu_bo_va *bo_va,
+ 	 * next command submission.
+ 	 */
+ 	if (bo && bo->tbo.base.resv == vm->root.bo->tbo.base.resv) {
+-		uint32_t mem_type = bo->tbo.resource->mem_type;
+-
+-		if (!(bo->preferred_domains &
+-		      amdgpu_mem_type_to_domain(mem_type)))
++		if (bo->tbo.resource &&
++		    !(bo->preferred_domains &
++		      amdgpu_mem_type_to_domain(bo->tbo.resource->mem_type)))
+ 			amdgpu_vm_bo_evicted(&bo_va->base);
+ 		else
+ 			amdgpu_vm_bo_idle(&bo_va->base);
+-- 
+2.45.2
+
 
