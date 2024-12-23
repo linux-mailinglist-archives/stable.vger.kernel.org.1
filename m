@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-105906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596869FB23F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAEED9FB29E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE8D118857B0
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B71318818ED
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73564187FE4;
-	Mon, 23 Dec 2024 16:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117571A8F80;
+	Mon, 23 Dec 2024 16:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsyWwdfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm00i1aZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AAB12C544;
-	Mon, 23 Dec 2024 16:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E388827;
+	Mon, 23 Dec 2024 16:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970543; cv=none; b=P/aj+HJhS2eZg52NQZRL9NX5VtlhMqRVyexuKkFKtT/KQI8ri5+EG1sLFE+d5/s69uNWwjjSTYiJxrXQ15TVygQD2Mhqw24nYd++qsbFBz4vk8leKw8SHVeLZTUVzedda7yLQ6R9lcB+ihPfmdlscbw7ISmKR/ZZVmsU2zO7hI4=
+	t=1734970833; cv=none; b=Yig8uY5jwrvRlTPHzhXZpSPoxzy4qgOCpltxwUinzSDqHZa/18zs40YLoVO7NqDUZAkYuEJGAG2IcIKjqwQpXfvhzNY5Gu5tPeWZcC1CIfAQJzCz5lEvx4roKDh297llE2lu1K7rIIDcew3W2lEcZoZMWdzkJa5qi4A40noDvpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970543; c=relaxed/simple;
-	bh=ejIutn26X5AQxV9BF/9oQzDFIc0/r6X+0NUFuQyi6iI=;
+	s=arc-20240116; t=1734970833; c=relaxed/simple;
+	bh=6YXyz/solEWs1CY3RlvTI08WHD1gvfrudJ4MIIACxVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OMzwz8NIXjEc+AWK3Ae//64KOQQFn7Xk+KVPtlk6/w1+FqM9tL1Bv3E9lt+fMO4R/gPIn7CxtjXhXda4AsOj9WCM5Ehug2wgOUJOM2GtysVNcyGPsle2hJoOqDmybau2rtikK2g5zgxtQFrRaX8nIeP4iIFdwXjGfmBlcyHkwH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsyWwdfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED0AC4CED3;
-	Mon, 23 Dec 2024 16:15:41 +0000 (UTC)
+	 MIME-Version; b=WpF5gRY0I4j6cB80Oq3f0sUzWMetHaTJ6IFCSwBFVyXduyCAm4deN5gRfQCFJDMX9XD8LxelRCIPBYWNL/n8iXo1SmC1bVzQczgr3Ade+/83do5WwTvuOgidIWUmMEAzkWrKJ4FTn8Hj7siQh2A59fCJfcqu7aGJdMGfxWW5BVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm00i1aZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AF8C4CED4;
+	Mon, 23 Dec 2024 16:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970542;
-	bh=ejIutn26X5AQxV9BF/9oQzDFIc0/r6X+0NUFuQyi6iI=;
+	s=korg; t=1734970833;
+	bh=6YXyz/solEWs1CY3RlvTI08WHD1gvfrudJ4MIIACxVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vsyWwdfMJ9SXnAcJOr6lKFtnMAU4hy8fGLNsB0DqiglSb7/AQMbHI0RDwN63Flj3N
-	 1T8wYa4JuRIdVjpB7C1YXX1QaaiG5y07Anjk8FJS5ZA9MHwdE8E2vYzQ61Yvx6LuhW
-	 HhoOdIDM1VQZHVWs7OuV9bMp9WxfdoAqsSH2VELs=
+	b=Fm00i1aZJRfjI8MV98EC3sgbx+KLXAHza4A2RI2nxKB7eGLxIj5fgvZrVzEVf6wIG
+	 15SKH24ZTGW/CLAnZ5nQAgxHe1+PLcf3dfZXrROK0Ytc6WllCMtRxaG1bp04cI7vjj
+	 IcUd9Faps/7Q59atNB+OF0NdNcZ4csyzBTMwh/9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 114/116] net: fec: refactor PPS channel configuration
+	Weining Lu <luweining@loongson.cn>,
+	Li Chen <chenli@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 65/83] selftests/bpf: Use asm constraint "m" for LoongArch
 Date: Mon, 23 Dec 2024 16:59:44 +0100
-Message-ID: <20241223155403.982401783@linuxfoundation.org>
+Message-ID: <20241223155356.142240354@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit bf8ca67e21671e7a56e31da45360480b28f185f1 upstream.
+commit 29d44cce324dab2bd86c447071a596262e7109b6 upstream.
 
-Preparation patch to allow for PPS channel configuration, no functional
-change intended.
+Currently, LoongArch LLVM does not support the constraint "o" and no plan
+to support it, it only supports the similar constraint "m", so change the
+constraints from "nor" in the "else" case to arch-specific "nmr" to avoid
+the build error such as "unexpected asm memory constraint" for LoongArch.
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Fixes: 630301b0d59d ("selftests/bpf: Add basic USDT selftests")
+Suggested-by: Weining Lu <luweining@loongson.cn>
+Suggested-by: Li Chen <chenli@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@vger.kernel.org
+Link: https://llvm.org/docs/LangRef.html#supported-constraint-code-list
+Link: https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/LoongArch/LoongArchISelDAGToDAG.cpp#L172
+Link: https://lore.kernel.org/bpf/20241219111506.20643-1-yangtiezhu@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ tools/testing/selftests/bpf/sdt.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -84,8 +84,7 @@
- #define FEC_CC_MULT	(1 << 31)
- #define FEC_COUNTER_PERIOD	(1 << 31)
- #define PPS_OUPUT_RELOAD_PERIOD	NSEC_PER_SEC
--#define FEC_CHANNLE_0		0
--#define DEFAULT_PPS_CHANNEL	FEC_CHANNLE_0
-+#define DEFAULT_PPS_CHANNEL	0
- 
- #define FEC_PTP_MAX_NSEC_PERIOD		4000000000ULL
- #define FEC_PTP_MAX_NSEC_COUNTER	0x80000000ULL
-@@ -524,8 +523,9 @@ static int fec_ptp_enable(struct ptp_clo
- 	unsigned long flags;
- 	int ret = 0;
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+
- 	if (rq->type == PTP_CLK_REQ_PPS) {
--		fep->pps_channel = DEFAULT_PPS_CHANNEL;
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
- 		ret = fec_ptp_enable_pps(fep, on);
-@@ -536,10 +536,9 @@ static int fec_ptp_enable(struct ptp_clo
- 		if (rq->perout.flags)
- 			return -EOPNOTSUPP;
- 
--		if (rq->perout.index != DEFAULT_PPS_CHANNEL)
-+		if (rq->perout.index != fep->pps_channel)
- 			return -EOPNOTSUPP;
- 
--		fep->pps_channel = DEFAULT_PPS_CHANNEL;
- 		period.tv_sec = rq->perout.period.sec;
- 		period.tv_nsec = rq->perout.period.nsec;
- 		period_ns = timespec64_to_ns(&period);
+--- a/tools/testing/selftests/bpf/sdt.h
++++ b/tools/testing/selftests/bpf/sdt.h
+@@ -102,6 +102,8 @@
+ # define STAP_SDT_ARG_CONSTRAINT        nZr
+ # elif defined __arm__
+ # define STAP_SDT_ARG_CONSTRAINT        g
++# elif defined __loongarch__
++# define STAP_SDT_ARG_CONSTRAINT        nmr
+ # else
+ # define STAP_SDT_ARG_CONSTRAINT        nor
+ # endif
 
 
 
