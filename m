@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-105588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2309FAD34
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 11:37:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FCE9FAD35
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 11:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91C181651BE
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 10:37:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 514C87A18C2
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 10:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4AF193429;
-	Mon, 23 Dec 2024 10:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4826819340B;
+	Mon, 23 Dec 2024 10:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nU/5Ws/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akGUSdji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEBC193408
-	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 10:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0881618DF6D
+	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 10:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734950219; cv=none; b=fOavcnHkzlEupDeQtcGb4iwGjB8bRys+N2grb0V1aJEkB6RNBLgw5Qz/QcxjQvVQ8inzyY/JAsXIq/v11glrZruDRz3w0Rt+L3Xyjd2JTwe7QJYlgv2QanMnkgJxjj8VbszzabMmD/jcXURfzfd7SEnV2KOLttTsuwdlpkZ1nYE=
+	t=1734950248; cv=none; b=YpqPN+E8gD3SaLGoUtKAAPz8+Cx2c1fqEatlesS+2FMHWa4vJivZwukbvTzBzfCPoB1RXjjk7WW5m+chc8/D7uXh0jY1gjBjUNQML7Pk+ghKT6SnpKBJPqgxeQOtPnX2U6MVSo3yh2BnY65FO332Uy/CMNoQ5DyXeetenoAc3Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734950219; c=relaxed/simple;
-	bh=gAsh7SYg2PxAFKaA9MgiglCID8/hGpMTKxrryKE3Mes=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZTMVa+xDR1wUpnBvz5q7m7UcoTFy4CgLSTuY2VY9EAk+MKkgnL+fVBCAiQhIxE9+qBBfGXL4D9Yp3omePcSNP9tCz583ZXpEkQiY9wHRg+zAurA+aSJ2arcDaR9p8ZVsa+fTumYUCLTdVpWtfBLGiMMgMDPK1bsp0lq8GLFGxUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nU/5Ws/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E79C4CED3;
-	Mon, 23 Dec 2024 10:36:57 +0000 (UTC)
+	s=arc-20240116; t=1734950248; c=relaxed/simple;
+	bh=XKCpU1i550c5DuVWWof+2+NU+Si902bsl5oJKIEmH4g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=no78YiGdXu37fqB+iCWwVmMl9rEsDFS6mGvYrJODoUfl8WSex57sMKD41SIGjgdzw8DNwSmQ98QXPlvMOSd2aD+zd3vLdnJVaOOjGvxKPxVDdZ2cAA3sKP9QPuipQAVXjhMb5ixOW8RE+xZa+1g3wPFjzMxjZJHCWkVy8d60FMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akGUSdji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382F7C4CED3;
+	Mon, 23 Dec 2024 10:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734950218;
-	bh=gAsh7SYg2PxAFKaA9MgiglCID8/hGpMTKxrryKE3Mes=;
+	s=korg; t=1734950247;
+	bh=XKCpU1i550c5DuVWWof+2+NU+Si902bsl5oJKIEmH4g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nU/5Ws/JDuwLGkNGOfLIVJ7k7AMip1gPS+JyviMQvzqc+T/elZEtR5uPqQVq53eC5
-	 qXUK3ZNksFbii62Vnlifpp6AehjBwaUhBSSqHzhqwBLqTuyxDB2K2LhyuBz10x8GVZ
-	 zeaEnIOuhQOzW0q54bXkayb7OR8t2SBBnQ93BNuE=
-Subject: FAILED: patch "[PATCH] Drivers: hv: util: Avoid accessing a ringbuffer not" failed to apply to 5.4-stable tree
-To: mhklinux@outlook.com,decui@microsoft.com,wei.liu@kernel.org
+	b=akGUSdjiIONLHaklOfH47F6IVPh0Rq3um3geH4U8q9lkvaIXLA+7lU+6XCgRqVqPI
+	 QNunCVRa9ANgKg2OUrwAX0/BPq9mSkv0fCaPmBF+7LmCQIaKN0Wqk5FMt6U4STSL4/
+	 CI1tabYYYY7W3732qgzKbZqXb95eOH9RoMNiCdm4=
+Subject: FAILED: patch "[PATCH] x86/hyperv: Fix hv tsc page based sched_clock for hibernation" failed to apply to 6.6-stable tree
+To: namjain@linux.microsoft.com,decui@microsoft.com,mhklinux@outlook.com,wei.liu@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 23 Dec 2024 11:36:56 +0100
-Message-ID: <2024122355-diligence-trapper-0972@gregkh>
+Date: Mon, 23 Dec 2024 11:37:24 +0100
+Message-ID: <2024122324-twitter-clustered-891d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 07a756a49f4b4290b49ea46e089cbe6f79ff8d26
+git cherry-pick -x bcc80dec91ee745b3d66f3e48f0ec2efdea97149
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024122355-diligence-trapper-0972@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024122324-twitter-clustered-891d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,173 +77,169 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 07a756a49f4b4290b49ea46e089cbe6f79ff8d26 Mon Sep 17 00:00:00 2001
-From: Michael Kelley <mhklinux@outlook.com>
-Date: Wed, 6 Nov 2024 07:42:47 -0800
-Subject: [PATCH] Drivers: hv: util: Avoid accessing a ringbuffer not
- initialized yet
+From bcc80dec91ee745b3d66f3e48f0ec2efdea97149 Mon Sep 17 00:00:00 2001
+From: Naman Jain <namjain@linux.microsoft.com>
+Date: Tue, 17 Sep 2024 11:09:17 +0530
+Subject: [PATCH] x86/hyperv: Fix hv tsc page based sched_clock for hibernation
 
-If the KVP (or VSS) daemon starts before the VMBus channel's ringbuffer is
-fully initialized, we can hit the panic below:
+read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
+bigger than the variable hv_sched_clock_offset, which is cached during
+early boot, but depending on the timing this assumption may be false
+when a hibernated VM starts again (the clock counter starts from 0
+again) and is resuming back (Note: hv_init_tsc_clocksource() is not
+called during hibernation/resume); consequently,
+read_hv_sched_clock_tsc() may return a negative integer (which is
+interpreted as a huge positive integer since the return type is u64)
+and new kernel messages are prefixed with huge timestamps before
+read_hv_sched_clock_tsc() grows big enough (which typically takes
+several seconds).
 
-hv_utils: Registering HyperV Utility Driver
-hv_vmbus: registering driver hv_utils
-...
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-CPU: 44 UID: 0 PID: 2552 Comm: hv_kvp_daemon Tainted: G E 6.11.0-rc3+ #1
-RIP: 0010:hv_pkt_iter_first+0x12/0xd0
-Call Trace:
-...
- vmbus_recvpacket
- hv_kvp_onchannelcallback
- vmbus_on_event
- tasklet_action_common
- tasklet_action
- handle_softirqs
- irq_exit_rcu
- sysvec_hyperv_stimer0
- </IRQ>
- <TASK>
- asm_sysvec_hyperv_stimer0
-...
- kvp_register_done
- hvt_op_read
- vfs_read
- ksys_read
- __x64_sys_read
+Fix the issue by saving the Hyper-V clock counter just before the
+suspend, and using it to correct the hv_sched_clock_offset in
+resume. This makes hv tsc page based sched_clock continuous and ensures
+that post resume, it starts from where it left off during suspend.
+Override x86_platform.save_sched_clock_state and
+x86_platform.restore_sched_clock_state routines to correct this as soon
+as possible.
 
-This can happen because the KVP/VSS channel callback can be invoked
-even before the channel is fully opened:
-1) as soon as hv_kvp_init() -> hvutil_transport_init() creates
-/dev/vmbus/hv_kvp, the kvp daemon can open the device file immediately and
-register itself to the driver by writing a message KVP_OP_REGISTER1 to the
-file (which is handled by kvp_on_msg() ->kvp_handle_handshake()) and
-reading the file for the driver's response, which is handled by
-hvt_op_read(), which calls hvt->on_read(), i.e. kvp_register_done().
+Note: if Invariant TSC is available, the issue doesn't happen because
+1) we don't register read_hv_sched_clock_tsc() for sched clock:
+See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
+clocksource and sched clock setup");
+2) the common x86 code adjusts TSC similarly: see
+__restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
+x86_platform.restore_sched_clock_state().
 
-2) the problem with kvp_register_done() is that it can cause the
-channel callback to be called even before the channel is fully opened,
-and when the channel callback is starting to run, util_probe()->
-vmbus_open() may have not initialized the ringbuffer yet, so the
-callback can hit the panic of NULL pointer dereference.
-
-To reproduce the panic consistently, we can add a "ssleep(10)" for KVP in
-__vmbus_open(), just before the first hv_ringbuffer_init(), and then we
-unload and reload the driver hv_utils, and run the daemon manually within
-the 10 seconds.
-
-Fix the panic by reordering the steps in util_probe() so the char dev
-entry used by the KVP or VSS daemon is not created until after
-vmbus_open() has completed. This reordering prevents the race condition
-from happening.
-
-Reported-by: Dexuan Cui <decui@microsoft.com>
-Fixes: e0fa3e5e7df6 ("Drivers: hv: utils: fix a race on userspace daemons registration")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Acked-by: Wei Liu <wei.liu@kernel.org>
-Link: https://lore.kernel.org/r/20241106154247.2271-3-mhklinux@outlook.com
+Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation")
+Co-developed-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20240917053917.76787-1-namjain@linux.microsoft.com
 Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20241106154247.2271-3-mhklinux@outlook.com>
+Message-ID: <20240917053917.76787-1-namjain@linux.microsoft.com>
 
-diff --git a/drivers/hv/hv_kvp.c b/drivers/hv/hv_kvp.c
-index 29e01247a087..7400a5a4d2bd 100644
---- a/drivers/hv/hv_kvp.c
-+++ b/drivers/hv/hv_kvp.c
-@@ -767,6 +767,12 @@ hv_kvp_init(struct hv_util_service *srv)
- 	 */
- 	kvp_transaction.state = HVUTIL_DEVICE_INIT;
- 
-+	return 0;
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index d18078834ded..dc12fe5ef3ca 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -223,6 +223,63 @@ static void hv_machine_crash_shutdown(struct pt_regs *regs)
+ 	hyperv_cleanup();
+ }
+ #endif /* CONFIG_CRASH_DUMP */
++
++static u64 hv_ref_counter_at_suspend;
++static void (*old_save_sched_clock_state)(void);
++static void (*old_restore_sched_clock_state)(void);
++
++/*
++ * Hyper-V clock counter resets during hibernation. Save and restore clock
++ * offset during suspend/resume, while also considering the time passed
++ * before suspend. This is to make sure that sched_clock using hv tsc page
++ * based clocksource, proceeds from where it left off during suspend and
++ * it shows correct time for the timestamps of kernel messages after resume.
++ */
++static void save_hv_clock_tsc_state(void)
++{
++	hv_ref_counter_at_suspend = hv_read_reference_counter();
 +}
 +
-+int
-+hv_kvp_init_transport(void)
++static void restore_hv_clock_tsc_state(void)
 +{
- 	hvt = hvutil_transport_init(kvp_devname, CN_KVP_IDX, CN_KVP_VAL,
- 				    kvp_on_msg, kvp_on_reset);
- 	if (!hvt)
-diff --git a/drivers/hv/hv_snapshot.c b/drivers/hv/hv_snapshot.c
-index 86d87486ed40..bde637a96c37 100644
---- a/drivers/hv/hv_snapshot.c
-+++ b/drivers/hv/hv_snapshot.c
-@@ -389,6 +389,12 @@ hv_vss_init(struct hv_util_service *srv)
- 	 */
- 	vss_transaction.state = HVUTIL_DEVICE_INIT;
- 
-+	return 0;
++	/*
++	 * Adjust the offsets used by hv tsc clocksource to
++	 * account for the time spent before hibernation.
++	 * adjusted value = reference counter (time) at suspend
++	 *                - reference counter (time) now.
++	 */
++	hv_adj_sched_clock_offset(hv_ref_counter_at_suspend - hv_read_reference_counter());
 +}
 +
-+int
-+hv_vss_init_transport(void)
++/*
++ * Functions to override save_sched_clock_state and restore_sched_clock_state
++ * functions of x86_platform. The Hyper-V clock counter is reset during
++ * suspend-resume and the offset used to measure time needs to be
++ * corrected, post resume.
++ */
++static void hv_save_sched_clock_state(void)
 +{
- 	hvt = hvutil_transport_init(vss_devname, CN_VSS_IDX, CN_VSS_VAL,
- 				    vss_on_msg, vss_on_reset);
- 	if (!hvt) {
-diff --git a/drivers/hv/hv_util.c b/drivers/hv/hv_util.c
-index 370722220134..36ee89c0358b 100644
---- a/drivers/hv/hv_util.c
-+++ b/drivers/hv/hv_util.c
-@@ -141,6 +141,7 @@ static struct hv_util_service util_heartbeat = {
- static struct hv_util_service util_kvp = {
- 	.util_cb = hv_kvp_onchannelcallback,
- 	.util_init = hv_kvp_init,
-+	.util_init_transport = hv_kvp_init_transport,
- 	.util_pre_suspend = hv_kvp_pre_suspend,
- 	.util_pre_resume = hv_kvp_pre_resume,
- 	.util_deinit = hv_kvp_deinit,
-@@ -149,6 +150,7 @@ static struct hv_util_service util_kvp = {
- static struct hv_util_service util_vss = {
- 	.util_cb = hv_vss_onchannelcallback,
- 	.util_init = hv_vss_init,
-+	.util_init_transport = hv_vss_init_transport,
- 	.util_pre_suspend = hv_vss_pre_suspend,
- 	.util_pre_resume = hv_vss_pre_resume,
- 	.util_deinit = hv_vss_deinit,
-@@ -611,6 +613,13 @@ static int util_probe(struct hv_device *dev,
- 	if (ret)
- 		goto error;
++	old_save_sched_clock_state();
++	save_hv_clock_tsc_state();
++}
++
++static void hv_restore_sched_clock_state(void)
++{
++	restore_hv_clock_tsc_state();
++	old_restore_sched_clock_state();
++}
++
++static void __init x86_setup_ops_for_tsc_pg_clock(void)
++{
++	if (!(ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE))
++		return;
++
++	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
++	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
++
++	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
++	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
++}
+ #endif /* CONFIG_HYPERV */
  
-+	if (srv->util_init_transport) {
-+		ret = srv->util_init_transport();
-+		if (ret) {
-+			vmbus_close(dev->channel);
-+			goto error;
-+		}
-+	}
- 	return 0;
+ static uint32_t  __init ms_hyperv_platform(void)
+@@ -579,6 +636,7 @@ static void __init ms_hyperv_init_platform(void)
  
- error:
-diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-index d2856023d53c..52cb744b4d7f 100644
---- a/drivers/hv/hyperv_vmbus.h
-+++ b/drivers/hv/hyperv_vmbus.h
-@@ -370,12 +370,14 @@ void vmbus_on_event(unsigned long data);
- void vmbus_on_msg_dpc(unsigned long data);
+ 	/* Register Hyper-V specific clocksource */
+ 	hv_init_clocksource();
++	x86_setup_ops_for_tsc_pg_clock();
+ 	hv_vtl_init_platform();
+ #endif
+ 	/*
+diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
+index 99177835cade..b39dee7b93af 100644
+--- a/drivers/clocksource/hyperv_timer.c
++++ b/drivers/clocksource/hyperv_timer.c
+@@ -27,7 +27,8 @@
+ #include <asm/mshyperv.h>
  
- int hv_kvp_init(struct hv_util_service *srv);
-+int hv_kvp_init_transport(void);
- void hv_kvp_deinit(void);
- int hv_kvp_pre_suspend(void);
- int hv_kvp_pre_resume(void);
- void hv_kvp_onchannelcallback(void *context);
+ static struct clock_event_device __percpu *hv_clock_event;
+-static u64 hv_sched_clock_offset __ro_after_init;
++/* Note: offset can hold negative values after hibernation. */
++static u64 hv_sched_clock_offset __read_mostly;
  
- int hv_vss_init(struct hv_util_service *srv);
-+int hv_vss_init_transport(void);
- void hv_vss_deinit(void);
- int hv_vss_pre_suspend(void);
- int hv_vss_pre_resume(void);
-diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-index 22c22fb91042..02a226bcf0ed 100644
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -1559,6 +1559,7 @@ struct hv_util_service {
- 	void *channel;
- 	void (*util_cb)(void *);
- 	int (*util_init)(struct hv_util_service *);
-+	int (*util_init_transport)(void);
- 	void (*util_deinit)(void);
- 	int (*util_pre_suspend)(void);
- 	int (*util_pre_resume)(void);
+ /*
+  * If false, we're using the old mechanism for stimer0 interrupts
+@@ -470,6 +471,17 @@ static void resume_hv_clock_tsc(struct clocksource *arg)
+ 	hv_set_msr(HV_MSR_REFERENCE_TSC, tsc_msr.as_uint64);
+ }
+ 
++/*
++ * Called during resume from hibernation, from overridden
++ * x86_platform.restore_sched_clock_state routine. This is to adjust offsets
++ * used to calculate time for hv tsc page based sched_clock, to account for
++ * time spent before hibernation.
++ */
++void hv_adj_sched_clock_offset(u64 offset)
++{
++	hv_sched_clock_offset -= offset;
++}
++
+ #ifdef HAVE_VDSO_CLOCKMODE_HVCLOCK
+ static int hv_cs_enable(struct clocksource *cs)
+ {
+diff --git a/include/clocksource/hyperv_timer.h b/include/clocksource/hyperv_timer.h
+index 6cdc873ac907..aa5233b1eba9 100644
+--- a/include/clocksource/hyperv_timer.h
++++ b/include/clocksource/hyperv_timer.h
+@@ -38,6 +38,8 @@ extern void hv_remap_tsc_clocksource(void);
+ extern unsigned long hv_get_tsc_pfn(void);
+ extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
+ 
++extern void hv_adj_sched_clock_offset(u64 offset);
++
+ static __always_inline bool
+ hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
+ 		     u64 *cur_tsc, u64 *time)
 
 
