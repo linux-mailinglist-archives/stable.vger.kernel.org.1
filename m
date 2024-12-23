@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-105747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603EE9FB184
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3989FB1E4
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D9301883016
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E0ED162FFD
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84184188006;
-	Mon, 23 Dec 2024 16:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4ACB1B21B5;
+	Mon, 23 Dec 2024 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csU87te5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9AobBwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DF613BC0C;
-	Mon, 23 Dec 2024 16:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C92C13BC0C;
+	Mon, 23 Dec 2024 16:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970005; cv=none; b=D/z5Cxrr1uMSQIy3NckSJZMBC/tOZ82OI5XqNND4CQ6bRVipZjVLI7tUDaG9i7DtqqXZnsWNdanlnfCrOY3AVhk55PrVLD3kLPfDD5H3lY4+NcWRzLpGV9STrx8Vwn9XxrtK9c1NpHzYOBQakz96uIlIcBQmGIVBDvgKDjjMhB8=
+	t=1734970245; cv=none; b=kSxtT13BhTbYF2b3OGZ7VvtpT+HYeO8YkM9Rg7tMNkzNIcXMDBdYJ+oML0iLDJJH90orv7mKMyhek9zpvgxKbHEv60PThPn72NvU6+ylnNAv/soToPbNuYESQsKK484m2JX364NxeGPFqphm/Ll2kLmHpQSZ3rZWSFSnu2D4T70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970005; c=relaxed/simple;
-	bh=mDFFdIMmgeXLLABjJ/bCJu+QYKXQZ5kROREHqUJqkgE=;
+	s=arc-20240116; t=1734970245; c=relaxed/simple;
+	bh=5UoXcgRtUVcnPjqtCf8z23MOJFbLr/coVFjiTO5zz+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWnPuNxclGXlzV2IMMTsltevUmosnHeQLcoGetrqva7OZpTfPRg6Jjam6nAH+qFzhiuE9EfpwTVvi0kziicuKQmNrXuVR06ocrwnZlOUDAXhj8YDBQLtrvY/yciVB4vEjrD4gyQNtQVeDYuNlT0bNvp6oDZZHP/tOxdHxbsEbLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csU87te5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B50C4CED3;
-	Mon, 23 Dec 2024 16:06:44 +0000 (UTC)
+	 MIME-Version; b=pZBZ/BnY2dc2gyZaBhczcYziXnc1BghyijfBMuHsfhsLWPJOglQkXpgRZ8YXyVJAMFYLikWGUnoUcv0X+B5wPHHQVDPKzrxNtDXXYQ1kl1GpgUBn/To/+/E2SO3Ln3eXrZz2zWv91Z7rNeI5VKgvyYCjy7k1G+2LHkuqsqX6cl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9AobBwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26FEC4CED3;
+	Mon, 23 Dec 2024 16:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970005;
-	bh=mDFFdIMmgeXLLABjJ/bCJu+QYKXQZ5kROREHqUJqkgE=;
+	s=korg; t=1734970245;
+	bh=5UoXcgRtUVcnPjqtCf8z23MOJFbLr/coVFjiTO5zz+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=csU87te5XN3c9xGqCG/SM7FOQ55sRvsDkzhvGv9W67lXkXqDs5Q325YLKA1TRSAUn
-	 ijfgoaU5Yz76ugdgRZev5z376nqDx3eBHkT5GgPmDGkTbQRaAPBVvcNPpfAtTaVtZe
-	 8kNOKCsBPCKzf93jyh95aFmkwfYO+KyYBHFAeCyw=
+	b=n9AobBwBDvVPr29Y28X1V53M43LymOE0x29B6ViS/YfBT9oaCxoLND6Yozg7xxXE8
+	 t3qY42NHrSWf9KRfk7fE90toSETXFuwzoPETbti5uhhL9XTV8rXiryXjCmpucSkIkc
+	 OQ+ZEodhulSmLQE+ADhIKgzkW32hdgifQptkyAlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Deak <imre.deak@intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>
-Subject: [PATCH 6.12 085/160] drm/display: use ERR_PTR on DP tunnel manager creation fail
+	lei lu <llfamsec@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 026/116] xfs: dont walk off the end of a directory data block
 Date: Mon, 23 Dec 2024 16:58:16 +0100
-Message-ID: <20241223155411.981243190@linuxfoundation.org>
+Message-ID: <20241223155400.581065060@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Karas <krzysztof.karas@intel.com>
+From: lei lu <llfamsec@gmail.com>
 
-commit 080b2e7b5e9ad23343e4b11f0751e4c724a78958 upstream.
+commit 0c7fcdb6d06cdf8b19b57c17605215b06afa864a upstream.
 
-Instead of returning a generic NULL on error from
-drm_dp_tunnel_mgr_create(), use error pointers with informative codes
-to align the function with stub that is executed when
-CONFIG_DRM_DISPLAY_DP_TUNNEL is unset. This will also trigger IS_ERR()
-in current caller (intel_dp_tunnerl_mgr_init()) instead of bypassing it
-via NULL pointer.
+This adds sanity checks for xfs_dir2_data_unused and xfs_dir2_data_entry
+to make sure don't stray beyond valid memory region. Before patching, the
+loop simply checks that the start offset of the dup and dep is within the
+range. So in a crafted image, if last entry is xfs_dir2_data_unused, we
+can change dup->length to dup->length-1 and leave 1 byte of space. In the
+next traversal, this space will be considered as dup or dep. We may
+encounter an out of bound read when accessing the fixed members.
 
-v2: use error codes inside drm_dp_tunnel_mgr_create() instead of handling
- on caller's side (Michal, Imre)
+In the patch, we make sure that the remaining bytes large enough to hold
+an unused entry before accessing xfs_dir2_data_unused and
+xfs_dir2_data_unused is XFS_DIR2_DATA_ALIGN byte aligned. We also make
+sure that the remaining bytes large enough to hold a dirent with a
+single-byte name before accessing xfs_dir2_data_entry.
 
-v3: fixup commit message and add "CC"/"Fixes" lines (Andi),
- mention aligning function code with stub
-
-Fixes: 91888b5b1ad2 ("drm/i915/dp: Add support for DP tunnel BW allocation")
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: <stable@vger.kernel.org> # v6.9+
-Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/7q4fpnmmztmchczjewgm6igy55qt6jsm7tfd4fl4ucfq6yg2oy@q4lxtsu6445c
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_tunnel.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/xfs/libxfs/xfs_dir2_data.c | 31 ++++++++++++++++++++++++++-----
+ fs/xfs/libxfs/xfs_dir2_priv.h |  7 +++++++
+ 2 files changed, 33 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_tunnel.c b/drivers/gpu/drm/display/drm_dp_tunnel.c
-index 48b2df120086..90fe07a89260 100644
---- a/drivers/gpu/drm/display/drm_dp_tunnel.c
-+++ b/drivers/gpu/drm/display/drm_dp_tunnel.c
-@@ -1896,8 +1896,8 @@ static void destroy_mgr(struct drm_dp_tunnel_mgr *mgr)
-  *
-  * Creates a DP tunnel manager for @dev.
-  *
-- * Returns a pointer to the tunnel manager if created successfully or NULL in
-- * case of an error.
-+ * Returns a pointer to the tunnel manager if created successfully or error
-+ * pointer in case of failure.
-  */
- struct drm_dp_tunnel_mgr *
- drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
-@@ -1907,7 +1907,7 @@ drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
+diff --git a/fs/xfs/libxfs/xfs_dir2_data.c b/fs/xfs/libxfs/xfs_dir2_data.c
+index dbcf58979a59..e1d5da6d8d4a 100644
+--- a/fs/xfs/libxfs/xfs_dir2_data.c
++++ b/fs/xfs/libxfs/xfs_dir2_data.c
+@@ -177,6 +177,14 @@ __xfs_dir3_data_check(
+ 	while (offset < end) {
+ 		struct xfs_dir2_data_unused	*dup = bp->b_addr + offset;
+ 		struct xfs_dir2_data_entry	*dep = bp->b_addr + offset;
++		unsigned int	reclen;
++
++		/*
++		 * Are the remaining bytes large enough to hold an
++		 * unused entry?
++		 */
++		if (offset > end - xfs_dir2_data_unusedsize(1))
++			return __this_address;
  
- 	mgr = kzalloc(sizeof(*mgr), GFP_KERNEL);
- 	if (!mgr)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
+ 		/*
+ 		 * If it's unused, look for the space in the bestfree table.
+@@ -186,9 +194,13 @@ __xfs_dir3_data_check(
+ 		if (be16_to_cpu(dup->freetag) == XFS_DIR2_DATA_FREE_TAG) {
+ 			xfs_failaddr_t	fa;
  
- 	mgr->dev = dev;
- 	init_waitqueue_head(&mgr->bw_req_queue);
-@@ -1916,7 +1916,7 @@ drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
- 	if (!mgr->groups) {
- 		kfree(mgr);
- 
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 	}
- 
- #ifdef CONFIG_DRM_DISPLAY_DP_TUNNEL_STATE_DEBUG
-@@ -1927,7 +1927,7 @@ drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
- 		if (!init_group(mgr, &mgr->groups[i])) {
- 			destroy_mgr(mgr);
- 
--			return NULL;
-+			return ERR_PTR(-ENOMEM);
++			reclen = xfs_dir2_data_unusedsize(
++					be16_to_cpu(dup->length));
+ 			if (lastfree != 0)
+ 				return __this_address;
+-			if (offset + be16_to_cpu(dup->length) > end)
++			if (be16_to_cpu(dup->length) != reclen)
++				return __this_address;
++			if (offset + reclen > end)
+ 				return __this_address;
+ 			if (be16_to_cpu(*xfs_dir2_data_unused_tag_p(dup)) !=
+ 			    offset)
+@@ -206,10 +218,18 @@ __xfs_dir3_data_check(
+ 				    be16_to_cpu(bf[2].length))
+ 					return __this_address;
+ 			}
+-			offset += be16_to_cpu(dup->length);
++			offset += reclen;
+ 			lastfree = 1;
+ 			continue;
  		}
++
++		/*
++		 * This is not an unused entry. Are the remaining bytes
++		 * large enough for a dirent with a single-byte name?
++		 */
++		if (offset > end - xfs_dir2_data_entsize(mp, 1))
++			return __this_address;
++
+ 		/*
+ 		 * It's a real entry.  Validate the fields.
+ 		 * If this is a block directory then make sure it's
+@@ -218,9 +238,10 @@ __xfs_dir3_data_check(
+ 		 */
+ 		if (dep->namelen == 0)
+ 			return __this_address;
+-		if (!xfs_verify_dir_ino(mp, be64_to_cpu(dep->inumber)))
++		reclen = xfs_dir2_data_entsize(mp, dep->namelen);
++		if (offset + reclen > end)
+ 			return __this_address;
+-		if (offset + xfs_dir2_data_entsize(mp, dep->namelen) > end)
++		if (!xfs_verify_dir_ino(mp, be64_to_cpu(dep->inumber)))
+ 			return __this_address;
+ 		if (be16_to_cpu(*xfs_dir2_data_entry_tag_p(mp, dep)) != offset)
+ 			return __this_address;
+@@ -244,7 +265,7 @@ __xfs_dir3_data_check(
+ 			if (i >= be32_to_cpu(btp->count))
+ 				return __this_address;
+ 		}
+-		offset += xfs_dir2_data_entsize(mp, dep->namelen);
++		offset += reclen;
+ 	}
+ 	/*
+ 	 * Need to have seen all the entries and all the bestfree slots.
+diff --git a/fs/xfs/libxfs/xfs_dir2_priv.h b/fs/xfs/libxfs/xfs_dir2_priv.h
+index 7404a9ff1a92..9046d08554e9 100644
+--- a/fs/xfs/libxfs/xfs_dir2_priv.h
++++ b/fs/xfs/libxfs/xfs_dir2_priv.h
+@@ -187,6 +187,13 @@ void xfs_dir2_sf_put_ftype(struct xfs_mount *mp,
+ extern int xfs_readdir(struct xfs_trans *tp, struct xfs_inode *dp,
+ 		       struct dir_context *ctx, size_t bufsize);
  
- 		mgr->group_count++;
++static inline unsigned int
++xfs_dir2_data_unusedsize(
++	unsigned int	len)
++{
++	return round_up(len, XFS_DIR2_DATA_ALIGN);
++}
++
+ static inline unsigned int
+ xfs_dir2_data_entsize(
+ 	struct xfs_mount	*mp,
 -- 
-2.47.1
+2.39.5
 
 
 
