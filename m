@@ -1,215 +1,123 @@
-Return-Path: <stable+bounces-106025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607909FB736
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 23:28:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD099FB73D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 23:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7F1C7A1B7C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 22:28:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF90B1883E2D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 22:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CECD1C1F22;
-	Mon, 23 Dec 2024 22:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10451A9B4F;
+	Mon, 23 Dec 2024 22:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AGX9APS1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3qg4Hbj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E52188596;
-	Mon, 23 Dec 2024 22:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC90418E35D
+	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 22:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734992923; cv=none; b=AEJH9kTnMkGf2vaJKNVd0wrOtQXRO00gx8V67WGQMxTpfhgtEdaxhIEwEOul7UiCPuKYrqkF9UrhNpCP5FkyvMTF/W3vVM9IMh2kseeOcOJrL7MaQOnPQrWitHUUpTUmmuD5ppVTEYY0UiumJKWkxgZfML1IMXB2WvoDceMWFC8=
+	t=1734993585; cv=none; b=RoUpsjArpbOMfiPXwd0ZtGb0NyswyxqzUgp9Mmdt/RiOHdchz9FR69ELuSXrLgvJQOSjAMKr+qSbCM3Ltv9vH9/leEE5caqExQ+vm88yli3Kns67dDmGxpyEf3OXqTsgmdgxUHO6EdHTJTyzcQ462fqaNoZ2k9e37LxCloEQwbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734992923; c=relaxed/simple;
-	bh=BKMhmsocqaQ8j1Miatar58/pD1rw0gYWFuKrEGxYFbY=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:In-Reply-To:
-	 References:Content-Type; b=ScRmmSgUmrgs9ka0iKx3X8H5q7Bl2I28HodFeaArydIiQZQ7aFpFfDqyJ89Bre7sfLGvEfEckagt3dKTiK7OjIWpRy9DIQQXcgQ6le3n5j8ajZ2T3t27bGeEOu72097YrdhUpfAaQOLbTlktJMDEYlxXBbRpuXRAh6MBWlYVseE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AGX9APS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00130C4CED3;
-	Mon, 23 Dec 2024 22:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734992923;
-	bh=BKMhmsocqaQ8j1Miatar58/pD1rw0gYWFuKrEGxYFbY=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=AGX9APS104VNdxcv7LumWpLmKmbQluJs/iBLWQFG+eSCRm4g4TFVj6vj4ymvNPtYJ
-	 76UaXEQWY8Ygm9yGCIhgMlzAXHiugXivMF/LURiCh9894v2rgPIaX20OgPdOk6y5og
-	 hbIrnQkb7nWTKCJwORqsbesvU7nagiHWUzFKM3V9hWcS8XITRgWTSqlqxXVjbKaFkC
-	 mqwjbpUNPErcCnqNBZqnEUWpuKLcoO4B2Q24+/fVO4dwpYr4bWluBgPyy+OBvRgC8u
-	 3xBZ+9JzZgjiesfCwdvMyiqyfIISMWgvizZzoCWkC4DAPWbXTu9suiH3uZSs6tm5IO
-	 lL3q2T5i8/7RQ==
-Date: Mon, 23 Dec 2024 14:28:42 -0800
-Subject: [GIT PULL 5/8] xfsprogs: new code for 6.13
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: aalbersh@kernel.org, djwong@kernel.org
-Cc: brauner@kernel.org, cem@kernel.org, dan.carpenter@linaro.org, dchinner@redhat.com, hch@lst.de, jlayton@kernel.org, josef@toxicpanda.com, leo.lilong@huawei.com, linux-xfs@vger.kernel.org, rdunlap@infradead.org, stable@vger.kernel.org
-Message-ID: <173498954462.2301496.14094263333139867704.stg-ugh@frogsfrogsfrogs>
+	s=arc-20240116; t=1734993585; c=relaxed/simple;
+	bh=RiAI0tXdGDHFALVdgJYntF6iUfac1gyKXXGoBqwuDRU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nR/29MWh9DjKZAP+myAQrM2ELcBrh3U9xbufjjXEN4oRNPpMORV11KkKJsP6c6tU+wgXJgIyCI42xfrAQkzLx33ABR2dDLfwlaLjzD+C0zRSVAOXQlR9hvhZBS0vS1hBaPjdBg5bG6KR3fW/Sl+m39N3/OgTHQT4QBYsRFd9K1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3qg4Hbj; arc=none smtp.client-ip=209.85.166.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-844d5444b3dso165354339f.1
+        for <stable@vger.kernel.org>; Mon, 23 Dec 2024 14:39:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1734993583; x=1735598383; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=be7/RonVhjmu08VwAsKg4vuMbBxzDsJ2p7eX93MnT2k=;
+        b=F3qg4HbjQ/YnC5UDRPmOmd0fP8h1u+jx3TBIH/VxiA7unjy4pbu19NeiWvHUzGXHxf
+         /1Ckyr78NmBYqoWXfMRixLcSTp6AkR2KW5NB6QHjcwOxe1/SBY8AX0XGhzRYzHq8r49r
+         R/bqelXABwsx+CfPtnhTLI//P4xAb29XSobEo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734993583; x=1735598383;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=be7/RonVhjmu08VwAsKg4vuMbBxzDsJ2p7eX93MnT2k=;
+        b=hD017wo5KbZw7FUxEPzEa3M7ERyDIG8xxzU3KFnDb+eGNadgbqrdvyqjfxAPWJehqn
+         fSuKFzeRAteOBpx88T5NhpyC6e2mPYUFs+NkZT30APZojTbGuqetHN08OPp+8HRAhRV8
+         qdMWUXO0PXyoCDJp1h3ncaYhpGrR6ZNDv2ODgsfGHGR0dJ0FCYIH1LPF+0X0TQMgwN4K
+         /cYrEV2O9IDulR7S874o8ne+/lAGRznTVTuSNEAvjYJj85wGz8MtjlQBTz4A2txUm/+P
+         BOEhgOFoGJcUjbShAsUYbIUa9ECbLZ72oyU1ihVyRkc7+ggzhVYvCV0hQnrfBkVMh9Vy
+         Izng==
+X-Forwarded-Encrypted: i=1; AJvYcCU8SEdMe3mf+zLYEgquiE7dBEKxcjGFtnW/nNmZW5iBHO0B0AaNRc8d3k7y8lky+Lt+Us9GNyk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2pWt4Jb3AHVNzu69PqNOsYgf97WEPZnFztmnFF1IqekzL58qY
+	4HABqbXrXCV65eiOyZM9p+sTV2b3MxKP7XUKGOFdOBMrsYbdWg/a+MMew1i1OBA=
+X-Gm-Gg: ASbGncuZN+ko0JJgckLwF9iftkyq0SdVxoDWVme5uGb5K75XDosEHXSIXIMKTYgNjKu
+	o0Fe41i67PmPKi6lp3ZuCS5Y/AfbgGOjlwiV04k46rCmGhkT2BxvjV8dphePBu1iU52o8aRrVob
+	C665L3WYwU+RJbqmAk3+LNcuq7xJNl+2FY4IX59ljqZbGTnDSlvMHfgPN6zACu8KRWL3x8O6TOp
+	63w6pjjI22Fz72lRXohh92LAlq8gexKszIVM5jEzMLKa1wsVuUZ2eliOA0y6sEpocLY
+X-Google-Smtp-Source: AGHT+IEz+NIDzSEZUcGPPKarHrLAfuW2OviDkOfngOuKgwzh34HNpGJ2TKkOEJkYaXJ9EqsA+Mqy+A==
+X-Received: by 2002:a05:6602:3a86:b0:844:2ef3:a95a with SMTP id ca18e2360f4ac-84988d25967mr1988497939f.7.1734993583027;
+        Mon, 23 Dec 2024 14:39:43 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-8498d8eb32asm239386639f.42.2024.12.23.14.39.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Dec 2024 14:39:42 -0800 (PST)
+Message-ID: <33cb0bbb-d6d4-4637-818e-83ba4e7f278f@linuxfoundation.org>
+Date: Mon, 23 Dec 2024 15:39:41 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241223212904.GQ6174@frogsfrogsfrogs>
-References: <20241223212904.GQ6174@frogsfrogsfrogs>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/160] 6.12.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Andrey,
+On 12/23/24 08:56, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.7 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 27 Dec 2024 15:53:30 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-Please pull this branch with changes for xfsprogs for 6.11-rc1.
+Compiled and booted on my test system. No dmesg regressions.
 
-As usual, I did a test-merge with the main upstream branch as of a few
-minutes ago, and didn't see any conflicts.  Please let me know if you
-encounter any problems.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
---D
-
-The following changes since commit 513300e9565b0d446ac8e6a3a990444d766c728b:
-
-mkfs: add a utility to generate protofiles (2024-12-23 13:05:10 -0800)
-
-are available in the Git repository at:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfsprogs-dev.git tags/xfs-6.13-merge_2024-12-23
-
-for you to fetch changes up to 80b81c84f015ee01fed80c32184cc763ee1a655e:
-
-xfs: return from xfs_symlink_verify early on V4 filesystems (2024-12-23 13:05:13 -0800)
-
-----------------------------------------------------------------
-xfsprogs: new code for 6.13 [05/23]
-
-New code for 6.12.
-
-This has been running on the djcloud for months with no problems.  Enjoy!
-
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-
-----------------------------------------------------------------
-Christoph Hellwig (9):
-xfs: add a xfs_bmap_free_rtblocks helper
-xfs: move RT bitmap and summary information to the rtgroup
-xfs: support creating per-RTG files in growfs
-xfs: refactor xfs_rtbitmap_blockcount
-xfs: refactor xfs_rtsummary_blockcount
-xfs: make RT extent numbers relative to the rtgroup
-xfs: add a helper to prevent bmap merges across rtgroup boundaries
-xfs: make the RT allocator rtgroup aware
-xfs: don't call xfs_bmap_same_rtgroup in xfs_bmap_add_extent_hole_delay
-
-Darrick J. Wong (40):
-xfs: create incore realtime group structures
-xfs: define locking primitives for realtime groups
-xfs: add a lockdep class key for rtgroup inodes
-xfs: support caching rtgroup metadata inodes
-libfrog: add memchr_inv
-xfs: define the format of rt groups
-xfs: update realtime super every time we update the primary fs super
-xfs: export realtime group geometry via XFS_FSOP_GEOM
-xfs: check that rtblock extents do not break rtsupers or rtgroups
-xfs: add frextents to the lazysbcounters when rtgroups enabled
-xfs: record rt group metadata errors in the health system
-xfs: export the geometry of realtime groups to userspace
-xfs: add block headers to realtime bitmap and summary blocks
-xfs: encode the rtbitmap in big endian format
-xfs: encode the rtsummary in big endian format
-xfs: grow the realtime section when realtime groups are enabled
-xfs: support logging EFIs for realtime extents
-xfs: support error injection when freeing rt extents
-xfs: use realtime EFI to free extents when rtgroups are enabled
-xfs: don't merge ioends across RTGs
-xfs: scrub the realtime group superblock
-xfs: scrub metadir paths for rtgroup metadata
-xfs: mask off the rtbitmap and summary inodes when metadir in use
-xfs: create helpers to deal with rounding xfs_fileoff_t to rtx boundaries
-xfs: create helpers to deal with rounding xfs_filblks_t to rtx boundaries
-xfs: make xfs_rtblock_t a segmented address like xfs_fsblock_t
-xfs: adjust min_block usage in xfs_verify_agbno
-xfs: move the min and max group block numbers to xfs_group
-xfs: implement busy extent tracking for rtgroups
-xfs: use metadir for quota inodes
-xfs: scrub quota file metapaths
-xfs: enable metadata directory feature
-xfs: convert struct typedefs in xfs_ondisk.h
-xfs: separate space btree structures in xfs_ondisk.h
-xfs: port ondisk structure checks from xfs/122 to the kernel
-xfs: return a 64-bit block count from xfs_btree_count_blocks
-xfs: fix error bailout in xfs_rtginode_create
-xfs: update btree keys correctly when _insrec splits an inode root block
-xfs: fix sb_spino_align checks for large fsblock sizes
-xfs: return from xfs_symlink_verify early on V4 filesystems
-
-Dave Chinner (1):
-xfs: fix sparse inode limits on runt AG
-
-Jeff Layton (1):
-xfs: switch to multigrain timestamps
-
-Long Li (1):
-xfs: remove unknown compat feature check in superblock write validation
-
-db/block.c                  |   2 +-
-db/block.h                  |  16 -
-db/convert.c                |   1 -
-db/faddr.c                  |   1 -
-include/libxfs.h            |   2 +
-include/platform_defs.h     |  33 +++
-include/xfs_mount.h         |  30 +-
-include/xfs_trace.h         |   7 +
-include/xfs_trans.h         |   1 +
-libfrog/util.c              |  14 +
-libfrog/util.h              |   4 +
-libxfs/Makefile             |   2 +
-libxfs/init.c               |  35 ++-
-libxfs/libxfs_api_defs.h    |  16 +
-libxfs/libxfs_io.h          |   1 +
-libxfs/libxfs_priv.h        |  34 +--
-libxfs/rdwr.c               |  17 ++
-libxfs/trans.c              |  29 ++
-libxfs/util.c               |   8 +-
-libxfs/xfs_ag.c             |  22 +-
-libxfs/xfs_ag.h             |  16 +-
-libxfs/xfs_alloc.c          |  15 +-
-libxfs/xfs_alloc.h          |  12 +-
-libxfs/xfs_bmap.c           | 124 ++++++--
-libxfs/xfs_btree.c          |  33 ++-
-libxfs/xfs_btree.h          |   2 +-
-libxfs/xfs_defer.c          |   6 +
-libxfs/xfs_defer.h          |   1 +
-libxfs/xfs_dquot_buf.c      | 190 ++++++++++++
-libxfs/xfs_format.h         |  80 ++++-
-libxfs/xfs_fs.h             |  32 +-
-libxfs/xfs_group.h          |  33 +++
-libxfs/xfs_health.h         |  42 +--
-libxfs/xfs_ialloc.c         |  16 +-
-libxfs/xfs_ialloc_btree.c   |   6 +-
-libxfs/xfs_log_format.h     |   6 +-
-libxfs/xfs_ondisk.h         | 186 +++++++++---
-libxfs/xfs_quota_defs.h     |  43 +++
-libxfs/xfs_rtbitmap.c       | 405 +++++++++++++++++---------
-libxfs/xfs_rtbitmap.h       | 247 ++++++++++------
-libxfs/xfs_rtgroup.c        | 694 ++++++++++++++++++++++++++++++++++++++++++++
-libxfs/xfs_rtgroup.h        | 284 ++++++++++++++++++
-libxfs/xfs_sb.c             | 246 ++++++++++++++--
-libxfs/xfs_sb.h             |   6 +-
-libxfs/xfs_shared.h         |   4 +
-libxfs/xfs_symlink_remote.c |   4 +-
-libxfs/xfs_trans_inode.c    |   6 +-
-libxfs/xfs_trans_resv.c     |   2 +-
-libxfs/xfs_types.c          |  35 ++-
-libxfs/xfs_types.h          |   8 +-
-mkfs/proto.c                |  33 ++-
-mkfs/xfs_mkfs.c             |   8 +
-repair/dinode.c             |   4 +-
-repair/phase6.c             | 203 +++++++------
-repair/rt.c                 |  34 +--
-repair/rt.h                 |   4 +-
-56 files changed, 2728 insertions(+), 617 deletions(-)
-create mode 100644 libxfs/xfs_rtgroup.c
-create mode 100644 libxfs/xfs_rtgroup.h
+thanks,
+-- Shuah
 
 
