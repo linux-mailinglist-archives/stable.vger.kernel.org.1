@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDEC9FB155
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6899FB1D8
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1AF4162EF0
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:04:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0438D16167D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BD0188733;
-	Mon, 23 Dec 2024 16:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123471B393A;
+	Mon, 23 Dec 2024 16:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb8bn1wD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNpMQn2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9485112D1F1;
-	Mon, 23 Dec 2024 16:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31B512D1F1;
+	Mon, 23 Dec 2024 16:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969858; cv=none; b=oboDgXRBShkneM4DeHG9J7k4H2AQ1KLp6+jQgBOJZjb/y54IyzuUr+C2SWAAO3TIjVxGs822UrFcYColjMokWvdqMiYVXGy7lMkdgvVR+HmuGCYTfkmNMw6znCVli8jjTLM393yUKJ9tnfzg/goeIxFvfaHr2Z9EA1RwijbAuX8=
+	t=1734970200; cv=none; b=Dsv1ptswqY5Qlp18z2JSjUhtr3H/aRWTmwt5afx9/PhiEwG50aqCdsywS/SJa7aEnxN4LwmxyoqO6jRi1VUfY1GWzqkjkPGGkpJ5Uitw6zjklgXNqc2RFkQLWO82/8Kses5kqjDUSmYh7Br94QIJ02Hwt4gMQaBTTbptS8V+kro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969858; c=relaxed/simple;
-	bh=KZrhOPLOu4l41oix0Dt81NRuS1yUFhXigN0hMrdbltY=;
+	s=arc-20240116; t=1734970200; c=relaxed/simple;
+	bh=/KrBNUcoRigN3ec2UMScbe9+t+bOPlxFqMstLqvpr1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJ9lmDeg/d04iVpxhy0DwxbndsbQgPT7BJ0D6nlZovHNxUH75emD7o8/LHnysERb8/TJUo0TfHbkDpZXYrUljNMiFd+7aFspAyVeNJ8Y35/hQLDnUCUWqp27aYvkhrpY2LrBKI5VTv+4Gg6bGo5RYUINpbJrCD55/UajVJblVfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb8bn1wD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A89C4CED3;
-	Mon, 23 Dec 2024 16:04:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l4A6wdkZJ1JaiyXnUcHCaWeV6BzHwU4E9IhgcOugCrISJ5Td4nZVIh/Ipp46Uv32LPecCT2kY3JSNLqpov62QeP141IuT9pTAeVdy/zLuAte9zg0cPzg0tjDLyn7OzaLSabVzeDq9Ub0B301mEC0FmbCMv1rQTWOs0o4jbDauq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNpMQn2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B71C4CED3;
+	Mon, 23 Dec 2024 16:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969858;
-	bh=KZrhOPLOu4l41oix0Dt81NRuS1yUFhXigN0hMrdbltY=;
+	s=korg; t=1734970200;
+	bh=/KrBNUcoRigN3ec2UMScbe9+t+bOPlxFqMstLqvpr1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cb8bn1wDb06fiz1Tv5NfrBV21v3Jy/QM3zCVnhHaWhnZL8rtLrLGkwKNL0JAE4kfq
-	 VtcCuVsYuO8Tt4tevC1djHccj4yqGrqk2axJM1E2XrNPasypx/jMauOIZtCcn5YQa8
-	 dnX+ZJUFDxvEs7XM1hyvy05gIXvl+pnH8YfRjKi4=
+	b=qNpMQn2DWTmaTg1SeJu9TnRu4mfhbewI35mWpKuYHWKx4ANzFitqUoPZ4OULE2AHs
+	 kh6+m+aOOhqF2gyi2u1JM3tWC5hz8K4XZOeJZPcgZhJlD+SpL4DCJgnp3yAlj1q4RH
+	 jZzfRgQHfX3ao0akoNayNS45awYpGhJFgl6brmaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 073/160] i2c: riic: Always round-up when calculating bus period
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 014/116] p2sb: Factor out p2sb_read_from_cache()
 Date: Mon, 23 Dec 2024 16:58:04 +0100
-Message-ID: <20241223155411.507576309@linuxfoundation.org>
+Message-ID: <20241223155400.107652643@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit de6b43798d9043a7c749a0428dbb02d5fff156e5 upstream.
+[ Upstream commit 9244524d60ddea55f4df54c51200e8fef2032447 ]
 
-Currently, the RIIC driver may run the I2C bus faster than requested,
-which may cause subtle failures.  E.g. Biju reported a measured bus
-speed of 450 kHz instead of the expected maximum of 400 kHz on RZ/G2L.
+To prepare for the following fix, factor out the code to read the P2SB
+resource from the cache to the new function p2sb_read_from_cache().
 
-The initial calculation of the bus period uses DIV_ROUND_UP(), to make
-sure the actual bus speed never becomes faster than the requested bus
-speed.  However, the subsequent division-by-two steps do not use
-round-up, which may lead to a too-small period, hence a too-fast and
-possible out-of-spec bus speed.  E.g. on RZ/Five, requesting a bus speed
-of 100 resp. 400 kHz will yield too-fast target bus speeds of 100806
-resp. 403226 Hz instead of 97656 resp. 390625 Hz.
-
-Fix this by using DIV_ROUND_UP() in the subsequent divisions, too.
-
-Tested on RZ/A1H, RZ/A2M, and RZ/Five.
-
-Fixes: d982d66514192cdb ("i2c: riic: remove clock and frequency restrictions")
-Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: <stable@vger.kernel.org> # v4.15+
-Link: https://lore.kernel.org/r/c59aea77998dfea1b4456c4b33b55ab216fcbf5e.1732284746.git.geert+renesas@glider.be
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241128002836.373745-2-shinichiro.kawasaki@wdc.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 360c400d0f56 ("p2sb: Do not scan and remove the P2SB device when it is unhidden")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-riic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/p2sb.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
---- a/drivers/i2c/busses/i2c-riic.c
-+++ b/drivers/i2c/busses/i2c-riic.c
-@@ -352,7 +352,7 @@ static int riic_init_hw(struct riic_dev
- 		if (brl <= (0x1F + 3))
- 			break;
+diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
+index 687e341e3206..d6ee4b34f911 100644
+--- a/drivers/platform/x86/p2sb.c
++++ b/drivers/platform/x86/p2sb.c
+@@ -171,6 +171,22 @@ static int p2sb_cache_resources(void)
+ 	return ret;
+ }
  
--		total_ticks /= 2;
-+		total_ticks = DIV_ROUND_UP(total_ticks, 2);
- 		rate /= 2;
- 	}
++static int p2sb_read_from_cache(struct pci_bus *bus, unsigned int devfn,
++				struct resource *mem)
++{
++	struct p2sb_res_cache *cache = &p2sb_resources[PCI_FUNC(devfn)];
++
++	if (cache->bus_dev_id != bus->dev.id)
++		return -ENODEV;
++
++	if (!p2sb_valid_resource(&cache->res))
++		return -ENOENT;
++
++	memcpy(mem, &cache->res, sizeof(*mem));
++
++	return 0;
++}
++
+ /**
+  * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
+  * @bus: PCI bus to communicate with
+@@ -187,8 +203,6 @@ static int p2sb_cache_resources(void)
+  */
+ int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
+ {
+-	struct p2sb_res_cache *cache;
+-
+ 	bus = p2sb_get_bus(bus);
+ 	if (!bus)
+ 		return -ENODEV;
+@@ -196,15 +210,7 @@ int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
+ 	if (!devfn)
+ 		p2sb_get_devfn(&devfn);
  
+-	cache = &p2sb_resources[PCI_FUNC(devfn)];
+-	if (cache->bus_dev_id != bus->dev.id)
+-		return -ENODEV;
+-
+-	if (!p2sb_valid_resource(&cache->res))
+-		return -ENOENT;
+-
+-	memcpy(mem, &cache->res, sizeof(*mem));
+-	return 0;
++	return p2sb_read_from_cache(bus, devfn, mem);
+ }
+ EXPORT_SYMBOL_GPL(p2sb_bar);
+ 
+-- 
+2.39.5
+
 
 
 
