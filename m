@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-105722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510A49FB16C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 521AD9FB210
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC65D161D3C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1F101666A1
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96EF188733;
-	Mon, 23 Dec 2024 16:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71271B392B;
+	Mon, 23 Dec 2024 16:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adOLRZsY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPdDc+Tw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7878812D1F1;
-	Mon, 23 Dec 2024 16:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752F713BC0C;
+	Mon, 23 Dec 2024 16:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969920; cv=none; b=H1rOFZbfoC4l0Uczh5h8qZnRWuL3EcgQE61B2jKbr72cyU9YSNWXMmVyguz+81HgwZ3mCpA6Mb5M6nF+MRUYgJaWbTl52Aj7dhZIPaSj7n6bEaVoIAr1YEW7Lz3MzShMmJ3d+UCEs9BeQfXGyzjP0c9rlcaVw+NXPonUjUk5Yjk=
+	t=1734970376; cv=none; b=YgqeMREQ6fyVuVxfr+tmjRiNInAap2pjEMg6tGAZMByly1pUdGyyuqBRshQD/oJHlBXoXa3q+Q0VwrwPybPpMuaul7GG2fIWR7uffscEmgO4qrm2CmQr+rbq+BdHwq2kFGxy9aZfFB4D2oJzj/62YyUmMZ/2YMHg4mhAIbs4Jww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969920; c=relaxed/simple;
-	bh=jilrfThkiWKeO/nHX6uhQf7bcdaqJ2VwDg3itSA3ORE=;
+	s=arc-20240116; t=1734970376; c=relaxed/simple;
+	bh=/nrgwxh2+rZijnk24K0U15WjVTKfCLnHaeDZql+4tAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDVSkQ0T8DB5jR5ZYpg1k4UfJBQ7srdp0bx4KB0+ngnai5P/wuvuy8h+Co65FkSLRt5TZuqSNaiyU1kLBe3kMU3R2Ae9Cl81tu9ZYNMp1+TO5GBXoBNOOWapk8sN37Z2qLAYSy3mXTvndRaSdlyEq/edm66uvUPp7z7BM4cA3aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adOLRZsY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE59C4CED3;
-	Mon, 23 Dec 2024 16:05:19 +0000 (UTC)
+	 MIME-Version; b=PLiTd0w2Bp5vfBTxYhIkdL80NejUh9oj0Kk+6RxdpvrxRkIJ/xm3Nh8DuEOhPzCTdi7uMFUjizyrRxrhthl0+/7/QQs+XAx1uTysuyuKgA+DySgCZjDdDfjb1Jn16AfgAz6O2rBnICvTP4FLDcb+2R4t+oROSqVKx37Cb2oVtKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPdDc+Tw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96BBC4CED3;
+	Mon, 23 Dec 2024 16:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969920;
-	bh=jilrfThkiWKeO/nHX6uhQf7bcdaqJ2VwDg3itSA3ORE=;
+	s=korg; t=1734970376;
+	bh=/nrgwxh2+rZijnk24K0U15WjVTKfCLnHaeDZql+4tAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adOLRZsY1ohALSWmEwWFVlpBod7elGnzwYuK4F+NJASEyZlRB2LesS8rzBvKg/J8P
-	 2DBr6WxnS9pKKEmKeMttFJ3N40LRXqmqBZWRMkTTfuf3fxhgMu6tsaI8/1wuM+45dE
-	 /wAcatqMpb2uIylw7OpDDkOR4Vg3IwP9od23bL3A=
+	b=ZPdDc+TwCksBxvJYWXjSbDfJiW624aXFOAAKdgpaF2BtxNtIFDv7C7tqDIhy1cmnR
+	 OVoy1GsVUgB2tCj6Abn0ACOtdOJNyg3jctkXonDi8pwYRuXrbi+s1ih+N/XPWHC/wn
+	 fyGzGDuYUMe+AEUZwyBculfpw+avigZBawxPGxI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
+	wozizhi@huawei.com,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/160] dma-buf: Fix __dma_buf_debugfs_list_del argument for !CONFIG_DEBUG_FS
+Subject: [PATCH 6.6 033/116] xfs: use XFS_BUF_DADDR_NULL for daddrs in getfsmap code
 Date: Mon, 23 Dec 2024 16:58:23 +0100
-Message-ID: <20241223155412.245133937@linuxfoundation.org>
+Message-ID: <20241223155400.865442578@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 0cff90dec63da908fb16d9ea2872ebbcd2d18e6a ]
+commit 6b35cc8d9239569700cc7cc737c8ed40b8b9cfdb upstream.
 
-The arguments for __dma_buf_debugfs_list_del do not match for both the
-CONFIG_DEBUG_FS case and the !CONFIG_DEBUG_FS case. The !CONFIG_DEBUG_FS
-case should take a struct dma_buf *, but it's currently struct file *.
-This can lead to the build error:
+Use XFS_BUF_DADDR_NULL (instead of a magic sentinel value) to mean "this
+field is null" like the rest of xfs.
 
-error: passing argument 1 of ‘__dma_buf_debugfs_list_del’ from
-incompatible pointer type [-Werror=incompatible-pointer-types]
-
-dma-buf.c:63:53: note: expected ‘struct file *’ but argument is of
-type ‘struct dma_buf *’
-   63 | static void __dma_buf_debugfs_list_del(struct file *file)
-
-Fixes: bfc7bc539392 ("dma-buf: Do not build debugfs related code when !CONFIG_DEBUG_FS")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241117170326.1971113-1-tjmercier@google.com
+Cc: wozizhi@huawei.com
+Fixes: e89c041338ed6 ("xfs: implement the GETFSMAP ioctl")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-buf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_fsmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-index 8892bc701a66..afb8c1c50107 100644
---- a/drivers/dma-buf/dma-buf.c
-+++ b/drivers/dma-buf/dma-buf.c
-@@ -60,7 +60,7 @@ static void __dma_buf_debugfs_list_add(struct dma_buf *dmabuf)
+diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
+index 85953dbd4283..7754d51e1c27 100644
+--- a/fs/xfs/xfs_fsmap.c
++++ b/fs/xfs/xfs_fsmap.c
+@@ -252,7 +252,7 @@ xfs_getfsmap_rec_before_start(
+ 	const struct xfs_rmap_irec	*rec,
+ 	xfs_daddr_t			rec_daddr)
  {
- }
- 
--static void __dma_buf_debugfs_list_del(struct file *file)
-+static void __dma_buf_debugfs_list_del(struct dma_buf *dmabuf)
- {
- }
- #endif
+-	if (info->low_daddr != -1ULL)
++	if (info->low_daddr != XFS_BUF_DADDR_NULL)
+ 		return rec_daddr < info->low_daddr;
+ 	if (info->low.rm_blockcount)
+ 		return xfs_rmap_compare(rec, &info->low) < 0;
+@@ -986,7 +986,7 @@ xfs_getfsmap(
+ 		info.dev = handlers[i].dev;
+ 		info.last = false;
+ 		info.pag = NULL;
+-		info.low_daddr = -1ULL;
++		info.low_daddr = XFS_BUF_DADDR_NULL;
+ 		info.low.rm_blockcount = 0;
+ 		error = handlers[i].fn(tp, dkeys, &info);
+ 		if (error)
 -- 
 2.39.5
 
