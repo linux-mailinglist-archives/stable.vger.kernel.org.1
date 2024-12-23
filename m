@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78269FB262
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2E29FB1B4
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB1E718859DA
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF87A161A6C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DCF1B4120;
-	Mon, 23 Dec 2024 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74891B392B;
+	Mon, 23 Dec 2024 16:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="se0pVvZk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXwy21iC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2A81B3922;
-	Mon, 23 Dec 2024 16:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B4D188733;
+	Mon, 23 Dec 2024 16:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970652; cv=none; b=P5+V0jsKi7v56do1vRxSGT+/I8T3msw1U7pHSxggoloaiDpMwXWHTjnmz8K9FSY+Mj3CWiaxhpCu4kXl7vHY71A11uo8nzx6nWiVlWXha0mSNTJ8Ez316kEhYGdwhEMEXg9XtR8AtVA017sJfb6r11MsTiTDPntPZffpM1lPdOg=
+	t=1734970076; cv=none; b=uCejGx4XyG1Lh5aacJ0v8plckJus80Jxtx/pjCg84qRANSCQPTDeVAUAQwdieQtWqaBZQ3Bkc3gMTtcJ3ccwJHuaerODu6E74qNS52STg4UaFJ85jhFk9WLP6wqugNIC8CXi9dGcRaSxIAHhO1CuI7H5xlM6luXpd66DlgJ/2L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970652; c=relaxed/simple;
-	bh=PnKpsbxhIOD7i6RN/ExMPdyuCOAFwsfyn5rjg/ETb6E=;
+	s=arc-20240116; t=1734970076; c=relaxed/simple;
+	bh=r4ZlWVGH8okTRFWP3a532vsf+dvYK64DLxh7bdNk6JM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+/kdJMHq6p634FyIHql0M8k/fdEDJH4pstTIS+x464LCe3Ah0nJkYM3rS9PHNASjQ9VRt+3RnOsP9vuh73jjC6repVM7VdadKbMfQuF+7Ie/frtg5azk4h09ThuR/bZI2/xx+V8Gw3xavpMlHvhTBkqMdH2QBx847w3YsJi3vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=se0pVvZk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A15EC4CED3;
-	Mon, 23 Dec 2024 16:17:30 +0000 (UTC)
+	 MIME-Version; b=sO4N9cdA/N+xiOs7QEgrOybquOVHvcO/dEYJr1r2+lOwSw3Fy1bL80lTPrzI65b72aJ20A/3Uwaj9BoDFCaOrCtoz2+kejUpdYZT3PeGrjgJhL+zIsTJSdDJ6dY2K9kcbDWwqCuzYqmuLZvbnGvy8JcPGXl7SwvRXZHNny27VEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXwy21iC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B43C4CED3;
+	Mon, 23 Dec 2024 16:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970651;
-	bh=PnKpsbxhIOD7i6RN/ExMPdyuCOAFwsfyn5rjg/ETb6E=;
+	s=korg; t=1734970076;
+	bh=r4ZlWVGH8okTRFWP3a532vsf+dvYK64DLxh7bdNk6JM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=se0pVvZktJUU1BujtKYXS1OXH7b/flvFrPLtU6wq2tdt2wUDA9mtJ6I1DUxxjb8om
-	 qI/rjID924toVW6s4M5/FywXIwRzzPZnUlZGiMeZVLpmYJ8WmiIEtd2RXqZNeMFxJT
-	 EuEgBD2owgtHNpyYJ8ut04QHZtgTJeANfAS/Ndis=
+	b=bXwy21iCt1ddDbk/yKPn0cPDgMuBzqZZKmXC3/NAVxxfmNn0prHn54rOb4AwhaTrm
+	 TC+zDvbUiwZkM/EIAXwvLmfDAUZY0HEzX3pcbg/YiDKdVzXUgw17/+Ylmvx5MkBguw
+	 MYwQ6QQGhfo3SUBc7njyzS0VD1VK3a1TC2FPxboQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/83] net: hinic: Fix cleanup in create_rxqs/txqs()
-Date: Mon, 23 Dec 2024 16:59:07 +0100
-Message-ID: <20241223155354.733906034@linuxfoundation.org>
+	Will <willsroot@protonmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 137/160] io_uring: check if iowq is killed before queuing
+Date: Mon, 23 Dec 2024 16:59:08 +0100
+Message-ID: <20241223155414.084823328@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 7203d10e93b6e6e1d19481ef7907de6a9133a467 ]
+commit dbd2ca9367eb19bc5e269b8c58b0b1514ada9156 upstream.
 
-There is a check for NULL at the start of create_txqs() and
-create_rxqs() which tess if "nic_dev->txqs" is non-NULL.  The
-intention is that if the device is already open and the queues
-are already created then we don't create them a second time.
+task work can be executed after the task has gone through io_uring
+termination, whether it's the final task_work run or the fallback path.
+In this case, task work will find ->io_wq being already killed and
+null'ed, which is a problem if it then tries to forward the request to
+io_queue_iowq(). Make io_queue_iowq() fail requests in this case.
 
-However, the bug is that if we have an error in the create_txqs()
-then the pointer doesn't get set back to NULL.  The NULL check
-at the start of the function will say that it's already open when
-it's not and the device can't be used.
+Note that it also checks PF_KTHREAD, because the user can first close
+a DEFER_TASKRUN ring and shortly after kill the task, in which case
+->iowq check would race.
 
-Set ->txqs back to NULL on cleanup on error.
-
-Fixes: c3e79baf1b03 ("net-next/hinic: Add logical Txq and Rxq")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/0cc98faf-a0ed-4565-a55b-0fa2734bc205@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 50c52250e2d74 ("block: implement async io_uring discard cmd")
+Fixes: 773af69121ecc ("io_uring: always reissue from task_work context")
+Reported-by: Will <willsroot@protonmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/63312b4a2c2bb67ad67b857d17a300e1d3b078e8.1734637909.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/huawei/hinic/hinic_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/io_uring.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic/hinic_main.c b/drivers/net/ethernet/huawei/hinic/hinic_main.c
-index 2d6906aba2a2..af6100e5d9b9 100644
---- a/drivers/net/ethernet/huawei/hinic/hinic_main.c
-+++ b/drivers/net/ethernet/huawei/hinic/hinic_main.c
-@@ -172,6 +172,7 @@ static int create_txqs(struct hinic_dev *nic_dev)
- 	hinic_sq_dbgfs_uninit(nic_dev);
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -515,7 +515,11 @@ static void io_queue_iowq(struct io_kioc
+ 	struct io_uring_task *tctx = req->task->io_uring;
  
- 	devm_kfree(&netdev->dev, nic_dev->txqs);
-+	nic_dev->txqs = NULL;
- 	return err;
- }
+ 	BUG_ON(!tctx);
+-	BUG_ON(!tctx->io_wq);
++
++	if ((current->flags & PF_KTHREAD) || !tctx->io_wq) {
++		io_req_task_queue_fail(req, -ECANCELED);
++		return;
++	}
  
-@@ -268,6 +269,7 @@ static int create_rxqs(struct hinic_dev *nic_dev)
- 	hinic_rq_dbgfs_uninit(nic_dev);
- 
- 	devm_kfree(&netdev->dev, nic_dev->rxqs);
-+	nic_dev->rxqs = NULL;
- 	return err;
- }
- 
--- 
-2.39.5
-
+ 	/* init ->work of the whole link before punting */
+ 	io_prep_async_link(req);
 
 
 
