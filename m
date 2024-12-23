@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-105957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A759FB280
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F3C9FB24B
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3543F164436
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A54C164229
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBAE1B3725;
-	Mon, 23 Dec 2024 16:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CEA12C544;
+	Mon, 23 Dec 2024 16:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF/ei8iB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPzaJ6RD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C271A8F80;
-	Mon, 23 Dec 2024 16:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D25615C14B;
+	Mon, 23 Dec 2024 16:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970712; cv=none; b=Mbc2jTqY4bF073UHcv8UhX8UESIGrZ17SVl37QRoPIIHo3ml0XlWY4nL4tU1ibj5woXHCZ2cxTlKyEs95wsLhAwrJO+hSyd1Rci49ACRFaz/AJnd/dCTaFN6WNGkfGJmhGrIiHHONj4Mt9c3ETbD+WKjKEyuDVLD9SEqkGWjA5c=
+	t=1734970580; cv=none; b=YmDYAIGbHRK3kRp+aZOXSXCHmbeqoGm6iBpC3wM7ctlKrUvpAzT1okj9tOxOm5AQXi6EceruX5Ul9+5GUn014qdqo3IB+mAMgf9z/JOM48MklvU/e/cOf4kZ4GK8g8Wg2jwuHu1VDvSt4xSn4gCRXF7Bq7qGHm/cSoWh8NHeiB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970712; c=relaxed/simple;
-	bh=MBws/I1mgIK/yIXaj9d2WRGxSFLtWhzFReNcw8DzXQU=;
+	s=arc-20240116; t=1734970580; c=relaxed/simple;
+	bh=tTb+TFVTD0INmTuqT7feVXs3QrIOeNKG0WjwUye2hss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MC7N9EY16T9viIr+aZTbmidYorgYQXKjUyB1DID0XlGKeTQpAwHBqyCa8NeewR9mqG86HRDoxIKOwEH/PHA5u7kKPNc8a9zFzheGOySWRF8TIvste+4Yr85WnpWMcduZY4+fMisujsKebBiwONSUfYNQYtvdLYeOEejBTyFhTuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF/ei8iB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C75CC4CED3;
-	Mon, 23 Dec 2024 16:18:31 +0000 (UTC)
+	 MIME-Version; b=lPnFdr6xE3D2IR/fwbcFmlESYZtAmgEhXoHmCzY8BHUPtWl+CRnUuau0KUQGxa3a8vEs+zFlspQP1rxVgPRNWKR5dO15gcj2wpuQLp+9J6Wev+EyO835bFgVW2QynvBZIEgg+r+2C1vJ55AHncs0rp5lkKGwEXf2OC8qJzvKiJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPzaJ6RD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9F5C4CED3;
+	Mon, 23 Dec 2024 16:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970711;
-	bh=MBws/I1mgIK/yIXaj9d2WRGxSFLtWhzFReNcw8DzXQU=;
+	s=korg; t=1734970579;
+	bh=tTb+TFVTD0INmTuqT7feVXs3QrIOeNKG0WjwUye2hss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pF/ei8iB3lX9CEtrysecjPp35rtPdnatjfwMb2Y8Rlqeqxtz9iu8k6B9xqCFGV+bB
-	 ovbas4UOli4rMkHioradxaMrraJ0T5owt4zWoERSnT6u0zko2Dt/td9U/Im91I2Lrj
-	 elslsKCFvfIxpAXLY8oCk+YM23RWBLXLrA27/owI=
+	b=pPzaJ6RDn4z9Wzu54HFJnmoEupULHvQZeuQfi5ZEyKH/bMumooJtm07NuZIy5h60B
+	 yMOEAfBQy3IZ97ykzO1LiJSHUYcU2MohaDqEi2y2QgsWgOsao85wdo+nO71GisxITM
+	 q8O01/pNycS6hjKU/BMzOr/Es62slfVYBImMEFHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/83] i915/guc: Ensure busyness counter increases motonically
+	Weining Lu <luweining@loongson.cn>,
+	Li Chen <chenli@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 096/116] selftests/bpf: Use asm constraint "m" for LoongArch
 Date: Mon, 23 Dec 2024 16:59:26 +0100
-Message-ID: <20241223155355.453771248@linuxfoundation.org>
+Message-ID: <20241223155403.296882886@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 59a0b46788d58fdcee8d2f6b4e619d264a1799bf ]
+commit 29d44cce324dab2bd86c447071a596262e7109b6 upstream.
 
-Active busyness of an engine is calculated using gt timestamp and the
-context switch in time. While capturing the gt timestamp, it's possible
-that the context switches out. This race could result in an active
-busyness value that is greater than the actual context runtime value by a
-small amount. This leads to a negative delta and throws off busyness
-calculations for the user.
+Currently, LoongArch LLVM does not support the constraint "o" and no plan
+to support it, it only supports the similar constraint "m", so change the
+constraints from "nor" in the "else" case to arch-specific "nmr" to avoid
+the build error such as "unexpected asm memory constraint" for LoongArch.
 
-If a subsequent count is smaller than the previous one, just return the
-previous one, since we expect the busyness to catch up.
-
-Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241127174006.190128-3-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit cf907f6d294217985e9dafd9985dce874e04ca37)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 630301b0d59d ("selftests/bpf: Add basic USDT selftests")
+Suggested-by: Weining Lu <luweining@loongson.cn>
+Suggested-by: Li Chen <chenli@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@vger.kernel.org
+Link: https://llvm.org/docs/LangRef.html#supported-constraint-code-list
+Link: https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/LoongArch/LoongArchISelDAGToDAG.cpp#L172
+Link: https://lore.kernel.org/bpf/20241219111506.20643-1-yangtiezhu@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_types.h      | 5 +++++
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 5 ++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/sdt.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_types.h b/drivers/gpu/drm/i915/gt/intel_engine_types.h
-index 107f465a27b9..458320d28e27 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_types.h
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_types.h
-@@ -339,6 +339,11 @@ struct intel_engine_guc_stats {
- 	 * @start_gt_clk: GT clock time of last idle to active transition.
- 	 */
- 	u64 start_gt_clk;
-+
-+	/**
-+	 * @total: The last value of total returned
-+	 */
-+	u64 total;
- };
- 
- struct intel_engine_cs {
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index 4bfc1131b4f0..2cd1f43f8a3c 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -1346,9 +1346,12 @@ static ktime_t guc_engine_busyness(struct intel_engine_cs *engine, ktime_t *now)
- 		total += intel_gt_clock_interval_to_ns(gt, clk);
- 	}
- 
-+	if (total > stats->total)
-+		stats->total = total;
-+
- 	spin_unlock_irqrestore(&guc->timestamp.lock, flags);
- 
--	return ns_to_ktime(total);
-+	return ns_to_ktime(stats->total);
- }
- 
- static void __reset_guc_busyness_stats(struct intel_guc *guc)
--- 
-2.39.5
-
+--- a/tools/testing/selftests/bpf/sdt.h
++++ b/tools/testing/selftests/bpf/sdt.h
+@@ -102,6 +102,8 @@
+ # define STAP_SDT_ARG_CONSTRAINT        nZr
+ # elif defined __arm__
+ # define STAP_SDT_ARG_CONSTRAINT        g
++# elif defined __loongarch__
++# define STAP_SDT_ARG_CONSTRAINT        nmr
+ # else
+ # define STAP_SDT_ARG_CONSTRAINT        nor
+ # endif
 
 
 
