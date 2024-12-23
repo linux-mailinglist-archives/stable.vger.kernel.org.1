@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-105744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2459FB17F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC089FB1CD
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:10:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E5021883147
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C136618850A1
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0ED188006;
-	Mon, 23 Dec 2024 16:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1CF1B21B5;
+	Mon, 23 Dec 2024 16:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJwL6Wde"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynFp9NlN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0799212D1F1;
-	Mon, 23 Dec 2024 16:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5DC188006;
+	Mon, 23 Dec 2024 16:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969995; cv=none; b=edcY+p6IoOF2ot0vZAdMUp0tbrmsGy1sjF6JGKhd46D57Xpk8sT2c7RLW9r9q9IvO6wn27LbLryEk8oLlaGXUDJ181bGPRZDewW2fHQxk0XNp/f8pMNNUi3XKzPNJKHB3twayj0j5EzJVddoYwXVRHRORtl2fpcyKhpf8wwECNE=
+	t=1734970235; cv=none; b=lMSp+PL8q0YsJvH3lb5g7NeJyoLNu6JDcBq4FaaYP2LVlwm76aSSZzH73Kqec1r44zz6hJpUin+uAeo47vampEio0d1SpevsSrIocBb7Zz69Eqod756fByrAA1v4XQEsSznvVgrJUS77qyxiX4Pzq5RcNXEo4l+UG00XRD5KyAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969995; c=relaxed/simple;
-	bh=GKqnGXR8M2I0rMB9J4mE+5zgyFA6rB/lPOIA1wkUrwk=;
+	s=arc-20240116; t=1734970235; c=relaxed/simple;
+	bh=9y2k0lQM4tBgkHNci8ue6riQLtZ57syx+IraRiatudA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9pEwXcEAkbNuKuycJH+tetVZ1Bpl83tUAC0zc9YLWONfaE3t4s5emE0acL3Ar6ewXEDt7Nc+b2ppp0U2fZKSdKfpJtHzOYfNn5yKG9w8R5m4Ki1icjcMkj5rz8hOjWymKUdldrvPsB7h+6V4IFHOxyh621OPvdtVZvqJ3BUnFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJwL6Wde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 833F9C4CED3;
-	Mon, 23 Dec 2024 16:06:34 +0000 (UTC)
+	 MIME-Version; b=kDJzhnih0fTEEwljW++86xrMszTb2//Rr0altOG5xXcEasp2210jmIy3k/QzTPmJXHv3KtnM9E8zlIVE5gCDkHXvoZYLvkIfIgAh1xtsxJ6ZoXnlaLuxDN1wVcSjlNp6HIfjaVs6PFFkrRvtUCENyFqnIcgFezqUEphdOHUgxcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynFp9NlN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6ADC4CED3;
+	Mon, 23 Dec 2024 16:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969994;
-	bh=GKqnGXR8M2I0rMB9J4mE+5zgyFA6rB/lPOIA1wkUrwk=;
+	s=korg; t=1734970235;
+	bh=9y2k0lQM4tBgkHNci8ue6riQLtZ57syx+IraRiatudA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJwL6WdeCDChHCDlu8p+VJaptf7qPoEBRFCqCxy8Le2/ABYbg50f9AZi/lAm7WlM0
-	 a/8ma5Js4L0EuF3cUVn0Yh3/y7dQIOLk2EgQcP705hdfH+kXnWYidcsjZlegHM49j+
-	 CHJgh5h+m77kKR0/qYr0Hs7ihhPJC2fR04Yz3ffQ=
+	b=ynFp9NlNHLxJ/o5dccmMp8ZVYkDC8ghkFkietURVutEHA3db3far+iL2JWuuE8CrM
+	 VYAvSX01juVPoP/pF4ENGe3H0EesfUz77NFOiFXgXF4WPogZ7eNU4JwD6xagzlttRb
+	 TPDGB+BgxD9/SHZsQWs2rMSO6Fzqn4YcK4RQ36mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.12 082/160] thunderbolt: Add support for Intel Panther Lake-M/P
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 023/116] xfs: create a new helper to return a files allocation unit
 Date: Mon, 23 Dec 2024 16:58:13 +0100
-Message-ID: <20241223155411.861068420@linuxfoundation.org>
+Message-ID: <20241223155400.462973906@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 8644b48714dca8bf2f42a4ff8311de8efc9bd8c3 upstream.
+commit ee20808d848c87a51e176706d81b95a21747d6cf upstream.
 
-Intel Panther Lake-M/P has the same integrated Thunderbolt/USB4
-controller as Lunar Lake. Add these PCI IDs to the driver list of
-supported devices.
+[backport: dependency of d3b689d and f23660f]
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Create a new helper function to calculate the fundamental allocation
+unit (i.e. the smallest unit of space we can allocate) of a file.
+Things are going to get hairy with range-exchange on the realtime
+device, so prepare for this now.
+
+Remove the static attribute from xfs_is_falloc_aligned since the next
+patch will need it.
+
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/nhi.c |    8 ++++++++
- drivers/thunderbolt/nhi.h |    4 ++++
- 2 files changed, 12 insertions(+)
+ fs/xfs/xfs_file.c  | 32 ++++++++++++--------------------
+ fs/xfs/xfs_file.h  |  3 +++
+ fs/xfs/xfs_inode.c | 13 +++++++++++++
+ fs/xfs/xfs_inode.h |  2 ++
+ 4 files changed, 30 insertions(+), 20 deletions(-)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1520,6 +1520,14 @@ static struct pci_device_id nhi_ids[] =
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_M_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_M_NHI1),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI1),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
+diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
+index 8dcbcf965b2c..3b9d43d5c746 100644
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -39,33 +39,25 @@ static const struct vm_operations_struct xfs_file_vm_ops;
+  * Decide if the given file range is aligned to the size of the fundamental
+  * allocation unit for the file.
+  */
+-static bool
++bool
+ xfs_is_falloc_aligned(
+ 	struct xfs_inode	*ip,
+ 	loff_t			pos,
+ 	long long int		len)
+ {
+-	struct xfs_mount	*mp = ip->i_mount;
+-	uint64_t		mask;
+-
+-	if (XFS_IS_REALTIME_INODE(ip)) {
+-		if (!is_power_of_2(mp->m_sb.sb_rextsize)) {
+-			u64	rextbytes;
+-			u32	mod;
+-
+-			rextbytes = XFS_FSB_TO_B(mp, mp->m_sb.sb_rextsize);
+-			div_u64_rem(pos, rextbytes, &mod);
+-			if (mod)
+-				return false;
+-			div_u64_rem(len, rextbytes, &mod);
+-			return mod == 0;
+-		}
+-		mask = XFS_FSB_TO_B(mp, mp->m_sb.sb_rextsize) - 1;
+-	} else {
+-		mask = mp->m_sb.sb_blocksize - 1;
++	unsigned int		alloc_unit = xfs_inode_alloc_unitsize(ip);
++
++	if (!is_power_of_2(alloc_unit)) {
++		u32	mod;
++
++		div_u64_rem(pos, alloc_unit, &mod);
++		if (mod)
++			return false;
++		div_u64_rem(len, alloc_unit, &mod);
++		return mod == 0;
+ 	}
  
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -92,6 +92,10 @@ extern const struct tb_nhi_ops icl_nhi_o
- #define PCI_DEVICE_ID_INTEL_RPL_NHI1			0xa76d
- #define PCI_DEVICE_ID_INTEL_LNL_NHI0			0xa833
- #define PCI_DEVICE_ID_INTEL_LNL_NHI1			0xa834
-+#define PCI_DEVICE_ID_INTEL_PTL_M_NHI0			0xe333
-+#define PCI_DEVICE_ID_INTEL_PTL_M_NHI1			0xe334
-+#define PCI_DEVICE_ID_INTEL_PTL_P_NHI0			0xe433
-+#define PCI_DEVICE_ID_INTEL_PTL_P_NHI1			0xe434
+-	return !((pos | len) & mask);
++	return !((pos | len) & (alloc_unit - 1));
+ }
  
- #define PCI_CLASS_SERIAL_USB_USB4			0x0c0340
+ /*
+diff --git a/fs/xfs/xfs_file.h b/fs/xfs/xfs_file.h
+index 7d39e3eca56d..2ad91f755caf 100644
+--- a/fs/xfs/xfs_file.h
++++ b/fs/xfs/xfs_file.h
+@@ -9,4 +9,7 @@
+ extern const struct file_operations xfs_file_operations;
+ extern const struct file_operations xfs_dir_file_operations;
  
++bool xfs_is_falloc_aligned(struct xfs_inode *ip, loff_t pos,
++		long long int len);
++
+ #endif /* __XFS_FILE_H__ */
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index 1e50cc9a29db..6f7dca1c14c7 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -3782,3 +3782,16 @@ xfs_inode_reload_unlinked(
+ 
+ 	return error;
+ }
++
++/* Returns the size of fundamental allocation unit for a file, in bytes. */
++unsigned int
++xfs_inode_alloc_unitsize(
++	struct xfs_inode	*ip)
++{
++	unsigned int		blocks = 1;
++
++	if (XFS_IS_REALTIME_INODE(ip))
++		blocks = ip->i_mount->m_sb.sb_rextsize;
++
++	return XFS_FSB_TO_B(ip->i_mount, blocks);
++}
+diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
+index 3beb470f1892..0f2999b84e7d 100644
+--- a/fs/xfs/xfs_inode.h
++++ b/fs/xfs/xfs_inode.h
+@@ -622,4 +622,6 @@ xfs_inode_unlinked_incomplete(
+ int xfs_inode_reload_unlinked_bucket(struct xfs_trans *tp, struct xfs_inode *ip);
+ int xfs_inode_reload_unlinked(struct xfs_inode *ip);
+ 
++unsigned int xfs_inode_alloc_unitsize(struct xfs_inode *ip);
++
+ #endif	/* __XFS_INODE_H__ */
+-- 
+2.39.5
+
 
 
 
