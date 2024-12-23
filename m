@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-105964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC649FB27E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4C89FB248
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE9F17A10DF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E890A7A14BB
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9461A8F99;
-	Mon, 23 Dec 2024 16:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E238827;
+	Mon, 23 Dec 2024 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OL//GsNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3NkuWSU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11D98827;
-	Mon, 23 Dec 2024 16:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C351187848;
+	Mon, 23 Dec 2024 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970735; cv=none; b=hOnx+Xe4ZWhsdOu6KJEr0hPyPUSYoH26ZRApLi1qOOK/D/ZNgsyQSgOsBVQpfofaNp/nPtCdrgsXF8sgdTxaFNjDJRyvbIJmOiv1GzBcMIGGjf22A3qE7/l4iA1r+wi1DM/MNQbGWX5Yq4I2sxCbyAY3MaNjZtAAra4+wvVt0rk=
+	t=1734970566; cv=none; b=YUcGbnCfmLUGG9vD+rw5Azp/aT8ytT3WmABGaZwx5waiCsBxxYZTGJn6UTLPEGGxZ52J6NQ8s75yCSXgBPfVRvLqtqmiNsZnX+LDIEJhUVNcu6osRTiqXCLKCqQlJO/GY/yZ1bi7QyGk7wRgTb1iT3gDggyR2MnVUg7lsxleKEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970735; c=relaxed/simple;
-	bh=S93rCKqklmsiFSFSTyq+x4olwWgsiXla3y3UMRlI/io=;
+	s=arc-20240116; t=1734970566; c=relaxed/simple;
+	bh=cWj3/mFvwhw1sTKXTFCvkvypK8tlq/+TFJbNwRJ4pi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLDj84cXCZwqcqA7L1uMMvrFTh7b3WYX0sPOb1b5srVZkRIPhi4YvClzcghCDCSIeIKwta/K6eU2Z9BZy/wjAafuTX1AkZYbnwWjgSHNzuRbNzTZYPXYIo2NkdwZcdSE0D9kAuilDFcK9y71lzynjmwRnnUrsW3hFQR5bQ/MbUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OL//GsNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783D6C4CED3;
-	Mon, 23 Dec 2024 16:18:54 +0000 (UTC)
+	 MIME-Version; b=D6OJuFUWmQdWuv4Q/YpqmdTr8K4uYsKYYExhAFlqQ6YbY/TCSx+51l46nm0WuNePJ4TlMn5zz7Uy6PpHHmGS8ogQE+X3sGXXJWwYGbjPxgE2KghGGJHzVGKhtXsN6rINBFAQ4fpjBzZVQ6cTOKKfrmnd7DBqj1SPAGpOnB3cfHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3NkuWSU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4488C4CED3;
+	Mon, 23 Dec 2024 16:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970734;
-	bh=S93rCKqklmsiFSFSTyq+x4olwWgsiXla3y3UMRlI/io=;
+	s=korg; t=1734970566;
+	bh=cWj3/mFvwhw1sTKXTFCvkvypK8tlq/+TFJbNwRJ4pi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OL//GsNvwDpJJTnc2LL6z/A6IdfnTghXy87XK2xEADfSj8wB6DG70/un55kylXweV
-	 geE66nEai9GB1O8Q/bnxCSjoWCeiUXvSoF+XLGE8zVMcJJNNNMZVBlNRJAuAwz/WKO
-	 1b0VvMCG4jeIj/qjQ+f1nDFloGHPgBL3foAKNxOA=
+	b=i3NkuWSU6XHFSXRirhT9O4iLpoA0k5HjiiPkE3EetOCTTCibD5kgpmYZXuyr+VrL1
+	 Ti3BxCuqKnWqPw/O09rfAApiS6TNcWaM3ECjXV5hB7zMkLNodAhcnekYqTOiN+qJOC
+	 TgYryM0RFlkzueQ+jaZt8Wng5pRGXRiZfu3bIW7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 53/83] hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 102/116] nilfs2: fix buffer head leaks in calls to truncate_inode_pages()
 Date: Mon, 23 Dec 2024 16:59:32 +0100
-Message-ID: <20241223155355.684733927@linuxfoundation.org>
+Message-ID: <20241223155403.521756810@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 74d7e038fd072635d21e4734e3223378e09168d3 ]
+commit 6309b8ce98e9a18390b9fd8f03fc412f3c17aee9 upstream.
 
-The values returned by the driver after processing the contents of the
-Shunt Voltage Register and the Shunt Limit Registers do not correspond to
-the TMP512/TMP513 specifications. A raw register value is converted to a
-signed integer value by a sign extension in accordance with the algorithm
-provided in the specification, but due to the off-by-one error in the sign
-bit index, the result is incorrect. Moreover, the PGA shift calculated with
-the tmp51x_get_pga_shift function is relevant only to the Shunt Voltage
-Register, but is also applied to the Shunt Limit Registers.
+When block_invalidatepage was converted to block_invalidate_folio, the
+fallback to block_invalidatepage in folio_invalidate() if the
+address_space_operations method invalidatepage (currently
+invalidate_folio) was not set, was removed.
 
-According to the TMP512 and TMP513 datasheets, the Shunt Voltage Register
-(04h) is 13 to 16 bit two's complement integer value, depending on the PGA
-setting.  The Shunt Positive (0Ch) and Negative (0Dh) Limit Registers are
-16-bit two's complement integer values. Below are some examples:
+Unfortunately, some pseudo-inodes in nilfs2 use empty_aops set by
+inode_init_always_gfp() as is, or explicitly set it to
+address_space_operations.  Therefore, with this change,
+block_invalidatepage() is no longer called from folio_invalidate(), and as
+a result, the buffer_head structures attached to these pages/folios are no
+longer freed via try_to_free_buffers().
 
-* Shunt Voltage Register
-If PGA = 8, and regval = 1000 0011 0000 0000, then the decimal value must
-be -32000, but the value calculated by the driver will be 33536.
+Thus, these buffer heads are now leaked by truncate_inode_pages(), which
+cleans up the page cache from inode evict(), etc.
 
-* Shunt Limit Register
-If regval = 1000 0011 0000 0000, then the decimal value must be -32000, but
-the value calculated by the driver will be 768, if PGA = 1.
+Three types of caches use empty_aops: gc inode caches and the DAT shadow
+inode used by GC, and b-tree node caches.  Of these, b-tree node caches
+explicitly call invalidate_mapping_pages() during cleanup, which involves
+calling try_to_free_buffers(), so the leak was not visible during normal
+operation but worsened when GC was performed.
 
-Fix sign bit index, and also correct misleading comment describing the
-tmp51x_get_pga_shift function.
+Fix this issue by using address_space_operations with invalidate_folio set
+to block_invalidate_folio instead of empty_aops, which will ensure the
+same behavior as before.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Link: https://lore.kernel.org/r/20241216173648.526-2-m.masimov@maxima.ru
-[groeck: Fixed description and multi-line alignments]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241212164556.21338-1-konishi.ryusuke@gmail.com
+Fixes: 7ba13abbd31e ("fs: Turn block_invalidatepage into block_invalidate_folio")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>	[5.18+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/tmp513.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/nilfs2/btnode.c  |    1 +
+ fs/nilfs2/gcinode.c |    2 +-
+ fs/nilfs2/inode.c   |    5 +++++
+ fs/nilfs2/nilfs.h   |    1 +
+ 4 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index 589982c92190..23f7fb7fab8c 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -178,7 +178,7 @@ struct tmp51x_data {
- 	struct regmap *regmap;
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -35,6 +35,7 @@ void nilfs_init_btnc_inode(struct inode
+ 	ii->i_flags = 0;
+ 	memset(&ii->i_bmap_data, 0, sizeof(struct nilfs_bmap));
+ 	mapping_set_gfp_mask(btnc_inode->i_mapping, GFP_NOFS);
++	btnc_inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
+ }
+ 
+ void nilfs_btnode_cache_clear(struct address_space *btnc)
+--- a/fs/nilfs2/gcinode.c
++++ b/fs/nilfs2/gcinode.c
+@@ -163,7 +163,7 @@ int nilfs_init_gcinode(struct inode *ino
+ 
+ 	inode->i_mode = S_IFREG;
+ 	mapping_set_gfp_mask(inode->i_mapping, GFP_NOFS);
+-	inode->i_mapping->a_ops = &empty_aops;
++	inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
+ 
+ 	ii->i_flags = 0;
+ 	nilfs_bmap_init_gc(ii->i_bmap);
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -309,6 +309,10 @@ const struct address_space_operations ni
+ 	.is_partially_uptodate  = block_is_partially_uptodate,
  };
  
--// Set the shift based on the gain 8=4, 4=3, 2=2, 1=1
-+// Set the shift based on the gain: 8 -> 1, 4 -> 2, 2 -> 3, 1 -> 4
- static inline u8 tmp51x_get_pga_shift(struct tmp51x_data *data)
- {
- 	return 5 - ffs(data->pga_gain);
-@@ -200,7 +200,9 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
- 		 * 2's complement number shifted by one to four depending
- 		 * on the pga gain setting. 1lsb = 10uV
- 		 */
--		*val = sign_extend32(regval, 17 - tmp51x_get_pga_shift(data));
-+		*val = sign_extend32(regval,
-+				     reg == TMP51X_SHUNT_CURRENT_RESULT ?
-+				     16 - tmp51x_get_pga_shift(data) : 15);
- 		*val = DIV_ROUND_CLOSEST(*val * 10 * MILLI, data->shunt_uohms);
- 		break;
- 	case TMP51X_BUS_VOLTAGE_RESULT:
--- 
-2.39.5
-
++const struct address_space_operations nilfs_buffer_cache_aops = {
++	.invalidate_folio	= block_invalidate_folio,
++};
++
+ static int nilfs_insert_inode_locked(struct inode *inode,
+ 				     struct nilfs_root *root,
+ 				     unsigned long ino)
+@@ -748,6 +752,7 @@ struct inode *nilfs_iget_for_shadow(stru
+ 	NILFS_I(s_inode)->i_flags = 0;
+ 	memset(NILFS_I(s_inode)->i_bmap, 0, sizeof(struct nilfs_bmap));
+ 	mapping_set_gfp_mask(s_inode->i_mapping, GFP_NOFS);
++	s_inode->i_mapping->a_ops = &nilfs_buffer_cache_aops;
+ 
+ 	err = nilfs_attach_btree_node_cache(s_inode);
+ 	if (unlikely(err)) {
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -379,6 +379,7 @@ extern const struct file_operations nilf
+ extern const struct inode_operations nilfs_file_inode_operations;
+ extern const struct file_operations nilfs_file_operations;
+ extern const struct address_space_operations nilfs_aops;
++extern const struct address_space_operations nilfs_buffer_cache_aops;
+ extern const struct inode_operations nilfs_dir_inode_operations;
+ extern const struct inode_operations nilfs_special_inode_operations;
+ extern const struct inode_operations nilfs_symlink_inode_operations;
 
 
 
