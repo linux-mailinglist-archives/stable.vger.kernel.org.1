@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E629FB285
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 062BE9FB239
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E25818808CD
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72B9E1881936
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201C81A8F80;
-	Mon, 23 Dec 2024 16:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FA91B3925;
+	Mon, 23 Dec 2024 16:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGRDzzP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rKBygtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02FF8827;
-	Mon, 23 Dec 2024 16:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6B48827;
+	Mon, 23 Dec 2024 16:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970754; cv=none; b=PsfC4b3FaFWkwuuudIswlNPxAU0QqJqp890/C90p7iMo3DVw2nlpEO3+1N4azoi09PTxp5DnhafE/k1+OACBFaa1TFCXhHHxjX7ZmMept4ReCtCV9TO/xcYt6GlzKfh71MJO6djZPnWlB6DeJ9YG+RmATn+qCqfD8iJkv+XPVHg=
+	t=1734970521; cv=none; b=IUQlSOzUIDjhveh5d8+3ZvPBdwwUMUHS4JYyTJWq4RQquuCBTCgrX0+Qrpprt4Uq6NHWy4gkrqv5R7GjVBivRZgX3Fg/yTvW0e46vbCVYlDbjLsJBAhXvrPVxquHSK1zbyjtzZbaPLdzYeR0HrBtiVwkXnSvkl8toqSHVrF3qFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970754; c=relaxed/simple;
-	bh=cQ0SMc4L2LeoM2dRRgDtCzHYp6tYXh39w1yEXgLvgok=;
+	s=arc-20240116; t=1734970521; c=relaxed/simple;
+	bh=xv8IoLiCmkK1nTTfzEX5pelM5UqQKym006fgRBIrwB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=arl0yc8/LqRuQS8KFfl075WGEftSvLcR7BSPgZQQaj28ReD2upIoGwzwlWa/KrBlmZS0NDvaWNggsx35rFxF84x5qxA8J/Qft0nxdnj7E6flxBuMCB1Ww6AmQqyeyw2NjFeJGY1tsRjjEAs7anM7MR6b51ZbiDK/IbB76zVKIEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGRDzzP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3CAC4CED3;
-	Mon, 23 Dec 2024 16:19:14 +0000 (UTC)
+	 MIME-Version; b=fsZh6zs1n/VT9NAclcCn9yjD9ZhMXL7XJAiargcmO1tU3dX7+rJQEhWK7H5uaL0V02o46Cc+cR5vGATnPn6W8hIeoNDR+bb3A/QuJ7AuiPsYJWsWO3aYEmSXAz/kYqBRB2F4+qEieRF70fetfCaqfXhR7AP4lk6W+JAMR3QraNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rKBygtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753EAC4CED3;
+	Mon, 23 Dec 2024 16:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970754;
-	bh=cQ0SMc4L2LeoM2dRRgDtCzHYp6tYXh39w1yEXgLvgok=;
+	s=korg; t=1734970520;
+	bh=xv8IoLiCmkK1nTTfzEX5pelM5UqQKym006fgRBIrwB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGRDzzP15THzOZNufwgpW88l1hguV+xYJJeWdOmflv1U8zMMVSVxDRGayksC/SkE5
-	 A9mS0ykSanqz85POev7b5u33DbKQ4RSSweizkVhD0mq9X4z4Tly5MOoGr1WhC2twrt
-	 Y5wcKLUtsAIro0/1DWWgLNQ2lWEHtQzJO7ZoBbw0=
+	b=1rKBygtX1Ts4sJDSomBOJj3nwFpBTlzusq/iNnDuQzBncs9wITB55+0SqgW4yMCAR
+	 vWIknpZdavDua1Mji4vJptREnwnQ5k47dHnF58d/lETgbGRo31zfp4ZEz479SvxF96
+	 TNKUl73mEJF56y8excQaPCVTBP8OpiDb61/FFL7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frankie Fisher <frankie@terrorise.me.uk>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 59/83] btrfs: tree-checker: reject inline extent items with 0 ref count
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.6 108/116] ceph: improve error handling and short/overflow-read logic in __ceph_sync_read()
 Date: Mon, 23 Dec 2024 16:59:38 +0100
-Message-ID: <20241223155355.913897046@linuxfoundation.org>
+Message-ID: <20241223155403.746316379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Alex Markuze <amarkuze@redhat.com>
 
-commit dfb92681a19e1d5172420baa242806414b3eff6f upstream.
+commit 9abee475803fab6ad59d4f4fc59c6a75374a7d9d upstream.
 
-[BUG]
-There is a bug report in the mailing list where btrfs_run_delayed_refs()
-failed to drop the ref count for logical 25870311358464 num_bytes
-2113536.
+This patch refines the read logic in __ceph_sync_read() to ensure more
+predictable and efficient behavior in various edge cases.
 
-The involved leaf dump looks like this:
+- Return early if the requested read length is zero or if the file size
+  (`i_size`) is zero.
+- Initialize the index variable (`idx`) where needed and reorder some
+  code to ensure it is always set before use.
+- Improve error handling by checking for negative return values earlier.
+- Remove redundant encrypted file checks after failures. Only attempt
+  filesystem-level decryption if the read succeeded.
+- Simplify leftover calculations to correctly handle cases where the
+  read extends beyond the end of the file or stops short.  This can be
+  hit by continuously reading a file while, on another client, we keep
+  truncating and writing new data into it.
+- This resolves multiple issues caused by integer and consequent buffer
+  overflow (`pages` array being accessed beyond `num_pages`):
+  - https://tracker.ceph.com/issues/67524
+  - https://tracker.ceph.com/issues/68980
+  - https://tracker.ceph.com/issues/68981
 
-  item 166 key (25870311358464 168 2113536) itemoff 10091 itemsize 50
-    extent refs 1 gen 84178 flags 1
-    ref#0: shared data backref parent 32399126528000 count 0 <<<
-    ref#1: shared data backref parent 31808973717504 count 1
-
-Notice the count number is 0.
-
-[CAUSE]
-There is no concrete evidence yet, but considering 0 -> 1 is also a
-single bit flipped, it's possible that hardware memory bitflip is
-involved, causing the on-disk extent tree to be corrupted.
-
-[FIX]
-To prevent us reading such corrupted extent item, or writing such
-damaged extent item back to disk, enhance the handling of
-BTRFS_EXTENT_DATA_REF_KEY and BTRFS_SHARED_DATA_REF_KEY keys for both
-inlined and key items, to detect such 0 ref count and reject them.
-
-CC: stable@vger.kernel.org # 5.4+
-Link: https://lore.kernel.org/linux-btrfs/7c69dd49-c346-4806-86e7-e6f863a66f48@app.fastmail.com/
-Reported-by: Frankie Fisher <frankie@terrorise.me.uk>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: 1065da21e5df ("ceph: stop copying to iter at EOF on sync reads")
+Reported-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Signed-off-by: Alex Markuze <amarkuze@redhat.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-checker.c |   27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ fs/ceph/file.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1433,6 +1433,11 @@ static int check_extent_item(struct exte
- 					   dref_offset, fs_info->sectorsize);
- 				return -EUCLEAN;
- 			}
-+			if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
-+				extent_err(leaf, slot,
-+			"invalid data ref count, should have non-zero value");
-+				return -EUCLEAN;
-+			}
- 			inline_refs += btrfs_extent_data_ref_count(leaf, dref);
- 			break;
- 		/* Contains parent bytenr and ref count */
-@@ -1445,6 +1450,11 @@ static int check_extent_item(struct exte
- 					   inline_offset, fs_info->sectorsize);
- 				return -EUCLEAN;
- 			}
-+			if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
-+				extent_err(leaf, slot,
-+			"invalid shared data ref count, should have non-zero value");
-+				return -EUCLEAN;
-+			}
- 			inline_refs += btrfs_shared_data_ref_count(leaf, sref);
- 			break;
- 		default:
-@@ -1496,8 +1506,18 @@ static int check_simple_keyed_refs(struc
- {
- 	u32 expect_item_size = 0;
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -976,7 +976,7 @@ ssize_t __ceph_sync_read(struct inode *i
+ 	if (ceph_inode_is_shutdown(inode))
+ 		return -EIO;
  
--	if (key->type == BTRFS_SHARED_DATA_REF_KEY)
-+	if (key->type == BTRFS_SHARED_DATA_REF_KEY) {
-+		struct btrfs_shared_data_ref *sref;
-+
-+		sref = btrfs_item_ptr(leaf, slot, struct btrfs_shared_data_ref);
-+		if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
-+			extent_err(leaf, slot,
-+		"invalid shared data backref count, should have non-zero value");
-+			return -EUCLEAN;
+-	if (!len)
++	if (!len || !i_size)
+ 		return 0;
+ 	/*
+ 	 * flush any page cache pages in this range.  this
+@@ -996,7 +996,7 @@ ssize_t __ceph_sync_read(struct inode *i
+ 		int num_pages;
+ 		size_t page_off;
+ 		bool more;
+-		int idx;
++		int idx = 0;
+ 		size_t left;
+ 		struct ceph_osd_req_op *op;
+ 		u64 read_off = off;
+@@ -1068,7 +1068,14 @@ ssize_t __ceph_sync_read(struct inode *i
+ 		else if (ret == -ENOENT)
+ 			ret = 0;
+ 
+-		if (ret > 0 && IS_ENCRYPTED(inode)) {
++		if (ret < 0) {
++			ceph_osdc_put_request(req);
++			if (ret == -EBLOCKLISTED)
++				fsc->blocklisted = true;
++			break;
 +		}
 +
- 		expect_item_size = sizeof(struct btrfs_shared_data_ref);
-+	}
++		if (IS_ENCRYPTED(inode)) {
+ 			int fret;
  
- 	if (unlikely(btrfs_item_size(leaf, slot) != expect_item_size)) {
- 		generic_err(leaf, slot,
-@@ -1557,6 +1577,11 @@ static int check_extent_data_ref(struct
- 				   offset, leaf->fs_info->sectorsize);
- 			return -EUCLEAN;
+ 			fret = ceph_fscrypt_decrypt_extents(inode, pages,
+@@ -1097,7 +1104,7 @@ ssize_t __ceph_sync_read(struct inode *i
+ 		ceph_osdc_put_request(req);
+ 
+ 		/* Short read but not EOF? Zero out the remainder. */
+-		if (ret >= 0 && ret < len && (off + ret < i_size)) {
++		if (ret < len && (off + ret < i_size)) {
+ 			int zlen = min(len - ret, i_size - off - ret);
+ 			int zoff = page_off + ret;
+ 
+@@ -1107,13 +1114,11 @@ ssize_t __ceph_sync_read(struct inode *i
+ 			ret += zlen;
  		}
-+		if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
-+			extent_err(leaf, slot,
-+	"invalid extent data backref count, should have non-zero value");
-+			return -EUCLEAN;
-+		}
+ 
+-		idx = 0;
+-		if (ret <= 0)
+-			left = 0;
+-		else if (off + ret > i_size)
+-			left = i_size - off;
++		if (off + ret > i_size)
++			left = (i_size > off) ? i_size - off : 0;
+ 		else
+ 			left = ret;
++
+ 		while (left > 0) {
+ 			size_t plen, copied;
+ 
+@@ -1131,12 +1136,6 @@ ssize_t __ceph_sync_read(struct inode *i
+ 		}
+ 		ceph_release_page_vector(pages, num_pages);
+ 
+-		if (ret < 0) {
+-			if (ret == -EBLOCKLISTED)
+-				fsc->blocklisted = true;
+-			break;
+-		}
+-
+ 		if (off >= i_size || !more)
+ 			break;
  	}
- 	return 0;
- }
 
 
 
