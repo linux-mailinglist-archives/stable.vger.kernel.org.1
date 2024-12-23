@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-105836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239329FB1EE
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066379FB178
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EC8F188559D
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 425167A17CC
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5DE1B3948;
-	Mon, 23 Dec 2024 16:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1791B21B5;
+	Mon, 23 Dec 2024 16:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHXR2xeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaBTqItv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5601AD41F;
-	Mon, 23 Dec 2024 16:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF0212D1F1;
+	Mon, 23 Dec 2024 16:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970304; cv=none; b=Z1kYLP09abaPo3lmh7AHl9ZyTfcBw7CU5UhDvFUwC2cQr4l6qFOM3S0Vx0WPApFqNNfbg9+wcywEVRsrshpQt9HiSoMjLSQTTM4eNNQGgjhkd5/5OjBnI6A+4FNeAidSYFhXehitgAk++DjjygR/khCIk8J+Xq0cXly33m3JuRo=
+	t=1734969961; cv=none; b=BBRyWbQ5DCft03DVeIpCwtDwW1EeHJo0SBOqS0cPcbVkACASvWZGmnePamfDeGwiLdbWO3tEHZ9ltb+r/dPovbSka5Npue2WYebWywKHmkpcPnXrHEUWcuNRJr+GvYpFG//sYPLgbAZCXYitU1DKtB3ycDkQ49HrzEmskE13A0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970304; c=relaxed/simple;
-	bh=XvM3gJoZ89KJWZL2TqJ04P6R0WN6Rfyb2wSCSyroIRM=;
+	s=arc-20240116; t=1734969961; c=relaxed/simple;
+	bh=dzAx4GWQHzqgDOdkFbZ/yPvSVdwmBq8BTVLhkOGVhDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YYKIzsvlD+gMG1r20SG3Uu0DZZmsWFZi7aA8zul8MWM+ov321LSIj6w9xZg2eGVXT1vAP2mShgKRuD4azCSEukCOFA4JJBp2t4l5B0hL8OSl4WRz9071tYyvbMeGa6jH6/IoErt5/tJhqHc+6rHF8MKXzOkOuSqF6bQsrCP3n4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHXR2xeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75889C4CED3;
-	Mon, 23 Dec 2024 16:11:43 +0000 (UTC)
+	 MIME-Version; b=fS//ss6AkJ7bPxEes77zjXKz/JtRn3W8EBRxwS/RBBhWFQg0rMz1kbm8Tv+mWcxoYeDVWyAy7ZBVF3ZP5zswXYdoJW3+7/0qDSdDPE89Berrw82SzHtFdyqxYKQXPt6ge+JnrSveoQQt1ChSNmf/9wGUjir4rk/8twc2+LSqeF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaBTqItv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D971C4CED4;
+	Mon, 23 Dec 2024 16:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970303;
-	bh=XvM3gJoZ89KJWZL2TqJ04P6R0WN6Rfyb2wSCSyroIRM=;
+	s=korg; t=1734969960;
+	bh=dzAx4GWQHzqgDOdkFbZ/yPvSVdwmBq8BTVLhkOGVhDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHXR2xeEV8DKzW+Zv0F+bFLpNmIaqsEHM+jI2ACIYxXlaYFoSvXijpRvlFKUIeu9w
-	 g4/+zrkD57UrHdyv7dy1GS398N6XoTufKxUihN9tUK2+7MxNW1IRpGmGWf6+CH+H0w
-	 aCZEhyz7aZ60z4w21la5WvW5mH2ZFIA+srDeVwzg=
+	b=WaBTqItvAZPEMaDVqNIaxGeoA7bwKQ2nQhuLeAnF4om9u7tH+jhcohyMGCEEwFZ/+
+	 EqsP50Nh2FjhpT5ROiGIm6neLSCuuK98LvMEGe/JcgI58xzaKgU/lCsxmlo2QIxl1F
+	 TH2W0aPQMP85TID8Y3I1Yd6/rx/KFun7bzdtdfKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Murad Masimov <m.masimov@maxima.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/116] net/smc: check return value of sock_recvmsg when draining clc data
+Subject: [PATCH 6.12 103/160] hwmon: (tmp513) Fix interpretation of values of Temperature Result and Limit Registers
 Date: Mon, 23 Dec 2024 16:58:34 +0100
-Message-ID: <20241223155401.273591550@linuxfoundation.org>
+Message-ID: <20241223155412.656750747@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Murad Masimov <m.masimov@maxima.ru>
 
-[ Upstream commit c5b8ee5022a19464783058dc6042e8eefa34e8cd ]
+[ Upstream commit dd471e25770e7e632f736b90db1e2080b2171668 ]
 
-When receiving clc msg, the field length in smc_clc_msg_hdr indicates the
-length of msg should be received from network and the value should not be
-fully trusted as it is from the network. Once the value of length exceeds
-the value of buflen in function smc_clc_wait_msg it may run into deadloop
-when trying to drain the remaining data exceeding buflen.
+The values returned by the driver after processing the contents of the
+Temperature Result and the Temperature Limit Registers do not correspond to
+the TMP512/TMP513 specifications. A raw register value is converted to a
+signed integer value by a sign extension in accordance with the algorithm
+provided in the specification, but due to the off-by-one error in the sign
+bit index, the result is incorrect.
 
-This patch checks the return value of sock_recvmsg when draining data in
-case of deadloop in draining.
+According to the TMP512 and TMP513 datasheets, the Temperature Result (08h
+to 0Bh) and Limit (11h to 14h) Registers are 13-bit two's complement
+integer values, shifted left by 3 bits. The value is scaled by 0.0625
+degrees Celsius per bit.  E.g., if regval = 1 1110 0111 0000 000, the
+output should be -25 degrees, but the driver will return +487 degrees.
 
-Fixes: fb4f79264c0f ("net/smc: tolerate future SMCD versions")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
+Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+Link: https://lore.kernel.org/r/20241216173648.526-4-m.masimov@maxima.ru
+[groeck: fixed description line length]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hwmon/tmp513.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 286d6b19a1f1..dbce904c03cf 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -773,6 +773,11 @@ int smc_clc_wait_msg(struct smc_sock *smc, void *buf, int buflen,
- 						SMC_CLC_RECV_BUF_LEN : datlen;
- 		iov_iter_kvec(&msg.msg_iter, ITER_DEST, &vec, 1, recvlen);
- 		len = sock_recvmsg(smc->clcsock, &msg, krflags);
-+		if (len < recvlen) {
-+			smc->sk.sk_err = EPROTO;
-+			reason_code = -EPROTO;
-+			goto out;
-+		}
- 		datlen -= len;
- 	}
- 	if (clcm->type == SMC_CLC_DECLINE) {
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index 2846b1cc515d..1c2cb12071b8 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -234,7 +234,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
+ 	case TMP51X_REMOTE_TEMP_LIMIT_2:
+ 	case TMP513_REMOTE_TEMP_LIMIT_3:
+ 		// 1lsb = 0.0625 degrees centigrade
+-		*val = sign_extend32(regval, 16) >> TMP51X_TEMP_SHIFT;
++		*val = sign_extend32(regval, 15) >> TMP51X_TEMP_SHIFT;
+ 		*val = DIV_ROUND_CLOSEST(*val * 625, 10);
+ 		break;
+ 	case TMP51X_N_FACTOR_AND_HYST_1:
 -- 
 2.39.5
 
