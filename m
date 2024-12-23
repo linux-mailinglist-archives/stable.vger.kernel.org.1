@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-105719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828C79FB150
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 555799FB1E3
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D730018831D8
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 010491885301
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8B119E98B;
-	Mon, 23 Dec 2024 16:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F391B4126;
+	Mon, 23 Dec 2024 16:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoTnaMGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSKV9Itz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8CC2EAE6;
-	Mon, 23 Dec 2024 16:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDF61B395E;
+	Mon, 23 Dec 2024 16:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969907; cv=none; b=OiMJmgDJ7BuU6g9blgXiueYXcbC0BaWg2ujS5YWv33DMFNSjxnnFZ+1n/xABpl/win+ypjGPj5A1PXxd1qr3dqFkPaBTyWzW9TQCsU77Bmf5u5fGLfTzAqusC6jT80szxkn1BaPIal+2NZQvU6/f2fVQ+GQUKxEXisg2nTlZAKw=
+	t=1734970282; cv=none; b=CmnDfBRjbDmCDzKuNyDOMjjHWOYjyFU2YlaLXgYnyRUd7sOgAClBjMr/kyivQ8vVvFZYsgQO7V/aK8gOXRhjbkB92tsSegnnmoEG1rRJn8aTi+bcAMnObI5zcRmNKVMJ+jCLFfURMXgtKzcA9o9cYgJhOwZl4XcmuovmM6lZZyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969907; c=relaxed/simple;
-	bh=/Yoj6p5Q3DMULVTkLFMOrgEdPYtkXsFXe8RFWWUSHSk=;
+	s=arc-20240116; t=1734970282; c=relaxed/simple;
+	bh=/QnW958nyGP3ytafY/0Eoih2shVq+l7D0fjTJNudxhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U/cgPrDoUdE21ToS4OFnEwJDRZ6FWxoNnjcbeGf6vfvcwAe0zS1/e264WEYsolXjd88xIHwQ0gApmPLuDjGPPz2nE5+V64DBn+9GpLQP7GafpVQ1ORnMUc4/qkIPwfx28ARCB7i9Ib3MXU6jURlQj7td85A/uoeZdI2zFxGldFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoTnaMGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2007C4CED3;
-	Mon, 23 Dec 2024 16:05:06 +0000 (UTC)
+	 MIME-Version; b=MdAIufXGPtY+YfdH2k3FiQBAkqJjnbAkuYsfU/ODvkBKFlPS0tJwQ2SxYMRPWOaqDnyxmvQUmgC0t/01AcN07p8oHa5ElTmDBHGaS/u4cVC4LhSm7nAdAWHaIhRpweuPrTzNHIwHNhYciUwFrjp1On4PmJUZ6lBE23JI1yFSRHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSKV9Itz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0C6C4CED3;
+	Mon, 23 Dec 2024 16:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969907;
-	bh=/Yoj6p5Q3DMULVTkLFMOrgEdPYtkXsFXe8RFWWUSHSk=;
+	s=korg; t=1734970282;
+	bh=/QnW958nyGP3ytafY/0Eoih2shVq+l7D0fjTJNudxhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VoTnaMGATKYIAaxbFFNsWL4oAsMdgp4sU6cr55yazwdHJYwryjHHEqrjfbLrgXkKR
-	 jJJgDwZBjCs9H1JJWeJ84HhNHX+L8ew9reE68ayMEWawdy5oD6S6SA+92a3ZpO7+ev
-	 36yCuLImMLK7eLvL6+AoL4+OBIWCUnfR9UmLvrlo=
+	b=MSKV9Itze/Fon2iNHKBWP2tc0A/X5sLwcE0By2drsrWekGkktK+DqPJVU44HvoWFP
+	 2NQc+GmC4mZBC9EO2XXqlfuxUirVsYqze1UzQjxVly7OgIBI3c2Ya2Irm8Rw6dL/SO
+	 KAESsVY+AMrzJfDm3lM6TM+JrGuf0Vdt2DH6Bt+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	=?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 089/160] drm/amdgpu: Handle NULL bo->tbo.resource (again) in amdgpu_vm_bo_update
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 030/116] xfs: attr forks require attr, not attr2
 Date: Mon, 23 Dec 2024 16:58:20 +0100
-Message-ID: <20241223155412.134024240@linuxfoundation.org>
+Message-ID: <20241223155400.750601919@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michel Dänzer <mdaenzer@redhat.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 85230ee36d88e7a09fb062d43203035659dd10a5 upstream.
+commit 73c34b0b85d46bf9c2c0b367aeaffa1e2481b136 upstream.
 
-Third time's the charm, I hope?
+It turns out that I misunderstood the difference between the attr and
+attr2 feature bits.  "attr" means that at some point an attr fork was
+created somewhere in the filesystem.  "attr2" means that inodes have
+variable-sized forks, but says nothing about whether or not there
+actually /are/ attr forks in the system.
 
-Fixes: d3116756a710 ("drm/ttm: rename bo->mem and make it a pointer")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3837
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 695c2c745e5dff201b75da8a1d237ce403600d04)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If we have an attr fork, we only need to check that attr is set.
+
+Fixes: 99d9d8d05da26 ("xfs: scrub inode block mappings")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/xfs/scrub/bmap.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -1260,10 +1260,9 @@ int amdgpu_vm_bo_update(struct amdgpu_de
- 	 * next command submission.
- 	 */
- 	if (amdgpu_vm_is_bo_always_valid(vm, bo)) {
--		uint32_t mem_type = bo->tbo.resource->mem_type;
--
--		if (!(bo->preferred_domains &
--		      amdgpu_mem_type_to_domain(mem_type)))
-+		if (bo->tbo.resource &&
-+		    !(bo->preferred_domains &
-+		      amdgpu_mem_type_to_domain(bo->tbo.resource->mem_type)))
- 			amdgpu_vm_bo_evicted(&bo_va->base);
- 		else
- 			amdgpu_vm_bo_idle(&bo_va->base);
+diff --git a/fs/xfs/scrub/bmap.c b/fs/xfs/scrub/bmap.c
+index 75588915572e..9dfa310df311 100644
+--- a/fs/xfs/scrub/bmap.c
++++ b/fs/xfs/scrub/bmap.c
+@@ -857,7 +857,13 @@ xchk_bmap(
+ 		}
+ 		break;
+ 	case XFS_ATTR_FORK:
+-		if (!xfs_has_attr(mp) && !xfs_has_attr2(mp))
++		/*
++		 * "attr" means that an attr fork was created at some point in
++		 * the life of this filesystem.  "attr2" means that inodes have
++		 * variable-sized data/attr fork areas.  Hence we only check
++		 * attr here.
++		 */
++		if (!xfs_has_attr(mp))
+ 			xchk_ino_set_corrupt(sc, sc->ip->i_ino);
+ 		break;
+ 	default:
+-- 
+2.39.5
+
 
 
 
