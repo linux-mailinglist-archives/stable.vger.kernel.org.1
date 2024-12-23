@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1FE9FB208
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2839FB1BE
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36375167E93
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF0C165F8C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175C21AF0C7;
-	Mon, 23 Dec 2024 16:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EF119E98B;
+	Mon, 23 Dec 2024 16:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJZgLkoN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+e8uMeb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F497E0FF;
-	Mon, 23 Dec 2024 16:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031B4188006;
+	Mon, 23 Dec 2024 16:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970348; cv=none; b=EhsH0Ldd9IB8noIrvaWEu3bbcHrY9e4ujrR6w0TZjoZMa/BiIFhaZBLl1Bhb4+RG/fAxNiVJlYNILIvHl23ekH7pxEjFTezOx0GQhq0MLJHE/mYSxcKghg9k3V7+yWHJobYBtODQbsXJdehqw3RwRk3MNb5OZKiFNe4QvnfX4Ag=
+	t=1734970109; cv=none; b=Y+O8ImCKxOZzuHoYFyxB/B3eda6YwQW4Ix1jyYR5w1PH3zASk6QWAoNx2lQunPocAA6meL8Wsrvb4yw6fshbpPDUB+Nv+5PN3qKjkbnuPRyre+Vvq4ohR9rIlWbB3Pp7HX6AQAeGkScqgAZg+yHUZM5TQ6sYsphK5Hn7YeSH4zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970348; c=relaxed/simple;
-	bh=SWIpKXi145m9gcXspmBaZCS42bYaAnUyocuhH7C/wWA=;
+	s=arc-20240116; t=1734970109; c=relaxed/simple;
+	bh=XkuSMfvNFh8X0iZH8KD0bUZuePpgPtTt2Hfe/epT99A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjGCB2zuIwDs+/+arWY7KjZd9Ts4PtD4tUY7/MMjX9vI7lEcEtEgodmVbK9MHRw3NzvOH7kXAZCy5y7bYfOHGL1iXxURiULejji2E6LEZomKOWyNdwd+3OhpIzOOUaYax86XNzi4NN7dLH+BD18G6zZBd56+ucs5sCR6zJdL0Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJZgLkoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B7DC4CED3;
-	Mon, 23 Dec 2024 16:12:28 +0000 (UTC)
+	 MIME-Version; b=s1DEitUFEVbuQevU3BQ2aG04Mn3Esa2xbVJTmFblAbTha5J5hs8fhMaVJwQ9mXwxAz8VfBySNSAGV3Tx/HQeMAKqE+esdXwTGsncz48wOKVqem3UqpJaecCtcIDAmMZz8+vQYebKKyUNH2Pvvy5CEtrrSWXcJLuzC5SDpmasjw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+e8uMeb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65283C4CED3;
+	Mon, 23 Dec 2024 16:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970348;
-	bh=SWIpKXi145m9gcXspmBaZCS42bYaAnUyocuhH7C/wWA=;
+	s=korg; t=1734970108;
+	bh=XkuSMfvNFh8X0iZH8KD0bUZuePpgPtTt2Hfe/epT99A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJZgLkoNe3n9b6KFtVXqkRfGTTcGzWgFi6PNPBv102WO4W7iXOAYCYb0SdMcRwaGH
-	 2sqpfA19UFjg1uXDjvHeRr84k2FbzWONtENkh12xgZilpTrN5Oq62YcJGuWqGn3fa9
-	 wDyBtyM6j03ORzA/CCod2IZQ+1wwa+GcUPiBXXaM=
+	b=d+e8uMebod3fbI2lTbRUuMLmDeGi23K7hpxpiHK3fIwAvIcRMbEu0W/Spz+S6lxKr
+	 nNmI+C/rHqS4AOSi09wAe2IjTsjufS6wGwQNJH61INIUq6nZFyV8GobjWwDBjTBNJ8
+	 tN4MEL+6PgLJeM7AUH/rw4iPszBG7nSnNvcPFTSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Moreno <amorenoz@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/116] selftests: openvswitch: fix tcpdump execution
-Date: Mon, 23 Dec 2024 16:58:46 +0100
-Message-ID: <20241223155401.744217061@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 116/160] btrfs: fix improper generation check in snapshot delete
+Date: Mon, 23 Dec 2024 16:58:47 +0100
+Message-ID: <20241223155413.160452328@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Moreno <amorenoz@redhat.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit a17975992cc11588767175247ccaae1213a8b582 ]
+commit d75d72a858f0c00ca8ae161b48cdb403807be4de upstream.
 
-Fix the way tcpdump is executed by:
-- Using the right variable for the namespace. Currently the use of the
-  empty "ns" makes the command fail.
-- Waiting until it starts to capture to ensure the interesting traffic
-  is caught on slow systems.
-- Using line-buffered output to ensure logs are available when the test
-  is paused with "-p". Otherwise the last chunk of data might only be
-  written when tcpdump is killed.
+We have been using the following check
 
-Fixes: 74cc26f416b9 ("selftests: openvswitch: add interface support")
-Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Link: https://patch.msgid.link/20241217211652.483016-1-amorenoz@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   if (generation <= root->root_key.offset)
+
+to make decisions about whether or not to visit a node during snapshot
+delete.  This is because for normal subvolumes this is set to 0, and for
+snapshots it's set to the creation generation.  The idea being that if
+the generation of the node is less than or equal to our creation
+generation then we don't need to visit that node, because it doesn't
+belong to us, we can simply drop our reference and move on.
+
+However reloc roots don't have their generation stored in
+root->root_key.offset, instead that is the objectid of their
+corresponding fs root.  This means we can incorrectly not walk into
+nodes that need to be dropped when deleting a reloc root.
+
+There are a variety of consequences to making the wrong choice in two
+distinct areas.
+
+visit_node_for_delete()
+
+1. False positive.  We think we are newer than the block when we really
+   aren't.  We don't visit the node and drop our reference to the node
+   and carry on.  This would result in leaked space.
+2. False negative.  We do decide to walk down into a block that we
+   should have just dropped our reference to.  However this means that
+   the child node will have refs > 1, so we will switch to
+   UPDATE_BACKREF, and then the subsequent walk_down_proc() will notice
+   that btrfs_header_owner(node) != root->root_key.objectid and it'll
+   break out of the loop, and then walk_up_proc() will drop our reference,
+   so this appears to be ok.
+
+do_walk_down()
+
+1. False positive.  We are in UPDATE_BACKREF and incorrectly decide that
+   we are done and don't need to update the backref for our lower nodes.
+   This is another case that simply won't happen with relocation, as we
+   only have to do UPDATE_BACKREF if the node below us was shared and
+   didn't have FULL_BACKREF set, and since we don't own that node
+   because we're a reloc root we actually won't end up in this case.
+2. False negative.  Again this is tricky because as described above, we
+   simply wouldn't be here from relocation, because we don't own any of
+   the nodes because we never set btrfs_header_owner() to the reloc root
+   objectid, and we always use FULL_BACKREF, we never actually need to
+   set FULL_BACKREF on any children.
+
+Having spent a lot of time stressing relocation/snapshot delete recently
+I've not seen this pop in practice.  But this is objectively incorrect,
+so fix this to get the correct starting generation based on the root
+we're dropping to keep me from thinking there's a problem here.
+
+CC: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/openvswitch/openvswitch.sh | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/ctree.h       |   19 +++++++++++++++++++
+ fs/btrfs/extent-tree.c |    6 +++---
+ 2 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index bab7436c6834..a0f4764ad0af 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -128,8 +128,10 @@ ovs_add_netns_and_veths () {
- 		ovs_add_if "$1" "$2" "$4" -u || return 1
- 	fi
- 
--	[ $TRACING -eq 1 ] && ovs_netns_spawn_daemon "$1" "$ns" \
--			tcpdump -i any -s 65535
-+	if [ $TRACING -eq 1 ]; then
-+		ovs_netns_spawn_daemon "$1" "$3" tcpdump -l -i any -s 6553
-+		ovs_wait grep -q "listening on any" ${ovs_dir}/stderr
-+	fi
- 
- 	return 0
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -371,6 +371,25 @@ static inline void btrfs_set_root_last_t
  }
--- 
-2.39.5
-
+ 
+ /*
++ * Return the generation this root started with.
++ *
++ * Every normal root that is created with root->root_key.offset set to it's
++ * originating generation.  If it is a snapshot it is the generation when the
++ * snapshot was created.
++ *
++ * However for TREE_RELOC roots root_key.offset is the objectid of the owning
++ * tree root.  Thankfully we copy the root item of the owning tree root, which
++ * has it's last_snapshot set to what we would have root_key.offset set to, so
++ * return that if this is a TREE_RELOC root.
++ */
++static inline u64 btrfs_root_origin_generation(const struct btrfs_root *root)
++{
++	if (btrfs_root_id(root) == BTRFS_TREE_RELOC_OBJECTID)
++		return btrfs_root_last_snapshot(&root->root_item);
++	return root->root_key.offset;
++}
++
++/*
+  * Structure that conveys information about an extent that is going to replace
+  * all the extents in a file range.
+  */
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -5308,7 +5308,7 @@ static bool visit_node_for_delete(struct
+ 	 * reference to it.
+ 	 */
+ 	generation = btrfs_node_ptr_generation(eb, slot);
+-	if (!wc->update_ref || generation <= root->root_key.offset)
++	if (!wc->update_ref || generation <= btrfs_root_origin_generation(root))
+ 		return false;
+ 
+ 	/*
+@@ -5363,7 +5363,7 @@ static noinline void reada_walk_down(str
+ 			goto reada;
+ 
+ 		if (wc->stage == UPDATE_BACKREF &&
+-		    generation <= root->root_key.offset)
++		    generation <= btrfs_root_origin_generation(root))
+ 			continue;
+ 
+ 		/* We don't lock the tree block, it's OK to be racy here */
+@@ -5706,7 +5706,7 @@ static noinline int do_walk_down(struct
+ 	 * for the subtree
+ 	 */
+ 	if (wc->stage == UPDATE_BACKREF &&
+-	    generation <= root->root_key.offset) {
++	    generation <= btrfs_root_origin_generation(root)) {
+ 		wc->lookup_info = 1;
+ 		return 1;
+ 	}
 
 
 
