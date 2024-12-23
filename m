@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-105739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DC09FB185
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D429FB203
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A0ED161C4B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00476166B9F
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4933C12D1F1;
-	Mon, 23 Dec 2024 16:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0CA1B4139;
+	Mon, 23 Dec 2024 16:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Njuxft5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="037kO3Zk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F2619E971;
-	Mon, 23 Dec 2024 16:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C910A1B4137;
+	Mon, 23 Dec 2024 16:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969978; cv=none; b=XssbU5lhNc7Bx9JOomWKYG+ZQMx5DcV3YM6GMtjVdBKvv0foN0tyLz0Yi/VdptQ1Nt27d5rNZi8cF7qCkl0G1+QlSQbgzD6ja+96YlZ05sT501UFJZm0tslDrTion3rOkaYgmeLWtK8O5RjmrSMD0P6YeevAUhBRehv6O/NY94s=
+	t=1734970317; cv=none; b=hUwwyZGzUbx/QHCi8lelW3Im6CtojB1W2a/2VLa+vb1O3Munpq9Eg6uzSWU9erwKJuhIiElYVtfQ/nqavjjwAI7vDoBrrn1Xl9i+Vf3Nhb8ipREK1H5jXDAWmFWQ/51Fke076KsLZIkM6xKgWF1F/Ab3K+R4HHDtWAL2OA5/4A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969978; c=relaxed/simple;
-	bh=M3cTYHgV4/ta8WUjuVLFzUCISqzHfL1X/M74EKQS6AA=;
+	s=arc-20240116; t=1734970317; c=relaxed/simple;
+	bh=l2H2Su30oKKTde4jlFJdPnciDnIkjO2F4g3eig2APo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lql+WhBMrxYM/MuPzINipkdss5iMxWk2SLOS1Iq601ZyHaBCic8e86rRqYzVmmtcBTRwJ9a2spj8Ys2xsx2C7PZpAQYBtyj4YFCpgn0RWlmoyPDCIFCgsbEU4zimEewAo/fOU3Dh22cUc+pDgYJ8zJcHx9xKkKAcy7Y/JPriAm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Njuxft5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C428C4CED3;
-	Mon, 23 Dec 2024 16:06:17 +0000 (UTC)
+	 MIME-Version; b=nCPyOz5/zIuTfKoyxlwAw4aPL6CTpVkZWdZvYcyhAa7dY9k65u+eYBb1ouS4fK0l3Ba4u4z+mSTkzwIP1PIyq+eZj7K5ouA64rizNHt7Rg26VhCObO1KZuSx+sZ+AOfy02av4FMSddvsDBh8CXaW5ZLhw8GRYhS+uT4hqDtQEOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=037kO3Zk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316EAC4CED4;
+	Mon, 23 Dec 2024 16:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969977;
-	bh=M3cTYHgV4/ta8WUjuVLFzUCISqzHfL1X/M74EKQS6AA=;
+	s=korg; t=1734970317;
+	bh=l2H2Su30oKKTde4jlFJdPnciDnIkjO2F4g3eig2APo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Njuxft5diuW2/MU6P+vrMQxgabpMN8Q/hsSyMJY+BPu+sO6SX8UVqyz+HvUAlkk7g
-	 56olULRobh5upnGxucbXQmFP8wIg25Ra8aThdyH0bVTnHVLhxIBj0w6jm8gb+Dj/af
-	 wOq/sOazHC/ooIZKkxwrmW6l5M5RT6PxlSQZuzfI=
+	b=037kO3ZkQp5jd7v0B6lrjZqc+FJBZGCc+tDGbvMxlmyXpT+TjIqzmfDnHk0DyLrPn
+	 Zf9GYmnmEkjPTmg5L8zioBZBg1mdEh+bmvB6Pp7oxvkqxNm0HivDPDlNPnxms5yV4o
+	 1hf0UiUMmV2gY5jKokeQtNFgaMIh6ZtQgQ3P1fOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 107/160] drm/amdgpu/nbio7.7: fix IP version check
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 048/116] ionic: use ee->offset when returning sprom data
 Date: Mon, 23 Dec 2024 16:58:38 +0100
-Message-ID: <20241223155412.812647012@linuxfoundation.org>
+Message-ID: <20241223155401.424836199@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-commit 458600da793da12e0f3724ecbea34a80703f4d5b upstream.
+[ Upstream commit b096d62ba1323391b2db98b7704e2468cf3b1588 ]
 
-Use the helper function rather than reading it directly.
+Some calls into ionic_get_module_eeprom() don't use a single
+full buffer size, but instead multiple calls with an offset.
+Teach our driver to use the offset correctly so we can
+respond appropriately to the caller.
 
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 22b9555bc90df22b585bdd1f161b61584b13af51)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d03e00a2140 ("ionic: Add initial ethtool support")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20241212213157.12212-4-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_7.c
-@@ -247,7 +247,7 @@ static void nbio_v7_7_init_registers(str
- 	if (def != data)
- 		WREG32_SOC15(NBIO, 0, regBIF0_PCIE_MST_CTRL_3, data);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 35829a2851fa..d76e63f57ff1 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -945,8 +945,8 @@ static int ionic_get_module_eeprom(struct net_device *netdev,
+ 	len = min_t(u32, sizeof(xcvr->sprom), ee->len);
  
--	switch (adev->ip_versions[NBIO_HWIP][0]) {
-+	switch (amdgpu_ip_version(adev, NBIO_HWIP, 0)) {
- 	case IP_VERSION(7, 7, 0):
- 		data = RREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF5_STRAP4) & ~BIT(23);
- 		WREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF5_STRAP4, data);
+ 	do {
+-		memcpy(data, xcvr->sprom, len);
+-		memcpy(tbuf, xcvr->sprom, len);
++		memcpy(data, &xcvr->sprom[ee->offset], len);
++		memcpy(tbuf, &xcvr->sprom[ee->offset], len);
+ 
+ 		/* Let's make sure we got a consistent copy */
+ 		if (!memcmp(data, tbuf, len))
+-- 
+2.39.5
+
 
 
 
