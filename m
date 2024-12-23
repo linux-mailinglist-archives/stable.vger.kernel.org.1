@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0E19FB131
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:04:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B189FB1C6
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C72B17A1E25
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:04:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81C3C1882F02
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEF7188006;
-	Mon, 23 Dec 2024 16:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2F31B413F;
+	Mon, 23 Dec 2024 16:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHANYl20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSWB/ruw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC78A2EAE6;
-	Mon, 23 Dec 2024 16:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A94A1B4131;
+	Mon, 23 Dec 2024 16:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734969844; cv=none; b=IdIjtd6S0E9f+JwrlrsLn/mQq9W5otoUZamg3Fogx1Pg/D3HX+YSCBHeaHoy3nnFbfxKremZe+6m3PjxGjA42+pOrQ1f73F/1DhajC8wT6o7wGXco1pUoLzSpX5jAncud6KUGkmM1q5nmETKWqgxwLuSMMXjERLgW+hGFrcJ+fo=
+	t=1734970191; cv=none; b=T6sFVwieov7hGhLZ1T3KCehtEo3+TMljxnjleWtrPtAFo3zKZW3ywb3o0ifcI+Z7X6+jCjUQK0xGPZXRMsWhlhtB8IfenRn9AvoL8jLXuYRbaNrCzLRxGzxmpmiXM2iKT+ZmwiN8wDzWih+QM+WYKi5VCHW8rZ3pCNLDF+6Yq7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734969844; c=relaxed/simple;
-	bh=/f9BewhLlCIs3t43Br2tyGBEJCFajvttdN0VetKYeOE=;
+	s=arc-20240116; t=1734970191; c=relaxed/simple;
+	bh=K6JuoRONArQ5anEdIyd/bkulhGDCGAE3fhP9h0SxZZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xhq4Fs1HOVjJjJT/qe4tkJGBXJyqnG03S+I3fSy9k1GmJQUM9MwS6plBhwDg8lEz3O+NIYBA/V9PP8ohzldQMDUnsjE5FiwBdLtO5KiUyHYdSqiIVSUD2StzMiYsf1WZDilo8pn0baZl8gb1/g5rFBH399/d1A/SbmHjX0RI7RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHANYl20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E56C4CED3;
-	Mon, 23 Dec 2024 16:04:03 +0000 (UTC)
+	 MIME-Version; b=L42C1uJC3ZLr8crPCo/pxdGhUgdG82rIydopQ4LHJrPoGOCKDD5KXXMYmZYd0yxyIyaslW8/e6GLYEFgQiPRrf0nigUHOGuu+oz/adNvFF+LV0SmB/Gg6Pug+yLUrW7NVp15d7cIshPfRE8hcegoexTD/t0yNzx3Re9lUka1+rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSWB/ruw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10205C4CED4;
+	Mon, 23 Dec 2024 16:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734969843;
-	bh=/f9BewhLlCIs3t43Br2tyGBEJCFajvttdN0VetKYeOE=;
+	s=korg; t=1734970190;
+	bh=K6JuoRONArQ5anEdIyd/bkulhGDCGAE3fhP9h0SxZZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHANYl20kvTsrN3dp/4mQNPtl5x1q7RC/WP3RSss73vFpUwti3poJkYB24hXUF5MK
-	 +IBJZwC/0hqapN7MYlAPLpqAAZfjyUBB3yoCgNWW6/vUp+/wfLY+0UakFJDhcloiaQ
-	 5D5HgvOkKA/ecMSYSNjwB9GcHbTvjTZX+VxjB6hc=
+	b=hSWB/ruwiN6cC1Mpp5vjYFx9B5Pb9c6BiXUkivECBOMVqS7fBOe9HFBdC6CNxiOvd
+	 jMUgcBhbVpOrkjGTengTkW8A9gvH2ZSwoO5TfN2tGr59m/hSTPBvMELSzXJT3ZmMyf
+	 fBFGXvz7SW4UHYBJSR3bz9CFqT/N6R7mU5cFEyqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 070/160] chelsio/chtls: prevent potential integer overflow on 32bit
+	Roger Quadros <rogerq@kernel.org>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Peter Chen <peter.chen@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 011/116] usb: cdns3: Add quirk flag to enable suspend residency
 Date: Mon, 23 Dec 2024 16:58:01 +0100
-Message-ID: <20241223155411.382071447@linuxfoundation.org>
+Message-ID: <20241223155359.981220588@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Roger Quadros <rogerq@kernel.org>
 
-commit fbbd84af6ba70334335bdeba3ae536cf751c14c6 upstream.
+[ Upstream commit 0aca19e4037a4143273e90f1b44666b78b4dde9b ]
 
-The "gl->tot_len" variable is controlled by the user.  It comes from
-process_responses().  On 32bit systems, the "gl->tot_len +
-sizeof(struct cpl_pass_accept_req) + sizeof(struct rss_header)" addition
-could have an integer wrapping bug.  Use size_add() to prevent this.
+Some platforms (e.g. ti,j721e-usb, ti,am64-usb) require
+this bit to be set to workaround a lockup issue with PHY
+short suspend intervals [1]. Add a platform quirk flag
+to indicate if Suspend Residency should be enabled.
 
-Fixes: a08943947873 ("crypto: chtls - Register chtls with net tls")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/c6bfb23c-2db2-4e1b-b8ab-ba3925c82ef5@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[1] - https://www.ti.com/lit/er/sprz457h/sprz457h.pdf
+i2409 - USB: USB2 PHY locks up due to short suspend
+
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240516044537.16801-2-r-gunasekaran@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_main.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/core.h |  1 +
+ drivers/usb/cdns3/drd.c  | 10 +++++++++-
+ drivers/usb/cdns3/drd.h  |  3 +++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_main.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_main.c
-@@ -346,8 +346,9 @@ static struct sk_buff *copy_gl_to_skb_pk
- 	 * driver. Once driver synthesizes cpl_pass_accpet_req the skb will go
- 	 * through the regular cpl_pass_accept_req processing in TOM.
- 	 */
--	skb = alloc_skb(gl->tot_len + sizeof(struct cpl_pass_accept_req)
--			- pktshift, GFP_ATOMIC);
-+	skb = alloc_skb(size_add(gl->tot_len,
-+				 sizeof(struct cpl_pass_accept_req)) -
-+			pktshift, GFP_ATOMIC);
- 	if (unlikely(!skb))
- 		return NULL;
- 	__skb_put(skb, gl->tot_len + sizeof(struct cpl_pass_accept_req)
+diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
+index 81a9c9d6be08..57d47348dc19 100644
+--- a/drivers/usb/cdns3/core.h
++++ b/drivers/usb/cdns3/core.h
+@@ -44,6 +44,7 @@ struct cdns3_platform_data {
+ 			bool suspend, bool wakeup);
+ 	unsigned long quirks;
+ #define CDNS3_DEFAULT_PM_RUNTIME_ALLOW	BIT(0)
++#define CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE	BIT(1)
+ };
+ 
+ /**
+diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
+index ee917f1b091c..1b4ce2da1e4b 100644
+--- a/drivers/usb/cdns3/drd.c
++++ b/drivers/usb/cdns3/drd.c
+@@ -389,7 +389,7 @@ static irqreturn_t cdns_drd_irq(int irq, void *data)
+ int cdns_drd_init(struct cdns *cdns)
+ {
+ 	void __iomem *regs;
+-	u32 state;
++	u32 state, reg;
+ 	int ret;
+ 
+ 	regs = devm_ioremap_resource(cdns->dev, &cdns->otg_res);
+@@ -433,6 +433,14 @@ int cdns_drd_init(struct cdns *cdns)
+ 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+ 					      &cdns->otg_v1_regs->ien;
+ 			writel(1, &cdns->otg_v1_regs->simulate);
++
++			if (cdns->pdata &&
++			    (cdns->pdata->quirks & CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE)) {
++				reg = readl(&cdns->otg_v1_regs->susp_ctrl);
++				reg |= SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE;
++				writel(reg, &cdns->otg_v1_regs->susp_ctrl);
++			}
++
+ 			cdns->version  = CDNS3_CONTROLLER_V1;
+ 		} else {
+ 			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
+diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
+index d72370c321d3..1e2aee14d629 100644
+--- a/drivers/usb/cdns3/drd.h
++++ b/drivers/usb/cdns3/drd.h
+@@ -193,6 +193,9 @@ struct cdns_otg_irq_regs {
+ /* OTGREFCLK - bitmasks */
+ #define OTGREFCLK_STB_CLK_SWITCH_EN	BIT(31)
+ 
++/* SUPS_CTRL - bitmasks */
++#define SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE	BIT(17)
++
+ /* OVERRIDE - bitmasks */
+ #define OVERRIDE_IDPULLUP		BIT(0)
+ /* Only for CDNS3_CONTROLLER_V0 version */
+-- 
+2.39.5
+
 
 
 
