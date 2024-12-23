@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-105929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C2B9FB266
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:17:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8159FB1AB
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D3E71606DC
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB78C167E27
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3607F19E98B;
-	Mon, 23 Dec 2024 16:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7073E1B392B;
+	Mon, 23 Dec 2024 16:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gT1yOddJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBOOHoBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E673D12C544;
-	Mon, 23 Dec 2024 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E75F1AF0CE;
+	Mon, 23 Dec 2024 16:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970618; cv=none; b=GMs24HDWEj+yqybSwmTvlk+Rs2Vkji3DT2Qleo0oI8bzcujh84zs/+AhmeuVfvKd+cBYie2lCbAfL1fjKI+gFrzwN965vviF9PwvdTqyQ4GejG5vE1V1j6Nyb1fFcO2D+44Tb3z7IpNq7r+AgxQpmunkAwkklziuZYvoARZdICY=
+	t=1734970040; cv=none; b=QT0EY6RTt93ZK3d7H9D5FzmPbUYTE038q2+A1UG1xiUsdJSnoYzw03Wban/Pt7rCMVCJWcVxKTltVCni1XIfC1skVEPz/PFDx2aYEhhR41tRojv7qDcxOEDJRZKxNKrazhQYcbATc6d5vGDyLPoeIo/N7XqnlLe7tL3D8/ME6Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970618; c=relaxed/simple;
-	bh=A7Sf4tPyVqY0qV9R04JqN2KA+YqCUCP1k2HhzWFtCpE=;
+	s=arc-20240116; t=1734970040; c=relaxed/simple;
+	bh=E1UYldQU5bd7bDpcDwOn9Pes/LPKmJWuBtkQlVbLPeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMocKskjG6csRHDUN9wU8ueIDsVgw8dG80jmONdpeudthnnPh/gtxYxGEVBakvsBjE6LTbJKfxOezvm028b6ucZZCYG9XSPk3YVGJAVwN1liS1jiDIJQy85hK5ERSUDYIeslFeE/BtwULGvUsle475GXeOu36yjwzpHdgHavcWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gT1yOddJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A44C4CED3;
-	Mon, 23 Dec 2024 16:16:57 +0000 (UTC)
+	 MIME-Version; b=OaFxUihk5h74/xDPIk153o5BKo63VRA4x9iPXmwfeLXXKhuw45mhGD4WctCzj7TVmfxo3vnhOyQOs/SJjwmfrAgEIYfgXac8wX5BxSDFXxtYoAdrjISCOlBXN0c1QOdpoEyH7bjAKpIQ520+X9mUsj/cYSs3NY3wTHC6X164dSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBOOHoBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E2BC4CED6;
+	Mon, 23 Dec 2024 16:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970617;
-	bh=A7Sf4tPyVqY0qV9R04JqN2KA+YqCUCP1k2HhzWFtCpE=;
+	s=korg; t=1734970040;
+	bh=E1UYldQU5bd7bDpcDwOn9Pes/LPKmJWuBtkQlVbLPeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gT1yOddJIyQByUwcvoY8UmX9ZFFAdVp/NhCwNlKutW5NaqcvCo3gGmnHA+eT3runz
-	 1POQqAep6YeHhVZ17BUqmjy1IQQFIgii6iiOOiyoq33NtaBzUyLIMBwWBUOotG/K6b
-	 2l26DYwLE5/sDwfxNiNjCrcMpTjk6+GcxhkMwyv0=
+	b=tBOOHoBhbfMsNBKfWslcXam4pzZa2QS3Kl79KxXpgxZ6vaDe543iZrMYv1/yK4+rT
+	 YCeoGcv4eLQtjYjHr5Ae/+eIPQ/g38JIyVFo0b1tZ5EUbi9dO8yk6elDylP3Z2tn5k
+	 fKUG01+t/KjRBGFJ54Vujtpi0X354zaW/PKnFzmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 19/83] net/smc: protect link down work from execute after lgr freed
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 127/160] smb: client: fix TCP timers deadlock after rmmod
 Date: Mon, 23 Dec 2024 16:58:58 +0100
-Message-ID: <20241223155354.377477545@linuxfoundation.org>
+Message-ID: <20241223155413.693229180@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-[ Upstream commit 2b33eb8f1b3e8c2f87cfdbc8cc117f6bdfabc6ec ]
+commit e9f2517a3e18a54a3943c098d2226b245d488801 upstream.
 
-link down work may be scheduled before lgr freed but execute
-after lgr freed, which may result in crash. So it is need to
-hold a reference before shedule link down work, and put the
-reference after work executed or canceled.
+Commit ef7134c7fc48 ("smb: client: Fix use-after-free of network namespace.")
+fixed a netns UAF by manually enabled socket refcounting
+(sk->sk_net_refcnt=1 and sock_inuse_add(net, 1)).
 
-The relevant crash call stack as follows:
- list_del corruption. prev->next should be ffffb638c9c0fe20,
-    but was 0000000000000000
- ------------[ cut here ]------------
- kernel BUG at lib/list_debug.c:51!
- invalid opcode: 0000 [#1] SMP NOPTI
- CPU: 6 PID: 978112 Comm: kworker/6:119 Kdump: loaded Tainted: G #1
- Hardware name: Alibaba Cloud Alibaba Cloud ECS, BIOS 2221b89 04/01/2014
- Workqueue: events smc_link_down_work [smc]
- RIP: 0010:__list_del_entry_valid.cold+0x31/0x47
- RSP: 0018:ffffb638c9c0fdd8 EFLAGS: 00010086
- RAX: 0000000000000054 RBX: ffff942fb75e5128 RCX: 0000000000000000
- RDX: ffff943520930aa0 RSI: ffff94352091fc80 RDI: ffff94352091fc80
- RBP: 0000000000000000 R08: 0000000000000000 R09: ffffb638c9c0fc38
- R10: ffffb638c9c0fc30 R11: ffffffffa015eb28 R12: 0000000000000002
- R13: ffffb638c9c0fe20 R14: 0000000000000001 R15: ffff942f9cd051c0
- FS:  0000000000000000(0000) GS:ffff943520900000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f4f25214000 CR3: 000000025fbae004 CR4: 00000000007706e0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  rwsem_down_write_slowpath+0x17e/0x470
-  smc_link_down_work+0x3c/0x60 [smc]
-  process_one_work+0x1ac/0x350
-  worker_thread+0x49/0x2f0
-  ? rescuer_thread+0x360/0x360
-  kthread+0x118/0x140
-  ? __kthread_bind_mask+0x60/0x60
-  ret_from_fork+0x1f/0x30
+The reason the patch worked for that bug was because we now hold
+references to the netns (get_net_track() gets a ref internally)
+and they're properly released (internally, on __sk_destruct()),
+but only because sk->sk_net_refcnt was set.
 
-Fixes: 541afa10c126 ("net/smc: add smcr_port_err() and smcr_link_down() processing")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Tony Lu <tonylu@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Problem:
+(this happens regardless of CONFIG_NET_NS_REFCNT_TRACKER and regardless
+if init_net or other)
+
+Setting sk->sk_net_refcnt=1 *manually* and *after* socket creation is not
+only out of cifs scope, but also technically wrong -- it's set conditionally
+based on user (=1) vs kernel (=0) sockets.  And net/ implementations
+seem to base their user vs kernel space operations on it.
+
+e.g. upon TCP socket close, the TCP timers are not cleared because
+sk->sk_net_refcnt=1:
+(cf. commit 151c9c724d05 ("tcp: properly terminate timers for kernel sockets"))
+
+net/ipv4/tcp.c:
+    void tcp_close(struct sock *sk, long timeout)
+    {
+    	lock_sock(sk);
+    	__tcp_close(sk, timeout);
+    	release_sock(sk);
+    	if (!sk->sk_net_refcnt)
+    		inet_csk_clear_xmit_timers_sync(sk);
+    	sock_put(sk);
+    }
+
+Which will throw a lockdep warning and then, as expected, deadlock on
+tcp_write_timer().
+
+A way to reproduce this is by running the reproducer from ef7134c7fc48
+and then 'rmmod cifs'.  A few seconds later, the deadlock/lockdep
+warning shows up.
+
+Fix:
+We shouldn't mess with socket internals ourselves, so do not set
+sk_net_refcnt manually.
+
+Also change __sock_create() to sock_create_kern() for explicitness.
+
+As for non-init_net network namespaces, we deal with it the best way
+we can -- hold an extra netns reference for server->ssocket and drop it
+when it's released.  This ensures that the netns still exists whenever
+we need to create/destroy server->ssocket, but is not directly tied to
+it.
+
+Fixes: ef7134c7fc48 ("smb: client: Fix use-after-free of network namespace.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/smc_core.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/smb/client/connect.c |   36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 10d79cb55528..890785d4f6b6 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1726,7 +1726,9 @@ void smcr_link_down_cond_sched(struct smc_link *lnk)
- {
- 	if (smc_link_downing(&lnk->state)) {
- 		trace_smcr_link_down(lnk, __builtin_return_address(0));
--		schedule_work(&lnk->link_down_wrk);
-+		smcr_link_hold(lnk); /* smcr_link_put in link_down_wrk */
-+		if (!schedule_work(&lnk->link_down_wrk))
-+			smcr_link_put(lnk);
- 	}
- }
- 
-@@ -1758,11 +1760,14 @@ static void smc_link_down_work(struct work_struct *work)
- 	struct smc_link_group *lgr = link->lgr;
- 
- 	if (list_empty(&lgr->list))
--		return;
-+		goto out;
- 	wake_up_all(&lgr->llc_msg_waiter);
- 	mutex_lock(&lgr->llc_conf_mutex);
- 	smcr_link_down(link);
- 	mutex_unlock(&lgr->llc_conf_mutex);
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -987,9 +987,13 @@ clean_demultiplex_info(struct TCP_Server
+ 	msleep(125);
+ 	if (cifs_rdma_enabled(server))
+ 		smbd_destroy(server);
 +
-+out:
-+	smcr_link_put(link); /* smcr_link_hold by schedulers of link_down_work */
+ 	if (server->ssocket) {
+ 		sock_release(server->ssocket);
+ 		server->ssocket = NULL;
++
++		/* Release netns reference for the socket. */
++		put_net(cifs_net_ns(server));
+ 	}
+ 
+ 	if (!list_empty(&server->pending_mid_q)) {
+@@ -1037,6 +1041,7 @@ clean_demultiplex_info(struct TCP_Server
+ 		 */
+ 	}
+ 
++	/* Release netns reference for this server. */
+ 	put_net(cifs_net_ns(server));
+ 	kfree(server->leaf_fullpath);
+ 	kfree(server);
+@@ -1713,6 +1718,8 @@ cifs_get_tcp_session(struct smb3_fs_cont
+ 
+ 	tcp_ses->ops = ctx->ops;
+ 	tcp_ses->vals = ctx->vals;
++
++	/* Grab netns reference for this server. */
+ 	cifs_set_net_ns(tcp_ses, get_net(current->nsproxy->net_ns));
+ 
+ 	tcp_ses->conn_id = atomic_inc_return(&tcpSesNextId);
+@@ -1844,6 +1851,7 @@ smbd_connected:
+ out_err_crypto_release:
+ 	cifs_crypto_secmech_release(tcp_ses);
+ 
++	/* Release netns reference for this server. */
+ 	put_net(cifs_net_ns(tcp_ses));
+ 
+ out_err:
+@@ -1852,8 +1860,10 @@ out_err:
+ 			cifs_put_tcp_session(tcp_ses->primary_server, false);
+ 		kfree(tcp_ses->hostname);
+ 		kfree(tcp_ses->leaf_fullpath);
+-		if (tcp_ses->ssocket)
++		if (tcp_ses->ssocket) {
+ 			sock_release(tcp_ses->ssocket);
++			put_net(cifs_net_ns(tcp_ses));
++		}
+ 		kfree(tcp_ses);
+ 	}
+ 	return ERR_PTR(rc);
+@@ -3111,20 +3121,20 @@ generic_ip_connect(struct TCP_Server_Inf
+ 		socket = server->ssocket;
+ 	} else {
+ 		struct net *net = cifs_net_ns(server);
+-		struct sock *sk;
+ 
+-		rc = __sock_create(net, sfamily, SOCK_STREAM,
+-				   IPPROTO_TCP, &server->ssocket, 1);
++		rc = sock_create_kern(net, sfamily, SOCK_STREAM, IPPROTO_TCP, &server->ssocket);
+ 		if (rc < 0) {
+ 			cifs_server_dbg(VFS, "Error %d creating socket\n", rc);
+ 			return rc;
+ 		}
+ 
+-		sk = server->ssocket->sk;
+-		__netns_tracker_free(net, &sk->ns_tracker, false);
+-		sk->sk_net_refcnt = 1;
+-		get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
+-		sock_inuse_add(net, 1);
++		/*
++		 * Grab netns reference for the socket.
++		 *
++		 * It'll be released here, on error, or in clean_demultiplex_info() upon server
++		 * teardown.
++		 */
++		get_net(net);
+ 
+ 		/* BB other socket options to set KEEPALIVE, NODELAY? */
+ 		cifs_dbg(FYI, "Socket created\n");
+@@ -3138,8 +3148,10 @@ generic_ip_connect(struct TCP_Server_Inf
+ 	}
+ 
+ 	rc = bind_socket(server);
+-	if (rc < 0)
++	if (rc < 0) {
++		put_net(cifs_net_ns(server));
+ 		return rc;
++	}
+ 
+ 	/*
+ 	 * Eventually check for other socket options to change from
+@@ -3176,6 +3188,7 @@ generic_ip_connect(struct TCP_Server_Inf
+ 	if (rc < 0) {
+ 		cifs_dbg(FYI, "Error %d connecting to server\n", rc);
+ 		trace_smb3_connect_err(server->hostname, server->conn_id, &server->dstaddr, rc);
++		put_net(cifs_net_ns(server));
+ 		sock_release(socket);
+ 		server->ssocket = NULL;
+ 		return rc;
+@@ -3184,6 +3197,9 @@ generic_ip_connect(struct TCP_Server_Inf
+ 	if (sport == htons(RFC1001_PORT))
+ 		rc = ip_rfc1001_connect(server);
+ 
++	if (rc < 0)
++		put_net(cifs_net_ns(server));
++
+ 	return rc;
  }
  
- static int smc_vlan_by_tcpsk_walk(struct net_device *lower_dev,
--- 
-2.39.5
-
 
 
 
