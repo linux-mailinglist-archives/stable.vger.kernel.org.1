@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-105780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066029FB1A2
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA089FB24D
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 592A41882689
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C68C1642BD
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54B719E98B;
-	Mon, 23 Dec 2024 16:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6664A1A8F80;
+	Mon, 23 Dec 2024 16:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TopBEIIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIcYe1UD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88305188006;
-	Mon, 23 Dec 2024 16:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A9A187848;
+	Mon, 23 Dec 2024 16:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970115; cv=none; b=qN70BqGQSYW46cV2IpmRTMCGFQnCgRBXxDYPJrmu8NjzuWzPQU0Oj5Tei75rgehd38vwQ4436ofrw1pIcnXXN9oEw687Dg1McraciSUlMVe4cXEPSGF/ifjsYbrZn8PN2BvVlahkG0QLK2WtHGjTj3g8+6Ln2i70wTshDdnjib4=
+	t=1734970587; cv=none; b=t6UinJOHDvuh5w6f4RPiT3YjCYLmkCmgrMro1gKNZAEtfGPaufV2Yp+go+St54k76DmsEaNOi7x6oyVLOkDPfKQVtEwQ5eaMzRcwgyMc3nOhbANVU2ncMyTSOicjHhNwSlMbzQ++4ksZdpV+ty0ayZnkw+BROD5ZXizwsN2pdIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970115; c=relaxed/simple;
-	bh=Tcxagf8i0yLnTf+6hNMmKYtDcb9/TdUcryd6w16jk5o=;
+	s=arc-20240116; t=1734970587; c=relaxed/simple;
+	bh=VTK5gpArHGL531g7wvqyj2tl3ZFxM2GXGv5enwgFiBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upSSJqZOsFB2NTvE7pUehk0xLrYmCC+6fVRIF4eTRtJMX9G/SxAFmlpr6ovAUJ37QgVDcdGOzI9qR41YUPdYw+cO+yQDPj25L2yVNKwA2kQp2DKGyl5nUW/w5qEJInF8xz4GLaR+xunzhOjuDSpTB3X459njY9IjXdyfEFu/x5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TopBEIIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA86DC4CED3;
-	Mon, 23 Dec 2024 16:08:34 +0000 (UTC)
+	 MIME-Version; b=WpjghY/UbxvfmXb6newr4xkATpLQVtVkegqekZnHkNSCJjC0TUHIxY9KqgONioLM/Z81rbgqc1Ff3RAA3c1q9OZDaSf8Em61hC0rXhUwf6mLnlyUftWIUHHPCrgr16BOgHo4+EcCmHiKKX/DLTuOVXVeR8fbnaCUVwPblIIFVPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIcYe1UD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3487AC4CED3;
+	Mon, 23 Dec 2024 16:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970115;
-	bh=Tcxagf8i0yLnTf+6hNMmKYtDcb9/TdUcryd6w16jk5o=;
+	s=korg; t=1734970586;
+	bh=VTK5gpArHGL531g7wvqyj2tl3ZFxM2GXGv5enwgFiBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TopBEIIKy/x29UEND6IkNt1PXImnesnDPL7dP7NcAaPdN1aD4XNmbeJSU6PZlhOGS
-	 aYvJLsCsTIJuXzipSy4rMn+9o7asldYis7Ju9ei8KAumL8dq6oQewyQlDTNvp9Pz0Y
-	 b7IlBL4MloobJLeqSPZWd8EAjsKb7jhL6jiF5ZEY=
+	b=PIcYe1UDrxDZ6USQHgIBpiaBwAwpcz6cYVkQuVdJm99h83CP9ayuJ8rQMJp2n2+3k
+	 6lhbCF+AHwaidIAIT44aGCBFONtPuIGsZ3kScYPsfjsUKTZ0MV1wv3dtgv7jIOZoMd
+	 EEFmZq++coSy7gXPjTHgO4YJCPXG9by1Zoxtb/H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.12 118/160] s390/mm: Fix DirectMap accounting
+	Peng Hongchi <hongchi.peng@siengine.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 10/83] usb: dwc2: gadget: Dont write invalid mapped sg entries into dma_desc with iommu enabled
 Date: Mon, 23 Dec 2024 16:58:49 +0100
-Message-ID: <20241223155413.321697218@linuxfoundation.org>
+Message-ID: <20241223155354.036963004@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Peng Hongchi <hongchi.peng@siengine.com>
 
-commit 41856638e6c4ed51d8aa9e54f70059d1e357b46e upstream.
+[ Upstream commit 1134289b6b93d73721340b66c310fd985385e8fa ]
 
-With uncoupling of physical and virtual address spaces population of
-the identity mapping was changed to use the type POPULATE_IDENTITY
-instead of POPULATE_DIRECT. This breaks DirectMap accounting:
+When using dma_map_sg() to map the scatterlist with iommu enabled,
+the entries in the scatterlist can be mergerd into less but longer
+entries in the function __finalise_sg(). So that the number of
+valid mapped entries is actually smaller than ureq->num_reqs,and
+there are still some invalid entries in the scatterlist with
+dma_addr=0xffffffff and len=0. Writing these invalid sg entries
+into the dma_desc can cause a data transmission error.
 
-> cat /proc/meminfo
-DirectMap4k:       55296 kB
-DirectMap1M:    18446744073709496320 kB
+The function dma_map_sg() returns the number of valid map entries
+and the return value is assigned to usb_request::num_mapped_sgs in
+function usb_gadget_map_request_by_dev(). So that just write valid
+mapped entries into dma_desc according to the usb_request::num_mapped_sgs,
+and set the IOC bit if it's the last valid mapped entry.
 
-Adjust all locations of update_page_count() in vmem.c to use
-POPULATE_IDENTITY instead of POPULATE_DIRECT as well. With this
-accounting is correct again:
+This patch poses no risk to no-iommu situation, cause
+ureq->num_mapped_sgs equals ureq->num_sgs while using dma_direct_map_sg()
+to map the scatterlist whith iommu disabled.
 
-> cat /proc/meminfo
-DirectMap4k:       54264 kB
-DirectMap1M:     8334336 kB
-
-Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Peng Hongchi <hongchi.peng@siengine.com>
+Link: https://lore.kernel.org/r/20240523100315.7226-1-hongchi.peng@siengine.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/boot/vmem.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/dwc2/gadget.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/s390/boot/vmem.c
-+++ b/arch/s390/boot/vmem.c
-@@ -306,7 +306,7 @@ static void pgtable_pte_populate(pmd_t *
- 			pages++;
- 		}
+diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
+index cb29f9fae2f2..1c8141d80e25 100644
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -886,10 +886,10 @@ static void dwc2_gadget_config_nonisoc_xfer_ddma(struct dwc2_hsotg_ep *hs_ep,
  	}
--	if (mode == POPULATE_DIRECT)
-+	if (mode == POPULATE_IDENTITY)
- 		update_page_count(PG_DIRECT_MAP_4K, pages);
- }
  
-@@ -339,7 +339,7 @@ static void pgtable_pmd_populate(pud_t *
- 		}
- 		pgtable_pte_populate(pmd, addr, next, mode);
+ 	/* DMA sg buffer */
+-	for_each_sg(ureq->sg, sg, ureq->num_sgs, i) {
++	for_each_sg(ureq->sg, sg, ureq->num_mapped_sgs, i) {
+ 		dwc2_gadget_fill_nonisoc_xfer_ddma_one(hs_ep, &desc,
+ 			sg_dma_address(sg) + sg->offset, sg_dma_len(sg),
+-			sg_is_last(sg));
++			(i == (ureq->num_mapped_sgs - 1)));
+ 		desc_count += hs_ep->desc_count;
  	}
--	if (mode == POPULATE_DIRECT)
-+	if (mode == POPULATE_IDENTITY)
- 		update_page_count(PG_DIRECT_MAP_1M, pages);
- }
  
-@@ -372,7 +372,7 @@ static void pgtable_pud_populate(p4d_t *
- 		}
- 		pgtable_pmd_populate(pud, addr, next, mode);
- 	}
--	if (mode == POPULATE_DIRECT)
-+	if (mode == POPULATE_IDENTITY)
- 		update_page_count(PG_DIRECT_MAP_2G, pages);
- }
- 
+-- 
+2.39.5
+
 
 
 
