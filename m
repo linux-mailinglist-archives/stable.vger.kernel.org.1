@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-105824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFF09FB1E7
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9959FB12A
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EECC166B19
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:11:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E2427A1E82
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41F51B21B5;
-	Mon, 23 Dec 2024 16:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9110B1B21BD;
+	Mon, 23 Dec 2024 16:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMGtc3jZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yml2XT2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6173D13BC0C;
-	Mon, 23 Dec 2024 16:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2481AB52D;
+	Mon, 23 Dec 2024 16:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970262; cv=none; b=EwwkIPdmZRACl6ZMaqdSZe5gFcBYdkWQ6wpVfceCPI/fI+54NRF2KzntjuvRV9JyHjEmufSK29vbLU6qMTljGIPPHJBIRVUjypLNYZhpRVJZDb0mxvE5kl9tk79pFTGj5Oo8yuQ6LDjbU9WwhGPMpmT6GQVSx8nZSK6b422eCBw=
+	t=1734969823; cv=none; b=WzrxyffmSRTVGES3prrElCIoCz41YaCTRxBNFJljEGGCrfZGv2stRStsopM0zi6DfQdSXNFvNjoWibER751CVAj+kO8Tvc3WMtQBlHoDHQBVWG4NQ2cr7uhlV4cegi6LumkpStiO/ChZCNVKPU3HkH3PUwH0zbNUR4tO4WXibM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970262; c=relaxed/simple;
-	bh=oQsN3v/u/Qc1gnbBC3lFKB6Px1tYBBVQvTfPjP5MAnA=;
+	s=arc-20240116; t=1734969823; c=relaxed/simple;
+	bh=ed6reQ7bLcDDopsmQgk6rZokgJvwg02d7k7k+1WvFyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRHNrKQAd0Z0fF4nRTv3T2USOqlh1A9cLir1pRIPBe8BiabWetblbA1Coh5J7+unp7saZ8Qnkts5igkG0edX9sZff6pmLEQDnCkF6DJ74IAnlsnvwA5qLB7ZgFZhVOl+HEOYsoZr8SP4Hb1mdRKsxruWzbhiPXgBKD1H4FCxVmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMGtc3jZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E2CC4CED3;
-	Mon, 23 Dec 2024 16:11:01 +0000 (UTC)
+	 MIME-Version; b=kOxxTm7fE5xDY0DMjvHOhFQ4gWIvn5Yp5nc1LgsAVoQvWNW4I4y8E6GjeYpDeXpGIQL7UvPtosHhQq+2kpAQ/dM7isTVIEjSBRnQMeandIqHhc8ewSOAqj0EoNTaNR1KITdP73iF5lv/oqkrIcGQJ8P4uyhcNvY9i96A11XFLoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yml2XT2A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FBBC4CED3;
+	Mon, 23 Dec 2024 16:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970262;
-	bh=oQsN3v/u/Qc1gnbBC3lFKB6Px1tYBBVQvTfPjP5MAnA=;
+	s=korg; t=1734969823;
+	bh=ed6reQ7bLcDDopsmQgk6rZokgJvwg02d7k7k+1WvFyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vMGtc3jZk7EpWXEQqiuuNry3DwfIvDgP52bwJ9gniBlHVadjsSNsuzWH17l4nKk+X
-	 KGSAb6gmxdtaK7fMe6RevqRHmj+DUq2YtHLZpFvrdwOxlslB36FhlRmbSP7u1qdcff
-	 s421DL0K4/YYxUc7Z4QkEzDL2BimFRSOJS4XirJc=
+	b=yml2XT2A9j62GdSbbIE7d8QnG4AOdX7upuQ99mTeNqqeLc75Adql6es75pl10eXrX
+	 r6kyzl800dKxjkXQEMDjoKujcp2aOKz1598K0IAp69dTl/bJGjkHYJZKbpa92ib4wV
+	 ogCM4Tqrz4eoNE6WFXm+NQbXCMy/uflNx/MCCbLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/116] usb: cdns3-ti: Add workaround for Errata i2409
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 064/160] mmc: mtk-sd: disable wakeup in .remove() and in the error path of .probe()
 Date: Mon, 23 Dec 2024 16:57:55 +0100
-Message-ID: <20241223155359.754497879@linuxfoundation.org>
+Message-ID: <20241223155411.141808599@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit b50a2da03bd95784541b3f9058e452cc38f9ba05 ]
+commit f3d87abe11ed04d1b23a474a212f0e5deeb50892 upstream.
 
-TI USB2 PHY is known to have a lockup issue on very short
-suspend intervals. Enable the Suspend Residency quirk flag to
-workaround this as described in Errata i2409 [1].
+Current implementation leaves pdev->dev as a wakeup source. Add a
+device_init_wakeup(&pdev->dev, false) call in the .remove() function and
+in the error path of the .probe() function.
 
-[1] - https://www.ti.com/lit/er/sprz457h/sprz457h.pdf
-
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240516044537.16801-3-r-gunasekaran@ti.com
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Fixes: 527f36f5efa4 ("mmc: mediatek: add support for SDIO eint wakup IRQ")
+Cc: stable@vger.kernel.org
+Message-ID: <20241203023442.2434018-1-joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-ti.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/mmc/host/mtk-sd.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/cdns3/cdns3-ti.c b/drivers/usb/cdns3/cdns3-ti.c
-index 5945c4b1e11f..cfabc12ee0e3 100644
---- a/drivers/usb/cdns3/cdns3-ti.c
-+++ b/drivers/usb/cdns3/cdns3-ti.c
-@@ -16,6 +16,7 @@
- #include <linux/of_platform.h>
- #include <linux/pm_runtime.h>
- #include <linux/property.h>
-+#include "core.h"
- 
- /* USB Wrapper register offsets */
- #define USBSS_PID		0x0
-@@ -85,6 +86,18 @@ static inline void cdns_ti_writel(struct cdns_ti *data, u32 offset, u32 value)
- 	writel(value, data->usbss + offset);
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2924,6 +2924,7 @@ release_clk:
+ 	msdc_gate_clock(host);
+ 	platform_set_drvdata(pdev, NULL);
+ release_mem:
++	device_init_wakeup(&pdev->dev, false);
+ 	if (host->dma.gpd)
+ 		dma_free_coherent(&pdev->dev,
+ 			2 * sizeof(struct mt_gpdma_desc),
+@@ -2957,6 +2958,7 @@ static void msdc_drv_remove(struct platf
+ 			host->dma.gpd, host->dma.gpd_addr);
+ 	dma_free_coherent(&pdev->dev, MAX_BD_NUM * sizeof(struct mt_bdma_desc),
+ 			  host->dma.bd, host->dma.bd_addr);
++	device_init_wakeup(&pdev->dev, false);
  }
  
-+static struct cdns3_platform_data cdns_ti_pdata = {
-+	.quirks = CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE,   /* Errata i2409 */
-+};
-+
-+static const struct of_dev_auxdata cdns_ti_auxdata[] = {
-+	{
-+		.compatible = "cdns,usb3",
-+		.platform_data = &cdns_ti_pdata,
-+	},
-+	{},
-+};
-+
- static int cdns_ti_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -176,7 +189,7 @@ static int cdns_ti_probe(struct platform_device *pdev)
- 	reg |= USBSS_W1_PWRUP_RST;
- 	cdns_ti_writel(data, USBSS_W1, reg);
- 
--	error = of_platform_populate(node, NULL, NULL, dev);
-+	error = of_platform_populate(node, NULL, cdns_ti_auxdata, dev);
- 	if (error) {
- 		dev_err(dev, "failed to create children: %d\n", error);
- 		goto err;
--- 
-2.39.5
-
+ static void msdc_save_reg(struct msdc_host *host)
 
 
 
