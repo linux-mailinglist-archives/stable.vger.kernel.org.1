@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A849FB277
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA5A9FB197
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5B3A16742C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C49A7A0FD5
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4E51B4130;
-	Mon, 23 Dec 2024 16:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BBC1B0F30;
+	Mon, 23 Dec 2024 16:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/IgZfy6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BroJqypH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081861B4120;
-	Mon, 23 Dec 2024 16:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFC6188733;
+	Mon, 23 Dec 2024 16:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970686; cv=none; b=g0XuJ/GCDIo7YHahFi9Ivje7o9HvIgyid05qR2d1qV6eEI++BJBf9wWGmCJ04j9coYb/X97RWJIecN5UDnWOCyQ8iEfHturKuskfD3wy7pJq7pbKmNr6CniLeQq2JswPrp01CF8dpnMz8T+a5N5dZGY32E1iKcsLpafAZbnuDnw=
+	t=1734970083; cv=none; b=lTN0jtoOMcLCNCg3a1OEPBUo0KbrP3hiJyPPA8nyi7q9zKZ4mQL/Oadv/svtxdL1Eqc1Bik/xjI9PJxqrqeq0xrY3OsKRVPb7GglV0kfuHMXolLWxoZ1ccMM5insFOPLkPlR/aExI+MaZaySq6MEC/ZgFT4Z/Lh33Eu0wto6ex4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970686; c=relaxed/simple;
-	bh=PxjRoWHyQ66bQWifQkZ9B9uAkaq8O5xQc/if2pmi/Lk=;
+	s=arc-20240116; t=1734970083; c=relaxed/simple;
+	bh=Xf+0LZXTkYtwTwUMQ7HZ9pHdK0M6bAH88umBy2nrbws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aS606gvWdeuDLktK+KbS5J4diBHqQqNwKUwFpfm2aAjUvFLICeIihlhi0HgerocViDf+NvexuwRAZf/w1iV9D/KoiQiOPssIrrNP/I/0hMab+8Jril/6F1adR6oE7uNhn/N0ggOpgSfVDXzd55IfTBF+dJvVjHMcMgxiy1h+lm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/IgZfy6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CABBC4CEDC;
-	Mon, 23 Dec 2024 16:18:05 +0000 (UTC)
+	 MIME-Version; b=ARRjkZzwuNOkd8HtfACBeqO/pQOmZmQ6kbLG2adI75mmZheCPZedqeLXJbjhAdfLw77NZRGjupt0vHJdHAga1VO8PQUoRnWpRnbuCngafnJ18QTA2YZOViuwXRBv/PWHNNMXSE8sJb8HKnkzMokaMlYSOnOI3g6V1/UCG+VXxIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BroJqypH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63086C4CED3;
+	Mon, 23 Dec 2024 16:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970685;
-	bh=PxjRoWHyQ66bQWifQkZ9B9uAkaq8O5xQc/if2pmi/Lk=;
+	s=korg; t=1734970083;
+	bh=Xf+0LZXTkYtwTwUMQ7HZ9pHdK0M6bAH88umBy2nrbws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/IgZfy6UB3wA7+v3yVE1WdPgO3b8MHIOUOO6+iWBzCeHx2uPYhkcYBfACnHMZYnh
-	 UlS7Y9eCF1iErZQt+hzIRbNAiqiW2QEJ6fMy8cKUHAzUDW20cwQbc+fP8jV3rF36Wm
-	 JC5lVOl/XGwRUl7guaLeS+NRIfRntKqGP+UHvqNI=
+	b=BroJqypH78rLg0dfaUwIlCnGLFKESfboowSC7UiULiubRqvAFj7d/qHxYkN26+xHT
+	 LFDO1PSVXHU5+I/bkoGXmMUkFQMC6/fxO9oG0w5ew86JTResUMLHjRRCV5sNnup3zw
+	 +N/MgwaR4VtlBL8Tukv+xZ+4xvEu/hHfN/3UBy/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/83] net: mdiobus: fix an OF node reference leak
+	Simon Pilkington <simonp.git@mailbox.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 139/160] KVM: SVM: Allow guest writes to set MSR_AMD64_DE_CFG bits
 Date: Mon, 23 Dec 2024 16:59:10 +0100
-Message-ID: <20241223155354.855533926@linuxfoundation.org>
+Message-ID: <20241223155414.167746548@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 572af9f284669d31d9175122bbef9bc62cea8ded ]
+commit 4d5163cba43fe96902165606fa54e1aecbbb32de upstream.
 
-fwnode_find_mii_timestamper() calls of_parse_phandle_with_fixed_args()
-but does not decrement the refcount of the obtained OF node. Add an
-of_node_put() call before returning from the function.
+Drop KVM's arbitrary behavior of making DE_CFG.LFENCE_SERIALIZE read-only
+for the guest, as rejecting writes can lead to guest crashes, e.g. Windows
+in particular doesn't gracefully handle unexpected #GPs on the WRMSR, and
+nothing in the AMD manuals suggests that LFENCE_SERIALIZE is read-only _if
+it exists_.
 
-This bug was detected by an experimental static analysis tool that I am
-developing.
+KVM only allows LFENCE_SERIALIZE to be set, by the guest or host, if the
+underlying CPU has X86_FEATURE_LFENCE_RDTSC, i.e. if LFENCE is guaranteed
+to be serializing.  So if the guest sets LFENCE_SERIALIZE, KVM will provide
+the desired/correct behavior without any additional action (the guest's
+value is never stuffed into hardware).  And having LFENCE be serializing
+even when it's not _required_ to be is a-ok from a functional perspective.
 
-Fixes: bc1bee3b87ee ("net: mdiobus: Introduce fwnode_mdiobus_register_phy()")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241218035106.1436405-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 74a0e79df68a ("KVM: SVM: Disallow guest from changing userspace's MSR_AMD64_DE_CFG value")
+Fixes: d1d93fa90f1a ("KVM: SVM: Add MSR-based feature support for serializing LFENCE")
+Reported-by: Simon Pilkington <simonp.git@mailbox.org>
+Closes: https://lore.kernel.org/all/52914da7-a97b-45ad-86a0-affdf8266c61@mailbox.org
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20241211172952.1477605-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mdio/fwnode_mdio.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/svm.c |    9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
-index b782c35c4ac1..8ada397bc357 100644
---- a/drivers/net/mdio/fwnode_mdio.c
-+++ b/drivers/net/mdio/fwnode_mdio.c
-@@ -38,6 +38,7 @@ fwnode_find_pse_control(struct fwnode_handle *fwnode)
- static struct mii_timestamper *
- fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
- {
-+	struct mii_timestamper *mii_ts;
- 	struct of_phandle_args arg;
- 	int err;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3199,15 +3199,6 @@ static int svm_set_msr(struct kvm_vcpu *
+ 		if (data & ~supported_de_cfg)
+ 			return 1;
  
-@@ -51,10 +52,16 @@ fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
- 	else if (err)
- 		return ERR_PTR(err);
- 
--	if (arg.args_count != 1)
--		return ERR_PTR(-EINVAL);
-+	if (arg.args_count != 1) {
-+		mii_ts = ERR_PTR(-EINVAL);
-+		goto put_node;
-+	}
-+
-+	mii_ts = register_mii_timestamper(arg.np, arg.args[0]);
- 
--	return register_mii_timestamper(arg.np, arg.args[0]);
-+put_node:
-+	of_node_put(arg.np);
-+	return mii_ts;
- }
- 
- int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
--- 
-2.39.5
-
+-		/*
+-		 * Don't let the guest change the host-programmed value.  The
+-		 * MSR is very model specific, i.e. contains multiple bits that
+-		 * are completely unknown to KVM, and the one bit known to KVM
+-		 * is simply a reflection of hardware capabilities.
+-		 */
+-		if (!msr->host_initiated && data != svm->msr_decfg)
+-			return 1;
+-
+ 		svm->msr_decfg = data;
+ 		break;
+ 	}
 
 
 
