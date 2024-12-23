@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-105907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A719FB240
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F799FB2AC
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9433188592B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C4797A03BE
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAF419E98B;
-	Mon, 23 Dec 2024 16:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1221BC9F4;
+	Mon, 23 Dec 2024 16:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKu5sN2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNIz63+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F8D8827;
-	Mon, 23 Dec 2024 16:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F611BBBEE;
+	Mon, 23 Dec 2024 16:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970546; cv=none; b=dUcxregsWEmIkDZkmmYWMEe955NZA/6S8eSd1OqHHYi8rO9NUinGwkYkUo2LfAs3We7DVwiy/lN4uVtMxJYWldAp/kZZzyZL7Hu741uwdXCHqZhhERpg03GspMq+my4w278Xq3snhI3h+IIgKsoaFTxbYVcpS1N4Xku8+iFG6GA=
+	t=1734970844; cv=none; b=ilKRVmhEQeHWhHoRcLzevQCv2yKAFjtbYyAJFqHW/cv7tdoh2Q9Pr3WsTThdowU0zwx0AEP5Z+YYnSJAYmPzwgJVEvPMT7uhmERJxBmAc/g6NweXj8oAshNINB8l9RDIiiqnLtvYk62ACRjKCZmcN0LGNhEDH+/Ig8P1qYyUQyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970546; c=relaxed/simple;
-	bh=gClrYNXOj5THuZHeWB1QbP2+IAYKQCzR1s9lqSPb/e0=;
+	s=arc-20240116; t=1734970844; c=relaxed/simple;
+	bh=+xh5w9aZBjaKSue1qs48gHlTIXOXGaXb4BdsYXUZpPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WXXYC3sZ0t3iWHizyShWsJMCEjPO+OHaQUHRKRXAcmB6rAsRNIHkj2DYG+m5p9cByMp3WEGuEdNfhOSt6nXxBDrmm9WoC+Tf5gxZXBno/vMaUMRQIM/FE9S1nM1qKXHmU1BJTF/Ew9umj9wxnoCiR8EniJXZ+YwRYjwFogP3tN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKu5sN2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A404C4CED3;
-	Mon, 23 Dec 2024 16:15:45 +0000 (UTC)
+	 MIME-Version; b=f1IFfIUqkUfyF1hulW5hn4soXM0Pm7Cj+lw5LTIMkgwRQOVOERZJ/VfFLp5nx4Tcu8jWO7Bp+nNOal2qQNa2o6rgasrOObo3NdIG1BM1BhK1lBRB1Lh6vrIeJTYa7kvbOOdx82aaQKJ42qPvTVAA3Jq0P8+4pRc1H+XN1MXSJ1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNIz63+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B957CC4CED7;
+	Mon, 23 Dec 2024 16:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970546;
-	bh=gClrYNXOj5THuZHeWB1QbP2+IAYKQCzR1s9lqSPb/e0=;
+	s=korg; t=1734970844;
+	bh=+xh5w9aZBjaKSue1qs48gHlTIXOXGaXb4BdsYXUZpPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKu5sN2VZZenjABQC+8K4y6ePrDq8laGOeZ9I3/FWDSZMP/D6I9qXv0/P0ystiuAi
-	 +/SO0LEmrRP1srMBBFXSJSbcSIkM70A5KwNtVW5DMkcxHRDsy+yRVCVi8RYNrA565F
-	 C2PBljYU14VDhNC9bw+WPVSg/pqAG1vIlGDO2PfM=
+	b=aNIz63+ccGlqYjD+4c0jehckyHpfSGoy6ggU3X/2rFqe6vBKibxPFM8POMPvTsMqa
+	 T5OYPaViTaX3Lk3fYSEJNJ7BDHDNas8rW3VYe+3dAbhKp0K7oI5PvzDqmATMWHBKRj
+	 UVxMGYDGv/i98ldOb4aIccnhxAc0ukJuq7QPiGrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 115/116] net: fec: make PPS channel configurable
-Date: Mon, 23 Dec 2024 16:59:45 +0100
-Message-ID: <20241223155404.024495438@linuxfoundation.org>
+	patches@lists.linux.dev,
+	Will <willsroot@protonmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 67/83] io_uring: check if iowq is killed before queuing
+Date: Mon, 23 Dec 2024 16:59:46 +0100
+Message-ID: <20241223155356.220129272@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 566c2d83887f0570056833102adc5b88e681b0c7 upstream.
+commit dbd2ca9367eb19bc5e269b8c58b0b1514ada9156 upstream.
 
-Depending on the SoC where the FEC is integrated into the PPS channel
-might be routed to different timer instances. Make this configurable
-from the devicetree.
+task work can be executed after the task has gone through io_uring
+termination, whether it's the final task_work run or the fallback path.
+In this case, task work will find ->io_wq being already killed and
+null'ed, which is a problem if it then tries to forward the request to
+io_queue_iowq(). Make io_queue_iowq() fail requests in this case.
 
-When the related DT property is not present fallback to the previous
-default and use channel 0.
+Note that it also checks PF_KTHREAD, because the user can first close
+a DEFER_TASKRUN ring and shortly after kill the task, in which case
+->iowq check would race.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Tested-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Cc: stable@vger.kernel.org
+Fixes: 50c52250e2d74 ("block: implement async io_uring discard cmd")
+Fixes: 773af69121ecc ("io_uring: always reissue from task_work context")
+Reported-by: Will <willsroot@protonmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/63312b4a2c2bb67ad67b857d17a300e1d3b078e8.1734637909.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -523,8 +523,6 @@ static int fec_ptp_enable(struct ptp_clo
- 	unsigned long flags;
- 	int ret = 0;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -440,7 +440,11 @@ void io_queue_iowq(struct io_kiocb *req,
+ 	struct io_uring_task *tctx = req->task->io_uring;
  
--	fep->pps_channel = DEFAULT_PPS_CHANNEL;
--
- 	if (rq->type == PTP_CLK_REQ_PPS) {
- 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
- 
-@@ -706,12 +704,16 @@ void fec_ptp_init(struct platform_device
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-+	struct device_node *np = fep->pdev->dev.of_node;
- 	int irq;
- 	int ret;
- 
- 	fep->ptp_caps.owner = THIS_MODULE;
- 	strscpy(fep->ptp_caps.name, "fec ptp", sizeof(fep->ptp_caps.name));
- 
-+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
-+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
+ 	BUG_ON(!tctx);
+-	BUG_ON(!tctx->io_wq);
 +
- 	fep->ptp_caps.max_adj = 250000000;
- 	fep->ptp_caps.n_alarm = 0;
- 	fep->ptp_caps.n_ext_ts = 0;
++	if ((current->flags & PF_KTHREAD) || !tctx->io_wq) {
++		io_req_task_queue_fail(req, -ECANCELED);
++		return;
++	}
+ 
+ 	/* init ->work of the whole link before punting */
+ 	io_prep_async_link(req);
 
 
 
