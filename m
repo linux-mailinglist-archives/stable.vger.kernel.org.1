@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2839FB1BE
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8823A9FB1FB
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF0C165F8C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9CA018848A1
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EF119E98B;
-	Mon, 23 Dec 2024 16:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972A51B21BD;
+	Mon, 23 Dec 2024 16:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+e8uMeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlWIRs6/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031B4188006;
-	Mon, 23 Dec 2024 16:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EA47E0FF;
+	Mon, 23 Dec 2024 16:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970109; cv=none; b=Y+O8ImCKxOZzuHoYFyxB/B3eda6YwQW4Ix1jyYR5w1PH3zASk6QWAoNx2lQunPocAA6meL8Wsrvb4yw6fshbpPDUB+Nv+5PN3qKjkbnuPRyre+Vvq4ohR9rIlWbB3Pp7HX6AQAeGkScqgAZg+yHUZM5TQ6sYsphK5Hn7YeSH4zc=
+	t=1734970353; cv=none; b=eCJ8WEM0QOXRxPQF98rb5x6R6wSqVR4zfmWyUEu+O09HcM5Jn5pljauL81ZG6qt921GNPmmMVqJOyvz+Et5v3XotN4nHVswApu14OgjpGrik0w00pOFnLgQFeCvxGS7DoAW/IQEb9irdIwrmvKZ7fpZtxBaQPMGfuDDZ15c+oAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970109; c=relaxed/simple;
-	bh=XkuSMfvNFh8X0iZH8KD0bUZuePpgPtTt2Hfe/epT99A=;
+	s=arc-20240116; t=1734970353; c=relaxed/simple;
+	bh=XHXBChGhzJh5HjFY5vZjjAmrAcgcrtdDYwmymElp/aU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1DEitUFEVbuQevU3BQ2aG04Mn3Esa2xbVJTmFblAbTha5J5hs8fhMaVJwQ9mXwxAz8VfBySNSAGV3Tx/HQeMAKqE+esdXwTGsncz48wOKVqem3UqpJaecCtcIDAmMZz8+vQYebKKyUNH2Pvvy5CEtrrSWXcJLuzC5SDpmasjw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+e8uMeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65283C4CED3;
-	Mon, 23 Dec 2024 16:08:28 +0000 (UTC)
+	 MIME-Version; b=nmsfKVjc6H/JaEGesKhEJXEffeoaoiougzkLpzwM0rTVMO0d6/nay724qwEJfoVuE4oXt28cKeX3O2hHHAq8wCVvOsgTbRL825aS4x5y7aeSRR/W49ooSo3prP985J0HtS/DyyPLPB4cEhn+CvzuB4PL+tfdnxmrJiOa1+Fu9iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlWIRs6/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51C5C4CED3;
+	Mon, 23 Dec 2024 16:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970108;
-	bh=XkuSMfvNFh8X0iZH8KD0bUZuePpgPtTt2Hfe/epT99A=;
+	s=korg; t=1734970353;
+	bh=XHXBChGhzJh5HjFY5vZjjAmrAcgcrtdDYwmymElp/aU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+e8uMebod3fbI2lTbRUuMLmDeGi23K7hpxpiHK3fIwAvIcRMbEu0W/Spz+S6lxKr
-	 nNmI+C/rHqS4AOSi09wAe2IjTsjufS6wGwQNJH61INIUq6nZFyV8GobjWwDBjTBNJ8
-	 tN4MEL+6PgLJeM7AUH/rw4iPszBG7nSnNvcPFTSc=
+	b=NlWIRs6/gFkmxwLXk1Tf8Co3V3/LtRtBMAgZvvhmCAmTFbAlnAZQeHH794WWj4Lz6
+	 36oINrfTDlQFOV/ccH0mwuILETW7nhZto904KQm4sKhvf/Yy6BQYnf6RN3JXiACK7n
+	 3ndyyLT9S6lO3KaZq0AAU0Az9QVkruGn9Gqg0oIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 116/160] btrfs: fix improper generation check in snapshot delete
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 057/116] net: mdiobus: fix an OF node reference leak
 Date: Mon, 23 Dec 2024 16:58:47 +0100
-Message-ID: <20241223155413.160452328@linuxfoundation.org>
+Message-ID: <20241223155401.780789065@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit d75d72a858f0c00ca8ae161b48cdb403807be4de upstream.
+[ Upstream commit 572af9f284669d31d9175122bbef9bc62cea8ded ]
 
-We have been using the following check
+fwnode_find_mii_timestamper() calls of_parse_phandle_with_fixed_args()
+but does not decrement the refcount of the obtained OF node. Add an
+of_node_put() call before returning from the function.
 
-   if (generation <= root->root_key.offset)
+This bug was detected by an experimental static analysis tool that I am
+developing.
 
-to make decisions about whether or not to visit a node during snapshot
-delete.  This is because for normal subvolumes this is set to 0, and for
-snapshots it's set to the creation generation.  The idea being that if
-the generation of the node is less than or equal to our creation
-generation then we don't need to visit that node, because it doesn't
-belong to us, we can simply drop our reference and move on.
-
-However reloc roots don't have their generation stored in
-root->root_key.offset, instead that is the objectid of their
-corresponding fs root.  This means we can incorrectly not walk into
-nodes that need to be dropped when deleting a reloc root.
-
-There are a variety of consequences to making the wrong choice in two
-distinct areas.
-
-visit_node_for_delete()
-
-1. False positive.  We think we are newer than the block when we really
-   aren't.  We don't visit the node and drop our reference to the node
-   and carry on.  This would result in leaked space.
-2. False negative.  We do decide to walk down into a block that we
-   should have just dropped our reference to.  However this means that
-   the child node will have refs > 1, so we will switch to
-   UPDATE_BACKREF, and then the subsequent walk_down_proc() will notice
-   that btrfs_header_owner(node) != root->root_key.objectid and it'll
-   break out of the loop, and then walk_up_proc() will drop our reference,
-   so this appears to be ok.
-
-do_walk_down()
-
-1. False positive.  We are in UPDATE_BACKREF and incorrectly decide that
-   we are done and don't need to update the backref for our lower nodes.
-   This is another case that simply won't happen with relocation, as we
-   only have to do UPDATE_BACKREF if the node below us was shared and
-   didn't have FULL_BACKREF set, and since we don't own that node
-   because we're a reloc root we actually won't end up in this case.
-2. False negative.  Again this is tricky because as described above, we
-   simply wouldn't be here from relocation, because we don't own any of
-   the nodes because we never set btrfs_header_owner() to the reloc root
-   objectid, and we always use FULL_BACKREF, we never actually need to
-   set FULL_BACKREF on any children.
-
-Having spent a lot of time stressing relocation/snapshot delete recently
-I've not seen this pop in practice.  But this is objectively incorrect,
-so fix this to get the correct starting generation based on the root
-we're dropping to keep me from thinking there's a problem here.
-
-CC: stable@vger.kernel.org
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bc1bee3b87ee ("net: mdiobus: Introduce fwnode_mdiobus_register_phy()")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241218035106.1436405-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.h       |   19 +++++++++++++++++++
- fs/btrfs/extent-tree.c |    6 +++---
- 2 files changed, 22 insertions(+), 3 deletions(-)
+ drivers/net/mdio/fwnode_mdio.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -371,6 +371,25 @@ static inline void btrfs_set_root_last_t
+diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
+index 1183ef5e203e..c62f2e85414d 100644
+--- a/drivers/net/mdio/fwnode_mdio.c
++++ b/drivers/net/mdio/fwnode_mdio.c
+@@ -38,6 +38,7 @@ fwnode_find_pse_control(struct fwnode_handle *fwnode)
+ static struct mii_timestamper *
+ fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
+ {
++	struct mii_timestamper *mii_ts;
+ 	struct of_phandle_args arg;
+ 	int err;
+ 
+@@ -51,10 +52,16 @@ fwnode_find_mii_timestamper(struct fwnode_handle *fwnode)
+ 	else if (err)
+ 		return ERR_PTR(err);
+ 
+-	if (arg.args_count != 1)
+-		return ERR_PTR(-EINVAL);
++	if (arg.args_count != 1) {
++		mii_ts = ERR_PTR(-EINVAL);
++		goto put_node;
++	}
++
++	mii_ts = register_mii_timestamper(arg.np, arg.args[0]);
+ 
+-	return register_mii_timestamper(arg.np, arg.args[0]);
++put_node:
++	of_node_put(arg.np);
++	return mii_ts;
  }
  
- /*
-+ * Return the generation this root started with.
-+ *
-+ * Every normal root that is created with root->root_key.offset set to it's
-+ * originating generation.  If it is a snapshot it is the generation when the
-+ * snapshot was created.
-+ *
-+ * However for TREE_RELOC roots root_key.offset is the objectid of the owning
-+ * tree root.  Thankfully we copy the root item of the owning tree root, which
-+ * has it's last_snapshot set to what we would have root_key.offset set to, so
-+ * return that if this is a TREE_RELOC root.
-+ */
-+static inline u64 btrfs_root_origin_generation(const struct btrfs_root *root)
-+{
-+	if (btrfs_root_id(root) == BTRFS_TREE_RELOC_OBJECTID)
-+		return btrfs_root_last_snapshot(&root->root_item);
-+	return root->root_key.offset;
-+}
-+
-+/*
-  * Structure that conveys information about an extent that is going to replace
-  * all the extents in a file range.
-  */
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5308,7 +5308,7 @@ static bool visit_node_for_delete(struct
- 	 * reference to it.
- 	 */
- 	generation = btrfs_node_ptr_generation(eb, slot);
--	if (!wc->update_ref || generation <= root->root_key.offset)
-+	if (!wc->update_ref || generation <= btrfs_root_origin_generation(root))
- 		return false;
- 
- 	/*
-@@ -5363,7 +5363,7 @@ static noinline void reada_walk_down(str
- 			goto reada;
- 
- 		if (wc->stage == UPDATE_BACKREF &&
--		    generation <= root->root_key.offset)
-+		    generation <= btrfs_root_origin_generation(root))
- 			continue;
- 
- 		/* We don't lock the tree block, it's OK to be racy here */
-@@ -5706,7 +5706,7 @@ static noinline int do_walk_down(struct
- 	 * for the subtree
- 	 */
- 	if (wc->stage == UPDATE_BACKREF &&
--	    generation <= root->root_key.offset) {
-+	    generation <= btrfs_root_origin_generation(root)) {
- 		wc->lookup_info = 1;
- 		return 1;
- 	}
+ int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
+-- 
+2.39.5
+
 
 
 
