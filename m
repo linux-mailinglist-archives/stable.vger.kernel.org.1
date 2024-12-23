@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-105908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A609FB241
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:15:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D93D9FB1AF
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E23162178
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:15:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549851884D30
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E1D187848;
-	Mon, 23 Dec 2024 16:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2961B4127;
+	Mon, 23 Dec 2024 16:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVO76wpR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOgO2lXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DBB8827;
-	Mon, 23 Dec 2024 16:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE85C1B395C;
+	Mon, 23 Dec 2024 16:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970549; cv=none; b=iSqPL6/6UXkS/cyDT02C7S07Fsty1mBbK/M+Xtpd4kStILDExURtcdgpPf0vABl8p+wJWIW7yzbi+ANSk3wlS+xodwr71m31SWswyptxlr8SH5O2Eqkd91T6vIupA73efXYwwE2k62bbdVArth/fhDklNOJ1fwTLtipvHGei7ZI=
+	t=1734970139; cv=none; b=J+xyTPNDLwJFoSCSBzGrs+qJRqi5oLgt4tzkVZwrqf0axvGlXtDIHqipt2WYHd4PW8y0f96X5AroHJ2lSnlRYSY6nLx9xH/M08pCAGsP72XROtFqPB6nvvvBByhMS/wggYsVTlC+P6DgVGuiO21uhvZusmGTAHdGQDHFGu8kewo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970549; c=relaxed/simple;
-	bh=VGE1m+vaGoAHYdxWO5l/w06P3zFNHkbA31looErgutQ=;
+	s=arc-20240116; t=1734970139; c=relaxed/simple;
+	bh=8jctfwiTah3S2Qtr9MahY1v3MUyRd3hI9HtnU4b9e/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtS6Ui+13IL4m4nCPVEPkKddKYUqSsEaW8FGNWP9wDYGfa1zZkVyphuVjL0GsF7aS/AwLk/QR8oBxdsVi2xOB9sb2iw2cVj3YXQhm/TbCCCBwkz+r1sql740PUddhX/nb6OD+bvHGIXKfkdK5WRGq7Xg404kwwrSIrNBLUJ0zbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVO76wpR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A5AC4CED3;
-	Mon, 23 Dec 2024 16:15:48 +0000 (UTC)
+	 MIME-Version; b=WyJ9wLv0RH/6iBXERC/i4jaXGgusfjlWSCMzsOo8mDmsJKSdXMEotvSr+rtbPTGrGBN7jaK7d4ko2NH4Liex9swvmK1DhYRzxB1uxaDKEWxzBq7o/3xNl1Kwtn3+P+cEKN66DaHgCKCt3bCa3jbAwqexn3yIVfH0wZd8j/vtBrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOgO2lXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4633BC4CED6;
+	Mon, 23 Dec 2024 16:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970549;
-	bh=VGE1m+vaGoAHYdxWO5l/w06P3zFNHkbA31looErgutQ=;
+	s=korg; t=1734970138;
+	bh=8jctfwiTah3S2Qtr9MahY1v3MUyRd3hI9HtnU4b9e/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVO76wpRvjFweFPclszyNpwananGr8s3DosCq4OWrosXWx2TB2AifaAqmvf+NKDHY
-	 Hf6TC9+BqSqJYwJvREd5Sxb0colJ/Wfot/q3HJ+zB96oOzRidIjU2OG5kqqozBLRrG
-	 1EEKEkNbNTnxz3EeIZPMfXPmPioGDiaQtRpW+mmM=
+	b=xOgO2lXQ03s0ZBWqdCNl+9dv5xk2MTxZfDmJjA7zhmghL0jD1YtOegVbsIRV3bgjF
+	 A13u54M4ea2JzlkT2brzqa1XSYqd5dls4EYfFkgevwSrY0/eOxIrKGvsvW0XrGHmeE
+	 fi7NeHhNpGn7TCMd9F4wh2kq1r4A6sWgoqcndKw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will <willsroot@protonmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 098/116] io_uring: check if iowq is killed before queuing
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Huang Ying <ying.huang@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 157/160] mm: use aligned address in copy_user_gigantic_page()
 Date: Mon, 23 Dec 2024 16:59:28 +0100
-Message-ID: <20241223155403.372235093@linuxfoundation.org>
+Message-ID: <20241223155414.889533845@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-commit dbd2ca9367eb19bc5e269b8c58b0b1514ada9156 upstream.
+commit f5d09de9f1bf9674c6418ff10d0a40cfe29268e1 upstream.
 
-task work can be executed after the task has gone through io_uring
-termination, whether it's the final task_work run or the fallback path.
-In this case, task work will find ->io_wq being already killed and
-null'ed, which is a problem if it then tries to forward the request to
-io_queue_iowq(). Make io_queue_iowq() fail requests in this case.
+In current kernel, hugetlb_wp() calls copy_user_large_folio() with the
+fault address.  Where the fault address may be not aligned with the huge
+page size.  Then, copy_user_large_folio() may call
+copy_user_gigantic_page() with the address, while
+copy_user_gigantic_page() requires the address to be huge page size
+aligned.  So, this may cause memory corruption or information leak,
+addtional, use more obvious naming 'addr_hint' instead of 'addr' for
+copy_user_gigantic_page().
 
-Note that it also checks PF_KTHREAD, because the user can first close
-a DEFER_TASKRUN ring and shortly after kill the task, in which case
-->iowq check would race.
-
-Cc: stable@vger.kernel.org
-Fixes: 50c52250e2d74 ("block: implement async io_uring discard cmd")
-Fixes: 773af69121ecc ("io_uring: always reissue from task_work context")
-Reported-by: Will <willsroot@protonmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/63312b4a2c2bb67ad67b857d17a300e1d3b078e8.1734637909.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lkml.kernel.org/r/20241028145656.932941-2-wangkefeng.wang@huawei.com
+Fixes: 530dd9926dc1 ("mm: memory: improve copy_user_large_folio()")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Huang Ying <ying.huang@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ mm/hugetlb.c |    5 ++---
+ mm/memory.c  |    5 +++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -498,7 +498,11 @@ void io_queue_iowq(struct io_kiocb *req,
- 	struct io_uring_task *tctx = req->task->io_uring;
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5333,7 +5333,7 @@ again:
+ 					break;
+ 				}
+ 				ret = copy_user_large_folio(new_folio, pte_folio,
+-						ALIGN_DOWN(addr, sz), dst_vma);
++							    addr, dst_vma);
+ 				folio_put(pte_folio);
+ 				if (ret) {
+ 					folio_put(new_folio);
+@@ -6632,8 +6632,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 			*foliop = NULL;
+ 			goto out;
+ 		}
+-		ret = copy_user_large_folio(folio, *foliop,
+-					    ALIGN_DOWN(dst_addr, size), dst_vma);
++		ret = copy_user_large_folio(folio, *foliop, dst_addr, dst_vma);
+ 		folio_put(*foliop);
+ 		*foliop = NULL;
+ 		if (ret) {
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6817,13 +6817,14 @@ void folio_zero_user(struct folio *folio
+ }
  
- 	BUG_ON(!tctx);
--	BUG_ON(!tctx->io_wq);
-+
-+	if ((current->flags & PF_KTHREAD) || !tctx->io_wq) {
-+		io_req_task_queue_fail(req, -ECANCELED);
-+		return;
-+	}
+ static int copy_user_gigantic_page(struct folio *dst, struct folio *src,
+-				   unsigned long addr,
++				   unsigned long addr_hint,
+ 				   struct vm_area_struct *vma,
+ 				   unsigned int nr_pages)
+ {
+-	int i;
++	unsigned long addr = ALIGN_DOWN(addr_hint, folio_size(dst));
+ 	struct page *dst_page;
+ 	struct page *src_page;
++	int i;
  
- 	/* init ->work of the whole link before punting */
- 	io_prep_async_link(req);
+ 	for (i = 0; i < nr_pages; i++) {
+ 		dst_page = folio_page(dst, i);
 
 
 
