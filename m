@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-105978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCEC9FB28F
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8319FB221
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4344188157C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:19:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71E7B1881FDF
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52FB1AAE0B;
-	Mon, 23 Dec 2024 16:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A7E7E0FF;
+	Mon, 23 Dec 2024 16:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmpUL/Si"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2aZo78h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946C317A597;
-	Mon, 23 Dec 2024 16:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2104519E98B;
+	Mon, 23 Dec 2024 16:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970782; cv=none; b=S62HIs1DakHZRZgaxQPTuNlo6LKeaHwU5qbca4YeHhgzqDdOIgDWxGRJ+Vd0MmZef19rnP+nx8tLH0pggXWBWrZ0tY+U+zsxpmAhrMvwIuj3zyU0Bdpqvf2R3SreNJ8QfSLIKP9jbRVAo1NpnbkBMWe302b1XIhMwo7O9idcOUU=
+	t=1734970451; cv=none; b=qloeCwiDxfeNUWJ02YOMIQNkCUMybJ8r+OJVO+jg4+5CCiAZ6Un/spl87K60wpVXujGhv3fDjymoCRuO1xlWMBQs1dDqp+1cHgyFAm03pZXRX8+bw6yd9Fv0q6yVMw6T0PBk2NR8jkuMeukgkE9meyZd+V0BYSk/OjUBjiVTzLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970782; c=relaxed/simple;
-	bh=U7agZ1NkBrdoEDtRWKWG0+tmX+e2U8Guyfk4Mm3ukcU=;
+	s=arc-20240116; t=1734970451; c=relaxed/simple;
+	bh=yZZh1jJDUgTfzZtAsmdU2JuwBIfW3vq4nr4MkrOb3lQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYbjMef5JXnqYPb7ZgDKsmhUgl58C7LIwUclKdah3++UhX0FV6uGBeTHAx83qkl6y8h6rJpz813plZmWdxp9LaI5zeC/AKIptX7SQJlOq+yHB1K7xLGxVl6ldcwk7DMX6U0QRiw5u01Tp9QIbVdIzdqYZXDaQQQDeK4gkWxAtMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmpUL/Si; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBB4C4CED3;
-	Mon, 23 Dec 2024 16:19:41 +0000 (UTC)
+	 MIME-Version; b=R/D59ByA/WV2XNzSyLNcc8SJSYW7fvZa2OKnKYsersGfkJ8/9PvF7y+7TT27eAPd3MbHhPjmrPTxqjf9Cot7mnX8PFlfmBBqGCqhE16tVSoeBjgpIJjEfrZvPJRsOwh/+zUrAAVkYQgysNhPLTLOQB/RLQXNy3t10I4UKLL+25A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2aZo78h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0E8C4CED3;
+	Mon, 23 Dec 2024 16:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970782;
-	bh=U7agZ1NkBrdoEDtRWKWG0+tmX+e2U8Guyfk4Mm3ukcU=;
+	s=korg; t=1734970451;
+	bh=yZZh1jJDUgTfzZtAsmdU2JuwBIfW3vq4nr4MkrOb3lQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmpUL/SiNgmJXHuFBY5xa5MCHYxBrWExi0KZ1hXUoZHBz9KIff3K45j45bQ2svxGN
-	 PEvPU8sgMt4imoAmnQOxrOyzM5vmDm+qmlXeTZvrR7J6E/LzUAZkTsGJRU1W/mpjG7
-	 vv1KjkyNnDMunwEQMli9uK5TPzx0fHplMG3JCg6k=
+	b=w2aZo78httDjOvsWF6awq7w1+ZSUOIweKbaXwOyOsv6pyxWVcZq/FHetoCOJ/61Oe
+	 s0+h2S0BPJx5Igz4jKcMPHX+v/mqS4EdZ6+/YrTZGO//Mu6iaUHQh+Yhojyjp/3NXQ
+	 L5dkvqO+IOWhWdRQKntmFLHZSrLDq6jGGvfOhYGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Cain <bcain@quicinc.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 37/83] hexagon: Disable constant extender optimization for LLVM prior to 19.1.0
-Date: Mon, 23 Dec 2024 16:59:16 +0100
-Message-ID: <20241223155355.077867408@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 087/116] vmalloc: fix accounting with i915
+Date: Mon, 23 Dec 2024 16:59:17 +0100
+Message-ID: <20241223155402.943868423@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +69,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit aef25be35d23ec768eed08bfcf7ca3cf9685bc28 upstream.
+commit a2e740e216f5bf49ccb83b6d490c72a340558a43 upstream.
 
-The Hexagon-specific constant extender optimization in LLVM may crash on
-Linux kernel code [1], such as fs/bcache/btree_io.c after
-commit 32ed4a620c54 ("bcachefs: Btree path tracepoints") in 6.12:
+If the caller of vmap() specifies VM_MAP_PUT_PAGES (currently only the
+i915 driver), we will decrement nr_vmalloc_pages and MEMCG_VMALLOC in
+vfree().  These counters are incremented by vmalloc() but not by vmap() so
+this will cause an underflow.  Check the VM_MAP_PUT_PAGES flag before
+decrementing either counter.
 
-  clang: llvm/lib/Target/Hexagon/HexagonConstExtenders.cpp:745: bool (anonymous namespace)::HexagonConstExtenders::ExtRoot::operator<(const HCE::ExtRoot &) const: Assertion `ThisB->getParent() == OtherB->getParent()' failed.
-  Stack dump:
-  0.      Program arguments: clang --target=hexagon-linux-musl ... fs/bcachefs/btree_io.c
-  1.      <eof> parser at end of file
-  2.      Code generation
-  3.      Running pass 'Function Pass Manager' on module 'fs/bcachefs/btree_io.c'.
-  4.      Running pass 'Hexagon constant-extender optimization' on function '@__btree_node_lock_nopath'
-
-Without assertions enabled, there is just a hang during compilation.
-
-This has been resolved in LLVM main (20.0.0) [2] and backported to LLVM
-19.1.0 but the kernel supports LLVM 13.0.1 and newer, so disable the
-constant expander optimization using the '-mllvm' option when using a
-toolchain that is not fixed.
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/issues/99714 [1]
-Link: https://github.com/llvm/llvm-project/commit/68df06a0b2998765cb0a41353fcf0919bbf57ddb [2]
-Link: https://github.com/llvm/llvm-project/commit/2ab8d93061581edad3501561722ebd5632d73892 [3]
-Reviewed-by: Brian Cain <bcain@quicinc.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lkml.kernel.org/r/20241211202538.168311-1-willy@infradead.org
+Fixes: b944afc9d64d ("mm: add a VM_MAP_PUT_PAGES flag for vmap")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/hexagon/Makefile |    6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/vmalloc.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/hexagon/Makefile
-+++ b/arch/hexagon/Makefile
-@@ -32,3 +32,9 @@ KBUILD_LDFLAGS += $(ldflags-y)
- TIR_NAME := r19
- KBUILD_CFLAGS += -ffixed-$(TIR_NAME) -DTHREADINFO_REG=$(TIR_NAME) -D__linux__
- KBUILD_AFLAGS += -DTHREADINFO_REG=$(TIR_NAME)
-+
-+# Disable HexagonConstExtenders pass for LLVM versions prior to 19.1.0
-+# https://github.com/llvm/llvm-project/issues/99714
-+ifneq ($(call clang-min-version, 190100),y)
-+KBUILD_CFLAGS += -mllvm -hexagon-cext=false
-+endif
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2851,7 +2851,8 @@ void vfree(const void *addr)
+ 		struct page *page = vm->pages[i];
+ 
+ 		BUG_ON(!page);
+-		mod_memcg_page_state(page, MEMCG_VMALLOC, -1);
++		if (!(vm->flags & VM_MAP_PUT_PAGES))
++			mod_memcg_page_state(page, MEMCG_VMALLOC, -1);
+ 		/*
+ 		 * High-order allocs for huge vmallocs are split, so
+ 		 * can be freed as an array of order-0 allocations
+@@ -2859,7 +2860,8 @@ void vfree(const void *addr)
+ 		__free_page(page);
+ 		cond_resched();
+ 	}
+-	atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
++	if (!(vm->flags & VM_MAP_PUT_PAGES))
++		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
+ 	kvfree(vm->pages);
+ 	kfree(vm);
+ }
 
 
 
