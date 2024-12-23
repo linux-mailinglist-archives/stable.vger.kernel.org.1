@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-105965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17829FB283
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41DF9FB24C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:16:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F9F8161D52
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3489A1885EEB
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837E81A8F80;
-	Mon, 23 Dec 2024 16:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107CC1AAE0B;
+	Mon, 23 Dec 2024 16:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ5tDHx5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ4s9Rfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409048827;
-	Mon, 23 Dec 2024 16:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C036C1865EB;
+	Mon, 23 Dec 2024 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970738; cv=none; b=Q94bD/lzNsirMGmr+Qn5vciw4aVGZpkcx12GPsTtwY0Qrb7q55Uu80uz5Jld36/1ZDYAXYlt6NH99wBMn65NjS+QMKClfGKiQSkKK4QjfdWllaBey3rE9C6NMtja9eeNh1NbmRgXsWZS6GtMIxp9qYOkvA1oj0Czc2bXne3yyno=
+	t=1734970569; cv=none; b=VnuxVX7lruZQETkAd+wpxUy1qbiTNS2Wvd+dslZLbV59EyL9iLtdoS4RGd4nvvNB+z/XMlg+eRQxDl8dWF9SwIGo2BeKLVYMw//LhMMbpFTYdr+Y9GWZKDYX8bJs2lE2jr2S3WJlROgp4akhj8ARfzsxrIz4SVuI1NUO1Ev5PMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970738; c=relaxed/simple;
-	bh=d/94KvA8wmcDEQQravATxkg+05qY0McR7zDnpU/OK5Y=;
+	s=arc-20240116; t=1734970569; c=relaxed/simple;
+	bh=ZHZ6IK9AHnKG6IbEsV8JlMsKLaKEICFK7iBKaZxFOQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bf2fczxeeJLVsewQKSot58Jfuy2ByVGq+6h52uPWXjFS+1KRha2fpA9O5VExERqCynrzHVkEJtMjH9YbKHCyDMlhV2S+9JpWI+bTxhfIaJELaWiS/3jnYqjnugQ78WoN2qElxbyTbn0KXz0Aqw213tbeA96iSOyviE4FMfT/FzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ5tDHx5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AAAC4CED3;
-	Mon, 23 Dec 2024 16:18:57 +0000 (UTC)
+	 MIME-Version; b=merYKNUpohdUnhACu0lrPyZYhj5i7AOqLCDOzz66ah25FJYwCB4tmP/E+yc2hvGSlrQi7VRwuexn+NVXjhW1+2Xd49DJuy26apqfjt8dIEiEpjCH/siUQpmPa+vC+yAtstFL8gLqxxjFrPakT1Dzgwb57cOxCsEU+sc8OTpR5Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ4s9Rfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350B3C4CED3;
+	Mon, 23 Dec 2024 16:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970738;
-	bh=d/94KvA8wmcDEQQravATxkg+05qY0McR7zDnpU/OK5Y=;
+	s=korg; t=1734970569;
+	bh=ZHZ6IK9AHnKG6IbEsV8JlMsKLaKEICFK7iBKaZxFOQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJ5tDHx5d0Nt0Ruci4V3l/T2EyxrrGHCmTDpOb/Pa9KWDy3YunwETLlr3ifLBV0v0
-	 3J+FwBBuojf0OVf3A5GX0Ro3lNiGK+JeZw3SSiAwy8pXHgCXqUyaWFEoT1r5H0+up9
-	 OaM7uczopXMzkWLngdJcmlUiuvZDxQjr5w3iEKo8=
+	b=AZ4s9RfhBavOc3vC4U1VLhWERcHFbYnBPGBxwfMZGpbjxO3B6mO+4+M9oRI3MXpUe
+	 QnO4KoCi6UAGpvNiT62GDWi9boe3rxJjPnDLTiJCwj2NIJpr1QzrmJfBT+SALmB3pR
+	 F+xhXFG5hPq3wLxKBrPQjC1ArY5ZnEY5NaHhJEmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 54/83] hwmon: (tmp513) Fix Current Register value interpretation
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9260555647a5132edd48@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 103/116] nilfs2: prevent use of deleted inode
 Date: Mon, 23 Dec 2024 16:59:33 +0100
-Message-ID: <20241223155355.721364430@linuxfoundation.org>
+Message-ID: <20241223155403.560406043@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-References: <20241223155353.641267612@linuxfoundation.org>
+In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
+References: <20241223155359.534468176@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit da1d0e6ba211baf6747db74c07700caddfd8a179 ]
+commit 901ce9705fbb9f330ff1f19600e5daf9770b0175 upstream.
 
-The value returned by the driver after processing the contents of the
-Current Register does not correspond to the TMP512/TMP513 specifications.
-A raw register value is converted to a signed integer value by a sign
-extension in accordance with the algorithm provided in the specification,
-but due to the off-by-one error in the sign bit index, the result is
-incorrect. Moreover, negative values will be reported as large positive
-due to missing sign extension from u32 to long.
+syzbot reported a WARNING in nilfs_rmdir. [1]
 
-According to the TMP512 and TMP513 datasheets, the Current Register (07h)
-is a 16-bit two's complement integer value. E.g., if regval = 1000 0011
-0000 0000, then the value must be (-32000 * lsb), but the driver will
-return (33536 * lsb).
+Because the inode bitmap is corrupted, an inode with an inode number that
+should exist as a ".nilfs" file was reassigned by nilfs_mkdir for "file0",
+causing an inode duplication during execution.  And this causes an
+underflow of i_nlink in rmdir operations.
 
-Fix off-by-one bug, and also cast data->curr_lsb_ua (which is of type u32)
-to long to prevent incorrect cast for negative values.
+The inode is used twice by the same task to unmount and remove directories
+".nilfs" and "file0", it trigger warning in nilfs_rmdir.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Avoid to this issue, check i_nlink in nilfs_iget(), if it is 0, it means
+that this inode has been deleted, and iput is executed to reclaim it.
 
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Link: https://lore.kernel.org/r/20241216173648.526-3-m.masimov@maxima.ru
-[groeck: Fixed description line length]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]
+WARNING: CPU: 1 PID: 5824 at fs/inode.c:407 drop_nlink+0xc4/0x110 fs/inode.c:407
+...
+Call Trace:
+ <TASK>
+ nilfs_rmdir+0x1b0/0x250 fs/nilfs2/namei.c:342
+ vfs_rmdir+0x3a3/0x510 fs/namei.c:4394
+ do_rmdir+0x3b5/0x580 fs/namei.c:4453
+ __do_sys_rmdir fs/namei.c:4472 [inline]
+ __se_sys_rmdir fs/namei.c:4470 [inline]
+ __x64_sys_rmdir+0x47/0x50 fs/namei.c:4470
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Link: https://lkml.kernel.org/r/20241209065759.6781-1-konishi.ryusuke@gmail.com
+Fixes: d25006523d0b ("nilfs2: pathname operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9260555647a5132edd48
+Tested-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/tmp513.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/inode.c |    8 +++++++-
+ fs/nilfs2/namei.c |    5 +++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index 23f7fb7fab8c..4ab06852efd9 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -218,7 +218,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
- 		break;
- 	case TMP51X_BUS_CURRENT_RESULT:
- 		// Current = (ShuntVoltage * CalibrationRegister) / 4096
--		*val = sign_extend32(regval, 16) * data->curr_lsb_ua;
-+		*val = sign_extend32(regval, 15) * (long)data->curr_lsb_ua;
- 		*val = DIV_ROUND_CLOSEST(*val, MILLI);
- 		break;
- 	case TMP51X_LOCAL_TEMP_RESULT:
--- 
-2.39.5
-
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -618,8 +618,14 @@ struct inode *nilfs_iget(struct super_bl
+ 	inode = nilfs_iget_locked(sb, root, ino);
+ 	if (unlikely(!inode))
+ 		return ERR_PTR(-ENOMEM);
+-	if (!(inode->i_state & I_NEW))
++
++	if (!(inode->i_state & I_NEW)) {
++		if (!inode->i_nlink) {
++			iput(inode);
++			return ERR_PTR(-ESTALE);
++		}
+ 		return inode;
++	}
+ 
+ 	err = __nilfs_read_inode(sb, root, ino, inode);
+ 	if (unlikely(err)) {
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -67,6 +67,11 @@ nilfs_lookup(struct inode *dir, struct d
+ 		inode = NULL;
+ 	} else {
+ 		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
++		if (inode == ERR_PTR(-ESTALE)) {
++			nilfs_error(dir->i_sb,
++					"deleted inode referenced: %lu", ino);
++			return ERR_PTR(-EIO);
++		}
+ 	}
+ 
+ 	return d_splice_alias(inode, dentry);
 
 
 
