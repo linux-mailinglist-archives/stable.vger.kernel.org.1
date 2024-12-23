@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-105830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555799FB1E3
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F7D9FB16A
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 010491885301
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:11:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A6A41614DA
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F391B4126;
-	Mon, 23 Dec 2024 16:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDD6189B94;
+	Mon, 23 Dec 2024 16:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSKV9Itz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JGLVYv4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDF61B395E;
-	Mon, 23 Dec 2024 16:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB4A2EAE6;
+	Mon, 23 Dec 2024 16:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970282; cv=none; b=CmnDfBRjbDmCDzKuNyDOMjjHWOYjyFU2YlaLXgYnyRUd7sOgAClBjMr/kyivQ8vVvFZYsgQO7V/aK8gOXRhjbkB92tsSegnnmoEG1rRJn8aTi+bcAMnObI5zcRmNKVMJ+jCLFfURMXgtKzcA9o9cYgJhOwZl4XcmuovmM6lZZyo=
+	t=1734969911; cv=none; b=XNKA3zr+NkFftGB50mLONdsAtfS/BpsQorTU/7D+ZUD+CGYLUSIkmTrJeGqJunVCD9QfU+FVktUmBBvZurH6h2x/jm3E29TlBm0i3Oaks9UWNEgRw2U00XS9MoDXk3KUFmbRLlCLDs2jUj6oImpCTrhlHsKd4xxAJ1+rCTnjn34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970282; c=relaxed/simple;
-	bh=/QnW958nyGP3ytafY/0Eoih2shVq+l7D0fjTJNudxhc=;
+	s=arc-20240116; t=1734969911; c=relaxed/simple;
+	bh=RJVpjGZ6/esfnwT3TKX9S4z8CbocJlLSW54rARIByJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MdAIufXGPtY+YfdH2k3FiQBAkqJjnbAkuYsfU/ODvkBKFlPS0tJwQ2SxYMRPWOaqDnyxmvQUmgC0t/01AcN07p8oHa5ElTmDBHGaS/u4cVC4LhSm7nAdAWHaIhRpweuPrTzNHIwHNhYciUwFrjp1On4PmJUZ6lBE23JI1yFSRHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSKV9Itz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0C6C4CED3;
-	Mon, 23 Dec 2024 16:11:21 +0000 (UTC)
+	 MIME-Version; b=KjifyF8FO4dBX3oIhE3rTY13MCaKIV/7+WdJ4d7wskdquyYDUodhCJf1zo7Pnnh9UnggS7dcI6xNmmfCFPDK0Q9ajEbex/HVhHSMRaggap2xaYm3oRCd7hm92HkBqlctA4qIcWXaKCpOpDCcIzU7kc/i/hwXRJjIVwJ11+2XTco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JGLVYv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBC7C4CED3;
+	Mon, 23 Dec 2024 16:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970282;
-	bh=/QnW958nyGP3ytafY/0Eoih2shVq+l7D0fjTJNudxhc=;
+	s=korg; t=1734969911;
+	bh=RJVpjGZ6/esfnwT3TKX9S4z8CbocJlLSW54rARIByJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSKV9Itze/Fon2iNHKBWP2tc0A/X5sLwcE0By2drsrWekGkktK+DqPJVU44HvoWFP
-	 2NQc+GmC4mZBC9EO2XXqlfuxUirVsYqze1UzQjxVly7OgIBI3c2Ya2Irm8Rw6dL/SO
-	 KAESsVY+AMrzJfDm3lM6TM+JrGuf0Vdt2DH6Bt+4=
+	b=0JGLVYv4I3Vmem5rhUGPFvsXntg/Ky5qP1sasyjjFBB53uqmkDNSuSI1SBi1xb9Cn
+	 hLixi52inYtFfNxUUSe9xOJps/eYftZztWo5b2lw6elaF9/5h9jo4K0r0W1HNvNc6E
+	 kjU+hDEgXhnxIbnHgJZz4eMbA/hd2PYrKLT7tXo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Huan Yang <link@vivo.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/116] xfs: attr forks require attr, not attr2
-Date: Mon, 23 Dec 2024 16:58:20 +0100
-Message-ID: <20241223155400.750601919@linuxfoundation.org>
+Subject: [PATCH 6.12 090/160] udmabuf: udmabuf_create pin folio codestyle cleanup
+Date: Mon, 23 Dec 2024 16:58:21 +0100
+Message-ID: <20241223155412.170983053@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,235 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Huan Yang <link@vivo.com>
 
-commit 73c34b0b85d46bf9c2c0b367aeaffa1e2481b136 upstream.
+[ Upstream commit 164fd9efd46531fddfaa933d394569259896642b ]
 
-It turns out that I misunderstood the difference between the attr and
-attr2 feature bits.  "attr" means that at some point an attr fork was
-created somewhere in the filesystem.  "attr2" means that inodes have
-variable-sized forks, but says nothing about whether or not there
-actually /are/ attr forks in the system.
+This patch aim to simplify the memfd folio pin during the udmabuf
+create. No functional changes.
 
-If we have an attr fork, we only need to check that attr is set.
+This patch create a udmabuf_pin_folios function, in this, do the memfd
+pin folio and then record each pinned folio, offset.
 
-Fixes: 99d9d8d05da26 ("xfs: scrub inode block mappings")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+This patch simplify the pinned folio record, iter by each pinned folio,
+and then record each offset in it.
+
+Compare to iter by pgcnt, more readable.
+
+Suggested-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Huan Yang <link@vivo.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240918025238.2957823-5-link@vivo.com
+Stable-dep-of: f49856f525ac ("udmabuf: fix memory leak on last export_udmabuf() error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/scrub/bmap.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/dma-buf/udmabuf.c | 137 +++++++++++++++++++++-----------------
+ 1 file changed, 76 insertions(+), 61 deletions(-)
 
-diff --git a/fs/xfs/scrub/bmap.c b/fs/xfs/scrub/bmap.c
-index 75588915572e..9dfa310df311 100644
---- a/fs/xfs/scrub/bmap.c
-+++ b/fs/xfs/scrub/bmap.c
-@@ -857,7 +857,13 @@ xchk_bmap(
- 		}
- 		break;
- 	case XFS_ATTR_FORK:
--		if (!xfs_has_attr(mp) && !xfs_has_attr2(mp))
-+		/*
-+		 * "attr" means that an attr fork was created at some point in
-+		 * the life of this filesystem.  "attr2" means that inodes have
-+		 * variable-sized data/attr fork areas.  Hence we only check
-+		 * attr here.
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index a3638ccc15f5..970e08a95dc0 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -262,9 +262,6 @@ static int check_memfd_seals(struct file *memfd)
+ {
+ 	int seals;
+ 
+-	if (!memfd)
+-		return -EBADFD;
+-
+ 	if (!shmem_file(memfd) && !is_file_hugepages(memfd))
+ 		return -EBADFD;
+ 
+@@ -299,17 +296,68 @@ static int export_udmabuf(struct udmabuf *ubuf,
+ 	return dma_buf_fd(buf, flags);
+ }
+ 
++static long udmabuf_pin_folios(struct udmabuf *ubuf, struct file *memfd,
++			       loff_t start, loff_t size)
++{
++	pgoff_t pgoff, pgcnt, upgcnt = ubuf->pagecount;
++	struct folio **folios = NULL;
++	u32 cur_folio, cur_pgcnt;
++	long nr_folios;
++	long ret = 0;
++	loff_t end;
++
++	pgcnt = size >> PAGE_SHIFT;
++	folios = kvmalloc_array(pgcnt, sizeof(*folios), GFP_KERNEL);
++	if (!folios)
++		return -ENOMEM;
++
++	end = start + (pgcnt << PAGE_SHIFT) - 1;
++	nr_folios = memfd_pin_folios(memfd, start, end, folios, pgcnt, &pgoff);
++	if (nr_folios <= 0) {
++		ret = nr_folios ? nr_folios : -EINVAL;
++		goto end;
++	}
++
++	cur_pgcnt = 0;
++	for (cur_folio = 0; cur_folio < nr_folios; ++cur_folio) {
++		pgoff_t subpgoff = pgoff;
++		size_t fsize = folio_size(folios[cur_folio]);
++
++		ret = add_to_unpin_list(&ubuf->unpin_list, folios[cur_folio]);
++		if (ret < 0)
++			goto end;
++
++		for (; subpgoff < fsize; subpgoff += PAGE_SIZE) {
++			ubuf->folios[upgcnt] = folios[cur_folio];
++			ubuf->offsets[upgcnt] = subpgoff;
++			++upgcnt;
++
++			if (++cur_pgcnt >= pgcnt)
++				goto end;
++		}
++
++		/**
++		 * In a given range, only the first subpage of the first folio
++		 * has an offset, that is returned by memfd_pin_folios().
++		 * The first subpages of other folios (in the range) have an
++		 * offset of 0.
 +		 */
-+		if (!xfs_has_attr(mp))
- 			xchk_ino_set_corrupt(sc, sc->ip->i_ino);
- 		break;
- 	default:
++		pgoff = 0;
++	}
++end:
++	ubuf->pagecount = upgcnt;
++	kvfree(folios);
++	return ret;
++}
++
+ static long udmabuf_create(struct miscdevice *device,
+ 			   struct udmabuf_create_list *head,
+ 			   struct udmabuf_create_item *list)
+ {
+-	pgoff_t pgoff, pgcnt, pglimit, pgbuf = 0;
+-	long nr_folios, ret = -EINVAL;
+-	struct file *memfd = NULL;
+-	struct folio **folios;
++	pgoff_t pgcnt = 0, pglimit;
+ 	struct udmabuf *ubuf;
+-	u32 i, j, k, flags;
+-	loff_t end;
++	long ret = -EINVAL;
++	u32 i, flags;
+ 
+ 	ubuf = kzalloc(sizeof(*ubuf), GFP_KERNEL);
+ 	if (!ubuf)
+@@ -318,81 +366,50 @@ static long udmabuf_create(struct miscdevice *device,
+ 	INIT_LIST_HEAD(&ubuf->unpin_list);
+ 	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
+ 	for (i = 0; i < head->count; i++) {
+-		if (!IS_ALIGNED(list[i].offset, PAGE_SIZE))
++		if (!PAGE_ALIGNED(list[i].offset))
+ 			goto err;
+-		if (!IS_ALIGNED(list[i].size, PAGE_SIZE))
++		if (!PAGE_ALIGNED(list[i].size))
+ 			goto err;
+-		ubuf->pagecount += list[i].size >> PAGE_SHIFT;
+-		if (ubuf->pagecount > pglimit)
++
++		pgcnt += list[i].size >> PAGE_SHIFT;
++		if (pgcnt > pglimit)
+ 			goto err;
+ 	}
+ 
+-	if (!ubuf->pagecount)
++	if (!pgcnt)
+ 		goto err;
+ 
+-	ubuf->folios = kvmalloc_array(ubuf->pagecount, sizeof(*ubuf->folios),
+-				      GFP_KERNEL);
++	ubuf->folios = kvmalloc_array(pgcnt, sizeof(*ubuf->folios), GFP_KERNEL);
+ 	if (!ubuf->folios) {
+ 		ret = -ENOMEM;
+ 		goto err;
+ 	}
+-	ubuf->offsets = kvcalloc(ubuf->pagecount, sizeof(*ubuf->offsets),
+-				 GFP_KERNEL);
++
++	ubuf->offsets = kvcalloc(pgcnt, sizeof(*ubuf->offsets), GFP_KERNEL);
+ 	if (!ubuf->offsets) {
+ 		ret = -ENOMEM;
+ 		goto err;
+ 	}
+ 
+-	pgbuf = 0;
+ 	for (i = 0; i < head->count; i++) {
+-		memfd = fget(list[i].memfd);
+-		ret = check_memfd_seals(memfd);
+-		if (ret < 0)
+-			goto err;
++		struct file *memfd = fget(list[i].memfd);
+ 
+-		pgcnt = list[i].size >> PAGE_SHIFT;
+-		folios = kvmalloc_array(pgcnt, sizeof(*folios), GFP_KERNEL);
+-		if (!folios) {
+-			ret = -ENOMEM;
++		if (!memfd) {
++			ret = -EBADFD;
+ 			goto err;
+ 		}
+ 
+-		end = list[i].offset + (pgcnt << PAGE_SHIFT) - 1;
+-		ret = memfd_pin_folios(memfd, list[i].offset, end,
+-				       folios, pgcnt, &pgoff);
+-		if (ret <= 0) {
+-			kvfree(folios);
+-			if (!ret)
+-				ret = -EINVAL;
++		ret = check_memfd_seals(memfd);
++		if (ret < 0) {
++			fput(memfd);
+ 			goto err;
+ 		}
+ 
+-		nr_folios = ret;
+-		pgoff >>= PAGE_SHIFT;
+-		for (j = 0, k = 0; j < pgcnt; j++) {
+-			ubuf->folios[pgbuf] = folios[k];
+-			ubuf->offsets[pgbuf] = pgoff << PAGE_SHIFT;
+-
+-			if (j == 0 || ubuf->folios[pgbuf-1] != folios[k]) {
+-				ret = add_to_unpin_list(&ubuf->unpin_list,
+-							folios[k]);
+-				if (ret < 0) {
+-					kfree(folios);
+-					goto err;
+-				}
+-			}
+-
+-			pgbuf++;
+-			if (++pgoff == folio_nr_pages(folios[k])) {
+-				pgoff = 0;
+-				if (++k == nr_folios)
+-					break;
+-			}
+-		}
+-
+-		kvfree(folios);
++		ret = udmabuf_pin_folios(ubuf, memfd, list[i].offset,
++					 list[i].size);
+ 		fput(memfd);
+-		memfd = NULL;
++		if (ret)
++			goto err;
+ 	}
+ 
+ 	flags = head->flags & UDMABUF_FLAGS_CLOEXEC ? O_CLOEXEC : 0;
+@@ -403,8 +420,6 @@ static long udmabuf_create(struct miscdevice *device,
+ 	return ret;
+ 
+ err:
+-	if (memfd)
+-		fput(memfd);
+ 	unpin_all_folios(&ubuf->unpin_list);
+ 	kvfree(ubuf->offsets);
+ 	kvfree(ubuf->folios);
 -- 
 2.39.5
 
