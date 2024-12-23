@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-105841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767D69FB1F5
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3242F9FB154
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:05:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A58DE18853FB
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 862BB1883203
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D111B4135;
-	Mon, 23 Dec 2024 16:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391F1186E58;
+	Mon, 23 Dec 2024 16:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/NvLHIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjFgFNR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEDA1B4126;
-	Mon, 23 Dec 2024 16:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0902EAE6;
+	Mon, 23 Dec 2024 16:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970321; cv=none; b=CC03vZZwhpd2OypppJb3819W7AGH053967rkHMY9COS+0RM6ewjfQ05vjK6s+NJ7A76BT3PjwCk0knKZbHNtd2aOCDJVPuiKNdICzSsyTPSTcH0jx4cfwDQTX7Yd2/wDJI9DgfuJCMFDktpwH8GXKfIvuImjx4Zwxu80J6keQKA=
+	t=1734969917; cv=none; b=W4UoVUEIUmX6GUfBPhtSWr/L3h4U41Wnwg8X58kp2PuhReuzy3BBKRzn4/XbhfsNLnzwU8X+0KPryU5MrRaD91wpRbqxZi62Uxiro6BzkGXxSKw3qjvJYbzsbMB+U2/3NlcrkMkrEAgiea8P8pk9BNj0z8UfX0hoZpOqSn8TN1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970321; c=relaxed/simple;
-	bh=YgTlhSzWK2J5dhjCjdNJs3YwZxgRPiF4AvsgS0kA5MM=;
+	s=arc-20240116; t=1734969917; c=relaxed/simple;
+	bh=u1xOu/mU90zsJmwLxZItSdaG/Ia4QBghzBc5CxxRqdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7YRFxOr4hCG7sMDw4JVtHQxnCeI+Oz6SahgvskpIUyHX6H/R8J8rwHn9X5w4+6QreaO+4reF0vKD5Iy73dGQr0xEpgqgihf9JhqEpEWWXK556Sn86F/tygDXc7FCtO2JHi7jzlci7IIydiXOneVeH7r/h2g5632Jv7rgeZbp8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/NvLHIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F875C4CED3;
-	Mon, 23 Dec 2024 16:12:00 +0000 (UTC)
+	 MIME-Version; b=Xds8ZfZgG+7pUt4ostSA75rbWOCi3WA1MSo0nENUU82X/IHr48bcyjIocTMRqNZMChwsl3Np5p8DRvcng7enK9Kot99OI1iUhiAO/lbMVeZQpXeyaYj9Y4FEN7FBdrD79JCo9DBF8CaKsCn79/Rvj/UB/+L27T3NbcdwzK3IH2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjFgFNR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477DAC4CED3;
+	Mon, 23 Dec 2024 16:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970321;
-	bh=YgTlhSzWK2J5dhjCjdNJs3YwZxgRPiF4AvsgS0kA5MM=;
+	s=korg; t=1734969916;
+	bh=u1xOu/mU90zsJmwLxZItSdaG/Ia4QBghzBc5CxxRqdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/NvLHIYOt0ZeTC5LTWpWlXtvc3qN9A1N7gErszsvzgkb62clH+iiq8cOaGdvOOx9
-	 Cg44nYAvdSGqgsPU7UhF/I2hGB2N+Vk0N1jAtUqJgDyuhmEuIwZGQcRBtNfat8WaHi
-	 az07/0rfYRudlOy5TynTESSvtqTdsgU+NaQveQ1M=
+	b=DjFgFNR+3WXj/wrTh28onR3uNg7yC9VBAzC8n2rgABiOArMQA3XxI2VyhbKxhkMSp
+	 XmkpOhEpo3zvTjOTjOxZyLe30DKS6qjBihNdC0z+w3fziutZ1uCl12G9jS5rTJf+e+
+	 riCq4/mq40T742veK0FyPFG8KkfZcDocyBhR6Xao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Jann Horn <jannh@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/116] xfs: conditionally allow FS_XFLAG_REALTIME changes if S_DAX is set
-Date: Mon, 23 Dec 2024 16:58:21 +0100
-Message-ID: <20241223155400.790308749@linuxfoundation.org>
+Subject: [PATCH 6.12 091/160] udmabuf: fix memory leak on last export_udmabuf() error path
+Date: Mon, 23 Dec 2024 16:58:22 +0100
+Message-ID: <20241223155412.209251082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Jann Horn <jannh@google.com>
 
-commit 8d16762047c627073955b7ed171a36addaf7b1ff upstream.
+[ Upstream commit f49856f525acd5bef52ae28b7da2e001bbe7439e ]
 
-If a file has the S_DAX flag (aka fsdax access mode) set, we cannot
-allow users to change the realtime flag unless the datadev and rtdev
-both support fsdax access modes.  Even if there are no extents allocated
-to the file, the setattr thread could be racing with another thread
-that has already started down the write code paths.
+In export_udmabuf(), if dma_buf_fd() fails because the FD table is full, a
+dma_buf owning the udmabuf has already been created; but the error handling
+in udmabuf_create() will tear down the udmabuf without doing anything about
+the containing dma_buf.
 
-Fixes: ba23cba9b3bdc ("fs: allow per-device dax status checking for filesystems")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+This leaves a dma_buf in memory that contains a dangling pointer; though
+that doesn't seem to lead to anything bad except a memory leak.
+
+Fix it by moving the dma_buf_fd() call out of export_udmabuf() so that we
+can give it different error handling.
+
+Note that the shape of this code changed a lot in commit 5e72b2b41a21
+("udmabuf: convert udmabuf driver to use folios"); but the memory leak
+seems to have existed since the introduction of udmabuf.
+
+Fixes: fbb0de795078 ("Add udmabuf misc device")
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241204-udmabuf-fixes-v2-3-23887289de1c@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_ioctl.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/dma-buf/udmabuf.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/fs/xfs/xfs_ioctl.c b/fs/xfs/xfs_ioctl.c
-index df4bf0d56aad..32e718043e0e 100644
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -1128,6 +1128,17 @@ xfs_ioctl_setattr_xflags(
- 		/* Can't change realtime flag if any extents are allocated. */
- 		if (ip->i_df.if_nextents || ip->i_delayed_blks)
- 			return -EINVAL;
-+
-+		/*
-+		 * If S_DAX is enabled on this file, we can only switch the
-+		 * device if both support fsdax.  We can't update S_DAX because
-+		 * there might be other threads walking down the access paths.
-+		 */
-+		if (IS_DAX(VFS_I(ip)) &&
-+		    (mp->m_ddev_targp->bt_daxdev == NULL ||
-+		     (mp->m_rtdev_targp &&
-+		      mp->m_rtdev_targp->bt_daxdev == NULL)))
-+			return -EINVAL;
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index 970e08a95dc0..614df433c451 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -276,12 +276,10 @@ static int check_memfd_seals(struct file *memfd)
+ 	return 0;
+ }
+ 
+-static int export_udmabuf(struct udmabuf *ubuf,
+-			  struct miscdevice *device,
+-			  u32 flags)
++static struct dma_buf *export_udmabuf(struct udmabuf *ubuf,
++				      struct miscdevice *device)
+ {
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+-	struct dma_buf *buf;
+ 
+ 	ubuf->device = device;
+ 	exp_info.ops  = &udmabuf_ops;
+@@ -289,11 +287,7 @@ static int export_udmabuf(struct udmabuf *ubuf,
+ 	exp_info.priv = ubuf;
+ 	exp_info.flags = O_RDWR;
+ 
+-	buf = dma_buf_export(&exp_info);
+-	if (IS_ERR(buf))
+-		return PTR_ERR(buf);
+-
+-	return dma_buf_fd(buf, flags);
++	return dma_buf_export(&exp_info);
+ }
+ 
+ static long udmabuf_pin_folios(struct udmabuf *ubuf, struct file *memfd,
+@@ -356,6 +350,7 @@ static long udmabuf_create(struct miscdevice *device,
+ {
+ 	pgoff_t pgcnt = 0, pglimit;
+ 	struct udmabuf *ubuf;
++	struct dma_buf *dmabuf;
+ 	long ret = -EINVAL;
+ 	u32 i, flags;
+ 
+@@ -413,9 +408,20 @@ static long udmabuf_create(struct miscdevice *device,
  	}
  
- 	if (rtflag) {
+ 	flags = head->flags & UDMABUF_FLAGS_CLOEXEC ? O_CLOEXEC : 0;
+-	ret = export_udmabuf(ubuf, device, flags);
+-	if (ret < 0)
++	dmabuf = export_udmabuf(ubuf, device);
++	if (IS_ERR(dmabuf)) {
++		ret = PTR_ERR(dmabuf);
+ 		goto err;
++	}
++	/*
++	 * Ownership of ubuf is held by the dmabuf from here.
++	 * If the following dma_buf_fd() fails, dma_buf_put() cleans up both the
++	 * dmabuf and the ubuf (through udmabuf_ops.release).
++	 */
++
++	ret = dma_buf_fd(dmabuf, flags);
++	if (ret < 0)
++		dma_buf_put(dmabuf);
+ 
+ 	return ret;
+ 
 -- 
 2.39.5
 
