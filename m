@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-105772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6805A9FB199
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:08:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F959FB281
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209461884DD9
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:08:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB0B16682E
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF9F19E971;
-	Mon, 23 Dec 2024 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CAA1A4AAA;
+	Mon, 23 Dec 2024 16:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snHrE8bI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gqwk0Neu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DEF3D6D;
-	Mon, 23 Dec 2024 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C6E8827;
+	Mon, 23 Dec 2024 16:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970089; cv=none; b=phbQn3M+VEctQPcWHTGoZo87e/nDMihVeZCNqforLwD020OqKaKUpPB9skY1gSSqKHixi5/PfpRNVNpiwe17+3bjqh79wbrT2ltyvaPmD9ynCfmSNfNwXXLxuJBXF+NGMCh/QQsftgA802uV5eqlyiV0+XJPwrFvVrQEjEtjthg=
+	t=1734970721; cv=none; b=CnT1MeCguIhkjC80xBQyBWhic6HpO0n/bpMLUIbs9uB/JnI+xzJn8wbMfN84o1t9H7jxB12QWf/kOn6id5ZsM16N8xHBx00J5IwwyiT+Hs66thvSsCqGCAZ2xgo8F0kHygQa+HX6SYpx4gSIqan/OUilvqPY4dS/p1OIiGkni2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970089; c=relaxed/simple;
-	bh=Ug6euxqdRtoERdsFM9TI5bIUMUWU9RiWChFVU+MzFR0=;
+	s=arc-20240116; t=1734970721; c=relaxed/simple;
+	bh=L2OZ/qICzE5g3y5BgHakShHnWYudd8uZ5npHZy0djmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcdBETKS6f1jro+tydcRppAF/77Fk5zp5W1ul16ViuHdth445ONOnUS3SvBKbfr7MbfytT5naI83r+4quY5+FAuAreYkpt10vrTpFyjpXW+cwABrlwLtIazftDFxE0iyZ3yct78OySq1Rc+3srNG3jRI8+uXYnbhDrY58keyOZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snHrE8bI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC60C4CED3;
-	Mon, 23 Dec 2024 16:08:08 +0000 (UTC)
+	 MIME-Version; b=StqjWdWjQCuGZjZwyKXunK61coWuiO6kHeeJPZIt+T8itzMEPBHiDgcA2CALFezN1ancZy2FBMBGHB315MA/JIRkDv8A66WYi4cnu4CnGlbCIGw7m9ajWMQHfgZ9C1AsUcAohRedMSIJU/Uu1T0o+QMTw1nXQMQ7x/CxvO1Nz5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gqwk0Neu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CA8C4CED3;
+	Mon, 23 Dec 2024 16:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970089;
-	bh=Ug6euxqdRtoERdsFM9TI5bIUMUWU9RiWChFVU+MzFR0=;
+	s=korg; t=1734970721;
+	bh=L2OZ/qICzE5g3y5BgHakShHnWYudd8uZ5npHZy0djmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snHrE8bI2J+WPYUuOR568S0b3dMZ+DZd8lJVe8qFq50IRgOpq0ThPKxPtxoJMemLp
-	 V/hf09ba8RHm6jMDU1vwNYLDTv5AG9msZQdbGyaO539TCgLJei4hm7y0CkNht/nEjq
-	 wRY/NCzlcBWUiz/Uu17gxrlvDz3wUirO7eVgYx7E=
+	b=Gqwk0NeuagpbjASJTWo32Km+WqK1XqRAhKwTF2RpHLrf/qYDhNk8TmufuVoIe/TqM
+	 g2EYqAkk/c/OeVKeNUod6jJc0DaWzcuK+FOkSJbjY839WpOMU677Dn/AjO78K2qEvr
+	 UwQvJGd9v8LeBZomHVev8J1eoDJtJ7ftuzEo595c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.12 140/160] of/irq: Fix interrupt-map cell length check in of_irq_parse_imap_parent()
+	Prathamesh Shete <pshete@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 32/83] mmc: sdhci-tegra: Remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk
 Date: Mon, 23 Dec 2024 16:59:11 +0100
-Message-ID: <20241223155414.206845249@linuxfoundation.org>
+Message-ID: <20241223155354.891332149@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-References: <20241223155408.598780301@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Prathamesh Shete <pshete@nvidia.com>
 
-commit fec3edc47d5cfc2dd296a5141df887bf567944db upstream.
+commit a56335c85b592cb2833db0a71f7112b7d9f0d56b upstream.
 
-On a malformed interrupt-map property which is shorter than expected by
-1 cell, we may read bogus data past the end of the property instead of
-returning an error in of_irq_parse_imap_parent().
+Value 0 in ADMA length descriptor is interpreted as 65536 on new Tegra
+chips, remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk to make sure max
+ADMA2 length is 65536.
 
-Decrement the remaining length when skipping over the interrupt parent
-phandle cell.
-
-Fixes: 935df1bd40d4 ("of/irq: Factor out parsing of interrupt-map parent phandle+args from of_irq_parse_raw()")
+Fixes: 4346b7c7941d ("mmc: tegra: Add Tegra186 support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241209-of_irq_fix-v1-1-782f1419c8a1@quicinc.com
-[rh: reword commit msg]
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Message-ID: <20241209101009.22710-1-pshete@nvidia.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/sdhci-tegra.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -111,6 +111,7 @@ const __be32 *of_irq_parse_imap_parent(c
- 	else
- 		np = of_find_node_by_phandle(be32_to_cpup(imap));
- 	imap++;
-+	len--;
- 
- 	/* Check if not found */
- 	if (!np) {
+--- a/drivers/mmc/host/sdhci-tegra.c
++++ b/drivers/mmc/host/sdhci-tegra.c
+@@ -1520,7 +1520,6 @@ static const struct sdhci_pltfm_data sdh
+ 	.quirks = SDHCI_QUIRK_BROKEN_TIMEOUT_VAL |
+ 		  SDHCI_QUIRK_SINGLE_POWER_WRITE |
+ 		  SDHCI_QUIRK_NO_HISPD_BIT |
+-		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
+ 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+ 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
+ 		   SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER,
 
 
 
