@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-105839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828869FB1F4
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC88A9FB183
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0A191885408
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:12:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041911615DC
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D5F1B4120;
-	Mon, 23 Dec 2024 16:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E277D1B393A;
+	Mon, 23 Dec 2024 16:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KN9ofkCg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zh8IOYhf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF701B395B;
-	Mon, 23 Dec 2024 16:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA1C19E98B;
+	Mon, 23 Dec 2024 16:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970314; cv=none; b=lsomchTfw5somC+rGDJBkuHHZz3IXliwq0OxmrEyFRelZqOp0N145ONgHArsoGRtOhJ/OZxDam2vE5pdGuiC+zB8074GteDKAzeWajYq7uT+og9MDlF9OOPz+t18RlPG7qwAnvA/UTQpA3yTWsvt6d4TuzpeOFj12HcqIZ7OOQ4=
+	t=1734969974; cv=none; b=VEGHMMCKCskSgduntHfEivytSWJkXAv8P3BijzagPSJ7Djx6gh//LwK+rtvE4XuFhc6hvDRrkaxOXcAtWsH80x5V3Rg9l60lyXh8NDRBS5F4juWpwAXT/DiUolKnxKMh362RLtu5QcYQY6E8lGVXnlVNDjqaI9ImqT5vdMqw6vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970314; c=relaxed/simple;
-	bh=VjOlpR4dfJC3wUdRNJreVQ+pGCfqPUeI1JHa+zPFTGo=;
+	s=arc-20240116; t=1734969974; c=relaxed/simple;
+	bh=FmdPuaFyV9YJNTYTZGOrvvCzep5mInvyYH2gw3dM9Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YK8GRdGfptt+GI8UMr+iRl6eQfFmpIvgGxZ1SOz4lSPWwhWBzg+AQ1bzMbtLxQER8zEvFcgvA/gAwbUqwlQwwfgL6nJ5WeuEe/z8MuGNStDf8pwpz+8uHjcnAg0aEOU63c0+h5pORsWmRy38S1DYpT/S7exPdrC7SU33rApT5S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KN9ofkCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88E4C4CED3;
-	Mon, 23 Dec 2024 16:11:53 +0000 (UTC)
+	 MIME-Version; b=cECuF0lFXoUc0ZwsUfKnlaW7/C0ctRv3rDJjCvvJ82jGuNa2xEV0tCml6tbFDEXTy7ljd+EvvKdOw7GdRT3tFsUoG2jmEHm6N8YVt6t352J/K1S+jumpPGX/15rULvd1fcoyAw1prXZdEHphcb2Hjce7QivG4d90oVTf7+Xydkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zh8IOYhf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10030C4CED3;
+	Mon, 23 Dec 2024 16:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970314;
-	bh=VjOlpR4dfJC3wUdRNJreVQ+pGCfqPUeI1JHa+zPFTGo=;
+	s=korg; t=1734969974;
+	bh=FmdPuaFyV9YJNTYTZGOrvvCzep5mInvyYH2gw3dM9Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KN9ofkCgFFMkizjz1Y9ZIdJkxpL80ypTsd3bDEPoSRngqT+E7CXgiFCZQKuFK63xc
-	 WBF4ubGku+8vPhBAJqgFgOQYHaTzmNHLAm8Tvn/hF8L+XXRR9MbpEldlZQlW53HKZq
-	 zGDGUUkFSXeTA7TJFpofBjPryIT8MK8O9Zu9YPg0=
+	b=zh8IOYhfnlQXw7XL56+fiXHyGEIcJTFm/Ktv/tGhrQPu2JwG3QmCk2JbxrYWDo3we
+	 69v/7ssbQb1Ww6fRZQbrZ3awRR51SLG4UBVxG+1h2uK3j5lPiJMMU7HomNl0vzQ0vf
+	 qLqPS7gnVDnojjGJK2T1v0fqqkd0LQX9Y/jU0QCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/116] ionic: Fix netdev notifier unregister on failure
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 106/160] drm/amdgpu/nbio7.11: fix IP version check
 Date: Mon, 23 Dec 2024 16:58:37 +0100
-Message-ID: <20241223155401.386880208@linuxfoundation.org>
+Message-ID: <20241223155412.775292214@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 9590d32e090ea2751e131ae5273859ca22f5ac14 ]
+commit 8c1ecc7197a88c6ae62de56e1c0887f220712a32 upstream.
 
-If register_netdev() fails, then the driver leaks the netdev notifier.
-Fix this by calling ionic_lif_unregister() on register_netdev()
-failure. This will also call ionic_lif_unregister_phc() if it has
-already been registered.
+Use the helper function rather than reading it directly.
 
-Fixes: 30b87ab4c0b3 ("ionic: remove lif list concept")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20241212213157.12212-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2c8eeaaa0fe5841ccf07a0eb51b1426f34ef39f7)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_11.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 9d724d228b83..bc7c5cd38596 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3736,8 +3736,8 @@ int ionic_lif_register(struct ionic_lif *lif)
- 	/* only register LIF0 for now */
- 	err = register_netdev(lif->netdev);
- 	if (err) {
--		dev_err(lif->ionic->dev, "Cannot register net device, aborting\n");
--		ionic_lif_unregister_phc(lif);
-+		dev_err(lif->ionic->dev, "Cannot register net device: %d, aborting\n", err);
-+		ionic_lif_unregister(lif);
- 		return err;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_11.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_11.c
+@@ -275,7 +275,7 @@ static void nbio_v7_11_init_registers(st
+ 	if (def != data)
+ 		WREG32_SOC15(NBIO, 0, regBIF_BIF256_CI256_RC3X4_USB4_PCIE_MST_CTRL_3, data);
  
--- 
-2.39.5
-
+-	switch (adev->ip_versions[NBIO_HWIP][0]) {
++	switch (amdgpu_ip_version(adev, NBIO_HWIP, 0)) {
+ 	case IP_VERSION(7, 11, 0):
+ 	case IP_VERSION(7, 11, 1):
+ 	case IP_VERSION(7, 11, 2):
 
 
 
