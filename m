@@ -1,53 +1,50 @@
-Return-Path: <stable+bounces-105618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3E19FAE4E
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 13:33:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2869FAE50
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 13:36:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F620165439
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 12:33:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCF2E188356C
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 12:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D5A19DFB4;
-	Mon, 23 Dec 2024 12:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CE11A8F68;
+	Mon, 23 Dec 2024 12:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BLaNRzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfdR5twt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC36818FDDC
-	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 12:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261C51A0721
+	for <stable@vger.kernel.org>; Mon, 23 Dec 2024 12:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734957201; cv=none; b=L7UFq96KZwdpHBbnJ+bmvCtqnqE5Eer/KY2eqUMH3RBtCsYsN2sQTcRB/TgqnwC5ZcN8tg9zeUX00IaSC/Ad4hrwk6iFwpJMUp0Rh1C/mjNemiQlqEZ/yFq/Deb4DKtnF5w+HEmYQQfKkZLknHgyYp+9fyqOTg6iREH1h7RYHHs=
+	t=1734957388; cv=none; b=jjA4piVECzxSg2Tc1rlnhD0TOPUtvWj8DH85s6VP9ud7sZ69WcKkqrhU6QmSRZbwSe936ekJMw6lpzuGVpv4UnX48HolwSjl4Te6yeR4BrYG9df+fXfDD+O1vDvkAQhIF5W0V4oX1RH+Mjw2QXFXCChWPMceebkn6NtjkpemdhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734957201; c=relaxed/simple;
-	bh=gNdPIKQWNchUI05DVfttdowLVV5p63k5A2kfSZ0Z0qE=;
+	s=arc-20240116; t=1734957388; c=relaxed/simple;
+	bh=kY/fQbZrrkBRk5NL5yWz0t9NHRHqJAX6MPE7WYQUSIc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HJWaNf2YHSFy0L3UEAsSr1T4fcBJw9blIcxmjsebnplE7ifSyYns9UT2TruYfpF+pSoyExXg58c+2ZOeNFf/xshti2pKTjwhPRs5NqN9WrRvLkqRpCh2xdiGWAUn1abtxDpbBMwz4hxIZNSIgux+K8ER03oWMDx0Qi+oiEBEqK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BLaNRzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC3CC4CED3;
-	Mon, 23 Dec 2024 12:33:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=oZGNd1Xm6sK5K/+PZSEx1i/WojfeL/7tLk2ZyKXw+6sNb9rWb68DvTQtEmIM/eszcCr05boidd2pW+4R+eIFfO52K1NpM+a5DjmS/g6SVdTDTZU0mA60pSIV1d6fk60i9FbmzsRFrr7So591SZjC4GcGiupIeIpMhnZSigwnEzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfdR5twt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A95C4CED3;
+	Mon, 23 Dec 2024 12:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734957200;
-	bh=gNdPIKQWNchUI05DVfttdowLVV5p63k5A2kfSZ0Z0qE=;
+	s=korg; t=1734957388;
+	bh=kY/fQbZrrkBRk5NL5yWz0t9NHRHqJAX6MPE7WYQUSIc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1BLaNRztxQfyWGlAb6IpRcvN367Lcvx7glUtiHhLjzyyqb1aGRM853P55DoFR8aee
-	 ogXm7xR59t2pL5WOU3OGmzgLsVJfBhRnBC+X44lOUIi5v6F9+UFHb7Paf83UvbwfpT
-	 bJXcy0RCrCZdqGU2TuoHN/jOf0Pl44zIX9mFukOM=
-Date: Mon, 23 Dec 2024 13:33:17 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org
-Subject: Re: Request to port to 6.6.y : c809b0d0e52d ("x86/microcode/AMD:
- Flush patch buffer mapping after application")
-Message-ID: <2024122345-demotion-zit-15c6@gregkh>
-References: <Z2GZp14ZFOadAskq@antipodes>
- <2024121745-roundworm-thursday-107d@gregkh>
- <Z2LABy6mqCSdvBge@antipodes>
+	b=pfdR5twtI7Pus7DbxOFQKTdDEKYKaGPzYpvOIaDQswtSQkNFCf5xvFjhO0ehgXTZc
+	 vYkflonrxJ1lXr4OOpXkRleE8pNQqShfQZoBufAhjmXaRvPWrnpiI0WK5sXadIGH49
+	 kCIlwG1LZdIqz1YYGHkzpIRb5wbwjCZwSx5BhNoM=
+Date: Mon, 23 Dec 2024 13:36:23 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: stable <stable@vger.kernel.org>
+Subject: Re: 6.6-stable backports
+Message-ID: <2024122314-jujitsu-modulator-9333@gregkh>
+References: <164c752f-ae4d-48a5-a11d-1d7462f817cb@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,28 +53,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z2LABy6mqCSdvBge@antipodes>
+In-Reply-To: <164c752f-ae4d-48a5-a11d-1d7462f817cb@kernel.dk>
 
-On Wed, Dec 18, 2024 at 01:28:55PM +0100, Thomas De Schampheleire wrote:
-> On Tue, Dec 17, 2024 at 04:53:43PM +0100, Greg KH wrote:
-> > 
-> > Please send a set of working, and tested, commits that you wish for us
-> > to commit, we can't cherry-pick stuff out of an email like this for
-> > obvious reasons :)
-> > 
-> > And whenever possible, yes, we do want to take the fixes that are in
-> > Linus's tree, otherwise maintaining the branch over time gets harder and
-> > harder.  So just backport them all please.
+On Thu, Dec 19, 2024 at 11:34:58AM -0700, Jens Axboe wrote:
+> Hi,
 > 
-> Thanks Greg for your input, understood.
-> 
-> Borislav, are you open to preparing the required commits?
+> Can you guys queue up these patches for 6.6-stable?
 
-Wait, why do you want these for the 6.6.y tree if you haven't even
-tested to see if they are required or work there?  Why not just move to
-6.12.y instead as you know that works.
-
-thanks,
+Both sets now queued up, thanks!
 
 greg k-h
 
