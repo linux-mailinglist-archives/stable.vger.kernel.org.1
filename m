@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-105832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1ED19FB1F1
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1F09FB173
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95D3D166A2B
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:11:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38F961669F1
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9807F1B21B5;
-	Mon, 23 Dec 2024 16:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200AF186E58;
+	Mon, 23 Dec 2024 16:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hm5AzGOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7h/FD1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E36188006;
-	Mon, 23 Dec 2024 16:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ED22EAE6;
+	Mon, 23 Dec 2024 16:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970289; cv=none; b=S4tsrQ8o9Hp5+1e2XU572hlDlEEEK43EyrPBNHOz8eljMtPRahDiL2X46ptER4Op6N52ic6XUH6EUYytap6gTVEZTq77NwNCY871z7qd6/SuvRWjJoyR+W/Pp7shG0gaDUGCBAVNqi1gWqTdSXa795YEupjVNAIOhYItQubLfIg=
+	t=1734969947; cv=none; b=ixCkj6ewoSV7v+TMUg5mN21euUOtQL0OK5QfV3274nAy9I7cFE6ewUcAQzV/9lcokKneley+jI2XSkWTwYoUCnHhQyVLcax331sbQll6JCX8RbsVxofamJ6AJl7jzOVIMS4TIoKpCwQIdiAI//pXgduY9f0UH5NMxycfIObgrYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970289; c=relaxed/simple;
-	bh=frYztCd8zRBTk4LNCMIU/VdtC+SqsDER6ktsP9oD9wk=;
+	s=arc-20240116; t=1734969947; c=relaxed/simple;
+	bh=1Zb3tLXZCBXt9XWoCcR4TtbsrfuiQKhiFSj2wfTup38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNttVw0bFRO59JmXf0e8H55dNRYCj08IDOsGYPHUPkty5QspNqUfd48YoZcJkKwdBxPduyXKb8E1NvSI89wfEGlJ8phZuIIQTa0NrPhKyqPXDQUS1wGgRQ+LT8TF0/r5FTSJA/cbnl55sMI7kSXt3xtbA7ualjQvfZoG53ivDnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hm5AzGOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B585BC4CED3;
-	Mon, 23 Dec 2024 16:11:28 +0000 (UTC)
+	 MIME-Version; b=exL3Fr/GB6p5ZUnw8pvtC6e46tvaleGdHpbz4lv2StVWXCVwYqS1a2qVhyzxw1eV5PHrbrkf+HTEqGP16geDjuAH0gARTDEDX60afsRPXEJl2KqEJ/L+iHAxlOhK/858E9sNi1i8nmc/9WeMotVNVRWbsc+dO9yALDo1V1Rlmc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7h/FD1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC09C4CED3;
+	Mon, 23 Dec 2024 16:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970289;
-	bh=frYztCd8zRBTk4LNCMIU/VdtC+SqsDER6ktsP9oD9wk=;
+	s=korg; t=1734969947;
+	bh=1Zb3tLXZCBXt9XWoCcR4TtbsrfuiQKhiFSj2wfTup38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hm5AzGOnQqDyzxsLWzcfW4GmVl7tbjSlglblAKIUWN1hVHUcOdzwhbz2o0UZ3vSj/
-	 nBY+dd5VWLo7VEJgEHkcjR6rTYdIETm46b5Wvnn4RjvS07camCxGeDyEZxi8S0ZpZJ
-	 QYfCTJmW1UczkZsHF4ueRn0C2Q0DzAfxT31XAt+o=
+	b=n7h/FD1nu+JVcFHvXo9UZPzSZQWC++4gDzviaz1dhSb2AeRVUeWk+6qOaylzsPw3Z
+	 KyBMZa5CxYSIE0Bz5MfpTWFpgK7qU7w4cePTmx8XAu4SJUKzyILbm6omMOHC6AGaoS
+	 8zPZ0W8vrJ5JmLVTQK2MBZOCulArpvqpK+6kMfI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/116] net/smc: check sndbuf_space again after NOSPACE flag is set in smc_poll
+Subject: [PATCH 6.12 099/160] i915/guc: Accumulate active runtime on gt reset
 Date: Mon, 23 Dec 2024 16:58:30 +0100
-Message-ID: <20241223155401.125290402@linuxfoundation.org>
+Message-ID: <20241223155412.509198262@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-[ Upstream commit 679e9ddcf90dbdf98aaaa71a492454654b627bcb ]
+[ Upstream commit 1622ed27d26ab4c234476be746aa55bcd39159dd ]
 
-When application sending data more than sndbuf_space, there have chances
-application will sleep in epoll_wait, and will never be wakeup again. This
-is caused by a race between smc_poll and smc_cdc_tx_handler.
+On gt reset, if a context is running, then accumulate it's active time
+into the busyness counter since there will be no chance for the context
+to switch out and update it's run time.
 
-application                                      tasklet
-smc_tx_sendmsg(len > sndbuf_space)   |
-epoll_wait for EPOLL_OUT,timeout=0   |
-  smc_poll                           |
-    if (!smc->conn.sndbuf_space)     |
-                                     |  smc_cdc_tx_handler
-                                     |    atomic_add sndbuf_space
-                                     |    smc_tx_sndbuf_nonfull
-                                     |      if (!test_bit SOCK_NOSPACE)
-                                     |        do not sk_write_space;
-      set_bit SOCK_NOSPACE;          |
-    return mask=0;                   |
+v2: Move comment right above the if (John)
 
-Application will sleep in epoll_wait as smc_poll returns 0. And
-smc_cdc_tx_handler will not call sk_write_space because the SOCK_NOSPACE
-has not be set. If there is no inflight cdc msg, sk_write_space will not be
-called any more, and application will sleep in epoll_wait forever.
-So check sndbuf_space again after NOSPACE flag is set to break the race.
-
-Fixes: 8dce2786a290 ("net/smc: smc_poll improvements")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241127174006.190128-4-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit 7ed047da59cfa1acb558b95169d347acc8d85da1)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 77c6c0dff069..06d607e676f6 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2888,6 +2888,13 @@ static __poll_t smc_poll(struct file *file, struct socket *sock,
- 			} else {
- 				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
- 				set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
+diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+index fbff9b9a067c..ee12ee0ed418 100644
+--- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+@@ -1449,8 +1449,21 @@ static void __reset_guc_busyness_stats(struct intel_guc *guc)
+ 
+ 	guc_update_pm_timestamp(guc, &unused);
+ 	for_each_engine(engine, gt, id) {
++		struct intel_engine_guc_stats *stats = &engine->stats.guc;
 +
-+				if (sk->sk_state != SMC_INIT) {
-+					/* Race breaker the same way as tcp_poll(). */
-+					smp_mb__after_atomic();
-+					if (atomic_read(&smc->conn.sndbuf_space))
-+						mask |= EPOLLOUT | EPOLLWRNORM;
-+				}
- 			}
- 			if (atomic_read(&smc->conn.bytes_to_rcv))
- 				mask |= EPOLLIN | EPOLLRDNORM;
+ 		guc_update_engine_gt_clks(engine);
+-		engine->stats.guc.prev_total = 0;
++
++		/*
++		 * If resetting a running context, accumulate the active
++		 * time as well since there will be no context switch.
++		 */
++		if (stats->running) {
++			u64 clk = guc->timestamp.gt_stamp - stats->start_gt_clk;
++
++			stats->total_gt_clks += clk;
++		}
++		stats->prev_total = 0;
++		stats->running = 0;
+ 	}
+ 
+ 	spin_unlock_irqrestore(&guc->timestamp.lock, flags);
 -- 
 2.39.5
 
