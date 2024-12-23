@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-105812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AE69FB1DF
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DD59FB140
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 057E8167D4C
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:10:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 205C41671D1
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C1C1B3931;
-	Mon, 23 Dec 2024 16:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5C31B21B5;
+	Mon, 23 Dec 2024 16:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kyM9mSu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygsLhhpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A601B392B;
-	Mon, 23 Dec 2024 16:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C888189B94;
+	Mon, 23 Dec 2024 16:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970221; cv=none; b=oU6dL13RVQ65zbvCV/pggQKNQHzj3VM6iTmAKOrfAg6OtmLD8856QkSlxhvazbyiOQ3ayss8Iht/bI1huxOWhE/ZN/kaaNHhG7BFle5Mf4YkPT3Qx90p0YnE9KBvcLZifVt71O/leXoCPJpxNRFEueRkRDyE1F7g32ADjFlWbdk=
+	t=1734969809; cv=none; b=G3GNAdiiSTjVU53BXRAQsoXDk4734gn56ybSjpD0kdvJL50tNyomx8fYZz6bJsZcIVPKUPej1j3IjbgGbT0Vc37W76QMAt4bSCNGaFdRPLEriv8bRyHEq99A+4NidPpeSPUrPiz/uK4SqpAg8GMbjdBXgF7ukADmiYYUltp3Iag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970221; c=relaxed/simple;
-	bh=iKahr5qoQxN73DqM7VSADJj/irzMlTJ2TCE6HxuZoJo=;
+	s=arc-20240116; t=1734969809; c=relaxed/simple;
+	bh=lqe2UNhAhlxgF8C2ddUadycqHv9rUeTBLsAvq/2rRYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItVB3GkF9i06MigM9C2UvxMCN9Wv0Lx9SdYbjOzbSG64wzu/Eba2+rd88Z1/6p5Gl22GfXmy/z4mO0wLzOrViwiWMygo7pbUt4faYQAYKWI4ZVV8wzr+uU3cfjJU/7t5mj57MQEw1O0Khmbiafr4mlkM0DiwpdE/EoPN7S+MFrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kyM9mSu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBB6C4CED3;
-	Mon, 23 Dec 2024 16:10:20 +0000 (UTC)
+	 MIME-Version; b=qWVVAH2cl1SzsfShG+b5c6xPnVmJEqU9WGPS1OZCphzVj3rAOWCglQ7wBKVuUaSu9MUvXtjyxj/4rtG9Nakfe5k+LV41vo2fsuX8gz1neFQtyb5Oao48rQQMtYH3561nQukhA/Xi3RPVqHIXOm8tbruYvxMj/8An+2E+prI4FIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygsLhhpM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77975C4CED3;
+	Mon, 23 Dec 2024 16:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970221;
-	bh=iKahr5qoQxN73DqM7VSADJj/irzMlTJ2TCE6HxuZoJo=;
+	s=korg; t=1734969809;
+	bh=lqe2UNhAhlxgF8C2ddUadycqHv9rUeTBLsAvq/2rRYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kyM9mSumKc2iLDP7tdpYApdYpa4Cy8tRJpH8IUoYtgKdQ+bYMRwRiDKeOVHHYp+R
-	 tGpxgiqdAuX7NLj9v04bhNG81O0DtjYelu8uj8F7rylTCHOaYCSDDLhrzJFe3jxXkA
-	 qdObiePUKwNZWRm75aXBYa/ngp2FWMOpbfTZHnWY=
+	b=ygsLhhpMCYR0DyciV88w1QikldzuezT5KT+ufhqGn9la/tg9RoUlZROdu/V9/ClCV
+	 Lpi0N4Xf+gCQ4/+LhT/3rKk7PMJzE9wRSxpFM0X3/lKqneZuxS4Unk8vL3bmzx1RU+
+	 7KY2n2yAE/ao/ExuVz3MrIjqbq10/p+nVfjetWgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Hongchi <hongchi.peng@siengine.com>,
+	Adrian Moreno <amorenoz@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/116] usb: dwc2: gadget: Dont write invalid mapped sg entries into dma_desc with iommu enabled
+Subject: [PATCH 6.12 061/160] psample: adjust size if rate_as_probability is set
 Date: Mon, 23 Dec 2024 16:57:52 +0100
-Message-ID: <20241223155359.639122376@linuxfoundation.org>
+Message-ID: <20241223155411.032324045@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+References: <20241223155408.598780301@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Hongchi <hongchi.peng@siengine.com>
+From: Adrian Moreno <amorenoz@redhat.com>
 
-[ Upstream commit 1134289b6b93d73721340b66c310fd985385e8fa ]
+[ Upstream commit 5eecd85c77a254a43bde3212da8047b001745c9f ]
 
-When using dma_map_sg() to map the scatterlist with iommu enabled,
-the entries in the scatterlist can be mergerd into less but longer
-entries in the function __finalise_sg(). So that the number of
-valid mapped entries is actually smaller than ureq->num_reqs,and
-there are still some invalid entries in the scatterlist with
-dma_addr=0xffffffff and len=0. Writing these invalid sg entries
-into the dma_desc can cause a data transmission error.
+If PSAMPLE_ATTR_SAMPLE_PROBABILITY flag is to be sent, the available
+size for the packet data has to be adjusted accordingly.
 
-The function dma_map_sg() returns the number of valid map entries
-and the return value is assigned to usb_request::num_mapped_sgs in
-function usb_gadget_map_request_by_dev(). So that just write valid
-mapped entries into dma_desc according to the usb_request::num_mapped_sgs,
-and set the IOC bit if it's the last valid mapped entry.
+Also, check the error code returned by nla_put_flag.
 
-This patch poses no risk to no-iommu situation, cause
-ureq->num_mapped_sgs equals ureq->num_sgs while using dma_direct_map_sg()
-to map the scatterlist whith iommu disabled.
-
-Signed-off-by: Peng Hongchi <hongchi.peng@siengine.com>
-Link: https://lore.kernel.org/r/20240523100315.7226-1-hongchi.peng@siengine.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7b1b2b60c63f ("net: psample: allow using rate as probability")
+Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20241217113739.3929300-1-amorenoz@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/gadget.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/psample/psample.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
-index b2f6da5b65cc..b26de09f6b6d 100644
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -885,10 +885,10 @@ static void dwc2_gadget_config_nonisoc_xfer_ddma(struct dwc2_hsotg_ep *hs_ep,
- 	}
+diff --git a/net/psample/psample.c b/net/psample/psample.c
+index a0ddae8a65f9..25f92ba0840c 100644
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -393,7 +393,9 @@ void psample_sample_packet(struct psample_group *group,
+ 		   nla_total_size_64bit(sizeof(u64)) +	/* timestamp */
+ 		   nla_total_size(sizeof(u16)) +	/* protocol */
+ 		   (md->user_cookie_len ?
+-		    nla_total_size(md->user_cookie_len) : 0); /* user cookie */
++		    nla_total_size(md->user_cookie_len) : 0) + /* user cookie */
++		   (md->rate_as_probability ?
++		    nla_total_size(0) : 0);	/* rate as probability */
  
- 	/* DMA sg buffer */
--	for_each_sg(ureq->sg, sg, ureq->num_sgs, i) {
-+	for_each_sg(ureq->sg, sg, ureq->num_mapped_sgs, i) {
- 		dwc2_gadget_fill_nonisoc_xfer_ddma_one(hs_ep, &desc,
- 			sg_dma_address(sg) + sg->offset, sg_dma_len(sg),
--			sg_is_last(sg));
-+			(i == (ureq->num_mapped_sgs - 1)));
- 		desc_count += hs_ep->desc_count;
- 	}
+ #ifdef CONFIG_INET
+ 	tun_info = skb_tunnel_info(skb);
+@@ -498,8 +500,9 @@ void psample_sample_packet(struct psample_group *group,
+ 		    md->user_cookie))
+ 		goto error;
  
+-	if (md->rate_as_probability)
+-		nla_put_flag(nl_skb, PSAMPLE_ATTR_SAMPLE_PROBABILITY);
++	if (md->rate_as_probability &&
++	    nla_put_flag(nl_skb, PSAMPLE_ATTR_SAMPLE_PROBABILITY))
++		goto error;
+ 
+ 	genlmsg_end(nl_skb, data);
+ 	genlmsg_multicast_netns(&psample_nl_family, group->net, nl_skb, 0,
 -- 
 2.39.5
 
