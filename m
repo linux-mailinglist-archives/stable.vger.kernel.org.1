@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-105867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-105937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD219FB220
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:14:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89B0A9FB270
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 17:18:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAF01163203
-	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:13:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95D20168296
+	for <lists+stable@lfdr.de>; Mon, 23 Dec 2024 16:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC161B393A;
-	Mon, 23 Dec 2024 16:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7101AAE0B;
+	Mon, 23 Dec 2024 16:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpVrEu0h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixzNSUk/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02C81B21B5;
-	Mon, 23 Dec 2024 16:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10DB8827;
+	Mon, 23 Dec 2024 16:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970408; cv=none; b=nK8EhSBVnvC17fZLRwicVF5VD1pocvDENq+w5LbFLV2tKxEAk7vbsNRidbxMjQ4Jv/zI60Wjt3NSvwFeZKMNfnzAwn5o94R4v73v+Ftc3UQymLJ1afSvtAyWyYJSOKuIK71A9LQ0FE1Z57EaoLMwZnuvbewqv2IlsghYaSDXCWY=
+	t=1734970644; cv=none; b=fMuEHhROAahRV+B05p4JBuqtqzfpN2GW7KYTZbtMC5MuVaJAf0gPx3HfbVLsxYxBxSgdcYu+Cby7jo1ydmUAv4R1KW/Fpv1gYSY3j+y30Ptxw8pYm1P8Tb+XLVYv0nMGrJjPIWPZVLOE+ed8tmhuEmfaNw4o0wwwWmd+0rpEh4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970408; c=relaxed/simple;
-	bh=58dRHttiB2+OgnNSCklTEpZsRp3Yb6OQmZ/NEaLcq4k=;
+	s=arc-20240116; t=1734970644; c=relaxed/simple;
+	bh=To04578maZbtL8CdYY/DkuovizB8puuZwE1nBF64qv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRT05qYjOZ2VmsdRuNVor2yhPusJDM2li6KRwfRrmpWDB3gyigpM6vUhTdfEvbnj+lf2u/chB4HUv3MI9j+R+2M5l51jbBwfZOm2E34t2FQ8VPWnE76UJJmvGUYTiD/JQH+xBcSeSnWneBrlBK2NwfLdgBSqzWh0SjEOmcQa52c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpVrEu0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4726C4CED3;
-	Mon, 23 Dec 2024 16:13:27 +0000 (UTC)
+	 MIME-Version; b=GAYOWl+SFoHNN21NLvJYskqIW4KNNHLvrE4wfscW5vl2MSuHqz3z2YHuI9TkGg8sM6WwkAYPjY2CkpyuNCRrf0kV0/ULFUVJJI4jjF91DQUNJiYxtDYEudoXwSNs0b4wEoQAuX7JRrDYCs9aNx7VM74wy5ZRVN371T5l++viO10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixzNSUk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B66C4CED3;
+	Mon, 23 Dec 2024 16:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734970408;
-	bh=58dRHttiB2+OgnNSCklTEpZsRp3Yb6OQmZ/NEaLcq4k=;
+	s=korg; t=1734970644;
+	bh=To04578maZbtL8CdYY/DkuovizB8puuZwE1nBF64qv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpVrEu0hbu4Cg7Ym1vCZrVcCvlb9cf0R4kyaHyoRnD3iAMneI34ScwhwELH8nL/Qu
-	 VAd4WjimlZIe2MrVIhg+pXaiEW5B0D90Y+gj1SPz/41JEGW0OwirYUgljxU3lksjlC
-	 NQF7TSZAWcWgnqvLt5gOBLyLVEKxb8rE+8ZqqxCY=
+	b=ixzNSUk/y9I/DTDsl8mEG5keVhp2d0MK9VQa4TcR1vy31dsYRFYtSnujpf/VP9Gxu
+	 v710dtTiJGuD0pGYzpTv/CChsHCtbntrpLDLzeG4pF+b9Cnl5S3axRgZ/nvtnmPg5A
+	 2ROz15QWtLON2Y/4462sCBHvQxLIPKvs2DMP9Fjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/116] i915/guc: Reset engine utilization buffer before registration
+Subject: [PATCH 6.1 26/83] ionic: Fix netdev notifier unregister on failure
 Date: Mon, 23 Dec 2024 16:59:05 +0100
-Message-ID: <20241223155402.479123839@linuxfoundation.org>
+Message-ID: <20241223155354.649073993@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-References: <20241223155359.534468176@linuxfoundation.org>
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit abcc2ddae5f82aa6cfca162e3db643dd33f0a2e8 ]
+[ Upstream commit 9590d32e090ea2751e131ae5273859ca22f5ac14 ]
 
-On GT reset, we store total busyness counts for all engines and
-re-register the utilization buffer with GuC. At that time we should
-reset the buffer, so that we don't get spurious busyness counts on
-subsequent queries.
+If register_netdev() fails, then the driver leaks the netdev notifier.
+Fix this by calling ionic_lif_unregister() on register_netdev()
+failure. This will also call ionic_lif_unregister_phc() if it has
+already been registered.
 
-To repro this issue, run igt@perf_pmu@busy-hang followed by
-igt@perf_pmu@most-busy-idle-check-all for a couple iterations.
-
-Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241127174006.190128-2-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit abd318237fa6556c1e5225529af145ef15d5ff0d)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Fixes: 30b87ab4c0b3 ("ionic: remove lif list concept")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20241212213157.12212-2-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/i915/gt/uc/intel_guc_submission.c | 21 +++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index 236dfff81fea..44610c739fe7 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -1229,6 +1229,21 @@ static void __get_engine_usage_record(struct intel_engine_cs *engine,
- 	} while (++i < 6);
- }
- 
-+static void __set_engine_usage_record(struct intel_engine_cs *engine,
-+				      u32 last_in, u32 id, u32 total)
-+{
-+	struct iosys_map rec_map = intel_guc_engine_usage_record_map(engine);
-+
-+#define record_write(map_, field_, val_) \
-+	iosys_map_wr_field(map_, 0, struct guc_engine_usage_record, field_, val_)
-+
-+	record_write(&rec_map, last_switch_in_stamp, last_in);
-+	record_write(&rec_map, current_context_index, id);
-+	record_write(&rec_map, total_runtime, total);
-+
-+#undef record_write
-+}
-+
- static void guc_update_engine_gt_clks(struct intel_engine_cs *engine)
- {
- 	struct intel_engine_guc_stats *stats = &engine->stats.guc;
-@@ -1488,6 +1503,9 @@ static void guc_timestamp_ping(struct work_struct *wrk)
- 
- static int guc_action_enable_usage_stats(struct intel_guc *guc)
- {
-+	struct intel_gt *gt = guc_to_gt(guc);
-+	struct intel_engine_cs *engine;
-+	enum intel_engine_id id;
- 	u32 offset = intel_guc_engine_usage_offset(guc);
- 	u32 action[] = {
- 		INTEL_GUC_ACTION_SET_ENG_UTIL_BUFF,
-@@ -1495,6 +1513,9 @@ static int guc_action_enable_usage_stats(struct intel_guc *guc)
- 		0,
- 	};
- 
-+	for_each_engine(engine, gt, id)
-+		__set_engine_usage_record(engine, 0, 0xffffffff, 0);
-+
- 	return intel_guc_send(guc, action, ARRAY_SIZE(action));
- }
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 14865fc245da..b746944bcd2a 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -3484,8 +3484,8 @@ int ionic_lif_register(struct ionic_lif *lif)
+ 	/* only register LIF0 for now */
+ 	err = register_netdev(lif->netdev);
+ 	if (err) {
+-		dev_err(lif->ionic->dev, "Cannot register net device, aborting\n");
+-		ionic_lif_unregister_phc(lif);
++		dev_err(lif->ionic->dev, "Cannot register net device: %d, aborting\n", err);
++		ionic_lif_unregister(lif);
+ 		return err;
+ 	}
  
 -- 
 2.39.5
