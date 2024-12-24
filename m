@@ -1,145 +1,149 @@
-Return-Path: <stable+bounces-106054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E0E9FBA2E
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:25:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CFBF9FBA43
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:39:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90A3B164FEE
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:25:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA3F7162CC3
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E589918FDBA;
-	Tue, 24 Dec 2024 07:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807E6183098;
+	Tue, 24 Dec 2024 07:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="JB/iyRvo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqZclh3B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D5118F2C3
-	for <stable@vger.kernel.org>; Tue, 24 Dec 2024 07:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A286224EA;
+	Tue, 24 Dec 2024 07:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735025098; cv=none; b=sR8/FKubZOzH07jbW8nqyx1pF9ob1xuNz1PsVo5s6lM/8dpvhlQbGT42ttzU8OvEEBiTA+xYOzlxRxDuu4cB3NuHjkcaVs94kXvyySk05rHGTHk7f7BE/nJbpDHuuLD2kF2LQYhICG/736ug4GPVLesXcApb0UI6tqNSQ43KKaE=
+	t=1735025962; cv=none; b=r2GA50IphMUSp8w+VzpwhZnPP8vf6CBmErDPQS0hprjhN6MVRCbCEF88HDqI9eIlW67ni0e8lbTPLyL9oRpzc5JyYBCJsle7LvJ0EVeT8SQScYrIuGUP4RzrJ7bhCHzugkmmlRyBQkQ/MJjmr5g2UqoTO0b+bWT7lS90O7Cv7vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735025098; c=relaxed/simple;
-	bh=9cZLG5L2vkdEDHKnH31YZBkU40Mvvp2J/3ooo59x45Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/XZgGF8Ll6boPOFju93Qdmdp3PyLDISajDInatgdhmXMrchBiIk51rDwWBGcwxgwEQRUeO8wGxq6CxNHb8mPmkWNRLzer/GE3kM18QUoM+53dOaOA+96Jk4rL5nNaOV0ss36p3Bw8tbGaS1ILnrDWuapJ6bVj4pqdM78c4e+S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=JB/iyRvo; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21670dce0a7so62780045ad.1
-        for <stable@vger.kernel.org>; Mon, 23 Dec 2024 23:24:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1735025096; x=1735629896; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AE9nvfJslVj9qB/yCOxLUqgILFx3DJwfUeD0T7gDpl8=;
-        b=JB/iyRvo9lcf0AJEefx2I49AOL80+IZ5EHaO8o+bsCBcOJvHOl2xdT/5KHUjWOOTT4
-         fs4KPmi1M1JvNuaN6PlPVZCIkOYPjBcVoMpRGsffS/3yBXIcbXxnPhKOnnVZO1wTSlVj
-         boKUGTExYAd003Cgpg2d/D8Gj3gngY1dmRNKs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735025096; x=1735629896;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AE9nvfJslVj9qB/yCOxLUqgILFx3DJwfUeD0T7gDpl8=;
-        b=jV1lcYQKcn2Xqqskgup6LOZoRcEZRLQpge6k1VthWILxqkcotplcG65pOm5B2w593L
-         yyu4dC153qfb5jg8dOjlqYUYAhWY0psb1uRjr/gzP4LEZ149/itrabDhjLVMyZMbxAss
-         TdJPEheurI2tpIS3i+Y/nwYlXZv2bhId+HccDEZHi/bLtKyYOvOibWicPHj+vt1WgmRU
-         Itaa1O7tOoE8cQM/Kn6HrO9NUTmgq4S2+dpCOGfrvQlp5druX4yeCry4imkCwBgwxG6e
-         bPmyz/gGjPVb3nt4oECzrHlAvFFpAE2ytD651QS5KSvsHsBq02w6Rn6yly17iqvVSrHD
-         1kGA==
-X-Forwarded-Encrypted: i=1; AJvYcCVU72FjNqboGdSp1zcBkvHB8MiSKRDUPKjP20cwE4ge7X+Ixrm9i0CTHZcFUezGC1jLclhSuss=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrwHiUgPejOUEJwbv0c3AuI3cV0dQif/TS5VEZE0DXodPHcx21
-	+/0jD212LVXy+V8IfGKXaRMM2AlLTk6gFIOqFQcW+q6BSEb/cEv2/3i+mXwr1g==
-X-Gm-Gg: ASbGncsyNW+ckEEhMpzslqHshX8pkA3xXLlWVCEr5rn78kwtB2tA0i8h/Q7ag6I3Xa4
-	hsCLqxoFg9BWDjuRzNFTIAMrxQ2TMembLiTMvlwd322mk1gbGR9n6fxNrp1/ugOdprG9sWgv0iW
-	jhPeJYYARlp7fWV1ASEJTnJjiWZlZjKjkRPuT6AF1xWlXIqPCQqBzgFtfTq2yPWE517lTQuTD7S
-	+LkW4ln85u460UxdXpJGD4LeEtIVFaWcW7VCBLpx05Y0hyDHBbfb9q8aLE=
-X-Google-Smtp-Source: AGHT+IHKoKTL2NIALRxLrphqegLKe8K7HSq2hikZhf5VhPOyutofWJK6Rrh5cMHHc0VdChmeAIfuLw==
-X-Received: by 2002:a17:902:ccc7:b0:215:94b0:9df4 with SMTP id d9443c01a7336-219e6f283aemr251758405ad.54.1735025096549;
-        Mon, 23 Dec 2024 23:24:56 -0800 (PST)
-Received: from localhost ([2401:fa00:8f:203:de21:da72:a349:25b2])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-219dca02b77sm84195355ad.242.2024.12.23.23.24.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Dec 2024 23:24:56 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	"Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Hans Verkuil <hverkuil@xs4all.nl>,
-	linux-media@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	stable@vger.kernel.org,
-	Nathan Hebert <nhebert@google.com>
-Subject: [PATCHv3 1/2] media: venus: destroy hfi session after m2m_ctx release
-Date: Tue, 24 Dec 2024 16:24:05 +0900
-Message-ID: <20241224072444.2044956-2-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-In-Reply-To: <20241224072444.2044956-1-senozhatsky@chromium.org>
-References: <20241224072444.2044956-1-senozhatsky@chromium.org>
+	s=arc-20240116; t=1735025962; c=relaxed/simple;
+	bh=cCQtsKCeEZog/LrYCxk88omHx4Ew2PH39UDmDC7uwBc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TqXmQFybQR0i/TudBR38vOlMgOe3NypBvf602b+pj0e6KV0yVb8b8e9RWYGroh4pPesmHubZpxt/nL8k9alpygiV/LvXivM6NL3UcXStxaHXDd7spb8GNeRqoCbD72r2HEPO8/sFoEH4hQXW5FRE8WVYidIkDtp3GO8EUe2Jk9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqZclh3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F308AC4CED0;
+	Tue, 24 Dec 2024 07:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1735025961;
+	bh=cCQtsKCeEZog/LrYCxk88omHx4Ew2PH39UDmDC7uwBc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TqZclh3BaWFHEbQKMzD9fEyl0NYD8ZDGj2qPafWujR3koUujZls63KurKoBDAofjM
+	 0mziwBwF1YNAXh/0kSRS6yHRVY3/NhEuUVlyTe/DeMamzQsQcLacO4g4ss2/X9UGNz
+	 XGBxEZOfulwiC+GP5QkLEM6NPZiT79eODYOhr5ss=
+Date: Tue, 24 Dec 2024 08:38:37 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Akash M/Akash M <akash.m5@samsung.com>
+Cc: paul@crapouillou.net, Chris.Wulff@biamp.com, tudor.ambarus@linaro.org,
+	m.grzeschik@pengutronix.de, viro@zeniv.linux.org.uk,
+	quic_jjohnson@quicinc.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, naushad@samsung.com, rc93.raju@samsung.com,
+	taehyun.cho@samsung.com, hongpooh.kim@samsung.com,
+	eomji.oh@samsung.com, shijie.cai@samsung.com,
+	alim.akhtar@samsung.com, selvarasu.g@samsung.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: gadget: f_fs: Remove WARN_ON in functionfs_bind
+Message-ID: <2024122413-jersey-dimmer-b01a@gregkh>
+References: <CGME20241219125248epcas5p3887188e4df29b7b580cce9cfe6fed79f@epcas5p3.samsung.com>
+ <20241219125221.1679-1-akash.m5@samsung.com>
+ <0375d572-4c88-40ce-af24-62a8b38fb7bf@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0375d572-4c88-40ce-af24-62a8b38fb7bf@samsung.com>
 
-This partially reverts commit that made hfi_session_destroy()
-the first step of vdec/venc close().  The reason being is a
-regression report when, supposedly, encode/decoder is closed
-with still active streaming (no ->stop_streaming() call before
-close()) and pending pkts, so isr_thread cannot find instance
-and fails to process those pending pkts.  This was the idea
-behind the original patch - make it impossible to use instance
-under destruction, because this is racy, but apparently there
-are uses cases that depend on that unsafe pattern.  Return to
-the old (unsafe) behaviour for the time being (until a better
-fix is found).
+On Tue, Dec 24, 2024 at 12:12:49PM +0530, Akash M/Akash M wrote:
+> 
+> On 12/19/2024 6:22 PM, Akash M wrote:
+> > This commit addresses an issue related to below kernel panic where
+> > panic_on_warn is enabled. It is caused by the unnecessary use of WARN_ON
+> > in functionsfs_bind, which easily leads to the following scenarios.
+> >
+> > 1.adb_write in adbd               2. UDC write via configfs
+> >    =================	             =====================
+> >
+> > ->usb_ffs_open_thread()           ->UDC write
+> >   ->open_functionfs()               ->configfs_write_iter()
+> >    ->adb_open()                      ->gadget_dev_desc_UDC_store()
+> >     ->adb_write()                     ->usb_gadget_register_driver_owner
+> >                                        ->driver_register()
+> > ->StartMonitor()                       ->bus_add_driver()
+> >   ->adb_read()                           ->gadget_bind_driver()
+> > <times-out without BIND event>           ->configfs_composite_bind()
+> >                                            ->usb_add_function()
+> > ->open_functionfs()                        ->ffs_func_bind()
+> >   ->adb_open()                               ->functionfs_bind()
+> >                                         <ffs->state !=FFS_ACTIVE>
+> >
+> > The adb_open, adb_read, and adb_write operations are invoked from the
+> > daemon, but trying to bind the function is a process that is invoked by
+> > UDC write through configfs, which opens up the possibility of a race
+> > condition between the two paths. In this race scenario, the kernel panic
+> > occurs due to the WARN_ON from functionfs_bind when panic_on_warn is
+> > enabled. This commit fixes the kernel panic by removing the unnecessary
+> > WARN_ON.
+> >
+> > Kernel panic - not syncing: kernel: panic_on_warn set ...
+> > [   14.542395] Call trace:
+> > [   14.542464]  ffs_func_bind+0x1c8/0x14a8
+> > [   14.542468]  usb_add_function+0xcc/0x1f0
+> > [   14.542473]  configfs_composite_bind+0x468/0x588
+> > [   14.542478]  gadget_bind_driver+0x108/0x27c
+> > [   14.542483]  really_probe+0x190/0x374
+> > [   14.542488]  __driver_probe_device+0xa0/0x12c
+> > [   14.542492]  driver_probe_device+0x3c/0x220
+> > [   14.542498]  __driver_attach+0x11c/0x1fc
+> > [   14.542502]  bus_for_each_dev+0x104/0x160
+> > [   14.542506]  driver_attach+0x24/0x34
+> > [   14.542510]  bus_add_driver+0x154/0x270
+> > [   14.542514]  driver_register+0x68/0x104
+> > [   14.542518]  usb_gadget_register_driver_owner+0x48/0xf4
+> > [   14.542523]  gadget_dev_desc_UDC_store+0xf8/0x144
+> > [   14.542526]  configfs_write_iter+0xf0/0x138
+> >
+> > Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Akash M <akash.m5@samsung.com>
+> >
+> > diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+> > index 2920f8000bbd..92c883440e02 100644
+> > --- a/drivers/usb/gadget/function/f_fs.c
+> > +++ b/drivers/usb/gadget/function/f_fs.c
+> > @@ -2285,7 +2285,7 @@ static int functionfs_bind(struct ffs_data *ffs, struct usb_composite_dev *cdev)
+> >   	struct usb_gadget_strings **lang;
+> >   	int first_id;
+> >   
+> > -	if (WARN_ON(ffs->state != FFS_ACTIVE
+> > +	if ((ffs->state != FFS_ACTIVE
+> >   		 || test_and_set_bit(FFS_FL_BOUND, &ffs->flags)))
+> >   		return -EBADFD;
+> >   
+> Hi Greg,
+> 
+> I realized there's a minor nitpick with the patch I submitted - 
+> specifically a pair of extra brackets not removed.
+> 
+> Do you want me to proceed with sending a v2 to address this, or is this 
+> something you can take care while applying this patch?
 
-Fixes: 45b1a1b348ec1 ("media: venus: sync with threaded IRQ during inst destruction")
-Cc: stable@vger.kernel.org
-Reported-by: Nathan Hebert <nhebert@google.com>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/media/platform/qcom/venus/core.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+It's already in my tree, as you should have gotten an email about that.
 
-diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-index 2d27c5167246..807487a1f536 100644
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -506,18 +506,14 @@ static __maybe_unused int venus_runtime_suspend(struct device *dev)
- void venus_close_common(struct venus_inst *inst)
- {
- 	/*
--	 * First, remove the inst from the ->instances list, so that
--	 * to_instance() will return NULL.
--	 */
--	hfi_session_destroy(inst);
--	/*
--	 * Second, make sure we don't have IRQ/IRQ-thread currently running
-+	 * Make sure we don't have IRQ/IRQ-thread currently running
- 	 * or pending execution, which would race with the inst destruction.
- 	 */
- 	synchronize_irq(inst->core->irq);
- 
- 	v4l2_m2m_ctx_release(inst->m2m_ctx);
- 	v4l2_m2m_release(inst->m2m_dev);
-+	hfi_session_destroy(inst);
- 	v4l2_fh_del(&inst->fh);
- 	v4l2_fh_exit(&inst->fh);
- 	v4l2_ctrl_handler_free(&inst->ctrl_handler);
--- 
-2.47.1.613.gc27f4b7a9f-goog
+Just send a cleanup patch for later, it's not a big deal.
 
+thanks,
+
+greg k-h
 
