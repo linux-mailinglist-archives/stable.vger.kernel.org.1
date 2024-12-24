@@ -1,118 +1,123 @@
-Return-Path: <stable+bounces-106043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2689FB923
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 05:18:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B21309FB9AF
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F9F01617C9
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 04:18:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27733164548
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 06:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E86713C9B8;
-	Tue, 24 Dec 2024 04:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50EBE14A617;
+	Tue, 24 Dec 2024 06:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CsP5UrcC"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="RVXu0FEv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33E821106;
-	Tue, 24 Dec 2024 04:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F641487D5;
+	Tue, 24 Dec 2024 06:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735013927; cv=none; b=QUR1s6/jsOPUp7k7XysxAX0vJUXEfIyJI4Xjo6vjFsKIitMyDk8RhCzvYiMEDNCT4zeLMclTrklUcdcr7XOJ1MFsV5RQKtAiRZksj84gyYd4dgxpuPSZaJQe7NDzQrMyCAcNRmlJZ26afx5CEVWPAy9xjLBxvhbk2fVt8oFILCY=
+	t=1735020761; cv=none; b=X/9MDL2cxhmNEYlHTVEVgHtAtebZsNnwn7CcnFhXkypydPMzPCZWUFJbEoX6wgvOAfXkckZL4q09HLWENUyO8gmB4fx4zoJq5JEF0z/ENoAgfBVRePcx5XLbmQ5S5ZaPZb9P9Oy8OVNN4ssOCks8zzfsuBs1aymipslp3nNx3a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735013927; c=relaxed/simple;
-	bh=tIdIYP1YhQ7GU+RskcLEWdyC86YX4CMaX09zAKjTEuU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=E/NUS+lfqZINtIFezzU2FC7r0uCJgav847SiQSMRlrcLQZd0+pT4h6xqYYCcgJ9bE55fsBNnBEB4U2CihJlj22t8WKvb4SHclGe7dbo6TSJXaci8EV/av+1ryto4OHra04ulddjx3de5ih+PUhSFon/AnFzaACvI7cO5aE5aaFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CsP5UrcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0E4C4CED0;
-	Tue, 24 Dec 2024 04:18:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735013927;
-	bh=tIdIYP1YhQ7GU+RskcLEWdyC86YX4CMaX09zAKjTEuU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=CsP5UrcCpUEqCqM+7LFucmDpt0beFJiium1J7q9gV7GS4jL/wskHHmMz38BFOza7Y
-	 f474h7bdVe5ui1Z7kpaQnNo3hFqqr4BTrOF8HECf7qRIzNWEeUZeqLfobuFpinBDQ9
-	 M5A3/DDRtGx6fSxiJ5R+/51nblAd68vd+yq7U+Wt1oFRZ3gDqzTRvA22wVkfujWj5u
-	 nXXFrxrEmK++AQxLcM3oY4fn8tN7bcjeXFQZbsgZPNHY0RDrL91QVFlYWVvVG2lnBo
-	 yN4a/avGxosPeY/NZek4W1yrRiRUFOkMyMKB6HRIQCeq18FslYWhS9RMnZmgkZ0fXg
-	 7WIFSwzY4uSBQ==
+	s=arc-20240116; t=1735020761; c=relaxed/simple;
+	bh=0KwGciMbbMIvdCsfeKFBeBug/lObwJGpllXY4dqmF5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vBsqEURYh1h1ZgGHcwZ8iJHV/vfaVZ6EzE9dc6EStxWxBOitReMV4sUv9TsQSFqy4xnAqb/FZLmRgJApb3TALTxO3B9W7U49thAWe0HOVnnUPY91smhY0zkHuxJCzLU6d+pThs0mql4E9XnJvyp4yETwUgaECtgFoNhSr5ESABk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=RVXu0FEv; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1735020688;
+	bh=IAzDc9MfMmq2YmPNIrP/dODV2uxxUZPudpTQKPDJALc=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=RVXu0FEvUlfdLeWm30nHmY7kJS2FwoQOzdydFq2axEfLGWMkrauzunPSc1la3wqdz
+	 LQiB6jEuqYi/nd1yJswnl9DGvq5QmXJ3HdscsroDt7zIZ22K8PmLSzw8BxeaGrpl0+
+	 dBI7Cg5Pvm3/N/i0U0fBb1VQYLy7I/yatu+UFlYI=
+X-QQ-mid: bizesmtpip3t1735020648tlxa9hx
+X-QQ-Originating-IP: tPZRCzswTjBVcac3tacxG9Z6CVY2UcrpN8n8sRX2X9E=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 24 Dec 2024 14:10:46 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2400545881246479525
+From: WangYuli <wangyuli@uniontech.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: jiaxun.yang@flygoat.com,
+	tsbogend@alpha.franken.de,
+	linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	guanwentao@uniontech.com,
+	baimingcong@uniontech.com,
+	revy@deepin.org,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 5.4~6.6] MIPS: Probe toolchain support of -msym32
+Date: Tue, 24 Dec 2024 14:09:18 +0800
+Message-ID: <183F7B3F0A07AC93+20241224060918.15199-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Dec 2024 06:18:42 +0200
-Message-Id: <D6JN3SL6SY8T.1VYULNCNNAHGJ@kernel.org>
-Cc: <stable@vger.kernel.org>, "Andy Liang" <andy.liang@hpe.com>, "Matthew
- Garrett" <mjg59@srcf.ucam.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5] tpm: Map the ACPI provided event log
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>,
- <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, "Colin Ian King"
- <colin.i.king@gmail.com>, "Joe Hattori" <joe@pf.is.s.u-tokyo.ac.jp>, "James
- Bottomley" <James.Bottomley@HansenPartnership.com>, "Stefan Berger"
- <stefanb@linux.ibm.com>, "Ard Biesheuvel" <ardb@kernel.org>, "Mimi Zohar"
- <zohar@linux.ibm.com>, "Al Viro" <viro@zeniv.linux.org.uk>, "Kylene Jo
- Hall" <kjhall@us.ibm.com>, "Reiner Sailer" <sailer@us.ibm.com>, "Seiji
- Munetoh" <munetoh@jp.ibm.com>, "Andrew Morton" <akpm@osdl.org>
-X-Mailer: aerc 0.18.2
-References: <20241224040334.11533-1-jarkko@kernel.org>
-In-Reply-To: <20241224040334.11533-1-jarkko@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NSEFX6u+4l+K4yINnM6/bA/Wp3DrEuPgE13xTNC2cF0kKRo09Nvttn3X
+	gkyynssj37O0TD7CIx+YWHyVb1uuKsM8QB68al9IvwuYtWSWdUXYmYeIH3swrTVG/Sv5U1B
+	ohrTt12PcD4rvCGspDP2XcDGHhpg39VrvbzBG/nefM5kajWo6k8d9PiyxNBDZci1SSSxmMa
+	YhcrFK/GMr+blq47ZFrV8Xiurm7v8JSgyZ9aibRQlgHT8dxcqnDPjxfU38O5D1sCzUEe+MQ
+	PWJP3VHJ9Nxc3LzOda6g6z3mDuXMkDA+m6KV8XJNG+1Bf8R8c4huKMoF8X4eFEuTifIGBR1
+	5YSVvmprKqVBNQbJ8T3cqNEyQ6IQ/7+oFJaglZcANYz7XX4LUMlcAc+CQlz3byWBGFuPVxS
+	5m/qycf2qZU9DDoWJuop/Zpvvh4XfP/i6dc4DuK20JIyyK9gNy1+1+JOH05xuEP9zWVfi3Z
+	5FcTTt/Gj0/AUXzHP3DzgEmlFsq19r+NNRAx4gFDvtoYkdWr2DmZiHgevOx8e84ARQIbN81
+	fxK78Id84kHfUI6l+sK674QWqqzVoPuE7HhXeVLcbHQOgiJjq2I7e79965XT/7D+it+RbYm
+	cb3FmxinPQoUVCukgDCnR0GtLxoaqBHdSwG7b+y9UY6j6cs9F0C0JVZTnvHV77xR13bCqHZ
+	BWnzjNXtBGREDP/NJvZ7XcFkeMvitwGzqaEM+BiTwzLM7yIsgpHPSDXIB3TOniPiH/jBeRK
+	c8/dcQvIGEMrcZR3mApcuQJVof8xfLUrqlcBd4Zh1QclywucoFpZoFTTDrfNOFeqjJOfo5B
+	Tmo86kVwrfk0DO/UQp1qqXO4hxjaF1qNwat6wJuns71c2N6/5NNP8gTulhiSsuCt0cJ9glk
+	ALl1V+OiwurOkch6kAF5lo+D1eJ45vV4C9xdLBqA7Y7HsvrA7TSlVTn2gXYOD77EzD/zP+e
+	A6WIY2VVR7opq3ztQwQj6HRoIheKqeblZlzc=
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+X-QQ-RECHKSPAM: 0
 
-On Tue Dec 24, 2024 at 6:03 AM EET, Jarkko Sakkinen wrote:
-> The following failure was reported:
->
-> [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id=
- 0)
-> [   10.848132][    T1] ------------[ cut here ]------------
-> [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __=
-alloc_pages_noprof+0x2ca/0x330
-> [   10.862827][    T1] Modules linked in:
-> [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted =
-6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98=
-293a7c9eba9013378d807364c088c9375
-> [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant D=
-L320 Gen12, BIOS 1.20 10/28/2024
-> [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-> [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe=
- ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce=
- 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
-> [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-> [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0=
-000000000000000
-> [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0=
-000000000040cc0
->
-> Above shows that ACPI pointed a 16 MiB buffer for the log events because
-> RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address the
-> bug by mapping the region when needed instead of copying.
->
-> Cc: stable@vger.kernel.org # v2.6.16+
-> Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
-> Reported-by: Andy Liang <andy.liang@hpe.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219495
-> Suggested-by: Matthew Garrett <mjg59@srcf.ucam.org>
-> Tested-by: Andy Liang <andy.liang@hpe.com>
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-Doing some weird truncate here would be pointless even if it is "too
-large". It's HPE's problem, not ours. The onnly piece of code where the
-fix makes any mentionable changes is really acpi.c and I've tested that
-quite throughly already...
+[ Upstream commit 18ca63a2e23c5e170d2d7552b64b1f5ad019cd9b ]
 
-In some other version of the hardware the size was BTW 8 MiB (according
-to TPM2 table contents) and later on it changed to 16 MiB (according to
-transcript above i.e. RSI). That is weird but I don't think we should
-care.
+msym32 is not supported by LLVM toolchain.
+Workaround by probe toolchain support of msym32 for KBUILD_SYM32
+feature.
 
-BR, Jarkko
+Link: https://github.com/ClangBuiltLinux/linux/issues/1544
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ arch/mips/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index f49807e1f19b..0888074f4dfe 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -299,7 +299,7 @@ drivers-$(CONFIG_PCI)		+= arch/mips/pci/
+ ifdef CONFIG_64BIT
+   ifndef KBUILD_SYM32
+     ifeq ($(shell expr $(load-y) \< 0xffffffff80000000), 0)
+-      KBUILD_SYM32 = y
++      KBUILD_SYM32 = $(call cc-option-yn, -msym32)
+     endif
+   endif
+ 
+-- 
+2.47.1
+
 
