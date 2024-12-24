@@ -1,149 +1,100 @@
-Return-Path: <stable+bounces-106056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFBF9FBA43
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:39:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DDC9FBA47
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:44:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA3F7162CC3
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:39:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDFF1883272
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807E6183098;
-	Tue, 24 Dec 2024 07:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E2218B47E;
+	Tue, 24 Dec 2024 07:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqZclh3B"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="YRD25q+p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A286224EA;
-	Tue, 24 Dec 2024 07:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9201F86250;
+	Tue, 24 Dec 2024 07:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735025962; cv=none; b=r2GA50IphMUSp8w+VzpwhZnPP8vf6CBmErDPQS0hprjhN6MVRCbCEF88HDqI9eIlW67ni0e8lbTPLyL9oRpzc5JyYBCJsle7LvJ0EVeT8SQScYrIuGUP4RzrJ7bhCHzugkmmlRyBQkQ/MJjmr5g2UqoTO0b+bWT7lS90O7Cv7vc=
+	t=1735026266; cv=none; b=NCNaLe/AQfq6WpliiOWiHxx7lyjFgSvKnU5a5R0CmeGi0Js4wKT6hBifJ31pVol/MhlpjSz+QyZeTiPNisTDrw7y3VCil3EIahCTGB5y6RJ1TKvtNHkcDfua39M/zTaMYvaP6UQqco18KLAwdx8kHn8a5Gp63uDTM/blR36Q6/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735025962; c=relaxed/simple;
-	bh=cCQtsKCeEZog/LrYCxk88omHx4Ew2PH39UDmDC7uwBc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TqXmQFybQR0i/TudBR38vOlMgOe3NypBvf602b+pj0e6KV0yVb8b8e9RWYGroh4pPesmHubZpxt/nL8k9alpygiV/LvXivM6NL3UcXStxaHXDd7spb8GNeRqoCbD72r2HEPO8/sFoEH4hQXW5FRE8WVYidIkDtp3GO8EUe2Jk9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqZclh3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F308AC4CED0;
-	Tue, 24 Dec 2024 07:39:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735025961;
-	bh=cCQtsKCeEZog/LrYCxk88omHx4Ew2PH39UDmDC7uwBc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TqZclh3BaWFHEbQKMzD9fEyl0NYD8ZDGj2qPafWujR3koUujZls63KurKoBDAofjM
-	 0mziwBwF1YNAXh/0kSRS6yHRVY3/NhEuUVlyTe/DeMamzQsQcLacO4g4ss2/X9UGNz
-	 XGBxEZOfulwiC+GP5QkLEM6NPZiT79eODYOhr5ss=
-Date: Tue, 24 Dec 2024 08:38:37 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Akash M/Akash M <akash.m5@samsung.com>
-Cc: paul@crapouillou.net, Chris.Wulff@biamp.com, tudor.ambarus@linaro.org,
-	m.grzeschik@pengutronix.de, viro@zeniv.linux.org.uk,
-	quic_jjohnson@quicinc.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
-	dh10.jung@samsung.com, naushad@samsung.com, rc93.raju@samsung.com,
-	taehyun.cho@samsung.com, hongpooh.kim@samsung.com,
-	eomji.oh@samsung.com, shijie.cai@samsung.com,
-	alim.akhtar@samsung.com, selvarasu.g@samsung.com,
+	s=arc-20240116; t=1735026266; c=relaxed/simple;
+	bh=+tmVQNDbPLLjALMas9jkB+FitqvhPC+w92rzlYHAmaQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kgud8Rk6VvM85EeYUXGxkwm1rdzNOED6xBniqAH4uwaU8U1lzIxJZvG5YndD8ZfiFEHUnlbXfsn+BJ4FuWI+D2Orj1C4t/NessDjpIXcANMkjJrby+JRU/Oi3GCH/Xhdsb3G7siA7gC9Kh17Y+IJO9ISmn82LPJDyf2yIAgzefY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=YRD25q+p; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=rv8l9
+	YFNfbS2Fc/AUsV3HzdcDIM3qTrTB46nCaLjGlg=; b=YRD25q+pp5yfPM8Ayf2wj
+	pY4BXC4d8Aa2lfKqS/ToGjZ2ZTrICY753+4S94kTnVV5obyRQBB1PpZesh8bSNex
+	OGcZRmda1T7J/oWckZYgtOT8yXTr5DA0GGnyftGny8t9jDJZ6oWHiwHbyCX0QOBZ
+	S3YmVEUETwL0OXq2QLZd7g=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3X5QTZmpnV25TBQ--.3123S4;
+	Tue, 24 Dec 2024 15:43:24 +0800 (CST)
+From: Ma Ke <make_ruc2021@163.com>
+To: jejb@linux.ibm.com,
+	martin.petersen@oracle.com,
+	jeff@garzik.org,
+	James.Bottomley@SteelEye.com
+Cc: linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make_ruc2021@163.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: f_fs: Remove WARN_ON in functionfs_bind
-Message-ID: <2024122413-jersey-dimmer-b01a@gregkh>
-References: <CGME20241219125248epcas5p3887188e4df29b7b580cce9cfe6fed79f@epcas5p3.samsung.com>
- <20241219125221.1679-1-akash.m5@samsung.com>
- <0375d572-4c88-40ce-af24-62a8b38fb7bf@samsung.com>
+Subject: [PATCH RESEND] [SCSI] raid class: Fix error handling in raid_component_add
+Date: Tue, 24 Dec 2024 15:43:14 +0800
+Message-Id: <20241224074314.3769014-1-make_ruc2021@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0375d572-4c88-40ce-af24-62a8b38fb7bf@samsung.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3X5QTZmpnV25TBQ--.3123S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Gr15JF48GrWrAw48ZFW3GFg_yoWkAFg_GF
+	40vryIgr1Ikrs7XasxtanxZr1vgFsF93yfuFWIvFn3Zay3XFZFqr1DWrs0vryUW3yUXw17
+	J3W5tr40vr409jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRZnYFUUUUUU==
+X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBXwC-C2dqYxc-yQAAsk
 
-On Tue, Dec 24, 2024 at 12:12:49PM +0530, Akash M/Akash M wrote:
-> 
-> On 12/19/2024 6:22 PM, Akash M wrote:
-> > This commit addresses an issue related to below kernel panic where
-> > panic_on_warn is enabled. It is caused by the unnecessary use of WARN_ON
-> > in functionsfs_bind, which easily leads to the following scenarios.
-> >
-> > 1.adb_write in adbd               2. UDC write via configfs
-> >    =================	             =====================
-> >
-> > ->usb_ffs_open_thread()           ->UDC write
-> >   ->open_functionfs()               ->configfs_write_iter()
-> >    ->adb_open()                      ->gadget_dev_desc_UDC_store()
-> >     ->adb_write()                     ->usb_gadget_register_driver_owner
-> >                                        ->driver_register()
-> > ->StartMonitor()                       ->bus_add_driver()
-> >   ->adb_read()                           ->gadget_bind_driver()
-> > <times-out without BIND event>           ->configfs_composite_bind()
-> >                                            ->usb_add_function()
-> > ->open_functionfs()                        ->ffs_func_bind()
-> >   ->adb_open()                               ->functionfs_bind()
-> >                                         <ffs->state !=FFS_ACTIVE>
-> >
-> > The adb_open, adb_read, and adb_write operations are invoked from the
-> > daemon, but trying to bind the function is a process that is invoked by
-> > UDC write through configfs, which opens up the possibility of a race
-> > condition between the two paths. In this race scenario, the kernel panic
-> > occurs due to the WARN_ON from functionfs_bind when panic_on_warn is
-> > enabled. This commit fixes the kernel panic by removing the unnecessary
-> > WARN_ON.
-> >
-> > Kernel panic - not syncing: kernel: panic_on_warn set ...
-> > [   14.542395] Call trace:
-> > [   14.542464]  ffs_func_bind+0x1c8/0x14a8
-> > [   14.542468]  usb_add_function+0xcc/0x1f0
-> > [   14.542473]  configfs_composite_bind+0x468/0x588
-> > [   14.542478]  gadget_bind_driver+0x108/0x27c
-> > [   14.542483]  really_probe+0x190/0x374
-> > [   14.542488]  __driver_probe_device+0xa0/0x12c
-> > [   14.542492]  driver_probe_device+0x3c/0x220
-> > [   14.542498]  __driver_attach+0x11c/0x1fc
-> > [   14.542502]  bus_for_each_dev+0x104/0x160
-> > [   14.542506]  driver_attach+0x24/0x34
-> > [   14.542510]  bus_add_driver+0x154/0x270
-> > [   14.542514]  driver_register+0x68/0x104
-> > [   14.542518]  usb_gadget_register_driver_owner+0x48/0xf4
-> > [   14.542523]  gadget_dev_desc_UDC_store+0xf8/0x144
-> > [   14.542526]  configfs_write_iter+0xf0/0x138
-> >
-> > Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Akash M <akash.m5@samsung.com>
-> >
-> > diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-> > index 2920f8000bbd..92c883440e02 100644
-> > --- a/drivers/usb/gadget/function/f_fs.c
-> > +++ b/drivers/usb/gadget/function/f_fs.c
-> > @@ -2285,7 +2285,7 @@ static int functionfs_bind(struct ffs_data *ffs, struct usb_composite_dev *cdev)
-> >   	struct usb_gadget_strings **lang;
-> >   	int first_id;
-> >   
-> > -	if (WARN_ON(ffs->state != FFS_ACTIVE
-> > +	if ((ffs->state != FFS_ACTIVE
-> >   		 || test_and_set_bit(FFS_FL_BOUND, &ffs->flags)))
-> >   		return -EBADFD;
-> >   
-> Hi Greg,
-> 
-> I realized there's a minor nitpick with the patch I submitted - 
-> specifically a pair of extra brackets not removed.
-> 
-> Do you want me to proceed with sending a v2 to address this, or is this 
-> something you can take care while applying this patch?
+The reference count of the device incremented in device_initialize() is
+not decremented when device_add() fails. Add a put_device() call before
+returning from the function to decrement reference count for cleanup.
+Or it could cause memory leak.
 
-It's already in my tree, as you should have gotten an email about that.
+As comment of device_add() says, if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count.
 
-Just send a cleanup patch for later, it's not a big deal.
+Found by code review.
 
-thanks,
+Cc: stable@vger.kernel.org
+Fixes: ed542bed126c ("[SCSI] raid class: handle component-add errors")
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+---
+ drivers/scsi/raid_class.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-greg k-h
+diff --git a/drivers/scsi/raid_class.c b/drivers/scsi/raid_class.c
+index 898a0bdf8df6..2cb2949a78c6 100644
+--- a/drivers/scsi/raid_class.c
++++ b/drivers/scsi/raid_class.c
+@@ -251,6 +251,7 @@ int raid_component_add(struct raid_template *r,struct device *raid_dev,
+ 	list_del(&rc->node);
+ 	rd->component_count--;
+ 	put_device(component_dev);
++	put_device(&rc->dev);
+ 	kfree(rc);
+ 	return err;
+ }
+-- 
+2.25.1
+
 
