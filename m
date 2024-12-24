@@ -1,128 +1,130 @@
-Return-Path: <stable+bounces-106062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57209FBB8C
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 10:52:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB3CE9FBC20
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 11:23:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D5041887AA7
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 09:50:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08886168D17
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 10:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49431D6DA3;
-	Tue, 24 Dec 2024 09:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A091B2180;
+	Tue, 24 Dec 2024 10:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bGn2SmAZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KbuXRj7Q"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="o3mcNWAc"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51651B4F1E;
-	Tue, 24 Dec 2024 09:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C05518FDD8
+	for <stable@vger.kernel.org>; Tue, 24 Dec 2024 10:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735033654; cv=none; b=ZBjUanRpsMPLvgl7eJrlAiqr7Cd7IzHCssjeD31VXU5bAKxgC1KKTZ2brxt60Mgqeo0EtY1ghvEwjdpBq2ik8F1+FtssJ2/1LucNTx2fv8nwYWeEXTIK/xjbDPrglOtFluiQpHmxgblqTdis7UpAO519AvD9TXHcqp41Hqk+UUs=
+	t=1735035382; cv=none; b=h2ohngPCOd4gpxmIbhqwxOyx+b2UKpFveedkenNjWegsvJrCDL9EM+jlvC6L8nZKPmb53eGXip+ufMb4GG91/aMNwVh1Kz5XCT2JLknlj+0zW/8+ctk2RBVZsX9gqhXptxYjIbCa5dIPgV1zr6/Cr/PPewGlZeOMjqlRmJMbQ10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735033654; c=relaxed/simple;
-	bh=/Ym5OsdlmtJHTJFEl2HFMeYmEB0z2MzIRMrdowttpCY=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=hKQBhgC6hBeIxO7VUU8RJdcYXj5xjX7UF1R7rOYcQtQ+SDnH5y/ncrli+BEW3FnjRTHp5nrEQZGwANUx9vQx72UAnHWKPD+F+In/9OXi8YM0CSD34kUVKdmEk2vUtRSeCBMTVbagLeLXv46o15N3t/uPvk8Y+W8WzWnFLJmEtLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bGn2SmAZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KbuXRj7Q; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 24 Dec 2024 09:47:30 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1735033651;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=8ABSVMN0mHmJFsqS369Z/NJtBs9QT7y0JQxwU7KzqYM=;
-	b=bGn2SmAZJteLCF35ZPhfKI/xNhD6VAXHQd1b1jBB2kSz1PMuwgwSAY7mhVGBL++UKwkvb9
-	I2Ks2xEbuXD6I6+rr5XeO+rWVidMjbu2ObGly9S7U+kUkTWGHQlchAn961ag1Qsr6nLwf/
-	AhsYcLwPXrB28svIkkegBngsuETEjszyyskkkMSpyUBqGi/7UoMYkfP0PEANFWG01sW8bS
-	XSyVbYM05CGL30eIyLGbw0EdC9ql5SUQBvgEA6a3ORvEsY9uvpcWWtlAQZ99LE4e/a4tH8
-	rmFA8zUDpsZyjW2p7CyvQiNr+tLj/UXLzV+KJRF1bMaJOXrPteC5YwYD43ANEQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1735033651;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=8ABSVMN0mHmJFsqS369Z/NJtBs9QT7y0JQxwU7KzqYM=;
-	b=KbuXRj7Qrrw3xYW9CNxPRJJIK1Vxex6x8ysz3sp35mWct9mdHg+zqd1AUWAjD9b9NMlmCI
-	4FYvY02lqho1OoDw==
-From: "tip-bot2 for Li RongQing" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] virt: tdx-guest: Just leak decrypted memory on
- unrecoverable errors
-Cc: Li RongQing <lirongqing@baidu.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1735035382; c=relaxed/simple;
+	bh=1uASdSnQlPEPsjzcpi1ZN+8O6LUCqdymG8K2zGwCuA4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HjhNWny2TvgTorhcrwrWjgeir1KEJ6PC//Vhgy861WazmlC867kK02PbJr50oC0vfILpM1/36MpkLJLIWB+X6iluCTRe3MlqMBWzdpHOvisutLwmneNcp3sSe3lPuT1gb0/5jnBi2uxqcgnBMM59nyZmio6kuff2RwnbJ4++Q98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=o3mcNWAc; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6010a.ext.cloudfilter.net ([10.0.30.248])
+	by cmsmtp with ESMTPS
+	id PyjEtUJ6BqvuoQ1xVtihXu; Tue, 24 Dec 2024 10:16:13 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id Q1xUtTxj6EfeeQ1xUtkce2; Tue, 24 Dec 2024 10:16:13 +0000
+X-Authority-Analysis: v=2.4 cv=VsElAf2n c=1 sm=1 tr=0 ts=676a89ed
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=9xsrzLQQd9IFNql683FgryzmtC9f7xBWUezFFUfyfqo=; b=o3mcNWAcuLBynXWReSm//d6+uK
+	E2br2cF9w6ftfjnnbBseIz5IUoM283jPhg9IpPlYFW9BgQsD9TX/RrF0f1E81wurDvcf6ijl/UQGY
+	0MBfgLxtLp+2ArWANn1XZZU8m/HEFAQKtz6JJPllYXkxx5kx7w7O7n7nsxqJwYx5dEZjVOyjF2POm
+	KzYYOb23UKRWCn80qkajirxJdWjpHUnaaJZXkxWKwoMqCagndk+As7SVEVTLOKRW865QQ1GwS5oHR
+	UvUfLrsB5D35h+xjZduhr822r4czI0bUHRRexdQ2bHt8+F6nE7JgoNLMrWei6ta0p70oai+XVal4t
+	tpjeiy1Q==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:53926 helo=[10.0.1.115])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1tQ1xT-002Psk-23;
+	Tue, 24 Dec 2024 03:16:11 -0700
+Message-ID: <2eaf702f-5080-4c42-8a23-41359b90add7@w6rz.net>
+Date: Tue, 24 Dec 2024 02:16:09 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173503365084.399.4200780690438676943.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/160] 6.12.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20241223155408.598780301@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1tQ1xT-002Psk-23
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.115]) [73.223.253.157]:53926
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfKP3Tft1DKWbwr7HXqljX9VgL4qNx3cP9dWO7J1l9d7aDpTDl479MtLyr+Pd6tDeMqgp0A1x9UJAT2/kQr19V/u1Lvi4N7CpQ8Ea7IZUyPNZrTC5x5/y
+ fyuZnZJL7vvV/l7R/5VRb5Qtjw8neEGEIQFR3ejuiQ/Et1c3E4mDrTFuVZsJ3Dr9yCHLf0KEzcXWHw==
 
-The following commit has been merged into the x86/urgent branch of tip:
+On 12/23/24 07:56, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.7 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 27 Dec 2024 15:53:30 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Commit-ID:     10331a93486ffb7b85ceea9da48a37da8cc16bdf
-Gitweb:        https://git.kernel.org/tip/10331a93486ffb7b85ceea9da48a37da8cc16bdf
-Author:        Li RongQing <lirongqing@baidu.com>
-AuthorDate:    Wed, 19 Jun 2024 19:18:01 +08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 18 Dec 2024 06:07:55 -08:00
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-virt: tdx-guest: Just leak decrypted memory on unrecoverable errors
+Tested-by: Ron Economos <re@w6rz.net>
 
-In CoCo VMs it is possible for the untrusted host to cause
-set_memory_decrypted() to fail such that an error is returned
-and the resulting memory is shared. Callers need to take care
-to handle these errors to avoid returning decrypted (shared)
-memory to the page allocator, which could lead to functional
-or security issues.
-
-Leak the decrypted memory when set_memory_decrypted() fails,
-and don't need to print an error since set_memory_decrypted()
-will call WARN_ONCE().
-
-Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240619111801.25630-1-lirongqing%40baidu.com
----
- drivers/virt/coco/tdx-guest/tdx-guest.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index d7db6c8..224e7dd 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -124,10 +124,8 @@ static void *alloc_quote_buf(void)
- 	if (!addr)
- 		return NULL;
- 
--	if (set_memory_decrypted((unsigned long)addr, count)) {
--		free_pages_exact(addr, len);
-+	if (set_memory_decrypted((unsigned long)addr, count))
- 		return NULL;
--	}
- 
- 	return addr;
- }
 
