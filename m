@@ -1,121 +1,139 @@
-Return-Path: <stable+bounces-106039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2479FB820
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 02:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D12AD9FB8C0
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 03:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F94D16582D
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 01:09:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8C11627E8
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 02:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19D5C2C8;
-	Tue, 24 Dec 2024 01:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A949813C816;
+	Tue, 24 Dec 2024 02:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yIgKyyui"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="YF/OG5Ww"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94391A95E;
-	Tue, 24 Dec 2024 01:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2102FB6;
+	Tue, 24 Dec 2024 02:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735002553; cv=none; b=OO6JOMDQPPyR/3ookofEMtEZi2ykvcV0cJSncgofzd7IXF+wPMiz63YSUg97yJZzPhEskfs+pmtDgmtro3ItX9OLDw82tK3r75Zbgqo6oc43ZrjOFqku9UrkFHPmoA4fBVsYOKDJB+6Yj3rKIG2pk4KMiwKRNM+ckx2QQzV4Yi4=
+	t=1735008895; cv=none; b=np/0d1Wm3twQeK2csyOmSog8CtlfGidibTXrYeYXSjG0CHERECXwPF2TysSekY4pvkWr1p5oZsu1klVzqWPW2CL5GJtuKMN3qVj3GnNRaojySlqieVTIYvGjLVngfqyYaia5nViMtV/ugWloAPXVCVP5mMx2sF8SYnvU6c4dbkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735002553; c=relaxed/simple;
-	bh=4rDVZHD3AVDNcoO8R/b1XAopoXmn5s+omf3WqGDMjz0=;
-	h=Date:To:From:Subject:Message-Id; b=BRUsd0XvDb9DI5ZarTXLopY3Nxn7OfQJdXaXx0FVDHGBncm6ZptO2i5u0eMNCsK+VwxERDyL5PjgdscSBg6EFjE+oiO7roAdlsewC6Ez0UHlLSTbsmgVOiXuMyozneIaXs5u+jmM5cXjJAGaGZ0NOqvHP7vVWUQz/sKgi157q1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yIgKyyui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0457DC4CED3;
-	Tue, 24 Dec 2024 01:09:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1735002553;
-	bh=4rDVZHD3AVDNcoO8R/b1XAopoXmn5s+omf3WqGDMjz0=;
-	h=Date:To:From:Subject:From;
-	b=yIgKyyuivzmN3yyqQ3jWpAgeH9v1FwpkJoAXpeaabzsDis+CGLVkbTPeyXWnYCRMi
-	 ZqfrgVMnhlj+XXQWoiJe5Uaevj8bE28+je83uHARMppYa4QG8HsneLSLoSjUKcu/4w
-	 KChbR4/vl4NJX/1mOQFK7thXSIFq9JTwjWidwKik=
-Date: Mon, 23 Dec 2024 17:09:12 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-core-fix-ignored-quota-goals-and-filters-of-newly-committed-schemes.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241224010913.0457DC4CED3@smtp.kernel.org>
+	s=arc-20240116; t=1735008895; c=relaxed/simple;
+	bh=xWS3vrD8hACtXK4k8pMX7q+Vj94Gb4GP2O+23x0XvNg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hmfXmitryI6lo8qbNzv7m8VUSM1XGkzAXtSbno9n0YAaCrJm/kVbqTJoDsQhvC6lsDi4ixlZxIOOc3+iRsgnPZTumKH1Nex3bDtLZXUbkaxg2AHrSEw/GX/55umwtiDsn/M/hbDx+bORFVcrD8YNEjLow2O1bvBgizDKDuFmkEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=YF/OG5Ww; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BO2sjYE32799716, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1735008885; bh=xWS3vrD8hACtXK4k8pMX7q+Vj94Gb4GP2O+23x0XvNg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version;
+	b=YF/OG5WwGtcW4D/WJ7NE+etukVeRT66eDsZ9QzQ1ISx/bj9VCCYeV1N8bno+uQ49g
+	 QcubdElEWAndvP9XKxYNLgD7rRcgMwMKM3bhy/g++5hMDLG2FnOwO+HwHgnopJ7BcP
+	 SFCAK2Wmx5U2561mVIOvB7S+ltwZLh+mMVViIhvO+eH8Zi/HRJfbxPENPBYa9NWSRy
+	 9TptdxInk5XNcGNrmxuJnKqqqt0pkqa3uawUXbIVQDbVZJ0FPkyUACusmTCfQgNveT
+	 WZkbYXNt3MYewwizKccLdyz6CLsbepv0onggBjFFjHWziHCmp093uEJTieXH+qNJa8
+	 2edrGu85Y6KYA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BO2sjYE32799716
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 24 Dec 2024 10:54:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 24 Dec 2024 10:54:45 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 24 Dec 2024 10:54:45 +0800
+Received: from RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2]) by
+ RTEXMBS01.realtek.com.tw ([fe80::147b:e1e8:e867:41c2%7]) with mapi id
+ 15.01.2507.035; Tue, 24 Dec 2024 10:54:45 +0800
+From: Kailang <kailang@realtek.com>
+To: Evgeny Kapun <abacabadabacaba@gmail.com>, Takashi Iwai <tiwai@suse.de>
+CC: Linux Sound Mailing List <linux-sound@vger.kernel.org>,
+        "Linux Kernel
+ Mailing List" <linux-kernel@vger.kernel.org>,
+        Linux Regressions Mailing List
+	<regressions@lists.linux.dev>,
+        Linux Stable Mailing List
+	<stable@vger.kernel.org>
+Subject: RE: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
+Thread-Topic: [REGRESSION] Distorted sound on Acer Aspire A115-31 laptop
+Thread-Index: AQHbTvIxtyWK99B6LkqZbi3R9/JZE7LtROwAgAQfxYCAAA3tgIAB5qEAgAFmuDA=
+Date: Tue, 24 Dec 2024 02:54:45 +0000
+Message-ID: <58300a2a06e34f3e89bf7a097b3cd4ca@realtek.com>
+References: <e142749b-7714-4733-9452-918fbe328c8f@gmail.com>
+ <8734ijwru5.wl-tiwai@suse.de>
+ <57883f2e-49cd-4aa4-9879-7dcdf7fec6df@gmail.com>
+ <87ldw89l7e.wl-tiwai@suse.de>
+ <fc506097-9d04-442c-9efd-c9e7ce0f3ace@gmail.com>
+In-Reply-To: <fc506097-9d04-442c-9efd-c9e7ce0f3ace@gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: yes
+Content-Type: multipart/mixed;
+	boundary="_002_58300a2a06e34f3e89bf7a097b3cd4carealtekcom_"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 
+--_002_58300a2a06e34f3e89bf7a097b3cd4carealtekcom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The patch titled
-     Subject: mm/damon/core: fix ignored quota goals and filters of newly committed schemes
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-core-fix-ignored-quota-goals-and-filters-of-newly-committed-schemes.patch
+DQpQbGVhc2UgdGVzdCBhdHRhY2ggcGF0Y2guDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
+LS0NCj4gRnJvbTogRXZnZW55IEthcHVuIDxhYmFjYWJhZGFiYWNhYmFAZ21haWwuY29tPg0KPiBT
+ZW50OiBNb25kYXksIERlY2VtYmVyIDIzLCAyMDI0IDk6MjkgUE0NCj4gVG86IFRha2FzaGkgSXdh
+aSA8dGl3YWlAc3VzZS5kZT4NCj4gQ2M6IExpbnV4IFNvdW5kIE1haWxpbmcgTGlzdCA8bGludXgt
+c291bmRAdmdlci5rZXJuZWwub3JnPjsgS2FpbGFuZw0KPiA8a2FpbGFuZ0ByZWFsdGVrLmNvbT47
+IExpbnV4IEtlcm5lbCBNYWlsaW5nIExpc3QNCj4gPGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5v
+cmc+OyBMaW51eCBSZWdyZXNzaW9ucyBNYWlsaW5nIExpc3QNCj4gPHJlZ3Jlc3Npb25zQGxpc3Rz
+LmxpbnV4LmRldj47IExpbnV4IFN0YWJsZSBNYWlsaW5nIExpc3QNCj4gPHN0YWJsZUB2Z2VyLmtl
+cm5lbC5vcmc+DQo+IFN1YmplY3Q6IFJlOiBbUkVHUkVTU0lPTl0gRGlzdG9ydGVkIHNvdW5kIG9u
+IEFjZXIgQXNwaXJlIEExMTUtMzEgbGFwdG9wDQo+IA0KPiANCj4gRXh0ZXJuYWwgbWFpbC4NCj4g
+DQo+IA0KPiANCj4gPj4gT3IgZG8geW91IG5lZWQgYWxzYS1pbmZvIHdpdGggYSBuZXcga2VybmVs
+LCBidXQgd2l0aCB0aGUgb2ZmZW5kaW5nDQo+ID4+IGNvbW1pdCByZXZlcnRlZD8NCj4gPiBZZXMs
+IHRoYXQnbGwgYmUgdGhlIGJlc3QgZm9yIGVsaW1pbmF0aW5nIG90aGVyIHBvc3NpYmxlIGFydGlm
+YWN0cy4NCj4gDQo+IEhlcmUgYXJlIHR3byBhbHNhLWluZm8gb3V0cHV0cyBmb3IgdGhlIHNhbWUg
+a2VybmVsIHZlcnNpb24sIGV4Y2VwdCB0aGF0IG9uZSBoYXMNCj4gdGhlIHByb2JsZW1hdGljIGNv
+bW1pdCByZXZlcnRlZC4NCg==
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-fix-ignored-quota-goals-and-filters-of-newly-committed-schemes.patch
+--_002_58300a2a06e34f3e89bf7a097b3cd4carealtekcom_
+Content-Type: application/octet-stream; name="0000-acer-a115.patch"
+Content-Description: 0000-acer-a115.patch
+Content-Disposition: attachment; filename="0000-acer-a115.patch"; size=904;
+	creation-date="Tue, 24 Dec 2024 02:52:43 GMT";
+	modification-date="Tue, 24 Dec 2024 02:51:38 GMT"
+Content-Transfer-Encoding: base64
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+ZGlmZiAtLWdpdCBhL3NvdW5kL3BjaS9oZGEvcGF0Y2hfcmVhbHRlay5jIGIvc291bmQvcGNpL2hk
+YS9wYXRjaF9yZWFsdGVrLmMKaW5kZXggNjFiYTVkYzM1YjhiLi4yOTM0Nzk5YjZlMDcgMTAwNjQ0
+Ci0tLSBhL3NvdW5kL3BjaS9oZGEvcGF0Y2hfcmVhbHRlay5jCisrKyBiL3NvdW5kL3BjaS9oZGEv
+cGF0Y2hfcmVhbHRlay5jCkBAIC0xMDE1OCw2ICsxMDE1OCw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1
+Y3QgaGRhX3F1aXJrIGFsYzI2OV9maXh1cF90YmxbXSA9IHsKIAlTTkRfUENJX1FVSVJLKDB4MTAy
+NSwgMHgxMzA4LCAiQWNlciBBc3BpcmUgWjI0LTg5MCIsIEFMQzI4Nl9GSVhVUF9BQ0VSX0FJT19I
+RUFEU0VUX01JQyksCiAJU05EX1BDSV9RVUlSSygweDEwMjUsIDB4MTMyYSwgIkFjZXIgVHJhdmVs
+TWF0ZSBCMTE0LTIxIiwgQUxDMjMzX0ZJWFVQX0FDRVJfSEVBRFNFVF9NSUMpLAogCVNORF9QQ0lf
+UVVJUksoMHgxMDI1LCAweDEzMzAsICJBY2VyIFRyYXZlbE1hdGUgWDUxNC01MVQiLCBBTEMyNTVf
+RklYVVBfQUNFUl9IRUFEU0VUX01JQyksCisJU05EX1BDSV9RVUlSSygweDEwMjUsIDB4MTM2MCwg
+IkFjZXIgQXNwaXJlIEExMTUiLCBBTEMyNTVfRklYVVBfQUNFUl9NSUNfTk9fUFJFU0VOQ0UpLAog
+CVNORF9QQ0lfUVVJUksoMHgxMDI1LCAweDE0MWYsICJBY2VyIFNwaW4gU1A1MTMtNTROIiwgQUxD
+MjU1X0ZJWFVQX0FDRVJfTUlDX05PX1BSRVNFTkNFKSwKIAlTTkRfUENJX1FVSVJLKDB4MTAyNSwg
+MHgxNDJiLCAiQWNlciBTd2lmdCBTRjMxNC00MiIsIEFMQzI1NV9GSVhVUF9BQ0VSX01JQ19OT19Q
+UkVTRU5DRSksCiAJU05EX1BDSV9RVUlSSygweDEwMjUsIDB4MTQzMCwgIkFjZXIgVHJhdmVsTWF0
+ZSBCMzExUi0zMSIsIEFMQzI1Nl9GSVhVUF9BQ0VSX01JQ19OT19QUkVTRU5DRSksCg==
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/core: fix ignored quota goals and filters of newly committed schemes
-Date: Sun, 22 Dec 2024 15:12:22 -0800
-
-damon_commit_schemes() ignores quota goals and filters of the newly
-committed schemes.  This makes users confused about the behaviors. 
-Correctly handle those inputs.
-
-Link: https://lkml.kernel.org/r/20241222231222.85060-3-sj@kernel.org
-Fixes: 9cb3d0b9dfce ("mm/damon/core: implement DAMON context commit function")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/core.c |    5 +++++
- 1 file changed, 5 insertions(+)
-
---- a/mm/damon/core.c~mm-damon-core-fix-ignored-quota-goals-and-filters-of-newly-committed-schemes
-+++ a/mm/damon/core.c
-@@ -868,6 +868,11 @@ static int damon_commit_schemes(struct d
- 				NUMA_NO_NODE);
- 		if (!new_scheme)
- 			return -ENOMEM;
-+		err = damos_commit(new_scheme, src_scheme);
-+		if (err) {
-+			damon_destroy_scheme(new_scheme);
-+			return err;
-+		}
- 		damon_add_scheme(dst, new_scheme);
- 	}
- 	return 0;
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-core-fix-new-damon_target-objects-leaks-on-damon_commit_targets.patch
-mm-damon-core-fix-ignored-quota-goals-and-filters-of-newly-committed-schemes.patch
-samples-add-a-skeleton-of-a-sample-damon-module-for-working-set-size-estimation.patch
-samples-damon-wsse-start-and-stop-damon-as-the-user-requests.patch
-samples-damon-wsse-implement-working-set-size-estimation-and-logging.patch
-samples-damon-introduce-a-skeleton-of-a-smaple-damon-module-for-proactive-reclamation.patch
-samples-damon-prcl-implement-schemes-setup.patch
-replace-free-hugepage-folios-after-migration-fix-2.patch
-
+--_002_58300a2a06e34f3e89bf7a097b3cd4carealtekcom_--
 
