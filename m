@@ -1,57 +1,49 @@
-Return-Path: <stable+bounces-106058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF389FBA4A
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:52:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8572B9FBA6C
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 09:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F43F164250
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:52:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D76FA1883F37
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDD5187FEC;
-	Tue, 24 Dec 2024 07:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C98A14A099;
+	Tue, 24 Dec 2024 08:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jOi5IPjr"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="aHkJBYUc"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFB68F66;
-	Tue, 24 Dec 2024 07:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E4516F0FE
+	for <stable@vger.kernel.org>; Tue, 24 Dec 2024 08:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735026728; cv=none; b=j/CX9j5d0LwEhOqEuIXvrZKo63x9s/hacBNQiriRqTOHkPU0ks1jBd6DHeZmfHnZv7pIJXk5mzjhgKKjNj08KA1Ueh0u7n6DLYmlI1Wt7XxEbycwWhollZ3v6OEz2oTl+nLGuh8FBhad5oO9v0iYBN2rtklyivIvib3si0deKvE=
+	t=1735027883; cv=none; b=L5pHh1z2yxUI3QwQntdJJZML0xUuVJBWbNiDFQUrGDk0Y1FFTzvNonAZ33TTmIy00xgWTQIOiHy3cWnvoVVJlCJNRpdmOn8DBiDsqzrteZ3ac7irzuvIOhuhRY2/nahU7iTiuC2Mna6JzFNMEXynrPz4jLb8vJE7ZwkWIbokMj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735026728; c=relaxed/simple;
-	bh=K82UHOux3hacbEhV+14iXgn4wi9VECeVfkXAko1fE1U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o/L0av5z6hTcxiiFaFFtHoj8VNNQSNVS+FyzRiZfngP9G3A4jXbawkrEJPuysjkyxLwpwzoGrgw37oCL7/PBPcg1V5I5XQXaLS6P6wkygizc91eNj76z1mEMEBR4vAA6UDNKQNXtwW06bv0SsSEpUoXF01R26LZnDv60cYysFEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jOi5IPjr; arc=none smtp.client-ip=220.197.31.2
+	s=arc-20240116; t=1735027883; c=relaxed/simple;
+	bh=TYJ918j1tLu7iz37tCV9WlXJfkpm2PR4Gqbf9Lm8Azc=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=Fcrsffnxw3p/4Kc55gWDWqUrL8FnU4CjTK6vipjbpimqpMxqA6FnrYUITQbk04ptDkYt2GvT1s+Akc+4npnl/v+DRlVs0O2T+Tf0j3DMngsrVXNzAxFvL/UuOcpWTbHh2ENfBwGgo5Wz+ASknzZ4B1LTdkNEbpRItHI4TyITRTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=aHkJBYUc; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=SNECs
-	J0XKp8vy5JU0Zqz2v1x01Madw93zTND8IbZ038=; b=jOi5IPjrssH7Kc5ew7L5k
-	SwIi84doG3BrbNg/yhbzl60++ya+LLIWdhNaJW5M900tWlfetN3UkSzwnpNwL5pd
-	jkdpyRb7xnxhSA+Urr6Rel+Vp2GN8KNvEUIDesB9RvIMiNtmk6DYjeWoqecHAT6D
-	qx1KlMpUnAlN6DbnhLOzGQ=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBnofntZ2pnyb0QBQ--.44335S4;
-	Tue, 24 Dec 2024 15:51:17 +0800 (CST)
-From: Ma Ke <make_ruc2021@163.com>
-To: jckuo@nvidia.com,
-	vkoul@kernel.org,
-	kishon@kernel.org,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com
-Cc: linux-phy@lists.infradead.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make_ruc2021@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] phy: Fix error handling in tegra_xusb_port_init
-Date: Tue, 24 Dec 2024 15:51:08 +0800
-Message-Id: <20241224075108.3770055-1-make_ruc2021@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=sSO2f
+	CafuR5FYd9QutZVYPFDBhE2ZcW84J+ye2N9Qss=; b=aHkJBYUcBlsmU8PKmsKPO
+	WuByXLJ5EBibUg/hXC+0UhJDL8M16KN0akcSUWWbHnZ89i6jnm5mu+USk1U44nxF
+	/Rv8hQv93ArUsGvFBwbIurRPmyBX7WH24YPqeeXtxUx9SyMJzR/rnbsL7JODYHFL
+	oNxoOaDd3Ctv5FBTHlOIIg=
+Received: from pek-blan-cn-l1.corp.ad.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3CCyRbGpnGRVFBQ--.20453S2;
+	Tue, 24 Dec 2024 16:11:07 +0800 (CST)
+From: Wenshan Lan <jetlan9@163.com>
+To: stable@vger.kernel.org,
+	qun-wei.lin@mediatek.com
+Subject: [PATCH 6.6] sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
+Date: Tue, 24 Dec 2024 16:10:57 +0800
+Message-Id: <20241224081057.2711-1-jetlan9@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,53 +51,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnofntZ2pnyb0QBQ--.44335S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Gr15JF48GryxJFy3Zr1UKFg_yoWkXrgEkr
-	nYv3s3WrWvga1kCr15Crn3ZryIkF42qFyIqr4IqF93AayrXrs2vryDWrZxZr47Wws8ur1U
-	Ga45ur48Zr1SgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRM0eHDUUUUU==
-X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBFRG-C2dqZf4oZQAAsr
+X-CM-TRANSID:_____wD3CCyRbGpnGRVFBQ--.20453S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWrWfGrWfGF17ZFy3CrW7Arb_yoWrGr4Up3
+	sxKr17GFW8Jr1xtr4UAFWjkrWUJayDuF1UJry2qw18tFy5Ar45tr97tFWfCFyUArWjya43
+	tF1qgr97Kr4DAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRWq2iUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbBDx6-yGdqZm6wLQAAs+
 
-The reference count of the device incremented in device_initialize() is
-not decremented when device_add() fails. Add a put_device() call before
-returning from the function to decrement reference count for cleanup.
-Or it could cause memory leak.
+From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
 
-Found by code review.
+[ Upstream commit fd7b4f9f46d46acbc7af3a439bb0d869efdc5c58 ]
 
-Cc: stable@vger.kernel.org
-Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
+When CONFIG_KASAN_SW_TAGS and CONFIG_KASAN_STACK are enabled, the
+object_is_on_stack() function may produce incorrect results due to the
+presence of tags in the obj pointer, while the stack pointer does not have
+tags.  This discrepancy can lead to incorrect stack object detection and
+subsequently trigger warnings if CONFIG_DEBUG_OBJECTS is also enabled.
+
+Example of the warning:
+
+ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1 at lib/debugobjects.c:557 __debug_object_init+0x330/0x364
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc5 #4
+Hardware name: linux,dummy-virt (DT)
+pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __debug_object_init+0x330/0x364
+lr : __debug_object_init+0x330/0x364
+sp : ffff800082ea7b40
+x29: ffff800082ea7b40 x28: 98ff0000c0164518 x27: 98ff0000c0164534
+x26: ffff800082d93ec8 x25: 0000000000000001 x24: 1cff0000c00172a0
+x23: 0000000000000000 x22: ffff800082d93ed0 x21: ffff800081a24418
+x20: 3eff800082ea7bb0 x19: efff800000000000 x18: 0000000000000000
+x17: 00000000000000ff x16: 0000000000000047 x15: 206b63617473206e
+x14: 0000000000000018 x13: ffff800082ea7780 x12: 0ffff800082ea78e
+x11: 0ffff800082ea790 x10: 0ffff800082ea79d x9 : 34d77febe173e800
+x8 : 34d77febe173e800 x7 : 0000000000000001 x6 : 0000000000000001
+x5 : feff800082ea74b8 x4 : ffff800082870a90 x3 : ffff80008018d3c4
+x2 : 0000000000000001 x1 : ffff800082858810 x0 : 0000000000000050
+Call trace:
+ __debug_object_init+0x330/0x364
+ debug_object_init_on_stack+0x30/0x3c
+ schedule_hrtimeout_range_clock+0xac/0x26c
+ schedule_hrtimeout+0x1c/0x30
+ wait_task_inactive+0x1d4/0x25c
+ kthread_bind_mask+0x28/0x98
+ init_rescuer+0x1e8/0x280
+ workqueue_init+0x1a0/0x3cc
+ kernel_init_freeable+0x118/0x200
+ kernel_init+0x28/0x1f0
+ ret_from_fork+0x10/0x20
+---[ end trace 0000000000000000 ]---
+ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
+------------[ cut here ]------------
+
+Link: https://lkml.kernel.org/r/20241113042544.19095-1-qun-wei.lin@mediatek.com
+Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+Cc: Andrew Yang <andrew.yang@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Casper Li <casper.li@mediatek.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chinwen Chang <chinwen.chang@mediatek.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Resolve line conflicts ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 ---
- drivers/phy/tegra/xusb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/sched/task_stack.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-index 79d4814d758d..c89df95aa6ca 100644
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -548,16 +548,16 @@ static int tegra_xusb_port_init(struct tegra_xusb_port *port,
+diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
+index f158b025c175..d2117e1c8fa5 100644
+--- a/include/linux/sched/task_stack.h
++++ b/include/linux/sched/task_stack.h
+@@ -8,6 +8,7 @@
  
- 	err = dev_set_name(&port->dev, "%s-%u", name, index);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
+ #include <linux/sched.h>
+ #include <linux/magic.h>
++#include <linux/kasan.h>
  
- 	err = device_add(&port->dev);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
  
- 	return 0;
+@@ -88,6 +89,7 @@ static inline int object_is_on_stack(const void *obj)
+ {
+ 	void *stack = task_stack_page(current);
  
--unregister:
--	device_unregister(&port->dev);
-+put_device:
-+	put_device(&port->dev);
- 	return err;
++	obj = kasan_reset_tag(obj);
+ 	return (obj >= stack) && (obj < (stack + THREAD_SIZE));
  }
  
 -- 
-2.25.1
+2.43.0
 
 
