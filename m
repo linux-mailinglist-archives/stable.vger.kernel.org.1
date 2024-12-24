@@ -1,199 +1,141 @@
-Return-Path: <stable+bounces-106081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64619FC02F
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 17:24:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA179FC17D
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 19:57:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6945C163E81
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 16:24:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858EA166123
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 18:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C78C1FF1D9;
-	Tue, 24 Dec 2024 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF0C212FB5;
+	Tue, 24 Dec 2024 18:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQmtL/R4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HXXIMl/+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R50Fy0H3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462BC1C3BE7;
-	Tue, 24 Dec 2024 16:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7792212F9D;
+	Tue, 24 Dec 2024 18:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735057466; cv=none; b=H/XFvzUxltWBOd6mqRWlMhvEyIAsjba7jKv7BVJyZ0vaV+RfV5mTRuY51r7dsL62HRt11MgWafF5ywMU1rArxQT9YYoMjT5kPa4skkng8Skc/AKxxH5123sM6bqfeU8I+r+Pg1ZJq6ley1lHeWUC+JR8d1j29G8KlNZCSkUJN/Q=
+	t=1735066465; cv=none; b=c3oAlPLn8t7IV06gVt085qMHeD9hwYdBtuB92xGYui37ZBgZgps+rK9fVsvm7Abtdsyr2YTqeUrhyTWnMj39APTX1jLgwim4d2SOf4emdd4n+d+7Bh+THG6t3NDjbjpXO03nNi52Htqkn/CKR9JrGP9IVtxCMdhHHVJa7lLQV9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735057466; c=relaxed/simple;
-	bh=p7KqVG8jZUozSrF3yUtKGwmf8J8zBpBVmYtQMvxyH9U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SISXz/gFPK362FsycWpD0Rlt9fJBbVg8n3nXZGZnIddsI08leHbNOID4sojqkH0u0rmHLFzYavehlXV5rTrU70EdtZpCahJ65uilm031CFNsl4pB6yRBAUZKjAoYKo1C8CCaCssHrkYwybNTaS3XuPSuqg1wAiG07kfEIBGatbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQmtL/R4; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5401b7f7141so4694795e87.1;
-        Tue, 24 Dec 2024 08:24:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735057462; x=1735662262; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4mkXKWmGiV5XXckoZsuAcHVdzO+pEYcGppRBWUinzmo=;
-        b=NQmtL/R4qYLMQqZg7hmYhjjkGL6NCh1wjzG465wRBuootUUvE2O7nZ2H8xvdul0iPG
-         rVrPumGZqREUPYK59zND4kTGl/M6Edo82YkjatyX82kWp9PFsmHlEghqsR3CXXkf2oYP
-         ct4Pwtd9ntjc1GKZmF8TBp17nQZfOUlClPzd8opzvMxPhO03Nn7L6kdtn2GhslMLXud5
-         pgq0WXXqGvE8FOi+TnRIxVlzEPwH0I8wyR2LEkwfFOtsJ/QKlCRlX+dJ5qfBxXVIsU7O
-         YtpV9VV30vT7RZVs1C349hsuFfBTNeHoDkGb9mbmQh9g5tkikK+JpmuWwgO9+nldBNTB
-         L0ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735057462; x=1735662262;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4mkXKWmGiV5XXckoZsuAcHVdzO+pEYcGppRBWUinzmo=;
-        b=W+I5opUpCoIfhghZr165uXUu6M23NOuE4QjuzFhc7Rnqi97hBnlL2xMlCumfXdhxGv
-         v0OpydeSMmBTixdC+c/ixL74ygqOasEpz14iY6NFxnnDytkKGmswRx/Egw8lRoXco3p/
-         vYmLiBlmvLCJLTvWjwrrj6oTzBrmp/YaB7WLY1ZLQHHVZ9/tKRK8y3IKr8v0/+GYDSnt
-         ewBa3xus3bU3Cn8eQo/fKkKdsaL+Gt/mqdqFd+Px3tY/iVkJdkC5YEZNTNAc4PNzX6nw
-         6NFm/8bq4Jt+bZAWS7vzFtMVWXvy6rtXFhWa1oeCW4lb+4cqbJG41PKPZt4PMhvazfyy
-         aHiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUokBDV1O+yZmwwetXyX2q7Na21WAz3TLLg/rsqydL2QbhhMS/mf0dtqY1wkb6/qeqQWsUTVYx+@vger.kernel.org, AJvYcCXei/eaeyQ5f7A4V2CrK+UAJia5S6/ICpd6AIikXEvbgyfqAxQqCFzq6KWR0N8rEFhWyU/T9bcST4pqkKU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjypptKxPl2i9v1bhwVT0liTyApQ5iMlRWYJCaiaWliuep3g5p
-	nYvJsnGWHrNUXcS9R3mOoRX8CfrSkA3igZ++dRjMT3L4PGML5F+pjUw+R6dN16ePyqPzmLyp75G
-	HuWm3X6sbLNKv+EQZg44AlawulRo=
-X-Gm-Gg: ASbGncsrImf6lagpPrSXGlji8daII5dA3tjp8wDTzYAMgqf15izRehMWKF7EKrpds3j
-	hPTtO9exF7V7rS/lSzFBXjBtrGAGIsyTL/56sE5g2vye/GVhwoOky866iJLGmCuPrp054
-X-Google-Smtp-Source: AGHT+IFeDcoH6FqGav3dMmPGh5sT6bY3h7jtuxBtb3J/jlYw3D77GN96q3f6d8YvDmECDxLlD6KL4j+bq6oD5HrXqmc=
-X-Received: by 2002:a05:6512:1114:b0:53e:335e:774d with SMTP id
- 2adb3069b0e04-5422957afc9mr4939338e87.56.1735057462100; Tue, 24 Dec 2024
- 08:24:22 -0800 (PST)
+	s=arc-20240116; t=1735066465; c=relaxed/simple;
+	bh=CsciRzqNqyZ3vL0fgWGHcS6tIk23gdMvxo6Llwa1540=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=fPMS57XtHQQ2ZStZY+Weu1QvWWiYfLfPaJJjUlGlNYKut5hlfIvY2wG3gdEGCtwyS7xbmuKTnhFGKKNoi093w6GwMg6NqgS5aDbQRfv/MaWEM/+iAtYHv8z7GhLpjHI3CPqZi4LgJ1TFa4p3xrUKrIsyXjTOwexLKG9iSL4RuOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HXXIMl/+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R50Fy0H3; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 24 Dec 2024 18:54:21 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1735066462;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s6zAL1gvrT1TWcfgSOqx/cM8bdD78KCgyU1oQH8unk8=;
+	b=HXXIMl/+8jLbMgjo6P1sNIEKEDRorQ3L2ozwg6vlFmss0QdfybwE3kG9o6NfMc/0teIRxe
+	ROdUPZkCKL/0A8kWCw45KhrxUbMHkuuXCpDgk4qt0DIppR7faVNsHSyrfOb3+9CvxxOOSK
+	0ZfiAL9FX/gjmQ1CD8r9HxpOrcXrdAsq43rjjuabWwja/cyNRefA8aCeFLP9Lal+NVgKka
+	Bh7bGoWRDXWTXdGn62ZCj+M4b6z7Q2tH3aXROAeKjj/8voGG0a4jw+cB9bk6n5W8Y8N7oK
+	1X8+Sl6Pe5bcAWTmN/rZjaVKW/1/UO7DhdBWzpntxFzf2CF6CWgCCRhnF5x6uA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1735066462;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s6zAL1gvrT1TWcfgSOqx/cM8bdD78KCgyU1oQH8unk8=;
+	b=R50Fy0H3xQO+HmfR+0qLz0d8v8w2G2QfjEn4k5Tp/y7B4OZHbohFppbHIVL699+iaYz44O
+	0Z1gBBfWN5TeBXAw==
+From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/intel: Fix bitmask of OCR and FRONTEND
+ events for LNC
+Cc: Andi Kleen <ak@linux.intel.com>, Kan Liang <kan.liang@linux.intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241216160252.430858-1-kan.liang@linux.intel.com>
+References: <20241216160252.430858-1-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+icZUWHU=oXOEj5wHTzxrw_wj1w5hTvqq8Ry400s0ZCJjTEZw@mail.gmail.com>
- <099d3a80-4fdb-49a7-9fd0-207d7386551f@citrix.com> <CA+icZUX98gQ54hePEWNauiU41XQV7qdKJx5PiiXzxy+6yW7hTw@mail.gmail.com>
- <CA+icZUW-i53boHBPt+8zh-D921XFbPb_Kc=dzdgCK1QvkOgCsw@mail.gmail.com>
- <90640a5d-ff17-4555-adc6-ae9e21e24ebd@citrix.com> <CA+icZUVo69swc9QfwJr+mDuHqJKcFUexc08voP2O41g31HGx5w@mail.gmail.com>
- <43166e29-ff2d-4a9d-8c1b-41b5e247974b@citrix.com> <CA+icZUUp9rgx2Dvsww6QbTGRZz5=mf75D0_KncwdgCEZe01-EA@mail.gmail.com>
- <CA+icZUV0HEF_hwr-eSovntfcT0++FBrQN-HbFL+oZtnKjJzLtA@mail.gmail.com>
- <698f48a0-b674-4d7f-9c47-f1f8bf86379e@citrix.com> <CA+icZUW454ND85nbjqAoMg42=i+aGht8Z=iG2wKj=Un7Ot0y6Q@mail.gmail.com>
-In-Reply-To: <CA+icZUW454ND85nbjqAoMg42=i+aGht8Z=iG2wKj=Un7Ot0y6Q@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From: Sedat Dilek <sedat.dilek@gmail.com>
-Date: Tue, 24 Dec 2024 17:23:45 +0100
-Message-ID: <CA+icZUUnbY7eRZtN-pMNn0jhYKLLEWEDNmJjhGQ3auPuS9_+MQ@mail.gmail.com>
-Subject: Re: [Linux-6.12.y] XEN: CVE-2024-53241 / XSA-466 and Clang-kCFI
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Juergen Gross <jgross@suse.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Jan Beulich <jbeulich@suse.com>, 
-	Josh Poimboeuf <jpoimboe@redhat.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, 
-	xen-devel <xen-devel@lists.xenproject.org>, 1091360@bugs.debian.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <173506646152.399.12766960837214090089.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Sun, Dec 22, 2024 at 11:37=E2=80=AFAM Sedat Dilek <sedat.dilek@gmail.com=
-> wrote:
->
-> On Sat, Dec 21, 2024 at 10:31=E2=80=AFPM Andrew Cooper
-> <andrew.cooper3@citrix.com> wrote:
-> >
-> > On 21/12/2024 6:25 pm, Sedat Dilek wrote:
-> > > With...
-> > >
-> > > dileks@iniza:~/src/xtf/git$ mv tests/xsa-454 ../
-> > > dileks@iniza:~/src/xtf/git$ mv tests/xsa-consoleio-write ../
-> >
-> > That's completely bizzare.   There's nothing interestingly different
-> > with those two tests vs the others.
-> >
-> > I take it the crash is repeatable when using either of these?
-> >
-> > ~Andrew
->
-> This time I stopped SDDM and thus KDE-6/Wayland session.
->
-> Tested with Debian's officially 6.12.6-amd64 kernel in VT-3.
->
-> test-hvm32pae-xsa-consoleio-write SUCCESS <--- 1st time I tried, never
-> said this is not OK
->
-> test-hvm64-xsa-454 leads to FROZEN system and DATA LOSS (here: ext4).
-> Reproducibly as told many times.- in Debian and selfmade kernels version =
-6.12.6.
->
-> Stolen from the picture I took with my smartphone:
->
-> sudo ./xft-runner test-hvm64-xsa-454
->
-> Executing 'xl create -p tests/xsa-454/test-hvm64-xsa-454.cfg'
-> Executing 'xl console test-hvm64-xsa-454'
-> Executing 'xl unpause test-hvm64-xsa-454'
->
-> ^^ System does NOT react!
->
-> I can send you the picture on request.
->
-> -Sedat-
+The following commit has been merged into the perf/urgent branch of tip:
 
-[ CC 1091360@bugs.debian.org ]
+Commit-ID:     aa5d2ca7c179c40669edb5e96d931bf9828dea3d
+Gitweb:        https://git.kernel.org/tip/aa5d2ca7c179c40669edb5e96d931bf9828dea3d
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Mon, 16 Dec 2024 08:02:52 -08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 20 Dec 2024 15:31:14 +01:00
 
-I upgraded to Xen version 4.19.1 in Debian/unstable AMD64.
+perf/x86/intel: Fix bitmask of OCR and FRONTEND events for LNC
 
-# xl info | egrep 'release|version|commandline|caps'
-release                : 6.12.6-amd64
-version                : #1 SMP PREEMPT_DYNAMIC Debian 6.12.6-1 (2024-12-21=
-)
-hw_caps                :
-bfebfbff:17bae3bf:28100800:00000001:00000001:00000000:00000000:00000100
-virt_caps              : pv hvm hap shadow gnttab-v1 gnttab-v2
-xen_version            : 4.19.1
-xen_caps               : xen-3.0-x86_64 hvm-3.0-x86_32 hvm-3.0-x86_32p
-hvm-3.0-x86_64
-xen_commandline        : placeholder
+The released OCR and FRONTEND events utilized more bits on Lunar Lake
+p-core. The corresponding mask in the extra_regs has to be extended to
+unblock the extra bits.
 
-dileks@iniza:~/src/xtf/git$ sudo ./xtf-runner --host test-hvm64-xsa-454
-Executing 'xl create -p tests/xsa-454/test-hvm64-xsa-454.cfg'
-Executing 'xl console test-hvm64-xsa-454'
-Executing 'xl unpause test-hvm64-xsa-454'
---- Xen Test Framework ---
-Environment: HVM 64bit (Long mode 4 levels)
-XSA-454 PoC
-Success: Not vulnerable to XSA-454
-Test result: SUCCESS
+Add a dedicated intel_lnc_extra_regs.
 
-Combined test results:
-test-hvm64-xsa-454                       SUCCESS
+Fixes: a932aa0e868f ("perf/x86: Add Lunar Lake and Arrow Lake support")
+Reported-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20241216160252.430858-1-kan.liang@linux.intel.com
+---
+ arch/x86/events/intel/core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-root@iniza:~# LC_ALL=3DC ll /var/log/xen/*xsa-454*.log
--rw-r--r-- 1 root adm 232 Dec 24 17:11
-/var/log/xen/qemu-dm-test-hvm64-xsa-454.log
--rw-r--r-- 1 root adm 232 Dec 24 17:11 /var/log/xen/xl-test-hvm64-xsa-454.l=
-og
-
-root@iniza:~# cat /var/log/xen/qemu-dm-test-hvm64-xsa-454.log
-VNC server running on 127.0.0.1:5900
-xen-qemu-system-i386: failed to create 'console' device '0': declining
-to handle console type 'xenconsoled'
-xen-qemu-system-i386: terminating on signal 1 from pid 6302
-(/usr/lib/xen-4.19/bin/xl)
-
-root@iniza:~# cat /var/log/xen/xl-test-hvm64-xsa-454.log
-Waiting for domain test-hvm64-xsa-454 (domid 144) to die [pid 6302]
-Domain 144 has shut down, reason code 0 0x0
-Action for shutdown reason code 0 is destroy
-Domain 144 needs to be cleaned up: destroying the domain
-Done. Exiting now
-
-Due to Debian-Bug #1091360 ("qemu-system-xen: Build against libxen-dev
-version 4.19.1-1") I am not able to do the full XFT tests.
-
--Sedat-
-
-Link: https://bugs.debian.org/1091360
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 2e1e268..99c590d 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -429,6 +429,16 @@ static struct event_constraint intel_lnc_event_constraints[] = {
+ 	EVENT_CONSTRAINT_END
+ };
+ 
++static struct extra_reg intel_lnc_extra_regs[] __read_mostly = {
++	INTEL_UEVENT_EXTRA_REG(0x012a, MSR_OFFCORE_RSP_0, 0xfffffffffffull, RSP_0),
++	INTEL_UEVENT_EXTRA_REG(0x012b, MSR_OFFCORE_RSP_1, 0xfffffffffffull, RSP_1),
++	INTEL_UEVENT_PEBS_LDLAT_EXTRA_REG(0x01cd),
++	INTEL_UEVENT_EXTRA_REG(0x02c6, MSR_PEBS_FRONTEND, 0x9, FE),
++	INTEL_UEVENT_EXTRA_REG(0x03c6, MSR_PEBS_FRONTEND, 0x7fff1f, FE),
++	INTEL_UEVENT_EXTRA_REG(0x40ad, MSR_PEBS_FRONTEND, 0xf, FE),
++	INTEL_UEVENT_EXTRA_REG(0x04c2, MSR_PEBS_FRONTEND, 0x8, FE),
++	EVENT_EXTRA_END
++};
+ 
+ EVENT_ATTR_STR(mem-loads,	mem_ld_nhm,	"event=0x0b,umask=0x10,ldlat=3");
+ EVENT_ATTR_STR(mem-loads,	mem_ld_snb,	"event=0xcd,umask=0x1,ldlat=3");
+@@ -6422,7 +6432,7 @@ static __always_inline void intel_pmu_init_lnc(struct pmu *pmu)
+ 	intel_pmu_init_glc(pmu);
+ 	hybrid(pmu, event_constraints) = intel_lnc_event_constraints;
+ 	hybrid(pmu, pebs_constraints) = intel_lnc_pebs_event_constraints;
+-	hybrid(pmu, extra_regs) = intel_rwc_extra_regs;
++	hybrid(pmu, extra_regs) = intel_lnc_extra_regs;
+ }
+ 
+ static __always_inline void intel_pmu_init_skt(struct pmu *pmu)
 
