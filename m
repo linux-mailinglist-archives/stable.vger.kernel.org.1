@@ -1,228 +1,370 @@
-Return-Path: <stable+bounces-106046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460619FB9F6
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:47:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1B19FBA07
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:02:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DD347A1514
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 06:47:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92818164CBB
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA50214B08C;
-	Tue, 24 Dec 2024 06:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00F216DEB1;
+	Tue, 24 Dec 2024 07:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bUHawXj1";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="dkR28z98"
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="SwDtv1kq"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0622C2BB15;
-	Tue, 24 Dec 2024 06:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735022859; cv=fail; b=VWljfGMiNwZv6+Law5Cz3f8JGaDmXONVE+t1GCms6qtci0WqyqC6+g1cdH/TLBF6gxGIqsqdwT97znaCOOiwhbbv7kLorqM0uxjgc+S3aXki+JUp64/yr1TmHnknvyZVD0JwHUREuBrrtxlrF2HNZmTfqiYSVzuGJpNgqhw8Y84=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735022859; c=relaxed/simple;
-	bh=PFLsGNnMfpTSnms2q2+ndbh+muQM4wxE7u+o2HgDTWs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MxE4VypUGo5J7kjJx8ShCKeJEo0Jv2nuuQuwbQq0ll+BW4Q0VtBsgHmpJ0JW8VeeiwubidyqlnexRZIZa33/ycTLBKu+sIJNsn0rMF7Lm2AMAnQDSXQ9KVjh6XxUyEFX4lSxAYr/G/V8Rx2bpiA0824IQss4ifmdS69hVJ7vALU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bUHawXj1; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=dkR28z98; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BO1urFZ017603;
-	Tue, 24 Dec 2024 06:46:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=8sgZhkSLp762Q3J5L0r4Gwfyt/Hv8xl8gsqRhS/0NAI=; b=
-	bUHawXj1qCLb+pwjP7sAocXs7YtQq1YKYI1UBylm4XdyYwUi5SW65iEfjBTgIcj8
-	yk4qf5dm9HDXGPkH+PantvKzbJWM96vE1UwNx5nIwchGwl12IqPF5SZBhYrUi2Kc
-	whdCrk7V0q+kxxLY1r163Wbye+5efcZWBm3oiBSZ3sAx1w/WlA3lPUfkI6B4jo01
-	MTBfQaemiKdRGOp5IN/6iYqvnUQTOQc5j++YlpC+vsK3A29Likv4uZ27Xz9bNU3z
-	mDmOItP6BBMIHv6pT2qhhfDHC4jTybBWcm+Vi3fhecQKNvJTrOvDokV2QhRnUmMH
-	FRxosVDLjIItEMxUl/855Q==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43nq9ybtde-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Dec 2024 06:46:55 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4BO4SNBB001005;
-	Tue, 24 Dec 2024 06:46:54 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2043.outbound.protection.outlook.com [104.47.58.43])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 43pk8tjf1a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Dec 2024 06:46:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z4yop+AadhjvED6wOGN3K7CM7cQTQWQ/6slygrV2qecMdI+pbO6Xuf6uSRowuWNnsC2bkzDBSTPKDuT8zTSK5G+XrnNllsArV8tPfryVKnNrk0GXtmnKR4LZBGUxDqd3Hn7fBM3OiI6lLGi6ZBa+y7idxBaKeK2zEttUXJqlNU6aeeYrJImxi6L6VDBY7+ICBJxb/V+8j9rEhnbXApwYLKuM99+yuTE4OO+t0x+t34TdLzm/BDoRWrtL+WTgozkAPxv3NM6vvdbx0L205/wuRnjATzFh4y3sdrorB9u35AUNXE5XbvWlekWCOZQl0EdHOUefKD3ktBknf09HCf/OPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8sgZhkSLp762Q3J5L0r4Gwfyt/Hv8xl8gsqRhS/0NAI=;
- b=XfrseEHEwLt3NQ4ZvDeoEk8Ox+gpqHAZIVi6YIqpMCBnzX03kjHV9k2Ky1X2xrp9suA/QPbxUCpSlY9vD5cmk4JVnRLti74P6xYaX0rI/jw/MDtsHNJ07LR02SLIe6lGV2yRlxuj6eUVGAVQe7iXH5HXYQJ9lwidLjIZVa/QAzXdEQvUPMkvaNKm//hxG9NaUGGphXzEtwsnKOXDnr11kaMuyydtf9n7W/Jv5h1UV44afmjgzwIHu5/tEY+kTshoQlWKmSM6P35hRyCaIl2RjCbMF1LHAKfdFpbuSj+frq7hNEjMKjEG9rIRaiKBilf5yta//6wyWZ8jhiwi6+srTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8sgZhkSLp762Q3J5L0r4Gwfyt/Hv8xl8gsqRhS/0NAI=;
- b=dkR28z98a0mNAGzuBJJCH9lofJUn5C9ubHK9pbqyawn7ZYL6Hb2ZDvRdTiNU1woGTtv0IMOC7NA298SyFM4O3zCW6ixb98ltmksua1egr/a/+XCR2TdNaBlMjm7PbxWeygExwNb1UDK+KLRWKbd1/mb+KUdZao98pdJTyHLVFCs=
-Received: from DM4PR10MB6886.namprd10.prod.outlook.com (2603:10b6:8:102::10)
- by IA0PR10MB7303.namprd10.prod.outlook.com (2603:10b6:208:40d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.19; Tue, 24 Dec
- 2024 06:46:48 +0000
-Received: from DM4PR10MB6886.namprd10.prod.outlook.com
- ([fe80::bdcc:98f5:ebd5:cd38]) by DM4PR10MB6886.namprd10.prod.outlook.com
- ([fe80::bdcc:98f5:ebd5:cd38%6]) with mapi id 15.20.8272.013; Tue, 24 Dec 2024
- 06:46:47 +0000
-Message-ID: <6150d63d-1ef2-4257-bd03-4d447c1ac0da@oracle.com>
-Date: Tue, 24 Dec 2024 12:16:36 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/116] 6.6.68-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com,
-        broonie@kernel.org, Vegard Nossum <vegard.nossum@oracle.com>
-References: <20241223155359.534468176@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20241223155359.534468176@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR01CA0009.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::18) To DM4PR10MB6886.namprd10.prod.outlook.com
- (2603:10b6:8:102::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B8414A0B3
+	for <stable@vger.kernel.org>; Tue, 24 Dec 2024 07:02:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735023734; cv=none; b=NG8cpQn8g847pk906yUVO/1V1Q6Tuppdcy7nk4Wlc11+V+Zn/ADD0WwZDAhQAWUSYfDgtIXYdqbn075ecd4b1nkO5doVwqzPIT2u2n1ELMZw12aD1QvJBUl22LgN7eVW+ELNasoOqETPFiUW+qzXx6L/MvSqG6UHUhp+sMKJITM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735023734; c=relaxed/simple;
+	bh=kuJVk3/a7NDz6VEw3JeqK372To5Da3c0uqahh4Wv2K4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:content-type; b=LIRDFdEzXZdAbsD/wg2dPWwwNws34e85l48E/2sO36xq1uk6OGoZ8BIIv/ImMI/K2tRHboLK1eiXaoSs9SzGehCNldsQG05YMNpdAuKx0Qkv8uQ2qzkFGbdjbZHPDLhDdm68XPzxMyIYF6tuk4RsEcd5MRLZ+bmXfk/t+CQ4fjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=SwDtv1kq; arc=none smtp.client-ip=170.10.129.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1735023729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rA1oPMPUmFSS3w9jlWQOYQD06roC5BrwaE0cWo6yF6M=;
+	b=SwDtv1kq4FgZXuY9ACTPDNwsZwwiHcStXTG+bBG6YiN6fCm4wPZcaIaVOwDQZlSGKjP2Od
+	nNx4BItvw5iubiLaCcAeDSdvNjViiO7p9sh3aJNSJ/siwS0Wdo00Y7JAyMGQg5e5WL3nXT
+	iR4HvfYfNAp8bcxXYzPT0qbce6uP80Y=
+Received: from g7t16451g.inc.hp.com (hpifallback.mail.core.hp.com
+ [15.73.128.137]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-511-Fs5LgfA0NJ-MWZS8nnv3Aw-1; Tue, 24 Dec 2024 02:02:07 -0500
+X-MC-Unique: Fs5LgfA0NJ-MWZS8nnv3Aw-1
+X-Mimecast-MFC-AGG-ID: Fs5LgfA0NJ-MWZS8nnv3Aw
+Received: from g8t13020g.inc.hpicorp.net (g8t13020g.inc.hpicorp.net [15.60.27.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by g7t16451g.inc.hp.com (Postfix) with ESMTPS id B7EA26001742;
+	Tue, 24 Dec 2024 07:02:06 +0000 (UTC)
+Received: from mail.hp.com (unknown [15.32.134.51])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by g8t13020g.inc.hpicorp.net (Postfix) with ESMTPS id 5165B600009A;
+	Tue, 24 Dec 2024 07:02:04 +0000 (UTC)
+Received: from cdc-linux-buildsrv17.. (localhost [127.0.0.1])
+	by mail.hp.com (Postfix) with ESMTP id 45ECFA42BAA;
+	Tue, 24 Dec 2024 14:50:07 +0800 (CST)
+From: Wade Wang <wade.wang@hp.com>
+To: wade.wang@hp.com
+Cc: wade_ww_wang@hotmail.com,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] HID: hid-plantronics: Add mic mute mapping and generalize quirks
+Date: Tue, 24 Dec 2024 14:50:02 +0800
+Message-Id: <20241224065003.1870660-1-wade.wang@hp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB6886:EE_|IA0PR10MB7303:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e522adc-342c-40ab-6d1b-08dd23e6bcb4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZStzVy9rZWhoUi9OZGZnL3FEYXFMR2J4QUszdU4rNXI2TzI0amRBc0lkeDRx?=
- =?utf-8?B?MFliN2lDTnl1Vi9aTHVHbWVCeEpKTUpsRUVKdUhycGlFclI0Vk9lK0JlNXUv?=
- =?utf-8?B?NHB5V091NUxvSzBkaFFXNkVpMU0zYnhNNTdjem9QaFJtQXo1bE5WT0VLWHNo?=
- =?utf-8?B?RkJnaU1yanNvakJoNnNIUXZBZzBCYkttMnNpTW9kc0RaTzdjeFVZWGlkUStm?=
- =?utf-8?B?ekpYLzdNRG5YeXFPZEU5SlJaS3VLMDlla1dzNVRCTHJrREEwcUhDU3RYcWJV?=
- =?utf-8?B?SUx1MWVNcG4wOWQveUc3aEtnT3h5Nm04aEZVVVoxMGkvblg4WXArV0ZhVHVL?=
- =?utf-8?B?RmkrL0hqdUZIamNRM1VjekhNZ3lRTStTZWk5Nkd1WW8yVDF3dFQ0YXJ3MzRo?=
- =?utf-8?B?anc2OTc5a3JJVkRpMWZOOFZ5ci9lRVlEUlBxMEZmWEdUOW83SE9uUndYdjNh?=
- =?utf-8?B?b0F0dHZzVHlVODRmTlMyOE9lZ0RzdENJVVBnVmlWdDM4YlZ6OFYzbnhoR1dw?=
- =?utf-8?B?K0RnL3pUcHV6WkVERVBZOEpNUHg3cTZhYkZUbHRiZ0gwUnJDQnMzWXl5V3Y0?=
- =?utf-8?B?QjdGRnZkS0YyRFdwVHR0QkNlYlEyZlpGRTkzNExjMFU3dXVFSHgreW9nSmV3?=
- =?utf-8?B?K0krLzVjOUpvSXNNSzJxdFVWZm52WkVOaEF0czJ1OWVHc1llRm9Wc1N2NjUy?=
- =?utf-8?B?NmpUSnQwUFUrQ2ZMcEJ3c0IrRmdGeDNlaXM3SFkvcW1mME9IZjdrb243c21T?=
- =?utf-8?B?anBFeENMZHdDUnkvUjg0MU1BSGtJRTBuL1BnNnVKK3drZlNQdlBwMzdFZXhj?=
- =?utf-8?B?M2lSUHJTS3lIY0Z2SUlXRW85NXRITnJ2UjVvSUdSMmN3R0NMMkswYVF1aTQ2?=
- =?utf-8?B?R2ZsdDdPNEhPd3liSDNBSUIzYnRQQ0xNYzhmTmVLWXlIdmhBb1NEQmtqeVlX?=
- =?utf-8?B?T1dOdXVlMHdVS202VGJoTUlqZWdMOEFFQWRlb2g2ek5HZ25jcXNSVnU2c0Ez?=
- =?utf-8?B?U3JMSHpBODYxNytJVFpPQ25LZy9yeDQ5by9EUGk0V1VUZnFhR2NFYUR0ZUJj?=
- =?utf-8?B?bkxxWlduaGhhb0xlNldnTjlVZTZmbnVmYnd1OHp4RmVOYzJBOGhSandvNlA0?=
- =?utf-8?B?NUUvbnU2a1kwVW1Pd3h5OGVMNDFRNmg3c2l0MzREVzE0U0VpVGthaHNYcHlL?=
- =?utf-8?B?a0RnSVZjZmFTdFJNMGFQR3JSaXhRY0lQMkVjQ2YwOGNOY1pidXpSTEVUM2k3?=
- =?utf-8?B?VEhNbW1neGJ6VlArWFZoTFBTTk1aNXU1SHZxUUhtU1lNdTVVTGZLc1FXTkth?=
- =?utf-8?B?ekt1TDlydFl4K05DWkNWdnU2dFF3cTZqakk4ajhVdVZZQzBibXFCL0dmcEVH?=
- =?utf-8?B?U3FEU1hZQ2JDQVJxeUJ4N0N1bElaSHVhNU1ZU25ZZzZnUFlhMGdmaHd0Z1ZC?=
- =?utf-8?B?bU41NXIyWTh4UWZiUTBNZ0FtaWZZbm9ER3FwUFAwd3VCdmQ3VTA1TzByQUo3?=
- =?utf-8?B?aXZzL1JBVlRHS2t1YjljU01sbHhMRU5kRk5XaG1XN0ZOcDd5Qk54YWdwQzA4?=
- =?utf-8?B?cm5PWUIrUjJnZTJxMGJuSzBtTDFnMjBESjgvUGZBWWNCWlZVWC9PWndlV0No?=
- =?utf-8?B?TnYzdW9yQnlXZW91VTVodnd3Y0hUOGhaR1NEVmptZDIzaE94L0J6aTd5Rnlv?=
- =?utf-8?B?SktkMVBEWjc1K1FaQ0ZiUytMYjVudFE4SlZVemNlRnVhRitxWG9MWkxMMUZ2?=
- =?utf-8?B?eUFBejVRRmIvSU9qaStvR3ErTmRrR1Mza0RiVXd1VVRUSS8wRXEyU2RRQ2VL?=
- =?utf-8?B?blRYbWRRbElidXlDem56SzFIYlllUXpWZ2FQbWZjNjU2TEJFVHJsYWV2R0t1?=
- =?utf-8?Q?dRvzgL9potKg0?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB6886.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RGVhNkhlZkJmcWN5a2MwYUJXMmdkTWhvZC91S1F5QnRYVGIzc1FkVENKSy9o?=
- =?utf-8?B?bjFLUTR1ZzNhR2pvUFV3L3pQMXo2ay92YmhkTkpaV2V1SGVSWXZTcHJmZGpL?=
- =?utf-8?B?M3BYYm1TaElGZXNpVWl3VlY1K0VTZUJTeHo2cnNMNm11VWVHQlhOZHh4UG5O?=
- =?utf-8?B?djY1T1I3Q0M0MXVYS1ZETkFHb0RJUGRoR3h3U09ySlh6Njg3ckNDelJ6ZUVT?=
- =?utf-8?B?KzdERDhOVUJ5eEMwcDJwNGwrSzk5Qnl6SndxcEFYa1JuMEl2RDkrV21qSU5I?=
- =?utf-8?B?NitMS2Z3RExuMi8yZjhnbEdGdmpxS29TSmtybGdFcFNJVWpkSXNIZFNBYTh3?=
- =?utf-8?B?NEY4eUU1VTVSRFdvdWtndE1QL3FjM3hsd3FsYzIzQkh0YnA2V3Q2aFFUeS9w?=
- =?utf-8?B?QVM1RUNHM3Vqbm1nVFZlVzF4bjlySHpITzFyMnJRNGlBRDc3ellzaitsc3lk?=
- =?utf-8?B?Z3pPSTZJeEpoZmE1YVBad2VqNmJuMnlzSyt1V0VWSUg1SnM2VnZWdk1TYUlk?=
- =?utf-8?B?SDZIUSs2bjdQOCtoYTRDWFQzRzM0bll6dUFienI5bDg5a0szVDZ5SjZSWTgr?=
- =?utf-8?B?QUNBZnhVcGE1Q3dHOThZSVZ0NHk4WTN3cTJqVUdabzNsaCtZcDlqRjRidTBS?=
- =?utf-8?B?K0grMzY1VUpSTi9Ca2NwVVJINHJDVzBqcHI3RVNLcCs2T2Ryd1pzRFRoMUM4?=
- =?utf-8?B?emdaVS9xSVBrWGlRU0ozUStPRSs3b05rNTFpOU9oNEoxK2p4YnIzTzI0NFVV?=
- =?utf-8?B?ZVBHNkp6dXd5eXhxQVpTbmdKSHQ5bFM3TnVzQk8wY0pnaFZYUE1ibERKTjNz?=
- =?utf-8?B?ZWw4ZUlTMm4zKytUdVZVdXNXUVI4WGNBbWdHcnVTd2VGNHVZVU45ZVhxYnB1?=
- =?utf-8?B?cDdMWDNpWDdOcXBaK0N1SCsrYkpnSmp4UmRwL05ZSkFwYXI4RHRlTHZDbFRF?=
- =?utf-8?B?cWxqNndiN0cxRStJL1ViYXFhOHFja29tK2xEYXdZaFYySHhmZ0hNWkxYQUR1?=
- =?utf-8?B?cmNVa3VRRzhKSExxcGVmeTA0MGQ0dkRDZEZqbTg3RnBWVDEzelp6L0dwV25J?=
- =?utf-8?B?MXRwNVBvN2NJMklPU2RraS81WFdlLzJrb3h0aHdrbEFIcEhXcjlmSFdPNHZ1?=
- =?utf-8?B?T3ViOW05SnZLQndmT0E2VmhKQzZGYW9iZjFyamdiWnQzMkd4ZjZGZUE1S0lY?=
- =?utf-8?B?SWw0SmdxVnNGcHF2WndEWEoxQ0pDV2E4WnUyRWRrR0hVNUkxUXdGSlg4MGtv?=
- =?utf-8?B?Vk5jTFd5UXRRVWkwZmZqTUtab0dqalE5QWY5alMxVERKMlF6WmZjYUptaCtO?=
- =?utf-8?B?VnhrdzBJOXl6NmppTW9VZnFOUm1JdXBUbW1QR2dvRFh6eHpudW5TVi9CMnZC?=
- =?utf-8?B?dVN1a01jOHdsa05wdklpWFdvNnJjeFB6NmVLZ28xVXBsbXlRM052cnU3MWRB?=
- =?utf-8?B?U2RzMkR6Qk15dzNPdkdiYUJUaERZMjljY1oxQXd4cktUUk95aXZic2RCN04x?=
- =?utf-8?B?dm5QL1hYSGVDeE80cEFFY0NiblBnUXFvWEpFYTNaRk9sbmFYQlJVNEU5QVgv?=
- =?utf-8?B?Q0ozU3BtaTFrMTVXdGJDaVhLaWR3Lzd0eFNhbFY2WlJDM3NKS0c4a0FicXE4?=
- =?utf-8?B?TmNIYVZWV1Q1K1RoZUplUTFENVZvRVNRaytnWXlLRUFkTW9WcFAzVm1LV20x?=
- =?utf-8?B?bkhtaEtaU3EyYVUxZkZETk90dEFIdUFiZy9ab2FhRWVjTlJCeXdHSG96Yy9B?=
- =?utf-8?B?V091a3BSMWVGS3lhOFVuT09CUTFwWFFUeDFmME1jVlY3aWlKQkdTU0JBdStR?=
- =?utf-8?B?Mkw1WmtkbVgya0drYmQ5aEg1bVhMTTduWEtNd1RWUHlLODRqMFVZdzkwMTNL?=
- =?utf-8?B?NmNXMDRXakNjUFQxVENLRkt1ZVVycVQxQjFZaU16Y2lTVDJBS0xIMjlrbUFZ?=
- =?utf-8?B?TzZIOXlmdVhPMDFqdmpCU1BaZ0FnQ296UFBuM0FTR2VRYktDRU9iRU9DZ2Ey?=
- =?utf-8?B?RlVwekN3MElJU1doNFVXd0EraEhDYjZBSVg2Qy8wZElBTG9PSW9YRFBudTZh?=
- =?utf-8?B?S1AyTHRIWnYzNHdXN1pvWUJsUXhDUFFwd3pTZHdJQ3V2SzFILzhnZ3ZTdHVZ?=
- =?utf-8?B?T2dLenlPQUgwaHhDN3NVMUM5d1YweXFMVTl1OXVZL0d1bWYxcmNYYm5LNU5y?=
- =?utf-8?Q?aMtQAE/W+0s+bh9gMXBmzEk=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	+/Zq3b5YcHCcQJZhfNipWBP2MiPNxWeXkvzoUUmG9KE9aJ8pLHXaho2Lf9m2bEg1YVtQehO17AlmqsH8fYCU+i6ZajisrW4vyv822NreXQk4y9PQ9YYKyaJAlziMgZutqDa9gdz+jeVDFpxeFMyEuq/SGYK+rvgiUx+GPYO8dgduH23m6nwiFhol8ZkFlp4K/6J1fL0yQSXvAOogPP2CyxkSJAWT0oLfc84W4xsXL9OdNuiM1vTmFRE7DTTqKGr2kuw4pja5hH4VOJ0RSM6M8kEYZZVrPigw7JlrBOay0XRFXBPSixQrRABgDlmETMsLuFxqNcFeXt3T4Z1rxSABj7bEVnMMNPUwbHiB9cHdEcLpGph0TvwCNj66RGVDALpL8kYCf6OVU4t0oJVrz/jDSlImwwHiudtVfvM8NayoTz7Nu20LAYfbCDPPt0MBsRurguTHCUY6kG/zyFaAN4Vy2SPdznHvuof8LXRl0E7+ig+3mHjeNcarWxAxciIjuBJ0OgLiqRZRF+f8mMYgi6ZEgteN8huZtXNmVKU1PegjhVFnyN7Zehtmp1XFxY77WQNW2e1T6G5KTLK8veOfKPcS4vVsv9lXW7z58Cdd/4411to=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e522adc-342c-40ab-6d1b-08dd23e6bcb4
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB6886.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2024 06:46:47.5539
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aH9Ax7LZDL1pcze0odY3XDTYgMmh2OszXa1fu6/g4ApnBCIAwEsi8+7DLR1nAwAwF2SbDK9xzm84M0szxHkgpfDXP7XyfaHKyu7dphfVrO1M3rVG3igPvQJvNtokDkNx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7303
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-24_02,2024-12-24_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
- malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2411120000 definitions=main-2412240054
-X-Proofpoint-GUID: nmm5DCEvy2nQKIiHOI2-v0-yfO5IxH8f
-X-Proofpoint-ORIG-GUID: nmm5DCEvy2nQKIiHOI2-v0-yfO5IxH8f
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1j1GemepX3HFsiQYdf9jsGJxHtzlOKy2bSR2UfqFb6Y_1735023726
+X-Mimecast-Originator: hp.com
+Content-Transfer-Encoding: quoted-printable
+content-type: text/plain; charset=WINDOWS-1252; x-default=true
 
-Hi Greg,
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-On 23/12/24 21:27, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.68 release.
-> There are 116 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Add mapping for headset mute key events.
 
-No problems seen on x86_64 and aarch64 with our testing.
+Remove PLT_QUIRK_DOUBLE_VOLUME_KEYS quirk and made it generic.
+The quirk logic did not keep track of the actual previous key
+so any key event occurring in less than or equal to 5ms was ignored.
 
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Remove PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS quirk.
+It had the same logic issue as the double key quirk and was actually
+masking the as designed behavior of most of the headsets.
+It's occurrence should be minimized with the ALSA control naming
+quirk that is part of the patch set.
 
-Thanks,
-Harshit
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Wade Wang <wade.wang@hp.com>
+Cc: stable@vger.kernel.org
+---
+V1 -> V2: Optimize out 2 macros - no functional changes
+
+ drivers/hid/hid-plantronics.c | 144 ++++++++++++++++------------------
+ 1 file changed, 67 insertions(+), 77 deletions(-)
+
+diff --git a/drivers/hid/hid-plantronics.c b/drivers/hid/hid-plantronics.c
+index 25cfd964dc25..acb9eb18f7cc 100644
+--- a/drivers/hid/hid-plantronics.c
++++ b/drivers/hid/hid-plantronics.c
+@@ -6,9 +6,6 @@
+  *  Copyright (c) 2015-2018 Terry Junge <terry.junge@plantronics.com>
+  */
+=20
+-/*
+- */
+-
+ #include "hid-ids.h"
+=20
+ #include <linux/hid.h>
+@@ -23,30 +20,28 @@
+=20
+ #define PLT_VOL_UP=09=090x00b1
+ #define PLT_VOL_DOWN=09=090x00b2
++#define PLT_MIC_MUTE=09=090x00b5
+=20
+ #define PLT1_VOL_UP=09=09(PLT_HID_1_0_PAGE | PLT_VOL_UP)
+ #define PLT1_VOL_DOWN=09=09(PLT_HID_1_0_PAGE | PLT_VOL_DOWN)
++#define PLT1_MIC_MUTE=09=09(PLT_HID_1_0_PAGE | PLT_MIC_MUTE)
+ #define PLT2_VOL_UP=09=09(PLT_HID_2_0_PAGE | PLT_VOL_UP)
+ #define PLT2_VOL_DOWN=09=09(PLT_HID_2_0_PAGE | PLT_VOL_DOWN)
++#define PLT2_MIC_MUTE=09=09(PLT_HID_2_0_PAGE | PLT_MIC_MUTE)
++#define HID_TELEPHONY_MUTE=09(HID_UP_TELEPHONY | 0x2f)
++#define HID_CONSUMER_MUTE=09(HID_UP_CONSUMER | 0xe2)
+=20
+ #define PLT_DA60=09=090xda60
+ #define PLT_BT300_MIN=09=090x0413
+ #define PLT_BT300_MAX=09=090x0418
+=20
+-
+-#define PLT_ALLOW_CONSUMER (field->application =3D=3D HID_CP_CONSUMERCONTR=
+OL && \
+-=09=09=09    (usage->hid & HID_USAGE_PAGE) =3D=3D HID_UP_CONSUMER)
+-
+-#define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
+-#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
+-
+ #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
+-#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
+=20
+ struct plt_drv_data {
+ =09unsigned long device_type;
+-=09unsigned long last_volume_key_ts;
+-=09u32 quirks;
++=09unsigned long last_key_ts;
++=09unsigned long double_key_to;
++=09__u16 last_key;
+ };
+=20
+ static int plantronics_input_mapping(struct hid_device *hdev,
+@@ -58,34 +53,43 @@ static int plantronics_input_mapping(struct hid_device =
+*hdev,
+ =09unsigned short mapped_key;
+ =09struct plt_drv_data *drv_data =3D hid_get_drvdata(hdev);
+ =09unsigned long plt_type =3D drv_data->device_type;
++=09int allow_mute =3D usage->hid =3D=3D HID_TELEPHONY_MUTE;
++=09int allow_consumer =3D field->application =3D=3D HID_CP_CONSUMERCONTROL=
+ &&
++=09=09=09(usage->hid & HID_USAGE_PAGE) =3D=3D HID_UP_CONSUMER &&
++=09=09=09usage->hid !=3D HID_CONSUMER_MUTE;
+=20
+ =09/* special case for PTT products */
+ =09if (field->application =3D=3D HID_GD_JOYSTICK)
+ =09=09goto defaulted;
+=20
+-=09/* handle volume up/down mapping */
+ =09/* non-standard types or multi-HID interfaces - plt_type is PID */
+ =09if (!(plt_type & HID_USAGE_PAGE)) {
+ =09=09switch (plt_type) {
+ =09=09case PLT_DA60:
+-=09=09=09if (PLT_ALLOW_CONSUMER)
++=09=09=09if (allow_consumer)
+ =09=09=09=09goto defaulted;
+-=09=09=09goto ignored;
++=09=09=09if (usage->hid =3D=3D HID_CONSUMER_MUTE) {
++=09=09=09=09mapped_key =3D KEY_MICMUTE;
++=09=09=09=09goto mapped;
++=09=09=09}
++=09=09=09break;
+ =09=09default:
+-=09=09=09if (PLT_ALLOW_CONSUMER)
++=09=09=09if (allow_consumer || allow_mute)
+ =09=09=09=09goto defaulted;
+ =09=09}
++=09=09goto ignored;
+ =09}
+-=09/* handle standard types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
+-=09/* 'basic telephony compliant' - allow default consumer page map */
+-=09else if ((plt_type & HID_USAGE) >=3D PLT_BASIC_TELEPHONY &&
+-=09=09 (plt_type & HID_USAGE) !=3D PLT_BASIC_EXCEPTION) {
+-=09=09if (PLT_ALLOW_CONSUMER)
+-=09=09=09goto defaulted;
+-=09}
+-=09/* not 'basic telephony' - apply legacy mapping */
+-=09/* only map if the field is in the device's primary vendor page */
+-=09else if (!((field->application ^ plt_type) & HID_USAGE_PAGE)) {
++
++=09/* handle standard consumer control mapping */
++=09/* and standard telephony mic mute mapping */
++=09if (allow_consumer || allow_mute)
++=09=09goto defaulted;
++
++=09/* handle vendor unique types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
++=09/* if not 'basic telephony compliant' - map vendor unique controls */
++=09if (!((plt_type & HID_USAGE) >=3D PLT_BASIC_TELEPHONY &&
++=09      (plt_type & HID_USAGE) !=3D PLT_BASIC_EXCEPTION) &&
++=09      !((field->application ^ plt_type) & HID_USAGE_PAGE))
+ =09=09switch (usage->hid) {
+ =09=09case PLT1_VOL_UP:
+ =09=09case PLT2_VOL_UP:
+@@ -95,8 +99,11 @@ static int plantronics_input_mapping(struct hid_device *=
+hdev,
+ =09=09case PLT2_VOL_DOWN:
+ =09=09=09mapped_key =3D KEY_VOLUMEDOWN;
+ =09=09=09goto mapped;
++=09=09case PLT1_MIC_MUTE:
++=09=09case PLT2_MIC_MUTE:
++=09=09=09mapped_key =3D KEY_MICMUTE;
++=09=09=09goto mapped;
+ =09=09}
+-=09}
+=20
+ /*
+  * Future mapping of call control or other usages,
+@@ -105,6 +112,8 @@ static int plantronics_input_mapping(struct hid_device =
+*hdev,
+  */
+=20
+ ignored:
++=09hid_dbg(hdev, "usage: %08x (appl: %08x) - ignored\n",
++=09=09usage->hid, field->application);
+ =09return -1;
+=20
+ defaulted:
+@@ -123,38 +132,26 @@ static int plantronics_event(struct hid_device *hdev,=
+ struct hid_field *field,
+ =09=09=09     struct hid_usage *usage, __s32 value)
+ {
+ =09struct plt_drv_data *drv_data =3D hid_get_drvdata(hdev);
++=09unsigned long prev_tsto, cur_ts;
++=09__u16 prev_key, cur_key;
+=20
+-=09if (drv_data->quirks & PLT_QUIRK_DOUBLE_VOLUME_KEYS) {
+-=09=09unsigned long prev_ts, cur_ts;
++=09/* Usages are filtered in plantronics_usages. */
+=20
+-=09=09/* Usages are filtered in plantronics_usages. */
++=09/* HZ too low for ms resolution - double key detection disabled */
++=09/* or it is a key release - handle key presses only. */
++=09if (!drv_data->double_key_to || !value)
++=09=09return 0;
+=20
+-=09=09if (!value) /* Handle key presses only. */
+-=09=09=09return 0;
++=09prev_tsto =3D drv_data->last_key_ts + drv_data->double_key_to;
++=09cur_ts =3D drv_data->last_key_ts =3D jiffies;
++=09prev_key =3D drv_data->last_key;
++=09cur_key =3D drv_data->last_key =3D usage->code;
+=20
+-=09=09prev_ts =3D drv_data->last_volume_key_ts;
+-=09=09cur_ts =3D jiffies;
+-=09=09if (jiffies_to_msecs(cur_ts - prev_ts) <=3D PLT_DOUBLE_KEY_TIMEOUT)
+-=09=09=09return 1; /* Ignore the repeated key. */
+-
+-=09=09drv_data->last_volume_key_ts =3D cur_ts;
++=09/* If the same key occurs in <=3D double_key_to -- ignore it */
++=09if (prev_key =3D=3D cur_key && time_before_eq(cur_ts, prev_tsto)) {
++=09=09hid_dbg(hdev, "double key %d ignored\n", cur_key);
++=09=09return 1; /* Ignore the repeated key. */
+ =09}
+-=09if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
+-=09=09unsigned long prev_ts, cur_ts;
+-
+-=09=09/* Usages are filtered in plantronics_usages. */
+-
+-=09=09if (!value) /* Handle key presses only. */
+-=09=09=09return 0;
+-
+-=09=09prev_ts =3D drv_data->last_volume_key_ts;
+-=09=09cur_ts =3D jiffies;
+-=09=09if (jiffies_to_msecs(cur_ts - prev_ts) <=3D PLT_FOLLOWED_OPPOSITE_KE=
+Y_TIMEOUT)
+-=09=09=09return 1; /* Ignore the followed opposite volume key. */
+-
+-=09=09drv_data->last_volume_key_ts =3D cur_ts;
+-=09}
+-
+ =09return 0;
+ }
+=20
+@@ -196,12 +193,16 @@ static int plantronics_probe(struct hid_device *hdev,
+ =09ret =3D hid_parse(hdev);
+ =09if (ret) {
+ =09=09hid_err(hdev, "parse failed\n");
+-=09=09goto err;
++=09=09return ret;
+ =09}
+=20
+ =09drv_data->device_type =3D plantronics_device_type(hdev);
+-=09drv_data->quirks =3D id->driver_data;
+-=09drv_data->last_volume_key_ts =3D jiffies - msecs_to_jiffies(PLT_DOUBLE_=
+KEY_TIMEOUT);
++=09drv_data->double_key_to =3D msecs_to_jiffies(PLT_DOUBLE_KEY_TIMEOUT);
++=09drv_data->last_key_ts =3D jiffies - drv_data->double_key_to;
++
++=09/* if HZ does not allow ms resolution - disable double key detection */
++=09if (drv_data->double_key_to < PLT_DOUBLE_KEY_TIMEOUT)
++=09=09drv_data->double_key_to =3D 0;
+=20
+ =09hid_set_drvdata(hdev, drv_data);
+=20
+@@ -210,29 +211,10 @@ static int plantronics_probe(struct hid_device *hdev,
+ =09if (ret)
+ =09=09hid_err(hdev, "hw start failed\n");
+=20
+-err:
+ =09return ret;
+ }
+=20
+ static const struct hid_device_id plantronics_devices[] =3D {
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3210_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
+ =09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
+ =09{ }
+ };
+@@ -241,6 +223,14 @@ MODULE_DEVICE_TABLE(hid, plantronics_devices);
+ static const struct hid_usage_id plantronics_usages[] =3D {
+ =09{ HID_CP_VOLUMEUP, EV_KEY, HID_ANY_ID },
+ =09{ HID_CP_VOLUMEDOWN, EV_KEY, HID_ANY_ID },
++=09{ HID_TELEPHONY_MUTE, EV_KEY, HID_ANY_ID },
++=09{ HID_CONSUMER_MUTE, EV_KEY, HID_ANY_ID },
++=09{ PLT2_VOL_UP, EV_KEY, HID_ANY_ID },
++=09{ PLT2_VOL_DOWN, EV_KEY, HID_ANY_ID },
++=09{ PLT2_MIC_MUTE, EV_KEY, HID_ANY_ID },
++=09{ PLT1_VOL_UP, EV_KEY, HID_ANY_ID },
++=09{ PLT1_VOL_DOWN, EV_KEY, HID_ANY_ID },
++=09{ PLT1_MIC_MUTE, EV_KEY, HID_ANY_ID },
+ =09{ HID_TERMINATOR, HID_TERMINATOR, HID_TERMINATOR }
+ };
+=20
+--=20
+2.43.0
+
 
