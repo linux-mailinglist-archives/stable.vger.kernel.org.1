@@ -1,218 +1,375 @@
-Return-Path: <stable+bounces-106055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885359FBA3E
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:31:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCA19FBA18
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 08:08:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEF8C1610A1
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:31:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41C0D7A15B8
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 07:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F2B16F0E8;
-	Tue, 24 Dec 2024 07:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F20186E2F;
+	Tue, 24 Dec 2024 07:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="i3vbaqmA"
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="Cpwua8C7"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E56129A78
-	for <stable@vger.kernel.org>; Tue, 24 Dec 2024 07:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3595F1865FA
+	for <stable@vger.kernel.org>; Tue, 24 Dec 2024 07:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735025471; cv=none; b=mLM3o7n+xJOhsv2nN8PY+kTHgGJTOZ3+HRuh8YYDnmuQaEIVN4JFYRr1WhZZcjfOhbPIUBhfkz4mmxO6P+rx6Iltes8ZLdjPIApZQdN2Mg1wzoTaJeFw3J6lm0OAdsFdc4qhMlx5rCVcgyZ6XOpkw97TIG9JgJm7UICIcWV8CI0=
+	t=1735024126; cv=none; b=XaYvzwaKaXVO94CfffHx/oMGFLqjf8h0CnjqGO/j1EUDnJzvMrxG373OTmnd7eXuGzmjF2CkRiDvrerc7/wK1W5O7ABZlzMPXaF4HQi6xWWfCFCZcnUBTy94pOqRxydERyvLD5ZXPFHoAu4u6eUnLLhJR/ab8Qf9LtCQnb59fLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735025471; c=relaxed/simple;
-	bh=vyXEO3T23SWpdUZOwBM2ExxJ1g/SfdC+adZF21CnxPU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=jr18L62z9yR+TX5bju3mn0U/O3Q3sZ/fMuxvASKx2xOaWtPn7xDmVppwDakucGKQX1B/vKk7la19SsCuqnV4TTstRWG4vM/TVxaTFecbIdwn7yfbSSQHgTVkkMecNgzVBm6pkYPxmquTyXx8gpeMeS2tz/fCZN8ovHd340VZBbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=i3vbaqmA; arc=none smtp.client-ip=203.254.224.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20241224073100epoutp0319b42f149641cbe4fdeb4d099741aa94~UDHahyE4V0058600586epoutp03g
-	for <stable@vger.kernel.org>; Tue, 24 Dec 2024 07:31:00 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20241224073100epoutp0319b42f149641cbe4fdeb4d099741aa94~UDHahyE4V0058600586epoutp03g
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1735025460;
-	bh=Qa6Qh0gLXzAaNr2t8CyZ7prTde6LFTe5csM82T4eUiM=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=i3vbaqmAxSNFYHl6eBfOzHN525BEGJIYWHYvawtxAXOsheUrqcVvX7Kruykb9xBa7
-	 O+aIKptLzpmg4uiJXWMeomc+ChbqutV/o8qtiAKPObwu6lLHXnyqaQJagGjo0sPD5H
-	 JeoMe2m4lWniCcT2zz5ZCZreX7XIixzkEZ6O4NoM=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTP id
-	20241224073059epcas5p3fa1e6710c0b7668b637801d14553454a~UDHaEPpUc2176021760epcas5p3A;
-	Tue, 24 Dec 2024 07:30:59 +0000 (GMT)
-Received: from epsmges5p1new.samsung.com (unknown [182.195.38.174]) by
-	epsnrtp3.localdomain (Postfix) with ESMTP id 4YHRQ96ryRz4x9QB; Tue, 24 Dec
-	2024 07:30:57 +0000 (GMT)
-Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
-	epsmges5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	D7.A8.20052.1336A676; Tue, 24 Dec 2024 16:30:57 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20241224064253epcas5p178262f60c05d40e50113fdf6995d987a~UCdaDjGgU1268912689epcas5p1e;
-	Tue, 24 Dec 2024 06:42:53 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20241224064253epsmtrp110a76d4f237aa727e6b1e63f0ea4d22b~UCdaBcgO01278212782epsmtrp18;
-	Tue, 24 Dec 2024 06:42:53 +0000 (GMT)
-X-AuditID: b6c32a49-3fffd70000004e54-67-676a63317e44
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	68.3C.18729.DE75A676; Tue, 24 Dec 2024 15:42:53 +0900 (KST)
-Received: from [107.122.5.186] (unknown [107.122.5.186]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20241224064250epsmtip167462c80a5d4aea84a907d037aba0aff~UCdXPR3s23103831038epsmtip1X;
-	Tue, 24 Dec 2024 06:42:50 +0000 (GMT)
-Message-ID: <0375d572-4c88-40ce-af24-62a8b38fb7bf@samsung.com>
-Date: Tue, 24 Dec 2024 12:12:49 +0530
+	s=arc-20240116; t=1735024126; c=relaxed/simple;
+	bh=kuJVk3/a7NDz6VEw3JeqK372To5Da3c0uqahh4Wv2K4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:content-type; b=U/607aY3JNLY5nVU6ezHu5MplBp52dF3GK8bjxt+X/IZTRXDU9sCs6ZmY2WV0wOLklsOoPGwzwXxdDLqlY5KSxfM1Wihi8qskmNuKvRt3mnl4fC+oC9/R1V3vM9RCxOgqDxD4cLSHBXAAtguvSRpuVflssUcxO3dKKazyeQ8Um8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=Cpwua8C7; arc=none smtp.client-ip=170.10.129.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1735024122;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rA1oPMPUmFSS3w9jlWQOYQD06roC5BrwaE0cWo6yF6M=;
+	b=Cpwua8C7YxNAL3JwBYYnwca+P7JkCJUYmu5sDHwtOstQOSaHlRFWIqjn9Utrtil2959mcn
+	/LO8hLeZEnbVivqoUKZhUdt4gCnHfupCWXSeYL/R8xKBmXoFmtNfceNhch69vrk4m1C/k9
+	3gQBu0KJrWxD+k9TmOuoJ8QUgXFSb50=
+Received: from g8t13016g.inc.hp.com (hpi-bastion.austin2.mail.core.hp.com
+ [15.72.64.134]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-S7dmcqc7Pf-GbAxIMhYF0w-1; Tue, 24 Dec 2024 02:08:41 -0500
+X-MC-Unique: S7dmcqc7Pf-GbAxIMhYF0w-1
+X-Mimecast-MFC-AGG-ID: S7dmcqc7Pf-GbAxIMhYF0w
+Received: from g7t16458g.inc.hpicorp.net (g7t16458g.inc.hpicorp.net [15.63.18.16])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by g8t13016g.inc.hp.com (Postfix) with ESMTPS id 87DDB6000ABE;
+	Tue, 24 Dec 2024 07:08:38 +0000 (UTC)
+Received: from mail.hp.com (unknown [15.32.134.51])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by g7t16458g.inc.hpicorp.net (Postfix) with ESMTPS id AC54C60000A8;
+	Tue, 24 Dec 2024 07:08:36 +0000 (UTC)
+Received: from cdc-linux-buildsrv17.. (localhost [127.0.0.1])
+	by mail.hp.com (Postfix) with ESMTP id 22EF7A42BAA;
+	Tue, 24 Dec 2024 14:56:39 +0800 (CST)
+From: Wade Wang <wade.wang@hp.com>
+To: jikos@kernel.org,
+	tiwai@suse.com,
+	bentiss@kernel.org,
+	perex@perex.cz,
+	linuxhid@cosmicgizmosystems.com
+Cc: wade.wang@hp.com,
+	linux-input@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] HID: hid-plantronics: Add mic mute mapping and generalize quirks
+Date: Tue, 24 Dec 2024 14:56:35 +0800
+Message-Id: <20241224065636.1870713-1-wade.wang@hp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: gadget: f_fs: Remove WARN_ON in functionfs_bind
-To: gregkh@linuxfoundation.org, paul@crapouillou.net, Chris.Wulff@biamp.com,
-	tudor.ambarus@linaro.org, m.grzeschik@pengutronix.de,
-	viro@zeniv.linux.org.uk, quic_jjohnson@quicinc.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
-	rc93.raju@samsung.com, taehyun.cho@samsung.com, hongpooh.kim@samsung.com,
-	eomji.oh@samsung.com, shijie.cai@samsung.com, alim.akhtar@samsung.com,
-	selvarasu.g@samsung.com, stable@vger.kernel.org
-Content-Language: en-US
-From: Akash M/Akash M <akash.m5@samsung.com>
-In-Reply-To: <20241219125221.1679-1-akash.m5@samsung.com>
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Tf1CTZRzveX9sQ2/e62DwOI6AtwywwL0I610C5Qm7UUp4dpllzPfY2xiM
-	be4d9kPj5EwICgjL4rcTLA0ShQM0oJBpRwieAzk7wdkU7BJGAkpx5yExXij++zyf7+fzfH89
-	jwiV3BfIRHqjlbUYGQMpWIW1XgoLCadS03XymY5I2lXdKqDLpoYR+pbta4S+cuoEQh+uPSug
-	j3a0YLTzzixGX2+rFNA13x1B6ebcQYSe/mUep4trBzA6p9mJ03X5lRh9+dQUQl//50eUtjXe
-	BfTRLik9PZRCX5vrxl/xUd/5zCFU1w/kCdS3bnQI1J1VPwjVxXNydUlHtrqouQ6oHzY9rW4a
-	nUCSvd7OiEljGS1rCWKNqSat3qiLJV/bqdmqiVbIqXBKSb9IBhmZTDaWjN+WHK7SGxb6IoP2
-	M4asBSqZ4ThyY1yMxZRlZYPSTJw1lmTNWoM5yhzBMZlcllEXYWStL1FyeWT0gnBvRtoTVxFm
-	Lvf/oD0n8xBo8SkAXiJIRMGJiq9AAVglkhDtAE4N1As8AQkxDeDxRwF84G8Aa+1TyLLD8f01
-	jA/8BGBu6V8Y75gAsGt4vQeLiTjYfzkfLQAiEUash4MXQ3h6LewpG12US4lA+PtQqdCDvYlE
-	eLf5G9xzpw/xCMCR2dnFA0oUI3DePYx7VCjhB4dGjy9WISBegIPDbuDBXoQSttSWobwmEJ6f
-	qEQ9ZkjkecF655iQLzse9kx8CXjsDce6m5d4GbxfnLuEt8HTbWdwT9WQ0MLHxw7w9Muw3ta3
-	SKNEGDzbtpGnA+CxKw0In3YNLHw8ujQgMbxQvYxJWP3JJM5jCD/tsgH+djWs6Nv3BQguXzGW
-	8hVNlq9opvz/xDaA1YF1rJnL1LFctJkysu//t+1UU2YTWHzzGxIvAKdrMsIOEBGwAyhCSR+x
-	XaLXScRa5sOPWItJY8kysJwdRC+spwSVSVNNC5/GaNVQUUp5lEKhiFJuUlCkn3j8SJVWQugY
-	K5vBsmbWsuxDRF6yQ8j2hCYKS/IGDZvu3Rg/uabxge9MTHxgWI077019HPFM7lvBjkLVefxz
-	dPfOzT3mGZiAFDINiLhxvgDP7zoYuSNBKA3YMv5bqNCVjBcl+ffW3CR7n2O364NUzrluV5nk
-	0ni6A1dppDF7Et71TTTdfAjOyZSOn98bHrXfSwrdqwho65zn3FsC+kJSTA293mO/Vkw+/+ra
-	3TmDfzqedaTvKvE1rdunHEmJPPDGmV32KuqkVRbq2uPXbvjYNP+H5qns6WxbyP53WmtinKfZ
-	1TN60B/9evAJhST2qtGtnLsqu5h7ePPqByMt/qUHqVB4+/a3T+bcqgYmYse5/q4Ov61D0k4S
-	49IYagNq4Zh/AerDd4R8BAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrJIsWRmVeSWpSXmKPExsWy7bCSnO7b8Kx0g3MzeCwezNvGZjHz420m
-	izsLpjFZnFq+kMmiefF6NotJe7ayWNx9+IPF4vKuOWwWi5a1MltsabvCZPHp6H9Wi/7Fl1gs
-	GrfcZbVY1TmHxeLI8o9MFpe/72S2WLDxEaPFpIOiFp9uxVmc/3uc1UHE42H3BXaP1Zfa2Tzu
-	XNvD5rF/7hp2j/6/Bh4T99R59G1ZxejxeZOcx6Ynb5kCOKO4bFJSczLLUov07RK4Mv496GMp
-	mCVdsbsxt4Fxq0gXIyeHhICJxIWV51m6GLk4hAR2M0qs23WHHSIhIXHn5002CFtYYuW/5+wQ
-	Ra8ZJfY8OQBWxCtgJ3HxSCdzFyMHB4uAqsSVA+oQYUGJkzOfsIDYogLyEvdvzQArFxbwlHi0
-	ZToryBwRgS+MEpuWrmAEcZgF+pkk1n75DrWhh1Gi5f5bZpAWZgFxiVtP5jOB2GwCOhJXbr9h
-	BLE5BSwlti6eCVVjJtG1tYsRwpaX2P52DvMERqFZSC6ZhWTULCQts5C0LGBkWcUomVpQnJue
-	W2xYYJiXWq5XnJhbXJqXrpecn7uJERzbWpo7GLev+qB3iJGJg/EQowQHs5II7yGhzHQh3pTE
-	yqrUovz4otKc1OJDjNIcLErivOIvelOEBNITS1KzU1MLUotgskwcnFINTNEenxUX9pabtq9o
-	f7Dp7kXHKkWxF89FTxmEW+e8duwxusrF+unfEh627vxzli8SuQNeb+6YeIxFtPvwRK74t0q9
-	5/7J58w7wFlRVbzv+ISVXzZu/nD/o8GUi8aips90ekxL319VCg1nZqg6balZlr5oq/2dxy+r
-	TNOOBu2JWLTeRZNx1Vzu4CwJx0kyfi5Pc3n/v/Te90m1mKcwMDzPYNn3fvUlx0t+f9bbdKn3
-	jOXdxKRPO+cwyVs2lMgubGauudVRzlTjyrMiVs/4bvvqX/NmzHvnLpX9Tiz636wViZmHVdZ0
-	MvK0uWquyrCXXqbuOvHatpfXTEp73OtmMGn84U7aLiTNyGoQeunP5BlqSizFGYmGWsxFxYkA
-	Wp5KlVwDAAA=
-X-CMS-MailID: 20241224064253epcas5p178262f60c05d40e50113fdf6995d987a
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20241219125248epcas5p3887188e4df29b7b580cce9cfe6fed79f
-References: <CGME20241219125248epcas5p3887188e4df29b7b580cce9cfe6fed79f@epcas5p3.samsung.com>
-	<20241219125221.1679-1-akash.m5@samsung.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: L0IETSFJh6yloLzuQOR1xz9kZdVx2SzyZMgMr7e-yVs_1735024118
+X-Mimecast-Originator: hp.com
+Content-Transfer-Encoding: quoted-printable
+content-type: text/plain; charset=WINDOWS-1252; x-default=true
 
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-On 12/19/2024 6:22 PM, Akash M wrote:
-> This commit addresses an issue related to below kernel panic where
-> panic_on_warn is enabled. It is caused by the unnecessary use of WARN_ON
-> in functionsfs_bind, which easily leads to the following scenarios.
->
-> 1.adb_write in adbd               2. UDC write via configfs
->    =================	             =====================
->
-> ->usb_ffs_open_thread()           ->UDC write
->   ->open_functionfs()               ->configfs_write_iter()
->    ->adb_open()                      ->gadget_dev_desc_UDC_store()
->     ->adb_write()                     ->usb_gadget_register_driver_owner
->                                        ->driver_register()
-> ->StartMonitor()                       ->bus_add_driver()
->   ->adb_read()                           ->gadget_bind_driver()
-> <times-out without BIND event>           ->configfs_composite_bind()
->                                            ->usb_add_function()
-> ->open_functionfs()                        ->ffs_func_bind()
->   ->adb_open()                               ->functionfs_bind()
->                                         <ffs->state !=FFS_ACTIVE>
->
-> The adb_open, adb_read, and adb_write operations are invoked from the
-> daemon, but trying to bind the function is a process that is invoked by
-> UDC write through configfs, which opens up the possibility of a race
-> condition between the two paths. In this race scenario, the kernel panic
-> occurs due to the WARN_ON from functionfs_bind when panic_on_warn is
-> enabled. This commit fixes the kernel panic by removing the unnecessary
-> WARN_ON.
->
-> Kernel panic - not syncing: kernel: panic_on_warn set ...
-> [   14.542395] Call trace:
-> [   14.542464]  ffs_func_bind+0x1c8/0x14a8
-> [   14.542468]  usb_add_function+0xcc/0x1f0
-> [   14.542473]  configfs_composite_bind+0x468/0x588
-> [   14.542478]  gadget_bind_driver+0x108/0x27c
-> [   14.542483]  really_probe+0x190/0x374
-> [   14.542488]  __driver_probe_device+0xa0/0x12c
-> [   14.542492]  driver_probe_device+0x3c/0x220
-> [   14.542498]  __driver_attach+0x11c/0x1fc
-> [   14.542502]  bus_for_each_dev+0x104/0x160
-> [   14.542506]  driver_attach+0x24/0x34
-> [   14.542510]  bus_add_driver+0x154/0x270
-> [   14.542514]  driver_register+0x68/0x104
-> [   14.542518]  usb_gadget_register_driver_owner+0x48/0xf4
-> [   14.542523]  gadget_dev_desc_UDC_store+0xf8/0x144
-> [   14.542526]  configfs_write_iter+0xf0/0x138
->
-> Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Akash M <akash.m5@samsung.com>
->
-> diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-> index 2920f8000bbd..92c883440e02 100644
-> --- a/drivers/usb/gadget/function/f_fs.c
-> +++ b/drivers/usb/gadget/function/f_fs.c
-> @@ -2285,7 +2285,7 @@ static int functionfs_bind(struct ffs_data *ffs, struct usb_composite_dev *cdev)
->   	struct usb_gadget_strings **lang;
->   	int first_id;
->   
-> -	if (WARN_ON(ffs->state != FFS_ACTIVE
-> +	if ((ffs->state != FFS_ACTIVE
->   		 || test_and_set_bit(FFS_FL_BOUND, &ffs->flags)))
->   		return -EBADFD;
->   
-Hi Greg,
+Add mapping for headset mute key events.
 
-I realized there's a minor nitpick with the patch I submitted - 
-specifically a pair of extra brackets not removed.
+Remove PLT_QUIRK_DOUBLE_VOLUME_KEYS quirk and made it generic.
+The quirk logic did not keep track of the actual previous key
+so any key event occurring in less than or equal to 5ms was ignored.
 
-Do you want me to proceed with sending a v2 to address this, or is this 
-something you can take care while applying this patch?
+Remove PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS quirk.
+It had the same logic issue as the double key quirk and was actually
+masking the as designed behavior of most of the headsets.
+It's occurrence should be minimized with the ALSA control naming
+quirk that is part of the patch set.
 
-Looking forward to your advice.
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Wade Wang <wade.wang@hp.com>
+Cc: stable@vger.kernel.org
+---
+V1 -> V2: Optimize out 2 macros - no functional changes
 
-Thanks,
-Akash
+ drivers/hid/hid-plantronics.c | 144 ++++++++++++++++------------------
+ 1 file changed, 67 insertions(+), 77 deletions(-)
+
+diff --git a/drivers/hid/hid-plantronics.c b/drivers/hid/hid-plantronics.c
+index 25cfd964dc25..acb9eb18f7cc 100644
+--- a/drivers/hid/hid-plantronics.c
++++ b/drivers/hid/hid-plantronics.c
+@@ -6,9 +6,6 @@
+  *  Copyright (c) 2015-2018 Terry Junge <terry.junge@plantronics.com>
+  */
+=20
+-/*
+- */
+-
+ #include "hid-ids.h"
+=20
+ #include <linux/hid.h>
+@@ -23,30 +20,28 @@
+=20
+ #define PLT_VOL_UP=09=090x00b1
+ #define PLT_VOL_DOWN=09=090x00b2
++#define PLT_MIC_MUTE=09=090x00b5
+=20
+ #define PLT1_VOL_UP=09=09(PLT_HID_1_0_PAGE | PLT_VOL_UP)
+ #define PLT1_VOL_DOWN=09=09(PLT_HID_1_0_PAGE | PLT_VOL_DOWN)
++#define PLT1_MIC_MUTE=09=09(PLT_HID_1_0_PAGE | PLT_MIC_MUTE)
+ #define PLT2_VOL_UP=09=09(PLT_HID_2_0_PAGE | PLT_VOL_UP)
+ #define PLT2_VOL_DOWN=09=09(PLT_HID_2_0_PAGE | PLT_VOL_DOWN)
++#define PLT2_MIC_MUTE=09=09(PLT_HID_2_0_PAGE | PLT_MIC_MUTE)
++#define HID_TELEPHONY_MUTE=09(HID_UP_TELEPHONY | 0x2f)
++#define HID_CONSUMER_MUTE=09(HID_UP_CONSUMER | 0xe2)
+=20
+ #define PLT_DA60=09=090xda60
+ #define PLT_BT300_MIN=09=090x0413
+ #define PLT_BT300_MAX=09=090x0418
+=20
+-
+-#define PLT_ALLOW_CONSUMER (field->application =3D=3D HID_CP_CONSUMERCONTR=
+OL && \
+-=09=09=09    (usage->hid & HID_USAGE_PAGE) =3D=3D HID_UP_CONSUMER)
+-
+-#define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
+-#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
+-
+ #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
+-#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
+=20
+ struct plt_drv_data {
+ =09unsigned long device_type;
+-=09unsigned long last_volume_key_ts;
+-=09u32 quirks;
++=09unsigned long last_key_ts;
++=09unsigned long double_key_to;
++=09__u16 last_key;
+ };
+=20
+ static int plantronics_input_mapping(struct hid_device *hdev,
+@@ -58,34 +53,43 @@ static int plantronics_input_mapping(struct hid_device =
+*hdev,
+ =09unsigned short mapped_key;
+ =09struct plt_drv_data *drv_data =3D hid_get_drvdata(hdev);
+ =09unsigned long plt_type =3D drv_data->device_type;
++=09int allow_mute =3D usage->hid =3D=3D HID_TELEPHONY_MUTE;
++=09int allow_consumer =3D field->application =3D=3D HID_CP_CONSUMERCONTROL=
+ &&
++=09=09=09(usage->hid & HID_USAGE_PAGE) =3D=3D HID_UP_CONSUMER &&
++=09=09=09usage->hid !=3D HID_CONSUMER_MUTE;
+=20
+ =09/* special case for PTT products */
+ =09if (field->application =3D=3D HID_GD_JOYSTICK)
+ =09=09goto defaulted;
+=20
+-=09/* handle volume up/down mapping */
+ =09/* non-standard types or multi-HID interfaces - plt_type is PID */
+ =09if (!(plt_type & HID_USAGE_PAGE)) {
+ =09=09switch (plt_type) {
+ =09=09case PLT_DA60:
+-=09=09=09if (PLT_ALLOW_CONSUMER)
++=09=09=09if (allow_consumer)
+ =09=09=09=09goto defaulted;
+-=09=09=09goto ignored;
++=09=09=09if (usage->hid =3D=3D HID_CONSUMER_MUTE) {
++=09=09=09=09mapped_key =3D KEY_MICMUTE;
++=09=09=09=09goto mapped;
++=09=09=09}
++=09=09=09break;
+ =09=09default:
+-=09=09=09if (PLT_ALLOW_CONSUMER)
++=09=09=09if (allow_consumer || allow_mute)
+ =09=09=09=09goto defaulted;
+ =09=09}
++=09=09goto ignored;
+ =09}
+-=09/* handle standard types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
+-=09/* 'basic telephony compliant' - allow default consumer page map */
+-=09else if ((plt_type & HID_USAGE) >=3D PLT_BASIC_TELEPHONY &&
+-=09=09 (plt_type & HID_USAGE) !=3D PLT_BASIC_EXCEPTION) {
+-=09=09if (PLT_ALLOW_CONSUMER)
+-=09=09=09goto defaulted;
+-=09}
+-=09/* not 'basic telephony' - apply legacy mapping */
+-=09/* only map if the field is in the device's primary vendor page */
+-=09else if (!((field->application ^ plt_type) & HID_USAGE_PAGE)) {
++
++=09/* handle standard consumer control mapping */
++=09/* and standard telephony mic mute mapping */
++=09if (allow_consumer || allow_mute)
++=09=09goto defaulted;
++
++=09/* handle vendor unique types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
++=09/* if not 'basic telephony compliant' - map vendor unique controls */
++=09if (!((plt_type & HID_USAGE) >=3D PLT_BASIC_TELEPHONY &&
++=09      (plt_type & HID_USAGE) !=3D PLT_BASIC_EXCEPTION) &&
++=09      !((field->application ^ plt_type) & HID_USAGE_PAGE))
+ =09=09switch (usage->hid) {
+ =09=09case PLT1_VOL_UP:
+ =09=09case PLT2_VOL_UP:
+@@ -95,8 +99,11 @@ static int plantronics_input_mapping(struct hid_device *=
+hdev,
+ =09=09case PLT2_VOL_DOWN:
+ =09=09=09mapped_key =3D KEY_VOLUMEDOWN;
+ =09=09=09goto mapped;
++=09=09case PLT1_MIC_MUTE:
++=09=09case PLT2_MIC_MUTE:
++=09=09=09mapped_key =3D KEY_MICMUTE;
++=09=09=09goto mapped;
+ =09=09}
+-=09}
+=20
+ /*
+  * Future mapping of call control or other usages,
+@@ -105,6 +112,8 @@ static int plantronics_input_mapping(struct hid_device =
+*hdev,
+  */
+=20
+ ignored:
++=09hid_dbg(hdev, "usage: %08x (appl: %08x) - ignored\n",
++=09=09usage->hid, field->application);
+ =09return -1;
+=20
+ defaulted:
+@@ -123,38 +132,26 @@ static int plantronics_event(struct hid_device *hdev,=
+ struct hid_field *field,
+ =09=09=09     struct hid_usage *usage, __s32 value)
+ {
+ =09struct plt_drv_data *drv_data =3D hid_get_drvdata(hdev);
++=09unsigned long prev_tsto, cur_ts;
++=09__u16 prev_key, cur_key;
+=20
+-=09if (drv_data->quirks & PLT_QUIRK_DOUBLE_VOLUME_KEYS) {
+-=09=09unsigned long prev_ts, cur_ts;
++=09/* Usages are filtered in plantronics_usages. */
+=20
+-=09=09/* Usages are filtered in plantronics_usages. */
++=09/* HZ too low for ms resolution - double key detection disabled */
++=09/* or it is a key release - handle key presses only. */
++=09if (!drv_data->double_key_to || !value)
++=09=09return 0;
+=20
+-=09=09if (!value) /* Handle key presses only. */
+-=09=09=09return 0;
++=09prev_tsto =3D drv_data->last_key_ts + drv_data->double_key_to;
++=09cur_ts =3D drv_data->last_key_ts =3D jiffies;
++=09prev_key =3D drv_data->last_key;
++=09cur_key =3D drv_data->last_key =3D usage->code;
+=20
+-=09=09prev_ts =3D drv_data->last_volume_key_ts;
+-=09=09cur_ts =3D jiffies;
+-=09=09if (jiffies_to_msecs(cur_ts - prev_ts) <=3D PLT_DOUBLE_KEY_TIMEOUT)
+-=09=09=09return 1; /* Ignore the repeated key. */
+-
+-=09=09drv_data->last_volume_key_ts =3D cur_ts;
++=09/* If the same key occurs in <=3D double_key_to -- ignore it */
++=09if (prev_key =3D=3D cur_key && time_before_eq(cur_ts, prev_tsto)) {
++=09=09hid_dbg(hdev, "double key %d ignored\n", cur_key);
++=09=09return 1; /* Ignore the repeated key. */
+ =09}
+-=09if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
+-=09=09unsigned long prev_ts, cur_ts;
+-
+-=09=09/* Usages are filtered in plantronics_usages. */
+-
+-=09=09if (!value) /* Handle key presses only. */
+-=09=09=09return 0;
+-
+-=09=09prev_ts =3D drv_data->last_volume_key_ts;
+-=09=09cur_ts =3D jiffies;
+-=09=09if (jiffies_to_msecs(cur_ts - prev_ts) <=3D PLT_FOLLOWED_OPPOSITE_KE=
+Y_TIMEOUT)
+-=09=09=09return 1; /* Ignore the followed opposite volume key. */
+-
+-=09=09drv_data->last_volume_key_ts =3D cur_ts;
+-=09}
+-
+ =09return 0;
+ }
+=20
+@@ -196,12 +193,16 @@ static int plantronics_probe(struct hid_device *hdev,
+ =09ret =3D hid_parse(hdev);
+ =09if (ret) {
+ =09=09hid_err(hdev, "parse failed\n");
+-=09=09goto err;
++=09=09return ret;
+ =09}
+=20
+ =09drv_data->device_type =3D plantronics_device_type(hdev);
+-=09drv_data->quirks =3D id->driver_data;
+-=09drv_data->last_volume_key_ts =3D jiffies - msecs_to_jiffies(PLT_DOUBLE_=
+KEY_TIMEOUT);
++=09drv_data->double_key_to =3D msecs_to_jiffies(PLT_DOUBLE_KEY_TIMEOUT);
++=09drv_data->last_key_ts =3D jiffies - drv_data->double_key_to;
++
++=09/* if HZ does not allow ms resolution - disable double key detection */
++=09if (drv_data->double_key_to < PLT_DOUBLE_KEY_TIMEOUT)
++=09=09drv_data->double_key_to =3D 0;
+=20
+ =09hid_set_drvdata(hdev, drv_data);
+=20
+@@ -210,29 +211,10 @@ static int plantronics_probe(struct hid_device *hdev,
+ =09if (ret)
+ =09=09hid_err(hdev, "hw start failed\n");
+=20
+-err:
+ =09return ret;
+ }
+=20
+ static const struct hid_device_id plantronics_devices[] =3D {
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3210_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
+-=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+-=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
+-=09=09.driver_data =3D PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
+ =09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
+ =09{ }
+ };
+@@ -241,6 +223,14 @@ MODULE_DEVICE_TABLE(hid, plantronics_devices);
+ static const struct hid_usage_id plantronics_usages[] =3D {
+ =09{ HID_CP_VOLUMEUP, EV_KEY, HID_ANY_ID },
+ =09{ HID_CP_VOLUMEDOWN, EV_KEY, HID_ANY_ID },
++=09{ HID_TELEPHONY_MUTE, EV_KEY, HID_ANY_ID },
++=09{ HID_CONSUMER_MUTE, EV_KEY, HID_ANY_ID },
++=09{ PLT2_VOL_UP, EV_KEY, HID_ANY_ID },
++=09{ PLT2_VOL_DOWN, EV_KEY, HID_ANY_ID },
++=09{ PLT2_MIC_MUTE, EV_KEY, HID_ANY_ID },
++=09{ PLT1_VOL_UP, EV_KEY, HID_ANY_ID },
++=09{ PLT1_VOL_DOWN, EV_KEY, HID_ANY_ID },
++=09{ PLT1_MIC_MUTE, EV_KEY, HID_ANY_ID },
+ =09{ HID_TERMINATOR, HID_TERMINATOR, HID_TERMINATOR }
+ };
+=20
+--=20
+2.43.0
 
 
