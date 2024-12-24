@@ -1,86 +1,101 @@
-Return-Path: <stable+bounces-106078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B759FBF67
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 16:00:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51719FBF99
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 16:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945BF162907
-	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 15:00:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE3C18853B0
+	for <lists+stable@lfdr.de>; Tue, 24 Dec 2024 15:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A071BCA1B;
-	Tue, 24 Dec 2024 14:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5AE1BFE06;
+	Tue, 24 Dec 2024 15:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="YTXdSjEc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JP6oNNrD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CD01991DD
-	for <stable@vger.kernel.org>; Tue, 24 Dec 2024 14:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F4E1DFD1;
+	Tue, 24 Dec 2024 15:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735052397; cv=none; b=X5NdkRQKB6pS2v8Y+I0bp659Rb2f6JalO/D9vPZkflgP9TUItVu1vylk4b+mSvmV2uCl1941xTqFnfLzOaU/CDw4wVlap34mNWdu2govsKybPvOrwFvEAlSyL/x1QliY7NWHhl1YM36An9rlv/Ir7bIKFKaViw8NO7ift+21iI8=
+	t=1735053919; cv=none; b=t1KbwLAlTCFtXZD1TK/3k5awu3hwJyFYqETLv1oWbSCpHzdtFf9x4O/Ze7WfQX4xDQw0qql1mdiPnMeoCatuwg0vv2mK5dp5D/UVWtHPh7IAA/IV8bmwIBxfJiRqYR07ZVK/RSfJFqipVBlL8qsH6kaobHIXIHe4zzPjnekAg5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735052397; c=relaxed/simple;
-	bh=dIh3tL5xlZ7tAnf9j3LTDw3P6peEVniwwFRYkuxnjXw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MUgN5tMzFD3iaWYJvIPsu/ID2ChrOMM4l5FCd+83FaSVUhh+3lv+k119RBSDKjRdCE2mIWBDpFNXIXM1qPT8MxHPO9BYgRzzFoWqcQu4WMpiyhibEOBvO5ZZhgCMXRvpX8TEs0B+ZahZPFITb2i9wz1qj8z6qGIqENKavhbnYOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=YTXdSjEc; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc (unknown [10.10.165.19])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 6C47C40755C3;
-	Tue, 24 Dec 2024 14:59:50 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6C47C40755C3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1735052390;
-	bh=BY/LFLv7Pf5wVRWBA7LkaIObSdqnag9YXL9QaysQGnQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YTXdSjEcoXROq0+eecmAcM2+G3uJorPHjHOfvrjIqRcdJj4TJrtQoZNRYpzBJjuZ7
-	 ArqWykbs6tBkXGDsCFQ2BScxqm39lVKejnC1WXwOEivSOHaIuMqnUzAF5Bi8y+Ypvi
-	 FJtgdEnJdRsaz6aFnf7x6x0Z8ayNGCNyyT8UMDvw=
-Date: Tue, 24 Dec 2024 17:59:46 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: mordan@ispras.ru
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: ehci-hcd: fix call balance of clocks handling
- routines
-Message-ID: <20241224-b6bb2469b4f8b29fd6cd3a57-pchelkin@ispras.ru>
-References: <20241223093223-4173e9cdd41aad4a@stable.kernel.org>
- <1ca017108b4be8195b597ed5a2c22504@ispras.ru>
+	s=arc-20240116; t=1735053919; c=relaxed/simple;
+	bh=V/7XXPcXHWaRNDVEGaRoIRGDjHQ/RXIhkdCB+v2zD5w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=OSnPeu/QLcnkDVims/Adon3BB7UEPFXOWRaqPladmY0PkdsbHb9zytlu/MaJcN/amjMHmthYVkFsQ2vTbujCwfaMkP97+L8th5/ToXr+20JEAruY8ni5AAy7WZIbFoqjMWZ6MOCLgWuO5exS0vYeT52xUpeAwenHrlQjpZwhDL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JP6oNNrD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EF6C4CED0;
+	Tue, 24 Dec 2024 15:25:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735053918;
+	bh=V/7XXPcXHWaRNDVEGaRoIRGDjHQ/RXIhkdCB+v2zD5w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=JP6oNNrD0tYZixKdkO3Oujay9RO6fkwcTqq3siXrcXwNyfqXn8nFaJQMMbGxcl3Bm
+	 gwFcO8Twgu9bttkVR3Qg4HC4mbq2RPAgHJ9t3/NBg3RX2NCEagpFqa1h2qdHMTuJsg
+	 rvc1dE6XsS2U68yQemmWZ58lzq/RBQWWBiePC6bjpb2//dyvZTNLXfk2NHDmJmKRAz
+	 unDBCi6dAC2YYfdRGmO81XqHCLcTfP1ZJLGgIFBeDm/32Cwh3krZLccawW6+v55rZ5
+	 HLp/zwDeTzzIgpmKiTGbgLkwQVuu5qyen6wtUvOAwzUr0RDgfXCvtZdGv/i04IIJyu
+	 zHw4Ot9OVuZiQ==
+From: Vinod Koul <vkoul@kernel.org>
+To: Kishon Vijay Abraham I <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Lee Jones <lee@kernel.org>, Zijun Hu <zijun_hu@icloud.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+ Johan Hovold <johan@kernel.org>, stable@vger.kernel.org, 
+ linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Zijun Hu <quic_zijuhu@quicinc.com>, Johan Hovold <johan+linaro@kernel.org>, 
+ Simon Horman <horms@kernel.org>
+In-Reply-To: <20241213-phy_core_fix-v6-0-40ae28f5015a@quicinc.com>
+References: <20241213-phy_core_fix-v6-0-40ae28f5015a@quicinc.com>
+Subject: Re: (subset) [PATCH v6 0/6] phy: core: Fix bugs for several APIs
+ and simplify an API
+Message-Id: <173505391227.950293.14243235099163713416.b4-ty@kernel.org>
+Date: Tue, 24 Dec 2024 20:55:12 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1ca017108b4be8195b597ed5a2c22504@ispras.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On Tue, 24. Dec 14:56, mordan@ispras.ru wrote:
-> Hello,
+
+On Fri, 13 Dec 2024 20:36:40 +0800, Zijun Hu wrote:
+> This patch series is to fix bugs for below APIs:
 > 
-> A required dependency commit is missing, as noted by Fedor Pchelkin:
-
-Hmm... Vitalii, this was added to stable-queue by Greg KH after I've posted
-the request, so everything is OK now.
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=b0af78f3436d5d30681302b7ac7ffb794966e351
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=f89319493cac3a576aa90386751ce1041e101b6e
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=22121974e9baf6da20d257b6ecacc15c7272969a
-
+> devm_phy_put()
+> devm_of_phy_provider_unregister()
+> devm_phy_destroy()
+> phy_get()
+> of_phy_get()
+> devm_phy_get()
+> devm_of_phy_get()
+> devm_of_phy_get_by_index()
 > 
-> > The current patch was added to stable kernels lacking the necessary
-> > prerequisite ff30bd6a6618 ("sh: clk: Fix clk_enable() to return 0 on
-> > NULL clk") which is specified in Cc:stable tag of the commit description
-> > per stable kernels documentation [1].
-> > [1]: https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-> > Could you please cherry-pick ff30bd6a6618 ("sh: clk: Fix clk_enable() to
-> > return 0 on NULL clk") to 6.1.y, 5.15.y, 5.10.y and 5.4.y ? It applies
-> > cleanly.
-> > Thanks!
+> [...]
+
+Applied, thanks!
+
+[6/6] phy: core: Simplify API of_phy_simple_xlate() implementation
+      commit: e6625db662120572c32ac34c371f9deefb321411
+
+Best regards,
+-- 
+~Vinod
+
+
 
