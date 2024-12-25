@@ -1,109 +1,79 @@
-Return-Path: <stable+bounces-106090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA929FC32D
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 02:50:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB3A19FC35A
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 03:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7969A164D94
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 01:50:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3866D1881B38
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 02:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACC7DDAB;
-	Wed, 25 Dec 2024 01:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B6417991;
+	Wed, 25 Dec 2024 02:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4LtHHf/"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CB68BE8;
-	Wed, 25 Dec 2024 01:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CCD632;
+	Wed, 25 Dec 2024 02:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735091417; cv=none; b=KDkMm1xdgqpn94AtN/U6XqcZ1vWo1lTOCAgBb68FhlARlUDIobirT42CBMGSuQLilKgw4+5Vg5A6sHGqZPskhjSdGkI+/wAdFL1I/0RREyiLr3r87S3nfTRHVALbhUAKKyMqbgki5r62Y4zkrroAWP2OaR0LqI2i4ypOd2C5S24=
+	t=1735094521; cv=none; b=TLLlkLTo8y3Pafn7nJ5w8MgxrM2hz22Ra3pGYcVBRKxI0MhMuogIldUIoiB0D0+Kiqi8u7/v3OgdXQf3mafeaXkTc6m2uuj3K9cjcQvwaEGTFH7KmKh2VlwGZb7LO4b5zcWN1txOsVH5VjR2GuLlZqTSf1HGt9SOlpVrU096hJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735091417; c=relaxed/simple;
-	bh=EdaUEwtMp14tYaHw5JolGOjmyDZbWdJgQVblhV5qGvI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OwqHY7Ogvcj24sPsYaClE4zV/IOA/tUaE8UaFxQoNstobDNjMvwJqCBwfZU5c2DBdJ82eawETAc5smrhJ93c8ixipydTugmFocuaMaDJGUq50RrLVHSJH3AtB/7BfIYLeGWj9OeT/OXcoyeB6OOsu2ee1J59gI+VMEaVzhdWoGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 92922892c26211efa216b1d71e6e1362-20241225
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:3ea3fa0b-20a0-401c-9156-22e5864dba5a,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-9
-X-CID-INFO: VERSION:1.1.41,REQID:3ea3fa0b-20a0-401c-9156-22e5864dba5a,IP:0,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:-9
-X-CID-META: VersionHash:6dc6a47,CLOUDID:86630b22780dc18832a319ea0a9c4226,BulkI
-	D:2412250950104SCDE6W8,BulkQuantity:0,Recheck:0,SF:17|19|24|38|45|64|66|78
-	|80|81|82|83|102|841,TC:nil,Content:0,EDM:-3,IP:1,URL:1,File:nil,RT:nil,Bu
-	lk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:
-	0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_IBB,TF_CID_SPAM_ULS,
-	TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-UUID: 92922892c26211efa216b1d71e6e1362-20241225
-X-User: zhaomengmeng@kylinos.cn
-Received: from [192.168.109.86] [(123.150.8.42)] by mailgw.kylinos.cn
-	(envelope-from <zhaomengmeng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 403518014; Wed, 25 Dec 2024 09:50:09 +0800
-Message-ID: <4b9e8925-4851-4b6f-94ad-ab3f238f7252@kylinos.cn>
-Date: Wed, 25 Dec 2024 09:50:04 +0800
+	s=arc-20240116; t=1735094521; c=relaxed/simple;
+	bh=fyLf3RASkCe2x0XKlRNqhZ0gTwHmNi/WjJCvj3hFC+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SmiEmiaUUvHLSzwJJNPYT2OVOcmGBg7fY2nl0VxI9RGBKk5kUi0uz5sxicNllYcs1i2FM4eXX8tNFRPTOumY4Lkwf1m4kOlEYR09QzwKDX3xLHAB87FJWdAwBKExglxqi7w9ZTmo7lPookCh25qIYgSRfWlYSJmFsodnVwqlQGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4LtHHf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28938C4CEDC;
+	Wed, 25 Dec 2024 02:41:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735094520;
+	bh=fyLf3RASkCe2x0XKlRNqhZ0gTwHmNi/WjJCvj3hFC+8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U4LtHHf/u6YAJ9HmGqERoIx5KcV7eX4dpjO4r7zd8JHJ4byecIxkS3kEEUU3w90k0
+	 y7QzfWcjzDnyMZ4XES4q536tz+FKJa2KcZgbdAGvFFLuaFnnIAHVZ9y7km6I4znC1T
+	 zv+RchV3pU1Ld0KBJyHvqMd61jsdsN/cwqgd33qruV/pdtUZNG642yMNTHO79THMPC
+	 o2ottKNdiIgatxUBDwrXua6e1IagyQhAEE7cqnWiWYY9uKXEwXZJZDLu6B62AwDFuB
+	 d368hM+rltZPwqyhLx6LOBbs55z6y1uLdtE5og+Muhuf51l4sQulzq34xmN2RcZELf
+	 a7cEeAnBa5lqQ==
+Date: Wed, 25 Dec 2024 02:41:57 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: "Dustin L. Howett" <dustin@howett.net>
+Cc: Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Alexandru M Stan <ams@frame.work>, linux@frame.work,
+	stable@vger.kernel.org, chrome-platform@lists.linux.dev
+Subject: Re: [PATCH] platform/chrome: cros_ec_lpc: fix product identity for
+ early Framework Laptops
+Message-ID: <Z2tw9REoq5rbpv6S@google.com>
+References: <20241224-platform-chrome-cros_ec_lpc-fix-product-identity-for-early-framework-laptops-v1-1-0d31d6e1d22c@howett.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/83] 6.1.122-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Daniel Reichelt <debian@nachtgeist.net>, Zhao Mengmeng <zhaomzhao@126.com>
-References: <20241223155353.641267612@linuxfoundation.org>
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241224-platform-chrome-cros_ec_lpc-fix-product-identity-for-early-framework-laptops-v1-1-0d31d6e1d22c@howett.net>
 
-On 2024/12/23 23:58, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.122 release.
-> There are 83 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Dec 24, 2024 at 12:55:58PM -0600, Dustin L. Howett wrote:
+> The product names for the Framework Laptop (12th and 13th Generation
+> Intel Core) are incorrect as of 62be134abf42.
 > 
-> Responses should be made by Fri, 27 Dec 2024 15:53:30 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.122-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+> [...]
 
-I have tested this rc kernel in my qemu environment, it fixes the issue of loop-mount Windows
-Setup ISOs can't be readed by executing `ls $mntpt/sources`. Daniel also confirmed that
-udf patch has solved his problem.
+Applied to
 
-Tested-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+    https://git.kernel.org/pub/scm/linux/kernel/git/chrome-platform/linux.git for-next
 
-Links: https://lore.kernel.org/regressions/Z2XKY0f6on1UbwWb@eldamar.lan/
+[1/1] platform/chrome: cros_ec_lpc: fix product identity for early Framework Laptops
+      commit: dcd59d0d7d51b2a4b768fc132b0d74a97dfd6d6a
 
-Thanks,
--- zmm
+Thanks!
 
