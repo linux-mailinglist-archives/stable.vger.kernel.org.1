@@ -1,126 +1,349 @@
-Return-Path: <stable+bounces-106094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0011F9FC375
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 04:22:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8869FC389
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 05:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8079A1649F5
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 03:22:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63F9D18834F4
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 04:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6F218E25;
-	Wed, 25 Dec 2024 03:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB732E401;
+	Wed, 25 Dec 2024 04:19:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cosmicgizmosystems.com (beyond-windows.com [63.249.102.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF762F56;
-	Wed, 25 Dec 2024 03:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF932F56;
+	Wed, 25 Dec 2024 04:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.249.102.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735096929; cv=none; b=JzEU8UVwR5UaR0VG2IGv9QVaYc+8e7AgfC+9i/2emTHnZkaK6mqG+uWF3gkSSIDxQQ98CBvy3WOK1qUvFXpDEBa/bWp5Rx6BdXqRYTnnBNla1oqgRsLLiOWhMuK5I83vyZSd4oOJvgw9FqGwj1lr/u2SJDzffc8wJuYwHbOckTM=
+	t=1735100366; cv=none; b=Y2HpgkNsen7wecg1jaW9+sq+fdm41Il/9rwkYgFmRFewCoMhKHuPKuIm2sYKbRCU4rRr6WaN7M9GH2Lft+BAkDzCvbo4X+NLint7uF3VWJ+2qmpqvPI4SJcWZUA/8C+4S9Vn9ucbJxaIHV1e8nevzelqzDng5T/q6t0fTg+GwjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735096929; c=relaxed/simple;
-	bh=P4jzAfVpChnoHSmEL/zXZuykfzIzPxDYDHnBM6njoxo=;
+	s=arc-20240116; t=1735100366; c=relaxed/simple;
+	bh=lnD+s+ZJvMCoAV68W0d+HtzrejSVY5k5wzhVcbX/Z68=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=olkH2Hw2cPjO1DKd/GrAR2dzC0g0SxoyHLDbvvzAdDBBeEcgu4uV0WcMUuuscpfYEI4zlZuiMnAyZAHdY8DAuQaUIZKGskgE3Eih1WnxM/yBipTTeoua0ydBhtVFLsk8HV5mWfE7/klUWKhOmImMsqRkj19BQVLLtztRyItbf0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4YHxr52qn0z4f3jdk;
-	Wed, 25 Dec 2024 11:21:41 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 1C61B1A0AE8;
-	Wed, 25 Dec 2024 11:22:01 +0800 (CST)
-Received: from [10.174.177.210] (unknown [10.174.177.210])
-	by APP4 (Coremail) with SMTP id gCh0CgDnwoZXemtn_0NBFg--.36175S3;
-	Wed, 25 Dec 2024 11:22:00 +0800 (CST)
-Message-ID: <e09ef7f8-a878-5fc2-3bc5-c39b1fba0344@huaweicloud.com>
-Date: Wed, 25 Dec 2024 11:21:59 +0800
+	 In-Reply-To:Content-Type; b=a7Hl5VjLaEXBIjiisA/9mwney1UrYC8vSJf/lIebbeSbTGXyoYGcWAluLz0lNv3bnnvxl/wi9tL5URaMr1FXjcEwEwcgmu/MoPTp82R9Hlg5az8UD6P/FDGbTzyHCHa7fJEPrQgKVGiKP0InG9t1oV3OC03cNvWMl7yNQ0+HoZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com; spf=pass smtp.mailfrom=cosmicgizmosystems.com; arc=none smtp.client-ip=63.249.102.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cosmicgizmosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cosmicgizmosystems.com
+Received: from [10.0.0.101] (c-73-190-111-195.hsd1.wa.comcast.net [73.190.111.195])
+	by host11.cruzio.com (Postfix) with ESMTPSA id 5E3922611C6D;
+	Tue, 24 Dec 2024 20:12:45 -0800 (PST)
+Message-ID: <2e6c49a9-ff34-4bad-9361-ad4d9daa92c3@cosmicgizmosystems.com>
+Date: Tue, 24 Dec 2024 20:12:44 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH 1/2] NFSv4.0: Fix the wake up of the next waiter in
- nfs_release_seqid()
-To: Li Lingfeng <lilingfeng3@huawei.com>, trondmy@kernel.org,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-nfs@vger.kernel.org, linux-stable <stable@vger.kernel.org>
-References: <5527548df9be8ce76ed31ad0ea6520908533b4fe.1731103952.git.trond.myklebust@hammerspace.com>
- <0cf3c4a6-082a-4ee7-91bf-13cb98138879@huawei.com>
-From: yangerkun <yangerkun@huaweicloud.com>
-In-Reply-To: <0cf3c4a6-082a-4ee7-91bf-13cb98138879@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDnwoZXemtn_0NBFg--.36175S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw4xGw45Cr4rAr13Ww1kuFg_yoW8Cw1DpF
-	n5JrW5Gay8Zr40gr1jqr4UCryjqr48K3ZrGr1kAF1UAw43Ars0qF4aqr1v9rWUJrs3Xr4U
-	Xr1FqFnxur45XrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AF
-	wI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1D
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7I
-	JmUUUUU
-X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] HID: hid-plantronics: Add mic mute mapping and
+ generalize quirks
+To: Wade Wang <wade.wang@hp.com>, jikos@kernel.org, tiwai@suse.com,
+ bentiss@kernel.org, perex@perex.cz
+Cc: linux-input@vger.kernel.org, linux-sound@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241224065636.1870713-1-wade.wang@hp.com>
+Content-Language: en-US
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
+In-Reply-To: <20241224065636.1870713-1-wade.wang@hp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-You need cc stable.
+Sorry...
 
-在 2024/12/25 10:50, Li Lingfeng 写道:
-> Hi, I noticed that [PATCH 2] has been applied to the stable, but [PATCH 1]
-> has not.
-> Based on 6.6 where [PATCH 2] was merged, I can still reproduce the
-> original issue, and [PATCH 1] needs to be applied as well to resolve it.
-> It may be better to push [PATCH 1] to the stable as well.
-> Thanks.
+Looks like multiple mailings occurred for this patch series and no cover letter.
+
+This is the latest mailing and seems to have the correct mailing lists.
+
+It would be ideal if these two patches could flow upstream and to stable together.
+
+You can find the V1 threads here-
+
+Link: https://lore.kernel.org/linux-input/87zfl333uy.wl-tiwai@suse.de/T/#t
+
+Thanks,
+Terry
+
+On 12/23/24 10:56 PM, Wade Wang wrote:
+> From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 > 
-> 在 2024/11/9 6:13, trondmy@kernel.org 写道:
->> From: Trond Myklebust <trond.myklebust@hammerspace.com>
->>
->> There is no need to wake up another waiter on the seqid list unless the
->> seqid being removed is at the head of the list, and so is relinquishing
->> control of the sequence counter to the next entry.
->>
->> Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
->> ---
->>   fs/nfs/nfs4state.c | 10 ++++------
->>   1 file changed, 4 insertions(+), 6 deletions(-)
->>
->> diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
->> index dafd61186557..9a9f60a2291b 100644
->> --- a/fs/nfs/nfs4state.c
->> +++ b/fs/nfs/nfs4state.c
->> @@ -1083,14 +1083,12 @@ void nfs_release_seqid(struct nfs_seqid *seqid)
->>           return;
->>       sequence = seqid->sequence;
->>       spin_lock(&sequence->lock);
->> -    list_del_init(&seqid->list);
->> -    if (!list_empty(&sequence->list)) {
->> -        struct nfs_seqid *next;
->> -
->> -        next = list_first_entry(&sequence->list,
->> -                struct nfs_seqid, list);
->> +    if (list_is_first(&seqid->list, &sequence->list) &&
->> +        !list_is_singular(&sequence->list)) {
->> +        struct nfs_seqid *next = list_next_entry(seqid, list);
->>           rpc_wake_up_queued_task(&sequence->wait, next->task);
->>       }
->> +    list_del_init(&seqid->list);
->>       spin_unlock(&sequence->lock);
->>   }
+> Add mapping for headset mute key events.
+> 
+> Remove PLT_QUIRK_DOUBLE_VOLUME_KEYS quirk and made it generic.
+> The quirk logic did not keep track of the actual previous key
+> so any key event occurring in less than or equal to 5ms was ignored.
+> 
+> Remove PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS quirk.
+> It had the same logic issue as the double key quirk and was actually
+> masking the as designed behavior of most of the headsets.
+> It's occurrence should be minimized with the ALSA control naming
+> quirk that is part of the patch set.
+> 
+> Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+> Signed-off-by: Wade Wang <wade.wang@hp.com>
+> Cc: stable@vger.kernel.org
+> ---
+> V1 -> V2: Optimize out 2 macros - no functional changes
+> 
+>  drivers/hid/hid-plantronics.c | 144 ++++++++++++++++------------------
+>  1 file changed, 67 insertions(+), 77 deletions(-)
+> 
+> diff --git a/drivers/hid/hid-plantronics.c b/drivers/hid/hid-plantronics.c
+> index 25cfd964dc25..acb9eb18f7cc 100644
+> --- a/drivers/hid/hid-plantronics.c
+> +++ b/drivers/hid/hid-plantronics.c
+> @@ -6,9 +6,6 @@
+>   *  Copyright (c) 2015-2018 Terry Junge <terry.junge@plantronics.com>
+>   */
+>  
+> -/*
+> - */
+> -
+>  #include "hid-ids.h"
+>  
+>  #include <linux/hid.h>
+> @@ -23,30 +20,28 @@
+>  
+>  #define PLT_VOL_UP		0x00b1
+>  #define PLT_VOL_DOWN		0x00b2
+> +#define PLT_MIC_MUTE		0x00b5
+>  
+>  #define PLT1_VOL_UP		(PLT_HID_1_0_PAGE | PLT_VOL_UP)
+>  #define PLT1_VOL_DOWN		(PLT_HID_1_0_PAGE | PLT_VOL_DOWN)
+> +#define PLT1_MIC_MUTE		(PLT_HID_1_0_PAGE | PLT_MIC_MUTE)
+>  #define PLT2_VOL_UP		(PLT_HID_2_0_PAGE | PLT_VOL_UP)
+>  #define PLT2_VOL_DOWN		(PLT_HID_2_0_PAGE | PLT_VOL_DOWN)
+> +#define PLT2_MIC_MUTE		(PLT_HID_2_0_PAGE | PLT_MIC_MUTE)
+> +#define HID_TELEPHONY_MUTE	(HID_UP_TELEPHONY | 0x2f)
+> +#define HID_CONSUMER_MUTE	(HID_UP_CONSUMER | 0xe2)
+>  
+>  #define PLT_DA60		0xda60
+>  #define PLT_BT300_MIN		0x0413
+>  #define PLT_BT300_MAX		0x0418
+>  
+> -
+> -#define PLT_ALLOW_CONSUMER (field->application == HID_CP_CONSUMERCONTROL && \
+> -			    (usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER)
+> -
+> -#define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
+> -#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
+> -
+>  #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
+> -#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
+>  
+>  struct plt_drv_data {
+>  	unsigned long device_type;
+> -	unsigned long last_volume_key_ts;
+> -	u32 quirks;
+> +	unsigned long last_key_ts;
+> +	unsigned long double_key_to;
+> +	__u16 last_key;
+>  };
+>  
+>  static int plantronics_input_mapping(struct hid_device *hdev,
+> @@ -58,34 +53,43 @@ static int plantronics_input_mapping(struct hid_device *hdev,
+>  	unsigned short mapped_key;
+>  	struct plt_drv_data *drv_data = hid_get_drvdata(hdev);
+>  	unsigned long plt_type = drv_data->device_type;
+> +	int allow_mute = usage->hid == HID_TELEPHONY_MUTE;
+> +	int allow_consumer = field->application == HID_CP_CONSUMERCONTROL &&
+> +			(usage->hid & HID_USAGE_PAGE) == HID_UP_CONSUMER &&
+> +			usage->hid != HID_CONSUMER_MUTE;
+>  
+>  	/* special case for PTT products */
+>  	if (field->application == HID_GD_JOYSTICK)
+>  		goto defaulted;
+>  
+> -	/* handle volume up/down mapping */
+>  	/* non-standard types or multi-HID interfaces - plt_type is PID */
+>  	if (!(plt_type & HID_USAGE_PAGE)) {
+>  		switch (plt_type) {
+>  		case PLT_DA60:
+> -			if (PLT_ALLOW_CONSUMER)
+> +			if (allow_consumer)
+>  				goto defaulted;
+> -			goto ignored;
+> +			if (usage->hid == HID_CONSUMER_MUTE) {
+> +				mapped_key = KEY_MICMUTE;
+> +				goto mapped;
+> +			}
+> +			break;
+>  		default:
+> -			if (PLT_ALLOW_CONSUMER)
+> +			if (allow_consumer || allow_mute)
+>  				goto defaulted;
+>  		}
+> +		goto ignored;
+>  	}
+> -	/* handle standard types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
+> -	/* 'basic telephony compliant' - allow default consumer page map */
+> -	else if ((plt_type & HID_USAGE) >= PLT_BASIC_TELEPHONY &&
+> -		 (plt_type & HID_USAGE) != PLT_BASIC_EXCEPTION) {
+> -		if (PLT_ALLOW_CONSUMER)
+> -			goto defaulted;
+> -	}
+> -	/* not 'basic telephony' - apply legacy mapping */
+> -	/* only map if the field is in the device's primary vendor page */
+> -	else if (!((field->application ^ plt_type) & HID_USAGE_PAGE)) {
+> +
+> +	/* handle standard consumer control mapping */
+> +	/* and standard telephony mic mute mapping */
+> +	if (allow_consumer || allow_mute)
+> +		goto defaulted;
+> +
+> +	/* handle vendor unique types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
+> +	/* if not 'basic telephony compliant' - map vendor unique controls */
+> +	if (!((plt_type & HID_USAGE) >= PLT_BASIC_TELEPHONY &&
+> +	      (plt_type & HID_USAGE) != PLT_BASIC_EXCEPTION) &&
+> +	      !((field->application ^ plt_type) & HID_USAGE_PAGE))
+>  		switch (usage->hid) {
+>  		case PLT1_VOL_UP:
+>  		case PLT2_VOL_UP:
+> @@ -95,8 +99,11 @@ static int plantronics_input_mapping(struct hid_device *hdev,
+>  		case PLT2_VOL_DOWN:
+>  			mapped_key = KEY_VOLUMEDOWN;
+>  			goto mapped;
+> +		case PLT1_MIC_MUTE:
+> +		case PLT2_MIC_MUTE:
+> +			mapped_key = KEY_MICMUTE;
+> +			goto mapped;
+>  		}
+> -	}
+>  
+>  /*
+>   * Future mapping of call control or other usages,
+> @@ -105,6 +112,8 @@ static int plantronics_input_mapping(struct hid_device *hdev,
+>   */
+>  
+>  ignored:
+> +	hid_dbg(hdev, "usage: %08x (appl: %08x) - ignored\n",
+> +		usage->hid, field->application);
+>  	return -1;
+>  
+>  defaulted:
+> @@ -123,38 +132,26 @@ static int plantronics_event(struct hid_device *hdev, struct hid_field *field,
+>  			     struct hid_usage *usage, __s32 value)
+>  {
+>  	struct plt_drv_data *drv_data = hid_get_drvdata(hdev);
+> +	unsigned long prev_tsto, cur_ts;
+> +	__u16 prev_key, cur_key;
+>  
+> -	if (drv_data->quirks & PLT_QUIRK_DOUBLE_VOLUME_KEYS) {
+> -		unsigned long prev_ts, cur_ts;
+> +	/* Usages are filtered in plantronics_usages. */
+>  
+> -		/* Usages are filtered in plantronics_usages. */
+> +	/* HZ too low for ms resolution - double key detection disabled */
+> +	/* or it is a key release - handle key presses only. */
+> +	if (!drv_data->double_key_to || !value)
+> +		return 0;
+>  
+> -		if (!value) /* Handle key presses only. */
+> -			return 0;
+> +	prev_tsto = drv_data->last_key_ts + drv_data->double_key_to;
+> +	cur_ts = drv_data->last_key_ts = jiffies;
+> +	prev_key = drv_data->last_key;
+> +	cur_key = drv_data->last_key = usage->code;
+>  
+> -		prev_ts = drv_data->last_volume_key_ts;
+> -		cur_ts = jiffies;
+> -		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_DOUBLE_KEY_TIMEOUT)
+> -			return 1; /* Ignore the repeated key. */
+> -
+> -		drv_data->last_volume_key_ts = cur_ts;
+> +	/* If the same key occurs in <= double_key_to -- ignore it */
+> +	if (prev_key == cur_key && time_before_eq(cur_ts, prev_tsto)) {
+> +		hid_dbg(hdev, "double key %d ignored\n", cur_key);
+> +		return 1; /* Ignore the repeated key. */
+>  	}
+> -	if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
+> -		unsigned long prev_ts, cur_ts;
+> -
+> -		/* Usages are filtered in plantronics_usages. */
+> -
+> -		if (!value) /* Handle key presses only. */
+> -			return 0;
+> -
+> -		prev_ts = drv_data->last_volume_key_ts;
+> -		cur_ts = jiffies;
+> -		if (jiffies_to_msecs(cur_ts - prev_ts) <= PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT)
+> -			return 1; /* Ignore the followed opposite volume key. */
+> -
+> -		drv_data->last_volume_key_ts = cur_ts;
+> -	}
+> -
+>  	return 0;
+>  }
+>  
+> @@ -196,12 +193,16 @@ static int plantronics_probe(struct hid_device *hdev,
+>  	ret = hid_parse(hdev);
+>  	if (ret) {
+>  		hid_err(hdev, "parse failed\n");
+> -		goto err;
+> +		return ret;
+>  	}
+>  
+>  	drv_data->device_type = plantronics_device_type(hdev);
+> -	drv_data->quirks = id->driver_data;
+> -	drv_data->last_volume_key_ts = jiffies - msecs_to_jiffies(PLT_DOUBLE_KEY_TIMEOUT);
+> +	drv_data->double_key_to = msecs_to_jiffies(PLT_DOUBLE_KEY_TIMEOUT);
+> +	drv_data->last_key_ts = jiffies - drv_data->double_key_to;
+> +
+> +	/* if HZ does not allow ms resolution - disable double key detection */
+> +	if (drv_data->double_key_to < PLT_DOUBLE_KEY_TIMEOUT)
+> +		drv_data->double_key_to = 0;
+>  
+>  	hid_set_drvdata(hdev, drv_data);
+>  
+> @@ -210,29 +211,10 @@ static int plantronics_probe(struct hid_device *hdev,
+>  	if (ret)
+>  		hid_err(hdev, "hw start failed\n");
+>  
+> -err:
+>  	return ret;
+>  }
+>  
+>  static const struct hid_device_id plantronics_devices[] = {
+> -	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+> -					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3210_SERIES),
+> -		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+> -	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+> -					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES),
+> -		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+> -	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+> -					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES),
+> -		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+> -	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+> -					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
+> -		.driver_data = PLT_QUIRK_DOUBLE_VOLUME_KEYS },
+> -	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+> -					 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
+> -		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
+> -	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+> -					 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
+> -		.driver_data = PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
+>  	{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
+>  	{ }
+>  };
+> @@ -241,6 +223,14 @@ MODULE_DEVICE_TABLE(hid, plantronics_devices);
+>  static const struct hid_usage_id plantronics_usages[] = {
+>  	{ HID_CP_VOLUMEUP, EV_KEY, HID_ANY_ID },
+>  	{ HID_CP_VOLUMEDOWN, EV_KEY, HID_ANY_ID },
+> +	{ HID_TELEPHONY_MUTE, EV_KEY, HID_ANY_ID },
+> +	{ HID_CONSUMER_MUTE, EV_KEY, HID_ANY_ID },
+> +	{ PLT2_VOL_UP, EV_KEY, HID_ANY_ID },
+> +	{ PLT2_VOL_DOWN, EV_KEY, HID_ANY_ID },
+> +	{ PLT2_MIC_MUTE, EV_KEY, HID_ANY_ID },
+> +	{ PLT1_VOL_UP, EV_KEY, HID_ANY_ID },
+> +	{ PLT1_VOL_DOWN, EV_KEY, HID_ANY_ID },
+> +	{ PLT1_MIC_MUTE, EV_KEY, HID_ANY_ID },
+>  	{ HID_TERMINATOR, HID_TERMINATOR, HID_TERMINATOR }
+>  };
+>  
 
 
