@@ -1,79 +1,125 @@
-Return-Path: <stable+bounces-106091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3A19FC35A
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 03:42:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B85F19FC35D
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 03:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3866D1881B38
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 02:42:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD18B18842FA
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 02:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B6417991;
-	Wed, 25 Dec 2024 02:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4LtHHf/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD91113211A;
+	Wed, 25 Dec 2024 02:45:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CCD632;
-	Wed, 25 Dec 2024 02:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F45E53E23;
+	Wed, 25 Dec 2024 02:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735094521; cv=none; b=TLLlkLTo8y3Pafn7nJ5w8MgxrM2hz22Ra3pGYcVBRKxI0MhMuogIldUIoiB0D0+Kiqi8u7/v3OgdXQf3mafeaXkTc6m2uuj3K9cjcQvwaEGTFH7KmKh2VlwGZb7LO4b5zcWN1txOsVH5VjR2GuLlZqTSf1HGt9SOlpVrU096hJo=
+	t=1735094702; cv=none; b=tBVeAk7gbFIRmpwKGlsMHUP7Xjy/4+ASGxtJZet0dPWc9PKRti333bJmzx47vb1uWEZi1fYojRqZrNydELjJ3t2qa4oB/3brKWoHArsWKH7od+hx0gaYYbybF6ELMiFaTfCHsUZHhtvxbz5v6jYlXS7mCIFoLgmCOFEhvdPdvLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735094521; c=relaxed/simple;
-	bh=fyLf3RASkCe2x0XKlRNqhZ0gTwHmNi/WjJCvj3hFC+8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SmiEmiaUUvHLSzwJJNPYT2OVOcmGBg7fY2nl0VxI9RGBKk5kUi0uz5sxicNllYcs1i2FM4eXX8tNFRPTOumY4Lkwf1m4kOlEYR09QzwKDX3xLHAB87FJWdAwBKExglxqi7w9ZTmo7lPookCh25qIYgSRfWlYSJmFsodnVwqlQGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4LtHHf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28938C4CEDC;
-	Wed, 25 Dec 2024 02:41:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735094520;
-	bh=fyLf3RASkCe2x0XKlRNqhZ0gTwHmNi/WjJCvj3hFC+8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U4LtHHf/u6YAJ9HmGqERoIx5KcV7eX4dpjO4r7zd8JHJ4byecIxkS3kEEUU3w90k0
-	 y7QzfWcjzDnyMZ4XES4q536tz+FKJa2KcZgbdAGvFFLuaFnnIAHVZ9y7km6I4znC1T
-	 zv+RchV3pU1Ld0KBJyHvqMd61jsdsN/cwqgd33qruV/pdtUZNG642yMNTHO79THMPC
-	 o2ottKNdiIgatxUBDwrXua6e1IagyQhAEE7cqnWiWYY9uKXEwXZJZDLu6B62AwDFuB
-	 d368hM+rltZPwqyhLx6LOBbs55z6y1uLdtE5og+Muhuf51l4sQulzq34xmN2RcZELf
-	 a7cEeAnBa5lqQ==
-Date: Wed, 25 Dec 2024 02:41:57 +0000
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: "Dustin L. Howett" <dustin@howett.net>
-Cc: Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Alexandru M Stan <ams@frame.work>, linux@frame.work,
-	stable@vger.kernel.org, chrome-platform@lists.linux.dev
-Subject: Re: [PATCH] platform/chrome: cros_ec_lpc: fix product identity for
- early Framework Laptops
-Message-ID: <Z2tw9REoq5rbpv6S@google.com>
-References: <20241224-platform-chrome-cros_ec_lpc-fix-product-identity-for-early-framework-laptops-v1-1-0d31d6e1d22c@howett.net>
+	s=arc-20240116; t=1735094702; c=relaxed/simple;
+	bh=Hwu5c24DC5at5/TqglxlBqTR9dnnO1xr7Iyw+0MazWE=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=B0qBK0gIlHb3uWbfalyAQ/98tEoQ4OYC+ElzDdWDId1JvBczSFfL/pipnP/cNnVfciC1Zda3q90CeQKw6qAezguVlAFPcp9C5O+YbvwMYcmslmokgREHWaMt2ONEycl/K8uKEDP+IYwy4I94RtfBuh3DUK21m8MLARFCUBAwZOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4F8C4CED6;
+	Wed, 25 Dec 2024 02:45:02 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1tQHPJ-0000000Ektk-0Sv4;
+	Tue, 24 Dec 2024 21:45:57 -0500
+Message-ID: <20241225024556.965969273@goodmis.org>
+User-Agent: quilt/0.68
+Date: Tue, 24 Dec 2024 21:45:37 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+ =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>,
+ =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [for-linus][PATCH 1/2] tracing: Constify string literal data member in struct
+ trace_event_call
+References: <20241225024536.865653915@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241224-platform-chrome-cros_ec_lpc-fix-product-identity-for-early-framework-laptops-v1-1-0d31d6e1d22c@howett.net>
+Content-Type: text/plain; charset=UTF-8
 
-On Tue, Dec 24, 2024 at 12:55:58PM -0600, Dustin L. Howett wrote:
-> The product names for the Framework Laptop (12th and 13th Generation
-> Intel Core) are incorrect as of 62be134abf42.
-> 
-> [...]
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 
-Applied to
+The name member of the struct trace_event_call is assigned with
+generated string literals; declare them pointer to read-only.
 
-    https://git.kernel.org/pub/scm/linux/kernel/git/chrome-platform/linux.git for-next
+Reported by clang:
 
-[1/1] platform/chrome: cros_ec_lpc: fix product identity for early Framework Laptops
-      commit: dcd59d0d7d51b2a4b768fc132b0d74a97dfd6d6a
+    security/landlock/syscalls.c:179:1: warning: initializing 'char *' with an expression of type 'const char[34]' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+      179 | SYSCALL_DEFINE3(landlock_create_ruleset,
+          | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      180 |                 const struct landlock_ruleset_attr __user *const, attr,
+          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      181 |                 const size_t, size, const __u32, flags)
+          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:226:36: note: expanded from macro 'SYSCALL_DEFINE3'
+      226 | #define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)
+          |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:234:2: note: expanded from macro 'SYSCALL_DEFINEx'
+      234 |         SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \
+          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:184:2: note: expanded from macro 'SYSCALL_METADATA'
+      184 |         SYSCALL_TRACE_ENTER_EVENT(sname);                       \
+          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:151:30: note: expanded from macro 'SYSCALL_TRACE_ENTER_EVENT'
+      151 |                         .name                   = "sys_enter"#sname,    \
+          |                                                   ^~~~~~~~~~~~~~~~~
 
-Thanks!
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mickaël Salaün <mic@digikod.net>
+Cc: Günther Noack <gnoack@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/20241125105028.42807-1-cgoettsche@seltendoof.de
+Fixes: b77e38aa240c3 ("tracing: add event trace infrastructure")
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ include/linux/trace_events.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index 91b8ffbdfa8c..58ad4ead33fc 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -364,7 +364,7 @@ struct trace_event_call {
+ 	struct list_head	list;
+ 	struct trace_event_class *class;
+ 	union {
+-		char			*name;
++		const char		*name;
+ 		/* Set TRACE_EVENT_FL_TRACEPOINT flag when using "tp" */
+ 		struct tracepoint	*tp;
+ 	};
+-- 
+2.45.2
+
+
 
