@@ -1,93 +1,126 @@
-Return-Path: <stable+bounces-106093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A469FC35F
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 03:45:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0011F9FC375
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 04:22:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F2F918844AF
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 02:45:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8079A1649F5
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 03:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D647613B2AF;
-	Wed, 25 Dec 2024 02:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6F218E25;
+	Wed, 25 Dec 2024 03:22:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A833D130AF6;
-	Wed, 25 Dec 2024 02:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF762F56;
+	Wed, 25 Dec 2024 03:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735094702; cv=none; b=WZVyCQfWk9sQWLzY35siQXOs9+4foOw1CxlmnvtQNBisuxKc5zVvn2OX/6UI86zzOJ9VBeB8gdB/JiITXhSH5Ufj45XST9XUPt7+sz126IADjIJceyz939fHbqGeNM7iyJ+pPBJAMe1sh/NjJmYIr2tRM12p4HJSxQ5Cqf2WNnw=
+	t=1735096929; cv=none; b=JzEU8UVwR5UaR0VG2IGv9QVaYc+8e7AgfC+9i/2emTHnZkaK6mqG+uWF3gkSSIDxQQ98CBvy3WOK1qUvFXpDEBa/bWp5Rx6BdXqRYTnnBNla1oqgRsLLiOWhMuK5I83vyZSd4oOJvgw9FqGwj1lr/u2SJDzffc8wJuYwHbOckTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735094702; c=relaxed/simple;
-	bh=aUzV+DHzGVAU7tJrn0HvvKdxPT4C+tB8L0v12RTpLjc=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=VExPU3H8oesVy+ruS1jkIgdHHTaCxdMPf6G6ZUIieOGQe0I82heDxbJEKyVBFFMmLSZeHQInaeWwWFm/u9AEBvYnePSmjXvTwo5EEZsisjKja+8bqUy7UMNr5rOI/D72wzSMYkCCDUhlNK43Bdnrwp+RIwGU/3Ujr9uz75qdfrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512E7C4CEDF;
-	Wed, 25 Dec 2024 02:45:02 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1tQHPJ-0000000EkuF-1BJn;
-	Tue, 24 Dec 2024 21:45:57 -0500
-Message-ID: <20241225024557.131467576@goodmis.org>
-User-Agent: quilt/0.68
-Date: Tue, 24 Dec 2024 21:45:38 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com,
- Lizhi Xu <lizhi.xu@windriver.com>
-Subject: [for-linus][PATCH 2/2] tracing: Prevent bad count for tracing_cpumask_write
-References: <20241225024536.865653915@goodmis.org>
+	s=arc-20240116; t=1735096929; c=relaxed/simple;
+	bh=P4jzAfVpChnoHSmEL/zXZuykfzIzPxDYDHnBM6njoxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=olkH2Hw2cPjO1DKd/GrAR2dzC0g0SxoyHLDbvvzAdDBBeEcgu4uV0WcMUuuscpfYEI4zlZuiMnAyZAHdY8DAuQaUIZKGskgE3Eih1WnxM/yBipTTeoua0ydBhtVFLsk8HV5mWfE7/klUWKhOmImMsqRkj19BQVLLtztRyItbf0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4YHxr52qn0z4f3jdk;
+	Wed, 25 Dec 2024 11:21:41 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 1C61B1A0AE8;
+	Wed, 25 Dec 2024 11:22:01 +0800 (CST)
+Received: from [10.174.177.210] (unknown [10.174.177.210])
+	by APP4 (Coremail) with SMTP id gCh0CgDnwoZXemtn_0NBFg--.36175S3;
+	Wed, 25 Dec 2024 11:22:00 +0800 (CST)
+Message-ID: <e09ef7f8-a878-5fc2-3bc5-c39b1fba0344@huaweicloud.com>
+Date: Wed, 25 Dec 2024 11:21:59 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH 1/2] NFSv4.0: Fix the wake up of the next waiter in
+ nfs_release_seqid()
+To: Li Lingfeng <lilingfeng3@huawei.com>, trondmy@kernel.org,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-nfs@vger.kernel.org, linux-stable <stable@vger.kernel.org>
+References: <5527548df9be8ce76ed31ad0ea6520908533b4fe.1731103952.git.trond.myklebust@hammerspace.com>
+ <0cf3c4a6-082a-4ee7-91bf-13cb98138879@huawei.com>
+From: yangerkun <yangerkun@huaweicloud.com>
+In-Reply-To: <0cf3c4a6-082a-4ee7-91bf-13cb98138879@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgDnwoZXemtn_0NBFg--.36175S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw4xGw45Cr4rAr13Ww1kuFg_yoW8Cw1DpF
+	n5JrW5Gay8Zr40gr1jqr4UCryjqr48K3ZrGr1kAF1UAw43Ars0qF4aqr1v9rWUJrs3Xr4U
+	Xr1FqFnxur45XrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AF
+	wI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1D
+	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
+	0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
+	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7I
+	JmUUUUU
+X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+You need cc stable.
 
-If a large count is provided, it will trigger a warning in bitmap_parse_user.
-Also check zero for it.
-
-Cc: stable@vger.kernel.org
-Fixes: 9e01c1b74c953 ("cpumask: convert kernel trace functions")
-Link: https://lore.kernel.org/20241216073238.2573704-1-lizhi.xu@windriver.com
-Reported-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0aecfd34fb878546f3fd
-Tested-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/trace.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 957f941a08e7..f8aebcb01e62 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5087,6 +5087,9 @@ tracing_cpumask_write(struct file *filp, const char __user *ubuf,
- 	cpumask_var_t tracing_cpumask_new;
- 	int err;
- 
-+	if (count == 0 || count > KMALLOC_MAX_SIZE)
-+		return -EINVAL;
-+
- 	if (!zalloc_cpumask_var(&tracing_cpumask_new, GFP_KERNEL))
- 		return -ENOMEM;
- 
--- 
-2.45.2
-
+在 2024/12/25 10:50, Li Lingfeng 写道:
+> Hi, I noticed that [PATCH 2] has been applied to the stable, but [PATCH 1]
+> has not.
+> Based on 6.6 where [PATCH 2] was merged, I can still reproduce the
+> original issue, and [PATCH 1] needs to be applied as well to resolve it.
+> It may be better to push [PATCH 1] to the stable as well.
+> Thanks.
+> 
+> 在 2024/11/9 6:13, trondmy@kernel.org 写道:
+>> From: Trond Myklebust <trond.myklebust@hammerspace.com>
+>>
+>> There is no need to wake up another waiter on the seqid list unless the
+>> seqid being removed is at the head of the list, and so is relinquishing
+>> control of the sequence counter to the next entry.
+>>
+>> Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+>> ---
+>>   fs/nfs/nfs4state.c | 10 ++++------
+>>   1 file changed, 4 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+>> index dafd61186557..9a9f60a2291b 100644
+>> --- a/fs/nfs/nfs4state.c
+>> +++ b/fs/nfs/nfs4state.c
+>> @@ -1083,14 +1083,12 @@ void nfs_release_seqid(struct nfs_seqid *seqid)
+>>           return;
+>>       sequence = seqid->sequence;
+>>       spin_lock(&sequence->lock);
+>> -    list_del_init(&seqid->list);
+>> -    if (!list_empty(&sequence->list)) {
+>> -        struct nfs_seqid *next;
+>> -
+>> -        next = list_first_entry(&sequence->list,
+>> -                struct nfs_seqid, list);
+>> +    if (list_is_first(&seqid->list, &sequence->list) &&
+>> +        !list_is_singular(&sequence->list)) {
+>> +        struct nfs_seqid *next = list_next_entry(seqid, list);
+>>           rpc_wake_up_queued_task(&sequence->wait, next->task);
+>>       }
+>> +    list_del_init(&seqid->list);
+>>       spin_unlock(&sequence->lock);
+>>   }
 
 
