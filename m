@@ -1,117 +1,148 @@
-Return-Path: <stable+bounces-106102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFA09FC3C2
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 07:06:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFDF9FC3E8
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 08:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1C21163C59
-	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 06:06:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAD14164153
+	for <lists+stable@lfdr.de>; Wed, 25 Dec 2024 07:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B25145B0F;
-	Wed, 25 Dec 2024 06:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A4C1494B2;
+	Wed, 25 Dec 2024 07:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LcGnI2Y/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD3586326;
-	Wed, 25 Dec 2024 06:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E6B175BF;
+	Wed, 25 Dec 2024 07:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735106779; cv=none; b=IbsOu4HMzjybkupA0A+ByQSW77i2p9uYhVG9CTzB0f3vnDdGKBUWvHzROwZcjaLQuAg9rOTsbg77wLNtr49LEW23a/YxRCovfvSAKgVTRwSd8VnBW5xd+mAPAnUfVIoBEFejP/C7OwnvTXIJe8uAuEg5u+07AxdoWdumVMoYwho=
+	t=1735110669; cv=none; b=oazYvHqSj3bJ9BdYMGlcJp0jQYcb+MVfmtoHseLi8ZD7hlUyJVrZLD2wSN4nVuuIs6ujYMYq3c61vRh3Ba43h2+wVbpJ3B4RQdY3+dXdklyV/bzh6n2SRzT2Dsp7gGr1kZC5xG+bEazCyefu6tI0vtbHivZntDc5yvCBkDFeBbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735106779; c=relaxed/simple;
-	bh=4U28UYnwj12Gq2+kx1+ZWtNsWRUIugmWnDtIZTB+2W4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SuCrucR6WgE43yxHGh0N4nGmOcZ52B3YdcJcizcv/UektFub8EXkZiJm5/Ts94R6TkV/W/hYX8cjkusoO7vgN3ml0Hm2pXUAAuO87MatbGcARM9pk9JMUl/QBKLKy/b2Qhn6Kx1H39cJsNU9dO/0em6fmtYk/7STxzgG2rYB+ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.63])
-	by gateway (Coremail) with SMTP id _____8Axjq_WoGtneklaAA--.22746S3;
-	Wed, 25 Dec 2024 14:06:14 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.63])
-	by front1 (Coremail) with SMTP id qMiowMBxXcfUoGtnl4MIAA--.45830S2;
-	Wed, 25 Dec 2024 14:06:13 +0800 (CST)
-From: Binbin Zhou <zhoubinbin@loongson.cn>
-To: Binbin Zhou <zhoubb.aaron@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Yinbo Zhu <zhuyinbo@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	linux-clk@vger.kernel.org,
-	Xuerui Wang <kernel@xen0n.name>,
-	loongarch@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] clk: clk-loongson2: Fix the number count of clk provider
-Date: Wed, 25 Dec 2024 14:05:59 +0800
-Message-ID: <20241225060600.3094154-1-zhoubinbin@loongson.cn>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1735110669; c=relaxed/simple;
+	bh=gnhsxX4oXEW7P+r6OA1bGGNyoF9DXTncUB6iNrQ94fs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uYzPuzn877DOmcdsR7QgaZxtVio1atkNqSArbwn7KSnz+FFZHo+xD9ptM21QEQU1+/a/Up6KYgvMrW8YtzwcFIjZLKbuQ19c33gjNbsa54FazNOA8tZ/JKmEtLKNcA6WZrIyiLC7ONHF+i+bIZXd00NRAMLPHMRQ6W/0baeZnEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LcGnI2Y/; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735110666; x=1766646666;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gnhsxX4oXEW7P+r6OA1bGGNyoF9DXTncUB6iNrQ94fs=;
+  b=LcGnI2Y/bvj4Rwg1HQjsX1Z1ruszbGociLye4LojRlOZ5fVw9z4aBkAd
+   kQ9kb1Zv0GcCa+VbNkxLjnK5IzFy5xPr730zfz4H2UIv/nCQBOVLHEGRf
+   20mfDrDA5QT16gUn5VDP9vVRGG9fqOVykUIGwYDMZ5FFBv/AsUkW+oMZT
+   /LJae120xgFOiksIXnfICJXFZCqvG9uav1qEK4JBa2lBh0PrN9y0MIPFV
+   xT5HCOpr3j2J0cwbsfYllflaVjxTj90IOKccKoDO1H+bja7irVq3eayZ2
+   HCxcNP5EwuS91Er/BT+vscvEaNleleCL/LH9RNHBYtG63e12jyRECzDOK
+   Q==;
+X-CSE-ConnectionGUID: KAMFkOUQSZqADZCnoDlaNg==
+X-CSE-MsgGUID: CiwG6d8tQZGubIdhJ3dsTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11296"; a="35596762"
+X-IronPort-AV: E=Sophos;i="6.12,262,1728975600"; 
+   d="scan'208";a="35596762"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2024 23:11:06 -0800
+X-CSE-ConnectionGUID: 7KGvvfJBQF+IM8eX/9HkOA==
+X-CSE-MsgGUID: 42+rJXalTxSo9k1P1rGe/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,262,1728975600"; 
+   d="scan'208";a="100171071"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 24 Dec 2024 23:10:55 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tQLXd-0001mZ-15;
+	Wed, 25 Dec 2024 07:10:49 +0000
+Date: Wed, 25 Dec 2024 15:09:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mitchell Levy <levymitchell0@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Mitchell Levy <levymitchell0@gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: lockdep: Remove support for dynamically
+ allocated LockClassKeys
+Message-ID: <202412251433.T3BhO2CQ-lkp@intel.com>
+References: <20241219-rust-lockdep-v2-1-f65308fbc5ca@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMBxXcfUoGtnl4MIAA--.45830S2
-X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7AF13ZF43XryUZry5JryfXwc_yoW8Jw1UpF
-	ZxA34UCr48ta1rZF1ktw1IgFy5u34FvFyUCFW7C3WDZrn8W34jgF1rAFW0grW3JF48uF1a
-	gFyvk3y8CFy0vFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
-	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241219-rust-lockdep-v2-1-f65308fbc5ca@gmail.com>
 
-Since commit 02fb4f008433 ("clk: clk-loongson2: Fix potential buffer
-overflow in flexible-array member access"), the clk provider register is
-failed.
+Hi Mitchell,
 
-The count of `clks_num` is shown below:
+kernel test robot noticed the following build warnings:
 
-	for (p = data; p->name; p++)
-		clks_num++;
+[auto build test WARNING on 0c5928deada15a8d075516e6e0d9ee19011bb000]
 
-In fact, `clks_num` represents the number of SoC clocks and should be
-expressed as the maximum value of the clock binding id in use (p->id + 1).
+url:    https://github.com/intel-lab-lkp/linux/commits/Mitchell-Levy/rust-lockdep-Remove-support-for-dynamically-allocated-LockClassKeys/20241220-050220
+base:   0c5928deada15a8d075516e6e0d9ee19011bb000
+patch link:    https://lore.kernel.org/r/20241219-rust-lockdep-v2-1-f65308fbc5ca%40gmail.com
+patch subject: [PATCH v2 1/2] rust: lockdep: Remove support for dynamically allocated LockClassKeys
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20241225/202412251433.T3BhO2CQ-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241225/202412251433.T3BhO2CQ-lkp@intel.com/reproduce)
 
-Now we fix it to avoid the following error when trying to register a clk
-provider:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412251433.T3BhO2CQ-lkp@intel.com/
 
-[ 13.409595] of_clk_hw_onecell_get: invalid index 17
+All warnings (new ones prefixed by >>):
 
-Fixes: 02fb4f008433 ("clk: clk-loongson2: Fix potential buffer overflow in flexible-array member access")
-Cc: stable@vger.kernel.org
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
----
- drivers/clk/clk-loongson2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>> warning: unsafe block missing a safety comment
+   --> rust/kernel/sync.rs:45:13
+   |
+   45  |             unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   ::: rust/kernel/block/mq/gen_disk.rs:111:17
+   |
+   111 |                 static_lock_class!().as_ptr(),
+   |                 -------------------- in this macro invocation
+   |
+   = help: consider adding a safety comment on the preceding line
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
+   = note: requested on the command line with `-W clippy::undocumented-unsafe-blocks`
+   = note: this warning originates in the macro `static_lock_class` (in Nightly builds, run with -Z macro-backtrace for more info)
+--
+>> warning: unsafe block missing a safety comment
+   --> rust/kernel/sync.rs:45:13
+   |
+   45  |             unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   ::: rust/kernel/workqueue.rs:218:21
+   |
+   218 |             work <- new_work!("Queue::try_spawn"),
+   |                     ----------------------------- in this macro invocation
+   |
+   = help: consider adding a safety comment on the preceding line
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
+   = note: this warning originates in the macro `$crate::static_lock_class` which comes from the expansion of the macro `new_work` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-diff --git a/drivers/clk/clk-loongson2.c b/drivers/clk/clk-loongson2.c
-index 6bf51d5a49a1..b1b2038acd0b 100644
---- a/drivers/clk/clk-loongson2.c
-+++ b/drivers/clk/clk-loongson2.c
-@@ -294,7 +294,7 @@ static int loongson2_clk_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 
- 	for (p = data; p->name; p++)
--		clks_num++;
-+		clks_num = max(clks_num, p->id + 1);
- 
- 	clp = devm_kzalloc(dev, struct_size(clp, clk_data.hws, clks_num),
- 			   GFP_KERNEL);
 -- 
-2.43.5
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
