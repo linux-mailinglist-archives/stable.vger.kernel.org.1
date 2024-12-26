@@ -1,82 +1,88 @@
-Return-Path: <stable+bounces-106170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359F69FCE23
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 22:50:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901199FCE90
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 23:39:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4253A029B
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 21:50:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3366716255E
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 22:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BED1A238A;
-	Thu, 26 Dec 2024 21:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6C1C0DF3;
+	Thu, 26 Dec 2024 22:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LXT8jiq/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwt3JaJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECA619DF98
-	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 21:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC5E1BD4F7;
+	Thu, 26 Dec 2024 22:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735249804; cv=none; b=TjAlvjH2ccdvqor5FP9g0NonUFoGYolAVRE+IkTsIOPFmPsfgdhaxpCSUvBiISfeNZ+LSbzJL5Z94DDkVU4lJwZO40YYzv9r9ogphNtkWG7NiuiEntu3vdKIwYMFU9JrRLiWdyqLowYi6cy/D9140tSfZzSpEHe1e0ao6CkK5nY=
+	t=1735252740; cv=none; b=FWxgwO+H+4XRZ1d0jrnLkhHdE7I5wToBg25tFkzlKWhC/m984yaWHG4+gspuup69IxLyvTvMr53O3qHqd5GQocqYAXIz/zKX1ed/YtXQAmfZ0S+ynObp4PMD9VeIhDIuKUx1ZR4oZ9ij2IJk+w3T2DRtdRJTqlyrQ2ejKY/XB1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735249804; c=relaxed/simple;
-	bh=sLSjzbl/h6eJToFyWQL9bgsj7zV97ED/IsIkXavg4Kg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m5YMmXDgYAcIJXJmZzlo9r0KdrstIqUOF8AQ3g2JxrPpqUf6xgEkCbhMl+entn6KZBoxg4KxIVoGysyx7VuQ4Pugx6YfIp2dbGv8qfAdLg6Qtdw2e0CymxLwvhVx5EnDWCoZD7Mso4zguPblGw1jhSdFtVT0xt8lAh0JweAaPAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LXT8jiq/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5191C4CED1;
-	Thu, 26 Dec 2024 21:50:03 +0000 (UTC)
+	s=arc-20240116; t=1735252740; c=relaxed/simple;
+	bh=PRnqGqye9XLcM7XryqGktyEXPjFZialyNlgxDprsjto=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ao0Io2NIatBmAX0DKULR4SjnCFM+8FqWZq+5bsc411Sblqpdm0Fydbh3PgMroALxJILm1dK9cI3aEqGXOSvC2URXsMPV2P5FMI67OtPtK0jjmKK6dVUz9pfeW+imn/VVp0+q2m7mBRdGrRAcj4jaT4I2o0MMRMGw4GgN7rs89gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwt3JaJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A887C4CEE1;
+	Thu, 26 Dec 2024 22:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735249803;
-	bh=sLSjzbl/h6eJToFyWQL9bgsj7zV97ED/IsIkXavg4Kg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LXT8jiq/QiTqKzoH7ywNBPb7IwFMGyDkVvzZiEUuTWOBcDGC1k+xh5KgRO4XjS0Ao
-	 8PQbMweWE3QeYJevDwrZG+keMkDM9lGQU/njtKDRgP5TqKosGfyhvxEqMGQ4qGcd2X
-	 ayuROlmVcetictHMKymaZ+nQE4Xf/g6c9shWC5OrjIWYEzUujaNPFU1dkXxpHSaBKe
-	 Rrp6oZm/BuH/kp6caxqNThal16yvQiO6oFHQMOh8efuPx8XDTFrJZe8PFrZssQMapG
-	 e1+E12C2k8CXZNaYmC8L8mqbZ1j1ZqNxIMMyEIcTIEakLfFm2BkZhxQnTQciPttDB5
-	 j7qhcmEn1/LXA==
-Date: Thu, 26 Dec 2024 16:50:02 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] vmalloc: fix accounting with i915
-Message-ID: <Z23Pijiak5WGnUQd@lappy>
-References: <20241223200729.4000320-1-willy@infradead.org>
- <20241225183106-cee20b35fc2f9d72@stable.kernel.org>
- <Z218psbww0eNEkhs@casper.infradead.org>
+	s=k20201202; t=1735252740;
+	bh=PRnqGqye9XLcM7XryqGktyEXPjFZialyNlgxDprsjto=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kwt3JaJPPleS9RIrUeVFTmRq/7VGdHXr7JFCCzjAVTyUAFdWHDsiP67YyCqjwch2x
+	 wEqHhau5xfAiphIyg2obojARRMuFzbhDO7kQ0bCTmFDO6Prpc3I167jqXM9zeG75Zx
+	 LVUrEmuTsyWiEJ6HWYYerRE0Oqj6+eNAyIJlzJiVNyac8jFOXz8yLHSAcTW/zhfXgp
+	 eXBI4Gqky32dzMKwz+ZnNIM/e/RlkkvsZspSKWBGui6ppLcXXQPslXEmnzFNZ+K5gs
+	 66slMAD0K3b8Agg2YRTnvbkg0BKUJVQ6Z5/hQloqwkw6xHIc70iQTExiGsgJCGAh3W
+	 GcFSF2KHGQz1g==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Anastasia Belova <abelova@astralinux.ru>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	David Dai <daidavid1@codeaurora.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: Re: [PATCH] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
+Date: Thu, 26 Dec 2024 16:38:31 -0600
+Message-ID: <173525273254.1449028.13893672295374918386.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241203084231.6001-1-abelova@astralinux.ru>
+References: <20241203084231.6001-1-abelova@astralinux.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <Z218psbww0eNEkhs@casper.infradead.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 26, 2024 at 03:56:22PM +0000, Matthew Wilcox wrote:
->On Wed, Dec 25, 2024 at 08:21:56PM -0500, Sasha Levin wrote:
->> [ Sasha's backport helper bot ]
->>
->> Hi,
->>
->> Found matching upstream commit: a2e740e216f5bf49ccb83b6d490c72a340558a43
->>
->> WARNING: Author mismatch between patch and found commit:
->> Backport author: "Matthew Wilcox (Oracle)" <willy@infradead.org>
->> Commit author: Matthew Wilcox (Oracle) <willy@infradead.org>
->
->Do I need to adjust my tooling, or do you?
 
-I'll go fix it...
+On Tue, 03 Dec 2024 11:42:31 +0300, Anastasia Belova wrote:
+> aggr_state and unit fields are u32. The result of their
+> multiplication may not fit in this type.
+> 
+> Add explicit casting to prevent overflow.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> [...]
 
+Applied, thanks!
+
+[1/1] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
+      commit: 89aa5925d201b90a48416784831916ca203658f9
+
+Best regards,
 -- 
-Thanks,
-Sasha
+Bjorn Andersson <andersson@kernel.org>
 
