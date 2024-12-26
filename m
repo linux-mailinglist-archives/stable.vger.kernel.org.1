@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-106156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2819FCCC8
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 19:30:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2549FCCD5
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 19:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F5A6162F6F
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 18:30:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9234018835AB
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 18:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF791DC046;
-	Thu, 26 Dec 2024 18:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C371DD88F;
+	Thu, 26 Dec 2024 18:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F125hghx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BicnnEWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDBA1DB933;
-	Thu, 26 Dec 2024 18:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6EB1DD867;
+	Thu, 26 Dec 2024 18:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735237649; cv=none; b=FFxikRra0OTK71T9Os6d0S4lfLqWDrqL/Yb/z5p+LY5zKQGG8EzVykajD+TjjX9wH0r0iaHtLcAI1EspVOxaBaYx2doPkHt/0QbNT7ZDpDff8xaN9b84lA5GcEVGXFSQACqKNOnwB023QBdsqVmZGyz2WtaJ7OYoPNSbjrdBuc4=
+	t=1735237651; cv=none; b=nZFVxr04ZTbYvGnLW5WbTMcpANmP8z3ocizHNjTlEs3wqQJtg/Bqn1XEtMGAeBURrTfXNE5O7hMj7XYUOAnlSFlN7t2+XEn2hIjHTz+PeViQTtBk8/f19wTv139kwRiFQH9/zi8QyRfJDYbQ8l2sZG5UIp4POkVG4NHSsKXP31g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735237649; c=relaxed/simple;
-	bh=GpWvEosYE+MOeVXHv894f/KZ6FRugQ2cd6d3kLMslic=;
+	s=arc-20240116; t=1735237651; c=relaxed/simple;
+	bh=cZ/wRP8jq1Nbg+yg2cXwCcnW41Z4fVTy7Wm64hE/5+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HhYplg1UoRNAZIT4iGW9Fx/EaEy5nprjLCTUjeO5wsn3KgFiaVOYTILi+dRKROCfd4fk1CPq5lzE0codtCjl33/csOpnfJShGfYT1BfE5XpjOxHmuVnquftTWRui6ohF0EsRV8sSg8mQz8iF96f728ov79m8Ciltniq1ntZb/yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F125hghx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2FAC4CED7;
-	Thu, 26 Dec 2024 18:27:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GV5m2/LJGOr8etnudFAhVmCnGoGgolWoumK4ytBmP9mgFriwZY1TuRSeONgi0axAhw3k062SKJFv6pNZ8p4BLQXplMF91oRKwA/XYwRSDmla9yoqh6MNz3Cd52ulvx35daFppwQlPGDr4ap/NVjQBWAWhIInA9pt9uMzhvSY17k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BicnnEWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC49C4CEDE;
+	Thu, 26 Dec 2024 18:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735237648;
-	bh=GpWvEosYE+MOeVXHv894f/KZ6FRugQ2cd6d3kLMslic=;
+	s=k20201202; t=1735237651;
+	bh=cZ/wRP8jq1Nbg+yg2cXwCcnW41Z4fVTy7Wm64hE/5+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F125hghxBNOlXLdOwrWiCjfAsNKmEciiZ1/msGR9ulBFdZQlv7JNu2qMdQDlNr/lN
-	 4yzEMBd6JF/xSv/dKdjBqfJR4yz8nDMvMgc7S5/kCktUFCuExrBZEuH+NOrDQVkqJr
-	 zvyHxXNMBIPXWTy8LAmnIfxXo8Bjzvs7SPMYubjnPHXta/YmYFZL/xsucbUw6JBJpN
-	 cI7/p19f+LQAdt7g7jkiaq9Ib/Ii1pyOWfM+knpBDbxh5yZ/DlbZIJvFrM10UKkGh5
-	 j7g4bTgkNiiN1Pb/62ysGQfjnUMwqGewFrRJ4eJJxyIyQyAvtaa0WY7ZbRIu3fdNy0
-	 u/r3ojuTE+HQw==
+	b=BicnnEWBWZ9WTcrswrZu+NkVnmcPsQFj7D8or/DHtCILUp1Z4VlZOEHwm/fJWVSoj
+	 3BtfNQCvijofIZK+HeaRxbRKU04GCcsxnaVsFnPOwJU/f6s6hbeKt+n2cPIwLjpCJz
+	 brp3x2WGHp1nmxAmcdhQy7cuLXrINXdg6IX074S6fEzriw4CNYkhUE7SXCvtZH72bA
+	 tIT0cI1BM6LTrSam5SnszX51bHp85PAp+diLMI7eDorUAUbOUoid74lyyT4yr+L4YU
+	 tzHOkokEZyj9tvJs5vM40E2FIkKl5r9iSB7sbU0ZACULgxREczOoAlaCRXGkqs/8CN
+	 Mt+X7Fs09VCgQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
+To: mturquette@baylibre.com,
+	sboyd@kernel.org,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
-Date: Thu, 26 Dec 2024 12:26:46 -0600
-Message-ID: <173523761376.1412574.9908609145092222648.b4-ty@kernel.org>
+	stable@vger.kernel.org,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: (subset) [PATCH 1/2] clk: qcom: gcc-sm8550: Do not turn off PCIe GDSCs during gdsc_disable()
+Date: Thu, 26 Dec 2024 12:26:49 -0600
+Message-ID: <173523761377.1412574.15694387383996577078.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
-References: <20241220-sm6350-uart1-icc-v1-1-f4f10fd91adf@fairphone.com>
+In-Reply-To: <20241219170011.70140-1-manivannan.sadhasivam@linaro.org>
+References: <20241219170011.70140-1-manivannan.sadhasivam@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,17 +66,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 20 Dec 2024 09:59:50 +0100, Luca Weiss wrote:
-> The path MASTER_QUP_0 to SLAVE_EBI_CH0 would be qup-memory path and not
-> qup-config. Since the qup-memory path is not part of the qcom,geni-uart
-> bindings, just replace that path with the correct path for qup-config.
+On Thu, 19 Dec 2024 22:30:10 +0530, Manivannan Sadhasivam wrote:
+> With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
+> can happen during scenarios such as system suspend and breaks the resume
+> of PCIe controllers from suspend.
 > 
+> So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
+> during gdsc_disable() and allow the hardware to transition the GDSCs to
+> retention when the parent domain enters low power state during system
+> suspend.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: sm6350: Fix uart1 interconnect path
-      commit: be2f81eaa2c8e81d3de5b73dca5e133f63384cb3
+[1/2] clk: qcom: gcc-sm8550: Do not turn off PCIe GDSCs during gdsc_disable()
+      commit: 967e011013eda287dbec9e8bd3a19ebe730b8a08
+[2/2] clk: qcom: gcc-sm8650: Do not turn off PCIe GDSCs during gdsc_disable()
+      commit: a57465766a91c6e173876f9cbb424340e214313f
 
 Best regards,
 -- 
