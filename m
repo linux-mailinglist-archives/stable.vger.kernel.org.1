@@ -1,127 +1,91 @@
-Return-Path: <stable+bounces-106153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7F89FCC60
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 18:18:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA079FCCBE
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 19:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A484188261C
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 17:18:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13D9A1883897
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 18:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B842136351;
-	Thu, 26 Dec 2024 17:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984E61482ED;
+	Thu, 26 Dec 2024 18:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FD41KjOP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="plPEUwWw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073702B9AA;
-	Thu, 26 Dec 2024 17:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB161DA305;
+	Thu, 26 Dec 2024 18:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735233477; cv=none; b=iMpLtmhqLakRfhhdPmNFxg/GT2hkBUbx7amIF+bllk74Fz8vrK4rtE6Do5XAjWfJHc+5AFuoEVj3iGU8SCvYs+UctJjk3l2uYzrn4OhVTKe/2xbNN6TDLSdGh7uaTcQ47sHXKIX0iNRRDn6Y7vOweT4SpE8HLGpnkPPqAVme1yw=
+	t=1735237646; cv=none; b=Xq/e6BW4vVNFCbEDkp8/UmNwDV2AsBtG5zRD3N7OvhBc4mVPvZm7Q/fhvXVNB4dvS1YUZZmaE2X1nNCA6NPI/w+16KFBmPik6FNigIjosXHBeHB9EISpSlW6AHl8FRxNlK3JF86TWQGJww6jU3LQ5KJ3ZwEEQ6Cbmm6VdoHGPsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735233477; c=relaxed/simple;
-	bh=ww7W+rtOj6vI3FcKydZmdcipzAf+fOFg2f8HWEOocgI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A5E/Or38yz4pphzJXeuXB56C8c04xzLwhC8iPV57/oOkNJDU2O7HfZLTRZsJYO1jJSEjuxytNWZxHKSW4hDaQGEgEc4YLjV9HJqabip7cZkz1qq5LI3YUKsB7AZbMXOlWZAM21wDyBKwbHkYUo9o3/aj4O3j3XVkZ3O5VLoQVHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FD41KjOP; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21670dce0a7so6335385ad.1;
-        Thu, 26 Dec 2024 09:17:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735233475; x=1735838275; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N2JS7KIcFGoRuhDSIr5OUV3yQoO0oPRPWcrr0Aps2ug=;
-        b=FD41KjOPxa2OG6mF2naICNPnDRhiIbTvvovXlT3cJOZ9UjGwOp03g23b72bK6uEuNB
-         cACDANATBi1nbNhfS1FLQsJzMCfmcB+p911z2gnxvrTRLiT4OwFlkSAvpytggfmYDYdl
-         OfiwKf8u1KOwaPJ5Uwu7EfKeFkjrvf3Au1bXO9lML8eiU2DxEiVQ6kLaDsRATB4p9uwu
-         K2htH0KMgUtS/xqQS8svf5zhjDtrylJbR0NtbHIiEZuiLHPyEExWr7FawiUAg1+hRlOU
-         /kxN7PNlQAAJ0R13Q6ACwCbYsL2fEPLI/F18jyIzfdbWOxhhJ97unNYwkAxbMUkA4XhG
-         YONA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735233475; x=1735838275;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N2JS7KIcFGoRuhDSIr5OUV3yQoO0oPRPWcrr0Aps2ug=;
-        b=P6qCBEnhq7gEOSQOW9T8ficSm+A7PYzUXeos3fGPJkRqD0tipa2wuDzxqEi3X2RiM+
-         JJv74mjfJiBb3AxmApebg53Y96s3KDqafeqQW/NLL9+EyVe6BSaiQn+Hp8aFYLBQQyZp
-         oLEgzoC8eddet/RTEOtGHy5olDNEcPgvjxo4RgE4UeJGA1ejtdniULJIeC+LVwgIcL7f
-         jFsEqKSLJVYmQD3aq6cDBcM/SBtMgRVFSc0GkWd0MGX8EaIMNkjhxeu4vEl+1u2y144+
-         kTdHVXbrJkCfGkIXNOhGbG8FWbbcwqUD12rYnK/U5+whYJVQ1GJH9wjIdOTV/6F+6Ks2
-         XLiA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMNXVf0HezWvBJhAITbajXVDt+nmzgQYbRpdn9agLxpyRUtfcuoRXoAF9Z4qRPeInQ85mN4jDMiCp/2X8=@vger.kernel.org, AJvYcCVu+mN481dwmik1rOm36EtUDn46b+H3SFtXD5WyA39BfZaXgGKvZw/9Z6Mw8f/xM2WJ4TRZFcQq@vger.kernel.org
-X-Gm-Message-State: AOJu0YwX9zl8JjRzGcny5utsOSuafwhUlXSuMMfcgxY67zbFKonvj721
-	BLgEnKEOh5qGY7P7GZUqu8D+81/dzveJv79rZ+Q/9NbYHJwAgL3wmqy96A==
-X-Gm-Gg: ASbGncvy/pRKIrSesuwEoywkXLYyCFIufX99wzNn5AgaHN9TZpN07LMdtZfuaC5Yx6J
-	CkTgjTDmDsS/lcCmRIlyh1jTmvALAduiLyH1Z3OHGpQCoTAUcMTnooOfNv7ZulI97sCER0E1tez
-	2GDA0DgGTeff5z52Ku1CQ5xeJFjXtaPzJIpYQLo9psWIrIy3rWSuJKJHXxHK0LFYePg58DQ11aZ
-	H7wvmJeSh8c73KgSzGiO1b3NKeHZu/gjHzH6DHOXBwhtf8d00KAlzU4mbGEZ8nXU7KXI21k4JiY
-	AG0oUwAf7fyXjPWOFIw=
-X-Google-Smtp-Source: AGHT+IFvTvgkZFJMiJIZRSMsJE4sRMVjtoqtMI1ZfNdqvb3f8fv3x0IsAx2GK1OaxALqD2HTYM+vTA==
-X-Received: by 2002:a17:902:ec85:b0:216:45b9:43ad with SMTP id d9443c01a7336-219e6ed1eefmr305861575ad.34.1735233475269;
-        Thu, 26 Dec 2024 09:17:55 -0800 (PST)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9705ccsm122014735ad.92.2024.12.26.09.17.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Dec 2024 09:17:54 -0800 (PST)
-Message-ID: <da01ed2b-8d7c-4b11-b565-966ce66f4653@gmail.com>
-Date: Thu, 26 Dec 2024 09:17:53 -0800
+	s=arc-20240116; t=1735237646; c=relaxed/simple;
+	bh=0I8rZQEcnKSn8EnhUl83K7yBRsn4QtRupo5a+dn+Ay4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KCnAx7kYQqF0QxJ6mUfDcnhjIn5YYOpt2NIkkNZsAk9vpjaCXzq7b8klLNTp/6r7Chpd9c5bpttdBQuGx2whlko+T+f3OyGaFl29tny2jLy4YoNrRnl0Wwbd89/bWQwoVfE+3ivn7Kgz+73f+27PdEhBMl2XoqnAIJeR24h0wOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=plPEUwWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBF2C4CEDC;
+	Thu, 26 Dec 2024 18:27:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735237645;
+	bh=0I8rZQEcnKSn8EnhUl83K7yBRsn4QtRupo5a+dn+Ay4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=plPEUwWwWloncQRoh+h1s27GSqdr/8yzc7Jrc6U0kKcJmqoxAkz/rCrO3A74Xqb3u
+	 VDS8iF5O847XtG5yjbE9VwaHs1rRmDxV80GGazxisD8lNQWuSK2xrTQBBoNpRqAhLC
+	 t3oBYecePOh0UFJLmoeAPZ6MjLDK6FEezTOzHc8fko97PuBGWc3nLtU9bAAlRtVm1k
+	 gxo8Jj3gsebjZSxfSLiB5sWyiFaeDBR+RQwI+6/kdyjb6n8u5EiFx0qqY20+KX0DOB
+	 1Xt88U8c0Rrj0l5lCajuHhB9kcajg0eswenr2KEA9B2arBEyqgdJ7r5FFr9ZKFo2i0
+	 uA/pLfayNKMDg==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Sibi Sankar <quic_sibis@quicinc.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Konrad Dybcio <konradybcio@kernel.org>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] soc: qcom: llcc: Enable LLCC_WRCACHE at boot on X1
+Date: Thu, 26 Dec 2024 12:26:43 -0600
+Message-ID: <173523761377.1412574.1412273165675516150.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241219-topic-llcc_x1e_wrcache-v3-1-b9848d9c3d63@oss.qualcomm.com>
+References: <20241219-topic-llcc_x1e_wrcache-v3-1-b9848d9c3d63@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/160] 6.12.7-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20241223155408.598780301@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-
-On 12/23/2024 7:56 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.7 release.
-> There are 160 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, 19 Dec 2024 19:53:29 +0100, Konrad Dybcio wrote:
+> The Last Level Cache is split into many slices, each one of which can
+> be toggled on or off.
 > 
-> Responses should be made by Fri, 27 Dec 2024 15:53:30 +0000.
-> Anything received after that time might be too late.
+> Only certain slices are recommended to be turned on unconditionally,
+> in order to reach optimal performance/latency/power levels.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
+> Enable WRCACHE on X1 at boot, in accordance with internal
+> recommendations.
 > 
-> thanks,
-> 
-> greg k-h
+> [...]
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Applied, thanks!
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+[1/1] soc: qcom: llcc: Enable LLCC_WRCACHE at boot on X1
+      commit: 35d8bc131de0f0f280f0db42499512d79f05f456
+
+Best regards,
 -- 
-Florian
-
+Bjorn Andersson <andersson@kernel.org>
 
