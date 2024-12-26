@@ -1,189 +1,189 @@
-Return-Path: <stable+bounces-106120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804D09FC776
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 02:49:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFBF9FC7EA
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 05:18:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9821188280A
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 01:49:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A154162C40
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 04:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7722914;
-	Thu, 26 Dec 2024 01:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A439017C69;
+	Thu, 26 Dec 2024 04:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="qJZ0cbFB"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="cocj5ZEz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6A6360
-	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 01:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C181139E
+	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 04:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735177741; cv=none; b=fLF/h0LFPfLiekLfjRPz/fqorV2toOce76DIhZ6uU0Gzam66r9OJaUYuvROxj+1PL0WBKrPrQxhKY5KnO4NGD9NgDKWewyPX8IgpyWkKk5AaL3KzfD194MqVIXx5KOHbbOKsKKXcdoIJcAyX+EyEutJMMb8VsThdvP2JMiMYRUY=
+	t=1735186705; cv=none; b=ujH60Pnf2brtW0lVTOMZKZ4wcZJiR+k9DRVilGjJn9z+gtdom4LCVoTRY1/KNlc9ahGc7KrQTyiBMVCBf9Jbrs5WmOAAzArsbbzgc9B2klRe8MRnE3XOQYQ0ZRBzE2+mqTg+Dq5XvsQemRMMhAt5kZniYKs7vM2mhDi7KChE+X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735177741; c=relaxed/simple;
-	bh=bWwSYKadA07KmwbzeaPMaTYKaSAUwYxV/ll+Zi6vSnQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=OM+ggPwOECWEc0dKeUWmi8mjE1O3LZZGk6ZjcZxy23rhcEEXihlgfioDzdtT2lsYUlk8OQd2w/ydZXSL/z7jxg44/6nxAem069feIf79wGtHmXV7UfJwUPQRyXQR7Xh9nLsuwEhPh82xeJ8QQpa1p48wPXx+zhphtDT1GaZJY7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=qJZ0cbFB; arc=none smtp.client-ip=54.204.34.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1735177722;
-	bh=bWwSYKadA07KmwbzeaPMaTYKaSAUwYxV/ll+Zi6vSnQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=qJZ0cbFBHBQZfmcFmz6fiIbZzs2tYnLpTbpIVjNa1sQbRUczW3T8oL/K9t/u+cr9O
-	 hbNYIVJk+Q6Z1GzfT3h0Rc8lMN9aPhn3HPWqKVV4qDbh8wEI5H6EZB0sDXapLCZ1k4
-	 kAXbQnLjSPse8kA8V9z+IN9f0V1BtWDXkD+Fvw8c=
-X-QQ-mid: bizesmtpip4t1735177719tzuqou5
-X-QQ-Originating-IP: hfBpJA0T8Tpugu4UgfzQlLUckOs4f+UqdaBvM7LjBiM=
-Received: from [IPV6:240e:668:120a::253:10f] ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 26 Dec 2024 09:48:38 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 18014970393753908179
-Message-ID: <75C5E32C0CD59E4A+9f9b7696-8383-4bbf-9d85-b1aecd5b1e21@uniontech.com>
-Date: Thu, 26 Dec 2024 09:48:38 +0800
+	s=arc-20240116; t=1735186705; c=relaxed/simple;
+	bh=6u+Gum0heP5wkMF5oaTYaP92Q0YorTA0Nn7ncNSWyZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bbt76KuUKgFct8liuX5I7neGoVHqSNHt8keC3t8s5jz8IZuRbugMWyGszyN9xXHFZnbEQltE6GSDzHCH5jzzSq4MrQcojCsQiIh2P0X40Ki90kdDfEzAdybKjsU+AZMb1UwiNAJeeQ+HqaCU1/Ns2zXm4dwIHnKDedAJCyWEKB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=cocj5ZEz; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=rwnBzO8bw4J+y3koWkvGY0/vPHhL+CP53eLeu4N59Do=; b=cocj5ZEzk1fYVhF+Z2bsrr/Lpt
+	WvUjBIbxH7/CC7OkWw9w+lAt6uo6xqF0/JQ5JUwECyjP4yPC8B0sGR74mvDMguhE46bOCrHz40kqQ
+	f+aYVTEdFgOGBt4uN6AqovOhBCjcruCfDpVEtNqPnVRHEb0FskcZxy7BdLwzlsHvPIlKtxwJtymSl
+	/U9hFwO3eFzyH9UsI1aECyTdhY0YYh2hSKtFtSDyIWu80PndOwvtgPdopOWmfDixGj1TD6Ja8r12I
+	PO8DvHFou1KoBqRjLLOx6s8BOgzFUtmyiuPQAZYxe3BZs7hA6Dv/wtjcUEQfuZPYROcMFPSa6dFg3
+	fnDRUJ0A==;
+Received: from 114-32-150-26.hinet-ip.hinet.net ([114.32.150.26] helo=gavin-HP-Z840-Workstation..)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tQei7-007nTJ-CS; Thu, 26 Dec 2024 04:38:56 +0100
+From: Gavin Guo <gavinguo@igalia.com>
+To: stable@vger.kernel.org
+Cc: seanjc@google.com,
+	mhal@rbox.co,
+	haoyuwu254@gmail.com,
+	pbonzini@redhat.com
+Subject: [PATCH 6.6] KVM: x86: Make x2APIC ID 100% readonly
+Date: Thu, 26 Dec 2024 11:38:47 +0800
+Message-ID: <20241226033847.760293-1-gavinguo@igalia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4~6.6] MIPS: Probe toolchain support of -msym32
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-References: <20241225181141-941d612a552d1f6d@stable.kernel.org>
-Content-Language: en-US
-From: WangYuli <wangyuli@uniontech.com>
-Autocrypt: addr=wangyuli@uniontech.com; keydata=
- xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSKP+nX39DN
- IVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAxFiEEa1GMzYeuKPkg
- qDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMBAAAKCRDF2h8wRvQL7g0UAQCH
- 3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfPbwD/SrncJwwPAL4GiLPEC4XssV6FPUAY
- 0rA68eNNI9cJLArOOARmgSyJEgorBgEEAZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7
- VTL0dvPDofBTjFYDAQgHwngEGBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIb
- DAAKCRDF2h8wRvQL7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkU
- o9ERi7qS/hbUdUgtitI89efbY0TVetgDsyeQiwU=
-In-Reply-To: <20241225181141-941d612a552d1f6d@stable.kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------TUVtc5Xc07N8sOxGkzCzDeaE"
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MrLc0h1D6pNrTZK6zp5WZwr3fWLf51iakIa1kCajqXx1OlCXxwgQRwdf
-	xnzZk/nwS2UfzgXtQmYFcSpjAqLFXOVNVpVhV+3Zwl3k0om2IGq+6S45JmE9H3OpRfqgCJx
-	Cv12siaKct/k3qOT8o/kOBQtsYJKi7R97fYcV4Nf8yBD+3wrLSFQZiSfm/PrMuym5hh0K48
-	wh6CFWDZXMQuN8I/NQogFzxJhcXhlA6kLu+8CLM01h1+hjvLaAJDWBfoKqCngpTAeSe7tx/
-	7/HOKaruQvznYKVRJ9bGGhQoyroC2waeUfeZ+pt1CuHgbmHro9y5bbpMISPw+L6nGgRmRpU
-	jNwuoWXGuMx+7zBYzGfuwTDvaM6dFvXN1qghp9bfjWKlTgOcYT2aR4X5pbWuakuG627iWtk
-	5BTbu1n2GuTBVzC5LZHLesNN8jlzXAWtoBPmxXnC6Q/F+ExSebsQDkDNU4pvVFtMTOxYDbN
-	DF2zYK4N1lbhO9qx08GjQ/p0Hed6jQC74Ido/EkNMqTI/i//Lb71e7FQbJIiLH+mZLlpfLC
-	fXm436qoXhEOEKlk+6Q3yw9WZ+WoBxQpfuGtc9BXhUMKEu/MKKpPwBqBVs+9eFmbfczMvGS
-	uJTLk4zeoq8dus5WdZrwwf9yIpSzuDc3H1Z9V+5N0xW1qQrkDxnszbpW/3oeKnAsr32q22J
-	3DBVO3KwTiReB0Xs9ca6JJxa4DSUH2gagHFx0DPIrssSMny2LoiFPKH/daSc79pKOHH4wIb
-	N+UV+htAgSleMPrm4bUrOTC+I2YZClp4N8a8Uav5+AXqud7ggDC9NaAABkaoXCPbZyKuwFv
-	arXGVbsBKlxK0JZ1c6j9b3iQPaRhK1qQrRpqv/mb9wJPK5r3pFYUawW/ZARD+XZIcOGYy/5
-	eHrUge9hs/1TfbU80VUUERcwTKleBheBU21fDXJQH6vEnu17tqUvXLJowifALk3qPxT4uiu
-	MzlxzMYH9yRetz+uCMXxObp65mxptgnrEebwQ0y6Gm5lzsWMTAhNDskv2XnTqzU4CEVXwWd
-	Cw2NtWH97o3MgMK2kg
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-X-QQ-RECHKSPAM: 0
+Content-Transfer-Encoding: 8bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------TUVtc5Xc07N8sOxGkzCzDeaE
-Content-Type: multipart/mixed; boundary="------------gyc0YZWVrh6rIgo31FSPNTCg";
- protected-headers="v1"
-From: WangYuli <wangyuli@uniontech.com>
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Message-ID: <9f9b7696-8383-4bbf-9d85-b1aecd5b1e21@uniontech.com>
-Subject: Re: [PATCH 5.4~6.6] MIPS: Probe toolchain support of -msym32
-References: <20241225181141-941d612a552d1f6d@stable.kernel.org>
-In-Reply-To: <20241225181141-941d612a552d1f6d@stable.kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
---------------gyc0YZWVrh6rIgo31FSPNTCg
-Content-Type: multipart/mixed; boundary="------------NGJY0lRLZzLrv2r5m0IONkUU"
+[ Upstream commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071 ]
 
---------------NGJY0lRLZzLrv2r5m0IONkUU
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Ignore the userspace provided x2APIC ID when fixing up APIC state for
+KVM_SET_LAPIC, i.e. make the x2APIC fully readonly in KVM.  Commit
+a92e2543d6a8 ("KVM: x86: use hardware-compatible format for APIC ID
+register"), which added the fixup, didn't intend to allow userspace to
+modify the x2APIC ID.  In fact, that commit is when KVM first started
+treating the x2APIC ID as readonly, apparently to fix some race:
 
-SGkgU2FzaGEgTGV2aW4sDQoNCkknbSB3b25kZXJpbmcgaWYgdGhlcmUgbWlnaHQgYmUgYSBi
-b3Qgb3V0cHV0IGlzc3VlLg0KDQpJbiBmYWN0LCB0aGlzIHBhdGNoIHNob3VsZCBiZSBiYWNr
-cG9ydGVkIHRvIGV2ZXJ5IExUUyB2ZXJzaW9uIGZyb20gNS40IA0KdG8gNi42LCBpbmNsdWRp
-bmcgNS4xMCwgNS4xNSBhbmQgNi4xLg0KDQpUaGFua3MsDQoNCg0KT24gMjAyNC8xMi8yNiAw
-OToyMSwgU2FzaGEgTGV2aW4gd3JvdGU6DQo+IFsgU2FzaGEncyBiYWNrcG9ydCBoZWxwZXIg
-Ym90IF0NCj4NCj4gSGksDQo+DQo+IFRoZSB1cHN0cmVhbSBjb21taXQgU0hBMSBwcm92aWRl
-ZCBpcyBjb3JyZWN0OiAxOGNhNjNhMmUyM2M1ZTE3MGQyZDc1NTJiNjRiMWY1YWQwMTljZDli
-DQo+DQo+IFdBUk5JTkc6IEF1dGhvciBtaXNtYXRjaCBiZXR3ZWVuIHBhdGNoIGFuZCB1cHN0
-cmVhbSBjb21taXQ6DQo+IEJhY2twb3J0IGF1dGhvcjogV2FuZ1l1bGkgPHdhbmd5dWxpQHVu
-aW9udGVjaC5jb20+DQo+IENvbW1pdCBhdXRob3I6IEppYXh1biBZYW5nIDxqaWF4dW4ueWFu
-Z0BmbHlnb2F0LmNvbT4NCj4NCj4NCj4gU3RhdHVzIGluIG5ld2VyIGtlcm5lbCB0cmVlczoN
-Cj4gNi4xMi55IHwgUHJlc2VudCAoZXhhY3QgU0hBMSkNCj4gNi42LnkgfCBOb3QgZm91bmQN
-Cj4NCj4gTm90ZTogVGhlIHBhdGNoIGRpZmZlcnMgZnJvbSB0aGUgdXBzdHJlYW0gY29tbWl0
-Og0KPiAtLS0NCj4gMTogIDE4Y2E2M2EyZTIzYyAhIDE6ICA4ZTg0ZjM4NThmY2YgTUlQUzog
-UHJvYmUgdG9vbGNoYWluIHN1cHBvcnQgb2YgLW1zeW0zMg0KPiAgICAgIEBAIE1ldGFkYXRh
-DQo+ICAgICAgICAjIyBDb21taXQgbWVzc2FnZSAjIw0KPiAgICAgICAgICAgTUlQUzogUHJv
-YmUgdG9vbGNoYWluIHN1cHBvcnQgb2YgLW1zeW0zMg0KPiAgICAgICANCj4gICAgICArICAg
-IFsgVXBzdHJlYW0gY29tbWl0IDE4Y2E2M2EyZTIzYzVlMTcwZDJkNzU1MmI2NGIxZjVhZDAx
-OWNkOWIgXQ0KPiAgICAgICsNCj4gICAgICAgICAgIG1zeW0zMiBpcyBub3Qgc3VwcG9ydGVk
-IGJ5IExMVk0gdG9vbGNoYWluLg0KPiAgICAgICAgICAgV29ya2Fyb3VuZCBieSBwcm9iZSB0
-b29sY2hhaW4gc3VwcG9ydCBvZiBtc3ltMzIgZm9yIEtCVUlMRF9TWU0zMg0KPiAgICAgICAg
-ICAgZmVhdHVyZS4NCj4gICAgICBAQCBDb21taXQgbWVzc2FnZQ0KPiAgICAgICAgICAgTGlu
-azogaHR0cHM6Ly9naXRodWIuY29tL0NsYW5nQnVpbHRMaW51eC9saW51eC9pc3N1ZXMvMTU0
-NA0KPiAgICAgICAgICAgU2lnbmVkLW9mZi1ieTogSmlheHVuIFlhbmcgPGppYXh1bi55YW5n
-QGZseWdvYXQuY29tPg0KPiAgICAgICAgICAgU2lnbmVkLW9mZi1ieTogVGhvbWFzIEJvZ2Vu
-ZG9lcmZlciA8dHNib2dlbmRAYWxwaGEuZnJhbmtlbi5kZT4NCj4gICAgICArICAgIFNpZ25l
-ZC1vZmYtYnk6IFdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPg0KPiAgICAgICAN
-Cj4gICAgICAgICMjIGFyY2gvbWlwcy9NYWtlZmlsZSAjIw0KPiAgICAgICBAQCBhcmNoL21p
-cHMvTWFrZWZpbGU6IGRyaXZlcnMtJChDT05GSUdfUENJKQkJKz0gYXJjaC9taXBzL3BjaS8N
-Cj4gLS0tDQo+DQo+IFJlc3VsdHMgb2YgdGVzdGluZyBvbiB2YXJpb3VzIGJyYW5jaGVzOg0K
-Pg0KPiB8IEJyYW5jaCAgICAgICAgICAgICAgICAgICAgfCBQYXRjaCBBcHBseSB8IEJ1aWxk
-IFRlc3QgfA0KPiB8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tfC0tLS0tLS0tLS0tLS18
-LS0tLS0tLS0tLS0tfA0KPiB8IHN0YWJsZS9saW51eC02LjYueSAgICAgICAgfCAgU3VjY2Vz
-cyAgICB8ICBTdWNjZXNzICAgfA0KPiB8IHN0YWJsZS9saW51eC01LjQueSAgICAgICAgfCAg
-U3VjY2VzcyAgICB8ICBTdWNjZXNzICAgfA0KPg0KVGhhbmtzLA0KLS0gDQpXYW5nWXVsaQ0K
+ static inline u32 kvm_apic_id(struct kvm_lapic *apic)
+ {
+-       return (kvm_lapic_get_reg(apic, APIC_ID) >> 24) & 0xff;
++       /* To avoid a race between apic_base and following APIC_ID update when
++        * switching to x2apic_mode, the x2apic mode returns initial x2apic id.
++        */
++       if (apic_x2apic_mode(apic))
++               return apic->vcpu->vcpu_id;
++
++       return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
+ }
 
---------------NGJY0lRLZzLrv2r5m0IONkUU
-Content-Type: application/pgp-keys; name="OpenPGP_0xC5DA1F3046F40BEE.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xC5DA1F3046F40BEE.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+Furthermore, KVM doesn't support delivering interrupts to vCPUs with a
+modified x2APIC ID, but KVM *does* return the modified value on a guest
+RDMSR and for KVM_GET_LAPIC.  I.e. no remotely sane setup can actually
+work with a modified x2APIC ID.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+Making the x2APIC ID fully readonly fixes a WARN in KVM's optimized map
+calculation, which expects the LDR to align with the x2APIC ID.
 
-xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSK
-P+nX39DNIVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAx
-FiEEa1GMzYeuKPkgqDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMB
-AAAKCRDF2h8wRvQL7g0UAQCH3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfP
-bwD/SrncJwwPAL4GiLPEC4XssV6FPUAY0rA68eNNI9cJLArOOARmgSyJEgorBgEE
-AZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7VTL0dvPDofBTjFYDAQgHwngE
-GBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIbDAAKCRDF2h8wRvQL
-7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkUo9ERi7qS
-/hbUdUgtitI89efbY0TVetgDsyeQiwU=3D
-=3DBlkq
------END PGP PUBLIC KEY BLOCK-----
+  WARNING: CPU: 2 PID: 958 at arch/x86/kvm/lapic.c:331 kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+  CPU: 2 PID: 958 Comm: recalc_apic_map Not tainted 6.4.0-rc3-vanilla+ #35
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.2-1-1 04/01/2014
+  RIP: 0010:kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+  Call Trace:
+   <TASK>
+   kvm_apic_set_state+0x1cf/0x5b0 [kvm]
+   kvm_arch_vcpu_ioctl+0x1806/0x2100 [kvm]
+   kvm_vcpu_ioctl+0x663/0x8a0 [kvm]
+   __x64_sys_ioctl+0xb8/0xf0
+   do_syscall_64+0x56/0x80
+   entry_SYSCALL_64_after_hwframe+0x46/0xb0
+  RIP: 0033:0x7fade8b9dd6f
 
---------------NGJY0lRLZzLrv2r5m0IONkUU--
+Unfortunately, the WARN can still trigger for other CPUs than the current
+one by racing against KVM_SET_LAPIC, so remove it completely.
 
---------------gyc0YZWVrh6rIgo31FSPNTCg--
+Reported-by: Michal Luczaj <mhal@rbox.co>
+Closes: https://lore.kernel.org/all/814baa0c-1eaa-4503-129f-059917365e80@rbox.co
+Reported-by: Haoyu Wu <haoyuwu254@gmail.com>
+Closes: https://lore.kernel.org/all/20240126161633.62529-1-haoyuwu254@gmail.com
+Reported-by: syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000c2a6b9061cbca3c3@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240802202941.344889-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+---
+ arch/x86/kvm/lapic.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
---------------TUVtc5Xc07N8sOxGkzCzDeaE
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 34766abbabd8..cd9c1e1f6fd3 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -338,10 +338,8 @@ static void kvm_recalculate_logical_map(struct kvm_apic_map *new,
+ 	 * reversing the LDR calculation to get cluster of APICs, i.e. no
+ 	 * additional work is required.
+ 	 */
+-	if (apic_x2apic_mode(apic)) {
+-		WARN_ON_ONCE(ldr != kvm_apic_calc_x2apic_ldr(kvm_x2apic_id(apic)));
++	if (apic_x2apic_mode(apic))
+ 		return;
+-	}
+ 
+ 	if (WARN_ON_ONCE(!kvm_apic_map_get_logical_dest(new, ldr,
+ 							&cluster, &mask))) {
+@@ -2964,18 +2962,28 @@ static int kvm_apic_state_fixup(struct kvm_vcpu *vcpu,
+ 		struct kvm_lapic_state *s, bool set)
+ {
+ 	if (apic_x2apic_mode(vcpu->arch.apic)) {
++		u32 x2apic_id = kvm_x2apic_id(vcpu->arch.apic);
+ 		u32 *id = (u32 *)(s->regs + APIC_ID);
+ 		u32 *ldr = (u32 *)(s->regs + APIC_LDR);
+ 		u64 icr;
+ 
+ 		if (vcpu->kvm->arch.x2apic_format) {
+-			if (*id != vcpu->vcpu_id)
++			if (*id != x2apic_id)
+ 				return -EINVAL;
+ 		} else {
++			/*
++			 * Ignore the userspace value when setting APIC state.
++			 * KVM's model is that the x2APIC ID is readonly, e.g.
++			 * KVM only supports delivering interrupts to KVM's
++			 * version of the x2APIC ID.  However, for backwards
++			 * compatibility, don't reject attempts to set a
++			 * mismatched ID for userspace that hasn't opted into
++			 * x2apic_format.
++			 */
+ 			if (set)
+-				*id >>= 24;
++				*id = x2apic_id;
+ 			else
+-				*id <<= 24;
++				*id = x2apic_id << 24;
+ 		}
+ 
+ 		/*
+@@ -2984,7 +2992,7 @@ static int kvm_apic_state_fixup(struct kvm_vcpu *vcpu,
+ 		 * split to ICR+ICR2 in userspace for backwards compatibility.
+ 		 */
+ 		if (set) {
+-			*ldr = kvm_apic_calc_x2apic_ldr(*id);
++			*ldr = kvm_apic_calc_x2apic_ldr(x2apic_id);
+ 
+ 			icr = __kvm_lapic_get_reg(s->regs, APIC_ICR) |
+ 			      (u64)__kvm_lapic_get_reg(s->regs, APIC_ICR2) << 32;
+-- 
+2.43.0
 
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZ2y19gUDAAAAAAAKCRDF2h8wRvQL7k5h
-AQD9/+FEnG7Q29pQchDxyq1zFSVTKFLk6G4tgowd8p240wD8D7BMOpXMTgeouVlMZQGUnT072gnT
-zArb9fDL5P30awk=
-=qqJn
------END PGP SIGNATURE-----
-
---------------TUVtc5Xc07N8sOxGkzCzDeaE--
 
