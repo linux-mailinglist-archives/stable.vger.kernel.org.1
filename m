@@ -1,224 +1,137 @@
-Return-Path: <stable+bounces-106133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5106A9FCA55
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 11:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4963E9FCA57
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 11:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C168163026
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 10:45:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD304162F79
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 10:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18FA1D45FD;
-	Thu, 26 Dec 2024 10:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C27C1D515B;
+	Thu, 26 Dec 2024 10:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="WJCKp/yH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eCDGpgif"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cU/aj9B4"
 X-Original-To: stable@vger.kernel.org
-Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6FA1CF2B7;
-	Thu, 26 Dec 2024 10:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.138
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65751D4605
+	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 10:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735209939; cv=none; b=YI+YNFDPpfgvLiPndLcPFtcP85UydQPOOjTitNXJardG9goW0x9JKp30GydtPENW7WdkC1yIKSLsl5a93srD98J669I6OVMmSj1giBdRHPRP0qxGZDVB87x10zKhZ9J9yF94ZGxQB2AHHdo3JEZWmcMbfAjskY3t9t0toNfLhTE=
+	t=1735209942; cv=none; b=KUv7VQcwVEY6lR3sdC2IbQBUMDWPaT1Ft7et3mEg5IFO//IxaIi+UM6RnTXViFGpetrANTLUjELp77fQxc1TUPxnq+VrfVzjAJz19BRCEc0NRkCeMY7cOhLLaGfG2x8deP48zcwLE8SC7Cg8Y/jqZdEAx3oxhEkecZjH2dmCGoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735209939; c=relaxed/simple;
-	bh=ltD8Q1yJuFcwflR+5zmJHqfB8aeFKvQGlw/4hXFU+gg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jYOFGnpvRaGbvDRHbs6s1sXY7E0/iHNkjzuOADtDGqt9qcd8kK9cEm7kO9CRve6sc3HFzuibbK2X254XcSc3+VCscuw7EjlHKipcxxiG0h12mxJzKgAj9KLidOZrkeLeIO3AnOtEw8pk1asM88M3LSLDwAjtmI3q6UnJJ8/iJ9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=WJCKp/yH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eCDGpgif; arc=none smtp.client-ip=103.168.172.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailflow.phl.internal (Postfix) with ESMTP id BCC252005BC;
-	Thu, 26 Dec 2024 05:45:36 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Thu, 26 Dec 2024 05:45:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	coelacanthus.name; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1735209936; x=1735217136; bh=ePabROfKQd
-	3trOxWB+908jisGE3fNauyk5nCt4vyino=; b=WJCKp/yHbthI8T+qhG/lyB8sVl
-	YkBdNRi92T7EjmfAbW05WfVUqDu6jMu/pV3O3UDDFi3bwVIIA5zyZO5UtSzIlteK
-	OjuZ8aMVHFdrFILJ+CDVV3Q6uZzvcZOBDQfjedKCJwlS5ckYzekFayuJxhWPCIAF
-	SjkG5pgUr63vrT0O18uKxwyeWkCVFU57zuA49U3lZ4FBrOdE9O11FoEUjTcCISmK
-	lNnxGP7k4CrA/l+5PlRQdktO30wi2umtCXxTp9NQAZa4bR8PIXO9a4L4pgao7Q2q
-	NOvn9Z5T+S5p5QFxpuXUmKX8Bk+nCrK0/R5c1Rd463frn54ZqIb3i5AcFN9w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735209936; x=
-	1735217136; bh=ePabROfKQd3trOxWB+908jisGE3fNauyk5nCt4vyino=; b=e
-	CDGpgifKLN6SqZU5GgHiZkzD9f3gSYBbWmMcaEC1BB+hlYeLabPw3gNh52pejqb/
-	8WbiSTOTHWdFIdTFXZhW1QegDkIbCpMocpWKco/JtlFIDfM1ypfn+v3h3j7+40yB
-	+ox5zGQJGuP+1B2I3NtCfXxRiMpUrXg6q/nsP5RkvQxyxqe/be9ZBE0wFxnZeMJt
-	zi5vSene5LV0etexLECP0WxSuNVIVrr02y5FcVPgKGUZvTlFaGJ8vyC0tlv3lb5b
-	ZpZmLpAN3fQgW7eKhzDGqI5rUe3X0X1m1scff8dL7jy8PjT1KcIZ0J0qbqlwGQdi
-	TFjzDhawAn5/zFoLqm4HA==
-X-ME-Sender: <xms:0DNtZ7yjDB8DznbBtoFTjW6Bb4GuhQqy9VQyZt1C4mvgh1X-crXmag>
-    <xme:0DNtZzS7wtRmhBMT4oQMjyUMdasKo6TAbNq0rESD9KQUi67E3rO-I11yL1R8ApglZ
-    LGsBF5Vpb8sOXZnIzo>
-X-ME-Received: <xmr:0DNtZ1XFai5VaJaHRFKcPNZcQUpE9bXwjY8Etwqm3uq0OyW4PRe3WAMnxqXh2g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddukedgudelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtkeertdertdej
-    necuhfhrohhmpeevvghlvghsthgvucfnihhuuceouhifuhestghovghlrggtrghnthhhuh
-    hsrdhnrghmvgeqnecuggftrfgrthhtvghrnhepueeigfduffelffegiefffeeffeeileev
-    jefghefhjeffueetvdffieduvedtleegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrgh
-    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehufihu
-    segtohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhoug
-    gvpehsmhhtphhouhhtpdhrtghpthhtohepfhgvlhhigihonhhmrghrshesrghrtghhlhhi
-    nhhugidrohhrghdprhgtphhtthhopegrsgholhhoghhnrgesrhgvughhrghtrdgtohhmpd
-    hrtghpthhtohepuhifuhestghovghlrggtrghnthhhuhhsrdhnrghmvgdprhgtphhtthho
-    pehlihhnuhigqdhrihhstghvsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqkhhsvghlfhhtvghsthesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hkvggvsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghjohhnvghssehvvghnthgr
-    nhgrmhhitghrohdrtghomhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:0DNtZ1jP_5WESZQUMYYJ1rx4VOQFa0Fy03qrhuNw0MLfuabP1iDI-g>
-    <xmx:0DNtZ9AcmGNCUMGv49fzMBTTIrUMqjhPQXTGa79CEiSVal7AImxb2Q>
-    <xmx:0DNtZ-LATYIf9GVQcyDXPCNFrbhKSmIyFjo1c7x70Br1b3ghJpwyqA>
-    <xmx:0DNtZ8C9W5Ws8XwxaQsPQwx7f6e2rI03qPHq2qc1-Fkx4Dk5u5jd7w>
-    <xmx:0DNtZ_z1z8S4wgpTaFULsyYbiqmC9FXAL0vH_TgvGiyHscXxZkbROiQz>
-Feedback-ID: i95c648bc:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Dec 2024 05:45:35 -0500 (EST)
-From: Celeste Liu <uwu@coelacanthus.name>
-Date: Thu, 26 Dec 2024 18:45:09 +0800
-Subject: [PATCH v3 1/2] riscv/ptrace: add new regset to access original a0
- register
+	s=arc-20240116; t=1735209942; c=relaxed/simple;
+	bh=gwc8i0j1/7O9YiAE8S2mKPx/3LBUJgGeNzXcKo+yud4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=APRxCwbivk2y5+KD7QlPybXlazOdXsXisvr0ZdHmwzWrPNP8rp1VnwOGcIB/0zHrdSaXcOvszGjJZMpqoM0DXIpidN4sQVMPENQSd1JSkmsm5xBaHY46F2zjXmw8IAXXvKIiySF2Nxj0Y3XWSR57hznraX4uMWfxfr9LFNcVU5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cU/aj9B4; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=zLwjyiStgNWLBog5wfNfYBSj5QcqwsBpCUQgQjlS2K4=;
+	b=cU/aj9B4Lwbsc6DC8kbYsIyFtvRY2V4cPIQ6Lvt9E8R311keAAm8uBaVoCJ4oZ
+	OQVQkwQVjIi6jhyVX6UTjHoM/zCmB/tiN8Kp+6fIWNTGaJPiK906azjv/1HmZN9N
+	/8oZ2kF0gaawox3krvnIVyiuKS9AZwWcyOZ9t+Rd9gBHU=
+Received: from [192.168.3.47] (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3377OM21nNfpCBw--.58420S2;
+	Thu, 26 Dec 2024 18:45:35 +0800 (CST)
+Message-ID: <575d14c5-6759-438b-8729-c137c26e900c@163.com>
+Date: Thu, 26 Dec 2024 18:45:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241226-riscv-new-regset-v3-1-f5b96465826b@coelacanthus.name>
-References: <20241226-riscv-new-regset-v3-0-f5b96465826b@coelacanthus.name>
-In-Reply-To: <20241226-riscv-new-regset-v3-0-f5b96465826b@coelacanthus.name>
-To: Oleg Nesterov <oleg@redhat.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Eric Biederman <ebiederm@xmission.com>, 
- Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>, 
- Andrea Bolognani <abologna@redhat.com>, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>, 
- Charlie Jenkins <charlie@rivosinc.com>, 
- Andrew Jones <ajones@ventanamicro.com>, Quan Zhou <zhouquan@iscas.ac.cn>, 
- Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>, 
- Guo Ren <guoren@kernel.org>, Yao Zi <ziyao@disroot.org>, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
- Celeste Liu <uwu@coelacanthus.name>, stable@vger.kernel.org, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@rivosinc.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3197; i=uwu@coelacanthus.name;
- h=from:subject:message-id; bh=ltD8Q1yJuFcwflR+5zmJHqfB8aeFKvQGlw/4hXFU+gg=;
- b=owJ4nJvAy8zAJeafov85RWVtBeNptSSG9FzjfcFzW5JSdpl75XUxC/ltnaLIqDsn6mp9ALeE/
- /UNjTpGnztKWRjEuBhkxRRZ8kpYfnJeOtu9t2N7F8wcViaQIQxcnAIwkbY4hr+CYlO/Xjrb7vv1
- +Z2EKf+Uc45vtstX3O5heYTPZ/69PkYfhv+pU2QfOJ+VmqvmXlw/Sez2geWKDfKuot+ldE1LVY8
- xbeEGAGoyRRQ=
-X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp;
- fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4.y] epoll: Add synchronous wakeup support for
+ ep_poll_callback
+To: stable@vger.kernel.org
+References: <2024122326-viscous-dreaded-d15d@gregkh>
+ <20241226083553.1283297-1-jetlan9@163.com>
+Content-Language: en-US
+From: "Lan, Wenshan" <jetlan9@163.com>
+In-Reply-To: <20241226083553.1283297-1-jetlan9@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD3377OM21nNfpCBw--.58420S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZryDWryDXF4DtFyfuFyUZFb_yoW5GFykpF
+	45WFnYqFWrXrWUK3ykXr47uF9ruws5GwnxCrWDu3WUArW7Kw1FyryIyFnxZFs2vrZYk3y3
+	AanxZrn3uw4UJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziY0PDUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/1tbiDwPByGdtKNf9QAAAsN
 
-The orig_a0 is missing in struct user_regs_struct of riscv, and there is
-no way to add it without breaking UAPI. (See Link tag below)
 
-Like NT_ARM_SYSTEM_CALL do, we add a new regset name NT_RISCV_ORIG_A0 to
-access original a0 register from userspace via ptrace API.
+On 12/26/2024 4:35 PM, Wenshan Lan wrote:
+> CAUTION: This email comes from a non Wind River email account!
+> Do not click links or open attachments unless you recognize the sender and know the content is safe.
+>
+> From: Xuewen Yan <xuewen.yan@unisoc.com>
+>
+> Now, the epoll only use wake_up() interface to wake up task.
+> However, sometimes, there are epoll users which want to use
+> the synchronous wakeup flag to hint the scheduler, such as
+> Android binder driver.
+> So add a wake_up_sync() define, and use the wake_up_sync()
+> when the sync is true in ep_poll_callback().
+>
+> Co-developed-by: Jing Xia <jing.xia@unisoc.com>
+> Signed-off-by: Jing Xia <jing.xia@unisoc.com>
+> Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+> Link: https://lore.kernel.org/r/20240426080548.8203-1-xuewen.yan@unisoc.com
+> Tested-by: Brian Geffon <bgeffon@google.com>
+> Reviewed-by: Brian Geffon <bgeffon@google.com>
+> Reported-by: Benoit Lize <lizeb@google.com>
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> (cherry picked from commit 900bbaae67e980945dec74d36f8afe0de7556d5a)
+> [ Redefine wake_up_sync(x) as __wake_up_sync(x, TASK_NORMAL, 1) to
+>    make it work on 5.4.y ]
+> Signed-off-by: Wenshan Lan <jetlan9@163.com>
+> ---
+>   fs/eventpoll.c       | 5 ++++-
+>   include/linux/wait.h | 1 +
+>   2 files changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+> index 8c0e94183186..569bfff280e4 100644
+> --- a/fs/eventpoll.c
+> +++ b/fs/eventpoll.c
+> @@ -1273,7 +1273,10 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
+>                                  break;
+>                          }
+>                  }
+> -               wake_up(&ep->wq);
+> +               if (sync)
+> +                       wake_up_sync(&ep->wq);
+> +               else
+> +                       wake_up(&ep->wq);
+>          }
+>          if (waitqueue_active(&ep->poll_wait))
+>                  pwake++;
+> diff --git a/include/linux/wait.h b/include/linux/wait.h
+> index 03bff85e365f..5b65f720261a 100644
+> --- a/include/linux/wait.h
+> +++ b/include/linux/wait.h
+> @@ -213,6 +213,7 @@ void __wake_up_pollfree(struct wait_queue_head *wq_head);
+>   #define wake_up_all(x)                 __wake_up(x, TASK_NORMAL, 0, NULL)
+>   #define wake_up_locked(x)              __wake_up_locked((x), TASK_NORMAL, 1)
+>   #define wake_up_all_locked(x)          __wake_up_locked((x), TASK_NORMAL, 0)
+> +#define wake_up_sync(x)                        __wake_up_sync(x, TASK_NORMAL, 1)
+>
+>   #define wake_up_interruptible(x)       __wake_up(x, TASK_INTERRUPTIBLE, 1, NULL)
+>   #define wake_up_interruptible_nr(x, nr)        __wake_up(x, TASK_INTERRUPTIBLE, nr, NULL)
+> --
+> 2.43.0
 
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
-Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
----
- arch/riscv/kernel/ptrace.c | 32 ++++++++++++++++++++++++++++++++
- include/uapi/linux/elf.h   |  1 +
- 2 files changed, 33 insertions(+)
+Please ignore this patch for I forgot to CC the related persons. Thanks.
 
-diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
-index ea67e9fb7a583683b922fe2c017ea61f3bc848db..ef9ab74c8575a5c440155973b1c625c06a867c97 100644
---- a/arch/riscv/kernel/ptrace.c
-+++ b/arch/riscv/kernel/ptrace.c
-@@ -31,6 +31,7 @@ enum riscv_regset {
- #ifdef CONFIG_RISCV_ISA_SUPM
- 	REGSET_TAGGED_ADDR_CTRL,
- #endif
-+	REGSET_ORIG_A0,
- };
- 
- static int riscv_gpr_get(struct task_struct *target,
-@@ -184,6 +185,29 @@ static int tagged_addr_ctrl_set(struct task_struct *target,
- }
- #endif
- 
-+static int riscv_orig_a0_get(struct task_struct *target,
-+			     const struct user_regset *regset,
-+			     struct membuf to)
-+{
-+	return membuf_store(&to, task_pt_regs(target)->orig_a0);
-+}
-+
-+static int riscv_orig_a0_set(struct task_struct *target,
-+			     const struct user_regset *regset,
-+			     unsigned int pos, unsigned int count,
-+			     const void *kbuf, const void __user *ubuf)
-+{
-+	unsigned long orig_a0 = task_pt_regs(target)->orig_a0;
-+	int ret;
-+
-+	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &orig_a0, 0, -1);
-+	if (ret)
-+		return ret;
-+
-+	task_pt_regs(target)->orig_a0 = orig_a0;
-+	return 0;
-+}
-+
- static const struct user_regset riscv_user_regset[] = {
- 	[REGSET_X] = {
- 		.core_note_type = NT_PRSTATUS,
-@@ -224,6 +248,14 @@ static const struct user_regset riscv_user_regset[] = {
- 		.set = tagged_addr_ctrl_set,
- 	},
- #endif
-+	[REGSET_ORIG_A0] = {
-+		.core_note_type = NT_RISCV_ORIG_A0,
-+		.n = 1,
-+		.size = sizeof(elf_greg_t),
-+		.align = sizeof(elf_greg_t),
-+		.regset_get = riscv_orig_a0_get,
-+		.set = riscv_orig_a0_set,
-+	},
- };
- 
- static const struct user_regset_view riscv_user_native_view = {
-diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-index b44069d29cecc0f9de90ee66bfffd2137f4275a8..390060229601631da2fb27030d9fa2142e676c14 100644
---- a/include/uapi/linux/elf.h
-+++ b/include/uapi/linux/elf.h
-@@ -452,6 +452,7 @@ typedef struct elf64_shdr {
- #define NT_RISCV_CSR	0x900		/* RISC-V Control and Status Registers */
- #define NT_RISCV_VECTOR	0x901		/* RISC-V vector registers */
- #define NT_RISCV_TAGGED_ADDR_CTRL 0x902	/* RISC-V tagged address control (prctl()) */
-+#define NT_RISCV_ORIG_A0	  0x903	/* RISC-V original a0 register */
- #define NT_LOONGARCH_CPUCFG	0xa00	/* LoongArch CPU config registers */
- #define NT_LOONGARCH_CSR	0xa01	/* LoongArch control and status registers */
- #define NT_LOONGARCH_LSX	0xa02	/* LoongArch Loongson SIMD Extension registers */
+B.R.
 
--- 
-2.47.1
+Wenshan
+
+>
 
 
