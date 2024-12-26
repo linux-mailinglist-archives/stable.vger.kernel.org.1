@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095EF9FCBEB
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 17:44:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBA39FCBEC
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 17:44:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BAFA16129D
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 16:44:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF7921617ED
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 16:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F398615A;
-	Thu, 26 Dec 2024 16:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3DB13AD26;
+	Thu, 26 Dec 2024 16:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gmjtKV8c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QN9bVtEU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF1728EC
-	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 16:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E21728EC
+	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 16:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735231465; cv=none; b=QNwrTrHPxWCIM/CvswySIEUZmgyjDyun6O+uUNsmFBiX63Ffi6ZmdRH5HJrNBo9xfo5ZzZn+hBJwCnoomQGWGv+jhkjSfQvza2TLuNnEhV0eFspTEcByyVLs2nmC8hBoE2XR+DmeccbRzMJlWP59CjVubICVuCDnOvLXCm2yUqg=
+	t=1735231467; cv=none; b=IpuV41z9UZxtFDccvlOPt134y2NoSzfIMkDcPUYggGd7J8UrciSaos8sAZD6qmmcC2P0jaOJjtmUbVvHZokoEB1ubyJr6pM4mBJn9nLgEd12nVSA2P2GnRMqASbP6CvhO0oQ4LuU0zQS5n6deVynxLwJVPfV0ujUXJlNkS8JeBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735231465; c=relaxed/simple;
-	bh=4AuQEU3myYf4DrJnc1l3hrzAIqkrFu0k7fT5RsYEFQI=;
+	s=arc-20240116; t=1735231467; c=relaxed/simple;
+	bh=AFz2MiKf9ROw6DdM2EmylXGlX+MpdHzYgqgWY6KoRlg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WjeLAuKmSvh8jaonFOS7pRcTucM5M0yy2Qt7wmGCp5F3VbF5I0/XtSaeS/9NuP9o3Ecs4eHFEuVFEAe1PJjiUfGTTIJbRXt2b3OPumqgeD0zssUPLxArDKR7ty7lCHUVZctk6VmtKqLW9aQrWJX1bmiqok3xl7zfLqeFL5rQRSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gmjtKV8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEA3C4CED1;
-	Thu, 26 Dec 2024 16:44:24 +0000 (UTC)
+	 MIME-Version; b=G4eFOjiAcsnONnb5jkBF8kUeiF+KUPvvXX2OmUNQc/PG0/oBxTkNszHiOA+BgBWstUrpLE5DX9QhcX1FfAW+V/NMBI4F+mGbSfnYmA7xl36dcQnHKpLeyyfA5wkIBlubO0tZLEQlRx4999CKPreRQ5sIa02fvx0hVc7im+n7540=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QN9bVtEU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7A8C4CED1;
+	Thu, 26 Dec 2024 16:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735231465;
-	bh=4AuQEU3myYf4DrJnc1l3hrzAIqkrFu0k7fT5RsYEFQI=;
+	s=k20201202; t=1735231467;
+	bh=AFz2MiKf9ROw6DdM2EmylXGlX+MpdHzYgqgWY6KoRlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmjtKV8c16oCUuABgA+coebFMRLKKNiy+9kLLJt5RP0rzjfkJpeqw+T1LgScQo1/q
-	 ez7m+OfPecgR1udcGLcTABWXUNNUciVTrEdpBj6QjLqXcta/HPclCQQlVUByWPbogn
-	 F3j1YJW7FxGpj4qC9NgStGfpHQUDKsLFci4DHazTOP9k5fL0Py0H98zqg1gD99b4Yp
-	 XfdehzgwnyhyUEMf0bTZNnTqsuQgQCt06InjlQN33xvTJHSre9njy0h21885Jol7Ze
-	 CXO199ibcDH56eGatRYYT/be6EOVrQOgJiemzDTjMPkdn+55HBAnFe0BMq+UdO/yi9
-	 eTacXU7JhqPAA==
+	b=QN9bVtEU1nTGZBFInlYAfusqomtaqg2JMavKQn5sqay+bOzTCNyKRUqBmA9YYvfvr
+	 UvNEbZ4Ox3n/sWxSgQUxfLXQnJWkEDTR3DyM9TJmcQFbfz8pVvFF0+fmeGQucaQgBT
+	 5d228oT5vdRY7jVnkjfXiNMyayihAKQBhS+hzrDVXhoJqSmY4+UFi8RH2kNcxQHl1N
+	 i0Ao4FYrWcpNpBhYUOfBo4M+D7rn3Ht9xK/4YfKjfNfQmBeBUukLgNpprhPOXPlZZB
+	 bPDkXzBckKojgyxDFv9rHU3QJjZsot51lWKYa+35YiL+aiP5AtinoQa2uB+hVGSQPb
+	 /w3TmXzav/HeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Wenshan Lan <jetlan9@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y v2] epoll: Add synchronous wakeup support for ep_poll_callback
-Date: Thu, 26 Dec 2024 11:44:23 -0500
-Message-Id: <20241226093321-4632481b072a01d6@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y] epoll: Add synchronous wakeup support for ep_poll_callback
+Date: Thu, 26 Dec 2024 11:44:25 -0500
+Message-Id: <20241226092706-2239e6ad50474d96@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20241226111429.12499-1-jetlan9@163.com>
+In-Reply-To:  <20241226083553.1283297-1-jetlan9@163.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,7 +80,7 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  900bbaae67e9 ! 1:  b90bb7104c43 epoll: Add synchronous wakeup support for ep_poll_callback
+1:  900bbaae67e9 ! 1:  90c173fa699e epoll: Add synchronous wakeup support for ep_poll_callback
     @@ Commit message
          Reviewed-by: Brian Geffon <bgeffon@google.com>
          Reported-by: Benoit Lize <lizeb@google.com>
