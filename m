@@ -1,86 +1,82 @@
-Return-Path: <stable+bounces-106158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192D29FCCFF
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 19:35:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8C19FCD55
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 20:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA62C18840A8
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 18:34:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 834601632B2
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 19:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D401DF279;
-	Thu, 26 Dec 2024 18:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7791474A0;
+	Thu, 26 Dec 2024 19:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6/C2C4m"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HYwtVFmZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0171D4332;
-	Thu, 26 Dec 2024 18:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B919E2BAF4;
+	Thu, 26 Dec 2024 19:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735237668; cv=none; b=mE1t3BmTdAJzI1E1prGGHz+ZX6nEB8GMqRCMCYVy3lSpmLYbshNm+Yex3KvpNiMk7HALhkM8c9eEIQXqjDSbu3kLDor93ty28d+W1B84RZPR9VCp9sqBu4xc5c7xSOMAA0a/WuPGf0+uKb8kKV+bVw+DKhv9I2PSoqw0UEyw+xo=
+	t=1735241153; cv=none; b=o2S4XnwhIj/n63MrLOsxg+HxvKfWHWlePOHhuxL6HWi/OU7Oguz6VO+mkqcomn3sh4J6nqRdsoX02ZR6/wWqUp98mL5ZCqVEpxpGCYVaU2b4hdh9uxS8jab+wqKNhylgSp+TBF+SEbo6cfgAr/BBvRMQY5zcH+U9ZzVHukX01eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735237668; c=relaxed/simple;
-	bh=EKX8CQK+FN1ekhUaKnzFVscZs31aUn6srbryd+66yOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Of/0bHLgeuxKTUc7MM0VEfBI3a3LCHUROp7/v/NKp7djVxTKUSh202UH8gtWeupQ/H80PUdofk6fCxQjm+9hheEcSg2WcKuCVc/ufxg4bMebtKj6HrHz9OJalm958MOb0ygNUWecBaEBVHKWjhMjBQ/4Imnsz1YC/CnNmAEW07k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6/C2C4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D77C4CEDC;
-	Thu, 26 Dec 2024 18:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735237668;
-	bh=EKX8CQK+FN1ekhUaKnzFVscZs31aUn6srbryd+66yOY=;
+	s=arc-20240116; t=1735241153; c=relaxed/simple;
+	bh=cy1FTu3yw3/LRkw4CAp4YrnfbKzoM4XTyEp7i/p5Ozs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=osh1CTXfM3dn0KQ74BOHnxxr36yo40Bd5Uh/JoM8hUky3mBGrp3oviyOlHD7QE6Fr3kHwQZNWC4bBPjs6GndgN6BKGBT+Jp64HHRwlOX32LPGFcMFLRHcuRhhCi8H+ocTxTKtE9+2l+NhCyquJEejNdYxW70Px6FWUmMI1WO1Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HYwtVFmZ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 0F8D4203EC22; Thu, 26 Dec 2024 11:25:51 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0F8D4203EC22
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1735241151;
+	bh=cy1FTu3yw3/LRkw4CAp4YrnfbKzoM4XTyEp7i/p5Ozs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6/C2C4mpGwZLOf8oDQ92vz00s5LqV58/6XVHmx5mxvjKJTgg6bCQYKPfwLfrOoQp
-	 xqnKGNoy7acdTqM+XtACtStYWtzfZscXCXWaB0NXdZTP5cxT7Wi8EBIrgNv0E0yceU
-	 M0SdFe3e7+ljFaD0z38AdPAUUKjAdaPLwUUGsQbqxQG9hvGnpPVeOq5lr2A2+NNWJ3
-	 gnbbqMXMqGW6OTYD9kisgvotFwuxSLQc5GXi3rLNPWrWcHCXE8Ayc3JFtooH0xDW2I
-	 Xp+luAJc8RiduZw+yn0cIWCmaukpnzv16cyGhORU2QJlOTChXvtkff4+g3Il5asPbV
-	 k30OWA5mWQ0cQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
+	b=HYwtVFmZW+CXABs/yHvabozgOPuH0ZUIuY9ol2rfHIQ54Ut4s8wWH6M86nMvDPRUh
+	 Tjh80VwnLZFNYX5rO2CLEYOOmZ9Dn6RG6wtYcoWmJjl7cUZ645yCp2Bhbd/tBl4x0o
+	 r9K1F6Aq2vqZkAvvzt5tbzeoD1OF5bLQ0nEHQ+BQ=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
 	linux-kernel@vger.kernel.org,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Ajit Pandey <quic_ajipan@quicinc.com>,
-	Jagadeesh Kona <quic_jkona@quicinc.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] clk: qcom: gcc-mdm9607: Fix cmd_rcgr offset for blsp1_uart6 rcg
-Date: Thu, 26 Dec 2024 12:27:03 -0600
-Message-ID: <173523761376.1412574.892326612734171327.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241220095048.248425-1-quic_skakitap@quicinc.com>
-References: <20241220095048.248425-1-quic_skakitap@quicinc.com>
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org
+Subject: Re: [PATCH 6.1] 6.1.122-rc1 review
+Date: Thu, 26 Dec 2024 11:25:51 -0800
+Message-Id: <1735241151-21119-1-git-send-email-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <20241223155353.641267612@linuxfoundation.org>
+References: <20241223155353.641267612@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+
+The kernel, bpf tool, amd kselftest tool builds fine for v6.1.122-rc1 on x86 and arm64 Azure VM.
+
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
 
 
-On Fri, 20 Dec 2024 15:20:48 +0530, Satya Priya Kakitapalli wrote:
-> Fix cmd_rcgr offset for blsp1_uart6_apps_clk_src on mdm9607 platform.
-> 
-> 
 
-Applied, thanks!
 
-[1/1] clk: qcom: gcc-mdm9607: Fix cmd_rcgr offset for blsp1_uart6 rcg
-      commit: 939c28ad2b8879920afea06fba5722ec8695ee7f
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Thanks,
+Hardik
 
