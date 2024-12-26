@@ -1,90 +1,143 @@
-Return-Path: <stable+bounces-106167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171CB9FCE0B
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 22:37:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347A99FCE0D
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 22:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93EC33A029B
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 21:37:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D0A37A154D
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 21:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F311474B7;
-	Thu, 26 Dec 2024 21:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBDC148857;
+	Thu, 26 Dec 2024 21:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NjgFtiKd"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Q80O9aGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305CA18E1F;
-	Thu, 26 Dec 2024 21:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE6918E1F;
+	Thu, 26 Dec 2024 21:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735249060; cv=none; b=iD+hIC/3RJeCsWIENmquzbJU6eVpqPytfPiiaDffA6Ms6poOIud5l6OokIERdwSJDoAop1dTWrAJrcttricw+vRe+VW9EUPEUxHfjZ6N/jm2RMAN+7VDq4aoxSKKLEPWDYSu6L0bVOFFr8z4hfjIyWvjxHX/v5a9Q8+94pst6MA=
+	t=1735249131; cv=none; b=XawkQ1+wJDTECnbsUv0Z/ZDofpyvN78V0/5gGThFHvR8/R4QsJ7ovVraHJyfMMMbkchzooyRGs52Y4TdRo5u38wcciX1KvejWOKqjKY7NiOxSvdJeFc6AUszJIvyDB+pN2bW/ycYOaonhRqmYYVGsMMDb/oElKAvfb9mkNUOGUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735249060; c=relaxed/simple;
-	bh=jFSXg/wQWBSsQPC8BzuCSlHXutjgx3MstOqNsihgMPk=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ZsqhFclS55uTc6aH6NqlSTuaxhrc8WrCfpl8Z/5FDNMzWa7B2ENn3sk0hOMyZQ3KDpCrbh9+GQW4/JcyMYXFz5PJBG+NErfhuKGbVXPRyiD/WA1KgCfJBw3BeHKlxdagNa3zb7ZgmCC71HSf7oHoj55DA/5a+G3de7rFA/H5tpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NjgFtiKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E25C4CED1;
-	Thu, 26 Dec 2024 21:37:39 +0000 (UTC)
+	s=arc-20240116; t=1735249131; c=relaxed/simple;
+	bh=jcyj5tSl4PeG/4jjbOvSRQSVQvAHVmja0i+w17NkK6o=;
+	h=Date:To:From:Subject:Message-Id; b=uYVcLZya5872pkiLKP2v/eOy3bCgB406pxInXe+k2ykWuywk28e3DQnioqrhti9RbvMj/zDyL8SUR3ybdwRl2rCgCDbsr0mIMCf/WwuUmYza2FBtKioiq3vpPE1sLNMKXsiIpKi2wQ7iNDc5PokyVGORUPNdt7guJFVf+yPPNXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Q80O9aGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B615C4CED1;
+	Thu, 26 Dec 2024 21:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1735249059;
-	bh=jFSXg/wQWBSsQPC8BzuCSlHXutjgx3MstOqNsihgMPk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NjgFtiKdcXvr7sD42V8I4vRKoHlp8gn5U4/lu+Rw4on73KipXMxJSYtEMzPCLkWKJ
-	 ADm37+1ehhyNJfKHVYytjBi75tH1oGE4LwiSq8K+jDW1JHZLf0ytK7Iulom8QKECNl
-	 Xv60gEm1rxyyJMI0RWliMg++UznsghaIJutV6KQE=
-Date: Thu, 26 Dec 2024 13:37:38 -0800
+	s=korg; t=1735249131;
+	bh=jcyj5tSl4PeG/4jjbOvSRQSVQvAHVmja0i+w17NkK6o=;
+	h=Date:To:From:Subject:From;
+	b=Q80O9aGnYb41uUTK2ROxC6infLZYTvb/0LsRs5PvsJ8gulQmYoo1dGlx4Gzg56uFy
+	 dezmw4NtaxHQ0K/r4KzhcliutmY+ikjCHHPGXy1/B4UduPM7Oy26exiJjzhhgEgBr6
+	 VvvE8rmukUXMCR79D402MTDmaTcRgFpLU3O7DCfA=
+Date: Thu, 26 Dec 2024 13:38:50 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shile.zhang@linux.alibaba.com,rostedt@goodmis.org,peterz@infradead.org,mingo@kernel.org,jserv@ccns.ncku.edu.tw,jpoimboe@kernel.org,chuang@cs.nycu.edu.tw,visitorckw@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: peterz@infradead.org, shile.zhang@linux.alibaba.com, mingo@kernel.org,
- rostedt@goodmis.org, jpoimboe@kernel.org, jserv@ccns.ncku.edu.tw,
- chuang@cs.nycu.edu.tw, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] scripts/sorttable: Fix orc_sort_cmp() to maintain
- symmetry and transitivity
-Message-Id: <20241226133738.36561a6b556550a3f50fc5b3@linux-foundation.org>
-In-Reply-To: <20241226140332.2670689-1-visitorckw@gmail.com>
-References: <20241226140332.2670689-1-visitorckw@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + scripts-sorttable-fix-orc_sort_cmp-to-maintain-symmetry-and-transitivity.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241226213851.3B615C4CED1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Thu, 26 Dec 2024 22:03:32 +0800 Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
 
-> The orc_sort_cmp() function, used with qsort(), previously violated the
-> symmetry and transitivity rules required by the C standard.
-> Specifically, when both entries are ORC_TYPE_UNDEFINED, it could result
-> in both a < b and b < a, which breaks the required symmetry and
-> transitivity. This can lead to undefined behavior and incorrect sorting
-> results, potentially causing memory corruption in glibc
-> implementations [1].
-> 
-> Symmetry: If x < y, then y > x.
-> Transitivity: If x < y and y < z, then x < z.
-> 
-> Fix the comparison logic to return 0 when both entries are
-> ORC_TYPE_UNDEFINED, ensuring compliance with qsort() requirements.
-> 
-> Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-> Fixes: 57fa18994285 ("scripts/sorttable: Implement build-time ORC unwind table sorting")
-> Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
+The patch titled
+     Subject: scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     scripts-sorttable-fix-orc_sort_cmp-to-maintain-symmetry-and-transitivity.patch
 
-Two Fixes:, years apart.  This is problematic for stable tree
-maintainers - what do they do if their kernel has one of the above
-commits but not the other?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-sorttable-fix-orc_sort_cmp-to-maintain-symmetry-and-transitivity.patch
 
-Can we please clarify this?  Which kernel version(s) need the fix?
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Or perhaps this should have been presented as two separate patches.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+Subject: scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
+Date: Thu, 26 Dec 2024 22:03:32 +0800
+
+The orc_sort_cmp() function, used with qsort(), previously violated the
+symmetry and transitivity rules required by the C standard.  Specifically,
+when both entries are ORC_TYPE_UNDEFINED, it could result in both a < b
+and b < a, which breaks the required symmetry and transitivity.  This can
+lead to undefined behavior and incorrect sorting results, potentially
+causing memory corruption in glibc implementations [1].
+
+Symmetry: If x < y, then y > x.
+Transitivity: If x < y and y < z, then x < z.
+
+Fix the comparison logic to return 0 when both entries are
+ORC_TYPE_UNDEFINED, ensuring compliance with qsort() requirements.
+
+Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+Link: https://lkml.kernel.org/r/20241226140332.2670689-1-visitorckw@gmail.com
+Fixes: 57fa18994285 ("scripts/sorttable: Implement build-time ORC unwind table sorting")
+Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
+Cc: <chuang@cs.nycu.edu.tw>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Shile Zhang <shile.zhang@linux.alibaba.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ scripts/sorttable.h |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+--- a/scripts/sorttable.h~scripts-sorttable-fix-orc_sort_cmp-to-maintain-symmetry-and-transitivity
++++ a/scripts/sorttable.h
+@@ -110,7 +110,7 @@ static inline unsigned long orc_ip(const
+ 
+ static int orc_sort_cmp(const void *_a, const void *_b)
+ {
+-	struct orc_entry *orc_a;
++	struct orc_entry *orc_a, *orc_b;
+ 	const int *a = g_orc_ip_table + *(int *)_a;
+ 	const int *b = g_orc_ip_table + *(int *)_b;
+ 	unsigned long a_val = orc_ip(a);
+@@ -128,6 +128,9 @@ static int orc_sort_cmp(const void *_a,
+ 	 * whitelisted .o files which didn't get objtool generation.
+ 	 */
+ 	orc_a = g_orc_table + (a - g_orc_ip_table);
++	orc_b = g_orc_table + (b - g_orc_ip_table);
++	if (orc_a->type == ORC_TYPE_UNDEFINED && orc_b->type == ORC_TYPE_UNDEFINED)
++		return 0;
+ 	return orc_a->type == ORC_TYPE_UNDEFINED ? -1 : 1;
+ }
+ 
+_
+
+Patches currently in -mm which might be from visitorckw@gmail.com are
+
+scripts-sorttable-fix-orc_sort_cmp-to-maintain-symmetry-and-transitivity.patch
+lib-min_heap-improve-type-safety-in-min_heap-macros-by-using-container_of.patch
+lib-test_min_heap-use-inline-min-heap-variants-to-reduce-attack-vector.patch
+lib-min_heap-add-brief-introduction-to-min-heap-api.patch
+documentation-core-api-min_heap-add-author-information.patch
 
 
