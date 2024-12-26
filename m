@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-106171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901199FCE90
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 23:39:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C3F9FCEA8
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 23:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3366716255E
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 22:39:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4221883647
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 22:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6C1C0DF3;
-	Thu, 26 Dec 2024 22:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB831D63F2;
+	Thu, 26 Dec 2024 22:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwt3JaJP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKqKsgC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC5E1BD4F7;
-	Thu, 26 Dec 2024 22:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56C31D63DF;
+	Thu, 26 Dec 2024 22:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735252740; cv=none; b=FWxgwO+H+4XRZ1d0jrnLkhHdE7I5wToBg25tFkzlKWhC/m984yaWHG4+gspuup69IxLyvTvMr53O3qHqd5GQocqYAXIz/zKX1ed/YtXQAmfZ0S+ynObp4PMD9VeIhDIuKUx1ZR4oZ9ij2IJk+w3T2DRtdRJTqlyrQ2ejKY/XB1c=
+	t=1735252748; cv=none; b=LaGCSTuzl/ED7s3eZxKZH4YAG/LiKFXwiCz4YeGR9I9r6KebEYs309qp1wwMjKmRQIzA2wAQ4LlZNMKF30RAPfS836QDKURce9Y5drkHdgn3PsHBuI8WbO4dnpOjXojm3oTgG301KHuGie+0wt9ex7A+my1uQhkRedPAsZRIa8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735252740; c=relaxed/simple;
-	bh=PRnqGqye9XLcM7XryqGktyEXPjFZialyNlgxDprsjto=;
+	s=arc-20240116; t=1735252748; c=relaxed/simple;
+	bh=+2e40L4naeHkPBU1a9Pkqe/W3ex19iNFNzjK1/IFaEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ao0Io2NIatBmAX0DKULR4SjnCFM+8FqWZq+5bsc411Sblqpdm0Fydbh3PgMroALxJILm1dK9cI3aEqGXOSvC2URXsMPV2P5FMI67OtPtK0jjmKK6dVUz9pfeW+imn/VVp0+q2m7mBRdGrRAcj4jaT4I2o0MMRMGw4GgN7rs89gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwt3JaJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A887C4CEE1;
-	Thu, 26 Dec 2024 22:38:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sk1it+NsxgagPacNnBTwvpRGe1IZoDCwytW5ce0OhCBKcjyUnNog1pmsP9l0P6uJaLVP6SG4ZoOa81xTF/YU2ndakcHp/8ri/2o13MEEAZwuFkVfkc+DojOjm+IWB0ZM3m+IHx/iUzXK7JRZZe4jBjwWMx6nXOsyv1Iqm2ywpuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKqKsgC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C346CC4CEDC;
+	Thu, 26 Dec 2024 22:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735252740;
-	bh=PRnqGqye9XLcM7XryqGktyEXPjFZialyNlgxDprsjto=;
+	s=k20201202; t=1735252748;
+	bh=+2e40L4naeHkPBU1a9Pkqe/W3ex19iNFNzjK1/IFaEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwt3JaJPPleS9RIrUeVFTmRq/7VGdHXr7JFCCzjAVTyUAFdWHDsiP67YyCqjwch2x
-	 wEqHhau5xfAiphIyg2obojARRMuFzbhDO7kQ0bCTmFDO6Prpc3I167jqXM9zeG75Zx
-	 LVUrEmuTsyWiEJ6HWYYerRE0Oqj6+eNAyIJlzJiVNyac8jFOXz8yLHSAcTW/zhfXgp
-	 eXBI4Gqky32dzMKwz+ZnNIM/e/RlkkvsZspSKWBGui6ppLcXXQPslXEmnzFNZ+K5gs
-	 66slMAD0K3b8Agg2YRTnvbkg0BKUJVQ6Z5/hQloqwkw6xHIc70iQTExiGsgJCGAh3W
-	 GcFSF2KHGQz1g==
+	b=gKqKsgC8fEZeM5iVSZQ20UBGeTYyTJBFpL6t98cTGlX6FXzGbfRsReHsJd1+qHep4
+	 VazZPabKP5KS8TxJct7Hb30Ovxi8ie5dMsAwQneVrCfCIHdyFYRDqn8etIguv18GcS
+	 ljz017BbYoYg6mtzwuLE/6cTzUc1GQxjsGnW3kgLFh224xDTV+8VBM4RaSJbZ7tSq1
+	 GyK0cP4tUy83XidFIpLGS8Xxjc0IVeG9M7O9sjnM485lVGClriM0JLAtzThcZgHjgA
+	 +5SczRrhCrxVQ8V4s+GGF+H0rzkAzn3OzWNCBe1mPIowFtWnM8wOQC0FG0UbdkZYgN
+	 MJNsysTHOVv0A==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Anastasia Belova <abelova@astralinux.ru>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	David Dai <daidavid1@codeaurora.org>,
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Andy Gross <agross@codeaurora.org>,
 	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
-Date: Thu, 26 Dec 2024 16:38:31 -0600
-Message-ID: <173525273254.1449028.13893672295374918386.b4-ty@kernel.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org
+Subject: Re: (subset) [PATCH] soc: qcom: smem_state: fix missing of_node_put in error path
+Date: Thu, 26 Dec 2024 16:38:38 -0600
+Message-ID: <173525273246.1449028.16739092974223949443.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203084231.6001-1-abelova@astralinux.ru>
-References: <20241203084231.6001-1-abelova@astralinux.ru>
+In-Reply-To: <20240822164853.231087-2-krzysztof.kozlowski@linaro.org>
+References: <20240822164853.231087-1-krzysztof.kozlowski@linaro.org> <20240822164853.231087-2-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,20 +64,16 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Tue, 03 Dec 2024 11:42:31 +0300, Anastasia Belova wrote:
-> aggr_state and unit fields are u32. The result of their
-> multiplication may not fit in this type.
+On Thu, 22 Aug 2024 18:48:51 +0200, Krzysztof Kozlowski wrote:
+> If of_parse_phandle_with_args() succeeds, the OF node reference should
+> be dropped, regardless of number of phandle arguments.
 > 
-> Add explicit casting to prevent overflow.
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> [...]
 
 Applied, thanks!
 
-[1/1] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
-      commit: 89aa5925d201b90a48416784831916ca203658f9
+[1/1] soc: qcom: smem_state: fix missing of_node_put in error path
+      commit: 70096b4990848229d0784c5e51dc3c7c072f1111
 
 Best regards,
 -- 
