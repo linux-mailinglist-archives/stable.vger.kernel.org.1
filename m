@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266079FC752
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 02:21:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8FA9FC757
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 02:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A057C18826D9
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 01:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A91BE162B2C
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 01:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD39F4C9F;
-	Thu, 26 Dec 2024 01:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A1CC8F0;
+	Thu, 26 Dec 2024 01:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bq52eqzE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzQXmeMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3EBEC5
-	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 01:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C4BEC5
+	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 01:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735176106; cv=none; b=OVdAlFTHLyRMx7UScM22IVWvQADRDzXh4xu9sU0JldbU3Nq2TI812y3hE5/KYinK0Jx6su2gUzcakz3ym/6SoK+JxQXjRpWBOTZ5IO3yqgFgy3GgUEANgoYWWW7R+DFCGkY5IK4rTD3hiHPzl3eW531tyPEfkM3ZGlJLyRMWKAI=
+	t=1735176108; cv=none; b=DgrkVd/LQ5GsypSYctI+3dQNjuckLvZ8evFFFdDdaWAjXU66yV3kYtzaaxPm9BI1y8yaBkxtrmLphgBKXhUR3qopeA7vP9vZn4CiQfXXaw4pexoktVvliNuz3ZZfjxZrSA2/gxGIQZDP7kmLb2lbiQFaMnquJ5YYVnLS/1gccIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735176106; c=relaxed/simple;
-	bh=noH+ZsL33efsKxtlkW6ViXOhVLU4yLWuCqxXfNgXtS4=;
+	s=arc-20240116; t=1735176108; c=relaxed/simple;
+	bh=WDmby4bpkgO2o6jl0NV24nJeOm0c6WJA1wnAA/qYanQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YRQ+V4pzjxB/gzAkM2MAUHG+3OJYIC0HFvfNNE1hSotXbKN4jawX4JUGcD9crRhpph+815EXXuaadrv1byOlsX6huOLRYKVv3nbdTIkaFoCB6wHU+NFps8vkXUPcWOpY7VltTTkyMS1hR3XlzZOyYEEdN4pRUNGoth1yDE5+GVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bq52eqzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98023C4CECD;
-	Thu, 26 Dec 2024 01:21:45 +0000 (UTC)
+	 MIME-Version; b=Dq80WPGLVo/xDqe2NKBoU4B33hRj7rTm1uSX+0VMNRHGeeHX3zKL9iSb/paQtqm7mk0Tf6xO8yXNvqXBvnvsfc++Czr0Iv6CQZGQkOI4h9bo8phu9SuaxmsgEg4WRgZYZygIQ47JU18Kd1g+yAQb/BLIW6USxHYxUxNLWS3Uv5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzQXmeMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957AFC4CECD;
+	Thu, 26 Dec 2024 01:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735176106;
-	bh=noH+ZsL33efsKxtlkW6ViXOhVLU4yLWuCqxXfNgXtS4=;
+	s=k20201202; t=1735176108;
+	bh=WDmby4bpkgO2o6jl0NV24nJeOm0c6WJA1wnAA/qYanQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bq52eqzEEWF8R4n4GgV7Vd0iNOHi/bSuDziE//PFVejhB2ruHLMhxlDFBn63jhAeX
-	 7Tsjzg6MXIdUVrJ7XycWPlxM8GM5qNAUyuWQLfIwMXu7fmD1yR68flyZrBsZDh+uKi
-	 UCjAi626XLiUlQvc1q+y9pZ/tzAnRrYfdOGZZLNvzGuxJwoPiW5q5v24nxQUBDFWcJ
-	 CU3SpgOo4oUiv3azdVir22jVmWudAIYBAQFy7XTyEOJwKe3w18EHiz6ojwO4JXVZl7
-	 p54bmwO04fKZF3s6T6CxgbS7qMwN3Xyrm6IEc89JaTFsamw4iTqAJSNvuZqlDq2mSq
-	 9RA1gjPuNOdbA==
+	b=UzQXmeMQM72UfzZqxnNgkdhREBBgzFGBy/RLYxidb3aN8zMXaGhkQDMG/pwMpMEXW
+	 lOCDayqCeeawrWeMS2FImQh7YhVLK/oZot2B7eOOfku6BAjb+UQF1XeaDwAG6HZcsp
+	 6vbbygMxF4rd41cYsf/jG+QHrBBO6Q6xone8iRgn+mDA/LTQkIOGReGLN22VvcDSLZ
+	 0EsOQVipE1jIc9vbwcjALwLKVSlkhsRbpM0rgvY5EDlq5JAieN8DdavJtn+EZ2A+Df
+	 hvkVZ8paLXFEEMGx61ZxGe5qxwyOtvhUShNBz5gvJ7GX+TfPUnKoXBV5YP67V29Wrg
+	 qnZeuvdjQAoCA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: WangYuli <wangyuli@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4~6.6] MIPS: Probe toolchain support of -msym32
-Date: Wed, 25 Dec 2024 20:21:44 -0500
-Message-Id: <20241225181141-941d612a552d1f6d@stable.kernel.org>
+Subject: Re: [PATCH 6.1/6.6] MIPS: mipsregs: Set proper ISA level for virt extensions
+Date: Wed, 25 Dec 2024 20:21:46 -0500
+Message-Id: <20241225174433-a6ea649ee16c8b60@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <183F7B3F0A07AC93+20241224060918.15199-1-wangyuli@uniontech.com>
+In-Reply-To:  <38A42FE743EFB36A+20241224062239.19248-1-wangyuli@uniontech.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,7 +63,7 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 18ca63a2e23c5e170d2d7552b64b1f5ad019cd9b
+The upstream commit SHA1 provided is correct: a640d6762a7d404644201ebf6d2a078e8dc84f97
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: WangYuli <wangyuli@uniontech.com>
@@ -76,24 +76,24 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  18ca63a2e23c ! 1:  8e84f3858fcf MIPS: Probe toolchain support of -msym32
+1:  a640d6762a7d ! 1:  b6d3079a55fb MIPS: mipsregs: Set proper ISA level for virt extensions
     @@ Metadata
       ## Commit message ##
-         MIPS: Probe toolchain support of -msym32
+         MIPS: mipsregs: Set proper ISA level for virt extensions
      
-    +    [ Upstream commit 18ca63a2e23c5e170d2d7552b64b1f5ad019cd9b ]
+    +    [ Upstream commit a640d6762a7d404644201ebf6d2a078e8dc84f97 ]
     +
-         msym32 is not supported by LLVM toolchain.
-         Workaround by probe toolchain support of msym32 for KBUILD_SYM32
-         feature.
+         c994a3ec7ecc ("MIPS: set mips32r5 for virt extensions") setted
+         some instructions in virt extensions to ISA level mips32r5.
+     
     @@ Commit message
-         Link: https://github.com/ClangBuiltLinux/linux/issues/1544
+     
          Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
          Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
     +    Signed-off-by: WangYuli <wangyuli@uniontech.com>
      
-      ## arch/mips/Makefile ##
-     @@ arch/mips/Makefile: drivers-$(CONFIG_PCI)		+= arch/mips/pci/
+      ## arch/mips/include/asm/mipsregs.h ##
+     @@ arch/mips/include/asm/mipsregs.h: do {									\
 ---
 
 Results of testing on various branches:
@@ -101,5 +101,5 @@ Results of testing on various branches:
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
 | stable/linux-6.6.y        |  Success    |  Success   |
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
