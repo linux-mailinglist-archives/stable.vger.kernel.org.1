@@ -1,115 +1,153 @@
-Return-Path: <stable+bounces-106178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644B09FCF14
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 00:07:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802749FCF23
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 00:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2491A3A0340
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 23:07:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30AC53A039A
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 23:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCF819992C;
-	Thu, 26 Dec 2024 23:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669D11C3F1C;
+	Thu, 26 Dec 2024 23:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x76JMJH5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMTWVS0l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2408190077
-	for <stable@vger.kernel.org>; Thu, 26 Dec 2024 23:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1278314A0A3;
+	Thu, 26 Dec 2024 23:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735254473; cv=none; b=B/mXDbwNUDGLzwr0emQ3DhHPklyDgRCIjd2EusQdT0g0MbETo7JohV6wgaAAvguQe52miKZ8NKO+jXCToVAoxA90Bv6LOOPi3Q98BPhMVvgkuU1MUma4k1QKJNZpaMKu/F3j6w2LVxAfHhPKwvsaaBV2wKtY3vKyhWuvWIXpP3U=
+	t=1735255870; cv=none; b=Yb68gEjSFyC6mvgrD++TLcVs2YhNZq3R5sYdE8AiTJPqQEcqoJ0QjCe76quUbqAckeSwb3mR+hjocXIZe71iPPHgTldQ5hMKm93UpmQNoG3pwYu0B0OyvBPnCTZG4w0rAUfAnmDLFmwcCUQLdjic3jnDH9p0dfUtnjUuBWy2q28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735254473; c=relaxed/simple;
-	bh=T7m1ZfI5nt6EBHnKwYOGho4eD3nQbiorgxa7jVOgQzg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aOVgYZr4nTggpdbyWlEjc0Z36KrCMRBYFaOKcEvKbX9yxd/q8XgmbeQThNEvsTT0adHzXUkQI6v2mG/2RM39elNeY+9QdPa+01Nkx0KgzRMqpM1LJS40NMxLwryFjmWC+CuKKReEVc7CiL+i26EOJPKK2LviWzc1TCvlDfUNvcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x76JMJH5; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4678c9310afso1715051cf.1
-        for <stable@vger.kernel.org>; Thu, 26 Dec 2024 15:07:51 -0800 (PST)
+	s=arc-20240116; t=1735255870; c=relaxed/simple;
+	bh=FeK1Mls2SIsS7vrOJ+4ipEz/GICQEV63ehcLAVorveU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p1VzHF4f2a1Jmx8Z2Of0f8MhrDhSnZzt5iZpgNAJp1tkggD9BA/5FIj5wjo1tBhdEy/Uy2Hgcu1wLcfvDFu9hDN0wuGeVz9xiBGxr06zERoAGqsJulVeoDQa35aBvUitBU84yB1XVn14dXmnxjZ3suIq36ObhwoGRqzayD4t8jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMTWVS0l; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2efded08c79so6353553a91.0;
+        Thu, 26 Dec 2024 15:31:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1735254470; x=1735859270; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bRomBso2hHE7YrImWq0wbVcT1dst09ldMkIN2FASxJ0=;
-        b=x76JMJH5OB3TrRg5Wtfyc+Wt/3N+UPTP5HKDuWRh4mvgQ4V/YXTTDzJoqbyaRfU/g4
-         4X62RRaldd1PLHng1FMk9hqeFUp1wRgmpSBHUyIw6IPzsTUGagjXfZ8Cgs0j27o26EoK
-         gMJk78Yyadlt293hbhJxkkfcTc52rRnQFFTg4uIOXxPWKEwWaUkHsMj85xGgEj9ClouI
-         o0yb7WyXyllusV6Vqr9P1ZjrAt+ZGPbTnYPSGcA+cAxrTIkVySVki5oSdzPHe8Vvx9zc
-         wpIOfVkqEiNshLx0sN6WRK0P7oK6KUKF35h0u3HjyVZMLQ4WmFC6lJUrANVgoZsPoD/i
-         8RcQ==
+        d=gmail.com; s=20230601; t=1735255866; x=1735860666; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kLv3i0F8oV6VEkHswooSetE7hPOYGpCT7QiQv9dslCc=;
+        b=GMTWVS0lLNe/+IAyYUuE6TyXUEXp56Yx2uxHhbGFw112Koo1eMNqvdj+r4YWLHk77Y
+         vlMzZKCmOUlbWSl6wxIHm7Et3GYAs/32DXrmc5btasWaVzE2wQqphYFZvxXu5qz2TikX
+         eLQtcW4JUnVbGcqYIQrsRzPJdW4CTKomPorJTDm5+p+GlWyRt1NH3qDjwjxMEGfOMvSY
+         w2F4HVCLAWKO/SZ3X2p8RbD0fW42HU6B48bjP1y0keN6Lj3nu91thoGCD/lgHWndb4Q6
+         c8Ojn+OzVV8uJv3oC26DD7NVIe97uE8OMfB86YycrFWXL72XFrfuOrxrXVy+xLmmGwZw
+         augw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735254470; x=1735859270;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bRomBso2hHE7YrImWq0wbVcT1dst09ldMkIN2FASxJ0=;
-        b=ApHGgX2Lv+l1/vMM4Jx9s11vWx9t18vg/WU2Uh4uog3ZokmP8XoE8pJCTcDRcl1Gl2
-         Fov+Q3aZaFiOz46T8mdfLEp1n21N7PsU5EwUObOMq1Xfiod8Z6wVyViZIHMixHIQMgCr
-         cz8Uxm6ztBz2DFWdxZn6kdwYSZKCgMwRjWtyog/yQkSDn9XVgtmd/ODIzkLNpCAHs6iQ
-         gwaMqyEJDJnNeUOWGrNlKCbtp2g7aEO4FPiNhVjHutHiQ79vjaP7I5hd1M4dO5kSBliF
-         CoLz4Y0UBB/in0YUHgy96iAXaKrMZaHMu7o7sZYJh8lZoEOHjgud8GQ5vFPX4zn7bjbw
-         evrA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMTvmQubuHIdiGBDxI89QbL4sWB7bR4rLeQVEa4DDJARzSmbFIgczjwsDWdU06tiQdvnzsZ1g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxooVdsWYk/SFDIgw9f8358Lj/aenxoLqH8T7xYrV7U+khKyqaZ
-	bQu84mEXsd0L97weBDsQxCSXvQA/qUWYNde2Z0VctdGZLL1U58vRCL5TYcoq7E3wSPgnfMbbIRv
-	O3D8r4UKhO5Hq7Oe+bhZK/Eafq3Ta7ImbJGhY
-X-Gm-Gg: ASbGnctsHnOObty9qUBxuuCmqROpiM/ZWiPCieF0jkgbmNW9CDtVmTXD6WH8G2QrZ3r
-	Nespi60DWCh441fgbLaJeyBzx/hXugml8LSJAug==
-X-Google-Smtp-Source: AGHT+IFhjdoMUGCzHBQmzdGdz4JrsyT+H2pqbPiCnL0Gl+iLY8mS0CNjTft2xGk+ZwISn3BwzOAc38wfaZi5URoujxU=
-X-Received: by 2002:ac8:7f82:0:b0:466:8e4d:e981 with SMTP id
- d75a77b69052e-46a4bfc6904mr18862911cf.3.1735254470272; Thu, 26 Dec 2024
- 15:07:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1735255866; x=1735860666;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kLv3i0F8oV6VEkHswooSetE7hPOYGpCT7QiQv9dslCc=;
+        b=UYj3YTIf++DPnT/HnEfDltq8R084NPbJX1bBh4wbykhKgzA97RfAKAz/ddcyptK+4D
+         Scgkj5ROAbI3HPAzFSGRjIl6sBgPQwNezhT27V3LsVT/xwXwrnEpXd8+CAVQhPLc7ibi
+         L+H1D6mOySA53SNaXDPJ0eUn9unVFcwVLJa+WjebIlZnxf0dbGH+j9sFCveFXdoFfuFF
+         j63FCQcGLBMBUYKGGmu43Vob5TFP1sFXq/6TRZjs7xovaa0OhZgpVk0YHbJ5lC95zk/6
+         eEkbiAsbyQqC/vsKwfoabLeqB/kSn3jCY56dCpWEITGKw7wM3vJMwVGYFjQp7+qiqwAl
+         Y22w==
+X-Forwarded-Encrypted: i=1; AJvYcCW+VJcQEP/IODUipkm473+4r1QPDK/t7nTqtqVjHmoE3p8EHXp/EtB7++FuY/yY9513YlDS7RbTsKGf8Po=@vger.kernel.org, AJvYcCXabJR3BDyDdTW3ZMmH837FUKNGPKXqmne/igVbeZYMrWz+cxQZuPqIOzmbZl7Hm31qG6zPROKM@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFGU2iDirqd0TLD7ZsYW/93hGgWxBu3Kjcv/OHCCfg6vRgJpNI
+	3i6M4bVqA/WlzD9JQcBHs+5LU3ibh5uMEHhWiTrKen5RKoQM9cju
+X-Gm-Gg: ASbGncsxI5WYSkyK//EHrmj+d7nNoNxEGFJvMOIAzWi4YFhuowu1ksuSU/jBXIs4LxQ
+	jB+UdVRcoDikqPw9EMduEqHhWCnduNdUV2kp6+R6iJ0/lg6/sj0gOAQk3C3XOLwBgxOnykFt3dq
+	arnrrNVg8YhM74sjcbZpTO9YbaEJEkPiqcbgRo7ihG8b2sE21PPwze96r4K9JwKnuBgxrOO10KF
+	zO0RgnCyYDls0OeZBXZhRws+zE/8l3ISzPdKaCyport//wKSHZ34DVsTLDv5jsKO9cYF7jjL4Cc
+	+JhO0MS0
+X-Google-Smtp-Source: AGHT+IGcbbx1BsmDb8Eeab5wdwR6nnFwd35Vwa57Ne8234uX+CyUDrJi1Oe+VxHagZLNZAZ+8U4whw==
+X-Received: by 2002:a17:90b:4c0a:b0:2ee:f22a:61dd with SMTP id 98e67ed59e1d1-2f452ee08e5mr34270717a91.32.1735255866183;
+        Thu, 26 Dec 2024 15:31:06 -0800 (PST)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f447883b0csm16060410a91.42.2024.12.26.15.31.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Dec 2024 15:31:05 -0800 (PST)
+Date: Fri, 27 Dec 2024 07:31:01 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: peterz@infradead.org, shile.zhang@linux.alibaba.com, mingo@kernel.org,
+	rostedt@goodmis.org, jpoimboe@kernel.org, jserv@ccns.ncku.edu.tw,
+	chuang@cs.nycu.edu.tw, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] scripts/sorttable: Fix orc_sort_cmp() to maintain
+ symmetry and transitivity
+Message-ID: <Z23nNV+zM101SltV@visitorckw-System-Product-Name>
+References: <20241226140332.2670689-1-visitorckw@gmail.com>
+ <20241226133738.36561a6b556550a3f50fc5b3@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241226211639.1357704-1-surenb@google.com> <20241226211639.1357704-2-surenb@google.com>
- <20241226150127.73d1b2a08cf31dac1a900c1e@linux-foundation.org>
-In-Reply-To: <20241226150127.73d1b2a08cf31dac1a900c1e@linux-foundation.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 26 Dec 2024 15:07:39 -0800
-Message-ID: <CAJuCfpFSYqQ1LN0OZQT+jU=vLXZa5-L2Agdk1gzMdk9J0Zb-vg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] alloc_tag: skip pgalloc_tag_swap if profiling is disabled
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kent.overstreet@linux.dev, yuzhao@google.com, 00107082@163.com, 
-	quic_zhenhuah@quicinc.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241226133738.36561a6b556550a3f50fc5b3@linux-foundation.org>
 
-On Thu, Dec 26, 2024 at 3:01=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Thu, 26 Dec 2024 13:16:39 -0800 Suren Baghdasaryan <surenb@google.com>=
- wrote:
->
-> > When memory allocation profiling is disabled, there is no need to swap
-> > allocation tags during migration. Skip it to avoid unnecessary overhead=
-.
-> >
-> > Fixes: e0a955bf7f61 ("mm/codetag: add pgalloc_tag_copy()")
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > Cc: stable@vger.kernel.org
->
-> Are these changes worth backporting?  Some indication of how much
-> difference the patches make would help people understand why we're
-> proposing a backport.
+Hi Andrew,
 
-The first patch ("alloc_tag: avoid current->alloc_tag manipulations
-when profiling is disabled") I think is worth backporting. It
-eliminates about half of the regression for slab allocations when
-profiling is disabled. The second one I couldn't really measure, so I
-think it's not as important. Thanks!
-
+On Thu, Dec 26, 2024 at 01:37:38PM -0800, Andrew Morton wrote:
+> On Thu, 26 Dec 2024 22:03:32 +0800 Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
+> 
+> > The orc_sort_cmp() function, used with qsort(), previously violated the
+> > symmetry and transitivity rules required by the C standard.
+> > Specifically, when both entries are ORC_TYPE_UNDEFINED, it could result
+> > in both a < b and b < a, which breaks the required symmetry and
+> > transitivity. This can lead to undefined behavior and incorrect sorting
+> > results, potentially causing memory corruption in glibc
+> > implementations [1].
+> > 
+> > Symmetry: If x < y, then y > x.
+> > Transitivity: If x < y and y < z, then x < z.
+> > 
+> > Fix the comparison logic to return 0 when both entries are
+> > ORC_TYPE_UNDEFINED, ensuring compliance with qsort() requirements.
+> > 
+> > Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+> > Fixes: 57fa18994285 ("scripts/sorttable: Implement build-time ORC unwind table sorting")
+> > Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
+> 
+> Two Fixes:, years apart.  This is problematic for stable tree
+> maintainers - what do they do if their kernel has one of the above
+> commits but not the other?
 >
+TL;DR:
+Any kernel containing either of the two commits requires a fix.
+
+> Can we please clarify this?  Which kernel version(s) need the fix?
+> 
+The issue originally appeared in commit 57fa18994285
+("scripts/sorttable: Implement build-time ORC unwind table sorting"),
+where the comparison function was:
+
+    return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
+
+It was later updated in commit fb799447ae29 ("x86,objtool: Split
+UNWIND_HINT_EMPTY in two") to:
+
+    return orc_a->type == ORC_TYPE_UNDEFINED ? -1 : 1;
+
+Both commits introduce the need for a fix, as the comparison logic in
+both cases violates symmetry and transitivity.
+
+> Or perhaps this should have been presented as two separate patches.
+> 
+For 6.1.y and earlier kernels, applying this patch directly is likely
+to cause conflicts. A separate patch tailored to those versions will be
+required. Please correct me if I'm mistaken, but my understanding is
+that after this patch lands in Linus' tree, I should submit additional
+patches for 6.1 and earlier versions to the stable mailing list with
+the appropriate subject prefix.
+
+Regards,
+Kuan-Wei
 
