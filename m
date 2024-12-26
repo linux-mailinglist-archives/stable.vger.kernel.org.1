@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-106157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2549FCCD5
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 19:31:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192D29FCCFF
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 19:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9234018835AB
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 18:31:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA62C18840A8
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 18:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C371DD88F;
-	Thu, 26 Dec 2024 18:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D401DF279;
+	Thu, 26 Dec 2024 18:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BicnnEWB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6/C2C4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6EB1DD867;
-	Thu, 26 Dec 2024 18:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0171D4332;
+	Thu, 26 Dec 2024 18:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735237651; cv=none; b=nZFVxr04ZTbYvGnLW5WbTMcpANmP8z3ocizHNjTlEs3wqQJtg/Bqn1XEtMGAeBURrTfXNE5O7hMj7XYUOAnlSFlN7t2+XEn2hIjHTz+PeViQTtBk8/f19wTv139kwRiFQH9/zi8QyRfJDYbQ8l2sZG5UIp4POkVG4NHSsKXP31g=
+	t=1735237668; cv=none; b=mE1t3BmTdAJzI1E1prGGHz+ZX6nEB8GMqRCMCYVy3lSpmLYbshNm+Yex3KvpNiMk7HALhkM8c9eEIQXqjDSbu3kLDor93ty28d+W1B84RZPR9VCp9sqBu4xc5c7xSOMAA0a/WuPGf0+uKb8kKV+bVw+DKhv9I2PSoqw0UEyw+xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735237651; c=relaxed/simple;
-	bh=cZ/wRP8jq1Nbg+yg2cXwCcnW41Z4fVTy7Wm64hE/5+E=;
+	s=arc-20240116; t=1735237668; c=relaxed/simple;
+	bh=EKX8CQK+FN1ekhUaKnzFVscZs31aUn6srbryd+66yOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GV5m2/LJGOr8etnudFAhVmCnGoGgolWoumK4ytBmP9mgFriwZY1TuRSeONgi0axAhw3k062SKJFv6pNZ8p4BLQXplMF91oRKwA/XYwRSDmla9yoqh6MNz3Cd52ulvx35daFppwQlPGDr4ap/NVjQBWAWhIInA9pt9uMzhvSY17k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BicnnEWB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC49C4CEDE;
-	Thu, 26 Dec 2024 18:27:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Of/0bHLgeuxKTUc7MM0VEfBI3a3LCHUROp7/v/NKp7djVxTKUSh202UH8gtWeupQ/H80PUdofk6fCxQjm+9hheEcSg2WcKuCVc/ufxg4bMebtKj6HrHz9OJalm958MOb0ygNUWecBaEBVHKWjhMjBQ/4Imnsz1YC/CnNmAEW07k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6/C2C4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D77C4CEDC;
+	Thu, 26 Dec 2024 18:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735237651;
-	bh=cZ/wRP8jq1Nbg+yg2cXwCcnW41Z4fVTy7Wm64hE/5+E=;
+	s=k20201202; t=1735237668;
+	bh=EKX8CQK+FN1ekhUaKnzFVscZs31aUn6srbryd+66yOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BicnnEWBWZ9WTcrswrZu+NkVnmcPsQFj7D8or/DHtCILUp1Z4VlZOEHwm/fJWVSoj
-	 3BtfNQCvijofIZK+HeaRxbRKU04GCcsxnaVsFnPOwJU/f6s6hbeKt+n2cPIwLjpCJz
-	 brp3x2WGHp1nmxAmcdhQy7cuLXrINXdg6IX074S6fEzriw4CNYkhUE7SXCvtZH72bA
-	 tIT0cI1BM6LTrSam5SnszX51bHp85PAp+diLMI7eDorUAUbOUoid74lyyT4yr+L4YU
-	 tzHOkokEZyj9tvJs5vM40E2FIkKl5r9iSB7sbU0ZACULgxREczOoAlaCRXGkqs/8CN
-	 Mt+X7Fs09VCgQ==
+	b=d6/C2C4mpGwZLOf8oDQ92vz00s5LqV58/6XVHmx5mxvjKJTgg6bCQYKPfwLfrOoQp
+	 xqnKGNoy7acdTqM+XtACtStYWtzfZscXCXWaB0NXdZTP5cxT7Wi8EBIrgNv0E0yceU
+	 M0SdFe3e7+ljFaD0z38AdPAUUKjAdaPLwUUGsQbqxQG9hvGnpPVeOq5lr2A2+NNWJ3
+	 gnbbqMXMqGW6OTYD9kisgvotFwuxSLQc5GXi3rLNPWrWcHCXE8Ayc3JFtooH0xDW2I
+	 Xp+luAJc8RiduZw+yn0cIWCmaukpnzv16cyGhORU2QJlOTChXvtkff4+g3Il5asPbV
+	 k30OWA5mWQ0cQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: mturquette@baylibre.com,
-	sboyd@kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org,
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Cc: Konrad Dybcio <konradybcio@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
 	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: (subset) [PATCH 1/2] clk: qcom: gcc-sm8550: Do not turn off PCIe GDSCs during gdsc_disable()
-Date: Thu, 26 Dec 2024 12:26:49 -0600
-Message-ID: <173523761377.1412574.15694387383996577078.b4-ty@kernel.org>
+	Taniya Das <quic_tdas@quicinc.com>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Ajit Pandey <quic_ajipan@quicinc.com>,
+	Jagadeesh Kona <quic_jkona@quicinc.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] clk: qcom: gcc-mdm9607: Fix cmd_rcgr offset for blsp1_uart6 rcg
+Date: Thu, 26 Dec 2024 12:27:03 -0600
+Message-ID: <173523761376.1412574.892326612734171327.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241219170011.70140-1-manivannan.sadhasivam@linaro.org>
-References: <20241219170011.70140-1-manivannan.sadhasivam@linaro.org>
+In-Reply-To: <20241220095048.248425-1-quic_skakitap@quicinc.com>
+References: <20241220095048.248425-1-quic_skakitap@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,24 +70,15 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 19 Dec 2024 22:30:10 +0530, Manivannan Sadhasivam wrote:
-> With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
-> can happen during scenarios such as system suspend and breaks the resume
-> of PCIe controllers from suspend.
+On Fri, 20 Dec 2024 15:20:48 +0530, Satya Priya Kakitapalli wrote:
+> Fix cmd_rcgr offset for blsp1_uart6_apps_clk_src on mdm9607 platform.
 > 
-> So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
-> during gdsc_disable() and allow the hardware to transition the GDSCs to
-> retention when the parent domain enters low power state during system
-> suspend.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/2] clk: qcom: gcc-sm8550: Do not turn off PCIe GDSCs during gdsc_disable()
-      commit: 967e011013eda287dbec9e8bd3a19ebe730b8a08
-[2/2] clk: qcom: gcc-sm8650: Do not turn off PCIe GDSCs during gdsc_disable()
-      commit: a57465766a91c6e173876f9cbb424340e214313f
+[1/1] clk: qcom: gcc-mdm9607: Fix cmd_rcgr offset for blsp1_uart6 rcg
+      commit: 939c28ad2b8879920afea06fba5722ec8695ee7f
 
 Best regards,
 -- 
