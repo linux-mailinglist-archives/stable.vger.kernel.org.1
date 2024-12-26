@@ -1,115 +1,159 @@
-Return-Path: <stable+bounces-106163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DE39FCD92
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 21:21:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81599FCD95
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 21:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D61B7A0F88
-	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 20:21:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 804B018824FB
+	for <lists+stable@lfdr.de>; Thu, 26 Dec 2024 20:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6666D1474B8;
-	Thu, 26 Dec 2024 20:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10D01482E7;
+	Thu, 26 Dec 2024 20:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="LN/cNB80"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGcLUbJ+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EE061FDF;
-	Thu, 26 Dec 2024 20:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A413518E1F;
+	Thu, 26 Dec 2024 20:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735244505; cv=none; b=gdYsBN1aqMAYM6s//A7p1L1fSo0Gf7+wlby/qaYLSVYyLobTQraH3pOt/3YrYQTBDpBpGfbNWkPiuVkGCWAUxmKzriEEKJlVmcWkSov9CZXBkjh5755oN83gZK3C/stKcpxpqn1/tld2hRwSV+LNrxayd6xIcdf055xht0BQuWo=
+	t=1735244562; cv=none; b=jkEL4q2iUk9jrQWNKHRNCBfUlpE7ScNgV9VrA2axrE+0W97SUxx0Jy5g0blh1FLsBnSoM7GVBlvFOWuBROxOiXUmuTIwcD2nUpuyz7g3tNAL1eTol/Y0M55dQcrEpkUUEVA5/IB19SpogPadB8Z+8jSL1BFgDXOmiaLzqKOw0BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735244505; c=relaxed/simple;
-	bh=Nr4BNDAiONN0lQOy7SQhlDh9VQb5Traq50M/a9PMXFg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eqeXYO20I+yNXETDNpk+ZrEiCOLDImUlhHEHz9B5KoEtEWzdpcnoqEXzEWXwpuLooorDLW4iTKmF3jplKrbBbfYPw11KhPxgghySN7hbLrvpN1/Ihm36uitJoYZFE+k51NfolY0IFDhpMeUfySmOBi8pwfD8p0QCoFM0MY6NyK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=LN/cNB80; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5E56810408FAF;
-	Thu, 26 Dec 2024 21:21:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1735244501;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JK+ei++vKPa0VfwieqMiK89n+GtjDWuvAomMunUIVYE=;
-	b=LN/cNB80CUgSRcokvRWQFyUZz9ZT5pTSm2WhhKiely9kigHuUmWMfdXpf+LLM8Qeyz4cF/
-	fkjFqcCo5P37aQ9E8Zet7WZLm5EvPq3irnTNH+tq4SjABg18rTLz9BN/pkaUu+bOQaW7Rl
-	HC1x+KF63/FHMAbr6UVorSqmX7u5A2q1uYSv4KBA0+zi8VPc3hhyUiiZaf3ICjdxUPS9IT
-	7KT1gclLxXIOEzfk7ha+F8BJFKOdbuFQN1MSj9LQGfQrIYLe17PxWs0Fwi+hKD4XVGNuIQ
-	6T3dNrgqPaKgbJXwjZn5udN4RH3ktn7ixHamahuR2d0Zn+yVjcyxVZy7FN8EUQ==
-Date: Thu, 26 Dec 2024 21:21:37 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.12 000/160] 6.12.7-rc1 review
-Message-ID: <Z2260fyPFGj0IoaH@duo.ucw.cz>
-References: <20241223155408.598780301@linuxfoundation.org>
+	s=arc-20240116; t=1735244562; c=relaxed/simple;
+	bh=GA7J+jMmYsm8q4PJgNbUdwhz4o5CZkLxwcBc2wVOKps=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=JuKji18EWVdkh34SBwPyaAcSr05nXTpX7h/N4UBK5BkE8XQ1fJTvrfsRLDJN7j0nNqyxSSJG5xPthJIhCQotSlbHGIa/oCFGTZVtAgs2mFVNgLkQ6EiI1ju95RAbd+DUNuZP7ToV7XkozPww5yxkVfKC06kQRgN6ureA1owuI9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGcLUbJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DEFC4CED1;
+	Thu, 26 Dec 2024 20:22:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735244562;
+	bh=GA7J+jMmYsm8q4PJgNbUdwhz4o5CZkLxwcBc2wVOKps=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=CGcLUbJ+xvxTaAsl6USGbzIOA8Mt4KYrkhOsOQMF86UIEbGQAF7TYCpdXPpkI+qpm
+	 jxPEA1ue3PhCw1qA+sOPsbt8diPD6nK2ll0o5ujL2lsTlMu8dkjEJfvKN1AMLe4iYc
+	 7/FYX0R7+yLBc2tggYPQTHZ0WqK9a7UIWJhvn2SFZDlCgqtDqKQmBlCUcje1lpZFBj
+	 Ac7hKvGj1Yw4dV4tF7RmLROsZhwSuRSt4r03desw0RnILZAvivT1oEQDelZkZBjiet
+	 MIe9JwkF9iR20UXyHhySV02tepTmEJQRZFdIZVT6HC79oG9Bxn2Gq5ild4kXtxFusL
+	 bHQqx+w3y/QWg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Arci39VYFY3NcwzD"
-Content-Disposition: inline
-In-Reply-To: <20241223155408.598780301@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
-
-
---Arci39VYFY3NcwzD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Dec 2024 22:22:37 +0200
+Message-Id: <D6LWUWNIILWL.1JXPT3L8GOC1H@kernel.org>
+Cc: <stable@vger.kernel.org>, "Andy Liang" <andy.liang@hpe.com>, "Matthew
+ Garrett" <mjg59@srcf.ucam.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 1/2] tpm: Map the ACPI provided event log
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>,
+ <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Colin Ian King"
+ <colin.i.king@gmail.com>, "Seiji Munetoh" <munetoh@jp.ibm.com>, "Andrew
+ Morton" <akpm@osdl.org>, "Reiner Sailer" <sailer@us.ibm.com>, "Kylene Jo
+ Hall" <kjhall@us.ibm.com>, "Stefan Berger" <stefanb@us.ibm.com>
+X-Mailer: aerc 0.18.2
+References: <20241225193242.40066-1-jarkko@kernel.org>
+ <D6LRNN9Q88F8.3EVLQ1JYK3UEW@kernel.org>
+In-Reply-To: <D6LRNN9Q88F8.3EVLQ1JYK3UEW@kernel.org>
 
-Hi!
+On Thu Dec 26, 2024 at 6:18 PM EET, Jarkko Sakkinen wrote:
+> On Wed Dec 25, 2024 at 9:32 PM EET, Jarkko Sakkinen wrote:
+> > The following failure was reported:
+> >
+> > [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-=
+id 0)
+> > [   10.848132][    T1] ------------[ cut here ]------------
+> > [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 =
+__alloc_pages_noprof+0x2ca/0x330
+> > [   10.862827][    T1] Modules linked in:
+> > [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainte=
+d 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd=
+98293a7c9eba9013378d807364c088c9375
+> > [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant=
+ DL320 Gen12, BIOS 1.20 10/28/2024
+> > [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+> > [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 =
+fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 =
+ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e=
+1
+> > [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+> > [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX:=
+ 0000000000000000
+> > [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI:=
+ 0000000000040cc0
+> >
+> > Above shows that ACPI pointed a 16 MiB buffer for the log events becaus=
+e
+> > RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address th=
+e
+> > bug with kvmalloc() and devres_add().
+> >
+> > Cc: stable@vger.kernel.org # v2.6.16+
+> > Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
+> > Reported-by: Andy Liang <andy.liang@hpe.com>
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219495
+> > Suggested-by: Matthew Garrett <mjg59@srcf.ucam.org>
+>
+> Oops, needs to be dropped from this.
+>
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > ---
+> > v6:
+> > * A new patch.
+> > ---
+> >  drivers/char/tpm/eventlog/acpi.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventl=
+og/acpi.c
+> > index 69533d0bfb51..7cd44a46a0d7 100644
+> > --- a/drivers/char/tpm/eventlog/acpi.c
+> > +++ b/drivers/char/tpm/eventlog/acpi.c
+> > @@ -136,10 +136,12 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+> >  	}
+> > =20
+> >  	/* malloc EventLog space */
+> > -	log->bios_event_log =3D devm_kmalloc(&chip->dev, len, GFP_KERNEL);
+> > +	log->bios_event_log =3D kvmalloc(len, GFP_KERNEL);
+> >  	if (!log->bios_event_log)
+> >  		return -ENOMEM;
+> > =20
+> > +	devres_add(&chip->dev, log->bios_event_log);
+> > +
+>
+> We either need to git revert 441b7152729f ("tpm: Use managed allocation
+> for bios event log") OR alternatively use devm_add_action() creating a
+> fix that wastes 16 MiB of memory and obfuscates flows more than needed.
+>
+> I don't necessarily get how come this is "less intrusive"...
 
-> This is the start of the stable review cycle for the 6.12.7 release.
-> There are 160 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Right, so I guess it's not actually very complicated:
 
-CIP testing did not find any problems here (obsvx2, bbb are test problems,
-not kernel problems):
+ret =3D devm_add_action_or_reset(&chip->dev, kvfree, &log->bios_event_log)
+if (ret) {
+	log->bios_event_log =3D NULL;
+	return ret;
+}
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.12.y
+Had not used this API since we used it in tpmm_chip_alloc(). I'll tweak
+the patch accordingly...
 
-6.6 passes our testing, too:
+And since 2/2 becomes a feature patch I'll refine it to do a traverse of
+the log so we know the actual size of the populated contents and then
+move back on using devm_kmalloc() in that patch (i.e. it will render
+out also the fix that the first patch makes).
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
+Not too bad, I can live this.
 
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---Arci39VYFY3NcwzD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ2260QAKCRAw5/Bqldv6
-8qRWAJ0WSRtKLUPiY1tJglB3PGfNgxeP9ACeJlNud+7UNoyVi3nkRs5KpgHqkFI=
-=9lCu
------END PGP SIGNATURE-----
-
---Arci39VYFY3NcwzD--
+BR, Jarkko
 
