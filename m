@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-106219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0A39FD695
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 18:28:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1E19FD698
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 18:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D5EB163F0E
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 17:28:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F407D188590B
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 17:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B751B1F868E;
-	Fri, 27 Dec 2024 17:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0611F540D;
+	Fri, 27 Dec 2024 17:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tPqxYuAS"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l/3ZolzX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED32C1F8671
-	for <stable@vger.kernel.org>; Fri, 27 Dec 2024 17:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B369F1FB3
+	for <stable@vger.kernel.org>; Fri, 27 Dec 2024 17:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735320530; cv=none; b=fxoXN91mGuXcla04Rpst8vFbwqgmOmJK9RkwnCsbL5vzwx5BCfvZclfeVIW3iGwf4N2VDJe2cvx7BrBd0V7ZKqdrxV4Y0vFqIYCaBxRJC/PuNmR95GQyzFTWiWC2LOHcxCtUHAVAahGf6pBGXlGoqzShfxpxYRtl3p54r2GsaKQ=
+	t=1735320744; cv=none; b=UCCBt+DdC7My5Rae3gApfhcYOPIIdwE+RYcYPKwGVcT0F76gPv8Mmkd0QyYJjmSW4lEX9OWnjwLzXKqxYbz6X9gAhKaPCbbtcFUr9crdbdynQoWGuxVby2cfTaQyBveEDCA56cn1qFXMyTPJzl7C1dB0AGPbLJIq5okmvwsYZeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735320530; c=relaxed/simple;
-	bh=ULTUSzRAGz20FulS7nvF9ST3it3WDhDXbGp7XX88+SU=;
+	s=arc-20240116; t=1735320744; c=relaxed/simple;
+	bh=3Za89p1AJUVKLvTESTvLCCRcRlcpPs2RUs4Uj0BvdEA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eF8ufOx0l4wPn9ryD/QA/wjnPPBgPwLFqXvekHTE5veoHWb6SFBqJkqCtF/6YKBl3GcXJigSVP2EyvUj/OJEACN1rgd4roUrSpMejN8xJ0fhRuKnzXZ+pH87xWLcJrXUMY/5tGgHvtcQoiTMqaUBoRKMY9q5dLBHmMLl+PxG8sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tPqxYuAS; arc=none smtp.client-ip=209.85.160.169
+	 To:Cc:Content-Type; b=EkluksuvuGf6hy1oOjgbcurNoF+x9927IqxRFtxxAuKJbaJjUxwZOgbxL5K/MYfKq+COmVzALKfgZRtBB0vs+Wlp3Dqh0ZtRVB4u9mSnJlYb1/fy2ybimM+Ihd+jCrWy4Ti7aUWG5YdNV8fo4INQxDwV2ztw5EKPs151bVK0QcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l/3ZolzX; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-467abce2ef9so1980811cf.0
-        for <stable@vger.kernel.org>; Fri, 27 Dec 2024 09:28:48 -0800 (PST)
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4679b5c66d0so1883851cf.1
+        for <stable@vger.kernel.org>; Fri, 27 Dec 2024 09:32:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1735320528; x=1735925328; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1735320741; x=1735925541; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KpCKjMyoJFbHMCmkJCoptr+HQTE/8N0QQxukHE9I6Ro=;
-        b=tPqxYuASPmLak0G7GVzi0xbdEXbYUzxEKuEk6z+BgyoMzSDrlDYhX02miKZQBDKD47
-         WPaJb6qc4nUqiD0Vk8ehyXbvMaPWtho8cUg5ciWfSbcYeBaWST4i+4+8fZ/p7USLfcwM
-         L1ugb2S3kBm+S0zVuA8hwr7nLCZlxxxb9Jp6hcS94R4Mtxr9qei4XMqKcNUIjPO2q1Op
-         57kW0u/L3yEE22yoY7DgyWJmarRxRMh93DpKmkSie2OuPEyUMBQP5gTZQbw6Qm6D/c8G
-         3b4ptP0uxk31VZHr0AfB6xrDXz5QyJVQUqy0zivEbadVbmOEcH5uQBF2NK6MVjknpAb6
-         JaRg==
+        bh=04SxCpsaZ7KCjEolpa+jFc5TEJpImpO+Qtvwvnqh0yA=;
+        b=l/3ZolzXeaf0v622BlXOch2Pk6BztZytEstwXrjr17CjkFRzJ+ix2eJ6jvcFCwGG/B
+         n+FUKGPifQWXXXHlOAf5ojlpxWcYdDCMK7CgmNdx151vpPcz8UV5oUTTUYP1cvRDMRoW
+         8ZyqvurcJk5baqHIdZcCcyy0oSnL2ATUyD8VvC3RmIJPN6CG1ynA1EbZwXSncH2zpbPK
+         uUR4kDrfHEzGFhJtb4+vG5TQCg52T0X7FTCTVnhbjnSlm0OhLmu2Bj+hNb2oebwfsOAn
+         ZeLuJblhr1PZtcusGNwrTjyyl7Gt6sKwnJMSzb3u2kM0BdFkGHFFX9GMlnNRd7B2r8ie
+         Ioiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735320528; x=1735925328;
+        d=1e100.net; s=20230601; t=1735320741; x=1735925541;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KpCKjMyoJFbHMCmkJCoptr+HQTE/8N0QQxukHE9I6Ro=;
-        b=Q2AEHpkj1LXO/OQXm2h13baXKEXNf6P4TBz6TbK1h4eul+/tVVKLtgsDFjz1e3CCwI
-         +gkzBjssMUJ/P/d1jrKv8eSJ3bMOsHTyv7gn+6HdkbqNdxnhGpKv4aWkietNNFacm4MN
-         h1l76YnYeA7U+cqlrjjDFq4FEZDOJ75pOVCqg31LS/+kqpL+aBOLu0jEPPXdsocDMybx
-         lRyRqyuk/J5a0vua5AesDd5Ci6silGskTYM1A64tGob+fXwn/C4fjQYu9MOhCLkMSmEX
-         tT2/Uu5l2Ve9bm5+GdQ3wMsSbBWeTTEE9xnARTGk09BlACJ/EpEm0TsOilFvYJ8PNb2w
-         rXmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0drsqIjmJ9den9IragNWPAYszn4JmC3LOlT7y/hkYEetNMsmHliv3Ll3JuA4ei8uu3dHFvbA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqThZZ/b/uFyJniWiBhz+6TCl8tATPlJDGZadmCQDuBiF3BY32
-	7TeVSJg0FksatGhuUIHLPFPIxShBORgjk6oelA0c/HZ9RdYVF+snFTjyZU5PIL4wlD25x2wR/oO
-	NuSumGuZbPInVcJgsV4kY45bqI+kKlu8GZHvX
-X-Gm-Gg: ASbGncuKhT4nh2UsglpcPjq0n5BjB0EycbYTrP4ipTOHATs43LVoCO3KJRXseyPTAI1
-	blHAkm+v8/a0IbmuNexc2YlPIroGEt/mK5n9pbw==
-X-Google-Smtp-Source: AGHT+IHXJ9qnlcknbZgTfwfnqxYMBtpCb6XoucoAKBV2CWfPidzPtEvqga3s4/HDaXdYSAmQ3MqzuRVNN/1m3MYP72c=
-X-Received: by 2002:a05:622a:18a8:b0:463:6fc7:e7cb with SMTP id
- d75a77b69052e-46a4c00f1ddmr20923011cf.11.1735320527675; Fri, 27 Dec 2024
- 09:28:47 -0800 (PST)
+        bh=04SxCpsaZ7KCjEolpa+jFc5TEJpImpO+Qtvwvnqh0yA=;
+        b=fnsFOaOUBGtoRUDN2mJBqv3n8/avVFfhIwH2aDZaP/NCtS7dk7dSt6UxxEKnklYbmF
+         VHIxBYCKA7KSU6L16Wqiqm9Aer5gSasiNgM/kQL4z3WZTm/vkSm9htMNLEZCTsiHmJKp
+         RMH+qYb3rUBQeOrrJVfFHuevL2uDCm+GtL6NzmxV9XuF5j/Q6utQmJm9QsKwxuANNkeU
+         vbtIfVwH0w+3wn7qk1qIcToUNAImfGTNzZPp6RkjZYknHipnvqLADslx20NCglSYXsEB
+         rhBrBI2kmwFK5jbIUbbMaPviAyda+c1mNPPM3FxoDG+jgMFihjW8uCfyf9IW5XPGnIl2
+         hD1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUvxo6LoVVQ+xhhB4KioFY0Orgr4gzQomKcx7/GyrZ/WL8am0COtclnzb/hb+E5CAgGsTTj+WA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxK1yR9QalqEt875O1v4dg2BLNO/Wg9W6KRBuhkZRnEcw77tejd
+	6IrgwMRnrek219qAour2sPZjE9cJN0Uw6xavuYXgcPO5wHlRXj9N42RcXS9VomTVOmkH4VS4+pX
+	F3iS5lH0dkrjkUSQ8fblSYNt8vB/0d25QGz57
+X-Gm-Gg: ASbGncv+Dyf7fq/y3GFC11Sw7XIVmMVpWQJppsJDeR1UOWPZx/mzUG+oASOjEizU9i6
+	iM2yyleBzr3PCNoGFnHvys1MEzyVZ2TsXzYR9Tg==
+X-Google-Smtp-Source: AGHT+IFcBTHXKztvE10gZyJ3MYoBAJikURcg/HIDcbPftZvqfZcicz+LBrQC0kbUMElsmtxWbTj4Z7qSC3T+TnLLQuU=
+X-Received: by 2002:ac8:7f82:0:b0:466:8887:6751 with SMTP id
+ d75a77b69052e-46a4c01bab2mr20251161cf.23.1735320741443; Fri, 27 Dec 2024
+ 09:32:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,11 +77,12 @@ References: <20241226211639.1357704-1-surenb@google.com> <20241226211639.1357704
  <20241226150127.73d1b2a08cf31dac1a900c1e@linux-foundation.org>
  <CAJuCfpFSYqQ1LN0OZQT+jU=vLXZa5-L2Agdk1gzMdk9J0Zb-vg@mail.gmail.com>
  <20241226162315.cbf088cb28fe897bfe1b075b@linux-foundation.org>
- <CAJuCfpG_cbwFSdL5mt0_M_t0Ejc_P3TA+QGxZvHMAK1P+z7_BA@mail.gmail.com> <20241226235900.5a4e3ab79840e08482380976@linux-foundation.org>
-In-Reply-To: <20241226235900.5a4e3ab79840e08482380976@linux-foundation.org>
+ <CAJuCfpG_cbwFSdL5mt0_M_t0Ejc_P3TA+QGxZvHMAK1P+z7_BA@mail.gmail.com>
+ <20241226235900.5a4e3ab79840e08482380976@linux-foundation.org> <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
+In-Reply-To: <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 27 Dec 2024 09:28:36 -0800
-Message-ID: <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
+Date: Fri, 27 Dec 2024 09:32:10 -0800
+Message-ID: <CAJuCfpFKDejZz8KqniMa4U+8oQ8LSCwx6U3eAqphN2FeCD8WTg@mail.gmail.com>
 Subject: Re: [PATCH 2/2] alloc_tag: skip pgalloc_tag_swap if profiling is disabled
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: kent.overstreet@linux.dev, yuzhao@google.com, 00107082@163.com, 
@@ -90,77 +91,91 @@ Cc: kent.overstreet@linux.dev, yuzhao@google.com, 00107082@163.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 26, 2024 at 11:59=E2=80=AFPM Andrew Morton
-<akpm@linux-foundation.org> wrote:
+On Fri, Dec 27, 2024 at 9:28=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
 >
-> On Thu, 26 Dec 2024 16:56:00 -0800 Suren Baghdasaryan <surenb@google.com>=
- wrote:
->
-> > On Thu, Dec 26, 2024 at 4:23=E2=80=AFPM Andrew Morton <akpm@linux-found=
-ation.org> wrote:
-> > >
-> > > On Thu, 26 Dec 2024 15:07:39 -0800 Suren Baghdasaryan <surenb@google.=
-com> wrote:
-> > >
-> > > > On Thu, Dec 26, 2024 at 3:01=E2=80=AFPM Andrew Morton <akpm@linux-f=
-oundation.org> wrote:
-> > > > >
-> > > > > On Thu, 26 Dec 2024 13:16:39 -0800 Suren Baghdasaryan <surenb@goo=
-gle.com> wrote:
-> > > > >
-> > > > > > When memory allocation profiling is disabled, there is no need =
-to swap
-> > > > > > allocation tags during migration. Skip it to avoid unnecessary =
-overhead.
-> > > > > >
-> > > > > > Fixes: e0a955bf7f61 ("mm/codetag: add pgalloc_tag_copy()")
-> > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > > > Cc: stable@vger.kernel.org
-> > > > >
-> > > > > Are these changes worth backporting?  Some indication of how much
-> > > > > difference the patches make would help people understand why we'r=
-e
-> > > > > proposing a backport.
-> > > >
-> > > > The first patch ("alloc_tag: avoid current->alloc_tag manipulations
-> > > > when profiling is disabled") I think is worth backporting. It
-> > > > eliminates about half of the regression for slab allocations when
-> > > > profiling is disabled.
-> > >
-> > > um, what regression?  The changelog makes no mention of this.  Please
-> > > send along a suitable Reported-by: and Closes: and a summary of the
-> > > benefits so that people can actually see what this patch does, and wh=
-y.
+> On Thu, Dec 26, 2024 at 11:59=E2=80=AFPM Andrew Morton
+> <akpm@linux-foundation.org> wrote:
 > >
-> > Sorry, I should have used "overhead" instead of "regression".
-> > When one sets CONFIG_MEM_ALLOC_PROFILING=3Dy, the code gets instrumente=
-d
-> > and even if profiling is turned off, it still has a small performance
-> > cost minimized by the use of mem_alloc_profiling_key static key. I
-> > found a couple of places which were not protected with
-> > mem_alloc_profiling_key, which means that even when profiling is
-> > turned off, the code is still executed. Once I added these checks, the
-> > overhead of the mode when memory profiling is enabled but turned off
-> > went down by about 50%.
+> > On Thu, 26 Dec 2024 16:56:00 -0800 Suren Baghdasaryan <surenb@google.co=
+m> wrote:
+> >
+> > > On Thu, Dec 26, 2024 at 4:23=E2=80=AFPM Andrew Morton <akpm@linux-fou=
+ndation.org> wrote:
+> > > >
+> > > > On Thu, 26 Dec 2024 15:07:39 -0800 Suren Baghdasaryan <surenb@googl=
+e.com> wrote:
+> > > >
+> > > > > On Thu, Dec 26, 2024 at 3:01=E2=80=AFPM Andrew Morton <akpm@linux=
+-foundation.org> wrote:
+> > > > > >
+> > > > > > On Thu, 26 Dec 2024 13:16:39 -0800 Suren Baghdasaryan <surenb@g=
+oogle.com> wrote:
+> > > > > >
+> > > > > > > When memory allocation profiling is disabled, there is no nee=
+d to swap
+> > > > > > > allocation tags during migration. Skip it to avoid unnecessar=
+y overhead.
+> > > > > > >
+> > > > > > > Fixes: e0a955bf7f61 ("mm/codetag: add pgalloc_tag_copy()")
+> > > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > > > > Cc: stable@vger.kernel.org
+> > > > > >
+> > > > > > Are these changes worth backporting?  Some indication of how mu=
+ch
+> > > > > > difference the patches make would help people understand why we=
+'re
+> > > > > > proposing a backport.
+> > > > >
+> > > > > The first patch ("alloc_tag: avoid current->alloc_tag manipulatio=
+ns
+> > > > > when profiling is disabled") I think is worth backporting. It
+> > > > > eliminates about half of the regression for slab allocations when
+> > > > > profiling is disabled.
+> > > >
+> > > > um, what regression?  The changelog makes no mention of this.  Plea=
+se
+> > > > send along a suitable Reported-by: and Closes: and a summary of the
+> > > > benefits so that people can actually see what this patch does, and =
+why.
+> > >
+> > > Sorry, I should have used "overhead" instead of "regression".
+> > > When one sets CONFIG_MEM_ALLOC_PROFILING=3Dy, the code gets instrumen=
+ted
+> > > and even if profiling is turned off, it still has a small performance
+> > > cost minimized by the use of mem_alloc_profiling_key static key. I
+> > > found a couple of places which were not protected with
+> > > mem_alloc_profiling_key, which means that even when profiling is
+> > > turned off, the code is still executed. Once I added these checks, th=
+e
+> > > overhead of the mode when memory profiling is enabled but turned off
+> > > went down by about 50%.
+> >
+> > Well, a 50% reduction in a 0.0000000001% overhead ain't much.
 >
-> Well, a 50% reduction in a 0.0000000001% overhead ain't much.
-
-I wish the overhead was that low :)
-
-I ran more comprehensive testing on Pixel 6 on Big, Medium and Little cores=
-:
-
-                 Overhead before fixes            Overhead after fixes
-                 slab alloc      page alloc          slab alloc      page a=
-lloc
-Big               6.21%           5.32%                3.31%          4.93%
-Medium       4.51%           5.05%                3.79%          4.39%
-Little            7.62%           1.82%                6.68%          1.02%
-
-
-> But I
-> added the final sentence to the changelog.
+> I wish the overhead was that low :)
 >
-> It still doesn't tell us the very simple thing which we're all eager to
-> know: how much faster did the kernel get??
+> I ran more comprehensive testing on Pixel 6 on Big, Medium and Little cor=
+es:
+>
+>                  Overhead before fixes            Overhead after fixes
+>                  slab alloc      page alloc          slab alloc      page=
+ alloc
+> Big               6.21%           5.32%                3.31%          4.9=
+3%
+> Medium       4.51%           5.05%                3.79%          4.39%
+> Little            7.62%           1.82%                6.68%          1.0=
+2%
+
+Note, this is an allocation microbenchmark doing allocations in a
+tight loop. Not a really realistic scenario and useful only to make
+performance comparisons.
+
+>
+>
+> > But I
+> > added the final sentence to the changelog.
+> >
+> > It still doesn't tell us the very simple thing which we're all eager to
+> > know: how much faster did the kernel get??
 
