@@ -1,134 +1,127 @@
-Return-Path: <stable+bounces-106192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AE19FD238
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 09:46:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042569FD40B
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 13:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92AFB1883962
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 08:47:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27D287A1892
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 12:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0BA15383A;
-	Fri, 27 Dec 2024 08:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3074B1F193A;
+	Fri, 27 Dec 2024 12:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b="NDNJRDDn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hx0TmUyq"
 X-Original-To: stable@vger.kernel.org
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF7F1876
-	for <stable@vger.kernel.org>; Fri, 27 Dec 2024 08:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5771F190D;
+	Fri, 27 Dec 2024 12:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735289214; cv=none; b=I+BKyteolbXRmbT1domJjbu+OjU64VctwyDb6ZQ5gdVtDitmmEeMoXAFmM1XP9mdTyyY2/2OapWNdAeHfO9oeM/cDVEsd6D8qOaqvr9B1Shc6Gqg2q7n18oIEelVutCTr+GkLPtA8gPZaW0GY9GXmoNjnqV7ylGccmkZdLTOSmo=
+	t=1735300856; cv=none; b=MpA5rTzU1WUj4nzOip62XlA4twaMNTkt7oNWV1q0fgEhH/vQgdywveUEfOowiB9fsQC6yjZoIrb0WaQvw4pe08ek77gQIWgja+u+DljYGxg9pQxYyXTm9fwuvMMiUPa4Q9BS49SOOoZ1mkaDtutOq65oORzFZk1duuZQqOi0t1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735289214; c=relaxed/simple;
-	bh=CLaRTwNrBEuvYmMR2ZHeWDlLDsqiojHM+Zpk2bGtvqI=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=gY7+9tKvRcn0VRAdJniy+HNnrFfNH3/+ROPfevPQOu1uHp0z3EkuyAwHZeutAT9bfM34JJLl7RqrYeBrqSHW2dyiejkubvlupcAexeNztUjpwcO5yzJoUCyMg/7xM9B9BYruQF53NUskcjbFc8pzSHUlx3rtQYcCgANFmTDJ+wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com; spf=pass smtp.mailfrom=linumiz.com; dkim=pass (2048-bit key) header.d=linumiz.com header.i=@linumiz.com header.b=NDNJRDDn; arc=none smtp.client-ip=44.202.169.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linumiz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linumiz.com
-Received: from eig-obgw-5002a.ext.cloudfilter.net ([10.0.29.215])
-	by cmsmtp with ESMTPS
-	id R0UZtaiuanNFGR5y7tWgU0; Fri, 27 Dec 2024 08:45:15 +0000
-Received: from md-in-79.webhostbox.net ([43.225.55.182])
-	by cmsmtp with ESMTPS
-	id R5y5tHcbNcEKuR5y6t2kuO; Fri, 27 Dec 2024 08:45:15 +0000
-X-Authority-Analysis: v=2.4 cv=Z7YnH2RA c=1 sm=1 tr=0 ts=676e691b
- a=LfuyaZh/8e9VOkaVZk0aRw==:117 a=kofhyyBXuK/oEhdxNjf66Q==:17
- a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=-pn6D5nKLtMA:10 a=NEAV23lmAAAA:8
- a=oIXfh7CG2JD6673A1wUA:9 a=QEXdDO2ut3YA:10 a=ZCPYImcxYIQFgLOT52_G:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=linumiz.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:To:Subject:Cc:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=CbHybnIOXmlSwaXNoaXYOUqH0/mYuZ8kkjuKjW87omQ=; b=NDNJRDDnw/y2q/XpMHCG2FL1sK
-	oITjouXaGaiFTHEqjQ1JABwZmQ0zzYnzoflffHMbU1Pjkj15KTHaR7OyQNyL4t7Ldkku8gntKicsO
-	nFBwg3skiPmnF+9QeKVeYfiIZjA+tjRroZ/t8+gAlEqXfTdHol7mNAYzGekP6uIRKCy7HdIfVFqgg
-	nnm+VYrMucoVSeE+0O388Pz3oumqegJkOKSsrN/SP8rkh7MgdPwt86JlP2uH5MgmOvAAYhmVWmWEZ
-	0y7OPy/Uj+4Z58HzetcOlpOv9tfweAhraj0p/KWJkKCX5dSIAHFhLZYOLEn0CGAUaoJdk1pbK5LvK
-	zh0wxk8Q==;
-Received: from [122.165.245.213] (port=48506 helo=[192.168.1.5])
-	by md-in-79.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <parthiban@linumiz.com>)
-	id 1tR5xx-003AmV-0N;
-	Fri, 27 Dec 2024 14:15:05 +0530
-Message-ID: <9415ca9c-f303-4507-8cd6-cb08ee09e988@linumiz.com>
-Date: Fri, 27 Dec 2024 14:14:59 +0530
+	s=arc-20240116; t=1735300856; c=relaxed/simple;
+	bh=4qQzC02wqrdGnNxqHzqMTu/5RUVAiwcDlAflh1KJkWg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LIvHR0jTWQXuk2z922We/tU1zjY20unqnQxXL/mBXCfMQR64+MoyainSV/5sg4vlWfe20MHCPLI8AfRzp+JCTbpQuGuvbyJAupi0cd2g3vGuPLgu/zhJewaqgYq+8evgrGaaAK8JAxE3HC3uNkCcdhyl6owrT/jCNR51caTBU8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hx0TmUyq; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735300854; x=1766836854;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4qQzC02wqrdGnNxqHzqMTu/5RUVAiwcDlAflh1KJkWg=;
+  b=Hx0TmUyqNw3edZf/dXDI8MFX7zSE4wwdv9XMO3Owq+SLxdeYagOrweiG
+   1f8b3moz1VBfoKb7pAJNLUF8HN6SpYbPZneGSEvIFM5kEqOX8Uko4Vs5Y
+   77595r3Z43oDuU3/tOsedCvDgkx7RbLm7H/3OSQE9tlG6nf2+hInH6Hah
+   w93l2QS70NwfrOWJjtt92Kc3t8kUs2uwRBvtpIWhMR6DK38kiIRgzXQ9L
+   oK8VvySwYhnw8urDtvAGtZKlcp8l+DHKylTWV6SmhvPVwjy/65UnSiX9T
+   O+dy9bkXVnMCSghWaWuWWVrbV1gHFg45pNjGRy6feC9V7jNsPXmw+TI4K
+   Q==;
+X-CSE-ConnectionGUID: zC8+wOqXTMqEtiDk/6Eg6Q==
+X-CSE-MsgGUID: FT5zzKMSRbiVe/Ye1rgY6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11298"; a="35932527"
+X-IronPort-AV: E=Sophos;i="6.12,269,1728975600"; 
+   d="scan'208";a="35932527"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2024 04:00:54 -0800
+X-CSE-ConnectionGUID: icueMuu2QbOMTyPg9svYuA==
+X-CSE-MsgGUID: SCiyC6HtSsSK97X1ZKNWSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="104772445"
+Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
+  by fmviesa005.fm.intel.com with ESMTP; 27 Dec 2024 04:00:52 -0800
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+To: <gregkh@linuxfoundation.org>
+Cc: <linux-usb@vger.kernel.org>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	stable@vger.kernel.org,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 3/5] usb: xhci: Fix NULL pointer dereference on certain command aborts
+Date: Fri, 27 Dec 2024 14:01:40 +0200
+Message-Id: <20241227120142.1035206-4-mathias.nyman@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241227120142.1035206-1-mathias.nyman@linux.intel.com>
+References: <20241227120142.1035206-1-mathias.nyman@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: parthiban@linumiz.com, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, Andre Przywara <andre.przywara@arm.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] clk: sunxi-ng: a100: enable MMC clock reparenting
-To: Chen-Yu Tsai <wens@csie.org>, Michael Turquette
- <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Yangtao Li <frank@allwinnertech.com>,
- Maxime Ripard <mripard@kernel.org>, Rob Herring <robh@kernel.org>,
- Cody Eksal <masterr3c0rd@epochal.quest>
-References: <20241109003739.3440904-1-masterr3c0rd@epochal.quest>
- <173124139852.3585539.10704015898700065278.b4-ty@csie.org>
-Content-Language: en-US
-From: Parthiban <parthiban@linumiz.com>
-Organization: Linumiz
-In-Reply-To: <173124139852.3585539.10704015898700065278.b4-ty@csie.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - md-in-79.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - linumiz.com
-X-BWhitelist: no
-X-Source-IP: 122.165.245.213
-X-Source-L: No
-X-Exim-ID: 1tR5xx-003AmV-0N
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.1.5]) [122.165.245.213]:48506
-X-Source-Auth: parthiban@linumiz.com
-X-Email-Count: 1
-X-Org: HG=dishared_whb_net_legacy;ORG=directi;
-X-Source-Cap: bGludW1jbWM7aG9zdGdhdG9yO21kLWluLTc5LndlYmhvc3Rib3gubmV0
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfCANQwNbMd9PDTR5LxbA+nsbBPBdSk9uKWhsBxt+PkAQvm1riRDZtpOmSONVD8QbDixQk/gbU6obKVYW283rzFmYTw7y/CyjI0kJHFTieclKbLSdKl3W
- /arRDXiQMylHqwPjfm4jaCFZzycuYyxcfRS+IDFw6PB5/PhMg2fhUam5J76uiMXdlH3cLWxlHD4Ul7NFowzdJebtVUu55KzdgeA=
+Content-Transfer-Encoding: 8bit
 
-On 11/10/24 5:53 PM, Chen-Yu Tsai wrote:
-> On Fri, 08 Nov 2024 20:37:37 -0400, Cody Eksal wrote:
->> While testing the MMC nodes proposed in [1], it was noted that mmc0/1
->> would fail to initialize, with "mmc: fatal err update clk timeout" in
->> the kernel logs. A closer look at the clock definitions showed that the MMC
->> MPs had the "CLK_SET_RATE_NO_REPARENT" flag set. No reason was given for
->> adding this flag in the first place, and its original purpose is unknown,
->> but it doesn't seem to make sense and results in severe limitations to MMC
->> speeds. Thus, remove this flag from the 3 MMC MPs.
->>
->> [...]
-> 
-> Applied to clk-for-6.13 in git@github.com:linux-sunxi/linux-sunxi.git, thanks!
-> 
-> [1/1] clk: sunxi-ng: a100: enable MMC clock reparenting
->       commit: 3fd8177f0015c32fdb0af0feab0bcf344aa74832
-This commit is missing in 6.13-rc4. Will it be merged in the next rcX?
+From: Michal Pecio <michal.pecio@gmail.com>
 
-Thanks,
-Parthiban
-> 
-> Best regards,
+If a command is queued to the final usable TRB of a ring segment, the
+enqueue pointer is advanced to the subsequent link TRB and no further.
+If the command is later aborted, when the abort completion is handled
+the dequeue pointer is advanced to the first TRB of the next segment.
+
+If no further commands are queued, xhci_handle_stopped_cmd_ring() sees
+the ring pointers unequal and assumes that there is a pending command,
+so it calls xhci_mod_cmd_timer() which crashes if cur_cmd was NULL.
+
+Don't attempt timer setup if cur_cmd is NULL. The subsequent doorbell
+ring likely is unnecessary too, but it's harmless. Leave it alone.
+
+This is probably Bug 219532, but no confirmation has been received.
+
+The issue has been independently reproduced and confirmed fixed using
+a USB MCU programmed to NAK the Status stage of SET_ADDRESS forever.
+Everything continued working normally after several prevented crashes.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219532
+Fixes: c311e391a7ef ("xhci: rework command timeout and cancellation,")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+---
+ drivers/usb/host/xhci-ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 4cf5363875c7..da26e317ab0c 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -422,7 +422,8 @@ static void xhci_handle_stopped_cmd_ring(struct xhci_hcd *xhci,
+ 	if ((xhci->cmd_ring->dequeue != xhci->cmd_ring->enqueue) &&
+ 	    !(xhci->xhc_state & XHCI_STATE_DYING)) {
+ 		xhci->current_cmd = cur_cmd;
+-		xhci_mod_cmd_timer(xhci);
++		if (cur_cmd)
++			xhci_mod_cmd_timer(xhci);
+ 		xhci_ring_cmd_db(xhci);
+ 	}
+ }
+-- 
+2.25.1
 
 
