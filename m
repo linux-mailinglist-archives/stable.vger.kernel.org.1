@@ -1,181 +1,115 @@
-Return-Path: <stable+bounces-106220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1E19FD698
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 18:32:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CD39FD6D8
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 19:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F407D188590B
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 17:32:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9049E188379C
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 18:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0611F540D;
-	Fri, 27 Dec 2024 17:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E14E1F8665;
+	Fri, 27 Dec 2024 18:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l/3ZolzX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZkyUf7md"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B369F1FB3
-	for <stable@vger.kernel.org>; Fri, 27 Dec 2024 17:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9C957C93;
+	Fri, 27 Dec 2024 18:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735320744; cv=none; b=UCCBt+DdC7My5Rae3gApfhcYOPIIdwE+RYcYPKwGVcT0F76gPv8Mmkd0QyYJjmSW4lEX9OWnjwLzXKqxYbz6X9gAhKaPCbbtcFUr9crdbdynQoWGuxVby2cfTaQyBveEDCA56cn1qFXMyTPJzl7C1dB0AGPbLJIq5okmvwsYZeM=
+	t=1735323429; cv=none; b=pCxfGy4sNmRGmTOH1FImLa674shybabNTbL+mTQpAw7EXTOgEbbZtzUFpIlxfrDfcUer351enFTRB0QHKHonQFZ8Cehvt2YKsqCtKKS16xz0JVDoKeBzfVA6rm3fGexkFVifP6rqKP3vBaSV7HTqGMIIMP7X5jhC/Lr9P1X0UZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735320744; c=relaxed/simple;
-	bh=3Za89p1AJUVKLvTESTvLCCRcRlcpPs2RUs4Uj0BvdEA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EkluksuvuGf6hy1oOjgbcurNoF+x9927IqxRFtxxAuKJbaJjUxwZOgbxL5K/MYfKq+COmVzALKfgZRtBB0vs+Wlp3Dqh0ZtRVB4u9mSnJlYb1/fy2ybimM+Ihd+jCrWy4Ti7aUWG5YdNV8fo4INQxDwV2ztw5EKPs151bVK0QcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l/3ZolzX; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4679b5c66d0so1883851cf.1
-        for <stable@vger.kernel.org>; Fri, 27 Dec 2024 09:32:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1735320741; x=1735925541; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=04SxCpsaZ7KCjEolpa+jFc5TEJpImpO+Qtvwvnqh0yA=;
-        b=l/3ZolzXeaf0v622BlXOch2Pk6BztZytEstwXrjr17CjkFRzJ+ix2eJ6jvcFCwGG/B
-         n+FUKGPifQWXXXHlOAf5ojlpxWcYdDCMK7CgmNdx151vpPcz8UV5oUTTUYP1cvRDMRoW
-         8ZyqvurcJk5baqHIdZcCcyy0oSnL2ATUyD8VvC3RmIJPN6CG1ynA1EbZwXSncH2zpbPK
-         uUR4kDrfHEzGFhJtb4+vG5TQCg52T0X7FTCTVnhbjnSlm0OhLmu2Bj+hNb2oebwfsOAn
-         ZeLuJblhr1PZtcusGNwrTjyyl7Gt6sKwnJMSzb3u2kM0BdFkGHFFX9GMlnNRd7B2r8ie
-         Ioiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735320741; x=1735925541;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=04SxCpsaZ7KCjEolpa+jFc5TEJpImpO+Qtvwvnqh0yA=;
-        b=fnsFOaOUBGtoRUDN2mJBqv3n8/avVFfhIwH2aDZaP/NCtS7dk7dSt6UxxEKnklYbmF
-         VHIxBYCKA7KSU6L16Wqiqm9Aer5gSasiNgM/kQL4z3WZTm/vkSm9htMNLEZCTsiHmJKp
-         RMH+qYb3rUBQeOrrJVfFHuevL2uDCm+GtL6NzmxV9XuF5j/Q6utQmJm9QsKwxuANNkeU
-         vbtIfVwH0w+3wn7qk1qIcToUNAImfGTNzZPp6RkjZYknHipnvqLADslx20NCglSYXsEB
-         rhBrBI2kmwFK5jbIUbbMaPviAyda+c1mNPPM3FxoDG+jgMFihjW8uCfyf9IW5XPGnIl2
-         hD1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUvxo6LoVVQ+xhhB4KioFY0Orgr4gzQomKcx7/GyrZ/WL8am0COtclnzb/hb+E5CAgGsTTj+WA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK1yR9QalqEt875O1v4dg2BLNO/Wg9W6KRBuhkZRnEcw77tejd
-	6IrgwMRnrek219qAour2sPZjE9cJN0Uw6xavuYXgcPO5wHlRXj9N42RcXS9VomTVOmkH4VS4+pX
-	F3iS5lH0dkrjkUSQ8fblSYNt8vB/0d25QGz57
-X-Gm-Gg: ASbGncv+Dyf7fq/y3GFC11Sw7XIVmMVpWQJppsJDeR1UOWPZx/mzUG+oASOjEizU9i6
-	iM2yyleBzr3PCNoGFnHvys1MEzyVZ2TsXzYR9Tg==
-X-Google-Smtp-Source: AGHT+IFcBTHXKztvE10gZyJ3MYoBAJikURcg/HIDcbPftZvqfZcicz+LBrQC0kbUMElsmtxWbTj4Z7qSC3T+TnLLQuU=
-X-Received: by 2002:ac8:7f82:0:b0:466:8887:6751 with SMTP id
- d75a77b69052e-46a4c01bab2mr20251161cf.23.1735320741443; Fri, 27 Dec 2024
- 09:32:21 -0800 (PST)
+	s=arc-20240116; t=1735323429; c=relaxed/simple;
+	bh=hgLTG9x/Hkq9O+DHS9knFWeoeVLM47KiC6OVSbSuvgk=;
+	h=Date:To:From:Subject:Message-Id; b=R1hkmAnOrf39fDOiedU/RkWU14OvgzP1ByVnpa/NoM13zJrjO7OAZa+uzbDTxuTYKhSyBcUl+/QdOQ1bH4NupQDgs+SlBNtNIZw0VZOJOFCMLWInG4diw862igBMZO1mb9Sfv8I/TYWw8oYaLuLa4eZ862YNrWX3sdMYE76ez+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZkyUf7md; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFEC6C4CED0;
+	Fri, 27 Dec 2024 18:17:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1735323428;
+	bh=hgLTG9x/Hkq9O+DHS9knFWeoeVLM47KiC6OVSbSuvgk=;
+	h=Date:To:From:Subject:From;
+	b=ZkyUf7mdq+8KxNJ5I+92hTalpzksEHDoLtueg00IaA4CEC2NSyN4S0x0c/dbfp242
+	 JhqsSZr104QzbAmgck9R/fyYGLeTXdmMmguKAO6uND45+7up7+y2zg6uL67bRt4HGB
+	 fWSvmqR5OA+sWv77ArQ8ZK40eaTZBV/yJfdBDdAo=
+Date: Fri, 27 Dec 2024 10:17:08 -0800
+To: mm-commits@vger.kernel.org,ubizjak@gmail.com,stable@vger.kernel.org,catalin.marinas@arm.com,guoweikang.kernel@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-kmemleak-fix-percpu-memory-leak-detection-failure.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241227181708.AFEC6C4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241226211639.1357704-1-surenb@google.com> <20241226211639.1357704-2-surenb@google.com>
- <20241226150127.73d1b2a08cf31dac1a900c1e@linux-foundation.org>
- <CAJuCfpFSYqQ1LN0OZQT+jU=vLXZa5-L2Agdk1gzMdk9J0Zb-vg@mail.gmail.com>
- <20241226162315.cbf088cb28fe897bfe1b075b@linux-foundation.org>
- <CAJuCfpG_cbwFSdL5mt0_M_t0Ejc_P3TA+QGxZvHMAK1P+z7_BA@mail.gmail.com>
- <20241226235900.5a4e3ab79840e08482380976@linux-foundation.org> <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
-In-Reply-To: <CAJuCfpHJ7D0oLfHYzb9jvktP4X6O=ySGe7CK7sZmVNpSnzDeiQ@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 27 Dec 2024 09:32:10 -0800
-Message-ID: <CAJuCfpFKDejZz8KqniMa4U+8oQ8LSCwx6U3eAqphN2FeCD8WTg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] alloc_tag: skip pgalloc_tag_swap if profiling is disabled
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kent.overstreet@linux.dev, yuzhao@google.com, 00107082@163.com, 
-	quic_zhenhuah@quicinc.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 27, 2024 at 9:28=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Thu, Dec 26, 2024 at 11:59=E2=80=AFPM Andrew Morton
-> <akpm@linux-foundation.org> wrote:
-> >
-> > On Thu, 26 Dec 2024 16:56:00 -0800 Suren Baghdasaryan <surenb@google.co=
-m> wrote:
-> >
-> > > On Thu, Dec 26, 2024 at 4:23=E2=80=AFPM Andrew Morton <akpm@linux-fou=
-ndation.org> wrote:
-> > > >
-> > > > On Thu, 26 Dec 2024 15:07:39 -0800 Suren Baghdasaryan <surenb@googl=
-e.com> wrote:
-> > > >
-> > > > > On Thu, Dec 26, 2024 at 3:01=E2=80=AFPM Andrew Morton <akpm@linux=
--foundation.org> wrote:
-> > > > > >
-> > > > > > On Thu, 26 Dec 2024 13:16:39 -0800 Suren Baghdasaryan <surenb@g=
-oogle.com> wrote:
-> > > > > >
-> > > > > > > When memory allocation profiling is disabled, there is no nee=
-d to swap
-> > > > > > > allocation tags during migration. Skip it to avoid unnecessar=
-y overhead.
-> > > > > > >
-> > > > > > > Fixes: e0a955bf7f61 ("mm/codetag: add pgalloc_tag_copy()")
-> > > > > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > > > > > > Cc: stable@vger.kernel.org
-> > > > > >
-> > > > > > Are these changes worth backporting?  Some indication of how mu=
-ch
-> > > > > > difference the patches make would help people understand why we=
-'re
-> > > > > > proposing a backport.
-> > > > >
-> > > > > The first patch ("alloc_tag: avoid current->alloc_tag manipulatio=
-ns
-> > > > > when profiling is disabled") I think is worth backporting. It
-> > > > > eliminates about half of the regression for slab allocations when
-> > > > > profiling is disabled.
-> > > >
-> > > > um, what regression?  The changelog makes no mention of this.  Plea=
-se
-> > > > send along a suitable Reported-by: and Closes: and a summary of the
-> > > > benefits so that people can actually see what this patch does, and =
-why.
-> > >
-> > > Sorry, I should have used "overhead" instead of "regression".
-> > > When one sets CONFIG_MEM_ALLOC_PROFILING=3Dy, the code gets instrumen=
-ted
-> > > and even if profiling is turned off, it still has a small performance
-> > > cost minimized by the use of mem_alloc_profiling_key static key. I
-> > > found a couple of places which were not protected with
-> > > mem_alloc_profiling_key, which means that even when profiling is
-> > > turned off, the code is still executed. Once I added these checks, th=
-e
-> > > overhead of the mode when memory profiling is enabled but turned off
-> > > went down by about 50%.
-> >
-> > Well, a 50% reduction in a 0.0000000001% overhead ain't much.
->
-> I wish the overhead was that low :)
->
-> I ran more comprehensive testing on Pixel 6 on Big, Medium and Little cor=
-es:
->
->                  Overhead before fixes            Overhead after fixes
->                  slab alloc      page alloc          slab alloc      page=
- alloc
-> Big               6.21%           5.32%                3.31%          4.9=
-3%
-> Medium       4.51%           5.05%                3.79%          4.39%
-> Little            7.62%           1.82%                6.68%          1.0=
-2%
 
-Note, this is an allocation microbenchmark doing allocations in a
-tight loop. Not a really realistic scenario and useful only to make
-performance comparisons.
+The patch titled
+     Subject: mm/kmemleak: fix percpu memory leak detection failure
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-kmemleak-fix-percpu-memory-leak-detection-failure.patch
 
->
->
-> > But I
-> > added the final sentence to the changelog.
-> >
-> > It still doesn't tell us the very simple thing which we're all eager to
-> > know: how much faster did the kernel get??
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-kmemleak-fix-percpu-memory-leak-detection-failure.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Guo Weikang <guoweikang.kernel@gmail.com>
+Subject: mm/kmemleak: fix percpu memory leak detection failure
+Date: Fri, 27 Dec 2024 17:23:10 +0800
+
+kmemleak_alloc_percpu gives an incorrect min_count parameter, causing
+percpu memory to be considered a gray object.
+
+Link: https://lkml.kernel.org/r/20241227092311.3572500-1-guoweikang.kernel@gmail.com
+Fixes: 8c8685928910 ("mm/kmemleak: use IS_ERR_PCPU() for pointer in the percpu address space")
+Signed-off-by: Guo Weikang <guoweikang.kernel@gmail.com>
+Acked-by: Uros Bizjak <ubizjak@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Guo Weikang <guoweikang.kernel@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/kmemleak.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/kmemleak.c~mm-kmemleak-fix-percpu-memory-leak-detection-failure
++++ a/mm/kmemleak.c
+@@ -1093,7 +1093,7 @@ void __ref kmemleak_alloc_percpu(const v
+ 	pr_debug("%s(0x%px, %zu)\n", __func__, ptr, size);
+ 
+ 	if (kmemleak_enabled && ptr && !IS_ERR_PCPU(ptr))
+-		create_object_percpu((__force unsigned long)ptr, size, 0, gfp);
++		create_object_percpu((__force unsigned long)ptr, size, 1, gfp);
+ }
+ EXPORT_SYMBOL_GPL(kmemleak_alloc_percpu);
+ 
+_
+
+Patches currently in -mm which might be from guoweikang.kernel@gmail.com are
+
+mm-kmemleak-fix-percpu-memory-leak-detection-failure.patch
+mm-shmem-refactor-to-reuse-vfs_parse_monolithic_sep-for-option-parsing.patch
+mm-early_ioremap-add-null-pointer-checks-to-prevent-null-pointer-dereference.patch
+
 
