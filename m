@@ -1,98 +1,87 @@
-Return-Path: <stable+bounces-106222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E506B9FD773
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 20:18:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D15BE9FD7F2
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 23:13:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89BE4161A11
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 19:18:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12DE33A2510
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 22:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6471F708C;
-	Fri, 27 Dec 2024 19:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="JWHPav/L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0711F8671;
+	Fri, 27 Dec 2024 22:12:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from c.mail.sonic.net (c.mail.sonic.net [64.142.111.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004F5433D9;
-	Fri, 27 Dec 2024 19:18:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7644140E5F;
+	Fri, 27 Dec 2024 22:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.142.111.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735327091; cv=none; b=svEI5+A5Q4+W57Bz3eiMaIWA5WLfUbF8jrD+FWwaOXs792MeHv80cHjrgfaWTLafFMqLdSdxMzRnQr2W8PYemI6GEp1irlOy+ZLMCZtE0i9k+GaD7n0BEmxPNWPJMpp/O6tUNAJPNWG8BrgKIMFbNN/LYQFo87BZ4sLyl161Dow=
+	t=1735337574; cv=none; b=r0PC565Uy0stwgQyaXbMBKb+m3qxniQ8+t4gJPYlqdvzVScukunvabIlQbEkaMb2s38IhQW/S/cbXwPZJLylJCeWWik/90CvWj4AeVEi90dPrOuepv2Gx3FUeDx/Cooulw0t0CO6GUCkoIa4Gb9p7FMd3Re12KT8WCG+5wylvFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735327091; c=relaxed/simple;
-	bh=+5VkRUPQNNxI7PB2kQvTcGLW9ZabD9FR368mm5St2bo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AOWXk75asGpouIgwHtAQ4pc4b22ZconR+BzGqhhjL4L6oHCdgDHSfVFUrzVyHzJvWkzLipaVVHCb0X2aqF9ZE06t8OKrxbg99xG3Ss/jDXKoFVeB1x7UDuAEK4P21xQd9j5ZU3lxhtbNmtcJ1yHNqSRNDVmLxq5abi2nf5qT7I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=JWHPav/L; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
-From: Dragan Simic <dsimic@manjaro.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1735327086;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+tI9IaR8j0Yh3ldwm8YLrHNIwIU+o5zOLZk+zEBzhSs=;
-	b=JWHPav/LtLZaFlFKjshHxPcds+zu2AihQHH8uOxjZqJvteoJrCLAkinGRwSiczhrCvrpae
-	t0mWyplDkQNiNvrztTsPZ9GDDTJFwm0YrfsfkZ+WDz0H7IsP+R6ZD3yQ0+XmxvkwqOhcA/
-	F6yVzVTRSrfu0xfrI+dMhdcEFTUmOQU+7/W9IATK5mvSvWo6+kgIZpMSR6EV5CkXZu2GT7
-	83JEDihlpEBQ5BsheKd2ec3P2xVban2rsJ7IeG4Tevbt5uhhRw3gL+Zt2fEKmfc3SGUqrw
-	0ZN1EjUl09qmOgzGTrRRWnhaLdz5q/B02izxvuBx1M8j9NRQk4+CUCc19hsxRQ==
-To: trondmy@kernel.org,
-	anna@kernel.org
-Cc: linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dsimic@manjaro.org,
-	stable@vger.kernel.org,
-	Diederik de Haas <didi.debian@cknow.org>
-Subject: [PATCH] nfs: Make NFS_FSCACHE select NETFS_SUPPORT instead of depending on it
-Date: Fri, 27 Dec 2024 20:17:58 +0100
-Message-Id: <4faf55b5022a9e363e3cad791144064636ed0eba.1735326877.git.dsimic@manjaro.org>
+	s=arc-20240116; t=1735337574; c=relaxed/simple;
+	bh=tQYo7yFQHNTUCg4xYgaBSCoZpTcp0McFxVMUVfN0Ysc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BzEk7S2XV+fnThxEjTmOYkEUGjnofpn31UdbmLmyi5obdnVAnI5fp134wX7IHnYBBj1fwuSqlcEoNFIc21eKZMIHrXtyrNRZm2ok0vrxf1l5eQseZy6r8MgqGwnQHTne1o5OVbdMFrlnkh8HY4VbaRlAFeCZkRxsI8hJ4E/kGBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nom.one; spf=pass smtp.mailfrom=nom.one; arc=none smtp.client-ip=64.142.111.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nom.one
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nom.one
+Received: from 192-184-189-61.static.sonic.net (192-184-189-61.static.sonic.net [192.184.189.61])
+	(authenticated bits=0)
+	by c.mail.sonic.net (8.16.1/8.16.1) with ESMTPA id 4BRLxPHM028219;
+	Fri, 27 Dec 2024 13:59:26 -0800
+From: Forest <forestix@nom.one>
+To: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: linux-usb@vger.kernel.org, regressions@lists.linux.dev,
+        stable@vger.kernel.org
+Subject: [REGRESSION] usb: xhci port capability storage change broke fastboot android bootloader utility
+Date: Fri, 27 Dec 2024 13:59:25 -0800
+Message-ID: <hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Sonic-CAuth: UmFuZG9tSVabdT5M3Uxujc7aSwDmt/6gtZZakyrLJYpvb4QM5G4wOXkXz6ZrkafRHKgKpLdKZ+d8LGr1bHHlSKbvQaxXNLth
+X-Sonic-ID: C;Hrx41p3E7xGkb6xkvwPenQ== M;jAqK1p3E7xGkb6xkvwPenQ==
+X-Spam-Flag: No
+X-Sonic-Spam-Details: 0.0/5.0 by cerberusd
 
-Having the NFS_FSCACHE option depend on the NETFS_SUPPORT options makes
-selecting NFS_FSCACHE impossible unless another option that additionally
-selects NETFS_SUPPORT is already selected.
+#regzbot introduced: 63a1f8454962
 
-As a result, for example, being able to reach and select the NFS_FSCACHE
-option requires the CEPH_FS or CIFS option to be selected beforehand, which
-obviously doesn't make much sense.
+Dear maintainer,
 
-Let's correct this by making the NFS_FSCACHE option actually select the
-NETFS_SUPPORT option, instead of depending on it.
+I think I have found a regression in kernels version 6.10 and newer,
+including the latest mainline v6.13-rc4:
 
-Fixes: 915cd30cdea8 ("netfs, fscache: Combine fscache with netfs")
-Cc: stable@vger.kernel.org
-Reported-by: Diederik de Haas <didi.debian@cknow.org>
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
----
- fs/nfs/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+fastboot (the tool for communicating with Android bootloaders) now fails to
+perform various operations over USB.
 
-diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
-index 0eb20012792f..d3f76101ad4b 100644
---- a/fs/nfs/Kconfig
-+++ b/fs/nfs/Kconfig
-@@ -170,7 +170,8 @@ config ROOT_NFS
- 
- config NFS_FSCACHE
- 	bool "Provide NFS client caching support"
--	depends on NFS_FS=m && NETFS_SUPPORT || NFS_FS=y && NETFS_SUPPORT=y
-+	depends on NFS_FS
-+	select NETFS_SUPPORT
- 	select FSCACHE
- 	help
- 	  Say Y here if you want NFS data to be cached locally on disc through
+The problem manifests as an error when attempting to 'fastboot flash' an
+image (e.g. a new kernel containing security updates) to a LineageOS phone.
+It also manifests with simpler operations like reading a variable from the
+bootloader. For example:
+
+  fastboot getvar kernel
+
+A typical error message when the failure occurs:
+
+  getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
+
+I can reproduce this at will. It happens about 50% of the time when I
+run the above getvar command, and almost all the time when I try to push
+a new kernel to a device.
+
+A git bisect reveals this:
+
+63a1f8454962a64746a59441687dc2401290326c is the first bad commit
+commit 63a1f8454962a64746a59441687dc2401290326c
+Author: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date:   Mon Apr 29 17:02:28 2024 +0300
+    xhci: stored cached port capability values in one place
 
