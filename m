@@ -1,144 +1,126 @@
-Return-Path: <stable+bounces-106208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFED9FD5A2
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 16:39:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B339FD5C4
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 17:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951031880A2C
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 15:39:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41DB73A3A02
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 16:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D2C1F7096;
-	Fri, 27 Dec 2024 15:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69241F3D33;
+	Fri, 27 Dec 2024 16:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvS+Lu51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzVyFch8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E63B320B;
-	Fri, 27 Dec 2024 15:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B87D1F754E
+	for <stable@vger.kernel.org>; Fri, 27 Dec 2024 16:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735313959; cv=none; b=RGRVfP5Js9hj8aN59hlvhfJBR4MzXWrV9DuZAoe38vuzkCm5YWqwk84JjAJWF7vUSMYG7MDzw0LNl3t3xhjvEr8e1qjrQyjWqY5JE5dOZRw+B4v+d/aSaiQ6ALhiLEQZsmom4Gh8XrYRGbmAdMbOMy16AGyGlVr6MWpTo/TcvPs=
+	t=1735315203; cv=none; b=QPGAF7ZT+sFnoLDUsAi0pMXoH7i8/rV+fPhL+WcGyPKEj8WzZ+Ll91UmmwaBkgvYsKWI5/e0gfUq4p/RSie6+G5AamC0zAU6MxxpmRcVQZtAa2ciIRdq2BkEhzzn7TLUbhuycGGuGGv9+S3tPf+nseHQyEUa8/HOVm3/+zdq8dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735313959; c=relaxed/simple;
-	bh=7mzQY7/7p8tFlllO115gV5ll9BUzuzVq7bkL40Yq9nA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qqKyrGMsgOfctMowzEnJ6D1BFZWuXSPvNLlkX57Om4dxDWW1zore1YyoOewYzYItUH8P9GMj1HbC90npmhFwXRbY1IPhqjaFJrd6EvQDsHZqqYWIWvvs/nFYKYPFBwZD+f3jnKoTaWFAAu19SA0v3xX7NUs9/4vWzoVOzAGk7YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvS+Lu51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FD9C4CED0;
-	Fri, 27 Dec 2024 15:39:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735313957;
-	bh=7mzQY7/7p8tFlllO115gV5ll9BUzuzVq7bkL40Yq9nA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lvS+Lu51+qHR29oFWarwrXqW3Zvq2gaHNcgjMXmwoffTt8my6Sk/dc1zCZrS/QsSY
-	 yeYfFQ4ewY5/RXzfz7D+9mcD8RVOQCs/agCDY2sIysb8jrEcegTHZkAz3xrcTV54wu
-	 5hS25Hu0oq8/hgMFNmBlSz0CcqnnT04VyY5aexcCkw9gkpYUkODZc2Jyws62NDfeDW
-	 yPOapP3UFJ+VXlJsT5H7ArFb4foQP3CGV3hWdvYt/+ilQzjzmCGHbUuMLp374GWpuL
-	 RmqkZyogJEn5rDKgmuM2WWfx2hfO2Za/Cq33/VwU0FctWxA9FbvMow8cdb7tAZWZhJ
-	 8w3cE6+40oIWQ==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Stefan Berger <stefanb@us.ibm.com>,
-	Andrew Morton <akpm@osdl.org>,
-	Seiji Munetoh <munetoh@jp.ibm.com>,
-	Kylene Jo Hall <kjhall@us.ibm.com>,
-	Reiner Sailer <sailer@us.ibm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	stable@vger.kernel.org,
-	Andy Liang <andy.liang@hpe.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v8] tpm: Map the ACPI provided event log
-Date: Fri, 27 Dec 2024 17:39:09 +0200
-Message-ID: <20241227153911.28128-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1735315203; c=relaxed/simple;
+	bh=ganNciXAgWlD9a4cGfjV/dwJZwaTIwyALocMbMMNzWw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VVK0g/W0WERNr09qgdLeRvrp2w3L4i9SijmQk6KD0jGBm7Yo/obvvAZR2H31IgOYr93GcghuQZ3xfQg5x/zio/RIIQGMRFPIvT2Ti5yIQtWVrzderFipWbvxJaL/ZY77cWGNBYkD+ae8ydvp6fERas5BSerkrd+WZG/SKHInNjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzVyFch8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77673C4CED0;
+	Fri, 27 Dec 2024 16:00:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1735315203;
+	bh=ganNciXAgWlD9a4cGfjV/dwJZwaTIwyALocMbMMNzWw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=LzVyFch8HdRFKe2b7IUiwv2HGUX1LfKuDA5I75alJP3ecuLt3JjZnEaPR+ZLLciWb
+	 WEDrYy/0+HxzyPDsZ0r2Gfr7nVplimFt+veM4QA4NIBDwCA73ypmdZ43ikX5Uj6we3
+	 m0oL9SspgpFd6ol6wTMrR7kZGhwj1NyweQVSg9EM=
+Subject: FAILED: patch "[PATCH] phy: core: Fix that API devm_of_phy_provider_unregister()" failed to apply to 5.4-stable tree
+To: quic_zijuhu@quicinc.com,johan+linaro@kernel.org,vkoul@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 27 Dec 2024 16:59:59 +0100
+Message-ID: <2024122759-prune-pavement-a482@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-The following failure was reported:
 
-[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
-[   10.848132][    T1] ------------[ cut here ]------------
-[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
-[   10.862827][    T1] Modules linked in:
-[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
-[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
-[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
-[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
-[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Above shows that ACPI pointed a 16 MiB buffer for the log events because
-RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address the
-bug with kvmalloc() and devm_add_action_or_reset().
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org # v2.6.16+
-Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
-Reported-by: Andy Liang <andy.liang@hpe.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v8:
-* Reduced to only to this quick fix. Let HPE reserve 16 MiB if they want
-  to. We have mapping approach backed up in lore.
-v7:
-* Use devm_add_action_or_reset().
-* Fix tags.
-v6:
-* A new patch.
----
- drivers/char/tpm/eventlog/acpi.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x c0b82ab95b4f1fbc3e3aeab9d829d012669524b6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024122759-prune-pavement-a482@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
-diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
-index 69533d0bfb51..394c8302cefd 100644
---- a/drivers/char/tpm/eventlog/acpi.c
-+++ b/drivers/char/tpm/eventlog/acpi.c
-@@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_event_log, u64 len)
- 	return n == 0;
- }
- 
-+static void tpm_bios_log_free(void *data)
-+{
-+	kvfree(data);
-+}
-+
- /* read binary bios log */
- int tpm_read_log_acpi(struct tpm_chip *chip)
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c0b82ab95b4f1fbc3e3aeab9d829d012669524b6 Mon Sep 17 00:00:00 2001
+From: Zijun Hu <quic_zijuhu@quicinc.com>
+Date: Fri, 13 Dec 2024 20:36:42 +0800
+Subject: [PATCH] phy: core: Fix that API devm_of_phy_provider_unregister()
+ fails to unregister the phy provider
+
+For devm_of_phy_provider_unregister(), its comment says it needs to invoke
+of_phy_provider_unregister() to unregister the phy provider, but it will
+not actually invoke the function since devres_destroy() does not call
+devm_phy_provider_release(), and the missing of_phy_provider_unregister()
+call will cause:
+
+- The phy provider fails to be unregistered.
+- Leak both memory and the OF node refcount.
+
+Fortunately, the faulty API has not been used by current kernel tree.
+Fix by using devres_release() instead of devres_destroy() within the API.
+
+Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/stable/20241213-phy_core_fix-v6-2-40ae28f5015a%40quicinc.com
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-2-40ae28f5015a@quicinc.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index f190d7126613..de07e1616b34 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -1259,12 +1259,12 @@ EXPORT_SYMBOL_GPL(of_phy_provider_unregister);
+  * of_phy_provider_unregister to unregister the phy provider.
+  */
+ void devm_of_phy_provider_unregister(struct device *dev,
+-	struct phy_provider *phy_provider)
++				     struct phy_provider *phy_provider)
  {
-@@ -136,10 +141,16 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
- 	}
+ 	int r;
  
- 	/* malloc EventLog space */
--	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
-+	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
- 	if (!log->bios_event_log)
- 		return -ENOMEM;
- 
-+	ret = devm_add_action_or_reset(&chip->dev, tpm_bios_log_free, log->bios_event_log);
-+	if (ret) {
-+		log->bios_event_log = NULL;
-+		return ret;
-+	}
-+
- 	log->bios_event_log_end = log->bios_event_log + len;
- 
- 	virt = acpi_os_map_iomem(start, len);
--- 
-2.47.1
+-	r = devres_destroy(dev, devm_phy_provider_release, devm_phy_match,
+-		phy_provider);
++	r = devres_release(dev, devm_phy_provider_release, devm_phy_match,
++			   phy_provider);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PHY provider device resource\n");
+ }
+ EXPORT_SYMBOL_GPL(devm_of_phy_provider_unregister);
 
 
