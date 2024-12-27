@@ -1,122 +1,129 @@
-Return-Path: <stable+bounces-106194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60A79FD434
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 13:46:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E6C9FD49F
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 14:06:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 902D43A0F82
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 12:46:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB453A32B1
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 13:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAD41B2193;
-	Fri, 27 Dec 2024 12:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675591F2C58;
+	Fri, 27 Dec 2024 13:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q//aZnUz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0TXab3t"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCFF14AD29
-	for <stable@vger.kernel.org>; Fri, 27 Dec 2024 12:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8751F191D;
+	Fri, 27 Dec 2024 13:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735303606; cv=none; b=Qh7QRlXeATvlCnxLGSxg7791fh0sCvICJ9SQ8sJXs7nwEEthy2gbXk7kIRksaAGFLoCnw2c1ELVGsbMuf/HX5lOSYxXRs0hpk6QGQvONnO4b9CS5s1RmwLjkYudKLxUteRNJ09olzXGkNl40SPoDwpHkOo/Y8aSjWpE1MmxHAl0=
+	t=1735304655; cv=none; b=bVKMfw6lW+yo+a8V7W0DRCIBg6Ax3Ubdcbbb0RyZeF+llQCw0gmL3+5JVfx2VZiuXo320Re/69zubXiHZOZmBz9qIK48aFB6VYfPw221wTGp29XpBw3orWqaa26yrrLTkWc4F6AGtAuNmUmhVKePPZZjIMQtsHetaxLj5LrN7yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735303606; c=relaxed/simple;
-	bh=IX1Pbb9e9j1HoYmbUCLz0vmxGQOa9VaE8MApR1YCGOs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FH7v0EkB308EZf+E+5I1yQ+XlBmWalb5fiK+hF3VubZ99Q6CEBkrybO24d6g2zwRcZ3sVS5DeuLrFVG86I7AszpYSa9toBDMa0TSxJ6ysgM31liFJhRUrVxIC6/RwkdLer1dGN9QyloYlECn0vty9+eh/XGaoRqq6p7KcLdV8i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q//aZnUz; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso3913212f8f.3
-        for <stable@vger.kernel.org>; Fri, 27 Dec 2024 04:46:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735303603; x=1735908403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qAr5MJyxW4tliQqtSvIibq4rtO0kf94wwATw2mUtoLU=;
-        b=Q//aZnUzV9muSqLahVP7KhXETYk0BL1wsxA07GNo2UvpcQxPO6r0XnJdXvb2qn4Fke
-         yEzIQAa5LjNnFltmBm1i5xAObm5VHoDm+a+SKcV7gk+zc9DvJrTyDnAETXRhIqK1K0/S
-         9B30svSQ9XIc57Wyfa7f4ATPOTFFEbJO9c8kPeZl2BMLI8tyxnxfIfQpmHwP5B0fuB2f
-         tZaOXyPIh64XlspQrvUNP3Y7xg7IGdzJhUZPxpHExKqetgkNecrvoX117OaEmrLRPfle
-         dLU5Q32knnc+QzddMkLjnfjCZPR4YAIq5QQhH2/GNsvEjpk0W0Ug/wvggu2b7pneCfx1
-         YoRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735303603; x=1735908403;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qAr5MJyxW4tliQqtSvIibq4rtO0kf94wwATw2mUtoLU=;
-        b=ZsrW969qBX1xthp5mmWkMuwVnwsim8FNckHNs1F8aQNV3JY5iorG8Dyr5XS901dS3q
-         V+55m5Vk3DYusUlKKJzTgHlWFHBkDErGiIbhxnS9ROnkFzt1Spyq6enAcYAZkfPhbTji
-         MHUyJxKdZ8yLcA8QUAqllJOuATpmb5Ih79zrS/5Zfk5zYNNpLd8uwxejJ9rheK34UmvB
-         OQe77j0Q2uIqgjKeLYrOW0pBo7i5Uz16jUBBH5G5kVSypZq7rnuFUzspx9/QYZgU5uat
-         Keg78GhjyW4XKpxnHiHV0vAJpc8Z+efrPCcSP3N3seQwI7c7CyxHkgt9LFQET/VwhI8K
-         khJw==
-X-Forwarded-Encrypted: i=1; AJvYcCVu5M6ny5fGSCUReTw3ABLISRhR3o10x/DJjGytlqN0hyxuS29dtxvKyNhGsnfP+O8cqzQG2Ns=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywkk2nXEam/HFs//bFEIEq+T2oysQy1HggcPcvCB98+50yxguyo
-	gIAvnCiPuRWPnEM/MtFhoQV0uv6W7psHu1t41iZ4/Xi6GqkX0RiP0tZnP3t9h1w=
-X-Gm-Gg: ASbGncv3s83IE3+Ji6NKhQkdyS+86tS+yAV5mz7d76eE653lNnl2cWHeKMS6kZI8F42
-	lppdTQO5JkLrxYYxyFg96L0rSa4MpkvFd+phvL5dkq6AuJLBqB/W/mh9vLMIrEXRNAZZk4jOda+
-	7vkUnD5XTReud2qy9EaH8u3tfIqVf3MMuKpsmX4jUPqsS3UhoVt5Yelfj2yQYGDbHAfn7TYNYaz
-	zF5fKggpLlPEyQ49wmNg5je100nN6eGkiHMrxal7ECz6b7k+6ZL7lQ2
-X-Google-Smtp-Source: AGHT+IFOSyN6MsRY52PNGIySqb8jJ3jiAJ8ipn+mH7OpC8pga8Vo0BdkKK7utvCX05gXYmLza6GGZg==
-X-Received: by 2002:a5d:584d:0:b0:385:e0d6:fb73 with SMTP id ffacd0b85a97d-38a221fa9cdmr21953130f8f.15.1735303603117;
-        Fri, 27 Dec 2024 04:46:43 -0800 (PST)
-Received: from hackbox.lan ([82.76.168.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b11495sm297172905e9.19.2024.12.27.04.46.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Dec 2024 04:46:42 -0800 (PST)
-From: Abel Vesa <abel.vesa@linaro.org>
-To: linux-clk@vger.kernel.org,
-	Marek Vasut <marex@denx.de>
-Cc: Abel Vesa <abelvesa@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] clk: imx8mp: Fix clkout1/2 support
-Date: Fri, 27 Dec 2024 14:45:59 +0200
-Message-Id: <173530350106.4140483.17403614068290152779.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241112013718.333771-1-marex@denx.de>
-References: <20241112013718.333771-1-marex@denx.de>
+	s=arc-20240116; t=1735304655; c=relaxed/simple;
+	bh=U1YONWOTtZmZ0b6jh7tOLzeJRsqbzqOEKkuhXdCSghI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZzX9wrgjFD9bTcH+q/QssFML2vW5He3r1YJzUJYTm832al1FVVWyGGk+Wgqxjj2vxG/Hm59WlYztjiaVHIsthoz/k4+Qr5UDSmgyk86ODUloT8GmLS6D8uG5mYKbnhMFdeGcJSMf/fKP4vvNa3p0dviqAtP+44HOo9Ko63aFOKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0TXab3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10CAC4CED0;
+	Fri, 27 Dec 2024 13:04:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1735304654;
+	bh=U1YONWOTtZmZ0b6jh7tOLzeJRsqbzqOEKkuhXdCSghI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=w0TXab3t1rG0gVn+7Wmbi14Js+oeiw8q+KoZUhlEq4HJ2inEl1F6vorru3GX0mPSG
+	 CJTSgIwCcw4SRpdqXaXBEDiOtfUGYR7xSJ16MWUKD42nZk/qs9mvJBMVen/oFRHy9r
+	 uxYTkLa3mnjsKquXCfuyFdIB5mLvqeIfooP7IZDg=
+Date: Fri, 27 Dec 2024 14:04:11 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH 6.12 000/160] 6.12.7-rc1 review
+Message-ID: <2024122713-vacant-muppet-06eb@gregkh>
+References: <20241223155408.598780301@linuxfoundation.org>
+ <CA+G9fYt+k1m9oTuuZaGyTXqg+EKsSTnmfsc2HYijDWmEjx9xFg@mail.gmail.com>
+ <87y102r27e.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87y102r27e.wl-maz@kernel.org>
 
-
-On Tue, 12 Nov 2024 02:36:54 +0100, Marek Vasut wrote:
-> The CLKOUTn may be fed from PLL1/2/3, but the PLL1/2/3 has to be enabled
-> first by setting PLL_CLKE bit 11 in CCM_ANALOG_SYS_PLLn_GEN_CTRL register.
-> The CCM_ANALOG_SYS_PLLn_GEN_CTRL bit 11 is modeled by plln_out clock. Fix
-> the clock tree and place the clkout1/2 under plln_sel instead of plain plln
-> to let the clock subsystem correctly control the bit 11 and enable the PLL
-> in case the CLKOUTn is supplied by PLL1/2/3.
+On Thu, Dec 26, 2024 at 01:41:41PM +0000, Marc Zyngier wrote:
+> On Tue, 24 Dec 2024 19:12:40 +0000,
+> Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > 
+> > On Mon, 23 Dec 2024 at 21:31, Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > This is the start of the stable review cycle for the 6.12.7 release.
+> > > There are 160 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > >
+> > > Responses should be made by Fri, 27 Dec 2024 15:53:30 +0000.
+> > > Anything received after that time might be too late.
+> > >
+> > > The whole patch series can be found in one patch at:
+> > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.7-rc1.gz
+> > > or in the git tree and branch at:
+> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> > > and the diffstat can be found below.
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> > 
+> > The following test regressions found on arm64 selftests
+> > kvm kvm_set_id_regs.
+> > 
+> > This was reported and fixed by a patch [1].
+> > 
+> > * graviton4-metal, kselftest-kvm
+> >   - kvm_set_id_regs
+> > 
+> > * rk3399-rock-pi-4b-nvhe, kselftest-kvm
+> >   - kvm_set_id_regs
+> > 
+> > * rk3399-rock-pi-4b-protected, kselftest-kvm
+> >   - kvm_set_id_regs
+> > 
+> > * rk3399-rock-pi-4b-vhe, kselftest-kvm
+> >   - kvm_set_id_regs
+> > 
+> >  Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 > 
-> [...]
+> This is totally harmless, and if anything, indicates that the *fix*
+> is doing its job, and that this patch *must* be backported.
 
-Applied, thanks!
+Ok, but for some bizare reason someone stripped OFF the Fixes: tag,
+which causes this problem to now show up.  Hopefully that will not
+happen again in the future, but now I don't know what the git id is in
+Linus's tree to be able to apply here.
 
-[1/1] clk: imx8mp: Fix clkout1/2 support
-      commit: a9b7c84d22fb1687d63ca2a386773015cf59436b
+So, what do I do now?
 
-Best regards,
--- 
-Abel Vesa <abel.vesa@linaro.org>
+confused,
+
+greg k-h
 
