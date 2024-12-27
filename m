@@ -1,124 +1,144 @@
-Return-Path: <stable+bounces-106207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0FF9FD580
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 16:18:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFED9FD5A2
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 16:39:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1C7E3A4BF7
-	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 15:18:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951031880A2C
+	for <lists+stable@lfdr.de>; Fri, 27 Dec 2024 15:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBAA51F63C9;
-	Fri, 27 Dec 2024 15:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D2C1F7096;
+	Fri, 27 Dec 2024 15:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvS+Lu51"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E573F9D6;
-	Fri, 27 Dec 2024 15:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E63B320B;
+	Fri, 27 Dec 2024 15:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735312707; cv=none; b=Y5bcUtjdpEZPTcSShtt+fsqRXCnk42LtYln/AAyY3rTDj6GH3JvfAhyQJLBBB2e8BXrukJcxdYLND1onULL8SMMA/enOR/Ou0/rlPRCQucjLk/jF0t5ImkO8UiCyy4Bfr/fYu4dVrtG8oJuJHRCoDzHORx4nyYfQBO0SatIWTUk=
+	t=1735313959; cv=none; b=RGRVfP5Js9hj8aN59hlvhfJBR4MzXWrV9DuZAoe38vuzkCm5YWqwk84JjAJWF7vUSMYG7MDzw0LNl3t3xhjvEr8e1qjrQyjWqY5JE5dOZRw+B4v+d/aSaiQ6ALhiLEQZsmom4Gh8XrYRGbmAdMbOMy16AGyGlVr6MWpTo/TcvPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735312707; c=relaxed/simple;
-	bh=5mHgPD47KHRO3TRouHZwXsGVGtTqUwYDN+U+WO6IdEk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZrzCnKSJvKWI5dDocvjHNqxOouZpGAcQvZfGY7EbQEn7TYIPYcd40wcddW6qNuTdeD1wAbstBA1oC00fwjq9F8AOGoeFtyjEGduIjpl+D2X4olj2/gvYkSSkLMF8fvaQSEGn84+l8LHRrGjiU0xm7ohEXDNcp3TB4NU5Gug/4wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5401fb9fa03so7298274e87.1;
-        Fri, 27 Dec 2024 07:18:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735312702; x=1735917502;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=L0eDlOw9p3DnVtbNe3F5E+YgQxPXK7eYD6omdeJR05k=;
-        b=eMfK+FGLi0PSA30t8KPhaodRLmn2byocjuzac7pzyJsiWdj+Uxe8t8G8hLJm9DX7dJ
-         MQSspMm4n+0M1HF+2ju5+l4D7KP4AmrwCYSD51t7EtgGK92FvJximQ/2MhagCE20KAGy
-         g50+s4IjkLUJ8/YJqiz0YBZnJMV1JYWqCv/1nJx3dnsvOaxUYW2LB5O5MUjAHsGkI79j
-         5u0raFWnkIY/+qBPxW/3qY5hO4sfUGErrg0nuU0dFXZUPm5KRMxiNuAACq0BP1Wh5IBi
-         gmp65zEdMCA66eZgADfDNmzIndYxnQA7xEoqel23ETLScbAqB0Zz4can8DAwVa+KlyJH
-         maRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ+crzksLcnyAX5yO3jJ22NN8HtpZIJTAhWreFdw7PvWbWFGc9wjdb9tZroMTyX57d9PSM9sIAA4WkPJuD@vger.kernel.org, AJvYcCVdCJvHHCUdJ6xEyCNaGuDBD58U2ukVHtb4bn071JScPlNJPs9LZp9cF1azzLHi7hjobFFsS5FNCWA=@vger.kernel.org, AJvYcCWoBRj+iJw/y+NDz8ZQep+Lr7Frq4ppE9O809Hvho0OjkSofJPs4tNKeXeuFBpBGu+qbt/Xlchv@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzodi63ro38RjfhKemQZYCK8uRL/odsnBmVbc4fwg6qhi9qGB5p
-	2er8Qi/1ilkM/VlF0+nNrRXVmG4NufWbDs61+Uk+uWAbWqYxjAvIfx9LtHzV
-X-Gm-Gg: ASbGncsFV2rPgI7NeU2rAHcPfTd/rkQ6tVKdFtp+WEn+GUUpEVFXflWTkx0p6yZh7gn
-	RWFHO7xQ7GR0bDLMt6AtdbSuNa97Akv/STlDQAeLgmSx808SLT6wMk65MDMbSh1Xvhfwf0VPIUk
-	AjR0gx66VTgLRG6lDV3/b6uMxQjeHsgkbN941IgAE+CcxFsbRxbQeqCeDFRMpPQ28t0C7D+g3Am
-	v0NIaq6RHKcKkUywX+md293S3/VgqTiYWwa99Wb46sH9YqAaiPb7M9XSSi1t3VR/0YWsyJQaKzI
-	Yz5uhUgrc0M3HQ==
-X-Google-Smtp-Source: AGHT+IFB/fuyS34HvKmc8Aw7C+i39y90Wsl1/tRIoZtj5qXrbWyoPRmGQWLR6giyKuhCWTzRUpRI7A==
-X-Received: by 2002:a05:6512:1246:b0:53d:f769:14cb with SMTP id 2adb3069b0e04-5422944350cmr7783825e87.9.1735312701961;
-        Fri, 27 Dec 2024 07:18:21 -0800 (PST)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com. [209.85.208.172])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542238135a0sm2434736e87.151.2024.12.27.07.18.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Dec 2024 07:18:20 -0800 (PST)
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-30033e07ef3so37764241fa.0;
-        Fri, 27 Dec 2024 07:18:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUxclGAWVzNQ6ZI1xSENgxnhs3NutUG1/WfWa+kWZNjB1XFLPR+HJLiKuIF939AfEJo2JnKj19i@vger.kernel.org, AJvYcCWdg4/kn+3EyHsFjfQTWjBWPFhl3z0pFlXXVKJJXfyIRf9f7clQuzahvlKHWmcnMDbTjtvhu12BF03semGs@vger.kernel.org, AJvYcCWvDuiaeXuKCBx2LVCaTN6BPaf7zQPQoeQrcv7JTMLgO6tTfMih1CroX52/f9rCc0beyaDC8XesFrg=@vger.kernel.org
-X-Received: by 2002:a2e:a591:0:b0:302:1fce:393d with SMTP id
- 38308e7fff4ca-3045833692cmr107500831fa.2.1735312700069; Fri, 27 Dec 2024
- 07:18:20 -0800 (PST)
+	s=arc-20240116; t=1735313959; c=relaxed/simple;
+	bh=7mzQY7/7p8tFlllO115gV5ll9BUzuzVq7bkL40Yq9nA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qqKyrGMsgOfctMowzEnJ6D1BFZWuXSPvNLlkX57Om4dxDWW1zore1YyoOewYzYItUH8P9GMj1HbC90npmhFwXRbY1IPhqjaFJrd6EvQDsHZqqYWIWvvs/nFYKYPFBwZD+f3jnKoTaWFAAu19SA0v3xX7NUs9/4vWzoVOzAGk7YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvS+Lu51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FD9C4CED0;
+	Fri, 27 Dec 2024 15:39:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735313957;
+	bh=7mzQY7/7p8tFlllO115gV5ll9BUzuzVq7bkL40Yq9nA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lvS+Lu51+qHR29oFWarwrXqW3Zvq2gaHNcgjMXmwoffTt8my6Sk/dc1zCZrS/QsSY
+	 yeYfFQ4ewY5/RXzfz7D+9mcD8RVOQCs/agCDY2sIysb8jrEcegTHZkAz3xrcTV54wu
+	 5hS25Hu0oq8/hgMFNmBlSz0CcqnnT04VyY5aexcCkw9gkpYUkODZc2Jyws62NDfeDW
+	 yPOapP3UFJ+VXlJsT5H7ArFb4foQP3CGV3hWdvYt/+ilQzjzmCGHbUuMLp374GWpuL
+	 RmqkZyogJEn5rDKgmuM2WWfx2hfO2Za/Cq33/VwU0FctWxA9FbvMow8cdb7tAZWZhJ
+	 8w3cE6+40oIWQ==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Stefan Berger <stefanb@us.ibm.com>,
+	Andrew Morton <akpm@osdl.org>,
+	Seiji Munetoh <munetoh@jp.ibm.com>,
+	Kylene Jo Hall <kjhall@us.ibm.com>,
+	Reiner Sailer <sailer@us.ibm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	stable@vger.kernel.org,
+	Andy Liang <andy.liang@hpe.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v8] tpm: Map the ACPI provided event log
+Date: Fri, 27 Dec 2024 17:39:09 +0200
+Message-ID: <20241227153911.28128-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241109003739.3440904-1-masterr3c0rd@epochal.quest>
- <173124139852.3585539.10704015898700065278.b4-ty@csie.org> <9415ca9c-f303-4507-8cd6-cb08ee09e988@linumiz.com>
-In-Reply-To: <9415ca9c-f303-4507-8cd6-cb08ee09e988@linumiz.com>
-Reply-To: wens@csie.org
-From: Chen-Yu Tsai <wens@csie.org>
-Date: Fri, 27 Dec 2024 23:18:06 +0800
-X-Gmail-Original-Message-ID: <CAGb2v650sctP83mdoYtcws2zVzJzfBqq=AvAXYH-WaOoPBDx2Q@mail.gmail.com>
-Message-ID: <CAGb2v650sctP83mdoYtcws2zVzJzfBqq=AvAXYH-WaOoPBDx2Q@mail.gmail.com>
-Subject: Re: [PATCH] clk: sunxi-ng: a100: enable MMC clock reparenting
-To: Parthiban <parthiban@linumiz.com>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Yangtao Li <frank@allwinnertech.com>, Maxime Ripard <mripard@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Cody Eksal <masterr3c0rd@epochal.quest>, linux-clk@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Andre Przywara <andre.przywara@arm.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 27, 2024 at 4:45=E2=80=AFPM Parthiban <parthiban@linumiz.com> w=
-rote:
->
-> On 11/10/24 5:53 PM, Chen-Yu Tsai wrote:
-> > On Fri, 08 Nov 2024 20:37:37 -0400, Cody Eksal wrote:
-> >> While testing the MMC nodes proposed in [1], it was noted that mmc0/1
-> >> would fail to initialize, with "mmc: fatal err update clk timeout" in
-> >> the kernel logs. A closer look at the clock definitions showed that th=
-e MMC
-> >> MPs had the "CLK_SET_RATE_NO_REPARENT" flag set. No reason was given f=
-or
-> >> adding this flag in the first place, and its original purpose is unkno=
-wn,
-> >> but it doesn't seem to make sense and results in severe limitations to=
- MMC
-> >> speeds. Thus, remove this flag from the 3 MMC MPs.
-> >>
-> >> [...]
-> >
-> > Applied to clk-for-6.13 in git@github.com:linux-sunxi/linux-sunxi.git, =
-thanks!
-> >
-> > [1/1] clk: sunxi-ng: a100: enable MMC clock reparenting
-> >       commit: 3fd8177f0015c32fdb0af0feab0bcf344aa74832
-> This commit is missing in 6.13-rc4. Will it be merged in the next rcX?
+The following failure was reported:
 
-It looks like I tagged the wrong commit when I sent the pull request.
+[   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
+[   10.848132][    T1] ------------[ cut here ]------------
+[   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
+[   10.862827][    T1] Modules linked in:
+[   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
+[   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
+[   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+[   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
+[   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+[   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
+[   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
 
-I'll try to send a PR for it as a fix.
+Above shows that ACPI pointed a 16 MiB buffer for the log events because
+RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address the
+bug with kvmalloc() and devm_add_action_or_reset().
 
-ChenYu
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org # v2.6.16+
+Fixes: 55a82ab3181b ("[PATCH] tpm: add bios measurement log")
+Reported-by: Andy Liang <andy.liang@hpe.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219495
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+v8:
+* Reduced to only to this quick fix. Let HPE reserve 16 MiB if they want
+  to. We have mapping approach backed up in lore.
+v7:
+* Use devm_add_action_or_reset().
+* Fix tags.
+v6:
+* A new patch.
+---
+ drivers/char/tpm/eventlog/acpi.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/char/tpm/eventlog/acpi.c b/drivers/char/tpm/eventlog/acpi.c
+index 69533d0bfb51..394c8302cefd 100644
+--- a/drivers/char/tpm/eventlog/acpi.c
++++ b/drivers/char/tpm/eventlog/acpi.c
+@@ -63,6 +63,11 @@ static bool tpm_is_tpm2_log(void *bios_event_log, u64 len)
+ 	return n == 0;
+ }
+ 
++static void tpm_bios_log_free(void *data)
++{
++	kvfree(data);
++}
++
+ /* read binary bios log */
+ int tpm_read_log_acpi(struct tpm_chip *chip)
+ {
+@@ -136,10 +141,16 @@ int tpm_read_log_acpi(struct tpm_chip *chip)
+ 	}
+ 
+ 	/* malloc EventLog space */
+-	log->bios_event_log = devm_kmalloc(&chip->dev, len, GFP_KERNEL);
++	log->bios_event_log = kvmalloc(len, GFP_KERNEL);
+ 	if (!log->bios_event_log)
+ 		return -ENOMEM;
+ 
++	ret = devm_add_action_or_reset(&chip->dev, tpm_bios_log_free, log->bios_event_log);
++	if (ret) {
++		log->bios_event_log = NULL;
++		return ret;
++	}
++
+ 	log->bios_event_log_end = log->bios_event_log + len;
+ 
+ 	virt = acpi_os_map_iomem(start, len);
+-- 
+2.47.1
+
 
