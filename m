@@ -1,137 +1,128 @@
-Return-Path: <stable+bounces-106231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6339FDA5D
-	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 13:10:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41B89FDB7E
+	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 16:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221B81882D95
-	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 12:10:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E387160388
+	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 15:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D6B156F39;
-	Sat, 28 Dec 2024 12:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0B615DBC1;
+	Sat, 28 Dec 2024 15:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GpL88f9E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="phV6PVA7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AEEC147;
-	Sat, 28 Dec 2024 12:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B2B7E575
+	for <stable@vger.kernel.org>; Sat, 28 Dec 2024 15:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735387822; cv=none; b=M9Zg71HeUt2vQKWOJ3EApZxSz9cUeALlIR7joPUUiFIPG3bP3GVe3tBqnaEOSb5IMGp6G0Gx3q/PZn/eU57TFZh8bX8o9fV6T2uZsoKGbNM0DjO/0uL7lhxs7xNHvW3AqoArfu8H8VFus7oA17bjOYsJW4COcsIU7gk/s7K+Lz4=
+	t=1735398952; cv=none; b=CQ9Cg3A9Ti2s8wLOWMR5BZBOS+2ejTBajxvd8wI7RRqNbEnMW0J4umoGOyDJ8zo2HQzNJn1szXi+Ho30QT2b8Y0yLN9FucUUVWyaqFvbEQ7kV5ZdskW58sXFJZ7gVM9CbpNeMzoBGVYf/pRLN8q8hpH0DTbU0mJ2O0N9kjRvXak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735387822; c=relaxed/simple;
-	bh=0QGXNaFJjk1c0fNs0wWeOtd9rF+1wlCEw/cKHTrnC/U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jFB4yIjJHmE5lKz/yq/4zuTWEBpKR10mZQecC5BUaB4EergQ5yLhpdGZGwzM9U70TNnPO2h2827sQv30HjOxbq7sy9hohWhcuURtBFe3lGhrf7wDW63J6TMcZpXMG36OWzAK0l7ZV8Ko5Vy9Kkj3E7RVDJWcuZj/DNpmu6eEhmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GpL88f9E; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3863494591bso4257758f8f.1;
-        Sat, 28 Dec 2024 04:10:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735387819; x=1735992619; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fA6eTDteXLTTcDUHaQ/HA6RP/xb4w/Mt2bZYijpFrSs=;
-        b=GpL88f9Eqr5EHDmbhrP4nSztSlmLtLAZReKSEUfR47UZL3qRKFXyuBIRxekQKTLR0O
-         Jacnpe4QURb7PQ4WjIz+Djhd0due/2ND7fzeFkg8DlUlYvItfa90xFegAqpAVnpj+1E/
-         ON2MzphY3arOjiSzXfGBN+8WoUfA2eSBkcKTf8Jk3BS9A48UK+hYohe9oC+YWOL8lear
-         NM3Xw9WdUgrQFfN61Cy5RP/UbeRzdfC5hlxVaQvoDdX/nVUv2EWq0xKEAeV+CUmwamMx
-         TBC3Jx5uroPspiUIt+yjDz6UTQdP5Ewr1HfGSL1cGw1ZeDBo8Rj1y3XqKglskHzgzrw8
-         CCfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735387819; x=1735992619;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fA6eTDteXLTTcDUHaQ/HA6RP/xb4w/Mt2bZYijpFrSs=;
-        b=alHaL6+pGwv5jUCM1MTmU5NZP4juyRTpVV//unUaOfrTKhTEmFW6nF0oNCfM/603vp
-         TvAgbeFBKj57rteS+0BXC1BIItSbJyUWQnDbCatB57Jb6BS7DJwhlHnk6XDkXEmbUlpB
-         UQkzUGf3Tqyss2xmKzPaRQsDYNtmVEvrPown4RbzE6zN8eY7N5/W+M3ToPNevsJmDchj
-         U747SJHpApqxH4sbhCP3JORd5/oimcoV78RbIOub6Q9Vj7R+5oAHnGKZdVPdmzpCtdQ4
-         iFYs3hieRIE4AVU9/4AvFpgEUSaqtdAIpY7d4Z1KWod1K2ksNUBnuFg7gA7Xp8m2uCb8
-         iczA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+DTRelNumNuz1B/h34rlcC7cIWVyJBE1V0utc3KtX2Z8JlrEiiwN1nRmJF7d02BgmqkLo9SRVJ3tO@vger.kernel.org, AJvYcCU5eh2yXVNq/E6hEeD8vAO7ElI1BZ/NMti5RnMFYf7f0liL4y4BdyYINSY5FwshmFuHeHkKGOhM@vger.kernel.org, AJvYcCUyL6cptMPKoXtNh887jCO05VxZhWq4p5yieRNyZJLyEl1wIcrlZ1RLDVBPTh+iQb2CHgJPVgT+@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKwz7uSJYDj+VxzPuL3250qJ14fvExf7oLNWJayhr7JEAb9cp5
-	56i/d568k4tStcMcLMXL6sRQRvb+xcc+tjytSx8sdca7ZqPBZ0nG
-X-Gm-Gg: ASbGncukkjY0cdt7/OQaM0IEawiA2ZENbV9w07Gp7TJu2Mh53a3S6hROL591x+PdHvV
-	pJNnMOWDSUXUauR+fOlGT9ELpf8Rs4Xk6xJd9N83b/BRpifn/GVkINFxkGKivp4qxX8zKjA52wt
-	dzA17yU+ZJsq7ojVWNSvLZNoL1fWartTmMJRpZqZ/hi9zhbdd0WvpkZN6RhPpjfnHua1GsxdCWW
-	g7VAwjI+mtN8p5gFaZ+Q8izuryDfisIkiAxxt7wFHDjc7SWYEN3Zb5Az9mc2hcMQiNHTPQnXAYS
-	vTfizb9SEh9DUCzRILjK+78=
-X-Google-Smtp-Source: AGHT+IEK4q12r0ZW7JTwEPQZ6rfdXPvPurHXUgjNLPvHDQIcghOD4uO5VpbcPPeppibnu2nA+HUl/g==
-X-Received: by 2002:a5d:6da4:0:b0:385:f5c4:b30d with SMTP id ffacd0b85a97d-38a223ffac3mr25789354f8f.39.1735387819342;
-        Sat, 28 Dec 2024 04:10:19 -0800 (PST)
-Received: from dsl-u17-10 (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8a6e19sm24601333f8f.100.2024.12.28.04.10.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 28 Dec 2024 04:10:18 -0800 (PST)
-Date: Sat, 28 Dec 2024 12:10:18 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-sctp@vger.kernel.org, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Xi Wang
- <xi.wang@gmail.com>, Neil Horman <nhorman@tuxdriver.com>, Vlad Yasevich
- <vyasevich@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] net/sctp: Prevent autoclose integer overflow in
- sctp_association_init()
-Message-ID: <20241228121018.6b4b78dc@dsl-u17-10>
-In-Reply-To: <20241219162114.2863827-1-kniv@yandex-team.ru>
-References: <20241219162114.2863827-1-kniv@yandex-team.ru>
-X-Mailer: Claws Mail 3.16.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1735398952; c=relaxed/simple;
+	bh=gIQv6WIzFMQE3J2U4bylWeQdLvAZoBhGBbxu9c8Wnd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VFZdKPTOQ+aJOcfguqZuSrNJnYW0h+tYgpSTbi0g84EdsIuqV2hy2Tm4s3IJ47wh2YH6nGpYkqoae6cgc6LK98w5gVFGRC8IXtXC8xAkUodnGNn4waxqm5twCZJUXugOFNnIWmx+LYB25DSgUN4Y7PrN3fUvbWsYKw1j4IO6WYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=phV6PVA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965E4C4CECD;
+	Sat, 28 Dec 2024 15:15:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735398951;
+	bh=gIQv6WIzFMQE3J2U4bylWeQdLvAZoBhGBbxu9c8Wnd4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=phV6PVA7HGI8Ev/gJSuMz5iwv01I2QYhxYpc9C0mNLbNViF+cOsFAMy6O3UtN3l8A
+	 9Ldw/3HcyehRCOh45SqCv+mgZlbZamslmbWyIqjJinnyVxxNHXn2wTPBuiAh4jfizV
+	 Zidjsi/3QOST4KMVy7GvwEbCsRKewcPEzW1Vq8VdJbXKN43FOEMo7c3IR29e/A+v1d
+	 Laqie3MJipgLg+q4WJTy5tIUXe7Qjbm7Dxlrf6MkOFdZTZTkjMd808te95MG3ENhkT
+	 BTSQzoK4kNv2qD0GKcd/y3uyetVjOxV2KOJD1pKhrKd6DNCu0mmzv3Vvc6+K9VyOqB
+	 yNU9bzyRKKqIw==
+Date: Sat, 28 Dec 2024 10:15:50 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Gavin Guo <gavinguo@igalia.com>
+Cc: stable@vger.kernel.org, seanjc@google.com, mhal@rbox.co,
+	haoyuwu254@gmail.com, pbonzini@redhat.com
+Subject: Re: [PATCH 6.6] KVM: x86: Make x2APIC ID 100% readonly
+Message-ID: <Z3AWJjUDmfCnD99S@lappy>
+References: <20241226033847.760293-1-gavinguo@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20241226033847.760293-1-gavinguo@igalia.com>
 
-On Thu, 19 Dec 2024 19:21:14 +0300
-Nikolay Kuratov <kniv@yandex-team.ru> wrote:
+On Thu, Dec 26, 2024 at 11:38:47AM +0800, Gavin Guo wrote:
+>From: Sean Christopherson <seanjc@google.com>
+>
+>[ Upstream commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071 ]
+>
+>Ignore the userspace provided x2APIC ID when fixing up APIC state for
+>KVM_SET_LAPIC, i.e. make the x2APIC fully readonly in KVM.  Commit
+>a92e2543d6a8 ("KVM: x86: use hardware-compatible format for APIC ID
+>register"), which added the fixup, didn't intend to allow userspace to
+>modify the x2APIC ID.  In fact, that commit is when KVM first started
+>treating the x2APIC ID as readonly, apparently to fix some race:
+>
+> static inline u32 kvm_apic_id(struct kvm_lapic *apic)
+> {
+>-       return (kvm_lapic_get_reg(apic, APIC_ID) >> 24) & 0xff;
+>+       /* To avoid a race between apic_base and following APIC_ID update when
+>+        * switching to x2apic_mode, the x2apic mode returns initial x2apic id.
+>+        */
+>+       if (apic_x2apic_mode(apic))
+>+               return apic->vcpu->vcpu_id;
+>+
+>+       return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
+> }
+>
+>Furthermore, KVM doesn't support delivering interrupts to vCPUs with a
+>modified x2APIC ID, but KVM *does* return the modified value on a guest
+>RDMSR and for KVM_GET_LAPIC.  I.e. no remotely sane setup can actually
+>work with a modified x2APIC ID.
+>
+>Making the x2APIC ID fully readonly fixes a WARN in KVM's optimized map
+>calculation, which expects the LDR to align with the x2APIC ID.
+>
+>  WARNING: CPU: 2 PID: 958 at arch/x86/kvm/lapic.c:331 kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+>  CPU: 2 PID: 958 Comm: recalc_apic_map Not tainted 6.4.0-rc3-vanilla+ #35
+>  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.2-1-1 04/01/2014
+>  RIP: 0010:kvm_recalculate_apic_map+0x609/0xa00 [kvm]
+>  Call Trace:
+>   <TASK>
+>   kvm_apic_set_state+0x1cf/0x5b0 [kvm]
+>   kvm_arch_vcpu_ioctl+0x1806/0x2100 [kvm]
+>   kvm_vcpu_ioctl+0x663/0x8a0 [kvm]
+>   __x64_sys_ioctl+0xb8/0xf0
+>   do_syscall_64+0x56/0x80
+>   entry_SYSCALL_64_after_hwframe+0x46/0xb0
+>  RIP: 0033:0x7fade8b9dd6f
+>
+>Unfortunately, the WARN can still trigger for other CPUs than the current
+>one by racing against KVM_SET_LAPIC, so remove it completely.
+>
+>Reported-by: Michal Luczaj <mhal@rbox.co>
+>Closes: https://lore.kernel.org/all/814baa0c-1eaa-4503-129f-059917365e80@rbox.co
+>Reported-by: Haoyu Wu <haoyuwu254@gmail.com>
+>Closes: https://lore.kernel.org/all/20240126161633.62529-1-haoyuwu254@gmail.com
+>Reported-by: syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com
+>Closes: https://lore.kernel.org/all/000000000000c2a6b9061cbca3c3@google.com
+>Signed-off-by: Sean Christopherson <seanjc@google.com>
+>Message-ID: <20240802202941.344889-2-seanjc@google.com>
+>Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>Signed-off-by: Gavin Guo <gavinguo@igalia.com>
 
-> While by default max_autoclose equals to INT_MAX / HZ, one may set
-> net.sctp.max_autoclose to UINT_MAX. There is code in
-> sctp_association_init() that can consequently trigger overflow.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 9f70f46bd4c7 ("sctp: properly latch and use autoclose value from sock to association")
-> Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-> ---
->  net/sctp/associola.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-> index c45c192b7878..0b0794f164cf 100644
-> --- a/net/sctp/associola.c
-> +++ b/net/sctp/associola.c
-> @@ -137,7 +137,8 @@ static struct sctp_association *sctp_association_init(
->  		= 5 * asoc->rto_max;
->  
->  	asoc->timeouts[SCTP_EVENT_TIMEOUT_SACK] = asoc->sackdelay;
-> -	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] = sp->autoclose * HZ;
-> +	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] =
-> +		(unsigned long)sp->autoclose * HZ;
+As this one isn't tagged for stable, the KVM maintainers should ack the
+backport before we take it.
 
-That doesn't fix 32bit systems.
-
-Looking through sctp/structs.h there are a lot of 'long' used for
-timeouts.
-it can't be right that any of these change size between 32bit and 64bit.
-So they should either be __u32 or __u64 (or similar).
-
-	David
-
->  
->  	/* Initializes the timers */
->  	for (i = SCTP_EVENT_TIMEOUT_NONE; i < SCTP_NUM_TIMEOUT_TYPES; ++i)
-
+-- 
+Thanks,
+Sasha
 
