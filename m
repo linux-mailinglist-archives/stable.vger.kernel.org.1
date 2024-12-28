@@ -1,128 +1,129 @@
-Return-Path: <stable+bounces-106232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41B89FDB7E
-	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 16:15:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A5E9FDBB6
+	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 17:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E387160388
-	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 15:15:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CD2B1882149
+	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 16:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0B615DBC1;
-	Sat, 28 Dec 2024 15:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C6715A86B;
+	Sat, 28 Dec 2024 16:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="phV6PVA7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="djSJdr+E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B2B7E575
-	for <stable@vger.kernel.org>; Sat, 28 Dec 2024 15:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC0C4A0C
+	for <stable@vger.kernel.org>; Sat, 28 Dec 2024 16:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735398952; cv=none; b=CQ9Cg3A9Ti2s8wLOWMR5BZBOS+2ejTBajxvd8wI7RRqNbEnMW0J4umoGOyDJ8zo2HQzNJn1szXi+Ho30QT2b8Y0yLN9FucUUVWyaqFvbEQ7kV5ZdskW58sXFJZ7gVM9CbpNeMzoBGVYf/pRLN8q8hpH0DTbU0mJ2O0N9kjRvXak=
+	t=1735404541; cv=none; b=HxDMh30v3TRIC8/XxWYKnmOSdccQxE6xDQSZ72zr1UtCZGVUw/AopBH22r9SqIt4lMHBkzvBzDN9hbRlUyi9X86sXyzNY/lM0dq2q2vmVsekq/OVHYjRA1QJM3RstAXpVOZXP5BgdTZuCo7Sl/TtDdYig2lRb/T4GaZKpTQsdU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735398952; c=relaxed/simple;
-	bh=gIQv6WIzFMQE3J2U4bylWeQdLvAZoBhGBbxu9c8Wnd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VFZdKPTOQ+aJOcfguqZuSrNJnYW0h+tYgpSTbi0g84EdsIuqV2hy2Tm4s3IJ47wh2YH6nGpYkqoae6cgc6LK98w5gVFGRC8IXtXC8xAkUodnGNn4waxqm5twCZJUXugOFNnIWmx+LYB25DSgUN4Y7PrN3fUvbWsYKw1j4IO6WYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=phV6PVA7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965E4C4CECD;
-	Sat, 28 Dec 2024 15:15:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735398951;
-	bh=gIQv6WIzFMQE3J2U4bylWeQdLvAZoBhGBbxu9c8Wnd4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=phV6PVA7HGI8Ev/gJSuMz5iwv01I2QYhxYpc9C0mNLbNViF+cOsFAMy6O3UtN3l8A
-	 9Ldw/3HcyehRCOh45SqCv+mgZlbZamslmbWyIqjJinnyVxxNHXn2wTPBuiAh4jfizV
-	 Zidjsi/3QOST4KMVy7GvwEbCsRKewcPEzW1Vq8VdJbXKN43FOEMo7c3IR29e/A+v1d
-	 Laqie3MJipgLg+q4WJTy5tIUXe7Qjbm7Dxlrf6MkOFdZTZTkjMd808te95MG3ENhkT
-	 BTSQzoK4kNv2qD0GKcd/y3uyetVjOxV2KOJD1pKhrKd6DNCu0mmzv3Vvc6+K9VyOqB
-	 yNU9bzyRKKqIw==
-Date: Sat, 28 Dec 2024 10:15:50 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Gavin Guo <gavinguo@igalia.com>
-Cc: stable@vger.kernel.org, seanjc@google.com, mhal@rbox.co,
-	haoyuwu254@gmail.com, pbonzini@redhat.com
-Subject: Re: [PATCH 6.6] KVM: x86: Make x2APIC ID 100% readonly
-Message-ID: <Z3AWJjUDmfCnD99S@lappy>
-References: <20241226033847.760293-1-gavinguo@igalia.com>
+	s=arc-20240116; t=1735404541; c=relaxed/simple;
+	bh=CnHOjWnwcxBfEr30xjoW1jdvqAsEgL8xjieParMkvc8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ih4vx1YwyAH9KXMpvH2eqE3cFjFS9X0KwfazqjQ9gYMuJbZ5Lu+37n61KgcJPaPgWIAonzBmiCFs7v49MGcT3O8Y7wmH4qt95FIORWlQHPiNFakpCqdpksOleUAbpJDGRVWFeCnO5FFfDvjEV8e+KQ4pe0w7x2c1gs8JMS3YFi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=djSJdr+E; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1735404539;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DrhhYC/SUzcKanUzR7ReLLrLLKZ8RxD2ej3oFU+uwCA=;
+	b=djSJdr+EJrUebjmJ/JsMdAiRy5PCmmmuC4mnjwyf+GoCs+g+saVsYp8K3NO4Jh5WJl1LgR
+	y07781bb9dl1/J1nMMisPQIADjw14O5ygV3gPRtxKcUmPvP3kT9bGB5ayPlSKXfRDnVium
+	r2Y0YFYj6JXkoCy/wkfyN24VszxuStE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-161-4CTNSmINOwOYq9lcnypZjg-1; Sat,
+ 28 Dec 2024 11:48:55 -0500
+X-MC-Unique: 4CTNSmINOwOYq9lcnypZjg-1
+X-Mimecast-MFC-AGG-ID: 4CTNSmINOwOYq9lcnypZjg
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0AA5A1956089;
+	Sat, 28 Dec 2024 16:48:54 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.7])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CB4801956053;
+	Sat, 28 Dec 2024 16:48:51 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Len Brown <lenb@kernel.org>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	linux-acpi@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ACPI: resource: Add TongFang GM5HG0A to irq1_edge_low_force_override[]
+Date: Sat, 28 Dec 2024 17:48:45 +0100
+Message-ID: <20241228164845.42381-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20241226033847.760293-1-gavinguo@igalia.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, Dec 26, 2024 at 11:38:47AM +0800, Gavin Guo wrote:
->From: Sean Christopherson <seanjc@google.com>
->
->[ Upstream commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071 ]
->
->Ignore the userspace provided x2APIC ID when fixing up APIC state for
->KVM_SET_LAPIC, i.e. make the x2APIC fully readonly in KVM.  Commit
->a92e2543d6a8 ("KVM: x86: use hardware-compatible format for APIC ID
->register"), which added the fixup, didn't intend to allow userspace to
->modify the x2APIC ID.  In fact, that commit is when KVM first started
->treating the x2APIC ID as readonly, apparently to fix some race:
->
-> static inline u32 kvm_apic_id(struct kvm_lapic *apic)
-> {
->-       return (kvm_lapic_get_reg(apic, APIC_ID) >> 24) & 0xff;
->+       /* To avoid a race between apic_base and following APIC_ID update when
->+        * switching to x2apic_mode, the x2apic mode returns initial x2apic id.
->+        */
->+       if (apic_x2apic_mode(apic))
->+               return apic->vcpu->vcpu_id;
->+
->+       return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
-> }
->
->Furthermore, KVM doesn't support delivering interrupts to vCPUs with a
->modified x2APIC ID, but KVM *does* return the modified value on a guest
->RDMSR and for KVM_GET_LAPIC.  I.e. no remotely sane setup can actually
->work with a modified x2APIC ID.
->
->Making the x2APIC ID fully readonly fixes a WARN in KVM's optimized map
->calculation, which expects the LDR to align with the x2APIC ID.
->
->  WARNING: CPU: 2 PID: 958 at arch/x86/kvm/lapic.c:331 kvm_recalculate_apic_map+0x609/0xa00 [kvm]
->  CPU: 2 PID: 958 Comm: recalc_apic_map Not tainted 6.4.0-rc3-vanilla+ #35
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.2-1-1 04/01/2014
->  RIP: 0010:kvm_recalculate_apic_map+0x609/0xa00 [kvm]
->  Call Trace:
->   <TASK>
->   kvm_apic_set_state+0x1cf/0x5b0 [kvm]
->   kvm_arch_vcpu_ioctl+0x1806/0x2100 [kvm]
->   kvm_vcpu_ioctl+0x663/0x8a0 [kvm]
->   __x64_sys_ioctl+0xb8/0xf0
->   do_syscall_64+0x56/0x80
->   entry_SYSCALL_64_after_hwframe+0x46/0xb0
->  RIP: 0033:0x7fade8b9dd6f
->
->Unfortunately, the WARN can still trigger for other CPUs than the current
->one by racing against KVM_SET_LAPIC, so remove it completely.
->
->Reported-by: Michal Luczaj <mhal@rbox.co>
->Closes: https://lore.kernel.org/all/814baa0c-1eaa-4503-129f-059917365e80@rbox.co
->Reported-by: Haoyu Wu <haoyuwu254@gmail.com>
->Closes: https://lore.kernel.org/all/20240126161633.62529-1-haoyuwu254@gmail.com
->Reported-by: syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com
->Closes: https://lore.kernel.org/all/000000000000c2a6b9061cbca3c3@google.com
->Signed-off-by: Sean Christopherson <seanjc@google.com>
->Message-ID: <20240802202941.344889-2-seanjc@google.com>
->Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+The TongFang GM5HG0A is a TongFang barebone design which is sold under
+various brand names.
 
-As this one isn't tagged for stable, the KVM maintainers should ack the
-backport before we take it.
+The ACPI IRQ override for the keyboard IRQ must be used on these AMD Zen
+laptops in order for the IRQ to work.
 
+At least on the SKIKK Vanaheim variant the DMI product- and board-name
+strings have been replaced by the OEM with "Vanaheim" so checking that
+board-name contains "GM5HG0A" as is usually done for TongFang barebones
+quirks does not work.
+
+The DMI OEM strings do contain "GM5HG0A". I have looked at the dmidecode
+for a few other TongFang devices and the TongFang code-name string being
+in the OEM strings seems to be something which is consistently true.
+
+Add a quirk checking one of the DMI_OEM_STRING(s) is "GM5HG0A" in the hope
+that this will work for other OEM versions of the "GM5HG0A" too.
+
+Link: https://www.skikk.eu/en/laptops/vanaheim-15-rtx-4060
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219614
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/resource.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 7d6537ea176f..90aaec923889 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -653,6 +653,17 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
+ 		},
+ 	},
++	{
++		/*
++		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
++		 * board-name is changed, so check OEM strings instead. Note
++		 * OEM string matches are always exact matches.
++		 * https://bugzilla.kernel.org/show_bug.cgi?id=219614
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_OEM_STRING, "GM5HG0A"),
++		},
++	},
+ 	{ }
+ };
+ 
 -- 
-Thanks,
-Sasha
+2.47.1
+
 
