@@ -1,88 +1,112 @@
-Return-Path: <stable+bounces-106229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948859FD997
-	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 10:25:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C72B9FDA28
+	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 12:31:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 171753A2998
-	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 09:25:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE4183A1095
+	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 11:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51024524B0;
-	Sat, 28 Dec 2024 09:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C85126BF9;
+	Sat, 28 Dec 2024 11:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=johnrowley.me header.i=@johnrowley.me header.b="lk8gAtHu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+Received: from mail.vapourmail.eu (mail.vapourmail.eu [5.75.183.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5E13594B
-	for <stable@vger.kernel.org>; Sat, 28 Dec 2024 09:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3406441C7F;
+	Sat, 28 Dec 2024 11:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.183.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735377919; cv=none; b=i+FiHOjtTqe85Z/e5e7R2QtqMG6Gb/GJ1Z1sD1/kFocmzecHCaL+tmoEO/EuTkOseLZ8ltytRwQtY2xDoI0w8d9FpCyknspCd1t10sM2/fS2MSJq0wgDJcM6XLetaYabVcaZGMvyIeqiG/YcI90PGyMa3vicwgkXnrVeSZSZKxo=
+	t=1735385457; cv=none; b=t+TD4hI7zkk5prfHvbXifUugpRm0bTN3L9OcUfn+A2ciVzOFJWOuDaZ3IIMHw/0l+axehKKD2w5TTwnLq/EAlkdBBhc6ddR1GNlB8cdoUU5LwyWzhiHmocT3AGpAWoEOCvA/DcoxNfw+J2rYztJvNUuowvsdyNnjPzKoYb7k2Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735377919; c=relaxed/simple;
-	bh=gdF0+/IKFS1FB9wEhi6/Uax5ANVCaWMlDsPfmDyt+uU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SfbPCnyKX1lsJSdgbWrtPK5SehtaXNMHuDEiamJpshO2PIPbnLRANW2JFZzZLsYyiD2xopYYfWmJr0DP0CtQKXVzkdReQjB71lyeodzMV7iLDkr5ZZu7Cx2fa2mx2tLkEIFciw6JwgBIz960m/4LUuoD4hF8NQYK80ZfX3EQXkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn; spf=pass smtp.mailfrom=jmu.edu.cn; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jmu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jmu.edu.cn
-Received: from amadeus-Vostro-3710.lan (unknown [113.116.6.180])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 711cda3b;
-	Sat, 28 Dec 2024 17:25:05 +0800 (GMT+08:00)
-From: Chukun Pan <amadeus@jmu.edu.cn>
-To: gregkh@linuxfoundation.org
-Cc: heiko@sntech.de,
-	stable@vger.kernel.org,
-	Chukun Pan <amadeus@jmu.edu.cn>
-Subject: Re:Patch "phy: rockchip: naneng-combphy: fix phy reset" has been added to the 6.12-stable tree
-Date: Sat, 28 Dec 2024 17:25:02 +0800
-Message-Id: <20241228092502.544093-1-amadeus@jmu.edu.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1735385457; c=relaxed/simple;
+	bh=MPnsZkEMIEgTUjya2LEgJESQrwnn0Ude09R3MVOIwLs=;
+	h=MIME-Version:From:To:Cc:Subject:Message-ID:Date:Content-Type; b=eqbMq/V1jr5mgIIWsuOQjdq9BafZ2Lzm2wWUDQ/7NHK9sdwO8zD3UgkOPPNslbdoZ5q+vk040EVXnbYeUquhyrNPM1xYxovLhOptIeVSh74wPKfkhAbgI/7URT1Wj5WzbarD3epTJTKPt8ZctdsEPN9C3GYVy7pxM7OqWh3JJ+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=johnrowley.me; spf=pass smtp.mailfrom=johnrowley.me; dkim=pass (2048-bit key) header.d=johnrowley.me header.i=@johnrowley.me header.b=lk8gAtHu; arc=none smtp.client-ip=5.75.183.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=johnrowley.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=johnrowley.me
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 864F4C38A1;
+	Sat, 28 Dec 2024 11:21:28 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnrowley.me;
+	s=dkim; t=1735384888;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jlYla/Bco2UqXlERzs8y9C8soBwyQ6mVQEUumxBUGxg=;
+	b=lk8gAtHuwEORQp/vq/s6veYdG2Q7O70WoMXN8ExK/WFoek/04e7+CB8q7L3h8u/c2jpXwb
+	2MEjHvvMTqbH7i1iE5pOdOn7Uv+HMK95ZNE2cXYX53rnx5CDt30ktozV+DMpGSAvsvngWz
+	xodrNByppjWgjEteaZzLBV2dp1B3ssGT1idLxJ80FU4hAaU1XnWvUJ8qXT545/bpf43ZrI
+	5heaWOMhmzWzYn1Egi7yOdI628cajvWCD5JFR0Bq1QY7I5JQl0GtFMzKVmP7Yb+OQUDIP/
+	BJ/nqLQ7nytUhq+RWtHWKOY0baU6YkD1QsZFb5mspml4UgdbxWd+/czVvz5hGQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDSUofVklOHU0eHR5MGUpISVYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlKSkhVSkpNVU1VSkNLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09LVUpLS1VLWQ
-	Y+
-X-HM-Tid: 0a940c95682e03a2kunm711cda3b
-X-HM-MType: 10
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MRw6HBw*LTIcKT4sNSMrFjU1
-	CzRPChJVSlVKTEhOSExMQktNSUhPVTMWGhIXVRoWGh8eDgg7ERYOVR4fDlUYFUVZV1kSC1lBWUpK
-	SFVKSk1VTVVKQ0tZV1kIAVlBQkhINwY+
+From: "John Rowley" <lkml@johnrowley.me>
+To: <johannes@sipsolutions.net>, <linux-wireless@vger.kernel.org>
+Cc: <stable@vger.kernel.org>
+Subject: UBSAN array-index-out-of-bounds: cfg80211_scan_6ghz
+Message-ID: <1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain>
+Date: Sat, 28 Dec 2024 11:21:27 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
-> This is a note to let you know that I've just added the patch titled
->
->    phy: rockchip: naneng-combphy: fix phy reset
->
-> to the 6.12-stable tree which can be found at:
->    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->     phy-rockchip-naneng-combphy-fix-phy-reset.patch
-> and it can be found in the queue-6.12 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+Hi, I'm experiencing UBSAN array-index-out-of-bounds errors while using
+my Framework 13" AMD laptop with its Mediatek MT7922 wifi adapter
+(mt7921e).
 
-Please backport this commit together:
-arm64: dts: rockchip: add reset-names for combphy on rk3568
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=8b9c12757f919157752646faf3821abf2b7d2a64
+It seems to happen only once on boot, and occurs with both kernel
+versions 6.12.7 and 6.13-rc4, both compiled from vanilla upstream kernel=20
+sources on Fedora 41 using the kernel.org LLVM toolchain (19.1.6).
 
-If apply fails, please change arch/arm64/boot/dts/rockchip/rk356x-base.dtsi
-to arch/arm64/boot/dts/rockchip/rk356x.dtsi.
+I can try some other kernel series if necessary, and also a bisect if I
+find a working version, but that may take me a while.
 
-Thanks,
-Chukun
+I wasn't sure if I should mark this as a regression, as I'm not sure
+which/if there is a working kernel version at this point.
 
--- 
-2.25.1
+Thanks.
+
+----
+
+[   17.754417] UBSAN: array-index-out-of-bounds in /data/linux/net/wireless/=
+scan.c:766:2
+[   17.754423] index 0 is out of range for type 'struct ieee80211_channel *[=
+] __counted_by(n_channels)' (aka 'struct ieee80211_channel *[]')
+[   17.754427] CPU: 13 UID: 0 PID: 620 Comm: kworker/u64:10 Tainted: G      =
+          T  6.13.0-rc4 #9
+[   17.754433] Tainted: [T]=3DRANDSTRUCT
+[   17.754435] Hardware name: Framework Laptop 13 (AMD Ryzen 7040Series)/FRA=
+NMDCP07, BIOS 03.05 03/29/2024
+[   17.754438] Workqueue: events_unbound cfg80211_wiphy_work
+[   17.754446] Call Trace:
+[   17.754449]  <TASK>
+[   17.754452]  dump_stack_lvl+0x82/0xc0
+[   17.754459]  __ubsan_handle_out_of_bounds+0xe7/0x110
+[   17.754464]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   17.754470]  ? __kmalloc_noprof+0x1a7/0x280
+[   17.754477]  cfg80211_scan_6ghz+0x3bb/0xfd0
+[   17.754482]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   17.754486]  ? try_to_wake_up+0x368/0x4c0
+[   17.754491]  ? try_to_wake_up+0x1a9/0x4c0
+[   17.754496]  ___cfg80211_scan_done+0xa9/0x1e0
+[   17.754500]  cfg80211_wiphy_work+0xb7/0xe0
+[   17.754504]  process_scheduled_works+0x205/0x3a0
+[   17.754509]  worker_thread+0x24a/0x300
+[   17.754514]  ? __cfi_worker_thread+0x10/0x10
+[   17.754519]  kthread+0x158/0x180
+[   17.754524]  ? __cfi_kthread+0x10/0x10
+[   17.754528]  ret_from_fork+0x40/0x50
+[   17.754534]  ? __cfi_kthread+0x10/0x10
+[   17.754538]  ret_from_fork_asm+0x11/0x30
+[   17.754544]  </TASK>
 
 
