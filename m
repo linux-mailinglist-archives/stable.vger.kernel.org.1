@@ -1,163 +1,129 @@
-Return-Path: <stable+bounces-106235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2329C9FDC15
-	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 20:15:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557F09FDE37
+	for <lists+stable@lfdr.de>; Sun, 29 Dec 2024 10:28:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5788C3A13D4
-	for <lists+stable@lfdr.de>; Sat, 28 Dec 2024 19:15:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF7181881F1A
+	for <lists+stable@lfdr.de>; Sun, 29 Dec 2024 09:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF981607AA;
-	Sat, 28 Dec 2024 19:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B027083A;
+	Sun, 29 Dec 2024 09:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ty8jqJUr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="le1IeGx5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7y5p4X6U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DDF1EB36
-	for <stable@vger.kernel.org>; Sat, 28 Dec 2024 19:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB75B33993;
+	Sun, 29 Dec 2024 09:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735413301; cv=none; b=U3iz1/66NjseiT3ljKAqA9dyLoD9s1FmpEX/v42EPX7yjSVRPnkbEMePGMnJwgJqR3fup93yiPcsuAT8zhxqtQIGtpvJozIHycFnH1NLfPfrHWPRwio0MIsAaEFA17mc6yb0Bj/uoavHs0WmcnTLNIqOJjtEUiXuDXlzMUjQAQs=
+	t=1735464488; cv=none; b=AtYDUtbnjuBz2OjGfMFVSDwFwUzjS4R0QgVsblWPZeDJMxMIMFY74SnMu+8XPpcK+0ez1eyTbT64pUimdwPcEqGGA0csF309Vrr3ueVprTrbVa+vxy3dOcVJTH5lj5n7ANRcrNbFhL+p/VhAOMSZ6CIQD/ghS8X07eX6MisfCCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735413301; c=relaxed/simple;
-	bh=05/CWKPmNHnJ1kl0ZeLZkfHWsf3l3GKGPyn9G4+dKC8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bKdmPMUAslJDUS3xy0t6kh0pfOVZERR1seH8bO1pgfINZZQnG2rdrqNEya9ifH8uiJ60Hd77+32nm6GSo6BdpBBVX1MbDUQMnO8wKGe9OD01ERSizSioIJe5Vs201G9f1gn6bouDHHSO3Sq14F6oB+N8NXzkUzzeB7oQ9JMZQsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ty8jqJUr; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2167141dfa1so99589755ad.1
-        for <stable@vger.kernel.org>; Sat, 28 Dec 2024 11:14:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735413298; x=1736018098; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wnJJrPymQsyi6rQn5duCSRWZMy0mcWIVLDm579CLt4w=;
-        b=Ty8jqJUr5wcP8iTINlHfyJM3Pe05neqpylgAAH0+MiMcYJsZTs2RaHhBtQwPI86IS0
-         f6wZJSGpSKoD0hkdxuoO4isbLJe0PHLv8A5BXDksScURcZt3QVNyehUrx3+51loLbdTE
-         I2W7xrYo8Dm89Ws4Fk81dwHjUi2lQequhewnN5fHvw8j/qESKW31xg+eDkyAbj1/zTwf
-         OK8tONXyqkbDDCLRwbNFljDgiGpgdTtLDWHpardrv6wSX26jR7mjoSKN4dA3cAYyHxVl
-         6EK3ajZ5bGSWjwNFAKj0kCiVL8jbp0G0tibNhNXSXTwHHixPnr8f/agw9S4Olz6WVbdj
-         1PWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735413298; x=1736018098;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wnJJrPymQsyi6rQn5duCSRWZMy0mcWIVLDm579CLt4w=;
-        b=umUf6S11C+VQoWqXqFCG+bwzy+Yz1FrTsR7aGHBYFGNRX8lnBaE7u8oJwob9jOKbv4
-         QUHFllGQG5Qz3E0vyfKUmAOivO6WwgVreMrZovYTEy/ysUnyFZFYDXgXKYpyCKaNL9h6
-         Oe7htvIrUPfrQgOyHh9fUAZQVcjsreY0KqPc4VvlkAlLePgZBUP4Dv8mRXOG0y39vKQs
-         1WjBg+Yxc2acdpX3ySjRA85kWFeQ3QH471a7+rHWrO7o5XLUidYnR7zfJLTafS38Jn90
-         NHJTO5npZydOnK72/yCz/NOI9GWOkruSFX6NwtFfJ0JD652kZEJwZnYAjw48UhH+qGnf
-         84Yw==
-X-Gm-Message-State: AOJu0Yw2/hFvI8IvbWpCOgrZDtDMgo0/yfJPDpkurgSSTayROQq/PzQF
-	g1+npT68YI6TjGeaMHIrMzmtJq5c0UK6P5zoHFl7HVXbSGSp/IpoVubM9wcu
-X-Gm-Gg: ASbGncvUBtih1ygJaaHQ/b8P94oc2L6MI2zn88Nkh6JgXkJmcDOaamvTiIIQKTrYOkl
-	DdkjgYOfdoDUSEDqmuNPk5eBHFf2s0KvH3Ntzaz23T9v+TMiFj2S0dJLSvXtgpRulvlLF8M0tf6
-	yzPqjlxr6cGU1D5OMnKh/gf9noEIwbQUa3pdJgRgDaHPbGxdUKhxHZdda0bUlfsTcYuiTj+asdt
-	tFWHm2NSOSZqk//YPE+/T1uQfcLslWca5TDhqfFafqgZXORMWVIO6FONwO9khvMkw==
-X-Google-Smtp-Source: AGHT+IFkoC9SPW7qkMAjCqRYGjjPXGamI0kjTGnW2vQrt9WMZ7J3vLGgTMMc2RaQc5jQ5tDYFXnIXw==
-X-Received: by 2002:a17:902:c94b:b0:215:ae61:27ca with SMTP id d9443c01a7336-219e6d6b172mr523491145ad.26.1735413298299;
-        Sat, 28 Dec 2024 11:14:58 -0800 (PST)
-Received: from ssrish-desktop.. ([2405:201:d007:6848:f867:cbf3:5f70:299e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc962cb8sm153227365ad.10.2024.12.28.11.14.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Dec 2024 11:14:57 -0800 (PST)
-From: Srish Srinivasan <srishwap4@gmail.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: john.fastabend@gmail.com,
-	daniel@iogearbox.net,
-	jakub@cloudflare.com,
-	lmb@cloudflare.com,
-	kuba@kernel.org,
-	ast@kernel.org,
-	andrii@kernel.org,
-	kafai@fb.com,
-	songliubraving@fb.com,
-	yhs@fb.com,
-	Jiayuan Chen <mrpre@163.com>,
-	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Srish Srinivasan <srishwap4@gmail.com>
-Subject: [PATCH v5.10] bpf: fix recursive lock when verdict program return SK_PASS
-Date: Sun, 29 Dec 2024 00:44:15 +0530
-Message-ID: <20241228191415.41473-1-srishwap4@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1735464488; c=relaxed/simple;
+	bh=Nd8oXdRqgXx2laEJNMFEaUTrDxIl7E8+dYd1wum3ELg=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=q+nU2wPT+WhjoVQxRSAjxAtiPd7GlKflX80wVFpyGnwpbVpNYKarB7M+/hoUJKhGfvXemI8hLnVd/BHUiaPcGkj0EhWFHO4fcPTERbq8hUSVSf2RZcIRuQ+wjkCKcOBO8cVCrR145zPGr5lAYFzApnljglG4KyiiVoCLf2T+7C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=le1IeGx5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7y5p4X6U; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sun, 29 Dec 2024 09:28:04 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1735464485;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=RW2IvpfoXsPG/v0gcwjjErnlDTLHaciCcMVs2AbXPF4=;
+	b=le1IeGx5Vrp+5lGZkjnH8CFcvcGUlMoIzFDZUSo91xoWOrNLtW0fb+Zncy7XRYDu4RRjnZ
+	YhwgofxkAtKxi4piFUo0Cnn/X9+0uewXM6mGNp2o3hkIPmudsVpk/AQ3MTD4jtfBJlMz1D
+	L4nJzoM4JNsIuwOQVAGWFNXt/CX8viFEtHj+/0icL9+T8tw7cMRjuS/G/ybSlDRdF5iBQS
+	t32AFlb8/ea1tVU23XQ/aExxM5yEoVaO/ra91KtM7F/tECSjuxmNFJnhCCeIu/utmxroBE
+	40ysRMm7C+uC+i/67TgT5h1OMHjSc/lXqa0f3SY5amPk+/nRN8RAliH066w+pw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1735464485;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=RW2IvpfoXsPG/v0gcwjjErnlDTLHaciCcMVs2AbXPF4=;
+	b=7y5p4X6Uc/PPehXQI6Y0ilTPOlS32iaJv9RkAATVVhV7DhM2vueatKo+oHrzYQYx+XOrRB
+	vu7DPVHnRlOdGwDA==
+From: "tip-bot2 for Li RongQing" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] virt: tdx-guest: Just leak decrypted memory on
+ unrecoverable errors
+Cc: Li RongQing <lirongqing@baidu.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <173546448435.399.8616425027879023490.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Jiayuan Chen <mrpre@163.com>
+The following commit has been merged into the x86/urgent branch of tip:
 
-commit 8ca2a1eeadf09862190b2810697702d803ceef2d upstream.
+Commit-ID:     27834971f616c5e154423c578fa95e0444444ce1
+Gitweb:        https://git.kernel.org/tip/27834971f616c5e154423c578fa95e0444444ce1
+Author:        Li RongQing <lirongqing@baidu.com>
+AuthorDate:    Wed, 19 Jun 2024 19:18:01 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 29 Dec 2024 10:18:44 +01:00
 
-When the stream_verdict program returns SK_PASS, it places the received skb
-into its own receive queue, but a recursive lock eventually occurs, leading
-to an operating system deadlock. This issue has been present since v6.9.
+virt: tdx-guest: Just leak decrypted memory on unrecoverable errors
 
-'''
-sk_psock_strp_data_ready
-    write_lock_bh(&sk->sk_callback_lock)
-    strp_data_ready
-      strp_read_sock
-        read_sock -> tcp_read_sock
-          strp_recv
-            cb.rcv_msg -> sk_psock_strp_read
-              # now stream_verdict return SK_PASS without peer sock assign
-              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
-              sk_psock_verdict_apply
-                sk_psock_skb_ingress_self
-                  sk_psock_skb_ingress_enqueue
-                    sk_psock_data_ready
-                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
+In CoCo VMs it is possible for the untrusted host to cause
+set_memory_decrypted() to fail such that an error is returned
+and the resulting memory is shared. Callers need to take care
+to handle these errors to avoid returning decrypted (shared)
+memory to the page allocator, which could lead to functional
+or security issues.
 
-'''
+Leak the decrypted memory when set_memory_decrypted() fails,
+and don't need to print an error since set_memory_decrypted()
+will call WARN_ONCE().
 
-This topic has been discussed before, but it has not been fixed.
-Previous discussion:
-https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
-
-Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
-Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[srish: Apply to stable branch linux-5.10.y]
-Signed-off-by: Srish Srinivasan <srishwap4@gmail.com>
+Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240619111801.25630-1-lirongqing%40baidu.com
 ---
- net/core/skmsg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 51792dda1..890e16bbc 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -940,9 +940,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
- 		if (tls_sw_has_ctx_rx(sk)) {
- 			psock->parser.saved_data_ready(sk);
- 		} else {
--			write_lock_bh(&sk->sk_callback_lock);
-+			read_lock_bh(&sk->sk_callback_lock);
- 			strp_data_ready(&psock->parser.strp);
--			write_unlock_bh(&sk->sk_callback_lock);
-+			read_unlock_bh(&sk->sk_callback_lock);
- 		}
- 	}
- 	rcu_read_unlock();
--- 
-2.25.1
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index d7db6c8..224e7dd 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -124,10 +124,8 @@ static void *alloc_quote_buf(void)
+ 	if (!addr)
+ 		return NULL;
+ 
+-	if (set_memory_decrypted((unsigned long)addr, count)) {
+-		free_pages_exact(addr, len);
++	if (set_memory_decrypted((unsigned long)addr, count))
+ 		return NULL;
+-	}
+ 
+ 	return addr;
+ }
 
