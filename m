@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-106448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44BB89FE85C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E82259FE80A
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F12921615B8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:53:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C684160BA1
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9965515E8B;
-	Mon, 30 Dec 2024 15:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCC71531C4;
+	Mon, 30 Dec 2024 15:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJ1RwIg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqMLR/u6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B742AE68;
-	Mon, 30 Dec 2024 15:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B29815E8B;
+	Mon, 30 Dec 2024 15:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574009; cv=none; b=LeYL1etPymN2J4cuTAlReDWuSxNXtXvBF5ntjIJd8yeQvzPX+DfhNiU15LT6r4e8783n7lkKIemhLj+7QTJQaqtTjgttnhvLYfk3YH4lZ7GQLymdU4aofIaHtmFPORzgudA7StfIGt6PzOXAOIRA93zQdWdOi0VBTJsh5gi6JJk=
+	t=1735573733; cv=none; b=WWQBMQR2QHo1xkig7YA/h0yo0xHuHh8AsZQjBxpDUpaOpKmhEHLQxmpmI6j4BaSOk7eIVfTOhbM60azzNtUXp3PgGglA1WSsSOIebGz8hmFS4pGeQm5FFjTrmOhGcivY+3DYg5OpWO0DeV99KW0VVsCPzbSxDQMAUFI1TPShYeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574009; c=relaxed/simple;
-	bh=/MzB2fTWO0U52EqiR1p2KFwP5sYPyVhHbf68J1PaPcw=;
+	s=arc-20240116; t=1735573733; c=relaxed/simple;
+	bh=Uzqfcmq7mcN0NRemkHoINVj0R0XYQhoRq6Nq3nhhdFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBaLKmMfs6I003Tu/MVEs9Z5Zyc7At114tGN047JGgFUzeWbQn1ONTR13eyM5Pf3Jk+x9YfjtVuKwcuvnmDrEqLdxsvtjMaKS55Llaezm3cBAczl8CaU6GbtptZN4x+qiC+bWR7YJIlRJsH6cPMPNun4V4tJStuqVU1T9gVltnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJ1RwIg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6047C4CED0;
-	Mon, 30 Dec 2024 15:53:28 +0000 (UTC)
+	 MIME-Version; b=PWJ1bXqDQiXLGFTp4TY71Oh+Wi5C/93AGVqb6/mMBV+08Kis5e857e37yNdbHb4A+FGnQt8kpQs9SLd7KZAlDzdsR3D+KWs/KpLNitDpY1hvfwSpz47mJszYzGj3SxZDfHQggwytorgqNSuE+eT49gJk5+FrhgCRYRg9QVYtydI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqMLR/u6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC38C4CED0;
+	Mon, 30 Dec 2024 15:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574009;
-	bh=/MzB2fTWO0U52EqiR1p2KFwP5sYPyVhHbf68J1PaPcw=;
+	s=korg; t=1735573733;
+	bh=Uzqfcmq7mcN0NRemkHoINVj0R0XYQhoRq6Nq3nhhdFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJ1RwIg1ewxI2SWNn993yAryqv/fsA5bQ54KFuVvji3IkYLjvNyMJRPb1QdTYpbml
-	 cB4M/QCDB/L/Uz7k/Nx8onkLmElG7uzNasEIN6pmFSQhrJELEKQGIVDtV23n9CUVjf
-	 aOZEHtUjEfdrhuLIraPnb0EfBdx3X/YslrMsEx4E=
+	b=RqMLR/u68vpmraUKplqxw+6DyTgwFIOKQJYmmy+eKeBuGwGherTNXq1g22jl9fvE5
+	 afLffFkOx5dbVTz3dgB5rgoXTkbuw2DRRAwXeTNpXaGdTlexgVW5tmof8x3tTwdcum
+	 CTTzotk30cJHUe7CRApTBduP5LRFXDrv8gNhFiFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/114] nfsd: Revert "nfsd: release svc_expkey/svc_export with rcu_work"
+Subject: [PATCH 6.6 02/86] ceph: try to allocate a smaller extent map for sparse read
 Date: Mon, 30 Dec 2024 16:42:10 +0100
-Message-ID: <20241230154218.569240006@linuxfoundation.org>
+Message-ID: <20241230154211.809365861@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 69d803c40edeaf94089fbc8751c9b746cdc35044 ]
+[ Upstream commit aaefabc4a5f7ae48682c4d2d5d10faaf95c08eb9 ]
 
-This reverts commit f8c989a0c89a75d30f899a7cabdc14d72522bb8d.
+In fscrypt case and for a smaller read length we can predict the
+max count of the extent map. And for small read length use cases
+this could save some memories.
 
-Before this commit, svc_export_put or expkey_put will call path_put with
-sync mode. After this commit, path_put will be called with async mode.
-And this can lead the unexpected results show as follow.
+[ idryomov: squash into a single patch to avoid build break, drop
+  redundant variable in ceph_alloc_sparse_ext_map() ]
 
-mkfs.xfs -f /dev/sda
-echo "/ *(rw,no_root_squash,fsid=0)" > /etc/exports
-echo "/mnt *(rw,no_root_squash,fsid=1)" >> /etc/exports
-exportfs -ra
-service nfs-server start
-mount -t nfs -o vers=4.0 127.0.0.1:/mnt /mnt1
-mount /dev/sda /mnt/sda
-touch /mnt1/sda/file
-exportfs -r
-umount /mnt/sda # failed unexcepted
-
-The touch will finally call nfsd_cross_mnt, add refcount to mount, and
-then add cache_head. Before this commit, exportfs -r will call
-cache_flush to cleanup all cache_head, and path_put in
-svc_export_put/expkey_put will be finished with sync mode. So, the
-latter umount will always success. However, after this commit, path_put
-will be called with async mode, the latter umount may failed, and if
-we add some delay, umount will success too. Personally I think this bug
-and should be fixed. We first revert before bugfix patch, and then fix
-the original bug with a different way.
-
-Fixes: f8c989a0c89a ("nfsd: release svc_expkey/svc_export with rcu_work")
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Stable-dep-of: 18d44c5d062b ("ceph: allocate sparse_ext map only for sparse reads")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/export.c | 31 ++++++-------------------------
- fs/nfsd/export.h |  4 ++--
- 2 files changed, 8 insertions(+), 27 deletions(-)
+ fs/ceph/addr.c                  |  4 +++-
+ fs/ceph/file.c                  |  8 ++++++--
+ fs/ceph/super.h                 | 14 ++++++++++++++
+ include/linux/ceph/osd_client.h |  7 +++++--
+ 4 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
-index 6d0455973d64..49aede376d86 100644
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -40,24 +40,15 @@
- #define	EXPKEY_HASHMAX		(1 << EXPKEY_HASHBITS)
- #define	EXPKEY_HASHMASK		(EXPKEY_HASHMAX -1)
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 1a2776025e98..2c92de964c5a 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -355,6 +355,7 @@ static void ceph_netfs_issue_read(struct netfs_io_subrequest *subreq)
+ 	u64 len = subreq->len;
+ 	bool sparse = IS_ENCRYPTED(inode) || ceph_test_mount_opt(fsc, SPARSEREAD);
+ 	u64 off = subreq->start;
++	int extent_cnt;
  
--static void expkey_put_work(struct work_struct *work)
-+static void expkey_put(struct kref *ref)
+ 	if (ceph_inode_is_shutdown(inode)) {
+ 		err = -EIO;
+@@ -377,7 +378,8 @@ static void ceph_netfs_issue_read(struct netfs_io_subrequest *subreq)
+ 	}
+ 
+ 	if (sparse) {
+-		err = ceph_alloc_sparse_ext_map(&req->r_ops[0]);
++		extent_cnt = __ceph_sparse_read_ext_count(inode, len);
++		err = ceph_alloc_sparse_ext_map(&req->r_ops[0], extent_cnt);
+ 		if (err)
+ 			goto out;
+ 	}
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index 813974244a9d..23dcfb916298 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -1001,6 +1001,7 @@ ssize_t __ceph_sync_read(struct inode *inode, loff_t *ki_pos,
+ 		struct ceph_osd_req_op *op;
+ 		u64 read_off = off;
+ 		u64 read_len = len;
++		int extent_cnt;
+ 
+ 		/* determine new offset/length if encrypted */
+ 		ceph_fscrypt_adjust_off_and_len(inode, &read_off, &read_len);
+@@ -1040,7 +1041,8 @@ ssize_t __ceph_sync_read(struct inode *inode, loff_t *ki_pos,
+ 
+ 		op = &req->r_ops[0];
+ 		if (sparse) {
+-			ret = ceph_alloc_sparse_ext_map(op);
++			extent_cnt = __ceph_sparse_read_ext_count(inode, read_len);
++			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
+ 			if (ret) {
+ 				ceph_osdc_put_request(req);
+ 				break;
+@@ -1431,6 +1433,7 @@ ceph_direct_read_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		ssize_t len;
+ 		struct ceph_osd_req_op *op;
+ 		int readop = sparse ? CEPH_OSD_OP_SPARSE_READ : CEPH_OSD_OP_READ;
++		int extent_cnt;
+ 
+ 		if (write)
+ 			size = min_t(u64, size, fsc->mount_options->wsize);
+@@ -1494,7 +1497,8 @@ ceph_direct_read_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		osd_req_op_extent_osd_data_bvecs(req, 0, bvecs, num_pages, len);
+ 		op = &req->r_ops[0];
+ 		if (sparse) {
+-			ret = ceph_alloc_sparse_ext_map(op);
++			extent_cnt = __ceph_sparse_read_ext_count(inode, size);
++			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
+ 			if (ret) {
+ 				ceph_osdc_put_request(req);
+ 				break;
+diff --git a/fs/ceph/super.h b/fs/ceph/super.h
+index 8efd4ba60774..5903e3fb6d75 100644
+--- a/fs/ceph/super.h
++++ b/fs/ceph/super.h
+@@ -3,6 +3,7 @@
+ #define _FS_CEPH_SUPER_H
+ 
+ #include <linux/ceph/ceph_debug.h>
++#include <linux/ceph/osd_client.h>
+ 
+ #include <asm/unaligned.h>
+ #include <linux/backing-dev.h>
+@@ -1401,6 +1402,19 @@ static inline void __ceph_update_quota(struct ceph_inode_info *ci,
+ 		ceph_adjust_quota_realms_count(&ci->netfs.inode, has_quota);
+ }
+ 
++static inline int __ceph_sparse_read_ext_count(struct inode *inode, u64 len)
++{
++	int cnt = 0;
++
++	if (IS_ENCRYPTED(inode)) {
++		cnt = len >> CEPH_FSCRYPT_BLOCK_SHIFT;
++		if (cnt > CEPH_SPARSE_EXT_ARRAY_INITIAL)
++			cnt = 0;
++	}
++
++	return cnt;
++}
++
+ extern void ceph_handle_quota(struct ceph_mds_client *mdsc,
+ 			      struct ceph_mds_session *session,
+ 			      struct ceph_msg *msg);
+diff --git a/include/linux/ceph/osd_client.h b/include/linux/ceph/osd_client.h
+index f703fb8030de..50e409e84466 100644
+--- a/include/linux/ceph/osd_client.h
++++ b/include/linux/ceph/osd_client.h
+@@ -573,9 +573,12 @@ int __ceph_alloc_sparse_ext_map(struct ceph_osd_req_op *op, int cnt);
+  */
+ #define CEPH_SPARSE_EXT_ARRAY_INITIAL  16
+ 
+-static inline int ceph_alloc_sparse_ext_map(struct ceph_osd_req_op *op)
++static inline int ceph_alloc_sparse_ext_map(struct ceph_osd_req_op *op, int cnt)
  {
--	struct svc_expkey *key =
--		container_of(to_rcu_work(work), struct svc_expkey, ek_rcu_work);
-+	struct svc_expkey *key = container_of(ref, struct svc_expkey, h.ref);
- 
- 	if (test_bit(CACHE_VALID, &key->h.flags) &&
- 	    !test_bit(CACHE_NEGATIVE, &key->h.flags))
- 		path_put(&key->ek_path);
- 	auth_domain_put(key->ek_client);
--	kfree(key);
--}
--
--static void expkey_put(struct kref *ref)
--{
--	struct svc_expkey *key = container_of(ref, struct svc_expkey, h.ref);
--
--	INIT_RCU_WORK(&key->ek_rcu_work, expkey_put_work);
--	queue_rcu_work(system_wq, &key->ek_rcu_work);
-+	kfree_rcu(key, ek_rcu);
+-	return __ceph_alloc_sparse_ext_map(op, CEPH_SPARSE_EXT_ARRAY_INITIAL);
++	if (!cnt)
++		cnt = CEPH_SPARSE_EXT_ARRAY_INITIAL;
++
++	return __ceph_alloc_sparse_ext_map(op, cnt);
  }
  
- static int expkey_upcall(struct cache_detail *cd, struct cache_head *h)
-@@ -364,26 +355,16 @@ static void export_stats_destroy(struct export_stats *stats)
- 					    EXP_STATS_COUNTERS_NUM);
- }
- 
--static void svc_export_put_work(struct work_struct *work)
-+static void svc_export_put(struct kref *ref)
- {
--	struct svc_export *exp =
--		container_of(to_rcu_work(work), struct svc_export, ex_rcu_work);
--
-+	struct svc_export *exp = container_of(ref, struct svc_export, h.ref);
- 	path_put(&exp->ex_path);
- 	auth_domain_put(exp->ex_client);
- 	nfsd4_fslocs_free(&exp->ex_fslocs);
- 	export_stats_destroy(exp->ex_stats);
- 	kfree(exp->ex_stats);
- 	kfree(exp->ex_uuid);
--	kfree(exp);
--}
--
--static void svc_export_put(struct kref *ref)
--{
--	struct svc_export *exp = container_of(ref, struct svc_export, h.ref);
--
--	INIT_RCU_WORK(&exp->ex_rcu_work, svc_export_put_work);
--	queue_rcu_work(system_wq, &exp->ex_rcu_work);
-+	kfree_rcu(exp, ex_rcu);
- }
- 
- static int svc_export_upcall(struct cache_detail *cd, struct cache_head *h)
-diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
-index 081afb68681e..3794ae253a70 100644
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -75,7 +75,7 @@ struct svc_export {
- 	u32			ex_layout_types;
- 	struct nfsd4_deviceid_map *ex_devid_map;
- 	struct cache_detail	*cd;
--	struct rcu_work		ex_rcu_work;
-+	struct rcu_head		ex_rcu;
- 	unsigned long		ex_xprtsec_modes;
- 	struct export_stats	*ex_stats;
- };
-@@ -92,7 +92,7 @@ struct svc_expkey {
- 	u32			ek_fsid[6];
- 
- 	struct path		ek_path;
--	struct rcu_work		ek_rcu_work;
-+	struct rcu_head		ek_rcu;
- };
- 
- #define EX_ISSYNC(exp)		(!((exp)->ex_flags & NFSEXP_ASYNC))
+ extern void ceph_osdc_get_request(struct ceph_osd_request *req);
 -- 
 2.39.5
 
