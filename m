@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D04F9FE879
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFF99FE7F1
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 402367A0F7F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D3FA160BFB
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7165115E8B;
-	Mon, 30 Dec 2024 15:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF187156678;
+	Mon, 30 Dec 2024 15:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZRoSqTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFzxzA+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265CA42AA6;
-	Mon, 30 Dec 2024 15:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD6515E8B;
+	Mon, 30 Dec 2024 15:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574107; cv=none; b=MSGu4yJ7UmBKP8qcrvuDImxEzmmd2XqmGVgtClr0jCDfVvuxuE4I7MYH/vPmZmP46Yh13aBqZHizCVOndglWG05BSKwV6MZxkJJCAYwIktKDDcRdtXTehTXnRViAMKo+gic2YhmnVg1DYfLeb4rFDPSmuw/uOOP5WSFi+CjZMWQ=
+	t=1735573654; cv=none; b=Nm9XML8vQudJtU1HdZLjzuh0s8OqIi4LW5/4hVt37yGrxU/WQq9eJqwAlEFqAiM9IpugtZyTQugA/WduSCWspjQ1Rmz2F4sUy0WNjx9Q442T2r0Wup9399KxhRRbKeflaowdflOKfB9nYRESNlrMueAzqGYj65o3het6YmtX5Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574107; c=relaxed/simple;
-	bh=2gknVYVkl7yoxO2DFug7mhmSpzcuHvC8kG8ggdPfXbY=;
+	s=arc-20240116; t=1735573654; c=relaxed/simple;
+	bh=eIhvDiwqWhDzVE9a2wEUNtyCKxpGg0xsycqx7rB6eBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDMnqU9yVRkyNgAVSJ1JO8P0ouz48lGxzzvKiPHH2vmjQ4dmriysC8sG1iPGdRkWlStHqqvdoQmnK2Zp8miJANj/lC1r0WPurmxJug2iD4e96BVR/oXwuU4LvGruv8ZAJgblwjGmElXYQJInzgovGowkvPORdUbRLAUo0JD1hUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZRoSqTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FD8C4CED0;
-	Mon, 30 Dec 2024 15:55:05 +0000 (UTC)
+	 MIME-Version; b=UZzpjxw22VUWKSGeVK7XKT/iVoJIwm3PuOSM5w/HtZ9pOW0xmbPgdfZWyiVL9XgF0qgatFoKu/P2oGl6emnD3m36DCLlLhsokI6nj2+J+vlBDLVuKh6O5OQyWCm3XDMWNSKAJn/gKtXwTIr0Eva/CzMh4jEp+8C6o5NaNgE2U94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFzxzA+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD18C4CED0;
+	Mon, 30 Dec 2024 15:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574107;
-	bh=2gknVYVkl7yoxO2DFug7mhmSpzcuHvC8kG8ggdPfXbY=;
+	s=korg; t=1735573654;
+	bh=eIhvDiwqWhDzVE9a2wEUNtyCKxpGg0xsycqx7rB6eBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZRoSqTA09Jk5Jy5XCcDxaIUtgS3LMdRMaXGQgMsCTKxC3Dbmaur9dlCDtf5tteiS
-	 jLJLE3G/TN1Agc2h+Gxlk+eEzCEaigv0bEoMh4IOYDvZH9BYPM6FenT8YV5ErP2vkG
-	 /2wbydtdseErEZcCdYvXzN2nyvPFYOuRf1j5WuC8=
+	b=yFzxzA+XwEA+68E9Pb82ZTLagikKDKnq6eCltvg7c6Brq9pZsqF1K7TJDP9RvD+b2
+	 RjthR1ZcSjM2Z0OgBZZLv4BdF/veUqHKg8ucsh+Vbk7zqcUXuyKT2L13vhBAzxmuBH
+	 MiUkPhOg5slccJ+610R6x/m/SLq7bCkMUzDwC35g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 038/114] ASoC: amd: ps: Fix for enabling DMIC on acp63 platform via _DSD entry
-Date: Mon, 30 Dec 2024 16:42:35 +0100
-Message-ID: <20241230154219.529617394@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 26/60] tracing/kprobe: Make trace_kprobes module callback called after jump_label update
+Date: Mon, 30 Dec 2024 16:42:36 +0100
+Message-ID: <20241230154208.279907454@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 88438444fdddd0244c8b2697713adcca3e71599e upstream.
+[ Upstream commit d685d55dfc86b1a4bdcec77c3c1f8a83f181264e ]
 
-Add condition check to register ACP PDM sound card by reading
-_WOV acpi entry.
+Make sure the trace_kprobe's module notifer callback function is called
+after jump_label's callback is called. Since the trace_kprobe's callback
+eventually checks jump_label address during registering new kprobe on
+the loading module, jump_label must be updated before this registration
+happens.
 
-Fixes: 0386d765f27a ("ASoC: amd: ps: refactor acp device configuration read logic")
+Link: https://lore.kernel.org/all/173387585556.995044.3157941002975446119.stgit@devnote2/
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Link: https://patch.msgid.link/20241213061147.1060451-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 614243181050 ("tracing/kprobes: Support module init function probing")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/ps/pci-ps.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ kernel/trace/trace_kprobe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/amd/ps/pci-ps.c
-+++ b/sound/soc/amd/ps/pci-ps.c
-@@ -375,11 +375,18 @@ static int get_acp63_device_config(struc
- {
- 	struct acpi_device *pdm_dev;
- 	const union acpi_object *obj;
-+	acpi_handle handle;
-+	acpi_integer dmic_status;
- 	u32 config;
- 	bool is_dmic_dev = false;
- 	bool is_sdw_dev = false;
-+	bool wov_en, dmic_en;
- 	int ret;
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 8657c9b1448e..72655d81b37d 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -702,7 +702,7 @@ static int trace_kprobe_module_callback(struct notifier_block *nb,
  
-+	/* IF WOV entry not found, enable dmic based on acp-audio-device-type entry*/
-+	wov_en = true;
-+	dmic_en = false;
-+
- 	config = readl(acp_data->acp63_base + ACP_PIN_CONFIG);
- 	switch (config) {
- 	case ACP_CONFIG_4:
-@@ -412,10 +419,18 @@ static int get_acp63_device_config(struc
- 			if (!acpi_dev_get_property(pdm_dev, "acp-audio-device-type",
- 						   ACPI_TYPE_INTEGER, &obj) &&
- 						   obj->integer.value == ACP_DMIC_DEV)
--				is_dmic_dev = true;
-+				dmic_en = true;
- 		}
-+
-+		handle = ACPI_HANDLE(&pci->dev);
-+		ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
-+		if (!ACPI_FAILURE(ret))
-+			wov_en = dmic_status;
- 	}
+ static struct notifier_block trace_kprobe_module_nb = {
+ 	.notifier_call = trace_kprobe_module_callback,
+-	.priority = 1	/* Invoked after kprobe module callback */
++	.priority = 2	/* Invoked after kprobe and jump_label module callback */
+ };
  
-+	if (dmic_en && wov_en)
-+		is_dmic_dev = true;
-+
- 	if (acp_data->is_sdw_config) {
- 		ret = acp_scan_sdw_devices(&pci->dev, ACP63_SDW_ADDR);
- 		if (!ret && acp_data->info.link_mask)
+ static int count_symbols(void *data, unsigned long unused)
+-- 
+2.39.5
+
 
 
 
