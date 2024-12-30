@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-106529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2219FE8B7
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:58:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDE89FE84C
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:52:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E86B43A26AE
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:58:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B53261882EF7
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BA5194094;
-	Mon, 30 Dec 2024 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C38537E9;
+	Mon, 30 Dec 2024 15:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjSYaTg4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GoGeihQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57D315E8B;
-	Mon, 30 Dec 2024 15:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B8D15E8B;
+	Mon, 30 Dec 2024 15:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574292; cv=none; b=igA69i6RFh7v2KsZQ7k06MtVLJ6QhJ+9jjEAI0NUl8Oq2+oZUEMWRfO+iPfI58OLqKZDqjyKI3ESshkEpFJAb1ewtKD91Z7MSR4ch1M0Pgy2aOg0vDdCikxicj8wZYRqa2IfGRcFKGmq/H++17bn7ONALeAvQ/fYiId6rKkm0y0=
+	t=1735573955; cv=none; b=MxUYknBIiFu35pEBsWjEdK/2xEtIChMVFdqOrEGS/igRmnSA9USoIFH96+AqiO10kIRxl5afQOXRrcl5Zz21DwroysQW2qrw5/KBZ6dIykNlpzW3qs2Gg6UinglWZQwt407QuR8kninfqrttvv3e3bqXlJ4OPOHnX7HA+ucHKrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574292; c=relaxed/simple;
-	bh=pJuRQ8diw1jRmdhyjzynd1IIeoF0Hgf+wNxiLvWeaeE=;
+	s=arc-20240116; t=1735573955; c=relaxed/simple;
+	bh=jCuBaEJfhmjsYRWaFB0tHsKJgCEOaviUhdZrBr3PkFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PH6mKPVBe9JC0HxDS96W+T1Y0tAietXwjJi3j4QCMOo0bWddoQ/VcXVee5YlRM1hAhtrq3v5CcIegqWMaOrvLB8PiBoiVcbB4xNHFHIYblGFuqPT+GjYsxOmV/4guyZXQ5oM391bQlxEZCS0zsI847eFEuWOzwf46syR6SAGrVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjSYaTg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5A8C4CED0;
-	Mon, 30 Dec 2024 15:58:12 +0000 (UTC)
+	 MIME-Version; b=lrmk8wAE9dmTTKOhLuR4udEfe2OQIeslKXLxo4TtTgNxdemZrQsuQteBhU3543bPEWjcT/lmEYMw05BKyTE1h6WHtKd3Z+9T9dA3sc/dDEKAAps0He1iu5YHHvEqCZ0BY9Oo41PzGtxiO7D/VzMof2+qzjzxs2oJaQu/c0E3MLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GoGeihQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C4AC4CED0;
+	Mon, 30 Dec 2024 15:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574292;
-	bh=pJuRQ8diw1jRmdhyjzynd1IIeoF0Hgf+wNxiLvWeaeE=;
+	s=korg; t=1735573955;
+	bh=jCuBaEJfhmjsYRWaFB0tHsKJgCEOaviUhdZrBr3PkFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjSYaTg4RZAfOBQEFleelmeCoZrj2qukumdcrW2P/EEYeOVrkMnJPm1fIxdc6nFbQ
-	 A4ccgttpSQP3QmbFeitEUnvsaBS9XwkwKmBO+0Rul4dLH1hjtkQBftcrGNVG36gxLG
-	 8DmsGUahhqTTPbqHoPp9Ih/2bglK+iH/h7QNF2bM=
+	b=1GoGeihQQluZXfsMAaA+aHIhgiZFqa73ObstNpSc4WhzE2U7qX5PJY15Q6eFGwCAX
+	 /UiCqmb63aSisYVDf/60ewAcUjjTXpqN6OZU2MK630Duw04WOfYvqJu8+mg+buEEFg
+	 VBCS9G+QNhOMHppKbgdFjjsCHQPULGvAhVCepMP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 094/114] i2c: imx: add imx7d compatible string for applying erratum ERR007805
+	kernel test robot <lkp@intel.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 83/86] ALSA: sh: Fix wrong argument order for copy_from_iter()
 Date: Mon, 30 Dec 2024 16:43:31 +0100
-Message-ID: <20241230154221.714844672@linuxfoundation.org>
+Message-ID: <20241230154214.863683387@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit e0cec363197e41af870613e8e17b30bf0e3d41b5 upstream.
+commit 66a0a2b0473c39ae85c44628d14e4366fdc0aa0d upstream.
 
-Compatible string "fsl,imx7d-i2c" is not exited at i2c-imx driver
-compatible string table, at the result, "fsl,imx21-i2c" will be
-matched, but it will cause erratum ERR007805 not be applied in fact.
+Fix a brown paper bag bug I introduced at converting to the standard
+iter helper; the arguments were wrongly passed and have to be
+swapped.
 
-So Add "fsl,imx7d-i2c" compatible string in i2c-imx driver to apply
-the erratum ERR007805(https://www.nxp.com/docs/en/errata/IMX7DS_3N09P.pdf).
-
-"
-ERR007805 I2C: When the I2C clock speed is configured for 400 kHz,
-the SCL low period violates the I2C spec of 1.3 uS min
-
-Description: When the I2C module is programmed to operate at the
-maximum clock speed of 400 kHz (as defined by the I2C spec), the SCL
-clock low period violates the I2C spec of 1.3 uS min. The user must
-reduce the clock speed to obtain the SCL low time to meet the 1.3us
-I2C minimum required. This behavior means the SoC is not compliant
-to the I2C spec at 400kHz.
-
-Workaround: To meet the clock low period requirement in fast speed
-mode, SCL must be configured to 384KHz or less.
-"
-
-"fsl,imx7d-i2c" already is documented in binding doc. This erratum
-fix has been included in imx6_i2c_hwdata and it is the same in all
-I.MX6/7/8, so just reuse it.
-
-Fixes: 39c025721d70 ("i2c: imx: Implement errata ERR007805 or e7805 bus frequency limit")
-Cc: stable@vger.kernel.org # v5.18+
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Fixes: 39c025721d70 ("i2c: imx: Implement errata ERR007805 or e7805 bus frequency limit")
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20241218044238.143414-1-carlos.song@nxp.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 9b5f8ee43e48 ("ALSA: sh: Use standard helper for buffer accesses")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412140019.jat5Dofr-lkp@intel.com/
+Link: https://patch.msgid.link/20241220114417.5898-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-imx.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/sh/sh_dac_audio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -282,6 +282,7 @@ static const struct of_device_id i2c_imx
- 	{ .compatible = "fsl,imx6sll-i2c", .data = &imx6_i2c_hwdata, },
- 	{ .compatible = "fsl,imx6sx-i2c", .data = &imx6_i2c_hwdata, },
- 	{ .compatible = "fsl,imx6ul-i2c", .data = &imx6_i2c_hwdata, },
-+	{ .compatible = "fsl,imx7d-i2c", .data = &imx6_i2c_hwdata, },
- 	{ .compatible = "fsl,imx7s-i2c", .data = &imx6_i2c_hwdata, },
- 	{ .compatible = "fsl,imx8mm-i2c", .data = &imx6_i2c_hwdata, },
- 	{ .compatible = "fsl,imx8mn-i2c", .data = &imx6_i2c_hwdata, },
+--- a/sound/sh/sh_dac_audio.c
++++ b/sound/sh/sh_dac_audio.c
+@@ -163,7 +163,7 @@ static int snd_sh_dac_pcm_copy(struct sn
+ 	/* channel is not used (interleaved data) */
+ 	struct snd_sh_dac *chip = snd_pcm_substream_chip(substream);
+ 
+-	if (copy_from_iter(chip->data_buffer + pos, src, count) != count)
++	if (copy_from_iter(chip->data_buffer + pos, count, src) != count)
+ 		return -EFAULT;
+ 	chip->buffer_end = chip->data_buffer + pos + count;
+ 
 
 
 
