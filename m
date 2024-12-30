@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A509FE8AB
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECE39FE83F
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B081188319B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1DEE7A1572
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466752AE68;
-	Mon, 30 Dec 2024 15:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC0C1537C8;
+	Mon, 30 Dec 2024 15:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/3AuRIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3aw12zH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AAB15E8B;
-	Mon, 30 Dec 2024 15:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3D715E8B;
+	Mon, 30 Dec 2024 15:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574257; cv=none; b=a0U6K5hD81bVkROP7y3l665pw0ohafWTu2iUmtcj26X5/eAvxP+28mWX37s07E5TgHi5yhxboltPSnT0DZNCU9W7jIYhBSYpMu1AdTAeVFnfb8AU+ezhPr69w7L6V8IDVO+KAbtWoo48n7Q6+HFn4ZkG8pPEMPyKxGdjSaZQp5c=
+	t=1735573911; cv=none; b=TsNwIBPx6XB6lwVnwmvYgDr6CSDio0aZl7J2HLnYStLgU0xpwLUY1psHh39pTfsUL/hyGZez5pNDDr4VdspB36cH7P2l4qs0u0CiJ7UC/+aF5Fx5NaDSqtd+WiM6JAMAzmABKS1B+n/wxW2va+AoFsLd1hcKOkjZM/imW0nJicI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574257; c=relaxed/simple;
-	bh=w1CJyqOlAW48HwMZSrf5m5Ji5d89fNB5/Z0f0AummUY=;
+	s=arc-20240116; t=1735573911; c=relaxed/simple;
+	bh=V1uarwE8A0tlsQUEdVaM6Rpu2TiiS+uSsME8GVRcuhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Id1foYentW38f5hPFImHGwFO8LxWDb7bt09vm4zj7AvdBmuNpFrzXAIuf3hyVCgg00syR5WbC/h6NM/THmxpuhOsEY5hqtuYBauqB0ALg2KhE6T0eS5GYnbQtL53kI2e/0UvdD/1sD35NcO5WKx8+kMGcbX68Ccmp5j9vzzBRdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/3AuRIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6BAC4CED2;
-	Mon, 30 Dec 2024 15:57:35 +0000 (UTC)
+	 MIME-Version; b=JMqYbJMx6X0rNDefiDKDSwFvoQxJFlgcePlybKG6ZuXPIJVbE10Rg9nWYL0bHg6c+5shiRgRI4OsrTHmE1e+OvNDSJ3GzjwjGGae2P7hqphgxBUuXuQCuUIL/YwbJ9BzjAMTORdGpdmqDLJqoymkWvb5iIHe+6dRT1lXGiEGW8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3aw12zH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45891C4CED0;
+	Mon, 30 Dec 2024 15:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574256;
-	bh=w1CJyqOlAW48HwMZSrf5m5Ji5d89fNB5/Z0f0AummUY=;
+	s=korg; t=1735573911;
+	bh=V1uarwE8A0tlsQUEdVaM6Rpu2TiiS+uSsME8GVRcuhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/3AuRIXDbi7s4diwt805gfx3gfnw/pd8cgHXu8KqqZM5SDmaI5IWFTXEI6m0q5V1
-	 6hOE+TxuBeAPp262bZZwEM3nNqu/VUJO4b1NDqrqk4HgO4AdK7+SODuMph2adou13S
-	 RlRZ4xE+1Hd8G4cJ84eWFg8YXsSvlCEn16XG+a7A=
+	b=A3aw12zHrQk6BGnR+R+Y582hGNhfRXXPNseCfk/VWpTV/4DysQl/zZFONhOPfqZrj
+	 yGUTa4ME1vAV9bQvfSJHFsQeFw3+eWJ4hSBIcG3bmQ7ww1vuqmtRxX29t7W5ueP/R5
+	 cDPvCXMPowDBOTnVn5qSeym+4d0SmvRYq5qCVUpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenchangcheng <chenchangcheng@kylinos.cn>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Yunxiang Li <Yunxiang.Li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/114] objtool: Add bch2_trans_unlocked_error() to bcachefs noreturns
-Date: Mon, 30 Dec 2024 16:43:18 +0100
-Message-ID: <20241230154221.212843888@linuxfoundation.org>
+Subject: [PATCH 6.6 71/86] drm/amdkfd: pause autosuspend when creating pdd
+Date: Mon, 30 Dec 2024 16:43:19 +0100
+Message-ID: <20241230154214.412434784@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chenchangcheng <ccc194101@163.com>
+From: Jesse.zhang@amd.com <Jesse.zhang@amd.com>
 
-[ Upstream commit 31ad36a271290648e7c2288a03d7b933d20254d6 ]
+[ Upstream commit 438b39ac74e2a9dc0a5c9d653b7d8066877e86b1 ]
 
-Fix the following objtool warning during build time:
+When using MES creating a pdd will require talking to the GPU to
+setup the relevant context. The code here forgot to wake up the GPU
+in case it was in suspend, this causes KVM to EFAULT for passthrough
+GPU for example. This issue can be masked if the GPU was woken up by
+other things (e.g. opening the KMS node) first and have not yet gone to sleep.
 
-    fs/bcachefs/btree_trans_commit.o: warning: objtool: bch2_trans_commit_write_locked.isra.0() falls through to next function do_bch2_trans_commit.isra.0()
-    fs/bcachefs/btree_trans_commit.o: warning: objtool: .text: unexpected end of section
-......
-    fs/bcachefs/btree_update.o: warning: objtool: bch2_trans_update_get_key_cache() falls through to next function flush_new_cached_update()
-    fs/bcachefs/btree_update.o: warning: objtool: flush_new_cached_update() falls through to next function bch2_trans_update_by_path()
+v4: do the allocation of proc_ctx_bo in a lazy fashion
+when the first queue is created in a process (Felix)
 
-bch2_trans_unlocked_error() is an Obviously Correct (tm) panic() wrapper,
-add it to the list of known noreturns.
-
-[ mingo: Improved the changelog ]
-
-Fixes: fd104e2967b7 ("bcachefs: bch2_trans_verify_not_unlocked()")
-Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/20241220074847.3418134-1-ccc194101@163.com
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Reviewed-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/noreturns.h | 1 +
- 1 file changed, 1 insertion(+)
+ .../drm/amd/amdkfd/kfd_device_queue_manager.c | 15 ++++++++++++
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c      | 23 ++-----------------
+ 2 files changed, 17 insertions(+), 21 deletions(-)
 
-diff --git a/tools/objtool/noreturns.h b/tools/objtool/noreturns.h
-index e7da92489167..f98dc0e1c99c 100644
---- a/tools/objtool/noreturns.h
-+++ b/tools/objtool/noreturns.h
-@@ -20,6 +20,7 @@ NORETURN(__x64_sys_exit_group)
- NORETURN(arch_cpu_idle_dead)
- NORETURN(bch2_trans_in_restart_error)
- NORETURN(bch2_trans_restart_error)
-+NORETURN(bch2_trans_unlocked_error)
- NORETURN(cpu_bringup_and_idle)
- NORETURN(cpu_startup_entry)
- NORETURN(do_exit)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+index 4d9a406925e1..43fa260ddbce 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -197,6 +197,21 @@ static int add_queue_mes(struct device_queue_manager *dqm, struct queue *q,
+ 	if (dqm->is_hws_hang)
+ 		return -EIO;
+ 
++	if (!pdd->proc_ctx_cpu_ptr) {
++		r = amdgpu_amdkfd_alloc_gtt_mem(adev,
++				AMDGPU_MES_PROC_CTX_SIZE,
++				&pdd->proc_ctx_bo,
++				&pdd->proc_ctx_gpu_addr,
++				&pdd->proc_ctx_cpu_ptr,
++				false);
++		if (r) {
++			dev_err(adev->dev,
++				"failed to allocate process context bo\n");
++			return r;
++		}
++		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
++	}
++
+ 	memset(&queue_input, 0x0, sizeof(struct mes_add_queue_input));
+ 	queue_input.process_id = qpd->pqm->process->pasid;
+ 	queue_input.page_table_base_addr =  qpd->page_table_base;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 577bdb6a9640..64346c71c62a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -1046,7 +1046,8 @@ static void kfd_process_destroy_pdds(struct kfd_process *p)
+ 
+ 		kfd_free_process_doorbells(pdd->dev->kfd, pdd);
+ 
+-		if (pdd->dev->kfd->shared_resources.enable_mes)
++		if (pdd->dev->kfd->shared_resources.enable_mes &&
++			pdd->proc_ctx_cpu_ptr)
+ 			amdgpu_amdkfd_free_gtt_mem(pdd->dev->adev,
+ 						   &pdd->proc_ctx_bo);
+ 		/*
+@@ -1572,7 +1573,6 @@ struct kfd_process_device *kfd_create_process_device_data(struct kfd_node *dev,
+ 							struct kfd_process *p)
+ {
+ 	struct kfd_process_device *pdd = NULL;
+-	int retval = 0;
+ 
+ 	if (WARN_ON_ONCE(p->n_pdds >= MAX_GPU_INSTANCE))
+ 		return NULL;
+@@ -1596,21 +1596,6 @@ struct kfd_process_device *kfd_create_process_device_data(struct kfd_node *dev,
+ 	pdd->user_gpu_id = dev->id;
+ 	atomic64_set(&pdd->evict_duration_counter, 0);
+ 
+-	if (dev->kfd->shared_resources.enable_mes) {
+-		retval = amdgpu_amdkfd_alloc_gtt_mem(dev->adev,
+-						AMDGPU_MES_PROC_CTX_SIZE,
+-						&pdd->proc_ctx_bo,
+-						&pdd->proc_ctx_gpu_addr,
+-						&pdd->proc_ctx_cpu_ptr,
+-						false);
+-		if (retval) {
+-			dev_err(dev->adev->dev,
+-				"failed to allocate process context bo\n");
+-			goto err_free_pdd;
+-		}
+-		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
+-	}
+-
+ 	p->pdds[p->n_pdds++] = pdd;
+ 	if (kfd_dbg_is_per_vmid_supported(pdd->dev))
+ 		pdd->spi_dbg_override = pdd->dev->kfd2kgd->disable_debug_trap(
+@@ -1622,10 +1607,6 @@ struct kfd_process_device *kfd_create_process_device_data(struct kfd_node *dev,
+ 	idr_init(&pdd->alloc_idr);
+ 
+ 	return pdd;
+-
+-err_free_pdd:
+-	kfree(pdd);
+-	return NULL;
+ }
+ 
+ /**
 -- 
 2.39.5
 
