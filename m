@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-106507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0376A9FE89D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B789FE7FC
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA21918831DD
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99265160AE6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB19D1531C4;
-	Mon, 30 Dec 2024 15:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D883842AA6;
+	Mon, 30 Dec 2024 15:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKxMgQko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvqYI9Ox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9823415E8B;
-	Mon, 30 Dec 2024 15:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947EA15E8B;
+	Mon, 30 Dec 2024 15:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574219; cv=none; b=lQ/pDNPeJ8CNAP90aFcMS9hMC8Lh0jZTE7h/+DF1mE37TTad2FhYS7iaLdIZIU3ycBA7fub1r9StOyQnANkuAxQbcn5kJ0b9Z+wKlA9RF3186QA0zSnvgAguqW96/gkUVq9WQX2b8aOETdmWP4NPX4tUCMPkkGNpWR4kvE80y7s=
+	t=1735573687; cv=none; b=iE2DqIjZT/MtIBaODfAr2tcn0cAb/+PP9Wzx16XVarWhOGRcHw7p/d7diA2yPOdMNmLxGQuxRCbL8L98rC+eQ7AkuKHpaHQTjTxLox7gZc7kBW/hZX0t8767s5LL7QJH2QT6YSoy5GBz/UMYDjUS0Pn7Qshj9vb8YYjsE/dtgRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574219; c=relaxed/simple;
-	bh=RzDYXr4JD0It91Kbc2U+zUpKxmq+E2iH/cDhrMeXwMw=;
+	s=arc-20240116; t=1735573687; c=relaxed/simple;
+	bh=fTcNwy8hpoLBfTaxW1rkTSNPF60QblT0rR5h5h06m14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYEIurxO9yEU9q194MjKU5eIKB6pyTsYsp0p5zhRIL3ZhLhbJUYvVjqyR8XSNLpH2glkahC2rYQ4gW/uPLiqFNY9gXzbv/Y/y7K6SKIY2Q18J9CZY7GGQuGjG+F3+Ij/MkoWyywYKmZBJNRbZpuHAIUgQ/aLMkunWCfJeqELrTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKxMgQko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF02C4CED0;
-	Mon, 30 Dec 2024 15:56:58 +0000 (UTC)
+	 MIME-Version; b=P+xjUYwNMgxLlXPDSjXuSIyG/r55EQnfSWkBG0hUQj0aojZRqkRCU7pUplfmgXwTQhsNWbS2hFSK2jx9T7E8o43hHwEeP8K0IKAx170MXmkd7opmE0p0oCUD57bikorTf2GQa43oztnjzb1k8lFELo+rn0KDvXKb3KBFfjWOluM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvqYI9Ox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B43C4CED0;
+	Mon, 30 Dec 2024 15:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574219;
-	bh=RzDYXr4JD0It91Kbc2U+zUpKxmq+E2iH/cDhrMeXwMw=;
+	s=korg; t=1735573687;
+	bh=fTcNwy8hpoLBfTaxW1rkTSNPF60QblT0rR5h5h06m14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKxMgQkoRa9NdGrGjhPeFevoAeorKMKSGceY2aBJQyZqOTWehwYwMxS61iV0CRAZ6
-	 dmh/KNjfNd4lARhWbFolb0/ImnEvzMXq2+ja/rAC84HzdBAZsgsWvFsiNGX3n62aMc
-	 J9ET8BfPN4D3XZpKmeeOOpiocRuwzGKYhYXnDkJE=
+	b=cvqYI9OxCJJcA+RszRKCY9gHGzw1vA2FRG6CjS9kiNOIshAq6ooVo5xI55qBMsKUW
+	 wNWL4nzjJDkaBpV9dtt43neqEjxr/1CgUgb4XcYPBAHfWMng2gfv4VLMck/BMC2SVu
+	 EoP06kRV89FAvdQEWxl4ybDbt4L77kqzbdKZVwto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Cathy Avery <cavery@redhat.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/114] scsi: storvsc: Do not flag MAINTENANCE_IN return of SRB_STATUS_DATA_OVERRUN as an error
+	Yang Erkun <yangerkun@huaweicloud.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 58/60] nfsd: cancel nfsd_shrinker_work using sync mode in nfs4_state_shutdown_net
 Date: Mon, 30 Dec 2024 16:43:08 +0100
-Message-ID: <20241230154220.827827226@linuxfoundation.org>
+Message-ID: <20241230154209.482686736@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cathy Avery <cavery@redhat.com>
+From: Yang Erkun <yangerkun@huaweicloud.com>
 
-[ Upstream commit b1aee7f034615b6824d2c70ddb37ef9fc23493b7 ]
+commit d5ff2fb2e7167e9483846e34148e60c0c016a1f6 upstream.
 
-This partially reverts commit 812fe6420a6e ("scsi: storvsc: Handle
-additional SRB status values").
+In the normal case, when we excute `echo 0 > /proc/fs/nfsd/threads`, the
+function `nfs4_state_destroy_net` in `nfs4_state_shutdown_net` will
+release all resources related to the hashed `nfs4_client`. If the
+`nfsd_client_shrinker` is running concurrently, the `expire_client`
+function will first unhash this client and then destroy it. This can
+lead to the following warning. Additionally, numerous use-after-free
+errors may occur as well.
 
-HyperV does not support MAINTENANCE_IN resulting in FC passthrough
-returning the SRB_STATUS_DATA_OVERRUN value. Now that
-SRB_STATUS_DATA_OVERRUN is treated as an error, multipath ALUA paths go
-into a faulty state as multipath ALUA submits RTPG commands via
-MAINTENANCE_IN.
+nfsd_client_shrinker         echo 0 > /proc/fs/nfsd/threads
 
-[    3.215560] hv_storvsc 1d69d403-9692-4460-89f9-a8cbcc0f94f3:
-tag#230 cmd 0xa3 status: scsi 0x0 srb 0x12 hv 0xc0000001
-[    3.215572] scsi 1:0:0:32: alua: rtpg failed, result 458752
+expire_client                nfsd_shutdown_net
+  unhash_client                ...
+                               nfs4_state_shutdown_net
+                                 /* won't wait shrinker exit */
+  /*                             cancel_work(&nn->nfsd_shrinker_work)
+   * nfsd_file for this          /* won't destroy unhashed client1 */
+   * client1 still alive         nfs4_state_destroy_net
+   */
 
-Make MAINTENANCE_IN return success to avoid the error path as is
-currently done with INQUIRY and MODE_SENSE.
+                               nfsd_file_cache_shutdown
+                                 /* trigger warning */
+                                 kmem_cache_destroy(nfsd_file_slab)
+                                 kmem_cache_destroy(nfsd_file_mark_slab)
+  /* release nfsd_file and mark */
+  __destroy_client
 
-Suggested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Cathy Avery <cavery@redhat.com>
-Link: https://lore.kernel.org/r/20241127181324.3318443-1-cavery@redhat.com
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+====================================================================
+BUG nfsd_file (Not tainted): Objects remaining in nfsd_file on
+__kmem_cache_shutdown()
+--------------------------------------------------------------------
+CPU: 4 UID: 0 PID: 764 Comm: sh Not tainted 6.12.0-rc3+ #1
+
+ dump_stack_lvl+0x53/0x70
+ slab_err+0xb0/0xf0
+ __kmem_cache_shutdown+0x15c/0x310
+ kmem_cache_destroy+0x66/0x160
+ nfsd_file_cache_shutdown+0xac/0x210 [nfsd]
+ nfsd_destroy_serv+0x251/0x2a0 [nfsd]
+ nfsd_svc+0x125/0x1e0 [nfsd]
+ write_threads+0x16a/0x2a0 [nfsd]
+ nfsctl_transaction_write+0x74/0xa0 [nfsd]
+ vfs_write+0x1a5/0x6d0
+ ksys_write+0xc1/0x160
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+====================================================================
+BUG nfsd_file_mark (Tainted: G    B   W         ): Objects remaining
+nfsd_file_mark on __kmem_cache_shutdown()
+--------------------------------------------------------------------
+
+ dump_stack_lvl+0x53/0x70
+ slab_err+0xb0/0xf0
+ __kmem_cache_shutdown+0x15c/0x310
+ kmem_cache_destroy+0x66/0x160
+ nfsd_file_cache_shutdown+0xc8/0x210 [nfsd]
+ nfsd_destroy_serv+0x251/0x2a0 [nfsd]
+ nfsd_svc+0x125/0x1e0 [nfsd]
+ write_threads+0x16a/0x2a0 [nfsd]
+ nfsctl_transaction_write+0x74/0xa0 [nfsd]
+ vfs_write+0x1a5/0x6d0
+ ksys_write+0xc1/0x160
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+To resolve this issue, cancel `nfsd_shrinker_work` using synchronous
+mode in nfs4_state_shutdown_net.
+
+Fixes: 7c24fa225081 ("NFSD: replace delayed_work with work_struct for nfsd_client_shrinker")
+Signed-off-by: Yang Erkun <yangerkun@huaweicloud.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index 7ceb982040a5..d0b55c1fa908 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -149,6 +149,8 @@ struct hv_fc_wwn_packet {
- */
- static int vmstor_proto_version;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8208,7 +8208,7 @@ nfs4_state_shutdown_net(struct net *net)
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
  
-+static bool hv_dev_is_fc(struct hv_device *hv_dev);
-+
- #define STORVSC_LOGGING_NONE	0
- #define STORVSC_LOGGING_ERROR	1
- #define STORVSC_LOGGING_WARN	2
-@@ -1138,6 +1140,7 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
- 	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
- 	 * We do this so we can distinguish truly fatal failues
-@@ -1145,7 +1148,9 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 */
+ 	unregister_shrinker(&nn->nfsd_client_shrinker);
+-	cancel_work(&nn->nfsd_shrinker_work);
++	cancel_work_sync(&nn->nfsd_shrinker_work);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
  
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
--	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE)) {
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
-+	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
- 		vstor_packet->vm_srb.srb_status = SRB_STATUS_SUCCESS;
- 	}
--- 
-2.39.5
-
 
 
 
