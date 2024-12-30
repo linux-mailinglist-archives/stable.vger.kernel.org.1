@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-106465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAAE9FE871
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4E49FE7F3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE4C57A1676
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56CAE1882EA5
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F021A9B54;
-	Mon, 30 Dec 2024 15:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1737D1A2550;
+	Mon, 30 Dec 2024 15:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYSM7KLN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVesO5ZM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D6C2E414;
-	Mon, 30 Dec 2024 15:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F70194094;
+	Mon, 30 Dec 2024 15:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574076; cv=none; b=h9p2OVaNUGe+yTb/G1RRLPrSzo0GNuASWMl9QUBM4Pch23VUr3D3PE+JO/7/tWYLMF2YI4339wncjCTZdVwInVMQ6fq9cGksme5Z/C+FEB8xgvzXKTUrV+2gMNcrhw3qlK5Y2ZSUfqfAnvKzSVnNhaammQw2GHaTIAXJ1p43PEw=
+	t=1735573657; cv=none; b=T6sbxo2W+dSA3LXvEhmhrLhPEQ0goTZRDbDMhaB7Bz1SfdsI7KnJFMxidYNyta6XGunwIgxMPfZ8TL8nLElxOSsb7yp/rsN8q3zdXXsXjHQrOoxFGCsS4A5r0DlFGgAsfngtLGPPqG0sEBmlapOFq9FqYZGqq4Kzlju8DNjIna8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574076; c=relaxed/simple;
-	bh=o/SR8FVPNyLeNrOQPCMzu8x+Sr+/pgNfwuOu7mMSyWU=;
+	s=arc-20240116; t=1735573657; c=relaxed/simple;
+	bh=Zznwo5dsxpvUJ5/UiYpRu2bLbSBY8NjqW7uJ594OSS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvRUgFk8NwrqtXeRFzXSF7x8+a0Z0sij1ntrty+wIRpRnGDJE2FU31FyKa607H+V2Y1L3Na6yWaqRZtPEKnkoAnf3jMgseoBex7sumJc8TaXN5BQJWCapL9DST2L4BUD6aim8L1Q/paXjwbBlKb0zFSrXotIx9lUBZ2uMbyPUAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYSM7KLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8E7C4CED0;
-	Mon, 30 Dec 2024 15:54:34 +0000 (UTC)
+	 MIME-Version; b=HP3SZhCj9wGGwAnCWQlK8/qkKBP9DOdq1vdLOXxL9+HrngBo+wCaWFkRUrOPIXeL9sErT8iP2JjrCIpvw/hMiBdITX6gKwX+z/LG+VJljH6Q6rfZlihWUOibJL5OWGV2GIqBC0NPRocA7otXR67OZOm3Fjv8aKWfbdG8ktU2fJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVesO5ZM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E80BC4CED0;
+	Mon, 30 Dec 2024 15:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574075;
-	bh=o/SR8FVPNyLeNrOQPCMzu8x+Sr+/pgNfwuOu7mMSyWU=;
+	s=korg; t=1735573657;
+	bh=Zznwo5dsxpvUJ5/UiYpRu2bLbSBY8NjqW7uJ594OSS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYSM7KLNWDgeXKhufO0f6OVklAVBd5KYzXEKGBFFDEQGDIupUzFn3kWH+EgGtmw3m
-	 +Q1cOxfmu8xHbO44IfCqNKzQXbMltNvZB4eDwPthaluTSuzgPEJcCmFIoeDJPzUK81
-	 XnNuffs+mHdL4kWr49GuqR/GoU4RTcSKdmdZzvUw=
+	b=nVesO5ZMvOZJMoI87QdUjoqqU+XhYB7GQtU7XkFTbDRoGIIyAu+Kx6vtrl7qFP9JD
+	 1tk4uZPrFclRT4EhAmPBQ/fCj9qvFT1us/Xb0lcAH0Zde/y/QAzannNTabMxLnwCfP
+	 biydDDFOtseY9QPiFCu6Vb8AkiVkH+mx8gzkuQsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Kartik Rajput <kkartik@nvidia.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Michael Zimmermann <sigmaepsilon92@gmail.com>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 030/114] dmaengine: tegra: Return correct DMA status when paused
+Subject: [PATCH 6.1 17/60] phy: rockchip: naneng-combphy: fix phy reset
 Date: Mon, 30 Dec 2024 16:42:27 +0100
-Message-ID: <20241230154219.223470216@linuxfoundation.org>
+Message-ID: <20241230154207.942622137@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-commit ebc008699fd95701c9af5ebaeb0793eef81a71d5 upstream.
+commit fbcbffbac994aca1264e3c14da96ac9bfd90466e upstream.
 
-Currently, the driver does not return the correct DMA status when a DMA
-pause is issued by the client drivers. This causes GPCDMA users to
-assume that DMA is still running, while in reality, the DMA is paused.
+Currently, the USB port via combophy on the RK3528/RK3588 SoC is broken.
 
-Return DMA_PAUSED for tx_status() if the channel is paused in the middle
-of a transfer.
+  usb usb8-port1: Cannot enable. Maybe the USB cable is bad?
 
-Fixes: ee17028009d4 ("dmaengine: tegra: Add tegra gpcdma driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Link: https://lore.kernel.org/r/20241212124412.5650-1-kkartik@nvidia.com
+This is due to the combphy of RK3528/RK3588 SoC has multiple resets, but
+only "phy resets" need assert and deassert, "apb resets" don't need.
+So change the driver to only match the phy resets, which is also what
+the vendor kernel does.
+
+Fixes: 7160820d742a ("phy: rockchip: add naneng combo phy for RK3568")
+Cc: FUKAUMI Naoki <naoki@radxa.com>
+Cc: Michael Zimmermann <sigmaepsilon92@gmail.com>
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Tested-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20241122073006.99309-2-amadeus@jmu.edu.cn
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/tegra186-gpc-dma.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/phy/rockchip/phy-rockchip-naneng-combphy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/tegra186-gpc-dma.c
-+++ b/drivers/dma/tegra186-gpc-dma.c
-@@ -231,6 +231,7 @@ struct tegra_dma_channel {
- 	bool config_init;
- 	char name[30];
- 	enum dma_transfer_direction sid_dir;
-+	enum dma_status status;
- 	int id;
- 	int irq;
- 	int slave_id;
-@@ -393,6 +394,8 @@ static int tegra_dma_pause(struct tegra_
- 		tegra_dma_dump_chan_regs(tdc);
- 	}
+--- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+@@ -299,7 +299,7 @@ static int rockchip_combphy_parse_dt(str
  
-+	tdc->status = DMA_PAUSED;
-+
- 	return ret;
- }
+ 	priv->ext_refclk = device_property_present(dev, "rockchip,ext-refclk");
  
-@@ -419,6 +422,8 @@ static void tegra_dma_resume(struct tegr
- 	val = tdc_read(tdc, TEGRA_GPCDMA_CHAN_CSRE);
- 	val &= ~TEGRA_GPCDMA_CHAN_CSRE_PAUSE;
- 	tdc_write(tdc, TEGRA_GPCDMA_CHAN_CSRE, val);
-+
-+	tdc->status = DMA_IN_PROGRESS;
- }
+-	priv->phy_rst = devm_reset_control_array_get_exclusive(dev);
++	priv->phy_rst = devm_reset_control_get(dev, "phy");
+ 	if (IS_ERR(priv->phy_rst))
+ 		return dev_err_probe(dev, PTR_ERR(priv->phy_rst), "failed to get phy reset\n");
  
- static int tegra_dma_device_resume(struct dma_chan *dc)
-@@ -544,6 +549,7 @@ static void tegra_dma_xfer_complete(stru
- 
- 	tegra_dma_sid_free(tdc);
- 	tdc->dma_desc = NULL;
-+	tdc->status = DMA_COMPLETE;
- }
- 
- static void tegra_dma_chan_decode_error(struct tegra_dma_channel *tdc,
-@@ -716,6 +722,7 @@ static int tegra_dma_terminate_all(struc
- 		tdc->dma_desc = NULL;
- 	}
- 
-+	tdc->status = DMA_COMPLETE;
- 	tegra_dma_sid_free(tdc);
- 	vchan_get_all_descriptors(&tdc->vc, &head);
- 	spin_unlock_irqrestore(&tdc->vc.lock, flags);
-@@ -769,6 +776,9 @@ static enum dma_status tegra_dma_tx_stat
- 	if (ret == DMA_COMPLETE)
- 		return ret;
- 
-+	if (tdc->status == DMA_PAUSED)
-+		ret = DMA_PAUSED;
-+
- 	spin_lock_irqsave(&tdc->vc.lock, flags);
- 	vd = vchan_find_desc(&tdc->vc, cookie);
- 	if (vd) {
 
 
 
