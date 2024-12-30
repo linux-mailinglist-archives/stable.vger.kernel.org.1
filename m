@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-106373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AED69FE80F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50C99FE875
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43A761606B2
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D24418830BD
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F9E1531C4;
-	Mon, 30 Dec 2024 15:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A1642AA6;
+	Mon, 30 Dec 2024 15:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8LVNsKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzkaNmAJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630FC15E8B;
-	Mon, 30 Dec 2024 15:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8341B15E8B;
+	Mon, 30 Dec 2024 15:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573755; cv=none; b=NjFjghVfj/FgqvTA1dff4ur0vs2fNv6bMziFyo1Ssd1DuuQjiDEk447KU9qxR8kB0jWShF1TLWn2nYlNbqo/nUiCEIbH06JmOy/KGJCErqpMMeN4rd/JCTGJPSgEup0RGfebWIIwZ51OhuMi6CAW8KHtF7IgcH9fci+DDjhbeeM=
+	t=1735574096; cv=none; b=HEnIfgUfIhsebUnHI/5bGuJV9R2DAifO1nHvTiQWIk2pIpgPNqvsKg592TIBdbfSOzo05HJGdDN7vE9kKZrZIwZycT1ETDIS6AmA24Z9d51SIFUN0nW8V0J2byYmy8Jx0KP7joR/Kd5ba1jvH8ETrBcxIJxPApxASoHHGgih28Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573755; c=relaxed/simple;
-	bh=C15WwY3yEduRov/sNthv4aFqVADys7fUMKJiuAJtOWs=;
+	s=arc-20240116; t=1735574096; c=relaxed/simple;
+	bh=mkCl7h5KwHqNay2kp9snkjQbUQsETbgAbpBG5nCbvK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWDdwoSaXyaUtX+n5Tk3VGTRuvHKQlRwKk65HZp+4pxurPVm+I+6JBMvupHxegrfw/P493AP1YYJSOPaglsovRa7moDvp4+t/EM7bL/RvmjtFe3sYujozrH/txUxRdndHkvQI5eU4Qb+FGounHOONt5kleZwCR55NxWWTmXIszM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8LVNsKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2A8C4CED0;
-	Mon, 30 Dec 2024 15:49:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SM6r3UVLR9MqEYVx2vCW9juLRb5mOugyI9lmaORABaD02aaFMv/UVRMFjIWD0LpKJcK5QJTTizS94hU2vCaJKadzQQJJRQyBidZq82IbzzZmGkJHJJMx2Fm1dAU9/VFrXsRQGUBFhbHHCZENVOMxlJOSfkdDl90vGGdFKHWfEug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzkaNmAJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF09C4CED0;
+	Mon, 30 Dec 2024 15:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573755;
-	bh=C15WwY3yEduRov/sNthv4aFqVADys7fUMKJiuAJtOWs=;
+	s=korg; t=1735574096;
+	bh=mkCl7h5KwHqNay2kp9snkjQbUQsETbgAbpBG5nCbvK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8LVNsKvMNSfyCuAUQ/Cj40+wdTF0Lsjmjw0fLN1HL5/wY9u03wc1qf8qtt8SC/dV
-	 gLuT/cV5no2WIKLs/fPWj913rz5xGilTZgEpdjKbeAhDEihV9CsFWXoj8SbLN4OjF1
-	 P0+r+f0X1XW1HLJmuHuod1AHIl67JAtzTCSCLD2Q=
+	b=GzkaNmAJxFkAhiGWXWeRn8ZrpQY1ypLo2i6QeY2b504nyfiKtrI40wAgUWCSf0rhL
+	 alI9uoFZJ68Et999xKtW51ubBHktk4IfmCBqOKh/rtf6HuNCeC/jsLtfb4+ojWDx3f
+	 Set97mKrSL9zCN6Bi/LMqtqhisXBqLu2m8DaiG14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 24/86] dmaengine: tegra: Return correct DMA status when paused
-Date: Mon, 30 Dec 2024 16:42:32 +0100
-Message-ID: <20241230154212.641929150@linuxfoundation.org>
+	"Dustin L. Howett" <dustin@howett.net>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.12 036/114] platform/chrome: cros_ec_lpc: fix product identity for early Framework Laptops
+Date: Mon, 30 Dec 2024 16:42:33 +0100
+Message-ID: <20241230154219.450124336@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Dustin L. Howett <dustin@howett.net>
 
-commit ebc008699fd95701c9af5ebaeb0793eef81a71d5 upstream.
+commit dcd59d0d7d51b2a4b768fc132b0d74a97dfd6d6a upstream.
 
-Currently, the driver does not return the correct DMA status when a DMA
-pause is issued by the client drivers. This causes GPCDMA users to
-assume that DMA is still running, while in reality, the DMA is paused.
+The product names for the Framework Laptop (12th and 13th Generation
+Intel Core) are incorrect as of 62be134abf42.
 
-Return DMA_PAUSED for tx_status() if the channel is paused in the middle
-of a transfer.
-
-Fixes: ee17028009d4 ("dmaengine: tegra: Add tegra gpcdma driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Link: https://lore.kernel.org/r/20241212124412.5650-1-kkartik@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 62be134abf42 ("platform/chrome: cros_ec_lpc: switch primary DMI data for Framework Laptop")
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Dustin L. Howett <dustin@howett.net>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20241224-platform-chrome-cros_ec_lpc-fix-product-identity-for-early-framework-laptops-v1-1-0d31d6e1d22c@howett.net
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/tegra186-gpc-dma.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/platform/chrome/cros_ec_lpc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/tegra186-gpc-dma.c
-+++ b/drivers/dma/tegra186-gpc-dma.c
-@@ -231,6 +231,7 @@ struct tegra_dma_channel {
- 	bool config_init;
- 	char name[30];
- 	enum dma_transfer_direction sid_dir;
-+	enum dma_status status;
- 	int id;
- 	int irq;
- 	int slave_id;
-@@ -393,6 +394,8 @@ static int tegra_dma_pause(struct tegra_
- 		tegra_dma_dump_chan_regs(tdc);
- 	}
- 
-+	tdc->status = DMA_PAUSED;
-+
- 	return ret;
- }
- 
-@@ -419,6 +422,8 @@ static void tegra_dma_resume(struct tegr
- 	val = tdc_read(tdc, TEGRA_GPCDMA_CHAN_CSRE);
- 	val &= ~TEGRA_GPCDMA_CHAN_CSRE_PAUSE;
- 	tdc_write(tdc, TEGRA_GPCDMA_CHAN_CSRE, val);
-+
-+	tdc->status = DMA_IN_PROGRESS;
- }
- 
- static int tegra_dma_device_resume(struct dma_chan *dc)
-@@ -544,6 +549,7 @@ static void tegra_dma_xfer_complete(stru
- 
- 	tegra_dma_sid_free(tdc);
- 	tdc->dma_desc = NULL;
-+	tdc->status = DMA_COMPLETE;
- }
- 
- static void tegra_dma_chan_decode_error(struct tegra_dma_channel *tdc,
-@@ -716,6 +722,7 @@ static int tegra_dma_terminate_all(struc
- 		tdc->dma_desc = NULL;
- 	}
- 
-+	tdc->status = DMA_COMPLETE;
- 	tegra_dma_sid_free(tdc);
- 	vchan_get_all_descriptors(&tdc->vc, &head);
- 	spin_unlock_irqrestore(&tdc->vc.lock, flags);
-@@ -769,6 +776,9 @@ static enum dma_status tegra_dma_tx_stat
- 	if (ret == DMA_COMPLETE)
- 		return ret;
- 
-+	if (tdc->status == DMA_PAUSED)
-+		ret = DMA_PAUSED;
-+
- 	spin_lock_irqsave(&tdc->vc.lock, flags);
- 	vd = vchan_find_desc(&tdc->vc, cookie);
- 	if (vd) {
+diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
+index 924bf4d3cc77..8470b7f2b135 100644
+--- a/drivers/platform/chrome/cros_ec_lpc.c
++++ b/drivers/platform/chrome/cros_ec_lpc.c
+@@ -707,7 +707,7 @@ static const struct dmi_system_id cros_ec_lpc_dmi_table[] __initconst = {
+ 		/* Framework Laptop (12th Gen Intel Core) */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "12th Gen Intel Core"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Laptop (12th Gen Intel Core)"),
+ 		},
+ 		.driver_data = (void *)&framework_laptop_mec_lpc_driver_data,
+ 	},
+@@ -715,7 +715,7 @@ static const struct dmi_system_id cros_ec_lpc_dmi_table[] __initconst = {
+ 		/* Framework Laptop (13th Gen Intel Core) */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "13th Gen Intel Core"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Laptop (13th Gen Intel Core)"),
+ 		},
+ 		.driver_data = (void *)&framework_laptop_mec_lpc_driver_data,
+ 	},
+-- 
+2.47.1
+
 
 
 
