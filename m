@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE089FE802
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFE09FE7CB
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 831557A1404
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B84CC161F4C
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27BC14F136;
-	Mon, 30 Dec 2024 15:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D77514F136;
+	Mon, 30 Dec 2024 15:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRPpEAKF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPzB8CS9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0A915E8B;
-	Mon, 30 Dec 2024 15:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CB82594B6;
+	Mon, 30 Dec 2024 15:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573703; cv=none; b=f4acu6TqI7f4o4RGp/cUTiCxmy1u/27Eb5G8ieWtwd6V2Dq5NyzfZK6qIfIlCFr3A1sx0Dt3ek3Y6csYcljutTJX8Z7dDNOLzYFaZ0wq5WBd9bLvaK3YqHTgmFKRdlFWsdxhTEIa10WioJ5zRJoxwIXJUClalIZhu4a3u/99lsg=
+	t=1735573535; cv=none; b=AXId5EsjcygSRios1CZJ2b27C1+7ceQfCO4YX1aiO3alGrkOFCvIPeIqtPzYi5ClU00puqa5PzAu/sn/j5+eAPDbFXCm806pkvN1i+iOGBBlwohXS13UCCwoMxPwuBmM1ELQz1YBPD6A3mTLYDO/B7bquuuS+/rVrr9YojBgW8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573703; c=relaxed/simple;
-	bh=OFYny5ygQaYtfVCiwjokbA9itmTuU9gAZSrEMEK+QJQ=;
+	s=arc-20240116; t=1735573535; c=relaxed/simple;
+	bh=HEYOgVKSCWSjT8hAtw3IafwLV/8KOY9tj9H1YNFW9+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDe85b5Y/XxfsVmCmeT3qPawCjSTUGF1TUWxe7ku2cGlBVCJuDy594x3DTY6QQ8mbqAVid60QRHjTw/O4cUgukVv5wsHcdS7E86yjWNKKL9cEBAf6kzPXs0oAQJAFi4JbnD0KKESgSd+JNgFOO2G8y7vYgaDY/m4MT1m5z+qPIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRPpEAKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC85C4CED0;
-	Mon, 30 Dec 2024 15:48:22 +0000 (UTC)
+	 MIME-Version; b=ABWofpzo9V8McIZRKRChvtj6wKHy9B6irIIWND6b0FRauVt+xz5b7TQ/XqNzsmAwG++0naALNRuuXzKx7yLfBiot6S/ju3fn1tzQpkqlndsrCuvPMONHVR1mC6ylmBQhUzRt6LkxFhGocnw1uUq/Cr2n2Z7Q5ej4vWNXqXw9NQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPzB8CS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39405C4CED0;
+	Mon, 30 Dec 2024 15:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573703;
-	bh=OFYny5ygQaYtfVCiwjokbA9itmTuU9gAZSrEMEK+QJQ=;
+	s=korg; t=1735573534;
+	bh=HEYOgVKSCWSjT8hAtw3IafwLV/8KOY9tj9H1YNFW9+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRPpEAKF+lHl/5v9xXxObPpYxb84IdjwJC/99NCMsANMsBUg58ofp0Hkz2Cp7bm4n
-	 a5APCQpdBrk6LOSwVSTuXwDXdVSF0Yx7grk/1yZBb0wd9X+MqfEF5ZPKPMihjM4x7z
-	 J4Skql+G+PE43NR+YEChVE4SLVpCX1skpw04rbLs=
+	b=CPzB8CS9At6NtESorlKDIYiC4hH5iCxWf8cfZNWgs+eCprrs3rz2Chvv3ruTgl1LL
+	 fllSezJ5x18O+zFdouRYeF38Pou3Y0yU4zOy2V/QbGg2VBECivieE8rHFmJs3lr3Yz
+	 X1iDY/X6yGPoH3TWvwLk27e6BYuQEnvWr/UO2XGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
+	Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>,
 	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 11/86] mtd: diskonchip: Cast an operand to prevent potential overflow
+Subject: [PATCH 6.1 09/60] mtd: rawnand: arasan: Fix missing de-registration of NAND
 Date: Mon, 30 Dec 2024 16:42:19 +0100
-Message-ID: <20241230154212.144208705@linuxfoundation.org>
+Message-ID: <20241230154207.638808832@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
 
-commit 9b458e8be0d13e81ed03fffa23f8f9b528bbd786 upstream.
+commit 11e6831fd81468cf48155b9b3c11295c391da723 upstream.
 
-There may be a potential integer overflow issue in inftl_partscan().
-parts[0].size is defined as "uint64_t"  while mtd->erasesize and
-ip->firstUnit are defined as 32-bit unsigned integer. The result of
-the calculation will be limited to 32 bits without correct casting.
+The NAND chip-selects are registered for the Arasan driver during
+initialization but are not de-registered when the driver is unloaded. As a
+result, if the driver is loaded again, the chip-selects remain registered
+and busy, making them unavailable for use.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Fixes: 197b88fecc50 ("mtd: rawnand: arasan: Add new Arasan NAND controller")
 Cc: stable@vger.kernel.org
+Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/diskonchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/mtd/nand/raw/diskonchip.c
-+++ b/drivers/mtd/nand/raw/diskonchip.c
-@@ -1098,7 +1098,7 @@ static inline int __init inftl_partscan(
- 		    (i == 0) && (ip->firstUnit > 0)) {
- 			parts[0].name = " DiskOnChip IPL / Media Header partition";
- 			parts[0].offset = 0;
--			parts[0].size = mtd->erasesize * ip->firstUnit;
-+			parts[0].size = (uint64_t)mtd->erasesize * ip->firstUnit;
- 			numparts = 1;
- 		}
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -1510,8 +1510,15 @@ disable_controller_clk:
  
+ static int anfc_remove(struct platform_device *pdev)
+ {
++	int i;
+ 	struct arasan_nfc *nfc = platform_get_drvdata(pdev);
+ 
++	for (i = 0; i < nfc->ncs; i++) {
++		if (nfc->cs_array[i]) {
++			gpiod_put(nfc->cs_array[i]);
++		}
++	}
++
+ 	anfc_chips_cleanup(nfc);
+ 
+ 	clk_disable_unprepare(nfc->bus_clk);
 
 
 
