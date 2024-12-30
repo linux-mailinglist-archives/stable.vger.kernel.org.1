@@ -1,158 +1,119 @@
-Return-Path: <stable+bounces-106563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EF99FE9AB
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:11:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2656D9FE9AF
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:12:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3535E162417
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 18:11:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC6691884D5E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 18:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CB1EDE;
-	Mon, 30 Dec 2024 18:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954DD1B0408;
+	Mon, 30 Dec 2024 18:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVzKmrSe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KNOqEu5p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49471AAA2C;
-	Mon, 30 Dec 2024 18:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D56EDE;
+	Mon, 30 Dec 2024 18:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735582260; cv=none; b=Dp6sg6cSKz6lhIbLmr0kc1499zreNxra3qR1e1LuDuoSNQqTeHF+Nr25y0oBCXFKGubMT56P4L4U8vrnpCLxJnBtNTB9bOnMf16TNU1GTds9ldimb1acPKKSzF39dDdXj+M0vHg9GMpJX4hwohRlzaagzC40UsnmBnSTkMKcE+Y=
+	t=1735582359; cv=none; b=ZuIae6TsSSTmyg1fAkryGSoQacDI/8hLX0rAeXlHUS/emhitxDKxIoFIrxDg7Y319lqHUHrrMrLy5TPzVJbaE8jH6IKt2FM8xAD0n+LKitSxFXGskqbB/wZ3k3lKczJOEcmH2976/8t+8wGIFhG5cbnVSdlMtxHIKa0UacUKM08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735582260; c=relaxed/simple;
-	bh=76s1saDLVGxgpjPOn26jApFtMqijW95mlrh+Cqztvd4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=keEf7fuG6UzFHgxB3308j+5KboIpSZxO2xO5ns7kx4ZB1/Ty+NPpzdEtPl37vjJluoW3ehYClSVuLqOL14+nO+bZKpYfD0IXzC4cJ2gWV7zTNH9dCKRi2KYtJwGvePVYaKxJ1NF6eGqE90/aC7FJDeb4bwFzS9gigucIoMdXYbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVzKmrSe; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7b9bc648736so725204785a.1;
-        Mon, 30 Dec 2024 10:10:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735582258; x=1736187058; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=+5WHTUr53iWR5qjukQpdlBNhsUdDFBx6Bhkt96FfO/I=;
-        b=KVzKmrSeyU7hokfZaC84LYgMyddEe/ejpHs8jLpNhuXHPitpdnDYrZM6G4C7PDWkn+
-         UWpiV0Lac2FFQwNsL+/xZ2KIdCdOsV23EJEAlXtjxU0ulV39a+KxdYZMdVOhQb2TLBgV
-         aIdieKpm9hyeugXFupw0qhKAzOQPaK8Lgwg3ywWYykb1lCZcPPGPNYoltrbQq6L5Jcba
-         po+d7SS40Ml4pLfdG8omG7mk7rZCEuoZJVH6Q5hVNSj9Ny/hB+OvHp8IwCb1Nz/XyYhU
-         tMiux205ZA8WBAtcn5WyJfjaHYKD8qjSnAFNBU2dMAI1KO0zIB7FfgIB+OUVYcb0y+DP
-         +6Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735582258; x=1736187058;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+5WHTUr53iWR5qjukQpdlBNhsUdDFBx6Bhkt96FfO/I=;
-        b=RwgpIn1vu5J27Lt3+MU7a7SJZnb4MzeNcwmap8vHRq5mCUEUMSbcD8NzIzZRQyXK46
-         6su0EUmaZs/Gg062IrzcJoys+yYcBUIeT2/N5TxGxh+Z+TFtbYfVTd/l613dIL+9qmyE
-         DlX3vY9WEpFIeZUpbz5mxO7TfNDYEiC5i3d5Kq6C2nwNHCbFClWQoNbQXPnM5+/gM1pU
-         /R3kI5FCegROGfKA8Mr5xCH87pR7a/9/ppGv3ya7pp1aJvKLni+GIEm774dgRUxfgomP
-         abUXpKgPk7sYNS1+w33233QxN2VdOpwiPYkrxag1m1i3yO8rhmqg6cWZWgqiKnoDpCDS
-         QA8w==
-X-Forwarded-Encrypted: i=1; AJvYcCUo8/1yd0Rl34Do4ssY9Zq2I2PLco4enzNj2x65VNiqC3bDt3cySz/71hv2xRlonNQa1ntU0AORE7epgvI=@vger.kernel.org, AJvYcCXoZ8nVuA+tQG5Q9eEw5DrSFkEuMPnKEWuwYRNvLQjSMVAur0EuR6AU+i7+3ngw0fHllMjQL/Xp@vger.kernel.org
-X-Gm-Message-State: AOJu0YzP9eZz8OEBj+418QFSrFnVuoEIRj46oSpVxuLkVzj1l5+PJiPD
-	bmS0G4FYAq/8TeuX5cB/fapgm+Al7tHqWn97BA/77HoQUylma95h
-X-Gm-Gg: ASbGnctFrsxjCk5tL6YOpgkhr6fBjKQsjFdy786z1rAZvN6EgU65g+XThxVwGtVq160
-	qs5p3eifKEZmbCTA0isGvOXk7zNSI7pRufLo3D2sGjQlQLWAjkrB1Z5kFmWmjonDrY1iCILOvXM
-	uRSnDnrh7bSZcCQn/NfpMgBHniYy28aLHINlv1p0jvr/EkIBUNNwr+P8g5W1Anye3KbZ1O5enB1
-	0ItpcE2PpghzfKRgnoFO30t+z48prs/uNiIedjKfdhYPb4d8mW1wd46G87yxD+3hue+J4Q32cRP
-	xyB1pJ8Z
-X-Google-Smtp-Source: AGHT+IH/pyTi1GUrPCv8oVUrhjc/UCMbc1DGGQboZpm6KcCOxpSgKs5HNif+Vh+s/vC3q0LjM60wPw==
-X-Received: by 2002:a05:620a:2855:b0:7b8:61df:f5e4 with SMTP id af79cd13be357-7b9ba7be7d7mr6471057685a.35.1735582257702;
-        Mon, 30 Dec 2024 10:10:57 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3eb30b46sm107572331cf.87.2024.12.30.10.10.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Dec 2024 10:10:57 -0800 (PST)
-Message-ID: <8edd954d-69c1-4018-b400-f66cf29c6f0d@gmail.com>
-Date: Mon, 30 Dec 2024 10:10:54 -0800
+	s=arc-20240116; t=1735582359; c=relaxed/simple;
+	bh=h6w2zPUzzp2R5NlQbgzRta52ssPzbwq3ofsg76Bo/Sw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gZVlRKmxM2+jlqnz86lwPl1IieB8VQr3mN6EcAeu1DbJvHBuyobuSp8Jv6Oyb1J1XzVKF4w1y+LDpve+VONu1REB+x/0HoLIIW/SaKWXTTNbhuglpB/b51VJWvqEM/F/S2SSR73JZIKqyHIWjoJbMIGOUyEx2vgL674qy6TW0o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KNOqEu5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F324C4CED0;
+	Mon, 30 Dec 2024 18:12:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735582358;
+	bh=h6w2zPUzzp2R5NlQbgzRta52ssPzbwq3ofsg76Bo/Sw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=KNOqEu5pV6sXFIPEt52+tqt9hoYO/ITVGqc8UGkMs2vfzYPH9pp9z+VpeZ56jPiJM
+	 4sOWWEvol2eVLEeOqT64ByVg/7rzNVCk7RchmiIB75hpw3vKO/802T4sQpNP2qLB7j
+	 /nZnTZ/ICUl/9y0yXRxxdRYjRh2Lt7qq4UB3+RtfKvQmmXgmm1PWSwHTdkeejjJgIL
+	 M6z5R1N+MqSq+mPL94vzHf6tFg9ZoXx/1kwgoAld++9m7dyTqvTrrmjCvgYglnIISZ
+	 qPHTkoPCcKNy71yyhS60E58V+GJvhn+MuaG0/pAzlSK0XJKgs9j3wvGX6VTH55mA3Y
+	 XYnRnz/EMzHbA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/3] mptcp: rx path fixes
+Date: Mon, 30 Dec 2024 19:12:29 +0100
+Message-Id: <20241230-net-mptcp-rbuf-fixes-v1-0-8608af434ceb@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/114] 6.12.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20241230154218.044787220@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI3icmcC/x3LQQ5AMBBA0avIrE2ipYSriAU6ZRaqaRGJuLuJ5
+ c/PeyBRZErQZQ9Eujjx7iVUnsG8jn4hZCsNutCV0mWBng7cwjEHjNPp0PFNCZvK6JpMa1ujQGi
+ I9A+RPYiA4X0/+EXwIGsAAAA=
+X-Change-ID: 20241230-net-mptcp-rbuf-fixes-74526e59d951
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1205; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=h6w2zPUzzp2R5NlQbgzRta52ssPzbwq3ofsg76Bo/Sw=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBncuKT9IkLKq6ih3njIaUhaYkZfgTUbqGe9dUCC
+ MQ8SMMp8hGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ3LikwAKCRD2t4JPQmmg
+ c5tcD/0ayB2eRLES6pJ4RK0tInA1Mhz7/FDHaBHXhNCmO9OCcCxUIR2ssFjsSVoPWGQVIB59LOp
+ 4xc1Mmlvjqj9L6X7cRcp+FiyjGk+QHAy/oUz9zlvLQuypM03o5SNkdjgvBiQBZ1imdtF3kmcxqJ
+ G8S3GQr++GvjsmVbSDjiOfMuJ7gTuzzAehrayLr8ibnq7Ly4kVkITx9zqbMHdRhNrtSb4garwJz
+ Tteu2ENr8MIOS9hNiDA0Gkzw490Y+jr+xWKPYni2Rhm4cnCOFsXmM/hQgF6kL8fVYgzkEplG8nr
+ +Z7ynmD4UvyadRt6CgfdHLwEfE730WyYl0KWfZbYPy/4S5R718mwgmZuislvEP6sJqqBDKrUKUz
+ vL468ADf14MfRaraD0Iew1wXtvzpw9zlcjbN0PpoWhV7nQ46omx4qbELT1Ob8+2MYkPLEdJZ6Lj
+ 5NTWSLgilNBqLbEomRvT7pa0TOiWoJDJNoDh6sTjGgpQd96ohxrtNjXuzRQFGBPOvE4RDLkJ8Fw
+ nnVqxxgO4jrp8kxMLCZGE0BpQwIM7sD7c2e0ZU24MXXKgSuQ5FPNnGH4DgYgFg9SLkvMGt6ZgDD
+ mKTRq3NEoqAY+QmLlIpb87J8pDLjIEZr0/uCQnAT0bck+Za2GXn5pjQjpe4Sc+1Qm0llpA8oVye
+ LtDkrOnZYX9LHWw==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On 12/30/24 07:41, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.8 release.
-> There are 114 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 01 Jan 2025 15:41:48 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Here are 3 different fixes, all related to the MPTCP receive buffer:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+- Patch 1: fix receive buffer space when recvmsg() blocks after
+  receiving some data. For a fix introduced in v6.12, backported to
+  v6.1.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+- Patch 2: mptcp_cleanup_rbuf() can be called when no data has been
+  copied. For 5.11.
+
+- Patch 3: prevent excessive coalescing on receive, which can affect the
+  throughput badly. It looks better to wait a bit before backporting
+  this one to stable versions, to get more results. For 5.10.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Please note that there is no urgency here as well: this can of course be
+sent to Linus next year!
+
+Enjoy this holiday period!
+
+---
+Paolo Abeni (3):
+      mptcp: fix recvbuffer adjust on sleeping rcvmsg
+      mptcp: don't always assume copied data in mptcp_cleanup_rbuf()
+      mptcp: prevent excessive coalescing on receive
+
+ net/mptcp/protocol.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
+---
+base-commit: a024e377efed31ecfb39210bed562932321345b3
+change-id: 20241230-net-mptcp-rbuf-fixes-74526e59d951
+
+Best regards,
 -- 
-Florian
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
