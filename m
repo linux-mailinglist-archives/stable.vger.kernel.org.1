@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-106568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBE79FE9E6
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 866E29FEA19
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0555D18834FD
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 18:35:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7171D18823AC
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 18:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC1D17C228;
-	Mon, 30 Dec 2024 18:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D448318A6AD;
+	Mon, 30 Dec 2024 18:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M76ZiBZ6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCtEZCrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBACEAD0;
-	Mon, 30 Dec 2024 18:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB34189BAF;
+	Mon, 30 Dec 2024 18:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735583727; cv=none; b=uhd+p0vC1zBNXSFBlKQDpA2FBM8i4vL79PGf3K3ts6CFc84ulBLcxaHtalHVJf3u1Ovx6jHTk6To9bawdO9byVOwP891xyjR/GkmiQfHYtIDxAbwxrCo1yaYClSmdg9Dr3w7So54ehKAP3SBzBE1OVam0nQROigj4f8yQTPuiJ8=
+	t=1735584241; cv=none; b=ZnC67TTrRVx05O/FLc4U6CEimBQtGSVLjcd+YVrZ3Sj8YGd+u2BMkTwP0Hqjjcm5fjjDKUqp9qlnk2F/zSrTKJ7eYUjphusJzng8kq33rTqt4EL3h8YxZeuoUEtQ+plpvWijnSczWplJ46M3QdwYVFJDvbspKFBCPTAu8CmUmoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735583727; c=relaxed/simple;
-	bh=zwDNZZ12ROo3lHb0+PRLe7IckEi8MMjuQAn4UZi1DZY=;
+	s=arc-20240116; t=1735584241; c=relaxed/simple;
+	bh=EaGvYshQAYBF6LKL/0EP5Ojxz4m17etFuYNOpimT77U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ffsR0Twt2FEcY+cw7kzmOwGj16yQ1UVHe7VxpuyRH8tLoM7eTNDp24NgpmQOsl1v+aJyMtisJfa7kFH+7/dZXbHecsQGfmOlHctmv14nJaKIKzjFqJF3GlhIoLxQpBdMFYNPSADNHvHh/HSdVHQR2RJp/vgOgRMtne1UxuDmYVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M76ZiBZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC2BC4CED6;
-	Mon, 30 Dec 2024 18:35:26 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UBvUylgAtDL50m7f+amh295/NMmUyNhsMNAGtD4riARRHCbLNVzp07CvBLZgVs2oRJfoC7BYKxBs6X7uTqW3vxC9N0rccIc18n4RJV/bNW99N+1F7OoEUlPEAVa+sBHujKewtdnwQt7ew0WIe4mJj6yOaEM4a/2kwW0qQMHG2r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCtEZCrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F296DC4CED0;
+	Mon, 30 Dec 2024 18:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735583727;
-	bh=zwDNZZ12ROo3lHb0+PRLe7IckEi8MMjuQAn4UZi1DZY=;
+	s=k20201202; t=1735584241;
+	bh=EaGvYshQAYBF6LKL/0EP5Ojxz4m17etFuYNOpimT77U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M76ZiBZ6GaqsxRTU+yv9vR06ujnT3fU/qqzbAG7DMv6ypQVCUXpOWPWWhN1Oe97bZ
-	 u05HPPpbAICK556leBaETCdjm1OmXgVRSYelZwixvRMUxNd4HBcahuF+ywol/gLlpM
-	 R8GiK0SluXy8f93pIWirjY2W7gPHRBFliQjGyU0VwVDo5i7U/ScDR3duaYGGgh48Wu
-	 WQA5mzglMGdDZkwjBFKobWXYQW23uhPFh5rODCgdEtXXMOZUbSpDTkADnjEsooxIyE
-	 uxKTKMTdAAjAUdx7o8oj3KEIdlrqDQ1Y2JHWJELQNmvamABJDHTp/+yk1lHotJhlyE
-	 i0rqr9NrbiYZA==
-Date: Mon, 30 Dec 2024 10:35:23 -0800
+	b=DCtEZCrJQikaZ0APHkYa8PUHU9/D0b+d21VFJbBSyLqNEWn8fat7df4oF+Gpm77Qb
+	 WurCGl/bKh/b2+l+8aJ9wzYR2U2FEsfeIA68Xm9ccGY26kfI7SYmj9uzbz5jg5wa3p
+	 gRbleZYLx+I6+LjXyZB0qdORzwMXE9Juqf7YWluUEB1Axf9Uax0GqZfkHX3pGriFyl
+	 nCgjEbsaTVOkYVdMfRNN+nvLAUdr4si9RYx9XHnyiKjeKYV1BgPklKep9gqYp9kFpb
+	 +NlkZx0o4wBIjH3jL/ENWm/OeV5eyQaJ/QB2C6NgRWIEphcej7tXIl3Ypq1NzyiYNf
+	 DnhuTBLEKuhyQ==
+Date: Mon, 30 Dec 2024 10:43:58 -0800
 From: Kees Cook <kees@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: John Rowley <lkml@johnrowley.me>, johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org,
-	gustavoars@kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: UBSAN array-index-out-of-bounds: cfg80211_scan_6ghz
-Message-ID: <202412301022.BCAC61BD6C@keescook>
-References: <1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain>
- <20241230053806.GA129354@ax162>
+To: Nam Cao <namcao@linutronix.de>
+Cc: Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Dylan Hatch <dylanbhatch@google.com>,
+	"Eric W . Biederman" <ebiederm@xmission.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] fs/proc: do_task_stat: Fix ESP not readable
+ during coredump
+Message-ID: <202412301043.78340B2FD@keescook>
+References: <cover.1735550994.git.namcao@linutronix.de>
+ <c2f1b742c2b8f230f8e0ffa10a061116934dcf5b.1735550994.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,70 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241230053806.GA129354@ax162>
+In-Reply-To: <c2f1b742c2b8f230f8e0ffa10a061116934dcf5b.1735550994.git.namcao@linutronix.de>
 
-On Sun, Dec 29, 2024 at 10:38:06PM -0700, Nathan Chancellor wrote:
-> Hi John,
+On Mon, Dec 30, 2024 at 11:17:30AM +0100, Nam Cao wrote:
+> The field "eip" (instruction pointer) and "esp" (stack pointer) of a task
+> can be read from /proc/PID/stat. These fields can be interesting for
+> coredump.
 > 
-> On Sat, Dec 28, 2024 at 11:21:27AM +0000, John Rowley wrote:
-> > Hi, I'm experiencing UBSAN array-index-out-of-bounds errors while using
-> > my Framework 13" AMD laptop with its Mediatek MT7922 wifi adapter
-> > (mt7921e).
-> > 
-> > It seems to happen only once on boot, and occurs with both kernel
-> > versions 6.12.7 and 6.13-rc4, both compiled from vanilla upstream kernel 
-> > sources on Fedora 41 using the kernel.org LLVM toolchain (19.1.6).
-> > 
-> > I can try some other kernel series if necessary, and also a bisect if I
-> > find a working version, but that may take me a while.
+> However, these fields were disabled by commit 0a1eb2d474ed ("fs/proc: Stop
+> reporting eip and esp in /proc/PID/stat"), because it is generally unsafe
+> to do so. But it is safe for a coredumping process, and therefore
+> exceptions were made:
 > 
-> This looks related to UBSAN_BOUNDS and the fact that version of clang
-> supports the __counted_by attribute. I do not have much time at the
-> moment to look at this but I have added Kees, Gustavo, and
-> linux-hardening for further analysis.
+>   - for a coredumping thread by commit fd7d56270b52 ("fs/proc: Report
+>     eip/esp in /prod/PID/stat for coredumping").
 > 
-> Cheers,
-> Nathan
+>   - for all other threads in a coredumping process by commit cb8f381f1613
+>     ("fs/proc/array.c: allow reporting eip/esp for all coredumping
+>     threads").
 > 
-> > I wasn't sure if I should mark this as a regression, as I'm not sure
-> > which/if there is a working kernel version at this point.
-> > 
-> > Thanks.
-> > 
-> > ----
-> > 
-> > [   17.754417] UBSAN: array-index-out-of-bounds in /data/linux/net/wireless/scan.c:766:2
-> > [   17.754423] index 0 is out of range for type 'struct ieee80211_channel *[] __counted_by(n_channels)' (aka 'struct ieee80211_channel *[]')
+> The above two commits check the PF_DUMPCORE flag to determine a coredump thread
+> and the PF_EXITING flag for the other threads.
+> 
+> Unfortunately, commit 92307383082d ("coredump:  Don't perform any cleanups
+> before dumping core") moved coredump to happen earlier and before PF_EXITING is
+> set. Thus, checking PF_EXITING is no longer the correct way to determine
+> threads in a coredumping process.
+> 
+> Instead of PF_EXITING, use PF_POSTCOREDUMP to determine the other threads.
+> 
+> Checking of PF_EXITING was added for coredumping, so it probably can now be
+> removed. But it doesn't hurt to keep.
+> 
+> Fixes: 92307383082d ("coredump:  Don't perform any cleanups before dumping core")
+> Cc: stable@vger.kernel.org
+> Cc: Eric W. Biederman <ebiederm@xmission.com>
+> Acked-by: Oleg Nesterov <oleg@redhat.com>
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
 
-This is this line:
+Thanks for fixing this!
 
-        request->channels[n_channels] = chan;
-
-and later:
-
-        request->n_channels++;
-
-Patch should be:
-
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 1c6fd45aa809..ccdbeb604639 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -763,12 +763,11 @@ static  void cfg80211_scan_req_add_chan(struct cfg80211_scan_request *request,
- 		}
- 	}
- 
-+	request->n_channels++;
- 	request->channels[n_channels] = chan;
- 	if (add_to_6ghz)
- 		request->scan_6ghz_params[request->n_6ghz_params].channel_idx =
- 			n_channels;
--
--	request->n_channels++;
- }
- 
- static bool cfg80211_find_ssid_match(struct cfg80211_colocated_ap *ap,
-
+Acked-by: Kees Cook <kees@kernel.org>
 
 -- 
 Kees Cook
