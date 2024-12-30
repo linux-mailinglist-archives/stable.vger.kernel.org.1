@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-106494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A5A9FE88D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4536C9FE81F
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4D49188314F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 073E91610D6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE3A1531C4;
-	Mon, 30 Dec 2024 15:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B972E414;
+	Mon, 30 Dec 2024 15:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihme74PF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2B6GyAeI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED93315E8B;
-	Mon, 30 Dec 2024 15:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14140537E9;
+	Mon, 30 Dec 2024 15:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574175; cv=none; b=kwXm7k7gY3LvbAl4FVLjmSvSxPYxfrIwjQzsmotEqJ67R95JULGEsdQTIYgjFCM4L7deuaunMPKGqr9I0HP0/XaymOHLLyG+Ef4pI/0B/1YQ1mJWKbiF9LxsCikgPPGNkpStCl0NofC/US11LjnwhOZsUnn1zsyYYngge+f7faM=
+	t=1735573808; cv=none; b=P0xZEaPJEpqLgr/dub66MCzpLO5jSRDrryvcs1wCVfaAsWpn2Hxd0B7WCoqfcRsfPHAzXGkLHfnUpxpjEU5W0BcqG3VGhoduTzI0uHondNHVBH5TGN5Lg0dDOqD5BpxlexiVvPGZ0LrtEe9vQcZhnrBxeYTuDLNomlfPNRdquN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574175; c=relaxed/simple;
-	bh=6Cn+S3bpybLQAeeFGUIoU2UfD0FRLJF6TnetUx8c3bM=;
+	s=arc-20240116; t=1735573808; c=relaxed/simple;
+	bh=Zbm8yqghCU+RyctjZJUd8yvzqAP2HAakTvPvY0g8Vng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tF1IzMaLd26sYC/tF4pKnOc4aJNmn3NueZc2VPKZy0p93yS4ks1SzLktfVNbCkuTrz+3Gace3lSycvMY+4y4DaVROQA6LCmKJWuLN4FhhvLB8diAQftmUgBC/lVt3BI0toNV0BhmOcHqoszbrB2e95aI2VrP1UywW+ZkiHTjQto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihme74PF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FFCC4CED0;
-	Mon, 30 Dec 2024 15:56:14 +0000 (UTC)
+	 MIME-Version; b=aqNl/Ylj2COvD2A7uF7TzuFQX/dd9qjXlqZHDVh1C+NX50vESo/6e5Y6NVoq4t0AcdC2KzdShdexOTK5wjoL4VsgUIN67sBN7RbP2agU7vgoYsG41pdhx2ML3eBnQLIeEoQxwfG4YwLBLH5L2Fq4suRvpdBhz/nR0XvJRKVoquo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2B6GyAeI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B03C4CED0;
+	Mon, 30 Dec 2024 15:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574174;
-	bh=6Cn+S3bpybLQAeeFGUIoU2UfD0FRLJF6TnetUx8c3bM=;
+	s=korg; t=1735573807;
+	bh=Zbm8yqghCU+RyctjZJUd8yvzqAP2HAakTvPvY0g8Vng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihme74PFiMA9+Mz7dcCqVnjAgpZbrPPauqB1d1GWq/EC4amlvXojsApNZX3j+m45n
-	 iQedxVrXoawRwhMmaSMmZV+uagAuIbgIu7JavKP9AHcd7mrj+XM1jDQ3+UwnPciYoQ
-	 Y1Ls/xOV2Ca+ZjsFTkwY3OVEQV8dH5q6Z8JK20L8=
+	b=2B6GyAeItq9TvsBhQI8TAmegYYaQa2ZbarbbEpq/x8DdMX2Qdg6C4J9X1OftHCNN+
+	 gkpbs6bBEtsPeweVXcVDkeMLa3FBipU0wUMuGKtUxXsHCxieRfmHuZOcF6i28mYdUW
+	 z3zWypd/zRIZmBQ5ZeVF1Sf1E1vdrfDfJM4I7kn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Henzl <thenzl@redhat.com>,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/114] scsi: megaraid_sas: Fix for a potential deadlock
+Subject: [PATCH 6.6 40/86] regmap: Use correct format specifier for logging range errors
 Date: Mon, 30 Dec 2024 16:42:48 +0100
-Message-ID: <20241230154220.023873384@linuxfoundation.org>
+Message-ID: <20241230154213.239742417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Henzl <thenzl@redhat.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 50740f4dc78b41dec7c8e39772619d5ba841ddd7 ]
+[ Upstream commit 3f1aa0c533d9dd8a835caf9a6824449c463ee7e2 ]
 
-This fixes a 'possible circular locking dependency detected' warning
-      CPU0                    CPU1
-      ----                    ----
- lock(&instance->reset_mutex);
-                              lock(&shost->scan_mutex);
-                              lock(&instance->reset_mutex);
- lock(&shost->scan_mutex);
+The register addresses are unsigned ints so we should use %u not %d to
+log them.
 
-Fix this by temporarily releasing the reset_mutex.
-
-Signed-off-by: Tomas Henzl <thenzl@redhat.com>
-Link: https://lore.kernel.org/r/20240923174833.45345-1-thenzl@redhat.com
-Acked-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20241127-regmap-test-high-addr-v1-1-74a48a9e0dc5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/base/regmap/regmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
-index 8e75e2e279a4..50f1dcb6d584 100644
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -8907,8 +8907,11 @@ megasas_aen_polling(struct work_struct *work)
- 						   (ld_target_id / MEGASAS_MAX_DEV_PER_CHANNEL),
- 						   (ld_target_id % MEGASAS_MAX_DEV_PER_CHANNEL),
- 						   0);
--			if (sdev1)
-+			if (sdev1) {
-+				mutex_unlock(&instance->reset_mutex);
- 				megasas_remove_scsi_device(sdev1);
-+				mutex_lock(&instance->reset_mutex);
-+			}
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 1db04886def6..3011f7f9381b 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1062,13 +1062,13 @@ struct regmap *__regmap_init(struct device *dev,
  
- 			event_type = SCAN_VD_CHANNEL;
- 			break;
+ 		/* Sanity check */
+ 		if (range_cfg->range_max < range_cfg->range_min) {
+-			dev_err(map->dev, "Invalid range %d: %d < %d\n", i,
++			dev_err(map->dev, "Invalid range %d: %u < %u\n", i,
+ 				range_cfg->range_max, range_cfg->range_min);
+ 			goto err_range;
+ 		}
+ 
+ 		if (range_cfg->range_max > map->max_register) {
+-			dev_err(map->dev, "Invalid range %d: %d > %d\n", i,
++			dev_err(map->dev, "Invalid range %d: %u > %u\n", i,
+ 				range_cfg->range_max, map->max_register);
+ 			goto err_range;
+ 		}
 -- 
 2.39.5
 
