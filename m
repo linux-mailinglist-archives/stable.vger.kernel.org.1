@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-106360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0FC9FE801
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2969FE7BE
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:44:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 939D03A20F6
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51DA97A13F8
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1158537E9;
-	Mon, 30 Dec 2024 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AB81AAA1D;
+	Mon, 30 Dec 2024 15:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCssNbBE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXeHSLC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEF315E8B;
-	Mon, 30 Dec 2024 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2DC126C13;
+	Mon, 30 Dec 2024 15:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573706; cv=none; b=YJcap5OtGFjyfKxkxOQddRlf3LXj5siEOFaqSeEAb+bt906tYAjJdydeBTaSHb7a1IRTfQrj7iRzmJSCiFIL9cWq7b7eLexXTvtjt0y6l+CM1fVQi8GT5HF/q1Blls2fTrnwF7WdMHsyYkKeIhagnJ8TemYczH+7o4XkVOBYcBA=
+	t=1735573485; cv=none; b=gRcHKuNy25n1bHZHpRNWbzn0DQHhoHTEntxIfDxaqCQ/jxcSekPxsvkhNNEPTBAWHWnbiUrSSldghBQ8JQshFGpMXHVeSlnPaal8HIQv2CIAQfZ0UUfon8LdK31l+Zn33HyxOD7L5GGStHdtuuJxebSNa97btlIZFapnIgWnHT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573706; c=relaxed/simple;
-	bh=gKBXy+l+cdIE3k3H3PAoX8W+oaT7PA3pwUca5b4FhvY=;
+	s=arc-20240116; t=1735573485; c=relaxed/simple;
+	bh=6zBgGMgpq+lf5Yo7DkFDLBaDNy9qaWIkXOiAUOFzSm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aECzvlcWmvyZNcaEd1fOouaj2S9IFDQ3qGlemHYVi+jSNJBrLqOnD8zBrcXM45Dx+UhcfpSYoiN0k7T5imJ6XJCex1BSEEvBc3gkXHjzCXri7JQOgbVwE0yQPo1dJJUhdz0FbAPqmvEa4CTFBBVpZDbE4fKT46co90WlwrXT2MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCssNbBE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FD9C4CED0;
-	Mon, 30 Dec 2024 15:48:25 +0000 (UTC)
+	 MIME-Version; b=VVAfRaXnhFm0epAYO+6CvgdIdQdqSolVswQzl8Oyc+N+2j2PKBilxwTtOE9FjtrROzsQjWb1ad4l+P6pIzqg+UJ9ofE0LNuYrruZERvkfLrcoCaeKKg+UzNuaTYLcrSigwNjtWydgAf/xIC9OetJzq9hTA/dQsGFCLB1TPj0DKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXeHSLC9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50AAC4CED0;
+	Mon, 30 Dec 2024 15:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573706;
-	bh=gKBXy+l+cdIE3k3H3PAoX8W+oaT7PA3pwUca5b4FhvY=;
+	s=korg; t=1735573485;
+	bh=6zBgGMgpq+lf5Yo7DkFDLBaDNy9qaWIkXOiAUOFzSm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wCssNbBEjJn5E/M3+njSPTTdIe6U38/1YWxFbbBQEb5ckxv4vJbjyExKJHpELyo4K
-	 vz36BFl5S+YWUwvk2ONo4xUcmhhT85iseWN9rbLOydDOHFrALW2RbkPuTBw/XltEx0
-	 9CZurAFFa5XIpLkkb86z1SvGL+MkqFXMkNUiDmUY=
+	b=oXeHSLC9eD24tg0hZ5b0SeR0X2jTgmDrn+1s8dNVuG2hXTHp/R0MyujXYiM8K0W8V
+	 GmcHJi0B4265qdFv0lS6AGIZE+UZDc2FMT+UGvDYo9KcJFAhvH8n+rQis3fJua/kif
+	 lHoIHvXM7rXquzJpU+Ku3rjs0OZiIm/04WzF5Fx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Andrzejewski <maciej.andrzejewski@m-works.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 12/86] mtd: rawnand: arasan: Fix double assertion of chip-select
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 10/60] phy: qcom-qmp: Fix register name in RX Lane config of SC8280XP
 Date: Mon, 30 Dec 2024 16:42:20 +0100
-Message-ID: <20241230154212.183391979@linuxfoundation.org>
+Message-ID: <20241230154207.676261088@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit b086a46dae48829e11c0c02580e30d920b76743c upstream.
+commit 8886fb3240931a0afce82dea87edfe46bcb0a586 upstream.
 
-When two chip-selects are configured in the device tree, and the second is
-a non-native GPIO, both the GPIO-based chip-select and the first native
-chip-select may be asserted simultaneously. This double assertion causes
-incorrect read and write operations.
+In RX Lane configuration sequence of SC8280XP, the register
+V5_RX_UCDR_FO_GAIN is incorrectly spelled as RX_UCDR_SO_GAIN and
+hence the programming sequence is wrong. Fix the register sequence
+accordingly to avoid any compliance failures. This has been tested
+on SA8775P by checking device mode enumeration in SuperSpeed.
 
-The issue occurs because when nfc->ncs <= 2, nfc->spare_cs is always
-initialized to 0 due to static initialization. Consequently, when the
-second chip-select (GPIO-based) is selected in anfc_assert_cs(), it is
-detected by anfc_is_gpio_cs(), and nfc->native_cs is assigned the value 0.
-This results in both the GPIO-based chip-select being asserted and the
-NAND controller register receiving 0, erroneously selecting the native
-chip-select.
-
-This patch resolves the issue, as confirmed by oscilloscope testing with
-configurations involving two or more chip-selects in the device tree.
-
-Fixes: acbd3d0945f9 ("mtd: rawnand: arasan: Leverage additional GPIO CS")
 Cc: stable@vger.kernel.org
-Signed-off-by: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: c0c7769cdae2 ("phy: qcom-qmp: Add SC8280XP USB3 UNI phy")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241112092831.4110942-1-quic_kriskura@quicinc.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -1410,8 +1410,8 @@ static int anfc_parse_cs(struct arasan_n
- 	 * case, the "not" chosen CS is assigned to nfc->spare_cs and selected
- 	 * whenever a GPIO CS must be asserted.
- 	 */
--	if (nfc->cs_array && nfc->ncs > 2) {
--		if (!nfc->cs_array[0] && !nfc->cs_array[1]) {
-+	if (nfc->cs_array) {
-+		if (nfc->ncs > 2 && !nfc->cs_array[0] && !nfc->cs_array[1]) {
- 			dev_err(nfc->dev,
- 				"Assign a single native CS when using GPIOs\n");
- 			return -EINVAL;
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+@@ -1393,7 +1393,7 @@ static const struct qmp_phy_init_tbl sc8
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_FO_GAIN, 0x2f),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_COUNT_LOW, 0xff),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_COUNT_HIGH, 0x0f),
+-	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_SO_GAIN, 0x0a),
++	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FO_GAIN, 0x0a),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_VGA_CAL_CNTRL1, 0x54),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_VGA_CAL_CNTRL2, 0x0f),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_RX_EQU_ADAPTOR_CNTRL2, 0x0f),
 
 
 
