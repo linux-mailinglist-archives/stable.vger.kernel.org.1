@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3819FE7C9
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE089FE802
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9DE1882E67
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 831557A1404
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7DC1537C8;
-	Mon, 30 Dec 2024 15:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27BC14F136;
+	Mon, 30 Dec 2024 15:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCpj1442"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRPpEAKF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0932594B6;
-	Mon, 30 Dec 2024 15:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0A915E8B;
+	Mon, 30 Dec 2024 15:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573531; cv=none; b=cxA9NJFh4iTeJ/g6TlRXOgVLm7kxUR1olpF+3pgtZKj/5CTJVrhzJmHtG+Q3GhggrsGKE8QHfwZUYxGLhWjLKHb3wQfL8rma2Qrctl6WL2nEeEJ7MgH8xGCNH8x4Ymq4rF1HlJLJp/AdoXgI7RxTcC9WS4cihOp13fVOdeNsRNw=
+	t=1735573703; cv=none; b=f4acu6TqI7f4o4RGp/cUTiCxmy1u/27Eb5G8ieWtwd6V2Dq5NyzfZK6qIfIlCFr3A1sx0Dt3ek3Y6csYcljutTJX8Z7dDNOLzYFaZ0wq5WBd9bLvaK3YqHTgmFKRdlFWsdxhTEIa10WioJ5zRJoxwIXJUClalIZhu4a3u/99lsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573531; c=relaxed/simple;
-	bh=CFrn99IaPG2YHbw3GGafegaybtZwNWd+gpSXhgwbz38=;
+	s=arc-20240116; t=1735573703; c=relaxed/simple;
+	bh=OFYny5ygQaYtfVCiwjokbA9itmTuU9gAZSrEMEK+QJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1HcCzC8/cc1xJ4gUE2NEo3Bfs8OjWWdmMH8Ma2kx5V9kCtpOK6PsU4sA1wdyQfR1aE18Udsc78LD7MncQ6WdFCkzNA4S9NF/Qu6s/n7y0YeQMeuiW6VtppQ9dALmGxZ6M5+0nurDZvz6PzN5SSb/jVs5v9N+yWZvDdos/izKGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCpj1442; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7979C4CED0;
-	Mon, 30 Dec 2024 15:45:30 +0000 (UTC)
+	 MIME-Version; b=mDe85b5Y/XxfsVmCmeT3qPawCjSTUGF1TUWxe7ku2cGlBVCJuDy594x3DTY6QQ8mbqAVid60QRHjTw/O4cUgukVv5wsHcdS7E86yjWNKKL9cEBAf6kzPXs0oAQJAFi4JbnD0KKESgSd+JNgFOO2G8y7vYgaDY/m4MT1m5z+qPIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRPpEAKF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC85C4CED0;
+	Mon, 30 Dec 2024 15:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573531;
-	bh=CFrn99IaPG2YHbw3GGafegaybtZwNWd+gpSXhgwbz38=;
+	s=korg; t=1735573703;
+	bh=OFYny5ygQaYtfVCiwjokbA9itmTuU9gAZSrEMEK+QJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCpj14424W42nzR/rHg7SzdrnwzRK8egcXc/AZTUJ8GYa4omzQKObbMqg6qrUhosX
-	 Jj61ii+jpvTNSbQVsaytLYUpp1iSCx1KSOxdMPZPL8x9Tlk0Ry6QiUVFREfZA+dPTU
-	 EUz1qN6hiIkgujE013pAeZPOYh6euP625nP+h1js=
+	b=LRPpEAKF+lHl/5v9xXxObPpYxb84IdjwJC/99NCMsANMsBUg58ofp0Hkz2Cp7bm4n
+	 a5APCQpdBrk6LOSwVSTuXwDXdVSF0Yx7grk/1yZBb0wd9X+MqfEF5ZPKPMihjM4x7z
+	 J4Skql+G+PE43NR+YEChVE4SLVpCX1skpw04rbLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Andrzejewski <maciej.andrzejewski@m-works.net>,
+	Zichen Xie <zichenxie0106@gmail.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 08/60] mtd: rawnand: arasan: Fix double assertion of chip-select
-Date: Mon, 30 Dec 2024 16:42:18 +0100
-Message-ID: <20241230154207.601229038@linuxfoundation.org>
+Subject: [PATCH 6.6 11/86] mtd: diskonchip: Cast an operand to prevent potential overflow
+Date: Mon, 30 Dec 2024 16:42:19 +0100
+Message-ID: <20241230154212.144208705@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-commit b086a46dae48829e11c0c02580e30d920b76743c upstream.
+commit 9b458e8be0d13e81ed03fffa23f8f9b528bbd786 upstream.
 
-When two chip-selects are configured in the device tree, and the second is
-a non-native GPIO, both the GPIO-based chip-select and the first native
-chip-select may be asserted simultaneously. This double assertion causes
-incorrect read and write operations.
+There may be a potential integer overflow issue in inftl_partscan().
+parts[0].size is defined as "uint64_t"  while mtd->erasesize and
+ip->firstUnit are defined as 32-bit unsigned integer. The result of
+the calculation will be limited to 32 bits without correct casting.
 
-The issue occurs because when nfc->ncs <= 2, nfc->spare_cs is always
-initialized to 0 due to static initialization. Consequently, when the
-second chip-select (GPIO-based) is selected in anfc_assert_cs(), it is
-detected by anfc_is_gpio_cs(), and nfc->native_cs is assigned the value 0.
-This results in both the GPIO-based chip-select being asserted and the
-NAND controller register receiving 0, erroneously selecting the native
-chip-select.
-
-This patch resolves the issue, as confirmed by oscilloscope testing with
-configurations involving two or more chip-selects in the device tree.
-
-Fixes: acbd3d0945f9 ("mtd: rawnand: arasan: Leverage additional GPIO CS")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/diskonchip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -1425,8 +1425,8 @@ static int anfc_parse_cs(struct arasan_n
- 	 * case, the "not" chosen CS is assigned to nfc->spare_cs and selected
- 	 * whenever a GPIO CS must be asserted.
- 	 */
--	if (nfc->cs_array && nfc->ncs > 2) {
--		if (!nfc->cs_array[0] && !nfc->cs_array[1]) {
-+	if (nfc->cs_array) {
-+		if (nfc->ncs > 2 && !nfc->cs_array[0] && !nfc->cs_array[1]) {
- 			dev_err(nfc->dev,
- 				"Assign a single native CS when using GPIOs\n");
- 			return -EINVAL;
+--- a/drivers/mtd/nand/raw/diskonchip.c
++++ b/drivers/mtd/nand/raw/diskonchip.c
+@@ -1098,7 +1098,7 @@ static inline int __init inftl_partscan(
+ 		    (i == 0) && (ip->firstUnit > 0)) {
+ 			parts[0].name = " DiskOnChip IPL / Media Header partition";
+ 			parts[0].offset = 0;
+-			parts[0].size = mtd->erasesize * ip->firstUnit;
++			parts[0].size = (uint64_t)mtd->erasesize * ip->firstUnit;
+ 			numparts = 1;
+ 		}
+ 
 
 
 
