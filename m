@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A09B9FE85D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C64C39FE7BC
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:44:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3CA63A25D7
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:53:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC7613A1E0E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9891531C4;
-	Mon, 30 Dec 2024 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9435A1AA1E0;
+	Mon, 30 Dec 2024 15:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p00+CdTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCz6Y+B9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEB72AE68;
-	Mon, 30 Dec 2024 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDA1126C13;
+	Mon, 30 Dec 2024 15:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574012; cv=none; b=E5ISTZaC4SvqeO9At/YA04Ub+uheau9vQNOZG3YlR5+0vkxDEAHKE37E6RXLi7AWgKQDVA1Dt8u1Ft6n5f/h+rx28qlqiWNQ2yoI0/WMB7MldlvWJE90sRXRnFN3vG8RGbHOwM7VmkASVNIqyxwVyBQRokU6PhfCG2DORe+Uoto=
+	t=1735573482; cv=none; b=DacIkbBLEZpQzvBpIrgMOa1e2wnG1bZGIQciyrLLbXBKP0XTPQi/Fp7KNtDt+M9Kahu6m8dOLFjFvkFBrZpg7tMl9qh0LET9FaecfgR4r8DVAr2DnQ2wE6UeFT8ZJNveRbHd9yXjphTPSAfBaakw69MOfSOjbf2qBhGQrRLpClI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574012; c=relaxed/simple;
-	bh=ssmQDjR4SjEv6k/wjnzsZE9sEie0QZLMt/mv7Jzmf78=;
+	s=arc-20240116; t=1735573482; c=relaxed/simple;
+	bh=YeWTYR5MbdbeJU1AZ67jTwGziQcgYd3N7DqNdc/yOZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajr7QgOLpVpDj8F0mi3W0g7JJDDKxj80qxShuiJjQU8WafrVZWgB5gyZpQcxDR/R79rCHPfIgAz4FmRg/WWScnKGw6WNmUOnd60MMosYkW4nkEVOHLmABC8CUPqtKNMrKnN5ZAzGvepz8LBjuZYAmX0vHMw83eGBI3VxFEw2bO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p00+CdTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AE3C4CED0;
-	Mon, 30 Dec 2024 15:53:31 +0000 (UTC)
+	 MIME-Version; b=IV1H98MRxb46OGciP4VjOfxoZmdjK7Tcw4r7JvhK90FEmdJetrf2r/Tk++6OlfyMbqOcNYB9ws31zOIB1sL4Sp4o5wk6oKXqIiaNaFXZVwCbOMfxKOW0bTdKW8vDHgHGl9xaaF24OlyVVBZViDcVfeP53e9efIRHoMZyaSFSzPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCz6Y+B9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19916C4CED0;
+	Mon, 30 Dec 2024 15:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574012;
-	bh=ssmQDjR4SjEv6k/wjnzsZE9sEie0QZLMt/mv7Jzmf78=;
+	s=korg; t=1735573481;
+	bh=YeWTYR5MbdbeJU1AZ67jTwGziQcgYd3N7DqNdc/yOZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p00+CdTM2chBwRSo9NumAr2Fr06lY1Zz1x/3lqwhQyG8aFAdwI+L10cWu9Adns5Wu
-	 m6U3PRQT1v1hqvzc8CP0WKmrZStfMlvhdMOIsFe13JmoJS5cr0thbRP5kjBs6kbBfO
-	 R51cMTXdaUEIErtuTPMdk3Csq4KpxG0dXQ30vZ48=
+	b=dCz6Y+B9wFQaIzI1NLB4fB2ttFclZu2MGfq9RXNIG2jRddFRpJNreUSZCYsddCDM5
+	 dznur1+Gl0XqztxBZBBux8iO9TGJiupAT0JHpRw4PfaIOBiWGy+GinnWA486vBXmsL
+	 MXek00pn7nKQAzMBh8raH9QoxF74Ww+215nmHXKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/114] nfsd: restore callback functionality for NFSv4.0
+Subject: [PATCH 6.1 01/60] media: dvb-frontends: dib3000mb: fix uninit-value in dib3000_write_reg
 Date: Mon, 30 Dec 2024 16:42:11 +0100
-Message-ID: <20241230154218.606301954@linuxfoundation.org>
+Message-ID: <20241230154207.334771371@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 7917f01a286ce01e9c085e24468421f596ee1a0c ]
+[ Upstream commit 2dd59fe0e19e1ab955259978082b62e5751924c7 ]
 
-A recent patch inadvertently broke callbacks for NFSv4.0.
+Syzbot reports [1] an uninitialized value issue found by KMSAN in
+dib3000_read_reg().
 
-In the 4.0 case we do not expect a session to be found but still need to
-call setup_callback_client() which will not try to dereference it.
+Local u8 rb[2] is used in i2c_transfer() as a read buffer; in case
+that call fails, the buffer may end up with some undefined values.
 
-This patch moves the check for failure to find a session into the 4.1+
-branch of setup_callback_client()
+Since no elaborate error handling is expected in dib3000_write_reg(),
+simply zero out rb buffer to mitigate the problem.
 
-Fixes: 1e02c641c3a4 ("NFSD: Prevent NULL dereference in nfsd4_process_cb_update()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[1] Syzkaller report
+dvb-usb: bulk message failed: -22 (6/0)
+=====================================================
+BUG: KMSAN: uninit-value in dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+ dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+ dibusb_dib3000mb_frontend_attach+0x155/0x2f0 drivers/media/usb/dvb-usb/dibusb-mb.c:31
+ dvb_usb_adapter_frontend_init+0xed/0x9a0 drivers/media/usb/dvb-usb/dvb-usb-dvb.c:290
+ dvb_usb_adapter_init drivers/media/usb/dvb-usb/dvb-usb-init.c:90 [inline]
+ dvb_usb_init drivers/media/usb/dvb-usb/dvb-usb-init.c:186 [inline]
+ dvb_usb_device_init+0x25a8/0x3760 drivers/media/usb/dvb-usb/dvb-usb-init.c:310
+ dibusb_probe+0x46/0x250 drivers/media/usb/dvb-usb/dibusb-mb.c:110
+...
+Local variable rb created at:
+ dib3000_read_reg+0x86/0x4e0 drivers/media/dvb-frontends/dib3000mb.c:54
+ dib3000mb_attach+0x123/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+...
+
+Fixes: 74340b0a8bc6 ("V4L/DVB (4457): Remove dib3000-common-module")
+Reported-by: syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240517155800.9881-1-n.zhandarovich@fintech.ru
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4callback.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/dvb-frontends/dib3000mb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index b8cbb1556004..de0763652549 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -1058,7 +1058,7 @@ static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *c
- 		args.authflavor = clp->cl_cred.cr_flavor;
- 		clp->cl_cb_ident = conn->cb_ident;
- 	} else {
--		if (!conn->cb_xprt)
-+		if (!conn->cb_xprt || !ses)
- 			return -EINVAL;
- 		clp->cl_cb_session = ses;
- 		args.bc_xprt = conn->cb_xprt;
-@@ -1461,8 +1461,6 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
- 		ses = c->cn_session;
- 	}
- 	spin_unlock(&clp->cl_lock);
--	if (!c)
--		return;
- 
- 	err = setup_callback_client(clp, &conn, ses);
- 	if (err) {
+diff --git a/drivers/media/dvb-frontends/dib3000mb.c b/drivers/media/dvb-frontends/dib3000mb.c
+index c598b2a63325..7c452ddd9e40 100644
+--- a/drivers/media/dvb-frontends/dib3000mb.c
++++ b/drivers/media/dvb-frontends/dib3000mb.c
+@@ -51,7 +51,7 @@ MODULE_PARM_DESC(debug, "set debugging level (1=info,2=xfer,4=setfe,8=getfe (|-a
+ static int dib3000_read_reg(struct dib3000_state *state, u16 reg)
+ {
+ 	u8 wb[] = { ((reg >> 8) | 0x80) & 0xff, reg & 0xff };
+-	u8 rb[2];
++	u8 rb[2] = {};
+ 	struct i2c_msg msg[] = {
+ 		{ .addr = state->config.demod_address, .flags = 0,        .buf = wb, .len = 2 },
+ 		{ .addr = state->config.demod_address, .flags = I2C_M_RD, .buf = rb, .len = 2 },
 -- 
 2.39.5
 
