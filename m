@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-106400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB5B9FE82C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441A79FE891
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F1891882F66
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05958161A5C
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8651531C4;
-	Mon, 30 Dec 2024 15:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53BD537E9;
+	Mon, 30 Dec 2024 15:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvYsuqz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkcpVOgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D88915E8B;
-	Mon, 30 Dec 2024 15:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B0A15E8B;
+	Mon, 30 Dec 2024 15:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573848; cv=none; b=CDr9JEb8DTgk8B8xhjQysa/i1YVmZjWee3Y62D1uBjxvqOSgA0nHFBaBztssawbGpEPxeCGObn97R/PLVeGBXtTNjod8XgRFFAthVWnpxl9z8JA8d7udnZRNxD1PW2oix+B9xWSKULyhUUWXOdkf1HMX3QiHPeHdENdknLfm1EU=
+	t=1735574188; cv=none; b=oDQ528IAY4uMb0vXrUobvlqKXb7FT4xt0/hrzrH+chgYtSaPv6NS7uqYSBcuyhOIHI11VfpoXKc7S6r5/iiVtWGk42u3ZrKkqIMbfQBMWDGjth8k5FEcvZtsoFwGEtvkANnKrjfC6c0RepEUvg/PBT+N/EjXmhpNAFl3QrjkMSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573848; c=relaxed/simple;
-	bh=QhSagTPg1cKStBT0eVGwSiT6N2yR1qD8WUSzJb4owSk=;
+	s=arc-20240116; t=1735574188; c=relaxed/simple;
+	bh=aWE9SN2XbEjSoyf6/60HeELVSqmXmeeNPugYmkMUJbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5xy1uchIVcJG0/sfNKDYNaX8NSoD1ks9e83hYHoeD63fOcp5dii6vO2kLO1nU9eV8fUEKC+p3dUR+YD0HFYAIEOKRckn/g1q1DVk7CqbMQo6t2a9Cbl4NtyXJ1Y9iTvu/Bsr8qAoDzALKDcCUQ03WiA3d9ogHZ8Evz0/FEmaik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvYsuqz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10DCC4CED0;
-	Mon, 30 Dec 2024 15:50:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TS+3oP8u0iojIgyiuxDYV7uHDCa4fpquHrYRIQVDuqSV8lz2pqFc+ABsTQdVchPRx3KCdmItVQ8Hz1o/JETjWiwL/amaYzBJNnf8poeH66AfD/XqjKqp8azAi+f7Z4k72FxMEAGxXZ3o/JlaHh1/0WFklWakshAvsDMuME4L2MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkcpVOgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED00EC4CED0;
+	Mon, 30 Dec 2024 15:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573848;
-	bh=QhSagTPg1cKStBT0eVGwSiT6N2yR1qD8WUSzJb4owSk=;
+	s=korg; t=1735574188;
+	bh=aWE9SN2XbEjSoyf6/60HeELVSqmXmeeNPugYmkMUJbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TvYsuqz1yb74CLNrhbU+QSyXOi4IHrhhngOoZcrmg7fBobrqCKXhEZgHpfw+x+PYh
-	 Q34PEz1I1ukbbW4PsfMRGKqnJuQ8rDzOWWQhT1WRVlsbNwwXq1viw6CJzWrXS2SKrb
-	 3arusdmyXvk39l440MkT2aYelWReXH6ChMHT4gKk=
+	b=kkcpVOglC6hqb4qccLWu25CmO1WDtG5MJ4CEIh4h4/WSsJsWtTMYikMOxtwXNxoMZ
+	 7d4bTzowHeR7bVnmsC/IZqqFoDculv7UCSVf/cjavOfRuYesXoIwYtiizKzSCt9fPQ
+	 hLJgfg56OqHMBg7O/kdcee0cfZ0A7lnXpCfafT1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Peter Newman <peternewman@google.com>,
-	Babu Moger <babu.moger@amd.com>,
-	Luck Tony <tony.luck@intel.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Pau Espin Pedrol <pespin@espeweb.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 51/86] blk-mq: move cpuhp callback registering out of q->sysfs_lock
-Date: Mon, 30 Dec 2024 16:42:59 +0100
-Message-ID: <20241230154213.662774339@linuxfoundation.org>
+Subject: [PATCH 6.12 063/114] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
+Date: Mon, 30 Dec 2024 16:43:00 +0100
+Message-ID: <20241230154220.524142171@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,202 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 22465bbac53c821319089016f268a2437de9b00a ]
+[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
 
-Registering and unregistering cpuhp callback requires global cpu hotplug lock,
-which is used everywhere. Meantime q->sysfs_lock is used in block layer
-almost everywhere.
+On the Asus X541UAK an unknown event 0xCF is emited when the charger
+is plugged in. This is caused by the following AML code:
 
-It is easy to trigger lockdep warning[1] by connecting the two locks.
+    If (ACPS ())
+    {
+        ACPF = One
+        Local0 = 0x58
+        If (ATKP)
+        {
+            ^^^^ATKD.IANE (0xCF)
+        }
+    }
+    Else
+    {
+        ACPF = Zero
+        Local0 = 0x57
+    }
 
-Fix the warning by moving blk-mq's cpuhp callback registering out of
-q->sysfs_lock. Add one dedicated global lock for covering registering &
-unregistering hctx's cpuhp, and it is safe to do so because hctx is
-guaranteed to be live if our request_queue is live.
+    Notify (AC0, 0x80) // Status Change
+    If (ATKP)
+    {
+        ^^^^ATKD.IANE (Local0)
+    }
 
-[1] https://lore.kernel.org/lkml/Z04pz3AlvI4o0Mr8@agluck-desk3/
+    Sleep (0x64)
+    PNOT ()
+    Sleep (0x0A)
+    NBAT (0x80)
 
-Cc: Reinette Chatre <reinette.chatre@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Peter Newman <peternewman@google.com>
-Cc: Babu Moger <babu.moger@amd.com>
-Reported-by: Luck Tony <tony.luck@intel.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20241206111611.978870-3-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Ignore the 0xCF event to silence the unknown event warning.
+
+Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
+Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 103 +++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 92 insertions(+), 11 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index f4a9eed1b977..9efc2fd3e4c4 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -43,6 +43,7 @@
- 
- static DEFINE_PER_CPU(struct llist_head, blk_cpu_done);
- static DEFINE_PER_CPU(call_single_data_t, blk_cpu_csd);
-+static DEFINE_MUTEX(blk_mq_cpuhp_lock);
- 
- static void blk_mq_insert_request(struct request *rq, blk_insert_t flags);
- static void blk_mq_request_bypass_insert(struct request *rq,
-@@ -3623,13 +3624,91 @@ static int blk_mq_hctx_notify_dead(unsigned int cpu, struct hlist_node *node)
- 	return 0;
- }
- 
--static void blk_mq_remove_cpuhp(struct blk_mq_hw_ctx *hctx)
-+static void __blk_mq_remove_cpuhp(struct blk_mq_hw_ctx *hctx)
- {
--	if (!(hctx->flags & BLK_MQ_F_STACKING))
-+	lockdep_assert_held(&blk_mq_cpuhp_lock);
-+
-+	if (!(hctx->flags & BLK_MQ_F_STACKING) &&
-+	    !hlist_unhashed(&hctx->cpuhp_online)) {
- 		cpuhp_state_remove_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
- 						    &hctx->cpuhp_online);
--	cpuhp_state_remove_instance_nocalls(CPUHP_BLK_MQ_DEAD,
--					    &hctx->cpuhp_dead);
-+		INIT_HLIST_NODE(&hctx->cpuhp_online);
-+	}
-+
-+	if (!hlist_unhashed(&hctx->cpuhp_dead)) {
-+		cpuhp_state_remove_instance_nocalls(CPUHP_BLK_MQ_DEAD,
-+						    &hctx->cpuhp_dead);
-+		INIT_HLIST_NODE(&hctx->cpuhp_dead);
-+	}
-+}
-+
-+static void blk_mq_remove_cpuhp(struct blk_mq_hw_ctx *hctx)
-+{
-+	mutex_lock(&blk_mq_cpuhp_lock);
-+	__blk_mq_remove_cpuhp(hctx);
-+	mutex_unlock(&blk_mq_cpuhp_lock);
-+}
-+
-+static void __blk_mq_add_cpuhp(struct blk_mq_hw_ctx *hctx)
-+{
-+	lockdep_assert_held(&blk_mq_cpuhp_lock);
-+
-+	if (!(hctx->flags & BLK_MQ_F_STACKING) &&
-+	    hlist_unhashed(&hctx->cpuhp_online))
-+		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
-+				&hctx->cpuhp_online);
-+
-+	if (hlist_unhashed(&hctx->cpuhp_dead))
-+		cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD,
-+				&hctx->cpuhp_dead);
-+}
-+
-+static void __blk_mq_remove_cpuhp_list(struct list_head *head)
-+{
-+	struct blk_mq_hw_ctx *hctx;
-+
-+	lockdep_assert_held(&blk_mq_cpuhp_lock);
-+
-+	list_for_each_entry(hctx, head, hctx_list)
-+		__blk_mq_remove_cpuhp(hctx);
-+}
-+
-+/*
-+ * Unregister cpuhp callbacks from exited hw queues
-+ *
-+ * Safe to call if this `request_queue` is live
-+ */
-+static void blk_mq_remove_hw_queues_cpuhp(struct request_queue *q)
-+{
-+	LIST_HEAD(hctx_list);
-+
-+	spin_lock(&q->unused_hctx_lock);
-+	list_splice_init(&q->unused_hctx_list, &hctx_list);
-+	spin_unlock(&q->unused_hctx_lock);
-+
-+	mutex_lock(&blk_mq_cpuhp_lock);
-+	__blk_mq_remove_cpuhp_list(&hctx_list);
-+	mutex_unlock(&blk_mq_cpuhp_lock);
-+
-+	spin_lock(&q->unused_hctx_lock);
-+	list_splice(&hctx_list, &q->unused_hctx_list);
-+	spin_unlock(&q->unused_hctx_lock);
-+}
-+
-+/*
-+ * Register cpuhp callbacks from all hw queues
-+ *
-+ * Safe to call if this `request_queue` is live
-+ */
-+static void blk_mq_add_hw_queues_cpuhp(struct request_queue *q)
-+{
-+	struct blk_mq_hw_ctx *hctx;
-+	unsigned long i;
-+
-+	mutex_lock(&blk_mq_cpuhp_lock);
-+	queue_for_each_hw_ctx(q, hctx, i)
-+		__blk_mq_add_cpuhp(hctx);
-+	mutex_unlock(&blk_mq_cpuhp_lock);
- }
- 
- /*
-@@ -3680,8 +3759,6 @@ static void blk_mq_exit_hctx(struct request_queue *q,
- 	if (set->ops->exit_hctx)
- 		set->ops->exit_hctx(hctx, hctx_idx);
- 
--	blk_mq_remove_cpuhp(hctx);
--
- 	xa_erase(&q->hctx_table, hctx_idx);
- 
- 	spin_lock(&q->unused_hctx_lock);
-@@ -3698,6 +3775,7 @@ static void blk_mq_exit_hw_queues(struct request_queue *q,
- 	queue_for_each_hw_ctx(q, hctx, i) {
- 		if (i == nr_queue)
- 			break;
-+		blk_mq_remove_cpuhp(hctx);
- 		blk_mq_exit_hctx(q, set, hctx, i);
- 	}
- }
-@@ -3721,11 +3799,6 @@ static int blk_mq_init_hctx(struct request_queue *q,
- 	if (xa_insert(&q->hctx_table, hctx_idx, hctx, GFP_KERNEL))
- 		goto exit_flush_rq;
- 
--	if (!(hctx->flags & BLK_MQ_F_STACKING))
--		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
--				&hctx->cpuhp_online);
--	cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD, &hctx->cpuhp_dead);
--
- 	return 0;
- 
-  exit_flush_rq:
-@@ -3760,6 +3833,8 @@ blk_mq_alloc_hctx(struct request_queue *q, struct blk_mq_tag_set *set,
- 	INIT_DELAYED_WORK(&hctx->run_work, blk_mq_run_work_fn);
- 	spin_lock_init(&hctx->lock);
- 	INIT_LIST_HEAD(&hctx->dispatch);
-+	INIT_HLIST_NODE(&hctx->cpuhp_dead);
-+	INIT_HLIST_NODE(&hctx->cpuhp_online);
- 	hctx->queue = q;
- 	hctx->flags = set->flags & ~BLK_MQ_F_TAG_QUEUE_SHARED;
- 
-@@ -4278,6 +4353,12 @@ static void blk_mq_realloc_hw_ctxs(struct blk_mq_tag_set *set,
- 	xa_for_each_start(&q->hctx_table, j, hctx, j)
- 		blk_mq_exit_hctx(q, set, hctx, j);
- 	mutex_unlock(&q->sysfs_lock);
-+
-+	/* unregister cpuhp callbacks for exited hctxs */
-+	blk_mq_remove_hw_queues_cpuhp(q);
-+
-+	/* register cpuhp for new initialized hctxs */
-+	blk_mq_add_hw_queues_cpuhp(q);
- }
- 
- static void blk_mq_update_poll_flag(struct request_queue *q)
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index ef04d396f61c..a5933980ade3 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -623,6 +623,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
+ 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
+ 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
+ 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
++	{ KE_IGNORE, 0xCF, },	/* AC mode */
+ 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
+ 	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
+ 	{ KE_END, 0},
 -- 
 2.39.5
 
