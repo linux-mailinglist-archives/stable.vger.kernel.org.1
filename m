@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-106346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9460C9FE7F4
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF589FE830
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCD6A3A23C7
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11EB77A14E5
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBF91537C8;
-	Mon, 30 Dec 2024 15:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FEC1531C4;
+	Mon, 30 Dec 2024 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2clL4rM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXZ0q/C5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A60C15E8B;
-	Mon, 30 Dec 2024 15:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA5815E8B;
+	Mon, 30 Dec 2024 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573661; cv=none; b=elWdmmJkojAPXHxfrOc5Z365Lgod40XvxVmNKyKB13D+Ig/ITs/APgGJOuoO9FNR44Rj2RrJRfas+8X/Dn9Wxxcbzir7lpZDssQNWjzjFuG0W/2+YnfYzODS0pC//EBqVAZIzhCwMtx40hyQ0ALYbN0yHSiA+2p9Nxm/sNhiiIA=
+	t=1735573858; cv=none; b=Z2znUKKHBo6NPeQ1fFoxUQoYrpnfuFmn+DE23TXTRBOah8BCFaDo6JjkcMG7pJ/6KHngu0ASiQNCKuCvtrPgohtugiOQKQOgxfX+no4k14nYsWqFPgu1AX6/bnvCNPrlfkQtPFqNdkFZ8mCgvoQvE+ZlffC+3BjhxPB5l5xnMjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573661; c=relaxed/simple;
-	bh=Gr0tPT5fFAfOMyLLA1R8kEcFzFZ/3EmP3gN8u30kAs8=;
+	s=arc-20240116; t=1735573858; c=relaxed/simple;
+	bh=0mqz514slea1G/a5ZbJjLxW1Scu9/HPC+yZEjue96H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qb9w/Top4Y7yu4WSG9mZZ+1qZLuv+iYhT4SoXlB0wlQzpc/mzdEdoDU12XcrsdgA1puS8R3Py6Miloo17k71YSQ1x1ea4oBU6PcldpmMr/sVFMXIfGOV+6k+mm5+TbHSPr9rQIwocefz9zrbaigC6sPpAdK93hcEe5RU2eHATjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2clL4rM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD73C4CED0;
-	Mon, 30 Dec 2024 15:47:40 +0000 (UTC)
+	 MIME-Version; b=ObYQB4LXqtdiLkdwFWMmR8pvKwf8lCyvnXWsyILArdmQT1xPdymRAcPf5dXp2S0Xd9hV8VfBV3PkjssLs3sW/JPQ/BygfXGzSmiyboXR8ylfWaZJk3tOBla4WT5SfSmFMb+BomgV+7UUGk1Ntd5EjkHkNCIbhRmFdC6EoCYESLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXZ0q/C5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E6CC4CED0;
+	Mon, 30 Dec 2024 15:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573661;
-	bh=Gr0tPT5fFAfOMyLLA1R8kEcFzFZ/3EmP3gN8u30kAs8=;
+	s=korg; t=1735573858;
+	bh=0mqz514slea1G/a5ZbJjLxW1Scu9/HPC+yZEjue96H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2clL4rMECB93JDU23M2HyldolPqWCUKQ+x8xy/6qxNqb6Lar/Oaiw3PFBXsCsvJQ
-	 acdK6eXpwwTExYBPH56X9CL/drGXUgmhRgXQeWnksug/W5FSiWcJ25bTK4lDcUkRXW
-	 P4tFrkSSPvnRcxc2ELU38ZA3DgzeRgP72VKRkxsU=
+	b=PXZ0q/C5TiwF3wsZfAtXNEoaFpMvUwQBKev+0eKOFHgBul3+Q1RSGUxc99/a5mUsd
+	 bX0XH0RNbAYG3g1F4QmU+Pz6V9Mavb6dGTMsK/aLz6mplPCMk/TL2jkV5dXZQUKwqg
+	 /gJ+We/h3HwNLonJnAyI/S1p6PUB0YMlyNHrwWxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kun Hu <huk23@m.fudan.edu.cn>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 51/60] io_uring/sqpoll: fix sqpoll error handling races
-Date: Mon, 30 Dec 2024 16:43:01 +0100
-Message-ID: <20241230154209.211130245@linuxfoundation.org>
+	Qun-Wei Lin <qun-wei.lin@mediatek.com>,
+	Andrew Yang <andrew.yang@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Casper Li <casper.li@mediatek.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chinwen Chang <chinwen.chang@mediatek.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Wenshan Lan <jetlan9@163.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 54/86] sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
+Date: Mon, 30 Dec 2024 16:43:02 +0100
+Message-ID: <20241230154213.773955654@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +72,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
 
-commit e33ac68e5e21ec1292490dfe061e75c0dbdd3bd4 upstream.
+[ Upstream commit fd7b4f9f46d46acbc7af3a439bb0d869efdc5c58 ]
 
-BUG: KASAN: slab-use-after-free in __lock_acquire+0x370b/0x4a10 kernel/locking/lockdep.c:5089
-Call Trace:
-<TASK>
-...
-_raw_spin_lock_irqsave+0x3d/0x60 kernel/locking/spinlock.c:162
-class_raw_spinlock_irqsave_constructor include/linux/spinlock.h:551 [inline]
-try_to_wake_up+0xb5/0x23c0 kernel/sched/core.c:4205
-io_sq_thread_park+0xac/0xe0 io_uring/sqpoll.c:55
-io_sq_thread_finish+0x6b/0x310 io_uring/sqpoll.c:96
-io_sq_offload_create+0x162/0x11d0 io_uring/sqpoll.c:497
-io_uring_create io_uring/io_uring.c:3724 [inline]
-io_uring_setup+0x1728/0x3230 io_uring/io_uring.c:3806
-...
+When CONFIG_KASAN_SW_TAGS and CONFIG_KASAN_STACK are enabled, the
+object_is_on_stack() function may produce incorrect results due to the
+presence of tags in the obj pointer, while the stack pointer does not have
+tags.  This discrepancy can lead to incorrect stack object detection and
+subsequently trigger warnings if CONFIG_DEBUG_OBJECTS is also enabled.
 
-Kun Hu reports that the SQPOLL creating error path has UAF, which
-happens if io_uring_alloc_task_context() fails and then io_sq_thread()
-manages to run and complete before the rest of error handling code,
-which means io_sq_thread_finish() is looking at already killed task.
+Example of the warning:
 
-Note that this is mostly theoretical, requiring fault injection on
-the allocation side to trigger in practice.
+ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1 at lib/debugobjects.c:557 __debug_object_init+0x330/0x364
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc5 #4
+Hardware name: linux,dummy-virt (DT)
+pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __debug_object_init+0x330/0x364
+lr : __debug_object_init+0x330/0x364
+sp : ffff800082ea7b40
+x29: ffff800082ea7b40 x28: 98ff0000c0164518 x27: 98ff0000c0164534
+x26: ffff800082d93ec8 x25: 0000000000000001 x24: 1cff0000c00172a0
+x23: 0000000000000000 x22: ffff800082d93ed0 x21: ffff800081a24418
+x20: 3eff800082ea7bb0 x19: efff800000000000 x18: 0000000000000000
+x17: 00000000000000ff x16: 0000000000000047 x15: 206b63617473206e
+x14: 0000000000000018 x13: ffff800082ea7780 x12: 0ffff800082ea78e
+x11: 0ffff800082ea790 x10: 0ffff800082ea79d x9 : 34d77febe173e800
+x8 : 34d77febe173e800 x7 : 0000000000000001 x6 : 0000000000000001
+x5 : feff800082ea74b8 x4 : ffff800082870a90 x3 : ffff80008018d3c4
+x2 : 0000000000000001 x1 : ffff800082858810 x0 : 0000000000000050
+Call trace:
+ __debug_object_init+0x330/0x364
+ debug_object_init_on_stack+0x30/0x3c
+ schedule_hrtimeout_range_clock+0xac/0x26c
+ schedule_hrtimeout+0x1c/0x30
+ wait_task_inactive+0x1d4/0x25c
+ kthread_bind_mask+0x28/0x98
+ init_rescuer+0x1e8/0x280
+ workqueue_init+0x1a0/0x3cc
+ kernel_init_freeable+0x118/0x200
+ kernel_init+0x28/0x1f0
+ ret_from_fork+0x10/0x20
+---[ end trace 0000000000000000 ]---
+ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
+------------[ cut here ]------------
 
-Cc: stable@vger.kernel.org
-Reported-by: Kun Hu <huk23@m.fudan.edu.cn>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/0f2f1aa5729332612bd01fe0f2f385fd1f06ce7c.1735231717.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20241113042544.19095-1-qun-wei.lin@mediatek.com
+Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+Cc: Andrew Yang <andrew.yang@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Casper Li <casper.li@mediatek.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chinwen Chang <chinwen.chang@mediatek.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Resolve line conflicts ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/sqpoll.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/sched/task_stack.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -345,6 +345,7 @@ int io_sqpoll_wait_sq(struct io_ring_ctx
- __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
- 				struct io_uring_params *p)
+diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
+index f158b025c175..d2117e1c8fa5 100644
+--- a/include/linux/sched/task_stack.h
++++ b/include/linux/sched/task_stack.h
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/sched.h>
+ #include <linux/magic.h>
++#include <linux/kasan.h>
+ 
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 
+@@ -88,6 +89,7 @@ static inline int object_is_on_stack(const void *obj)
  {
-+	struct task_struct *task_to_put = NULL;
- 	int ret;
+ 	void *stack = task_stack_page(current);
  
- 	/* Retain compatibility with failing for an invalid attach attempt */
-@@ -425,6 +426,7 @@ __cold int io_sq_offload_create(struct i
- 		}
- 
- 		sqd->thread = tsk;
-+		task_to_put = get_task_struct(tsk);
- 		ret = io_uring_alloc_task_context(tsk, ctx);
- 		wake_up_new_task(tsk);
- 		if (ret)
-@@ -435,11 +437,15 @@ __cold int io_sq_offload_create(struct i
- 		goto err;
- 	}
- 
-+	if (task_to_put)
-+		put_task_struct(task_to_put);
- 	return 0;
- err_sqpoll:
- 	complete(&ctx->sq_data->exited);
- err:
- 	io_sq_thread_finish(ctx);
-+	if (task_to_put)
-+		put_task_struct(task_to_put);
- 	return ret;
++	obj = kasan_reset_tag(obj);
+ 	return (obj >= stack) && (obj < (stack + THREAD_SIZE));
  }
  
+-- 
+2.39.5
+
 
 
 
