@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-106300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219A59FE7C0
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:44:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8FD49FE805
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68E983A225F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:44:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A778160E0A
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309A11A840B;
-	Mon, 30 Dec 2024 15:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F4414F136;
+	Mon, 30 Dec 2024 15:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyaP07+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLh5BXK3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB41126C13;
-	Mon, 30 Dec 2024 15:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0307715E8B;
+	Mon, 30 Dec 2024 15:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573497; cv=none; b=BWuJtnUpc1VMq2TMyQMEAf8L73Ju+4b1qFaf/CTJgJY2V+xLdScEbuLnU8uaCkXKC8IwylS2XflUDS3tPipEipOLwJlzv5LDdrp+EzSSyuCgHBfk5X79fFhZ74RoeDVHp7xBUf1W8+Ir1QA8JqWRciUcM5DH5IA4NvLlhp9BUJo=
+	t=1735573716; cv=none; b=FueWKbTzw/rKq/8gTQslXCCtnChZ4objf9YLM7en5dq/wGdOMdeQ6w35UNTF/2T+6yRJf00EI94olStm13QFTCXeNyQs8ge1RrYGkSms8+UnDjRiYKl2VkwnCGtqHHN3FTERrhOY3j45150gaMWrVNLbOjnfU1TbMCeySestJEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573497; c=relaxed/simple;
-	bh=Ns8/TvWHg8eV9lIBn4VtcagQ91oUhpjYa7iKRDhiUS4=;
+	s=arc-20240116; t=1735573716; c=relaxed/simple;
+	bh=xoCljlEtQLjDH2HtzB20r5CBK12DkBXblEtjoLIeTqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bN9T06nh5jdPW2VeKRHmSKHBP/MeZF8v0uUxrIvdjAXZBa+jr1ZZ2tXciaCMQrU3ACOTdyQEersYnXyTKzke0+SPTC3/jq5vZGis/2xCO7FmwF0ZemOadMwT4R22GB9mOhZ0JVf3kET8WL/+JB0lrWxYH7Lm+3s+5V/wTtLhDts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyaP07+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FF2C4CED0;
-	Mon, 30 Dec 2024 15:44:55 +0000 (UTC)
+	 MIME-Version; b=N7YdFJEScikY2TN8J3lxi+hc/4OrJdzTBdzBJzaXaaBF/c9P6330E1syHgmh9ZJQvbspvQ5srNeaAOFj8cWtuuQOGEIOMmuVQxzi/k4fCAXrGEzvhywTTgYNoMXewQTSv3YeURuPH4m/jrzEuiqQV6H4yoyH5VUezQz8yYc4JmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLh5BXK3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C610C4CED0;
+	Mon, 30 Dec 2024 15:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573496;
-	bh=Ns8/TvWHg8eV9lIBn4VtcagQ91oUhpjYa7iKRDhiUS4=;
+	s=korg; t=1735573715;
+	bh=xoCljlEtQLjDH2HtzB20r5CBK12DkBXblEtjoLIeTqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyaP07+qvnKvAO9+qIG3m4OIUt5GraX9Nbf9+gc05w9kWaNITpdfpJNYqFoPWo5py
-	 QR8GafzDbALJzKEPZy8sgo5oYVZ3OV2r3kaLm/8dxOira6JgkqUATahZcMzdTBSSt6
-	 KHVAzLLZojr073mWER07epD2XtYmQlMX8niku7Ig=
+	b=CLh5BXK3WAFMKISTX7qUN15PppDaKYp7z47x0TiIIvRf5CnkK5qQ+UEk2LOrYHFws
+	 k1YZu3lsCQqbENFy/MV0q8h7XQvkrmcuoITCH6opXEAPZYkhrEgIy41bh+tfZ5mNwl
+	 ikHBIrYrwIpkn1103L1mvbFpUJCCDlpAdrSfgrTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Johan Hovold <johan+linaro@kernel.org>,
 	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 13/60] phy: core: Fix that API devm_phy_put() fails to release the phy
+Subject: [PATCH 6.6 15/86] phy: core: Fix an OF node refcount leakage in _of_phy_get()
 Date: Mon, 30 Dec 2024 16:42:23 +0100
-Message-ID: <20241230154207.792026171@linuxfoundation.org>
+Message-ID: <20241230154212.295378648@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit fe4bfa9b6d7bd752bfe4700c937f235aa8ce997b upstream.
+commit 5ebdc6be16c2000e37fcb8b4072d442d268ad492 upstream.
 
-For devm_phy_put(), its comment says it needs to invoke phy_put() to
-release the phy, but it will not actually invoke the function since
-devres_destroy() does not call devm_phy_release(), and the missing
-phy_put() call will cause:
+_of_phy_get() will directly return when suffers of_device_is_compatible()
+error, but it forgets to decrease refcount of OF node @args.np before error
+return, the refcount was increased by previous of_parse_phandle_with_args()
+so causes the OF node's refcount leakage.
 
-- The phy fails to be released.
-- devm_phy_put() can not fully undo what API devm_phy_get() does.
-- Leak refcount of both the module and device for below typical usage:
+Fix by decreasing the refcount via of_node_put() before the error return.
 
-  devm_phy_get(); // or its variant
-  ...
-  err = do_something();
-  if (err)
-      goto err_out;
-  ...
-  err_out:
-  devm_phy_put(); // leak refcount here
-
-  The file(s) affected by this issue are shown below since they have such
-  typical usage.
-  drivers/pci/controller/cadence/pcie-cadence.c
-  drivers/net/ethernet/ti/am65-cpsw-nuss.c
-
-Fix by using devres_release() instead of devres_destroy() within the API.
-
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
 Cc: stable@vger.kernel.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Krzysztof Wilczyński <kw@linux.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-1-40ae28f5015a@quicinc.com
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-4-40ae28f5015a@quicinc.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/phy-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/phy-core.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -688,7 +688,7 @@ void devm_phy_put(struct device *dev, st
- 	if (!phy)
- 		return;
+@@ -577,8 +577,10 @@ static struct phy *_of_phy_get(struct de
+ 		return ERR_PTR(-ENODEV);
  
--	r = devres_destroy(dev, devm_phy_release, devm_phy_match, phy);
-+	r = devres_release(dev, devm_phy_release, devm_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_phy_put);
+ 	/* This phy type handled by the usb-phy subsystem for now */
+-	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
+-		return ERR_PTR(-ENODEV);
++	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
++		phy = ERR_PTR(-ENODEV);
++		goto out_put_node;
++	}
+ 
+ 	mutex_lock(&phy_provider_mutex);
+ 	phy_provider = of_phy_provider_lookup(args.np);
+@@ -600,6 +602,7 @@ out_put_module:
+ 
+ out_unlock:
+ 	mutex_unlock(&phy_provider_mutex);
++out_put_node:
+ 	of_node_put(args.np);
+ 
+ 	return phy;
 
 
 
