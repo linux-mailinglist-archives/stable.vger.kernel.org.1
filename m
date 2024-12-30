@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-106486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AAD9FE885
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F8F9FE81E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D41C43A2614
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7098160B98
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B9B1537C8;
-	Mon, 30 Dec 2024 15:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3211A9B3D;
+	Mon, 30 Dec 2024 15:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/muex+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3eEEibr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE09215E8B;
-	Mon, 30 Dec 2024 15:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE26F2AE68;
+	Mon, 30 Dec 2024 15:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574147; cv=none; b=HtifiT7rbuIxldSkPiYINnBDCX27DJ49ooQZpIx2BfIee6oqmgrAIea9MiD19g0+XKUv1SpTm72SOyODJazlHPlW+F5/BaBt8X7kWgcVLoYCoyMZBw4HLCOFhdtjUWKtNfWtsuIbuOEpLlSdyqKW+8TiKc0e0Y+fa5UxIs2DUDI=
+	t=1735573805; cv=none; b=MhklIUVilAyvTmQKyhzObzGjo4oh/nqJpwrqNJf1PblIS9jcBhPHrqnijprTwPSM9v+i6rcrYiLI4klumNW7w74olAe6IQP5dyA5Ycovov79G7bIbyebC9KR6GqHvkD5o4BibKyi95qg+MUGiau0qBwT4cGVvxsqWpKVuQwOSgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574147; c=relaxed/simple;
-	bh=uttXg/h1RudH6gKhkUk1e9as2r/55OzHTg84CvTO/9c=;
+	s=arc-20240116; t=1735573805; c=relaxed/simple;
+	bh=OT1HJaZAQPNKwBcxEK0A1tXThEKV68kPi5ijI/w0QSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwaUSf+w4Mzv1hKK+XJkVsVOsxiwVTArDizeZQh5ce2c8wk7JlcyPUQS0/ooS8BKR60wLnw5hiKLXKG8y+8+zulL3xRPn3wXjUgcwA5CFvkbSkXzfQbUPyp+cDPREN7ukzZOGYv1wI2wr0mwpOJ4rqHWky2jrdgh08u7DyQvXEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/muex+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EABC4CED0;
-	Mon, 30 Dec 2024 15:55:46 +0000 (UTC)
+	 MIME-Version; b=LsxUQ90ON6xBZUbyvz/+5VHXisD43TRC1MJS1EGzlURGHuq3ANbJjm8SJgVqMXVrSQphuZ6no/L/8FdWet5W1xoX8vdPG7Uibka6fO7Xzxfx6PUAbHLQpQ/XRoO6cHxa1zWg8ScZXCCE8qBTspflgQrNRWJvd/zd0oXofyBcekQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3eEEibr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6E3C4CED0;
+	Mon, 30 Dec 2024 15:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574147;
-	bh=uttXg/h1RudH6gKhkUk1e9as2r/55OzHTg84CvTO/9c=;
+	s=korg; t=1735573804;
+	bh=OT1HJaZAQPNKwBcxEK0A1tXThEKV68kPi5ijI/w0QSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/muex+iYknxKHJKJysNSv0VqvYUmC3u+P3qj0wNhMB9TUCGlxPC8nS2mQP0RI5Oy
-	 5H3ihVNOCyVlqkt8gXHJ15PcJOetX278xZtMLSAdzXmW9mYlcDXIoMW6mQFrcRnBPe
-	 XZmzL05iurAai3V+lgqsE35jS7ULhc3QDXbb+a/c=
+	b=y3eEEibrI6s3IcVuxwHITvegEVxGZUuIzblOaCMXWmy+Izm7Z/LfjyhVC5iLD4IRX
+	 5uE85JsoZscGh5GyUpbCUcpLccZ6I6rs09LWEJFHrYTwNaVb5m65U7KdNGwKCl42L3
+	 J8nTDzjrgrn3ZOUj9lIHKILl3DgvuhoNEhkXUPAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/114] watchdog: mediatek: Add support for MT6735 TOPRGU/WDT
-Date: Mon, 30 Dec 2024 16:42:46 +0100
-Message-ID: <20241230154219.945542197@linuxfoundation.org>
+Subject: [PATCH 6.6 39/86] smb: server: Fix building with GCC 15
+Date: Mon, 30 Dec 2024 16:42:47 +0100
+Message-ID: <20241230154213.203214595@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
 
-[ Upstream commit 15ddf704f56f8c95ff74dfd1157ed8646b322fa1 ]
+[ Upstream commit e18655cf35a5958fbf4ae9ca3ebf28871a3a1801 ]
 
-Add support for the Top Reset Generation Unit/Watchdog Timer found on
-MT6735.
+GCC 15 introduces -Werror=unterminated-string-initialization by default,
+this results in the following build error
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241106104738.195968-3-y.oudjana@protonmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+fs/smb/server/smb_common.c:21:35: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-ini
+tialization]
+   21 | static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+
+To this we are replacing char basechars[43] with a character pointer
+and then using strlen to get the length.
+
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/mtk_wdt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/smb/server/smb_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
-index e2d7a57d6ea2..91d110646e16 100644
---- a/drivers/watchdog/mtk_wdt.c
-+++ b/drivers/watchdog/mtk_wdt.c
-@@ -10,6 +10,7 @@
-  */
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index 663b014b9d18..23537e1b3468 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -18,8 +18,8 @@
+ #include "mgmt/share_config.h"
  
- #include <dt-bindings/reset/mt2712-resets.h>
-+#include <dt-bindings/reset/mediatek,mt6735-wdt.h>
- #include <dt-bindings/reset/mediatek,mt6795-resets.h>
- #include <dt-bindings/reset/mt7986-resets.h>
- #include <dt-bindings/reset/mt8183-resets.h>
-@@ -87,6 +88,10 @@ static const struct mtk_wdt_data mt2712_data = {
- 	.toprgu_sw_rst_num = MT2712_TOPRGU_SW_RST_NUM,
- };
- 
-+static const struct mtk_wdt_data mt6735_data = {
-+	.toprgu_sw_rst_num = MT6735_TOPRGU_RST_NUM,
-+};
-+
- static const struct mtk_wdt_data mt6795_data = {
- 	.toprgu_sw_rst_num = MT6795_TOPRGU_SW_RST_NUM,
- };
-@@ -489,6 +494,7 @@ static int mtk_wdt_resume(struct device *dev)
- static const struct of_device_id mtk_wdt_dt_ids[] = {
- 	{ .compatible = "mediatek,mt2712-wdt", .data = &mt2712_data },
- 	{ .compatible = "mediatek,mt6589-wdt" },
-+	{ .compatible = "mediatek,mt6735-wdt", .data = &mt6735_data },
- 	{ .compatible = "mediatek,mt6795-wdt", .data = &mt6795_data },
- 	{ .compatible = "mediatek,mt7986-wdt", .data = &mt7986_data },
- 	{ .compatible = "mediatek,mt7988-wdt", .data = &mt7988_data },
+ /*for shortname implementation */
+-static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
+-#define MANGLE_BASE (sizeof(basechars) / sizeof(char) - 1)
++static const char *basechars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
++#define MANGLE_BASE (strlen(basechars) - 1)
+ #define MAGIC_CHAR '~'
+ #define PERIOD '.'
+ #define mangle(V) ((char)(basechars[(V) % MANGLE_BASE]))
 -- 
 2.39.5
 
