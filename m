@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-106410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8126A9FE836
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5BF9FE7D4
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F893A126E
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 355171882E52
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB29537E9;
-	Mon, 30 Dec 2024 15:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE601A9B54;
+	Mon, 30 Dec 2024 15:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8IqbMcy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWOvnVsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD0E15E8B;
-	Mon, 30 Dec 2024 15:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE8F15E8B;
+	Mon, 30 Dec 2024 15:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573881; cv=none; b=l6EmTES8mb9Efj5clvXv244clcxNuzNTXqNuQjD6noP90cKCQVNCjTuzr4YHVrMAc+Mef/KIIMhH+4ybDmdr8v6yyMjUnkMy06BTvTP0W0jrbQkGY9SoykAfQ5HYU6j7L7Dndke+SWBX+zPEcqeR2TUqgSiPyw9Itkz6Vh6zbss=
+	t=1735573556; cv=none; b=P5LWez/r4q+OTYgP71q3sdkWBGdMzuOEZafyICmrjPLrthoqSSuMre9/Q1+47HtKeN7uWbzEXgwEZSZZTxiVfCK5VY/mJb6KBC+EqNNbH4Sg+yOAHptNrnyFjetqxSdYTvBcVW+q1izntLT9I6v2tMbiSL5vj/H7mJ0IqgnpzMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573881; c=relaxed/simple;
-	bh=o2sqwsynM/ZRWMIiZHc2J2a1fUOIEF7jSG+28e6VH14=;
+	s=arc-20240116; t=1735573556; c=relaxed/simple;
+	bh=eg6TmomTXTRQge00MzE25/th0+9Ct1WBmYZPR0nz2EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auGjhjC92G/RIEKMo8xdTS4x6Ww9ujlb9UiMD33p/btV7kwTje79wuLwGO4G1PLPQkkPZL0CmqUUOiU5y6E70QG0an05FNDix16Z19wnhn3v42nMcsV5I1eekvxO41R/gRdaR0E7HGFXpwiHW6+ulfKBBXbomfrDrzvOzzBF3eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8IqbMcy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A32EC4CED0;
-	Mon, 30 Dec 2024 15:51:20 +0000 (UTC)
+	 MIME-Version; b=AwGjKfSogK9evqIcL76d5YZ+n0umTsg5tIhth4xU6rYZ4KllW0TxTNOXSjflnZQX0hyUQCbKwMynnOv5qBi89vDBQh03gTEGqzxzASAlE7gzaRQipkhCJQxSiWrdJ6Jt5X/5vQuj8K2YzzS5v6p/eb1zbXk47DXjOYisrraos+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWOvnVsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FCFC4CED0;
+	Mon, 30 Dec 2024 15:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573881;
-	bh=o2sqwsynM/ZRWMIiZHc2J2a1fUOIEF7jSG+28e6VH14=;
+	s=korg; t=1735573556;
+	bh=eg6TmomTXTRQge00MzE25/th0+9Ct1WBmYZPR0nz2EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8IqbMcyqNA9zWrZ2ZeeGrl1VCMq5lhGxk0HPOpHHpLtg80H++6+gT9Z6d/EEQ1m9
-	 xvt8cXVnlojH0FTYO9RqzPwiOxVNnwsBY7ffVRniaJn+AFTWof2h4teqp/bQP2YIvh
-	 pTaSrPUbg6ZeYXjbq27MSmKbpMpHreZmndOSrzwk=
+	b=uWOvnVsuXF6WuiRPPD+0MQ8GgvcKDsObNCL37IPwJsKrE0ejtIE6Lkt6Ij8RU6aoy
+	 WWmEy5Zsr3+OFh01sqbSqED31zMi5vnai0kbUL82IarLe15nEGfSzduo7Dblx80kqb
+	 hCBuuMQ2EvKJwaem3Lw5hLtIt9QuEehAgPL0hFBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Tomas Henzl <thenzl@redhat.com>,
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 31/86] tracing/kprobe: Make trace_kprobes module callback called after jump_label update
+Subject: [PATCH 6.1 29/60] scsi: megaraid_sas: Fix for a potential deadlock
 Date: Mon, 30 Dec 2024 16:42:39 +0100
-Message-ID: <20241230154212.905414299@linuxfoundation.org>
+Message-ID: <20241230154208.390700801@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Tomas Henzl <thenzl@redhat.com>
 
-[ Upstream commit d685d55dfc86b1a4bdcec77c3c1f8a83f181264e ]
+[ Upstream commit 50740f4dc78b41dec7c8e39772619d5ba841ddd7 ]
 
-Make sure the trace_kprobe's module notifer callback function is called
-after jump_label's callback is called. Since the trace_kprobe's callback
-eventually checks jump_label address during registering new kprobe on
-the loading module, jump_label must be updated before this registration
-happens.
+This fixes a 'possible circular locking dependency detected' warning
+      CPU0                    CPU1
+      ----                    ----
+ lock(&instance->reset_mutex);
+                              lock(&shost->scan_mutex);
+                              lock(&instance->reset_mutex);
+ lock(&shost->scan_mutex);
 
-Link: https://lore.kernel.org/all/173387585556.995044.3157941002975446119.stgit@devnote2/
+Fix this by temporarily releasing the reset_mutex.
 
-Fixes: 614243181050 ("tracing/kprobes: Support module init function probing")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Tomas Henzl <thenzl@redhat.com>
+Link: https://lore.kernel.org/r/20240923174833.45345-1-thenzl@redhat.com
+Acked-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_kprobe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/megaraid/megaraid_sas_base.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 94cb09d44115..508c10414a93 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -702,7 +702,7 @@ static int trace_kprobe_module_callback(struct notifier_block *nb,
+diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
+index 37208bc08c66..f4b32ce45ce0 100644
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -8905,8 +8905,11 @@ megasas_aen_polling(struct work_struct *work)
+ 						   (ld_target_id / MEGASAS_MAX_DEV_PER_CHANNEL),
+ 						   (ld_target_id % MEGASAS_MAX_DEV_PER_CHANNEL),
+ 						   0);
+-			if (sdev1)
++			if (sdev1) {
++				mutex_unlock(&instance->reset_mutex);
+ 				megasas_remove_scsi_device(sdev1);
++				mutex_lock(&instance->reset_mutex);
++			}
  
- static struct notifier_block trace_kprobe_module_nb = {
- 	.notifier_call = trace_kprobe_module_callback,
--	.priority = 1	/* Invoked after kprobe module callback */
-+	.priority = 2	/* Invoked after kprobe and jump_label module callback */
- };
- 
- static int count_symbols(void *data, unsigned long unused)
+ 			event_type = SCAN_VD_CHANNEL;
+ 			break;
 -- 
 2.39.5
 
