@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-106377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3479FE812
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DA39FE7C4
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45D631881CD8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B905E1882E5F
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929561531C4;
-	Mon, 30 Dec 2024 15:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2F915748F;
+	Mon, 30 Dec 2024 15:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHMYN35x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jjpdn8IH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2392AE68;
-	Mon, 30 Dec 2024 15:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3971815E8B;
+	Mon, 30 Dec 2024 15:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573773; cv=none; b=jaOGQ+bqcs/z7iZkYmjI58yOyO+hwO3oFkfpadaha4UeEWf91zkdSk8pHdzIwaSW6DOlctIrujIMqJ7isSwio73tGq4cmboKt1A3ZDSgOB6cZ/Nsh0sBZLfll4Ch6lNLJwgW3zMoxhIWvxOlbsCDZVzvXLz7ERu1NO2++RT4HbI=
+	t=1735573511; cv=none; b=Qx7rNB2GI0LT5YuRWzajP6Np2F0uj+QPE5sfVdyKpACEVleJUYSYfR1Hs77Zc+fr3NO23bXTrMMS0erbtlHurSd3+6j11L/MsYpD6NpEXDXI2JJ6oxbLjcFBLoX8i7dHyZShhCaBkZJsY4mix3GwcECUj1o5Yo3p/elQnRSslcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573773; c=relaxed/simple;
-	bh=Mte15dJY4X+fg67zn1l2wXWdZJL2gtbvMFUbeWLmvIc=;
+	s=arc-20240116; t=1735573511; c=relaxed/simple;
+	bh=xLkIVKm1j3zfDdRPtZFO1H5umMJatNRx2QtOTvgHswg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOW8+2jCYfnt19LMmNCXGgVQCgywSpiEd56HwpJeN10jl521KTlZHcz/9UjjMNwIsWR1+VNJ/v6kU7TV5SG1a2UdYl57Kt3uNI+QODbyFicYyhvoZ45X48mW4Ahhy6NSIUXMVtidAkHqbRSNCTi+jaO+CRcxXlRmxHk0Ql8SoaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHMYN35x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4DBC4CED0;
-	Mon, 30 Dec 2024 15:49:32 +0000 (UTC)
+	 MIME-Version; b=nqrCaAyMKcKLdCF7+3ifT3Z/ZHIGnu2yspZesF3E78mApf39U54wWRqw7iMZadKr4mfhslwf1oeAt9jWqFkS0EGoxSaQd8UPQFLw12+HkvrftwkzAVeU3wi2B7pwVYHlh22RsGk3xCMRUhQgoDZys+iY5aKgsp7m+wg+Qhcf/Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jjpdn8IH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231F1C4CED0;
+	Mon, 30 Dec 2024 15:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573773;
-	bh=Mte15dJY4X+fg67zn1l2wXWdZJL2gtbvMFUbeWLmvIc=;
+	s=korg; t=1735573510;
+	bh=xLkIVKm1j3zfDdRPtZFO1H5umMJatNRx2QtOTvgHswg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHMYN35x4vsbrkkFzBkhVfrr2CBeiyWNJyNdv1DQj+kuzNriZlxWtaQ8YJyf9NgUy
-	 zQHaD+7GRxZh0vsYeEtoepb0+qJ0EVplWrDeU45vWCDZQuMlvcA9x6AJVYjmoCuVE1
-	 vmhtnCpvn8NeyBJSqrkEs68kk8a2nJcgbRJTwm2I=
+	b=Jjpdn8IHx/+xgBtBooLclYZlMH2YyeKDFdDE9sS73qNyPYWr/LcB6i7X3mQWJpGtj
+	 ZnM6pWHLsXKm4MN/kBH3AEb5xXSul5sWFhfG2PBNgFr742v75BYNpMNlSCyqw4Z3Dy
+	 VGvYB8Is4bK0GnZr16cWiLdCACn4uO8xhpwJ0iOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/86] ceph: allocate sparse_ext map only for sparse reads
+Subject: [PATCH 6.1 02/60] mm/vmstat: fix a W=1 clang compiler warning
 Date: Mon, 30 Dec 2024 16:42:12 +0100
-Message-ID: <20241230154211.882716602@linuxfoundation.org>
+Message-ID: <20241230154207.371620931@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 18d44c5d062b97b97bb0162d9742440518958dc1 ]
+[ Upstream commit 30c2de0a267c04046d89e678cc0067a9cfb455df ]
 
-If mounted with sparseread option, ceph_direct_read_write() ends up
-making an unnecessarily allocation for O_DIRECT writes.
+Fix the following clang compiler warning that is reported if the kernel is
+built with W=1:
 
-Fixes: 03bc06c7b0bd ("ceph: add new mount option to enable sparse reads")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+./include/linux/vmstat.h:518:36: error: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Werror,-Wenum-enum-conversion]
+  518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+      |                               ~~~~~~~~~~~ ^ ~~~
+
+Link: https://lkml.kernel.org/r/20241212213126.1269116-1-bvanassche@acm.org
+Fixes: 9d7ea9a297e6 ("mm/vmstat: add helpers to get vmstat item names for each enum type")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/file.c        | 2 +-
- net/ceph/osd_client.c | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ include/linux/vmstat.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-index 5233bbab8a76..a03b11cf7887 100644
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -1455,7 +1455,7 @@ ceph_direct_read_write(struct kiocb *iocb, struct iov_iter *iter,
- 		}
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 19cf5b6892ce..4fb5fa0cc84e 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -513,7 +513,7 @@ static inline const char *node_stat_name(enum node_stat_item item)
  
- 		op = &req->r_ops[0];
--		if (sparse) {
-+		if (!write && sparse) {
- 			extent_cnt = __ceph_sparse_read_ext_count(inode, size);
- 			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
- 			if (ret) {
-diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
-index 3babcd5e65e1..0b6a8bb0642f 100644
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -1173,6 +1173,8 @@ EXPORT_SYMBOL(ceph_osdc_new_request);
- 
- int __ceph_alloc_sparse_ext_map(struct ceph_osd_req_op *op, int cnt)
+ static inline const char *lru_list_name(enum lru_list lru)
  {
-+	WARN_ON(op->op != CEPH_OSD_OP_SPARSE_READ);
-+
- 	op->extent.sparse_ext_cnt = cnt;
- 	op->extent.sparse_ext = kmalloc_array(cnt,
- 					      sizeof(*op->extent.sparse_ext),
+-	return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
++	return node_stat_name(NR_LRU_BASE + (enum node_stat_item)lru) + 3; // skip "nr_"
+ }
+ 
+ static inline const char *writeback_stat_name(enum writeback_stat_item item)
 -- 
 2.39.5
 
