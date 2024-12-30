@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BC69FE837
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0E79FE7D5
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CE081882F35
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D024161DF3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD981531C4;
-	Mon, 30 Dec 2024 15:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDB81531C4;
+	Mon, 30 Dec 2024 15:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBh/Ogna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvzETb3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F6615E8B;
-	Mon, 30 Dec 2024 15:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A60815E8B;
+	Mon, 30 Dec 2024 15:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573885; cv=none; b=nIShOFc2NGhs3iqYYzNKsUQevjpnfS4Q/z0u1pxGUfeprRYzGNXCf1mxcHzuAK9tT2yGX7FcRM7ykVL2JYrgzAEYvpgwpShgkSvZqhIrfBGfWuJ3jpfSeuQR/M+h8UJsxzPPCJ5hLPY1Zy+1BA5shSZ4T/L+TY4OWywiC0wf99M=
+	t=1735573560; cv=none; b=NXJV7KanJfBUxLydzSEQJ4xRmU2ohUP40IkBgSzfRxl+o4G7nc0qnwWx7qbMvq1IgL3+8MiIVTqyjMfbMdihrawxZhpt0uUXn4Q8Dumis8RC2XHQzVzhSxJ535y9tivqq28Pp2bc/Eg6QozpzTxLQOA9ImHl8e4ltTVzSpWxp+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573885; c=relaxed/simple;
-	bh=4PKjJUlXN8NlAVXEQUmZnKbyoKsIiDGOlztePE2Rc7M=;
+	s=arc-20240116; t=1735573560; c=relaxed/simple;
+	bh=z4WJF/Uan5iQ0t9SykHTSM3oPIiomVWXYNCzQVRx8EU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpd4oPYk3Wl3ZPMmjtIndkEJGXTXlEEPjiXd2PIL7UF5lRxAZ0PLc6Y8MfBJuKyOmpraoHglg+0e4Yve3tdfHMvCQ3dg9e9x06baWt0dSGGaHmx7pRmNGkO+ZP3AdSylaBsAT4GFKB4yZHOOqcY4Me8dPUzODggo+X2kmeM2HsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBh/Ogna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E22C4CED0;
-	Mon, 30 Dec 2024 15:51:24 +0000 (UTC)
+	 MIME-Version; b=NmZwt7rG1QsLkn0QHwUz6p6h+x7JiUE3wzmdDbMmIkq3k44bgxqmxYsrv5G6KmHqUvZ+bSAfTY6P+/Wj+ZdkEdYZ2e/W8d3tI5liZ+sg3hViJVunMU5v2VwN8mr1POcj+6bZb457KsxmrXIGsGcdaA9dND4sjmmwdnTaWtLSqgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvzETb3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A57AC4CED0;
+	Mon, 30 Dec 2024 15:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573885;
-	bh=4PKjJUlXN8NlAVXEQUmZnKbyoKsIiDGOlztePE2Rc7M=;
+	s=korg; t=1735573560;
+	bh=z4WJF/Uan5iQ0t9SykHTSM3oPIiomVWXYNCzQVRx8EU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBh/Ognap4sfz1L6d/fnAaWUz9oYNmVJCBQYYX0i+YDRttZY+HiNjZmM6EOeHHU7c
-	 eft4vaevUNHO3rLDc4bKo+rSbmOUqqZZz3NDrWOS95qGSWckBQMv6Mf5h52g7Qp5rp
-	 F1vdrBttVfMgHVsJaZ1oLoVSvaDl5BZ6E0ksOcrI=
+	b=SvzETb3Eye1t3flbgKJDXRKF90nrAb7UZcs07wSltlRfBTQqWoSN54rjEbcnxkL1i
+	 Wsq1/pKxNL5rnZZxdDXoGmcSSbXxIINnFHevTwrKfsCnYk2bO3D8PFF2ShE3IhqSkC
+	 0n9JA5sop9P8Mi/TXegS6FI4hhEFg3dq74DeDTUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Hilliard <james.hilliard1@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 32/86] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
+Subject: [PATCH 6.1 30/60] ALSA: hda/conexant: fix Z60MR100 startup pop issue
 Date: Mon, 30 Dec 2024 16:42:40 +0100
-Message-ID: <20241230154212.944054826@linuxfoundation.org>
+Message-ID: <20241230154208.426968815@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hilliard <james.hilliard1@gmail.com>
+From: bo liu <bo.liu@senarytech.com>
 
-[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
+[ Upstream commit 947c4012f8f03a8bb946beb6e5294d5e32817d67 ]
 
-For the watchdog timer to work properly on the QCML04 board we need to
-set PWRGD enable in the Environment Controller Configuration Registers
-Special Configuration Register 1 when it is not already set, this may
-be the case when the watchdog is not enabled from within the BIOS.
+When Z60MR100 startup, speaker will output a pop. To fix this issue,
+we mute codec by init verbs in bios when system startup, and set GPIO
+to low to unmute codec in codec driver when it loaded .
 
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+[ white space fixes and compile warning fix by tiwai ]
+
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Link: https://patch.msgid.link/20241129014441.437205-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ sound/pci/hda/patch_conexant.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
-index 843f9f8e3917..239947df613d 100644
---- a/drivers/watchdog/it87_wdt.c
-+++ b/drivers/watchdog/it87_wdt.c
-@@ -20,6 +20,8 @@
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index a14b9cb48f69..7edb029f08a3 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -311,6 +311,7 @@ enum {
+ 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
+ 	CXT_PINCFG_SWS_JS201D,
+ 	CXT_PINCFG_TOP_SPEAKER,
++	CXT_FIXUP_HP_A_U,
+ };
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/bits.h>
-+#include <linux/dmi.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-@@ -40,6 +42,7 @@
- #define VAL		0x2f
- 
- /* Logical device Numbers LDN */
-+#define EC		0x04
- #define GPIO		0x07
- 
- /* Configuration Registers and Functions */
-@@ -71,6 +74,12 @@
- #define IT8784_ID	0x8784
- #define IT8786_ID	0x8786
- 
-+/* Environment Controller Configuration Registers LDN=0x04 */
-+#define SCR1		0xfa
-+
-+/* Environment Controller Bits SCR1 */
-+#define WDT_PWRGD	0x20
-+
- /* GPIO Configuration Registers LDN=0x07 */
- #define WDTCTRL		0x71
- #define WDTCFG		0x72
-@@ -233,6 +242,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
- 	return ret;
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -778,6 +779,18 @@ static void cxt_setup_mute_led(struct hda_codec *codec,
+ 	}
  }
  
-+enum {
-+	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
-+};
-+
-+static const struct dmi_system_id it87_quirks[] = {
-+	{
-+		/* Qotom Q30900P (IT8786) */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
-+		},
-+		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
-+	},
-+	{}
-+};
-+
- static const struct watchdog_info ident = {
- 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
- 	.firmware_version = 1,
-@@ -254,8 +278,10 @@ static struct watchdog_device wdt_dev = {
- 
- static int __init it87_wdt_init(void)
- {
-+	const struct dmi_system_id *dmi_id;
- 	u8  chip_rev;
- 	u8 ctrl;
-+	int quirks = 0;
- 	int rc;
- 
- 	rc = superio_enter();
-@@ -266,6 +292,10 @@ static int __init it87_wdt_init(void)
- 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
- 	superio_exit();
- 
-+	dmi_id = dmi_first_match(it87_quirks);
-+	if (dmi_id)
-+		quirks = (long)dmi_id->driver_data;
-+
- 	switch (chip_type) {
- 	case IT8702_ID:
- 		max_units = 255;
-@@ -326,6 +356,15 @@ static int __init it87_wdt_init(void)
- 		superio_outb(0x00, WDTCTRL);
- 	}
- 
-+	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
-+		superio_select(EC);
-+		ctrl = superio_inb(SCR1);
-+		if (!(ctrl & WDT_PWRGD)) {
-+			ctrl |= WDT_PWRGD;
-+			superio_outb(ctrl, SCR1);
-+		}
++static void cxt_setup_gpio_unmute(struct hda_codec *codec,
++				  unsigned int gpio_mute_mask)
++{
++	if (gpio_mute_mask) {
++		// set gpio data to 0.
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DATA, 0);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_MASK, gpio_mute_mask);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DIRECTION, gpio_mute_mask);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_STICKY_MASK, 0);
 +	}
++}
 +
- 	superio_exit();
+ static void cxt_fixup_mute_led_gpio(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
+ {
+@@ -792,6 +805,15 @@ static void cxt_fixup_hp_zbook_mute_led(struct hda_codec *codec,
+ 		cxt_setup_mute_led(codec, 0x10, 0x20);
+ }
  
- 	if (timeout < 1 || timeout > max_units * 60) {
++static void cxt_fixup_hp_a_u(struct hda_codec *codec,
++			     const struct hda_fixup *fix, int action)
++{
++	// Init vers in BIOS mute the spk/hp by set gpio high to avoid pop noise,
++	// so need to unmute once by clearing the gpio data when runs into the system.
++	if (action == HDA_FIXUP_ACT_INIT)
++		cxt_setup_gpio_unmute(codec, 0x2);
++}
++
+ /* ThinkPad X200 & co with cxt5051 */
+ static const struct hda_pintbl cxt_pincfg_lenovo_x200[] = {
+ 	{ 0x16, 0x042140ff }, /* HP (seq# overridden) */
+@@ -1016,6 +1038,10 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cxt_fixup_sirius_top_speaker,
+ 	},
++	[CXT_FIXUP_HP_A_U] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cxt_fixup_hp_a_u,
++	},
+ };
+ 
+ static const struct snd_pci_quirk cxt5045_fixups[] = {
+@@ -1090,6 +1116,7 @@ static const struct snd_pci_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
++	SND_PCI_QUIRK(0x14f1, 0x0252, "MBX-Z60MR100", CXT_FIXUP_HP_A_U),
+ 	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
+ 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
+ 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
+@@ -1135,6 +1162,7 @@ static const struct hda_model_fixup cxt5066_fixup_models[] = {
+ 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
+ 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
+ 	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
++	{ .id = CXT_FIXUP_HP_A_U, .name = "HP-U-support" },
+ 	{}
+ };
+ 
 -- 
 2.39.5
 
