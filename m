@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736C19FE82E
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9460C9FE7F4
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 429917A080C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCD6A3A23C7
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAE242AA6;
-	Mon, 30 Dec 2024 15:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBF91537C8;
+	Mon, 30 Dec 2024 15:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIUEClOE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2clL4rM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADFE15E8B;
-	Mon, 30 Dec 2024 15:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A60C15E8B;
+	Mon, 30 Dec 2024 15:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573855; cv=none; b=S8hujzihpehvahWiSHaPJjJ/lWWG6QQ1c1aESY3f4QSzNaEMlVFrncvbiGkSgOf1gUr0ZUBxSGvETJYqIlyHqledBfK5JkAIzSzi+6JY3YvuPsEXpgxcONy+FV5C8iDRf4dQKJStCvR+lOtStJxQCckQYiwfIlrWSTkip3yBmeY=
+	t=1735573661; cv=none; b=elWdmmJkojAPXHxfrOc5Z365Lgod40XvxVmNKyKB13D+Ig/ITs/APgGJOuoO9FNR44Rj2RrJRfas+8X/Dn9Wxxcbzir7lpZDssQNWjzjFuG0W/2+YnfYzODS0pC//EBqVAZIzhCwMtx40hyQ0ALYbN0yHSiA+2p9Nxm/sNhiiIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573855; c=relaxed/simple;
-	bh=B1wwM255L0/cqVuLAlM1PmeFrczOkUuTERI7id7xUfc=;
+	s=arc-20240116; t=1735573661; c=relaxed/simple;
+	bh=Gr0tPT5fFAfOMyLLA1R8kEcFzFZ/3EmP3gN8u30kAs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbdTubscqjoBCQck6mUPOyBpdCs4nKrcqJmscsKlrt7P1kSI0y8RwNhJ2nZhJfbVgjtp4VmANxxfbir/wgJWTHVcf3biD8ahZVEAyHP8jzpWrJva0xVBbel5MVBYUfSLbrzfUY2ePJXa6V7WVlmEu/XVdkVJycLbyX535oumA9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIUEClOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BBAC4CED0;
-	Mon, 30 Dec 2024 15:50:54 +0000 (UTC)
+	 MIME-Version; b=Qb9w/Top4Y7yu4WSG9mZZ+1qZLuv+iYhT4SoXlB0wlQzpc/mzdEdoDU12XcrsdgA1puS8R3Py6Miloo17k71YSQ1x1ea4oBU6PcldpmMr/sVFMXIfGOV+6k+mm5+TbHSPr9rQIwocefz9zrbaigC6sPpAdK93hcEe5RU2eHATjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2clL4rM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD73C4CED0;
+	Mon, 30 Dec 2024 15:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573855;
-	bh=B1wwM255L0/cqVuLAlM1PmeFrczOkUuTERI7id7xUfc=;
+	s=korg; t=1735573661;
+	bh=Gr0tPT5fFAfOMyLLA1R8kEcFzFZ/3EmP3gN8u30kAs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gIUEClOENdXzs/xHrTqN8bs5NBD/WvNX3++qIdcmaJu+bn/3FNNw/7uU0/stlnJB8
-	 l/7c5yIHdAAj8FMn2is2XNpukJ7yr0nkdshJeOZY/MQIDWXlZuTbjxAhkCAlTCIrEX
-	 vFMM0EL7oc/zYa5ECbHd31Tp2yE5GhmwkSxir1/I=
+	b=w2clL4rMECB93JDU23M2HyldolPqWCUKQ+x8xy/6qxNqb6Lar/Oaiw3PFBXsCsvJQ
+	 acdK6eXpwwTExYBPH56X9CL/drGXUgmhRgXQeWnksug/W5FSiWcJ25bTK4lDcUkRXW
+	 P4tFrkSSPvnRcxc2ELU38ZA3DgzeRgP72VKRkxsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	WangYuli <wangyuli@uniontech.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 53/86] MIPS: mipsregs: Set proper ISA level for virt extensions
+	Kun Hu <huk23@m.fudan.edu.cn>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 51/60] io_uring/sqpoll: fix sqpoll error handling races
 Date: Mon, 30 Dec 2024 16:43:01 +0100
-Message-ID: <20241230154213.738111507@linuxfoundation.org>
+Message-ID: <20241230154209.211130245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit a640d6762a7d404644201ebf6d2a078e8dc84f97 ]
+commit e33ac68e5e21ec1292490dfe061e75c0dbdd3bd4 upstream.
 
-c994a3ec7ecc ("MIPS: set mips32r5 for virt extensions") setted
-some instructions in virt extensions to ISA level mips32r5.
+BUG: KASAN: slab-use-after-free in __lock_acquire+0x370b/0x4a10 kernel/locking/lockdep.c:5089
+Call Trace:
+<TASK>
+...
+_raw_spin_lock_irqsave+0x3d/0x60 kernel/locking/spinlock.c:162
+class_raw_spinlock_irqsave_constructor include/linux/spinlock.h:551 [inline]
+try_to_wake_up+0xb5/0x23c0 kernel/sched/core.c:4205
+io_sq_thread_park+0xac/0xe0 io_uring/sqpoll.c:55
+io_sq_thread_finish+0x6b/0x310 io_uring/sqpoll.c:96
+io_sq_offload_create+0x162/0x11d0 io_uring/sqpoll.c:497
+io_uring_create io_uring/io_uring.c:3724 [inline]
+io_uring_setup+0x1728/0x3230 io_uring/io_uring.c:3806
+...
 
-However TLB related vz instructions was leftover, also this
-shouldn't be done to a R5 or R6 kernel buid.
+Kun Hu reports that the SQPOLL creating error path has UAF, which
+happens if io_uring_alloc_task_context() fails and then io_sq_thread()
+manages to run and complete before the rest of error handling code,
+which means io_sq_thread_finish() is looking at already killed task.
 
-Reorg macros to set ISA level as needed when _ASM_SET_VIRT
-is called.
+Note that this is mostly theoretical, requiring fault injection on
+the allocation side to trigger in practice.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Kun Hu <huk23@m.fudan.edu.cn>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/0f2f1aa5729332612bd01fe0f2f385fd1f06ce7c.1735231717.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/mipsregs.h | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ io_uring/sqpoll.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 2d53704d9f24..e959a6b1a325 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -2078,7 +2078,14 @@ do {									\
- 		_ASM_INSN_IF_MIPS(0x4200000c)				\
- 		_ASM_INSN32_IF_MM(0x0000517c)
- #else	/* !TOOLCHAIN_SUPPORTS_VIRT */
--#define _ASM_SET_VIRT ".set\tvirt\n\t"
-+#if MIPS_ISA_REV >= 5
-+#define _ASM_SET_VIRT_ISA
-+#elif defined(CONFIG_64BIT)
-+#define _ASM_SET_VIRT_ISA ".set\tmips64r5\n\t"
-+#else
-+#define _ASM_SET_VIRT_ISA ".set\tmips32r5\n\t"
-+#endif
-+#define _ASM_SET_VIRT _ASM_SET_VIRT_ISA ".set\tvirt\n\t"
- #define _ASM_SET_MFGC0	_ASM_SET_VIRT
- #define _ASM_SET_DMFGC0	_ASM_SET_VIRT
- #define _ASM_SET_MTGC0	_ASM_SET_VIRT
-@@ -2099,7 +2106,6 @@ do {									\
- ({ int __res;								\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
--		".set\tmips32r5\n\t"					\
- 		_ASM_SET_MFGC0						\
- 		"mfgc0\t%0, " #source ", %1\n\t"			\
- 		_ASM_UNSET_MFGC0					\
-@@ -2113,7 +2119,6 @@ do {									\
- ({ unsigned long long __res;						\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
--		".set\tmips64r5\n\t"					\
- 		_ASM_SET_DMFGC0						\
- 		"dmfgc0\t%0, " #source ", %1\n\t"			\
- 		_ASM_UNSET_DMFGC0					\
-@@ -2127,7 +2132,6 @@ do {									\
- do {									\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
--		".set\tmips32r5\n\t"					\
- 		_ASM_SET_MTGC0						\
- 		"mtgc0\t%z0, " #register ", %1\n\t"			\
- 		_ASM_UNSET_MTGC0					\
-@@ -2140,7 +2144,6 @@ do {									\
- do {									\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
--		".set\tmips64r5\n\t"					\
- 		_ASM_SET_DMTGC0						\
- 		"dmtgc0\t%z0, " #register ", %1\n\t"			\
- 		_ASM_UNSET_DMTGC0					\
--- 
-2.39.5
-
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -345,6 +345,7 @@ int io_sqpoll_wait_sq(struct io_ring_ctx
+ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 				struct io_uring_params *p)
+ {
++	struct task_struct *task_to_put = NULL;
+ 	int ret;
+ 
+ 	/* Retain compatibility with failing for an invalid attach attempt */
+@@ -425,6 +426,7 @@ __cold int io_sq_offload_create(struct i
+ 		}
+ 
+ 		sqd->thread = tsk;
++		task_to_put = get_task_struct(tsk);
+ 		ret = io_uring_alloc_task_context(tsk, ctx);
+ 		wake_up_new_task(tsk);
+ 		if (ret)
+@@ -435,11 +437,15 @@ __cold int io_sq_offload_create(struct i
+ 		goto err;
+ 	}
+ 
++	if (task_to_put)
++		put_task_struct(task_to_put);
+ 	return 0;
+ err_sqpoll:
+ 	complete(&ctx->sq_data->exited);
+ err:
+ 	io_sq_thread_finish(ctx);
++	if (task_to_put)
++		put_task_struct(task_to_put);
+ 	return ret;
+ }
+ 
 
 
 
