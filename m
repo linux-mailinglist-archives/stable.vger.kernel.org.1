@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-106464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 511679FE86C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 753E29FE808
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93B193A2620
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE33D3A23D0
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4AA1537C8;
-	Mon, 30 Dec 2024 15:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C230442AA6;
+	Mon, 30 Dec 2024 15:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuwFGMJs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOXOZBDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6252E414;
-	Mon, 30 Dec 2024 15:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804FB15E8B;
+	Mon, 30 Dec 2024 15:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574066; cv=none; b=gkZWaptaEvbvTAAeaHHOaHTiXi2LC3n4DWZuObLsCT7CkYDiCTI30JcezqXHMc7RIDhD4QiZptqHzQIopXVtwoS9P4BMVuXeRdgugntFms8zx8zXHj1B6iROJB6YCHbDA2c+BclDbldng9NdqL/PsNDVUoRE0ssnCrlAP6kSWN4=
+	t=1735573726; cv=none; b=e0jaL4YfyfqxuNkOGDQHpIlt2x5TGJCUr2P/+0FftlRDvCN/KL5lTmBYNHmvSxMEuIdQRI1uDVNbH+oxqDdi+69PCVPs6JVMWyURSKV8zYe7meKOpv3yzHJiVMhO5mswK3SkRXD+LiWXenurOKkhZ0oy7jjt2gzxl8NXtjbkjB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574066; c=relaxed/simple;
-	bh=uFxpRy97zPWd5ISWAQPfj+zfRVUJtX3jvLXGQmVZaqs=;
+	s=arc-20240116; t=1735573726; c=relaxed/simple;
+	bh=HFnuvXkyoRBhzu9nhMqZV/Q+O8pahnb6/R9BpFOJm4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhUIFYjSGCDcU09WsLkdDAu/eSOjNQpiKzerlF9fmAjSLi+3LKecUEbZ6OVXrtoKdcWRhnq3egFvcsrjdZ/oUjGT6lQ6OuhWPcZM544kFte3nmI7G0JF4+Gm7I1x/fgh9sjrlXW4HhzISTnpJbF1fCULjs8rN1Bnkj0nnkqZvaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuwFGMJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABC1C4CEDD;
-	Mon, 30 Dec 2024 15:54:25 +0000 (UTC)
+	 MIME-Version; b=Lhq/5aPa2K2ba3h3RMEcre7oYmqRYmNKWQc1vI94ejt5I8/s5Jm9oxoedduNvpnP9sx7Y2Ba8netB3L3kb+qdhJScS4JOed4D8hhGWSAby1OaucUTv0i3GeIKrC5Zb/nNqrwT6ypZkIBQHgcF/1RHCz9YQfWksNCxMRDHx+4gTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOXOZBDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D35C4CED0;
+	Mon, 30 Dec 2024 15:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574066;
-	bh=uFxpRy97zPWd5ISWAQPfj+zfRVUJtX3jvLXGQmVZaqs=;
+	s=korg; t=1735573726;
+	bh=HFnuvXkyoRBhzu9nhMqZV/Q+O8pahnb6/R9BpFOJm4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuwFGMJsAz4OssbkZd0Y7fXN+EEZyb7FqMsGT2PCezrAX8NFt1MYC4s2jH1EhSixn
-	 3kDduzecXICCXVV/w9Jmhh48s0Wy85nE/5NQ6856k1Y7xkH4gzJVXtqMLFsP3Dc/ap
-	 REopG/c0LRsPbY48TfXUOZOUKEYZlJJgRuZDFsMU=
+	b=JOXOZBDhfc7rLnRyl0h/l4oyHPpk2iVGAmXHubfzY3IpjmClnF9PceaOAdpyMqzze
+	 XKQ8uRYCtS86d4AUWjMvKeLfsGs+4YLmysNasBdp9IcjjdjXOuDfs3LgRXBu3kLuko
+	 2V//W6nZOFzZeMdc2bpMuD8JNXHD57faYsejaDHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Toth <fntoth@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 029/114] dmaengine: dw: Select only supported masters for ACPI devices
+Subject: [PATCH 6.6 18/86] phy: core: Fix that API devm_of_phy_provider_unregister() fails to unregister the phy provider
 Date: Mon, 30 Dec 2024 16:42:26 +0100
-Message-ID: <20241230154219.185298345@linuxfoundation.org>
+Message-ID: <20241230154212.415945066@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit f0e870a0e9c5521f2952ea9f3ea9d3d122631a89 upstream.
+commit c0b82ab95b4f1fbc3e3aeab9d829d012669524b6 upstream.
 
-The recently submitted fix-commit revealed a problem in the iDMA 32-bit
-platform code. Even though the controller supported only a single master
-the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
-0 and 1. As a result the sanity check implemented in the commit
-b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-got incorrect interface data width and thus prevented the client drivers
-from configuring the DMA-channel with the EINVAL error returned. E.g.,
-the next error was printed for the PXA2xx SPI controller driver trying
-to configure the requested channels:
+For devm_of_phy_provider_unregister(), its comment says it needs to invoke
+of_phy_provider_unregister() to unregister the phy provider, but it will
+not actually invoke the function since devres_destroy() does not call
+devm_phy_provider_release(), and the missing of_phy_provider_unregister()
+call will cause:
 
-> [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
-> [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
-> [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
+- The phy provider fails to be unregistered.
+- Leak both memory and the OF node refcount.
 
-The problem would have been spotted much earlier if the iDMA 32-bit
-controller supported more than one master interfaces. But since it
-supports just a single master and the iDMA 32-bit specific code just
-ignores the master IDs in the CTLLO preparation method, the issue has
-been gone unnoticed so far.
+Fortunately, the faulty API has not been used by current kernel tree.
+Fix by using devres_release() instead of devres_destroy() within the API.
 
-Fix the problem by specifying the default master ID for both memory
-and peripheral devices in the driver data. Thus the issue noticed for
-the iDMA 32-bit controllers will be eliminated and the ACPI-probed
-DW DMA controllers will be configured with the correct master ID by
-default.
-
-Cc: stable@vger.kernel.org
-Fixes: b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-Fixes: 199244d69458 ("dmaengine: dw: add support of iDMA 32-bit hardware")
-Reported-by: Ferry Toth <fntoth@gmail.com>
-Closes: https://lore.kernel.org/dmaengine/ZuXbCKUs1iOqFu51@black.fi.intel.com/
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/dmaengine/ZuXgI-VcHpMgbZ91@black.fi.intel.com/
-Tested-by: Ferry Toth <fntoth@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241104095142.157925-1-andriy.shevchenko@linux.intel.com
+Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/stable/20241213-phy_core_fix-v6-2-40ae28f5015a%40quicinc.com
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-2-40ae28f5015a@quicinc.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw/acpi.c     |    6 ++++--
- drivers/dma/dw/internal.h |    8 ++++++++
- drivers/dma/dw/pci.c      |    4 ++--
- 3 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/phy/phy-core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/dma/dw/acpi.c
-+++ b/drivers/dma/dw/acpi.c
-@@ -8,13 +8,15 @@
- 
- static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -1212,12 +1212,12 @@ EXPORT_SYMBOL_GPL(of_phy_provider_unregi
+  * of_phy_provider_unregister to unregister the phy provider.
+  */
+ void devm_of_phy_provider_unregister(struct device *dev,
+-	struct phy_provider *phy_provider)
++				     struct phy_provider *phy_provider)
  {
-+	struct dw_dma *dw = to_dw_dma(chan->device);
-+	struct dw_dma_chip_pdata *data = dev_get_drvdata(dw->dma.dev);
- 	struct acpi_dma_spec *dma_spec = param;
- 	struct dw_dma_slave slave = {
- 		.dma_dev = dma_spec->dev,
- 		.src_id = dma_spec->slave_id,
- 		.dst_id = dma_spec->slave_id,
--		.m_master = 0,
--		.p_master = 1,
-+		.m_master = data->m_master,
-+		.p_master = data->p_master,
- 	};
+ 	int r;
  
- 	return dw_dma_filter(chan, &slave);
---- a/drivers/dma/dw/internal.h
-+++ b/drivers/dma/dw/internal.h
-@@ -51,11 +51,15 @@ struct dw_dma_chip_pdata {
- 	int (*probe)(struct dw_dma_chip *chip);
- 	int (*remove)(struct dw_dma_chip *chip);
- 	struct dw_dma_chip *chip;
-+	u8 m_master;
-+	u8 p_master;
- };
- 
- static __maybe_unused const struct dw_dma_chip_pdata dw_dma_chip_pdata = {
- 	.probe = dw_dma_probe,
- 	.remove = dw_dma_remove,
-+	.m_master = 0,
-+	.p_master = 1,
- };
- 
- static const struct dw_dma_platform_data idma32_pdata = {
-@@ -72,6 +76,8 @@ static __maybe_unused const struct dw_dm
- 	.pdata = &idma32_pdata,
- 	.probe = idma32_dma_probe,
- 	.remove = idma32_dma_remove,
-+	.m_master = 0,
-+	.p_master = 0,
- };
- 
- static const struct dw_dma_platform_data xbar_pdata = {
-@@ -88,6 +94,8 @@ static __maybe_unused const struct dw_dm
- 	.pdata = &xbar_pdata,
- 	.probe = idma32_dma_probe,
- 	.remove = idma32_dma_remove,
-+	.m_master = 0,
-+	.p_master = 0,
- };
- 
- #endif /* _DMA_DW_INTERNAL_H */
---- a/drivers/dma/dw/pci.c
-+++ b/drivers/dma/dw/pci.c
-@@ -56,10 +56,10 @@ static int dw_pci_probe(struct pci_dev *
- 	if (ret)
- 		return ret;
- 
--	dw_dma_acpi_controller_register(chip->dw);
--
- 	pci_set_drvdata(pdev, data);
- 
-+	dw_dma_acpi_controller_register(chip->dw);
-+
- 	return 0;
+-	r = devres_destroy(dev, devm_phy_provider_release, devm_phy_match,
+-		phy_provider);
++	r = devres_release(dev, devm_phy_provider_release, devm_phy_match,
++			   phy_provider);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PHY provider device resource\n");
  }
- 
+ EXPORT_SYMBOL_GPL(devm_of_phy_provider_unregister);
 
 
 
