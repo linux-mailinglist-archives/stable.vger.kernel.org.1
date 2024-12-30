@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD4C9FE87D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BC69FE837
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 369C77A16C2
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CE081882F35
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D95D1537C8;
-	Mon, 30 Dec 2024 15:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD981531C4;
+	Mon, 30 Dec 2024 15:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4uUV00y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBh/Ogna"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C6B15E8B;
-	Mon, 30 Dec 2024 15:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F6615E8B;
+	Mon, 30 Dec 2024 15:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574120; cv=none; b=gWZDGFvEGeBJaDqjTBhBmL9N4J3tJQaDPMIntKfBYl90m7xTYVPYUb0QiotqHEjiaBbIKEYUdgOMMWctbILQm7t3xBI6PzzHH2/SollkqnC//MxsYZBuMTi0jNpPXmSQH3fd3jz3UI8lKLwjqTpJENrraD9vh98DdAdzDKonvxA=
+	t=1735573885; cv=none; b=nIShOFc2NGhs3iqYYzNKsUQevjpnfS4Q/z0u1pxGUfeprRYzGNXCf1mxcHzuAK9tT2yGX7FcRM7ykVL2JYrgzAEYvpgwpShgkSvZqhIrfBGfWuJ3jpfSeuQR/M+h8UJsxzPPCJ5hLPY1Zy+1BA5shSZ4T/L+TY4OWywiC0wf99M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574120; c=relaxed/simple;
-	bh=jYyZRpvFfyjCw2MGLVBc6/XD7HOZnUn3KyBJLHoDQgE=;
+	s=arc-20240116; t=1735573885; c=relaxed/simple;
+	bh=4PKjJUlXN8NlAVXEQUmZnKbyoKsIiDGOlztePE2Rc7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ae4Z0TTRIG6UQIoW0N7+S/6vSjwplTZPx2GRjjL2KmYhgMW0BQb9BKJpGfgn5NyW0Aqb9LdxWntcpEOUrpUSbaG1Uh5ngHpptWBjpQjVNn04YCj1Nb24lozFZZ3EsEqT5M9D8B30MkrSU1Gwpf6QAmiayVbCpEJeM+ZKc+1IgbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4uUV00y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB58DC4CED0;
-	Mon, 30 Dec 2024 15:55:19 +0000 (UTC)
+	 MIME-Version; b=bpd4oPYk3Wl3ZPMmjtIndkEJGXTXlEEPjiXd2PIL7UF5lRxAZ0PLc6Y8MfBJuKyOmpraoHglg+0e4Yve3tdfHMvCQ3dg9e9x06baWt0dSGGaHmx7pRmNGkO+ZP3AdSylaBsAT4GFKB4yZHOOqcY4Me8dPUzODggo+X2kmeM2HsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBh/Ogna; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E22C4CED0;
+	Mon, 30 Dec 2024 15:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574120;
-	bh=jYyZRpvFfyjCw2MGLVBc6/XD7HOZnUn3KyBJLHoDQgE=;
+	s=korg; t=1735573885;
+	bh=4PKjJUlXN8NlAVXEQUmZnKbyoKsIiDGOlztePE2Rc7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4uUV00ySLbHosEbfL2lpwttng6Uo1syopGlqeTw48UK1XFLl+E4W3rZldJDScodJ
-	 /Hu1uNixDIUY9t/Vf0qoAI6LKLu0uNqL9U83XjAMnTuLVUP47iv1F73aXpLAaqOZ0w
-	 rSWJ8FquWVvHyRzqaLNPgN55MMMHjlHebHAsIOBc=
+	b=cBh/Ognap4sfz1L6d/fnAaWUz9oYNmVJCBQYYX0i+YDRttZY+HiNjZmM6EOeHHU7c
+	 eft4vaevUNHO3rLDc4bKo+rSbmOUqqZZz3NDrWOS95qGSWckBQMv6Mf5h52g7Qp5rp
+	 F1vdrBttVfMgHVsJaZ1oLoVSvaDl5BZ6E0ksOcrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haren Myneni <haren@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	James Hilliard <james.hilliard1@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/114] powerpc/pseries/vas: Add close() callback in vas_vm_ops struct
-Date: Mon, 30 Dec 2024 16:42:39 +0100
-Message-ID: <20241230154219.678679982@linuxfoundation.org>
+Subject: [PATCH 6.6 32/86] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
+Date: Mon, 30 Dec 2024 16:42:40 +0100
+Message-ID: <20241230154212.944054826@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,157 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: James Hilliard <james.hilliard1@gmail.com>
 
-[ Upstream commit 05aa156e156ef3168e7ab8a68721945196495c17 ]
+[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
 
-The mapping VMA address is saved in VAS window struct when the
-paste address is mapped. This VMA address is used during migration
-to unmap the paste address if the window is active. The paste
-address mapping will be removed when the window is closed or with
-the munmap(). But the VMA address in the VAS window is not updated
-with munmap() which is causing invalid access during migration.
+For the watchdog timer to work properly on the QCML04 board we need to
+set PWRGD enable in the Environment Controller Configuration Registers
+Special Configuration Register 1 when it is not already set, this may
+be the case when the watchdog is not enabled from within the BIOS.
 
-The KASAN report shows:
-[16386.254991] BUG: KASAN: slab-use-after-free in reconfig_close_windows+0x1a0/0x4e8
-[16386.255043] Read of size 8 at addr c00000014a819670 by task drmgr/696928
-
-[16386.255096] CPU: 29 UID: 0 PID: 696928 Comm: drmgr Kdump: loaded Tainted: G    B              6.11.0-rc5-nxgzip #2
-[16386.255128] Tainted: [B]=BAD_PAGE
-[16386.255148] Hardware name: IBM,9080-HEX Power11 (architected) 0x820200 0xf000007 of:IBM,FW1110.00 (NH1110_016) hv:phyp pSeries
-[16386.255181] Call Trace:
-[16386.255202] [c00000016b297660] [c0000000018ad0ac] dump_stack_lvl+0x84/0xe8 (unreliable)
-[16386.255246] [c00000016b297690] [c0000000006e8a90] print_report+0x19c/0x764
-[16386.255285] [c00000016b297760] [c0000000006e9490] kasan_report+0x128/0x1f8
-[16386.255309] [c00000016b297880] [c0000000006eb5c8] __asan_load8+0xac/0xe0
-[16386.255326] [c00000016b2978a0] [c00000000013f898] reconfig_close_windows+0x1a0/0x4e8
-[16386.255343] [c00000016b297990] [c000000000140e58] vas_migration_handler+0x3a4/0x3fc
-[16386.255368] [c00000016b297a90] [c000000000128848] pseries_migrate_partition+0x4c/0x4c4
-...
-
-[16386.256136] Allocated by task 696554 on cpu 31 at 16377.277618s:
-[16386.256149]  kasan_save_stack+0x34/0x68
-[16386.256163]  kasan_save_track+0x34/0x80
-[16386.256175]  kasan_save_alloc_info+0x58/0x74
-[16386.256196]  __kasan_slab_alloc+0xb8/0xdc
-[16386.256209]  kmem_cache_alloc_noprof+0x200/0x3d0
-[16386.256225]  vm_area_alloc+0x44/0x150
-[16386.256245]  mmap_region+0x214/0x10c4
-[16386.256265]  do_mmap+0x5fc/0x750
-[16386.256277]  vm_mmap_pgoff+0x14c/0x24c
-[16386.256292]  ksys_mmap_pgoff+0x20c/0x348
-[16386.256303]  sys_mmap+0xd0/0x160
-...
-
-[16386.256350] Freed by task 0 on cpu 31 at 16386.204848s:
-[16386.256363]  kasan_save_stack+0x34/0x68
-[16386.256374]  kasan_save_track+0x34/0x80
-[16386.256384]  kasan_save_free_info+0x64/0x10c
-[16386.256396]  __kasan_slab_free+0x120/0x204
-[16386.256415]  kmem_cache_free+0x128/0x450
-[16386.256428]  vm_area_free_rcu_cb+0xa8/0xd8
-[16386.256441]  rcu_do_batch+0x2c8/0xcf0
-[16386.256458]  rcu_core+0x378/0x3c4
-[16386.256473]  handle_softirqs+0x20c/0x60c
-[16386.256495]  do_softirq_own_stack+0x6c/0x88
-[16386.256509]  do_softirq_own_stack+0x58/0x88
-[16386.256521]  __irq_exit_rcu+0x1a4/0x20c
-[16386.256533]  irq_exit+0x20/0x38
-[16386.256544]  interrupt_async_exit_prepare.constprop.0+0x18/0x2c
-...
-
-[16386.256717] Last potentially related work creation:
-[16386.256729]  kasan_save_stack+0x34/0x68
-[16386.256741]  __kasan_record_aux_stack+0xcc/0x12c
-[16386.256753]  __call_rcu_common.constprop.0+0x94/0xd04
-[16386.256766]  vm_area_free+0x28/0x3c
-[16386.256778]  remove_vma+0xf4/0x114
-[16386.256797]  do_vmi_align_munmap.constprop.0+0x684/0x870
-[16386.256811]  __vm_munmap+0xe0/0x1f8
-[16386.256821]  sys_munmap+0x54/0x6c
-[16386.256830]  system_call_exception+0x1a0/0x4a0
-[16386.256841]  system_call_vectored_common+0x15c/0x2ec
-
-[16386.256868] The buggy address belongs to the object at c00000014a819670
-                which belongs to the cache vm_area_struct of size 168
-[16386.256887] The buggy address is located 0 bytes inside of
-                freed 168-byte region [c00000014a819670, c00000014a819718)
-
-[16386.256915] The buggy address belongs to the physical page:
-[16386.256928] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14a81
-[16386.256950] memcg:c0000000ba430001
-[16386.256961] anon flags: 0x43ffff800000000(node=4|zone=0|lastcpupid=0x7ffff)
-[16386.256975] page_type: 0xfdffffff(slab)
-[16386.256990] raw: 043ffff800000000 c00000000501c080 0000000000000000 5deadbee00000001
-[16386.257003] raw: 0000000000000000 00000000011a011a 00000001fdffffff c0000000ba430001
-[16386.257018] page dumped because: kasan: bad access detected
-
-This patch adds close() callback in vas_vm_ops vm_operations_struct
-which will be executed during munmap() before freeing VMA. The VMA
-address in the VAS window is set to NULL after holding the window
-mmap_mutex.
-
-Fixes: 37e6764895ef ("powerpc/pseries/vas: Add VAS migration handler")
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20241214051758.997759-1-haren@linux.ibm.com
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/book3s/vas-api.c | 36 +++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-index f381b177ea06..0b6365d85d11 100644
---- a/arch/powerpc/platforms/book3s/vas-api.c
-+++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -464,7 +464,43 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
- 	return VM_FAULT_SIGBUS;
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index 843f9f8e3917..239947df613d 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -20,6 +20,8 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/bits.h>
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -40,6 +42,7 @@
+ #define VAL		0x2f
+ 
+ /* Logical device Numbers LDN */
++#define EC		0x04
+ #define GPIO		0x07
+ 
+ /* Configuration Registers and Functions */
+@@ -71,6 +74,12 @@
+ #define IT8784_ID	0x8784
+ #define IT8786_ID	0x8786
+ 
++/* Environment Controller Configuration Registers LDN=0x04 */
++#define SCR1		0xfa
++
++/* Environment Controller Bits SCR1 */
++#define WDT_PWRGD	0x20
++
+ /* GPIO Configuration Registers LDN=0x07 */
+ #define WDTCTRL		0x71
+ #define WDTCFG		0x72
+@@ -233,6 +242,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
+ 	return ret;
  }
  
-+/*
-+ * During mmap() paste address, mapping VMA is saved in VAS window
-+ * struct which is used to unmap during migration if the window is
-+ * still open. But the user space can remove this mapping with
-+ * munmap() before closing the window and the VMA address will
-+ * be invalid. Set VAS window VMA to NULL in this function which
-+ * is called before VMA free.
-+ */
-+static void vas_mmap_close(struct vm_area_struct *vma)
-+{
-+	struct file *fp = vma->vm_file;
-+	struct coproc_instance *cp_inst = fp->private_data;
-+	struct vas_window *txwin;
++enum {
++	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
++};
 +
-+	/* Should not happen */
-+	if (!cp_inst || !cp_inst->txwin) {
-+		pr_err("No attached VAS window for the paste address mmap\n");
-+		return;
-+	}
++static const struct dmi_system_id it87_quirks[] = {
++	{
++		/* Qotom Q30900P (IT8786) */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
++		},
++		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
++	},
++	{}
++};
 +
-+	txwin = cp_inst->txwin;
-+	/*
-+	 * task_ref.vma is set in coproc_mmap() during mmap paste
-+	 * address. So it has to be the same VMA that is getting freed.
-+	 */
-+	if (WARN_ON(txwin->task_ref.vma != vma)) {
-+		pr_err("Invalid paste address mmaping\n");
-+		return;
-+	}
-+
-+	mutex_lock(&txwin->task_ref.mmap_mutex);
-+	txwin->task_ref.vma = NULL;
-+	mutex_unlock(&txwin->task_ref.mmap_mutex);
-+}
-+
- static const struct vm_operations_struct vas_vm_ops = {
-+	.close = vas_mmap_close,
- 	.fault = vas_mmap_fault,
- };
+ static const struct watchdog_info ident = {
+ 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
+ 	.firmware_version = 1,
+@@ -254,8 +278,10 @@ static struct watchdog_device wdt_dev = {
  
+ static int __init it87_wdt_init(void)
+ {
++	const struct dmi_system_id *dmi_id;
+ 	u8  chip_rev;
+ 	u8 ctrl;
++	int quirks = 0;
+ 	int rc;
+ 
+ 	rc = superio_enter();
+@@ -266,6 +292,10 @@ static int __init it87_wdt_init(void)
+ 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
+ 	superio_exit();
+ 
++	dmi_id = dmi_first_match(it87_quirks);
++	if (dmi_id)
++		quirks = (long)dmi_id->driver_data;
++
+ 	switch (chip_type) {
+ 	case IT8702_ID:
+ 		max_units = 255;
+@@ -326,6 +356,15 @@ static int __init it87_wdt_init(void)
+ 		superio_outb(0x00, WDTCTRL);
+ 	}
+ 
++	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
++		superio_select(EC);
++		ctrl = superio_inb(SCR1);
++		if (!(ctrl & WDT_PWRGD)) {
++			ctrl |= WDT_PWRGD;
++			superio_outb(ctrl, SCR1);
++		}
++	}
++
+ 	superio_exit();
+ 
+ 	if (timeout < 1 || timeout > max_units * 60) {
 -- 
 2.39.5
 
