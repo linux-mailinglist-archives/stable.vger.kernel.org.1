@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-106512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B8E9FE8A3
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADDD9FE853
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD6323A26DD
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55C1B3A253D
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67821A9B54;
-	Mon, 30 Dec 2024 15:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7483D1531C4;
+	Mon, 30 Dec 2024 15:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ3s3f99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpTVnQfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD2A156678;
-	Mon, 30 Dec 2024 15:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277FF2AE68;
+	Mon, 30 Dec 2024 15:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574236; cv=none; b=d1XJXc+hpneD6FZ8lQTDSmbwO5G6lCqsY8YfYfRN98sFAuZLMutP4Pt1K+IaVo9D115PKiPjIL7o57Om7QZ41HfyFiZ062nJfipaApM4HxA+V4sYI003VVgCFiTWSYKd2fTbl5+KuyIzG6vpxcJloKjw3VtLrGBOXRZURTDp4gc=
+	t=1735573980; cv=none; b=NdeA9tgLAtYIdXMntRdIDWS7iZwzNCgds272Gi3S9LIW98GFPnwe4Cjn7PsPiT7NTaOP2M1xmX0hEgalGBN3n9UEf7BlKEM+7cFb4AK0yLxebiofAGAR0qe9MKNLIdo1OlRCOMcCdtInG9tYfSQ0iogeB5KZRyVXPcOzpwnvRBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574236; c=relaxed/simple;
-	bh=fxOwYAu1P4oziF0EZfttf2FA5Soqd4O+TMyEthBemo4=;
+	s=arc-20240116; t=1735573980; c=relaxed/simple;
+	bh=iUaxw51qva3X3pf1QqT2m/x2Ma+f01wG1c6sIpD6X9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZKBbuL7Nf/mnHUsdmVroqooofhkFB1UNZ094nbcrKzdrOMt2fJXBppC1V+b8JXjh1qPrM2oy8Xu1fRBijruG9rcovXc0740A5hkTo8bNF9Y/RcE+0xL7tRJUJ5d3Jyj6HdJKsqD9VJrBDFsCJFJmG/wDgAJpu0VfSlQsdumSVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ3s3f99; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B94C4CED2;
-	Mon, 30 Dec 2024 15:57:15 +0000 (UTC)
+	 MIME-Version; b=OXLTLSiqCmOfFDatVY8eBeHHyD2ersfDqOh4KF5AmzPrwLTBcxEs6ZYP8fOuBSWZsgBKh1TE+kj6+nC/zvCkigByqy1u5Eaq2ikcRmdOw0pVyC1NnaNRLKMbRnkPjlMz9AXsgiV8FFxiq0YUr0Roxny1H/xX+fXpqk+pzUSlLQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpTVnQfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A81C4CED0;
+	Mon, 30 Dec 2024 15:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574236;
-	bh=fxOwYAu1P4oziF0EZfttf2FA5Soqd4O+TMyEthBemo4=;
+	s=korg; t=1735573980;
+	bh=iUaxw51qva3X3pf1QqT2m/x2Ma+f01wG1c6sIpD6X9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZ3s3f99ZjZPI0KKonHVdCrKTqroVMK0Kp/MKac180/TT7zIodIfQUUSpwjMTMlun
-	 j8lueAd2D8AdujRp5vbqoWsROFL+nrAEvK//qCn2KaXFp0gwozOsGFBYO9NSGNOIx7
-	 qSr/WHNAScxXuQFa7X31oEp02IuQSUiaPBIdJfUg=
+	b=LpTVnQfd3J9h+Pqx3RlM2ssFcDn54Z9nRtjGDuHlts/ebW5p+QdCNeTTrvTkUq3R7
+	 Vz6LHlTmWl7UUm3DTKY3yjoWT1eS46JWRHBPma7p0v7BZOV06a4mVNfLVItyARR5U/
+	 NXIWy7L18FT8p5ebkNMwe99yMeT0Al87LPbUcoRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Peter Newman <peternewman@google.com>,
-	Babu Moger <babu.moger@amd.com>,
-	Luck Tony <tony.luck@intel.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Tony Luck <tony.luck@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/114] blk-mq: register cpuhp callback after hctx is added to xarray table
-Date: Mon, 30 Dec 2024 16:43:13 +0100
-Message-ID: <20241230154221.020631255@linuxfoundation.org>
+Subject: [PATCH 6.6 66/86] x86/cpu/intel: Switch to new Intel CPU model defines
+Date: Mon, 30 Dec 2024 16:43:14 +0100
+Message-ID: <20241230154214.224088784@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +62,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit 4bf485a7db5d82ddd0f3ad2b299893199090375e ]
+[ Upstream commit 6568fc18c2f62b4f35092e9680fe39f3500f4767 ]
 
-We need to retrieve 'hctx' from xarray table in the cpuhp callback, so the
-callback should be registered after this 'hctx' is added to xarray table.
+New CPU #defines encode vendor and family as well as model.
 
-Cc: Reinette Chatre <reinette.chatre@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Peter Newman <peternewman@google.com>
-Cc: Babu Moger <babu.moger@amd.com>
-Cc: Luck Tony <tony.luck@intel.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20241206111611.978870-2-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20240520224620.9480-29-tony.luck%40intel.com
+Stable-dep-of: c9a4b55431e5 ("x86/cpu: Add Lunar Lake to list of CPUs with a broken MONITOR implementation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/intel.c | 108 ++++++++++++++++++------------------
+ 1 file changed, 53 insertions(+), 55 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index d5995021815d..4e76651e786d 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3903,16 +3903,11 @@ static int blk_mq_init_hctx(struct request_queue *q,
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index aa3e7ed0eb3d..78f34ff32c9b 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -72,19 +72,19 @@ static bool cpu_model_supports_sld __ro_after_init;
+  */
+ static void check_memory_type_self_snoop_errata(struct cpuinfo_x86 *c)
  {
- 	hctx->queue_num = hctx_idx;
- 
--	if (!(hctx->flags & BLK_MQ_F_STACKING))
--		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
--				&hctx->cpuhp_online);
--	cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD, &hctx->cpuhp_dead);
--
- 	hctx->tags = set->tags[hctx_idx];
- 
- 	if (set->ops->init_hctx &&
- 	    set->ops->init_hctx(hctx, set->driver_data, hctx_idx))
--		goto unregister_cpu_notifier;
-+		goto fail;
- 
- 	if (blk_mq_init_request(set, hctx->fq->flush_rq, hctx_idx,
- 				hctx->numa_node))
-@@ -3921,6 +3916,11 @@ static int blk_mq_init_hctx(struct request_queue *q,
- 	if (xa_insert(&q->hctx_table, hctx_idx, hctx, GFP_KERNEL))
- 		goto exit_flush_rq;
- 
-+	if (!(hctx->flags & BLK_MQ_F_STACKING))
-+		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
-+				&hctx->cpuhp_online);
-+	cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD, &hctx->cpuhp_dead);
-+
- 	return 0;
- 
-  exit_flush_rq:
-@@ -3929,8 +3929,7 @@ static int blk_mq_init_hctx(struct request_queue *q,
-  exit_hctx:
- 	if (set->ops->exit_hctx)
- 		set->ops->exit_hctx(hctx, hctx_idx);
-- unregister_cpu_notifier:
--	blk_mq_remove_cpuhp(hctx);
-+ fail:
- 	return -1;
+-	switch (c->x86_model) {
+-	case INTEL_FAM6_CORE_YONAH:
+-	case INTEL_FAM6_CORE2_MEROM:
+-	case INTEL_FAM6_CORE2_MEROM_L:
+-	case INTEL_FAM6_CORE2_PENRYN:
+-	case INTEL_FAM6_CORE2_DUNNINGTON:
+-	case INTEL_FAM6_NEHALEM:
+-	case INTEL_FAM6_NEHALEM_G:
+-	case INTEL_FAM6_NEHALEM_EP:
+-	case INTEL_FAM6_NEHALEM_EX:
+-	case INTEL_FAM6_WESTMERE:
+-	case INTEL_FAM6_WESTMERE_EP:
+-	case INTEL_FAM6_SANDYBRIDGE:
++	switch (c->x86_vfm) {
++	case INTEL_CORE_YONAH:
++	case INTEL_CORE2_MEROM:
++	case INTEL_CORE2_MEROM_L:
++	case INTEL_CORE2_PENRYN:
++	case INTEL_CORE2_DUNNINGTON:
++	case INTEL_NEHALEM:
++	case INTEL_NEHALEM_G:
++	case INTEL_NEHALEM_EP:
++	case INTEL_NEHALEM_EX:
++	case INTEL_WESTMERE:
++	case INTEL_WESTMERE_EP:
++	case INTEL_SANDYBRIDGE:
+ 		setup_clear_cpu_cap(X86_FEATURE_SELFSNOOP);
+ 	}
  }
+@@ -106,9 +106,9 @@ static void probe_xeon_phi_r3mwait(struct cpuinfo_x86 *c)
+ 	 */
+ 	if (c->x86 != 6)
+ 		return;
+-	switch (c->x86_model) {
+-	case INTEL_FAM6_XEON_PHI_KNL:
+-	case INTEL_FAM6_XEON_PHI_KNM:
++	switch (c->x86_vfm) {
++	case INTEL_XEON_PHI_KNL:
++	case INTEL_XEON_PHI_KNM:
+ 		break;
+ 	default:
+ 		return;
+@@ -134,32 +134,32 @@ static void probe_xeon_phi_r3mwait(struct cpuinfo_x86 *c)
+  * - Release note from 20180108 microcode release
+  */
+ struct sku_microcode {
+-	u8 model;
++	u32 vfm;
+ 	u8 stepping;
+ 	u32 microcode;
+ };
+ static const struct sku_microcode spectre_bad_microcodes[] = {
+-	{ INTEL_FAM6_KABYLAKE,		0x0B,	0x80 },
+-	{ INTEL_FAM6_KABYLAKE,		0x0A,	0x80 },
+-	{ INTEL_FAM6_KABYLAKE,		0x09,	0x80 },
+-	{ INTEL_FAM6_KABYLAKE_L,	0x0A,	0x80 },
+-	{ INTEL_FAM6_KABYLAKE_L,	0x09,	0x80 },
+-	{ INTEL_FAM6_SKYLAKE_X,		0x03,	0x0100013e },
+-	{ INTEL_FAM6_SKYLAKE_X,		0x04,	0x0200003c },
+-	{ INTEL_FAM6_BROADWELL,		0x04,	0x28 },
+-	{ INTEL_FAM6_BROADWELL_G,	0x01,	0x1b },
+-	{ INTEL_FAM6_BROADWELL_D,	0x02,	0x14 },
+-	{ INTEL_FAM6_BROADWELL_D,	0x03,	0x07000011 },
+-	{ INTEL_FAM6_BROADWELL_X,	0x01,	0x0b000025 },
+-	{ INTEL_FAM6_HASWELL_L,		0x01,	0x21 },
+-	{ INTEL_FAM6_HASWELL_G,		0x01,	0x18 },
+-	{ INTEL_FAM6_HASWELL,		0x03,	0x23 },
+-	{ INTEL_FAM6_HASWELL_X,		0x02,	0x3b },
+-	{ INTEL_FAM6_HASWELL_X,		0x04,	0x10 },
+-	{ INTEL_FAM6_IVYBRIDGE_X,	0x04,	0x42a },
++	{ INTEL_KABYLAKE,	0x0B,	0x80 },
++	{ INTEL_KABYLAKE,	0x0A,	0x80 },
++	{ INTEL_KABYLAKE,	0x09,	0x80 },
++	{ INTEL_KABYLAKE_L,	0x0A,	0x80 },
++	{ INTEL_KABYLAKE_L,	0x09,	0x80 },
++	{ INTEL_SKYLAKE_X,	0x03,	0x0100013e },
++	{ INTEL_SKYLAKE_X,	0x04,	0x0200003c },
++	{ INTEL_BROADWELL,	0x04,	0x28 },
++	{ INTEL_BROADWELL_G,	0x01,	0x1b },
++	{ INTEL_BROADWELL_D,	0x02,	0x14 },
++	{ INTEL_BROADWELL_D,	0x03,	0x07000011 },
++	{ INTEL_BROADWELL_X,	0x01,	0x0b000025 },
++	{ INTEL_HASWELL_L,	0x01,	0x21 },
++	{ INTEL_HASWELL_G,	0x01,	0x18 },
++	{ INTEL_HASWELL,	0x03,	0x23 },
++	{ INTEL_HASWELL_X,	0x02,	0x3b },
++	{ INTEL_HASWELL_X,	0x04,	0x10 },
++	{ INTEL_IVYBRIDGE_X,	0x04,	0x42a },
+ 	/* Observed in the wild */
+-	{ INTEL_FAM6_SANDYBRIDGE_X,	0x06,	0x61b },
+-	{ INTEL_FAM6_SANDYBRIDGE_X,	0x07,	0x712 },
++	{ INTEL_SANDYBRIDGE_X,	0x06,	0x61b },
++	{ INTEL_SANDYBRIDGE_X,	0x07,	0x712 },
+ };
+ 
+ static bool bad_spectre_microcode(struct cpuinfo_x86 *c)
+@@ -173,11 +173,8 @@ static bool bad_spectre_microcode(struct cpuinfo_x86 *c)
+ 	if (cpu_has(c, X86_FEATURE_HYPERVISOR))
+ 		return false;
+ 
+-	if (c->x86 != 6)
+-		return false;
+-
+ 	for (i = 0; i < ARRAY_SIZE(spectre_bad_microcodes); i++) {
+-		if (c->x86_model == spectre_bad_microcodes[i].model &&
++		if (c->x86_vfm == spectre_bad_microcodes[i].vfm &&
+ 		    c->x86_stepping == spectre_bad_microcodes[i].stepping)
+ 			return (c->microcode <= spectre_bad_microcodes[i].microcode);
+ 	}
+@@ -312,7 +309,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 	 * need the microcode to have already been loaded... so if it is
+ 	 * not, recommend a BIOS update and disable large pages.
+ 	 */
+-	if (c->x86 == 6 && c->x86_model == 0x1c && c->x86_stepping <= 2 &&
++	if (c->x86_vfm == INTEL_ATOM_BONNELL && c->x86_stepping <= 2 &&
+ 	    c->microcode < 0x20e) {
+ 		pr_warn("Atom PSE erratum detected, BIOS microcode update recommended\n");
+ 		clear_cpu_cap(c, X86_FEATURE_PSE);
+@@ -345,11 +342,11 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 
+ 	/* Penwell and Cloverview have the TSC which doesn't sleep on S3 */
+ 	if (c->x86 == 6) {
+-		switch (c->x86_model) {
+-		case INTEL_FAM6_ATOM_SALTWELL_MID:
+-		case INTEL_FAM6_ATOM_SALTWELL_TABLET:
+-		case INTEL_FAM6_ATOM_SILVERMONT_MID:
+-		case INTEL_FAM6_ATOM_AIRMONT_NP:
++		switch (c->x86_vfm) {
++		case INTEL_ATOM_SALTWELL_MID:
++		case INTEL_ATOM_SALTWELL_TABLET:
++		case INTEL_ATOM_SILVERMONT_MID:
++		case INTEL_ATOM_AIRMONT_NP:
+ 			set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC_S3);
+ 			break;
+ 		default:
+@@ -393,7 +390,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 	 * should be false so that __flush_tlb_all() causes CR3 instead of CR4.PGE
+ 	 * to be modified.
+ 	 */
+-	if (c->x86 == 5 && c->x86_model == 9) {
++	if (c->x86_vfm == INTEL_QUARK_X1000) {
+ 		pr_info("Disabling PGE capability bit\n");
+ 		setup_clear_cpu_cap(X86_FEATURE_PGE);
+ 	}
+@@ -663,12 +660,13 @@ static void init_intel(struct cpuinfo_x86 *c)
+ 			set_cpu_cap(c, X86_FEATURE_PEBS);
+ 	}
+ 
+-	if (c->x86 == 6 && boot_cpu_has(X86_FEATURE_CLFLUSH) &&
+-	    (c->x86_model == 29 || c->x86_model == 46 || c->x86_model == 47))
++	if (boot_cpu_has(X86_FEATURE_CLFLUSH) &&
++	    (c->x86_vfm == INTEL_CORE2_DUNNINGTON ||
++	     c->x86_vfm == INTEL_NEHALEM_EX ||
++	     c->x86_vfm == INTEL_WESTMERE_EX))
+ 		set_cpu_bug(c, X86_BUG_CLFLUSH_MONITOR);
+ 
+-	if (c->x86 == 6 && boot_cpu_has(X86_FEATURE_MWAIT) &&
+-		((c->x86_model == INTEL_FAM6_ATOM_GOLDMONT)))
++	if (boot_cpu_has(X86_FEATURE_MWAIT) && c->x86_vfm == INTEL_ATOM_GOLDMONT)
+ 		set_cpu_bug(c, X86_BUG_MONITOR);
+ 
+ #ifdef CONFIG_X86_64
+@@ -1285,9 +1283,9 @@ void handle_bus_lock(struct pt_regs *regs)
+  * feature even though they do not enumerate IA32_CORE_CAPABILITIES.
+  */
+ static const struct x86_cpu_id split_lock_cpu_ids[] __initconst = {
+-	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_X,	0),
+-	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_L,	0),
+-	X86_MATCH_INTEL_FAM6_MODEL(ICELAKE_D,	0),
++	X86_MATCH_VFM(INTEL_ICELAKE_X,	0),
++	X86_MATCH_VFM(INTEL_ICELAKE_L,	0),
++	X86_MATCH_VFM(INTEL_ICELAKE_D,	0),
+ 	{}
+ };
  
 -- 
 2.39.5
