@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-106505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D069FE898
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61ED29FE820
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07ADC18831A4
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBCAB1882EEA
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4AF1A2550;
-	Mon, 30 Dec 2024 15:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB02914F136;
+	Mon, 30 Dec 2024 15:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FylwTFnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzErkcH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE215537E9;
-	Mon, 30 Dec 2024 15:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679562AE68;
+	Mon, 30 Dec 2024 15:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574213; cv=none; b=lGLNlNlDKDVlNhtpkpLAryKVv1kWIzO7FA3aJJEbu8Nz9tpB7onBTDBfwki0JPXnPx71t3l77pm9UQcuyKpRVh6jR5DW6y7c9RkejzothSbl+cvjtUGQ1FWpRoQE+SEN2ADwF4czVoA/jV9fG8vK3rnfXe+OGrSTcCH8ghHp7gI=
+	t=1735573811; cv=none; b=WZUkau1cJn5doizMUiuTvPgZbraAKFsHGw0fan8nT2MqoTfwtYvxT8qtUvJJjfzXgkKgZ9+R0RSesn4G1VyBrDGkwONJ2jEPETDDNyV9vXCSd1J6AGfTKnxDvajf3ijziD+BxdY+4A3WsTI9d6HZ4qqqCY+a/G3vga5Gbh2Gr18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574213; c=relaxed/simple;
-	bh=AzqT5sdLyLMM6z3qB4hj/fXy7a1V//94ijxfbKJQoTg=;
+	s=arc-20240116; t=1735573811; c=relaxed/simple;
+	bh=kCR4VPICakEOeAf8qLR8X7JXpKmx+LsCsgnoX37r4/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lieA5q2/iDRVwA551QWQAVkQnGFdKAhtIs+OsUgFU1yS8gXXAA+SPtAdO5dTHWM+p2tz3JWhHvkb2lakHgsckbTVaOgbJalJBEQr4TAMN+4MWLPOsUt5S5tf4mxZPAoaYxzet9BSeYpy3btYh4N8Ld5gmgPPHm6m2RZE47JQp2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FylwTFnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AE3C4CED0;
-	Mon, 30 Dec 2024 15:56:51 +0000 (UTC)
+	 MIME-Version; b=M/sqzRhTtYo9Myx9skh5UxEsnAatopjlGn7xXjlVLeG9yKyCvVyu53tDtY3Wwsl3eDDEBhcFz4mkBP2QehHJD9xlwooIy2Shu5iqfdBegR5BBP9htFdnlct+ZGCoeZV5n+vMUNa/MLWKmT45uX+UuCoKRgxOBw0zNcoxxuybxlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzErkcH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C864DC4CED0;
+	Mon, 30 Dec 2024 15:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574212;
-	bh=AzqT5sdLyLMM6z3qB4hj/fXy7a1V//94ijxfbKJQoTg=;
+	s=korg; t=1735573811;
+	bh=kCR4VPICakEOeAf8qLR8X7JXpKmx+LsCsgnoX37r4/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FylwTFnIZnsxhrhWRlYjVktSwUSvJzqmvcJhi/yqxDKDbcqSrULZ5mYoLTXMttqss
-	 A8F54tQkrtXNLD2wdELB7YVy8YsPabBiAY5SnX1/5ZabaKAV4YobVdJDhHXrt10E6T
-	 J/B9DW2oimdM0Rz7KzWhg5s5ls5rYP0rpsP74pCw=
+	b=wzErkcH7WYoWgDEiTurzFQFP9S5ZxUvtFKH/yDCXipX7fKqUYx5o3UEaHROCCL2qa
+	 z8gASmY9iwmlrzZ8Ojf8e6+zR+MUB2jjKP5v9sXl1fn/BbxMWvuqhdx3D4Sa0FX9gf
+	 5pPhzm8yMljBqLcZf6EEt6ucvAibrtdH3jaX19f4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
+	Xuefeng Zhao <zhaoxuefeng@loongson.cn>,
+	Jianmin Lv <lvjianmin@loongson.cn>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/114] udf: Skip parent dir link count update if corrupted
+Subject: [PATCH 6.6 41/86] LoongArch: Fix reserving screen info memory for above-4G firmware
 Date: Mon, 30 Dec 2024 16:42:49 +0100
-Message-ID: <20241230154220.061388209@linuxfoundation.org>
+Message-ID: <20241230154213.276218169@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit c5566903af56dd1abb092f18dcb0c770d6cd8dcb ]
+[ Upstream commit 55dc2f8f263448f1e6c7ef135d08e640d5a4826e ]
 
-If the parent directory link count is too low (likely directory inode
-corruption), just skip updating its link count as if it goes to 0 too
-early it can cause unexpected issues.
+Since screen_info.lfb_base is a __u32 type, an above-4G address need an
+ext_lfb_base to present its higher 32bits. In init_screen_info() we can
+use __screen_info_lfb_base() to handle this case for reserving screen
+info memory.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Xuefeng Zhao <zhaoxuefeng@loongson.cn>
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/namei.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/udf/namei.c b/fs/udf/namei.c
-index 78a603129dd5..2be775d30ac1 100644
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -517,7 +517,11 @@ static int udf_rmdir(struct inode *dir, struct dentry *dentry)
- 			 inode->i_nlink);
- 	clear_nlink(inode);
- 	inode->i_size = 0;
--	inode_dec_link_count(dir);
-+	if (dir->i_nlink >= 3)
-+		inode_dec_link_count(dir);
-+	else
-+		udf_warn(inode->i_sb, "parent dir link count too low (%u)\n",
-+			 dir->i_nlink);
- 	udf_add_fid_counter(dir->i_sb, true, -1);
- 	inode_set_mtime_to_ts(dir,
- 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
+diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
+index de4f3def4af0..4ae77e9300d5 100644
+--- a/arch/loongarch/kernel/efi.c
++++ b/arch/loongarch/kernel/efi.c
+@@ -90,7 +90,7 @@ static void __init init_screen_info(void)
+ 	memset(si, 0, sizeof(*si));
+ 	early_memunmap(si, sizeof(*si));
+ 
+-	memblock_reserve(screen_info.lfb_base, screen_info.lfb_size);
++	memblock_reserve(__screen_info_lfb_base(&screen_info), screen_info.lfb_size);
+ }
+ 
+ void __init efi_init(void)
 -- 
 2.39.5
 
