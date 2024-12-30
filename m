@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-106361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C6C9FE803
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA0C9FE889
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39B1E3A23F8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0A581618E8
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581F71531C4;
-	Mon, 30 Dec 2024 15:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A96B537E9;
+	Mon, 30 Dec 2024 15:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxPU0I6c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDDIDdWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160B515E8B;
-	Mon, 30 Dec 2024 15:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562A715E8B;
+	Mon, 30 Dec 2024 15:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573710; cv=none; b=vBpMX7hHOkAzlut4vB6CbP+wEarlSH4mxkOBYbETbOSpouOVPEvsfE2DHyftOcSifuhaEjXiAA7vZX+nFv7fFcKmvxARtJP/vi+s0ssZIdBHZEb8tlQDGmz/awz+UVIt3mxfJk+wWTEvMEQJI40aUswXffzWeMKlUXhwhVWYcbc=
+	t=1735574161; cv=none; b=anmb/d5E2G3oAeU6qszo41VTcI8H5h2IgDQxG/6le80GXMDvp+68JfGX75F7LxQpelqF49bqrXG1uhi3Q+tt916O+cXGL0RNV7+0k5c4Sg4DScDkyUnXr+AYePDbdW5XE9jthbxrrBtgKaj38Pnw7MCApJ4qeqPDK8vPdZFiNVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573710; c=relaxed/simple;
-	bh=FZUJ67+Npe30Kc0/bBpkIm3/f6k3QcSmCJIiwOWKQVM=;
+	s=arc-20240116; t=1735574161; c=relaxed/simple;
+	bh=v+AXN/nnXgpAdJf61DLz6i2lUFurzOV3NtIAOxbKXT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxwPLD/uVzuqcNvnMCm7jTFtWBq7sdgvEQVpbi4g4m+6BVsWsVc/M6KE+94AniYN7yNciXGoeGHwHb01lXiVKAl662CU+8nC+JMrGSIRjja8phuxIcvnB6Ja4kWuH1xWos3kJhqudj7GbYvXsB6TFmon1WRXKNDTx7mzvR39PyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxPU0I6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D22C4CED0;
-	Mon, 30 Dec 2024 15:48:28 +0000 (UTC)
+	 MIME-Version; b=eRtkg14v/mXsylGNJ8kWnLywpvP9TbrLUShNBfF77A3GHh4oU29LJHRiJtGn/S8CtXzSCKrO/PFLx21xG9gSDN6kudSgy/9jAI4iX7gPnyhZq7fhGDmi9Y5M0msNlkAVyRL0K+0Y6ro/vFOY9dgezoVh0OI4uL7xsYapkdrMKI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDDIDdWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD351C4CED0;
+	Mon, 30 Dec 2024 15:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573709;
-	bh=FZUJ67+Npe30Kc0/bBpkIm3/f6k3QcSmCJIiwOWKQVM=;
+	s=korg; t=1735574161;
+	bh=v+AXN/nnXgpAdJf61DLz6i2lUFurzOV3NtIAOxbKXT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxPU0I6cI0MFsHuR5C7h2f3Nn0ly6gSalr1FFoJ+Qz5+vSHSKYYU4cccOAVFoUO16
-	 L1KfY0KeDkrHPVoZm2eAJ08OeQB9hLqPE5KuS6q9k5Me5hHOkqinkMaiGYHllqDGYW
-	 jMabknn1grRr4of9PJJYT8SlS336wAaDAc/zO7R8=
+	b=KDDIDdWx5s4i2N43tizL8dgQtQqbQg/yIoxqM/4YOLc4fJU9ykGIhPlVPPht50IPu
+	 0z+F2TFDHF+9/+43HsODtDhokGOWo8XReGg5nLietseByoRJefrG4hQ+yg0TEuHqSX
+	 edFFRyxjCN1GxwfKrBjeR++FEjo2XAb4uwDAye9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 13/86] mtd: rawnand: arasan: Fix missing de-registration of NAND
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 024/114] phy: usb: Toggle the PHY power during init
 Date: Mon, 30 Dec 2024 16:42:21 +0100
-Message-ID: <20241230154212.219696362@linuxfoundation.org>
+Message-ID: <20241230154218.992816114@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
+From: Justin Chen <justin.chen@broadcom.com>
 
-commit 11e6831fd81468cf48155b9b3c11295c391da723 upstream.
+commit 0a92ea87bdd6f77ca4e17fe19649882cf5209edd upstream.
 
-The NAND chip-selects are registered for the Arasan driver during
-initialization but are not de-registered when the driver is unloaded. As a
-result, if the driver is loaded again, the chip-selects remain registered
-and busy, making them unavailable for use.
+When bringing up the PHY, it might be in a bad state if left powered.
+One case is we lose the PLL lock if the PLL is gated while the PHY
+is powered. Toggle the PHY power so we can start from a known state.
 
-Fixes: 197b88fecc50 ("mtd: rawnand: arasan: Add new Arasan NAND controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 4e5b9c9a73b3 ("phy: usb: Add support for new Synopsys USB controller on the 7216")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20241024213540.1059412-1-justin.chen@broadcom.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -1479,8 +1479,15 @@ static int anfc_probe(struct platform_de
+--- a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
++++ b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
+@@ -325,6 +325,12 @@ static void usb_init_common_7216(struct
+ 	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
  
- static void anfc_remove(struct platform_device *pdev)
- {
-+	int i;
- 	struct arasan_nfc *nfc = platform_get_drvdata(pdev);
- 
-+	for (i = 0; i < nfc->ncs; i++) {
-+		if (nfc->cs_array[i]) {
-+			gpiod_put(nfc->cs_array[i]);
-+		}
-+	}
+ 	USB_CTRL_UNSET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
 +
- 	anfc_chips_cleanup(nfc);
- }
++	/*
++	 * The PHY might be in a bad state if it is already powered
++	 * up. Toggle the power just in case.
++	 */
++	USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
+ 	USB_CTRL_UNSET(ctrl, USB_PM, USB_PWRDN);
  
+ 	/* 1 millisecond - for USB clocks to settle down */
 
 
 
