@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-106315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D35B9FE7D3
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8126A9FE836
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38681882B86
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F893A126E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA03515748F;
-	Mon, 30 Dec 2024 15:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB29537E9;
+	Mon, 30 Dec 2024 15:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IqoSRtv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8IqbMcy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66D315E8B;
-	Mon, 30 Dec 2024 15:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD0E15E8B;
+	Mon, 30 Dec 2024 15:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573553; cv=none; b=A2FpyP4UbpeTBnbZ3cyvPX5GytLDBU3PFXK1RqIHUUc/0WoCZkFPhG02BwvB89vJ4Xtd5PplCQNMDt6PS8OmXOhYzXvJZULA9sejyJecEJMgLa+cXPzV/sCnJbOSl4BOevHFpn17H8GOEhreIHpJvrlPxzaJAG+sgcSKzWeDB8w=
+	t=1735573881; cv=none; b=l6EmTES8mb9Efj5clvXv244clcxNuzNTXqNuQjD6noP90cKCQVNCjTuzr4YHVrMAc+Mef/KIIMhH+4ybDmdr8v6yyMjUnkMy06BTvTP0W0jrbQkGY9SoykAfQ5HYU6j7L7Dndke+SWBX+zPEcqeR2TUqgSiPyw9Itkz6Vh6zbss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573553; c=relaxed/simple;
-	bh=vZFGpod5xsnNLSNrmiXW9HkloRfCaMkvO72M5BIu3Ro=;
+	s=arc-20240116; t=1735573881; c=relaxed/simple;
+	bh=o2sqwsynM/ZRWMIiZHc2J2a1fUOIEF7jSG+28e6VH14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d18JQlx42zTyBMCRZjeUf6lhqPZNJMTv5rYA5ZGSUQ8FKxpnfPQXbtT5tK8IuLfxcBCgFhDK5u/OF/2Xlt4q3PPQppk1k2keKguxCOLei3e+3hVnHFgUEAeap4y0G28R5ZZB9ZPYH5YF1an6kkGoEwyHFdwwnE5sG6IfrdsIC90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IqoSRtv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D671FC4CED0;
-	Mon, 30 Dec 2024 15:45:52 +0000 (UTC)
+	 MIME-Version; b=auGjhjC92G/RIEKMo8xdTS4x6Ww9ujlb9UiMD33p/btV7kwTje79wuLwGO4G1PLPQkkPZL0CmqUUOiU5y6E70QG0an05FNDix16Z19wnhn3v42nMcsV5I1eekvxO41R/gRdaR0E7HGFXpwiHW6+ulfKBBXbomfrDrzvOzzBF3eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8IqbMcy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A32EC4CED0;
+	Mon, 30 Dec 2024 15:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573553;
-	bh=vZFGpod5xsnNLSNrmiXW9HkloRfCaMkvO72M5BIu3Ro=;
+	s=korg; t=1735573881;
+	bh=o2sqwsynM/ZRWMIiZHc2J2a1fUOIEF7jSG+28e6VH14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IqoSRtv3YCZRWU9Gcm9fa9cKTCZERh9D2xCPI09fDH1MUtWTcLYYmWQ5b+0KHhek
-	 bVoDSqCjdEChN+zSc0pgZwbRur784qGqi5Y4ulRS8PN1WNp+Rbw9bWY53c5g3JwS1R
-	 VAYDZInZ/nsrM8nWh47SfSV871/YeQuWXYfmzFbA=
+	b=q8IqbMcyqNA9zWrZ2ZeeGrl1VCMq5lhGxk0HPOpHHpLtg80H++6+gT9Z6d/EEQ1m9
+	 xvt8cXVnlojH0FTYO9RqzPwiOxVNnwsBY7ffVRniaJn+AFTWof2h4teqp/bQP2YIvh
+	 pTaSrPUbg6ZeYXjbq27MSmKbpMpHreZmndOSrzwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/60] scsi: qla1280: Fix hw revision numbering for ISP1020/1040
-Date: Mon, 30 Dec 2024 16:42:38 +0100
-Message-ID: <20241230154208.354400307@linuxfoundation.org>
+Subject: [PATCH 6.6 31/86] tracing/kprobe: Make trace_kprobes module callback called after jump_label update
+Date: Mon, 30 Dec 2024 16:42:39 +0100
+Message-ID: <20241230154212.905414299@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit c064de86d2a3909222d5996c5047f64c7a8f791b ]
+[ Upstream commit d685d55dfc86b1a4bdcec77c3c1f8a83f181264e ]
 
-Fix the hardware revision numbering for Qlogic ISP1020/1040 boards.  HWMASK
-suggests that the revision number only needs four bits, this is consistent
-with how NetBSD does things in their ISP driver. Verified on a IPS1040B
-which is seen as rev 5 not as BIT_4.
+Make sure the trace_kprobe's module notifer callback function is called
+after jump_label's callback is called. Since the trace_kprobe's callback
+eventually checks jump_label address during registering new kprobe on
+the loading module, jump_label must be updated before this registration
+happens.
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20241113225636.2276-1-linmag7@gmail.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/all/173387585556.995044.3157941002975446119.stgit@devnote2/
+
+Fixes: 614243181050 ("tracing/kprobes: Support module init function probing")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla1280.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/trace/trace_kprobe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla1280.h b/drivers/scsi/qla1280.h
-index d309e2ca14de..dea2290b37d4 100644
---- a/drivers/scsi/qla1280.h
-+++ b/drivers/scsi/qla1280.h
-@@ -116,12 +116,12 @@ struct device_reg {
- 	uint16_t id_h;		/* ID high */
- 	uint16_t cfg_0;		/* Configuration 0 */
- #define ISP_CFG0_HWMSK   0x000f	/* Hardware revision mask */
--#define ISP_CFG0_1020    BIT_0	/* ISP1020 */
--#define ISP_CFG0_1020A	 BIT_1	/* ISP1020A */
--#define ISP_CFG0_1040	 BIT_2	/* ISP1040 */
--#define ISP_CFG0_1040A	 BIT_3	/* ISP1040A */
--#define ISP_CFG0_1040B	 BIT_4	/* ISP1040B */
--#define ISP_CFG0_1040C	 BIT_5	/* ISP1040C */
-+#define ISP_CFG0_1020	 1	/* ISP1020 */
-+#define ISP_CFG0_1020A	 2	/* ISP1020A */
-+#define ISP_CFG0_1040	 3	/* ISP1040 */
-+#define ISP_CFG0_1040A	 4	/* ISP1040A */
-+#define ISP_CFG0_1040B	 5	/* ISP1040B */
-+#define ISP_CFG0_1040C	 6	/* ISP1040C */
- 	uint16_t cfg_1;		/* Configuration 1 */
- #define ISP_CFG1_F128    BIT_6  /* 128-byte FIFO threshold */
- #define ISP_CFG1_F64     BIT_4|BIT_5 /* 128-byte FIFO threshold */
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 94cb09d44115..508c10414a93 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -702,7 +702,7 @@ static int trace_kprobe_module_callback(struct notifier_block *nb,
+ 
+ static struct notifier_block trace_kprobe_module_nb = {
+ 	.notifier_call = trace_kprobe_module_callback,
+-	.priority = 1	/* Invoked after kprobe module callback */
++	.priority = 2	/* Invoked after kprobe and jump_label module callback */
+ };
+ 
+ static int count_symbols(void *data, unsigned long unused)
 -- 
 2.39.5
 
