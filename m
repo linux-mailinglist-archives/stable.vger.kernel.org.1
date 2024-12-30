@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-106498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441A79FE891
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8C29FE7FE
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05958161A5C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94540160ACE
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53BD537E9;
-	Mon, 30 Dec 2024 15:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388031531C4;
+	Mon, 30 Dec 2024 15:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkcpVOgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObFwLA14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B0A15E8B;
-	Mon, 30 Dec 2024 15:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC00C15E8B;
+	Mon, 30 Dec 2024 15:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574188; cv=none; b=oDQ528IAY4uMb0vXrUobvlqKXb7FT4xt0/hrzrH+chgYtSaPv6NS7uqYSBcuyhOIHI11VfpoXKc7S6r5/iiVtWGk42u3ZrKkqIMbfQBMWDGjth8k5FEcvZtsoFwGEtvkANnKrjfC6c0RepEUvg/PBT+N/EjXmhpNAFl3QrjkMSs=
+	t=1735573694; cv=none; b=rkFZRQ48dLw3HhXK+qMIaFBScyAYQbSsqlSiZCyzmJJMR0r8QRKTKOLfkBtfEon4AQ+7/SnNi56YDANUPxHTpHoS2bBwB16AcmTtP2xkAdOpCOijUxa4FqX5s1uCtSrYLm1AcIF1qEZJy/jb76GltfyuqlRNrqJxRVf3bUoPO3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574188; c=relaxed/simple;
-	bh=aWE9SN2XbEjSoyf6/60HeELVSqmXmeeNPugYmkMUJbU=;
+	s=arc-20240116; t=1735573694; c=relaxed/simple;
+	bh=jKctIXoSMnF39BX1o6/Y2e5K28b/w2fnRN+mKAk/NMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TS+3oP8u0iojIgyiuxDYV7uHDCa4fpquHrYRIQVDuqSV8lz2pqFc+ABsTQdVchPRx3KCdmItVQ8Hz1o/JETjWiwL/amaYzBJNnf8poeH66AfD/XqjKqp8azAi+f7Z4k72FxMEAGxXZ3o/JlaHh1/0WFklWakshAvsDMuME4L2MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkcpVOgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED00EC4CED0;
-	Mon, 30 Dec 2024 15:56:27 +0000 (UTC)
+	 MIME-Version; b=N20IndkJuZlSmxx0raLQIoJu2qsPs4qrHfZp6ZAAOutt2oAgfAvhazenjTRKz+Y4Kaxx1zG+Fnaof5SBE3fAVSYR0vP0f/PNNQEofizDXR2SCl3AOkzrsogL26DH91SnyFAkpsBf3Gwmct/tJuEhL7LaE9es/CdyiYb5z9ZDRX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObFwLA14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B832C4CED0;
+	Mon, 30 Dec 2024 15:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574188;
-	bh=aWE9SN2XbEjSoyf6/60HeELVSqmXmeeNPugYmkMUJbU=;
+	s=korg; t=1735573693;
+	bh=jKctIXoSMnF39BX1o6/Y2e5K28b/w2fnRN+mKAk/NMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kkcpVOglC6hqb4qccLWu25CmO1WDtG5MJ4CEIh4h4/WSsJsWtTMYikMOxtwXNxoMZ
-	 7d4bTzowHeR7bVnmsC/IZqqFoDculv7UCSVf/cjavOfRuYesXoIwYtiizKzSCt9fPQ
-	 hLJgfg56OqHMBg7O/kdcee0cfZ0A7lnXpCfafT1g=
+	b=ObFwLA14dMd7LtK5yPCNw+5Lo+j7wPvFs8AkW5C9zWqUtGLMzuPs1aOyOUArp/ULf
+	 AcZVZHgErmmIi/MxxH8JjQeyU3YMFyDNh0iFo2v24eqCHEkbGZsJmNlPMCCe2a37V8
+	 4OMloHCeMN+YEel3UdHxRPootoY3CNHSsXg4XgCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pau Espin Pedrol <pespin@espeweb.net>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/114] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
+	syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 50/60] tracing: Prevent bad count for tracing_cpumask_write
 Date: Mon, 30 Dec 2024 16:43:00 +0100
-Message-ID: <20241230154220.524142171@linuxfoundation.org>
+Message-ID: <20241230154209.173597930@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
+commit 98feccbf32cfdde8c722bc4587aaa60ee5ac33f0 upstream.
 
-On the Asus X541UAK an unknown event 0xCF is emited when the charger
-is plugged in. This is caused by the following AML code:
+If a large count is provided, it will trigger a warning in bitmap_parse_user.
+Also check zero for it.
 
-    If (ACPS ())
-    {
-        ACPF = One
-        Local0 = 0x58
-        If (ATKP)
-        {
-            ^^^^ATKD.IANE (0xCF)
-        }
-    }
-    Else
-    {
-        ACPF = Zero
-        Local0 = 0x57
-    }
-
-    Notify (AC0, 0x80) // Status Change
-    If (ATKP)
-    {
-        ^^^^ATKD.IANE (Local0)
-    }
-
-    Sleep (0x64)
-    PNOT ()
-    Sleep (0x0A)
-    NBAT (0x80)
-
-Ignore the 0xCF event to silence the unknown event warning.
-
-Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
-Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 9e01c1b74c953 ("cpumask: convert kernel trace functions")
+Link: https://lore.kernel.org/20241216073238.2573704-1-lizhi.xu@windriver.com
+Reported-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0aecfd34fb878546f3fd
+Tested-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index ef04d396f61c..a5933980ade3 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -623,6 +623,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
- 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
- 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
- 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
-+	{ KE_IGNORE, 0xCF, },	/* AC mode */
- 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
- 	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
- 	{ KE_END, 0},
--- 
-2.39.5
-
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -5262,6 +5262,9 @@ tracing_cpumask_write(struct file *filp,
+ 	cpumask_var_t tracing_cpumask_new;
+ 	int err;
+ 
++	if (count == 0 || count > KMALLOC_MAX_SIZE)
++		return -EINVAL;
++
+ 	if (!zalloc_cpumask_var(&tracing_cpumask_new, GFP_KERNEL))
+ 		return -ENOMEM;
+ 
 
 
 
