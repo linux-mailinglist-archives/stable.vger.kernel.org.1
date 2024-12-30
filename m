@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEA89FE873
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005F69FE7ED
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2478C1882EA6
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB2701882E85
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F55537E9;
-	Mon, 30 Dec 2024 15:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138C02E414;
+	Mon, 30 Dec 2024 15:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t34CbgIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvuzcUXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A447515E8B;
-	Mon, 30 Dec 2024 15:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45B62594B6;
+	Mon, 30 Dec 2024 15:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574089; cv=none; b=MTfdpjOcBgf21+70vSWAkKKCe+S9OUxH4JM83p6kRU+U3qhGdA/llZtl6ZsmrEGHdWZBYb51O0gBsMdmBvkDVMTPrg5fjSB0WlP6vbd8AlSyfR/YwVvMrKRKmG7A1Zc28y3FnAS6RUjhtF3OTDAHvy4NvfW3zBzZGhiQkR+XAbo=
+	t=1735573641; cv=none; b=HjGdaR/DzwAf01SxYPCvksO3McIOvmhoQIoNBjbLKeEqTQqdsjY6qVf9+KIgCyedIEcvQHLavF8pFr6LmvXOsSfV9+xFQGJZlZGKJy6//1bkeeDIO92gtFgCb/pMLvZdZ3Kq4iF0qQdQYeXkN7sYytZ1J48n3JgwGmi0N/EyJko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574089; c=relaxed/simple;
-	bh=6txZf4zqa8+TdVoXsFUMHaqk/gWUFT/jGTUj1395m5E=;
+	s=arc-20240116; t=1735573641; c=relaxed/simple;
+	bh=8ognPNBH4MztWPtXklsFEuev/HFLMN7AFkZNPtUEZbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGPIOqw58VITggbangyEMd7IQ8jkfztbe4cBTMz5WXrpISxxl9yjZmxg1AUn//G6kpgFRtxUxP0Q+z/696jBNytdverbN0lAY08dmPAPM69zJ8kh3aJ8dVuzYY2g2MC0x/Bxi7VE5Lkas0hysBx18+6DxmC9KfCe3vF2DjldmcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t34CbgIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC56C4CED0;
-	Mon, 30 Dec 2024 15:54:48 +0000 (UTC)
+	 MIME-Version; b=TFyaqy7QABuLo5vwaISHKm/7uC8ET5rbKAmtFbai/8ZGZiYsghEKsfZV4wMu4dGuI46Tr0dREuvJLjdciR0JKKfqxeLWxsimsozs6Bw9vUHChvyTbYVABrBFOJhdvofoU9srkA2mzvDo8ifNS0SPns+kckMnyPST0mBiX/Z0qtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvuzcUXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFDFC4CED0;
+	Mon, 30 Dec 2024 15:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574089;
-	bh=6txZf4zqa8+TdVoXsFUMHaqk/gWUFT/jGTUj1395m5E=;
+	s=korg; t=1735573641;
+	bh=8ognPNBH4MztWPtXklsFEuev/HFLMN7AFkZNPtUEZbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t34CbgIvQTzU9mPkmtbHGCt15cG44rxG5+Db7yCG1+k8Icfzyfs9tvJbfnyLXBKgM
-	 MtQVbnGLHm91Hnqf+eHSPtP7s+Ab9WQQQ59TJCb/NJy6MYqL/m27150IAfBBsQMB7S
-	 t/n5RMW/eYO39VutSzqPO9w/NtA31uxQWLHHQH0U=
+	b=yvuzcUXMGlICvODfuibvtksWvavS1yGfPDrREY6JNVj2DZxQjfQygG9wPxbnc2cYU
+	 yOajQbZKJeUi4zMhV6HYeawzqqAbkVo8eG7oO/YpvevuS+2L0QbWYxbTz4fpjtsqLn
+	 Od52BW1OMGkGDdkUnSiGjNkzU1DCL/gtHaBNV8Uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chen Ridong <chenridong@huawei.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 034/114] dmaengine: at_xdmac: avoid null_prt_deref in at_xdmac_prep_dma_memset
-Date: Mon, 30 Dec 2024 16:42:31 +0100
-Message-ID: <20241230154219.376242688@linuxfoundation.org>
+Subject: [PATCH 6.1 22/60] dmaengine: at_xdmac: avoid null_prt_deref in at_xdmac_prep_dma_memset
+Date: Mon, 30 Dec 2024 16:42:32 +0100
+Message-ID: <20241230154208.128282504@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,7 +85,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/dma/at_xdmac.c
 +++ b/drivers/dma/at_xdmac.c
-@@ -1363,6 +1363,8 @@ at_xdmac_prep_dma_memset(struct dma_chan
+@@ -1287,6 +1287,8 @@ at_xdmac_prep_dma_memset(struct dma_chan
  		return NULL;
  
  	desc = at_xdmac_memset_create_desc(chan, atchan, dest, len, value);
