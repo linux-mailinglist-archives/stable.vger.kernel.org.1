@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC7B9FE89F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC5B9FE850
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2EE93A26A7
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 693807A0F4E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F401AA7A6;
-	Mon, 30 Dec 2024 15:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CBA537E9;
+	Mon, 30 Dec 2024 15:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wud2wmwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nx/woQSe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535AC15E8B;
-	Mon, 30 Dec 2024 15:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A1F15E8B;
+	Mon, 30 Dec 2024 15:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574226; cv=none; b=cAq1y1KRcVTerOPDkx/ylFB3DwYT3KihOsRrbBFckmfpUU2rh2JFLuBcT1mjkOLeKwZyIjcTbfkkv/KieQACQpreV3E0wWxAJvEi6iuGVAHfrEeXEK37Kteb0hYQT5QPbaTq1+jqDveM4fNUY/uSGQWHwP3PT2lW3NxWV22Tabw=
+	t=1735573969; cv=none; b=V0czcjU5ixr3BRmFEbd2OYvRB4vc0ZmCK+XdQNNwiYTFZLBVbDmS/4Vb/llN+b/5KSiu4yitxz/U6Y6genqo/e/aKkvL7C0YQVa03zi7aSlX/Cd1T9+wIePmcmhtrqkJkSaHZQzedD3nQWk35InCnFgCDfncsZAnqg8x7hU4eFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574226; c=relaxed/simple;
-	bh=Tq2ofGbco3PwTlwrYKeyRoqXuIESnvHrkbyycHJIsXc=;
+	s=arc-20240116; t=1735573969; c=relaxed/simple;
+	bh=N5FMmg4HT5secLw1dBEdjC1WlHYa0XG0VUbCS9tv3Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIW+bLesjuU854LgXeB1QhqSt+5xuKInZGPw+gjUajfptdmxgBxZ1gL8YL8VnRp+yveJ860L9AfZK3dyXGD+pBBhAtNF/BVAJ2CYJp689c7FalDBEhCulQByB1JH7Fz+KIFr5cN1uYBeLLoFvOmDgke95rn+E6xbwtSBU3JLfVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wud2wmwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0427C4CED0;
-	Mon, 30 Dec 2024 15:57:05 +0000 (UTC)
+	 MIME-Version; b=jLSJmdZxLZdhRts+zdglvZb+9qreAfjvVisHREpzN6nwsIMPWI/EL6nhqO5uTWANQmejbCGGqzGgyviNyrBkswiHAxCcBNXLOMeguEARP7njLOLOg+QMKeLjlkEgfd1mmslWo5JFUOfWj0Vko9LRyKLAwtHERWtZyLLZbGMeXlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nx/woQSe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81F1C4CED0;
+	Mon, 30 Dec 2024 15:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574226;
-	bh=Tq2ofGbco3PwTlwrYKeyRoqXuIESnvHrkbyycHJIsXc=;
+	s=korg; t=1735573969;
+	bh=N5FMmg4HT5secLw1dBEdjC1WlHYa0XG0VUbCS9tv3Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wud2wmwWMus5bXjtnRDFfvjwn9a2HaapE6/dF3f6YMvD2dYFXevfbDGO8igb8seI/
-	 /NW3aVjnQE4icU0zZoCwYlFCZ5ra9daG5RDe6tQ/KMBSxsyu6HqEWXP7Ex+olDedNG
-	 AfyqaE/r411RMOCxwfEfRgInVOg0GDiWPBQxdWAg=
+	b=nx/woQSeZZaAjL12Jnl26dTAzeyK+YSPrQcJVed+BM50ijP3UOp2u+V+pfTc0bY8o
+	 QMsMelCbdpR6GfAzBDYJKueB9LnKpu31uoqTU3FjWNz36igJ5ahUi3KGcYLMxenUxT
+	 S47MGEJPmOPILEc8GbwpOIGPewNOjYEr3M7vO1QU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purushothama Siddaiah <psiddaiah@mvista.com>,
-	Corey Minyard <cminyard@mvista.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/114] spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()
-Date: Mon, 30 Dec 2024 16:43:10 +0100
-Message-ID: <20241230154220.906132343@linuxfoundation.org>
+Subject: [PATCH 6.6 63/86] x86/cpu: Add model number for another Intel Arrow Lake mobile processor
+Date: Mon, 30 Dec 2024 16:43:11 +0100
+Message-ID: <20241230154214.111296641@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purushothama Siddaiah <psiddaiah@mvista.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit 4c6ac5446d060f0bf435ccc8bc3aa7b7b5f718ad ]
+[ Upstream commit 8a8a9c9047d1089598bdb010ec44d7f14b4f9203 ]
 
-The devm_clk_get_optional_enabled() function returns error
-pointers(PTR_ERR()). So use IS_ERR() to check it.
+This one is the regular laptop CPU.
 
-Verified on K3-J7200 EVM board, without clock node mentioned
-in the device tree.
-
-Signed-off-by: Purushothama Siddaiah <psiddaiah@mvista.com>
-Reviewed-by: Corey Minyard <cminyard@mvista.com>
-Link: https://patch.msgid.link/20241205070426.1861048-1-psiddaiah@mvista.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240322161725.195614-1-tony.luck@intel.com
+Stable-dep-of: c9a4b55431e5 ("x86/cpu: Add Lunar Lake to list of CPUs with a broken MONITOR implementation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/intel-family.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 2c043817c66a..4a2f84c4d22e 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1561,10 +1561,10 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	}
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index b65e9c46b922..d0941f4c2724 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -127,6 +127,7 @@
  
- 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
--	if (mcspi->ref_clk)
--		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
--	else
-+	if (IS_ERR(mcspi->ref_clk))
- 		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
-+	else
-+		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
- 	ctlr->max_speed_hz = mcspi->ref_clk_hz;
- 	ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
+ #define INTEL_FAM6_ARROWLAKE_H		0xC5
+ #define INTEL_FAM6_ARROWLAKE		0xC6
++#define INTEL_FAM6_ARROWLAKE_U		0xB5
+ 
+ #define INTEL_FAM6_LUNARLAKE_M		0xBD
  
 -- 
 2.39.5
