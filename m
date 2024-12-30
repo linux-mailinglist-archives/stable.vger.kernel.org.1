@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-106398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDAFF9FE829
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE969FE7E9
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11BD63A24E6
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4ABC160737
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66AC1537C8;
-	Mon, 30 Dec 2024 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40662E414;
+	Mon, 30 Dec 2024 15:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALSRnwQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7DCJ+Mi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE7A15E8B;
-	Mon, 30 Dec 2024 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7222594B6;
+	Mon, 30 Dec 2024 15:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573841; cv=none; b=sSSefrtTxQPGj22jxzcijtz4oD89kkuTVnUtVc2sRYiiIwrBAzptQcZVtapk+NEvB7D2eUkRCtqBKMpO6PDOtUyiBuox/apyRGbN/CBP6WK4gKAw5dyXItu1z/izfHxInS+0CzAodrd4goXlbkLerkKVhhoSG7h53b3THFkU0lE=
+	t=1735573628; cv=none; b=FosZgnMMqA+jXapn9QERau+qRaKIT5l/j+6+H31FLmENkOZrKNJvLj4oSkt+PGZdphwdznFBzIDlLAQ5wTDsM6vOxf0uuQ1IqzSrlT2gPNawAh92LVQPeXnvYwM6xkZiceHqekvhuICQhQAS4FtyxYg/gjnZ6GnXPy7pTll8RLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573841; c=relaxed/simple;
-	bh=BVnUKsU20NhoQin4Fxh0ljKC0RMutULU2bo7fC8c4v0=;
+	s=arc-20240116; t=1735573628; c=relaxed/simple;
+	bh=7kDBJvA6VlFbDWZx4Wddxkpea3xZ4uIUX9p+tKHGcyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSTrIVPgL4yh9yFsukpzJoDVpIijJuP73ZNOQYzSB1wOYU1R1IuP1PRNypFArZTg4DZxHa3Vt7ZiH8xxgUQkGa+QZ6Rme7Shp8ki2PHso2tnwtauf0g+hSrBn0HUQaZhqlvh4n6urmLSzMnptjKvLZxlVGOvzi/aTuVloN/Ldk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALSRnwQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E328AC4CED0;
-	Mon, 30 Dec 2024 15:50:40 +0000 (UTC)
+	 MIME-Version; b=Mw+ZjHD39eFp42Va5s0PenupjnZK2RKl81gDqj72XwHMv/9yXVWPiv2pX+yZOxD41AqUAznugHY9sxO/5OwwBovi2c7QTT9hj3CE7giSw1rTsvjApOgbglDiHkM5ajDHngJS4zkc8gZN8LDBYZb7qPn+0Fpsy4T6Gv6hCcjG8TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7DCJ+Mi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC411C4CED0;
+	Mon, 30 Dec 2024 15:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573841;
-	bh=BVnUKsU20NhoQin4Fxh0ljKC0RMutULU2bo7fC8c4v0=;
+	s=korg; t=1735573628;
+	bh=7kDBJvA6VlFbDWZx4Wddxkpea3xZ4uIUX9p+tKHGcyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ALSRnwQnNkb2atQ4aki4+vFhhbxq06GBFiGSXVdroXOTJRdAPlgeLPg6CBCrL8Wv3
-	 xD7APxu+wdBNWq2YU63rhDzb2jdIctkVlIWcgkB1HV+t8oH1QepQ420cpU3QBm9nCb
-	 kgsgGlNW3xXojNhTmL0ouFUeSIx//SOVD+EPhcSg=
+	b=i7DCJ+MirO1LPKhcYJYa1S3gx0Qo0sc45dgNUfNZFRgh/JrpZ7OX8QRfnLgbnDO0L
+	 q4DHKIbMpf/Bn5G8KW1K2YmH3Q01F90C0yd9otQ9DqO0MJmoBOIkfCeXLK938CGqKN
+	 dWfZq0UjSFx20Vh7Z2JhwjrXVhyZ8P/PrvW93MUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@unisoc.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	NeilBrown <neilb@suse.de>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 49/86] virtio-blk: dont keep queue frozen during system suspend
+Subject: [PATCH 6.1 47/60] sched/core: Report correct state for TASK_IDLE | TASK_FREEZABLE
 Date: Mon, 30 Dec 2024 16:42:57 +0100
-Message-ID: <20241230154213.588811782@linuxfoundation.org>
+Message-ID: <20241230154209.060113582@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
+[ Upstream commit 0d6b35283bcf1a379cf20066544af8e6a6b16b46 ]
 
-Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
-deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
-PM callbacks. And the motivation is to drain inflight IOs before suspending.
+task_state_index() ignores uninteresting state flags (such as
+TASK_FREEZABLE) for most states, but for TASK_IDLE and TASK_RTLOCK_WAIT
+it does not.
 
-block layer's queue freeze looks very handy, but it is also easy to cause
-deadlock, such as, any attempt to call into bio_queue_enter() may run into
-deadlock if the queue is frozen in current context. There are all kinds
-of ->suspend() called in suspend context, so keeping queue frozen in the
-whole suspend context isn't one good idea. And Marek reported lockdep
-warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
+So if a task is waiting TASK_IDLE|TASK_FREEZABLE it gets incorrectly
+reported as TASK_UNINTERRUPTIBLE or "D".  (it is planned for nfsd to
+change to use this state).
 
-[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
+Fix this by only testing the interesting bits and not the irrelevant
+bits in __task_state_index()
 
-Given the motivation is to drain in-flight IOs, it can be done by calling
-freeze & unfreeze, meantime restore to previous behavior by keeping queue
-quiesced during suspend.
-
-Cc: Yi Sun <yi.sun@unisoc.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: virtualization@lists.linux.dev
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/169335025927.5133.4781141800413736103@noble.neil.brown.name
+Stable-dep-of: f718faf3940e ("freezer, sched: Report frozen tasks as 'D' instead of 'R'")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/linux/sched.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 997106fe73e4..65a1f1576e55 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -1624,9 +1624,12 @@ static void virtblk_remove(struct virtio_device *vdev)
- static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
-+	struct request_queue *q = vblk->disk->queue;
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 0cac69902ec5..205a00806835 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1663,7 +1663,7 @@ static inline unsigned int __task_state_index(unsigned int tsk_state,
  
- 	/* Ensure no requests in virtqueues before deleting vqs. */
--	blk_mq_freeze_queue(vblk->disk->queue);
-+	blk_mq_freeze_queue(q);
-+	blk_mq_quiesce_queue_nowait(q);
-+	blk_mq_unfreeze_queue(q);
+ 	BUILD_BUG_ON_NOT_POWER_OF_2(TASK_REPORT_MAX);
  
- 	/* Ensure we don't receive any more interrupts */
- 	virtio_reset_device(vdev);
-@@ -1650,8 +1653,8 @@ static int virtblk_restore(struct virtio_device *vdev)
- 		return ret;
+-	if (tsk_state == TASK_IDLE)
++	if ((tsk_state & TASK_IDLE) == TASK_IDLE)
+ 		state = TASK_REPORT_IDLE;
  
- 	virtio_device_ready(vdev);
-+	blk_mq_unquiesce_queue(vblk->disk->queue);
+ 	/*
+@@ -1671,7 +1671,7 @@ static inline unsigned int __task_state_index(unsigned int tsk_state,
+ 	 * to userspace, we can make this appear as if the task has gone through
+ 	 * a regular rt_mutex_lock() call.
+ 	 */
+-	if (tsk_state == TASK_RTLOCK_WAIT)
++	if (tsk_state & TASK_RTLOCK_WAIT)
+ 		state = TASK_UNINTERRUPTIBLE;
  
--	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
+ 	return fls(state);
 -- 
 2.39.5
 
