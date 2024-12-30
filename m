@@ -1,115 +1,129 @@
-Return-Path: <stable+bounces-106567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915CF9FE9B8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:13:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBE79FE9E6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 116B5162288
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 18:13:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0555D18834FD
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 18:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7F91B4F0B;
-	Mon, 30 Dec 2024 18:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC1D17C228;
+	Mon, 30 Dec 2024 18:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k03Y5WLH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M76ZiBZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DF31B0421;
-	Mon, 30 Dec 2024 18:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBACEAD0;
+	Mon, 30 Dec 2024 18:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735582367; cv=none; b=Bklh3YdK38p66dbzTGeTWVkiG8OfgE+bODLyChyL+Hxc997ldTqyb5EdsD2ULZmcmm6sXMKWXJAYGPcc/wUSSNNtMJvpU2awKSlRg/dCVi196Ioe+lobnKolSRa5wYPHDQmyjSkYECF50mYHM416syq+V22yCBjhqEj70pXfJHk=
+	t=1735583727; cv=none; b=uhd+p0vC1zBNXSFBlKQDpA2FBM8i4vL79PGf3K3ts6CFc84ulBLcxaHtalHVJf3u1Ovx6jHTk6To9bawdO9byVOwP891xyjR/GkmiQfHYtIDxAbwxrCo1yaYClSmdg9Dr3w7So54ehKAP3SBzBE1OVam0nQROigj4f8yQTPuiJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735582367; c=relaxed/simple;
-	bh=VHfAh39yqDxJVBGGxxhbrgbDetNMrhoiejJCoo85rwY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nziX+UN0EE+2O9pdEnla3q0XAKa+tXtTHTcTXXMdr5yWFNLhJKxJScSG/JXIxa8P2PtDj2DVFil9hIguBcPLcTY9FpcbVKm14VmVQbP2LQdDnohnDfZ/TvPYnDssMW1zrNlm0z32uas1Un+SZOyvssYmc+accMD2iBdvaAm+I50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k03Y5WLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A5AC4CED6;
-	Mon, 30 Dec 2024 18:12:44 +0000 (UTC)
+	s=arc-20240116; t=1735583727; c=relaxed/simple;
+	bh=zwDNZZ12ROo3lHb0+PRLe7IckEi8MMjuQAn4UZi1DZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ffsR0Twt2FEcY+cw7kzmOwGj16yQ1UVHe7VxpuyRH8tLoM7eTNDp24NgpmQOsl1v+aJyMtisJfa7kFH+7/dZXbHecsQGfmOlHctmv14nJaKIKzjFqJF3GlhIoLxQpBdMFYNPSADNHvHh/HSdVHQR2RJp/vgOgRMtne1UxuDmYVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M76ZiBZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC2BC4CED6;
+	Mon, 30 Dec 2024 18:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735582367;
-	bh=VHfAh39yqDxJVBGGxxhbrgbDetNMrhoiejJCoo85rwY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=k03Y5WLHzOJlhoHJPGuaT6+fCBhYoDZWYukwQOl8O2GGrUiXb8KxjqgatNGlVak8y
-	 7htvlSh5YD4CLZyCReR6ogt9mOAECJL+hLcyNBdH7t0tGz4TmbfqZyN67NkJqHvm7/
-	 +VhZ6qBLgO79RElYMVDHeTt8awcpOXbI3WwgQWCCZEsNUJyPkrkXiun+kTT6E/4mtL
-	 oUxz/yHMFQP2/REIW03tr7ymKRZls74I5pWHlhBVcVldMHpa6+IFMBxIDezTPAsuB8
-	 tyVnKRMGV1Hjb8HrqK8S/UWfK0KM+0RYhY96mBBw8IsvAhIR+ILIWnxRIFB/mBUTN5
-	 0NT7oRpMF3BVA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 30 Dec 2024 19:12:32 +0100
-Subject: [PATCH net 3/3] mptcp: prevent excessive coalescing on receive
+	s=k20201202; t=1735583727;
+	bh=zwDNZZ12ROo3lHb0+PRLe7IckEi8MMjuQAn4UZi1DZY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M76ZiBZ6GaqsxRTU+yv9vR06ujnT3fU/qqzbAG7DMv6ypQVCUXpOWPWWhN1Oe97bZ
+	 u05HPPpbAICK556leBaETCdjm1OmXgVRSYelZwixvRMUxNd4HBcahuF+ywol/gLlpM
+	 R8GiK0SluXy8f93pIWirjY2W7gPHRBFliQjGyU0VwVDo5i7U/ScDR3duaYGGgh48Wu
+	 WQA5mzglMGdDZkwjBFKobWXYQW23uhPFh5rODCgdEtXXMOZUbSpDTkADnjEsooxIyE
+	 uxKTKMTdAAjAUdx7o8oj3KEIdlrqDQ1Y2JHWJELQNmvamABJDHTp/+yk1lHotJhlyE
+	 i0rqr9NrbiYZA==
+Date: Mon, 30 Dec 2024 10:35:23 -0800
+From: Kees Cook <kees@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: John Rowley <lkml@johnrowley.me>, johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+	gustavoars@kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: UBSAN array-index-out-of-bounds: cfg80211_scan_6ghz
+Message-ID: <202412301022.BCAC61BD6C@keescook>
+References: <1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain>
+ <20241230053806.GA129354@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241230-net-mptcp-rbuf-fixes-v1-3-8608af434ceb@kernel.org>
-References: <20241230-net-mptcp-rbuf-fixes-v1-0-8608af434ceb@kernel.org>
-In-Reply-To: <20241230-net-mptcp-rbuf-fixes-v1-0-8608af434ceb@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1198; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=EJnPNuoRHjWeI+J2OzLS/vwyiccermUluT6moDDxN6A=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBncuKU2GVQROqJldxKAW5PdQo4vSM8vLQZpEO2P
- zN0xBw68HGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ3LilAAKCRD2t4JPQmmg
- c3XdEACT3aJXpqF1JGbapOMhg4NHaCy8XgQw+yoGs52hWCc0nZZW6pO7kXBJ4Lk4r4NcoJHTPv6
- FebLAO04HUVJ6N4rVk7VRQZfoSEoYbmwX0tOCsmUUq8UltSSRIHlJGARBNPs+5rpA0ps8l5e9Kg
- f15JiytNZf4Xkv+jVus2xPLZ/wPg7KsvaNn4EJva234ZVvW0zrbog47xrR16fzIwjpi9unKDLui
- aR0Nlz7npyIHCKI027lprGb03Vthb28ESB3pKFtgFVS0n+0i3IQoYi1r6N+ruhf3w5bkBNcz+FI
- +c9R5D/Ogiiqkhbg7uWp4AXzLHzVLz1w9lJX4POplTXGw2QDrxz+/HFPBRpf0IpM8JulzoL0M8N
- yIhKWbkyLK1WgAxlXaBzg/2TqT5d/tIPZwYKpVqHU3P1Awbvo16oHAG46eWbPHFOb11JHYo5lXj
- ymqiv2zBdURIQK+VK6inlddEI6qo4ZiIHSFAxYcapjiUerVkqlD0EKUd4Fgy9mA1uo3TNHEOJMA
- sKICe6Mq5Gaa8oYHRxjlvG9GoPIBMnUbq2gNynmXRe5L/cuA9rNbAGqTmEoNIsvC0yNF5yAiCAL
- 74NgGmgSHzbaAYhdxrBqC1vHxRwoBPZAAwsv1ayzKxZHsfPwcrgG4oF7Ur2mZ+M8zSm091A4JD+
- wYFzd2DBiwiGY6g==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241230053806.GA129354@ax162>
 
-From: Paolo Abeni <pabeni@redhat.com>
+On Sun, Dec 29, 2024 at 10:38:06PM -0700, Nathan Chancellor wrote:
+> Hi John,
+> 
+> On Sat, Dec 28, 2024 at 11:21:27AM +0000, John Rowley wrote:
+> > Hi, I'm experiencing UBSAN array-index-out-of-bounds errors while using
+> > my Framework 13" AMD laptop with its Mediatek MT7922 wifi adapter
+> > (mt7921e).
+> > 
+> > It seems to happen only once on boot, and occurs with both kernel
+> > versions 6.12.7 and 6.13-rc4, both compiled from vanilla upstream kernel 
+> > sources on Fedora 41 using the kernel.org LLVM toolchain (19.1.6).
+> > 
+> > I can try some other kernel series if necessary, and also a bisect if I
+> > find a working version, but that may take me a while.
+> 
+> This looks related to UBSAN_BOUNDS and the fact that version of clang
+> supports the __counted_by attribute. I do not have much time at the
+> moment to look at this but I have added Kees, Gustavo, and
+> linux-hardening for further analysis.
+> 
+> Cheers,
+> Nathan
+> 
+> > I wasn't sure if I should mark this as a regression, as I'm not sure
+> > which/if there is a working kernel version at this point.
+> > 
+> > Thanks.
+> > 
+> > ----
+> > 
+> > [   17.754417] UBSAN: array-index-out-of-bounds in /data/linux/net/wireless/scan.c:766:2
+> > [   17.754423] index 0 is out of range for type 'struct ieee80211_channel *[] __counted_by(n_channels)' (aka 'struct ieee80211_channel *[]')
 
-Currently the skb size after coalescing is only limited by the skb
-layout (the skb must not carry frag_list). A single coalesced skb
-covering several MSS can potentially fill completely the receive
-buffer. In such a case, the snd win will zero until the receive buffer
-will be empty again, affecting tput badly.
+This is this line:
 
-Fixes: 8268ed4c9d19 ("mptcp: introduce and use mptcp_try_coalesce()")
-Cc: stable@vger.kernel.org # please delay 2 weeks after 6.13-final release
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 1 +
- 1 file changed, 1 insertion(+)
+        request->channels[n_channels] = chan;
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 5307fff9d995309591ed742801350078db519f79..1b2e7cbb577fc26280f31e58adceb36987112f54 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -136,6 +136,7 @@ static bool mptcp_try_coalesce(struct sock *sk, struct sk_buff *to,
- 	int delta;
+and later:
+
+        request->n_channels++;
+
+Patch should be:
+
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 1c6fd45aa809..ccdbeb604639 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -763,12 +763,11 @@ static  void cfg80211_scan_req_add_chan(struct cfg80211_scan_request *request,
+ 		}
+ 	}
  
- 	if (MPTCP_SKB_CB(from)->offset ||
-+	    ((to->len + from->len) > (sk->sk_rcvbuf >> 3)) ||
- 	    !skb_try_coalesce(to, from, &fragstolen, &delta))
- 		return false;
++	request->n_channels++;
+ 	request->channels[n_channels] = chan;
+ 	if (add_to_6ghz)
+ 		request->scan_6ghz_params[request->n_6ghz_params].channel_idx =
+ 			n_channels;
+-
+-	request->n_channels++;
+ }
  
+ static bool cfg80211_find_ssid_match(struct cfg80211_colocated_ap *ap,
+
 
 -- 
-2.47.1
-
+Kees Cook
 
