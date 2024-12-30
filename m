@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8439FE897
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A069FE835
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31B6D3A25CA
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 889717A0549
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5028B1531C4;
-	Mon, 30 Dec 2024 15:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984231537C8;
+	Mon, 30 Dec 2024 15:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CotT5/J0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFnf/ESq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDD315E8B;
-	Mon, 30 Dec 2024 15:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FB815E8B;
+	Mon, 30 Dec 2024 15:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574209; cv=none; b=rPgUKWRPTN+fG8qm+ulTcr1U6f1McydglvcFDyoamuX0qr04ULd0YAsAERkt8aghxJirgnp4kLxeOcWNOZS93pto1d5ICWZZpHI4zMY91MfuARAa+EnAwLOJbDT1NPQ6KxjWrI+YvGHNWDp0fWd4oM/xbQ+ik8qjIQ5z+coSGDw=
+	t=1735573878; cv=none; b=FX+jZKVbVfqewwAHqaTozwVvRNtsviQev7Pf+3Vpe4Dy5FGkCEE1CrtNOHgyuXWjt3yA7Uda8vkWW1tnBT2tvF2miRFGHve33RrOHXMxgt/Gik6/CAPVA6rEc2hinkw9CVf38L0G8mAAEi0VA70G3mUL1eLl0zyvCAvlw8uBaX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574209; c=relaxed/simple;
-	bh=pzTbLDdha45kJSBnweAJa0irnAfkyp1i8Ru2gFHqe28=;
+	s=arc-20240116; t=1735573878; c=relaxed/simple;
+	bh=cR1Cu08x5fmidnx2ymX7qr1Xr0xxK3yx5ihNpFHkLu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvP5e2DuQhmYqB93LzDN+WL3k7bVj7wC67sAMLKGq95Jc72XtnBKPRkzcC/U4897uPhnsACM0pvK738uu5TkqdZZxK6gdvbv1hiOwdZDJVHRiwdJi7XlqX4nZskcDwOO8HCAih6pCIyl67dBlZbcIkZ4b6NoYm71f5HMCI87BJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CotT5/J0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEC7C4CED0;
-	Mon, 30 Dec 2024 15:56:48 +0000 (UTC)
+	 MIME-Version; b=E04ZKVTJ7f2tPsE5homA48rfOZyQplfJyhhNGhbhUVJfJqazc2DYlnNBDaRFUq7yBk3ITXCSd7RCHRfGdzkz9dLOCUgeMc7r0kkbRnpaVpmHJ9KiL5cFv+8o6LgFqxP6I6prGnvkBUeqwi4z7LoJqmds7iz0J14bOFSPfDIiNmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFnf/ESq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFBFC4CED0;
+	Mon, 30 Dec 2024 15:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574208;
-	bh=pzTbLDdha45kJSBnweAJa0irnAfkyp1i8Ru2gFHqe28=;
+	s=korg; t=1735573878;
+	bh=cR1Cu08x5fmidnx2ymX7qr1Xr0xxK3yx5ihNpFHkLu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CotT5/J0SIY8ScNXE97SBq+4X2MLJycO4tOR5TqUOErrrmHBKbYpYO/A5am53qPgF
-	 XWkVIZbv5RV/nnlKjVssrulk168yD6bqwv/Ck9s1/6pGQJUswB6aXF3XHXKY2evIgT
-	 s7z84xrH6Vu+kThuWOMyAsyJU0QUL4bAqCMbDoE4=
+	b=PFnf/ESqvIFOlSnpCfQrKtj5LJt3lGicWqWXUCgCRduwfmcT0/xlFxAfuRvFIF3gK
+	 RHm2jxKPKB45XpULDMepgEEmT9cZRS1Ib6qxnk58Am514IJgKTQH18GmM5JZhJ/lgV
+	 cST/Zzuw8HiaZHz+Nog8d68vGZPPhsr1ZDONrvdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	David Belanger <david.belanger@amd.com>,
+	Frank Min <frank.min@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/114] scsi: mpi3mr: Start controller indexing from 0
-Date: Mon, 30 Dec 2024 16:43:06 +0100
-Message-ID: <20241230154220.754152477@linuxfoundation.org>
+Subject: [PATCH 6.6 59/86] drm/amdgpu/hdp4.0: do a posting read when flushing HDP
+Date: Mon, 30 Dec 2024 16:43:07 +0100
+Message-ID: <20241230154213.964009022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 0d32014f1e3e7a7adf1583c45387f26b9bb3a49d ]
+[ Upstream commit c9b8dcabb52afe88413ff135a0953e3cc4128483 ]
 
-Instead of displaying the controller index starting from '1' make the
-driver display the controller index starting from '0'.
+Need to read back to make sure the write goes through.
 
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20241110194405.10108-4-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: David Belanger <david.belanger@amd.com>
+Reviewed-by: Frank Min <frank.min@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_os.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 5f2f67acf8bf..1bef88130d0c 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -5215,7 +5215,7 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c b/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
+index bbc6806d0f2b..30210613dc5c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
+@@ -40,10 +40,12 @@
+ static void hdp_v4_0_flush_hdp(struct amdgpu_device *adev,
+ 				struct amdgpu_ring *ring)
+ {
+-	if (!ring || !ring->funcs->emit_wreg)
++	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+-	else
++		RREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
++	} else {
+ 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
++	}
+ }
  
- 	mrioc = shost_priv(shost);
--	retval = ida_alloc_range(&mrioc_ida, 1, U8_MAX, GFP_KERNEL);
-+	retval = ida_alloc_range(&mrioc_ida, 0, U8_MAX, GFP_KERNEL);
- 	if (retval < 0)
- 		goto id_alloc_failed;
- 	mrioc->id = (u8)retval;
+ static void hdp_v4_0_invalidate_hdp(struct amdgpu_device *adev,
+@@ -53,11 +55,13 @@ static void hdp_v4_0_invalidate_hdp(struct amdgpu_device *adev,
+ 	    adev->ip_versions[HDP_HWIP][0] == IP_VERSION(4, 4, 2))
+ 		return;
+ 
+-	if (!ring || !ring->funcs->emit_wreg)
++	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32_SOC15_NO_KIQ(HDP, 0, mmHDP_READ_CACHE_INVALIDATE, 1);
+-	else
++		RREG32_SOC15_NO_KIQ(HDP, 0, mmHDP_READ_CACHE_INVALIDATE);
++	} else {
+ 		amdgpu_ring_emit_wreg(ring, SOC15_REG_OFFSET(
+ 			HDP, 0, mmHDP_READ_CACHE_INVALIDATE), 1);
++	}
+ }
+ 
+ static void hdp_v4_0_query_ras_error_count(struct amdgpu_device *adev,
 -- 
 2.39.5
 
