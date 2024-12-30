@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDF89FE7FA
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8439FE897
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9021B160B98
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31B6D3A25CA
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A50F2AE68;
-	Mon, 30 Dec 2024 15:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5028B1531C4;
+	Mon, 30 Dec 2024 15:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YM6haPmy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CotT5/J0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2850515E8B;
-	Mon, 30 Dec 2024 15:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDD315E8B;
+	Mon, 30 Dec 2024 15:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573681; cv=none; b=o6i5VtpNPMlzrgjmav1f/eF1b5QeF7qGw9l5fGZoRV5yvVZFUkE0BJXsvN5guP1EbqPAayFIo3R166U2G6SfhNPSIfsA74QkkeJQw/82auzdUl9wLqwBtp+l9uZZ0AvGKOelUG1lV2lAq4RB/Hu9ub0MrGmagydhWnY6ba7rihY=
+	t=1735574209; cv=none; b=rPgUKWRPTN+fG8qm+ulTcr1U6f1McydglvcFDyoamuX0qr04ULd0YAsAERkt8aghxJirgnp4kLxeOcWNOZS93pto1d5ICWZZpHI4zMY91MfuARAa+EnAwLOJbDT1NPQ6KxjWrI+YvGHNWDp0fWd4oM/xbQ+ik8qjIQ5z+coSGDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573681; c=relaxed/simple;
-	bh=ubCB6IjGZCMb1jj36pci88VWET6AkTAhd0Cq0o4fGtI=;
+	s=arc-20240116; t=1735574209; c=relaxed/simple;
+	bh=pzTbLDdha45kJSBnweAJa0irnAfkyp1i8Ru2gFHqe28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEc0mhy2okEva8zLyP9bVV054d34xWVMpoJXnXWi1MH/8HyiIDpod2MmsY7xKSUhfhaq7kcBRVFfaFLLSEZUYACTh2DtKVCNQ2AhtiNFWSDDQX9qNn4yxi0qzL69C8jIym/1DOn9Lq9N73iJVbqqHKoRpPx6hIPKSgZv6dH0vX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YM6haPmy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DB6C4CED0;
-	Mon, 30 Dec 2024 15:48:00 +0000 (UTC)
+	 MIME-Version; b=RvP5e2DuQhmYqB93LzDN+WL3k7bVj7wC67sAMLKGq95Jc72XtnBKPRkzcC/U4897uPhnsACM0pvK738uu5TkqdZZxK6gdvbv1hiOwdZDJVHRiwdJi7XlqX4nZskcDwOO8HCAih6pCIyl67dBlZbcIkZ4b6NoYm71f5HMCI87BJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CotT5/J0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEC7C4CED0;
+	Mon, 30 Dec 2024 15:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573681;
-	bh=ubCB6IjGZCMb1jj36pci88VWET6AkTAhd0Cq0o4fGtI=;
+	s=korg; t=1735574208;
+	bh=pzTbLDdha45kJSBnweAJa0irnAfkyp1i8Ru2gFHqe28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YM6haPmyqSPDg42OZWcLjKIsu9+3Pprtwl/1snrfSTytT1bPT2qayIuS4NXHWjfxp
-	 sKUBxutyv/k6BoOgm7SSq/9sOifPnJAPFN2F00DHFQjY+P+qG2vV88BoA6hkUt184k
-	 2ZVzcx2pANDSddvCKhaZR2tK2BM9goOPy827ieZA=
+	b=CotT5/J0SIY8ScNXE97SBq+4X2MLJycO4tOR5TqUOErrrmHBKbYpYO/A5am53qPgF
+	 XWkVIZbv5RV/nnlKjVssrulk168yD6bqwv/Ck9s1/6pGQJUswB6aXF3XHXKY2evIgT
+	 s7z84xrH6Vu+kThuWOMyAsyJU0QUL4bAqCMbDoE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 56/60] btrfs: avoid monopolizing a core when activating a swap file
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 069/114] scsi: mpi3mr: Start controller indexing from 0
 Date: Mon, 30 Dec 2024 16:43:06 +0100
-Message-ID: <20241230154209.407802096@linuxfoundation.org>
+Message-ID: <20241230154220.754152477@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit 2c8507c63f5498d4ee4af404a8e44ceae4345056 upstream.
+[ Upstream commit 0d32014f1e3e7a7adf1583c45387f26b9bb3a49d ]
 
-During swap activation we iterate over the extents of a file and we can
-have many thousands of them, so we can end up in a busy loop monopolizing
-a core. Avoid this by doing a voluntary reschedule after processing each
-extent.
+Instead of displaying the controller index starting from '1' make the
+driver display the controller index starting from '0'.
 
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20241110194405.10108-4-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -7387,6 +7387,8 @@ noinline int can_nocow_extent(struct ino
- 			ret = -EAGAIN;
- 			goto out;
- 		}
-+
-+		cond_resched();
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 5f2f67acf8bf..1bef88130d0c 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -5215,7 +5215,7 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
  	}
  
- 	if (orig_start)
+ 	mrioc = shost_priv(shost);
+-	retval = ida_alloc_range(&mrioc_ida, 1, U8_MAX, GFP_KERNEL);
++	retval = ida_alloc_range(&mrioc_ida, 0, U8_MAX, GFP_KERNEL);
+ 	if (retval < 0)
+ 		goto id_alloc_failed;
+ 	mrioc->id = (u8)retval;
+-- 
+2.39.5
+
 
 
 
