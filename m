@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-106334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334179FE7E7
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAFF9FE829
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BA681882EEF
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11BD63A24E6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D6714F136;
-	Mon, 30 Dec 2024 15:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66AC1537C8;
+	Mon, 30 Dec 2024 15:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQHXzPff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALSRnwQn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316442594B6;
-	Mon, 30 Dec 2024 15:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE7A15E8B;
+	Mon, 30 Dec 2024 15:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573617; cv=none; b=moph935LdugQvvmLGy8wdcu09mkZQqncQxu2jv3k/SbZZ8X7GfzgMxHVGvIaeOCycX6Nw+FfvIo+gBIAlOQRXJ+qJ4z0STdwagFPKIjkmubNA+xSJfiB7QkveayRzsFCSW44wtP5vlcIMd9zKvyMbQtJ2OVEzyxvdZtPJLTDQ6Y=
+	t=1735573841; cv=none; b=sSSefrtTxQPGj22jxzcijtz4oD89kkuTVnUtVc2sRYiiIwrBAzptQcZVtapk+NEvB7D2eUkRCtqBKMpO6PDOtUyiBuox/apyRGbN/CBP6WK4gKAw5dyXItu1z/izfHxInS+0CzAodrd4goXlbkLerkKVhhoSG7h53b3THFkU0lE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573617; c=relaxed/simple;
-	bh=YBKW+OGzL/hUdFrpeDXM8dWnr0tUKtWG3sd1LozB2fg=;
+	s=arc-20240116; t=1735573841; c=relaxed/simple;
+	bh=BVnUKsU20NhoQin4Fxh0ljKC0RMutULU2bo7fC8c4v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNXR2Tq1iFYxxajBfjbTae/2N14doHzE2smS/ni0jlC3TzEN7FECYygCDiprgHm8481unG+cKffvSzS3SOKvaRiqHadXDlBEGB/oKi6u+TC2EdCbQgvV72OzPOFElDvr/Lcv1JsTPYiVKt1gWzWIjwP4lICS8mBYtCFImZO5+QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQHXzPff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D64C4CED0;
-	Mon, 30 Dec 2024 15:46:56 +0000 (UTC)
+	 MIME-Version; b=LSTrIVPgL4yh9yFsukpzJoDVpIijJuP73ZNOQYzSB1wOYU1R1IuP1PRNypFArZTg4DZxHa3Vt7ZiH8xxgUQkGa+QZ6Rme7Shp8ki2PHso2tnwtauf0g+hSrBn0HUQaZhqlvh4n6urmLSzMnptjKvLZxlVGOvzi/aTuVloN/Ldk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALSRnwQn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E328AC4CED0;
+	Mon, 30 Dec 2024 15:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573616;
-	bh=YBKW+OGzL/hUdFrpeDXM8dWnr0tUKtWG3sd1LozB2fg=;
+	s=korg; t=1735573841;
+	bh=BVnUKsU20NhoQin4Fxh0ljKC0RMutULU2bo7fC8c4v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQHXzPff+tInSMbKGc+8e0hV1JWS9EspFUvVH7C/Duys4kebuzLm3h+hPl9A9/Jav
-	 lG+m7Nxx/Ah/FReZOXzwiY5aLkJfeZD4WgUftzOeH2tZvUfn6HLy8uyMTyfaog0cUi
-	 6fUVNtDKHYeHT6YEGxifQ9NfXvbmo9IiPm0ftRpI=
+	b=ALSRnwQnNkb2atQ4aki4+vFhhbxq06GBFiGSXVdroXOTJRdAPlgeLPg6CBCrL8Wv3
+	 xD7APxu+wdBNWq2YU63rhDzb2jdIctkVlIWcgkB1HV+t8oH1QepQ420cpU3QBm9nCb
+	 kgsgGlNW3xXojNhTmL0ouFUeSIx//SOVD+EPhcSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Yi Sun <yi.sun@unisoc.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux.dev,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 46/60] pmdomain: core: Add missing put_device()
-Date: Mon, 30 Dec 2024 16:42:56 +0100
-Message-ID: <20241230154209.021648643@linuxfoundation.org>
+Subject: [PATCH 6.6 49/86] virtio-blk: dont keep queue frozen during system suspend
+Date: Mon, 30 Dec 2024 16:42:57 +0100
+Message-ID: <20241230154213.588811782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +68,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit b8f7bbd1f4ecff6d6277b8c454f62bb0a1c6dbe4 ]
+[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
 
-When removing a genpd we don't clean up the genpd->dev correctly. Let's add
-the missing put_device() in genpd_free_data() to fix this.
+Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
+deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
+PM callbacks. And the motivation is to drain inflight IOs before suspending.
 
-Fixes: 401ea1572de9 ("PM / Domain: Add struct device to genpd")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Message-ID: <20241122134207.157283-2-ulf.hansson@linaro.org>
+block layer's queue freeze looks very handy, but it is also easy to cause
+deadlock, such as, any attempt to call into bio_queue_enter() may run into
+deadlock if the queue is frozen in current context. There are all kinds
+of ->suspend() called in suspend context, so keeping queue frozen in the
+whole suspend context isn't one good idea. And Marek reported lockdep
+warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
+
+[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
+
+Given the motivation is to drain in-flight IOs, it can be done by calling
+freeze & unfreeze, meantime restore to previous behavior by keeping queue
+quiesced during suspend.
+
+Cc: Yi Sun <yi.sun@unisoc.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/virtio_blk.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-index e01bb359034b..3c44b0313a10 100644
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -2012,6 +2012,7 @@ static int genpd_alloc_data(struct generic_pm_domain *genpd)
- 
- static void genpd_free_data(struct generic_pm_domain *genpd)
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 997106fe73e4..65a1f1576e55 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -1624,9 +1624,12 @@ static void virtblk_remove(struct virtio_device *vdev)
+ static int virtblk_freeze(struct virtio_device *vdev)
  {
-+	put_device(&genpd->dev);
- 	if (genpd_is_cpu_domain(genpd))
- 		free_cpumask_var(genpd->cpus);
- 	if (genpd->free_states)
+ 	struct virtio_blk *vblk = vdev->priv;
++	struct request_queue *q = vblk->disk->queue;
+ 
+ 	/* Ensure no requests in virtqueues before deleting vqs. */
+-	blk_mq_freeze_queue(vblk->disk->queue);
++	blk_mq_freeze_queue(q);
++	blk_mq_quiesce_queue_nowait(q);
++	blk_mq_unfreeze_queue(q);
+ 
+ 	/* Ensure we don't receive any more interrupts */
+ 	virtio_reset_device(vdev);
+@@ -1650,8 +1653,8 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 		return ret;
+ 
+ 	virtio_device_ready(vdev);
++	blk_mq_unquiesce_queue(vblk->disk->queue);
+ 
+-	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
+ }
+ #endif
 -- 
 2.39.5
 
