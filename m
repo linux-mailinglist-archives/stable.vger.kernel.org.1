@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-106350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF239FE7F8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631F49FE895
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FF9C160E82
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 286BB18831AD
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E6D156678;
-	Mon, 30 Dec 2024 15:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DFE1531C4;
+	Mon, 30 Dec 2024 15:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+I0AH7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kocC7bh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C251531C4;
-	Mon, 30 Dec 2024 15:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A5015E8B;
+	Mon, 30 Dec 2024 15:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573674; cv=none; b=NSGNsBLu7GBki6UvPuGJ/xsr0tcXDR2P45tC/J5r9jSWyQtGovHCqZMbhXgSzpym9S/hnwmNZ4ln1VEiOh+2JB5sE56F0bA5ddYekDA2+kpmd122x2LRZ5Z0P2U7w22Dx0azSi0mV1C+qwwRu0oD283Rw/UWuC8QdNIm1YeZd4c=
+	t=1735574202; cv=none; b=ktJRpn2sByNxqWsYZa0YZL353VRmV+zyyZUlg53ALt9CJAmvD1sXThNnPvw7vNTZw5neEy2MvJj2V3k/u3DxfUxCGns2ZGLOPbaR3IM10gUa3dwooiCisWluFeqvMAy76L9f9OBPX141GcN48emlqOKqm/fbIE5UfMcoMflopcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573674; c=relaxed/simple;
-	bh=YQZnvAb1Cssi39EfNztOisguG9Q9NB4Z0jIMtldMq40=;
+	s=arc-20240116; t=1735574202; c=relaxed/simple;
+	bh=kdVdRFH1EhmZ3GgSxwGiADriWYXhovL5NNGK3gCTXos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWiHO0YYFGfpppzGM7DqdrX++QcMIL/ILYDttWp4qMKCfsVQM8pLac8vfn+iFoAr2Htc092fysaMtUNMLinU+dN19po5HCNtk65akEEZnLd1ilJG85btGMJ7sXwX6COBDWwZXacumTuLTHDHmySklL47cQtQlBYoi2IA+wBvYg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+I0AH7N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99128C4CED0;
-	Mon, 30 Dec 2024 15:47:53 +0000 (UTC)
+	 MIME-Version; b=XJ7ebppidGmI92LLR6TgIT5mq07rdjc2izM2P5ivBsJVvNMAQSkjzTY10L2l1y2JAnsmPYsfP+6HS5IKSgoxyRH0yxoi0JOlnmtfXV5KanLzp4WDAOtYoGtRlfkWUx+aCc3AytuwB9gtmqnvys+zTKrlxC5bezdhg8wxetA+kLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kocC7bh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D74C4CED0;
+	Mon, 30 Dec 2024 15:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573674;
-	bh=YQZnvAb1Cssi39EfNztOisguG9Q9NB4Z0jIMtldMq40=;
+	s=korg; t=1735574202;
+	bh=kdVdRFH1EhmZ3GgSxwGiADriWYXhovL5NNGK3gCTXos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+I0AH7NANFpgx1z77FHM4gtITZ+ARWxhXlBrySgoj7v3j69VFUeprSdUSrpKICuL
-	 RNiFCClbt0joTs8/NYhs/Dm1vqVO3LhjuRdPOfLMCSybbTMK968a++kVwoZKIyi1OU
-	 GCpr4c5kUkPVrfH8ovuocb5ZZkxIE+UKK+3hJvZ8=
+	b=kocC7bh0UWIHIhxYQJzdRW/BVMWgVKcsWF9kNyjDJrvX3sH7WK5dcexJSGn6RVhsw
+	 5ggQRB9JWIwVBY/e3oIaVunVtitk5LFfjXIXrSYiw0qY+NmHw26RcTd1Z/1Lw4tD3C
+	 Tf0TOIQEmhbJw6T0M15VPnLfdDzW+8xhM0y3l8EM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 54/60] i2c: microchip-core: fix "ghost" detections
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 067/114] scsi: mpi3mr: Synchronize access to ioctl data buffer
 Date: Mon, 30 Dec 2024 16:43:04 +0100
-Message-ID: <20241230154209.326880648@linuxfoundation.org>
+Message-ID: <20241230154220.680330108@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit 49e1f0fd0d4cb03a16b8526c4e683e1958f71490 upstream.
+[ Upstream commit 367ac16e5ff2dcd6b7f00a8f94e6ba98875cb397 ]
 
-Running i2c-detect currently produces an output akin to:
-    0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-00:                         08 -- 0a -- 0c -- 0e --
-10: 10 -- 12 -- 14 -- 16 -- UU 19 -- 1b -- 1d -- 1f
-20: -- 21 -- 23 -- 25 -- 27 -- 29 -- 2b -- 2d -- 2f
-30: -- -- -- -- -- -- -- -- 38 -- 3a -- 3c -- 3e --
-40: 40 -- 42 -- 44 -- 46 -- 48 -- 4a -- 4c -- 4e --
-50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-60: 60 -- 62 -- 64 -- 66 -- 68 -- 6a -- 6c -- 6e --
-70: 70 -- 72 -- 74 -- 76 --
+The driver serializes ioctls through a mutex lock but access to the
+ioctl data buffer is not guarded by the mutex. This results in multiple
+user threads being able to write to the driver's ioctl buffer
+simultaneously.
 
-This happens because for an i2c_msg with a len of 0 the driver will
-mark the transmission of the message as a success once the START has
-been sent, without waiting for the devices on the bus to respond with an
-ACK/NAK. Since i2cdetect seems to run in a tight loop over all addresses
-the NAK is treated as part of the next test for the next address.
+Protect the ioctl buffer with the ioctl mutex.
 
-Delete the fast path that marks a message as complete when idev->msg_len
-is zero after sending a START/RESTART since this isn't a valid scenario.
-
-CC: stable@vger.kernel.org
-Fixes: 64a6f1c4987e ("i2c: add support for microchip fpga i2c controllers")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20241218-outbid-encounter-b2e78b1cc707@spud
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20241110194405.10108-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-microchip-corei2c.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_app.c | 36 ++++++++++++++++++++++----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
---- a/drivers/i2c/busses/i2c-microchip-corei2c.c
-+++ b/drivers/i2c/busses/i2c-microchip-corei2c.c
-@@ -287,8 +287,6 @@ static irqreturn_t mchp_corei2c_handle_i
- 		ctrl &= ~CTRL_STA;
- 		writeb(idev->addr, idev->base + CORE_I2C_DATA);
- 		writeb(ctrl, idev->base + CORE_I2C_CTRL);
--		if (idev->msg_len == 0)
--			finished = true;
- 		break;
- 	case STATUS_M_ARB_LOST:
- 		idev->msg_err = -EAGAIN;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
+index 01f035f9330e..10b8e4dc64f8 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -2329,6 +2329,15 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 	if (!mrioc)
+ 		return -ENODEV;
+ 
++	if (mutex_lock_interruptible(&mrioc->bsg_cmds.mutex))
++		return -ERESTARTSYS;
++
++	if (mrioc->bsg_cmds.state & MPI3MR_CMD_PENDING) {
++		dprint_bsg_err(mrioc, "%s: command is in use\n", __func__);
++		mutex_unlock(&mrioc->bsg_cmds.mutex);
++		return -EAGAIN;
++	}
++
+ 	if (!mrioc->ioctl_sges_allocated) {
+ 		dprint_bsg_err(mrioc, "%s: DMA memory was not allocated\n",
+ 			       __func__);
+@@ -2339,13 +2348,16 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 		karg->timeout = MPI3MR_APP_DEFAULT_TIMEOUT;
+ 
+ 	mpi_req = kzalloc(MPI3MR_ADMIN_REQ_FRAME_SZ, GFP_KERNEL);
+-	if (!mpi_req)
++	if (!mpi_req) {
++		mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 		return -ENOMEM;
++	}
+ 	mpi_header = (struct mpi3_request_header *)mpi_req;
+ 
+ 	bufcnt = karg->buf_entry_list.num_of_entries;
+ 	drv_bufs = kzalloc((sizeof(*drv_bufs) * bufcnt), GFP_KERNEL);
+ 	if (!drv_bufs) {
++		mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 		rval = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -2353,6 +2365,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 	dout_buf = kzalloc(job->request_payload.payload_len,
+ 				      GFP_KERNEL);
+ 	if (!dout_buf) {
++		mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 		rval = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -2360,6 +2373,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 	din_buf = kzalloc(job->reply_payload.payload_len,
+ 				     GFP_KERNEL);
+ 	if (!din_buf) {
++		mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 		rval = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -2435,6 +2449,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 					(mpi_msg_size > MPI3MR_ADMIN_REQ_FRAME_SZ)) {
+ 				dprint_bsg_err(mrioc, "%s: invalid MPI message size\n",
+ 					__func__);
++				mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 				rval = -EINVAL;
+ 				goto out;
+ 			}
+@@ -2447,6 +2462,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 		if (invalid_be) {
+ 			dprint_bsg_err(mrioc, "%s: invalid buffer entries passed\n",
+ 				__func__);
++			mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 			rval = -EINVAL;
+ 			goto out;
+ 		}
+@@ -2454,12 +2470,14 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 		if (sgl_dout_iter > (dout_buf + job->request_payload.payload_len)) {
+ 			dprint_bsg_err(mrioc, "%s: data_out buffer length mismatch\n",
+ 				       __func__);
++			mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 			rval = -EINVAL;
+ 			goto out;
+ 		}
+ 		if (sgl_din_iter > (din_buf + job->reply_payload.payload_len)) {
+ 			dprint_bsg_err(mrioc, "%s: data_in buffer length mismatch\n",
+ 				       __func__);
++			mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 			rval = -EINVAL;
+ 			goto out;
+ 		}
+@@ -2472,6 +2490,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 		dprint_bsg_err(mrioc, "%s:%d: invalid data transfer size passed for function 0x%x din_size = %d, dout_size = %d\n",
+ 			       __func__, __LINE__, mpi_header->function, din_size,
+ 			       dout_size);
++		mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 		rval = -EINVAL;
+ 		goto out;
+ 	}
+@@ -2480,6 +2499,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 		dprint_bsg_err(mrioc,
+ 		    "%s:%d: invalid data transfer size passed for function 0x%x din_size=%d\n",
+ 		    __func__, __LINE__, mpi_header->function, din_size);
++		mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 		rval = -EINVAL;
+ 		goto out;
+ 	}
+@@ -2487,6 +2507,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 		dprint_bsg_err(mrioc,
+ 		    "%s:%d: invalid data transfer size passed for function 0x%x dout_size = %d\n",
+ 		    __func__, __LINE__, mpi_header->function, dout_size);
++		mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 		rval = -EINVAL;
+ 		goto out;
+ 	}
+@@ -2497,6 +2518,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 			dprint_bsg_err(mrioc, "%s:%d: invalid message size passed:%d:%d:%d:%d\n",
+ 				       __func__, __LINE__, din_cnt, dout_cnt, din_size,
+ 			    dout_size);
++			mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 			rval = -EINVAL;
+ 			goto out;
+ 		}
+@@ -2544,6 +2566,7 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 				continue;
+ 			if (mpi3mr_map_data_buffer_dma(mrioc, drv_buf_iter, desc_count)) {
+ 				rval = -ENOMEM;
++				mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 				dprint_bsg_err(mrioc, "%s:%d: mapping data buffers failed\n",
+ 					       __func__, __LINE__);
+ 			goto out;
+@@ -2556,20 +2579,11 @@ static long mpi3mr_bsg_process_mpt_cmds(struct bsg_job *job)
+ 		sense_buff_k = kzalloc(erbsz, GFP_KERNEL);
+ 		if (!sense_buff_k) {
+ 			rval = -ENOMEM;
++			mutex_unlock(&mrioc->bsg_cmds.mutex);
+ 			goto out;
+ 		}
+ 	}
+ 
+-	if (mutex_lock_interruptible(&mrioc->bsg_cmds.mutex)) {
+-		rval = -ERESTARTSYS;
+-		goto out;
+-	}
+-	if (mrioc->bsg_cmds.state & MPI3MR_CMD_PENDING) {
+-		rval = -EAGAIN;
+-		dprint_bsg_err(mrioc, "%s: command is in use\n", __func__);
+-		mutex_unlock(&mrioc->bsg_cmds.mutex);
+-		goto out;
+-	}
+ 	if (mrioc->unrecoverable) {
+ 		dprint_bsg_err(mrioc, "%s: unrecoverable controller\n",
+ 		    __func__);
+-- 
+2.39.5
+
 
 
 
