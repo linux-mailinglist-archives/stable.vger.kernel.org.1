@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-106480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED3D9FE87F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469B19FE7D9
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F52C7A16B2
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42F327A1515
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617E8156678;
-	Mon, 30 Dec 2024 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44891AB6C8;
+	Mon, 30 Dec 2024 15:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLo9tKEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Al3FZzUT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F94415E8B;
-	Mon, 30 Dec 2024 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733B215E8B;
+	Mon, 30 Dec 2024 15:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574127; cv=none; b=YoFHXT9U5JpC5GqcFryWBVEVUEg/qVrRN99FrFK99dwlrEOrK5Q7FsHhEcKIJjkMg1HZBG4ceULHRdHBYsxY6pa3qWzX+9e8f7grFpzR4ZbNp1TAnVD1Nn1KhRMqVBprImi7PWKp4rtKwEgmDkdZdc1hPVy5EXUKoo/YS4ry+DQ=
+	t=1735573567; cv=none; b=nYMkVttHnEYIzFyGbsu4aWm0dGKN11w1IgsxsyHpA4Tr4qtJVSYnoAdGgp/og1eUuar2quhlTaNeBWN4ApvLv6brLAfhx89ufBVk72idrGeA6nZLFo9Y0eGnyQnqByoALkIxwzs8eC1P4x0TxUP/D7yoPQWjXF7GVmipihKvmb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574127; c=relaxed/simple;
-	bh=nEHTNOy02nRtHq7IGjipe9Uf4f+CIByO9JOz9GZtjZ4=;
+	s=arc-20240116; t=1735573567; c=relaxed/simple;
+	bh=pFhxoIbhklERn/yIEFdWsyfc1/xy0hHMGMb2IUxkYRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMXjCjqsv2cMbfdOgvq7XBgz/zEUJZKKsg8XtVZ7tTBOGVlOpUzxXKSgWSlYSfYCEbre55Vi2imRmLpY+UD6s++2Js3mjrzqCtS6o3M3Q0unpHEe3VI1LHUY4FPVnO4j4G4aQJjv/ZWsA4igtcseZk5doxFNWGLP0xiHvWVIlIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLo9tKEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8130DC4CED0;
-	Mon, 30 Dec 2024 15:55:26 +0000 (UTC)
+	 MIME-Version; b=MxRMCSzsRgs6yG6Oy6k0gSRPQBpfs0OiJlzbQV7CLqu25OXmcQtXfVTfMIjXZbLWZx98fvMvbNAAKKbFiqUn3S9ASvjcA/67GqIRb676ZtY6h7Q1f0wYV9F2Dk0Rf9oO0OSVG+K7Cafbiv4IKqUH1dO4HClFDTi2L3FMfjHFlFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Al3FZzUT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901BFC4CED0;
+	Mon, 30 Dec 2024 15:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574127;
-	bh=nEHTNOy02nRtHq7IGjipe9Uf4f+CIByO9JOz9GZtjZ4=;
+	s=korg; t=1735573567;
+	bh=pFhxoIbhklERn/yIEFdWsyfc1/xy0hHMGMb2IUxkYRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLo9tKEyl7LfPAqPEZFSnK5V0ACSw7K3y+AbbuHUPG0Y6FHVtHj6q9e3hXlg50fjw
-	 FNqgBQPFnKbb56Rya6OUi0s96zhizP7RZ4Q9as8uSoNm9ZALLap63vi1I816x1V8F5
-	 Nil/CRgEq++5RsNxx6LLKf3PsKT88zVYHyFDhgRU=
+	b=Al3FZzUT8o5Infkkbk3yh2owbMGkGpByV34Vbgl0NFPPRs0nZr97rZ+F5kS4D2Ltk
+	 wuTziplZ0zilsxVtqqDeZw/kucHvS8khs8qJ5AcWQ6HUEfgIFjZTaPagK0CtfwJ54K
+	 GqeqlGA23wMIopDDyr7ejSjuXS876RIRhmT/rmv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Ferris <cferris@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Kees Cook <kees@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/114] stddef: make __struct_group() UAPI C++-friendly
-Date: Mon, 30 Dec 2024 16:42:41 +0100
-Message-ID: <20241230154219.754447487@linuxfoundation.org>
+Subject: [PATCH 6.1 32/60] regmap: Use correct format specifier for logging range errors
+Date: Mon, 30 Dec 2024 16:42:42 +0100
+Message-ID: <20241230154208.500926993@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 724c6ce38bbaeb4b3f109b0e066d6c0ecd15446c ]
+[ Upstream commit 3f1aa0c533d9dd8a835caf9a6824449c463ee7e2 ]
 
-For the most part of the C++ history, it couldn't have type
-declarations inside anonymous unions for different reasons. At the
-same time, __struct_group() relies on the latters, so when the @TAG
-argument is not empty, C++ code doesn't want to build (even under
-`extern "C"`):
+The register addresses are unsigned ints so we should use %u not %d to
+log them.
 
-../linux/include/uapi/linux/pkt_cls.h:25:24: error:
-'struct tc_u32_sel::<unnamed union>::tc_u32_sel_hdr,' invalid;
-an anonymous union may only have public non-static data members
-[-fpermissive]
-
-The safest way to fix this without trying to switch standards (which
-is impossible in UAPI anyway) etc., is to disable tag declaration
-for that language. This won't break anything since for now it's not
-buildable at all.
-Use a separate definition for __struct_group() when __cplusplus is
-defined to mitigate the error, including the version from tools/.
-
-Fixes: 50d7bd38c3aa ("stddef: Introduce struct_group() helper macro")
-Reported-by: Christopher Ferris <cferris@google.com>
-Closes: https://lore.kernel.org/linux-hardening/Z1HZpe3WE5As8UAz@google.com
-Suggested-by: Kees Cook <kees@kernel.org> # __struct_group_tag()
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20241219135734.2130002-1-aleksander.lobakin@intel.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20241127-regmap-test-high-addr-v1-1-74a48a9e0dc5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/stddef.h       | 13 ++++++++++---
- tools/include/uapi/linux/stddef.h | 15 +++++++++++----
- 2 files changed, 21 insertions(+), 7 deletions(-)
+ drivers/base/regmap/regmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
-index 58154117d9b0..a6fce46aeb37 100644
---- a/include/uapi/linux/stddef.h
-+++ b/include/uapi/linux/stddef.h
-@@ -8,6 +8,13 @@
- #define __always_inline inline
- #endif
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index c822af48d2c9..8748cea3bc38 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1155,13 +1155,13 @@ struct regmap *__regmap_init(struct device *dev,
  
-+/* Not all C++ standards support type declarations inside an anonymous union */
-+#ifndef __cplusplus
-+#define __struct_group_tag(TAG)		TAG
-+#else
-+#define __struct_group_tag(TAG)
-+#endif
-+
- /**
-  * __struct_group() - Create a mirrored named and anonyomous struct
-  *
-@@ -20,13 +27,13 @@
-  * and size: one anonymous and one named. The former's members can be used
-  * normally without sub-struct naming, and the latter can be used to
-  * reason about the start, end, and size of the group of struct members.
-- * The named struct can also be explicitly tagged for layer reuse, as well
-- * as both having struct attributes appended.
-+ * The named struct can also be explicitly tagged for layer reuse (C only),
-+ * as well as both having struct attributes appended.
-  */
- #define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
- 	union { \
- 		struct { MEMBERS } ATTRS; \
--		struct TAG { MEMBERS } ATTRS NAME; \
-+		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
- 	} ATTRS
+ 		/* Sanity check */
+ 		if (range_cfg->range_max < range_cfg->range_min) {
+-			dev_err(map->dev, "Invalid range %d: %d < %d\n", i,
++			dev_err(map->dev, "Invalid range %d: %u < %u\n", i,
+ 				range_cfg->range_max, range_cfg->range_min);
+ 			goto err_range;
+ 		}
  
- #ifdef __cplusplus
-diff --git a/tools/include/uapi/linux/stddef.h b/tools/include/uapi/linux/stddef.h
-index bb6ea517efb5..c53cde425406 100644
---- a/tools/include/uapi/linux/stddef.h
-+++ b/tools/include/uapi/linux/stddef.h
-@@ -8,6 +8,13 @@
- #define __always_inline __inline__
- #endif
- 
-+/* Not all C++ standards support type declarations inside an anonymous union */
-+#ifndef __cplusplus
-+#define __struct_group_tag(TAG)		TAG
-+#else
-+#define __struct_group_tag(TAG)
-+#endif
-+
- /**
-  * __struct_group() - Create a mirrored named and anonyomous struct
-  *
-@@ -20,14 +27,14 @@
-  * and size: one anonymous and one named. The former's members can be used
-  * normally without sub-struct naming, and the latter can be used to
-  * reason about the start, end, and size of the group of struct members.
-- * The named struct can also be explicitly tagged for layer reuse, as well
-- * as both having struct attributes appended.
-+ * The named struct can also be explicitly tagged for layer reuse (C only),
-+ * as well as both having struct attributes appended.
-  */
- #define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
- 	union { \
- 		struct { MEMBERS } ATTRS; \
--		struct TAG { MEMBERS } ATTRS NAME; \
--	}
-+		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
-+	} ATTRS
- 
- /**
-  * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
+ 		if (range_cfg->range_max > map->max_register) {
+-			dev_err(map->dev, "Invalid range %d: %d > %d\n", i,
++			dev_err(map->dev, "Invalid range %d: %u > %u\n", i,
+ 				range_cfg->range_max, map->max_register);
+ 			goto err_range;
+ 		}
 -- 
 2.39.5
 
