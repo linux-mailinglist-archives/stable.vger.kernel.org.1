@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70FF9FE87E
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D64B9FE7D6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA7271882ECC
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EC0616201B
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F155537E9;
-	Mon, 30 Dec 2024 15:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D761AAE33;
+	Mon, 30 Dec 2024 15:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8gEbSV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpaqDyHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF90415E8B;
-	Mon, 30 Dec 2024 15:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFBD1AA1E0;
+	Mon, 30 Dec 2024 15:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574123; cv=none; b=U/thOA3bFLzlDLG/aRJuokCkHmfmU3PjfNdZYczpUqa06ZpCOn/UrsTApPLVtkgBAZvIecprEZH8xoxVq896H1tq5q+aBWPSZgD5mhWgCer0wTZffEysemJoisK1mKrHdp+Ucq63MXocbapBhXFISWf4PugRdFkSXh2TdVr5i1k=
+	t=1735573563; cv=none; b=VoM9eMN8fLLbZCrpS8AqBMwt+Zbqzk31FjGbTwjRXF+H6OaeV1tX++kc/y5P4M2HngJCZQAJoroo/4XbB7g+oLxrAINPZMifrpi/xXO1QrSsTG3YFb6wYjamKBNQBgONQuY4rT1RP9Kjhnld7OG8CXhA7ybndgvLBKywORthAfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574123; c=relaxed/simple;
-	bh=fkcBS2NI/7tReThK/Bep3y2xSkENaIg5xvqZUSURmxA=;
+	s=arc-20240116; t=1735573563; c=relaxed/simple;
+	bh=sUGY4VJciUVgPulLt4Uuj8L3NoJpn/4WESWwf7Z7P8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbbxXsBH9Dt8qAsorz5Rt8ZKdkWBimFGT+d94UkSRHGotTD0ZtKQrkvXjBC8tzluxOB1IB7H5hC+9iUL+wbDAnk01fZ82lqd3Qn0N9t9BOxlSjCehu61Dkv7Rk1gmFtwhkHun1+gHxOIGucJ3xKv6snOm8ix/X2RucUVrEadVp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8gEbSV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 228D2C4CED0;
-	Mon, 30 Dec 2024 15:55:22 +0000 (UTC)
+	 MIME-Version; b=IFVtf8m2DebghHULULF102qeHlQ8pZynh8il70YRSx7xi8f5DWA7EEQURwaKvKwRS/PshFj9sINXatULBnRY1YSITFlUgayZi9RhfBudQ3FS6OeFSphxZI/diza7rjmuCvdQ9V90q1RnVghJ8PF3p3f5VJcDXVnGyfXnGmsW9wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpaqDyHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03691C4CED0;
+	Mon, 30 Dec 2024 15:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574123;
-	bh=fkcBS2NI/7tReThK/Bep3y2xSkENaIg5xvqZUSURmxA=;
+	s=korg; t=1735573563;
+	bh=sUGY4VJciUVgPulLt4Uuj8L3NoJpn/4WESWwf7Z7P8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8gEbSV4yUlKnweFz9ZHq1eWSfKk8zpdCab180F6edacGNrbhlR8ZzoS5p7DYkYHl
-	 WgBk+xCLL5EcnKQo21o11bbaSpYK78/ubiiYNljbYkVMaTiJZt/2/8tCHkqqhbDR5S
-	 teVd7X46G5NQ7FCHzlUUK2aC13KFHKpXQ/byBcC0=
+	b=BpaqDyHKaps6ISA97FPXnLpd2p1KuPf873uSPyTnb0ghA9uYTW5qsVJPmfqN8Hkb7
+	 kd+uP81710CpAi/mgElQBfPMwvEXhbE43ubRYEUs8o6fJqhZQbXRDr93XGo2WRAmKK
+	 kDUejnUYQpuH2xUFxRXbHP780dYmYjXK9UuDgrAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/114] power: supply: bq24190: Fix BQ24296 Vbus regulator support
-Date: Mon, 30 Dec 2024 16:42:40 +0100
-Message-ID: <20241230154219.716328045@linuxfoundation.org>
+Subject: [PATCH 6.1 31/60] smb: server: Fix building with GCC 15
+Date: Mon, 30 Dec 2024 16:42:41 +0100
+Message-ID: <20241230154208.464391170@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
 
-[ Upstream commit b3ded6072c5600704cfa3ce3a8dc8718d34bda66 ]
+[ Upstream commit e18655cf35a5958fbf4ae9ca3ebf28871a3a1801 ]
 
-There are 2 issues with bq24296_set_otg_vbus():
+GCC 15 introduces -Werror=unterminated-string-initialization by default,
+this results in the following build error
 
-1. When writing the OTG_CONFIG bit it uses POC_CHG_CONFIG_SHIFT which
-   should be POC_OTG_CONFIG_SHIFT.
+fs/smb/server/smb_common.c:21:35: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-ini
+tialization]
+   21 | static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-2. When turning the regulator off it never turns charging back on. Note
-   this must be done through bq24190_charger_set_charge_type(), to ensure
-   that the charge_type property value of none/trickle/fast is honored.
+To this we are replacing char basechars[43] with a character pointer
+and then using strlen to get the length.
 
-Resolve both issues to fix BQ24296 Vbus regulator support not working.
-
-Fixes: b150a703b56f ("power: supply: bq24190_charger: Add support for BQ24296")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241116203648.169100-2-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq24190_charger.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/smb/server/smb_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/bq24190_charger.c b/drivers/power/supply/bq24190_charger.c
-index 2b393eb5c282..c47f32f152e6 100644
---- a/drivers/power/supply/bq24190_charger.c
-+++ b/drivers/power/supply/bq24190_charger.c
-@@ -567,6 +567,7 @@ static int bq24190_set_otg_vbus(struct bq24190_dev_info *bdi, bool enable)
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index bdcdc0fc9cad..7134abeeb53e 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -18,8 +18,8 @@
+ #include "mgmt/share_config.h"
  
- static int bq24296_set_otg_vbus(struct bq24190_dev_info *bdi, bool enable)
- {
-+	union power_supply_propval val = { .intval = bdi->charge_type };
- 	int ret;
- 
- 	ret = pm_runtime_resume_and_get(bdi->dev);
-@@ -587,13 +588,18 @@ static int bq24296_set_otg_vbus(struct bq24190_dev_info *bdi, bool enable)
- 
- 		ret = bq24190_write_mask(bdi, BQ24190_REG_POC,
- 					 BQ24296_REG_POC_OTG_CONFIG_MASK,
--					 BQ24296_REG_POC_CHG_CONFIG_SHIFT,
-+					 BQ24296_REG_POC_OTG_CONFIG_SHIFT,
- 					 BQ24296_REG_POC_OTG_CONFIG_OTG);
--	} else
-+	} else {
- 		ret = bq24190_write_mask(bdi, BQ24190_REG_POC,
- 					 BQ24296_REG_POC_OTG_CONFIG_MASK,
--					 BQ24296_REG_POC_CHG_CONFIG_SHIFT,
-+					 BQ24296_REG_POC_OTG_CONFIG_SHIFT,
- 					 BQ24296_REG_POC_OTG_CONFIG_DISABLE);
-+		if (ret < 0)
-+			goto out;
-+
-+		ret = bq24190_charger_set_charge_type(bdi, &val);
-+	}
- 
- out:
- 	pm_runtime_mark_last_busy(bdi->dev);
+ /*for shortname implementation */
+-static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
+-#define MANGLE_BASE (sizeof(basechars) / sizeof(char) - 1)
++static const char *basechars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
++#define MANGLE_BASE (strlen(basechars) - 1)
+ #define MAGIC_CHAR '~'
+ #define PERIOD '.'
+ #define mangle(V) ((char)(basechars[(V) % MANGLE_BASE]))
 -- 
 2.39.5
 
