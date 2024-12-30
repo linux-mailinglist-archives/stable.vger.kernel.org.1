@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E589FE7EE
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAE99FE810
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3051882F4A
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35C511881D21
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9B914F136;
-	Mon, 30 Dec 2024 15:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A9742AA6;
+	Mon, 30 Dec 2024 15:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuYPM6I/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBgKvV8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3771A2594B6;
-	Mon, 30 Dec 2024 15:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FDC15E8B;
+	Mon, 30 Dec 2024 15:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573645; cv=none; b=gdQ/KmDTVGEon+zPT98U3LLS/AuKB4z/LFb7jA8O2uVnyjLj7n44Nklxq5WzJzs8pGWvVobQf02WJ9/0lL0fuoB9bX5nxW0hq4hpFYvEzwsJNoIFSJafv48VFrh+IPZwLtNlgO7U0orCwI55+FKOZYrj8PZuSJnXk5UDze5c1H0=
+	t=1735573763; cv=none; b=p10rYZk3I2zTR6u+tHmpIuJ1W5vi9qf6klApYjxiUhsC+WC9Ph1YWLDMad5cz+NCLdisd15LBNesaPUqba4Em7uss6HoxATIL6YHdvDszVWYXWgDkh/pVA4I3SG0IwQgSvgZXRZc3LQybQCyR5l3UPVm8/gHftabamEd5mAHT4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573645; c=relaxed/simple;
-	bh=AA/QYhsQm6mhPUCQRAhvYnjdT6zTvc/DdM+LtZTpDrc=;
+	s=arc-20240116; t=1735573763; c=relaxed/simple;
+	bh=MtpoaPsKOFSzsV2lh//oDuY9baVhzcOTHK+RbAa2r6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcCbYxIoysvaiwDG6yGiUHA2yi22BNsjNFsYP/z3lxCu6R+PZKbli0Kt83Ccp3py+aWVk+EzP5SSe9ynmaqCxbyoogbwk/Yd2gdAgHoGN6jtFhtgtx0DZqmEFcQlVszEAvMehghjmDTYr8TW67JrpKiGNxKKXjYDdXMvzln0TKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuYPM6I/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34EC5C4CED0;
-	Mon, 30 Dec 2024 15:47:23 +0000 (UTC)
+	 MIME-Version; b=P5z4Bbi3VNTgww4T557VsIOqrb2YmjKjflBGSghOJvUmG9WAXOfPNtXP5pQAeifXZFAXqYxuIso2Dyut/fFN4fdOoOU1PSdd1tFqmiqiU9gQNgPaPx2vAgYTIzYJWbEcQuveFafqlbmjhODSEb9+pBVI1NhV7M6obhg+NpvwMYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBgKvV8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328D1C4CED0;
+	Mon, 30 Dec 2024 15:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573644;
-	bh=AA/QYhsQm6mhPUCQRAhvYnjdT6zTvc/DdM+LtZTpDrc=;
+	s=korg; t=1735573763;
+	bh=MtpoaPsKOFSzsV2lh//oDuY9baVhzcOTHK+RbAa2r6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IuYPM6I/L2UutuyKGLfQEuqqAgCocn+rpUYEimkXabNcwlhUVE6J/+HSyD/D8v4zD
-	 lQmi9/kcLi/I2FnBzxSOpNKHxzckIRQ0myTlyzpwTMn7j1jJLxMXdRjVk1JWWFHdHE
-	 7lr1ZlhuChT0W4lcYzFre4BPiFLv6DkfPWbI1cVE=
+	b=FBgKvV8Z757CGz9FKejT1fd7yWjQdSyjIDd8TEjZ5WNaRl2OuqWPADzAeUbZy4+Ts
+	 x6N0aSqNAGiPwfXCWZHiz9MP2qV0ky114mwt1sbzn4CtpRi5kOqllBHFJTDf57h9mB
+	 JNZmDzV+4Uak5KKoIrZsjAjNhGbbLoD/YB9v8h+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 23/60] mtd: rawnand: fix double free in atmel_pmecc_create_user()
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 25/86] dmaengine: fsl-edma: implement the cleanup path of fsl_edma3_attach_pd()
 Date: Mon, 30 Dec 2024 16:42:33 +0100
-Message-ID: <20241230154208.164246821@linuxfoundation.org>
+Message-ID: <20241230154212.678836719@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit d8e4771f99c0400a1873235704b28bb803c83d17 upstream.
+commit ccfa3131d4a0347988e73638edea5c8281b6d2c7 upstream.
 
-The "user" pointer was converted from being allocated with kzalloc() to
-being allocated by devm_kzalloc().  Calling kfree(user) will lead to a
-double free.
+Current implementation of fsl_edma3_attach_pd() does not provide a
+cleanup path, resulting in a memory leak. For example,
+dev_pm_domain_detach() is not called after dev_pm_domain_attach_by_id(),
+and the device link created with the DL_FLAG_STATELESS is not released
+explicitly.
 
-Fixes: 6d734f1bfc33 ("mtd: rawnand: atmel: Fix possible memory leak")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Therefore, provide a cleanup function fsl_edma3_detach_pd() and call it
+upon failure. Also add a devm_add_action_or_reset() call with this
+function after a successful fsl_edma3_attach_pd().
+
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://lore.kernel.org/r/20241221075712.3297200-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/pmecc.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/dma/fsl-edma-common.h |    1 +
+ drivers/dma/fsl-edma-main.c   |   41 ++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 37 insertions(+), 5 deletions(-)
 
---- a/drivers/mtd/nand/raw/atmel/pmecc.c
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.c
-@@ -380,10 +380,8 @@ atmel_pmecc_create_user(struct atmel_pme
- 	user->delta = user->dmu + req->ecc.strength + 1;
+--- a/drivers/dma/fsl-edma-common.h
++++ b/drivers/dma/fsl-edma-common.h
+@@ -151,6 +151,7 @@ struct fsl_edma_chan {
+ 	struct work_struct		issue_worker;
+ 	struct platform_device		*pdev;
+ 	struct device			*pd_dev;
++	struct device_link		*pd_dev_link;
+ 	u32				srcid;
+ 	struct clk			*clk;
+ 	int                             priority;
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -384,10 +384,33 @@ static const struct of_device_id fsl_edm
+ };
+ MODULE_DEVICE_TABLE(of, fsl_edma_dt_ids);
  
- 	gf_tables = atmel_pmecc_get_gf_tables(req);
--	if (IS_ERR(gf_tables)) {
--		kfree(user);
-+	if (IS_ERR(gf_tables))
- 		return ERR_CAST(gf_tables);
--	}
++static void fsl_edma3_detach_pd(struct fsl_edma_engine *fsl_edma)
++{
++	struct fsl_edma_chan *fsl_chan;
++	int i;
++
++	for (i = 0; i < fsl_edma->n_chans; i++) {
++		if (fsl_edma->chan_masked & BIT(i))
++			continue;
++		fsl_chan = &fsl_edma->chans[i];
++		if (fsl_chan->pd_dev_link)
++			device_link_del(fsl_chan->pd_dev_link);
++		if (fsl_chan->pd_dev) {
++			dev_pm_domain_detach(fsl_chan->pd_dev, false);
++			pm_runtime_dont_use_autosuspend(fsl_chan->pd_dev);
++			pm_runtime_set_suspended(fsl_chan->pd_dev);
++		}
++	}
++}
++
++static void devm_fsl_edma3_detach_pd(void *data)
++{
++	fsl_edma3_detach_pd(data);
++}
++
+ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
+ {
+ 	struct fsl_edma_chan *fsl_chan;
+-	struct device_link *link;
+ 	struct device *pd_chan;
+ 	struct device *dev;
+ 	int i;
+@@ -403,15 +426,16 @@ static int fsl_edma3_attach_pd(struct pl
+ 		pd_chan = dev_pm_domain_attach_by_id(dev, i);
+ 		if (IS_ERR_OR_NULL(pd_chan)) {
+ 			dev_err(dev, "Failed attach pd %d\n", i);
+-			return -EINVAL;
++			goto detach;
+ 		}
  
- 	user->gf_tables = gf_tables;
+-		link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
++		fsl_chan->pd_dev_link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
+ 					     DL_FLAG_PM_RUNTIME |
+ 					     DL_FLAG_RPM_ACTIVE);
+-		if (!link) {
++		if (!fsl_chan->pd_dev_link) {
+ 			dev_err(dev, "Failed to add device_link to %d\n", i);
+-			return -EINVAL;
++			dev_pm_domain_detach(pd_chan, false);
++			goto detach;
+ 		}
  
+ 		fsl_chan->pd_dev = pd_chan;
+@@ -422,6 +446,10 @@ static int fsl_edma3_attach_pd(struct pl
+ 	}
+ 
+ 	return 0;
++
++detach:
++	fsl_edma3_detach_pd(fsl_edma);
++	return -EINVAL;
+ }
+ 
+ static int fsl_edma_probe(struct platform_device *pdev)
+@@ -522,6 +550,9 @@ static int fsl_edma_probe(struct platfor
+ 		ret = fsl_edma3_attach_pd(pdev, fsl_edma);
+ 		if (ret)
+ 			return ret;
++		ret = devm_add_action_or_reset(&pdev->dev, devm_fsl_edma3_detach_pd, fsl_edma);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	INIT_LIST_HEAD(&fsl_edma->dma_dev.channels);
 
 
 
