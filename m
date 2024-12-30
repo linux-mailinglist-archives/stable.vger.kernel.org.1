@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0292C9FE8B1
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C40419FE7E6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D53787A0394
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 914BD7A1243
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D4415748F;
-	Mon, 30 Dec 2024 15:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D280E2E414;
+	Mon, 30 Dec 2024 15:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+bzGCBo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lo7LHg8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E93A15E8B;
-	Mon, 30 Dec 2024 15:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EC02594B6;
+	Mon, 30 Dec 2024 15:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574273; cv=none; b=qWl3KRTSKs1o1/9hb1htxWJKd4ELKofH7wOcYPESFdC2xpBFNIVnio5P68OSo6qqIYcX2gDz7wm9VurY5JPo/gpOWLt5lSgzJWa6h5OY8NwUz+d3BgKRJLePrWUiM5tXdKe2ewIk48CCdKDC9ETQ2/xyW5O0qXKd6IUeyha2pl4=
+	t=1735573613; cv=none; b=jpXXTiCYOJSa1ksDv+TeowWU/JM26/weigej8zNrcntQTZhQPg5OwcFIG0irvRu/kNU4IXmUg5HhvL/CCfY+Qb34ov+IrIONvqupeIlU8VlTS70z8waAyNcox6pE7lOH9K6KoeUZocuB5B8cVSWBaSo6Eg4Isj2vmeDncckv6t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574273; c=relaxed/simple;
-	bh=cyhQkdxOxTJx7kpUvA6tqi3dCY6ckUzTW1MiyFn8jSg=;
+	s=arc-20240116; t=1735573613; c=relaxed/simple;
+	bh=HeVe36YT5JcswlGg6p0ObO4Kj+5x/Q2vtffDBl9k7YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnjckz6a9+sMPIVsr/s/H/bGaCJMFOMMXda4JVzUhElPQDutowOhwWE1yF4ueZ94Kcfi0t0jJsMcuU0WLK3poxDV11gm4CSGeRYNUdM3B+g4ZSA3QbQaW0YOJWNdjx2zm6NsJZaXgj9YYQo3SDX91J/ylMAlUILyIu1BUBSb37E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+bzGCBo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE8AC4CED0;
-	Mon, 30 Dec 2024 15:57:52 +0000 (UTC)
+	 MIME-Version; b=eNntrhoYp9LhSLlH6JgKQ/qMdAbQVm1fDuxjQmlkuLCB4Ma4ilSw+uvuRQR+HwyQnqXHiPewCLx6Iaae7iogOFkDLnULRwrpkRJElJRXiXRc4aU+IlfQZPw0dm/o7AP/DOABWsxon9oj4EbAz3inbMK60X2ge46sO5BGyiPgDto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lo7LHg8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1171C4CED0;
+	Mon, 30 Dec 2024 15:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574273;
-	bh=cyhQkdxOxTJx7kpUvA6tqi3dCY6ckUzTW1MiyFn8jSg=;
+	s=korg; t=1735573613;
+	bh=HeVe36YT5JcswlGg6p0ObO4Kj+5x/Q2vtffDBl9k7YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+bzGCBofV7QzFRdh6GNz1VW6lkN9a262XTM5T5XzW8ANV5V3tQaugEqg7c6Ha/bV
-	 7BmGdnGYEbA+gqz2TCQ459hIDieNNiIVkAWQPYls9xfjA1qqtHDS0PoL0m5k/uy0zX
-	 FBtKXV2aiwRwd7DMPe/zgU1T0KskxU6/USqlkYbk=
+	b=lo7LHg8jeixpBhSF3j0AyiBV4yivLVmw4JRma6fixnt1zKbwEm9AxuYc3PKkzv9Lg
+	 qmz8eOGJKAoINcvT885xy6NOuZQJhxMxhq7nnwZWlI3e0Ng9TeAh+Xo5rNoKj24YLt
+	 riGHQ0iZCICUSJfvLBcGurTXdRJULmEZPLxF+/jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
+	Chris Chiu <chris.chiu@canonical.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/114] ALSA: sh: Use standard helper for buffer accesses
+Subject: [PATCH 6.1 45/60] ALSA: hda/realtek: fix micmute LEDs dont work on HP Laptops
 Date: Mon, 30 Dec 2024 16:42:55 +0100
-Message-ID: <20241230154220.312261318@linuxfoundation.org>
+Message-ID: <20241230154208.985047011@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Chris Chiu <chris.chiu@canonical.com>
 
-[ Upstream commit 9b5f8ee43e48c25fbe1a10163ec04343d750acd0 ]
+[ Upstream commit 0d08f0eec961acdb0424a3e2cfb37cfb89154833 ]
 
-The SH DAC audio driver uses the kmalloc'ed buffer as the main PCM
-buffer, and the data is transferred via hrtimer callbacks manually
-from there to the hardware.  Meanwhile, some of its code are written
-as if the buffer is on iomem and use the special helpers for the iomem
-(e.g. copy_from_iter_toio() or memset_io()).  Those are rather useless
-and the standard helpers should be used.
+These HP laptops use Realtek HDA codec ALC3315 combined CS35L56
+Amplifiers. They need the quirk ALC285_FIXUP_HP_GPIO_LED to get
+the micmute LED working.
 
-Similarly, the PCM mmap callback is set to a special one with
-snd_pcm_lib_mmap_iomem, but this is also nonsense, because SH
-architecture doesn't support this function, hence it leads just to
-NULL -- the fallback to the standard helper.
-
-This patch replaces those special setups with the standard ones.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411281337.I4M07b7i-lkp@intel.com/
-Link: https://patch.msgid.link/20241128104939.13755-1-tiwai@suse.de
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241202144659.1553504-1-chris.chiu@canonical.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/sh/sh_dac_audio.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/sh/sh_dac_audio.c b/sound/sh/sh_dac_audio.c
-index e7b6ce7bd086..5a9f77908a3d 100644
---- a/sound/sh/sh_dac_audio.c
-+++ b/sound/sh/sh_dac_audio.c
-@@ -163,7 +163,7 @@ static int snd_sh_dac_pcm_copy(struct snd_pcm_substream *substream,
- 	/* channel is not used (interleaved data) */
- 	struct snd_sh_dac *chip = snd_pcm_substream_chip(substream);
- 
--	if (copy_from_iter_toio(chip->data_buffer + pos, src, count))
-+	if (copy_from_iter(chip->data_buffer + pos, src, count) != count)
- 		return -EFAULT;
- 	chip->buffer_end = chip->data_buffer + pos + count;
- 
-@@ -182,7 +182,7 @@ static int snd_sh_dac_pcm_silence(struct snd_pcm_substream *substream,
- 	/* channel is not used (interleaved data) */
- 	struct snd_sh_dac *chip = snd_pcm_substream_chip(substream);
- 
--	memset_io(chip->data_buffer + pos, 0, count);
-+	memset(chip->data_buffer + pos, 0, count);
- 	chip->buffer_end = chip->data_buffer + pos + count;
- 
- 	if (chip->empty) {
-@@ -211,7 +211,6 @@ static const struct snd_pcm_ops snd_sh_dac_pcm_ops = {
- 	.pointer	= snd_sh_dac_pcm_pointer,
- 	.copy		= snd_sh_dac_pcm_copy,
- 	.fill_silence	= snd_sh_dac_pcm_silence,
--	.mmap		= snd_pcm_lib_mmap_iomem,
- };
- 
- static int snd_sh_dac_pcm(struct snd_sh_dac *chip, int device)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index beb182080abc..03fe531f8230 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9898,7 +9898,13 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8d01, "HP ZBook Power 14 G12", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8d84, "HP EliteBook X G1i", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8d91, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firelfy 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 -- 
 2.39.5
 
