@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-106399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C90F9FE82B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549739FE7EB
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A65D13A2521
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BDF21882EC3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8A61537C8;
-	Mon, 30 Dec 2024 15:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBAC2E414;
+	Mon, 30 Dec 2024 15:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOG35hkk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNK0mvWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF91015E8B;
-	Mon, 30 Dec 2024 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DF72594B6;
+	Mon, 30 Dec 2024 15:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573845; cv=none; b=Rkp1cJ8IIQkrIXJkWtcR0Q9f6NtmeDl1FAj3QJiAYIX+LjEax22P5vdb307N1F3MJ1QYcgZ9jeMgk/MHqolrds3iL+UB+Jtpc45+a0QGmKAkaSCqDi4cQ4B04zdSQ5Zo2Blvu75ct7GPqyhxjd5gNSC3+L3bDQS2LqRappW59Hw=
+	t=1735573635; cv=none; b=YY/wfhhxAnQ5oxhtCNJPvzVd79MT+M6Y9F9Dqta5ZVyIjxRYE6DfIOMHnWEcwbRAlRf8nBLJQyzA3mUMUlFVUIh+2EoqntxiIZQoZrLvjUNh30szrGnkCaV/xAap8X/1plG0W2P0m0+FD48QrbECAbknIJpWQMXov0buaB6ahRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573845; c=relaxed/simple;
-	bh=GUOEFLm9veyQswotIQh7WKNn60WSvGJ6VBxXtNhwB/o=;
+	s=arc-20240116; t=1735573635; c=relaxed/simple;
+	bh=eilYYmeiTvc5zI4tJ6/LePwtavRThsC11U3XAlwV3AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+C8rRHLJycuc4qMm07+70hQCOernJENXrudRbspZaglfJobZoC2Kc8LiXCY4RFdHsbW3RoPMTgwg8RoEIP+h6i/ZDgSwn5RUM/PelPi2WOnEksqAjDZpGUmti9u5H77i9tHayg+IU1ypzcR2v5pBphPAy2G1/L7+XKm7gx9qfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOG35hkk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D404C4CED0;
-	Mon, 30 Dec 2024 15:50:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pZfnvBlgsGDUs3eaIxuesUBmDu5tKqcxi8+tKUnlUKBFsu2zVaRnUX4dmmJbo9Oc5GjkXW17peA3no8jA7g2D/aCk5eWV91NFPyDGwMY/H7luTQqILWmniRqWPehwdeYbazBrZBkxdl4WeLt6Za6NcnmCBXE5C0SDB9EcaD4c3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNK0mvWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA7BC4CED0;
+	Mon, 30 Dec 2024 15:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573844;
-	bh=GUOEFLm9veyQswotIQh7WKNn60WSvGJ6VBxXtNhwB/o=;
+	s=korg; t=1735573634;
+	bh=eilYYmeiTvc5zI4tJ6/LePwtavRThsC11U3XAlwV3AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOG35hkksPO+GjNz8hj7t81l52TAZYnqQpGWjcfK4Pdt50ucuXnO04cFGADDIHiu/
-	 x21eaeQgVnEmxOY4kKCN9Gt5AE6GCmM+vjejhuLvS0oxO56YDG2PmE/kv8HCG48KPZ
-	 lcKxzk8u+33dq972QeP9VUMhZde4aV6BNpoblFrY=
+	b=cNK0mvWOGHngkIeLk8MCGbrtRoimEVXc1PZykfdE/n5tAh6EM9Mt5k1jr4SQR77AR
+	 i8SuAqg2GNy/rfg5i7RYHJ2SJtdljnbFpUaOpIrXlPisfZ6xXikdHszkbSUAvA0JXL
+	 G4yE57NHizEVyl6ilsk6dYeWiXfMB6ejq9N6UXTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Peter Newman <peternewman@google.com>,
-	Babu Moger <babu.moger@amd.com>,
-	Luck Tony <tony.luck@intel.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 50/86] blk-mq: register cpuhp callback after hctx is added to xarray table
-Date: Mon, 30 Dec 2024 16:42:58 +0100
-Message-ID: <20241230154213.625082685@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 49/60] tracing: Constify string literal data member in struct trace_event_call
+Date: Mon, 30 Dec 2024 16:42:59 +0100
+Message-ID: <20241230154209.133584613@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +67,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Christian Göttsche <cgzones@googlemail.com>
 
-[ Upstream commit 4bf485a7db5d82ddd0f3ad2b299893199090375e ]
+commit 452f4b31e3f70a52b97890888eeb9eaa9a87139a upstream.
 
-We need to retrieve 'hctx' from xarray table in the cpuhp callback, so the
-callback should be registered after this 'hctx' is added to xarray table.
+The name member of the struct trace_event_call is assigned with
+generated string literals; declare them pointer to read-only.
 
-Cc: Reinette Chatre <reinette.chatre@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Peter Newman <peternewman@google.com>
-Cc: Babu Moger <babu.moger@amd.com>
-Cc: Luck Tony <tony.luck@intel.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20241206111611.978870-2-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported by clang:
+
+    security/landlock/syscalls.c:179:1: warning: initializing 'char *' with an expression of type 'const char[34]' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+      179 | SYSCALL_DEFINE3(landlock_create_ruleset,
+          | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      180 |                 const struct landlock_ruleset_attr __user *const, attr,
+          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      181 |                 const size_t, size, const __u32, flags)
+          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:226:36: note: expanded from macro 'SYSCALL_DEFINE3'
+      226 | #define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)
+          |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:234:2: note: expanded from macro 'SYSCALL_DEFINEx'
+      234 |         SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \
+          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:184:2: note: expanded from macro 'SYSCALL_METADATA'
+      184 |         SYSCALL_TRACE_ENTER_EVENT(sname);                       \
+          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:151:30: note: expanded from macro 'SYSCALL_TRACE_ENTER_EVENT'
+      151 |                         .name                   = "sys_enter"#sname,    \
+          |                                                   ^~~~~~~~~~~~~~~~~
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mickaël Salaün <mic@digikod.net>
+Cc: Günther Noack <gnoack@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/20241125105028.42807-1-cgoettsche@seltendoof.de
+Fixes: b77e38aa240c3 ("tracing: add event trace infrastructure")
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ include/linux/trace_events.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 6c71add013bf..f4a9eed1b977 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3708,16 +3708,11 @@ static int blk_mq_init_hctx(struct request_queue *q,
- {
- 	hctx->queue_num = hctx_idx;
- 
--	if (!(hctx->flags & BLK_MQ_F_STACKING))
--		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
--				&hctx->cpuhp_online);
--	cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD, &hctx->cpuhp_dead);
--
- 	hctx->tags = set->tags[hctx_idx];
- 
- 	if (set->ops->init_hctx &&
- 	    set->ops->init_hctx(hctx, set->driver_data, hctx_idx))
--		goto unregister_cpu_notifier;
-+		goto fail;
- 
- 	if (blk_mq_init_request(set, hctx->fq->flush_rq, hctx_idx,
- 				hctx->numa_node))
-@@ -3726,6 +3721,11 @@ static int blk_mq_init_hctx(struct request_queue *q,
- 	if (xa_insert(&q->hctx_table, hctx_idx, hctx, GFP_KERNEL))
- 		goto exit_flush_rq;
- 
-+	if (!(hctx->flags & BLK_MQ_F_STACKING))
-+		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
-+				&hctx->cpuhp_online);
-+	cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD, &hctx->cpuhp_dead);
-+
- 	return 0;
- 
-  exit_flush_rq:
-@@ -3734,8 +3734,7 @@ static int blk_mq_init_hctx(struct request_queue *q,
-  exit_hctx:
- 	if (set->ops->exit_hctx)
- 		set->ops->exit_hctx(hctx, hctx_idx);
-- unregister_cpu_notifier:
--	blk_mq_remove_cpuhp(hctx);
-+ fail:
- 	return -1;
- }
- 
--- 
-2.39.5
-
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -355,7 +355,7 @@ struct trace_event_call {
+ 	struct list_head	list;
+ 	struct trace_event_class *class;
+ 	union {
+-		char			*name;
++		const char		*name;
+ 		/* Set TRACE_EVENT_FL_TRACEPOINT flag when using "tp" */
+ 		struct tracepoint	*tp;
+ 	};
 
 
 
