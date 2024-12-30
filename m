@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-106304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DA39FE7C4
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAF39FE814
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B905E1882E5F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1F7D1882F02
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2F915748F;
-	Mon, 30 Dec 2024 15:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F7542AA6;
+	Mon, 30 Dec 2024 15:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jjpdn8IH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKjeeA+6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3971815E8B;
-	Mon, 30 Dec 2024 15:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9231015E8B;
+	Mon, 30 Dec 2024 15:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573511; cv=none; b=Qx7rNB2GI0LT5YuRWzajP6Np2F0uj+QPE5sfVdyKpACEVleJUYSYfR1Hs77Zc+fr3NO23bXTrMMS0erbtlHurSd3+6j11L/MsYpD6NpEXDXI2JJ6oxbLjcFBLoX8i7dHyZShhCaBkZJsY4mix3GwcECUj1o5Yo3p/elQnRSslcI=
+	t=1735573776; cv=none; b=KvJVatiXxYsW3dV4nFL6imEY3Qr22jLSv4sP1D2t90TS+6rHXTbN/ZkSRaXisr9E65CkP33OFgbMwHMn3X3rlZgXpTCpTvsu2FOR5uVcqK/B2CoUptBiz1+bMeEt1pTpPWNrt6wTVrK/+/koNCkRuiGKD+7EAvzx5gvmACKCEk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573511; c=relaxed/simple;
-	bh=xLkIVKm1j3zfDdRPtZFO1H5umMJatNRx2QtOTvgHswg=;
+	s=arc-20240116; t=1735573776; c=relaxed/simple;
+	bh=Ebf6UDF6HrpQ5DFKOIAdoupxy3XtANQFjHVVWr8tmk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqrCaAyMKcKLdCF7+3ifT3Z/ZHIGnu2yspZesF3E78mApf39U54wWRqw7iMZadKr4mfhslwf1oeAt9jWqFkS0EGoxSaQd8UPQFLw12+HkvrftwkzAVeU3wi2B7pwVYHlh22RsGk3xCMRUhQgoDZys+iY5aKgsp7m+wg+Qhcf/Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jjpdn8IH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231F1C4CED0;
-	Mon, 30 Dec 2024 15:45:09 +0000 (UTC)
+	 MIME-Version; b=juqfACidrOLnwKU9dC0l+FIdntvZLv6kzwLIEuT/Ie9LP6wTqP09cjeMJ9O3dZymoXsV/7Dmu75MQTZhuXz4pMYfZcNDaNuV5kPWoCt8kh70IPkbjWwafP7bQlq78M4nUkXSO0l3Bjh93733dNkrJBRnEdkbOxtV1G+KCYvVAgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKjeeA+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B19C4CED0;
+	Mon, 30 Dec 2024 15:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573510;
-	bh=xLkIVKm1j3zfDdRPtZFO1H5umMJatNRx2QtOTvgHswg=;
+	s=korg; t=1735573776;
+	bh=Ebf6UDF6HrpQ5DFKOIAdoupxy3XtANQFjHVVWr8tmk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jjpdn8IHx/+xgBtBooLclYZlMH2YyeKDFdDE9sS73qNyPYWr/LcB6i7X3mQWJpGtj
-	 ZnM6pWHLsXKm4MN/kBH3AEb5xXSul5sWFhfG2PBNgFr742v75BYNpMNlSCyqw4Z3Dy
-	 VGvYB8Is4bK0GnZr16cWiLdCACn4uO8xhpwJ0iOU=
+	b=xKjeeA+6fx1hj3iAw7IC4emP0Fe1V8lIxiJfsoRLOCmrSr4xjY6AaLAnMvJcxOfFs
+	 I7Te6F0ocRCcooyUlDdwXKOchroVOmFEs3unDr7Ndz9w0DL2wVZgJnjbUrJp6zDCM4
+	 1yUAZDTf1tpppf0FsxIRtR60N5WPDTlBnPhvixkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 02/60] mm/vmstat: fix a W=1 clang compiler warning
-Date: Mon, 30 Dec 2024 16:42:12 +0100
-Message-ID: <20241230154207.371620931@linuxfoundation.org>
+Subject: [PATCH 6.6 05/86] mm/vmstat: fix a W=1 clang compiler warning
+Date: Mon, 30 Dec 2024 16:42:13 +0100
+Message-ID: <20241230154211.920565085@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index 19cf5b6892ce..4fb5fa0cc84e 100644
+index fed855bae6d8..3219b368db79 100644
 --- a/include/linux/vmstat.h
 +++ b/include/linux/vmstat.h
-@@ -513,7 +513,7 @@ static inline const char *node_stat_name(enum node_stat_item item)
+@@ -519,7 +519,7 @@ static inline const char *node_stat_name(enum node_stat_item item)
  
  static inline const char *lru_list_name(enum lru_list lru)
  {
