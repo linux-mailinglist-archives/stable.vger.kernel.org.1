@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F0F9FE87A
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECD89FE7D2
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2CA93A25FE
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20623162131
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49A51531C4;
-	Mon, 30 Dec 2024 15:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703A3156678;
+	Mon, 30 Dec 2024 15:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/ME/RLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbRot9eB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D1F2AE68;
-	Mon, 30 Dec 2024 15:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D12215E8B;
+	Mon, 30 Dec 2024 15:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574110; cv=none; b=OrI9gsjltijMb70z6fnlGTUo8yqLO/j3JGR+uCwvT06LRhD5SyzLWFhhe1QFQ8HLL8aMoo3YdAmWABRkG6ElNsxiC1vnTnZROYm2/0XItnTE9aBF8GeKHw7JngyBQR7nytnPlUXEpT8ORnuYeyRhrkdStImz8ARQyb+y4m4b7RY=
+	t=1735573550; cv=none; b=RhXP8sS0UdBXKoHvzgf2rfW9FQdwDyiLnkGoAeFSC/CZNk2XOUTNB2xVDEYen+Tdr+BTTiMK2Q9S0a3VNh8UBcI/7KBLfexynwDSQQWRz69fBjsGJFw0QcwNVYqOwSTnbR3kCXlWHHVpz/MkZPypDZ/WxrWT5/m93GPfa7S/vPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574110; c=relaxed/simple;
-	bh=4pmSZRdoh1m8bvowR7Bx1KTijlNBezG4FH/l0p6Sd+M=;
+	s=arc-20240116; t=1735573550; c=relaxed/simple;
+	bh=wwN4/kbbox6uvAuTcKSOoKuglATsOMpzhc1RvZmte3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpDeu0vmkIrjCk+Ba17PrJ20ynY8oSYycpIDhgaPz6uj7bIzrXv143fE1FUcGK5BxXd10O/hSqrgZZbQ5ZO+eISWydk11KTyaIvVrtYz5EgR6yO2WOaadohbC956/e+RBcn4jM3UHO1idjJmzPwaorjTV40Xzg2wAz0pMnH8OEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/ME/RLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E549CC4CED0;
-	Mon, 30 Dec 2024 15:55:09 +0000 (UTC)
+	 MIME-Version; b=Ol+tS97LZGPURMnioOnKRS0KnkYPTO6dv8kZWgrH3TyfQJ70731vfIkRzJ4I36DSqSzvwftv6dYg+nC68XEGohEa8kIK7oVN9wRUKiH3EEifp1hjqQWaRDoQ4Pz2G3hZHlSt69rS5XweaMeaDiprU8Jw4W55PBeDxCY3US3FyyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbRot9eB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E37DC4CED0;
+	Mon, 30 Dec 2024 15:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574110;
-	bh=4pmSZRdoh1m8bvowR7Bx1KTijlNBezG4FH/l0p6Sd+M=;
+	s=korg; t=1735573550;
+	bh=wwN4/kbbox6uvAuTcKSOoKuglATsOMpzhc1RvZmte3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/ME/RLwjAgcWxvi52rMjZxF4PDATMBSGX7SChJfV2Qu0GnFVtUpw8IYOeHlyj0nQ
-	 TtrQJr5ScHeENPqk7Y7FFbs95G3EUfsvUnlrMuGeQ6QjGqwz7yBpULZ9pFwdP5xF39
-	 O7X/RAauchWpMoFVYWc//BI/T16JNzF2BlqIh9yI=
+	b=sbRot9eBM+2OB711nvRmtkpH1tTPQS27qdWyzWQV4XRwNeb8RWgtiKZkYUuqGgGBj
+	 i8PG141mvgv3EoY2b65nWgOiqk4gpfOQsdP4HHl8gG/jq1CWWiupyIFNHvX/qOw+7G
+	 bSvTUtSDtyP8xWlC/OFhaqU0fL+ocWBnYJTsNXJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 039/114] ASoC: Intel: sof_sdw: Fix DMI match for Lenovo 21QA and 21QB
-Date: Mon, 30 Dec 2024 16:42:36 +0100
-Message-ID: <20241230154219.566935730@linuxfoundation.org>
+	James Hilliard <james.hilliard1@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 27/60] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
+Date: Mon, 30 Dec 2024 16:42:37 +0100
+Message-ID: <20241230154208.317386789@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: James Hilliard <james.hilliard1@gmail.com>
 
-commit ba7d47a54bf23a7201bdd2978e16b04fc1cb1f6e upstream.
+[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
 
-Update the DMI match for a Lenovo laptop to the new DMI identifier.
+For the watchdog timer to work properly on the QCML04 board we need to
+set PWRGD enable in the Environment Controller Configuration Registers
+Special Configuration Register 1 when it is not already set, this may
+be the case when the watchdog is not enabled from within the BIOS.
 
-This laptop ships with a different DMI identifier to what was expected,
-and now has two identifiers.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: ea657f6b24e1 ("ASoC: Intel: sof_sdw: Add quirk for cs42l43 system using host DMICs")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20241216140821.153670-3-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -608,7 +608,16 @@ static const struct dmi_system_id sof_sd
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "233C")
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21QB")
-+		},
-+		/* Note this quirk excludes the CODEC mic */
-+		.driver_data = (void *)(SOC_SDW_CODEC_MIC),
-+	},
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index 843f9f8e3917..239947df613d 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -20,6 +20,8 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/bits.h>
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -40,6 +42,7 @@
+ #define VAL		0x2f
+ 
+ /* Logical device Numbers LDN */
++#define EC		0x04
+ #define GPIO		0x07
+ 
+ /* Configuration Registers and Functions */
+@@ -71,6 +74,12 @@
+ #define IT8784_ID	0x8784
+ #define IT8786_ID	0x8786
+ 
++/* Environment Controller Configuration Registers LDN=0x04 */
++#define SCR1		0xfa
++
++/* Environment Controller Bits SCR1 */
++#define WDT_PWRGD	0x20
++
+ /* GPIO Configuration Registers LDN=0x07 */
+ #define WDTCTRL		0x71
+ #define WDTCFG		0x72
+@@ -233,6 +242,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
+ 	return ret;
+ }
+ 
++enum {
++	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
++};
++
++static const struct dmi_system_id it87_quirks[] = {
 +	{
-+		.callback = sof_sdw_quirk_cb,
++		/* Qotom Q30900P (IT8786) */
 +		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21QA")
- 		},
- 		/* Note this quirk excludes the CODEC mic */
- 		.driver_data = (void *)(SOC_SDW_CODEC_MIC),
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
++		},
++		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
++	},
++	{}
++};
++
+ static const struct watchdog_info ident = {
+ 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
+ 	.firmware_version = 1,
+@@ -254,8 +278,10 @@ static struct watchdog_device wdt_dev = {
+ 
+ static int __init it87_wdt_init(void)
+ {
++	const struct dmi_system_id *dmi_id;
+ 	u8  chip_rev;
+ 	u8 ctrl;
++	int quirks = 0;
+ 	int rc;
+ 
+ 	rc = superio_enter();
+@@ -266,6 +292,10 @@ static int __init it87_wdt_init(void)
+ 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
+ 	superio_exit();
+ 
++	dmi_id = dmi_first_match(it87_quirks);
++	if (dmi_id)
++		quirks = (long)dmi_id->driver_data;
++
+ 	switch (chip_type) {
+ 	case IT8702_ID:
+ 		max_units = 255;
+@@ -326,6 +356,15 @@ static int __init it87_wdt_init(void)
+ 		superio_outb(0x00, WDTCTRL);
+ 	}
+ 
++	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
++		superio_select(EC);
++		ctrl = superio_inb(SCR1);
++		if (!(ctrl & WDT_PWRGD)) {
++			ctrl |= WDT_PWRGD;
++			superio_outb(ctrl, SCR1);
++		}
++	}
++
+ 	superio_exit();
+ 
+ 	if (timeout < 1 || timeout > max_units * 60) {
+-- 
+2.39.5
+
 
 
 
