@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40419FE7E6
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB189FE827
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 914BD7A1243
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12DBD1882E8E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D280E2E414;
-	Mon, 30 Dec 2024 15:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFE61537C8;
+	Mon, 30 Dec 2024 15:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lo7LHg8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="myoeJ1gq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EC02594B6;
-	Mon, 30 Dec 2024 15:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AADB15E8B;
+	Mon, 30 Dec 2024 15:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573613; cv=none; b=jpXXTiCYOJSa1ksDv+TeowWU/JM26/weigej8zNrcntQTZhQPg5OwcFIG0irvRu/kNU4IXmUg5HhvL/CCfY+Qb34ov+IrIONvqupeIlU8VlTS70z8waAyNcox6pE7lOH9K6KoeUZocuB5B8cVSWBaSo6Eg4Isj2vmeDncckv6t8=
+	t=1735573835; cv=none; b=rwMUbyKDS7VqntqbBTUbRjrp2BBK+6Ioy/7tVfJVkFJ7xYVrAW23yuszo+UdwrZODBh3aLlmvzPrcCZbJTeAVSanm6Q7JD0wJEo1VTr/growbSZbStO2sKXJOVfOu2PB4A+EhuGsztEGSmwVOhWzqn3iIUhMmPs7FxTA3TgEUFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573613; c=relaxed/simple;
-	bh=HeVe36YT5JcswlGg6p0ObO4Kj+5x/Q2vtffDBl9k7YA=;
+	s=arc-20240116; t=1735573835; c=relaxed/simple;
+	bh=qX5sBQjXGeX+EA/z7FXhCLcRm98zC9vWVhyvOolplw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNntrhoYp9LhSLlH6JgKQ/qMdAbQVm1fDuxjQmlkuLCB4Ma4ilSw+uvuRQR+HwyQnqXHiPewCLx6Iaae7iogOFkDLnULRwrpkRJElJRXiXRc4aU+IlfQZPw0dm/o7AP/DOABWsxon9oj4EbAz3inbMK60X2ge46sO5BGyiPgDto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lo7LHg8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1171C4CED0;
-	Mon, 30 Dec 2024 15:46:52 +0000 (UTC)
+	 MIME-Version; b=pCnZIpK3xRwAOSYRTvXXbvb4241P2QL5rrxCG2/2PFAVe1I3eY1UEQUoAQQn0YMZtM3GBP74LtaKu0zLKGUrosP8FhYigKNrPwqFuNzPecrSFkZg+fn/JYyM15YNyu6f0WVlae0YOHg2rXJasvIFzP3PY/2oYaLsyq7p4Ldar1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=myoeJ1gq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0B4C4CED0;
+	Mon, 30 Dec 2024 15:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573613;
-	bh=HeVe36YT5JcswlGg6p0ObO4Kj+5x/Q2vtffDBl9k7YA=;
+	s=korg; t=1735573835;
+	bh=qX5sBQjXGeX+EA/z7FXhCLcRm98zC9vWVhyvOolplw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lo7LHg8jeixpBhSF3j0AyiBV4yivLVmw4JRma6fixnt1zKbwEm9AxuYc3PKkzv9Lg
-	 qmz8eOGJKAoINcvT885xy6NOuZQJhxMxhq7nnwZWlI3e0Ng9TeAh+Xo5rNoKj24YLt
-	 riGHQ0iZCICUSJfvLBcGurTXdRJULmEZPLxF+/jY=
+	b=myoeJ1gqMz4PuvDq627/8lZJgn1bQcgjOwh+zPZUOlgnoXFQUfAReQerrSQNXXxqd
+	 c+w88pRF6wnrckWlbNF0+IUUDdclBqRUph3CHa7UUQYvbSXVQ3LaXU6buA0+HHJJp4
+	 lX2sp/pF/ALu4+UOHLiE0Gd6wzYFy6Fm6XeGWFF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Purushothama Siddaiah <psiddaiah@mvista.com>,
+	Corey Minyard <cminyard@mvista.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 45/60] ALSA: hda/realtek: fix micmute LEDs dont work on HP Laptops
+Subject: [PATCH 6.6 47/86] spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()
 Date: Mon, 30 Dec 2024 16:42:55 +0100
-Message-ID: <20241230154208.985047011@linuxfoundation.org>
+Message-ID: <20241230154213.501976595@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Purushothama Siddaiah <psiddaiah@mvista.com>
 
-[ Upstream commit 0d08f0eec961acdb0424a3e2cfb37cfb89154833 ]
+[ Upstream commit 4c6ac5446d060f0bf435ccc8bc3aa7b7b5f718ad ]
 
-These HP laptops use Realtek HDA codec ALC3315 combined CS35L56
-Amplifiers. They need the quirk ALC285_FIXUP_HP_GPIO_LED to get
-the micmute LED working.
+The devm_clk_get_optional_enabled() function returns error
+pointers(PTR_ERR()). So use IS_ERR() to check it.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241202144659.1553504-1-chris.chiu@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Verified on K3-J7200 EVM board, without clock node mentioned
+in the device tree.
+
+Signed-off-by: Purushothama Siddaiah <psiddaiah@mvista.com>
+Reviewed-by: Corey Minyard <cminyard@mvista.com>
+Link: https://patch.msgid.link/20241205070426.1861048-1-psiddaiah@mvista.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-omap2-mcspi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index beb182080abc..03fe531f8230 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9898,7 +9898,13 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8d01, "HP ZBook Power 14 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d84, "HP EliteBook X G1i", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8d91, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firelfy 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index ddf1c684bcc7..3cfd262c1abc 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1521,10 +1521,10 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+-	if (mcspi->ref_clk)
+-		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
+-	else
++	if (IS_ERR(mcspi->ref_clk))
+ 		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
++	else
++		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
+ 	ctlr->max_speed_hz = mcspi->ref_clk_hz;
+ 	ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
+ 
 -- 
 2.39.5
 
