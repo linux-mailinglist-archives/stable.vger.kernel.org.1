@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA519FE896
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 239619FE834
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A60291883184
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A0651882F70
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF258537E9;
-	Mon, 30 Dec 2024 15:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1FA537E9;
+	Mon, 30 Dec 2024 15:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2YEy3Fm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/E/4S72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5F515E8B;
-	Mon, 30 Dec 2024 15:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1903315E8B;
+	Mon, 30 Dec 2024 15:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574205; cv=none; b=l97op5lY4+zj7UVW4kkK0QquNUtS+VFyKhxheplm6JtGqGlnd4L6MAWKsx2ihgGDT6m9muw9TKsL4EOwHl9FdW2hYsU4dWx+31tt5eWpuCiDzyjbfnx0RXk/Lq2TSyIGxm/PP1u8GM3Q/hCqHgwSu5Lnay0gpphVKIBhHZY5jd8=
+	t=1735573875; cv=none; b=e3kGrZQTHykKPfC2J9ryCZL185dsDMq+k/VI9pj7w3F0Zuz08aqM+1F5qcFg9OktZtcpsm7AQcSHgFCPpUzymyfzsMQoxpFMUXlPXKMKHulsaQQ5lAsFjrK7zen0yVb7c2ZuNOH++gTniYI/e3K5YaRDhgkgGpLv5b4M3UVdCBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574205; c=relaxed/simple;
-	bh=k/zN2Q3ulw5zvaj9Jhycx6F562yQ5CEzypEcOMk13bw=;
+	s=arc-20240116; t=1735573875; c=relaxed/simple;
+	bh=Fbfd0eWkQqA+1tCfRdKCkff3a20LT46FnAZxqmp7ofU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnYfpnrm2lTU2ViIZ+9SOYJgcBiigdjTGf1yD7YEnOfJQ9hyAgGUJ+a3igEoEvtTljDP5nxu56bw/csQtEii6JEa3ioFz+i08JHkNn8oC+ayh2ZW7n6G0FRoloDLPSrr3xg1sOeS2nRihJlfyInA8P/i0iEpRWbxq6iLzSEHLoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2YEy3Fm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB614C4CED0;
-	Mon, 30 Dec 2024 15:56:44 +0000 (UTC)
+	 MIME-Version; b=Tnmt3H2y8s0+CWLn0N/GIVdqGoA5lTz+9KqTKu8SLtkWUxN31lzYLlJZNv813HsoysGnLbV3gzl6Wabz+dJa1K6naSMoFHQmy84prqjYqd/HRKCBjiK7BuJUcdkxfznKFtqv8RcodLfLE1WoL6eQOW7h4TPrwNw/urUW1RzEqbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/E/4S72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94787C4CED0;
+	Mon, 30 Dec 2024 15:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574205;
-	bh=k/zN2Q3ulw5zvaj9Jhycx6F562yQ5CEzypEcOMk13bw=;
+	s=korg; t=1735573875;
+	bh=Fbfd0eWkQqA+1tCfRdKCkff3a20LT46FnAZxqmp7ofU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g2YEy3Fmd/v+maGVCVoLwC/EWpx17AdMRdaSJyCrlWkLGNOp5XGVPPO4I7bGRYR9X
-	 X9rLw4xyHJ3Q/LYn0YlevTaZyCIoKAz9eX5uRyDqTDx2pz547lUluUNOpO/usO9ys+
-	 gI/mN5OElcZKeoazcSj2UUqelH5U8DV7GEckXXg4=
+	b=s/E/4S72bEPhAmcAzt2diM8bd+jMWidJ37UvTzXRA+e74Pi0idqsOi4G+j4xe/dTc
+	 PIs2E3CyNj/H8fXNwb6AJZsW2lXx6Fu2izDi/YVsTBnKTfAlwSNK2ZsDjeGeK8+Dca
+	 zJvGr8uJgCcyUjqT607dc9c8hkucwA/mJhWYb6K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prayas Patel <prayas.patel@broadcom.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Victor Zhao <Victor.Zhao@amd.com>,
+	Emily Deng <Emily.Deng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/114] scsi: mpi3mr: Fix corrupt config pages PHY state is switched in sysfs
-Date: Mon, 30 Dec 2024 16:43:05 +0100
-Message-ID: <20241230154220.717133638@linuxfoundation.org>
+Subject: [PATCH 6.6 58/86] drm/amd/amdgpu: allow use kiq to do hdp flush under sriov
+Date: Mon, 30 Dec 2024 16:43:06 +0100
+Message-ID: <20241230154213.923002562@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,186 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Victor Zhao <Victor.Zhao@amd.com>
 
-[ Upstream commit 711201a8b8334a397440ac0b859df0054e174bc9 ]
+[ Upstream commit bf2bc61638033d118c9ef4ab1204295ba6694401 ]
 
-The driver, through the SAS transport, exposes a sysfs interface to
-enable/disable PHYs in a controller/expander setup.  When multiple PHYs
-are disabled and enabled in rapid succession, the persistent and current
-config pages related to SAS IO unit/SAS Expander pages could get
-corrupted.
+when use cpu to do page table update under sriov runtime, since mmio
+access is blocked, kiq has to be used to flush hdp.
 
-Use separate memory for each config request.
+change WREG32_NO_KIQ to WREG32 to allow kiq.
 
-Signed-off-by: Prayas Patel <prayas.patel@broadcom.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20241110194405.10108-3-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
+Reviewed-by: Emily Deng <Emily.Deng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: c9b8dcabb52a ("drm/amdgpu/hdp4.0: do a posting read when flushing HDP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr.h    |  9 ----
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 81 ++++++---------------------------
- 2 files changed, 13 insertions(+), 77 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
-index 81bb408ce56d..1e715fd65a7d 100644
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -134,8 +134,6 @@ extern atomic64_t event_counter;
- 
- #define MPI3MR_WATCHDOG_INTERVAL		1000 /* in milli seconds */
- 
--#define MPI3MR_DEFAULT_CFG_PAGE_SZ		1024 /* in bytes */
--
- #define MPI3MR_RESET_TOPOLOGY_SETTLE_TIME	10
- 
- #define MPI3MR_SCMD_TIMEOUT    (60 * HZ)
-@@ -1133,9 +1131,6 @@ struct scmd_priv {
-  * @io_throttle_low: I/O size to stop throttle in 512b blocks
-  * @num_io_throttle_group: Maximum number of throttle groups
-  * @throttle_groups: Pointer to throttle group info structures
-- * @cfg_page: Default memory for configuration pages
-- * @cfg_page_dma: Configuration page DMA address
-- * @cfg_page_sz: Default configuration page memory size
-  * @sas_transport_enabled: SAS transport enabled or not
-  * @scsi_device_channel: Channel ID for SCSI devices
-  * @transport_cmds: Command tracker for SAS transport commands
-@@ -1332,10 +1327,6 @@ struct mpi3mr_ioc {
- 	u16 num_io_throttle_group;
- 	struct mpi3mr_throttle_group_info *throttle_groups;
- 
--	void *cfg_page;
--	dma_addr_t cfg_page_dma;
--	u16 cfg_page_sz;
--
- 	u8 sas_transport_enabled;
- 	u8 scsi_device_channel;
- 	struct mpi3mr_drv_cmd transport_cmds;
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index f1ab76351bd8..2e6245bd4282 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -4186,17 +4186,6 @@ int mpi3mr_init_ioc(struct mpi3mr_ioc *mrioc)
- 	mpi3mr_read_tsu_interval(mrioc);
- 	mpi3mr_print_ioc_info(mrioc);
- 
--	if (!mrioc->cfg_page) {
--		dprint_init(mrioc, "allocating config page buffers\n");
--		mrioc->cfg_page_sz = MPI3MR_DEFAULT_CFG_PAGE_SZ;
--		mrioc->cfg_page = dma_alloc_coherent(&mrioc->pdev->dev,
--		    mrioc->cfg_page_sz, &mrioc->cfg_page_dma, GFP_KERNEL);
--		if (!mrioc->cfg_page) {
--			retval = -1;
--			goto out_failed_noretry;
--		}
--	}
--
- 	dprint_init(mrioc, "allocating host diag buffers\n");
- 	mpi3mr_alloc_diag_bufs(mrioc);
- 
-@@ -4768,11 +4757,7 @@ void mpi3mr_free_mem(struct mpi3mr_ioc *mrioc)
- 		    mrioc->admin_req_base, mrioc->admin_req_dma);
- 		mrioc->admin_req_base = NULL;
- 	}
--	if (mrioc->cfg_page) {
--		dma_free_coherent(&mrioc->pdev->dev, mrioc->cfg_page_sz,
--		    mrioc->cfg_page, mrioc->cfg_page_dma);
--		mrioc->cfg_page = NULL;
--	}
-+
- 	if (mrioc->pel_seqnum_virt) {
- 		dma_free_coherent(&mrioc->pdev->dev, mrioc->pel_seqnum_sz,
- 		    mrioc->pel_seqnum_virt, mrioc->pel_seqnum_dma);
-@@ -5392,55 +5377,6 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
- 	return retval;
+diff --git a/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c b/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
+index 71d1a2e3bac9..bbc6806d0f2b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
+@@ -41,7 +41,7 @@ static void hdp_v4_0_flush_hdp(struct amdgpu_device *adev,
+ 				struct amdgpu_ring *ring)
+ {
+ 	if (!ring || !ring->funcs->emit_wreg)
+-		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
++		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+ 	else
+ 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
  }
- 
--
--/**
-- * mpi3mr_free_config_dma_memory - free memory for config page
-- * @mrioc: Adapter instance reference
-- * @mem_desc: memory descriptor structure
-- *
-- * Check whether the size of the buffer specified by the memory
-- * descriptor is greater than the default page size if so then
-- * free the memory pointed by the descriptor.
-- *
-- * Return: Nothing.
-- */
--static void mpi3mr_free_config_dma_memory(struct mpi3mr_ioc *mrioc,
--	struct dma_memory_desc *mem_desc)
--{
--	if ((mem_desc->size > mrioc->cfg_page_sz) && mem_desc->addr) {
--		dma_free_coherent(&mrioc->pdev->dev, mem_desc->size,
--		    mem_desc->addr, mem_desc->dma_addr);
--		mem_desc->addr = NULL;
--	}
--}
--
--/**
-- * mpi3mr_alloc_config_dma_memory - Alloc memory for config page
-- * @mrioc: Adapter instance reference
-- * @mem_desc: Memory descriptor to hold dma memory info
-- *
-- * This function allocates new dmaable memory or provides the
-- * default config page dmaable memory based on the memory size
-- * described by the descriptor.
-- *
-- * Return: 0 on success, non-zero on failure.
-- */
--static int mpi3mr_alloc_config_dma_memory(struct mpi3mr_ioc *mrioc,
--	struct dma_memory_desc *mem_desc)
--{
--	if (mem_desc->size > mrioc->cfg_page_sz) {
--		mem_desc->addr = dma_alloc_coherent(&mrioc->pdev->dev,
--		    mem_desc->size, &mem_desc->dma_addr, GFP_KERNEL);
--		if (!mem_desc->addr)
--			return -ENOMEM;
--	} else {
--		mem_desc->addr = mrioc->cfg_page;
--		mem_desc->dma_addr = mrioc->cfg_page_dma;
--		memset(mem_desc->addr, 0, mrioc->cfg_page_sz);
--	}
--	return 0;
--}
--
- /**
-  * mpi3mr_post_cfg_req - Issue config requests and wait
-  * @mrioc: Adapter instance reference
-@@ -5596,8 +5532,12 @@ static int mpi3mr_process_cfg_req(struct mpi3mr_ioc *mrioc,
- 		cfg_req->page_length = cfg_hdr->page_length;
- 		cfg_req->page_version = cfg_hdr->page_version;
- 	}
--	if (mpi3mr_alloc_config_dma_memory(mrioc, &mem_desc))
--		goto out;
-+
-+	mem_desc.addr = dma_alloc_coherent(&mrioc->pdev->dev,
-+		mem_desc.size, &mem_desc.dma_addr, GFP_KERNEL);
-+
-+	if (!mem_desc.addr)
-+		return retval;
- 
- 	mpi3mr_add_sg_single(&cfg_req->sgl, sgl_flags, mem_desc.size,
- 	    mem_desc.dma_addr);
-@@ -5626,7 +5566,12 @@ static int mpi3mr_process_cfg_req(struct mpi3mr_ioc *mrioc,
- 	}
- 
- out:
--	mpi3mr_free_config_dma_memory(mrioc, &mem_desc);
-+	if (mem_desc.addr) {
-+		dma_free_coherent(&mrioc->pdev->dev, mem_desc.size,
-+			mem_desc.addr, mem_desc.dma_addr);
-+		mem_desc.addr = NULL;
-+	}
-+
- 	return retval;
+diff --git a/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c b/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
+index a9ea23fa0def..ed7facacf2fe 100644
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
+@@ -32,7 +32,7 @@ static void hdp_v5_0_flush_hdp(struct amdgpu_device *adev,
+ 				struct amdgpu_ring *ring)
+ {
+ 	if (!ring || !ring->funcs->emit_wreg)
+-		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
++		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+ 	else
+ 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
  }
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c b/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
+index 063eba619f2f..53ad93f96cd9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
+@@ -32,7 +32,7 @@ static void hdp_v6_0_flush_hdp(struct amdgpu_device *adev,
+ 				struct amdgpu_ring *ring)
+ {
+ 	if (!ring || !ring->funcs->emit_wreg)
+-		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
++		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+ 	else
+ 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+ }
 -- 
 2.39.5
 
