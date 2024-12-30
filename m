@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-106520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275B69FE8AD
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4831C9FE7E3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D381F16129C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09E0F161BF9
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1E6156678;
-	Mon, 30 Dec 2024 15:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B971531C4;
+	Mon, 30 Dec 2024 15:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QK9dsKXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD39nJve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B32E2AE68;
-	Mon, 30 Dec 2024 15:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAC72594B6;
+	Mon, 30 Dec 2024 15:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574263; cv=none; b=WeS3WhdnYwdiGkoszZuudGYVddYiImh+LS+25oZ78/OSmIxuCp30XAuYnXsnYFZimXyIJg/R7IdB/VNF9taS5nRW3E6MawhqFFUTdPuWTlXdMymQ54ygBjh0Rf5VxMW0xGQeUQlotu93e+8oE4X/horF6tydhlf0Meqzs44s7Wc=
+	t=1735573603; cv=none; b=jhEBmy+6d/ML1r5gvAOwhIrXFFaAnEAk8peRy5aeQwgmL2hPp5oBqsz6Wa5OWmugMNKw4cRGqe3X4bJSHDWqWn/3pUOvYssZRrBaUSXTEtbVup+ue4B8tYGAl/jCAovfn1aB5dpEqL0RJlSF2ZjC9DXAOuh/MDFl4sBls+kyIy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574263; c=relaxed/simple;
-	bh=gjPXEhzzvGound2ZBlEFhXWSo4591PRVXLoBRW9i/iE=;
+	s=arc-20240116; t=1735573603; c=relaxed/simple;
+	bh=o5aJNX5ajcNCDoPNBKG5Pzf+hQ/Ys1uWMmQOGl7vMwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUlZkwucL2xP0B+5kLkfMIVwsWT4BIwSxqA+9f56v9p9QYgFIpzmXJ9CJAMmp1Md4Be66O0qsVQxHfzsH4Q8HnEuNdsK5qIDGTaNzZDD0DxlfiMWZa/DWJ+uD+dVUTi8gooIfam5+TCgBQlSzfSf1QNe/lG7liCyoJmK4P+TW1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QK9dsKXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA720C4CED0;
-	Mon, 30 Dec 2024 15:57:42 +0000 (UTC)
+	 MIME-Version; b=shYqCOZQLt9z7Ju9SUTj4k+ezsEq41PeqIZHM/j2pU+LymgJ65KKEQvq6bCdztWc2XBgJEGZVHdjsCwIq5Xtqy2dXHeAiutHKNdWkv3ZrCiJooVlPV+8N7gfgHBcf/1LOZJoe54fzBOATIUQSAM65HPKimziGOzSQNvRdoE44fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XD39nJve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACCAC4CED0;
+	Mon, 30 Dec 2024 15:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574263;
-	bh=gjPXEhzzvGound2ZBlEFhXWSo4591PRVXLoBRW9i/iE=;
+	s=korg; t=1735573603;
+	bh=o5aJNX5ajcNCDoPNBKG5Pzf+hQ/Ys1uWMmQOGl7vMwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QK9dsKXl2MixKgRGjdZkFDH+kugzMl5Cmgm9JVDpG23TAOL3TT7f7+zyTwHS8XdO/
-	 pqhIWXF/rtGa5YgEROZLuMid4eJizPoIukg17xwhrX4Ptv+TEKIUUe8NY/uX8m3wuQ
-	 seJzjQTbcd9kbfcOge7kuvix5Iy24sj0LlNUthCI=
+	b=XD39nJve4T9opa1MbPnXW6C7f777z0THwBNU1y6l/3AZLIzRCxRg4nBlIYtMm5aMV
+	 dhdN5+AywmhRK8/IFkkEvYLu+dqTROQ0bj/gSdOQwKMQ88PxavI7ecXsKOmmEM65F5
+	 VfjKp0QxD18o5h7MYYYHuqx2Vstml4RHTY287jR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/114] ALSA: ump: Indicate the inactive group in legacy substream names
+Subject: [PATCH 6.1 42/60] net/mlx5e: Dont call cleanup on profile rollback failure
 Date: Mon, 30 Dec 2024 16:42:52 +0100
-Message-ID: <20241230154220.192385023@linuxfoundation.org>
+Message-ID: <20241230154208.875256617@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit e29e504e7890b9ee438ca6370d0180d607c473f9 ]
+[ Upstream commit 4dbc1d1a9f39c3711ad2a40addca04d07d9ab5d0 ]
 
-Since the legacy rawmidi has no proper way to know the inactive group,
-indicate it in the rawmidi substream names with "[Inactive]" suffix
-when the corresponding UMP group is inactive.
+When profile rollback fails in mlx5e_netdev_change_profile, the netdev
+profile var is left set to NULL. Avoid a crash when unloading the driver
+by not calling profile->cleanup in such a case.
 
-Link: https://patch.msgid.link/20241129094546.32119-3-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This was encountered while testing, with the original trigger that
+the wq rescuer thread creation got interrupted (presumably due to
+Ctrl+C-ing modprobe), which gets converted to ENOMEM (-12) by
+mlx5e_priv_init, the profile rollback also fails for the same reason
+(signal still active) so the profile is left as NULL, leading to a crash
+later in _mlx5e_remove.
+
+ [  732.473932] mlx5_core 0000:08:00.1: E-Switch: Unload vfs: mode(OFFLOADS), nvfs(2), necvfs(0), active vports(2)
+ [  734.525513] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+ [  734.557372] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
+ [  734.559187] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: new profile init failed, -12
+ [  734.560153] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+ [  734.589378] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
+ [  734.591136] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
+ [  745.537492] BUG: kernel NULL pointer dereference, address: 0000000000000008
+ [  745.538222] #PF: supervisor read access in kernel mode
+<snipped>
+ [  745.551290] Call Trace:
+ [  745.551590]  <TASK>
+ [  745.551866]  ? __die+0x20/0x60
+ [  745.552218]  ? page_fault_oops+0x150/0x400
+ [  745.555307]  ? exc_page_fault+0x79/0x240
+ [  745.555729]  ? asm_exc_page_fault+0x22/0x30
+ [  745.556166]  ? mlx5e_remove+0x6b/0xb0 [mlx5_core]
+ [  745.556698]  auxiliary_bus_remove+0x18/0x30
+ [  745.557134]  device_release_driver_internal+0x1df/0x240
+ [  745.557654]  bus_remove_device+0xd7/0x140
+ [  745.558075]  device_del+0x15b/0x3c0
+ [  745.558456]  mlx5_rescan_drivers_locked.part.0+0xb1/0x2f0 [mlx5_core]
+ [  745.559112]  mlx5_unregister_device+0x34/0x50 [mlx5_core]
+ [  745.559686]  mlx5_uninit_one+0x46/0xf0 [mlx5_core]
+ [  745.560203]  remove_one+0x4e/0xd0 [mlx5_core]
+ [  745.560694]  pci_device_remove+0x39/0xa0
+ [  745.561112]  device_release_driver_internal+0x1df/0x240
+ [  745.561631]  driver_detach+0x47/0x90
+ [  745.562022]  bus_remove_driver+0x84/0x100
+ [  745.562444]  pci_unregister_driver+0x3b/0x90
+ [  745.562890]  mlx5_cleanup+0xc/0x1b [mlx5_core]
+ [  745.563415]  __x64_sys_delete_module+0x14d/0x2f0
+ [  745.563886]  ? kmem_cache_free+0x1b0/0x460
+ [  745.564313]  ? lockdep_hardirqs_on_prepare+0xe2/0x190
+ [  745.564825]  do_syscall_64+0x6d/0x140
+ [  745.565223]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ [  745.565725] RIP: 0033:0x7f1579b1288b
+
+Fixes: 3ef14e463f6e ("net/mlx5e: Separate between netdev objects and mlx5e profiles initialization")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/ump.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/ump.c b/sound/core/ump.c
-index 0ade67d6b089..55d5d8af5e44 100644
---- a/sound/core/ump.c
-+++ b/sound/core/ump.c
-@@ -1256,8 +1256,9 @@ static void fill_substream_names(struct snd_ump_endpoint *ump,
- 		name = ump->groups[idx].name;
- 		if (!*name)
- 			name = ump->info.name;
--		snprintf(s->name, sizeof(s->name), "Group %d (%.16s)",
--			 idx + 1, name);
-+		snprintf(s->name, sizeof(s->name), "Group %d (%.16s)%s",
-+			 idx + 1, name,
-+			 ump->groups[idx].active ? "" : " [Inactive]");
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 385904502a6b..8ee6a81b42b4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5980,7 +5980,9 @@ static void mlx5e_remove(struct auxiliary_device *adev)
+ 	mlx5e_dcbnl_delete_app(priv);
+ 	unregister_netdev(priv->netdev);
+ 	mlx5e_suspend(adev, state);
+-	priv->profile->cleanup(priv);
++	/* Avoid cleanup if profile rollback failed. */
++	if (priv->profile)
++		priv->profile->cleanup(priv);
+ 	mlx5e_devlink_port_unregister(priv);
+ 	mlx5e_destroy_netdev(priv);
  }
- 
 -- 
 2.39.5
 
