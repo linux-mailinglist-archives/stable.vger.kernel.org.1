@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-106268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546F89FE3CB
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 09:39:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323E89FE3CC
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 09:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11B9D161E9E
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 08:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14E761882709
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 08:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557F61A0BC9;
-	Mon, 30 Dec 2024 08:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323E81A0B0E;
+	Mon, 30 Dec 2024 08:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywjZ27Ls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hthhZQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142E91A0B12
-	for <stable@vger.kernel.org>; Mon, 30 Dec 2024 08:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64CF29429
+	for <stable@vger.kernel.org>; Mon, 30 Dec 2024 08:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735547980; cv=none; b=lrybzthEATKbVVOP47lzgiwlJrER5ydX1P864hFU0gX+Jo6eMnE8pyKcrAkG35kfXZV4syTZ9GGS8NVz9rCZgWz/lUeT4HI4lRmH0eCjskDr9xtK4Pj1tWRrzJrunY/XjvSsEz4N/VB87QglQnwzENaQOIkJySK4WuEmzsSnJxM=
+	t=1735547986; cv=none; b=M0mfEPpuC1nBKLo+N3zLpQyc87Crh3zItb8tecPSmPOHUWFt30rHA8qHp6sILDAohmFqs99b1ktJHzAQ3b2fhNIDasQ6vUgqlrr5dvKrniwUODs1WJLtMGBmpBXYJHAJa2BNBy8ed8QnOvmBK5oxbhHlntLV+BmMtr6KqhxA76E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735547980; c=relaxed/simple;
-	bh=meZH4pTUmkJYPq+Pp5jT02IHkbj+BPa6c9bGbneCZ7g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=r0S6jCXIZBNfdK7CNrPwCzXljhDrBjpC2KUKbfqBuO+pRTwG6F3mXnx+65b9oJmwva8HKE2MB9QbLrRm175wu1+3NyC1/oGwKUA1jTWj++Hv8AMfavbI6oykrTlr/XZJ1Qow4VhnOgS8Xu12UOqWm2fAk828QIPU03M8AG7pGrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywjZ27Ls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8508AC4CED0;
-	Mon, 30 Dec 2024 08:39:39 +0000 (UTC)
+	s=arc-20240116; t=1735547986; c=relaxed/simple;
+	bh=COIfo5eujmpI50F50RwICQoTOE0YsuIjJO1DbCs5Gys=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dPvarn6Wc9HfR0SxDYajWXwUZgb70YNfCS/KpQjMNuPUrYonA/uNN6O/Zvl2EFfFpcE3Of++9bOf33HnF8xEyHzQj5lg5O2JojpW7XOCaxce1prnD/P4fUiWVYh8xfYv6VbfBHgaftWsBR+fpkpCY9xBQiSAURUkfewohCuJUlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hthhZQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666B7C4CED0;
+	Mon, 30 Dec 2024 08:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735547979;
-	bh=meZH4pTUmkJYPq+Pp5jT02IHkbj+BPa6c9bGbneCZ7g=;
+	s=korg; t=1735547985;
+	bh=COIfo5eujmpI50F50RwICQoTOE0YsuIjJO1DbCs5Gys=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ywjZ27LsY0YLayCTxP0op1nr1Yb4DBc7QHZcYLCikD6AcCowjVONNKbjJ4FPt235S
-	 oAOTDKdLPvp8pF1l/hTXnNpdH55+E/x1h+SrECcp4ZlFU7jEfVQtAXVMknNsXYB+kV
-	 l0ifVtHuFy4bsHr1FAcPnbqkBjzVfu5QHE0yPb3g=
-Subject: FAILED: patch "[PATCH] btrfs: fix use-after-free when COWing tree bock and tracing" failed to apply to 5.4-stable tree
-To: fdmanana@suse.com,dsterba@suse.com,wqu@suse.com
+	b=0hthhZQAFS+ZeKdQ0CxnoQUHyWPiu3owDMi/ZXQOkDavpiS8VTFsjPkdaqo62UGmH
+	 SzBsYSdl0AqyK0UgeqVyxNPGrgeRGZdRE+RCLO1rc+VL333zINcgGXvBVGoAXIznlP
+	 IzkNGdvrSeF/HChchpx68r/8ADa/QMFX6ll4f9R8=
+Subject: FAILED: patch "[PATCH] btrfs: check folio mapping after unlock in" failed to apply to 6.6-stable tree
+To: boris@bur.io,dsterba@suse.com,wqu@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Dec 2024 09:39:28 +0100
-Message-ID: <2024123027-yeah-suitcase-41e7@gregkh>
+Date: Mon, 30 Dec 2024 09:39:42 +0100
+Message-ID: <2024123042-limelight-doily-8703@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 44f52bbe96dfdbe4aca3818a2534520082a07040
+git cherry-pick -x 3e74859ee35edc33a022c3f3971df066ea0ca6b9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024123027-yeah-suitcase-41e7@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024123042-limelight-doily-8703@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,73 +77,102 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 44f52bbe96dfdbe4aca3818a2534520082a07040 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Wed, 11 Dec 2024 16:08:07 +0000
-Subject: [PATCH] btrfs: fix use-after-free when COWing tree bock and tracing
- is enabled
+From 3e74859ee35edc33a022c3f3971df066ea0ca6b9 Mon Sep 17 00:00:00 2001
+From: Boris Burkov <boris@bur.io>
+Date: Fri, 13 Dec 2024 12:22:32 -0800
+Subject: [PATCH] btrfs: check folio mapping after unlock in
+ relocate_one_folio()
 
-When a COWing a tree block, at btrfs_cow_block(), and we have the
-tracepoint trace_btrfs_cow_block() enabled and preemption is also enabled
-(CONFIG_PREEMPT=y), we can trigger a use-after-free in the COWed extent
-buffer while inside the tracepoint code. This is because in some paths
-that call btrfs_cow_block(), such as btrfs_search_slot(), we are holding
-the last reference on the extent buffer @buf so btrfs_force_cow_block()
-drops the last reference on the @buf extent buffer when it calls
-free_extent_buffer_stale(buf), which schedules the release of the extent
-buffer with RCU. This means that if we are on a kernel with preemption,
-the current task may be preempted before calling trace_btrfs_cow_block()
-and the extent buffer already released by the time trace_btrfs_cow_block()
-is called, resulting in a use-after-free.
+When we call btrfs_read_folio() to bring a folio uptodate, we unlock the
+folio. The result of that is that a different thread can modify the
+mapping (like remove it with invalidate) before we call folio_lock().
+This results in an invalid page and we need to try again.
 
-Fix this by moving the trace_btrfs_cow_block() from btrfs_cow_block() to
-btrfs_force_cow_block() before the COWed extent buffer is freed.
-This also has a side effect of invoking the tracepoint in the tree defrag
-code, at defrag.c:btrfs_realloc_node(), since btrfs_force_cow_block() is
-called there, but this is fine and it was actually missing there.
+In particular, if we are relocating concurrently with aborting a
+transaction, this can result in a crash like the following:
 
-Reported-by: syzbot+8517da8635307182c8a5@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/6759a9b9.050a0220.1ac542.000d.GAE@google.com/
-CC: stable@vger.kernel.org # 5.4+
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  PGD 0 P4D 0
+  Oops: 0000 [#1] SMP
+  CPU: 76 PID: 1411631 Comm: kworker/u322:5
+  Workqueue: events_unbound btrfs_reclaim_bgs_work
+  RIP: 0010:set_page_extent_mapped+0x20/0xb0
+  RSP: 0018:ffffc900516a7be8 EFLAGS: 00010246
+  RAX: ffffea009e851d08 RBX: ffffea009e0b1880 RCX: 0000000000000000
+  RDX: 0000000000000000 RSI: ffffc900516a7b90 RDI: ffffea009e0b1880
+  RBP: 0000000003573000 R08: 0000000000000001 R09: ffff88c07fd2f3f0
+  R10: 0000000000000000 R11: 0000194754b575be R12: 0000000003572000
+  R13: 0000000003572fff R14: 0000000000100cca R15: 0000000005582fff
+  FS:  0000000000000000(0000) GS:ffff88c07fd00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 000000407d00f002 CR4: 00000000007706f0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  PKRU: 55555554
+  Call Trace:
+  <TASK>
+  ? __die+0x78/0xc0
+  ? page_fault_oops+0x2a8/0x3a0
+  ? __switch_to+0x133/0x530
+  ? wq_worker_running+0xa/0x40
+  ? exc_page_fault+0x63/0x130
+  ? asm_exc_page_fault+0x22/0x30
+  ? set_page_extent_mapped+0x20/0xb0
+  relocate_file_extent_cluster+0x1a7/0x940
+  relocate_data_extent+0xaf/0x120
+  relocate_block_group+0x20f/0x480
+  btrfs_relocate_block_group+0x152/0x320
+  btrfs_relocate_chunk+0x3d/0x120
+  btrfs_reclaim_bgs_work+0x2ae/0x4e0
+  process_scheduled_works+0x184/0x370
+  worker_thread+0xc6/0x3e0
+  ? blk_add_timer+0xb0/0xb0
+  kthread+0xae/0xe0
+  ? flush_tlb_kernel_range+0x90/0x90
+  ret_from_fork+0x2f/0x40
+  ? flush_tlb_kernel_range+0x90/0x90
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+
+This occurs because cleanup_one_transaction() calls
+destroy_delalloc_inodes() which calls invalidate_inode_pages2() which
+takes the folio_lock before setting mapping to NULL. We fail to check
+this, and subsequently call set_extent_mapping(), which assumes that
+mapping != NULL (in fact it asserts that in debug mode)
+
+Note that the "fixes" patch here is not the one that introduced the
+race (the very first iteration of this code from 2009) but a more recent
+change that made this particular crash happen in practice.
+
+Fixes: e7f1326cc24e ("btrfs: set page extent mapped after read_folio in relocate_one_page")
+CC: stable@vger.kernel.org # 6.1+
 Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 693dc27ffb89..185985a337b3 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -654,6 +654,8 @@ int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
- 			goto error_unlock_cow;
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index bf267bdfa8f8..db8b42f674b7 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2902,6 +2902,7 @@ static int relocate_one_folio(struct reloc_control *rc,
+ 	const bool use_rst = btrfs_need_stripe_tree_update(fs_info, rc->block_group->flags);
+ 
+ 	ASSERT(index <= last_index);
++again:
+ 	folio = filemap_lock_folio(inode->i_mapping, index);
+ 	if (IS_ERR(folio)) {
+ 
+@@ -2937,6 +2938,11 @@ static int relocate_one_folio(struct reloc_control *rc,
+ 			ret = -EIO;
+ 			goto release_folio;
  		}
++		if (folio->mapping != inode->i_mapping) {
++			folio_unlock(folio);
++			folio_put(folio);
++			goto again;
++		}
  	}
-+
-+	trace_btrfs_cow_block(root, buf, cow);
- 	if (unlock_orig)
- 		btrfs_tree_unlock(buf);
- 	free_extent_buffer_stale(buf);
-@@ -710,7 +712,6 @@ int btrfs_cow_block(struct btrfs_trans_handle *trans,
- {
- 	struct btrfs_fs_info *fs_info = root->fs_info;
- 	u64 search_start;
--	int ret;
  
- 	if (unlikely(test_bit(BTRFS_ROOT_DELETING, &root->state))) {
- 		btrfs_abort_transaction(trans, -EUCLEAN);
-@@ -751,12 +752,8 @@ int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 	 * Also We don't care about the error, as it's handled internally.
- 	 */
- 	btrfs_qgroup_trace_subtree_after_cow(trans, root, buf);
--	ret = btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
--				    cow_ret, search_start, 0, nest);
--
--	trace_btrfs_cow_block(root, buf, *cow_ret);
--
--	return ret;
-+	return btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
-+				     cow_ret, search_start, 0, nest);
- }
- ALLOW_ERROR_INJECTION(btrfs_cow_block, ERRNO);
- 
+ 	/*
 
 
