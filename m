@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6981D9FE844
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:52:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EA39FE8CF
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D7987A07EF
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E7EB7A1782
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9C81531C4;
-	Mon, 30 Dec 2024 15:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C11156678;
+	Mon, 30 Dec 2024 15:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry4Rrnnc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+z4LJo6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C06B15E8B;
-	Mon, 30 Dec 2024 15:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447B115E8B;
+	Mon, 30 Dec 2024 15:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573928; cv=none; b=OHfKO7MrAwhgyorS+iJVizbbgytWuh9Mfjn0+S/wykl2S7kBvNQcZ/QTIj2DKry1HLHM+uOw4VxkQoewvw8w8ax00KRzpccLrBvRrpe62bqMlmWbu+2VCwRLJ2Es3keVyh1pniGVSJr0x/8enPrfRssvons5MVqSlAfzTbwCywk=
+	t=1735574377; cv=none; b=IstPtmZTM94Fk4gIo+zCPZMQH9PjnXWykJGMbNCZtdEuNIFf1R0mvryMRum7hSZYkcUt2jvRnAv1eRLUhENBonjWzIDwBxAck8o+rnTnUhp1+qzmeSmhXg+R0Q7rJY+nitKsVUrjuHSoQUQPOaKphQ4dBNC+eSiXLg0waGJTMJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573928; c=relaxed/simple;
-	bh=xrBlRyqBz22ygtRtm/Bn45zUpJ5gtOlnoThXTR2Xz3I=;
+	s=arc-20240116; t=1735574377; c=relaxed/simple;
+	bh=tOB5TMq5MvSqrEB5LhjZzvXmrZG1r6wuJbcQEqa9mBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7LjTGXQHZXUCUeTMtf6U5dVtICkSDAdBLaguG1Kcq46n2IdlWmBkzLlQxDIW5NHTsXXWoApIHoBoz4tE6XmuKkbnjkebeyNeFUch9FRMQsmcGx/KyvW97zsAIT09FugvtMikeY0VdaAeiviRWkqCcRI9/y0cdHkoWJWI4I/z+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry4Rrnnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE48C4CED0;
-	Mon, 30 Dec 2024 15:52:07 +0000 (UTC)
+	 MIME-Version; b=tfP1JZr1hK8eboQWxDW2/B8zVIe8ClYNjWLncUF9kXvSzfgdQM/Py7+tBL6kpyZT08TH2Dr+w7dfefziTeCvgRyNevPtaVWh8E8ZAeEYqutB30+tSDnga5RKEF5QfkeJv2aJN3KHko04DvlFFUaePYchYVt1cvDz1jE/aDpM0h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+z4LJo6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A894FC4CED0;
+	Mon, 30 Dec 2024 15:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573928;
-	bh=xrBlRyqBz22ygtRtm/Bn45zUpJ5gtOlnoThXTR2Xz3I=;
+	s=korg; t=1735574377;
+	bh=tOB5TMq5MvSqrEB5LhjZzvXmrZG1r6wuJbcQEqa9mBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ry4RrnncAnLp0PCXSmdxmi1bdqONQOPYBLVnzVZBTUirJh/AUX5sfsx+MTl8jJE81
-	 64tunSVLAMn6vSh39ArN/VT20cVBa8FTCME7Zja5A2Fi6sUtEer1LEgrYO44T+TH23
-	 V0YaYfR+Rw88SFY4wqAa3p3KUYvFVXI2tUpDqUoA=
+	b=l+z4LJo6fe/xTv33wVAKYiMEhgk+Q9U7eyOukvdxrk+W3ZmKTXvUj30rTCKUcxypw
+	 3rFPn2dsQ49voKq0f6gSlYmBlKvUl3YO77hpd16GGDTAwe2ppkcQCtn5/vSk3oQzMo
+	 TauYecIhAEWHgLFhMO9lpUqVBByS062ykxX1uEmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 76/86] i2c: microchip-core: actually use repeated sends
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 087/114] rtla/timerlat: Fix histogram ALL for zero samples
 Date: Mon, 30 Dec 2024 16:43:24 +0100
-Message-ID: <20241230154214.595766929@linuxfoundation.org>
+Message-ID: <20241230154221.443264320@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,225 +61,305 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit 9a8f9320d67b27ddd7f1ee88d91820197a0e908f upstream.
+commit 6cc45f8c1f898570916044f606be9890d295e129 upstream.
 
-At present, where repeated sends are intended to be used, the
-i2c-microchip-core driver sends a stop followed by a start. Lots of i2c
-devices must not malfunction in the face of this behaviour, because the
-driver has operated like this for years! Try to keep track of whether or
-not a repeated send is required, and suppress sending a stop in these
-cases.
+rtla timerlat hist currently computers the minimum, maximum and average
+latency even in cases when there are zero samples. This leads to
+nonsensical values being calculated for maximum and minimum, and to
+divide by zero for average.
 
-CC: stable@vger.kernel.org
-Fixes: 64a6f1c4987e ("i2c: add support for microchip fpga i2c controllers")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20241218-football-composure-e56df2461461@spud
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+A similar bug is fixed by 01b05fc0e5f3 ("rtla/timerlat: Fix histogram
+report when a cpu count is 0") but the bug still remains for printing
+the sum over all CPUs in timerlat_print_stats_all.
+
+The issue can be reproduced with this command:
+
+$ rtla timerlat hist -U -d 1s
+Index
+over:
+count:
+min:
+avg:
+max:
+Floating point exception (core dumped)
+
+(There are always no samples with -U unless the user workload is
+created.)
+
+Fix the bug by omitting max/min/avg when sample count is zero,
+displaying a dash instead, just like we already do for the individual
+CPUs. The logic is moved into a new function called
+format_summary_value, which is used for both the individual CPUs
+and for the overall summary.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20241127134130.51171-1-tglozar@redhat.com
+Fixes: 1462501c7a8 ("rtla/timerlat: Add a summary for hist mode")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-microchip-corei2c.c |  120 ++++++++++++++++++++++-------
- 1 file changed, 94 insertions(+), 26 deletions(-)
+ tools/tracing/rtla/src/timerlat_hist.c |  189 +++++++++++++++++----------------
+ 1 file changed, 102 insertions(+), 87 deletions(-)
 
---- a/drivers/i2c/busses/i2c-microchip-corei2c.c
-+++ b/drivers/i2c/busses/i2c-microchip-corei2c.c
-@@ -93,27 +93,35 @@
-  * @base:		pointer to register struct
-  * @dev:		device reference
-  * @i2c_clk:		clock reference for i2c input clock
-+ * @msg_queue:		pointer to the messages requiring sending
-  * @buf:		pointer to msg buffer for easier use
-  * @msg_complete:	xfer completion object
-  * @adapter:		core i2c abstraction
-  * @msg_err:		error code for completed message
-  * @bus_clk_rate:	current i2c bus clock rate
-  * @isr_status:		cached copy of local ISR status
-+ * @total_num:		total number of messages to be sent/received
-+ * @current_num:	index of the current message being sent/received
-  * @msg_len:		number of bytes transferred in msg
-  * @addr:		address of the current slave
-+ * @restart_needed:	whether or not a repeated start is required after current message
-  */
- struct mchp_corei2c_dev {
- 	void __iomem *base;
- 	struct device *dev;
- 	struct clk *i2c_clk;
-+	struct i2c_msg *msg_queue;
- 	u8 *buf;
- 	struct completion msg_complete;
- 	struct i2c_adapter adapter;
- 	int msg_err;
-+	int total_num;
-+	int current_num;
- 	u32 bus_clk_rate;
- 	u32 isr_status;
- 	u16 msg_len;
- 	u8 addr;
-+	bool restart_needed;
- };
- 
- static void mchp_corei2c_core_disable(struct mchp_corei2c_dev *idev)
-@@ -222,6 +230,47 @@ static int mchp_corei2c_fill_tx(struct m
- 	return 0;
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -281,6 +281,21 @@ static void timerlat_hist_header(struct
  }
  
-+static void mchp_corei2c_next_msg(struct mchp_corei2c_dev *idev)
+ /*
++ * format_summary_value - format a line of summary value (min, max or avg)
++ * of hist data
++ */
++static void format_summary_value(struct trace_seq *seq,
++				 int count,
++				 unsigned long long val,
++				 bool avg)
 +{
-+	struct i2c_msg *this_msg;
-+	u8 ctrl;
-+
-+	if (idev->current_num >= idev->total_num) {
-+		complete(&idev->msg_complete);
-+		return;
-+	}
-+
-+	/*
-+	 * If there's been an error, the isr needs to return control
-+	 * to the "main" part of the driver, so as not to keep sending
-+	 * messages once it completes and clears the SI bit.
-+	 */
-+	if (idev->msg_err) {
-+		complete(&idev->msg_complete);
-+		return;
-+	}
-+
-+	this_msg = idev->msg_queue++;
-+
-+	if (idev->current_num < (idev->total_num - 1)) {
-+		struct i2c_msg *next_msg = idev->msg_queue;
-+
-+		idev->restart_needed = next_msg->flags & I2C_M_RD;
-+	} else {
-+		idev->restart_needed = false;
-+	}
-+
-+	idev->addr = i2c_8bit_addr_from_msg(this_msg);
-+	idev->msg_len = this_msg->len;
-+	idev->buf = this_msg->buf;
-+
-+	ctrl = readb(idev->base + CORE_I2C_CTRL);
-+	ctrl |= CTRL_STA;
-+	writeb(ctrl, idev->base + CORE_I2C_CTRL);
-+
-+	idev->current_num++;
++	if (count)
++		trace_seq_printf(seq, "%9llu ", avg ? val / count : val);
++	else
++		trace_seq_printf(seq, "%9c ", '-');
 +}
 +
- static irqreturn_t mchp_corei2c_handle_isr(struct mchp_corei2c_dev *idev)
- {
- 	u32 status = idev->isr_status;
-@@ -247,10 +296,14 @@ static irqreturn_t mchp_corei2c_handle_i
- 		break;
- 	case STATUS_M_SLAW_ACK:
- 	case STATUS_M_TX_DATA_ACK:
--		if (idev->msg_len > 0)
-+		if (idev->msg_len > 0) {
- 			mchp_corei2c_fill_tx(idev);
--		else
--			last_byte = true;
-+		} else {
-+			if (idev->restart_needed)
-+				finished = true;
-+			else
-+				last_byte = true;
-+		}
- 		break;
- 	case STATUS_M_TX_DATA_NACK:
- 	case STATUS_M_SLAR_NACK:
-@@ -287,7 +340,7 @@ static irqreturn_t mchp_corei2c_handle_i
- 		mchp_corei2c_stop(idev);
++/*
+  * timerlat_print_summary - print the summary of the hist data to the output
+  */
+ static void
+@@ -327,29 +342,23 @@ timerlat_print_summary(struct timerlat_h
+ 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
+ 			continue;
  
- 	if (last_byte || finished)
--		complete(&idev->msg_complete);
-+		mchp_corei2c_next_msg(idev);
- 
- 	return IRQ_HANDLED;
- }
-@@ -311,21 +364,48 @@ static irqreturn_t mchp_corei2c_isr(int
- 	return ret;
- }
- 
--static int mchp_corei2c_xfer_msg(struct mchp_corei2c_dev *idev,
--				 struct i2c_msg *msg)
-+static int mchp_corei2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
-+			     int num)
- {
--	u8 ctrl;
-+	struct mchp_corei2c_dev *idev = i2c_get_adapdata(adap);
-+	struct i2c_msg *this_msg = msgs;
- 	unsigned long time_left;
-+	u8 ctrl;
- 
--	idev->addr = i2c_8bit_addr_from_msg(msg);
--	idev->msg_len = msg->len;
--	idev->buf = msg->buf;
-+	mchp_corei2c_core_enable(idev);
-+
-+	/*
-+	 * The isr controls the flow of a transfer, this info needs to be saved
-+	 * to a location that it can access the queue information from.
-+	 */
-+	idev->restart_needed = false;
-+	idev->msg_queue = msgs;
-+	idev->total_num = num;
-+	idev->current_num = 0;
-+
-+	/*
-+	 * But the first entry to the isr is triggered by the start in this
-+	 * function, so the first message needs to be "dequeued".
-+	 */
-+	idev->addr = i2c_8bit_addr_from_msg(this_msg);
-+	idev->msg_len = this_msg->len;
-+	idev->buf = this_msg->buf;
- 	idev->msg_err = 0;
- 
--	reinit_completion(&idev->msg_complete);
-+	if (idev->total_num > 1) {
-+		struct i2c_msg *next_msg = msgs + 1;
- 
--	mchp_corei2c_core_enable(idev);
-+		idev->restart_needed = next_msg->flags & I2C_M_RD;
-+	}
- 
-+	idev->current_num++;
-+	idev->msg_queue++;
-+
-+	reinit_completion(&idev->msg_complete);
-+
-+	/*
-+	 * Send the first start to pass control to the isr
-+	 */
- 	ctrl = readb(idev->base + CORE_I2C_CTRL);
- 	ctrl |= CTRL_STA;
- 	writeb(ctrl, idev->base + CORE_I2C_CTRL);
-@@ -335,20 +415,8 @@ static int mchp_corei2c_xfer_msg(struct
- 	if (!time_left)
- 		return -ETIMEDOUT;
- 
--	return idev->msg_err;
--}
+-		if (!params->no_irq) {
+-			if (data->hist[cpu].irq_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						data->hist[cpu].min_irq);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
 -
--static int mchp_corei2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
--			     int num)
--{
--	struct mchp_corei2c_dev *idev = i2c_get_adapdata(adap);
--	int i, ret;
+-		if (!params->no_thread) {
+-			if (data->hist[cpu].thread_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						data->hist[cpu].min_thread);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
 -
--	for (i = 0; i < num; i++) {
--		ret = mchp_corei2c_xfer_msg(idev, msgs++);
--		if (ret)
--			return ret;
--	}
-+	if (idev->msg_err)
-+		return idev->msg_err;
+-		if (params->user_hist) {
+-			if (data->hist[cpu].user_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						data->hist[cpu].min_user);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
++		if (!params->no_irq)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].irq_count,
++					     data->hist[cpu].min_irq,
++					     false);
++
++		if (!params->no_thread)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].thread_count,
++					     data->hist[cpu].min_thread,
++					     false);
++
++		if (params->user_hist)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].user_count,
++					     data->hist[cpu].min_user,
++					     false);
+ 	}
+ 	trace_seq_printf(trace->seq, "\n");
  
- 	return num;
- }
+@@ -363,29 +372,23 @@ timerlat_print_summary(struct timerlat_h
+ 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
+ 			continue;
+ 
+-		if (!params->no_irq) {
+-			if (data->hist[cpu].irq_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						 data->hist[cpu].sum_irq / data->hist[cpu].irq_count);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
+-
+-		if (!params->no_thread) {
+-			if (data->hist[cpu].thread_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						 data->hist[cpu].sum_thread / data->hist[cpu].thread_count);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
+-
+-		if (params->user_hist) {
+-			if (data->hist[cpu].user_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						 data->hist[cpu].sum_user / data->hist[cpu].user_count);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
++		if (!params->no_irq)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].irq_count,
++					     data->hist[cpu].sum_irq,
++					     true);
++
++		if (!params->no_thread)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].thread_count,
++					     data->hist[cpu].sum_thread,
++					     true);
++
++		if (params->user_hist)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].user_count,
++					     data->hist[cpu].sum_user,
++					     true);
+ 	}
+ 	trace_seq_printf(trace->seq, "\n");
+ 
+@@ -399,29 +402,23 @@ timerlat_print_summary(struct timerlat_h
+ 		if (!data->hist[cpu].irq_count && !data->hist[cpu].thread_count)
+ 			continue;
+ 
+-		if (!params->no_irq) {
+-			if (data->hist[cpu].irq_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						 data->hist[cpu].max_irq);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
+-
+-		if (!params->no_thread) {
+-			if (data->hist[cpu].thread_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						data->hist[cpu].max_thread);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
+-
+-		if (params->user_hist) {
+-			if (data->hist[cpu].user_count)
+-				trace_seq_printf(trace->seq, "%9llu ",
+-						data->hist[cpu].max_user);
+-			else
+-				trace_seq_printf(trace->seq, "        - ");
+-		}
++		if (!params->no_irq)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].irq_count,
++					     data->hist[cpu].max_irq,
++					     false);
++
++		if (!params->no_thread)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].thread_count,
++					     data->hist[cpu].max_thread,
++					     false);
++
++		if (params->user_hist)
++			format_summary_value(trace->seq,
++					     data->hist[cpu].user_count,
++					     data->hist[cpu].max_user,
++					     false);
+ 	}
+ 	trace_seq_printf(trace->seq, "\n");
+ 	trace_seq_do_printf(trace->seq);
+@@ -505,16 +502,22 @@ timerlat_print_stats_all(struct timerlat
+ 		trace_seq_printf(trace->seq, "min:  ");
+ 
+ 	if (!params->no_irq)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.min_irq);
++		format_summary_value(trace->seq,
++				     sum.irq_count,
++				     sum.min_irq,
++				     false);
+ 
+ 	if (!params->no_thread)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.min_thread);
++		format_summary_value(trace->seq,
++				     sum.thread_count,
++				     sum.min_thread,
++				     false);
+ 
+ 	if (params->user_hist)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.min_user);
++		format_summary_value(trace->seq,
++				     sum.user_count,
++				     sum.min_user,
++				     false);
+ 
+ 	trace_seq_printf(trace->seq, "\n");
+ 
+@@ -522,16 +525,22 @@ timerlat_print_stats_all(struct timerlat
+ 		trace_seq_printf(trace->seq, "avg:  ");
+ 
+ 	if (!params->no_irq)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.sum_irq / sum.irq_count);
++		format_summary_value(trace->seq,
++				     sum.irq_count,
++				     sum.sum_irq,
++				     true);
+ 
+ 	if (!params->no_thread)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.sum_thread / sum.thread_count);
++		format_summary_value(trace->seq,
++				     sum.thread_count,
++				     sum.sum_thread,
++				     true);
+ 
+ 	if (params->user_hist)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.sum_user / sum.user_count);
++		format_summary_value(trace->seq,
++				     sum.user_count,
++				     sum.sum_user,
++				     true);
+ 
+ 	trace_seq_printf(trace->seq, "\n");
+ 
+@@ -539,16 +548,22 @@ timerlat_print_stats_all(struct timerlat
+ 		trace_seq_printf(trace->seq, "max:  ");
+ 
+ 	if (!params->no_irq)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.max_irq);
++		format_summary_value(trace->seq,
++				     sum.irq_count,
++				     sum.max_irq,
++				     false);
+ 
+ 	if (!params->no_thread)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.max_thread);
++		format_summary_value(trace->seq,
++				     sum.thread_count,
++				     sum.max_thread,
++				     false);
+ 
+ 	if (params->user_hist)
+-		trace_seq_printf(trace->seq, "%9llu ",
+-				 sum.max_user);
++		format_summary_value(trace->seq,
++				     sum.user_count,
++				     sum.max_user,
++				     false);
+ 
+ 	trace_seq_printf(trace->seq, "\n");
+ 	trace_seq_do_printf(trace->seq);
 
 
 
