@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-106417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6B69FE83E
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8599FE89E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B71F37A076B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C25FE160D14
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC6814F136;
-	Mon, 30 Dec 2024 15:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A549D1A9B3D;
+	Mon, 30 Dec 2024 15:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7apvNZ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9xuaQj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2142AE68;
-	Mon, 30 Dec 2024 15:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C7115E8B;
+	Mon, 30 Dec 2024 15:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573905; cv=none; b=kVxl3ibcQs5dFBdGJhvbxHGF80IABYg6No+R2Yu1Ji49jnH28it4iOPbYqnzZY2Ydy9oR/S9UT7/rG4DHsmtyMYbqZzVWjz+GpelkJ+s/dO1YlhB5odiLY3YCbgjMShuUIuDj0oJxqdp2pec/39tfh3ziMYy/l5n8cYGf9YkgL0=
+	t=1735574223; cv=none; b=oApRtMxIQhSU0TNgx0/ja1bS62e4g/HkNrxXfFo/tkozM19abtvaPd2SlUmOD/3SNRxrnn8L0rU0VO25YKuiyW59nUjU97Ie3QLHlfcZ6N9BZg5pbh0pr3hH7CUzhLIOJ+REgc2Mb+01vJVhaSYuUFH8SErIjcKblTVI2U045HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573905; c=relaxed/simple;
-	bh=i3ggnAFa8dDU8k11124IWhdlwV5QNoHs+LX475gCT0Y=;
+	s=arc-20240116; t=1735574223; c=relaxed/simple;
+	bh=2o4jRgaBR/O2rrc4Liq+JQXlFHTJyvd2AfDPTn5ptLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VajyHKoT5ELEy09rW4JPRmdfMUHmuOoYPjpTP67KU45M6FpMBACXXZJv+kCAAE11K9T9Ad6mTxulzspWzUvyCNjye5kdJdB1mAQm+YPqiOCvZvWfG/rspatYN4OCVYwqWUsqrVKhSiN1d7SdJ8dphovepyM4gyKPr03mbI5cWYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7apvNZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C895C4CED0;
-	Mon, 30 Dec 2024 15:51:44 +0000 (UTC)
+	 MIME-Version; b=mOHfm/qCEGmsuoUu0EH04AFT3ftF9Cwk5ZJzjdwBhRSfQHrSTHwhGCyNRnlyFhxloiSwohx2scVMuhxmKnePNXeb7HiW311v/+at9YFLKuikC9oxHu2BF6yCdyaUcpMDencAp4WU++YPFupD/WmRtad2yo4OL9XHcBN0nojTZgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9xuaQj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F7CC4CED0;
+	Mon, 30 Dec 2024 15:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573904;
-	bh=i3ggnAFa8dDU8k11124IWhdlwV5QNoHs+LX475gCT0Y=;
+	s=korg; t=1735574222;
+	bh=2o4jRgaBR/O2rrc4Liq+JQXlFHTJyvd2AfDPTn5ptLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7apvNZ50tQ3FtDBJes1QGptBqMIZlR58D8kmlz+N20Xx5C8bDzQskRQzelZNTccF
-	 42uopv4WvrBnH0QiiwGt0uHd8tV2epKTXyDv83MhOgFZ89IQWvphMsZOEHzXwTmaIW
-	 rsEhRKeETTUBP2dxB+WwiFJZby5wDcA0VKPxg7Sc=
+	b=J9xuaQj7nrwZoY+iY5PHyBYKruudQxIWZe4lVhzxu6onOXmsU0bQWsOAuPwFaSZU5
+	 E1UvV8DbuAJokxR6X659HXv5mHqJh7rO6pzpx2z6/iwLndmczf56VuJwykgRDLeh7o
+	 h/LB1TyXQNoWS2w8rDAT33J0pFkeXeB+cMD7gFNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Belanger <david.belanger@amd.com>,
-	Frank Min <frank.min@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Qinxin Xia <xiaqinxin@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 61/86] drm/amdgpu/hdp6.0: do a posting read when flushing HDP
+Subject: [PATCH 6.12 072/114] ACPI/IORT: Add PMCG platform information for HiSilicon HIP09A
 Date: Mon, 30 Dec 2024 16:43:09 +0100
-Message-ID: <20241230154214.038794803@linuxfoundation.org>
+Message-ID: <20241230154220.864943684@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Qinxin Xia <xiaqinxin@huawei.com>
 
-[ Upstream commit abe1cbaec6cfe9fde609a15cd6a12c812282ce77 ]
+[ Upstream commit c2b46ae022704a2d845e59461fa24431ad627022 ]
 
-Need to read back to make sure the write goes through.
+HiSilicon HIP09A platforms using the same SMMU PMCG with HIP09
+and thus suffers the same erratum. List them in the PMCG platform
+information list without introducing a new SMMU PMCG Model.
 
-Cc: David Belanger <david.belanger@amd.com>
-Reviewed-by: Frank Min <frank.min@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Update the silicon-errata.rst as well.
+
+Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
+Link: https://lore.kernel.org/r/20241205013331.1484017-1-xiaqinxin@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ Documentation/arch/arm64/silicon-errata.rst | 5 +++--
+ drivers/acpi/arm64/iort.c                   | 2 ++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c b/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
-index 53ad93f96cd9..b6d71ec1debf 100644
---- a/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
-@@ -31,10 +31,12 @@
- static void hdp_v6_0_flush_hdp(struct amdgpu_device *adev,
- 				struct amdgpu_ring *ring)
- {
--	if (!ring || !ring->funcs->emit_wreg)
-+	if (!ring || !ring->funcs->emit_wreg) {
- 		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
--	else
-+		RREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
-+	} else {
- 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
-+	}
- }
- 
- static void hdp_v6_0_update_clock_gating(struct amdgpu_device *adev,
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index 77db10e944f0..b42fea07c5ce 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -255,8 +255,9 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
+-|                | ,11} SMMU PMCG  |                 |                             |
++| Hisilicon      | Hip{08,09,09A,10| #162001900      | N/A                         |
++|                | ,10C,11}        |                 |                             |
++|                | SMMU PMCG       |                 |                             |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip09           | #162100801      | HISILICON_ERRATUM_162100801 |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 4c745a26226b..bf3be532e089 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1703,6 +1703,8 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+ 	/* HiSilicon Hip09 Platform */
+ 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	{"HISI  ", "HIP09A  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+ 	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
+ 	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
 -- 
 2.39.5
 
