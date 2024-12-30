@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-106421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757489FE841
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:52:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB579FE8CA
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:59:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CBD41882FD0
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30F457A1777
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4011AA7A6;
-	Mon, 30 Dec 2024 15:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9E915748F;
+	Mon, 30 Dec 2024 15:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/vDDcjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/jpDm8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D952AE68;
-	Mon, 30 Dec 2024 15:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1EB15E8B;
+	Mon, 30 Dec 2024 15:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573918; cv=none; b=DuG9QTSnzCNI2knI7FcAF2s/VEZQhvpgpJC+PJlDVTxHkNr5jIqpS1cJdq7KXnHAENNGFIyt5suxMKGLOJ99zBvCWqfCgtxGBOmgavHgUh9IUCrxFrMYbOb7z2Ei4O1hCvdaJsGXxkJSLBRVtEZ4DZEqoJTXJpr8A4XKKGhetpg=
+	t=1735574355; cv=none; b=Kk7Elrc6OBe8iz3X4mI/i4fT7qdLmHLxqp0gTRD8WBb+M1fr4wQt5wVIX+c1lBLhDD+l8Qz+3kA7NQEfv4+A5Vb/ajD/j/I2UJMNBj2Lb6URb08YFEJzmt2kABrCGr6z5SPgF6s8WMVBtf3ExYWBMcxlOqW4c+0tHeRzf/DW2As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573918; c=relaxed/simple;
-	bh=IyABsulOJu1ubzJdib6Rv2TSK/nDmgB4l/DK00EGJCw=;
+	s=arc-20240116; t=1735574355; c=relaxed/simple;
+	bh=ld7rM/4IB9rEIm5lufNyrbZ6ACTXi5vZ9ivlcBAcg/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tfbvSxDqh1aKqzbhJFh9puEOsIYrbI0xJE1FSarqeHsB2qvPvX1yNiwfWk5RpbL/wqDjsNBdhtrVKw7MP+OO72SfQ0tMS4is4AXsfPXfdhjZAxcN/SvCtwVC1BxBzk//RKt/LQ5FH3WrrRasDq5Xq3gZ2L04TpM80BFGTxud1kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/vDDcjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D9BC4CED0;
-	Mon, 30 Dec 2024 15:51:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t/I3vpxBIgmdSRlcFJf5b4WdEuuRe5jixQtuLADXQhJE8RKDZVOtsHbEnRpb1ktzuorsOYaqLaFPysInhdKUoWgDNT8Y6tBQWQLIKslf1i7xqu4YVT6iBW3F4mvWozWI8sE63VZYAphZoAib68CSZMi6XdFouxkZSoV3cClp8Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/jpDm8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C0BC4CED0;
+	Mon, 30 Dec 2024 15:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573918;
-	bh=IyABsulOJu1ubzJdib6Rv2TSK/nDmgB4l/DK00EGJCw=;
+	s=korg; t=1735574354;
+	bh=ld7rM/4IB9rEIm5lufNyrbZ6ACTXi5vZ9ivlcBAcg/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/vDDcjf5wl2IC4tFZin9OqSQKhAXKGWd9//299SpQ3fEiieUNmWiUWjWLwbj5E42
-	 z8GGF1T7DwYyHPvj2IpoWn1PGIjCQgOJm3L0xV2zwsB0/qvsJ4igB+pfsbCoagsiyO
-	 rJxrXL7AGuERoIQxLDmJKLmU45BHZW8idjVE7rJk=
+	b=A/jpDm8fRr5ubrR01C9OQ4iQs6DWNiaV8/kkrqTnMQMp2T3ars4QJEwP+suTwnHP4
+	 GBWhkeRRRe7cakd2sU1DZ1rZRLrwJjEExzZ0aonZX7JcTM0UdCWHtFBdGJ0bkXzY5Y
+	 MHvcbYA5NiqiL5MOyzJ8eHbDatTpSX++8f+q96lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -52,12 +52,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Justin Stitt <justinstitt@google.com>,
 	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 73/86] tracing: Constify string literal data member in struct trace_event_call
-Date: Mon, 30 Dec 2024 16:43:21 +0100
-Message-ID: <20241230154214.484730694@linuxfoundation.org>
+Subject: [PATCH 6.12 085/114] tracing: Constify string literal data member in struct trace_event_call
+Date: Mon, 30 Dec 2024 16:43:22 +0100
+Message-ID: <20241230154221.362324852@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -123,7 +123,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/include/linux/trace_events.h
 +++ b/include/linux/trace_events.h
-@@ -369,7 +369,7 @@ struct trace_event_call {
+@@ -379,7 +379,7 @@ struct trace_event_call {
  	struct list_head	list;
  	struct trace_event_class *class;
  	union {
