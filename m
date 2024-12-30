@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-106324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B8A9FE7DB
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE699FE870
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0D113A187D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63E601882ED9
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5059315E8B;
-	Mon, 30 Dec 2024 15:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250FF1537C8;
+	Mon, 30 Dec 2024 15:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SN/A6SVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkkXiS1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD7E537E9;
-	Mon, 30 Dec 2024 15:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73D52E414;
+	Mon, 30 Dec 2024 15:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573584; cv=none; b=MAP0NL/Uof7xIH930pY6f17jbR8vi1hJN4WIWW52n8csCmkhybpM3iC7pDj/J8ZJ5Lt1RZ7CMc5k+lAWBcHcaU+tL7GksXWG71F4VYO2YbZrKm4sTkSOyKS1qxt8BujudVVOFX9CCpKG7nd/EJ1en2zE8BLKKBz7RMgL+B9ot6U=
+	t=1735574082; cv=none; b=SI4auShEogMM9e3s16lnlSMaFgSdFTjtNwLw+5Q1LJvQZBrVv51bPbqwaJ03CHB6KEE2Ol9YixV6NIAku5125+sCUDS05ocpTxPFcTUuSnDgiHe8JTOo/glvyewz4FDU9iYStP7wTqbV0jDKaWpFi0RrOI3RW5uNT6xzhJP1r/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573584; c=relaxed/simple;
-	bh=frv26Nc95T++ohfuhiVknhTRqHxL53syBsT8hXs7YfY=;
+	s=arc-20240116; t=1735574082; c=relaxed/simple;
+	bh=GQiKbwIauiIXP6mTLObBPag2090l91df87irG5w5N3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2OnssPi40/yxiVCEUBYu7AXXq0+6BjwknK/KBzBfxAqaNMasoRaWQD8Z0tp35pw+WcYijHQRWSZHZokiOvd0qD50DFfhomusG2CamSZD2Xp+JP0E76OmBbVcx8CLwG7DEiFB14Zc5sGevtIVTs05Jotzkie2xS8BaiMZyXaxyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SN/A6SVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CC4C4CED0;
-	Mon, 30 Dec 2024 15:46:22 +0000 (UTC)
+	 MIME-Version; b=IO1hgE6w8fhp8pCfu7nX780YzrlNBgO0q5STC4wsnAK3Kg8iZIZfq5iaIADdgJySfxHlGKLuzYMW4UvoM2vpBjJbMN1sTHuX+hfWaMKM3JKI+XT3uEtPRoPVHvOuTpOcaE5zuypD7XPF4sPsRj+ZanWYBsTQ7HG02QusAP71MW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkkXiS1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F0AC4CED0;
+	Mon, 30 Dec 2024 15:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573583;
-	bh=frv26Nc95T++ohfuhiVknhTRqHxL53syBsT8hXs7YfY=;
+	s=korg; t=1735574082;
+	bh=GQiKbwIauiIXP6mTLObBPag2090l91df87irG5w5N3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SN/A6SVeIod2y8k4deUdaJ6c5mhGMUUi8zMiJPWHJmFoTHlt6vTl2RyYmcrzCty4K
-	 wtF+Xwi0s/CN4jzhxLqyEVCnr5I4MZO5q6ZXsNVdAw5rmHPdJ1/dhrPsKtpKRJ56P+
-	 Sx8m6igqk2CZl73XR5dheyZKlvt8khWFnCT2N0fI=
+	b=RkkXiS1RFhkzJr8MQS9hd0Yk4FoUmy7v+ydyheI0gna9YRr+LMqLpSt5ed2S1qJH5
+	 13CEAZljF4CI1pTh1AVbV3iCD4eyEb3EScx/llnub1yfq9TDJkHjUr0MZlhoW8luY4
+	 mWlOGM/r7qtWAbcBXHQzWXZKPIyCLUHOaSYwdCPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Toth <fntoth@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 19/60] dmaengine: dw: Select only supported masters for ACPI devices
+Subject: [PATCH 6.12 032/114] dmaengine: fsl-edma: implement the cleanup path of fsl_edma3_attach_pd()
 Date: Mon, 30 Dec 2024 16:42:29 +0100
-Message-ID: <20241230154208.016893451@linuxfoundation.org>
+Message-ID: <20241230154219.300675251@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +61,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit f0e870a0e9c5521f2952ea9f3ea9d3d122631a89 upstream.
+commit ccfa3131d4a0347988e73638edea5c8281b6d2c7 upstream.
 
-The recently submitted fix-commit revealed a problem in the iDMA 32-bit
-platform code. Even though the controller supported only a single master
-the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
-0 and 1. As a result the sanity check implemented in the commit
-b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-got incorrect interface data width and thus prevented the client drivers
-from configuring the DMA-channel with the EINVAL error returned. E.g.,
-the next error was printed for the PXA2xx SPI controller driver trying
-to configure the requested channels:
+Current implementation of fsl_edma3_attach_pd() does not provide a
+cleanup path, resulting in a memory leak. For example,
+dev_pm_domain_detach() is not called after dev_pm_domain_attach_by_id(),
+and the device link created with the DL_FLAG_STATELESS is not released
+explicitly.
 
-> [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
-> [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
-> [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
+Therefore, provide a cleanup function fsl_edma3_detach_pd() and call it
+upon failure. Also add a devm_add_action_or_reset() call with this
+function after a successful fsl_edma3_attach_pd().
 
-The problem would have been spotted much earlier if the iDMA 32-bit
-controller supported more than one master interfaces. But since it
-supports just a single master and the iDMA 32-bit specific code just
-ignores the master IDs in the CTLLO preparation method, the issue has
-been gone unnoticed so far.
-
-Fix the problem by specifying the default master ID for both memory
-and peripheral devices in the driver data. Thus the issue noticed for
-the iDMA 32-bit controllers will be eliminated and the ACPI-probed
-DW DMA controllers will be configured with the correct master ID by
-default.
-
-Cc: stable@vger.kernel.org
-Fixes: b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-Fixes: 199244d69458 ("dmaengine: dw: add support of iDMA 32-bit hardware")
-Reported-by: Ferry Toth <fntoth@gmail.com>
-Closes: https://lore.kernel.org/dmaengine/ZuXbCKUs1iOqFu51@black.fi.intel.com/
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/dmaengine/ZuXgI-VcHpMgbZ91@black.fi.intel.com/
-Tested-by: Ferry Toth <fntoth@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241104095142.157925-1-andriy.shevchenko@linux.intel.com
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://lore.kernel.org/r/20241221075712.3297200-1-joe@pf.is.s.u-tokyo.ac.jp
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw/acpi.c     |    6 ++++--
- drivers/dma/dw/internal.h |    8 ++++++++
- drivers/dma/dw/pci.c      |    4 ++--
- 3 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/dma/fsl-edma-common.h |    1 +
+ drivers/dma/fsl-edma-main.c   |   41 ++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 37 insertions(+), 5 deletions(-)
 
---- a/drivers/dma/dw/acpi.c
-+++ b/drivers/dma/dw/acpi.c
-@@ -8,13 +8,15 @@
- 
- static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
- {
-+	struct dw_dma *dw = to_dw_dma(chan->device);
-+	struct dw_dma_chip_pdata *data = dev_get_drvdata(dw->dma.dev);
- 	struct acpi_dma_spec *dma_spec = param;
- 	struct dw_dma_slave slave = {
- 		.dma_dev = dma_spec->dev,
- 		.src_id = dma_spec->slave_id,
- 		.dst_id = dma_spec->slave_id,
--		.m_master = 0,
--		.p_master = 1,
-+		.m_master = data->m_master,
-+		.p_master = data->p_master,
- 	};
- 
- 	return dw_dma_filter(chan, &slave);
---- a/drivers/dma/dw/internal.h
-+++ b/drivers/dma/dw/internal.h
-@@ -51,11 +51,15 @@ struct dw_dma_chip_pdata {
- 	int (*probe)(struct dw_dma_chip *chip);
- 	int (*remove)(struct dw_dma_chip *chip);
- 	struct dw_dma_chip *chip;
-+	u8 m_master;
-+	u8 p_master;
+--- a/drivers/dma/fsl-edma-common.h
++++ b/drivers/dma/fsl-edma-common.h
+@@ -166,6 +166,7 @@ struct fsl_edma_chan {
+ 	struct work_struct		issue_worker;
+ 	struct platform_device		*pdev;
+ 	struct device			*pd_dev;
++	struct device_link		*pd_dev_link;
+ 	u32				srcid;
+ 	struct clk			*clk;
+ 	int                             priority;
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -417,10 +417,33 @@ static const struct of_device_id fsl_edm
  };
+ MODULE_DEVICE_TABLE(of, fsl_edma_dt_ids);
  
- static __maybe_unused const struct dw_dma_chip_pdata dw_dma_chip_pdata = {
- 	.probe = dw_dma_probe,
- 	.remove = dw_dma_remove,
-+	.m_master = 0,
-+	.p_master = 1,
- };
- 
- static const struct dw_dma_platform_data idma32_pdata = {
-@@ -72,6 +76,8 @@ static __maybe_unused const struct dw_dm
- 	.pdata = &idma32_pdata,
- 	.probe = idma32_dma_probe,
- 	.remove = idma32_dma_remove,
-+	.m_master = 0,
-+	.p_master = 0,
- };
- 
- static const struct dw_dma_platform_data xbar_pdata = {
-@@ -88,6 +94,8 @@ static __maybe_unused const struct dw_dm
- 	.pdata = &xbar_pdata,
- 	.probe = idma32_dma_probe,
- 	.remove = idma32_dma_remove,
-+	.m_master = 0,
-+	.p_master = 0,
- };
- 
- #endif /* _DMA_DW_INTERNAL_H */
---- a/drivers/dma/dw/pci.c
-+++ b/drivers/dma/dw/pci.c
-@@ -56,10 +56,10 @@ static int dw_pci_probe(struct pci_dev *
- 	if (ret)
- 		return ret;
- 
--	dw_dma_acpi_controller_register(chip->dw);
--
- 	pci_set_drvdata(pdev, data);
- 
-+	dw_dma_acpi_controller_register(chip->dw);
++static void fsl_edma3_detach_pd(struct fsl_edma_engine *fsl_edma)
++{
++	struct fsl_edma_chan *fsl_chan;
++	int i;
 +
++	for (i = 0; i < fsl_edma->n_chans; i++) {
++		if (fsl_edma->chan_masked & BIT(i))
++			continue;
++		fsl_chan = &fsl_edma->chans[i];
++		if (fsl_chan->pd_dev_link)
++			device_link_del(fsl_chan->pd_dev_link);
++		if (fsl_chan->pd_dev) {
++			dev_pm_domain_detach(fsl_chan->pd_dev, false);
++			pm_runtime_dont_use_autosuspend(fsl_chan->pd_dev);
++			pm_runtime_set_suspended(fsl_chan->pd_dev);
++		}
++	}
++}
++
++static void devm_fsl_edma3_detach_pd(void *data)
++{
++	fsl_edma3_detach_pd(data);
++}
++
+ static int fsl_edma3_attach_pd(struct platform_device *pdev, struct fsl_edma_engine *fsl_edma)
+ {
+ 	struct fsl_edma_chan *fsl_chan;
+-	struct device_link *link;
+ 	struct device *pd_chan;
+ 	struct device *dev;
+ 	int i;
+@@ -436,15 +459,16 @@ static int fsl_edma3_attach_pd(struct pl
+ 		pd_chan = dev_pm_domain_attach_by_id(dev, i);
+ 		if (IS_ERR_OR_NULL(pd_chan)) {
+ 			dev_err(dev, "Failed attach pd %d\n", i);
+-			return -EINVAL;
++			goto detach;
+ 		}
+ 
+-		link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
++		fsl_chan->pd_dev_link = device_link_add(dev, pd_chan, DL_FLAG_STATELESS |
+ 					     DL_FLAG_PM_RUNTIME |
+ 					     DL_FLAG_RPM_ACTIVE);
+-		if (!link) {
++		if (!fsl_chan->pd_dev_link) {
+ 			dev_err(dev, "Failed to add device_link to %d\n", i);
+-			return -EINVAL;
++			dev_pm_domain_detach(pd_chan, false);
++			goto detach;
+ 		}
+ 
+ 		fsl_chan->pd_dev = pd_chan;
+@@ -455,6 +479,10 @@ static int fsl_edma3_attach_pd(struct pl
+ 	}
+ 
  	return 0;
++
++detach:
++	fsl_edma3_detach_pd(fsl_edma);
++	return -EINVAL;
  }
  
+ static int fsl_edma_probe(struct platform_device *pdev)
+@@ -544,6 +572,9 @@ static int fsl_edma_probe(struct platfor
+ 		ret = fsl_edma3_attach_pd(pdev, fsl_edma);
+ 		if (ret)
+ 			return ret;
++		ret = devm_add_action_or_reset(&pdev->dev, devm_fsl_edma3_detach_pd, fsl_edma);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	if (drvdata->flags & FSL_EDMA_DRV_TCD64)
 
 
 
