@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-106301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4114C9FE7C2
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BE29FE806
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E46F7A04EE
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EAA11881CDD
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD741AA1E0;
-	Mon, 30 Dec 2024 15:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E552442AA6;
+	Mon, 30 Dec 2024 15:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUsBENiG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gy44GVxU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B935C126C13;
-	Mon, 30 Dec 2024 15:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A129015E8B;
+	Mon, 30 Dec 2024 15:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573500; cv=none; b=XxJLtzq2CDze+n/m58FGh3bsqlkcklp7lFY/g6t4UsiNJBN6mC75mgpOFH2AVlZXTfJMXLtsloPKyuHxCg55HVzRjg6myUkhJ5vzja9VsL+p7VehI9CFQVncrTGzPLAbolSHewXo+nU6ivE8veJ593rdDBDzFGxAdrxa+vvHdLI=
+	t=1735573719; cv=none; b=L+tSzD9dKu7hx4HddzIo0skd7art55VaGcufY+2O2ka2j5KSgd9w0XFM4QWRkPv5FlqNRbJrMIfW+vurU9Ll9xYDgo3xYTPn3yszVj2cBiHWXehejT33QCXjts1wyPeyrpPtq41F5n27tnBq5uJFJCt7XVdHByszl6BGHmW8DC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573500; c=relaxed/simple;
-	bh=y5zIUC0vBz0O/uotS+iVPiHYQqU9ie/251wUUVzTRsE=;
+	s=arc-20240116; t=1735573719; c=relaxed/simple;
+	bh=E8WotHogovt/9riWKy5y8CfBgnVWZPMwfSPuZM6t9jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvBtV4mt7NMUJ5NPhxZM1yMDizb31UIO9bVmo8CY6z3zZ9yAefPK1X/CGRxA5zA/JX79GJmkNcrv/gWu5451FKqEnPFYDu4o72gKnol5F5yxdtOi8H6rygAPpTB3VKhVRAZBBtSdh9QIZKkGsyqaHs7EZd7Dghk5uXpbHps5l3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUsBENiG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44CFC4CED0;
-	Mon, 30 Dec 2024 15:44:59 +0000 (UTC)
+	 MIME-Version; b=jxJIUkKjHyENjjLDEeOa9CC0TAAhhHqDBgQQMenoaghOG2GBolxiV6f8nanr6z0/hwrgTxiZ+roM1I25Jx1oYQD6LxC+N77hzElthwl+z43sJop34xhoPuix4qUkBsWubh7Ftge4v3qzItfvzpbXggl0/x1Sykpc+ZGU5iwwXpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gy44GVxU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE27C4CED0;
+	Mon, 30 Dec 2024 15:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573500;
-	bh=y5zIUC0vBz0O/uotS+iVPiHYQqU9ie/251wUUVzTRsE=;
+	s=korg; t=1735573719;
+	bh=E8WotHogovt/9riWKy5y8CfBgnVWZPMwfSPuZM6t9jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zUsBENiGUKPtiPgHpaFEFcVuuOtzim7R9ADnDrGPbVVY3ftT5ksJIhbvDTPf5I6qX
-	 fsttUYyzY3iMf5G97mWrK75ykLGHIHbBPKmO5sDpVzd1Ea6jlRIZQM5YZdI4L0YWYM
-	 yuTjChKEq7hx6k+YKye41CINC47mrkUfFPfgG//A=
+	b=Gy44GVxU8X/KgdLomyLMuRVU5x9smM/jUImxV2WSiQiBm9ryEBf2L/fGsh6MUGsYr
+	 0kzVX68kkTXvr16B2whTlJIWl/WmDtoRGfsARw7VWd2jc8JVRphGcfs8HGnMEglWsW
+	 JZYQ3g7PNy+wmJswP5xif5v+GBH/Leyqi60uOErA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johan Hovold <johan+linaro@kernel.org>,
 	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 14/60] phy: core: Fix that API devm_of_phy_provider_unregister() fails to unregister the phy provider
+Subject: [PATCH 6.6 16/86] phy: core: Fix an OF node refcount leakage in of_phy_provider_lookup()
 Date: Mon, 30 Dec 2024 16:42:24 +0100
-Message-ID: <20241230154207.829201327@linuxfoundation.org>
+Message-ID: <20241230154212.338218235@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit c0b82ab95b4f1fbc3e3aeab9d829d012669524b6 upstream.
+commit a2d633cb1421e679b56f1a9fe1f42f089706f1ed upstream.
 
-For devm_of_phy_provider_unregister(), its comment says it needs to invoke
-of_phy_provider_unregister() to unregister the phy provider, but it will
-not actually invoke the function since devres_destroy() does not call
-devm_phy_provider_release(), and the missing of_phy_provider_unregister()
-call will cause:
+For macro for_each_child_of_node(parent, child), refcount of @child has
+been increased before entering its loop body, so normally needs to call
+of_node_put(@child) before returning from the loop body to avoid refcount
+leakage.
 
-- The phy provider fails to be unregistered.
-- Leak both memory and the OF node refcount.
+of_phy_provider_lookup() has such usage but does not call of_node_put()
+before returning, so cause leakage of the OF node refcount.
 
-Fortunately, the faulty API has not been used by current kernel tree.
-Fix by using devres_release() instead of devres_destroy() within the API.
+Fix by simply calling of_node_put() before returning from the loop body.
 
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+The APIs affected by this issue are shown below since they indirectly
+invoke problematic of_phy_provider_lookup().
+phy_get()
+of_phy_get()
+devm_phy_get()
+devm_of_phy_get()
+devm_of_phy_get_by_index()
+
+Fixes: 2a4c37016ca9 ("phy: core: Fix of_phy_provider_lookup to return PHY provider for sub node")
+Cc: stable@vger.kernel.org
 Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/stable/20241213-phy_core_fix-v6-2-40ae28f5015a%40quicinc.com
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-2-40ae28f5015a@quicinc.com
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-5-40ae28f5015a@quicinc.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/phy-core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/phy/phy-core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -1199,12 +1199,12 @@ EXPORT_SYMBOL_GPL(of_phy_provider_unregi
-  * of_phy_provider_unregister to unregister the phy provider.
-  */
- void devm_of_phy_provider_unregister(struct device *dev,
--	struct phy_provider *phy_provider)
-+				     struct phy_provider *phy_provider)
- {
- 	int r;
+@@ -140,8 +140,10 @@ static struct phy_provider *of_phy_provi
+ 			return phy_provider;
  
--	r = devres_destroy(dev, devm_phy_provider_release, devm_phy_match,
--		phy_provider);
-+	r = devres_release(dev, devm_phy_provider_release, devm_phy_match,
-+			   phy_provider);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY provider device resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_of_phy_provider_unregister);
+ 		for_each_child_of_node(phy_provider->children, child)
+-			if (child == node)
++			if (child == node) {
++				of_node_put(child);
+ 				return phy_provider;
++			}
+ 	}
+ 
+ 	return ERR_PTR(-EPROBE_DEFER);
 
 
 
