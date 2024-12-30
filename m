@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-106378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAF39FE814
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E6E29FE85F
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1F7D1882F02
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AA717A1634
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F7542AA6;
-	Mon, 30 Dec 2024 15:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C731531C4;
+	Mon, 30 Dec 2024 15:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKjeeA+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1TAUsHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9231015E8B;
-	Mon, 30 Dec 2024 15:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36B415E8B;
+	Mon, 30 Dec 2024 15:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573776; cv=none; b=KvJVatiXxYsW3dV4nFL6imEY3Qr22jLSv4sP1D2t90TS+6rHXTbN/ZkSRaXisr9E65CkP33OFgbMwHMn3X3rlZgXpTCpTvsu2FOR5uVcqK/B2CoUptBiz1+bMeEt1pTpPWNrt6wTVrK/+/koNCkRuiGKD+7EAvzx5gvmACKCEk4=
+	t=1735574019; cv=none; b=rHR5Nt5N+YcSlrH0U5ddb9gnErBMXu/dASfoByK3I8JTJMZDgW2Sr6Qtw/R/+opijDL276T/3aKfdAieEQfeccXDfumW1FFM67+9+s4vFOKQhGHuAIM19yj/AfOcISn3+EVu19HwquX7t8PWGRRDcmJM4mIxpwhbaNF1z08zcUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573776; c=relaxed/simple;
-	bh=Ebf6UDF6HrpQ5DFKOIAdoupxy3XtANQFjHVVWr8tmk4=;
+	s=arc-20240116; t=1735574019; c=relaxed/simple;
+	bh=n2me79oqY1nU39r+PiEizZ9+dJCs3iIA9MehqXdTDFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juqfACidrOLnwKU9dC0l+FIdntvZLv6kzwLIEuT/Ie9LP6wTqP09cjeMJ9O3dZymoXsV/7Dmu75MQTZhuXz4pMYfZcNDaNuV5kPWoCt8kh70IPkbjWwafP7bQlq78M4nUkXSO0l3Bjh93733dNkrJBRnEdkbOxtV1G+KCYvVAgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKjeeA+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B19C4CED0;
-	Mon, 30 Dec 2024 15:49:35 +0000 (UTC)
+	 MIME-Version; b=Tna3xg+QK3i5mdKy85qcXIkniweZKiid51MKHACxAsS0TDV87HBL8pjlC6aVir25dOQViRs5ZIQ9r4qThPmsWY1H0wB7Ag6lyJktwTgi90uQc0ZCWVnRPeSHzuzNmGLj7R5gzJ/3OJbAZTlyyiJ5BCkaLhnzDBa2e6Ethd7GAX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1TAUsHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78172C4CED0;
+	Mon, 30 Dec 2024 15:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573776;
-	bh=Ebf6UDF6HrpQ5DFKOIAdoupxy3XtANQFjHVVWr8tmk4=;
+	s=korg; t=1735574018;
+	bh=n2me79oqY1nU39r+PiEizZ9+dJCs3iIA9MehqXdTDFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKjeeA+6fx1hj3iAw7IC4emP0Fe1V8lIxiJfsoRLOCmrSr4xjY6AaLAnMvJcxOfFs
-	 I7Te6F0ocRCcooyUlDdwXKOchroVOmFEs3unDr7Ndz9w0DL2wVZgJnjbUrJp6zDCM4
-	 1yUAZDTf1tpppf0FsxIRtR60N5WPDTlBnPhvixkI=
+	b=E1TAUsHzV0Fon844iLPUkObbEt/hUCtVhGyW2no3NP0OEau5FlhRIffHCQjSBcI5N
+	 IFuVlvmydbBXwH5+VPSkGxtOG8lTh1B4QKwtjWnnoX4TDFyPqOcEKhbny4EKQCHY9b
+	 676+lrV7Dsoy1L9JVqasK0cS/ryLDF/32V7S0ORY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 05/86] mm/vmstat: fix a W=1 clang compiler warning
+	Maciej Andrzejewski <maciej.andrzejewski@m-works.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.12 016/114] mtd: rawnand: arasan: Fix double assertion of chip-select
 Date: Mon, 30 Dec 2024 16:42:13 +0100
-Message-ID: <20241230154211.920565085@linuxfoundation.org>
+Message-ID: <20241230154218.686188220@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
 
-[ Upstream commit 30c2de0a267c04046d89e678cc0067a9cfb455df ]
+commit b086a46dae48829e11c0c02580e30d920b76743c upstream.
 
-Fix the following clang compiler warning that is reported if the kernel is
-built with W=1:
+When two chip-selects are configured in the device tree, and the second is
+a non-native GPIO, both the GPIO-based chip-select and the first native
+chip-select may be asserted simultaneously. This double assertion causes
+incorrect read and write operations.
 
-./include/linux/vmstat.h:518:36: error: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Werror,-Wenum-enum-conversion]
-  518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-      |                               ~~~~~~~~~~~ ^ ~~~
+The issue occurs because when nfc->ncs <= 2, nfc->spare_cs is always
+initialized to 0 due to static initialization. Consequently, when the
+second chip-select (GPIO-based) is selected in anfc_assert_cs(), it is
+detected by anfc_is_gpio_cs(), and nfc->native_cs is assigned the value 0.
+This results in both the GPIO-based chip-select being asserted and the
+NAND controller register receiving 0, erroneously selecting the native
+chip-select.
 
-Link: https://lkml.kernel.org/r/20241212213126.1269116-1-bvanassche@acm.org
-Fixes: 9d7ea9a297e6 ("mm/vmstat: add helpers to get vmstat item names for each enum type")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch resolves the issue, as confirmed by oscilloscope testing with
+configurations involving two or more chip-selects in the device tree.
+
+Fixes: acbd3d0945f9 ("mtd: rawnand: arasan: Leverage additional GPIO CS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/vmstat.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index fed855bae6d8..3219b368db79 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -519,7 +519,7 @@ static inline const char *node_stat_name(enum node_stat_item item)
- 
- static inline const char *lru_list_name(enum lru_list lru)
- {
--	return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-+	return node_stat_name(NR_LRU_BASE + (enum node_stat_item)lru) + 3; // skip "nr_"
- }
- 
- static inline const char *writeback_stat_name(enum writeback_stat_item item)
--- 
-2.39.5
-
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -1409,8 +1409,8 @@ static int anfc_parse_cs(struct arasan_n
+ 	 * case, the "not" chosen CS is assigned to nfc->spare_cs and selected
+ 	 * whenever a GPIO CS must be asserted.
+ 	 */
+-	if (nfc->cs_array && nfc->ncs > 2) {
+-		if (!nfc->cs_array[0] && !nfc->cs_array[1]) {
++	if (nfc->cs_array) {
++		if (nfc->ncs > 2 && !nfc->cs_array[0] && !nfc->cs_array[1]) {
+ 			dev_err(nfc->dev,
+ 				"Assign a single native CS when using GPIOs\n");
+ 			return -EINVAL;
 
 
 
