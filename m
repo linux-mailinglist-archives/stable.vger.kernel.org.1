@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-106323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C6AE9FE7DC
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AAD9FE885
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 312A67A12D8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D41C43A2614
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90FB1ABED9;
-	Mon, 30 Dec 2024 15:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B9B1537C8;
+	Mon, 30 Dec 2024 15:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INn6Eosp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/muex+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627EB1AC891;
-	Mon, 30 Dec 2024 15:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE09215E8B;
+	Mon, 30 Dec 2024 15:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573580; cv=none; b=CouElEKPF7YppT3dsygugq7fn0epejIKSjnlfRQ8PKdBH6u2dcqxKY6K3/1VsheOjNFgsFooT15H7HCP0zCekevFvlLkrajtnlbahPaYhlsnKfAQdghTKuXCSZoTkcYceA3s0MECIfzW199hNW1zoGNiG8rkDmwfAWbZvJxlaHg=
+	t=1735574147; cv=none; b=HtifiT7rbuIxldSkPiYINnBDCX27DJ49ooQZpIx2BfIee6oqmgrAIea9MiD19g0+XKUv1SpTm72SOyODJazlHPlW+F5/BaBt8X7kWgcVLoYCoyMZBw4HLCOFhdtjUWKtNfWtsuIbuOEpLlSdyqKW+8TiKc0e0Y+fa5UxIs2DUDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573580; c=relaxed/simple;
-	bh=nV44cRgjE2+98HA9KlA+Om+492YJ7/a4IAc2Uj7D/DI=;
+	s=arc-20240116; t=1735574147; c=relaxed/simple;
+	bh=uttXg/h1RudH6gKhkUk1e9as2r/55OzHTg84CvTO/9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOSUSwbLNCY3YrI7S3BS9o5L7IGZdzwERW2pZ/+V7W8MZ9vvktttivH6Q32VVA/kjxqauZLV7TIjQMTII+vHHcKIFOaHMvUt1/jLmsgjv6qpcVEsW1aWCNF/1xfuC7HN5orV04uYEaqW+m1i9rSnWUf8tZ++gc6CblUUuzFyBNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INn6Eosp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E48C4CED0;
-	Mon, 30 Dec 2024 15:46:19 +0000 (UTC)
+	 MIME-Version; b=DwaUSf+w4Mzv1hKK+XJkVsVOsxiwVTArDizeZQh5ce2c8wk7JlcyPUQS0/ooS8BKR60wLnw5hiKLXKG8y+8+zulL3xRPn3wXjUgcwA5CFvkbSkXzfQbUPyp+cDPREN7ukzZOGYv1wI2wr0mwpOJ4rqHWky2jrdgh08u7DyQvXEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/muex+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EABC4CED0;
+	Mon, 30 Dec 2024 15:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573580;
-	bh=nV44cRgjE2+98HA9KlA+Om+492YJ7/a4IAc2Uj7D/DI=;
+	s=korg; t=1735574147;
+	bh=uttXg/h1RudH6gKhkUk1e9as2r/55OzHTg84CvTO/9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INn6EospemlKRhalcsehKn5dNGlsiIBGUC8ik47Ay0SGAe6o9lh0dJ4FH+DN7bIDR
-	 lIR+PT+YgJUpj9obPLrFVk8MTtc1LKs8vJT7PPYzvdv/3ApGh/VJl7Jr4LheMcsR/R
-	 NUQ6EhNK49zpN0cVAgEyv1Nc6qd/j4EU+5SXry2c=
+	b=S/muex+iYknxKHJKJysNSv0VqvYUmC3u+P3qj0wNhMB9TUCGlxPC8nS2mQP0RI5Oy
+	 5H3ihVNOCyVlqkt8gXHJ15PcJOetX278xZtMLSAdzXmW9mYlcDXIoMW6mQFrcRnBPe
+	 XZmzL05iurAai3V+lgqsE35jS7ULhc3QDXbb+a/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Imre Deak <imre.deak@intel.com>,
+	Yassine Oudjana <y.oudjana@protonmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/60] drm/dp_mst: Ensure mst_primary pointer is valid in drm_dp_mst_handle_up_req()
+Subject: [PATCH 6.12 049/114] watchdog: mediatek: Add support for MT6735 TOPRGU/WDT
 Date: Mon, 30 Dec 2024 16:42:46 +0100
-Message-ID: <20241230154208.651587698@linuxfoundation.org>
+Message-ID: <20241230154219.945542197@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Yassine Oudjana <y.oudjana@protonmail.com>
 
-[ Upstream commit e54b00086f7473dbda1a7d6fc47720ced157c6a8 ]
+[ Upstream commit 15ddf704f56f8c95ff74dfd1157ed8646b322fa1 ]
 
-While receiving an MST up request message from one thread in
-drm_dp_mst_handle_up_req(), the MST topology could be removed from
-another thread via drm_dp_mst_topology_mgr_set_mst(false), freeing
-mst_primary and setting drm_dp_mst_topology_mgr::mst_primary to NULL.
-This could lead to a NULL deref/use-after-free of mst_primary in
-drm_dp_mst_handle_up_req().
+Add support for the Top Reset Generation Unit/Watchdog Timer found on
+MT6735.
 
-Avoid the above by holding a reference for mst_primary in
-drm_dp_mst_handle_up_req() while it's used.
-
-v2: Fix kfreeing the request if getting an mst_primary reference fails.
-
-Cc: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com> (v1)
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241204132007.3132494-1-imre.deak@intel.com
+Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241106104738.195968-3-y.oudjana@protonmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 24 ++++++++++++++-----
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/watchdog/mtk_wdt.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index 4f8fcfaa80fd..d8cbb4eadc5b 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -4033,9 +4033,10 @@ static void drm_dp_mst_up_req_work(struct work_struct *work)
- static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- {
- 	struct drm_dp_pending_up_req *up_req;
-+	struct drm_dp_mst_branch *mst_primary;
+diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
+index e2d7a57d6ea2..91d110646e16 100644
+--- a/drivers/watchdog/mtk_wdt.c
++++ b/drivers/watchdog/mtk_wdt.c
+@@ -10,6 +10,7 @@
+  */
  
- 	if (!drm_dp_get_one_sb_msg(mgr, true, NULL))
--		goto out;
-+		goto out_clear_reply;
+ #include <dt-bindings/reset/mt2712-resets.h>
++#include <dt-bindings/reset/mediatek,mt6735-wdt.h>
+ #include <dt-bindings/reset/mediatek,mt6795-resets.h>
+ #include <dt-bindings/reset/mt7986-resets.h>
+ #include <dt-bindings/reset/mt8183-resets.h>
+@@ -87,6 +88,10 @@ static const struct mtk_wdt_data mt2712_data = {
+ 	.toprgu_sw_rst_num = MT2712_TOPRGU_SW_RST_NUM,
+ };
  
- 	if (!mgr->up_req_recv.have_eomt)
- 		return 0;
-@@ -4053,10 +4054,19 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- 		drm_dbg_kms(mgr->dev, "Received unknown up req type, ignoring: %x\n",
- 			    up_req->msg.req_type);
- 		kfree(up_req);
--		goto out;
-+		goto out_clear_reply;
-+	}
++static const struct mtk_wdt_data mt6735_data = {
++	.toprgu_sw_rst_num = MT6735_TOPRGU_RST_NUM,
++};
 +
-+	mutex_lock(&mgr->lock);
-+	mst_primary = mgr->mst_primary;
-+	if (!mst_primary || !drm_dp_mst_topology_try_get_mstb(mst_primary)) {
-+		mutex_unlock(&mgr->lock);
-+		kfree(up_req);
-+		goto out_clear_reply;
- 	}
-+	mutex_unlock(&mgr->lock);
- 
--	drm_dp_send_up_ack_reply(mgr, mgr->mst_primary, up_req->msg.req_type,
-+	drm_dp_send_up_ack_reply(mgr, mst_primary, up_req->msg.req_type,
- 				 false);
- 
- 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
-@@ -4073,13 +4083,13 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- 			    conn_stat->peer_device_type);
- 
- 		mutex_lock(&mgr->probe_lock);
--		handle_csn = mgr->mst_primary->link_address_sent;
-+		handle_csn = mst_primary->link_address_sent;
- 		mutex_unlock(&mgr->probe_lock);
- 
- 		if (!handle_csn) {
- 			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
- 			kfree(up_req);
--			goto out;
-+			goto out_put_primary;
- 		}
- 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
- 		const struct drm_dp_resource_status_notify *res_stat =
-@@ -4096,7 +4106,9 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- 	mutex_unlock(&mgr->up_req_lock);
- 	queue_work(system_long_wq, &mgr->up_req_work);
- 
--out:
-+out_put_primary:
-+	drm_dp_mst_topology_put_mstb(mst_primary);
-+out_clear_reply:
- 	memset(&mgr->up_req_recv, 0, sizeof(struct drm_dp_sideband_msg_rx));
- 	return 0;
- }
+ static const struct mtk_wdt_data mt6795_data = {
+ 	.toprgu_sw_rst_num = MT6795_TOPRGU_SW_RST_NUM,
+ };
+@@ -489,6 +494,7 @@ static int mtk_wdt_resume(struct device *dev)
+ static const struct of_device_id mtk_wdt_dt_ids[] = {
+ 	{ .compatible = "mediatek,mt2712-wdt", .data = &mt2712_data },
+ 	{ .compatible = "mediatek,mt6589-wdt" },
++	{ .compatible = "mediatek,mt6735-wdt", .data = &mt6735_data },
+ 	{ .compatible = "mediatek,mt6795-wdt", .data = &mt6795_data },
+ 	{ .compatible = "mediatek,mt7986-wdt", .data = &mt7986_data },
+ 	{ .compatible = "mediatek,mt7988-wdt", .data = &mt7988_data },
 -- 
 2.39.5
 
