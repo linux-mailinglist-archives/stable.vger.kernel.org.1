@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001EE9FE892
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736C19FE82E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4412D3A0858
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 429917A080C
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F2C1531C4;
-	Mon, 30 Dec 2024 15:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAE242AA6;
+	Mon, 30 Dec 2024 15:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAQpKE1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIUEClOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B741915E8B;
-	Mon, 30 Dec 2024 15:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADFE15E8B;
+	Mon, 30 Dec 2024 15:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574191; cv=none; b=IVdNZ1Fp9U3EcPSyTlUmxfLmql2Lg//H4+IAfe3dzBuzTT2xF0+HLzXtnjUPWDqnh7rIr695B+5QkxohNp6wpZy0TwXBQQtPuehoDdSwWbo6lNgv0QUC3+QEl41lfF6vnsIJwfsK7bgr7ViuLwxTKZ9u1YSiaTlKSnYB9BAvF/4=
+	t=1735573855; cv=none; b=S8hujzihpehvahWiSHaPJjJ/lWWG6QQ1c1aESY3f4QSzNaEMlVFrncvbiGkSgOf1gUr0ZUBxSGvETJYqIlyHqledBfK5JkAIzSzi+6JY3YvuPsEXpgxcONy+FV5C8iDRf4dQKJStCvR+lOtStJxQCckQYiwfIlrWSTkip3yBmeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574191; c=relaxed/simple;
-	bh=CDARV6xXxujvJtjSWR1WrzxGLuL3gFLAZuLOfaths2U=;
+	s=arc-20240116; t=1735573855; c=relaxed/simple;
+	bh=B1wwM255L0/cqVuLAlM1PmeFrczOkUuTERI7id7xUfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUL93VUZn5XU1o7RROIu4pVeTHhxOsbXUYTgzLHBuNTqoD+gx2sMEAGW//63wENSX6+IL6IBbiSxLnzmA4nb83DrtDQG/8e/5l26j90HKic/CGO1U9a3LVlsY+htPrEk7g+O4THbzaK5JkdSH2ufUWFkAZBbeP5M0Y4XjglDIaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAQpKE1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3FDC4CED0;
-	Mon, 30 Dec 2024 15:56:31 +0000 (UTC)
+	 MIME-Version; b=gbdTubscqjoBCQck6mUPOyBpdCs4nKrcqJmscsKlrt7P1kSI0y8RwNhJ2nZhJfbVgjtp4VmANxxfbir/wgJWTHVcf3biD8ahZVEAyHP8jzpWrJva0xVBbel5MVBYUfSLbrzfUY2ePJXa6V7WVlmEu/XVdkVJycLbyX535oumA9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIUEClOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BBAC4CED0;
+	Mon, 30 Dec 2024 15:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574191;
-	bh=CDARV6xXxujvJtjSWR1WrzxGLuL3gFLAZuLOfaths2U=;
+	s=korg; t=1735573855;
+	bh=B1wwM255L0/cqVuLAlM1PmeFrczOkUuTERI7id7xUfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAQpKE1P0ilHcZ6Bho9YvNPcfUVmuOh+eJePAxAN35iK2k1Vbh93hfgFyGAaZXyNr
-	 k74C87Puv/2BjHjzABuddQVjccnaXtDDNlbf/qsu1TU/MVBMwjS6VIdhOZiyHInaB6
-	 YgEP5Y2hLd9l8Yhpl9BCiqDBV+79XDvR9XslGzZ0=
+	b=gIUEClOENdXzs/xHrTqN8bs5NBD/WvNX3++qIdcmaJu+bn/3FNNw/7uU0/stlnJB8
+	 l/7c5yIHdAAj8FMn2is2XNpukJ7yr0nkdshJeOZY/MQIDWXlZuTbjxAhkCAlTCIrEX
+	 vFMM0EL7oc/zYa5ECbHd31Tp2yE5GhmwkSxir1/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	WangYuli <wangyuli@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/114] bpf: Zero index arg error string for dynptr and iter
+Subject: [PATCH 6.6 53/86] MIPS: mipsregs: Set proper ISA level for virt extensions
 Date: Mon, 30 Dec 2024 16:43:01 +0100
-Message-ID: <20241230154220.567133947@linuxfoundation.org>
+Message-ID: <20241230154213.738111507@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,320 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit bd74e238ae6944b462f57ce8752440a011ba4530 ]
+[ Upstream commit a640d6762a7d404644201ebf6d2a078e8dc84f97 ]
 
-Andrii spotted that process_dynptr_func's rejection of incorrect
-argument register type will print an error string where argument numbers
-are not zero-indexed, unlike elsewhere in the verifier.  Fix this by
-subtracting 1 from regno. The same scenario exists for iterator
-messages. Fix selftest error strings that match on the exact argument
-number while we're at it to ensure clean bisection.
+c994a3ec7ecc ("MIPS: set mips32r5 for virt extensions") setted
+some instructions in virt extensions to ISA level mips32r5.
 
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241203002235.3776418-1-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+However TLB related vz instructions was leftover, also this
+shouldn't be done to a R5 or R6 kernel buid.
+
+Reorg macros to set ISA level as needed when _ASM_SET_VIRT
+is called.
+
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                         | 12 +++++-----
- .../testing/selftests/bpf/progs/dynptr_fail.c | 22 +++++++++----------
- .../selftests/bpf/progs/iters_state_safety.c  | 14 ++++++------
- .../selftests/bpf/progs/iters_testmod_seq.c   |  4 ++--
- .../bpf/progs/test_kfunc_dynptr_param.c       |  2 +-
- .../selftests/bpf/progs/verifier_bits_iter.c  |  4 ++--
- 6 files changed, 29 insertions(+), 29 deletions(-)
+ arch/mips/include/asm/mipsregs.h | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 84d958f2c031..767f1cb8c27e 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7868,7 +7868,7 @@ static int process_dynptr_func(struct bpf_verifier_env *env, int regno, int insn
- 	if (reg->type != PTR_TO_STACK && reg->type != CONST_PTR_TO_DYNPTR) {
- 		verbose(env,
- 			"arg#%d expected pointer to stack or const struct bpf_dynptr\n",
--			regno);
-+			regno - 1);
- 		return -EINVAL;
- 	}
- 
-@@ -7922,7 +7922,7 @@ static int process_dynptr_func(struct bpf_verifier_env *env, int regno, int insn
- 		if (!is_dynptr_reg_valid_init(env, reg)) {
- 			verbose(env,
- 				"Expected an initialized dynptr as arg #%d\n",
--				regno);
-+				regno - 1);
- 			return -EINVAL;
- 		}
- 
-@@ -7930,7 +7930,7 @@ static int process_dynptr_func(struct bpf_verifier_env *env, int regno, int insn
- 		if (!is_dynptr_type_expected(env, reg, arg_type & ~MEM_RDONLY)) {
- 			verbose(env,
- 				"Expected a dynptr of type %s as arg #%d\n",
--				dynptr_type_str(arg_to_dynptr_type(arg_type)), regno);
-+				dynptr_type_str(arg_to_dynptr_type(arg_type)), regno - 1);
- 			return -EINVAL;
- 		}
- 
-@@ -7999,7 +7999,7 @@ static int process_iter_arg(struct bpf_verifier_env *env, int regno, int insn_id
- 	 */
- 	btf_id = btf_check_iter_arg(meta->btf, meta->func_proto, regno - 1);
- 	if (btf_id < 0) {
--		verbose(env, "expected valid iter pointer as arg #%d\n", regno);
-+		verbose(env, "expected valid iter pointer as arg #%d\n", regno - 1);
- 		return -EINVAL;
- 	}
- 	t = btf_type_by_id(meta->btf, btf_id);
-@@ -8009,7 +8009,7 @@ static int process_iter_arg(struct bpf_verifier_env *env, int regno, int insn_id
- 		/* bpf_iter_<type>_new() expects pointer to uninit iter state */
- 		if (!is_iter_reg_valid_uninit(env, reg, nr_slots)) {
- 			verbose(env, "expected uninitialized iter_%s as arg #%d\n",
--				iter_type_str(meta->btf, btf_id), regno);
-+				iter_type_str(meta->btf, btf_id), regno - 1);
- 			return -EINVAL;
- 		}
- 
-@@ -8033,7 +8033,7 @@ static int process_iter_arg(struct bpf_verifier_env *env, int regno, int insn_id
- 			break;
- 		case -EINVAL:
- 			verbose(env, "expected an initialized iter_%s as arg #%d\n",
--				iter_type_str(meta->btf, btf_id), regno);
-+				iter_type_str(meta->btf, btf_id), regno - 1);
- 			return err;
- 		case -EPROTO:
- 			verbose(env, "expected an RCU CS when using %s\n", meta->func_name);
-diff --git a/tools/testing/selftests/bpf/progs/dynptr_fail.c b/tools/testing/selftests/bpf/progs/dynptr_fail.c
-index 8f36c9de7591..dfd817d0348c 100644
---- a/tools/testing/selftests/bpf/progs/dynptr_fail.c
-+++ b/tools/testing/selftests/bpf/progs/dynptr_fail.c
-@@ -149,7 +149,7 @@ int ringbuf_release_uninit_dynptr(void *ctx)
- 
- /* A dynptr can't be used after it has been invalidated */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #3")
-+__failure __msg("Expected an initialized dynptr as arg #2")
- int use_after_invalid(void *ctx)
- {
- 	struct bpf_dynptr ptr;
-@@ -428,7 +428,7 @@ int invalid_helper2(void *ctx)
- 
- /* A bpf_dynptr is invalidated if it's been written into */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #1")
-+__failure __msg("Expected an initialized dynptr as arg #0")
- int invalid_write1(void *ctx)
- {
- 	struct bpf_dynptr ptr;
-@@ -1407,7 +1407,7 @@ int invalid_slice_rdwr_rdonly(struct __sk_buff *skb)
- 
- /* bpf_dynptr_adjust can only be called on initialized dynptrs */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #1")
-+__failure __msg("Expected an initialized dynptr as arg #0")
- int dynptr_adjust_invalid(void *ctx)
- {
- 	struct bpf_dynptr ptr = {};
-@@ -1420,7 +1420,7 @@ int dynptr_adjust_invalid(void *ctx)
- 
- /* bpf_dynptr_is_null can only be called on initialized dynptrs */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #1")
-+__failure __msg("Expected an initialized dynptr as arg #0")
- int dynptr_is_null_invalid(void *ctx)
- {
- 	struct bpf_dynptr ptr = {};
-@@ -1433,7 +1433,7 @@ int dynptr_is_null_invalid(void *ctx)
- 
- /* bpf_dynptr_is_rdonly can only be called on initialized dynptrs */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #1")
-+__failure __msg("Expected an initialized dynptr as arg #0")
- int dynptr_is_rdonly_invalid(void *ctx)
- {
- 	struct bpf_dynptr ptr = {};
-@@ -1446,7 +1446,7 @@ int dynptr_is_rdonly_invalid(void *ctx)
- 
- /* bpf_dynptr_size can only be called on initialized dynptrs */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #1")
-+__failure __msg("Expected an initialized dynptr as arg #0")
- int dynptr_size_invalid(void *ctx)
- {
- 	struct bpf_dynptr ptr = {};
-@@ -1459,7 +1459,7 @@ int dynptr_size_invalid(void *ctx)
- 
- /* Only initialized dynptrs can be cloned */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #1")
-+__failure __msg("Expected an initialized dynptr as arg #0")
- int clone_invalid1(void *ctx)
- {
- 	struct bpf_dynptr ptr1 = {};
-@@ -1493,7 +1493,7 @@ int clone_invalid2(struct xdp_md *xdp)
- 
- /* Invalidating a dynptr should invalidate its clones */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #3")
-+__failure __msg("Expected an initialized dynptr as arg #2")
- int clone_invalidate1(void *ctx)
- {
- 	struct bpf_dynptr clone;
-@@ -1514,7 +1514,7 @@ int clone_invalidate1(void *ctx)
- 
- /* Invalidating a dynptr should invalidate its parent */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #3")
-+__failure __msg("Expected an initialized dynptr as arg #2")
- int clone_invalidate2(void *ctx)
- {
- 	struct bpf_dynptr ptr;
-@@ -1535,7 +1535,7 @@ int clone_invalidate2(void *ctx)
- 
- /* Invalidating a dynptr should invalidate its siblings */
- SEC("?raw_tp")
--__failure __msg("Expected an initialized dynptr as arg #3")
-+__failure __msg("Expected an initialized dynptr as arg #2")
- int clone_invalidate3(void *ctx)
- {
- 	struct bpf_dynptr ptr;
-@@ -1723,7 +1723,7 @@ __noinline long global_call_bpf_dynptr(const struct bpf_dynptr *dynptr)
- }
- 
- SEC("?raw_tp")
--__failure __msg("arg#1 expected pointer to stack or const struct bpf_dynptr")
-+__failure __msg("arg#0 expected pointer to stack or const struct bpf_dynptr")
- int test_dynptr_reg_type(void *ctx)
- {
- 	struct task_struct *current = NULL;
-diff --git a/tools/testing/selftests/bpf/progs/iters_state_safety.c b/tools/testing/selftests/bpf/progs/iters_state_safety.c
-index d47e59aba6de..f41257eadbb2 100644
---- a/tools/testing/selftests/bpf/progs/iters_state_safety.c
-+++ b/tools/testing/selftests/bpf/progs/iters_state_safety.c
-@@ -73,7 +73,7 @@ int create_and_forget_to_destroy_fail(void *ctx)
- }
- 
- SEC("?raw_tp")
--__failure __msg("expected an initialized iter_num as arg #1")
-+__failure __msg("expected an initialized iter_num as arg #0")
- int destroy_without_creating_fail(void *ctx)
- {
- 	/* init with zeros to stop verifier complaining about uninit stack */
-@@ -91,7 +91,7 @@ int destroy_without_creating_fail(void *ctx)
- }
- 
- SEC("?raw_tp")
--__failure __msg("expected an initialized iter_num as arg #1")
-+__failure __msg("expected an initialized iter_num as arg #0")
- int compromise_iter_w_direct_write_fail(void *ctx)
- {
- 	struct bpf_iter_num iter;
-@@ -143,7 +143,7 @@ int compromise_iter_w_direct_write_and_skip_destroy_fail(void *ctx)
- }
- 
- SEC("?raw_tp")
--__failure __msg("expected an initialized iter_num as arg #1")
-+__failure __msg("expected an initialized iter_num as arg #0")
- int compromise_iter_w_helper_write_fail(void *ctx)
- {
- 	struct bpf_iter_num iter;
-@@ -230,7 +230,7 @@ int valid_stack_reuse(void *ctx)
- }
- 
- SEC("?raw_tp")
--__failure __msg("expected uninitialized iter_num as arg #1")
-+__failure __msg("expected uninitialized iter_num as arg #0")
- int double_create_fail(void *ctx)
- {
- 	struct bpf_iter_num iter;
-@@ -258,7 +258,7 @@ int double_create_fail(void *ctx)
- }
- 
- SEC("?raw_tp")
--__failure __msg("expected an initialized iter_num as arg #1")
-+__failure __msg("expected an initialized iter_num as arg #0")
- int double_destroy_fail(void *ctx)
- {
- 	struct bpf_iter_num iter;
-@@ -284,7 +284,7 @@ int double_destroy_fail(void *ctx)
- }
- 
- SEC("?raw_tp")
--__failure __msg("expected an initialized iter_num as arg #1")
-+__failure __msg("expected an initialized iter_num as arg #0")
- int next_without_new_fail(void *ctx)
- {
- 	struct bpf_iter_num iter;
-@@ -305,7 +305,7 @@ int next_without_new_fail(void *ctx)
- }
- 
- SEC("?raw_tp")
--__failure __msg("expected an initialized iter_num as arg #1")
-+__failure __msg("expected an initialized iter_num as arg #0")
- int next_after_destroy_fail(void *ctx)
- {
- 	struct bpf_iter_num iter;
-diff --git a/tools/testing/selftests/bpf/progs/iters_testmod_seq.c b/tools/testing/selftests/bpf/progs/iters_testmod_seq.c
-index 4a176e6aede8..6543d5b6e0a9 100644
---- a/tools/testing/selftests/bpf/progs/iters_testmod_seq.c
-+++ b/tools/testing/selftests/bpf/progs/iters_testmod_seq.c
-@@ -79,7 +79,7 @@ int testmod_seq_truncated(const void *ctx)
- 
- SEC("?raw_tp")
- __failure
--__msg("expected an initialized iter_testmod_seq as arg #2")
-+__msg("expected an initialized iter_testmod_seq as arg #1")
- int testmod_seq_getter_before_bad(const void *ctx)
- {
- 	struct bpf_iter_testmod_seq it;
-@@ -89,7 +89,7 @@ int testmod_seq_getter_before_bad(const void *ctx)
- 
- SEC("?raw_tp")
- __failure
--__msg("expected an initialized iter_testmod_seq as arg #2")
-+__msg("expected an initialized iter_testmod_seq as arg #1")
- int testmod_seq_getter_after_bad(const void *ctx)
- {
- 	struct bpf_iter_testmod_seq it;
-diff --git a/tools/testing/selftests/bpf/progs/test_kfunc_dynptr_param.c b/tools/testing/selftests/bpf/progs/test_kfunc_dynptr_param.c
-index e68667aec6a6..cd4d752bd089 100644
---- a/tools/testing/selftests/bpf/progs/test_kfunc_dynptr_param.c
-+++ b/tools/testing/selftests/bpf/progs/test_kfunc_dynptr_param.c
-@@ -45,7 +45,7 @@ int BPF_PROG(not_valid_dynptr, int cmd, union bpf_attr *attr, unsigned int size)
- }
- 
- SEC("?lsm.s/bpf")
--__failure __msg("arg#1 expected pointer to stack or const struct bpf_dynptr")
-+__failure __msg("arg#0 expected pointer to stack or const struct bpf_dynptr")
- int BPF_PROG(not_ptr_to_stack, int cmd, union bpf_attr *attr, unsigned int size)
- {
- 	unsigned long val = 0;
-diff --git a/tools/testing/selftests/bpf/progs/verifier_bits_iter.c b/tools/testing/selftests/bpf/progs/verifier_bits_iter.c
-index a7a6ae6c162f..8bcddadfc4da 100644
---- a/tools/testing/selftests/bpf/progs/verifier_bits_iter.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bits_iter.c
-@@ -32,7 +32,7 @@ int BPF_PROG(no_destroy, struct bpf_iter_meta *meta, struct cgroup *cgrp)
- 
- SEC("iter/cgroup")
- __description("uninitialized iter in ->next()")
--__failure __msg("expected an initialized iter_bits as arg #1")
-+__failure __msg("expected an initialized iter_bits as arg #0")
- int BPF_PROG(next_uninit, struct bpf_iter_meta *meta, struct cgroup *cgrp)
- {
- 	struct bpf_iter_bits it = {};
-@@ -43,7 +43,7 @@ int BPF_PROG(next_uninit, struct bpf_iter_meta *meta, struct cgroup *cgrp)
- 
- SEC("iter/cgroup")
- __description("uninitialized iter in ->destroy()")
--__failure __msg("expected an initialized iter_bits as arg #1")
-+__failure __msg("expected an initialized iter_bits as arg #0")
- int BPF_PROG(destroy_uninit, struct bpf_iter_meta *meta, struct cgroup *cgrp)
- {
- 	struct bpf_iter_bits it = {};
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 2d53704d9f24..e959a6b1a325 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -2078,7 +2078,14 @@ do {									\
+ 		_ASM_INSN_IF_MIPS(0x4200000c)				\
+ 		_ASM_INSN32_IF_MM(0x0000517c)
+ #else	/* !TOOLCHAIN_SUPPORTS_VIRT */
+-#define _ASM_SET_VIRT ".set\tvirt\n\t"
++#if MIPS_ISA_REV >= 5
++#define _ASM_SET_VIRT_ISA
++#elif defined(CONFIG_64BIT)
++#define _ASM_SET_VIRT_ISA ".set\tmips64r5\n\t"
++#else
++#define _ASM_SET_VIRT_ISA ".set\tmips32r5\n\t"
++#endif
++#define _ASM_SET_VIRT _ASM_SET_VIRT_ISA ".set\tvirt\n\t"
+ #define _ASM_SET_MFGC0	_ASM_SET_VIRT
+ #define _ASM_SET_DMFGC0	_ASM_SET_VIRT
+ #define _ASM_SET_MTGC0	_ASM_SET_VIRT
+@@ -2099,7 +2106,6 @@ do {									\
+ ({ int __res;								\
+ 	__asm__ __volatile__(						\
+ 		".set\tpush\n\t"					\
+-		".set\tmips32r5\n\t"					\
+ 		_ASM_SET_MFGC0						\
+ 		"mfgc0\t%0, " #source ", %1\n\t"			\
+ 		_ASM_UNSET_MFGC0					\
+@@ -2113,7 +2119,6 @@ do {									\
+ ({ unsigned long long __res;						\
+ 	__asm__ __volatile__(						\
+ 		".set\tpush\n\t"					\
+-		".set\tmips64r5\n\t"					\
+ 		_ASM_SET_DMFGC0						\
+ 		"dmfgc0\t%0, " #source ", %1\n\t"			\
+ 		_ASM_UNSET_DMFGC0					\
+@@ -2127,7 +2132,6 @@ do {									\
+ do {									\
+ 	__asm__ __volatile__(						\
+ 		".set\tpush\n\t"					\
+-		".set\tmips32r5\n\t"					\
+ 		_ASM_SET_MTGC0						\
+ 		"mtgc0\t%z0, " #register ", %1\n\t"			\
+ 		_ASM_UNSET_MTGC0					\
+@@ -2140,7 +2144,6 @@ do {									\
+ do {									\
+ 	__asm__ __volatile__(						\
+ 		".set\tpush\n\t"					\
+-		".set\tmips64r5\n\t"					\
+ 		_ASM_SET_DMTGC0						\
+ 		"dmtgc0\t%z0, " #register ", %1\n\t"			\
+ 		_ASM_UNSET_DMTGC0					\
 -- 
 2.39.5
 
