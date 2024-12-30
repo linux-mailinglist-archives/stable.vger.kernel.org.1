@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-106367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54B89FE809
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAAE9FE871
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A82A3A21EB
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE4C57A1676
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF4F42AA6;
-	Mon, 30 Dec 2024 15:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F021A9B54;
+	Mon, 30 Dec 2024 15:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7Llz/Sc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYSM7KLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378AF2AE68;
-	Mon, 30 Dec 2024 15:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D6C2E414;
+	Mon, 30 Dec 2024 15:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573730; cv=none; b=aLnbcqceZRcgO14tQBbpo8rEJIgeavsJeD3sKrPHmodvSSnm/VJ+ihAzdcQfRhJjLk8dobj07vXSCa4QkKNYRsYlBXIgK1tJJxquP6ZxiLDSpNQLB9Nq9d0TQLPhjC06LkRuUPzKOc6mhXeky+DpOgpuYRwY487rA37f5MziRjw=
+	t=1735574076; cv=none; b=h9p2OVaNUGe+yTb/G1RRLPrSzo0GNuASWMl9QUBM4Pch23VUr3D3PE+JO/7/tWYLMF2YI4339wncjCTZdVwInVMQ6fq9cGksme5Z/C+FEB8xgvzXKTUrV+2gMNcrhw3qlK5Y2ZSUfqfAnvKzSVnNhaammQw2GHaTIAXJ1p43PEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573730; c=relaxed/simple;
-	bh=H09v3M/+kQoGaWp9yfCFYxMY/qY0Zt/feeooo0BUKK4=;
+	s=arc-20240116; t=1735574076; c=relaxed/simple;
+	bh=o/SR8FVPNyLeNrOQPCMzu8x+Sr+/pgNfwuOu7mMSyWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4R0dt2j8J6nTxwYpVL2EjiItoDy8wfVWF3MB+0GEFKlAMRfruRppsyR4j7bknGubrSG/k8BqYTJPwqOBOK4giWYEXNlg51cWEj5N1LK+AQJR3a6gunMT7pSJkeiidGOrEZAiuGSgclydlC1Tk3pYHiOB8PxPmj2Yuek/u16NAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7Llz/Sc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95654C4CED0;
-	Mon, 30 Dec 2024 15:48:49 +0000 (UTC)
+	 MIME-Version; b=lvRUgFk8NwrqtXeRFzXSF7x8+a0Z0sij1ntrty+wIRpRnGDJE2FU31FyKa607H+V2Y1L3Na6yWaqRZtPEKnkoAnf3jMgseoBex7sumJc8TaXN5BQJWCapL9DST2L4BUD6aim8L1Q/paXjwbBlKb0zFSrXotIx9lUBZ2uMbyPUAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYSM7KLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8E7C4CED0;
+	Mon, 30 Dec 2024 15:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573730;
-	bh=H09v3M/+kQoGaWp9yfCFYxMY/qY0Zt/feeooo0BUKK4=;
+	s=korg; t=1735574075;
+	bh=o/SR8FVPNyLeNrOQPCMzu8x+Sr+/pgNfwuOu7mMSyWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7Llz/Sc5n3QxUTx93EHzVe1h/2av+kztYfCiA4zmqODeS9QaZLWNx74r6QvVOtIK
-	 niEvkEpVAnfH3CKiXRI3cA7yDmOAc1LKuH3jraQSQ+b/QUuLNgURehhYnDKrhiz11N
-	 7LBoylMjaxQN0idL6kLhGpsVVorKmANrw9txnXv0=
+	b=lYSM7KLNWDgeXKhufO0f6OVklAVBd5KYzXEKGBFFDEQGDIupUzFn3kWH+EgGtmw3m
+	 +Q1cOxfmu8xHbO44IfCqNKzQXbMltNvZB4eDwPthaluTSuzgPEJcCmFIoeDJPzUK81
+	 XnNuffs+mHdL4kWr49GuqR/GoU4RTcSKdmdZzvUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 19/86] phy: core: Fix that API devm_phy_destroy() fails to destroy the phy
+Subject: [PATCH 6.12 030/114] dmaengine: tegra: Return correct DMA status when paused
 Date: Mon, 30 Dec 2024 16:42:27 +0100
-Message-ID: <20241230154212.453884238@linuxfoundation.org>
+Message-ID: <20241230154219.223470216@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit 4dc48c88fcf82b89fdebd83a906aaa64f40fb8a9 upstream.
+commit ebc008699fd95701c9af5ebaeb0793eef81a71d5 upstream.
 
-For devm_phy_destroy(), its comment says it needs to invoke phy_destroy()
-to destroy the phy, but it will not actually invoke the function since
-devres_destroy() does not call devm_phy_consume(), and the missing
-phy_destroy() call will cause that the phy fails to be destroyed.
+Currently, the driver does not return the correct DMA status when a DMA
+pause is issued by the client drivers. This causes GPCDMA users to
+assume that DMA is still running, while in reality, the DMA is paused.
 
-Fortunately, the faulty API has not been used by current kernel tree.
-Fix by using devres_release() instead of devres_destroy() within the API.
+Return DMA_PAUSED for tx_status() if the channel is paused in the middle
+of a transfer.
 
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-3-40ae28f5015a@quicinc.com
+Fixes: ee17028009d4 ("dmaengine: tegra: Add tegra gpcdma driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Link: https://lore.kernel.org/r/20241212124412.5650-1-kkartik@nvidia.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/phy-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/tegra186-gpc-dma.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -1074,7 +1074,7 @@ void devm_phy_destroy(struct device *dev
- {
- 	int r;
+--- a/drivers/dma/tegra186-gpc-dma.c
++++ b/drivers/dma/tegra186-gpc-dma.c
+@@ -231,6 +231,7 @@ struct tegra_dma_channel {
+ 	bool config_init;
+ 	char name[30];
+ 	enum dma_transfer_direction sid_dir;
++	enum dma_status status;
+ 	int id;
+ 	int irq;
+ 	int slave_id;
+@@ -393,6 +394,8 @@ static int tegra_dma_pause(struct tegra_
+ 		tegra_dma_dump_chan_regs(tdc);
+ 	}
  
--	r = devres_destroy(dev, devm_phy_consume, devm_phy_match, phy);
-+	r = devres_release(dev, devm_phy_consume, devm_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
++	tdc->status = DMA_PAUSED;
++
+ 	return ret;
  }
- EXPORT_SYMBOL_GPL(devm_phy_destroy);
+ 
+@@ -419,6 +422,8 @@ static void tegra_dma_resume(struct tegr
+ 	val = tdc_read(tdc, TEGRA_GPCDMA_CHAN_CSRE);
+ 	val &= ~TEGRA_GPCDMA_CHAN_CSRE_PAUSE;
+ 	tdc_write(tdc, TEGRA_GPCDMA_CHAN_CSRE, val);
++
++	tdc->status = DMA_IN_PROGRESS;
+ }
+ 
+ static int tegra_dma_device_resume(struct dma_chan *dc)
+@@ -544,6 +549,7 @@ static void tegra_dma_xfer_complete(stru
+ 
+ 	tegra_dma_sid_free(tdc);
+ 	tdc->dma_desc = NULL;
++	tdc->status = DMA_COMPLETE;
+ }
+ 
+ static void tegra_dma_chan_decode_error(struct tegra_dma_channel *tdc,
+@@ -716,6 +722,7 @@ static int tegra_dma_terminate_all(struc
+ 		tdc->dma_desc = NULL;
+ 	}
+ 
++	tdc->status = DMA_COMPLETE;
+ 	tegra_dma_sid_free(tdc);
+ 	vchan_get_all_descriptors(&tdc->vc, &head);
+ 	spin_unlock_irqrestore(&tdc->vc.lock, flags);
+@@ -769,6 +776,9 @@ static enum dma_status tegra_dma_tx_stat
+ 	if (ret == DMA_COMPLETE)
+ 		return ret;
+ 
++	if (tdc->status == DMA_PAUSED)
++		ret = DMA_PAUSED;
++
+ 	spin_lock_irqsave(&tdc->vc.lock, flags);
+ 	vd = vchan_find_desc(&tdc->vc, cookie);
+ 	if (vd) {
 
 
 
