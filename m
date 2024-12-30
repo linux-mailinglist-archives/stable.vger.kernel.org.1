@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-106329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585049FE7E2
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275B69FE8AD
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CB8E1882EB4
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D381F16129C
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2472E414;
-	Mon, 30 Dec 2024 15:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1E6156678;
+	Mon, 30 Dec 2024 15:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxQAUeQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QK9dsKXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A71F15E8B;
-	Mon, 30 Dec 2024 15:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B32E2AE68;
+	Mon, 30 Dec 2024 15:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573600; cv=none; b=pv3fpZ7Hdxtubpi0qrl9wvtbxR2qFqhtnES2q3ZsHX8u7naBY48wNhBuRrZNhOaofy2DwTmqMoVcJlUlWzk4xlpoLSWz67q0TX94kO0HPhoigy07HXQBQbV0Ey2WeC7U4pcN4koZFZzi7BMhpbDTbjcJs1hBl8I6mVkybbsAWRQ=
+	t=1735574263; cv=none; b=WeS3WhdnYwdiGkoszZuudGYVddYiImh+LS+25oZ78/OSmIxuCp30XAuYnXsnYFZimXyIJg/R7IdB/VNF9taS5nRW3E6MawhqFFUTdPuWTlXdMymQ54ygBjh0Rf5VxMW0xGQeUQlotu93e+8oE4X/horF6tydhlf0Meqzs44s7Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573600; c=relaxed/simple;
-	bh=bpnABYcvh86ezJXCLSEBxSEs3H8XWOAAjHudOwjP+ck=;
+	s=arc-20240116; t=1735574263; c=relaxed/simple;
+	bh=gjPXEhzzvGound2ZBlEFhXWSo4591PRVXLoBRW9i/iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwAcrpL18TEZRC62XZun4AYDy6nsc0Ncx+LSvxG0s63KpfIGSj/epQ+yt2ni/ZJubI5W0EOg4JKM9SEYmUe/F/TryGxcoSqc6xP/kHDb75CUmgGHOxuL3j9b4JZNZ1GwcYkymGsp1V3Ito0jgzbCmO1xP3kvSVTTlPqpG/u1e5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxQAUeQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4759C4CED0;
-	Mon, 30 Dec 2024 15:46:39 +0000 (UTC)
+	 MIME-Version; b=MUlZkwucL2xP0B+5kLkfMIVwsWT4BIwSxqA+9f56v9p9QYgFIpzmXJ9CJAMmp1Md4Be66O0qsVQxHfzsH4Q8HnEuNdsK5qIDGTaNzZDD0DxlfiMWZa/DWJ+uD+dVUTi8gooIfam5+TCgBQlSzfSf1QNe/lG7liCyoJmK4P+TW1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QK9dsKXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA720C4CED0;
+	Mon, 30 Dec 2024 15:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573600;
-	bh=bpnABYcvh86ezJXCLSEBxSEs3H8XWOAAjHudOwjP+ck=;
+	s=korg; t=1735574263;
+	bh=gjPXEhzzvGound2ZBlEFhXWSo4591PRVXLoBRW9i/iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QxQAUeQVnMoJ67UOo4vy5fKhYzyg3cLfGzG3sa0UisF/E1WX00c4bVYn9MQTK1sby
-	 1BRx00PQXpxWwU401hLewoLgxKCFpF4BMDygknojyNaQFPEPWJ5D1DRYiI7IWWxmfw
-	 zUAY0ZhmoylByUcAXMO92/jg0ETzsXwg8QzqXGtA=
+	b=QK9dsKXl2MixKgRGjdZkFDH+kugzMl5Cmgm9JVDpG23TAOL3TT7f7+zyTwHS8XdO/
+	 pqhIWXF/rtGa5YgEROZLuMid4eJizPoIukg17xwhrX4Ptv+TEKIUUe8NY/uX8m3wuQ
+	 seJzjQTbcd9kbfcOge7kuvix5Iy24sj0LlNUthCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	WangYuli <wangyuli@uniontech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/60] MIPS: mipsregs: Set proper ISA level for virt extensions
-Date: Mon, 30 Dec 2024 16:42:51 +0100
-Message-ID: <20241230154208.839382011@linuxfoundation.org>
+Subject: [PATCH 6.12 055/114] ALSA: ump: Indicate the inactive group in legacy substream names
+Date: Mon, 30 Dec 2024 16:42:52 +0100
+Message-ID: <20241230154220.192385023@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit a640d6762a7d404644201ebf6d2a078e8dc84f97 ]
+[ Upstream commit e29e504e7890b9ee438ca6370d0180d607c473f9 ]
 
-c994a3ec7ecc ("MIPS: set mips32r5 for virt extensions") setted
-some instructions in virt extensions to ISA level mips32r5.
+Since the legacy rawmidi has no proper way to know the inactive group,
+indicate it in the rawmidi substream names with "[Inactive]" suffix
+when the corresponding UMP group is inactive.
 
-However TLB related vz instructions was leftover, also this
-shouldn't be done to a R5 or R6 kernel buid.
-
-Reorg macros to set ISA level as needed when _ASM_SET_VIRT
-is called.
-
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://patch.msgid.link/20241129094546.32119-3-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mipsregs.h | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ sound/core/ump.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 99eeafe6dcab..c60e72917a28 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -2078,7 +2078,14 @@ do {									\
- 		_ASM_INSN_IF_MIPS(0x4200000c)				\
- 		_ASM_INSN32_IF_MM(0x0000517c)
- #else	/* !TOOLCHAIN_SUPPORTS_VIRT */
--#define _ASM_SET_VIRT ".set\tvirt\n\t"
-+#if MIPS_ISA_REV >= 5
-+#define _ASM_SET_VIRT_ISA
-+#elif defined(CONFIG_64BIT)
-+#define _ASM_SET_VIRT_ISA ".set\tmips64r5\n\t"
-+#else
-+#define _ASM_SET_VIRT_ISA ".set\tmips32r5\n\t"
-+#endif
-+#define _ASM_SET_VIRT _ASM_SET_VIRT_ISA ".set\tvirt\n\t"
- #define _ASM_SET_MFGC0	_ASM_SET_VIRT
- #define _ASM_SET_DMFGC0	_ASM_SET_VIRT
- #define _ASM_SET_MTGC0	_ASM_SET_VIRT
-@@ -2099,7 +2106,6 @@ do {									\
- ({ int __res;								\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
--		".set\tmips32r5\n\t"					\
- 		_ASM_SET_MFGC0						\
- 		"mfgc0\t%0, " #source ", %1\n\t"			\
- 		_ASM_UNSET_MFGC0					\
-@@ -2113,7 +2119,6 @@ do {									\
- ({ unsigned long long __res;						\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
--		".set\tmips64r5\n\t"					\
- 		_ASM_SET_DMFGC0						\
- 		"dmfgc0\t%0, " #source ", %1\n\t"			\
- 		_ASM_UNSET_DMFGC0					\
-@@ -2127,7 +2132,6 @@ do {									\
- do {									\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
--		".set\tmips32r5\n\t"					\
- 		_ASM_SET_MTGC0						\
- 		"mtgc0\t%z0, " #register ", %1\n\t"			\
- 		_ASM_UNSET_MTGC0					\
-@@ -2140,7 +2144,6 @@ do {									\
- do {									\
- 	__asm__ __volatile__(						\
- 		".set\tpush\n\t"					\
--		".set\tmips64r5\n\t"					\
- 		_ASM_SET_DMTGC0						\
- 		"dmtgc0\t%z0, " #register ", %1\n\t"			\
- 		_ASM_UNSET_DMTGC0					\
+diff --git a/sound/core/ump.c b/sound/core/ump.c
+index 0ade67d6b089..55d5d8af5e44 100644
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -1256,8 +1256,9 @@ static void fill_substream_names(struct snd_ump_endpoint *ump,
+ 		name = ump->groups[idx].name;
+ 		if (!*name)
+ 			name = ump->info.name;
+-		snprintf(s->name, sizeof(s->name), "Group %d (%.16s)",
+-			 idx + 1, name);
++		snprintf(s->name, sizeof(s->name), "Group %d (%.16s)%s",
++			 idx + 1, name,
++			 ump->groups[idx].active ? "" : " [Inactive]");
+ 	}
+ }
+ 
 -- 
 2.39.5
 
