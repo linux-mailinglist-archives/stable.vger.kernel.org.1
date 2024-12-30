@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-106489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E8B9FE888
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C6C9FE803
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D685F188314F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39B1E3A23F8
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386C5537E9;
-	Mon, 30 Dec 2024 15:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581F71531C4;
+	Mon, 30 Dec 2024 15:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYc+WqOi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxPU0I6c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E782415E8B;
-	Mon, 30 Dec 2024 15:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160B515E8B;
+	Mon, 30 Dec 2024 15:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574158; cv=none; b=slx7dasw95oB4l899fzqeOseTOcOGaG/S6GbVnHAxeeRrrU7Ej6aV8ise/SSGtGFwO3fF68EwSa4ou9H4YCNiwEtmnXsuwDAXF863LNUNndhk98LWas18DA4EQ+JoNQJRSkg8xdyOU1pdEYqyrYo5cD1DzXZqXihtjsN97Q6SFc=
+	t=1735573710; cv=none; b=vBpMX7hHOkAzlut4vB6CbP+wEarlSH4mxkOBYbETbOSpouOVPEvsfE2DHyftOcSifuhaEjXiAA7vZX+nFv7fFcKmvxARtJP/vi+s0ssZIdBHZEb8tlQDGmz/awz+UVIt3mxfJk+wWTEvMEQJI40aUswXffzWeMKlUXhwhVWYcbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574158; c=relaxed/simple;
-	bh=Tg4+XpkE7+BO/zeCnoKIAk4kNpbbsY3+qYYFM8LObeY=;
+	s=arc-20240116; t=1735573710; c=relaxed/simple;
+	bh=FZUJ67+Npe30Kc0/bBpkIm3/f6k3QcSmCJIiwOWKQVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQjf0Pk14bBDz7r0iuv1KoTHfJROwKE/0qYdX2nAp4D6MZo+PHrrk+ASqmUO3nVMss+40SlzCv/yW6sWiZ+ZP5ckgfwIopCj/Rd96sbJObNag2clAdqCxfZpT+KcqikeLmgVApAZ0AVYz+Sx5m3xZewJnXOMbl/mLj8gEp+nG90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYc+WqOi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5610FC4CED0;
-	Mon, 30 Dec 2024 15:55:57 +0000 (UTC)
+	 MIME-Version; b=TxwPLD/uVzuqcNvnMCm7jTFtWBq7sdgvEQVpbi4g4m+6BVsWsVc/M6KE+94AniYN7yNciXGoeGHwHb01lXiVKAl662CU+8nC+JMrGSIRjja8phuxIcvnB6Ja4kWuH1xWos3kJhqudj7GbYvXsB6TFmon1WRXKNDTx7mzvR39PyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxPU0I6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D22C4CED0;
+	Mon, 30 Dec 2024 15:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574157;
-	bh=Tg4+XpkE7+BO/zeCnoKIAk4kNpbbsY3+qYYFM8LObeY=;
+	s=korg; t=1735573709;
+	bh=FZUJ67+Npe30Kc0/bBpkIm3/f6k3QcSmCJIiwOWKQVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYc+WqOimi1QGbQCz6PtK3nSQg3jdsPQqDGExdkzrgm40DcxIwwe65UNdbWxqfqkQ
-	 u3pjqhbccpTWGivO7dIVZNsA8+s1tKRIiwaO5kcytaSiV4pTqm0h5lAwETFbd5P+AM
-	 f74SQx0D4inIWQ0Y2B9THXLa0regsgwIDl4w1C50=
+	b=MxPU0I6cI0MFsHuR5C7h2f3Nn0ly6gSalr1FFoJ+Qz5+vSHSKYYU4cccOAVFoUO16
+	 L1KfY0KeDkrHPVoZm2eAJ08OeQB9hLqPE5KuS6q9k5Me5hHOkqinkMaiGYHllqDGYW
+	 jMabknn1grRr4of9PJJYT8SlS336wAaDAc/zO7R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 023/114] phy: core: Fix that API devm_phy_destroy() fails to destroy the phy
-Date: Mon, 30 Dec 2024 16:42:20 +0100
-Message-ID: <20241230154218.956423172@linuxfoundation.org>
+	Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 13/86] mtd: rawnand: arasan: Fix missing de-registration of NAND
+Date: Mon, 30 Dec 2024 16:42:21 +0100
+Message-ID: <20241230154212.219696362@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
 
-commit 4dc48c88fcf82b89fdebd83a906aaa64f40fb8a9 upstream.
+commit 11e6831fd81468cf48155b9b3c11295c391da723 upstream.
 
-For devm_phy_destroy(), its comment says it needs to invoke phy_destroy()
-to destroy the phy, but it will not actually invoke the function since
-devres_destroy() does not call devm_phy_consume(), and the missing
-phy_destroy() call will cause that the phy fails to be destroyed.
+The NAND chip-selects are registered for the Arasan driver during
+initialization but are not de-registered when the driver is unloaded. As a
+result, if the driver is loaded again, the chip-selects remain registered
+and busy, making them unavailable for use.
 
-Fortunately, the faulty API has not been used by current kernel tree.
-Fix by using devres_release() instead of devres_destroy() within the API.
-
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-3-40ae28f5015a@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 197b88fecc50 ("mtd: rawnand: arasan: Add new Arasan NAND controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/phy-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -1126,7 +1126,7 @@ void devm_phy_destroy(struct device *dev
- {
- 	int r;
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -1479,8 +1479,15 @@ static int anfc_probe(struct platform_de
  
--	r = devres_destroy(dev, devm_phy_consume, devm_phy_match, phy);
-+	r = devres_release(dev, devm_phy_consume, devm_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
+ static void anfc_remove(struct platform_device *pdev)
+ {
++	int i;
+ 	struct arasan_nfc *nfc = platform_get_drvdata(pdev);
+ 
++	for (i = 0; i < nfc->ncs; i++) {
++		if (nfc->cs_array[i]) {
++			gpiod_put(nfc->cs_array[i]);
++		}
++	}
++
+ 	anfc_chips_cleanup(nfc);
  }
- EXPORT_SYMBOL_GPL(devm_phy_destroy);
+ 
 
 
 
