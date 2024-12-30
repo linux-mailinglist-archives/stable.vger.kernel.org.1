@@ -1,116 +1,89 @@
-Return-Path: <stable+bounces-106573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E809FEA58
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 20:29:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A4B9FEA78
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 20:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9CAE7A174A
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 046963A2B81
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E094191F88;
-	Mon, 30 Dec 2024 19:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="DQJ48z07"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5AE199235;
+	Mon, 30 Dec 2024 19:48:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A927EAD0;
-	Mon, 30 Dec 2024 19:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B7D22339;
+	Mon, 30 Dec 2024 19:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735586976; cv=none; b=IucS1G+gINXbw/qBsJPQH252aRmKm0zDmICi1zIdw0osD6AhW9R+9+tGkxfiIsFTbtAH0I1eEtFO6kIBwlCLcikjFODAvyQ4DR0J5QnHSt7nYGSjCu5DfTqh94mzH5QLqFpKbxKZFwxKpz5Xe4ACaR0btZOCIOsQWdHhoLzSSMo=
+	t=1735588135; cv=none; b=a8elZAUA9yPAvUPHpNK8+5Fqdthubh/rcHDH8TkjTI5DUwhrheUhiVm4u1qPTZQ8bhyVr7llgp2LTVlrzqs72axjIHM/EPpV6uNoRhHAmDlEvCHRyY4jcY152hVMd0lUKWCnVsCTYnGC3jlUS86Ahm77U/PMSJnbPXq6yTJAE60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735586976; c=relaxed/simple;
-	bh=RBV7AVCmtT/t1t0VhW6vLY6hFofVcUSbLA2tcG3dZLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gp1oEaBGwINHmzqFUPMLBTr1Y54GmTcgfz2cwcxrQ+Y2XKGi0+fpNjsFB7yzF3xPvUJ4SdZIx0ddgnEo0DKnhBEIQKin32IQ6h0XN3p3cSAnoLO4jBPEFg2/KRczTo2tsT1OyDm66Ww2wxZI/UZKF61XGgKMret5MsYcmuqJsMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=DQJ48z07; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3163B10485582;
-	Mon, 30 Dec 2024 20:29:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1735586971;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PPBKm9op2Ao6jtgaEMtViH/5jsI/m27bLxA5CXn+6ic=;
-	b=DQJ48z07SsUEtddAIEzAXPv3nbBstcB2w6NiAWVn6XJSmCoNwvpTnH4trGZOASAfz20WOO
-	Z/U4z0NMVEUbLIdx/jzT8uBIrehQxGax6/+3U3RZq8tbDYN4AWafHCxAG9oxvc+OqFlly+
-	IWQ4Yo1/EszJh1/5WBjJvH0TnVoX7ozLU/1V1KalQ9SDBqGEPQ79HZpaZb+L+untrsNoZM
-	1UL8pR2CouCowYOeMtS8nV848pXzwZtGZHnCxGkW5oUmQj5jt3Uc5GpFDo6zZNnv/Lm81h
-	AH9YKfE2YVFxMaurHFpDwmtcSE0jUgNfRvpkzDmfrU4CWwp+OvT0Sl3L5c4tNg==
-Date: Mon, 30 Dec 2024 20:29:28 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.12 000/114] 6.12.8-rc1 review
-Message-ID: <Z3L0mE70QZ6V5uCB@duo.ucw.cz>
-References: <20241230154218.044787220@linuxfoundation.org>
+	s=arc-20240116; t=1735588135; c=relaxed/simple;
+	bh=BqNrskxIb8SvW2lLYiMrpwgJ4V5FMxmmQrN/z+2DYjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bc9YXYJKSJVRPF/DNuvdVRHsKj5CVPurwlf4F2TtErGm1JUuRxnW4fJ8Nkq442nqbY09hS7pUwrBC8ZAfUL3FPe5z+1XfzjJ6gNPOX4aKsJKGSs0fmBjgOpPoYDzJygF0p+Z/jZIl40c/8E93u9rdPWAYlfQ0esaHMFlq3WH+Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898EAC4CED0;
+	Mon, 30 Dec 2024 19:48:53 +0000 (UTC)
+Date: Mon, 30 Dec 2024 14:50:02 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Genes Lists <lists@sapience.com>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, lucas.demarchi@intel.com,
+ thomas.hellstrom@linux.intel.com, stable@vger.kernel.org,
+ regressions@lists.linux.dev, Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [REGRESSION][BISECTED] Re: 6.12.7 stable new error: event
+ xe_bo_move has unsafe dereference of argument 4
+Message-ID: <20241230145002.3cc11717@gandalf.local.home>
+In-Reply-To: <20241230141329.5f698715@batman.local.home>
+References: <2e9332ab19c44918dbaacecd8c039fb0bbe6e1db.camel@sapience.com>
+	<9dee19b6185d325d0e6fa5f7cbba81d007d99166.camel@sapience.com>
+	<20241230141329.5f698715@batman.local.home>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="qdWhiN3wsj6kMGAz"
-Content-Disposition: inline
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 30 Dec 2024 14:13:29 -0500
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
---qdWhiN3wsj6kMGAz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> I guess the "fix" would be to have the check code ignore pointer to
+> arrays, assuming they are "ok".
 
-Hi!
+Can you try this patch?
 
-> This is the start of the stable review cycle for the 6.12.8 release.
-> There are 114 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+-- Steve
 
-CIP testing did not find any problems here (obsvx2 target is down, as
-is one of bb targets):
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.12.y
-
-6.6 passes our testing, too:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---qdWhiN3wsj6kMGAz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ3L0mAAKCRAw5/Bqldv6
-8l4VAKCZlq4JrnzabtPYNhCOtYTR5iabuwCfXwHuLbc6ZA2fHfUnUytOO1T/1No=
-=9IbP
------END PGP SIGNATURE-----
-
---qdWhiN3wsj6kMGAz--
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 1545cc8b49d0..770e7ed91716 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -364,6 +364,18 @@ static bool process_string(const char *fmt, int len, struct trace_event_call *ca
+ 		s = r + 1;
+ 	} while (s < e);
+ 
++	/*
++	 * Check for arrays. If the argument has: foo[REC->val]
++	 * then it is very likely that foo is an array of strings
++	 * that are safe to use.
++	 */
++	r = strstr(s, "[");
++	if (r && r < e) {
++		r = strstr(r, "REC->");
++		if (r && r < e)
++			return true;
++	}
++
+ 	/*
+ 	 * If there's any strings in the argument consider this arg OK as it
+ 	 * could be: REC->field ? "foo" : "bar" and we don't want to get into
 
