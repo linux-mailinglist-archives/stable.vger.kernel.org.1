@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C449FE80C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFEC9FE872
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2F43A2321
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C851161701
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E89D1537C8;
-	Mon, 30 Dec 2024 15:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A96E1537C8;
+	Mon, 30 Dec 2024 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbknWu2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1tLWAV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0E215E8B;
-	Mon, 30 Dec 2024 15:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F7C2E414;
+	Mon, 30 Dec 2024 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573743; cv=none; b=lmeEaKVq7nL8iKykAvRn3RC2khwbs6Y2G3HrJtr6E8qtxBmoKnNrjKskBrdgX6pXNXiTqrueruG4w4XBTx70JCneDL/wa5BYB1L+K4sALYcbFj/T5SH64NQyO9cWq/J9e7bhbywXP3ez5/sXXBxCmkBAM9dk2KzVvHGRPesrpkM=
+	t=1735574086; cv=none; b=K3cDntA2Rra2+WeiKqqVpZpDEBVFzFcBggXnmvGyp83lxOw5ViU2tP5IY/1WDKijAPP1B0xW3ijuUpdgM453sFXdcF5owmmhy1RNhD0U/fPbkE3+2cIgJ3GHh7KePijOC9QNTPsfPRnaXTtZxZPByKhIV4WeGcpaCAWmhk6/wuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573743; c=relaxed/simple;
-	bh=SUuvflWxDFaFLKVUtUa6jJv7PsW5QlqQAkqwcYWd5hY=;
+	s=arc-20240116; t=1735574086; c=relaxed/simple;
+	bh=/acXmkfBLN2OSDGMY8Piqo3VXseDpa2vDT8a5hDGtmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CaG7VXEX8naWRHsg8O7+ZmxmjamecMIJ7J9vphIewfmrUWkCpJcKT8u7DHM6WCc4WRkLaGbSPhylHu8fBS4UoX1a2GM2QKS7IoEVOHco55QeVxrIoVnROyJ/8C49LAGIjTv9FWsJM+0c0FqJ5D0AZbtrZiYlUlrKDbs/Uie0Agc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbknWu2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F45C4CED0;
-	Mon, 30 Dec 2024 15:49:02 +0000 (UTC)
+	 MIME-Version; b=qmoAPHHE5yb5F+VxMpsrwz3eyuFh9KgQgYJMzPl1/KqlFqirFr6UHMBVkvRdC0QCSvZwZEZegXmbW90WID41FL3PnHhwBCDTL8xwBGDhU/WVs0OVd+nawRnbltYGBGu7WxbRl53RVfwyJGRBAio7bxFwX9uLMSY/BniKzK9i2Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1tLWAV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D11C4CED0;
+	Mon, 30 Dec 2024 15:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573743;
-	bh=SUuvflWxDFaFLKVUtUa6jJv7PsW5QlqQAkqwcYWd5hY=;
+	s=korg; t=1735574086;
+	bh=/acXmkfBLN2OSDGMY8Piqo3VXseDpa2vDT8a5hDGtmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbknWu2V0OM3VbFFEIoOeFjjp3llZg5CZqGQzUPYmZP0yWjzbX6wXP2MWB6S5m+Ko
-	 F5QaY/GHdCfs4iJ3KP4OqvsyKJgKxuJcZj2R+T2YqW0cNRB4MsPuJMC5SmLDm1/ghi
-	 0TxtuE2M40snqsYAcGY0HlNzvaS0xf7arh8F8kjk=
+	b=T1tLWAV0/IlvGNdLxYT/2vSJAzkEw8TvWPBGG3Mj/D+eAuQ6LP50RZGpWvdtcPfLQ
+	 spsjxoEhQDNfTqIbAh6UDhStcPEZBWuNWG4yCqbsrAG1QJ+NuUBVZhXg/pejEF/9Uy
+	 E4zbefpZMJaqwIL9/u7gqGosqMQCta0Rg4lgiHjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Sasha Finkelstein <fnkl.kernel@gmail.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 22/86] dmaengine: mv_xor: fix child node refcount handling in early exit
+Subject: [PATCH 6.12 033/114] dmaengine: apple-admac: Avoid accessing registers in probe
 Date: Mon, 30 Dec 2024 16:42:30 +0100
-Message-ID: <20241230154212.566619182@linuxfoundation.org>
+Message-ID: <20241230154219.336558768@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Sasha Finkelstein <fnkl.kernel@gmail.com>
 
-commit 362f1bf98a3ecb5a2a4fcbdaa9718c8403beceb2 upstream.
+commit 8d55e8a16f019211163f1180fd9f9fbe05901900 upstream.
 
-The for_each_child_of_node() loop requires explicit calls to
-of_node_put() to decrement the child's refcount upon early exits (break,
-goto, return).
+The ADMAC attached to the AOP has complex power sequencing, and is
+power gated when the probe callback runs. Move the register reads
+to other functions, where we can guarantee that the hardware is
+switched on.
 
-Add the missing calls in the two early exits before the goto
-instructions.
-
-Cc: stable@vger.kernel.org
-Fixes: f7d12ef53ddf ("dma: mv_xor: add Device Tree binding")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241011-dma_mv_xor_of_node_put-v1-1-3c2de819f463@gmail.com
+Fixes: 568aa6dd641f ("dmaengine: apple-admac: Allocate cache SRAM to channels")
+Signed-off-by: Sasha Finkelstein <fnkl.kernel@gmail.com>
+Link: https://lore.kernel.org/r/20241124-admac-power-v1-1-58f2165a4d55@gmail.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mv_xor.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/dma/apple-admac.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/dma/mv_xor.c
-+++ b/drivers/dma/mv_xor.c
-@@ -1393,6 +1393,7 @@ static int mv_xor_probe(struct platform_
- 			irq = irq_of_parse_and_map(np, 0);
- 			if (!irq) {
- 				ret = -ENODEV;
-+				of_node_put(np);
- 				goto err_channel_add;
- 			}
+--- a/drivers/dma/apple-admac.c
++++ b/drivers/dma/apple-admac.c
+@@ -153,6 +153,8 @@ static int admac_alloc_sram_carveout(str
+ {
+ 	struct admac_sram *sram;
+ 	int i, ret = 0, nblocks;
++	ad->txcache.size = readl_relaxed(ad->base + REG_TX_SRAM_SIZE);
++	ad->rxcache.size = readl_relaxed(ad->base + REG_RX_SRAM_SIZE);
  
-@@ -1401,6 +1402,7 @@ static int mv_xor_probe(struct platform_
- 			if (IS_ERR(chan)) {
- 				ret = PTR_ERR(chan);
- 				irq_dispose_mapping(irq);
-+				of_node_put(np);
- 				goto err_channel_add;
- 			}
+ 	if (dir == DMA_MEM_TO_DEV)
+ 		sram = &ad->txcache;
+@@ -912,12 +914,7 @@ static int admac_probe(struct platform_d
+ 		goto free_irq;
+ 	}
+ 
+-	ad->txcache.size = readl_relaxed(ad->base + REG_TX_SRAM_SIZE);
+-	ad->rxcache.size = readl_relaxed(ad->base + REG_RX_SRAM_SIZE);
+-
+ 	dev_info(&pdev->dev, "Audio DMA Controller\n");
+-	dev_info(&pdev->dev, "imprint %x TX cache %u RX cache %u\n",
+-		 readl_relaxed(ad->base + REG_IMPRINT), ad->txcache.size, ad->rxcache.size);
+ 
+ 	return 0;
  
 
 
