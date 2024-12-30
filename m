@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-106330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4831C9FE7E3
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38A59FE823
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09E0F161BF9
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B62621881C96
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B971531C4;
-	Mon, 30 Dec 2024 15:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB591537C8;
+	Mon, 30 Dec 2024 15:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD39nJve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIwpEkVr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAC72594B6;
-	Mon, 30 Dec 2024 15:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFB8537E9;
+	Mon, 30 Dec 2024 15:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573603; cv=none; b=jhEBmy+6d/ML1r5gvAOwhIrXFFaAnEAk8peRy5aeQwgmL2hPp5oBqsz6Wa5OWmugMNKw4cRGqe3X4bJSHDWqWn/3pUOvYssZRrBaUSXTEtbVup+ue4B8tYGAl/jCAovfn1aB5dpEqL0RJlSF2ZjC9DXAOuh/MDFl4sBls+kyIy0=
+	t=1735573821; cv=none; b=bw/LRdp+6GLFM3flzO/sXh54cDEzFp5YN+wsAmfpqASwO8RHTJ4AwuAew/E7U95RsIIcKDcc6ovkoIFH6z0oBtmnKJZDC68LGGXALo9xCetjfyGtcvWtRpYzWXD7vwswKA0O/QB4jN3MyNS2IpMGYfAJOkIhAHKn5chdYcm9tCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573603; c=relaxed/simple;
-	bh=o5aJNX5ajcNCDoPNBKG5Pzf+hQ/Ys1uWMmQOGl7vMwY=;
+	s=arc-20240116; t=1735573821; c=relaxed/simple;
+	bh=t9yQWY+8d6mQQRU1GKdbraVR6/6coRzzSJ0n30g2igs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shYqCOZQLt9z7Ju9SUTj4k+ezsEq41PeqIZHM/j2pU+LymgJ65KKEQvq6bCdztWc2XBgJEGZVHdjsCwIq5Xtqy2dXHeAiutHKNdWkv3ZrCiJooVlPV+8N7gfgHBcf/1LOZJoe54fzBOATIUQSAM65HPKimziGOzSQNvRdoE44fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XD39nJve; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACCAC4CED0;
-	Mon, 30 Dec 2024 15:46:42 +0000 (UTC)
+	 MIME-Version; b=lhcfeDzMJneXB8i1k9108peEvLppdEyB/b2bj9aCUE4aw+fFdU4Hg7hN6bF0sKSanBEtsHLjmPIDzjIAMhzNaLvpT/bFRJt5Yp18YGxntkQPrRDEpqH/ozBBQ+m8InTUeSSHM42Q/EI+iTv0fgRKZmK6qFKEgDeT4YLF8gW5tCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIwpEkVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8D4C4CED0;
+	Mon, 30 Dec 2024 15:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573603;
-	bh=o5aJNX5ajcNCDoPNBKG5Pzf+hQ/Ys1uWMmQOGl7vMwY=;
+	s=korg; t=1735573821;
+	bh=t9yQWY+8d6mQQRU1GKdbraVR6/6coRzzSJ0n30g2igs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XD39nJve4T9opa1MbPnXW6C7f777z0THwBNU1y6l/3AZLIzRCxRg4nBlIYtMm5aMV
-	 dhdN5+AywmhRK8/IFkkEvYLu+dqTROQ0bj/gSdOQwKMQ88PxavI7ecXsKOmmEM65F5
-	 VfjKp0QxD18o5h7MYYYHuqx2Vstml4RHTY287jR0=
+	b=cIwpEkVrCgzll09YfvsZXkHE2EAeWRkfmY7Da7cVoaAEJy7rLSMXHYB7qLeDTXRUC
+	 iXLjtd+2hDP663gzMQCvB2epaN6+MTGt14ptQqyMB3PRwo1uCFnduQ2jGBKg8Qf4IT
+	 6m1iPTjVF8njbmnSnFH7tx0+0GmihDE4rJR9lW2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	Aapo Vienamo <aapo.vienamo@iki.fi>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 42/60] net/mlx5e: Dont call cleanup on profile rollback failure
+Subject: [PATCH 6.6 44/86] spi: intel: Add Panther Lake SPI controller support
 Date: Mon, 30 Dec 2024 16:42:52 +0100
-Message-ID: <20241230154208.875256617@linuxfoundation.org>
+Message-ID: <20241230154213.386960547@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Aapo Vienamo <aapo.vienamo@iki.fi>
 
-[ Upstream commit 4dbc1d1a9f39c3711ad2a40addca04d07d9ab5d0 ]
+[ Upstream commit ceb259e43bf572ba7d766e1679ba73861d16203a ]
 
-When profile rollback fails in mlx5e_netdev_change_profile, the netdev
-profile var is left set to NULL. Avoid a crash when unloading the driver
-by not calling profile->cleanup in such a case.
+The Panther Lake SPI controllers are compatible with the Cannon Lake
+controllers. Add support for following SPI controller device IDs:
+ - H-series: 0xe323
+ - P-series: 0xe423
+ - U-series: 0xe423
 
-This was encountered while testing, with the original trigger that
-the wq rescuer thread creation got interrupted (presumably due to
-Ctrl+C-ing modprobe), which gets converted to ENOMEM (-12) by
-mlx5e_priv_init, the profile rollback also fails for the same reason
-(signal still active) so the profile is left as NULL, leading to a crash
-later in _mlx5e_remove.
-
- [  732.473932] mlx5_core 0000:08:00.1: E-Switch: Unload vfs: mode(OFFLOADS), nvfs(2), necvfs(0), active vports(2)
- [  734.525513] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
- [  734.557372] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
- [  734.559187] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: new profile init failed, -12
- [  734.560153] workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
- [  734.589378] mlx5_core 0000:08:00.1: mlx5e_netdev_init_profile:6235:(pid 6086): mlx5e_priv_init failed, err=-12
- [  734.591136] mlx5_core 0000:08:00.1 eth3: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
- [  745.537492] BUG: kernel NULL pointer dereference, address: 0000000000000008
- [  745.538222] #PF: supervisor read access in kernel mode
-<snipped>
- [  745.551290] Call Trace:
- [  745.551590]  <TASK>
- [  745.551866]  ? __die+0x20/0x60
- [  745.552218]  ? page_fault_oops+0x150/0x400
- [  745.555307]  ? exc_page_fault+0x79/0x240
- [  745.555729]  ? asm_exc_page_fault+0x22/0x30
- [  745.556166]  ? mlx5e_remove+0x6b/0xb0 [mlx5_core]
- [  745.556698]  auxiliary_bus_remove+0x18/0x30
- [  745.557134]  device_release_driver_internal+0x1df/0x240
- [  745.557654]  bus_remove_device+0xd7/0x140
- [  745.558075]  device_del+0x15b/0x3c0
- [  745.558456]  mlx5_rescan_drivers_locked.part.0+0xb1/0x2f0 [mlx5_core]
- [  745.559112]  mlx5_unregister_device+0x34/0x50 [mlx5_core]
- [  745.559686]  mlx5_uninit_one+0x46/0xf0 [mlx5_core]
- [  745.560203]  remove_one+0x4e/0xd0 [mlx5_core]
- [  745.560694]  pci_device_remove+0x39/0xa0
- [  745.561112]  device_release_driver_internal+0x1df/0x240
- [  745.561631]  driver_detach+0x47/0x90
- [  745.562022]  bus_remove_driver+0x84/0x100
- [  745.562444]  pci_unregister_driver+0x3b/0x90
- [  745.562890]  mlx5_cleanup+0xc/0x1b [mlx5_core]
- [  745.563415]  __x64_sys_delete_module+0x14d/0x2f0
- [  745.563886]  ? kmem_cache_free+0x1b0/0x460
- [  745.564313]  ? lockdep_hardirqs_on_prepare+0xe2/0x190
- [  745.564825]  do_syscall_64+0x6d/0x140
- [  745.565223]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- [  745.565725] RIP: 0033:0x7f1579b1288b
-
-Fixes: 3ef14e463f6e ("net/mlx5e: Separate between netdev objects and mlx5e profiles initialization")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: Aapo Vienamo <aapo.vienamo@iki.fi>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://patch.msgid.link/20241204080208.1036537-1-mika.westerberg@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-intel-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 385904502a6b..8ee6a81b42b4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5980,7 +5980,9 @@ static void mlx5e_remove(struct auxiliary_device *adev)
- 	mlx5e_dcbnl_delete_app(priv);
- 	unregister_netdev(priv->netdev);
- 	mlx5e_suspend(adev, state);
--	priv->profile->cleanup(priv);
-+	/* Avoid cleanup if profile rollback failed. */
-+	if (priv->profile)
-+		priv->profile->cleanup(priv);
- 	mlx5e_devlink_port_unregister(priv);
- 	mlx5e_destroy_netdev(priv);
- }
+diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
+index 4337ca51d7aa..5c0dec90eec1 100644
+--- a/drivers/spi/spi-intel-pci.c
++++ b/drivers/spi/spi-intel-pci.c
+@@ -86,6 +86,8 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0xa823), (unsigned long)&cnl_info },
++	{ PCI_VDEVICE(INTEL, 0xe323), (unsigned long)&cnl_info },
++	{ PCI_VDEVICE(INTEL, 0xe423), (unsigned long)&cnl_info },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(pci, intel_spi_pci_ids);
 -- 
 2.39.5
 
