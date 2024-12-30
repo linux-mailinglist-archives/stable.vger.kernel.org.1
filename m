@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-106332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CAC39FE7E5
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDB49FE825
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 859433A1559
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 576CD1882EE6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F82B14F136;
-	Mon, 30 Dec 2024 15:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51CC42AA6;
+	Mon, 30 Dec 2024 15:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xe4k8RLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1balGL4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD312594B6;
-	Mon, 30 Dec 2024 15:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B8B15E8B;
+	Mon, 30 Dec 2024 15:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573610; cv=none; b=dMCQXY7jOCJraW9nRw3mRciP+xFGL0/5aZPXvgXCKuPlI4g0si28p8bpwJNik4DkSosQQ9a6g2j99anqDpnYJNjZVVQUzPogqDMtY+W30S5lN33tLHI5SwBfqH/pfDphKNKpnHBIi+1en/jlWNuCvDqFpsRjV45m2SKZPwhOUtY=
+	t=1735573828; cv=none; b=awjKDQy5oJCLHiH6FWjrVUWLkOVMKKlWj9u9WBd7TstxdZG3Gj2ktyRUgVDCZhUGh8kFBOP1qAlwjnAvCjD4BRMTjhssip1deyfSwLT7BfyBHW/ay6883rQH+cYoJK+OuzzTX9IQgWSTaZYmoW7eJJSdxL8TOqSdD4GmV8t182w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573610; c=relaxed/simple;
-	bh=T1GIWAtvENHFLGPKRJgpZ941/eXX7jVNJircvo4QyxE=;
+	s=arc-20240116; t=1735573828; c=relaxed/simple;
+	bh=mn/1HmaRzpWVk58MMBSqnyTxWwPoT79NwPmkQf72qcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzYgXl/8MsYliNlc5Id9jrtMrXmw47+3SZAVPpw+7gdmnoltFFfvdoionWdndxH4JXXdfJfqwc4fYsJ/40wl7cFd0jBLgoXgxgGWUS4LcopX4ji5b10s7O0Mcd73p6u5a+3oUrWACMmEwiDdfYlQVzJu7M8LYF6LClhI8+IlCbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xe4k8RLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4907C4CED0;
-	Mon, 30 Dec 2024 15:46:49 +0000 (UTC)
+	 MIME-Version; b=nmP4uETUa9VK4CBcfeb2tkB5rEBaQLopb+/1KZAOqawxDUY1nFI1qmCk4T/jJs52BHgIw6h1LEaca0Oz70b0IItyYQkx6hdyV24UG60eaVEVg2/9Mp8gQ9JAb6bvkY2oksubKX7Ai1HhzNdorY+tkjqUs9itpOH/jGmN/VDcizA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1balGL4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D5FC4CED0;
+	Mon, 30 Dec 2024 15:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573610;
-	bh=T1GIWAtvENHFLGPKRJgpZ941/eXX7jVNJircvo4QyxE=;
+	s=korg; t=1735573828;
+	bh=mn/1HmaRzpWVk58MMBSqnyTxWwPoT79NwPmkQf72qcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xe4k8RLC4Wi1ht4gq6hUsAB0jZdo+4j8vJZRMv5fFmpssasah84IXG3xk+Y3FP56f
-	 UfzSUzxlfwnjriFncTIKDC4jPUYg6rwUIb7W1tQwZriKEtk4r+P+fF+hFUDFgen2+j
-	 cJjWzu4x10Ud9YXC3PPni3tFGWfW2cDhTe8khqAE=
+	b=j1balGL4WWyf8AARjLLEOaAcqxjx2XHGbGPnIUBpHBdtHA6EpiWXU+JssClGv/ygo
+	 Hxpg9yV4UZRGYu9l4/J3QSCv/ghFsMnVJDrrEijxhwU/AFJgFBro/pTFwCpFu8bK+2
+	 XOHWPa29bz5sp3ORyxOW/A/ezSe9R4mta2mzdKHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Su <dirk.su@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Cathy Avery <cavery@redhat.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 44/60] ALSA: hda/realtek: fix mute/micmute LEDs dont work for EliteBook X G1i
+Subject: [PATCH 6.6 46/86] scsi: storvsc: Do not flag MAINTENANCE_IN return of SRB_STATUS_DATA_OVERRUN as an error
 Date: Mon, 30 Dec 2024 16:42:54 +0100
-Message-ID: <20241230154208.948525740@linuxfoundation.org>
+Message-ID: <20241230154213.462968790@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dirk Su <dirk.su@canonical.com>
+From: Cathy Avery <cavery@redhat.com>
 
-[ Upstream commit 7ba81e4c3aa0ca25f06dc4456e7d36fa8e76385f ]
+[ Upstream commit b1aee7f034615b6824d2c70ddb37ef9fc23493b7 ]
 
-HP EliteBook X G1i needs ALC285_FIXUP_HP_GPIO_LED quirk to
-make mic-mute/audio-mute working.
+This partially reverts commit 812fe6420a6e ("scsi: storvsc: Handle
+additional SRB status values").
 
-Signed-off-by: Dirk Su <dirk.su@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241126060531.22759-1-dirk.su@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 0d08f0eec961 ("ALSA: hda/realtek: fix micmute LEDs don't work on HP Laptops")
+HyperV does not support MAINTENANCE_IN resulting in FC passthrough
+returning the SRB_STATUS_DATA_OVERRUN value. Now that
+SRB_STATUS_DATA_OVERRUN is treated as an error, multipath ALUA paths go
+into a faulty state as multipath ALUA submits RTPG commands via
+MAINTENANCE_IN.
+
+[    3.215560] hv_storvsc 1d69d403-9692-4460-89f9-a8cbcc0f94f3:
+tag#230 cmd 0xa3 status: scsi 0x0 srb 0x12 hv 0xc0000001
+[    3.215572] scsi 1:0:0:32: alua: rtpg failed, result 458752
+
+Make MAINTENANCE_IN return success to avoid the error path as is
+currently done with INQUIRY and MODE_SENSE.
+
+Suggested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Cathy Avery <cavery@redhat.com>
+Link: https://lore.kernel.org/r/20241127181324.3318443-1-cavery@redhat.com
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/storvsc_drv.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index bd0f00794c30..beb182080abc 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9898,6 +9898,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8d84, "HP EliteBook X G1i", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
+index 7ceb982040a5..d0b55c1fa908 100644
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -149,6 +149,8 @@ struct hv_fc_wwn_packet {
+ */
+ static int vmstor_proto_version;
+ 
++static bool hv_dev_is_fc(struct hv_device *hv_dev);
++
+ #define STORVSC_LOGGING_NONE	0
+ #define STORVSC_LOGGING_ERROR	1
+ #define STORVSC_LOGGING_WARN	2
+@@ -1138,6 +1140,7 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
+ 	 * not correctly handle:
+ 	 * INQUIRY command with page code parameter set to 0x80
+ 	 * MODE_SENSE command with cmd[2] == 0x1c
++	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
+ 	 *
+ 	 * Setup srb and scsi status so this won't be fatal.
+ 	 * We do this so we can distinguish truly fatal failues
+@@ -1145,7 +1148,9 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
+ 	 */
+ 
+ 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
+-	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE)) {
++	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
++	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
++	   hv_dev_is_fc(device))) {
+ 		vstor_packet->vm_srb.scsi_status = 0;
+ 		vstor_packet->vm_srb.srb_status = SRB_STATUS_SUCCESS;
+ 	}
 -- 
 2.39.5
 
