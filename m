@@ -1,56 +1,49 @@
-Return-Path: <stable+bounces-106241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB209FDFD1
-	for <lists+stable@lfdr.de>; Sun, 29 Dec 2024 17:10:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575A09FE1A1
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 02:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD9E21619C2
-	for <lists+stable@lfdr.de>; Sun, 29 Dec 2024 16:10:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11DC51615CE
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 01:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32B318628F;
-	Sun, 29 Dec 2024 16:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M2GIvg3h"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688871096F;
+	Mon, 30 Dec 2024 01:39:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4A827713
-	for <stable@vger.kernel.org>; Sun, 29 Dec 2024 16:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2CB173
+	for <stable@vger.kernel.org>; Mon, 30 Dec 2024 01:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735488601; cv=none; b=LQQtErn/a33A8PibUqAuxiP6/a6RGnKs5C+eAnttpsAhBBbnWc0OaEMXNXNtwTdICX9RD8ya1FycnFkVXnG43U6eihR06AG8E/miAd8mZl6zoktPMv75f4gD1aLglypjdAehr5BLkIZjhIvu08ayGEyleejHLsOVdkU524SVSGo=
+	t=1735522773; cv=none; b=SMz3fla60FcpmNO9K5i+vtXSIySOZcbOuSSHrS1zTnDjimbDP+ymKQgqDE3YdrSNsEA3Vx5e2t7BWMUkQMyTECt9V8ItPmjwmZLbXIn3pc8a8mD5c1i9kKrEorcaiiw0aeWUwfOPQ6VhPPpV3jxIyvo/f1YeqPJacyAH7ER9PEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735488601; c=relaxed/simple;
-	bh=6kEiZ5V9dnZGJirut7wSVOBzpOwrzgncL2BJcHqe/2E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NwVzGbQCI7HyVuilRQ0J9AQEW+/iUxmCGTf2jGZbT/EVJIf2bj7o2eFJdoYH3PMw2MqaEX1nYAjD4akEgCYwsfW/Kt463GmQ4YXU06CttfN8WzaA8LMpxRt+RLK5wVUJDj6b6dVfjdY1hPX1t8Z8c5UWuEVE+C/XaUPbXer9e8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M2GIvg3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC9CC4CED1;
-	Sun, 29 Dec 2024 16:10:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735488600;
-	bh=6kEiZ5V9dnZGJirut7wSVOBzpOwrzgncL2BJcHqe/2E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M2GIvg3hWvcESSYVuYnJnO+UvWfrNCKALuqx6lI1DFWqVZ/PKQhedoGKp7RXl/i7i
-	 T8CaVnDlHl9Eg9Vht4EZKptmtEzpmZrt3OIuJmceQNZ+cx0+nH6lsoDsEEDyID1nye
-	 NenWEN3gx0oYTdcXbZxYVrupwS0WFLwMdOzgIl2cLzFBZovTTOHz77uqWGm61WM15n
-	 KL7Hv5lyCyfdmdUESo0MokQziJ9q2aXK5eY54aIKWVI4Y9YpYNPRDWFPO13jwUbpYY
-	 B6Em3a/axlbjHkyL0Smg5grAUKiX3gDEQKOAkWji/LvJ1fnNYJAoOfBXW1qdWWDlRy
-	 MKqmvktriiCgw==
-From: Sasha Levin <sashal@kernel.org>
+	s=arc-20240116; t=1735522773; c=relaxed/simple;
+	bh=pHyEivHkIlR3zbuDEIyOwLRm+HEA8dZF8judVNTdubg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AYt6Dahf3ui0IL8hX75ykCdgtI1TYEKADFUS3FiKiJ2Yrba1J2+qL4pdpYQaEucz6TBRN7S10Gr9JT+7De9k36oTgvLjKdNXKozqag2n8NsYkIqxlh7/OU/TLYZai+jfvNVpCf8rGX5CbnBIdUUZtOWVLBwbhj5m2VxUKJcgKiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.63])
+	by gateway (Coremail) with SMTP id _____8Bx++HL+XFnh6BbAA--.48644S3;
+	Mon, 30 Dec 2024 09:39:23 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.63])
+	by front1 (Coremail) with SMTP id qMiowMAxQMbJ+XFnAkcNAA--.1525S2;
+	Mon, 30 Dec 2024 09:39:21 +0800 (CST)
+From: Binbin Zhou <zhoubinbin@loongson.cn>
 To: stable@vger.kernel.org
-Cc: Srish Srinivasan <srishwap4@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v5.10] bpf: fix recursive lock when verdict program return SK_PASS
-Date: Sun, 29 Dec 2024 11:09:58 -0500
-Message-Id: <20241229105403-9a5e93ba8876b6bd@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20241228191415.41473-1-srishwap4@gmail.com>
-References: 
+Cc: Binbin Zhou <zhoubinbin@loongson.cn>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12.y] dmaengine: loongson2-apb: Change GENMASK to GENMASK_ULL
+Date: Mon, 30 Dec 2024 09:39:19 +0800
+Message-ID: <20241230013919.1086511-1-zhoubinbin@loongson.cn>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <2024122721-badge-research-e542@gregkh>
+References: <2024122721-badge-research-e542@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,63 +51,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMAxQMbJ+XFnAkcNAA--.1525S2
+X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Aw4xWrW8Xw4kuF4fuF1xZwc_yoW8AF1fpF
+	y7W34I9ryUt3W7J3s8ta45XFy3JasrJrWUWanFv3y5urWfZw1qv34rXF43XF1jvry8AFW0
+	vF97J347AFZ7ZacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
+	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64
+	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07URa0PUUUUU=
 
-[ Sasha's backport helper bot ]
+Fix the following smatch static checker warning:
 
-Hi,
+drivers/dma/loongson2-apb-dma.c:189 ls2x_dma_write_cmd()
+warn: was expecting a 64 bit value instead of '~(((0)) + (((~((0))) - (((1)) << (0)) + 1) & (~((0)) >> ((8 * 4) - 1 - (4)))))'
 
-The upstream commit SHA1 provided is correct: 8ca2a1eeadf09862190b2810697702d803ceef2d
+The GENMASK macro used "unsigned long", which caused build issues when
+using a 32-bit toolchain because it would try to access bits > 31. This
+patch switches GENMASK to GENMASK_ULL, which uses "unsigned long long".
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Srish Srinivasan<srishwap4@gmail.com>
-Commit author: Jiayuan Chen<mrpre@163.com>
-
-
-Status in newer kernel trees:
-6.12.y | Present (different SHA1: f84c5ef6ca23)
-6.6.y | Present (different SHA1: da2bc8a0c8f3)
-6.1.y | Present (different SHA1: 386efa339e08)
-5.15.y | Present (different SHA1: 6694f7acd625)
-5.10.y | Not found
-
-Note: The patch differs from the upstream commit:
+Fixes: 71e7d3cb6e55 ("dmaengine: ls2x-apb: New driver for the Loongson LS2X APB DMA controller")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/87cdc025-7246-4548-85ca-3d36fdc2be2d@stanley.mountain/
+Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Link: https://lore.kernel.org/r/20241028093413.1145820-1-zhoubinbin@loongson.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+(cherry picked from commit 4b65d5322e1d8994acfdb9b867aa00bdb30d177b)
 ---
-1:  8ca2a1eeadf0 ! 1:  3487de836032 bpf: fix recursive lock when verdict program return SK_PASS
-    @@ Metadata
-      ## Commit message ##
-         bpf: fix recursive lock when verdict program return SK_PASS
-     
-    +    commit 8ca2a1eeadf09862190b2810697702d803ceef2d upstream.
-    +
-         When the stream_verdict program returns SK_PASS, it places the received skb
-         into its own receive queue, but a recursive lock eventually occurs, leading
-         to an operating system deadlock. This issue has been present since v6.9.
-    @@ Commit message
-         Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-         Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
-    +    [srish: Apply to stable branch linux-5.10.y]
-    +    Signed-off-by: Srish Srinivasan <srishwap4@gmail.com>
-     
-      ## net/core/skmsg.c ##
-     @@ net/core/skmsg.c: static void sk_psock_strp_data_ready(struct sock *sk)
-      		if (tls_sw_has_ctx_rx(sk)) {
-    - 			psock->saved_data_ready(sk);
-    + 			psock->parser.saved_data_ready(sk);
-      		} else {
-     -			write_lock_bh(&sk->sk_callback_lock);
-     +			read_lock_bh(&sk->sk_callback_lock);
-    - 			strp_data_ready(&psock->strp);
-    + 			strp_data_ready(&psock->parser.strp);
-     -			write_unlock_bh(&sk->sk_callback_lock);
-     +			read_unlock_bh(&sk->sk_callback_lock);
-      		}
----
+ drivers/dma/ls2x-apb-dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Results of testing on various branches:
+diff --git a/drivers/dma/ls2x-apb-dma.c b/drivers/dma/ls2x-apb-dma.c
+index 9652e8666722..b4f18be62945 100644
+--- a/drivers/dma/ls2x-apb-dma.c
++++ b/drivers/dma/ls2x-apb-dma.c
+@@ -31,7 +31,7 @@
+ #define LDMA_ASK_VALID		BIT(2)
+ #define LDMA_START		BIT(3) /* DMA start operation */
+ #define LDMA_STOP		BIT(4) /* DMA stop operation */
+-#define LDMA_CONFIG_MASK	GENMASK(4, 0) /* DMA controller config bits mask */
++#define LDMA_CONFIG_MASK	GENMASK_ULL(4, 0) /* DMA controller config bits mask */
+ 
+ /* Bitfields in ndesc_addr field of HW descriptor */
+ #define LDMA_DESC_EN		BIT(0) /*1: The next descriptor is valid */
+-- 
+2.43.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
 
