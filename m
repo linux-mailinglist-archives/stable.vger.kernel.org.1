@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-106482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125B99FE881
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2359FE883
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02E2F188305B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45993161A9B
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9C2156678;
-	Mon, 30 Dec 2024 15:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10F21531C4;
+	Mon, 30 Dec 2024 15:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3g3DZtt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yu5oiUqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF2C15E8B;
-	Mon, 30 Dec 2024 15:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D33A15E8B;
+	Mon, 30 Dec 2024 15:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574134; cv=none; b=BH5qbL1aZZVCo1aVvbxEJMCvqCCUfeADOdreMln5tKyGI4qzwnIkJJpL0nA6fxofRev8cLzAHeyv+xkyiH0C/WSIcClQAFfW8gdvShsDdmo/BFFfEPlVG30NIYoVGeUWIuom+yCkzFELiUyZdEDcfaj9xUbupFuQa7WY/QJGT7s=
+	t=1735574140; cv=none; b=tFxiLfx4D2wuXx4u8bvEW66CL+wosFo8aKF4hqWrifKdz9qMuR3A6lR5YER93OfstlBi+jAIEw9TUgmZ30R8SfPalVerXzfdRsMCGKGhqrj1+HA10HtHajZ8H4J4fjhe0gOsiSI/BVaoaOLKNSIC3y5OXUurF2cJsMU+wMsMpaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574134; c=relaxed/simple;
-	bh=xPZDu3712V53XkOvYlktHwjZV3QFWLzXdLqE7aXSzck=;
+	s=arc-20240116; t=1735574140; c=relaxed/simple;
+	bh=dPEnKCYgD+7k4Ad3krGUce+tVHhKtbYuGD/E3h0JKcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyMPdzASRrHkiOZgBUiAOBNa+vSiRhj7sFXILlnihDf2lmTk/88OlDxtsVjs2/i/3Ije6acFemTX3wYZUACrShqEVKmFC8Gz14gUp3/drcQsNjFKp+XsRrFynY77B9FlyCQ/QDD9+7OwkS53fQU7bA905gZGQ1BtAH1gJrH9DWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3g3DZtt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45466C4CED0;
-	Mon, 30 Dec 2024 15:55:33 +0000 (UTC)
+	 MIME-Version; b=ikOkISNXInfG/D3+oKZpsGqiZiXGFHiJUHaeT5fUG/tHxAJDs7xLAEPXTiUCW7bxmkCXq7+uHgaYfmZHbVmmPt0uSQ30c2pqnmkFB9hMAjVehzaxeLRY1KQkaoZm2duuJlnfiEv/OB1Mans6aJOyBIHhI4TcvnBM3QHuxaEuYn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yu5oiUqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6ADC4CED0;
+	Mon, 30 Dec 2024 15:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574133;
-	bh=xPZDu3712V53XkOvYlktHwjZV3QFWLzXdLqE7aXSzck=;
+	s=korg; t=1735574140;
+	bh=dPEnKCYgD+7k4Ad3krGUce+tVHhKtbYuGD/E3h0JKcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3g3DZtt4+BbCA8Qrn7HE8PrNE0B8M/2Q5mhSKz4NqUApkjgb8atuKwuvGNQZa++d
-	 SxXH1eR7Pv0gqk0gKMTUp7cUxNvJOFPx5U7lO5iEceHPE0scSuKJE20jb7eDzvL5hB
-	 bNqbqhvIidj9IcrBwgq//+s7ryPkiSgcan2s1AZk=
+	b=yu5oiUqnwQ9l/G4aItkNG3YanLV9BL56A4c2iKamf//YVLt5eR2q5gLU4xpoUwFMd
+	 z4Xuvh6MvGirTig9WPfXOjsbA+frDE2/TjzhnDnMnSMGG8tFVcmMQ64xh1wVufMPet
+	 jFSjNKg0Bco1167u8bVAR8oVGJ+GoaRXzr/VgC58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Hilliard <james.hilliard1@gmail.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/114] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
-Date: Mon, 30 Dec 2024 16:42:43 +0100
-Message-ID: <20241230154219.831373933@linuxfoundation.org>
+Subject: [PATCH 6.12 047/114] watchdog: rzg2l_wdt: Power on the watchdog domain in the restart handler
+Date: Mon, 30 Dec 2024 16:42:44 +0100
+Message-ID: <20241230154219.868489831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
 References: <20241230154218.044787220@linuxfoundation.org>
@@ -67,119 +69,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: James Hilliard <james.hilliard1@gmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
+[ Upstream commit bad201b2ac4e238c6d4b6966a220240e3861640c ]
 
-For the watchdog timer to work properly on the QCML04 board we need to
-set PWRGD enable in the Environment Controller Configuration Registers
-Special Configuration Register 1 when it is not already set, this may
-be the case when the watchdog is not enabled from within the BIOS.
+On RZ/G3S the watchdog can be part of a software-controlled PM domain. In
+this case, the watchdog device need to be powered on in
+struct watchdog_ops::restart API. This can be done though
+pm_runtime_resume_and_get() API if the watchdog PM domain and watchdog
+device are marked as IRQ safe. We mark the watchdog PM domain as IRQ safe
+with GENPD_FLAG_IRQ_SAFE when the watchdog PM domain is registered and the
+watchdog device though pm_runtime_irq_safe().
 
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
+Before commit e4cf89596c1f ("watchdog: rzg2l_wdt: Fix 'BUG: Invalid wait
+context'") pm_runtime_get_sync() was used in watchdog restart handler
+(which is similar to pm_runtime_resume_and_get() except the later one
+handles the runtime resume errors).
+
+Commit e4cf89596c1f ("watchdog: rzg2l_wdt: Fix 'BUG: Invalid wait
+context'") dropped the pm_runtime_get_sync() and replaced it with
+clk_prepare_enable() to avoid invalid wait context due to genpd_lock()
+in genpd_runtime_resume() being called from atomic context. But
+clk_prepare_enable() doesn't fit for this either (as reported by
+Ulf Hansson) as clk_prepare() can also sleep (it just not throw invalid
+wait context warning as it is not written for this).
+
+Because the watchdog device is marked now as IRQ safe (though this patch)
+the irq_safe_dev_in_sleep_domain() call from genpd_runtime_resume() returns
+1 for devices not registering an IRQ safe PM domain for watchdog (as the
+watchdog device is IRQ safe, PM domain is not and watchdog PM domain is
+always-on), this being the case for RZ/G3S with old device trees and
+the rest of the SoCs that use this driver, we can now drop also the
+clk_prepare_enable() calls in restart handler and rely on
+pm_runtime_resume_and_get().
+
+Thus, drop clk_prepare_enable() and use pm_runtime_resume_and_get() in
+watchdog restart handler.
+
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241015164732.4085249-5-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/watchdog/rzg2l_wdt.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
-index 3e8c15138edd..1a5a0a2c3f2e 100644
---- a/drivers/watchdog/it87_wdt.c
-+++ b/drivers/watchdog/it87_wdt.c
-@@ -20,6 +20,8 @@
+diff --git a/drivers/watchdog/rzg2l_wdt.c b/drivers/watchdog/rzg2l_wdt.c
+index 2a35f890a288..11bbe48160ec 100644
+--- a/drivers/watchdog/rzg2l_wdt.c
++++ b/drivers/watchdog/rzg2l_wdt.c
+@@ -12,6 +12,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/units.h>
+@@ -166,8 +167,22 @@ static int rzg2l_wdt_restart(struct watchdog_device *wdev,
+ 	struct rzg2l_wdt_priv *priv = watchdog_get_drvdata(wdev);
+ 	int ret;
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-	clk_prepare_enable(priv->pclk);
+-	clk_prepare_enable(priv->osc_clk);
++	/*
++	 * In case of RZ/G3S the watchdog device may be part of an IRQ safe power
++	 * domain that is currently powered off. In this case we need to power
++	 * it on before accessing registers. Along with this the clocks will be
++	 * enabled. We don't undo the pm_runtime_resume_and_get() as the device
++	 * need to be on for the reboot to happen.
++	 *
++	 * For the rest of SoCs not registering a watchdog IRQ safe power
++	 * domain it is safe to call pm_runtime_resume_and_get() as the
++	 * irq_safe_dev_in_sleep_domain() call in genpd_runtime_resume()
++	 * returns non zero value and the genpd_lock() is avoided, thus, there
++	 * will be no invalid wait context reported by lockdep.
++	 */
++	ret = pm_runtime_resume_and_get(wdev->parent);
++	if (ret)
++		return ret;
  
-+#include <linux/bits.h>
-+#include <linux/dmi.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-@@ -40,6 +42,7 @@
- #define VAL		0x2f
+ 	if (priv->devtype == WDT_RZG2L) {
+ 		ret = reset_control_deassert(priv->rstc);
+@@ -275,6 +290,7 @@ static int rzg2l_wdt_probe(struct platform_device *pdev)
  
- /* Logical device Numbers LDN */
-+#define EC		0x04
- #define GPIO		0x07
+ 	priv->devtype = (uintptr_t)of_device_get_match_data(dev);
  
- /* Configuration Registers and Functions */
-@@ -73,6 +76,12 @@
- #define IT8784_ID	0x8784
- #define IT8786_ID	0x8786
++	pm_runtime_irq_safe(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
-+/* Environment Controller Configuration Registers LDN=0x04 */
-+#define SCR1		0xfa
-+
-+/* Environment Controller Bits SCR1 */
-+#define WDT_PWRGD	0x20
-+
- /* GPIO Configuration Registers LDN=0x07 */
- #define WDTCTRL		0x71
- #define WDTCFG		0x72
-@@ -240,6 +249,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
- 	return ret;
- }
- 
-+enum {
-+	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
-+};
-+
-+static const struct dmi_system_id it87_quirks[] = {
-+	{
-+		/* Qotom Q30900P (IT8786) */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
-+		},
-+		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
-+	},
-+	{}
-+};
-+
- static const struct watchdog_info ident = {
- 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
- 	.firmware_version = 1,
-@@ -261,8 +285,10 @@ static struct watchdog_device wdt_dev = {
- 
- static int __init it87_wdt_init(void)
- {
-+	const struct dmi_system_id *dmi_id;
- 	u8  chip_rev;
- 	u8 ctrl;
-+	int quirks = 0;
- 	int rc;
- 
- 	rc = superio_enter();
-@@ -273,6 +299,10 @@ static int __init it87_wdt_init(void)
- 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
- 	superio_exit();
- 
-+	dmi_id = dmi_first_match(it87_quirks);
-+	if (dmi_id)
-+		quirks = (long)dmi_id->driver_data;
-+
- 	switch (chip_type) {
- 	case IT8702_ID:
- 		max_units = 255;
-@@ -333,6 +363,15 @@ static int __init it87_wdt_init(void)
- 		superio_outb(0x00, WDTCTRL);
- 	}
- 
-+	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
-+		superio_select(EC);
-+		ctrl = superio_inb(SCR1);
-+		if (!(ctrl & WDT_PWRGD)) {
-+			ctrl |= WDT_PWRGD;
-+			superio_outb(ctrl, SCR1);
-+		}
-+	}
-+
- 	superio_exit();
- 
- 	if (timeout < 1 || timeout > max_units * 60) {
+ 	priv->wdev.info = &rzg2l_wdt_ident;
 -- 
 2.39.5
 
