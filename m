@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-106364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BE29FE806
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA939FE86D
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EAA11881CDD
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E19017A1743
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E552442AA6;
-	Mon, 30 Dec 2024 15:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845CF1ACEB3;
+	Mon, 30 Dec 2024 15:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gy44GVxU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yq8LXwXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A129015E8B;
-	Mon, 30 Dec 2024 15:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413E215748F;
+	Mon, 30 Dec 2024 15:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573719; cv=none; b=L+tSzD9dKu7hx4HddzIo0skd7art55VaGcufY+2O2ka2j5KSgd9w0XFM4QWRkPv5FlqNRbJrMIfW+vurU9Ll9xYDgo3xYTPn3yszVj2cBiHWXehejT33QCXjts1wyPeyrpPtq41F5n27tnBq5uJFJCt7XVdHByszl6BGHmW8DC8=
+	t=1735574060; cv=none; b=Xcz1kjCCB4+WAiztbJCG0kNp/PoSmz5nzgJUZ53AEsXr+jcLz7+UIN1ZUP6hYNtIQaiGwEz9jP3T1uxqM4I+yp+EUFaafrTjtVWBn6TvmyT+MOu48tjTLcU7tgjR2o1ht5ZZgfeGQrZ9cgh6amWnxPJl0U/+OzR2lo+QV3mubxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573719; c=relaxed/simple;
-	bh=E8WotHogovt/9riWKy5y8CfBgnVWZPMwfSPuZM6t9jo=;
+	s=arc-20240116; t=1735574060; c=relaxed/simple;
+	bh=mI2C/YjOh09MTm5Q0LBxfSFFeccVeUGJXiM2IEnSix8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxJIUkKjHyENjjLDEeOa9CC0TAAhhHqDBgQQMenoaghOG2GBolxiV6f8nanr6z0/hwrgTxiZ+roM1I25Jx1oYQD6LxC+N77hzElthwl+z43sJop34xhoPuix4qUkBsWubh7Ftge4v3qzItfvzpbXggl0/x1Sykpc+ZGU5iwwXpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gy44GVxU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE27C4CED0;
-	Mon, 30 Dec 2024 15:48:38 +0000 (UTC)
+	 MIME-Version; b=mmf9xE78h3EUZQmiZz23DeGNwQafNsYiA0rE4eESoflXM94aTzT3KSfgcU5k2z2ZI9E609Ob8ZjIR+aLTbGlYT7BGRBUefbf3drOrhJXxbBrQQY84LqDlmQ8ufz3E8a+6Mk2ye6+Hhs/yEnPJphuuADVzdSONBUW5h5E48JuLmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yq8LXwXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A092FC4CED0;
+	Mon, 30 Dec 2024 15:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573719;
-	bh=E8WotHogovt/9riWKy5y8CfBgnVWZPMwfSPuZM6t9jo=;
+	s=korg; t=1735574060;
+	bh=mI2C/YjOh09MTm5Q0LBxfSFFeccVeUGJXiM2IEnSix8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gy44GVxU8X/KgdLomyLMuRVU5x9smM/jUImxV2WSiQiBm9ryEBf2L/fGsh6MUGsYr
-	 0kzVX68kkTXvr16B2whTlJIWl/WmDtoRGfsARw7VWd2jc8JVRphGcfs8HGnMEglWsW
-	 JZYQ3g7PNy+wmJswP5xif5v+GBH/Leyqi60uOErA=
+	b=Yq8LXwXCRac79J6KM0E/rYIfhqJp8RDaBI5XPchtarhkj11NBgcG8YhJ1qhrPpuTE
+	 xKEOilk/1EqM6u3hWne9MpJfLxaWT1TGVKVzWWdQP0AmI6K/dgqcAALcTiJwPK8BN0
+	 Ni6eLL1t89exsbteEw+xfZDB1Is7tfInzer/3UFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 16/86] phy: core: Fix an OF node refcount leakage in of_phy_provider_lookup()
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 027/114] ALSA: memalloc: prefer dma_mapping_error() over explicit address checking
 Date: Mon, 30 Dec 2024 16:42:24 +0100
-Message-ID: <20241230154212.338218235@linuxfoundation.org>
+Message-ID: <20241230154219.112628379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit a2d633cb1421e679b56f1a9fe1f42f089706f1ed upstream.
+commit fa0308134d26dbbeb209a1581eea46df663866b6 upstream.
 
-For macro for_each_child_of_node(parent, child), refcount of @child has
-been increased before entering its loop body, so normally needs to call
-of_node_put(@child) before returning from the loop body to avoid refcount
-leakage.
+With CONFIG_DMA_API_DEBUG enabled, the following warning is observed:
 
-of_phy_provider_lookup() has such usage but does not call of_node_put()
-before returning, so cause leakage of the OF node refcount.
+DMA-API: snd_hda_intel 0000:03:00.1: device driver failed to check map error[device address=0x00000000ffff0000] [size=20480 bytes] [mapped as single]
+WARNING: CPU: 28 PID: 2255 at kernel/dma/debug.c:1036 check_unmap+0x1408/0x2430
+CPU: 28 UID: 42 PID: 2255 Comm: wireplumber Tainted: G  W L  6.12.0-10-133577cad6bf48e5a7848c4338124081393bfe8a+ #759
+debug_dma_unmap_page+0xe9/0xf0
+snd_dma_wc_free+0x85/0x130 [snd_pcm]
+snd_pcm_lib_free_pages+0x1e3/0x440 [snd_pcm]
+snd_pcm_common_ioctl+0x1c9a/0x2960 [snd_pcm]
+snd_pcm_ioctl+0x6a/0xc0 [snd_pcm]
+...
 
-Fix by simply calling of_node_put() before returning from the loop body.
+Check for returned DMA addresses using specialized dma_mapping_error()
+helper which is generally recommended for this purpose by
+Documentation/core-api/dma-api.rst.
 
-The APIs affected by this issue are shown below since they indirectly
-invoke problematic of_phy_provider_lookup().
-phy_get()
-of_phy_get()
-devm_phy_get()
-devm_of_phy_get()
-devm_of_phy_get_by_index()
-
-Fixes: 2a4c37016ca9 ("phy: core: Fix of_phy_provider_lookup to return PHY provider for sub node")
-Cc: stable@vger.kernel.org
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-5-40ae28f5015a@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: c880a5146642 ("ALSA: memalloc: Use proper DMA mapping API for x86 WC buffer allocations")
+Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Closes: https://lore.kernel.org/r/CABXGCsNB3RsMGvCucOy3byTEOxoc-Ys+zB_HQ=Opb_GhX1ioDA@mail.gmail.com/
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20241219203345.195898-1-pchelkin@ispras.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/phy-core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/core/memalloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -140,8 +140,10 @@ static struct phy_provider *of_phy_provi
- 			return phy_provider;
- 
- 		for_each_child_of_node(phy_provider->children, child)
--			if (child == node)
-+			if (child == node) {
-+				of_node_put(child);
- 				return phy_provider;
-+			}
+diff --git a/sound/core/memalloc.c b/sound/core/memalloc.c
+index 13b71069ae18..b3853583d2ae 100644
+--- a/sound/core/memalloc.c
++++ b/sound/core/memalloc.c
+@@ -505,7 +505,7 @@ static void *snd_dma_wc_alloc(struct snd_dma_buffer *dmab, size_t size)
+ 	if (!p)
+ 		return NULL;
+ 	dmab->addr = dma_map_single(dmab->dev.dev, p, size, DMA_BIDIRECTIONAL);
+-	if (dmab->addr == DMA_MAPPING_ERROR) {
++	if (dma_mapping_error(dmab->dev.dev, dmab->addr)) {
+ 		do_free_pages(dmab->area, size, true);
+ 		return NULL;
  	}
- 
- 	return ERR_PTR(-EPROBE_DEFER);
+-- 
+2.47.1
+
 
 
 
