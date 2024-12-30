@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-106343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C1449FE7F2
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D04F9FE879
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC5047A039C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 402367A0F7F
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE57537E9;
-	Mon, 30 Dec 2024 15:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7165115E8B;
+	Mon, 30 Dec 2024 15:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do5DNkiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZRoSqTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FB115E8B;
-	Mon, 30 Dec 2024 15:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265CA42AA6;
+	Mon, 30 Dec 2024 15:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573651; cv=none; b=C8K8Xh4JbW9TPJDaeyGWCv7i04Qb/q4EqEs7JYcP+3AWegQw1apcGAE8BuRjHjQ3icF8DFC6zEDZ65ohk5fgyfAQi/nGDLRR4Zwn65LbaxuwHkn7W0EPJDP1fy4EgrLCw+V4jHvfazbeRTuTGi5F7efKOKzGatvht3Z+/kNygHE=
+	t=1735574107; cv=none; b=MSGu4yJ7UmBKP8qcrvuDImxEzmmd2XqmGVgtClr0jCDfVvuxuE4I7MYH/vPmZmP46Yh13aBqZHizCVOndglWG05BSKwV6MZxkJJCAYwIktKDDcRdtXTehTXnRViAMKo+gic2YhmnVg1DYfLeb4rFDPSmuw/uOOP5WSFi+CjZMWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573651; c=relaxed/simple;
-	bh=7Fys+seYAcxXSF3+IyLnxlsYsrM4tH3YZFna1XNz4lQ=;
+	s=arc-20240116; t=1735574107; c=relaxed/simple;
+	bh=2gknVYVkl7yoxO2DFug7mhmSpzcuHvC8kG8ggdPfXbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nl52ntxjmgq4BPVSKxj2Dx27is/O7O+1kDFnC9MC16bGhqyxV2sCC14mJDG99N6f9yalt9NP/VWR7c2LmRTQpUAIKjUDjtGj73i2L5L7aDkALXK6vwk7wPm3uDt7dBWG0CPqbuxn0kSXtQk1TP14CRZxBiUrSDbjh5zct0XQWmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Do5DNkiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BD8C4CED0;
-	Mon, 30 Dec 2024 15:47:30 +0000 (UTC)
+	 MIME-Version; b=WDMnqU9yVRkyNgAVSJ1JO8P0ouz48lGxzzvKiPHH2vmjQ4dmriysC8sG1iPGdRkWlStHqqvdoQmnK2Zp8miJANj/lC1r0WPurmxJug2iD4e96BVR/oXwuU4LvGruv8ZAJgblwjGmElXYQJInzgovGowkvPORdUbRLAUo0JD1hUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZRoSqTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FD8C4CED0;
+	Mon, 30 Dec 2024 15:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573651;
-	bh=7Fys+seYAcxXSF3+IyLnxlsYsrM4tH3YZFna1XNz4lQ=;
+	s=korg; t=1735574107;
+	bh=2gknVYVkl7yoxO2DFug7mhmSpzcuHvC8kG8ggdPfXbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Do5DNkiTEROL98+LM1ASkkQ19IIpO7I0cIy6ptdiFsDGfswen8mXiMGBXtcYJPzQW
-	 fTo5jSJu7L9LOGjpFEQZYCpzFkYJPzBUOKKlI61vQPeD7oJuPuzUIHhpueSju3Zfvi
-	 Jz7pzqk0EUgDDmYM8pUFkmA5fdIrZvBYOwDCmgrY=
+	b=gZRoSqTA09Jk5Jy5XCcDxaIUtgS3LMdRMaXGQgMsCTKxC3Dbmaur9dlCDtf5tteiS
+	 jLJLE3G/TN1Agc2h+Gxlk+eEzCEaigv0bEoMh4IOYDvZH9BYPM6FenT8YV5ErP2vkG
+	 /2wbydtdseErEZcCdYvXzN2nyvPFYOuRf1j5WuC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Ferris <cferris@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/60] stddef: make __struct_group() UAPI C++-friendly
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 038/114] ASoC: amd: ps: Fix for enabling DMIC on acp63 platform via _DSD entry
 Date: Mon, 30 Dec 2024 16:42:35 +0100
-Message-ID: <20241230154208.240713661@linuxfoundation.org>
+Message-ID: <20241230154219.529617394@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
 
-[ Upstream commit 724c6ce38bbaeb4b3f109b0e066d6c0ecd15446c ]
+commit 88438444fdddd0244c8b2697713adcca3e71599e upstream.
 
-For the most part of the C++ history, it couldn't have type
-declarations inside anonymous unions for different reasons. At the
-same time, __struct_group() relies on the latters, so when the @TAG
-argument is not empty, C++ code doesn't want to build (even under
-`extern "C"`):
+Add condition check to register ACP PDM sound card by reading
+_WOV acpi entry.
 
-../linux/include/uapi/linux/pkt_cls.h:25:24: error:
-'struct tc_u32_sel::<unnamed union>::tc_u32_sel_hdr,' invalid;
-an anonymous union may only have public non-static data members
-[-fpermissive]
+Fixes: 0386d765f27a ("ASoC: amd: ps: refactor acp device configuration read logic")
 
-The safest way to fix this without trying to switch standards (which
-is impossible in UAPI anyway) etc., is to disable tag declaration
-for that language. This won't break anything since for now it's not
-buildable at all.
-Use a separate definition for __struct_group() when __cplusplus is
-defined to mitigate the error, including the version from tools/.
-
-Fixes: 50d7bd38c3aa ("stddef: Introduce struct_group() helper macro")
-Reported-by: Christopher Ferris <cferris@google.com>
-Closes: https://lore.kernel.org/linux-hardening/Z1HZpe3WE5As8UAz@google.com
-Suggested-by: Kees Cook <kees@kernel.org> # __struct_group_tag()
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20241219135734.2130002-1-aleksander.lobakin@intel.com
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Link: https://patch.msgid.link/20241213061147.1060451-1-venkataprasad.potturu@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/stddef.h       | 13 ++++++++++---
- tools/include/uapi/linux/stddef.h | 15 +++++++++++----
- 2 files changed, 21 insertions(+), 7 deletions(-)
+ sound/soc/amd/ps/pci-ps.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
-index dcd50fb2164a..ef892cb1cbb7 100644
---- a/include/uapi/linux/stddef.h
-+++ b/include/uapi/linux/stddef.h
-@@ -8,6 +8,13 @@
- #define __always_inline inline
- #endif
+--- a/sound/soc/amd/ps/pci-ps.c
++++ b/sound/soc/amd/ps/pci-ps.c
+@@ -375,11 +375,18 @@ static int get_acp63_device_config(struc
+ {
+ 	struct acpi_device *pdm_dev;
+ 	const union acpi_object *obj;
++	acpi_handle handle;
++	acpi_integer dmic_status;
+ 	u32 config;
+ 	bool is_dmic_dev = false;
+ 	bool is_sdw_dev = false;
++	bool wov_en, dmic_en;
+ 	int ret;
  
-+/* Not all C++ standards support type declarations inside an anonymous union */
-+#ifndef __cplusplus
-+#define __struct_group_tag(TAG)		TAG
-+#else
-+#define __struct_group_tag(TAG)
-+#endif
++	/* IF WOV entry not found, enable dmic based on acp-audio-device-type entry*/
++	wov_en = true;
++	dmic_en = false;
 +
- /**
-  * __struct_group() - Create a mirrored named and anonyomous struct
-  *
-@@ -20,13 +27,13 @@
-  * and size: one anonymous and one named. The former's members can be used
-  * normally without sub-struct naming, and the latter can be used to
-  * reason about the start, end, and size of the group of struct members.
-- * The named struct can also be explicitly tagged for layer reuse, as well
-- * as both having struct attributes appended.
-+ * The named struct can also be explicitly tagged for layer reuse (C only),
-+ * as well as both having struct attributes appended.
-  */
- #define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
- 	union { \
- 		struct { MEMBERS } ATTRS; \
--		struct TAG { MEMBERS } ATTRS NAME; \
-+		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
- 	} ATTRS
- 
- /**
-diff --git a/tools/include/uapi/linux/stddef.h b/tools/include/uapi/linux/stddef.h
-index bb6ea517efb5..c53cde425406 100644
---- a/tools/include/uapi/linux/stddef.h
-+++ b/tools/include/uapi/linux/stddef.h
-@@ -8,6 +8,13 @@
- #define __always_inline __inline__
- #endif
- 
-+/* Not all C++ standards support type declarations inside an anonymous union */
-+#ifndef __cplusplus
-+#define __struct_group_tag(TAG)		TAG
-+#else
-+#define __struct_group_tag(TAG)
-+#endif
+ 	config = readl(acp_data->acp63_base + ACP_PIN_CONFIG);
+ 	switch (config) {
+ 	case ACP_CONFIG_4:
+@@ -412,10 +419,18 @@ static int get_acp63_device_config(struc
+ 			if (!acpi_dev_get_property(pdm_dev, "acp-audio-device-type",
+ 						   ACPI_TYPE_INTEGER, &obj) &&
+ 						   obj->integer.value == ACP_DMIC_DEV)
+-				is_dmic_dev = true;
++				dmic_en = true;
+ 		}
 +
- /**
-  * __struct_group() - Create a mirrored named and anonyomous struct
-  *
-@@ -20,14 +27,14 @@
-  * and size: one anonymous and one named. The former's members can be used
-  * normally without sub-struct naming, and the latter can be used to
-  * reason about the start, end, and size of the group of struct members.
-- * The named struct can also be explicitly tagged for layer reuse, as well
-- * as both having struct attributes appended.
-+ * The named struct can also be explicitly tagged for layer reuse (C only),
-+ * as well as both having struct attributes appended.
-  */
- #define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
- 	union { \
- 		struct { MEMBERS } ATTRS; \
--		struct TAG { MEMBERS } ATTRS NAME; \
--	}
-+		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
-+	} ATTRS
++		handle = ACPI_HANDLE(&pci->dev);
++		ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
++		if (!ACPI_FAILURE(ret))
++			wov_en = dmic_status;
+ 	}
  
- /**
-  * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
--- 
-2.39.5
-
++	if (dmic_en && wov_en)
++		is_dmic_dev = true;
++
+ 	if (acp_data->is_sdw_config) {
+ 		ret = acp_scan_sdw_devices(&pci->dev, ACP63_SDW_ADDR);
+ 		if (!ret && acp_data->info.link_mask)
 
 
 
