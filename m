@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80F19FE877
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 474659FE817
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5BF3A25D8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08B2316099B
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CACB1531C4;
-	Mon, 30 Dec 2024 15:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6756537E9;
+	Mon, 30 Dec 2024 15:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHd72Jl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJKtKWOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED9815E8B;
-	Mon, 30 Dec 2024 15:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DB815E8B;
+	Mon, 30 Dec 2024 15:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574100; cv=none; b=JdRQG6lav8F5vij95JfjqzzaX4rAeg3e3J1bLu+IAH/kKKaEFadxKQFIJud3BJHMKxMavFWtDFSE7wPr8LrpQLCtDLfdyIB/yp36n9ja+vECWtYwyuGHjU+v3tD7QOn1xPYpAwnSkgcCXhs6ag79/wUg32jhc1+H2w9a5010Q2s=
+	t=1735573785; cv=none; b=rY4nHKR9JUZpv+FgfeJ/eBFFzbfNqBuMhC4Mn6y6L8fk1+e7TImCW/21Tt3HxwSXAMVl3oAHNMFifp3KL5Mvjpnd2IruCxsKhvQFIkyqK+Ser4quUzUXg1N0tB73A+XrIrkBq6z7Ps8A81865Rm15fi1VmK++sZ5WfDyuamWxac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574100; c=relaxed/simple;
-	bh=rB2Nf9vpvsIYpfSvDwJoqrKNc13c9w0zy0lnoPoGTcM=;
+	s=arc-20240116; t=1735573785; c=relaxed/simple;
+	bh=QUETmkJkJh9/gyMWjwNK6k2HdH8ymU4B3Y8OaCP9JCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGtYddCZf0ho68dV5raU21tY8nM8fuvda2077RD1Ob7aZVgJIIGARxZo16hpdJbrvk8Q5HP1sN65piUHWRgZEmfZLzKIeCnEFY76se7dc7+SUBkpRTBpuwZiDNx7moKQxHwD0elSQg1BtTTt6+EfBhRG16dB9Wht6fPpnXpsOXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHd72Jl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2ADC4CED0;
-	Mon, 30 Dec 2024 15:54:59 +0000 (UTC)
+	 MIME-Version; b=bwOe9UUmBAR84xruPiU3CzZOzf2wy2sNVkkJJlA1B0+gAcV/Wa0wVKLdZglXBu1GjyPLAYzOrMRNx9qY2X/50mz8PCdbxMoc+gC//D1kJL6Yc3NBqUKeISeNLIMCY2ME2Bs+nI1lhkfKHwO4R2Pc3/iVfbItl7xaMs3le7cSDT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJKtKWOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169ECC4CED0;
+	Mon, 30 Dec 2024 15:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574099;
-	bh=rB2Nf9vpvsIYpfSvDwJoqrKNc13c9w0zy0lnoPoGTcM=;
+	s=korg; t=1735573785;
+	bh=QUETmkJkJh9/gyMWjwNK6k2HdH8ymU4B3Y8OaCP9JCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHd72Jl5ttlMwL9cU3EG47VpThPhJzAPs8wF/geRX0wm7tpiJ8+FSzAWU/UB0S7k8
-	 ZkDN83kssuPPgDX8ctiFgmm7fYk6vhMUMSGwM+313QqGqo3ISZVGkMoLYcOrRuGzMp
-	 1F4AxeLMM4WCtvGLs2kuYBg1nBkaRvDsZ5tv62Xg=
+	b=UJKtKWOWpoXvvSgPrND2Tv92OliEWwPtgDRStngOpNamu2rY9M3ulrQ9fxUaOaY/O
+	 9J0Y4zhO6swCV1wYpnQvHn/tpSicjbwEGfYjj6QL2MbquDmKQJQ5HJvzzz5bE/x5pq
+	 ATLDOOvy1OhEaF7YCDBck8/uMY93OQnOWh4oKmsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 019/114] phy: core: Fix an OF node refcount leakage in _of_phy_get()
+	Cong Wang <cong.wang@bytedance.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 08/86] bpf: Check negative offsets in __bpf_skb_min_len()
 Date: Mon, 30 Dec 2024 16:42:16 +0100
-Message-ID: <20241230154218.803299003@linuxfoundation.org>
+Message-ID: <20241230154212.032708953@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Cong Wang <cong.wang@bytedance.com>
 
-commit 5ebdc6be16c2000e37fcb8b4072d442d268ad492 upstream.
+[ Upstream commit 9ecc4d858b92c1bb0673ad9c327298e600c55659 ]
 
-_of_phy_get() will directly return when suffers of_device_is_compatible()
-error, but it forgets to decrease refcount of OF node @args.np before error
-return, the refcount was increased by previous of_parse_phandle_with_args()
-so causes the OF node's refcount leakage.
+skb_network_offset() and skb_transport_offset() can be negative when
+they are called after we pull the transport header, for example, when
+we use eBPF sockmap at the point of ->sk_data_ready().
 
-Fix by decreasing the refcount via of_node_put() before the error return.
+__bpf_skb_min_len() uses an unsigned int to get these offsets, this
+leads to a very large number which then causes bpf_skb_change_tail()
+failed unexpectedly.
 
-Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
-Cc: stable@vger.kernel.org
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-4-40ae28f5015a@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by using a signed int to get these offsets and ensure the
+minimum is at least zero.
+
+Fixes: 5293efe62df8 ("bpf: add bpf_skb_change_tail helper")
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241213034057.246437-2-xiyou.wangcong@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/core/filter.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -629,8 +629,10 @@ static struct phy *_of_phy_get(struct de
- 		return ERR_PTR(-ENODEV);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index bc52ab3374f3..34320ce70096 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3731,13 +3731,22 @@ static const struct bpf_func_proto bpf_skb_adjust_room_proto = {
  
- 	/* This phy type handled by the usb-phy subsystem for now */
--	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
--		return ERR_PTR(-ENODEV);
-+	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
-+		phy = ERR_PTR(-ENODEV);
-+		goto out_put_node;
+ static u32 __bpf_skb_min_len(const struct sk_buff *skb)
+ {
+-	u32 min_len = skb_network_offset(skb);
++	int offset = skb_network_offset(skb);
++	u32 min_len = 0;
+ 
+-	if (skb_transport_header_was_set(skb))
+-		min_len = skb_transport_offset(skb);
+-	if (skb->ip_summed == CHECKSUM_PARTIAL)
+-		min_len = skb_checksum_start_offset(skb) +
+-			  skb->csum_offset + sizeof(__sum16);
++	if (offset > 0)
++		min_len = offset;
++	if (skb_transport_header_was_set(skb)) {
++		offset = skb_transport_offset(skb);
++		if (offset > 0)
++			min_len = offset;
 +	}
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		offset = skb_checksum_start_offset(skb) +
++			 skb->csum_offset + sizeof(__sum16);
++		if (offset > 0)
++			min_len = offset;
++	}
+ 	return min_len;
+ }
  
- 	mutex_lock(&phy_provider_mutex);
- 	phy_provider = of_phy_provider_lookup(args.np);
-@@ -652,6 +654,7 @@ out_put_module:
- 
- out_unlock:
- 	mutex_unlock(&phy_provider_mutex);
-+out_put_node:
- 	of_node_put(args.np);
- 
- 	return phy;
+-- 
+2.39.5
+
 
 
 
