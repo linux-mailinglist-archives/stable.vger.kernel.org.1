@@ -1,130 +1,120 @@
-Return-Path: <stable+bounces-106245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F729FE23B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 04:27:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C13A59FE2AC
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 06:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21FE9161D0B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 03:27:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CEC6161CD1
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 05:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979ED13CA81;
-	Mon, 30 Dec 2024 03:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2932A166F3D;
+	Mon, 30 Dec 2024 05:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udGWBdKD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D476E1F957
-	for <stable@vger.kernel.org>; Mon, 30 Dec 2024 03:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF07415746E;
+	Mon, 30 Dec 2024 05:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735529255; cv=none; b=KX3aP2VryOtFtU7ke5WSV6W2Cd4JVpJJzp11kQ70K76fIYci4UK9TVVVpNwCL4HlGHS8q/f0wI0Ivg1FkXf0G/Zdc3oxbCpiWRX3ZOHONk8yWtGp70AiTChdN0HtqCVPABelb7ROM1m9emjOTJ1fnXi+qR+YfAaXn90SCwuV0QM=
+	t=1735537091; cv=none; b=EAlRLY0NYM5dV+aUX/uifhWpUk1UswOXt7GxUAsHsJdV6ylCVs/Vj+t1N/t+x7IMPPDVPoB83qp8WMxBWxf5RF5wte5b24y6WWdrMUVUkkmeFlJHhUBwRpBCMx0LqNO9GeqhueNaKkvn9N7VMA1p8ky8MJ58/OF6DfNkF9vbJfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735529255; c=relaxed/simple;
-	bh=7ghPPqj+lYqFrPIs/mLFzNBTu8aqTRS2fIy9inPKJj4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=ff2mya4vL4pulJo13cMjN8LFKit6mW7VD6eT17VfUi0s8sGfqBnszPw+RRxZ1nv+H9DxOPwwGutcABOlEK0bDuysLy0fKOpdSL0D6Il36ylAdDcsRnH2xtA3AtUqyKCYsj83vKBGslbub6Dy5/cv7ohy5Kksa0pJFTP9QdCQ1BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.63])
-	by gateway (Coremail) with SMTP id _____8CxPuMhE3JnLa1bAA--.48201S3;
-	Mon, 30 Dec 2024 11:27:29 +0800 (CST)
-Received: from zhoubinbin$loongson.cn ( [223.64.68.63] ) by
- ajax-webmail-front1 (Coremail) ; Mon, 30 Dec 2024 11:27:28 +0800
- (GMT+08:00)
-Date: Mon, 30 Dec 2024 11:27:28 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?5ZGo5b2s5b2s?= <zhoubinbin@loongson.cn>
-To: "Sasha Levin" <sashal@kernel.org>
-Cc: stable@vger.kernel.org, "Dan Carpenter" <dan.carpenter@linaro.org>,
-	"Vinod Koul" <vkoul@kernel.org>
-Subject: Re: Re: [PATCH 6.12.y] dmaengine: loongson2-apb: Change GENMASK to
- GENMASK_ULL
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.1-cmXT6 build
- 20240729(6d2960c6) Copyright (c) 2002-2024 www.mailtech.cn loongson
-In-Reply-To: <Z3IRGGQ0iqya5jnA@lappy>
-References: <2024122721-badge-research-e542@gregkh>
- <20241230013919.1086511-1-zhoubinbin@loongson.cn> <Z3IRGGQ0iqya5jnA@lappy>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: nlpx9mZvb3Rlcl90eHQ9MTc0Nzo2MTg=
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1735537091; c=relaxed/simple;
+	bh=Lst7XNAKcOZd0nU9L0bmu0BfVZvL3jfyMPy40z56/Y4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WoYgaqsAQpahTnn07NZGS0eXcBTa8yqXKw02E1U8VoAVFDEyRsmkGGYG9ZuTNLvrt6jMEyvpmWAcHgRoAl4wAzDJnwIRiTc0dnslgO2eh88D6hnPb07MPXvQsirl+0xabNiYjsDSaAyyPYHnnKU/eEyRm72vmdn0G5MVpvcMVN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udGWBdKD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0CFC4CED0;
+	Mon, 30 Dec 2024 05:38:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735537091;
+	bh=Lst7XNAKcOZd0nU9L0bmu0BfVZvL3jfyMPy40z56/Y4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=udGWBdKDMeyCMOUIIWxljdTQtPdTgBMPyXUNeEn0H/bIu2AzEA7Elr3n9QRuwgJ6b
+	 PX4Zw5Jf6w0g8wn5zeoYz88vpykNGwYsKLVOQKDOikYxpIqZM1M7E/QwPCnaPIxs0f
+	 Y+Dbs2BEKLR1N8a4HpiSXFeZXGNE/R6tuEpdp9DAuTx3f3E7XbGusU9a7NeAt8wnL6
+	 9Uv+bHkhTkj7kefehjl3fOu5HhNEhJCQSBhTpDmF088m4jDZT79wKsy+Z9vxaOR86E
+	 LPmzPXkVFhfx0zUsHGn73KbgYLJhgwgwJEgVyjC2WSBJrQbKRgWl7ib0RWICn0pp2J
+	 hOZj39HCxfrJg==
+Date: Sun, 29 Dec 2024 22:38:06 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: John Rowley <lkml@johnrowley.me>
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org, kees@kernel.org, gustavoars@kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: UBSAN array-index-out-of-bounds: cfg80211_scan_6ghz
+Message-ID: <20241230053806.GA129354@ax162>
+References: <1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <3eea8e9e.167b7.194159ab5e0.Coremail.zhoubinbin@loongson.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:qMiowMBxD8YgE3JnNGMNAA--.2561W
-X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/1tbiAQEHCGdx0MMDdAACs-
-X-Coremail-Antispam: 1Uk129KBj93XoW7CrWxJFy3WFy8Ww13Xr4xAFc_yoW8Zr17pr
-	y3Gw1qkr1UtryUC3s5G342vFy5J3sxJrZrWFsxtr1rAF98Z3Wvq34fZrWfWF42kryF9ryj
-	q397Xr1jkayUJacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUQYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1lnx0E6VACY4xI67k04243AVACY4xI67k04243AVAKzVAKj4xI6x02cVCv0x
-	Wle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACY4xI67k04243AVAKzVAK
-	j4xxM4xvF2IEb7IF0Fy26I8I3I1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UMVCEFcxC0VAYjx
-	AxZFUvcSsGvfC2KfnxnUUI43ZEXa7IUUiID5UUUUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain>
 
-CgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiU2FzaGEgTGV2aW4iIDxz
-YXNoYWxAa2VybmVsLm9yZz4KPiDlj5HpgIHml7bpl7Q6MjAyNC0xMi0zMCAxMToxODo0OCAo5pif
-5pyf5LiAKQo+IOaUtuS7tuS6ujogIkJpbmJpbiBaaG91IiA8emhvdWJpbmJpbkBsb29uZ3Nvbi5j
-bj4KPiDmioTpgIE6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcsICJEYW4gQ2FycGVudGVyIiA8ZGFu
-LmNhcnBlbnRlckBsaW5hcm8ub3JnPiwgIlZpbm9kIEtvdWwiIDx2a291bEBrZXJuZWwub3JnPgo+
-IOS4u+mimDogUmU6IFtQQVRDSCA2LjEyLnldIGRtYWVuZ2luZTogbG9vbmdzb24yLWFwYjogQ2hh
-bmdlIEdFTk1BU0sgdG8gR0VOTUFTS19VTEwKPiAKPiBPbiBNb24sIERlYyAzMCwgMjAyNCBhdCAw
-OTozOToxOUFNICswODAwLCBCaW5iaW4gWmhvdSB3cm90ZToKPiA+Rml4IHRoZSBmb2xsb3dpbmcg
-c21hdGNoIHN0YXRpYyBjaGVja2VyIHdhcm5pbmc6Cj4gPgo+ID5kcml2ZXJzL2RtYS9sb29uZ3Nv
-bjItYXBiLWRtYS5jOjE4OSBsczJ4X2RtYV93cml0ZV9jbWQoKQo+ID53YXJuOiB3YXMgZXhwZWN0
-aW5nIGEgNjQgYml0IHZhbHVlIGluc3RlYWQgb2YgJ34oKCgwKSkgKyAoKCh+KCgwKSkpIC0gKCgo
-MSkpIDw8ICgwKSkgKyAxKSAmICh+KCgwKSkgPj4gKCg4ICogNCkgLSAxIC0gKDQpKSkpKScKPiA+
-Cj4gPlRoZSBHRU5NQVNLIG1hY3JvIHVzZWQgInVuc2lnbmVkIGxvbmciLCB3aGljaCBjYXVzZWQg
-YnVpbGQgaXNzdWVzIHdoZW4KPiA+dXNpbmcgYSAzMi1iaXQgdG9vbGNoYWluIGJlY2F1c2UgaXQg
-d291bGQgdHJ5IHRvIGFjY2VzcyBiaXRzID4gMzEuIFRoaXMKPiA+cGF0Y2ggc3dpdGNoZXMgR0VO
-TUFTSyB0byBHRU5NQVNLX1VMTCwgd2hpY2ggdXNlcyAidW5zaWduZWQgbG9uZyBsb25nIi4KPiA+
-Cj4gPkZpeGVzOiA3MWU3ZDNjYjZlNTUgKCJkbWFlbmdpbmU6IGxzMngtYXBiOiBOZXcgZHJpdmVy
-IGZvciB0aGUgTG9vbmdzb24gTFMyWCBBUEIgRE1BIGNvbnRyb2xsZXIiKQo+ID5SZXBvcnRlZC1i
-eTogRGFuIENhcnBlbnRlciA8ZGFuLmNhcnBlbnRlckBsaW5hcm8ub3JnPgo+ID5DbG9zZXM6IGh0
-dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC84N2NkYzAyNS03MjQ2LTQ1NDgtODVjYS0zZDM2ZmRj
-MmJlMmRAc3RhbmxleS5tb3VudGFpbi8KPiA+U2lnbmVkLW9mZi1ieTogQmluYmluIFpob3UgPHpo
-b3ViaW5iaW5AbG9vbmdzb24uY24+Cj4gPkxpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3Iv
-MjAyNDEwMjgwOTM0MTMuMTE0NTgyMC0xLXpob3ViaW5iaW5AbG9vbmdzb24uY24KPiA+U2lnbmVk
-LW9mZi1ieTogVmlub2QgS291bCA8dmtvdWxAa2VybmVsLm9yZz4KPiA+KGNoZXJyeSBwaWNrZWQg
-ZnJvbSBjb21taXQgNGI2NWQ1MzIyZTFkODk5NGFjZmRiOWI4NjdhYTAwYmRiMzBkMTc3YikKPiAK
-PiBJJ2xsIHF1ZXVlIGl0IHVwLCBidXQgcGxlYXNlIHJlYWQKPiBodHRwczovL3d3dy5rZXJuZWwu
-b3JnL2RvYy9odG1sL2xhdGVzdC9wcm9jZXNzL3N0YWJsZS1rZXJuZWwtcnVsZXMuaHRtbCNvcHRp
-b24tMwo+IAoKSGkgU2FzaGE6CgpUaGFua3MgZm9yIHRoZSBoZWFkcyB1cC4KSSBhcG9sb2dpemUg
-Zm9yIG15IGlycmVndWxhcml0eSwgYWx0aG91Z2ggdGhpcyBpcyB0aGUgZmlyc3QgdGltZSBJJ3Zl
-IHN1Ym1pdHRlZCBhIHBhdGNoIHRvIHN0YWJsZSB0cmVlLgpBbmQgSSB3aWxsIHJlYWQgdGhlIGRv
-Y3VtZW50YXRpb24gYWJvdXQgdGhpcyBwYXJ0IGNhcmVmdWxseS4KClRoYW5rcy4KQmluYmluCj4g
-LS0gCj4gVGhhbmtzLAo+IFNhc2hhCg0KDQrmnKzpgq7ku7blj4rlhbbpmYTku7blkKvmnInpvpno
-iq/kuK3np5HnmoTllYbkuJrnp5jlr4bkv6Hmga/vvIzku4XpmZDkuo7lj5HpgIHnu5nkuIrpnaLl
-nLDlnYDkuK3liJflh7rnmoTkuKrkurrmiJbnvqTnu4TjgILnpoHmraLku7vkvZXlhbbku5bkurrk
-u6Xku7vkvZXlvaLlvI/kvb/nlKjvvIjljIXmi6zkvYbkuI3pmZDkuo7lhajpg6jmiJbpg6jliIbl
-nLDms4TpnLLjgIHlpI3liLbmiJbmlaPlj5HvvInmnKzpgq7ku7blj4rlhbbpmYTku7bkuK3nmoTk
-v6Hmga/jgILlpoLmnpzmgqjplJnmlLbmnKzpgq7ku7bvvIzor7fmgqjnq4vljbPnlLXor53miJbp
-gq7ku7bpgJrnn6Xlj5Hku7bkurrlubbliKDpmaTmnKzpgq7ku7bjgIIgDQpUaGlzIGVtYWlsIGFu
-ZCBpdHMgYXR0YWNobWVudHMgY29udGFpbiBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gZnJvbSBM
-b29uZ3NvbiBUZWNobm9sb2d5ICwgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBmb3IgdGhlIHBlcnNv
-biBvciBlbnRpdHkgd2hvc2UgYWRkcmVzcyBpcyBsaXN0ZWQgYWJvdmUuIEFueSB1c2Ugb2YgdGhl
-IGluZm9ybWF0aW9uIGNvbnRhaW5lZCBoZXJlaW4gaW4gYW55IHdheSAoaW5jbHVkaW5nLCBidXQg
-bm90IGxpbWl0ZWQgdG8sIHRvdGFsIG9yIHBhcnRpYWwgZGlzY2xvc3VyZSwgcmVwcm9kdWN0aW9u
-IG9yIGRpc3NlbWluYXRpb24pIGJ5IHBlcnNvbnMgb3RoZXIgdGhhbiB0aGUgaW50ZW5kZWQgcmVj
-aXBpZW50KHMpIGlzIHByb2hpYml0ZWQuIElmIHlvdSByZWNlaXZlIHRoaXMgZW1haWwgaW4gZXJy
-b3IsIHBsZWFzZSBub3RpZnkgdGhlIHNlbmRlciBieSBwaG9uZSBvciBlbWFpbCBpbW1lZGlhdGVs
-eSBhbmQgZGVsZXRlIGl0LiANCg0KDQo=
+Hi John,
 
+On Sat, Dec 28, 2024 at 11:21:27AM +0000, John Rowley wrote:
+> Hi, I'm experiencing UBSAN array-index-out-of-bounds errors while using
+> my Framework 13" AMD laptop with its Mediatek MT7922 wifi adapter
+> (mt7921e).
+> 
+> It seems to happen only once on boot, and occurs with both kernel
+> versions 6.12.7 and 6.13-rc4, both compiled from vanilla upstream kernel 
+> sources on Fedora 41 using the kernel.org LLVM toolchain (19.1.6).
+> 
+> I can try some other kernel series if necessary, and also a bisect if I
+> find a working version, but that may take me a while.
+
+This looks related to UBSAN_BOUNDS and the fact that version of clang
+supports the __counted_by attribute. I do not have much time at the
+moment to look at this but I have added Kees, Gustavo, and
+linux-hardening for further analysis.
+
+Cheers,
+Nathan
+
+> I wasn't sure if I should mark this as a regression, as I'm not sure
+> which/if there is a working kernel version at this point.
+> 
+> Thanks.
+> 
+> ----
+> 
+> [   17.754417] UBSAN: array-index-out-of-bounds in /data/linux/net/wireless/scan.c:766:2
+> [   17.754423] index 0 is out of range for type 'struct ieee80211_channel *[] __counted_by(n_channels)' (aka 'struct ieee80211_channel *[]')
+> [   17.754427] CPU: 13 UID: 0 PID: 620 Comm: kworker/u64:10 Tainted: G                T  6.13.0-rc4 #9
+> [   17.754433] Tainted: [T]=RANDSTRUCT
+> [   17.754435] Hardware name: Framework Laptop 13 (AMD Ryzen 7040Series)/FRANMDCP07, BIOS 03.05 03/29/2024
+> [   17.754438] Workqueue: events_unbound cfg80211_wiphy_work
+> [   17.754446] Call Trace:
+> [   17.754449]  <TASK>
+> [   17.754452]  dump_stack_lvl+0x82/0xc0
+> [   17.754459]  __ubsan_handle_out_of_bounds+0xe7/0x110
+> [   17.754464]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   17.754470]  ? __kmalloc_noprof+0x1a7/0x280
+> [   17.754477]  cfg80211_scan_6ghz+0x3bb/0xfd0
+> [   17.754482]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   17.754486]  ? try_to_wake_up+0x368/0x4c0
+> [   17.754491]  ? try_to_wake_up+0x1a9/0x4c0
+> [   17.754496]  ___cfg80211_scan_done+0xa9/0x1e0
+> [   17.754500]  cfg80211_wiphy_work+0xb7/0xe0
+> [   17.754504]  process_scheduled_works+0x205/0x3a0
+> [   17.754509]  worker_thread+0x24a/0x300
+> [   17.754514]  ? __cfi_worker_thread+0x10/0x10
+> [   17.754519]  kthread+0x158/0x180
+> [   17.754524]  ? __cfi_kthread+0x10/0x10
+> [   17.754528]  ret_from_fork+0x40/0x50
+> [   17.754534]  ? __cfi_kthread+0x10/0x10
+> [   17.754538]  ret_from_fork_asm+0x11/0x30
+> [   17.754544]  </TASK>
+> 
 
