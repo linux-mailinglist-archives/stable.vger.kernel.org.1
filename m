@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-106406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9AE9FE832
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D35B9FE7D3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC01A7A05A9
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38681882B86
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6823537E9;
-	Mon, 30 Dec 2024 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA03515748F;
+	Mon, 30 Dec 2024 15:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmWKRedq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IqoSRtv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21EE15E8B;
-	Mon, 30 Dec 2024 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66D315E8B;
+	Mon, 30 Dec 2024 15:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573868; cv=none; b=sDdcxzTU3mUlBzGVr7V7QXlja+J8EGnlWuDCzrP4S+IvlEhO5ouL15gVDBZSLr/F2YWrwQkNyej7YGObuYZBOSY8Mei6xNSB8eIwJ0uOLgPlM4D47WjKXYXrvlNIbBO/j0OYwQyg7zdFiPLyKkWQs3gFXT9PrAvG6ZZLJ+KWKlA=
+	t=1735573553; cv=none; b=A2FpyP4UbpeTBnbZ3cyvPX5GytLDBU3PFXK1RqIHUUc/0WoCZkFPhG02BwvB89vJ4Xtd5PplCQNMDt6PS8OmXOhYzXvJZULA9sejyJecEJMgLa+cXPzV/sCnJbOSl4BOevHFpn17H8GOEhreIHpJvrlPxzaJAG+sgcSKzWeDB8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573868; c=relaxed/simple;
-	bh=2y4KlTL82wF2dS8eMMjANpd50A2cNU9/QpaiIRz96kM=;
+	s=arc-20240116; t=1735573553; c=relaxed/simple;
+	bh=vZFGpod5xsnNLSNrmiXW9HkloRfCaMkvO72M5BIu3Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgxBF85ZHTYQ1kz90k6NkUm8N8kR2jTgvqpgEjRfRmymuGuY2DKuW+79VH6WkJ8yVZAYm3lGn+gO1ICLqUf6JyN0lixsUItp1sTt/4OUaFhNdjr6gpHovaqx0ndV8Bq058xOoD2xihaYDT17Dn2hc0NGFmsk+1rm+qOqPvMz4GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmWKRedq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20212C4CED0;
-	Mon, 30 Dec 2024 15:51:07 +0000 (UTC)
+	 MIME-Version; b=d18JQlx42zTyBMCRZjeUf6lhqPZNJMTv5rYA5ZGSUQ8FKxpnfPQXbtT5tK8IuLfxcBCgFhDK5u/OF/2Xlt4q3PPQppk1k2keKguxCOLei3e+3hVnHFgUEAeap4y0G28R5ZZB9ZPYH5YF1an6kkGoEwyHFdwwnE5sG6IfrdsIC90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IqoSRtv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D671FC4CED0;
+	Mon, 30 Dec 2024 15:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573868;
-	bh=2y4KlTL82wF2dS8eMMjANpd50A2cNU9/QpaiIRz96kM=;
+	s=korg; t=1735573553;
+	bh=vZFGpod5xsnNLSNrmiXW9HkloRfCaMkvO72M5BIu3Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmWKRedqWc8fuTJEo23juQJVApbeYSgQW+l1JrjJVfqR6JBh9w3pLDylRzOxtDojU
-	 mV6ulLj29P4YNam3HomayplamdBCIQqqcM55cXYmurQX0BOCcz5jfAifpTHOYTL8qo
-	 SP4SJPMp46iIT1WalJVLKimSyeG5ladRUFJdxAp8=
+	b=0IqoSRtv3YCZRWU9Gcm9fa9cKTCZERh9D2xCPI09fDH1MUtWTcLYYmWQ5b+0KHhek
+	 bVoDSqCjdEChN+zSc0pgZwbRur784qGqi5Y4ulRS8PN1WNp+Rbw9bWY53c5g3JwS1R
+	 VAYDZInZ/nsrM8nWh47SfSV871/YeQuWXYfmzFbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Ferris <cferris@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Kees Cook <kees@kernel.org>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 30/86] stddef: make __struct_group() UAPI C++-friendly
+Subject: [PATCH 6.1 28/60] scsi: qla1280: Fix hw revision numbering for ISP1020/1040
 Date: Mon, 30 Dec 2024 16:42:38 +0100
-Message-ID: <20241230154212.867663436@linuxfoundation.org>
+Message-ID: <20241230154208.354400307@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Magnus Lindholm <linmag7@gmail.com>
 
-[ Upstream commit 724c6ce38bbaeb4b3f109b0e066d6c0ecd15446c ]
+[ Upstream commit c064de86d2a3909222d5996c5047f64c7a8f791b ]
 
-For the most part of the C++ history, it couldn't have type
-declarations inside anonymous unions for different reasons. At the
-same time, __struct_group() relies on the latters, so when the @TAG
-argument is not empty, C++ code doesn't want to build (even under
-`extern "C"`):
+Fix the hardware revision numbering for Qlogic ISP1020/1040 boards.  HWMASK
+suggests that the revision number only needs four bits, this is consistent
+with how NetBSD does things in their ISP driver. Verified on a IPS1040B
+which is seen as rev 5 not as BIT_4.
 
-../linux/include/uapi/linux/pkt_cls.h:25:24: error:
-'struct tc_u32_sel::<unnamed union>::tc_u32_sel_hdr,' invalid;
-an anonymous union may only have public non-static data members
-[-fpermissive]
-
-The safest way to fix this without trying to switch standards (which
-is impossible in UAPI anyway) etc., is to disable tag declaration
-for that language. This won't break anything since for now it's not
-buildable at all.
-Use a separate definition for __struct_group() when __cplusplus is
-defined to mitigate the error, including the version from tools/.
-
-Fixes: 50d7bd38c3aa ("stddef: Introduce struct_group() helper macro")
-Reported-by: Christopher Ferris <cferris@google.com>
-Closes: https://lore.kernel.org/linux-hardening/Z1HZpe3WE5As8UAz@google.com
-Suggested-by: Kees Cook <kees@kernel.org> # __struct_group_tag()
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20241219135734.2130002-1-aleksander.lobakin@intel.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Link: https://lore.kernel.org/r/20241113225636.2276-1-linmag7@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/stddef.h       | 13 ++++++++++---
- tools/include/uapi/linux/stddef.h | 15 +++++++++++----
- 2 files changed, 21 insertions(+), 7 deletions(-)
+ drivers/scsi/qla1280.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
-index 2ec6f35cda32..473ad86706d8 100644
---- a/include/uapi/linux/stddef.h
-+++ b/include/uapi/linux/stddef.h
-@@ -8,6 +8,13 @@
- #define __always_inline inline
- #endif
- 
-+/* Not all C++ standards support type declarations inside an anonymous union */
-+#ifndef __cplusplus
-+#define __struct_group_tag(TAG)		TAG
-+#else
-+#define __struct_group_tag(TAG)
-+#endif
-+
- /**
-  * __struct_group() - Create a mirrored named and anonyomous struct
-  *
-@@ -20,13 +27,13 @@
-  * and size: one anonymous and one named. The former's members can be used
-  * normally without sub-struct naming, and the latter can be used to
-  * reason about the start, end, and size of the group of struct members.
-- * The named struct can also be explicitly tagged for layer reuse, as well
-- * as both having struct attributes appended.
-+ * The named struct can also be explicitly tagged for layer reuse (C only),
-+ * as well as both having struct attributes appended.
-  */
- #define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
- 	union { \
- 		struct { MEMBERS } ATTRS; \
--		struct TAG { MEMBERS } ATTRS NAME; \
-+		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
- 	} ATTRS
- 
- #ifdef __cplusplus
-diff --git a/tools/include/uapi/linux/stddef.h b/tools/include/uapi/linux/stddef.h
-index bb6ea517efb5..c53cde425406 100644
---- a/tools/include/uapi/linux/stddef.h
-+++ b/tools/include/uapi/linux/stddef.h
-@@ -8,6 +8,13 @@
- #define __always_inline __inline__
- #endif
- 
-+/* Not all C++ standards support type declarations inside an anonymous union */
-+#ifndef __cplusplus
-+#define __struct_group_tag(TAG)		TAG
-+#else
-+#define __struct_group_tag(TAG)
-+#endif
-+
- /**
-  * __struct_group() - Create a mirrored named and anonyomous struct
-  *
-@@ -20,14 +27,14 @@
-  * and size: one anonymous and one named. The former's members can be used
-  * normally without sub-struct naming, and the latter can be used to
-  * reason about the start, end, and size of the group of struct members.
-- * The named struct can also be explicitly tagged for layer reuse, as well
-- * as both having struct attributes appended.
-+ * The named struct can also be explicitly tagged for layer reuse (C only),
-+ * as well as both having struct attributes appended.
-  */
- #define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
- 	union { \
- 		struct { MEMBERS } ATTRS; \
--		struct TAG { MEMBERS } ATTRS NAME; \
--	}
-+		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
-+	} ATTRS
- 
- /**
-  * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
+diff --git a/drivers/scsi/qla1280.h b/drivers/scsi/qla1280.h
+index d309e2ca14de..dea2290b37d4 100644
+--- a/drivers/scsi/qla1280.h
++++ b/drivers/scsi/qla1280.h
+@@ -116,12 +116,12 @@ struct device_reg {
+ 	uint16_t id_h;		/* ID high */
+ 	uint16_t cfg_0;		/* Configuration 0 */
+ #define ISP_CFG0_HWMSK   0x000f	/* Hardware revision mask */
+-#define ISP_CFG0_1020    BIT_0	/* ISP1020 */
+-#define ISP_CFG0_1020A	 BIT_1	/* ISP1020A */
+-#define ISP_CFG0_1040	 BIT_2	/* ISP1040 */
+-#define ISP_CFG0_1040A	 BIT_3	/* ISP1040A */
+-#define ISP_CFG0_1040B	 BIT_4	/* ISP1040B */
+-#define ISP_CFG0_1040C	 BIT_5	/* ISP1040C */
++#define ISP_CFG0_1020	 1	/* ISP1020 */
++#define ISP_CFG0_1020A	 2	/* ISP1020A */
++#define ISP_CFG0_1040	 3	/* ISP1040 */
++#define ISP_CFG0_1040A	 4	/* ISP1040A */
++#define ISP_CFG0_1040B	 5	/* ISP1040B */
++#define ISP_CFG0_1040C	 6	/* ISP1040C */
+ 	uint16_t cfg_1;		/* Configuration 1 */
+ #define ISP_CFG1_F128    BIT_6  /* 128-byte FIFO threshold */
+ #define ISP_CFG1_F64     BIT_4|BIT_5 /* 128-byte FIFO threshold */
 -- 
 2.39.5
 
