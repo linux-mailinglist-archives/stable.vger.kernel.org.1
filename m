@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0D49FE83D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A509FE8AB
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B65C1882BB3
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B081188319B
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6E2537E9;
-	Mon, 30 Dec 2024 15:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466752AE68;
+	Mon, 30 Dec 2024 15:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMBiWBPN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/3AuRIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6939C2AE68;
-	Mon, 30 Dec 2024 15:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AAB15E8B;
+	Mon, 30 Dec 2024 15:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573908; cv=none; b=fvglqEtzdzxGjgyMAsherFRVD8hcP2ho46xh0mJhPeRXJm1xtQ1d8iEcXZe3qnEialCoDShxCiQxKsgwwHqzcJXhrRb1fcr1aI9pvXx4aj83tZxoTpwPiCmsH9NHuoVp5DXevOChD+GTExwmiwWtzQvIMU2LuPwxbJj0QvhooYs=
+	t=1735574257; cv=none; b=a0U6K5hD81bVkROP7y3l665pw0ohafWTu2iUmtcj26X5/eAvxP+28mWX37s07E5TgHi5yhxboltPSnT0DZNCU9W7jIYhBSYpMu1AdTAeVFnfb8AU+ezhPr69w7L6V8IDVO+KAbtWoo48n7Q6+HFn4ZkG8pPEMPyKxGdjSaZQp5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573908; c=relaxed/simple;
-	bh=EyChwQoQ0uqzuRef3bV4pBCjqzyU31yxeaRWX1dRudA=;
+	s=arc-20240116; t=1735574257; c=relaxed/simple;
+	bh=w1CJyqOlAW48HwMZSrf5m5Ji5d89fNB5/Z0f0AummUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcSCIDlk3E6+ipye52TuvYl4/6ElveM/Z0kXkM1/fmEYtpUjLm8yj14rFVjTKBHNmEXouxmI1JJZ6RPkgEudHmDcqwhcFFWl9nbYwRqzY2bnK9Eg4kzh/Ws1uzv76KZ2z6hOGAQcoFA1n3x9lvEeFSc+thAUYLGDXVQAfBLQtck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMBiWBPN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F4FC4CED0;
-	Mon, 30 Dec 2024 15:51:47 +0000 (UTC)
+	 MIME-Version; b=Id1foYentW38f5hPFImHGwFO8LxWDb7bt09vm4zj7AvdBmuNpFrzXAIuf3hyVCgg00syR5WbC/h6NM/THmxpuhOsEY5hqtuYBauqB0ALg2KhE6T0eS5GYnbQtL53kI2e/0UvdD/1sD35NcO5WKx8+kMGcbX68Ccmp5j9vzzBRdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/3AuRIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6BAC4CED2;
+	Mon, 30 Dec 2024 15:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573908;
-	bh=EyChwQoQ0uqzuRef3bV4pBCjqzyU31yxeaRWX1dRudA=;
+	s=korg; t=1735574256;
+	bh=w1CJyqOlAW48HwMZSrf5m5Ji5d89fNB5/Z0f0AummUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMBiWBPNb7HjnBUbjUEzf8yDieWTpY8on/u26NeWzeaZ8GrcEjviVzrdq+ck4rWO7
-	 /PJUXVG7eijw/ELGsASywcrym4GMhRYpPkeZZNvzvCnMdHVm7msTNRYMbDHuWkjncZ
-	 dxO7YdNZTZ+DEZ+9JGCybCvPJzvIIzKExtXZh1vA=
+	b=v/3AuRIXDbi7s4diwt805gfx3gfnw/pd8cgHXu8KqqZM5SDmaI5IWFTXEI6m0q5V1
+	 6hOE+TxuBeAPp262bZZwEM3nNqu/VUJO4b1NDqrqk4HgO4AdK7+SODuMph2adou13S
+	 RlRZ4xE+1Hd8G4cJ84eWFg8YXsSvlCEn16XG+a7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	chenchangcheng <chenchangcheng@kylinos.cn>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 70/86] drm/amdkfd: Use device based logging for errors
+Subject: [PATCH 6.12 081/114] objtool: Add bch2_trans_unlocked_error() to bcachefs noreturns
 Date: Mon, 30 Dec 2024 16:43:18 +0100
-Message-ID: <20241230154214.376160670@linuxfoundation.org>
+Message-ID: <20241230154221.212843888@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,471 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: chenchangcheng <ccc194101@163.com>
 
-[ Upstream commit 62ec7d38b769ccf33b1080e69c2ae5b7344d116d ]
+[ Upstream commit 31ad36a271290648e7c2288a03d7b933d20254d6 ]
 
-Convert some pr_* to some dev_* APIs to identify the device.
+Fix the following objtool warning during build time:
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 438b39ac74e2 ("drm/amdkfd: pause autosuspend when creating pdd")
+    fs/bcachefs/btree_trans_commit.o: warning: objtool: bch2_trans_commit_write_locked.isra.0() falls through to next function do_bch2_trans_commit.isra.0()
+    fs/bcachefs/btree_trans_commit.o: warning: objtool: .text: unexpected end of section
+......
+    fs/bcachefs/btree_update.o: warning: objtool: bch2_trans_update_get_key_cache() falls through to next function flush_new_cached_update()
+    fs/bcachefs/btree_update.o: warning: objtool: flush_new_cached_update() falls through to next function bch2_trans_update_by_path()
+
+bch2_trans_unlocked_error() is an Obviously Correct (tm) panic() wrapper,
+add it to the list of known noreturns.
+
+[ mingo: Improved the changelog ]
+
+Fixes: fd104e2967b7 ("bcachefs: bch2_trans_verify_not_unlocked()")
+Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20241220074847.3418134-1-ccc194101@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c  |  3 +-
- drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c | 21 ++++---
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c  |  8 ++-
- .../gpu/drm/amd/amdkfd/kfd_packet_manager.c   | 63 ++++++++++++-------
- drivers/gpu/drm/amd/amdkfd/kfd_process.c      | 24 ++++---
- 5 files changed, 74 insertions(+), 45 deletions(-)
+ tools/objtool/noreturns.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-index 6604a3f99c5e..b22a036523b7 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-@@ -373,7 +373,8 @@ int kfd_init_apertures(struct kfd_process *process)
- 
- 		pdd = kfd_create_process_device_data(dev, process);
- 		if (!pdd) {
--			pr_err("Failed to create process device data\n");
-+			dev_err(dev->adev->dev,
-+				"Failed to create process device data\n");
- 			return -ENOMEM;
- 		}
- 		/*
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c b/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
-index 68d13c4fac8f..2c529339ff65 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
-@@ -68,7 +68,7 @@ static bool kq_initialize(struct kernel_queue *kq, struct kfd_node *dev,
- 		kq->mqd_mgr = dev->dqm->mqd_mgrs[KFD_MQD_TYPE_HIQ];
- 		break;
- 	default:
--		pr_err("Invalid queue type %d\n", type);
-+		dev_err(dev->adev->dev, "Invalid queue type %d\n", type);
- 		return false;
- 	}
- 
-@@ -78,13 +78,14 @@ static bool kq_initialize(struct kernel_queue *kq, struct kfd_node *dev,
- 	prop.doorbell_ptr = kfd_get_kernel_doorbell(dev->kfd, &prop.doorbell_off);
- 
- 	if (!prop.doorbell_ptr) {
--		pr_err("Failed to initialize doorbell");
-+		dev_err(dev->adev->dev, "Failed to initialize doorbell");
- 		goto err_get_kernel_doorbell;
- 	}
- 
- 	retval = kfd_gtt_sa_allocate(dev, queue_size, &kq->pq);
- 	if (retval != 0) {
--		pr_err("Failed to init pq queues size %d\n", queue_size);
-+		dev_err(dev->adev->dev, "Failed to init pq queues size %d\n",
-+			queue_size);
- 		goto err_pq_allocate_vidmem;
- 	}
- 
-@@ -332,7 +333,7 @@ struct kernel_queue *kernel_queue_init(struct kfd_node *dev,
- 	if (kq_initialize(kq, dev, type, KFD_KERNEL_QUEUE_SIZE))
- 		return kq;
- 
--	pr_err("Failed to init kernel queue\n");
-+	dev_err(dev->adev->dev, "Failed to init kernel queue\n");
- 
- 	kfree(kq);
- 	return NULL;
-@@ -351,26 +352,26 @@ static __attribute__((unused)) void test_kq(struct kfd_node *dev)
- 	uint32_t *buffer, i;
- 	int retval;
- 
--	pr_err("Starting kernel queue test\n");
-+	dev_err(dev->adev->dev, "Starting kernel queue test\n");
- 
- 	kq = kernel_queue_init(dev, KFD_QUEUE_TYPE_HIQ);
- 	if (unlikely(!kq)) {
--		pr_err("  Failed to initialize HIQ\n");
--		pr_err("Kernel queue test failed\n");
-+		dev_err(dev->adev->dev, "  Failed to initialize HIQ\n");
-+		dev_err(dev->adev->dev, "Kernel queue test failed\n");
- 		return;
- 	}
- 
- 	retval = kq_acquire_packet_buffer(kq, 5, &buffer);
- 	if (unlikely(retval != 0)) {
--		pr_err("  Failed to acquire packet buffer\n");
--		pr_err("Kernel queue test failed\n");
-+		dev_err(dev->adev->dev, "  Failed to acquire packet buffer\n");
-+		dev_err(dev->adev->dev, "Kernel queue test failed\n");
- 		return;
- 	}
- 	for (i = 0; i < 5; i++)
- 		buffer[i] = kq->nop_packet;
- 	kq_submit_packet(kq);
- 
--	pr_err("Ending kernel queue test\n");
-+	dev_err(dev->adev->dev, "Ending kernel queue test\n");
- }
- 
- 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
-index b276bffcaaf3..0edae9ded68a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
-@@ -118,12 +118,14 @@ void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
- 	 * attention grabbing.
- 	 */
- 	if (gfx_info->max_shader_engines > KFD_MAX_NUM_SE) {
--		pr_err("Exceeded KFD_MAX_NUM_SE, chip reports %d\n",
--		       gfx_info->max_shader_engines);
-+		dev_err(mm->dev->adev->dev,
-+			"Exceeded KFD_MAX_NUM_SE, chip reports %d\n",
-+			gfx_info->max_shader_engines);
- 		return;
- 	}
- 	if (gfx_info->max_sh_per_se > KFD_MAX_NUM_SH_PER_SE) {
--		pr_err("Exceeded KFD_MAX_NUM_SH, chip reports %d\n",
-+		dev_err(mm->dev->adev->dev,
-+			"Exceeded KFD_MAX_NUM_SH, chip reports %d\n",
- 			gfx_info->max_sh_per_se * gfx_info->max_shader_engines);
- 		return;
- 	}
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager.c
-index 401096c103b2..ecb38a6e8013 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager.c
-@@ -45,7 +45,8 @@ static void pm_calc_rlib_size(struct packet_manager *pm,
- 	unsigned int process_count, queue_count, compute_queue_count, gws_queue_count;
- 	unsigned int map_queue_size;
- 	unsigned int max_proc_per_quantum = 1;
--	struct kfd_node *dev = pm->dqm->dev;
-+	struct kfd_node *node = pm->dqm->dev;
-+	struct device *dev = node->adev->dev;
- 
- 	process_count = pm->dqm->processes_count;
- 	queue_count = pm->dqm->active_queue_count;
-@@ -59,14 +60,14 @@ static void pm_calc_rlib_size(struct packet_manager *pm,
- 	 */
- 	*over_subscription = false;
- 
--	if (dev->max_proc_per_quantum > 1)
--		max_proc_per_quantum = dev->max_proc_per_quantum;
-+	if (node->max_proc_per_quantum > 1)
-+		max_proc_per_quantum = node->max_proc_per_quantum;
- 
- 	if ((process_count > max_proc_per_quantum) ||
- 	    compute_queue_count > get_cp_queues_num(pm->dqm) ||
- 	    gws_queue_count > 1) {
- 		*over_subscription = true;
--		pr_debug("Over subscribed runlist\n");
-+		dev_dbg(dev, "Over subscribed runlist\n");
- 	}
- 
- 	map_queue_size = pm->pmf->map_queues_size;
-@@ -81,7 +82,7 @@ static void pm_calc_rlib_size(struct packet_manager *pm,
- 	if (*over_subscription)
- 		*rlib_size += pm->pmf->runlist_size;
- 
--	pr_debug("runlist ib size %d\n", *rlib_size);
-+	dev_dbg(dev, "runlist ib size %d\n", *rlib_size);
- }
- 
- static int pm_allocate_runlist_ib(struct packet_manager *pm,
-@@ -90,6 +91,8 @@ static int pm_allocate_runlist_ib(struct packet_manager *pm,
- 				unsigned int *rl_buffer_size,
- 				bool *is_over_subscription)
- {
-+	struct kfd_node *node = pm->dqm->dev;
-+	struct device *dev = node->adev->dev;
- 	int retval;
- 
- 	if (WARN_ON(pm->allocated))
-@@ -99,11 +102,10 @@ static int pm_allocate_runlist_ib(struct packet_manager *pm,
- 
- 	mutex_lock(&pm->lock);
- 
--	retval = kfd_gtt_sa_allocate(pm->dqm->dev, *rl_buffer_size,
--					&pm->ib_buffer_obj);
-+	retval = kfd_gtt_sa_allocate(node, *rl_buffer_size, &pm->ib_buffer_obj);
- 
- 	if (retval) {
--		pr_err("Failed to allocate runlist IB\n");
-+		dev_err(dev, "Failed to allocate runlist IB\n");
- 		goto out;
- 	}
- 
-@@ -125,6 +127,8 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
- {
- 	unsigned int alloc_size_bytes;
- 	unsigned int *rl_buffer, rl_wptr, i;
-+	struct kfd_node *node = pm->dqm->dev;
-+	struct device *dev = node->adev->dev;
- 	int retval, processes_mapped;
- 	struct device_process_node *cur;
- 	struct qcm_process_device *qpd;
-@@ -142,7 +146,7 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
- 	*rl_size_bytes = alloc_size_bytes;
- 	pm->ib_size_bytes = alloc_size_bytes;
- 
--	pr_debug("Building runlist ib process count: %d queues count %d\n",
-+	dev_dbg(dev, "Building runlist ib process count: %d queues count %d\n",
- 		pm->dqm->processes_count, pm->dqm->active_queue_count);
- 
- 	/* build the run list ib packet */
-@@ -150,7 +154,7 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
- 		qpd = cur->qpd;
- 		/* build map process packet */
- 		if (processes_mapped >= pm->dqm->processes_count) {
--			pr_debug("Not enough space left in runlist IB\n");
-+			dev_dbg(dev, "Not enough space left in runlist IB\n");
- 			pm_release_ib(pm);
- 			return -ENOMEM;
- 		}
-@@ -167,7 +171,8 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
- 			if (!kq->queue->properties.is_active)
- 				continue;
- 
--			pr_debug("static_queue, mapping kernel q %d, is debug status %d\n",
-+			dev_dbg(dev,
-+				"static_queue, mapping kernel q %d, is debug status %d\n",
- 				kq->queue->queue, qpd->is_debug);
- 
- 			retval = pm->pmf->map_queues(pm,
-@@ -186,7 +191,8 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
- 			if (!q->properties.is_active)
- 				continue;
- 
--			pr_debug("static_queue, mapping user queue %d, is debug status %d\n",
-+			dev_dbg(dev,
-+				"static_queue, mapping user queue %d, is debug status %d\n",
- 				q->queue, qpd->is_debug);
- 
- 			retval = pm->pmf->map_queues(pm,
-@@ -203,11 +209,13 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
- 		}
- 	}
- 
--	pr_debug("Finished map process and queues to runlist\n");
-+	dev_dbg(dev, "Finished map process and queues to runlist\n");
- 
- 	if (is_over_subscription) {
- 		if (!pm->is_over_subscription)
--			pr_warn("Runlist is getting oversubscribed. Expect reduced ROCm performance.\n");
-+			dev_warn(
-+				dev,
-+				"Runlist is getting oversubscribed. Expect reduced ROCm performance.\n");
- 		retval = pm->pmf->runlist(pm, &rl_buffer[rl_wptr],
- 					*rl_gpu_addr,
- 					alloc_size_bytes / sizeof(uint32_t),
-@@ -272,6 +280,8 @@ void pm_uninit(struct packet_manager *pm, bool hanging)
- int pm_send_set_resources(struct packet_manager *pm,
- 				struct scheduling_resources *res)
- {
-+	struct kfd_node *node = pm->dqm->dev;
-+	struct device *dev = node->adev->dev;
- 	uint32_t *buffer, size;
- 	int retval = 0;
- 
-@@ -281,7 +291,7 @@ int pm_send_set_resources(struct packet_manager *pm,
- 					size / sizeof(uint32_t),
- 					(unsigned int **)&buffer);
- 	if (!buffer) {
--		pr_err("Failed to allocate buffer on kernel queue\n");
-+		dev_err(dev, "Failed to allocate buffer on kernel queue\n");
- 		retval = -ENOMEM;
- 		goto out;
- 	}
-@@ -343,6 +353,8 @@ int pm_send_runlist(struct packet_manager *pm, struct list_head *dqm_queues)
- int pm_send_query_status(struct packet_manager *pm, uint64_t fence_address,
- 			uint64_t fence_value)
- {
-+	struct kfd_node *node = pm->dqm->dev;
-+	struct device *dev = node->adev->dev;
- 	uint32_t *buffer, size;
- 	int retval = 0;
- 
-@@ -354,7 +366,7 @@ int pm_send_query_status(struct packet_manager *pm, uint64_t fence_address,
- 	kq_acquire_packet_buffer(pm->priv_queue,
- 			size / sizeof(uint32_t), (unsigned int **)&buffer);
- 	if (!buffer) {
--		pr_err("Failed to allocate buffer on kernel queue\n");
-+		dev_err(dev, "Failed to allocate buffer on kernel queue\n");
- 		retval = -ENOMEM;
- 		goto out;
- 	}
-@@ -372,6 +384,8 @@ int pm_send_query_status(struct packet_manager *pm, uint64_t fence_address,
- 
- int pm_update_grace_period(struct packet_manager *pm, uint32_t grace_period)
- {
-+	struct kfd_node *node = pm->dqm->dev;
-+	struct device *dev = node->adev->dev;
- 	int retval = 0;
- 	uint32_t *buffer, size;
- 
-@@ -385,7 +399,8 @@ int pm_update_grace_period(struct packet_manager *pm, uint32_t grace_period)
- 			(unsigned int **)&buffer);
- 
- 		if (!buffer) {
--			pr_err("Failed to allocate buffer on kernel queue\n");
-+			dev_err(dev,
-+				"Failed to allocate buffer on kernel queue\n");
- 			retval = -ENOMEM;
- 			goto out;
- 		}
-@@ -406,6 +421,8 @@ int pm_send_unmap_queue(struct packet_manager *pm,
- 			enum kfd_unmap_queues_filter filter,
- 			uint32_t filter_param, bool reset)
- {
-+	struct kfd_node *node = pm->dqm->dev;
-+	struct device *dev = node->adev->dev;
- 	uint32_t *buffer, size;
- 	int retval = 0;
- 
-@@ -414,7 +431,7 @@ int pm_send_unmap_queue(struct packet_manager *pm,
- 	kq_acquire_packet_buffer(pm->priv_queue,
- 			size / sizeof(uint32_t), (unsigned int **)&buffer);
- 	if (!buffer) {
--		pr_err("Failed to allocate buffer on kernel queue\n");
-+		dev_err(dev, "Failed to allocate buffer on kernel queue\n");
- 		retval = -ENOMEM;
- 		goto out;
- 	}
-@@ -463,6 +480,8 @@ int pm_debugfs_runlist(struct seq_file *m, void *data)
- 
- int pm_debugfs_hang_hws(struct packet_manager *pm)
- {
-+	struct kfd_node *node = pm->dqm->dev;
-+	struct device *dev = node->adev->dev;
- 	uint32_t *buffer, size;
- 	int r = 0;
- 
-@@ -474,16 +493,16 @@ int pm_debugfs_hang_hws(struct packet_manager *pm)
- 	kq_acquire_packet_buffer(pm->priv_queue,
- 			size / sizeof(uint32_t), (unsigned int **)&buffer);
- 	if (!buffer) {
--		pr_err("Failed to allocate buffer on kernel queue\n");
-+		dev_err(dev, "Failed to allocate buffer on kernel queue\n");
- 		r = -ENOMEM;
- 		goto out;
- 	}
- 	memset(buffer, 0x55, size);
- 	kq_submit_packet(pm->priv_queue);
- 
--	pr_info("Submitting %x %x %x %x %x %x %x to HIQ to hang the HWS.",
--		buffer[0], buffer[1], buffer[2], buffer[3],
--		buffer[4], buffer[5], buffer[6]);
-+	dev_info(dev, "Submitting %x %x %x %x %x %x %x to HIQ to hang the HWS.",
-+		 buffer[0], buffer[1], buffer[2], buffer[3], buffer[4],
-+		 buffer[5], buffer[6]);
- out:
- 	mutex_unlock(&pm->lock);
- 	return r;
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index fd640a061c96..577bdb6a9640 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -1308,7 +1308,8 @@ int kfd_process_init_cwsr_apu(struct kfd_process *p, struct file *filep)
- 		if (IS_ERR_VALUE(qpd->tba_addr)) {
- 			int err = qpd->tba_addr;
- 
--			pr_err("Failure to set tba address. error %d.\n", err);
-+			dev_err(dev->adev->dev,
-+				"Failure to set tba address. error %d.\n", err);
- 			qpd->tba_addr = 0;
- 			qpd->cwsr_kaddr = NULL;
- 			return err;
-@@ -1603,7 +1604,8 @@ struct kfd_process_device *kfd_create_process_device_data(struct kfd_node *dev,
- 						&pdd->proc_ctx_cpu_ptr,
- 						false);
- 		if (retval) {
--			pr_err("failed to allocate process context bo\n");
-+			dev_err(dev->adev->dev,
-+				"failed to allocate process context bo\n");
- 			goto err_free_pdd;
- 		}
- 		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
-@@ -1667,7 +1669,7 @@ int kfd_process_device_init_vm(struct kfd_process_device *pdd,
- 						     &p->kgd_process_info,
- 						     &p->ef);
- 	if (ret) {
--		pr_err("Failed to create process VM object\n");
-+		dev_err(dev->adev->dev, "Failed to create process VM object\n");
- 		return ret;
- 	}
- 	pdd->drm_priv = drm_file->private_data;
-@@ -1714,7 +1716,7 @@ struct kfd_process_device *kfd_bind_process_to_device(struct kfd_node *dev,
- 
- 	pdd = kfd_get_process_device_data(dev, p);
- 	if (!pdd) {
--		pr_err("Process device data doesn't exist\n");
-+		dev_err(dev->adev->dev, "Process device data doesn't exist\n");
- 		return ERR_PTR(-ENOMEM);
- 	}
- 
-@@ -1824,6 +1826,7 @@ int kfd_process_evict_queues(struct kfd_process *p, uint32_t trigger)
- 
- 	for (i = 0; i < p->n_pdds; i++) {
- 		struct kfd_process_device *pdd = p->pdds[i];
-+		struct device *dev = pdd->dev->adev->dev;
- 
- 		kfd_smi_event_queue_eviction(pdd->dev, p->lead_thread->pid,
- 					     trigger);
-@@ -1835,7 +1838,7 @@ int kfd_process_evict_queues(struct kfd_process *p, uint32_t trigger)
- 		 * them been add back since they actually not be saved right now.
- 		 */
- 		if (r && r != -EIO) {
--			pr_err("Failed to evict process queues\n");
-+			dev_err(dev, "Failed to evict process queues\n");
- 			goto fail;
- 		}
- 		n_evicted++;
-@@ -1857,7 +1860,8 @@ int kfd_process_evict_queues(struct kfd_process *p, uint32_t trigger)
- 
- 		if (pdd->dev->dqm->ops.restore_process_queues(pdd->dev->dqm,
- 							      &pdd->qpd))
--			pr_err("Failed to restore queues\n");
-+			dev_err(pdd->dev->adev->dev,
-+				"Failed to restore queues\n");
- 
- 		n_evicted--;
- 	}
-@@ -1873,13 +1877,14 @@ int kfd_process_restore_queues(struct kfd_process *p)
- 
- 	for (i = 0; i < p->n_pdds; i++) {
- 		struct kfd_process_device *pdd = p->pdds[i];
-+		struct device *dev = pdd->dev->adev->dev;
- 
- 		kfd_smi_event_queue_restore(pdd->dev, p->lead_thread->pid);
- 
- 		r = pdd->dev->dqm->ops.restore_process_queues(pdd->dev->dqm,
- 							      &pdd->qpd);
- 		if (r) {
--			pr_err("Failed to restore process queues\n");
-+			dev_err(dev, "Failed to restore process queues\n");
- 			if (!ret)
- 				ret = r;
- 		}
-@@ -2039,7 +2044,7 @@ int kfd_reserved_mem_mmap(struct kfd_node *dev, struct kfd_process *process,
- 	struct qcm_process_device *qpd;
- 
- 	if ((vma->vm_end - vma->vm_start) != KFD_CWSR_TBA_TMA_SIZE) {
--		pr_err("Incorrect CWSR mapping size.\n");
-+		dev_err(dev->adev->dev, "Incorrect CWSR mapping size.\n");
- 		return -EINVAL;
- 	}
- 
-@@ -2051,7 +2056,8 @@ int kfd_reserved_mem_mmap(struct kfd_node *dev, struct kfd_process *process,
- 	qpd->cwsr_kaddr = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
- 					get_order(KFD_CWSR_TBA_TMA_SIZE));
- 	if (!qpd->cwsr_kaddr) {
--		pr_err("Error allocating per process CWSR buffer.\n");
-+		dev_err(dev->adev->dev,
-+			"Error allocating per process CWSR buffer.\n");
- 		return -ENOMEM;
- 	}
- 
+diff --git a/tools/objtool/noreturns.h b/tools/objtool/noreturns.h
+index e7da92489167..f98dc0e1c99c 100644
+--- a/tools/objtool/noreturns.h
++++ b/tools/objtool/noreturns.h
+@@ -20,6 +20,7 @@ NORETURN(__x64_sys_exit_group)
+ NORETURN(arch_cpu_idle_dead)
+ NORETURN(bch2_trans_in_restart_error)
+ NORETURN(bch2_trans_restart_error)
++NORETURN(bch2_trans_unlocked_error)
+ NORETURN(cpu_bringup_and_idle)
+ NORETURN(cpu_startup_entry)
+ NORETURN(do_exit)
 -- 
 2.39.5
 
