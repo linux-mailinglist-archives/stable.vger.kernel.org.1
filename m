@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-106450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8FA9FE85E
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3479FE812
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E29AB7A14AA
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:53:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45D631881CD8
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7B0537E9;
-	Mon, 30 Dec 2024 15:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929561531C4;
+	Mon, 30 Dec 2024 15:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwHxCImp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHMYN35x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5A115E8B;
-	Mon, 30 Dec 2024 15:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2392AE68;
+	Mon, 30 Dec 2024 15:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574016; cv=none; b=nXGCp0sU/dz6xKYRMEnk6qDZyRq9eJHXwKgP4rLuv+7MdR6wGitoAZnQtWik/l5rAwElg1pyC0sx7hQU6R9/BnEexgbLaavr5KuoYf6swjbrsagyBQjmBRh3zu0tfiUxPZi47LL2oBjKvEESi0G45Wyak8SxmlCetkivRXL99+g=
+	t=1735573773; cv=none; b=jaOGQ+bqcs/z7iZkYmjI58yOyO+hwO3oFkfpadaha4UeEWf91zkdSk8pHdzIwaSW6DOlctIrujIMqJ7isSwio73tGq4cmboKt1A3ZDSgOB6cZ/Nsh0sBZLfll4Ch6lNLJwgW3zMoxhIWvxOlbsCDZVzvXLz7ERu1NO2++RT4HbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574016; c=relaxed/simple;
-	bh=0xXxb2D48wJgi7aV6G9EGlgnxi6ryiZq0kthFBsJ6Y8=;
+	s=arc-20240116; t=1735573773; c=relaxed/simple;
+	bh=Mte15dJY4X+fg67zn1l2wXWdZJL2gtbvMFUbeWLmvIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3YGEqlY0KmBJcWcCuMiXQ+SXijtkTM3rjQfD5WaoFWdwfKTpJ8H0vega8ZArS+caOn6RaYL3DS90PWI7+OGpKNj9EvRqi2Bs1Wd4MCRXYwZq3h+SPYPoEm5zR9qOF+CYjsForV4ENFfMUsCeFhtFsbFLuy2WnbDt3PKAnHrcKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwHxCImp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D2AC4CED0;
-	Mon, 30 Dec 2024 15:53:35 +0000 (UTC)
+	 MIME-Version; b=aOW8+2jCYfnt19LMmNCXGgVQCgywSpiEd56HwpJeN10jl521KTlZHcz/9UjjMNwIsWR1+VNJ/v6kU7TV5SG1a2UdYl57Kt3uNI+QODbyFicYyhvoZ45X48mW4Ahhy6NSIUXMVtidAkHqbRSNCTi+jaO+CRcxXlRmxHk0Ql8SoaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHMYN35x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4DBC4CED0;
+	Mon, 30 Dec 2024 15:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574015;
-	bh=0xXxb2D48wJgi7aV6G9EGlgnxi6ryiZq0kthFBsJ6Y8=;
+	s=korg; t=1735573773;
+	bh=Mte15dJY4X+fg67zn1l2wXWdZJL2gtbvMFUbeWLmvIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwHxCImpiH/ZToEUx6F3nR/xK1wpqMuKneF7P0Fo3+vGeO3lYlUAyWiA4UCcGO6K4
-	 Nz5CVUEUeKEXPz5c1sAJoxGCls/B/e3O6nFIdZYhgfNgmTxLt/SC+CKA0PoI/Pp3lY
-	 Jib7GqWM+n3Q5NwZHD/lOmgTiOsCT/aA2V7lwqRw=
+	b=OHMYN35x4vsbrkkFzBkhVfrr2CBeiyWNJyNdv1DQj+kuzNriZlxWtaQ8YJyf9NgUy
+	 zQHaD+7GRxZh0vsYeEtoepb0+qJ0EVplWrDeU45vWCDZQuMlvcA9x6AJVYjmoCuVE1
+	 vmhtnCpvn8NeyBJSqrkEs68kk8a2nJcgbRJTwm2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 015/114] mtd: diskonchip: Cast an operand to prevent potential overflow
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 04/86] ceph: allocate sparse_ext map only for sparse reads
 Date: Mon, 30 Dec 2024 16:42:12 +0100
-Message-ID: <20241230154218.646018404@linuxfoundation.org>
+Message-ID: <20241230154211.882716602@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 9b458e8be0d13e81ed03fffa23f8f9b528bbd786 upstream.
+[ Upstream commit 18d44c5d062b97b97bb0162d9742440518958dc1 ]
 
-There may be a potential integer overflow issue in inftl_partscan().
-parts[0].size is defined as "uint64_t"  while mtd->erasesize and
-ip->firstUnit are defined as 32-bit unsigned integer. The result of
-the calculation will be limited to 32 bits without correct casting.
+If mounted with sparseread option, ceph_direct_read_write() ends up
+making an unnecessarily allocation for O_DIRECT writes.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 03bc06c7b0bd ("ceph: add new mount option to enable sparse reads")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/diskonchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/file.c        | 2 +-
+ net/ceph/osd_client.c | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/diskonchip.c
-+++ b/drivers/mtd/nand/raw/diskonchip.c
-@@ -1098,7 +1098,7 @@ static inline int __init inftl_partscan(
- 		    (i == 0) && (ip->firstUnit > 0)) {
- 			parts[0].name = " DiskOnChip IPL / Media Header partition";
- 			parts[0].offset = 0;
--			parts[0].size = mtd->erasesize * ip->firstUnit;
-+			parts[0].size = (uint64_t)mtd->erasesize * ip->firstUnit;
- 			numparts = 1;
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index 5233bbab8a76..a03b11cf7887 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -1455,7 +1455,7 @@ ceph_direct_read_write(struct kiocb *iocb, struct iov_iter *iter,
  		}
  
+ 		op = &req->r_ops[0];
+-		if (sparse) {
++		if (!write && sparse) {
+ 			extent_cnt = __ceph_sparse_read_ext_count(inode, size);
+ 			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
+ 			if (ret) {
+diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
+index 3babcd5e65e1..0b6a8bb0642f 100644
+--- a/net/ceph/osd_client.c
++++ b/net/ceph/osd_client.c
+@@ -1173,6 +1173,8 @@ EXPORT_SYMBOL(ceph_osdc_new_request);
+ 
+ int __ceph_alloc_sparse_ext_map(struct ceph_osd_req_op *op, int cnt)
+ {
++	WARN_ON(op->op != CEPH_OSD_OP_SPARSE_READ);
++
+ 	op->extent.sparse_ext_cnt = cnt;
+ 	op->extent.sparse_ext = kmalloc_array(cnt,
+ 					      sizeof(*op->extent.sparse_ext),
+-- 
+2.39.5
+
 
 
 
