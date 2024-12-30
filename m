@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7509F9FE7C8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80F19FE877
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364B9162102
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5BF3A25D8
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147A91537C8;
-	Mon, 30 Dec 2024 15:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CACB1531C4;
+	Mon, 30 Dec 2024 15:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueMcLDDz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHd72Jl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39C915E8B;
-	Mon, 30 Dec 2024 15:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED9815E8B;
+	Mon, 30 Dec 2024 15:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573524; cv=none; b=epEijgambmdtS2mytdS56RquFK7ZEsPrgTaL9VWULCrStsukTPJbEJA6cZchPDfmt93S0VoZ3FSaNFpsBodToqxNL2+RgEWUMqBlga3Ugfoio71bNMTJuqAz3N1BwUetjPm++EBTJhPchmU2Ar6yH2H0uaBXBjEmJ/V28DUOmBs=
+	t=1735574100; cv=none; b=JdRQG6lav8F5vij95JfjqzzaX4rAeg3e3J1bLu+IAH/kKKaEFadxKQFIJud3BJHMKxMavFWtDFSE7wPr8LrpQLCtDLfdyIB/yp36n9ja+vECWtYwyuGHjU+v3tD7QOn1xPYpAwnSkgcCXhs6ag79/wUg32jhc1+H2w9a5010Q2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573524; c=relaxed/simple;
-	bh=HSNwEjZVqG3Bwpu5Kq92lR3KCMuaODldLf9+UmE1En8=;
+	s=arc-20240116; t=1735574100; c=relaxed/simple;
+	bh=rB2Nf9vpvsIYpfSvDwJoqrKNc13c9w0zy0lnoPoGTcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stnCR3rEfzjxb9LGVAQ9JcrjFtaxEZs4EVX3Sequ2kABPu4QX9XijLrZ4YsXMnfAxfWCTgTwXV1t3x/q2LGU800d9yu661HpopH6Qn5xvyUS18amLD5Y0XkDT3+xnfCHIxs0ugkIL/bx5hxoi4e3JIBDeGyEtKof+2s4nuWF/ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueMcLDDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30116C4CED0;
-	Mon, 30 Dec 2024 15:45:23 +0000 (UTC)
+	 MIME-Version; b=YGtYddCZf0ho68dV5raU21tY8nM8fuvda2077RD1Ob7aZVgJIIGARxZo16hpdJbrvk8Q5HP1sN65piUHWRgZEmfZLzKIeCnEFY76se7dc7+SUBkpRTBpuwZiDNx7moKQxHwD0elSQg1BtTTt6+EfBhRG16dB9Wht6fPpnXpsOXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHd72Jl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2ADC4CED0;
+	Mon, 30 Dec 2024 15:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573524;
-	bh=HSNwEjZVqG3Bwpu5Kq92lR3KCMuaODldLf9+UmE1En8=;
+	s=korg; t=1735574099;
+	bh=rB2Nf9vpvsIYpfSvDwJoqrKNc13c9w0zy0lnoPoGTcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ueMcLDDzOva5kyd9z3dbLQ8nv/t5Fr64Lwb3/rMo5+ZOADgNPyTgYl/pCeZMSt4oS
-	 YYGvv68tpm2Fi9GglsKzCCcUQgRTcnIkeHTXEY/QNJknDgeJBeBJS52VtkRA6cYw6V
-	 We1If97i7U5XtVYaCsWAShR0QkuAr43wryrmOAKw=
+	b=wHd72Jl5ttlMwL9cU3EG47VpThPhJzAPs8wF/geRX0wm7tpiJ8+FSzAWU/UB0S7k8
+	 ZkDN83kssuPPgDX8ctiFgmm7fYk6vhMUMSGwM+313QqGqo3ISZVGkMoLYcOrRuGzMp
+	 1F4AxeLMM4WCtvGLs2kuYBg1nBkaRvDsZ5tv62Xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/60] nfsd: restore callback functionality for NFSv4.0
+	Johan Hovold <johan+linaro@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 019/114] phy: core: Fix an OF node refcount leakage in _of_phy_get()
 Date: Mon, 30 Dec 2024 16:42:16 +0100
-Message-ID: <20241230154207.522689974@linuxfoundation.org>
+Message-ID: <20241230154218.803299003@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 7917f01a286ce01e9c085e24468421f596ee1a0c ]
+commit 5ebdc6be16c2000e37fcb8b4072d442d268ad492 upstream.
 
-A recent patch inadvertently broke callbacks for NFSv4.0.
+_of_phy_get() will directly return when suffers of_device_is_compatible()
+error, but it forgets to decrease refcount of OF node @args.np before error
+return, the refcount was increased by previous of_parse_phandle_with_args()
+so causes the OF node's refcount leakage.
 
-In the 4.0 case we do not expect a session to be found but still need to
-call setup_callback_client() which will not try to dereference it.
+Fix by decreasing the refcount via of_node_put() before the error return.
 
-This patch moves the check for failure to find a session into the 4.1+
-branch of setup_callback_client()
-
-Fixes: 1e02c641c3a4 ("NFSD: Prevent NULL dereference in nfsd4_process_cb_update()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
+Cc: stable@vger.kernel.org
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-4-40ae28f5015a@quicinc.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/phy/phy-core.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index a6dc8c479a4b..d2885dd4822d 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -986,7 +986,7 @@ static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *c
- 		args.authflavor = clp->cl_cred.cr_flavor;
- 		clp->cl_cb_ident = conn->cb_ident;
- 	} else {
--		if (!conn->cb_xprt)
-+		if (!conn->cb_xprt || !ses)
- 			return -EINVAL;
- 		clp->cl_cb_session = ses;
- 		args.bc_xprt = conn->cb_xprt;
-@@ -1379,8 +1379,6 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
- 		ses = c->cn_session;
- 	}
- 	spin_unlock(&clp->cl_lock);
--	if (!c)
--		return;
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -629,8 +629,10 @@ static struct phy *_of_phy_get(struct de
+ 		return ERR_PTR(-ENODEV);
  
- 	err = setup_callback_client(clp, &conn, ses);
- 	if (err) {
--- 
-2.39.5
-
+ 	/* This phy type handled by the usb-phy subsystem for now */
+-	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
+-		return ERR_PTR(-ENODEV);
++	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
++		phy = ERR_PTR(-ENODEV);
++		goto out_put_node;
++	}
+ 
+ 	mutex_lock(&phy_provider_mutex);
+ 	phy_provider = of_phy_provider_lookup(args.np);
+@@ -652,6 +654,7 @@ out_put_module:
+ 
+ out_unlock:
+ 	mutex_unlock(&phy_provider_mutex);
++out_put_node:
+ 	of_node_put(args.np);
+ 
+ 	return phy;
 
 
 
