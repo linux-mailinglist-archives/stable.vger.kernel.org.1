@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F8F9FE81E
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063C29FE8B3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:58:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7098160B98
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4191883244
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3211A9B3D;
-	Mon, 30 Dec 2024 15:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E35E1A2550;
+	Mon, 30 Dec 2024 15:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3eEEibr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwLnoRx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE26F2AE68;
-	Mon, 30 Dec 2024 15:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA3515E8B;
+	Mon, 30 Dec 2024 15:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573805; cv=none; b=MhklIUVilAyvTmQKyhzObzGjo4oh/nqJpwrqNJf1PblIS9jcBhPHrqnijprTwPSM9v+i6rcrYiLI4klumNW7w74olAe6IQP5dyA5Ycovov79G7bIbyebC9KR6GqHvkD5o4BibKyi95qg+MUGiau0qBwT4cGVvxsqWpKVuQwOSgo=
+	t=1735574280; cv=none; b=STAThTpTX5fNc/W4Heg6/fZ/3o1aCrhFOoygM6gI3SQHvPfZcdQ9J/Pa20fhxPPEeaQFej+g5fcA3nuOLXjj2N3Si74tpeVq4Em0eh+g1ka1bd2bWF7rTA2B15pM2yFMPs/Kf6PplbNbVdMAcHMXHHX3VSXydn8GGUtR37EmvOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573805; c=relaxed/simple;
-	bh=OT1HJaZAQPNKwBcxEK0A1tXThEKV68kPi5ijI/w0QSE=;
+	s=arc-20240116; t=1735574280; c=relaxed/simple;
+	bh=rdcBR4818dthyo0KhnDi6ZZRhSaFhHahUz6+7ZW5TOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LsxUQ90ON6xBZUbyvz/+5VHXisD43TRC1MJS1EGzlURGHuq3ANbJjm8SJgVqMXVrSQphuZ6no/L/8FdWet5W1xoX8vdPG7Uibka6fO7Xzxfx6PUAbHLQpQ/XRoO6cHxa1zWg8ScZXCCE8qBTspflgQrNRWJvd/zd0oXofyBcekQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3eEEibr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6E3C4CED0;
-	Mon, 30 Dec 2024 15:50:04 +0000 (UTC)
+	 MIME-Version; b=RaxL9bn/3vkFQvWiRp4jUgn46dsREYHnbb3KAyUu883Dd8bZPzEky274smlo+l9oMsSTJi3PnQOY2zdbvoI+hg4NkZ1pM0wv93yLO/+g7IAH1rNKhjL2MC0URe0t00ljuoLtRoY2ikOaMq7tomRFcsYUD6s7rYhK3ymDxstmOww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwLnoRx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECD1C4CED0;
+	Mon, 30 Dec 2024 15:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573804;
-	bh=OT1HJaZAQPNKwBcxEK0A1tXThEKV68kPi5ijI/w0QSE=;
+	s=korg; t=1735574279;
+	bh=rdcBR4818dthyo0KhnDi6ZZRhSaFhHahUz6+7ZW5TOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3eEEibrI6s3IcVuxwHITvegEVxGZUuIzblOaCMXWmy+Izm7Z/LfjyhVC5iLD4IRX
-	 5uE85JsoZscGh5GyUpbCUcpLccZ6I6rs09LWEJFHrYTwNaVb5m65U7KdNGwKCl42L3
-	 J8nTDzjrgrn3ZOUj9lIHKILl3DgvuhoNEhkXUPAA=
+	b=AwLnoRx0dO2PPQGrp4og//2MVrhFX58ceypw7pDhfxJ0TYJQrEw22q5DY6iYgdvJk
+	 tueqjUfp8UxdXO8c86yIYr81Aw6563gEBJMPZ3dYMlQBm4Ek8+DBgqjVWZcywjNj6P
+	 jahrPu/otzgaIvlEbRPHTUB8iPyKdYm0TBjkfBtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 39/86] smb: server: Fix building with GCC 15
+Subject: [PATCH 6.12 050/114] scsi: qla1280: Fix hw revision numbering for ISP1020/1040
 Date: Mon, 30 Dec 2024 16:42:47 +0100
-Message-ID: <20241230154213.203214595@linuxfoundation.org>
+Message-ID: <20241230154219.984029435@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Magnus Lindholm <linmag7@gmail.com>
 
-[ Upstream commit e18655cf35a5958fbf4ae9ca3ebf28871a3a1801 ]
+[ Upstream commit c064de86d2a3909222d5996c5047f64c7a8f791b ]
 
-GCC 15 introduces -Werror=unterminated-string-initialization by default,
-this results in the following build error
+Fix the hardware revision numbering for Qlogic ISP1020/1040 boards.  HWMASK
+suggests that the revision number only needs four bits, this is consistent
+with how NetBSD does things in their ISP driver. Verified on a IPS1040B
+which is seen as rev 5 not as BIT_4.
 
-fs/smb/server/smb_common.c:21:35: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-ini
-tialization]
-   21 | static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-
-To this we are replacing char basechars[43] with a character pointer
-and then using strlen to get the length.
-
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Link: https://lore.kernel.org/r/20241113225636.2276-1-linmag7@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb_common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla1280.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index 663b014b9d18..23537e1b3468 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -18,8 +18,8 @@
- #include "mgmt/share_config.h"
- 
- /*for shortname implementation */
--static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
--#define MANGLE_BASE (sizeof(basechars) / sizeof(char) - 1)
-+static const char *basechars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
-+#define MANGLE_BASE (strlen(basechars) - 1)
- #define MAGIC_CHAR '~'
- #define PERIOD '.'
- #define mangle(V) ((char)(basechars[(V) % MANGLE_BASE]))
+diff --git a/drivers/scsi/qla1280.h b/drivers/scsi/qla1280.h
+index d309e2ca14de..dea2290b37d4 100644
+--- a/drivers/scsi/qla1280.h
++++ b/drivers/scsi/qla1280.h
+@@ -116,12 +116,12 @@ struct device_reg {
+ 	uint16_t id_h;		/* ID high */
+ 	uint16_t cfg_0;		/* Configuration 0 */
+ #define ISP_CFG0_HWMSK   0x000f	/* Hardware revision mask */
+-#define ISP_CFG0_1020    BIT_0	/* ISP1020 */
+-#define ISP_CFG0_1020A	 BIT_1	/* ISP1020A */
+-#define ISP_CFG0_1040	 BIT_2	/* ISP1040 */
+-#define ISP_CFG0_1040A	 BIT_3	/* ISP1040A */
+-#define ISP_CFG0_1040B	 BIT_4	/* ISP1040B */
+-#define ISP_CFG0_1040C	 BIT_5	/* ISP1040C */
++#define ISP_CFG0_1020	 1	/* ISP1020 */
++#define ISP_CFG0_1020A	 2	/* ISP1020A */
++#define ISP_CFG0_1040	 3	/* ISP1040 */
++#define ISP_CFG0_1040A	 4	/* ISP1040A */
++#define ISP_CFG0_1040B	 5	/* ISP1040B */
++#define ISP_CFG0_1040C	 6	/* ISP1040C */
+ 	uint16_t cfg_1;		/* Configuration 1 */
+ #define ISP_CFG1_F128    BIT_6  /* 128-byte FIFO threshold */
+ #define ISP_CFG1_F64     BIT_4|BIT_5 /* 128-byte FIFO threshold */
 -- 
 2.39.5
 
