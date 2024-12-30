@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2EB9FE88A
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E01D19FE804
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94BD41883110
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7EBF1882F43
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5651531C4;
-	Mon, 30 Dec 2024 15:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9F0537E9;
+	Mon, 30 Dec 2024 15:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6SXk557"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyxjrgiO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACED215E8B;
-	Mon, 30 Dec 2024 15:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ADE15E8B;
+	Mon, 30 Dec 2024 15:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574164; cv=none; b=cNWJVOcoHSWEoHe+HVgrAJ0sHBRuNA3bnV9kQQNjW3XWPVj8056Nu93FCdtfxSEC52a+977j6O5Jx3ZuO/19eB/htu1VK5Lfb6CCu++V8Ib4gz3TlXtb1gnh1pWSkNR09wRwrFyDUnbCRLhwJAG8qrGRjg7ehla4QuH82Ky8WPU=
+	t=1735573713; cv=none; b=pXFPHCTieqe7bp4WlJj9FPvMLG+o3GtfoZnDHs893uFIRpLPiZVc6Zg8Ml725gZ5TFDgdrO29tTPD/dGh2r1RC/sanmxqG1L1+PdhEiof0IfVJ5r+7dKMDCwflRzuqJ6DCixmHljsL0K9480XUpKNdyU98UaVynq7yeW1lXWXsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574164; c=relaxed/simple;
-	bh=RrGOu+t+Kiih6f+Rj0LnP8XU88JiDLs7tmkyUBmsD1c=;
+	s=arc-20240116; t=1735573713; c=relaxed/simple;
+	bh=gxnDXKjLyv9PfdjryxkQ8vtTYxt6M5Ubwb0ExdJrLgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7wDX7cE6uSmi9An4HPlYADNId5ARoJOErLDyDYPQ988yl75hA4DPPgPuk11uY6jJ90t5+ovPaHwaYavUDgfWOPIi2YpzN4v0PS1dmJKsTiEkRAoGi2zRGyxO7CwN4jiKlQE92u0a5fVzKjGzBms5VomHKasvTL8B+UdEJIdLio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6SXk557; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B4AC4CED0;
-	Mon, 30 Dec 2024 15:56:03 +0000 (UTC)
+	 MIME-Version; b=k108no8WXHm4WpeDatyOEOMq9R3ztxN70jju0X7mOAyOQXTpmhM2GxbouSLya7RVg0qpSaDZ/qiJjYvqcvQ/Z/2u3QPlLUzWZBhvYbf0tOKiFkUPq+PDMiHjrSg9XGJucB6oERFr4ZHFarQmy72uJAEsG0NitPjlj20Uw14rqJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyxjrgiO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653E4C4CED0;
+	Mon, 30 Dec 2024 15:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574164;
-	bh=RrGOu+t+Kiih6f+Rj0LnP8XU88JiDLs7tmkyUBmsD1c=;
+	s=korg; t=1735573712;
+	bh=gxnDXKjLyv9PfdjryxkQ8vtTYxt6M5Ubwb0ExdJrLgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6SXk557j8YbTzY6wH5cPoB3tAb+i+G9OwlXaFIAj5z6Y5WQhZKiZt+0M5tnFRB+n
-	 5f0dh7b2hESw33cTjQxN/GLwxAYTs7onS9sD9UbNU11kHq3xjxua8SdKB2FULH4uE2
-	 4xhfaLFRRwm1E3PshGmiUmF18qhzAvQg2n0aD1fM=
+	b=MyxjrgiOAo1JzuZ+b2oYbwTqhankNaiB+M0fJdDVZvYkU4+fLrK086ad/KPmsfz+Q
+	 XbWss/wN/GKkdRo8E80DXlSqcVjzgj7YVOuesCAdVDO2TmemDB8cUTTOvmV++M+dJK
+	 z9dh1kCPWxFFdPW0OxQF9oTqPeiiwm63ejJdYB0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 025/114] phy: rockchip: samsung-hdptx: Set drvdata before enabling runtime PM
+Subject: [PATCH 6.6 14/86] phy: qcom-qmp: Fix register name in RX Lane config of SC8280XP
 Date: Mon, 30 Dec 2024 16:42:22 +0100
-Message-ID: <20241230154219.030500309@linuxfoundation.org>
+Message-ID: <20241230154212.257616264@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit 9d23e48654620fdccfcc74cc2cef04eaf7353d07 upstream.
+commit 8886fb3240931a0afce82dea87edfe46bcb0a586 upstream.
 
-In some cases, rk_hdptx_phy_runtime_resume() may be invoked before
-platform_set_drvdata() is executed in ->probe(), leading to a NULL
-pointer dereference when using the return of dev_get_drvdata().
+In RX Lane configuration sequence of SC8280XP, the register
+V5_RX_UCDR_FO_GAIN is incorrectly spelled as RX_UCDR_SO_GAIN and
+hence the programming sequence is wrong. Fix the register sequence
+accordingly to avoid any compliance failures. This has been tested
+on SA8775P by checking device mode enumeration in SuperSpeed.
 
-Ensure platform_set_drvdata() is called before devm_pm_runtime_enable().
-
-Reported-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20241023-phy-sam-hdptx-rpm-fix-v1-1-87f4c994e346@collabora.com
+Cc: stable@vger.kernel.org
+Fixes: c0c7769cdae2 ("phy: qcom-qmp: Add SC8280XP USB3 UNI phy")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241112092831.4110942-1-quic_kriskura@quicinc.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -1116,6 +1116,8 @@ static int rk_hdptx_phy_probe(struct pla
- 		return dev_err_probe(dev, PTR_ERR(hdptx->grf),
- 				     "Could not get GRF syscon\n");
- 
-+	platform_set_drvdata(pdev, hdptx);
-+
- 	ret = devm_pm_runtime_enable(dev);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to enable runtime PM\n");
-@@ -1125,7 +1127,6 @@ static int rk_hdptx_phy_probe(struct pla
- 		return dev_err_probe(dev, PTR_ERR(hdptx->phy),
- 				     "Failed to create HDMI PHY\n");
- 
--	platform_set_drvdata(pdev, hdptx);
- 	phy_set_drvdata(hdptx->phy, hdptx);
- 	phy_set_bus_width(hdptx->phy, 8);
- 
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+@@ -1088,7 +1088,7 @@ static const struct qmp_phy_init_tbl sc8
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_FO_GAIN, 0x2f),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_COUNT_LOW, 0xff),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_COUNT_HIGH, 0x0f),
+-	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_SO_GAIN, 0x0a),
++	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FO_GAIN, 0x0a),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_VGA_CAL_CNTRL1, 0x54),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_VGA_CAL_CNTRL2, 0x0f),
+ 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_RX_EQU_ADAPTOR_CNTRL2, 0x0f),
 
 
 
