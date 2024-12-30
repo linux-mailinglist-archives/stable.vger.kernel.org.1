@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-106302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387919FE7C1
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACC809FE807
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDD2A1620F9
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DEC8160581
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9BB1ACEA3;
-	Mon, 30 Dec 2024 15:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AD31537C8;
+	Mon, 30 Dec 2024 15:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMFzNQ74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOc+X4+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E441AB505;
-	Mon, 30 Dec 2024 15:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911B82AE68;
+	Mon, 30 Dec 2024 15:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573504; cv=none; b=lbjUQBroDDGyVcjGt+B/c7khwvRY/YCjEe2oiQVGaLndSGjufntOEQuhhHNXNQUS+73IheXcXGrYRMirEbuWXQ+yYbg7JUcsL5C47LfTU1gRsJx2nKPP3LUjM2ZHdMCr3cNJ4/7YwCf8xaY8CGEPXZyZPjI8Vjn9GdhwiP4+9BA=
+	t=1735573723; cv=none; b=ot9iER6NFEtAk6yELALp11T+iHROm39gDiXTaozFvHKESCFSSaG4oRHj1H8BK+tq453VP6vEliMYprSCKwO1cHi6Gv7OjsJPifEXprtPZ+wAdWyNqBX2dlGZ7aNdl/loA1KtJ8THphx6I02KPYy+w38Rpu7S7zFYjoTbRKRLQBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573504; c=relaxed/simple;
-	bh=rghf21gGfjRetS41Tc+X7u2dSjsIoDMCpkPp2IFOivc=;
+	s=arc-20240116; t=1735573723; c=relaxed/simple;
+	bh=ynsGoMSVz+3sdMdU2GCdW64KVCewY5JfqsB0ootUTjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrsoFHdWaCUaWQESoCtuSW94TaaYKmPjQqr/Mpurxy7xT14IqIgNdTrI+YyCf8oSMj1YR6w7cyF0USrONrxFBQs6XUgm8PjgdwpSILrw46yE8SSy6HgAD0wsUThiIfcNn6xIYbYPoxjDA6ZETEN1ZIjN0ITCf450dPTiXwbC/js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMFzNQ74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBB4C4CED0;
-	Mon, 30 Dec 2024 15:45:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gi7WIEUgIQExPMa6j5lJx5WxvdctfMYZ1294s5+DhK1PAyY3UJQCkcGXS5CC0tZDAH1s+OCh5ZRXi+BugC20fBqbiYTrNYYlMn8nTVRZc5+0zj6cQiTTvBLInpNJEmQtIHa8kD3ChG9zCNRiR4hDD7ILtvxJK832V81vAWU7DFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOc+X4+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93237C4CED0;
+	Mon, 30 Dec 2024 15:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573504;
-	bh=rghf21gGfjRetS41Tc+X7u2dSjsIoDMCpkPp2IFOivc=;
+	s=korg; t=1735573723;
+	bh=ynsGoMSVz+3sdMdU2GCdW64KVCewY5JfqsB0ootUTjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMFzNQ74vBJubDHdOlB0oyfa3FuSQ0e8KGh+5nBCpLLfUJl1svbAuUagaAqn9NI0s
-	 WLRbrJk5gqeR5fqyetYwASjHB4Kv4kr1nXz7iZ3LIKSUKGcGVqDce7HTmL22GkfQbP
-	 S0iWw4nLlbtOEjr9vxAInD7vZyeD0+rh6w5vdVg4=
+	b=MOc+X4+ubokol00t2C7WII20TAQ7QexS6fniFR8Wgl930FN52E2E6bdBA41F1D1vE
+	 8xBJrhfiVzwvuvW8l6pV/1YdlA70ICvXzkMi7cDHUVumdx5ZYOHHKLi+EoPi+BTunm
+	 rOnzBaTPdc79nvI2cZ5edIM2/bvx3I1ad+4W/quI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Johan Hovold <johan+linaro@kernel.org>,
 	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 15/60] phy: core: Fix that API devm_phy_destroy() fails to destroy the phy
+Subject: [PATCH 6.6 17/86] phy: core: Fix that API devm_phy_put() fails to release the phy
 Date: Mon, 30 Dec 2024 16:42:25 +0100
-Message-ID: <20241230154207.867080870@linuxfoundation.org>
+Message-ID: <20241230154212.376791402@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,28 +67,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 4dc48c88fcf82b89fdebd83a906aaa64f40fb8a9 upstream.
+commit fe4bfa9b6d7bd752bfe4700c937f235aa8ce997b upstream.
 
-For devm_phy_destroy(), its comment says it needs to invoke phy_destroy()
-to destroy the phy, but it will not actually invoke the function since
-devres_destroy() does not call devm_phy_consume(), and the missing
-phy_destroy() call will cause that the phy fails to be destroyed.
+For devm_phy_put(), its comment says it needs to invoke phy_put() to
+release the phy, but it will not actually invoke the function since
+devres_destroy() does not call devm_phy_release(), and the missing
+phy_put() call will cause:
 
-Fortunately, the faulty API has not been used by current kernel tree.
+- The phy fails to be released.
+- devm_phy_put() can not fully undo what API devm_phy_get() does.
+- Leak refcount of both the module and device for below typical usage:
+
+  devm_phy_get(); // or its variant
+  ...
+  err = do_something();
+  if (err)
+      goto err_out;
+  ...
+  err_out:
+  devm_phy_put(); // leak refcount here
+
+  The file(s) affected by this issue are shown below since they have such
+  typical usage.
+  drivers/pci/controller/cadence/pcie-cadence.c
+  drivers/net/ethernet/ti/am65-cpsw-nuss.c
+
 Fix by using devres_release() instead of devres_destroy() within the API.
 
 Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+Cc: stable@vger.kernel.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Krzysztof Wilczyński <kw@linux.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-3-40ae28f5015a@quicinc.com
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-1-40ae28f5015a@quicinc.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -90,15 +123,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -1061,7 +1061,7 @@ void devm_phy_destroy(struct device *dev
- {
- 	int r;
+@@ -690,7 +690,7 @@ void devm_phy_put(struct device *dev, st
+ 	if (!phy)
+ 		return;
  
--	r = devres_destroy(dev, devm_phy_consume, devm_phy_match, phy);
-+	r = devres_release(dev, devm_phy_consume, devm_phy_match, phy);
+-	r = devres_destroy(dev, devm_phy_release, devm_phy_match, phy);
++	r = devres_release(dev, devm_phy_release, devm_phy_match, phy);
  	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
  }
- EXPORT_SYMBOL_GPL(devm_phy_destroy);
+ EXPORT_SYMBOL_GPL(devm_phy_put);
 
 
 
