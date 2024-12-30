@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-106566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA839FE9B5
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:13:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915CF9FE9B8
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 19:13:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2F91884D31
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 18:13:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 116B5162288
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 18:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE86B1B4237;
-	Mon, 30 Dec 2024 18:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7F91B4F0B;
+	Mon, 30 Dec 2024 18:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEvc1uEi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k03Y5WLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A098D1B422F;
-	Mon, 30 Dec 2024 18:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DF31B0421;
+	Mon, 30 Dec 2024 18:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735582364; cv=none; b=TGXAX1MgO75eSdC3ideegFmrnNdPg9jI5MUz5Qu9XjtrWrLez8roHH+0kae3Hu1y7iphsnb9+zy0Gh+z5wun3C/Oyg9T1jioYvvq+woinyRaVcPiVGidGOmMsz8CCuo3wiVA+z40xxUFhD3biDgv1nMntMAaOl2sx7ySnMPh/Pk=
+	t=1735582367; cv=none; b=Bklh3YdK38p66dbzTGeTWVkiG8OfgE+bODLyChyL+Hxc997ldTqyb5EdsD2ULZmcmm6sXMKWXJAYGPcc/wUSSNNtMJvpU2awKSlRg/dCVi196Ioe+lobnKolSRa5wYPHDQmyjSkYECF50mYHM416syq+V22yCBjhqEj70pXfJHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735582364; c=relaxed/simple;
-	bh=3GqWaHhVC/0zjocNJkbBBeolfjfYPgIi7irOgXC4Li4=;
+	s=arc-20240116; t=1735582367; c=relaxed/simple;
+	bh=VHfAh39yqDxJVBGGxxhbrgbDetNMrhoiejJCoo85rwY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SMU9Qmuuxpki++/o3DR/eLGR5//lXcPQYZKy5ja8TyuKtfChHRydPrWb5AHnFfN/TV3a3WyoWWznDqN6nlVPrfoAUswzJ7CGcqaaGzhsawEzKEQD+kZg0YywN7ENvFxHhW5atPzjGi8upLR+U7nOIZ1FQKYjO6SW3dhwWmEvlkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEvc1uEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D11C4CEDC;
-	Mon, 30 Dec 2024 18:12:41 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=nziX+UN0EE+2O9pdEnla3q0XAKa+tXtTHTcTXXMdr5yWFNLhJKxJScSG/JXIxa8P2PtDj2DVFil9hIguBcPLcTY9FpcbVKm14VmVQbP2LQdDnohnDfZ/TvPYnDssMW1zrNlm0z32uas1Un+SZOyvssYmc+accMD2iBdvaAm+I50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k03Y5WLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A5AC4CED6;
+	Mon, 30 Dec 2024 18:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735582364;
-	bh=3GqWaHhVC/0zjocNJkbBBeolfjfYPgIi7irOgXC4Li4=;
+	s=k20201202; t=1735582367;
+	bh=VHfAh39yqDxJVBGGxxhbrgbDetNMrhoiejJCoo85rwY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gEvc1uEivzsD+8eEvf7J7gwSH/j20LBpmN0C8L86zuHMVV+F8S/fTjb0Oz7/lzqK1
-	 00gwmHIO409e1GL0Q+OXZrwAITaA5lm1IQMx2D1LPft56bSe2U8HOpNe10K+qthy5s
-	 VH/kdkBVH0r2dC6647EbFqb2tZ4qQGI/1uyoaXe7u4i1jjH6tXAWXNJ38VoAHBjA0D
-	 t7nCvTYIj28pZq8NJ8chXKzPHsX04mPPqtcCWNYcrIHLf65CBGYkxutnIp1981cG73
-	 6GJKSzuEKKTTQt7+oAFkunpspaIM6E8ex6D7BYBsrHPbSLkpYJz1ETS5sWdHR5l640
-	 QCHTwTUpDAbEg==
+	b=k03Y5WLHzOJlhoHJPGuaT6+fCBhYoDZWYukwQOl8O2GGrUiXb8KxjqgatNGlVak8y
+	 7htvlSh5YD4CLZyCReR6ogt9mOAECJL+hLcyNBdH7t0tGz4TmbfqZyN67NkJqHvm7/
+	 +VhZ6qBLgO79RElYMVDHeTt8awcpOXbI3WwgQWCCZEsNUJyPkrkXiun+kTT6E/4mtL
+	 oUxz/yHMFQP2/REIW03tr7ymKRZls74I5pWHlhBVcVldMHpa6+IFMBxIDezTPAsuB8
+	 tyVnKRMGV1Hjb8HrqK8S/UWfK0KM+0RYhY96mBBw8IsvAhIR+ILIWnxRIFB/mBUTN5
+	 0NT7oRpMF3BVA==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 30 Dec 2024 19:12:31 +0100
-Subject: [PATCH net 2/3] mptcp: don't always assume copied data in
- mptcp_cleanup_rbuf()
+Date: Mon, 30 Dec 2024 19:12:32 +0100
+Subject: [PATCH net 3/3] mptcp: prevent excessive coalescing on receive
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241230-net-mptcp-rbuf-fixes-v1-2-8608af434ceb@kernel.org>
+Message-Id: <20241230-net-mptcp-rbuf-fixes-v1-3-8608af434ceb@kernel.org>
 References: <20241230-net-mptcp-rbuf-fixes-v1-0-8608af434ceb@kernel.org>
 In-Reply-To: <20241230-net-mptcp-rbuf-fixes-v1-0-8608af434ceb@kernel.org>
 To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
@@ -63,115 +62,52 @@ To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3123; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=Jro3OUYTwf1FzAnykhSaTE51ONTfgmuwBnXuZnwKsFY=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBncuKUQjeWgZgqaqtceD03cYI1BfAUEEP9QFL9e
- TQ6aSSAZmuJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ3LilAAKCRD2t4JPQmmg
- c+fKEACvo+mZTblRqvxv1tCjhYX1y+VYCe//3lYg+reklIPkDguhVzZQY5buVv0F9cwXTtAcIVG
- d5jNbcclXK1FeRho+e7brh89MssyK0yzLhm/fJBFPXlng3vc5MLZgcUzC31OwWjyJ8pgl5NtZ43
- 6ni9gXzfI1cUgMI/8k6uI9o1t70pWtJK9CLGPpoIgH9k4oMUkOBsm4BDH/3B38s89fYvEtCy7uQ
- 4o/kuqjfcH+aDr8PuoeRi627KykGAlf4TeiAYsTxC38FFFRnkD6V33Pd5zlsb0rtUOgD6/0YvHO
- RYA/rvVff6W2OrOG+DaDkmmbVbzSh9o20F+qgjDQkDlWJGrY4seovhcx7cxlpUItlNB9dJOVccy
- 1WJtLe4Lzz+7eLxoKCqEy5rHpsys5tSunzUSb2uRisfVeUeLvsvYFGn9YlmdGUSQPdR1qKLnqMr
- TU//UYk9YkBuV4SQwW+KgiI77RtwtoLzIQ6J0iQhiqZ2bWHpBfyVg+qm28aKL2b93TkfVT+7zlN
- r/et6TPjJiCUjd1SFKXY5QyWr8ergx0aFFnr7NrLpQjwP/5iaC3zL+9OPG9KpUYNXw5PQfHeoEu
- mquZH2n1vV0KB8Hrhd1qjCH/dKtcExtp0/qT+sSiGgcNK/wgMVCjBzTqxZxX2TVDLPDUbqCi0yG
- Bq/qb8svc6MlLeQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1198; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=EJnPNuoRHjWeI+J2OzLS/vwyiccermUluT6moDDxN6A=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBncuKU2GVQROqJldxKAW5PdQo4vSM8vLQZpEO2P
+ zN0xBw68HGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ3LilAAKCRD2t4JPQmmg
+ c3XdEACT3aJXpqF1JGbapOMhg4NHaCy8XgQw+yoGs52hWCc0nZZW6pO7kXBJ4Lk4r4NcoJHTPv6
+ FebLAO04HUVJ6N4rVk7VRQZfoSEoYbmwX0tOCsmUUq8UltSSRIHlJGARBNPs+5rpA0ps8l5e9Kg
+ f15JiytNZf4Xkv+jVus2xPLZ/wPg7KsvaNn4EJva234ZVvW0zrbog47xrR16fzIwjpi9unKDLui
+ aR0Nlz7npyIHCKI027lprGb03Vthb28ESB3pKFtgFVS0n+0i3IQoYi1r6N+ruhf3w5bkBNcz+FI
+ +c9R5D/Ogiiqkhbg7uWp4AXzLHzVLz1w9lJX4POplTXGw2QDrxz+/HFPBRpf0IpM8JulzoL0M8N
+ yIhKWbkyLK1WgAxlXaBzg/2TqT5d/tIPZwYKpVqHU3P1Awbvo16oHAG46eWbPHFOb11JHYo5lXj
+ ymqiv2zBdURIQK+VK6inlddEI6qo4ZiIHSFAxYcapjiUerVkqlD0EKUd4Fgy9mA1uo3TNHEOJMA
+ sKICe6Mq5Gaa8oYHRxjlvG9GoPIBMnUbq2gNynmXRe5L/cuA9rNbAGqTmEoNIsvC0yNF5yAiCAL
+ 74NgGmgSHzbaAYhdxrBqC1vHxRwoBPZAAwsv1ayzKxZHsfPwcrgG4oF7Ur2mZ+M8zSm091A4JD+
+ wYFzd2DBiwiGY6g==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-Under some corner cases the MPTCP protocol can end-up invoking
-mptcp_cleanup_rbuf() when no data has been copied, but such helper
-assumes the opposite condition.
+Currently the skb size after coalescing is only limited by the skb
+layout (the skb must not carry frag_list). A single coalesced skb
+covering several MSS can potentially fill completely the receive
+buffer. In such a case, the snd win will zero until the receive buffer
+will be empty again, affecting tput badly.
 
-Explicitly drop such assumption and performs the costly call only
-when strictly needed - before releasing the msk socket lock.
-
-Fixes: fd8976790a6c ("mptcp: be careful on MPTCP-level ack.")
-Cc: stable@vger.kernel.org
+Fixes: 8268ed4c9d19 ("mptcp: introduce and use mptcp_try_coalesce()")
+Cc: stable@vger.kernel.org # please delay 2 weeks after 6.13-final release
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/protocol.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/mptcp/protocol.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 27afdb7e2071b16dbc4dfa1199b6e78c784f7a7c..5307fff9d995309591ed742801350078db519f79 100644
+index 5307fff9d995309591ed742801350078db519f79..1b2e7cbb577fc26280f31e58adceb36987112f54 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -528,13 +528,13 @@ static void mptcp_send_ack(struct mptcp_sock *msk)
- 		mptcp_subflow_send_ack(mptcp_subflow_tcp_sock(subflow));
- }
+@@ -136,6 +136,7 @@ static bool mptcp_try_coalesce(struct sock *sk, struct sk_buff *to,
+ 	int delta;
  
--static void mptcp_subflow_cleanup_rbuf(struct sock *ssk)
-+static void mptcp_subflow_cleanup_rbuf(struct sock *ssk, int copied)
- {
- 	bool slow;
+ 	if (MPTCP_SKB_CB(from)->offset ||
++	    ((to->len + from->len) > (sk->sk_rcvbuf >> 3)) ||
+ 	    !skb_try_coalesce(to, from, &fragstolen, &delta))
+ 		return false;
  
- 	slow = lock_sock_fast(ssk);
- 	if (tcp_can_send_ack(ssk))
--		tcp_cleanup_rbuf(ssk, 1);
-+		tcp_cleanup_rbuf(ssk, copied);
- 	unlock_sock_fast(ssk, slow);
- }
- 
-@@ -551,7 +551,7 @@ static bool mptcp_subflow_could_cleanup(const struct sock *ssk, bool rx_empty)
- 			      (ICSK_ACK_PUSHED2 | ICSK_ACK_PUSHED)));
- }
- 
--static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
-+static void mptcp_cleanup_rbuf(struct mptcp_sock *msk, int copied)
- {
- 	int old_space = READ_ONCE(msk->old_wspace);
- 	struct mptcp_subflow_context *subflow;
-@@ -559,14 +559,14 @@ static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
- 	int space =  __mptcp_space(sk);
- 	bool cleanup, rx_empty;
- 
--	cleanup = (space > 0) && (space >= (old_space << 1));
--	rx_empty = !__mptcp_rmem(sk);
-+	cleanup = (space > 0) && (space >= (old_space << 1)) && copied;
-+	rx_empty = !__mptcp_rmem(sk) && copied;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		if (cleanup || mptcp_subflow_could_cleanup(ssk, rx_empty))
--			mptcp_subflow_cleanup_rbuf(ssk);
-+			mptcp_subflow_cleanup_rbuf(ssk, copied);
- 	}
- }
- 
-@@ -2220,9 +2220,6 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		copied += bytes_read;
- 
--		/* be sure to advertise window change */
--		mptcp_cleanup_rbuf(msk);
--
- 		if (skb_queue_empty(&msk->receive_queue) && __mptcp_move_skbs(msk))
- 			continue;
- 
-@@ -2271,6 +2268,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		}
- 
- 		pr_debug("block timeout %ld\n", timeo);
-+		mptcp_cleanup_rbuf(msk, copied);
- 		err = sk_wait_data(sk, &timeo, NULL);
- 		if (err < 0) {
- 			err = copied ? : err;
-@@ -2278,6 +2276,8 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		}
- 	}
- 
-+	mptcp_cleanup_rbuf(msk, copied);
-+
- out_err:
- 	if (cmsg_flags && copied >= 0) {
- 		if (cmsg_flags & MPTCP_CMSG_TS)
 
 -- 
 2.47.1
