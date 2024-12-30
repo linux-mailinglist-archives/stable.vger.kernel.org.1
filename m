@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-106322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAC39FE7DA
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4579FE81D
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D89E162340
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC09C1882F02
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D0B1ACEA3;
-	Mon, 30 Dec 2024 15:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063FA15748F;
+	Mon, 30 Dec 2024 15:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAmJ8/AQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWMoH3jT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B87E2594B6;
-	Mon, 30 Dec 2024 15:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46F515E8B;
+	Mon, 30 Dec 2024 15:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573579; cv=none; b=qkOG5iv+UI7Uhl2lQTqsTb4PLEoRgkzIPnvTVuM0NN0/0Ei6Fm22rDSVJ0qqJCJpmTBEeM2iunfor3NbebuuJsBesbEvLbZnmHmj3fKxqu/ojGwSDvOTPHGoGOzOprUuFnv+Jpd2oCDrqajEtlshsKpHvaVaqy9akpsurVoA7f0=
+	t=1735573801; cv=none; b=JJhpiQ0/e/IMG0YlQ7AuFzl8zZ6gX7zaGy+7dLJt06XSapjJvRFj6wZHowP5U3qtmbt9U8qxMx/bcAxu0FVb0EQaGBJRCzzoUzweGFWY6S75QrZu3ZUkO9rX/XDE2WVMUTy76hHK5v7ndtAA9f0QQeMDGEpV3yebTvrMFP5ljWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573579; c=relaxed/simple;
-	bh=JCbCb9ZjiSkhVmSjBwSLKtSezP6mqp06dT9jZDdaIHw=;
+	s=arc-20240116; t=1735573801; c=relaxed/simple;
+	bh=ceGJcNIObDTiqsBLNqVT7SE6e4zcuZEVjKUR501tde0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aB4BZ8Ni0R3brXufrs3xRQQ473FK8w771ilJtZviWKdy+oj5iYxE9NjPxAB9tLScDIosWvfLAp66oXCdFVYSyrvFwf1Q1rx3F9c+QDIvbN/ymwEqOcMuy/WIio2VqnAOiqQl2CTWPHwtiYKUmmhj5xGoKdDzfaycRqwhJ7B2BMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAmJ8/AQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997D2C4CED0;
-	Mon, 30 Dec 2024 15:46:16 +0000 (UTC)
+	 MIME-Version; b=K67YTIYx5Exnv8BF2FXoevQRveih+FBau7pm0mxDNJvcxuKnHY//AImyfQmapfiApe+3j656XyRZe4O7t11RgNsZM1S83VvSB+NbpB68DPFkovbByUVqKcIRmXx6MYbic+gycnLB2tUfd7ksXDtwHwYMBC9/zNMd3VSRKEyKYEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWMoH3jT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1619AC4CED6;
+	Mon, 30 Dec 2024 15:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573577;
-	bh=JCbCb9ZjiSkhVmSjBwSLKtSezP6mqp06dT9jZDdaIHw=;
+	s=korg; t=1735573801;
+	bh=ceGJcNIObDTiqsBLNqVT7SE6e4zcuZEVjKUR501tde0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hAmJ8/AQL8fYr5aFnHqhAHhypVa3kPO6+r6Qw8Lz8wdekw8t/U6jrOhX15iVDH35+
-	 P6hPNZvc6wniXqkn7CcI6OmmxkB84JRT9ByNQkDSnmtwI+R+49f+aGghBtvfaq+2fn
-	 /wG7jGIwddp6v5D/Bs9Ad1d71JZ7fctMKpPU8WD4=
+	b=GWMoH3jT7nXmsqNFSgW6R48y/mHFUaCsxtfJtd1HYdp/nL1Mh0G0pSXo+0/C6rt9L
+	 5fKLL9XvCAbJuRuXYt6k2su2AVuOec4cEO1dvp3Lagopzki8DVQABlb1jf274vf5Hm
+	 ikwnVE2DFcT0jwncE9ixeAiIeE2VW5cUJBQBgDtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Cathy Avery <cavery@redhat.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/60] scsi: storvsc: Do not flag MAINTENANCE_IN return of SRB_STATUS_DATA_OVERRUN as an error
-Date: Mon, 30 Dec 2024 16:42:45 +0100
-Message-ID: <20241230154208.614408570@linuxfoundation.org>
+Subject: [PATCH 6.6 38/86] ALSA: sh: Use standard helper for buffer accesses
+Date: Mon, 30 Dec 2024 16:42:46 +0100
+Message-ID: <20241230154213.165198014@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cathy Avery <cavery@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit b1aee7f034615b6824d2c70ddb37ef9fc23493b7 ]
+[ Upstream commit 9b5f8ee43e48c25fbe1a10163ec04343d750acd0 ]
 
-This partially reverts commit 812fe6420a6e ("scsi: storvsc: Handle
-additional SRB status values").
+The SH DAC audio driver uses the kmalloc'ed buffer as the main PCM
+buffer, and the data is transferred via hrtimer callbacks manually
+from there to the hardware.  Meanwhile, some of its code are written
+as if the buffer is on iomem and use the special helpers for the iomem
+(e.g. copy_from_iter_toio() or memset_io()).  Those are rather useless
+and the standard helpers should be used.
 
-HyperV does not support MAINTENANCE_IN resulting in FC passthrough
-returning the SRB_STATUS_DATA_OVERRUN value. Now that
-SRB_STATUS_DATA_OVERRUN is treated as an error, multipath ALUA paths go
-into a faulty state as multipath ALUA submits RTPG commands via
-MAINTENANCE_IN.
+Similarly, the PCM mmap callback is set to a special one with
+snd_pcm_lib_mmap_iomem, but this is also nonsense, because SH
+architecture doesn't support this function, hence it leads just to
+NULL -- the fallback to the standard helper.
 
-[    3.215560] hv_storvsc 1d69d403-9692-4460-89f9-a8cbcc0f94f3:
-tag#230 cmd 0xa3 status: scsi 0x0 srb 0x12 hv 0xc0000001
-[    3.215572] scsi 1:0:0:32: alua: rtpg failed, result 458752
+This patch replaces those special setups with the standard ones.
 
-Make MAINTENANCE_IN return success to avoid the error path as is
-currently done with INQUIRY and MODE_SENSE.
-
-Suggested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Cathy Avery <cavery@redhat.com>
-Link: https://lore.kernel.org/r/20241127181324.3318443-1-cavery@redhat.com
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411281337.I4M07b7i-lkp@intel.com/
+Link: https://patch.msgid.link/20241128104939.13755-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/sh/sh_dac_audio.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index 4fad9d85bd6f..0685cbe7f0eb 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -149,6 +149,8 @@ struct hv_fc_wwn_packet {
- */
- static int vmstor_proto_version;
+diff --git a/sound/sh/sh_dac_audio.c b/sound/sh/sh_dac_audio.c
+index 95ba3abd4e47..36a973d1c46d 100644
+--- a/sound/sh/sh_dac_audio.c
++++ b/sound/sh/sh_dac_audio.c
+@@ -163,7 +163,7 @@ static int snd_sh_dac_pcm_copy(struct snd_pcm_substream *substream,
+ 	/* channel is not used (interleaved data) */
+ 	struct snd_sh_dac *chip = snd_pcm_substream_chip(substream);
  
-+static bool hv_dev_is_fc(struct hv_device *hv_dev);
-+
- #define STORVSC_LOGGING_NONE	0
- #define STORVSC_LOGGING_ERROR	1
- #define STORVSC_LOGGING_WARN	2
-@@ -1129,6 +1131,7 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
- 	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
- 	 * We do this so we can distinguish truly fatal failues
-@@ -1136,7 +1139,9 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 */
+-	if (copy_from_iter_toio(chip->data_buffer + pos, src, count))
++	if (copy_from_iter(chip->data_buffer + pos, src, count) != count)
+ 		return -EFAULT;
+ 	chip->buffer_end = chip->data_buffer + pos + count;
  
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
--	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE)) {
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
-+	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
- 		vstor_packet->vm_srb.srb_status = SRB_STATUS_SUCCESS;
- 	}
+@@ -182,7 +182,7 @@ static int snd_sh_dac_pcm_silence(struct snd_pcm_substream *substream,
+ 	/* channel is not used (interleaved data) */
+ 	struct snd_sh_dac *chip = snd_pcm_substream_chip(substream);
+ 
+-	memset_io(chip->data_buffer + pos, 0, count);
++	memset(chip->data_buffer + pos, 0, count);
+ 	chip->buffer_end = chip->data_buffer + pos + count;
+ 
+ 	if (chip->empty) {
+@@ -211,7 +211,6 @@ static const struct snd_pcm_ops snd_sh_dac_pcm_ops = {
+ 	.pointer	= snd_sh_dac_pcm_pointer,
+ 	.copy		= snd_sh_dac_pcm_copy,
+ 	.fill_silence	= snd_sh_dac_pcm_silence,
+-	.mmap		= snd_pcm_lib_mmap_iomem,
+ };
+ 
+ static int snd_sh_dac_pcm(struct snd_sh_dac *chip, int device)
 -- 
 2.39.5
 
