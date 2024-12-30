@@ -1,108 +1,135 @@
-Return-Path: <stable+bounces-106285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC649FE6F2
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:17:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 483969FE6FA
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3E611882408
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 14:17:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 934CF3A1615
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 14:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89181A9B3D;
-	Mon, 30 Dec 2024 14:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CCD1ACEB3;
+	Mon, 30 Dec 2024 14:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWDaOGs1"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="deYJuRq2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABBC1A83FA
-	for <stable@vger.kernel.org>; Mon, 30 Dec 2024 14:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C828E1AAA1B
+	for <stable@vger.kernel.org>; Mon, 30 Dec 2024 14:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735568232; cv=none; b=SKRXTaywgWNklUl7zGbqS4l1HlxLLIPbeNlh0Zm1DgfmoMldaslsq5mQwXvNYuwNNlulj6obxPBOl7xxKhA47zYVWfaFc1wwpFyRY8Y9L4LcYRbdo3Zio51Q6n3RYCvHZhd1Fm4UaRYegOttMV7y/tk6SUNJ2q2XDzyteIDG9bU=
+	t=1735568453; cv=none; b=FocD3drwwwj9JpXzX0UUUiW2bbS/JB4awOiwpcAlJhjL7/sNS1MKQWRQ6GRywkK8Kt9X4Uew7IB0nk2nR5ZWuJD29T/Jxv55PEdkNpOBQ7rTtJkTUsdQc2oudG4QWz6Ec6KE2JLka8UkMNejKDsgmS9Ybmi+0zP4/K7o72VAe3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735568232; c=relaxed/simple;
-	bh=zNBFk8TTTDsqJLI9KoKTTzxyLrG+qS44xVVB5xWNMNo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GIMqe+hJ2lL/Z3u7nHZVydCG/QTm/8xCQROcuTakEM21/8NtTisM3XDGiSI9KhkZ2Cknlmbo5gpM3AwhyGEltstWjK6wXF64xXKFFFw7eZfPQoM2okahDIONyOwnPzGEERS4UuVVo57Y+qiWuQl3nJL3COOh0R2lUGbZ6f4WJ+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWDaOGs1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772C8C4CED0;
-	Mon, 30 Dec 2024 14:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735568231;
-	bh=zNBFk8TTTDsqJLI9KoKTTzxyLrG+qS44xVVB5xWNMNo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dWDaOGs12JJsZPcJhvau/68uNzgF72CHTpT9DsJDjyLetw6iJ16BWxUuJ9wg+rli+
-	 Cfd6R96utNfWBmBsUOnz2hJQyzyzBQ93GrTgur7SbLwsMIK7f9aUk1AwHaH9mVbJny
-	 9Yp8arKZNVIV4Yxz9wbHD3Kv1is1wpWmpeQQrfAk=
-Date: Mon, 30 Dec 2024 15:17:08 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Fedor Pchelkin <boddah8794@gmail.com>
-Cc: stable@vger.kernel.org, Chris Lu <chris.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	linux-mediatek@lists.infradead.org
-Subject: Re: Request to backport fixes for crash in hci_unregister_dev() to
- 6.12.y
-Message-ID: <2024123059-luckily-baking-e397@gregkh>
-References: <ky2pwjrcwd42h24rkvlanyj3ty53orpyirm34hpo74lehhpg3n@3mnfibfr6yxm>
+	s=arc-20240116; t=1735568453; c=relaxed/simple;
+	bh=9sPmgt30nBGMdwfN5L62gm0t+fmgz+pvqOhAQOfBJHQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oSY++aR5stlDV4aRX3ugkuRgbp+D2GF9Oer5Jwks3HzXMLkAMIw4rZokHVUCXzIrr/mkXCUP1QUKCAKJPqfL9poy2TqY4eJmHIrQpnpCG6lD7emTCd6r5XrpQfdM53b90CUDSct6c89xTd50MLSTWZSQI74jMIH0mufS1IlUoUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=deYJuRq2; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4361b0ec57aso92537135e9.0
+        for <stable@vger.kernel.org>; Mon, 30 Dec 2024 06:20:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1735568450; x=1736173250; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ccNwZtNnGr/4W9StK3y13dTEyPZkarz5VVc5IgE/Cww=;
+        b=deYJuRq2rGZc7s2BVC9WutadUudfLQklL6pdLbzM+Ow+4v9yvcW+Qgz/s40m6550Fq
+         ETRvNvAPi81gwocxvkXwImR4F30vhXSTXMjGT3DY3rKcjxBdHiJLkBTjllQNsX+H4lVj
+         AZezNhLN8gprEY+0ZZD7ON9WoXVOhFAyFZVXIpcUQhhWb4DF7YWgmei0B45mLWJjkxuI
+         QX+Au7nbpngGGIcaoTdfU2uNPvV5/O0T2f3grAkxyGRivKDAEJejXhM11XAjochlkp5x
+         L8s8rkIZkXxH0kREl/Moecub4NYam8fF8KMqOey/61NMucWOdMUWzKq67UoFlRgXHsmZ
+         CUPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735568450; x=1736173250;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ccNwZtNnGr/4W9StK3y13dTEyPZkarz5VVc5IgE/Cww=;
+        b=lHYkPj3TYcHZ1CCZ/k4qcaTMhwPSQnYSxGvXiqew2FyRJ5spSMd8VBAThnAvaoAsKa
+         oUbkuB0/WIGs69PNLX3o/Qwm1/Xs6UeDZUV8Ph6dMg/g3BjipP12Z2vomJAvLc+Ub9DO
+         z7MiCWwY3QFfArC3coEdBIyAu0JQyiyrZNmjwK5jp2xZVDtGPibLHI7uctyPW4GUhT5g
+         Mow7Pm4ZV1LrGcEX6XBY1+OotgwDEdaQD4vIXcaOo1DV0Dz3IEVyXs5PSNKFDB1giuhz
+         YjGwsIhKRLAssMCMz58DaBHZi+w9fxFRaM6qJIavojXYtvyHP3ksrKfz3OwuUvB9FoIi
+         Xtjw==
+X-Forwarded-Encrypted: i=1; AJvYcCULA1Hi9BRGRvHqlTIjsHszve11TJFVmpc4gtKj4tPlz3u/MtjkBLLbWPkgvxXLlXmQ/p5y9B0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzxc2J+0W7eWvxOWImn6X0G8Qz5opanWlFM7fzXIZ8NYVN5pIC/
+	feDcK0g892EfVNT9WO/aSrIVnbOajMPPoTLkX+njcfFDM1q5VO6cTYEv9sk+eBYn7yflVEBCM8m
+	A
+X-Gm-Gg: ASbGncvGu09hr+Yv23+PxNNoJDsZ+xEkHOEE1Xk4MmwhVY6TVjcVyL5DZK6Xm4WDdil
+	D4oIEQT5jHKhu85Y5EVo1CA/wEGnGH3Iunlikaeg16yXJOlzgJ+q4HivuEsURzzAwbsfAWs4fWn
+	Qko9KMMf0P4huCwW6Kys6DEzKjNzpP/FglF5moOzc3GziGFJ/aITCuZDxs48p49+XB20dqORBl4
+	LjzcrQaalWEAp+9r95ux1VTmt+cvEGRQGK90DqvpwtssEbjlH9GWlQ/uOLuMk1QD3ROwq0tllg7
+	skBq/g==
+X-Google-Smtp-Source: AGHT+IEZaffaWtn5e6DdWpG4G/dL+kBcYQMTaGM4Gv+hwB75plnav3yPRsIBsDBwaFFwiryGINPc/w==
+X-Received: by 2002:a7b:c3c7:0:b0:434:a90b:94fe with SMTP id 5b1f17b1804b1-4366fb89a04mr355346625e9.10.1735568450170;
+        Mon, 30 Dec 2024 06:20:50 -0800 (PST)
+Received: from localhost.localdomain ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8471dcsm30377536f8f.48.2024.12.30.06.20.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Dec 2024 06:20:49 -0800 (PST)
+From: srinivas.kandagatla@linaro.org
+To: gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	stable@vger.kernel.org,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5/6] nvmem: qcom-spmi-sdam: Set size in struct nvmem_config
+Date: Mon, 30 Dec 2024 14:19:00 +0000
+Message-Id: <20241230141901.263976-6-srinivas.kandagatla@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241230141901.263976-1-srinivas.kandagatla@linaro.org>
+References: <20241230141901.263976-1-srinivas.kandagatla@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ky2pwjrcwd42h24rkvlanyj3ty53orpyirm34hpo74lehhpg3n@3mnfibfr6yxm>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1349; i=srinivas.kandagatla@linaro.org; h=from:subject; bh=FL5THL4GxmLd5V3ZZ9djMFqthvMfgl1TEG7K7smrkEo=; b=owEBbQGS/pANAwAKAXqh/VnHNFU3AcsmYgBncqvVzROS27/FPVGORk5eHxHWAmoryOsWk6wj5 +WhjS06vvWJATMEAAEKAB0WIQQi509axvzi9vce3Y16of1ZxzRVNwUCZ3Kr1QAKCRB6of1ZxzRV N0BtB/4qEP5xPVdXyT6/OGlxM4X/DlvdFpdkicqFt2WRGBrEW6aW/vf7/PFV2YLENXgLCyJeAPn 5gCgehXiFEOm135kyBv9n8EZeoovMgpAImJqx++fcWAtF4rLIgGPA8wVzwu8qgRH10SeHAxW9NG +Y/asphpEeO9ujUnu5sqg8+bqTkZu3EIVMcbFCBqmDinKwUIyv37TSy7QyG24snnfKFe6URQ9UG CszLrvKCB/E57v61lZSBwn3jHbVjCBtylfkoovTCN1IjMJTYE7YCkXy0YOy7aC+tP2jXZexZaVX 8xThq757w8BmDNZe6dY1odb3rVWOibU4sYT9RvvI7Z9wv2h0
+X-Developer-Key: i=srinivas.kandagatla@linaro.org; a=openpgp; fpr=ED6472765AB36EC43B3EF97AD77E3FC0562560D6
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 30, 2024 at 01:51:58PM +0300, Fedor Pchelkin wrote:
-> On 6.12 there is a kernel crash during the release of btusb Mediatek
-> device.
-> 
-> list_del corruption, ffff8aae1f024000->next is LIST_POISON1 (dead000000000100)
-> ------------[ cut here ]------------
-> kernel BUG at lib/list_debug.c:56!
-> Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-> CPU: 3 UID: 0 PID: 3770 Comm: qemu-system-x86 Tainted: G        W          6.12.5-200.fc41.x86_64 #1
-> Tainted: [W]=WARN
-> Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
-> RIP: 0010:__list_del_entry_valid_or_report.cold+0x5c/0x6f
-> Call Trace:
-> <TASK>
-> hci_unregister_dev+0x46/0x1f0 [bluetooth]
-> btusb_disconnect+0x67/0x170 [btusb]
-> usb_unbind_interface+0x95/0x2d0
-> device_release_driver_internal+0x19c/0x200
-> proc_ioctl+0x1be/0x230
-> usbdev_ioctl+0x6bd/0x1430
-> __x64_sys_ioctl+0x91/0xd0
-> do_syscall_64+0x82/0x160
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> Note: Taint is due to the amdgpu warnings, totally unrelated to the
-> issue.
-> 
-> The bug has been fixed "silently" in upstream with the following series
-> of 4 commits [1]:
-> 
-> ad0c6f603bb0 ("Bluetooth: btusb: mediatek: move Bluetooth power off command position")
-> cea1805f165c ("Bluetooth: btusb: mediatek: add callback function in btusb_disconnect")
-> 489304e67087 ("Bluetooth: btusb: mediatek: add intf release flow when usb disconnect")
-> defc33b5541e ("Bluetooth: btusb: mediatek: change the conditions for ISO interface")
-> 
-> These commits can be cleanly cherry-picked to 6.12.y and I may confirm
-> they fix the problem.
-> 
-> FWIW, the offending commit is ceac1cb0259d ("Bluetooth: btusb: mediatek:
-> add ISO data transmission functions") and it is present in 6.11.y and
-> 6.12.y.
-> 
-> 6.11.y is EOL, so please apply the patches to 6.12.y.
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-All now queued up, thanks.
+Let the nvmem core know what size the SDAM is, most notably this fixes
+the size of /sys/bus/nvmem/devices/spmi_sdam*/nvmem being '0' and makes
+user space work with that file.
 
-greg k-h
+  ~ # hexdump -C -s 64 /sys/bus/nvmem/devices/spmi_sdam2/nvmem
+  00000040  02 01 00 00 04 00 00 00  00 00 00 00 00 00 00 00  |................|
+  00000050  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+  *
+  00000080
+
+Fixes: 40ce9798794f ("nvmem: add QTI SDAM driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+---
+ drivers/nvmem/qcom-spmi-sdam.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/nvmem/qcom-spmi-sdam.c b/drivers/nvmem/qcom-spmi-sdam.c
+index 9aa8f42faa4c..4f1cca6eab71 100644
+--- a/drivers/nvmem/qcom-spmi-sdam.c
++++ b/drivers/nvmem/qcom-spmi-sdam.c
+@@ -144,6 +144,7 @@ static int sdam_probe(struct platform_device *pdev)
+ 	sdam->sdam_config.owner = THIS_MODULE;
+ 	sdam->sdam_config.add_legacy_fixed_of_cells = true;
+ 	sdam->sdam_config.stride = 1;
++	sdam->sdam_config.size = sdam->size;
+ 	sdam->sdam_config.word_size = 1;
+ 	sdam->sdam_config.reg_read = sdam_read;
+ 	sdam->sdam_config.reg_write = sdam_write;
+-- 
+2.25.1
+
 
