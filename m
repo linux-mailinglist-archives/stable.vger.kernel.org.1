@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-106358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EFBE9FE800
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3819FE7C9
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625DA1882F38
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F9DE1882E67
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD99E537E9;
-	Mon, 30 Dec 2024 15:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7DC1537C8;
+	Mon, 30 Dec 2024 15:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpUOyM92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCpj1442"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B27C15E8B;
-	Mon, 30 Dec 2024 15:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0932594B6;
+	Mon, 30 Dec 2024 15:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573700; cv=none; b=AjPP8WLOZ3IOjL154z3FFIHbGVt1L9niGVvlu+bFmosUq4r6t5oF9qfGSSa1CEQ1vLzljf8asZY9BKQLScTS/Mlb6GxOVsZPddyypMFjboQxAYfMsMtV/x7yEc1dgUGTzPkNVWkmW1R/0ud629rtQPboZVGyxFPMfmjt7dFWPOQ=
+	t=1735573531; cv=none; b=cxA9NJFh4iTeJ/g6TlRXOgVLm7kxUR1olpF+3pgtZKj/5CTJVrhzJmHtG+Q3GhggrsGKE8QHfwZUYxGLhWjLKHb3wQfL8rma2Qrctl6WL2nEeEJ7MgH8xGCNH8x4Ymq4rF1HlJLJp/AdoXgI7RxTcC9WS4cihOp13fVOdeNsRNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573700; c=relaxed/simple;
-	bh=7d2pxtzgdb+l5fXEwGJIYI0o5rmUYJ6EakHPnnuRSUc=;
+	s=arc-20240116; t=1735573531; c=relaxed/simple;
+	bh=CFrn99IaPG2YHbw3GGafegaybtZwNWd+gpSXhgwbz38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8AgPZLNkphvVJ3QuP+GT6oMACa0xXZG/i5qZWiENeIH4oqHXivmo7qNaaOrGcZt61HB7FhTZJKXo/FwVirXJMBDnvo4ALYTKbf4+s1bQrWVyAXhhCTLmHBfsGk7yVpdHj0jPP37qw6XJblbABPHZVOuPxBo+j0bR1ALg9Av3bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpUOyM92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CCBC4CED0;
-	Mon, 30 Dec 2024 15:48:19 +0000 (UTC)
+	 MIME-Version; b=f1HcCzC8/cc1xJ4gUE2NEo3Bfs8OjWWdmMH8Ma2kx5V9kCtpOK6PsU4sA1wdyQfR1aE18Udsc78LD7MncQ6WdFCkzNA4S9NF/Qu6s/n7y0YeQMeuiW6VtppQ9dALmGxZ6M5+0nurDZvz6PzN5SSb/jVs5v9N+yWZvDdos/izKGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCpj1442; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7979C4CED0;
+	Mon, 30 Dec 2024 15:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573700;
-	bh=7d2pxtzgdb+l5fXEwGJIYI0o5rmUYJ6EakHPnnuRSUc=;
+	s=korg; t=1735573531;
+	bh=CFrn99IaPG2YHbw3GGafegaybtZwNWd+gpSXhgwbz38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpUOyM9240/e7C3S1l3aAen58dZz+JnA7EZ1d92UIGLFvf5Ag01FCiVEpQ0zk8l1h
-	 nXagKgwVadYVLbVANhDiY7sWA9SPmcV5PRP0bPpKlk/wcXQ0rgk4WTNm/ltaZY2lzy
-	 oemoNvsHpqNXNA6rPzs8/81sI3mzzAG9B+YPemMw=
+	b=tCpj14424W42nzR/rHg7SzdrnwzRK8egcXc/AZTUJ8GYa4omzQKObbMqg6qrUhosX
+	 Jj61ii+jpvTNSbQVsaytLYUpp1iSCx1KSOxdMPZPL8x9Tlk0Ry6QiUVFREfZA+dPTU
+	 EUz1qN6hiIkgujE013pAeZPOYh6euP625nP+h1js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/86] nfsd: restore callback functionality for NFSv4.0
+	Maciej Andrzejewski <maciej.andrzejewski@m-works.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 08/60] mtd: rawnand: arasan: Fix double assertion of chip-select
 Date: Mon, 30 Dec 2024 16:42:18 +0100
-Message-ID: <20241230154212.106513472@linuxfoundation.org>
+Message-ID: <20241230154207.601229038@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
 
-[ Upstream commit 7917f01a286ce01e9c085e24468421f596ee1a0c ]
+commit b086a46dae48829e11c0c02580e30d920b76743c upstream.
 
-A recent patch inadvertently broke callbacks for NFSv4.0.
+When two chip-selects are configured in the device tree, and the second is
+a non-native GPIO, both the GPIO-based chip-select and the first native
+chip-select may be asserted simultaneously. This double assertion causes
+incorrect read and write operations.
 
-In the 4.0 case we do not expect a session to be found but still need to
-call setup_callback_client() which will not try to dereference it.
+The issue occurs because when nfc->ncs <= 2, nfc->spare_cs is always
+initialized to 0 due to static initialization. Consequently, when the
+second chip-select (GPIO-based) is selected in anfc_assert_cs(), it is
+detected by anfc_is_gpio_cs(), and nfc->native_cs is assigned the value 0.
+This results in both the GPIO-based chip-select being asserted and the
+NAND controller register receiving 0, erroneously selecting the native
+chip-select.
 
-This patch moves the check for failure to find a session into the 4.1+
-branch of setup_callback_client()
+This patch resolves the issue, as confirmed by oscilloscope testing with
+configurations involving two or more chip-selects in the device tree.
 
-Fixes: 1e02c641c3a4 ("NFSD: Prevent NULL dereference in nfsd4_process_cb_update()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: acbd3d0945f9 ("mtd: rawnand: arasan: Leverage additional GPIO CS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index 49a49529c6b8..54ffadf02e03 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -986,7 +986,7 @@ static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *c
- 		args.authflavor = clp->cl_cred.cr_flavor;
- 		clp->cl_cb_ident = conn->cb_ident;
- 	} else {
--		if (!conn->cb_xprt)
-+		if (!conn->cb_xprt || !ses)
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -1425,8 +1425,8 @@ static int anfc_parse_cs(struct arasan_n
+ 	 * case, the "not" chosen CS is assigned to nfc->spare_cs and selected
+ 	 * whenever a GPIO CS must be asserted.
+ 	 */
+-	if (nfc->cs_array && nfc->ncs > 2) {
+-		if (!nfc->cs_array[0] && !nfc->cs_array[1]) {
++	if (nfc->cs_array) {
++		if (nfc->ncs > 2 && !nfc->cs_array[0] && !nfc->cs_array[1]) {
+ 			dev_err(nfc->dev,
+ 				"Assign a single native CS when using GPIOs\n");
  			return -EINVAL;
- 		clp->cl_cb_session = ses;
- 		args.bc_xprt = conn->cb_xprt;
-@@ -1379,8 +1379,6 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
- 		ses = c->cn_session;
- 	}
- 	spin_unlock(&clp->cl_lock);
--	if (!c)
--		return;
- 
- 	err = setup_callback_client(clp, &conn, ses);
- 	if (err) {
--- 
-2.39.5
-
 
 
 
