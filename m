@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-106369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D841C9FE80B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AD09FE7D1
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF50E1881CF9
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 972C5161DF3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E656D42AA6;
-	Mon, 30 Dec 2024 15:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BD91ACEB5;
+	Mon, 30 Dec 2024 15:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqkztR8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPCjzUvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A417D15E8B;
-	Mon, 30 Dec 2024 15:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74FC1ACEAD;
+	Mon, 30 Dec 2024 15:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573736; cv=none; b=BdrE2U9AeEpNx2VcG3qiCskE+OO0mvv85Sc90BNCrdnhq3yoc0lC6dUw+cLr43cxEJr/APTU1X2rqICt6ovkdS08jaKmRdEBP56XCXHpP7iqB4IYD9dqDiEITmKolaTrla37K3W417MsOXKpHRY38KX9jVebbLqLxrr18Pzfn0g=
+	t=1735573546; cv=none; b=UgtUJjkRd9qIJ098B9lBw/vS9q3wvaoNd7PgmD8tAHBWkDcM07MbptX4WjB1Vs1enXQXJ49TbVPSr/pJXLyDQ+fKd1I7GmXvV2w5thBDbp1LjebDLIxtFmQkhegeU35XzIYb99zrPehlKbRJbGYe9f1D3vxIHLed2XaFlxdaFLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573736; c=relaxed/simple;
-	bh=cJ2uNtrexrqovOIjwkyYjBnRz2ypbSF6ZL1OOp4zGFg=;
+	s=arc-20240116; t=1735573546; c=relaxed/simple;
+	bh=ftlBm7japz6dkcj7pc/+vyQ6SOre9QHZtVBy07an7CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8HmiQ1/yPUQGEFfGK75Zx1BKWvWa7k8Kvi8ZSS9q37eP06NV4kfD8w4Uq2YoUeNOySwf9U+5txhQLa7OuRybXAV3WV7ffmpGtLdElOSSywo6GvQps8sDVpWAF0OVLcQu7zlN/VVWSUxOGa8b1tJITY+oGApx+MCYLQcxDwMC1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqkztR8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2930AC4CED0;
-	Mon, 30 Dec 2024 15:48:55 +0000 (UTC)
+	 MIME-Version; b=MZIqHnu/zZiBuvgTZguov4s0Gx52GVgSN9xui+wjT9s/ymM/Gh+bEdX7LvRzK9VNX5gOdH2un10L2SDnKtJt21sxq4ocQiPJ2R4ZBSTt2t3cEhzOrHrXf/iOzyJxOL9k2aFhhG1+Gj2mtr+no0J74e49hlWj67PMyasdEX1Unzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPCjzUvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DA8C4CED0;
+	Mon, 30 Dec 2024 15:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573736;
-	bh=cJ2uNtrexrqovOIjwkyYjBnRz2ypbSF6ZL1OOp4zGFg=;
+	s=korg; t=1735573546;
+	bh=ftlBm7japz6dkcj7pc/+vyQ6SOre9QHZtVBy07an7CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqkztR8n1B2IX6xhhzbbpbdnDywwv4nQC+KMCbcIanhJldcaDkpkTziZlBhFvTAku
-	 0jp4ocaoIX6RuVr8YOZKyysKiQSalMREtQ/LCAG1QHYwIdmRyB1L1jP1djLsK2qcOy
-	 zpIsDIARBntD5+AJseKLfZHcv7fRnJTr4DEROm1E=
+	b=KPCjzUvvJZDTkzHluL/C2PPTPY2Z9pRgMwzGLpwTuHVNTN7M1EC2xDBL7e/B5zHfB
+	 0pC1UaR9x9YYSvFrsypTEtNpsCT03wiN4BRmNmZN2SPpZuIVonmaOMz7FfkBy4N/3i
+	 BVR/dWEPFAcdFARaBBffY7nRKqIDoxy7DpP9P27M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 20/86] phy: usb: Toggle the PHY power during init
+Subject: [PATCH 6.1 18/60] dmaengine: mv_xor: fix child node refcount handling in early exit
 Date: Mon, 30 Dec 2024 16:42:28 +0100
-Message-ID: <20241230154212.490711618@linuxfoundation.org>
+Message-ID: <20241230154207.979780234@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 0a92ea87bdd6f77ca4e17fe19649882cf5209edd upstream.
+commit 362f1bf98a3ecb5a2a4fcbdaa9718c8403beceb2 upstream.
 
-When bringing up the PHY, it might be in a bad state if left powered.
-One case is we lose the PLL lock if the PLL is gated while the PHY
-is powered. Toggle the PHY power so we can start from a known state.
+The for_each_child_of_node() loop requires explicit calls to
+of_node_put() to decrement the child's refcount upon early exits (break,
+goto, return).
 
-Fixes: 4e5b9c9a73b3 ("phy: usb: Add support for new Synopsys USB controller on the 7216")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20241024213540.1059412-1-justin.chen@broadcom.com
+Add the missing calls in the two early exits before the goto
+instructions.
+
+Cc: stable@vger.kernel.org
+Fixes: f7d12ef53ddf ("dma: mv_xor: add Device Tree binding")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241011-dma_mv_xor_of_node_put-v1-1-3c2de819f463@gmail.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/dma/mv_xor.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-+++ b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-@@ -323,6 +323,12 @@ static void usb_init_common_7216(struct
- 	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1393,6 +1393,7 @@ static int mv_xor_probe(struct platform_
+ 			irq = irq_of_parse_and_map(np, 0);
+ 			if (!irq) {
+ 				ret = -ENODEV;
++				of_node_put(np);
+ 				goto err_channel_add;
+ 			}
  
- 	USB_CTRL_UNSET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
-+
-+	/*
-+	 * The PHY might be in a bad state if it is already powered
-+	 * up. Toggle the power just in case.
-+	 */
-+	USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
- 	USB_CTRL_UNSET(ctrl, USB_PM, USB_PWRDN);
+@@ -1401,6 +1402,7 @@ static int mv_xor_probe(struct platform_
+ 			if (IS_ERR(chan)) {
+ 				ret = PTR_ERR(chan);
+ 				irq_dispose_mapping(irq);
++				of_node_put(np);
+ 				goto err_channel_add;
+ 			}
  
- 	/* 1 millisecond - for USB clocks to settle down */
 
 
 
