@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-106447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FEC9FE85B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460569FE7FF
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C7C01883060
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:53:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90CD33A2202
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A6914F136;
-	Mon, 30 Dec 2024 15:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E54014F136;
+	Mon, 30 Dec 2024 15:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj/LKtQX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqfCNNqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1337015E8B;
-	Mon, 30 Dec 2024 15:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D10015E8B;
+	Mon, 30 Dec 2024 15:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574006; cv=none; b=FAk5D6WhEa/CFReV1Rmj0iyvYgMytxoVA2Kmm9wsopKOO8SQOeFSHpoO2VQRV6CFTbSdhFQQ/XnaZ9dWIaKAztd5SHHTgiQ3BzqOXQgFltDEoOszSpl8tEOtiFlWgRqH9mOsn+NybZYLlfnVUziZln/treDiNbzV4HP9NZ/hnTo=
+	t=1735573697; cv=none; b=r/aPVxJAD5MwB+5ww4VhdtgBtU3121SswKyDhv2PMPC8ssZrdH0HbZVZbfXcYq6AMiv4OcqYeSH51nqHluBSONGuLwAlv/eI/nLH02dcs7Vno/fVD0/iBe6Rakx7DNzORRN4XPTctfyIGPtqQHnyy7EX67T56mziPVVR9gkoZ8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574006; c=relaxed/simple;
-	bh=iOJm096VGkPwolyqK2rw134RM1Hybi5f6LXed2GphLs=;
+	s=arc-20240116; t=1735573697; c=relaxed/simple;
+	bh=rILZxPX2amvWyJYjMmcP9qIf2gEzSWiWJQqzTUON41I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMW7S0jtPRCggZ+sLMGYS0dr87Kzza3rsbJL9FGYg3/GITXBXJmOJ/Y3dooBOQwnlFaX4ApWsmJnmbtHpB5aBDRQ0p1KE4JWtDQxgNaTIlgwiccKriowsAQLWkMYX9c+7EdXC8qSblWthVVdiAKPkVs5mlaiYu2XYzZ6e1rVTxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj/LKtQX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901F4C4CED0;
-	Mon, 30 Dec 2024 15:53:25 +0000 (UTC)
+	 MIME-Version; b=tDGGzlpwqdoJcnh3C0jX/MzbibNq1/yAjEgulc6gwpx4FVgNLYcHI4vFzK+culHhh6n9JLz5dT1T07AdLB2UPWiEZhtAq7FRuUFru2T5C8aAKrJhE5f18CnR6AL9ZZBSReUVSIE2R7tqP0dFfqWOgKpgJlsgINXeZPZxtNO0dhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqfCNNqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98686C4CED0;
+	Mon, 30 Dec 2024 15:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574006;
-	bh=iOJm096VGkPwolyqK2rw134RM1Hybi5f6LXed2GphLs=;
+	s=korg; t=1735573697;
+	bh=rILZxPX2amvWyJYjMmcP9qIf2gEzSWiWJQqzTUON41I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tj/LKtQXGINiV4Wcywl3/7h78Lkw5Jd2W22q0JXxnUf7WPar0owJMR8sbV+w63SoK
-	 lIVBSfVdfH2YOiYaiPdsnzzOzOVWKPamZlWVYr+LLnNbNZb8MpdSQLEFReihBuZsNF
-	 e7wZQJrGrMCX2Etn+hrAu192//rS94br+pcDAWLs=
+	b=GqfCNNqS+NGUTwI/uUHLCZiyycGFpuOR1dSonbm0lYgyicbQ/bbieTnmgy2zypdhR
+	 LOX2DbRTbPgEckT8J4MeLOe/h90TXcVCxJq346d2+jd4PGIaOIRN2hx9por/8jWgt9
+	 69wzldCYzpdeJaL4Y5tNK4+bYYn6ODebwws00tSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <cong.wang@bytedance.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/114] bpf: Check negative offsets in __bpf_skb_min_len()
+Subject: [PATCH 6.6 01/86] media: dvb-frontends: dib3000mb: fix uninit-value in dib3000_write_reg
 Date: Mon, 30 Dec 2024 16:42:09 +0100
-Message-ID: <20241230154218.531064005@linuxfoundation.org>
+Message-ID: <20241230154211.770832033@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 9ecc4d858b92c1bb0673ad9c327298e600c55659 ]
+[ Upstream commit 2dd59fe0e19e1ab955259978082b62e5751924c7 ]
 
-skb_network_offset() and skb_transport_offset() can be negative when
-they are called after we pull the transport header, for example, when
-we use eBPF sockmap at the point of ->sk_data_ready().
+Syzbot reports [1] an uninitialized value issue found by KMSAN in
+dib3000_read_reg().
 
-__bpf_skb_min_len() uses an unsigned int to get these offsets, this
-leads to a very large number which then causes bpf_skb_change_tail()
-failed unexpectedly.
+Local u8 rb[2] is used in i2c_transfer() as a read buffer; in case
+that call fails, the buffer may end up with some undefined values.
 
-Fix this by using a signed int to get these offsets and ensure the
-minimum is at least zero.
+Since no elaborate error handling is expected in dib3000_write_reg(),
+simply zero out rb buffer to mitigate the problem.
 
-Fixes: 5293efe62df8 ("bpf: add bpf_skb_change_tail helper")
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241213034057.246437-2-xiyou.wangcong@gmail.com
+[1] Syzkaller report
+dvb-usb: bulk message failed: -22 (6/0)
+=====================================================
+BUG: KMSAN: uninit-value in dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+ dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+ dibusb_dib3000mb_frontend_attach+0x155/0x2f0 drivers/media/usb/dvb-usb/dibusb-mb.c:31
+ dvb_usb_adapter_frontend_init+0xed/0x9a0 drivers/media/usb/dvb-usb/dvb-usb-dvb.c:290
+ dvb_usb_adapter_init drivers/media/usb/dvb-usb/dvb-usb-init.c:90 [inline]
+ dvb_usb_init drivers/media/usb/dvb-usb/dvb-usb-init.c:186 [inline]
+ dvb_usb_device_init+0x25a8/0x3760 drivers/media/usb/dvb-usb/dvb-usb-init.c:310
+ dibusb_probe+0x46/0x250 drivers/media/usb/dvb-usb/dibusb-mb.c:110
+...
+Local variable rb created at:
+ dib3000_read_reg+0x86/0x4e0 drivers/media/dvb-frontends/dib3000mb.c:54
+ dib3000mb_attach+0x123/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+...
+
+Fixes: 74340b0a8bc6 ("V4L/DVB (4457): Remove dib3000-common-module")
+Reported-by: syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240517155800.9881-1-n.zhandarovich@fintech.ru
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/media/dvb-frontends/dib3000mb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 9a459213d283..55495063621d 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3751,13 +3751,22 @@ static const struct bpf_func_proto bpf_skb_adjust_room_proto = {
- 
- static u32 __bpf_skb_min_len(const struct sk_buff *skb)
+diff --git a/drivers/media/dvb-frontends/dib3000mb.c b/drivers/media/dvb-frontends/dib3000mb.c
+index c598b2a63325..7c452ddd9e40 100644
+--- a/drivers/media/dvb-frontends/dib3000mb.c
++++ b/drivers/media/dvb-frontends/dib3000mb.c
+@@ -51,7 +51,7 @@ MODULE_PARM_DESC(debug, "set debugging level (1=info,2=xfer,4=setfe,8=getfe (|-a
+ static int dib3000_read_reg(struct dib3000_state *state, u16 reg)
  {
--	u32 min_len = skb_network_offset(skb);
-+	int offset = skb_network_offset(skb);
-+	u32 min_len = 0;
- 
--	if (skb_transport_header_was_set(skb))
--		min_len = skb_transport_offset(skb);
--	if (skb->ip_summed == CHECKSUM_PARTIAL)
--		min_len = skb_checksum_start_offset(skb) +
--			  skb->csum_offset + sizeof(__sum16);
-+	if (offset > 0)
-+		min_len = offset;
-+	if (skb_transport_header_was_set(skb)) {
-+		offset = skb_transport_offset(skb);
-+		if (offset > 0)
-+			min_len = offset;
-+	}
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		offset = skb_checksum_start_offset(skb) +
-+			 skb->csum_offset + sizeof(__sum16);
-+		if (offset > 0)
-+			min_len = offset;
-+	}
- 	return min_len;
- }
- 
+ 	u8 wb[] = { ((reg >> 8) | 0x80) & 0xff, reg & 0xff };
+-	u8 rb[2];
++	u8 rb[2] = {};
+ 	struct i2c_msg msg[] = {
+ 		{ .addr = state->config.demod_address, .flags = 0,        .buf = wb, .len = 2 },
+ 		{ .addr = state->config.demod_address, .flags = I2C_M_RD, .buf = rb, .len = 2 },
 -- 
 2.39.5
 
