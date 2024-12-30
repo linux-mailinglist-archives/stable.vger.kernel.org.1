@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-106444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DAE9FE858
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B909FE860
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F921188305B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:53:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C63518806C7
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE74A15E8B;
-	Mon, 30 Dec 2024 15:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AEE2E414;
+	Mon, 30 Dec 2024 15:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMZQybyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCgmhHOh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3232E414;
-	Mon, 30 Dec 2024 15:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CD0156678;
+	Mon, 30 Dec 2024 15:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573996; cv=none; b=tI/uErVBE3nZKJy9WLvSY8j40XS2C9A1fqlsDWeu5QdjCHJrKQZlV61Mft9reG13DsSebJ1d0WpZ2V1aqs3CNAdxZdI83t14D9D5T1LGr3JZkJN6f6zyItWiLjUqSVDF6v55hq+0P+ngmPMscs3tvK5QUbT0swzJw4xQrM3sxKo=
+	t=1735574022; cv=none; b=m3XLIwctVSb+MoNhZscJvwzSgTbjTRT2mbzVKqCdTsRrWLBpW8otTL9ei1aEBSoRUCErWp/gygBCtyuPWkfgIZn9d6hb9ZdLICiOAD5lsoyLOyuAtvV7t2GHiX8hHXq+M+eDmoXzdoCekGzK1HRy01efsD9mzuc9bTTqVnZ1i9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573996; c=relaxed/simple;
-	bh=rnvrhE6Bxwa/E/9GZP+Mpv491H6YkNa159SWQUQ1oqE=;
+	s=arc-20240116; t=1735574022; c=relaxed/simple;
+	bh=HoPNRwTq+4lVGI+aD3ukWV982kFG+WegeZ+lGilZMEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ubk4IAJq33GeUh6+p5NfFNfpBSOVkvc7XGUZq2pIyvBrwayR8fZxpOfJBHAs4Nkjgws9vQlWsKNncN8c0T+7R0k+kvyNs+vsEhTK/LCwosBZFUHBsL3JG9n/f3cpGOI1sbq87cYZFa8A9wiLwCJYx8b7DPGh+qsu0Az8JLbJ88I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMZQybyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C46FC4CED0;
-	Mon, 30 Dec 2024 15:53:14 +0000 (UTC)
+	 MIME-Version; b=usWtNbBCm+9XpCDC/IuTxcXUqM9r0X7LWsJMRwWcc01mdA+qcrW5nSxEfPToHrxTBWCMgCcMZhuIBa8/TAKH1bBFhuHt4TRRKzthMduPA//GwghXS80sU/9Pbkursg9UUM/QTokEEo8yvC4qR5suoQcfrp7tLpW919jNRY8QbDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCgmhHOh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5615C4CED0;
+	Mon, 30 Dec 2024 15:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573996;
-	bh=rnvrhE6Bxwa/E/9GZP+Mpv491H6YkNa159SWQUQ1oqE=;
+	s=korg; t=1735574022;
+	bh=HoPNRwTq+4lVGI+aD3ukWV982kFG+WegeZ+lGilZMEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lMZQybywXhZpFnoQCoq6yKHkxVuL3zwJBDLRHx6dRw6pqC3owmS2iP/aWq4PctLOi
-	 HdObyBDREC7YAVQbv7ki9lA+WEITMA498gXIsQ2rFHlyawVUtiPOz7GaC9CXtGyr62
-	 wB5KCHFENI/VSc/j/QDEbSgEuTKRmmtnb/q4iOXA=
+	b=YCgmhHOh/NSo1/V7CKhJDEcA4SnjGwHj466S9BCE8SD6/cEQktikBBJHPKBT1PLJh
+	 m4FnLf4PW4TwqpwMFH8uF83SObyXmmI92IIwNRnCh+QbxlfIk1sOQsw/o9X306IJL7
+	 Y+hnzObFHgRTblBaiPJ+Wo/MVjE3vTyA7JdEoiok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/114] media: dvb-frontends: dib3000mb: fix uninit-value in dib3000_write_reg
-Date: Mon, 30 Dec 2024 16:41:58 +0100
-Message-ID: <20241230154218.105240143@linuxfoundation.org>
+Subject: [PATCH 6.12 002/114] ceph: allocate sparse_ext map only for sparse reads
+Date: Mon, 30 Dec 2024 16:41:59 +0100
+Message-ID: <20241230154218.152259121@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
 References: <20241230154218.044787220@linuxfoundation.org>
@@ -67,59 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit 2dd59fe0e19e1ab955259978082b62e5751924c7 ]
+[ Upstream commit 18d44c5d062b97b97bb0162d9742440518958dc1 ]
 
-Syzbot reports [1] an uninitialized value issue found by KMSAN in
-dib3000_read_reg().
+If mounted with sparseread option, ceph_direct_read_write() ends up
+making an unnecessarily allocation for O_DIRECT writes.
 
-Local u8 rb[2] is used in i2c_transfer() as a read buffer; in case
-that call fails, the buffer may end up with some undefined values.
-
-Since no elaborate error handling is expected in dib3000_write_reg(),
-simply zero out rb buffer to mitigate the problem.
-
-[1] Syzkaller report
-dvb-usb: bulk message failed: -22 (6/0)
-=====================================================
-BUG: KMSAN: uninit-value in dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
- dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
- dibusb_dib3000mb_frontend_attach+0x155/0x2f0 drivers/media/usb/dvb-usb/dibusb-mb.c:31
- dvb_usb_adapter_frontend_init+0xed/0x9a0 drivers/media/usb/dvb-usb/dvb-usb-dvb.c:290
- dvb_usb_adapter_init drivers/media/usb/dvb-usb/dvb-usb-init.c:90 [inline]
- dvb_usb_init drivers/media/usb/dvb-usb/dvb-usb-init.c:186 [inline]
- dvb_usb_device_init+0x25a8/0x3760 drivers/media/usb/dvb-usb/dvb-usb-init.c:310
- dibusb_probe+0x46/0x250 drivers/media/usb/dvb-usb/dibusb-mb.c:110
-...
-Local variable rb created at:
- dib3000_read_reg+0x86/0x4e0 drivers/media/dvb-frontends/dib3000mb.c:54
- dib3000mb_attach+0x123/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
-...
-
-Fixes: 74340b0a8bc6 ("V4L/DVB (4457): Remove dib3000-common-module")
-Reported-by: syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20240517155800.9881-1-n.zhandarovich@fintech.ru
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 03bc06c7b0bd ("ceph: add new mount option to enable sparse reads")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib3000mb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/file.c        | 2 +-
+ net/ceph/osd_client.c | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/dib3000mb.c b/drivers/media/dvb-frontends/dib3000mb.c
-index c598b2a63325..7c452ddd9e40 100644
---- a/drivers/media/dvb-frontends/dib3000mb.c
-+++ b/drivers/media/dvb-frontends/dib3000mb.c
-@@ -51,7 +51,7 @@ MODULE_PARM_DESC(debug, "set debugging level (1=info,2=xfer,4=setfe,8=getfe (|-a
- static int dib3000_read_reg(struct dib3000_state *state, u16 reg)
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index 67468d88f139..851d70200c6b 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -1552,7 +1552,7 @@ ceph_direct_read_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		}
+ 
+ 		op = &req->r_ops[0];
+-		if (sparse) {
++		if (!write && sparse) {
+ 			extent_cnt = __ceph_sparse_read_ext_count(inode, size);
+ 			ret = ceph_alloc_sparse_ext_map(op, extent_cnt);
+ 			if (ret) {
+diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
+index 9d078b37fe0b..abac770bc0b4 100644
+--- a/net/ceph/osd_client.c
++++ b/net/ceph/osd_client.c
+@@ -1173,6 +1173,8 @@ EXPORT_SYMBOL(ceph_osdc_new_request);
+ 
+ int __ceph_alloc_sparse_ext_map(struct ceph_osd_req_op *op, int cnt)
  {
- 	u8 wb[] = { ((reg >> 8) | 0x80) & 0xff, reg & 0xff };
--	u8 rb[2];
-+	u8 rb[2] = {};
- 	struct i2c_msg msg[] = {
- 		{ .addr = state->config.demod_address, .flags = 0,        .buf = wb, .len = 2 },
- 		{ .addr = state->config.demod_address, .flags = I2C_M_RD, .buf = rb, .len = 2 },
++	WARN_ON(op->op != CEPH_OSD_OP_SPARSE_READ);
++
+ 	op->extent.sparse_ext_cnt = cnt;
+ 	op->extent.sparse_ext = kmalloc_array(cnt,
+ 					      sizeof(*op->extent.sparse_ext),
 -- 
 2.39.5
 
