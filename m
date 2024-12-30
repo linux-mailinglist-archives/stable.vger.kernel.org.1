@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5009FE86B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74BD49FE816
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7FDC1617C8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BE401882ED3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4132F1ACEA5;
-	Mon, 30 Dec 2024 15:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8041537C8;
+	Mon, 30 Dec 2024 15:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlPyRdbY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAVjOGRl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F151C1ACEA1;
-	Mon, 30 Dec 2024 15:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6780E15E8B;
+	Mon, 30 Dec 2024 15:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574057; cv=none; b=qsMiaDoLUs/TjscFW/32AacCjQZrAINe7E2qKF5qF7PO4HYR99HjPB1jyLnXSQM7ATGqLaupZCkzzJ4J+Z1g9ec71j6dtni+xfN28utp+RtF4G7IxPuC7GOS2f4h/qI4rWnRsuQll6Hn013LEfuZ952EilGuMGlZQI52Hrc1XyE=
+	t=1735573782; cv=none; b=TcFVDYpjljxmvHdCb2+GVG9D+VYaF92IPmjYioiCBQ6U+untpc2p8YCeBsJITW+YihHuufTXvXO65HSB1y0RETD3h6UhE2mLFiiX2JOSwhHtoZbYkxMSgE+5xLw0PDdd3xIOnqcZLJAqe0wDjLcQHdb/92mF7wJGwWL7bbZLOwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574057; c=relaxed/simple;
-	bh=co1MyJN1LMgwbbFt2kkb01uZKdK+AZjIujUTea2VZ1I=;
+	s=arc-20240116; t=1735573782; c=relaxed/simple;
+	bh=4f8p9r5H3WFkqFGnGtRZyR7M5d2NL4vJ1khCX8a22kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZ7IdppRrRC2ItCJLkqWquTsnkYqDVbTE8Q34nWhNpBUWQSHCVHUsQn7hDYampliSDNgaPvw90gCjoe7WUeKlXwLIFF6xf6xplrQJ04tr7h57XYqFBuHfsPQ3rsQwvlpKE+CV6Mc5vbcPwUexhbMy8gAGGmxKwKVOBgSEzyPPxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlPyRdbY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4A4C4CED2;
-	Mon, 30 Dec 2024 15:54:16 +0000 (UTC)
+	 MIME-Version; b=anZUgNHKlwXFLh30hkK1HDOs3CHlFhyxmeS6G6v4mI8HIPiN1ssvGMx81mM2puKNwkDmgftwrEQLbhZNEnKHFrQGhkSE4XXSSb3v7PvK3EleFRweg2hpUTxaMc5Ugv7wfHkfPzO0flDmCIAb6p8r0n5izoF5In8Gwk5yuqwOFaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAVjOGRl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62F6C4CED0;
+	Mon, 30 Dec 2024 15:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574056;
-	bh=co1MyJN1LMgwbbFt2kkb01uZKdK+AZjIujUTea2VZ1I=;
+	s=korg; t=1735573782;
+	bh=4f8p9r5H3WFkqFGnGtRZyR7M5d2NL4vJ1khCX8a22kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlPyRdbYHWgzs40SquO4ZQWyydfd/79ttsgyE/dA5zf+Vm0yrDa14jNp4zwIixrCC
-	 FNNYFUdT3kXqaxRSiAsDuzBjqCTJWy25DorfMxmVMdwVF0u0/y3PQMcTpvNclt3bWz
-	 CvkGNw0t964Clx766r50fZNCYcu2Q++sEofMF0sw=
+	b=RAVjOGRlKyQqasSn/SPz52Klf2EvH2K+yS6PZcsrwOelMHV+k4LnVT3TI0/fVmSy4
+	 Hlatze/Cq3f7Pz/sqcqxczRoRGPBGXUfFDChzfn3zrzK2+cKC3sHjMo0LcPh1/uea7
+	 6OG4S/2DeYgIGHvQnHuOZjie4aGTFJNdUqdcTDuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 018/114] phy: qcom-qmp: Fix register name in RX Lane config of SC8280XP
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 07/86] tcp_bpf: Add sk_rmem_alloc related logic for tcp_bpf ingress redirection
 Date: Mon, 30 Dec 2024 16:42:15 +0100
-Message-ID: <20241230154218.763704933@linuxfoundation.org>
+Message-ID: <20241230154211.995525816@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-commit 8886fb3240931a0afce82dea87edfe46bcb0a586 upstream.
+[ Upstream commit d888b7af7c149c115dd6ac772cc11c375da3e17c ]
 
-In RX Lane configuration sequence of SC8280XP, the register
-V5_RX_UCDR_FO_GAIN is incorrectly spelled as RX_UCDR_SO_GAIN and
-hence the programming sequence is wrong. Fix the register sequence
-accordingly to avoid any compliance failures. This has been tested
-on SA8775P by checking device mode enumeration in SuperSpeed.
+When we do sk_psock_verdict_apply->sk_psock_skb_ingress, an sk_msg will
+be created out of the skb, and the rmem accounting of the sk_msg will be
+handled by the skb.
 
-Cc: stable@vger.kernel.org
-Fixes: c0c7769cdae2 ("phy: qcom-qmp: Add SC8280XP USB3 UNI phy")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241112092831.4110942-1-quic_kriskura@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For skmsgs in __SK_REDIRECT case of tcp_bpf_send_verdict, when redirecting
+to the ingress of a socket, although we sk_rmem_schedule and add sk_msg to
+the ingress_msg of sk_redir, we do not update sk_rmem_alloc. As a result,
+except for the global memory limit, the rmem of sk_redir is nearly
+unlimited. Thus, add sk_rmem_alloc related logic to limit the recv buffer.
+
+Since the function sk_msg_recvmsg and __sk_psock_purge_ingress_msg are
+used in these two paths. We use "msg->skb" to test whether the sk_msg is
+skb backed up. If it's not, we shall do the memory accounting explicitly.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241210012039.1669389-3-zijianzhang@bytedance.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-usb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/skmsg.h | 11 ++++++++---
+ net/core/skmsg.c      |  6 +++++-
+ net/ipv4/tcp_bpf.c    |  4 +++-
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-@@ -1008,7 +1008,7 @@ static const struct qmp_phy_init_tbl sc8
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_FO_GAIN, 0x2f),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_COUNT_LOW, 0xff),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FASTLOCK_COUNT_HIGH, 0x0f),
--	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_SO_GAIN, 0x0a),
-+	QMP_PHY_INIT_CFG(QSERDES_V5_RX_UCDR_FO_GAIN, 0x0a),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_VGA_CAL_CNTRL1, 0x54),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_VGA_CAL_CNTRL2, 0x0f),
- 	QMP_PHY_INIT_CFG(QSERDES_V5_RX_RX_EQU_ADAPTOR_CNTRL2, 0x0f),
+diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+index 062fe440f5d0..6ccfd9236387 100644
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -308,17 +308,22 @@ static inline void sock_drop(struct sock *sk, struct sk_buff *skb)
+ 	kfree_skb(skb);
+ }
+ 
+-static inline void sk_psock_queue_msg(struct sk_psock *psock,
++static inline bool sk_psock_queue_msg(struct sk_psock *psock,
+ 				      struct sk_msg *msg)
+ {
++	bool ret;
++
+ 	spin_lock_bh(&psock->ingress_lock);
+-	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED))
++	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
+ 		list_add_tail(&msg->list, &psock->ingress_msg);
+-	else {
++		ret = true;
++	} else {
+ 		sk_msg_free(psock->sk, msg);
+ 		kfree(msg);
++		ret = false;
+ 	}
+ 	spin_unlock_bh(&psock->ingress_lock);
++	return ret;
+ }
+ 
+ static inline struct sk_msg *sk_psock_dequeue_msg(struct sk_psock *psock)
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 846fd672f0e5..902098e221b3 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -445,8 +445,10 @@ int sk_msg_recvmsg(struct sock *sk, struct sk_psock *psock, struct msghdr *msg,
+ 			if (likely(!peek)) {
+ 				sge->offset += copy;
+ 				sge->length -= copy;
+-				if (!msg_rx->skb)
++				if (!msg_rx->skb) {
+ 					sk_mem_uncharge(sk, copy);
++					atomic_sub(copy, &sk->sk_rmem_alloc);
++				}
+ 				msg_rx->sg.size -= copy;
+ 
+ 				if (!sge->length) {
+@@ -772,6 +774,8 @@ static void __sk_psock_purge_ingress_msg(struct sk_psock *psock)
+ 
+ 	list_for_each_entry_safe(msg, tmp, &psock->ingress_msg, list) {
+ 		list_del(&msg->list);
++		if (!msg->skb)
++			atomic_sub(msg->sg.size, &psock->sk->sk_rmem_alloc);
+ 		sk_msg_free(psock->sk, msg);
+ 		kfree(msg);
+ 	}
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index a7b5b160d107..f882054fae5e 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -56,6 +56,7 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
+ 		}
+ 
+ 		sk_mem_charge(sk, size);
++		atomic_add(size, &sk->sk_rmem_alloc);
+ 		sk_msg_xfer(tmp, msg, i, size);
+ 		copied += size;
+ 		if (sge->length)
+@@ -74,7 +75,8 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
+ 
+ 	if (!ret) {
+ 		msg->sg.start = i;
+-		sk_psock_queue_msg(psock, tmp);
++		if (!sk_psock_queue_msg(psock, tmp))
++			atomic_sub(copied, &sk->sk_rmem_alloc);
+ 		sk_psock_data_ready(sk, psock);
+ 	} else {
+ 		sk_msg_free(sk, tmp);
+-- 
+2.39.5
+
 
 
 
