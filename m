@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-106320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F849FE7D7
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125B99FE881
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA9B3A18B7
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02E2F188305B
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E31A1ABECA;
-	Mon, 30 Dec 2024 15:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9C2156678;
+	Mon, 30 Dec 2024 15:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EITF5Yd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3g3DZtt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDFC15E8B;
-	Mon, 30 Dec 2024 15:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF2C15E8B;
+	Mon, 30 Dec 2024 15:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573571; cv=none; b=knGSH797c3CA3CXNAP/FlFcdmC/04gjpbn58qSmqjEfw4MVmkiYAi3QymnmWI1YbG2SBqyfg3AcH5vt1v7fmVAzt2JRD3QfnQXfSYU7YLaihLztqo4YWVf2GhXPjs9M1lBbYIYJBrMJH7RTOh3S+2PydcQyC5jxEUcPbs/OkRRQ=
+	t=1735574134; cv=none; b=BH5qbL1aZZVCo1aVvbxEJMCvqCCUfeADOdreMln5tKyGI4qzwnIkJJpL0nA6fxofRev8cLzAHeyv+xkyiH0C/WSIcClQAFfW8gdvShsDdmo/BFFfEPlVG30NIYoVGeUWIuom+yCkzFELiUyZdEDcfaj9xUbupFuQa7WY/QJGT7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573571; c=relaxed/simple;
-	bh=L6UejjBtnnKNkHYBmXSkr+2mkl2NRsYb2/7CPuDzRNk=;
+	s=arc-20240116; t=1735574134; c=relaxed/simple;
+	bh=xPZDu3712V53XkOvYlktHwjZV3QFWLzXdLqE7aXSzck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dGzJr9sG1IhZbMpgXfYOgLPuAdxAmj5eYU1pYoW2xk/il/v0z+8Pkf10xydPU2jfnQKIF6glHzfxrLfBGQ+UrLkJUx5JzpLwGKdEqVyBKFz0DWLscm3azaYjKFhopkURVaPFPZvKDZzyP+WtRPnTyqx6YOwsdWIQFHxTvu6ZBfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EITF5Yd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4122C4CED0;
-	Mon, 30 Dec 2024 15:46:09 +0000 (UTC)
+	 MIME-Version; b=FyMPdzASRrHkiOZgBUiAOBNa+vSiRhj7sFXILlnihDf2lmTk/88OlDxtsVjs2/i/3Ije6acFemTX3wYZUACrShqEVKmFC8Gz14gUp3/drcQsNjFKp+XsRrFynY77B9FlyCQ/QDD9+7OwkS53fQU7bA905gZGQ1BtAH1gJrH9DWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3g3DZtt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45466C4CED0;
+	Mon, 30 Dec 2024 15:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573570;
-	bh=L6UejjBtnnKNkHYBmXSkr+2mkl2NRsYb2/7CPuDzRNk=;
+	s=korg; t=1735574133;
+	bh=xPZDu3712V53XkOvYlktHwjZV3QFWLzXdLqE7aXSzck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2EITF5YdDzZX7FSqayze3awQMVKLKauaQm21ntTBjGjog6+n++G2/s9D2hHShi2pb
-	 mvFfZ62bRzcVfVIg8YTAReKqMkQAUcIRRR/wibeR386X828QZIJ1dwiBRjvW1shwsk
-	 Fb9MZtDKob7fJ4VUdxf81yQSIGhZWSXNTS0WdVCM=
+	b=N3g3DZtt4+BbCA8Qrn7HE8PrNE0B8M/2Q5mhSKz4NqUApkjgb8atuKwuvGNQZa++d
+	 SxXH1eR7Pv0gqk0gKMTUp7cUxNvJOFPx5U7lO5iEceHPE0scSuKJE20jb7eDzvL5hB
+	 bNqbqhvIidj9IcrBwgq//+s7ryPkiSgcan2s1AZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pau Espin Pedrol <pespin@espeweb.net>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	James Hilliard <james.hilliard1@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/60] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
+Subject: [PATCH 6.12 046/114] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
 Date: Mon, 30 Dec 2024 16:42:43 +0100
-Message-ID: <20241230154208.538252709@linuxfoundation.org>
+Message-ID: <20241230154219.831373933@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: James Hilliard <james.hilliard1@gmail.com>
 
-[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
+[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
 
-On the Asus X541UAK an unknown event 0xCF is emited when the charger
-is plugged in. This is caused by the following AML code:
+For the watchdog timer to work properly on the QCML04 board we need to
+set PWRGD enable in the Environment Controller Configuration Registers
+Special Configuration Register 1 when it is not already set, this may
+be the case when the watchdog is not enabled from within the BIOS.
 
-    If (ACPS ())
-    {
-        ACPF = One
-        Local0 = 0x58
-        If (ATKP)
-        {
-            ^^^^ATKD.IANE (0xCF)
-        }
-    }
-    Else
-    {
-        ACPF = Zero
-        Local0 = 0x57
-    }
-
-    Notify (AC0, 0x80) // Status Change
-    If (ATKP)
-    {
-        ^^^^ATKD.IANE (Local0)
-    }
-
-    Sleep (0x64)
-    PNOT ()
-    Sleep (0x0A)
-    NBAT (0x80)
-
-Ignore the 0xCF event to silence the unknown event warning.
-
-Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
-Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index af3da303e2b1..cba515ce3444 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -590,6 +590,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
- 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
- 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
- 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
-+	{ KE_IGNORE, 0xCF, },	/* AC mode */
- 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
- 	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
- 	{ KE_END, 0},
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index 3e8c15138edd..1a5a0a2c3f2e 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -20,6 +20,8 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/bits.h>
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -40,6 +42,7 @@
+ #define VAL		0x2f
+ 
+ /* Logical device Numbers LDN */
++#define EC		0x04
+ #define GPIO		0x07
+ 
+ /* Configuration Registers and Functions */
+@@ -73,6 +76,12 @@
+ #define IT8784_ID	0x8784
+ #define IT8786_ID	0x8786
+ 
++/* Environment Controller Configuration Registers LDN=0x04 */
++#define SCR1		0xfa
++
++/* Environment Controller Bits SCR1 */
++#define WDT_PWRGD	0x20
++
+ /* GPIO Configuration Registers LDN=0x07 */
+ #define WDTCTRL		0x71
+ #define WDTCFG		0x72
+@@ -240,6 +249,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
+ 	return ret;
+ }
+ 
++enum {
++	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
++};
++
++static const struct dmi_system_id it87_quirks[] = {
++	{
++		/* Qotom Q30900P (IT8786) */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
++		},
++		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
++	},
++	{}
++};
++
+ static const struct watchdog_info ident = {
+ 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
+ 	.firmware_version = 1,
+@@ -261,8 +285,10 @@ static struct watchdog_device wdt_dev = {
+ 
+ static int __init it87_wdt_init(void)
+ {
++	const struct dmi_system_id *dmi_id;
+ 	u8  chip_rev;
+ 	u8 ctrl;
++	int quirks = 0;
+ 	int rc;
+ 
+ 	rc = superio_enter();
+@@ -273,6 +299,10 @@ static int __init it87_wdt_init(void)
+ 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
+ 	superio_exit();
+ 
++	dmi_id = dmi_first_match(it87_quirks);
++	if (dmi_id)
++		quirks = (long)dmi_id->driver_data;
++
+ 	switch (chip_type) {
+ 	case IT8702_ID:
+ 		max_units = 255;
+@@ -333,6 +363,15 @@ static int __init it87_wdt_init(void)
+ 		superio_outb(0x00, WDTCTRL);
+ 	}
+ 
++	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
++		superio_select(EC);
++		ctrl = superio_inb(SCR1);
++		if (!(ctrl & WDT_PWRGD)) {
++			ctrl |= WDT_PWRGD;
++			superio_outb(ctrl, SCR1);
++		}
++	}
++
+ 	superio_exit();
+ 
+ 	if (timeout < 1 || timeout > max_units * 60) {
 -- 
 2.39.5
 
