@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-106254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941CF9FE3BB
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 09:35:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935539FE3BC
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 09:38:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B843A1F19
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 08:35:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A126161B75
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 08:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A891A0730;
-	Mon, 30 Dec 2024 08:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BEB1A0B0E;
+	Mon, 30 Dec 2024 08:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e12XRndJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M59SJ7pk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A119F430
-	for <stable@vger.kernel.org>; Mon, 30 Dec 2024 08:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FFA1A08B8
+	for <stable@vger.kernel.org>; Mon, 30 Dec 2024 08:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735547726; cv=none; b=cHRv2mvQg2sUDAsze7hHXwMkEyrV2td49h2GRj3+KNlIg3ocHaSeh8Rgz5aD6Z87aQe2lShMYY0A7wZIhtJ2p9hC9pDGP/Ys5qjbe6nYqdS8Jdb17rNko2zq/yPAeVC5OTO/vTJhNIUlph2WcMIeMJYrpvpxFhY+RK8TVTjRANM=
+	t=1735547886; cv=none; b=RbZaZZTheKOmfvSOu+S2OLQbLL5V6vgvuLuCsWUREg2ZvnFa3ft1ruCFdB5vKrv4cdMJuCx/8E1XOzWqd88zTBX8I1YS9ph4kwnFOLnuDOAkxhGD1v/JsE4SqcFZ0VZGpfIbJw/sUhXoTSn4ktB0AtkXuCyaC2XPvkyerPEgCII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735547726; c=relaxed/simple;
-	bh=RUp63lGfFvpGF4FoRqGJcQ/h2QQL9Idal0Gq2hYMBZA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VrJ9+tzIfbSdtEMMQu0mo5mwgT0tVhHm70viIoDr5qQlRD3KED4yZOOqxJkQlwiirRuy/fSh4D1jiLgBSIyptPh5IsweRfMASkAKeVelZRFf8cJxWw3i7T3FoV5OKy3BGS33u5p+mIQY58/9ZyzV4nbW6vkqSc16AfLWyBCI4tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e12XRndJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E6FC4CED0;
-	Mon, 30 Dec 2024 08:35:25 +0000 (UTC)
+	s=arc-20240116; t=1735547886; c=relaxed/simple;
+	bh=dx3n0i2jb7bWZLetElWA7rTZlIfXXObsZJwRSCvUBa8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fXfvrqyRzlWRbv3A6Bf7DhOEMoBTscH9MsKOYbs8UNXGehuI/UbAMZcB7pQ4V3vS9rowETze9hVvKGUKtn0NR+W2pqqHzMHN4KzsVTn4gUnBxj+PJid6kjt8XVnyomJKQRIzo1hfvJYwgpMr3lxzkKiTCPOdrb6R4Tn04IdPc5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M59SJ7pk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8995DC4CED0;
+	Mon, 30 Dec 2024 08:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735547726;
-	bh=RUp63lGfFvpGF4FoRqGJcQ/h2QQL9Idal0Gq2hYMBZA=;
+	s=korg; t=1735547885;
+	bh=dx3n0i2jb7bWZLetElWA7rTZlIfXXObsZJwRSCvUBa8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=e12XRndJedS2Bx8xILAoT6FM5Hl9ij3kPjWRqK8YnAeyXEEM9fQDyvZo6StVs9eos
-	 EFZi+KC8kRwsW0+2D2p7flJAyiHIOiWm258CvU6WXZJhrUz8/BCIZnuz/QSAeai59V
-	 hU1abPtVDuKU7UrGlv0LOglWzek234Jh0WGwvCcM=
-Subject: FAILED: patch "[PATCH] x86/fred: Clear WFE in missing-ENDBRANCH #CPs" failed to apply to 6.6-stable tree
-To: xin@zytor.com,dave.hansen@linux.intel.com,mingo@kernel.org
+	b=M59SJ7pkr46R3lhHh7UJZbEx19wWtTNpQXTQ6nXCn1CHuWfV3SOhJZJkcaReKwru2
+	 sjs/cHGR7tzfHKMyS+d2mpxIwVLj9aHLrS2E+49jkeKjc8FjYpW2Xs4J0QClf8fHU/
+	 8lt1sUuf4ldpTu4P7wPzhKajedEeQWscWEu1SDWE=
+Subject: FAILED: patch "[PATCH] btrfs: fix swap file activation failure due to extents that" failed to apply to 6.6-stable tree
+To: fdmanana@suse.com,dsterba@suse.com,wqu@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 30 Dec 2024 09:35:23 +0100
-Message-ID: <2024123023-arise-undercook-60f9@gregkh>
+Date: Mon, 30 Dec 2024 09:38:03 +0100
+Message-ID: <2024123002-remedial-drainpipe-efb2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x dc81e556f2a017d681251ace21bf06c126d5a192
+git cherry-pick -x 03018e5d8508254534511d40fb57bc150e6a87f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024123023-arise-undercook-60f9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024123002-remedial-drainpipe-efb2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,97 +77,330 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From dc81e556f2a017d681251ace21bf06c126d5a192 Mon Sep 17 00:00:00 2001
-From: "Xin Li (Intel)" <xin@zytor.com>
-Date: Wed, 13 Nov 2024 09:59:34 -0800
-Subject: [PATCH] x86/fred: Clear WFE in missing-ENDBRANCH #CPs
+From 03018e5d8508254534511d40fb57bc150e6a87f2 Mon Sep 17 00:00:00 2001
+From: Filipe Manana <fdmanana@suse.com>
+Date: Mon, 9 Dec 2024 12:54:14 +0000
+Subject: [PATCH] btrfs: fix swap file activation failure due to extents that
+ used to be shared
 
-An indirect branch instruction sets the CPU indirect branch tracker
-(IBT) into WAIT_FOR_ENDBRANCH (WFE) state and WFE stays asserted
-across the instruction boundary.  When the decoder finds an
-inappropriate instruction while WFE is set ENDBR, the CPU raises a #CP
-fault.
+When activating a swap file, to determine if an extent is shared we use
+can_nocow_extent(), which ends up at btrfs_cross_ref_exist(). That helper
+is meant to be quick because it's used in the NOCOW write path, when
+flushing delalloc and when doing a direct IO write, however it does return
+some false positives, meaning it may indicate that an extent is shared
+even if it's no longer the case. For the write path this is fine, we just
+do a unnecessary COW operation instead of doing a more rigorous check
+which would be too heavy (calling btrfs_is_data_extent_shared()).
 
-For the "kernel IBT no ENDBR" selftest where #CPs are deliberately
-triggered, the WFE state of the interrupted context needs to be
-cleared to let execution continue.  Otherwise when the CPU resumes
-from the instruction that just caused the previous #CP, another
-missing-ENDBRANCH #CP is raised and the CPU enters a dead loop.
+However when activating a swap file, the false positives simply result
+in a failure, which is confusing for users/applications. One particular
+case where this happens is when a data extent only has 1 reference but
+that reference is not inlined in the extent item located in the extent
+tree - this happens when we create more than 33 references for an extent
+and then delete those 33 references plus every other non-inline reference
+except one. The function check_committed_ref() assumes that if the size
+of an extent item doesn't match the size of struct btrfs_extent_item
+plus the size of an inline reference (plus an owner reference in case
+simple quotas are enabled), then the extent is shared - that is not the
+case however, we can have a single reference but it's not inlined - the
+reason we do this is to be fast and avoid inspecting non-inline references
+which may be located in another leaf of the extent tree, slowing down
+write paths.
 
-This is not a problem with IDT because it doesn't preserve WFE and
-IRET doesn't set WFE.  But FRED provides space on the entry stack
-(in an expanded CS area) to save and restore the WFE state, thus the
-WFE state is no longer clobbered, so software must clear it.
+The following test script reproduces the bug:
 
-Clear WFE to avoid dead looping in ibt_clear_fred_wfe() and the
-!ibt_fatal code path when execution is allowed to continue.
+   $ cat test.sh
+   #!/bin/bash
 
-Clobbering WFE in any other circumstance is a security-relevant bug.
+   DEV=/dev/sdi
+   MNT=/mnt/sdi
+   NUM_CLONES=50
 
-[ dhansen: changelog rewording ]
+   umount $DEV &> /dev/null
 
-Fixes: a5f6c2ace997 ("x86/shstk: Add user control-protection fault handler")
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241113175934.3897541-1-xin%40zytor.com
+   run_test()
+   {
+        local sync_after_add_reflinks=$1
+        local sync_after_remove_reflinks=$2
 
-diff --git a/arch/x86/kernel/cet.c b/arch/x86/kernel/cet.c
-index d2c732a34e5d..303bf74d175b 100644
---- a/arch/x86/kernel/cet.c
-+++ b/arch/x86/kernel/cet.c
-@@ -81,6 +81,34 @@ static void do_user_cp_fault(struct pt_regs *regs, unsigned long error_code)
+        mkfs.btrfs -f $DEV > /dev/null
+        #mkfs.xfs -f $DEV > /dev/null
+        mount $DEV $MNT
+
+        touch $MNT/foo
+        chmod 0600 $MNT/foo
+   	# On btrfs the file must be NOCOW.
+        chattr +C $MNT/foo &> /dev/null
+        xfs_io -s -c "pwrite -b 1M 0 1M" $MNT/foo
+        mkswap $MNT/foo
+
+        for ((i = 1; i <= $NUM_CLONES; i++)); do
+            touch $MNT/foo_clone_$i
+            chmod 0600 $MNT/foo_clone_$i
+            # On btrfs the file must be NOCOW.
+            chattr +C $MNT/foo_clone_$i &> /dev/null
+            cp --reflink=always $MNT/foo $MNT/foo_clone_$i
+        done
+
+        if [ $sync_after_add_reflinks -ne 0 ]; then
+            # Flush delayed refs and commit current transaction.
+            sync -f $MNT
+        fi
+
+        # Remove the original file and all clones except the last.
+        rm -f $MNT/foo
+        for ((i = 1; i < $NUM_CLONES; i++)); do
+            rm -f $MNT/foo_clone_$i
+        done
+
+        if [ $sync_after_remove_reflinks -ne 0 ]; then
+            # Flush delayed refs and commit current transaction.
+            sync -f $MNT
+        fi
+
+        # Now use the last clone as a swap file. It should work since
+        # its extent are not shared anymore.
+        swapon $MNT/foo_clone_${NUM_CLONES}
+        swapoff $MNT/foo_clone_${NUM_CLONES}
+
+        umount $MNT
+   }
+
+   echo -e "\nTest without sync after creating and removing clones"
+   run_test 0 0
+
+   echo -e "\nTest with sync after creating clones"
+   run_test 1 0
+
+   echo -e "\nTest with sync after removing clones"
+   run_test 0 1
+
+   echo -e "\nTest with sync after creating and removing clones"
+   run_test 1 1
+
+Running the test:
+
+   $ ./test.sh
+   Test without sync after creating and removing clones
+   wrote 1048576/1048576 bytes at offset 0
+   1 MiB, 1 ops; 0.0017 sec (556.793 MiB/sec and 556.7929 ops/sec)
+   Setting up swapspace version 1, size = 1020 KiB (1044480 bytes)
+   no label, UUID=a6b9c29e-5ef4-4689-a8ac-bc199c750f02
+   swapon: /mnt/sdi/foo_clone_50: swapon failed: Invalid argument
+   swapoff: /mnt/sdi/foo_clone_50: swapoff failed: Invalid argument
+
+   Test with sync after creating clones
+   wrote 1048576/1048576 bytes at offset 0
+   1 MiB, 1 ops; 0.0036 sec (271.739 MiB/sec and 271.7391 ops/sec)
+   Setting up swapspace version 1, size = 1020 KiB (1044480 bytes)
+   no label, UUID=5e9008d6-1f7a-4948-a1b4-3f30aba20a33
+   swapon: /mnt/sdi/foo_clone_50: swapon failed: Invalid argument
+   swapoff: /mnt/sdi/foo_clone_50: swapoff failed: Invalid argument
+
+   Test with sync after removing clones
+   wrote 1048576/1048576 bytes at offset 0
+   1 MiB, 1 ops; 0.0103 sec (96.665 MiB/sec and 96.6651 ops/sec)
+   Setting up swapspace version 1, size = 1020 KiB (1044480 bytes)
+   no label, UUID=916c2740-fa9f-4385-9f06-29c3f89e4764
+
+   Test with sync after creating and removing clones
+   wrote 1048576/1048576 bytes at offset 0
+   1 MiB, 1 ops; 0.0031 sec (314.268 MiB/sec and 314.2678 ops/sec)
+   Setting up swapspace version 1, size = 1020 KiB (1044480 bytes)
+   no label, UUID=06aab1dd-4d90-49c0-bd9f-3a8db4e2f912
+   swapon: /mnt/sdi/foo_clone_50: swapon failed: Invalid argument
+   swapoff: /mnt/sdi/foo_clone_50: swapoff failed: Invalid argument
+
+Fix this by reworking btrfs_swap_activate() to instead of using extent
+maps and checking for shared extents with can_nocow_extent(), iterate
+over the inode's file extent items and use the accurate
+btrfs_is_data_extent_shared().
+
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index b2abc0aa5300..b87f19630b00 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -9799,15 +9799,16 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 	struct btrfs_fs_info *fs_info = root->fs_info;
+ 	struct extent_io_tree *io_tree = &BTRFS_I(inode)->io_tree;
+ 	struct extent_state *cached_state = NULL;
+-	struct extent_map *em = NULL;
+ 	struct btrfs_chunk_map *map = NULL;
+ 	struct btrfs_device *device = NULL;
+ 	struct btrfs_swap_info bsi = {
+ 		.lowest_ppage = (sector_t)-1ULL,
+ 	};
++	struct btrfs_backref_share_check_ctx *backref_ctx = NULL;
++	struct btrfs_path *path = NULL;
+ 	int ret = 0;
+ 	u64 isize;
+-	u64 start;
++	u64 prev_extent_end = 0;
  
- static __ro_after_init bool ibt_fatal = true;
+ 	/*
+ 	 * Acquire the inode's mmap lock to prevent races with memory mapped
+@@ -9846,6 +9847,13 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 		goto out_unlock_mmap;
+ 	}
  
-+/*
-+ * By definition, all missing-ENDBRANCH #CPs are a result of WFE && !ENDBR.
-+ *
-+ * For the kernel IBT no ENDBR selftest where #CPs are deliberately triggered,
-+ * the WFE state of the interrupted context needs to be cleared to let execution
-+ * continue.  Otherwise when the CPU resumes from the instruction that just
-+ * caused the previous #CP, another missing-ENDBRANCH #CP is raised and the CPU
-+ * enters a dead loop.
-+ *
-+ * This is not a problem with IDT because it doesn't preserve WFE and IRET doesn't
-+ * set WFE.  But FRED provides space on the entry stack (in an expanded CS area)
-+ * to save and restore the WFE state, thus the WFE state is no longer clobbered,
-+ * so software must clear it.
-+ */
-+static void ibt_clear_fred_wfe(struct pt_regs *regs)
-+{
-+	/*
-+	 * No need to do any FRED checks.
-+	 *
-+	 * For IDT event delivery, the high-order 48 bits of CS are pushed
-+	 * as 0s into the stack, and later IRET ignores these bits.
-+	 *
-+	 * For FRED, a test to check if fred_cs.wfe is set would be dropped
-+	 * by compilers.
-+	 */
-+	regs->fred_cs.wfe = 0;
-+}
++	path = btrfs_alloc_path();
++	backref_ctx = btrfs_alloc_backref_share_check_ctx();
++	if (!path || !backref_ctx) {
++		ret = -ENOMEM;
++		goto out_unlock_mmap;
++	}
 +
- static void do_kernel_cp_fault(struct pt_regs *regs, unsigned long error_code)
- {
- 	if ((error_code & CP_EC) != CP_ENDBR) {
-@@ -90,6 +118,7 @@ static void do_kernel_cp_fault(struct pt_regs *regs, unsigned long error_code)
+ 	/*
+ 	 * Balance or device remove/replace/resize can move stuff around from
+ 	 * under us. The exclop protection makes sure they aren't running/won't
+@@ -9904,24 +9912,39 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 	isize = ALIGN_DOWN(inode->i_size, fs_info->sectorsize);
  
- 	if (unlikely(regs->ip == (unsigned long)&ibt_selftest_noendbr)) {
- 		regs->ax = 0;
-+		ibt_clear_fred_wfe(regs);
- 		return;
+ 	lock_extent(io_tree, 0, isize - 1, &cached_state);
+-	start = 0;
+-	while (start < isize) {
+-		u64 logical_block_start, physical_block_start;
++	while (prev_extent_end < isize) {
++		struct btrfs_key key;
++		struct extent_buffer *leaf;
++		struct btrfs_file_extent_item *ei;
+ 		struct btrfs_block_group *bg;
+-		u64 len = isize - start;
++		u64 logical_block_start;
++		u64 physical_block_start;
++		u64 extent_gen;
++		u64 disk_bytenr;
++		u64 len;
+ 
+-		em = btrfs_get_extent(BTRFS_I(inode), NULL, start, len);
+-		if (IS_ERR(em)) {
+-			ret = PTR_ERR(em);
++		key.objectid = btrfs_ino(BTRFS_I(inode));
++		key.type = BTRFS_EXTENT_DATA_KEY;
++		key.offset = prev_extent_end;
++
++		ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
++		if (ret < 0)
+ 			goto out;
+-		}
+ 
+-		if (em->disk_bytenr == EXTENT_MAP_HOLE) {
++		/*
++		 * If key not found it means we have an implicit hole (NO_HOLES
++		 * is enabled).
++		 */
++		if (ret > 0) {
+ 			btrfs_warn(fs_info, "swapfile must not have holes");
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+-		if (em->disk_bytenr == EXTENT_MAP_INLINE) {
++
++		leaf = path->nodes[0];
++		ei = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_file_extent_item);
++
++		if (btrfs_file_extent_type(leaf, ei) == BTRFS_FILE_EXTENT_INLINE) {
+ 			/*
+ 			 * It's unlikely we'll ever actually find ourselves
+ 			 * here, as a file small enough to fit inline won't be
+@@ -9933,23 +9956,45 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+-		if (extent_map_is_compressed(em)) {
++
++		if (btrfs_file_extent_compression(leaf, ei) != BTRFS_COMPRESS_NONE) {
+ 			btrfs_warn(fs_info, "swapfile must not be compressed");
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+ 
+-		logical_block_start = extent_map_block_start(em) + (start - em->start);
+-		len = min(len, em->len - (start - em->start));
+-		free_extent_map(em);
+-		em = NULL;
++		disk_bytenr = btrfs_file_extent_disk_bytenr(leaf, ei);
++		if (disk_bytenr == 0) {
++			btrfs_warn(fs_info, "swapfile must not have holes");
++			ret = -EINVAL;
++			goto out;
++		}
+ 
+-		ret = can_nocow_extent(inode, start, &len, NULL, false, true);
++		logical_block_start = disk_bytenr + btrfs_file_extent_offset(leaf, ei);
++		extent_gen = btrfs_file_extent_generation(leaf, ei);
++		prev_extent_end = btrfs_file_extent_end(path);
++
++		if (prev_extent_end > isize)
++			len = isize - key.offset;
++		else
++			len = btrfs_file_extent_num_bytes(leaf, ei);
++
++		backref_ctx->curr_leaf_bytenr = leaf->start;
++
++		/*
++		 * Don't need the path anymore, release to avoid deadlocks when
++		 * calling btrfs_is_data_extent_shared() because when joining a
++		 * transaction it can block waiting for the current one's commit
++		 * which in turn may be trying to lock the same leaf to flush
++		 * delayed items for example.
++		 */
++		btrfs_release_path(path);
++
++		ret = btrfs_is_data_extent_shared(BTRFS_I(inode), disk_bytenr,
++						  extent_gen, backref_ctx);
+ 		if (ret < 0) {
+ 			goto out;
+-		} else if (ret) {
+-			ret = 0;
+-		} else {
++		} else if (ret > 0) {
+ 			btrfs_warn(fs_info,
+ 				   "swapfile must not be copy-on-write");
+ 			ret = -EINVAL;
+@@ -9984,7 +10029,6 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 
+ 		physical_block_start = (map->stripes[0].physical +
+ 					(logical_block_start - map->start));
+-		len = min(len, map->chunk_len - (logical_block_start - map->start));
+ 		btrfs_free_chunk_map(map);
+ 		map = NULL;
+ 
+@@ -10025,20 +10069,16 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 				if (ret)
+ 					goto out;
+ 			}
+-			bsi.start = start;
++			bsi.start = key.offset;
+ 			bsi.block_start = physical_block_start;
+ 			bsi.block_len = len;
+ 		}
+-
+-		start += len;
  	}
  
-@@ -97,6 +126,7 @@ static void do_kernel_cp_fault(struct pt_regs *regs, unsigned long error_code)
- 	if (!ibt_fatal) {
- 		printk(KERN_DEFAULT CUT_HERE);
- 		__warn(__FILE__, __LINE__, (void *)regs->ip, TAINT_WARN, regs, NULL);
-+		ibt_clear_fred_wfe(regs);
- 		return;
- 	}
- 	BUG();
+ 	if (bsi.block_len)
+ 		ret = btrfs_add_swap_extent(sis, &bsi);
+ 
+ out:
+-	if (!IS_ERR_OR_NULL(em))
+-		free_extent_map(em);
+ 	if (!IS_ERR_OR_NULL(map))
+ 		btrfs_free_chunk_map(map);
+ 
+@@ -10053,6 +10093,8 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 
+ out_unlock_mmap:
+ 	up_write(&BTRFS_I(inode)->i_mmap_lock);
++	btrfs_free_backref_share_ctx(backref_ctx);
++	btrfs_free_path(path);
+ 	if (ret)
+ 		return ret;
+ 
 
 
