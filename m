@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-106403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF589FE830
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257769FE7F5
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11EB77A14E5
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DDA11882F09
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FEC1531C4;
-	Mon, 30 Dec 2024 15:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7E81537C8;
+	Mon, 30 Dec 2024 15:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXZ0q/C5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBLcpkd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA5815E8B;
-	Mon, 30 Dec 2024 15:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2102E414;
+	Mon, 30 Dec 2024 15:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573858; cv=none; b=Z2znUKKHBo6NPeQ1fFoxUQoYrpnfuFmn+DE23TXTRBOah8BCFaDo6JjkcMG7pJ/6KHngu0ASiQNCKuCvtrPgohtugiOQKQOgxfX+no4k14nYsWqFPgu1AX6/bnvCNPrlfkQtPFqNdkFZ8mCgvoQvE+ZlffC+3BjhxPB5l5xnMjA=
+	t=1735573667; cv=none; b=A40lSYze7CEjeHpJTEUElq0JCouRkTqonzNQNitL4p+wh4bLBRDb8bQSpy+QWYfGbyhREtsb9COSDnXxYq8n7NZ0l81tNj+NPCbruXF8Cput8Kn1X4JnN3SHeCsTYXfOfd6Ga0v5ltwC1SZuKQcg0fogTNpox1Vz9QHatHyIgZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573858; c=relaxed/simple;
-	bh=0mqz514slea1G/a5ZbJjLxW1Scu9/HPC+yZEjue96H8=;
+	s=arc-20240116; t=1735573667; c=relaxed/simple;
+	bh=QjLWvNg8ZnrQrrFsLjPwphN01vIMjkPiwmE6e8WnJB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObYQB4LXqtdiLkdwFWMmR8pvKwf8lCyvnXWsyILArdmQT1xPdymRAcPf5dXp2S0Xd9hV8VfBV3PkjssLs3sW/JPQ/BygfXGzSmiyboXR8ylfWaZJk3tOBla4WT5SfSmFMb+BomgV+7UUGk1Ntd5EjkHkNCIbhRmFdC6EoCYESLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXZ0q/C5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E6CC4CED0;
-	Mon, 30 Dec 2024 15:50:57 +0000 (UTC)
+	 MIME-Version; b=sIfH9KCM7EnNoHmQ0BfhSM62n4C4doiRge64i8MIEwMvNl9e8CeH4IaG4P29pbGfF09tEFDc+wmRB939njxyhpvRvf/0steZazFoHve6yrDpoJb6k7ZjxT2rOubnSspWqWLWYZg2OmS1zjumqtgU3DDcseTRWjzrTXsjBbutPBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBLcpkd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538C5C4CED0;
+	Mon, 30 Dec 2024 15:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573858;
-	bh=0mqz514slea1G/a5ZbJjLxW1Scu9/HPC+yZEjue96H8=;
+	s=korg; t=1735573667;
+	bh=QjLWvNg8ZnrQrrFsLjPwphN01vIMjkPiwmE6e8WnJB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXZ0q/C5TiwF3wsZfAtXNEoaFpMvUwQBKev+0eKOFHgBul3+Q1RSGUxc99/a5mUsd
-	 bX0XH0RNbAYG3g1F4QmU+Pz6V9Mavb6dGTMsK/aLz6mplPCMk/TL2jkV5dXZQUKwqg
-	 /gJ+We/h3HwNLonJnAyI/S1p6PUB0YMlyNHrwWxY=
+	b=lBLcpkd/zVrvH1NYhB0gWIh6+yoVcVoNtcniKvGXg+3uwMi3M8W83rBBhm/Dunmce
+	 0qtwkghE13htmBkq2/1Hx4K8tQiWgon7wKyGxMq8xWWEpdgwDiMnPYn4dee8G/MVoA
+	 1/gGFcAbyBdDttxlnb5b4YS0sef76kc0PDswG2EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qun-Wei Lin <qun-wei.lin@mediatek.com>,
-	Andrew Yang <andrew.yang@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Casper Li <casper.li@mediatek.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chinwen Chang <chinwen.chang@mediatek.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Wenshan Lan <jetlan9@163.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 54/86] sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 52/60] i2c: microchip-core: actually use repeated sends
 Date: Mon, 30 Dec 2024 16:43:02 +0100
-Message-ID: <20241230154213.773955654@linuxfoundation.org>
+Message-ID: <20241230154209.248926718@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,101 +61,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit fd7b4f9f46d46acbc7af3a439bb0d869efdc5c58 ]
+commit 9a8f9320d67b27ddd7f1ee88d91820197a0e908f upstream.
 
-When CONFIG_KASAN_SW_TAGS and CONFIG_KASAN_STACK are enabled, the
-object_is_on_stack() function may produce incorrect results due to the
-presence of tags in the obj pointer, while the stack pointer does not have
-tags.  This discrepancy can lead to incorrect stack object detection and
-subsequently trigger warnings if CONFIG_DEBUG_OBJECTS is also enabled.
+At present, where repeated sends are intended to be used, the
+i2c-microchip-core driver sends a stop followed by a start. Lots of i2c
+devices must not malfunction in the face of this behaviour, because the
+driver has operated like this for years! Try to keep track of whether or
+not a repeated send is required, and suppress sending a stop in these
+cases.
 
-Example of the warning:
-
-ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1 at lib/debugobjects.c:557 __debug_object_init+0x330/0x364
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc5 #4
-Hardware name: linux,dummy-virt (DT)
-pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __debug_object_init+0x330/0x364
-lr : __debug_object_init+0x330/0x364
-sp : ffff800082ea7b40
-x29: ffff800082ea7b40 x28: 98ff0000c0164518 x27: 98ff0000c0164534
-x26: ffff800082d93ec8 x25: 0000000000000001 x24: 1cff0000c00172a0
-x23: 0000000000000000 x22: ffff800082d93ed0 x21: ffff800081a24418
-x20: 3eff800082ea7bb0 x19: efff800000000000 x18: 0000000000000000
-x17: 00000000000000ff x16: 0000000000000047 x15: 206b63617473206e
-x14: 0000000000000018 x13: ffff800082ea7780 x12: 0ffff800082ea78e
-x11: 0ffff800082ea790 x10: 0ffff800082ea79d x9 : 34d77febe173e800
-x8 : 34d77febe173e800 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : feff800082ea74b8 x4 : ffff800082870a90 x3 : ffff80008018d3c4
-x2 : 0000000000000001 x1 : ffff800082858810 x0 : 0000000000000050
-Call trace:
- __debug_object_init+0x330/0x364
- debug_object_init_on_stack+0x30/0x3c
- schedule_hrtimeout_range_clock+0xac/0x26c
- schedule_hrtimeout+0x1c/0x30
- wait_task_inactive+0x1d4/0x25c
- kthread_bind_mask+0x28/0x98
- init_rescuer+0x1e8/0x280
- workqueue_init+0x1a0/0x3cc
- kernel_init_freeable+0x118/0x200
- kernel_init+0x28/0x1f0
- ret_from_fork+0x10/0x20
----[ end trace 0000000000000000 ]---
-ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
-------------[ cut here ]------------
-
-Link: https://lkml.kernel.org/r/20241113042544.19095-1-qun-wei.lin@mediatek.com
-Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
-Cc: Andrew Yang <andrew.yang@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Casper Li <casper.li@mediatek.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Chinwen Chang <chinwen.chang@mediatek.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Resolve line conflicts ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 64a6f1c4987e ("i2c: add support for microchip fpga i2c controllers")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20241218-football-composure-e56df2461461@spud
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched/task_stack.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-microchip-corei2c.c |  120 ++++++++++++++++++++++-------
+ 1 file changed, 94 insertions(+), 26 deletions(-)
 
-diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
-index f158b025c175..d2117e1c8fa5 100644
---- a/include/linux/sched/task_stack.h
-+++ b/include/linux/sched/task_stack.h
-@@ -8,6 +8,7 @@
+--- a/drivers/i2c/busses/i2c-microchip-corei2c.c
++++ b/drivers/i2c/busses/i2c-microchip-corei2c.c
+@@ -93,27 +93,35 @@
+  * @base:		pointer to register struct
+  * @dev:		device reference
+  * @i2c_clk:		clock reference for i2c input clock
++ * @msg_queue:		pointer to the messages requiring sending
+  * @buf:		pointer to msg buffer for easier use
+  * @msg_complete:	xfer completion object
+  * @adapter:		core i2c abstraction
+  * @msg_err:		error code for completed message
+  * @bus_clk_rate:	current i2c bus clock rate
+  * @isr_status:		cached copy of local ISR status
++ * @total_num:		total number of messages to be sent/received
++ * @current_num:	index of the current message being sent/received
+  * @msg_len:		number of bytes transferred in msg
+  * @addr:		address of the current slave
++ * @restart_needed:	whether or not a repeated start is required after current message
+  */
+ struct mchp_corei2c_dev {
+ 	void __iomem *base;
+ 	struct device *dev;
+ 	struct clk *i2c_clk;
++	struct i2c_msg *msg_queue;
+ 	u8 *buf;
+ 	struct completion msg_complete;
+ 	struct i2c_adapter adapter;
+ 	int msg_err;
++	int total_num;
++	int current_num;
+ 	u32 bus_clk_rate;
+ 	u32 isr_status;
+ 	u16 msg_len;
+ 	u8 addr;
++	bool restart_needed;
+ };
  
- #include <linux/sched.h>
- #include <linux/magic.h>
-+#include <linux/kasan.h>
- 
- #ifdef CONFIG_THREAD_INFO_IN_TASK
- 
-@@ -88,6 +89,7 @@ static inline int object_is_on_stack(const void *obj)
- {
- 	void *stack = task_stack_page(current);
- 
-+	obj = kasan_reset_tag(obj);
- 	return (obj >= stack) && (obj < (stack + THREAD_SIZE));
+ static void mchp_corei2c_core_disable(struct mchp_corei2c_dev *idev)
+@@ -222,6 +230,47 @@ static int mchp_corei2c_fill_tx(struct m
+ 	return 0;
  }
  
--- 
-2.39.5
-
++static void mchp_corei2c_next_msg(struct mchp_corei2c_dev *idev)
++{
++	struct i2c_msg *this_msg;
++	u8 ctrl;
++
++	if (idev->current_num >= idev->total_num) {
++		complete(&idev->msg_complete);
++		return;
++	}
++
++	/*
++	 * If there's been an error, the isr needs to return control
++	 * to the "main" part of the driver, so as not to keep sending
++	 * messages once it completes and clears the SI bit.
++	 */
++	if (idev->msg_err) {
++		complete(&idev->msg_complete);
++		return;
++	}
++
++	this_msg = idev->msg_queue++;
++
++	if (idev->current_num < (idev->total_num - 1)) {
++		struct i2c_msg *next_msg = idev->msg_queue;
++
++		idev->restart_needed = next_msg->flags & I2C_M_RD;
++	} else {
++		idev->restart_needed = false;
++	}
++
++	idev->addr = i2c_8bit_addr_from_msg(this_msg);
++	idev->msg_len = this_msg->len;
++	idev->buf = this_msg->buf;
++
++	ctrl = readb(idev->base + CORE_I2C_CTRL);
++	ctrl |= CTRL_STA;
++	writeb(ctrl, idev->base + CORE_I2C_CTRL);
++
++	idev->current_num++;
++}
++
+ static irqreturn_t mchp_corei2c_handle_isr(struct mchp_corei2c_dev *idev)
+ {
+ 	u32 status = idev->isr_status;
+@@ -247,10 +296,14 @@ static irqreturn_t mchp_corei2c_handle_i
+ 		break;
+ 	case STATUS_M_SLAW_ACK:
+ 	case STATUS_M_TX_DATA_ACK:
+-		if (idev->msg_len > 0)
++		if (idev->msg_len > 0) {
+ 			mchp_corei2c_fill_tx(idev);
+-		else
+-			last_byte = true;
++		} else {
++			if (idev->restart_needed)
++				finished = true;
++			else
++				last_byte = true;
++		}
+ 		break;
+ 	case STATUS_M_TX_DATA_NACK:
+ 	case STATUS_M_SLAR_NACK:
+@@ -287,7 +340,7 @@ static irqreturn_t mchp_corei2c_handle_i
+ 		mchp_corei2c_stop(idev);
+ 
+ 	if (last_byte || finished)
+-		complete(&idev->msg_complete);
++		mchp_corei2c_next_msg(idev);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -311,21 +364,48 @@ static irqreturn_t mchp_corei2c_isr(int
+ 	return ret;
+ }
+ 
+-static int mchp_corei2c_xfer_msg(struct mchp_corei2c_dev *idev,
+-				 struct i2c_msg *msg)
++static int mchp_corei2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
++			     int num)
+ {
+-	u8 ctrl;
++	struct mchp_corei2c_dev *idev = i2c_get_adapdata(adap);
++	struct i2c_msg *this_msg = msgs;
+ 	unsigned long time_left;
++	u8 ctrl;
+ 
+-	idev->addr = i2c_8bit_addr_from_msg(msg);
+-	idev->msg_len = msg->len;
+-	idev->buf = msg->buf;
++	mchp_corei2c_core_enable(idev);
++
++	/*
++	 * The isr controls the flow of a transfer, this info needs to be saved
++	 * to a location that it can access the queue information from.
++	 */
++	idev->restart_needed = false;
++	idev->msg_queue = msgs;
++	idev->total_num = num;
++	idev->current_num = 0;
++
++	/*
++	 * But the first entry to the isr is triggered by the start in this
++	 * function, so the first message needs to be "dequeued".
++	 */
++	idev->addr = i2c_8bit_addr_from_msg(this_msg);
++	idev->msg_len = this_msg->len;
++	idev->buf = this_msg->buf;
+ 	idev->msg_err = 0;
+ 
+-	reinit_completion(&idev->msg_complete);
++	if (idev->total_num > 1) {
++		struct i2c_msg *next_msg = msgs + 1;
+ 
+-	mchp_corei2c_core_enable(idev);
++		idev->restart_needed = next_msg->flags & I2C_M_RD;
++	}
+ 
++	idev->current_num++;
++	idev->msg_queue++;
++
++	reinit_completion(&idev->msg_complete);
++
++	/*
++	 * Send the first start to pass control to the isr
++	 */
+ 	ctrl = readb(idev->base + CORE_I2C_CTRL);
+ 	ctrl |= CTRL_STA;
+ 	writeb(ctrl, idev->base + CORE_I2C_CTRL);
+@@ -335,20 +415,8 @@ static int mchp_corei2c_xfer_msg(struct
+ 	if (!time_left)
+ 		return -ETIMEDOUT;
+ 
+-	return idev->msg_err;
+-}
+-
+-static int mchp_corei2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
+-			     int num)
+-{
+-	struct mchp_corei2c_dev *idev = i2c_get_adapdata(adap);
+-	int i, ret;
+-
+-	for (i = 0; i < num; i++) {
+-		ret = mchp_corei2c_xfer_msg(idev, msgs++);
+-		if (ret)
+-			return ret;
+-	}
++	if (idev->msg_err)
++		return idev->msg_err;
+ 
+ 	return num;
+ }
 
 
 
