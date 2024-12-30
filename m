@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-106525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063C29FE8B3
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:58:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D609FE7DE
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4191883244
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:58:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18FC31623FA
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E35E1A2550;
-	Mon, 30 Dec 2024 15:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5811A9B54;
+	Mon, 30 Dec 2024 15:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwLnoRx0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmIz2+2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA3515E8B;
-	Mon, 30 Dec 2024 15:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4244A1531C4;
+	Mon, 30 Dec 2024 15:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574280; cv=none; b=STAThTpTX5fNc/W4Heg6/fZ/3o1aCrhFOoygM6gI3SQHvPfZcdQ9J/Pa20fhxPPEeaQFej+g5fcA3nuOLXjj2N3Si74tpeVq4Em0eh+g1ka1bd2bWF7rTA2B15pM2yFMPs/Kf6PplbNbVdMAcHMXHHX3VSXydn8GGUtR37EmvOU=
+	t=1735573587; cv=none; b=X/JPcl8Yc9y25gOTrXxogq3VeRiIC8WI5Kndo5rgU5VZdrijdrvk5Zx79lehtyiTlOiJi/kCM1mZdd4DMKEF2j02lif+VXB9zC6NmXGHOSG3wdYLb+3AcNuiHFkj7vdkLillDH+BawNWz+NEAIMgYdb6Pudz4rgs7Pn78wg3nFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574280; c=relaxed/simple;
-	bh=rdcBR4818dthyo0KhnDi6ZZRhSaFhHahUz6+7ZW5TOc=;
+	s=arc-20240116; t=1735573587; c=relaxed/simple;
+	bh=JQTYv2uAy9GFTC+16VobO2OYfPDXZuN+YPD7iVektBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RaxL9bn/3vkFQvWiRp4jUgn46dsREYHnbb3KAyUu883Dd8bZPzEky274smlo+l9oMsSTJi3PnQOY2zdbvoI+hg4NkZ1pM0wv93yLO/+g7IAH1rNKhjL2MC0URe0t00ljuoLtRoY2ikOaMq7tomRFcsYUD6s7rYhK3ymDxstmOww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwLnoRx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECD1C4CED0;
-	Mon, 30 Dec 2024 15:57:59 +0000 (UTC)
+	 MIME-Version; b=QsJhzWd90T1y2gTKB/yFetyI+a1jBwLW5T+B3nwf6l52C3BRyrbytMMVBh01Nmj3k+DHQQrFD55elKBXwuASNKqFPWL05gPamF/qWEOJbrneyQLb3g3qq2YQYSz73nuE5Abb7wQ0+MVtjmZT8d3/hzlgYcoXIk5Y10OBryuS62M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmIz2+2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E43C4CED0;
+	Mon, 30 Dec 2024 15:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574279;
-	bh=rdcBR4818dthyo0KhnDi6ZZRhSaFhHahUz6+7ZW5TOc=;
+	s=korg; t=1735573587;
+	bh=JQTYv2uAy9GFTC+16VobO2OYfPDXZuN+YPD7iVektBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AwLnoRx0dO2PPQGrp4og//2MVrhFX58ceypw7pDhfxJ0TYJQrEw22q5DY6iYgdvJk
-	 tueqjUfp8UxdXO8c86yIYr81Aw6563gEBJMPZ3dYMlQBm4Ek8+DBgqjVWZcywjNj6P
-	 jahrPu/otzgaIvlEbRPHTUB8iPyKdYm0TBjkfBtk=
+	b=FmIz2+2taR562D+oLldvg2G0LJrgoZpC7ZU083jV+0eC0MzXrWHwyMtCgw6A+c2qo
+	 teixvb0/9k2zW2P9291eSQ1w/URIcUetLa0soLTVsjDEm4rcLeorY3g/8lIbChb/zs
+	 WevYP3ZIHLMcVNTCuXzBc/09Ln9IDL9Y1w2jLfM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yi Sun <yi.sun@unisoc.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux.dev,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/114] scsi: qla1280: Fix hw revision numbering for ISP1020/1040
+Subject: [PATCH 6.1 37/60] virtio-blk: dont keep queue frozen during system suspend
 Date: Mon, 30 Dec 2024 16:42:47 +0100
-Message-ID: <20241230154219.984029435@linuxfoundation.org>
+Message-ID: <20241230154208.688779495@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +68,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit c064de86d2a3909222d5996c5047f64c7a8f791b ]
+[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
 
-Fix the hardware revision numbering for Qlogic ISP1020/1040 boards.  HWMASK
-suggests that the revision number only needs four bits, this is consistent
-with how NetBSD does things in their ISP driver. Verified on a IPS1040B
-which is seen as rev 5 not as BIT_4.
+Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
+deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
+PM callbacks. And the motivation is to drain inflight IOs before suspending.
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20241113225636.2276-1-linmag7@gmail.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+block layer's queue freeze looks very handy, but it is also easy to cause
+deadlock, such as, any attempt to call into bio_queue_enter() may run into
+deadlock if the queue is frozen in current context. There are all kinds
+of ->suspend() called in suspend context, so keeping queue frozen in the
+whole suspend context isn't one good idea. And Marek reported lockdep
+warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
+
+[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
+
+Given the motivation is to drain in-flight IOs, it can be done by calling
+freeze & unfreeze, meantime restore to previous behavior by keeping queue
+quiesced during suspend.
+
+Cc: Yi Sun <yi.sun@unisoc.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla1280.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/block/virtio_blk.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/qla1280.h b/drivers/scsi/qla1280.h
-index d309e2ca14de..dea2290b37d4 100644
---- a/drivers/scsi/qla1280.h
-+++ b/drivers/scsi/qla1280.h
-@@ -116,12 +116,12 @@ struct device_reg {
- 	uint16_t id_h;		/* ID high */
- 	uint16_t cfg_0;		/* Configuration 0 */
- #define ISP_CFG0_HWMSK   0x000f	/* Hardware revision mask */
--#define ISP_CFG0_1020    BIT_0	/* ISP1020 */
--#define ISP_CFG0_1020A	 BIT_1	/* ISP1020A */
--#define ISP_CFG0_1040	 BIT_2	/* ISP1040 */
--#define ISP_CFG0_1040A	 BIT_3	/* ISP1040A */
--#define ISP_CFG0_1040B	 BIT_4	/* ISP1040B */
--#define ISP_CFG0_1040C	 BIT_5	/* ISP1040C */
-+#define ISP_CFG0_1020	 1	/* ISP1020 */
-+#define ISP_CFG0_1020A	 2	/* ISP1020A */
-+#define ISP_CFG0_1040	 3	/* ISP1040 */
-+#define ISP_CFG0_1040A	 4	/* ISP1040A */
-+#define ISP_CFG0_1040B	 5	/* ISP1040B */
-+#define ISP_CFG0_1040C	 6	/* ISP1040C */
- 	uint16_t cfg_1;		/* Configuration 1 */
- #define ISP_CFG1_F128    BIT_6  /* 128-byte FIFO threshold */
- #define ISP_CFG1_F64     BIT_4|BIT_5 /* 128-byte FIFO threshold */
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 28644729dc97..0ba56caa41ef 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -1201,9 +1201,12 @@ static void virtblk_remove(struct virtio_device *vdev)
+ static int virtblk_freeze(struct virtio_device *vdev)
+ {
+ 	struct virtio_blk *vblk = vdev->priv;
++	struct request_queue *q = vblk->disk->queue;
+ 
+ 	/* Ensure no requests in virtqueues before deleting vqs. */
+-	blk_mq_freeze_queue(vblk->disk->queue);
++	blk_mq_freeze_queue(q);
++	blk_mq_quiesce_queue_nowait(q);
++	blk_mq_unfreeze_queue(q);
+ 
+ 	/* Ensure we don't receive any more interrupts */
+ 	virtio_reset_device(vdev);
+@@ -1227,8 +1230,8 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 		return ret;
+ 
+ 	virtio_device_ready(vdev);
++	blk_mq_unquiesce_queue(vblk->disk->queue);
+ 
+-	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
+ }
+ #endif
 -- 
 2.39.5
 
