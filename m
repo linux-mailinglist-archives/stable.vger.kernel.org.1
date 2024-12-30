@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5578C9FE7BD
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:44:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2EB9FE88A
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 484EC1882ECC
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:44:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94BD41883110
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC801AA1E0;
-	Mon, 30 Dec 2024 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5651531C4;
+	Mon, 30 Dec 2024 15:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXQb2cuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6SXk557"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F0E126C13;
-	Mon, 30 Dec 2024 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACED215E8B;
+	Mon, 30 Dec 2024 15:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573489; cv=none; b=lKTKqK/5Dbtr3pGC88s6KXg0YmcEDWy95MG8hsGLQC4wFzcD4CuZTNCh8lHL0u4RsCm7eMaWzgWV/wBsa1ck5zg4l8gx6mwpNiFNCOTWVTFT8XhA3dSVAy2wa9LwEAEJAR+P4czdvG/bhQfy/Nztz+srHS8dillPfpCMw2hpmG0=
+	t=1735574164; cv=none; b=cNWJVOcoHSWEoHe+HVgrAJ0sHBRuNA3bnV9kQQNjW3XWPVj8056Nu93FCdtfxSEC52a+977j6O5Jx3ZuO/19eB/htu1VK5Lfb6CCu++V8Ib4gz3TlXtb1gnh1pWSkNR09wRwrFyDUnbCRLhwJAG8qrGRjg7ehla4QuH82Ky8WPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573489; c=relaxed/simple;
-	bh=n0fXD71yr9wGPcqQx8/ec+KDmxHU6bSKmoHjhoDgyaI=;
+	s=arc-20240116; t=1735574164; c=relaxed/simple;
+	bh=RrGOu+t+Kiih6f+Rj0LnP8XU88JiDLs7tmkyUBmsD1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4lMBcfjY/WQierpaRBhdwG+Ec0auhXtFBpkhiPpSE/Y6Nqq30eeMePkoI+WoRnI6iWZgm3VMyQDPNu9oz5jp/N2iPq8wYoscXDPoiQS0fOrOiRn3WVLIu5iP0o07L4pxkIGNcxTlBsjTU9FbRdvVg7oi3wjl1mCfwxCOpdCk3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXQb2cuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7148DC4CED0;
-	Mon, 30 Dec 2024 15:44:48 +0000 (UTC)
+	 MIME-Version; b=e7wDX7cE6uSmi9An4HPlYADNId5ARoJOErLDyDYPQ988yl75hA4DPPgPuk11uY6jJ90t5+ovPaHwaYavUDgfWOPIi2YpzN4v0PS1dmJKsTiEkRAoGi2zRGyxO7CwN4jiKlQE92u0a5fVzKjGzBms5VomHKasvTL8B+UdEJIdLio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6SXk557; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B4AC4CED0;
+	Mon, 30 Dec 2024 15:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573488;
-	bh=n0fXD71yr9wGPcqQx8/ec+KDmxHU6bSKmoHjhoDgyaI=;
+	s=korg; t=1735574164;
+	bh=RrGOu+t+Kiih6f+Rj0LnP8XU88JiDLs7tmkyUBmsD1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXQb2cuDM3dhVLYDUJrKoGhfygtsZOvluF4/qz6nH26OXnPY61cm+ri8zfJmd88hl
-	 RIquMimJQ8IvOq5WKyvKN7GxhRNQaLh9Q1N0HTbiBg5VNHZs82+Z0HbZcdCzmmwC0M
-	 Psmc4YJmiZBIoPAdmS+I+zqBAv7fUlTOLxKWozqI=
+	b=Q6SXk557j8YbTzY6wH5cPoB3tAb+i+G9OwlXaFIAj5z6Y5WQhZKiZt+0M5tnFRB+n
+	 5f0dh7b2hESw33cTjQxN/GLwxAYTs7onS9sD9UbNU11kHq3xjxua8SdKB2FULH4uE2
+	 4xhfaLFRRwm1E3PshGmiUmF18qhzAvQg2n0aD1fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 11/60] phy: core: Fix an OF node refcount leakage in _of_phy_get()
-Date: Mon, 30 Dec 2024 16:42:21 +0100
-Message-ID: <20241230154207.714995265@linuxfoundation.org>
+Subject: [PATCH 6.12 025/114] phy: rockchip: samsung-hdptx: Set drvdata before enabling runtime PM
+Date: Mon, 30 Dec 2024 16:42:22 +0100
+Message-ID: <20241230154219.030500309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 5ebdc6be16c2000e37fcb8b4072d442d268ad492 upstream.
+commit 9d23e48654620fdccfcc74cc2cef04eaf7353d07 upstream.
 
-_of_phy_get() will directly return when suffers of_device_is_compatible()
-error, but it forgets to decrease refcount of OF node @args.np before error
-return, the refcount was increased by previous of_parse_phandle_with_args()
-so causes the OF node's refcount leakage.
+In some cases, rk_hdptx_phy_runtime_resume() may be invoked before
+platform_set_drvdata() is executed in ->probe(), leading to a NULL
+pointer dereference when using the return of dev_get_drvdata().
 
-Fix by decreasing the refcount via of_node_put() before the error return.
+Ensure platform_set_drvdata() is called before devm_pm_runtime_enable().
 
-Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
-Cc: stable@vger.kernel.org
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-4-40ae28f5015a@quicinc.com
+Reported-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241023-phy-sam-hdptx-rpm-fix-v1-1-87f4c994e346@collabora.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/phy-core.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -575,8 +575,10 @@ static struct phy *_of_phy_get(struct de
- 		return ERR_PTR(-ENODEV);
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -1116,6 +1116,8 @@ static int rk_hdptx_phy_probe(struct pla
+ 		return dev_err_probe(dev, PTR_ERR(hdptx->grf),
+ 				     "Could not get GRF syscon\n");
  
- 	/* This phy type handled by the usb-phy subsystem for now */
--	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
--		return ERR_PTR(-ENODEV);
-+	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
-+		phy = ERR_PTR(-ENODEV);
-+		goto out_put_node;
-+	}
++	platform_set_drvdata(pdev, hdptx);
++
+ 	ret = devm_pm_runtime_enable(dev);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to enable runtime PM\n");
+@@ -1125,7 +1127,6 @@ static int rk_hdptx_phy_probe(struct pla
+ 		return dev_err_probe(dev, PTR_ERR(hdptx->phy),
+ 				     "Failed to create HDMI PHY\n");
  
- 	mutex_lock(&phy_provider_mutex);
- 	phy_provider = of_phy_provider_lookup(args.np);
-@@ -598,6 +600,7 @@ out_put_module:
+-	platform_set_drvdata(pdev, hdptx);
+ 	phy_set_drvdata(hdptx->phy, hdptx);
+ 	phy_set_bus_width(hdptx->phy, 8);
  
- out_unlock:
- 	mutex_unlock(&phy_provider_mutex);
-+out_put_node:
- 	of_node_put(args.np);
- 
- 	return phy;
 
 
 
