@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-106548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB579FE8CA
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF699FE842
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30F457A1777
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:59:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D3987A0F39
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9E915748F;
-	Mon, 30 Dec 2024 15:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D68537E9;
+	Mon, 30 Dec 2024 15:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/jpDm8f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6/Xu1Lw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1EB15E8B;
-	Mon, 30 Dec 2024 15:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BD215E8B;
+	Mon, 30 Dec 2024 15:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574355; cv=none; b=Kk7Elrc6OBe8iz3X4mI/i4fT7qdLmHLxqp0gTRD8WBb+M1fr4wQt5wVIX+c1lBLhDD+l8Qz+3kA7NQEfv4+A5Vb/ajD/j/I2UJMNBj2Lb6URb08YFEJzmt2kABrCGr6z5SPgF6s8WMVBtf3ExYWBMcxlOqW4c+0tHeRzf/DW2As=
+	t=1735573921; cv=none; b=dUSIn4pb2TGQuGtGSJr8HcoK/pR1wUSlxbTP2zSIaaQ8L77Hmma3Ow63rA9vOqVWr1JXL3dpJ3uqrTm2XBQfz85hvGmAQidlnBlNYKK/CdtZ28CzHQCqWJ+9E1z8aie63kuOzMcluLiRhV0YS5XzXuFICUHK10bbDY0i2/QUtcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574355; c=relaxed/simple;
-	bh=ld7rM/4IB9rEIm5lufNyrbZ6ACTXi5vZ9ivlcBAcg/U=;
+	s=arc-20240116; t=1735573921; c=relaxed/simple;
+	bh=H47To27T+A3NBjVJUtRjc4whAzqBx1F7Zru3EbZuzM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t/I3vpxBIgmdSRlcFJf5b4WdEuuRe5jixQtuLADXQhJE8RKDZVOtsHbEnRpb1ktzuorsOYaqLaFPysInhdKUoWgDNT8Y6tBQWQLIKslf1i7xqu4YVT6iBW3F4mvWozWI8sE63VZYAphZoAib68CSZMi6XdFouxkZSoV3cClp8Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/jpDm8f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C0BC4CED0;
-	Mon, 30 Dec 2024 15:59:14 +0000 (UTC)
+	 MIME-Version; b=iDnC22XRcfDdOV/rLMqX3kerJOjY96fae5JoPex3iOreHZ5x7Df8BRhs7zZzCAv2ieXVH1PEb688KUmQGCkUEXZ5EjpuiEfbnUqHvjhG7mvv6Rg8h+knTfyCwEtEsnpqM4vrdz1nGPlvdEIhLPAm+fxZBam1SWeBblUAyjWaJoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6/Xu1Lw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3374DC4CED0;
+	Mon, 30 Dec 2024 15:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574354;
-	bh=ld7rM/4IB9rEIm5lufNyrbZ6ACTXi5vZ9ivlcBAcg/U=;
+	s=korg; t=1735573921;
+	bh=H47To27T+A3NBjVJUtRjc4whAzqBx1F7Zru3EbZuzM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/jpDm8fRr5ubrR01C9OQ4iQs6DWNiaV8/kkrqTnMQMp2T3ars4QJEwP+suTwnHP4
-	 GBWhkeRRRe7cakd2sU1DZ1rZRLrwJjEExzZ0aonZX7JcTM0UdCWHtFBdGJ0bkXzY5Y
-	 MHvcbYA5NiqiL5MOyzJ8eHbDatTpSX++8f+q96lg=
+	b=n6/Xu1LwSqh5hQCYxEDf60TMjLunsX7mfxB14VJAYEYUBrJDm/3WgmouWqcKz8DED
+	 Pd1OlXQ4KABvIIiz+JBeec7i/QHBsEI4FZtUFr9rPFuDAghUXxot1EptPrwZlBmzi0
+	 ZofVJ6mEj6Ku/0TkCDy2reVpeMz64AlIKS0Z7HU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 085/114] tracing: Constify string literal data member in struct trace_event_call
+Subject: [PATCH 6.6 74/86] tracing: Prevent bad count for tracing_cpumask_write
 Date: Mon, 30 Dec 2024 16:43:22 +0100
-Message-ID: <20241230154221.362324852@linuxfoundation.org>
+Message-ID: <20241230154214.522297038@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-commit 452f4b31e3f70a52b97890888eeb9eaa9a87139a upstream.
+commit 98feccbf32cfdde8c722bc4587aaa60ee5ac33f0 upstream.
 
-The name member of the struct trace_event_call is assigned with
-generated string literals; declare them pointer to read-only.
-
-Reported by clang:
-
-    security/landlock/syscalls.c:179:1: warning: initializing 'char *' with an expression of type 'const char[34]' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
-      179 | SYSCALL_DEFINE3(landlock_create_ruleset,
-          | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      180 |                 const struct landlock_ruleset_attr __user *const, attr,
-          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      181 |                 const size_t, size, const __u32, flags)
-          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ./include/linux/syscalls.h:226:36: note: expanded from macro 'SYSCALL_DEFINE3'
-      226 | #define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)
-          |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ./include/linux/syscalls.h:234:2: note: expanded from macro 'SYSCALL_DEFINEx'
-      234 |         SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ./include/linux/syscalls.h:184:2: note: expanded from macro 'SYSCALL_METADATA'
-      184 |         SYSCALL_TRACE_ENTER_EVENT(sname);                       \
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ./include/linux/syscalls.h:151:30: note: expanded from macro 'SYSCALL_TRACE_ENTER_EVENT'
-      151 |                         .name                   = "sys_enter"#sname,    \
-          |                                                   ^~~~~~~~~~~~~~~~~
+If a large count is provided, it will trigger a warning in bitmap_parse_user.
+Also check zero for it.
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Mickaël Salaün <mic@digikod.net>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/20241125105028.42807-1-cgoettsche@seltendoof.de
-Fixes: b77e38aa240c3 ("tracing: add event trace infrastructure")
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Fixes: 9e01c1b74c953 ("cpumask: convert kernel trace functions")
+Link: https://lore.kernel.org/20241216073238.2573704-1-lizhi.xu@windriver.com
+Reported-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0aecfd34fb878546f3fd
+Tested-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/trace_events.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -379,7 +379,7 @@ struct trace_event_call {
- 	struct list_head	list;
- 	struct trace_event_class *class;
- 	union {
--		char			*name;
-+		const char		*name;
- 		/* Set TRACE_EVENT_FL_TRACEPOINT flag when using "tp" */
- 		struct tracepoint	*tp;
- 	};
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -5331,6 +5331,9 @@ tracing_cpumask_write(struct file *filp,
+ 	cpumask_var_t tracing_cpumask_new;
+ 	int err;
+ 
++	if (count == 0 || count > KMALLOC_MAX_SIZE)
++		return -EINVAL;
++
+ 	if (!zalloc_cpumask_var(&tracing_cpumask_new, GFP_KERNEL))
+ 		return -ENOMEM;
+ 
 
 
 
