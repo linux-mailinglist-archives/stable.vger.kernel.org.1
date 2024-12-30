@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-106524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A1D9FE8B2
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 334179FE7E7
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF3603A271C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BA681882EEF
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072AC156678;
-	Mon, 30 Dec 2024 15:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D6714F136;
+	Mon, 30 Dec 2024 15:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Exqi0Ri+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQHXzPff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B945C15E8B;
-	Mon, 30 Dec 2024 15:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316442594B6;
+	Mon, 30 Dec 2024 15:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574276; cv=none; b=lo/9u0KqklgkXvnA8o+lceWCbY5spD8BL6B8x+Ckvi23YM6EYNU5p3tR2WYbcKGO4n5eCCdmqYliA8DXwwG3ZgYfFsqq2w4r6mgysCihO/00vyGXTdP5cqW2n2BnTXikS2hSNJhMMljj2nVYQJNhViQEVCG9FX7d0oLXgcqPhu0=
+	t=1735573617; cv=none; b=moph935LdugQvvmLGy8wdcu09mkZQqncQxu2jv3k/SbZZ8X7GfzgMxHVGvIaeOCycX6Nw+FfvIo+gBIAlOQRXJ+qJ4z0STdwagFPKIjkmubNA+xSJfiB7QkveayRzsFCSW44wtP5vlcIMd9zKvyMbQtJ2OVEzyxvdZtPJLTDQ6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574276; c=relaxed/simple;
-	bh=JP/x5QOFzz1Z/8ZDHzVyBPK1/7hmW+tRPu8SM3nYwGI=;
+	s=arc-20240116; t=1735573617; c=relaxed/simple;
+	bh=YBKW+OGzL/hUdFrpeDXM8dWnr0tUKtWG3sd1LozB2fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPD1D5qHfUK4RRaeaZ70Xmw0yXb/PWVzt6DEnzgvnvnQ6LVJQ6W2F4qFecd9mxxZ39MrohDyRmULH5jxg4BCGBI1TMrukZrrT0jetcea0jpS67b8oD3qr6ziH6DbCFztr0EYgJA18NQBMJdDOsEmop0cnSfshKNfYkvlDJDP0hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Exqi0Ri+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204DDC4CED0;
-	Mon, 30 Dec 2024 15:57:55 +0000 (UTC)
+	 MIME-Version; b=uNXR2Tq1iFYxxajBfjbTae/2N14doHzE2smS/ni0jlC3TzEN7FECYygCDiprgHm8481unG+cKffvSzS3SOKvaRiqHadXDlBEGB/oKi6u+TC2EdCbQgvV72OzPOFElDvr/Lcv1JsTPYiVKt1gWzWIjwP4lICS8mBYtCFImZO5+QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQHXzPff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D64C4CED0;
+	Mon, 30 Dec 2024 15:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574276;
-	bh=JP/x5QOFzz1Z/8ZDHzVyBPK1/7hmW+tRPu8SM3nYwGI=;
+	s=korg; t=1735573616;
+	bh=YBKW+OGzL/hUdFrpeDXM8dWnr0tUKtWG3sd1LozB2fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Exqi0Ri+dYA91skgWnZMLW1tsIhbF1VohxtI56sbgbMjuwsmrGoO+HSU/QPzXB7um
-	 EwT5HZwIA+v2lRmCq/Uu4pQEkkURh3JKQlT0ELxP1LFkvRolXqlkwJlmDPJ0sZicJI
-	 VBtxkwZBmJa++LqycN2Wu7mlpOKU0PX1VQTkoQCA=
+	b=DQHXzPff+tInSMbKGc+8e0hV1JWS9EspFUvVH7C/Duys4kebuzLm3h+hPl9A9/Jav
+	 lG+m7Nxx/Ah/FReZOXzwiY5aLkJfeZD4WgUftzOeH2tZvUfn6HLy8uyMTyfaog0cUi
+	 6fUVNtDKHYeHT6YEGxifQ9NfXvbmo9IiPm0ftRpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/114] smb: server: Fix building with GCC 15
+Subject: [PATCH 6.1 46/60] pmdomain: core: Add missing put_device()
 Date: Mon, 30 Dec 2024 16:42:56 +0100
-Message-ID: <20241230154220.363752554@linuxfoundation.org>
+Message-ID: <20241230154209.021648643@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit e18655cf35a5958fbf4ae9ca3ebf28871a3a1801 ]
+[ Upstream commit b8f7bbd1f4ecff6d6277b8c454f62bb0a1c6dbe4 ]
 
-GCC 15 introduces -Werror=unterminated-string-initialization by default,
-this results in the following build error
+When removing a genpd we don't clean up the genpd->dev correctly. Let's add
+the missing put_device() in genpd_free_data() to fix this.
 
-fs/smb/server/smb_common.c:21:35: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-ini
-tialization]
-   21 | static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-
-To this we are replacing char basechars[43] with a character pointer
-and then using strlen to get the length.
-
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 401ea1572de9 ("PM / Domain: Add struct device to genpd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Message-ID: <20241122134207.157283-2-ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb_common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/power/domain.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index 75b4eb856d32..af8e24163bf2 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -18,8 +18,8 @@
- #include "mgmt/share_config.h"
+diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
+index e01bb359034b..3c44b0313a10 100644
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -2012,6 +2012,7 @@ static int genpd_alloc_data(struct generic_pm_domain *genpd)
  
- /*for shortname implementation */
--static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
--#define MANGLE_BASE (sizeof(basechars) / sizeof(char) - 1)
-+static const char *basechars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
-+#define MANGLE_BASE (strlen(basechars) - 1)
- #define MAGIC_CHAR '~'
- #define PERIOD '.'
- #define mangle(V) ((char)(basechars[(V) % MANGLE_BASE]))
+ static void genpd_free_data(struct generic_pm_domain *genpd)
+ {
++	put_device(&genpd->dev);
+ 	if (genpd_is_cpu_domain(genpd))
+ 		free_cpumask_var(genpd->cpus);
+ 	if (genpd->free_states)
 -- 
 2.39.5
 
