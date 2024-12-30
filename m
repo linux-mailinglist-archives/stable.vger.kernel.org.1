@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474659FE817
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5359FE882
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08B2316099B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35E211883119
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6756537E9;
-	Mon, 30 Dec 2024 15:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847F042AA6;
+	Mon, 30 Dec 2024 15:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJKtKWOW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcEJcwcY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DB815E8B;
-	Mon, 30 Dec 2024 15:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D4215E8B;
+	Mon, 30 Dec 2024 15:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573785; cv=none; b=rY4nHKR9JUZpv+FgfeJ/eBFFzbfNqBuMhC4Mn6y6L8fk1+e7TImCW/21Tt3HxwSXAMVl3oAHNMFifp3KL5Mvjpnd2IruCxsKhvQFIkyqK+Ser4quUzUXg1N0tB73A+XrIrkBq6z7Ps8A81865Rm15fi1VmK++sZ5WfDyuamWxac=
+	t=1735574137; cv=none; b=NV5kjhtAA6qTtvR5jLbHPx6lsoStTYkWdKU5YZ6eU0oGnNOOdXOO+7m1FAEV7zdfecN/LExXQhmat25hRurkc4r4hSuOBGYirXO87F3t5SzR9GFeweOcdedVJvZGerk+C/qHOiTiVFSjTZWkYyMNXU6drXFgsONLyZAsaG/9PBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573785; c=relaxed/simple;
-	bh=QUETmkJkJh9/gyMWjwNK6k2HdH8ymU4B3Y8OaCP9JCM=;
+	s=arc-20240116; t=1735574137; c=relaxed/simple;
+	bh=ZWEY+JlXGwZQMsyYv6JO8z+x9qwArBcvcZhTWekbcy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwOe9UUmBAR84xruPiU3CzZOzf2wy2sNVkkJJlA1B0+gAcV/Wa0wVKLdZglXBu1GjyPLAYzOrMRNx9qY2X/50mz8PCdbxMoc+gC//D1kJL6Yc3NBqUKeISeNLIMCY2ME2Bs+nI1lhkfKHwO4R2Pc3/iVfbItl7xaMs3le7cSDT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJKtKWOW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169ECC4CED0;
-	Mon, 30 Dec 2024 15:49:44 +0000 (UTC)
+	 MIME-Version; b=A6sL32GXWNCt+OOgUaRy3RodeeT6lRzIWv+IbKP3rq7R5TRietvVZWYfcEy6Z3n2wH6BUGXPuKGQXvhG0bd+3bu5Jn4lh1D/LEMhvveYKXH8lJt5QPDMR+9QMt0LsEkz+LHUfuQILKEkuTQTflco3agXkz1WIVN4wBtSJ/XGcTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcEJcwcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB9AC4CED0;
+	Mon, 30 Dec 2024 15:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573785;
-	bh=QUETmkJkJh9/gyMWjwNK6k2HdH8ymU4B3Y8OaCP9JCM=;
+	s=korg; t=1735574137;
+	bh=ZWEY+JlXGwZQMsyYv6JO8z+x9qwArBcvcZhTWekbcy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UJKtKWOWpoXvvSgPrND2Tv92OliEWwPtgDRStngOpNamu2rY9M3ulrQ9fxUaOaY/O
-	 9J0Y4zhO6swCV1wYpnQvHn/tpSicjbwEGfYjj6QL2MbquDmKQJQ5HJvzzz5bE/x5pq
-	 ATLDOOvy1OhEaF7YCDBck8/uMY93OQnOWh4oKmsw=
+	b=mcEJcwcYh5TUhCW0vlQKLu+jIJuW0x+k9+DojGpwydO0v1Q/dWLyoChWxmHBeCGCM
+	 bi3CkYk4hEkbZwIgJfcw54Of+rumNPfPqn66Z3QsAfmCSTZbeX4ZqEFIZeD3WAX7sY
+	 +zJyhsEuywXrD9x1cL1goRKTv4kypBb3mEDdAMMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <cong.wang@bytedance.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 08/86] bpf: Check negative offsets in __bpf_skb_min_len()
-Date: Mon, 30 Dec 2024 16:42:16 +0100
-Message-ID: <20241230154212.032708953@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 020/114] phy: core: Fix an OF node refcount leakage in of_phy_provider_lookup()
+Date: Mon, 30 Dec 2024 16:42:17 +0100
+Message-ID: <20241230154218.841014587@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 9ecc4d858b92c1bb0673ad9c327298e600c55659 ]
+commit a2d633cb1421e679b56f1a9fe1f42f089706f1ed upstream.
 
-skb_network_offset() and skb_transport_offset() can be negative when
-they are called after we pull the transport header, for example, when
-we use eBPF sockmap at the point of ->sk_data_ready().
+For macro for_each_child_of_node(parent, child), refcount of @child has
+been increased before entering its loop body, so normally needs to call
+of_node_put(@child) before returning from the loop body to avoid refcount
+leakage.
 
-__bpf_skb_min_len() uses an unsigned int to get these offsets, this
-leads to a very large number which then causes bpf_skb_change_tail()
-failed unexpectedly.
+of_phy_provider_lookup() has such usage but does not call of_node_put()
+before returning, so cause leakage of the OF node refcount.
 
-Fix this by using a signed int to get these offsets and ensure the
-minimum is at least zero.
+Fix by simply calling of_node_put() before returning from the loop body.
 
-Fixes: 5293efe62df8 ("bpf: add bpf_skb_change_tail helper")
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241213034057.246437-2-xiyou.wangcong@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The APIs affected by this issue are shown below since they indirectly
+invoke problematic of_phy_provider_lookup().
+phy_get()
+of_phy_get()
+devm_phy_get()
+devm_of_phy_get()
+devm_of_phy_get_by_index()
+
+Fixes: 2a4c37016ca9 ("phy: core: Fix of_phy_provider_lookup to return PHY provider for sub node")
+Cc: stable@vger.kernel.org
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-5-40ae28f5015a@quicinc.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/phy/phy-core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index bc52ab3374f3..34320ce70096 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3731,13 +3731,22 @@ static const struct bpf_func_proto bpf_skb_adjust_room_proto = {
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -145,8 +145,10 @@ static struct phy_provider *of_phy_provi
+ 			return phy_provider;
  
- static u32 __bpf_skb_min_len(const struct sk_buff *skb)
- {
--	u32 min_len = skb_network_offset(skb);
-+	int offset = skb_network_offset(skb);
-+	u32 min_len = 0;
+ 		for_each_child_of_node(phy_provider->children, child)
+-			if (child == node)
++			if (child == node) {
++				of_node_put(child);
+ 				return phy_provider;
++			}
+ 	}
  
--	if (skb_transport_header_was_set(skb))
--		min_len = skb_transport_offset(skb);
--	if (skb->ip_summed == CHECKSUM_PARTIAL)
--		min_len = skb_checksum_start_offset(skb) +
--			  skb->csum_offset + sizeof(__sum16);
-+	if (offset > 0)
-+		min_len = offset;
-+	if (skb_transport_header_was_set(skb)) {
-+		offset = skb_transport_offset(skb);
-+		if (offset > 0)
-+			min_len = offset;
-+	}
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		offset = skb_checksum_start_offset(skb) +
-+			 skb->csum_offset + sizeof(__sum16);
-+		if (offset > 0)
-+			min_len = offset;
-+	}
- 	return min_len;
- }
- 
--- 
-2.39.5
-
+ 	return ERR_PTR(-EPROBE_DEFER);
 
 
 
