@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-106522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B264A9FE8B0
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CAC39FE7E5
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 087E63A26EB
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 859433A1559
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243D9156678;
-	Mon, 30 Dec 2024 15:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F82B14F136;
+	Mon, 30 Dec 2024 15:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYQBJuEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xe4k8RLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D589915E8B;
-	Mon, 30 Dec 2024 15:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD312594B6;
+	Mon, 30 Dec 2024 15:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574269; cv=none; b=iizsKgC715aUG7GsYtYw7Rw/PND5Eg4BVr4dFBsmBDeCfWhnwL2dAuPwzwaIVMMD9GJ9V6R8RCBDTH8/pUihLg7yQGCivXTuWMjPORro7c9lVg7KdUiCj8OJ63juPU5RxM91JtU/dszohK1SYUCq6VBbJx7Q5rStnvXF59FB8Vo=
+	t=1735573610; cv=none; b=dMCQXY7jOCJraW9nRw3mRciP+xFGL0/5aZPXvgXCKuPlI4g0si28p8bpwJNik4DkSosQQ9a6g2j99anqDpnYJNjZVVQUzPogqDMtY+W30S5lN33tLHI5SwBfqH/pfDphKNKpnHBIi+1en/jlWNuCvDqFpsRjV45m2SKZPwhOUtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574269; c=relaxed/simple;
-	bh=fCEog7/TmnRNbr3oGB/lyxaw5qp0aZPBFGRVIPUvMFc=;
+	s=arc-20240116; t=1735573610; c=relaxed/simple;
+	bh=T1GIWAtvENHFLGPKRJgpZ941/eXX7jVNJircvo4QyxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpJHvtA7QxaNgGsSG9EHQg2NAXZk/p5pUD0erCjapALb2tErbhiSb+tGP3EZEbn4QgqJj5VMVoIRyDHq6+fit43HxfbYKQqFJhNILE9z4C4sSed5dn8VHrs+3FsA9RhYzf56NFOfgbMEbG1HCQEdSlgTXOZle/4rII2xOqpTWgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYQBJuEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B274C4CED0;
-	Mon, 30 Dec 2024 15:57:49 +0000 (UTC)
+	 MIME-Version; b=TzYgXl/8MsYliNlc5Id9jrtMrXmw47+3SZAVPpw+7gdmnoltFFfvdoionWdndxH4JXXdfJfqwc4fYsJ/40wl7cFd0jBLgoXgxgGWUS4LcopX4ji5b10s7O0Mcd73p6u5a+3oUrWACMmEwiDdfYlQVzJu7M8LYF6LClhI8+IlCbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xe4k8RLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4907C4CED0;
+	Mon, 30 Dec 2024 15:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574269;
-	bh=fCEog7/TmnRNbr3oGB/lyxaw5qp0aZPBFGRVIPUvMFc=;
+	s=korg; t=1735573610;
+	bh=T1GIWAtvENHFLGPKRJgpZ941/eXX7jVNJircvo4QyxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYQBJuEuFqsQ/nydviENrQcfTeDzKyNKib6phG20bmQJVuAP6pHMn1pqtOP/fFxtu
-	 8Z3PN5pGl8jxua3J7cqrtFSoATYt5GoL+GkWC1xw61D/nGcvv7aYG/ihljMtnnl/OY
-	 LRYcx1Ulu7atRUi+MPcJ3RGvJVaGVs+NljZYNGkI=
+	b=Xe4k8RLC4Wi1ht4gq6hUsAB0jZdo+4j8vJZRMv5fFmpssasah84IXG3xk+Y3FP56f
+	 UfzSUzxlfwnjriFncTIKDC4jPUYg6rwUIb7W1tQwZriKEtk4r+P+fF+hFUDFgen2+j
+	 cJjWzu4x10Ud9YXC3PPni3tFGWfW2cDhTe8khqAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bo liu <bo.liu@senarytech.com>,
+	Dirk Su <dirk.su@canonical.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/114] ALSA: hda/conexant: fix Z60MR100 startup pop issue
+Subject: [PATCH 6.1 44/60] ALSA: hda/realtek: fix mute/micmute LEDs dont work for EliteBook X G1i
 Date: Mon, 30 Dec 2024 16:42:54 +0100
-Message-ID: <20241230154220.270413112@linuxfoundation.org>
+Message-ID: <20241230154208.948525740@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bo liu <bo.liu@senarytech.com>
+From: Dirk Su <dirk.su@canonical.com>
 
-[ Upstream commit 947c4012f8f03a8bb946beb6e5294d5e32817d67 ]
+[ Upstream commit 7ba81e4c3aa0ca25f06dc4456e7d36fa8e76385f ]
 
-When Z60MR100 startup, speaker will output a pop. To fix this issue,
-we mute codec by init verbs in bios when system startup, and set GPIO
-to low to unmute codec in codec driver when it loaded .
+HP EliteBook X G1i needs ALC285_FIXUP_HP_GPIO_LED quirk to
+make mic-mute/audio-mute working.
 
-[ white space fixes and compile warning fix by tiwai ]
-
-Signed-off-by: bo liu <bo.liu@senarytech.com>
-Link: https://patch.msgid.link/20241129014441.437205-1-bo.liu@senarytech.com
+Signed-off-by: Dirk Su <dirk.su@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241126060531.22759-1-dirk.su@canonical.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 0d08f0eec961 ("ALSA: hda/realtek: fix micmute LEDs don't work on HP Laptops")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index 2e9f817b948e..538c37a78a56 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -307,6 +307,7 @@ enum {
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
- 	CXT_PINCFG_SWS_JS201D,
- 	CXT_PINCFG_TOP_SPEAKER,
-+	CXT_FIXUP_HP_A_U,
- };
- 
- /* for hda_fixup_thinkpad_acpi() */
-@@ -774,6 +775,18 @@ static void cxt_setup_mute_led(struct hda_codec *codec,
- 	}
- }
- 
-+static void cxt_setup_gpio_unmute(struct hda_codec *codec,
-+				  unsigned int gpio_mute_mask)
-+{
-+	if (gpio_mute_mask) {
-+		// set gpio data to 0.
-+		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DATA, 0);
-+		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_MASK, gpio_mute_mask);
-+		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DIRECTION, gpio_mute_mask);
-+		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_STICKY_MASK, 0);
-+	}
-+}
-+
- static void cxt_fixup_mute_led_gpio(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
- {
-@@ -788,6 +801,15 @@ static void cxt_fixup_hp_zbook_mute_led(struct hda_codec *codec,
- 		cxt_setup_mute_led(codec, 0x10, 0x20);
- }
- 
-+static void cxt_fixup_hp_a_u(struct hda_codec *codec,
-+			     const struct hda_fixup *fix, int action)
-+{
-+	// Init vers in BIOS mute the spk/hp by set gpio high to avoid pop noise,
-+	// so need to unmute once by clearing the gpio data when runs into the system.
-+	if (action == HDA_FIXUP_ACT_INIT)
-+		cxt_setup_gpio_unmute(codec, 0x2);
-+}
-+
- /* ThinkPad X200 & co with cxt5051 */
- static const struct hda_pintbl cxt_pincfg_lenovo_x200[] = {
- 	{ 0x16, 0x042140ff }, /* HP (seq# overridden) */
-@@ -998,6 +1020,10 @@ static const struct hda_fixup cxt_fixups[] = {
- 			{ }
- 		},
- 	},
-+	[CXT_FIXUP_HP_A_U] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cxt_fixup_hp_a_u,
-+	},
- };
- 
- static const struct hda_quirk cxt5045_fixups[] = {
-@@ -1072,6 +1098,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
-+	SND_PCI_QUIRK(0x14f1, 0x0252, "MBX-Z60MR100", CXT_FIXUP_HP_A_U),
- 	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
- 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
- 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
-@@ -1117,6 +1144,7 @@ static const struct hda_model_fixup cxt5066_fixup_models[] = {
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
- 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
- 	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
-+	{ .id = CXT_FIXUP_HP_A_U, .name = "HP-U-support" },
- 	{}
- };
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index bd0f00794c30..beb182080abc 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9898,6 +9898,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8d84, "HP EliteBook X G1i", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 -- 
 2.39.5
 
