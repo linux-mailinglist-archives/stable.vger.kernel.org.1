@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-106470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDF09FE876
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AED69FE80F
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 206B57A10DA
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43A761606B2
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498D81537C8;
-	Mon, 30 Dec 2024 15:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F9E1531C4;
+	Mon, 30 Dec 2024 15:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKytHhiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8LVNsKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061602E414;
-	Mon, 30 Dec 2024 15:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630FC15E8B;
+	Mon, 30 Dec 2024 15:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574093; cv=none; b=A+W3RzUzFkuHDXxDjCYv2LA5IqHG2GteilOfrfIuLi88s0fjnAAlfsr0UiRVTv8eSbw54w0HJBjKpJy21jpAA8aet/FeAeN4pIHiHTyH4mrvHBs4xGupxrxFgmcQJ0eXJP7ugqdCP8ql1fK9bdZ293fXs6vR8ZbrVjqS9c5SV1o=
+	t=1735573755; cv=none; b=NjFjghVfj/FgqvTA1dff4ur0vs2fNv6bMziFyo1Ssd1DuuQjiDEk447KU9qxR8kB0jWShF1TLWn2nYlNbqo/nUiCEIbH06JmOy/KGJCErqpMMeN4rd/JCTGJPSgEup0RGfebWIIwZ51OhuMi6CAW8KHtF7IgcH9fci+DDjhbeeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574093; c=relaxed/simple;
-	bh=hjtPhQ8YxlWF2t+fa/HjHqMW6hM0ieB3lWKHs6XxzXs=;
+	s=arc-20240116; t=1735573755; c=relaxed/simple;
+	bh=C15WwY3yEduRov/sNthv4aFqVADys7fUMKJiuAJtOWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwTv2KOXI6pbXu5SwYO9RtukjpdyHYNEKJ9paXPnDK0Z68jpU4/CFj1DeYjB3SGfuxstadQRjJFIwihXxXYWigNt39l++4rZoGLfAveIszyt3CayRwA0ErOFMgUdLd/PXrIDZ9sFEFuoVeeKPs4JAqNiwy216px/136xfUc2S9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKytHhiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67797C4CED0;
-	Mon, 30 Dec 2024 15:54:52 +0000 (UTC)
+	 MIME-Version; b=dWDdwoSaXyaUtX+n5Tk3VGTRuvHKQlRwKk65HZp+4pxurPVm+I+6JBMvupHxegrfw/P493AP1YYJSOPaglsovRa7moDvp4+t/EM7bL/RvmjtFe3sYujozrH/txUxRdndHkvQI5eU4Qb+FGounHOONt5kleZwCR55NxWWTmXIszM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8LVNsKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2A8C4CED0;
+	Mon, 30 Dec 2024 15:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574092;
-	bh=hjtPhQ8YxlWF2t+fa/HjHqMW6hM0ieB3lWKHs6XxzXs=;
+	s=korg; t=1735573755;
+	bh=C15WwY3yEduRov/sNthv4aFqVADys7fUMKJiuAJtOWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sKytHhiKci7FUwQplEpYqpn19Gj4EHH8zXDFP/yRVTv2jMx9dbnxnM0lZ0aDSIlmW
-	 safwlFhXi1oN80oR7/FG5+lrrQDLXFkczTVQTlrLMIJAnO2RVqwFuGUucIxogqwnCS
-	 pei+dBv4aWQ7LaKVhIidQKd80RilkKtHgeelIQ+g=
+	b=L8LVNsKvMNSfyCuAUQ/Cj40+wdTF0Lsjmjw0fLN1HL5/wY9u03wc1qf8qtt8SC/dV
+	 gLuT/cV5no2WIKLs/fPWj913rz5xGilTZgEpdjKbeAhDEihV9CsFWXoj8SbLN4OjF1
+	 P0+r+f0X1XW1HLJmuHuod1AHIl67JAtzTCSCLD2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 035/114] ASoC: SOF: Intel: hda-dai: Do not release the link DMA on STOP
+	Akhil R <akhilrajeev@nvidia.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 24/86] dmaengine: tegra: Return correct DMA status when paused
 Date: Mon, 30 Dec 2024 16:42:32 +0100
-Message-ID: <20241230154219.413902951@linuxfoundation.org>
+Message-ID: <20241230154212.641929150@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit e8d0ba147d901022bcb69da8d8fd817f84e9f3ca upstream.
+commit ebc008699fd95701c9af5ebaeb0793eef81a71d5 upstream.
 
-The linkDMA should not be released on stop trigger since a stream re-start
-might happen without closing of the stream. This leaves a short time for
-other streams to 'steal' the linkDMA since it has been released.
+Currently, the driver does not return the correct DMA status when a DMA
+pause is issued by the client drivers. This causes GPCDMA users to
+assume that DMA is still running, while in reality, the DMA is paused.
 
-This issue is not easy to reproduce under normal conditions as usually
-after stop the stream is closed, or the same stream is restarted, but if
-another stream got in between the stop and start, like this:
-aplay -Dhw:0,3 -c2 -r48000 -fS32_LE /dev/zero -d 120
-CTRL+z
-aplay -Dhw:0,0 -c2 -r48000 -fS32_LE /dev/zero -d 120
+Return DMA_PAUSED for tx_status() if the channel is paused in the middle
+of a transfer.
 
-then the link DMA channels will be mixed up, resulting firmware error or
-crash.
-
-Fixes: ab5593793e90 ("ASoC: SOF: Intel: hda: Always clean up link DMA during stop")
+Fixes: ee17028009d4 ("dmaengine: tegra: Add tegra gpcdma driver")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/thesofproject/sof/issues/9695
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20241217091019.31798-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Link: https://lore.kernel.org/r/20241212124412.5650-1-kkartik@nvidia.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/intel/hda-dai.c |   25 +++++++++++++++++++------
- sound/soc/sof/intel/hda.h     |    2 --
- 2 files changed, 19 insertions(+), 8 deletions(-)
+ drivers/dma/tegra186-gpc-dma.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/sound/soc/sof/intel/hda-dai.c
-+++ b/sound/soc/sof/intel/hda-dai.c
-@@ -103,8 +103,10 @@ hda_dai_get_ops(struct snd_pcm_substream
- 	return sdai->platform_private;
- }
- 
--int hda_link_dma_cleanup(struct snd_pcm_substream *substream, struct hdac_ext_stream *hext_stream,
--			 struct snd_soc_dai *cpu_dai)
-+static int
-+hda_link_dma_cleanup(struct snd_pcm_substream *substream,
-+		     struct hdac_ext_stream *hext_stream,
-+		     struct snd_soc_dai *cpu_dai, bool release)
- {
- 	const struct hda_dai_widget_dma_ops *ops = hda_dai_get_ops(substream, cpu_dai);
- 	struct sof_intel_hda_stream *hda_stream;
-@@ -128,6 +130,17 @@ int hda_link_dma_cleanup(struct snd_pcm_
- 		snd_hdac_ext_bus_link_clear_stream_id(hlink, stream_tag);
+--- a/drivers/dma/tegra186-gpc-dma.c
++++ b/drivers/dma/tegra186-gpc-dma.c
+@@ -231,6 +231,7 @@ struct tegra_dma_channel {
+ 	bool config_init;
+ 	char name[30];
+ 	enum dma_transfer_direction sid_dir;
++	enum dma_status status;
+ 	int id;
+ 	int irq;
+ 	int slave_id;
+@@ -393,6 +394,8 @@ static int tegra_dma_pause(struct tegra_
+ 		tegra_dma_dump_chan_regs(tdc);
  	}
  
-+	if (!release) {
-+		/*
-+		 * Force stream reconfiguration without releasing the channel on
-+		 * subsequent stream restart (without free), including LinkDMA
-+		 * reset.
-+		 * The stream is released via hda_dai_hw_free()
-+		 */
-+		hext_stream->link_prepared = 0;
-+		return 0;
-+	}
++	tdc->status = DMA_PAUSED;
 +
- 	if (ops->release_hext_stream)
- 		ops->release_hext_stream(sdev, cpu_dai, substream);
- 
-@@ -211,7 +224,7 @@ static int __maybe_unused hda_dai_hw_fre
- 	if (!hext_stream)
- 		return 0;
- 
--	return hda_link_dma_cleanup(substream, hext_stream, cpu_dai);
-+	return hda_link_dma_cleanup(substream, hext_stream, cpu_dai, true);
+ 	return ret;
  }
  
- static int __maybe_unused hda_dai_hw_params_data(struct snd_pcm_substream *substream,
-@@ -304,7 +317,8 @@ static int __maybe_unused hda_dai_trigge
- 	switch (cmd) {
- 	case SNDRV_PCM_TRIGGER_STOP:
- 	case SNDRV_PCM_TRIGGER_SUSPEND:
--		ret = hda_link_dma_cleanup(substream, hext_stream, dai);
-+		ret = hda_link_dma_cleanup(substream, hext_stream, dai,
-+					   cmd == SNDRV_PCM_TRIGGER_STOP ? false : true);
- 		if (ret < 0) {
- 			dev_err(sdev->dev, "%s: failed to clean up link DMA\n", __func__);
- 			return ret;
-@@ -656,8 +670,7 @@ static int hda_dai_suspend(struct hdac_b
- 			}
+@@ -419,6 +422,8 @@ static void tegra_dma_resume(struct tegr
+ 	val = tdc_read(tdc, TEGRA_GPCDMA_CHAN_CSRE);
+ 	val &= ~TEGRA_GPCDMA_CHAN_CSRE_PAUSE;
+ 	tdc_write(tdc, TEGRA_GPCDMA_CHAN_CSRE, val);
++
++	tdc->status = DMA_IN_PROGRESS;
+ }
  
- 			ret = hda_link_dma_cleanup(hext_stream->link_substream,
--						   hext_stream,
--						   cpu_dai);
-+						   hext_stream, cpu_dai, true);
- 			if (ret < 0)
- 				return ret;
- 		}
---- a/sound/soc/sof/intel/hda.h
-+++ b/sound/soc/sof/intel/hda.h
-@@ -1028,8 +1028,6 @@ const struct hda_dai_widget_dma_ops *
- hda_select_dai_widget_ops(struct snd_sof_dev *sdev, struct snd_sof_widget *swidget);
- int hda_dai_config(struct snd_soc_dapm_widget *w, unsigned int flags,
- 		   struct snd_sof_dai_config_data *data);
--int hda_link_dma_cleanup(struct snd_pcm_substream *substream, struct hdac_ext_stream *hext_stream,
--			 struct snd_soc_dai *cpu_dai);
+ static int tegra_dma_device_resume(struct dma_chan *dc)
+@@ -544,6 +549,7 @@ static void tegra_dma_xfer_complete(stru
  
- static inline struct snd_sof_dev *widget_to_sdev(struct snd_soc_dapm_widget *w)
- {
+ 	tegra_dma_sid_free(tdc);
+ 	tdc->dma_desc = NULL;
++	tdc->status = DMA_COMPLETE;
+ }
+ 
+ static void tegra_dma_chan_decode_error(struct tegra_dma_channel *tdc,
+@@ -716,6 +722,7 @@ static int tegra_dma_terminate_all(struc
+ 		tdc->dma_desc = NULL;
+ 	}
+ 
++	tdc->status = DMA_COMPLETE;
+ 	tegra_dma_sid_free(tdc);
+ 	vchan_get_all_descriptors(&tdc->vc, &head);
+ 	spin_unlock_irqrestore(&tdc->vc.lock, flags);
+@@ -769,6 +776,9 @@ static enum dma_status tegra_dma_tx_stat
+ 	if (ret == DMA_COMPLETE)
+ 		return ret;
+ 
++	if (tdc->status == DMA_PAUSED)
++		ret = DMA_PAUSED;
++
+ 	spin_lock_irqsave(&tdc->vc.lock, flags);
+ 	vd = vchan_find_desc(&tdc->vc, cookie);
+ 	if (vd) {
 
 
 
