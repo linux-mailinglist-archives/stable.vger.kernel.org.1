@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-106471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50C99FE875
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E589FE7EE
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D24418830BD
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3051882F4A
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A1642AA6;
-	Mon, 30 Dec 2024 15:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9B914F136;
+	Mon, 30 Dec 2024 15:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzkaNmAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuYPM6I/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8341B15E8B;
-	Mon, 30 Dec 2024 15:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3771A2594B6;
+	Mon, 30 Dec 2024 15:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574096; cv=none; b=HEnIfgUfIhsebUnHI/5bGuJV9R2DAifO1nHvTiQWIk2pIpgPNqvsKg592TIBdbfSOzo05HJGdDN7vE9kKZrZIwZycT1ETDIS6AmA24Z9d51SIFUN0nW8V0J2byYmy8Jx0KP7joR/Kd5ba1jvH8ETrBcxIJxPApxASoHHGgih28Y=
+	t=1735573645; cv=none; b=gdQ/KmDTVGEon+zPT98U3LLS/AuKB4z/LFb7jA8O2uVnyjLj7n44Nklxq5WzJzs8pGWvVobQf02WJ9/0lL0fuoB9bX5nxW0hq4hpFYvEzwsJNoIFSJafv48VFrh+IPZwLtNlgO7U0orCwI55+FKOZYrj8PZuSJnXk5UDze5c1H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574096; c=relaxed/simple;
-	bh=mkCl7h5KwHqNay2kp9snkjQbUQsETbgAbpBG5nCbvK4=;
+	s=arc-20240116; t=1735573645; c=relaxed/simple;
+	bh=AA/QYhsQm6mhPUCQRAhvYnjdT6zTvc/DdM+LtZTpDrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SM6r3UVLR9MqEYVx2vCW9juLRb5mOugyI9lmaORABaD02aaFMv/UVRMFjIWD0LpKJcK5QJTTizS94hU2vCaJKadzQQJJRQyBidZq82IbzzZmGkJHJJMx2Fm1dAU9/VFrXsRQGUBFhbHHCZENVOMxlJOSfkdDl90vGGdFKHWfEug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzkaNmAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF09C4CED0;
-	Mon, 30 Dec 2024 15:54:55 +0000 (UTC)
+	 MIME-Version; b=dcCbYxIoysvaiwDG6yGiUHA2yi22BNsjNFsYP/z3lxCu6R+PZKbli0Kt83Ccp3py+aWVk+EzP5SSe9ynmaqCxbyoogbwk/Yd2gdAgHoGN6jtFhtgtx0DZqmEFcQlVszEAvMehghjmDTYr8TW67JrpKiGNxKKXjYDdXMvzln0TKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuYPM6I/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34EC5C4CED0;
+	Mon, 30 Dec 2024 15:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574096;
-	bh=mkCl7h5KwHqNay2kp9snkjQbUQsETbgAbpBG5nCbvK4=;
+	s=korg; t=1735573644;
+	bh=AA/QYhsQm6mhPUCQRAhvYnjdT6zTvc/DdM+LtZTpDrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzkaNmAJxFkAhiGWXWeRn8ZrpQY1ypLo2i6QeY2b504nyfiKtrI40wAgUWCSf0rhL
-	 alI9uoFZJ68Et999xKtW51ubBHktk4IfmCBqOKh/rtf6HuNCeC/jsLtfb4+ojWDx3f
-	 Set97mKrSL9zCN6Bi/LMqtqhisXBqLu2m8DaiG14=
+	b=IuYPM6I/L2UutuyKGLfQEuqqAgCocn+rpUYEimkXabNcwlhUVE6J/+HSyD/D8v4zD
+	 lQmi9/kcLi/I2FnBzxSOpNKHxzckIRQ0myTlyzpwTMn7j1jJLxMXdRjVk1JWWFHdHE
+	 7lr1ZlhuChT0W4lcYzFre4BPiFLv6DkfPWbI1cVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dustin L. Howett" <dustin@howett.net>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.12 036/114] platform/chrome: cros_ec_lpc: fix product identity for early Framework Laptops
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 23/60] mtd: rawnand: fix double free in atmel_pmecc_create_user()
 Date: Mon, 30 Dec 2024 16:42:33 +0100
-Message-ID: <20241230154219.450124336@linuxfoundation.org>
+Message-ID: <20241230154208.164246821@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dustin L. Howett <dustin@howett.net>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit dcd59d0d7d51b2a4b768fc132b0d74a97dfd6d6a upstream.
+commit d8e4771f99c0400a1873235704b28bb803c83d17 upstream.
 
-The product names for the Framework Laptop (12th and 13th Generation
-Intel Core) are incorrect as of 62be134abf42.
+The "user" pointer was converted from being allocated with kzalloc() to
+being allocated by devm_kzalloc().  Calling kfree(user) will lead to a
+double free.
 
-Fixes: 62be134abf42 ("platform/chrome: cros_ec_lpc: switch primary DMI data for Framework Laptop")
-Cc: stable@vger.kernel.org # 6.12.x
-Signed-off-by: Dustin L. Howett <dustin@howett.net>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20241224-platform-chrome-cros_ec_lpc-fix-product-identity-for-early-framework-laptops-v1-1-0d31d6e1d22c@howett.net
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: 6d734f1bfc33 ("mtd: rawnand: atmel: Fix possible memory leak")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec_lpc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/atmel/pmecc.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
-index 924bf4d3cc77..8470b7f2b135 100644
---- a/drivers/platform/chrome/cros_ec_lpc.c
-+++ b/drivers/platform/chrome/cros_ec_lpc.c
-@@ -707,7 +707,7 @@ static const struct dmi_system_id cros_ec_lpc_dmi_table[] __initconst = {
- 		/* Framework Laptop (12th Gen Intel Core) */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "12th Gen Intel Core"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Laptop (12th Gen Intel Core)"),
- 		},
- 		.driver_data = (void *)&framework_laptop_mec_lpc_driver_data,
- 	},
-@@ -715,7 +715,7 @@ static const struct dmi_system_id cros_ec_lpc_dmi_table[] __initconst = {
- 		/* Framework Laptop (13th Gen Intel Core) */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "13th Gen Intel Core"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Laptop (13th Gen Intel Core)"),
- 		},
- 		.driver_data = (void *)&framework_laptop_mec_lpc_driver_data,
- 	},
--- 
-2.47.1
-
+--- a/drivers/mtd/nand/raw/atmel/pmecc.c
++++ b/drivers/mtd/nand/raw/atmel/pmecc.c
+@@ -380,10 +380,8 @@ atmel_pmecc_create_user(struct atmel_pme
+ 	user->delta = user->dmu + req->ecc.strength + 1;
+ 
+ 	gf_tables = atmel_pmecc_get_gf_tables(req);
+-	if (IS_ERR(gf_tables)) {
+-		kfree(user);
++	if (IS_ERR(gf_tables))
+ 		return ERR_CAST(gf_tables);
+-	}
+ 
+ 	user->gf_tables = gf_tables;
+ 
 
 
 
