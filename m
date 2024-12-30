@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-106462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA939FE86D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 387919FE7C1
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E19017A1743
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDD2A1620F9
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845CF1ACEB3;
-	Mon, 30 Dec 2024 15:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9BB1ACEA3;
+	Mon, 30 Dec 2024 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yq8LXwXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMFzNQ74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413E215748F;
-	Mon, 30 Dec 2024 15:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E441AB505;
+	Mon, 30 Dec 2024 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574060; cv=none; b=Xcz1kjCCB4+WAiztbJCG0kNp/PoSmz5nzgJUZ53AEsXr+jcLz7+UIN1ZUP6hYNtIQaiGwEz9jP3T1uxqM4I+yp+EUFaafrTjtVWBn6TvmyT+MOu48tjTLcU7tgjR2o1ht5ZZgfeGQrZ9cgh6amWnxPJl0U/+OzR2lo+QV3mubxM=
+	t=1735573504; cv=none; b=lbjUQBroDDGyVcjGt+B/c7khwvRY/YCjEe2oiQVGaLndSGjufntOEQuhhHNXNQUS+73IheXcXGrYRMirEbuWXQ+yYbg7JUcsL5C47LfTU1gRsJx2nKPP3LUjM2ZHdMCr3cNJ4/7YwCf8xaY8CGEPXZyZPjI8Vjn9GdhwiP4+9BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574060; c=relaxed/simple;
-	bh=mI2C/YjOh09MTm5Q0LBxfSFFeccVeUGJXiM2IEnSix8=;
+	s=arc-20240116; t=1735573504; c=relaxed/simple;
+	bh=rghf21gGfjRetS41Tc+X7u2dSjsIoDMCpkPp2IFOivc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmf9xE78h3EUZQmiZz23DeGNwQafNsYiA0rE4eESoflXM94aTzT3KSfgcU5k2z2ZI9E609Ob8ZjIR+aLTbGlYT7BGRBUefbf3drOrhJXxbBrQQY84LqDlmQ8ufz3E8a+6Mk2ye6+Hhs/yEnPJphuuADVzdSONBUW5h5E48JuLmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yq8LXwXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A092FC4CED0;
-	Mon, 30 Dec 2024 15:54:19 +0000 (UTC)
+	 MIME-Version; b=PrsoFHdWaCUaWQESoCtuSW94TaaYKmPjQqr/Mpurxy7xT14IqIgNdTrI+YyCf8oSMj1YR6w7cyF0USrONrxFBQs6XUgm8PjgdwpSILrw46yE8SSy6HgAD0wsUThiIfcNn6xIYbYPoxjDA6ZETEN1ZIjN0ITCf450dPTiXwbC/js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMFzNQ74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBB4C4CED0;
+	Mon, 30 Dec 2024 15:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574060;
-	bh=mI2C/YjOh09MTm5Q0LBxfSFFeccVeUGJXiM2IEnSix8=;
+	s=korg; t=1735573504;
+	bh=rghf21gGfjRetS41Tc+X7u2dSjsIoDMCpkPp2IFOivc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yq8LXwXCRac79J6KM0E/rYIfhqJp8RDaBI5XPchtarhkj11NBgcG8YhJ1qhrPpuTE
-	 xKEOilk/1EqM6u3hWne9MpJfLxaWT1TGVKVzWWdQP0AmI6K/dgqcAALcTiJwPK8BN0
-	 Ni6eLL1t89exsbteEw+xfZDB1Is7tfInzer/3UFM=
+	b=QMFzNQ74vBJubDHdOlB0oyfa3FuSQ0e8KGh+5nBCpLLfUJl1svbAuUagaAqn9NI0s
+	 WLRbrJk5gqeR5fqyetYwASjHB4Kv4kr1nXz7iZ3LIKSUKGcGVqDce7HTmL22GkfQbP
+	 S0iWw4nLlbtOEjr9vxAInD7vZyeD0+rh6w5vdVg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 027/114] ALSA: memalloc: prefer dma_mapping_error() over explicit address checking
-Date: Mon, 30 Dec 2024 16:42:24 +0100
-Message-ID: <20241230154219.112628379@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 15/60] phy: core: Fix that API devm_phy_destroy() fails to destroy the phy
+Date: Mon, 30 Dec 2024 16:42:25 +0100
+Message-ID: <20241230154207.867080870@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit fa0308134d26dbbeb209a1581eea46df663866b6 upstream.
+commit 4dc48c88fcf82b89fdebd83a906aaa64f40fb8a9 upstream.
 
-With CONFIG_DMA_API_DEBUG enabled, the following warning is observed:
+For devm_phy_destroy(), its comment says it needs to invoke phy_destroy()
+to destroy the phy, but it will not actually invoke the function since
+devres_destroy() does not call devm_phy_consume(), and the missing
+phy_destroy() call will cause that the phy fails to be destroyed.
 
-DMA-API: snd_hda_intel 0000:03:00.1: device driver failed to check map error[device address=0x00000000ffff0000] [size=20480 bytes] [mapped as single]
-WARNING: CPU: 28 PID: 2255 at kernel/dma/debug.c:1036 check_unmap+0x1408/0x2430
-CPU: 28 UID: 42 PID: 2255 Comm: wireplumber Tainted: G  W L  6.12.0-10-133577cad6bf48e5a7848c4338124081393bfe8a+ #759
-debug_dma_unmap_page+0xe9/0xf0
-snd_dma_wc_free+0x85/0x130 [snd_pcm]
-snd_pcm_lib_free_pages+0x1e3/0x440 [snd_pcm]
-snd_pcm_common_ioctl+0x1c9a/0x2960 [snd_pcm]
-snd_pcm_ioctl+0x6a/0xc0 [snd_pcm]
-...
+Fortunately, the faulty API has not been used by current kernel tree.
+Fix by using devres_release() instead of devres_destroy() within the API.
 
-Check for returned DMA addresses using specialized dma_mapping_error()
-helper which is generally recommended for this purpose by
-Documentation/core-api/dma-api.rst.
-
-Fixes: c880a5146642 ("ALSA: memalloc: Use proper DMA mapping API for x86 WC buffer allocations")
-Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Closes: https://lore.kernel.org/r/CABXGCsNB3RsMGvCucOy3byTEOxoc-Ys+zB_HQ=Opb_GhX1ioDA@mail.gmail.com/
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20241219203345.195898-1-pchelkin@ispras.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-3-40ae28f5015a@quicinc.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/memalloc.c | 2 +-
+ drivers/phy/phy-core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/memalloc.c b/sound/core/memalloc.c
-index 13b71069ae18..b3853583d2ae 100644
---- a/sound/core/memalloc.c
-+++ b/sound/core/memalloc.c
-@@ -505,7 +505,7 @@ static void *snd_dma_wc_alloc(struct snd_dma_buffer *dmab, size_t size)
- 	if (!p)
- 		return NULL;
- 	dmab->addr = dma_map_single(dmab->dev.dev, p, size, DMA_BIDIRECTIONAL);
--	if (dmab->addr == DMA_MAPPING_ERROR) {
-+	if (dma_mapping_error(dmab->dev.dev, dmab->addr)) {
- 		do_free_pages(dmab->area, size, true);
- 		return NULL;
- 	}
--- 
-2.47.1
-
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -1061,7 +1061,7 @@ void devm_phy_destroy(struct device *dev
+ {
+ 	int r;
+ 
+-	r = devres_destroy(dev, devm_phy_consume, devm_phy_match, phy);
++	r = devres_release(dev, devm_phy_consume, devm_phy_match, phy);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
+ }
+ EXPORT_SYMBOL_GPL(devm_phy_destroy);
 
 
 
