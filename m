@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-106451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6E29FE85F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:53:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0B59FE7C5
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AA717A1634
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:53:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 213CB1882E30
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C731531C4;
-	Mon, 30 Dec 2024 15:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141E0156678;
+	Mon, 30 Dec 2024 15:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1TAUsHz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8PRDfCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36B415E8B;
-	Mon, 30 Dec 2024 15:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4982E414;
+	Mon, 30 Dec 2024 15:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574019; cv=none; b=rHR5Nt5N+YcSlrH0U5ddb9gnErBMXu/dASfoByK3I8JTJMZDgW2Sr6Qtw/R/+opijDL276T/3aKfdAieEQfeccXDfumW1FFM67+9+s4vFOKQhGHuAIM19yj/AfOcISn3+EVu19HwquX7t8PWGRRDcmJM4mIxpwhbaNF1z08zcUg=
+	t=1735573514; cv=none; b=mOCZe0RLPEGKM/jwx8NT0DeQU/TIiBCOhAbXq5U28eiB581cu7ke8Cabc+a8szyN0Ln/EasIHkcY9fhj3TKQCJCEd62bTklh5PC6lgE4ijRu8c1WpLVZJ8ToNOL6OvTXz7MENvuD3p512DX2ZVWkmoUgJQcSyi60CUIvm8kOQjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574019; c=relaxed/simple;
-	bh=n2me79oqY1nU39r+PiEizZ9+dJCs3iIA9MehqXdTDFs=;
+	s=arc-20240116; t=1735573514; c=relaxed/simple;
+	bh=eEJIRjHBPYYS9aN1a30YefnNZ4ECXqOn92tQbqDWPdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tna3xg+QK3i5mdKy85qcXIkniweZKiid51MKHACxAsS0TDV87HBL8pjlC6aVir25dOQViRs5ZIQ9r4qThPmsWY1H0wB7Ag6lyJktwTgi90uQc0ZCWVnRPeSHzuzNmGLj7R5gzJ/3OJbAZTlyyiJ5BCkaLhnzDBa2e6Ethd7GAX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1TAUsHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78172C4CED0;
-	Mon, 30 Dec 2024 15:53:38 +0000 (UTC)
+	 MIME-Version; b=Jw3OerIYNZsRmFUtyndIk2TSA7y2HLw+Reo+Hvdrg9ssa6GkihJ3qbCap4s161toYYcxlx6jtqb/oB4GKwzljMKDU0zbyu5KG2hrByyHomuzyteoqpYPnoWEQlwhXuSHHjUBVN0QehVDSzbBjicAiSg5ikVn1tN+a58krJJjD9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8PRDfCZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D92C4CED0;
+	Mon, 30 Dec 2024 15:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574018;
-	bh=n2me79oqY1nU39r+PiEizZ9+dJCs3iIA9MehqXdTDFs=;
+	s=korg; t=1735573514;
+	bh=eEJIRjHBPYYS9aN1a30YefnNZ4ECXqOn92tQbqDWPdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1TAUsHzV0Fon844iLPUkObbEt/hUCtVhGyW2no3NP0OEau5FlhRIffHCQjSBcI5N
-	 IFuVlvmydbBXwH5+VPSkGxtOG8lTh1B4QKwtjWnnoX4TDFyPqOcEKhbny4EKQCHY9b
-	 676+lrV7Dsoy1L9JVqasK0cS/ryLDF/32V7S0ORY=
+	b=l8PRDfCZs3j4s7VrVBDC8UXGBHUkdTEy42PgKKGBdTNQwpUVeptyM2uEeylEda08L
+	 +oTR6d+vCdt/Cq7oHCLWZArveKkQsCf5h4Hg0rq/FoVwAILk8dzEa8upvshB4FkCSA
+	 YUd/ftxq2JO0xh4YZk/1oUKMqA+n0YyOfhJfmizQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Andrzejewski <maciej.andrzejewski@m-works.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 016/114] mtd: rawnand: arasan: Fix double assertion of chip-select
+	Cong Wang <cong.wang@bytedance.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 03/60] tcp_bpf: Charge receive socket buffer in bpf_tcp_ingress()
 Date: Mon, 30 Dec 2024 16:42:13 +0100
-Message-ID: <20241230154218.686188220@linuxfoundation.org>
+Message-ID: <20241230154207.409465673@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
+From: Cong Wang <cong.wang@bytedance.com>
 
-commit b086a46dae48829e11c0c02580e30d920b76743c upstream.
+[ Upstream commit 54f89b3178d5448dd4457afbb98fc1ab99090a65 ]
 
-When two chip-selects are configured in the device tree, and the second is
-a non-native GPIO, both the GPIO-based chip-select and the first native
-chip-select may be asserted simultaneously. This double assertion causes
-incorrect read and write operations.
+When bpf_tcp_ingress() is called, the skmsg is being redirected to the
+ingress of the destination socket. Therefore, we should charge its
+receive socket buffer, instead of sending socket buffer.
 
-The issue occurs because when nfc->ncs <= 2, nfc->spare_cs is always
-initialized to 0 due to static initialization. Consequently, when the
-second chip-select (GPIO-based) is selected in anfc_assert_cs(), it is
-detected by anfc_is_gpio_cs(), and nfc->native_cs is assigned the value 0.
-This results in both the GPIO-based chip-select being asserted and the
-NAND controller register receiving 0, erroneously selecting the native
-chip-select.
+Because sk_rmem_schedule() tests pfmemalloc of skb, we need to
+introduce a wrapper and call it for skmsg.
 
-This patch resolves the issue, as confirmed by oscilloscope testing with
-configurations involving two or more chip-selects in the device tree.
-
-Fixes: acbd3d0945f9 ("mtd: rawnand: arasan: Leverage additional GPIO CS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241210012039.1669389-2-zijianzhang@bytedance.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/sock.h | 10 ++++++++--
+ net/ipv4/tcp_bpf.c |  2 +-
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -1409,8 +1409,8 @@ static int anfc_parse_cs(struct arasan_n
- 	 * case, the "not" chosen CS is assigned to nfc->spare_cs and selected
- 	 * whenever a GPIO CS must be asserted.
- 	 */
--	if (nfc->cs_array && nfc->ncs > 2) {
--		if (!nfc->cs_array[0] && !nfc->cs_array[1]) {
-+	if (nfc->cs_array) {
-+		if (nfc->ncs > 2 && !nfc->cs_array[0] && !nfc->cs_array[1]) {
- 			dev_err(nfc->dev,
- 				"Assign a single native CS when using GPIOs\n");
- 			return -EINVAL;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 0a06c997b45b..e716b2ba00bb 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1660,7 +1660,7 @@ static inline bool sk_wmem_schedule(struct sock *sk, int size)
+ }
+ 
+ static inline bool
+-sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
++__sk_rmem_schedule(struct sock *sk, int size, bool pfmemalloc)
+ {
+ 	int delta;
+ 
+@@ -1668,7 +1668,13 @@ sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
+ 		return true;
+ 	delta = size - sk->sk_forward_alloc;
+ 	return delta <= 0 || __sk_mem_schedule(sk, delta, SK_MEM_RECV) ||
+-		skb_pfmemalloc(skb);
++	       pfmemalloc;
++}
++
++static inline bool
++sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
++{
++	return __sk_rmem_schedule(sk, size, skb_pfmemalloc(skb));
+ }
+ 
+ static inline int sk_unused_reserved_mem(const struct sock *sk)
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index deb6286b5881..cd999c55da99 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -49,7 +49,7 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
+ 		sge = sk_msg_elem(msg, i);
+ 		size = (apply && apply_bytes < sge->length) ?
+ 			apply_bytes : sge->length;
+-		if (!sk_wmem_schedule(sk, size)) {
++		if (!__sk_rmem_schedule(sk, size, false)) {
+ 			if (!copied)
+ 				ret = -ENOMEM;
+ 			break;
+-- 
+2.39.5
+
 
 
 
