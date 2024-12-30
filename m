@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D929FE84B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:52:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924979FE8B6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE4651882F8A
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC8153A2748
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C98914F136;
-	Mon, 30 Dec 2024 15:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0559D15748F;
+	Mon, 30 Dec 2024 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHS5HD05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXv95dGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF67715E8B;
-	Mon, 30 Dec 2024 15:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B713615E8B;
+	Mon, 30 Dec 2024 15:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573952; cv=none; b=tUY8OFsKGlJ/7yBdSX8DYdE2yptjASfPks+CsZjvcBXSdCdaUpZ43fAd1yFQzCH1WkhuwVhRM4QpwAhsFqmaj+i2q1lAvqQPxRHCSnEFa8khGy4enrAHqyE4CAq747ey5FWLanAukUBukt+5eve1YBGhyaep38+goPkXn5KiPWM=
+	t=1735574289; cv=none; b=Ts+3PKt+D4LVU3Yk1wzJhoaGz1KGy/so9giKkxfSrgICzBW6q95A+T0oqR2Vg4rPeJrcBg2F6m+GRJZuWWWBVQjLDpGQUt90SEGazQx9R0+BzF15xC0eP1zC8dC+dW7A7ExgZK7G7q6ZHyFVpsMwDOi6zm5qRGInriXsnzMWRGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573952; c=relaxed/simple;
-	bh=ba19d27Vo2N/7n13gFdJzpVsmMj/KjcQWT3+QC3ldag=;
+	s=arc-20240116; t=1735574289; c=relaxed/simple;
+	bh=HPZysbXXj1O8HffU9W5XYGSwfuOBOQhw0xb/mC4Qo80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lewQItGDljpJx3lhbY3hqIbyW3KpPF9Cku96QOMN/HcQyE4gmzTvMLpC4MOwaynvZxYWYAwYTDfVk6b06E6Bh+o4ed7U2Ix2FDgr8rVeOyMMdvOWQqTl9+U4j8F1g4PpLVn/cvIXJRH6k71p7Q6GWniR1lruFNDmK4lXLEa8D9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHS5HD05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA63C4CED0;
-	Mon, 30 Dec 2024 15:52:31 +0000 (UTC)
+	 MIME-Version; b=uJgSiqnopPpOtJFnUeNV50sbW2sKlEkgpVLKi6XjD0Q2VXAANl42VKRzz0UdRkHy2X4y0Dg8T1oxETx6P+gIXddvI7xL/v87UbZdszrPI+3wNnbP5885bgpsGD3j+5LNx1AMPApN50kSaQ3kWYujDQjcV129rsQpUbM8Cdc0ZBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXv95dGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24308C4CED0;
+	Mon, 30 Dec 2024 15:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573951;
-	bh=ba19d27Vo2N/7n13gFdJzpVsmMj/KjcQWT3+QC3ldag=;
+	s=korg; t=1735574289;
+	bh=HPZysbXXj1O8HffU9W5XYGSwfuOBOQhw0xb/mC4Qo80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHS5HD05KBhPQ3KA5vc3GmfxYddd5pxhl73OqGe+FZhU+0/tj5n0NU4bSyjT4PViV
-	 mMAzPnWqkmUujJXkhwRS/Ipt7KCi7sooFOQZUtmNk3PhUqzvahy9TaCMaL7qaNwYGL
-	 gx3L8PMdrbgn3Guj7zzDq6ndIq0x8TYvZGse4UlU=
+	b=bXv95dGDWBtwfEag5S5t3zkAVk5LX3o4m00k96HpYT6dZZM6dI80mQ9Q4YllpyZqd
+	 VZPcKMust31VP9c+lEuJbKSpD+TqwBFXNjQxOZPeuVAuq62uQyEUmF49fjs1Z0JOeW
+	 R0FQuvKqfZQ2Fl9a/wvwdUYW141jsVxgSPFksoik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 82/86] btrfs: sysfs: fix direct super block member reads
+	Andi Kleen <ak@linux.intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.12 093/114] perf/x86/intel: Fix bitmask of OCR and FRONTEND events for LNC
 Date: Mon, 30 Dec 2024 16:43:30 +0100
-Message-ID: <20241230154214.826853777@linuxfoundation.org>
+Message-ID: <20241230154221.675776598@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit fca432e73db2bec0fdbfbf6d98d3ebcd5388a977 upstream.
+commit aa5d2ca7c179c40669edb5e96d931bf9828dea3d upstream.
 
-The following sysfs entries are reading super block member directly,
-which can have a different endian and cause wrong values:
+The released OCR and FRONTEND events utilized more bits on Lunar Lake
+p-core. The corresponding mask in the extra_regs has to be extended to
+unblock the extra bits.
 
-- sys/fs/btrfs/<uuid>/nodesize
-- sys/fs/btrfs/<uuid>/sectorsize
-- sys/fs/btrfs/<uuid>/clone_alignment
+Add a dedicated intel_lnc_extra_regs.
 
-Thankfully those values (nodesize and sectorsize) are always aligned
-inside the btrfs_super_block, so it won't trigger unaligned read errors,
-just endian problems.
-
-Fix them by using the native cached members instead.
-
-Fixes: df93589a1737 ("btrfs: export more from FS_INFO to sysfs")
-CC: stable@vger.kernel.org
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: a932aa0e868f ("perf/x86: Add Lunar Lake and Arrow Lake support")
+Reported-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20241216160252.430858-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/sysfs.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/core.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/sysfs.c
-+++ b/fs/btrfs/sysfs.c
-@@ -1022,7 +1022,7 @@ static ssize_t btrfs_nodesize_show(struc
- {
- 	struct btrfs_fs_info *fs_info = to_fs_info(kobj);
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -429,6 +429,16 @@ static struct event_constraint intel_lnc
+ 	EVENT_CONSTRAINT_END
+ };
  
--	return sysfs_emit(buf, "%u\n", fs_info->super_copy->nodesize);
-+	return sysfs_emit(buf, "%u\n", fs_info->nodesize);
++static struct extra_reg intel_lnc_extra_regs[] __read_mostly = {
++	INTEL_UEVENT_EXTRA_REG(0x012a, MSR_OFFCORE_RSP_0, 0xfffffffffffull, RSP_0),
++	INTEL_UEVENT_EXTRA_REG(0x012b, MSR_OFFCORE_RSP_1, 0xfffffffffffull, RSP_1),
++	INTEL_UEVENT_PEBS_LDLAT_EXTRA_REG(0x01cd),
++	INTEL_UEVENT_EXTRA_REG(0x02c6, MSR_PEBS_FRONTEND, 0x9, FE),
++	INTEL_UEVENT_EXTRA_REG(0x03c6, MSR_PEBS_FRONTEND, 0x7fff1f, FE),
++	INTEL_UEVENT_EXTRA_REG(0x40ad, MSR_PEBS_FRONTEND, 0xf, FE),
++	INTEL_UEVENT_EXTRA_REG(0x04c2, MSR_PEBS_FRONTEND, 0x8, FE),
++	EVENT_EXTRA_END
++};
+ 
+ EVENT_ATTR_STR(mem-loads,	mem_ld_nhm,	"event=0x0b,umask=0x10,ldlat=3");
+ EVENT_ATTR_STR(mem-loads,	mem_ld_snb,	"event=0xcd,umask=0x1,ldlat=3");
+@@ -6344,7 +6354,7 @@ static __always_inline void intel_pmu_in
+ 	intel_pmu_init_glc(pmu);
+ 	hybrid(pmu, event_constraints) = intel_lnc_event_constraints;
+ 	hybrid(pmu, pebs_constraints) = intel_lnc_pebs_event_constraints;
+-	hybrid(pmu, extra_regs) = intel_rwc_extra_regs;
++	hybrid(pmu, extra_regs) = intel_lnc_extra_regs;
  }
  
- BTRFS_ATTR(, nodesize, btrfs_nodesize_show);
-@@ -1032,7 +1032,7 @@ static ssize_t btrfs_sectorsize_show(str
- {
- 	struct btrfs_fs_info *fs_info = to_fs_info(kobj);
- 
--	return sysfs_emit(buf, "%u\n", fs_info->super_copy->sectorsize);
-+	return sysfs_emit(buf, "%u\n", fs_info->sectorsize);
- }
- 
- BTRFS_ATTR(, sectorsize, btrfs_sectorsize_show);
-@@ -1084,7 +1084,7 @@ static ssize_t btrfs_clone_alignment_sho
- {
- 	struct btrfs_fs_info *fs_info = to_fs_info(kobj);
- 
--	return sysfs_emit(buf, "%u\n", fs_info->super_copy->sectorsize);
-+	return sysfs_emit(buf, "%u\n", fs_info->sectorsize);
- }
- 
- BTRFS_ATTR(, clone_alignment, btrfs_clone_alignment_show);
+ static __always_inline void intel_pmu_init_skt(struct pmu *pmu)
 
 
 
