@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-106405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62309FE831
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2AA9FE833
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FEC3A232C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31C3B3A1DB6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159601531C4;
-	Mon, 30 Dec 2024 15:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516751531C4;
+	Mon, 30 Dec 2024 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01x8+yQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPb35l1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C611715E8B;
-	Mon, 30 Dec 2024 15:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF2A15E8B;
+	Mon, 30 Dec 2024 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573865; cv=none; b=Wqvgzwrrd3UrLT7HM3B9uhK3PQoU43FwdLV/QrUauaQvfKXTPp9eHgvc2SRcEBvzllH0lUQmV9PTes9Xs8CW164zM1PPRUpbqfjTap+lul4ime+zuXX4pHAlk/wD7VI+fJ/KiDTm0VkEJLuUbbNvcY97VfFuLL734rtYmpdBoDs=
+	t=1735573872; cv=none; b=V2rZhG9N9IClW1Ii8lgRgb9fAj/8D+m0Gahf7r+VMluv1P4DhLzaJ13YRP16WrDxDkoeKAEZ3fCFNyERuzqDoLuMYq8r4YVDvVLBHXrvKbFiYts4Dl9MoFezzCC8BCTyvUPwsoKArnmM/IrsWrxcIJN8K4+AmK42pMSZpBCdbzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573865; c=relaxed/simple;
-	bh=GJ7n8JqmoRm+msBlmSM4zxKfYNFwgPQMA52MgCaSY44=;
+	s=arc-20240116; t=1735573872; c=relaxed/simple;
+	bh=iNHmw/UQZwNYx1puc5wJMwFZVdVntg/bnxFZk2r/duk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KonFf12Lkt5283z/81gYan3ker2s4IKb0/xHjYOIgwoT76CU1qay5jRgLuYFfxR6WZiyrYVjCpQK1gYotBrN/4s5CId1M9gtFHCKCKsbix8+vYYFM6xahFwyB1HNQ9qecrlv56FBR8HFdwdbEG1jee2WMtPx1igzD+DYjgXy6E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01x8+yQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA254C4CED0;
-	Mon, 30 Dec 2024 15:51:04 +0000 (UTC)
+	 MIME-Version; b=gMqOTICLVi1q9A1ifkJSwX6T9kw11l8ysM3eENcpLVtV/JjaQEfPuvkZaPSaWk49pqsU5PPMkRhXE6W0ko5NEmNL/LPUhcSL5WA3Rpl8UzOKWdbnlaW7XATDTT5xCj+t6I4jkbxeZ8eUx1IMYJ4K3nIXqdXGaJ3auz+DcmYIecU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPb35l1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C10C4CED0;
+	Mon, 30 Dec 2024 15:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573865;
-	bh=GJ7n8JqmoRm+msBlmSM4zxKfYNFwgPQMA52MgCaSY44=;
+	s=korg; t=1735573871;
+	bh=iNHmw/UQZwNYx1puc5wJMwFZVdVntg/bnxFZk2r/duk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01x8+yQBgsas6/4vs1qnpBoj2h6KKvKYyoJChWuuSh8HSH5afKIvwz4Qd5HbLu7JL
-	 qKwkwW8Qp0MDbHtNovx0Cil2WETSb5/j4RHr0SAT1zodXPgkjH9UDkZtMiAP/k6QsR
-	 h7HsPBatsTipbX/fYiVAtClLMC4/ZiqxU18Kh1w8=
+	b=xPb35l1O38lqG+v3zegi3QaIOvsiHQQW8kAhaxeH+YirRkAarOsDYQvmMAITfLuHh
+	 bGJEexbO5NhoXvrvuQizZvmzQ7XxGw116Sk4b2tV/a/cV/jS3Bg9NRVLN2ILQr4cIn
+	 9dCK9N/VWdKW2wLLkArejjKP1Z83VX7TENpk70Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 56/86] ALSA: hda/realtek: fix micmute LEDs dont work on HP Laptops
-Date: Mon, 30 Dec 2024 16:43:04 +0100
-Message-ID: <20241230154213.847757822@linuxfoundation.org>
+Subject: [PATCH 6.6 57/86] pmdomain: core: Add missing put_device()
+Date: Mon, 30 Dec 2024 16:43:05 +0100
+Message-ID: <20241230154213.885374787@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
 References: <20241230154211.711515682@linuxfoundation.org>
@@ -67,42 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 0d08f0eec961acdb0424a3e2cfb37cfb89154833 ]
+[ Upstream commit b8f7bbd1f4ecff6d6277b8c454f62bb0a1c6dbe4 ]
 
-These HP laptops use Realtek HDA codec ALC3315 combined CS35L56
-Amplifiers. They need the quirk ALC285_FIXUP_HP_GPIO_LED to get
-the micmute LED working.
+When removing a genpd we don't clean up the genpd->dev correctly. Let's add
+the missing put_device() in genpd_free_data() to fix this.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241202144659.1553504-1-chris.chiu@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 401ea1572de9 ("PM / Domain: Add struct device to genpd")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Message-ID: <20241122134207.157283-2-ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/base/power/domain.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index e847bdb600fd..b50778e34f5d 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10054,7 +10054,13 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8d01, "HP ZBook Power 14 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d84, "HP EliteBook X G1i", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8d91, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firelfy 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
+index 582564f8dde6..d9d339b8b571 100644
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -2021,6 +2021,7 @@ static int genpd_alloc_data(struct generic_pm_domain *genpd)
+ 
+ static void genpd_free_data(struct generic_pm_domain *genpd)
+ {
++	put_device(&genpd->dev);
+ 	if (genpd_is_cpu_domain(genpd))
+ 		free_cpumask_var(genpd->cpus);
+ 	if (genpd->free_states)
 -- 
 2.39.5
 
