@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-106484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2359FE883
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0FF9FE83B
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45993161A9B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC2281882ED3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10F21531C4;
-	Mon, 30 Dec 2024 15:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FEA14F136;
+	Mon, 30 Dec 2024 15:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yu5oiUqn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szbwfLZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D33A15E8B;
-	Mon, 30 Dec 2024 15:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D7415E8B;
+	Mon, 30 Dec 2024 15:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574140; cv=none; b=tFxiLfx4D2wuXx4u8bvEW66CL+wosFo8aKF4hqWrifKdz9qMuR3A6lR5YER93OfstlBi+jAIEw9TUgmZ30R8SfPalVerXzfdRsMCGKGhqrj1+HA10HtHajZ8H4J4fjhe0gOsiSI/BVaoaOLKNSIC3y5OXUurF2cJsMU+wMsMpaA=
+	t=1735573898; cv=none; b=IZ9e9OiISx4vjXDHGKdd2EtSM+/MFOZJhUWB/KAlA4+3l4ew8FSWJR2VMGeYPbmqQ+Yru3NO3qOtthR0QwaDbVcdNF+uTJ1o/9mTYB0qBzkqUvk8N+WlIvIJ/Gc2aDZKKjTvhKG1+ZfLwmrxvjGUWtCsEwfhU1o2ciuNFhJvFb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574140; c=relaxed/simple;
-	bh=dPEnKCYgD+7k4Ad3krGUce+tVHhKtbYuGD/E3h0JKcs=;
+	s=arc-20240116; t=1735573898; c=relaxed/simple;
+	bh=+7fmk0dPqndlzcA0IPILOv/oew7/1NwiV4ihiJh2QCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ikOkISNXInfG/D3+oKZpsGqiZiXGFHiJUHaeT5fUG/tHxAJDs7xLAEPXTiUCW7bxmkCXq7+uHgaYfmZHbVmmPt0uSQ30c2pqnmkFB9hMAjVehzaxeLRY1KQkaoZm2duuJlnfiEv/OB1Mans6aJOyBIHhI4TcvnBM3QHuxaEuYn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yu5oiUqn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6ADC4CED0;
-	Mon, 30 Dec 2024 15:55:39 +0000 (UTC)
+	 MIME-Version; b=c65xXBaYpR9rQ80QzvmTbkXIOAlY4PnbBvwYtXLcn7EpX1G+b+emrUuAs7+wqAa4YEaKU6Vu53Abh0xjQYxMJV2SLv429Wl6837nEwlwbi0DkV1oeV/qllOcDgIxuFLJeWH2kLA+nBrbYTUQgalc7Hknoa3speZmhOTBQyiwLTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szbwfLZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89835C4CED0;
+	Mon, 30 Dec 2024 15:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574140;
-	bh=dPEnKCYgD+7k4Ad3krGUce+tVHhKtbYuGD/E3h0JKcs=;
+	s=korg; t=1735573898;
+	bh=+7fmk0dPqndlzcA0IPILOv/oew7/1NwiV4ihiJh2QCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yu5oiUqnwQ9l/G4aItkNG3YanLV9BL56A4c2iKamf//YVLt5eR2q5gLU4xpoUwFMd
-	 z4Xuvh6MvGirTig9WPfXOjsbA+frDE2/TjzhnDnMnSMGG8tFVcmMQ64xh1wVufMPet
-	 jFSjNKg0Bco1167u8bVAR8oVGJ+GoaRXzr/VgC58=
+	b=szbwfLZ1NmC2lQO4rQw5W5wffhjHv5ImzUh7O+2YDerDE8GpUBdgXQE0l+wMOk5PV
+	 VIjWxmcQJ5+6MeMiZ5axc+C+fgEOKqroNrE7h82c9CTdpViqBcAJmColAN/E/w3ke5
+	 7lLk7QQQDDcqcN1z830LhPNRodRZlbsuf0ETQwt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/114] watchdog: rzg2l_wdt: Power on the watchdog domain in the restart handler
+Subject: [PATCH 6.6 36/86] udf: Skip parent dir link count update if corrupted
 Date: Mon, 30 Dec 2024 16:42:44 +0100
-Message-ID: <20241230154219.868489831@linuxfoundation.org>
+Message-ID: <20241230154213.093248691@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit bad201b2ac4e238c6d4b6966a220240e3861640c ]
+[ Upstream commit c5566903af56dd1abb092f18dcb0c770d6cd8dcb ]
 
-On RZ/G3S the watchdog can be part of a software-controlled PM domain. In
-this case, the watchdog device need to be powered on in
-struct watchdog_ops::restart API. This can be done though
-pm_runtime_resume_and_get() API if the watchdog PM domain and watchdog
-device are marked as IRQ safe. We mark the watchdog PM domain as IRQ safe
-with GENPD_FLAG_IRQ_SAFE when the watchdog PM domain is registered and the
-watchdog device though pm_runtime_irq_safe().
+If the parent directory link count is too low (likely directory inode
+corruption), just skip updating its link count as if it goes to 0 too
+early it can cause unexpected issues.
 
-Before commit e4cf89596c1f ("watchdog: rzg2l_wdt: Fix 'BUG: Invalid wait
-context'") pm_runtime_get_sync() was used in watchdog restart handler
-(which is similar to pm_runtime_resume_and_get() except the later one
-handles the runtime resume errors).
-
-Commit e4cf89596c1f ("watchdog: rzg2l_wdt: Fix 'BUG: Invalid wait
-context'") dropped the pm_runtime_get_sync() and replaced it with
-clk_prepare_enable() to avoid invalid wait context due to genpd_lock()
-in genpd_runtime_resume() being called from atomic context. But
-clk_prepare_enable() doesn't fit for this either (as reported by
-Ulf Hansson) as clk_prepare() can also sleep (it just not throw invalid
-wait context warning as it is not written for this).
-
-Because the watchdog device is marked now as IRQ safe (though this patch)
-the irq_safe_dev_in_sleep_domain() call from genpd_runtime_resume() returns
-1 for devices not registering an IRQ safe PM domain for watchdog (as the
-watchdog device is IRQ safe, PM domain is not and watchdog PM domain is
-always-on), this being the case for RZ/G3S with old device trees and
-the rest of the SoCs that use this driver, we can now drop also the
-clk_prepare_enable() calls in restart handler and rely on
-pm_runtime_resume_and_get().
-
-Thus, drop clk_prepare_enable() and use pm_runtime_resume_and_get() in
-watchdog restart handler.
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241015164732.4085249-5-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rzg2l_wdt.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ fs/udf/namei.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/rzg2l_wdt.c b/drivers/watchdog/rzg2l_wdt.c
-index 2a35f890a288..11bbe48160ec 100644
---- a/drivers/watchdog/rzg2l_wdt.c
-+++ b/drivers/watchdog/rzg2l_wdt.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <linux/units.h>
-@@ -166,8 +167,22 @@ static int rzg2l_wdt_restart(struct watchdog_device *wdev,
- 	struct rzg2l_wdt_priv *priv = watchdog_get_drvdata(wdev);
- 	int ret;
- 
--	clk_prepare_enable(priv->pclk);
--	clk_prepare_enable(priv->osc_clk);
-+	/*
-+	 * In case of RZ/G3S the watchdog device may be part of an IRQ safe power
-+	 * domain that is currently powered off. In this case we need to power
-+	 * it on before accessing registers. Along with this the clocks will be
-+	 * enabled. We don't undo the pm_runtime_resume_and_get() as the device
-+	 * need to be on for the reboot to happen.
-+	 *
-+	 * For the rest of SoCs not registering a watchdog IRQ safe power
-+	 * domain it is safe to call pm_runtime_resume_and_get() as the
-+	 * irq_safe_dev_in_sleep_domain() call in genpd_runtime_resume()
-+	 * returns non zero value and the genpd_lock() is avoided, thus, there
-+	 * will be no invalid wait context reported by lockdep.
-+	 */
-+	ret = pm_runtime_resume_and_get(wdev->parent);
-+	if (ret)
-+		return ret;
- 
- 	if (priv->devtype == WDT_RZG2L) {
- 		ret = reset_control_deassert(priv->rstc);
-@@ -275,6 +290,7 @@ static int rzg2l_wdt_probe(struct platform_device *pdev)
- 
- 	priv->devtype = (uintptr_t)of_device_get_match_data(dev);
- 
-+	pm_runtime_irq_safe(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
- 	priv->wdev.info = &rzg2l_wdt_ident;
+diff --git a/fs/udf/namei.c b/fs/udf/namei.c
+index 605f182da42c..b3f57ad2b869 100644
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -521,7 +521,11 @@ static int udf_rmdir(struct inode *dir, struct dentry *dentry)
+ 			 inode->i_nlink);
+ 	clear_nlink(inode);
+ 	inode->i_size = 0;
+-	inode_dec_link_count(dir);
++	if (dir->i_nlink >= 3)
++		inode_dec_link_count(dir);
++	else
++		udf_warn(inode->i_sb, "parent dir link count too low (%u)\n",
++			 dir->i_nlink);
+ 	udf_add_fid_counter(dir->i_sb, true, -1);
+ 	dir->i_mtime = inode_set_ctime_to_ts(dir,
+ 					     inode_set_ctime_current(inode));
 -- 
 2.39.5
 
