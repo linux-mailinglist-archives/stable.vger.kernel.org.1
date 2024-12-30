@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-106336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE969FE7E9
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 464B39FE88E
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4ABC160737
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 077C7161737
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40662E414;
-	Mon, 30 Dec 2024 15:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A713A15E8B;
+	Mon, 30 Dec 2024 15:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7DCJ+Mi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7QUL/TN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7222594B6;
-	Mon, 30 Dec 2024 15:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643FD2E414;
+	Mon, 30 Dec 2024 15:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573628; cv=none; b=FosZgnMMqA+jXapn9QERau+qRaKIT5l/j+6+H31FLmENkOZrKNJvLj4oSkt+PGZdphwdznFBzIDlLAQ5wTDsM6vOxf0uuQ1IqzSrlT2gPNawAh92LVQPeXnvYwM6xkZiceHqekvhuICQhQAS4FtyxYg/gjnZ6GnXPy7pTll8RLY=
+	t=1735574178; cv=none; b=unFQ89+VpE+y8AQgLoIyy9e8Nh8QnKYnOcFsAIZzJu5seJl7xlGEri/xQ5lnK0fEWWDzrtT/TvnzHtD4ABj61iyif0JuzWgm4OqjqIr08K9dNgbnLIZwlPYij3EzwBVre7dPVTMNYcG42lhuPqT2KikgriM8i2CvcqR6EqcJ3xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573628; c=relaxed/simple;
-	bh=7kDBJvA6VlFbDWZx4Wddxkpea3xZ4uIUX9p+tKHGcyc=;
+	s=arc-20240116; t=1735574178; c=relaxed/simple;
+	bh=D54Wc06N2qQ9fzLcwvQNm0IIlmjZie4u1tY6biOq7/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mw+ZjHD39eFp42Va5s0PenupjnZK2RKl81gDqj72XwHMv/9yXVWPiv2pX+yZOxD41AqUAznugHY9sxO/5OwwBovi2c7QTT9hj3CE7giSw1rTsvjApOgbglDiHkM5ajDHngJS4zkc8gZN8LDBYZb7qPn+0Fpsy4T6Gv6hCcjG8TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7DCJ+Mi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC411C4CED0;
-	Mon, 30 Dec 2024 15:47:07 +0000 (UTC)
+	 MIME-Version; b=WKBLPEXdAiqVUGghpGQaiKmM4gv1209MYOrhelUvwnr+2Xaf5dcIzgzmXtyABTwAS0e0kNBPbMsdgPMpO7VrFnYy18wzEsO0y3r8lFEoHztoG9zkxzxH4AAnInqkSaOBIE1wXQw6V5iVKrpNvonU9AXvWRCjPX/o4Xccf9FFBaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7QUL/TN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B0FC4CED0;
+	Mon, 30 Dec 2024 15:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573628;
-	bh=7kDBJvA6VlFbDWZx4Wddxkpea3xZ4uIUX9p+tKHGcyc=;
+	s=korg; t=1735574178;
+	bh=D54Wc06N2qQ9fzLcwvQNm0IIlmjZie4u1tY6biOq7/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7DCJ+MirO1LPKhcYJYa1S3gx0Qo0sc45dgNUfNZFRgh/JrpZ7OX8QRfnLgbnDO0L
-	 q4DHKIbMpf/Bn5G8KW1K2YmH3Q01F90C0yd9otQ9DqO0MJmoBOIkfCeXLK938CGqKN
-	 dWfZq0UjSFx20Vh7Z2JhwjrXVhyZ8P/PrvW93MUk=
+	b=b7QUL/TNOp5rb9uLg4vEEqVxwv1CQrZnG/VoFoDTAi09lhEMqJgmwaaqh7eQixfab
+	 XTxmaze3WJS6Br/mIfNPGzcj2zlKSrSugp8w5h8HTY4pOvGaFOzkvsNlArLkDuXXEE
+	 hDWBQFSYa7W4JMkdQrJpB+6rsAeaIYW/ztpgFTvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Ingo Molnar <mingo@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/60] sched/core: Report correct state for TASK_IDLE | TASK_FREEZABLE
+Subject: [PATCH 6.12 060/114] regmap: Use correct format specifier for logging range errors
 Date: Mon, 30 Dec 2024 16:42:57 +0100
-Message-ID: <20241230154209.060113582@linuxfoundation.org>
+Message-ID: <20241230154220.402503540@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 0d6b35283bcf1a379cf20066544af8e6a6b16b46 ]
+[ Upstream commit 3f1aa0c533d9dd8a835caf9a6824449c463ee7e2 ]
 
-task_state_index() ignores uninteresting state flags (such as
-TASK_FREEZABLE) for most states, but for TASK_IDLE and TASK_RTLOCK_WAIT
-it does not.
+The register addresses are unsigned ints so we should use %u not %d to
+log them.
 
-So if a task is waiting TASK_IDLE|TASK_FREEZABLE it gets incorrectly
-reported as TASK_UNINTERRUPTIBLE or "D".  (it is planned for nfsd to
-change to use this state).
-
-Fix this by only testing the interesting bits and not the irrelevant
-bits in __task_state_index()
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/169335025927.5133.4781141800413736103@noble.neil.brown.name
-Stable-dep-of: f718faf3940e ("freezer, sched: Report frozen tasks as 'D' instead of 'R'")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20241127-regmap-test-high-addr-v1-1-74a48a9e0dc5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched.h | 4 ++--
+ drivers/base/regmap/regmap.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 0cac69902ec5..205a00806835 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1663,7 +1663,7 @@ static inline unsigned int __task_state_index(unsigned int tsk_state,
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index e3e2afc2c83c..5962ea1230a1 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1063,13 +1063,13 @@ struct regmap *__regmap_init(struct device *dev,
  
- 	BUILD_BUG_ON_NOT_POWER_OF_2(TASK_REPORT_MAX);
+ 		/* Sanity check */
+ 		if (range_cfg->range_max < range_cfg->range_min) {
+-			dev_err(map->dev, "Invalid range %d: %d < %d\n", i,
++			dev_err(map->dev, "Invalid range %d: %u < %u\n", i,
+ 				range_cfg->range_max, range_cfg->range_min);
+ 			goto err_range;
+ 		}
  
--	if (tsk_state == TASK_IDLE)
-+	if ((tsk_state & TASK_IDLE) == TASK_IDLE)
- 		state = TASK_REPORT_IDLE;
- 
- 	/*
-@@ -1671,7 +1671,7 @@ static inline unsigned int __task_state_index(unsigned int tsk_state,
- 	 * to userspace, we can make this appear as if the task has gone through
- 	 * a regular rt_mutex_lock() call.
- 	 */
--	if (tsk_state == TASK_RTLOCK_WAIT)
-+	if (tsk_state & TASK_RTLOCK_WAIT)
- 		state = TASK_UNINTERRUPTIBLE;
- 
- 	return fls(state);
+ 		if (range_cfg->range_max > map->max_register) {
+-			dev_err(map->dev, "Invalid range %d: %d > %d\n", i,
++			dev_err(map->dev, "Invalid range %d: %u > %u\n", i,
+ 				range_cfg->range_max, map->max_register);
+ 			goto err_range;
+ 		}
 -- 
 2.39.5
 
