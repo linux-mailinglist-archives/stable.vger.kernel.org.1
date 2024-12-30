@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-106385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9469FE81C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA789FE884
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02CF3A249D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11A4C188306B
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BC31A2550;
-	Mon, 30 Dec 2024 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6077A42AA6;
+	Mon, 30 Dec 2024 15:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1+kcIey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uu/O8A0a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6437815E8B;
-	Mon, 30 Dec 2024 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCBD15E8B;
+	Mon, 30 Dec 2024 15:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573798; cv=none; b=efddrWws3WhRXQA5cFfc114CbJyLHkQ3qp67I5u+A1+T/n3BY/5jgQxolnj4WUiyqH9gBH7vA0ludQUAA3iOTmZCtZ7Jc/8TpLUx38EDBVZt6/NRuAdSCKcOy0oiEHJ3dn+YnJQCaw0MwtbbGPV2bjphQ5kQL4gbvNE6vs9l5ok=
+	t=1735574144; cv=none; b=W23xmvDKx6WwILbXmPROSuhyFrO1zSnDv6bmDvhlgvxPImQ9DNNeDNRuCFLL9n0IdNI0YDGgkfbSNmioCsEaUhXybQglDSICVEI2CGufxP/12+7vlnUXKkckpcz+56dqcrSLYkgAdojLJqanBYK31uIB1nS6t4+nFlEbcSC1mTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573798; c=relaxed/simple;
-	bh=MSH0TEbPTISKpHsC9+7OBgEfzJrQazKVDJ/X5pOjugc=;
+	s=arc-20240116; t=1735574144; c=relaxed/simple;
+	bh=RGjpyRQKth7Rh533OVVtiJ1HRNMP0/a+IV2fvfDqeBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqmxB1Iz7GCYEQdtdbZfKGoweEFuSPHOyIqdxYFjQZyTUXJBxJtAdfTJpaU97EyUhpS9on+JH7lXc9tdDjuvGpmnb9GzaS+95iaOxDT5TNe2KYWuaW+cF5CT3isbyP8q11+LoQZCJ20fN472iCdvSp6qd/0qficDEfAw1Oguo5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1+kcIey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62E2C4CED0;
-	Mon, 30 Dec 2024 15:49:57 +0000 (UTC)
+	 MIME-Version; b=QmSU6a3D6Ko5+ZIrqAq/Q/nCqnzh3aGqv/r3Fs3qtWLY8tuigAd3KP7xyJzlS6HVwK0ggI5hjUk41CLBPiFzfufGSVcTzhmFb2UaEGb/nAVixVU3RrxRb/hKxms+G1mezLPaLZAALgXdlXdrNK7Ocng0Knjj7llacJnGnbA5jyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uu/O8A0a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8074CC4CED0;
+	Mon, 30 Dec 2024 15:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573798;
-	bh=MSH0TEbPTISKpHsC9+7OBgEfzJrQazKVDJ/X5pOjugc=;
+	s=korg; t=1735574144;
+	bh=RGjpyRQKth7Rh533OVVtiJ1HRNMP0/a+IV2fvfDqeBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1+kcIeyZHIGJc6LkMfZ/qkaS4D13N9Pet0DCrEAcuIefdg3hfihMph30qypZg7up
-	 MgcYvshHHjjqUF6RA8rS4zltCulkjQ+OV4Bvk04byoitqBmcywByW5w0DwtmlMEyHm
-	 pdR8QKreks/1I7k/uvocjRZyDgmc2SYfqCh6CLPc=
+	b=Uu/O8A0avRBHMbVZt1yrqU0xlU1AEx0KGQ1/X0XkRuAhxawT9nTihMzyePYRwzI2h
+	 ZV8GO3Rs+BE7KnsFqNpMYtyKxAvyOiLhTD+0ff4b4ENtHCKhlnqhgUZxoLw5etC5f5
+	 U3ufDlZVNeLj1bfDMbYXc81pMkz0cM3JIcoaUk80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bo liu <bo.liu@senarytech.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 37/86] ALSA: hda/conexant: fix Z60MR100 startup pop issue
+Subject: [PATCH 6.12 048/114] Revert "watchdog: s3c2410_wdt: use exynos_get_pmu_regmap_by_phandle() for PMU regs"
 Date: Mon, 30 Dec 2024 16:42:45 +0100
-Message-ID: <20241230154213.129338097@linuxfoundation.org>
+Message-ID: <20241230154219.906501103@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bo liu <bo.liu@senarytech.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 947c4012f8f03a8bb946beb6e5294d5e32817d67 ]
+[ Upstream commit ccfb765944bb66813398958983cb8141e2624a6b ]
 
-When Z60MR100 startup, speaker will output a pop. To fix this issue,
-we mute codec by init verbs in bios when system startup, and set GPIO
-to low to unmute codec in codec driver when it loaded .
+This reverts commit 746f0770f916e6c48e422d6a34e67eae16707f0e.
 
-[ white space fixes and compile warning fix by tiwai ]
+Now that we can register a SoC specific regmap with syscon using
+of_syscon_register_regmap() api we can switch back to using
+syscon_regmap_lookup_by_phandle() in the client drivers.
 
-Signed-off-by: bo liu <bo.liu@senarytech.com>
-Link: https://patch.msgid.link/20241129014441.437205-1-bo.liu@senarytech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241029191131.2329414-1-peter.griffin@linaro.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/watchdog/Kconfig       | 1 +
+ drivers/watchdog/s3c2410_wdt.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index b3208b068dd8..989ce0fb6291 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -311,6 +311,7 @@ enum {
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
- 	CXT_PINCFG_SWS_JS201D,
- 	CXT_PINCFG_TOP_SPEAKER,
-+	CXT_FIXUP_HP_A_U,
- };
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 94c96bcfefe3..0b59c669c26d 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -549,6 +549,7 @@ config S3C2410_WATCHDOG
+ 	tristate "S3C6410/S5Pv210/Exynos Watchdog"
+ 	depends on ARCH_S3C64XX || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
+ 	select WATCHDOG_CORE
++	select MFD_SYSCON if ARCH_EXYNOS
+ 	help
+ 	  Watchdog timer block in the Samsung S3C64xx, S5Pv210 and Exynos
+ 	  SoCs. This will reboot the system when the timer expires with
+diff --git a/drivers/watchdog/s3c2410_wdt.c b/drivers/watchdog/s3c2410_wdt.c
+index 686cf544d0ae..349d30462c8c 100644
+--- a/drivers/watchdog/s3c2410_wdt.c
++++ b/drivers/watchdog/s3c2410_wdt.c
+@@ -24,9 +24,9 @@
+ #include <linux/slab.h>
+ #include <linux/err.h>
+ #include <linux/of.h>
++#include <linux/mfd/syscon.h>
+ #include <linux/regmap.h>
+ #include <linux/delay.h>
+-#include <linux/soc/samsung/exynos-pmu.h>
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -778,6 +779,18 @@ static void cxt_setup_mute_led(struct hda_codec *codec,
+ #define S3C2410_WTCON		0x00
+ #define S3C2410_WTDAT		0x04
+@@ -699,11 +699,11 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	if (wdt->drv_data->quirks & QUIRKS_HAVE_PMUREG) {
+-		wdt->pmureg = exynos_get_pmu_regmap_by_phandle(dev->of_node,
+-						 "samsung,syscon-phandle");
++		wdt->pmureg = syscon_regmap_lookup_by_phandle(dev->of_node,
++						"samsung,syscon-phandle");
+ 		if (IS_ERR(wdt->pmureg))
+ 			return dev_err_probe(dev, PTR_ERR(wdt->pmureg),
+-					     "PMU regmap lookup failed.\n");
++					     "syscon regmap lookup failed.\n");
  	}
- }
  
-+static void cxt_setup_gpio_unmute(struct hda_codec *codec,
-+				  unsigned int gpio_mute_mask)
-+{
-+	if (gpio_mute_mask) {
-+		// set gpio data to 0.
-+		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DATA, 0);
-+		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_MASK, gpio_mute_mask);
-+		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DIRECTION, gpio_mute_mask);
-+		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_STICKY_MASK, 0);
-+	}
-+}
-+
- static void cxt_fixup_mute_led_gpio(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
- {
-@@ -792,6 +805,15 @@ static void cxt_fixup_hp_zbook_mute_led(struct hda_codec *codec,
- 		cxt_setup_mute_led(codec, 0x10, 0x20);
- }
- 
-+static void cxt_fixup_hp_a_u(struct hda_codec *codec,
-+			     const struct hda_fixup *fix, int action)
-+{
-+	// Init vers in BIOS mute the spk/hp by set gpio high to avoid pop noise,
-+	// so need to unmute once by clearing the gpio data when runs into the system.
-+	if (action == HDA_FIXUP_ACT_INIT)
-+		cxt_setup_gpio_unmute(codec, 0x2);
-+}
-+
- /* ThinkPad X200 & co with cxt5051 */
- static const struct hda_pintbl cxt_pincfg_lenovo_x200[] = {
- 	{ 0x16, 0x042140ff }, /* HP (seq# overridden) */
-@@ -1002,6 +1024,10 @@ static const struct hda_fixup cxt_fixups[] = {
- 			{ }
- 		},
- 	},
-+	[CXT_FIXUP_HP_A_U] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cxt_fixup_hp_a_u,
-+	},
- };
- 
- static const struct hda_quirk cxt5045_fixups[] = {
-@@ -1076,6 +1102,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
-+	SND_PCI_QUIRK(0x14f1, 0x0252, "MBX-Z60MR100", CXT_FIXUP_HP_A_U),
- 	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
- 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
- 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
-@@ -1121,6 +1148,7 @@ static const struct hda_model_fixup cxt5066_fixup_models[] = {
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
- 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
- 	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
-+	{ .id = CXT_FIXUP_HP_A_U, .name = "HP-U-support" },
- 	{}
- };
- 
+ 	wdt_irq = platform_get_irq(pdev, 0);
 -- 
 2.39.5
 
