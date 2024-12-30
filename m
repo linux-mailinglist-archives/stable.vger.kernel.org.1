@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503079FE7EC
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DEA89FE873
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 988D23A22EC
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2478C1882EA6
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA36214F136;
-	Mon, 30 Dec 2024 15:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F55537E9;
+	Mon, 30 Dec 2024 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BexURkfJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t34CbgIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8727D2594B6;
-	Mon, 30 Dec 2024 15:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A447515E8B;
+	Mon, 30 Dec 2024 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573638; cv=none; b=K6Pc9dU1m2TK2D81Pi+pDNdmslUfmvtNyNcmYxu1Fdqs1f8fakOM4m/W4mqynl2zhS7GZqDv0/WFHSlNnWdUr2Ed2SDOxKWYqVYN0vnlodUYbb+/EPLM1w3elo35aSdqE4qYObWK1jPJ/nSkOmYmDsQKXRG+nA+YLSSsan7j8pY=
+	t=1735574089; cv=none; b=MTfdpjOcBgf21+70vSWAkKKCe+S9OUxH4JM83p6kRU+U3qhGdA/llZtl6ZsmrEGHdWZBYb51O0gBsMdmBvkDVMTPrg5fjSB0WlP6vbd8AlSyfR/YwVvMrKRKmG7A1Zc28y3FnAS6RUjhtF3OTDAHvy4NvfW3zBzZGhiQkR+XAbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573638; c=relaxed/simple;
-	bh=xz5gmXoW9BdPe3/OUSCplyyakmqfKsF5uWspwbj3x0I=;
+	s=arc-20240116; t=1735574089; c=relaxed/simple;
+	bh=6txZf4zqa8+TdVoXsFUMHaqk/gWUFT/jGTUj1395m5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZnxCFaUMK5VwqUg/zlp4ynAfnknsKctI57QeH5IMtgnmLv3rZCzb3wUB3LZjnSVwMaIscnLrM0/q6cdmdUR5DLPyTFmhuLjW8hDgJEv61RXEB03jpDm3YBdWAc8Vzxh5VsGLrkxr7x+UDNMkCPSI/gvhlImNQqEWpMzsoQ0FBsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BexURkfJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84668C4CED0;
-	Mon, 30 Dec 2024 15:47:17 +0000 (UTC)
+	 MIME-Version; b=UGPIOqw58VITggbangyEMd7IQ8jkfztbe4cBTMz5WXrpISxxl9yjZmxg1AUn//G6kpgFRtxUxP0Q+z/696jBNytdverbN0lAY08dmPAPM69zJ8kh3aJ8dVuzYY2g2MC0x/Bxi7VE5Lkas0hysBx18+6DxmC9KfCe3vF2DjldmcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t34CbgIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC56C4CED0;
+	Mon, 30 Dec 2024 15:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573638;
-	bh=xz5gmXoW9BdPe3/OUSCplyyakmqfKsF5uWspwbj3x0I=;
+	s=korg; t=1735574089;
+	bh=6txZf4zqa8+TdVoXsFUMHaqk/gWUFT/jGTUj1395m5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BexURkfJ9KxhKJSKQFWC1q/2pCmmea0aw7qUvR1kGvbE+y2jrrsnyOhsnfZtjBlAi
-	 wAwuAAtPGtLhKzo55wxKqTKK1Z0NaLCfsKL4U759v6gYz90oEJjqi2KL3MTLiFHEIG
-	 +I86cUnXEWr89YCBAkeiV/5D9CQap9xBwBOA37Uc=
+	b=t34CbgIvQTzU9mPkmtbHGCt15cG44rxG5+Db7yCG1+k8Icfzyfs9tvJbfnyLXBKgM
+	 MtQVbnGLHm91Hnqf+eHSPtP7s+Ab9WQQQ59TJCb/NJy6MYqL/m27150IAfBBsQMB7S
+	 t/n5RMW/eYO39VutSzqPO9w/NtA31uxQWLHHQH0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Finkelstein <fnkl.kernel@gmail.com>,
+	Chen Ridong <chenridong@huawei.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 21/60] dmaengine: apple-admac: Avoid accessing registers in probe
+Subject: [PATCH 6.12 034/114] dmaengine: at_xdmac: avoid null_prt_deref in at_xdmac_prep_dma_memset
 Date: Mon, 30 Dec 2024 16:42:31 +0100
-Message-ID: <20241230154208.092028861@linuxfoundation.org>
+Message-ID: <20241230154219.376242688@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Finkelstein <fnkl.kernel@gmail.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 8d55e8a16f019211163f1180fd9f9fbe05901900 upstream.
+commit c43ec96e8d34399bd9dab2f2dc316b904892133f upstream.
 
-The ADMAC attached to the AOP has complex power sequencing, and is
-power gated when the probe callback runs. Move the register reads
-to other functions, where we can guarantee that the hardware is
-switched on.
+The at_xdmac_memset_create_desc may return NULL, which will lead to a
+null pointer dereference. For example, the len input is error, or the
+atchan->free_descs_list is empty and memory is exhausted. Therefore, add
+check to avoid this.
 
-Fixes: 568aa6dd641f ("dmaengine: apple-admac: Allocate cache SRAM to channels")
-Signed-off-by: Sasha Finkelstein <fnkl.kernel@gmail.com>
-Link: https://lore.kernel.org/r/20241124-admac-power-v1-1-58f2165a4d55@gmail.com
+Fixes: b206d9a23ac7 ("dmaengine: xdmac: Add memset support")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Link: https://lore.kernel.org/r/20241029082845.1185380-1-chenridong@huaweicloud.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/apple-admac.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/dma/at_xdmac.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/dma/apple-admac.c
-+++ b/drivers/dma/apple-admac.c
-@@ -152,6 +152,8 @@ static int admac_alloc_sram_carveout(str
- {
- 	struct admac_sram *sram;
- 	int i, ret = 0, nblocks;
-+	ad->txcache.size = readl_relaxed(ad->base + REG_TX_SRAM_SIZE);
-+	ad->rxcache.size = readl_relaxed(ad->base + REG_RX_SRAM_SIZE);
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -1363,6 +1363,8 @@ at_xdmac_prep_dma_memset(struct dma_chan
+ 		return NULL;
  
- 	if (dir == DMA_MEM_TO_DEV)
- 		sram = &ad->txcache;
-@@ -911,12 +913,7 @@ static int admac_probe(struct platform_d
- 		goto free_irq;
- 	}
+ 	desc = at_xdmac_memset_create_desc(chan, atchan, dest, len, value);
++	if (!desc)
++		return NULL;
+ 	list_add_tail(&desc->desc_node, &desc->descs_list);
  
--	ad->txcache.size = readl_relaxed(ad->base + REG_TX_SRAM_SIZE);
--	ad->rxcache.size = readl_relaxed(ad->base + REG_RX_SRAM_SIZE);
--
- 	dev_info(&pdev->dev, "Audio DMA Controller\n");
--	dev_info(&pdev->dev, "imprint %x TX cache %u RX cache %u\n",
--		 readl_relaxed(ad->base + REG_IMPRINT), ad->txcache.size, ad->rxcache.size);
- 
- 	return 0;
- 
+ 	desc->tx_dma_desc.cookie = -EBUSY;
 
 
 
