@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-106487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A6B9FE886
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EFBE9FE800
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E64D3A266F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625DA1882F38
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF63537E9;
-	Mon, 30 Dec 2024 15:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD99E537E9;
+	Mon, 30 Dec 2024 15:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6fDNRAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpUOyM92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B05D15E8B;
-	Mon, 30 Dec 2024 15:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B27C15E8B;
+	Mon, 30 Dec 2024 15:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574151; cv=none; b=hA+hsYRCrlUw7FiFwMAZ4dRfftzRYCobQ0cFgOP7ZRWUPrSZoeNZ59u5A8sR5rYmaTbLMWRSzRrbXOuMsPI0swQlKi6xC7PE47aL85xScADHVjLlEIlwfmY2aayMMnlRObwAHFO0v/MPVxuBsjQl0K7IuTVhx0GV1236+OfOw4g=
+	t=1735573700; cv=none; b=AjPP8WLOZ3IOjL154z3FFIHbGVt1L9niGVvlu+bFmosUq4r6t5oF9qfGSSa1CEQ1vLzljf8asZY9BKQLScTS/Mlb6GxOVsZPddyypMFjboQxAYfMsMtV/x7yEc1dgUGTzPkNVWkmW1R/0ud629rtQPboZVGyxFPMfmjt7dFWPOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574151; c=relaxed/simple;
-	bh=Xm1azQ3bZ9ez+Jcyztvorod2ukURyO+Mkikbj9Mo/Ow=;
+	s=arc-20240116; t=1735573700; c=relaxed/simple;
+	bh=7d2pxtzgdb+l5fXEwGJIYI0o5rmUYJ6EakHPnnuRSUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eUlKM0GIQW+5ozBBxJYP+7G8/5jlTbtl7VH2cWmYl70lT8RwSXhfnRzgRtWaKXUq+FNxJNQ+yH0UMMCwRC+j9XUUeuL3PBztaqadYLxzTV3y5U0JxYzaKk0mrlnm9lKlYdLsdkRd37E3DnhJzMSI4Yqw/mv6mDJEDnstp2lLzhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6fDNRAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9000CC4CED0;
-	Mon, 30 Dec 2024 15:55:50 +0000 (UTC)
+	 MIME-Version; b=k8AgPZLNkphvVJ3QuP+GT6oMACa0xXZG/i5qZWiENeIH4oqHXivmo7qNaaOrGcZt61HB7FhTZJKXo/FwVirXJMBDnvo4ALYTKbf4+s1bQrWVyAXhhCTLmHBfsGk7yVpdHj0jPP37qw6XJblbABPHZVOuPxBo+j0bR1ALg9Av3bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpUOyM92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CCBC4CED0;
+	Mon, 30 Dec 2024 15:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574151;
-	bh=Xm1azQ3bZ9ez+Jcyztvorod2ukURyO+Mkikbj9Mo/Ow=;
+	s=korg; t=1735573700;
+	bh=7d2pxtzgdb+l5fXEwGJIYI0o5rmUYJ6EakHPnnuRSUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6fDNRAvDPnpVmzs7iaW85oGXgZqaN+26z4nFoBHsrSg67JJ/bNR4VsG23/kkdQJm
-	 UbEh7yRWE8HbpKvaCQE4kNidxcKbF75Zq0rSJ2f3meJvTqDFZzBk6C388dPN9GvHjO
-	 iQRRsrA70fjflQ15Kz9tFDbi1kKqlU0XcEQLdZfo=
+	b=DpUOyM9240/e7C3S1l3aAen58dZz+JnA7EZ1d92UIGLFvf5Ag01FCiVEpQ0zk8l1h
+	 nXagKgwVadYVLbVANhDiY7sWA9SPmcV5PRP0bPpKlk/wcXQ0rgk4WTNm/ltaZY2lzy
+	 oemoNvsHpqNXNA6rPzs8/81sI3mzzAG9B+YPemMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 021/114] phy: core: Fix that API devm_phy_put() fails to release the phy
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 10/86] nfsd: restore callback functionality for NFSv4.0
 Date: Mon, 30 Dec 2024 16:42:18 +0100
-Message-ID: <20241230154218.879980692@linuxfoundation.org>
+Message-ID: <20241230154212.106513472@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: NeilBrown <neilb@suse.de>
 
-commit fe4bfa9b6d7bd752bfe4700c937f235aa8ce997b upstream.
+[ Upstream commit 7917f01a286ce01e9c085e24468421f596ee1a0c ]
 
-For devm_phy_put(), its comment says it needs to invoke phy_put() to
-release the phy, but it will not actually invoke the function since
-devres_destroy() does not call devm_phy_release(), and the missing
-phy_put() call will cause:
+A recent patch inadvertently broke callbacks for NFSv4.0.
 
-- The phy fails to be released.
-- devm_phy_put() can not fully undo what API devm_phy_get() does.
-- Leak refcount of both the module and device for below typical usage:
+In the 4.0 case we do not expect a session to be found but still need to
+call setup_callback_client() which will not try to dereference it.
 
-  devm_phy_get(); // or its variant
-  ...
-  err = do_something();
-  if (err)
-      goto err_out;
-  ...
-  err_out:
-  devm_phy_put(); // leak refcount here
+This patch moves the check for failure to find a session into the 4.1+
+branch of setup_callback_client()
 
-  The file(s) affected by this issue are shown below since they have such
-  typical usage.
-  drivers/pci/controller/cadence/pcie-cadence.c
-  drivers/net/ethernet/ti/am65-cpsw-nuss.c
-
-Fix by using devres_release() instead of devres_destroy() within the API.
-
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
-Cc: stable@vger.kernel.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Krzysztof Wilczyński <kw@linux.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-1-40ae28f5015a@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e02c641c3a4 ("NFSD: Prevent NULL dereference in nfsd4_process_cb_update()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4callback.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -742,7 +742,7 @@ void devm_phy_put(struct device *dev, st
- 	if (!phy)
- 		return;
+diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
+index 49a49529c6b8..54ffadf02e03 100644
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -986,7 +986,7 @@ static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *c
+ 		args.authflavor = clp->cl_cred.cr_flavor;
+ 		clp->cl_cb_ident = conn->cb_ident;
+ 	} else {
+-		if (!conn->cb_xprt)
++		if (!conn->cb_xprt || !ses)
+ 			return -EINVAL;
+ 		clp->cl_cb_session = ses;
+ 		args.bc_xprt = conn->cb_xprt;
+@@ -1379,8 +1379,6 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
+ 		ses = c->cn_session;
+ 	}
+ 	spin_unlock(&clp->cl_lock);
+-	if (!c)
+-		return;
  
--	r = devres_destroy(dev, devm_phy_release, devm_phy_match, phy);
-+	r = devres_release(dev, devm_phy_release, devm_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_phy_put);
+ 	err = setup_callback_client(clp, &conn, ses);
+ 	if (err) {
+-- 
+2.39.5
+
 
 
 
