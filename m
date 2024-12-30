@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-106531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFBE9FE8B9
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:58:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864449FE84F
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5251918831CD
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:58:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A82A7A1407
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5151531C4;
-	Mon, 30 Dec 2024 15:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BF814F136;
+	Mon, 30 Dec 2024 15:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2TgEsbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTgAwBAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EF715E8B;
-	Mon, 30 Dec 2024 15:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56D815E8B;
+	Mon, 30 Dec 2024 15:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574300; cv=none; b=hkRTg6/GW/Ijw9VqiOZEKbsz4i6zZ90xbAtGkTvKl8KZPvxXxrTrVYRkn+tG8HGQhwTkMwncR50Dbn5sYBIIWhsp9G0WesjfCrj6bljJMIFRZzGZMGpXxSrCXSD342YSBZQqsxYHs1EkSHghXMDoKYhXbphsGBAnHk5FxgwBdOw=
+	t=1735573966; cv=none; b=G7pXbg1SOIoIn0uEiFDyp1K0S0zKxOuyqwgY/HnEA5qxjRzpenrd+JE1/EihoRcJ62siIFz/UaaKBIz+fc9Qw2px6Y/dLRUwKJg41vAuIszSfD1VhSEIIGaC3V+ewK13v+RCX8Jl+lSVyokH5d66Ji9xC79NyZyv5TcyFBe0fUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574300; c=relaxed/simple;
-	bh=8U8b6ZZ582ffljalWmb0PGooxF7abQX23dgQ1ppN3Bg=;
+	s=arc-20240116; t=1735573966; c=relaxed/simple;
+	bh=MF9tPtawN0xvA5BfJhNoBZp95SwW6TVb2L7hVcaFGhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hzny6JG/M/g47Q5Nyk0Y2BVlcyhb6g9vc6njaQyXxH9B2KSyKsliOqA0yqueqfcqaOsXmmhD4NAP/ENbKXjkp9lvB55OLb06xvbR/oWDgRVIQpdWoTCUFrk1DemdABW81XvCR4jU/vglGX2wG2qE055P2vnSPjHAWqChVI5HBvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2TgEsbA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1781FC4CED0;
-	Mon, 30 Dec 2024 15:58:19 +0000 (UTC)
+	 MIME-Version; b=fPTwMZh6f9tf5B1qtzWgF+6epyMae7iFXQTCQ4WSEtQJBQS184xJK2ucy4uOiEk4OMBCh3+jh0G4SJZOFRa2Q7JySP06n7MYL1JBhoec35PWRedl2VNUBdOjWVhLlAkCpiDrPGeLAm2XmIN85vFvsgu43hYf8k6/zxZaL+zoJkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTgAwBAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56924C4CED0;
+	Mon, 30 Dec 2024 15:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574300;
-	bh=8U8b6ZZ582ffljalWmb0PGooxF7abQX23dgQ1ppN3Bg=;
+	s=korg; t=1735573965;
+	bh=MF9tPtawN0xvA5BfJhNoBZp95SwW6TVb2L7hVcaFGhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2TgEsbARSVeZa9dzxQpiBaUDzSj3S5SdnRRIYPdUqoAhbzi6JoEbVLSkqTODfaHH
-	 Hw1cLudv9ltErdQUdhgZcF8Ah3Cj9FDTMCY2Ibs1DR/epKOnIYCgrmLKI4LN/fY2Ez
-	 1e9GqvID18O8nnGYqwBU6hnppb9ZzgYgSbOGMo8E=
+	b=CTgAwBAkME+5D47LX1TVtUN8q4xESuZyl7ugU3kFHjvJGmf6zJ1lljJk7Lls2htWk
+	 t+SxgSYOjC2Tkh7X1s80lZhfy+mBEcUWlZn3djnT3oXtJhH9bPA2QUWbBPj4UDtlIA
+	 8bgV5TjkOvRW84TBTIaK7OiBt1abOhYt2ItwKYFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.12 096/114] perf/x86/intel/ds: Add PEBS format 6
-Date: Mon, 30 Dec 2024 16:43:33 +0100
-Message-ID: <20241230154221.801336182@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 86/86] block: avoid to reuse `hctx` not removed from cpuhp callback list
+Date: Mon, 30 Dec 2024 16:43:34 +0100
+Message-ID: <20241230154214.975982013@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit b8c3a2502a205321fe66c356f4b70cabd8e1a5fc upstream.
+commit 85672ca9ceeaa1dcf2777a7048af5f4aee3fd02b upstream.
 
-The only difference between 5 and 6 is the new counters snapshotting
-group, without the following counters snapshotting enabling patches,
-it's impossible to utilize the feature in a PEBS record. It's safe to
-share the same code path with format 5.
+If the 'hctx' isn't removed from cpuhp callback list, we can't reuse it,
+otherwise use-after-free may be triggered.
 
-Add format 6, so the end user can at least utilize the legacy PEBS
-features.
-
-Fixes: a932aa0e868f ("perf/x86: Add Lunar Lake and Arrow Lake support")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241216204505.748363-1-kan.liang@linux.intel.com
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202412172217.b906db7c-lkp@intel.com
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Fixes: 22465bbac53c ("blk-mq: move cpuhp callback registering out of q->sysfs_lock")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241218101617.3275704-3-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/ds.c |    1 +
- 1 file changed, 1 insertion(+)
+ block/blk-mq.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -2496,6 +2496,7 @@ void __init intel_ds_init(void)
- 			x86_pmu.large_pebs_flags |= PERF_SAMPLE_TIME;
- 			break;
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -4278,6 +4278,15 @@ struct gendisk *blk_mq_alloc_disk_for_qu
+ }
+ EXPORT_SYMBOL(blk_mq_alloc_disk_for_queue);
  
-+		case 6:
- 		case 5:
- 			x86_pmu.pebs_ept = 1;
- 			fallthrough;
++/*
++ * Only hctx removed from cpuhp list can be reused
++ */
++static bool blk_mq_hctx_is_reusable(struct blk_mq_hw_ctx *hctx)
++{
++	return hlist_unhashed(&hctx->cpuhp_online) &&
++		hlist_unhashed(&hctx->cpuhp_dead);
++}
++
+ static struct blk_mq_hw_ctx *blk_mq_alloc_and_init_hctx(
+ 		struct blk_mq_tag_set *set, struct request_queue *q,
+ 		int hctx_idx, int node)
+@@ -4287,7 +4296,7 @@ static struct blk_mq_hw_ctx *blk_mq_allo
+ 	/* reuse dead hctx first */
+ 	spin_lock(&q->unused_hctx_lock);
+ 	list_for_each_entry(tmp, &q->unused_hctx_list, hctx_list) {
+-		if (tmp->numa_node == node) {
++		if (tmp->numa_node == node && blk_mq_hctx_is_reusable(tmp)) {
+ 			hctx = tmp;
+ 			break;
+ 		}
 
 
 
