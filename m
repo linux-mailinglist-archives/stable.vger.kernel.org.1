@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-106412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF6F9FE838
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED3D9FE87F
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 557047A1245
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F52C7A16B2
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90238537E9;
-	Mon, 30 Dec 2024 15:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617E8156678;
+	Mon, 30 Dec 2024 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZq0LPfo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLo9tKEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEA315E8B;
-	Mon, 30 Dec 2024 15:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F94415E8B;
+	Mon, 30 Dec 2024 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573888; cv=none; b=JlnANxqUQa2C0+vxBEBD14gkNt3jofSGCp9kcjixTKZq7U87pA+70DVfJD6cakNGUzjQnAyjo/7pStlAwnYtTH0xb2nQYfiCRmRYBmq9CHucVKMxnH7SYjuz34Hm6DBSlfaQ27xG2ay7JheM9ZckgbqZhlIOtgb6snFeJ0rzJ3I=
+	t=1735574127; cv=none; b=YoFHXT9U5JpC5GqcFryWBVEVUEg/qVrRN99FrFK99dwlrEOrK5Q7FsHhEcKIJjkMg1HZBG4ceULHRdHBYsxY6pa3qWzX+9e8f7grFpzR4ZbNp1TAnVD1Nn1KhRMqVBprImi7PWKp4rtKwEgmDkdZdc1hPVy5EXUKoo/YS4ry+DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573888; c=relaxed/simple;
-	bh=9GVWMWPme/WJMl0uTAoJursuMl+ZdKhbu075p8kOfSk=;
+	s=arc-20240116; t=1735574127; c=relaxed/simple;
+	bh=nEHTNOy02nRtHq7IGjipe9Uf4f+CIByO9JOz9GZtjZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMQ7m9aqNTlVGtfO/OvYaGhy9fhj5iUI1qiO8SxFElolZEK2iQKgV5ulucgqFtOYZc8SSKw0iAU5hepKMW2geF0V37ydaiCciCErzxaarpJuPsFPxWkoeev/hMSd4cR79yWH90opXaJLHTVssl1PEmuZCIe68GtrGrInAIA9Si0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZq0LPfo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C00C4CED0;
-	Mon, 30 Dec 2024 15:51:27 +0000 (UTC)
+	 MIME-Version; b=kMXjCjqsv2cMbfdOgvq7XBgz/zEUJZKKsg8XtVZ7tTBOGVlOpUzxXKSgWSlYSfYCEbre55Vi2imRmLpY+UD6s++2Js3mjrzqCtS6o3M3Q0unpHEe3VI1LHUY4FPVnO4j4G4aQJjv/ZWsA4igtcseZk5doxFNWGLP0xiHvWVIlIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLo9tKEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8130DC4CED0;
+	Mon, 30 Dec 2024 15:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573888;
-	bh=9GVWMWPme/WJMl0uTAoJursuMl+ZdKhbu075p8kOfSk=;
+	s=korg; t=1735574127;
+	bh=nEHTNOy02nRtHq7IGjipe9Uf4f+CIByO9JOz9GZtjZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZq0LPfoLnSiSky2yiGdP1lmFR+6l3012sV/QRWGD5LHrJZwhGl74DLwPw/kpVi6E
-	 1jYJnnxUd4KcvSNGcthQUdBreYoNQSXSC74TF1Fj/BQWOumWi4ySo1qwsNeuShco04
-	 ygzXWVU7H6+ZSJbAuACGgfPjxeVKPX8WEBSGcMPk=
+	b=SLo9tKEyl7LfPAqPEZFSnK5V0ACSw7K3y+AbbuHUPG0Y6FHVtHj6q9e3hXlg50fjw
+	 FNqgBQPFnKbb56Rya6OUi0s96zhizP7RZ4Q9as8uSoNm9ZALLap63vi1I816x1V8F5
+	 Nil/CRgEq++5RsNxx6LLKf3PsKT88zVYHyFDhgRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Christopher Ferris <cferris@google.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 33/86] watchdog: mediatek: Add support for MT6735 TOPRGU/WDT
+Subject: [PATCH 6.12 044/114] stddef: make __struct_group() UAPI C++-friendly
 Date: Mon, 30 Dec 2024 16:42:41 +0100
-Message-ID: <20241230154212.980133131@linuxfoundation.org>
+Message-ID: <20241230154219.754447487@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit 15ddf704f56f8c95ff74dfd1157ed8646b322fa1 ]
+[ Upstream commit 724c6ce38bbaeb4b3f109b0e066d6c0ecd15446c ]
 
-Add support for the Top Reset Generation Unit/Watchdog Timer found on
-MT6735.
+For the most part of the C++ history, it couldn't have type
+declarations inside anonymous unions for different reasons. At the
+same time, __struct_group() relies on the latters, so when the @TAG
+argument is not empty, C++ code doesn't want to build (even under
+`extern "C"`):
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241106104738.195968-3-y.oudjana@protonmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+../linux/include/uapi/linux/pkt_cls.h:25:24: error:
+'struct tc_u32_sel::<unnamed union>::tc_u32_sel_hdr,' invalid;
+an anonymous union may only have public non-static data members
+[-fpermissive]
+
+The safest way to fix this without trying to switch standards (which
+is impossible in UAPI anyway) etc., is to disable tag declaration
+for that language. This won't break anything since for now it's not
+buildable at all.
+Use a separate definition for __struct_group() when __cplusplus is
+defined to mitigate the error, including the version from tools/.
+
+Fixes: 50d7bd38c3aa ("stddef: Introduce struct_group() helper macro")
+Reported-by: Christopher Ferris <cferris@google.com>
+Closes: https://lore.kernel.org/linux-hardening/Z1HZpe3WE5As8UAz@google.com
+Suggested-by: Kees Cook <kees@kernel.org> # __struct_group_tag()
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20241219135734.2130002-1-aleksander.lobakin@intel.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/mtk_wdt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/uapi/linux/stddef.h       | 13 ++++++++++---
+ tools/include/uapi/linux/stddef.h | 15 +++++++++++----
+ 2 files changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
-index 0559d9f2d97b..66bb68ceb14c 100644
---- a/drivers/watchdog/mtk_wdt.c
-+++ b/drivers/watchdog/mtk_wdt.c
-@@ -10,6 +10,7 @@
-  */
+diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
+index 58154117d9b0..a6fce46aeb37 100644
+--- a/include/uapi/linux/stddef.h
++++ b/include/uapi/linux/stddef.h
+@@ -8,6 +8,13 @@
+ #define __always_inline inline
+ #endif
  
- #include <dt-bindings/reset/mt2712-resets.h>
-+#include <dt-bindings/reset/mediatek,mt6735-wdt.h>
- #include <dt-bindings/reset/mediatek,mt6795-resets.h>
- #include <dt-bindings/reset/mt7986-resets.h>
- #include <dt-bindings/reset/mt8183-resets.h>
-@@ -81,6 +82,10 @@ static const struct mtk_wdt_data mt2712_data = {
- 	.toprgu_sw_rst_num = MT2712_TOPRGU_SW_RST_NUM,
- };
- 
-+static const struct mtk_wdt_data mt6735_data = {
-+	.toprgu_sw_rst_num = MT6735_TOPRGU_RST_NUM,
-+};
++/* Not all C++ standards support type declarations inside an anonymous union */
++#ifndef __cplusplus
++#define __struct_group_tag(TAG)		TAG
++#else
++#define __struct_group_tag(TAG)
++#endif
 +
- static const struct mtk_wdt_data mt6795_data = {
- 	.toprgu_sw_rst_num = MT6795_TOPRGU_SW_RST_NUM,
- };
-@@ -448,6 +453,7 @@ static int mtk_wdt_resume(struct device *dev)
- static const struct of_device_id mtk_wdt_dt_ids[] = {
- 	{ .compatible = "mediatek,mt2712-wdt", .data = &mt2712_data },
- 	{ .compatible = "mediatek,mt6589-wdt" },
-+	{ .compatible = "mediatek,mt6735-wdt", .data = &mt6735_data },
- 	{ .compatible = "mediatek,mt6795-wdt", .data = &mt6795_data },
- 	{ .compatible = "mediatek,mt7986-wdt", .data = &mt7986_data },
- 	{ .compatible = "mediatek,mt8183-wdt", .data = &mt8183_data },
+ /**
+  * __struct_group() - Create a mirrored named and anonyomous struct
+  *
+@@ -20,13 +27,13 @@
+  * and size: one anonymous and one named. The former's members can be used
+  * normally without sub-struct naming, and the latter can be used to
+  * reason about the start, end, and size of the group of struct members.
+- * The named struct can also be explicitly tagged for layer reuse, as well
+- * as both having struct attributes appended.
++ * The named struct can also be explicitly tagged for layer reuse (C only),
++ * as well as both having struct attributes appended.
+  */
+ #define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
+ 	union { \
+ 		struct { MEMBERS } ATTRS; \
+-		struct TAG { MEMBERS } ATTRS NAME; \
++		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
+ 	} ATTRS
+ 
+ #ifdef __cplusplus
+diff --git a/tools/include/uapi/linux/stddef.h b/tools/include/uapi/linux/stddef.h
+index bb6ea517efb5..c53cde425406 100644
+--- a/tools/include/uapi/linux/stddef.h
++++ b/tools/include/uapi/linux/stddef.h
+@@ -8,6 +8,13 @@
+ #define __always_inline __inline__
+ #endif
+ 
++/* Not all C++ standards support type declarations inside an anonymous union */
++#ifndef __cplusplus
++#define __struct_group_tag(TAG)		TAG
++#else
++#define __struct_group_tag(TAG)
++#endif
++
+ /**
+  * __struct_group() - Create a mirrored named and anonyomous struct
+  *
+@@ -20,14 +27,14 @@
+  * and size: one anonymous and one named. The former's members can be used
+  * normally without sub-struct naming, and the latter can be used to
+  * reason about the start, end, and size of the group of struct members.
+- * The named struct can also be explicitly tagged for layer reuse, as well
+- * as both having struct attributes appended.
++ * The named struct can also be explicitly tagged for layer reuse (C only),
++ * as well as both having struct attributes appended.
+  */
+ #define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
+ 	union { \
+ 		struct { MEMBERS } ATTRS; \
+-		struct TAG { MEMBERS } ATTRS NAME; \
+-	}
++		struct __struct_group_tag(TAG) { MEMBERS } ATTRS NAME; \
++	} ATTRS
+ 
+ /**
+  * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
 -- 
 2.39.5
 
