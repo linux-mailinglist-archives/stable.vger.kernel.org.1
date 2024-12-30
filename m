@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-106338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549739FE7EB
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3179B9FE890
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BDF21882EC3
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 258BB1883047
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBAC2E414;
-	Mon, 30 Dec 2024 15:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712221531C4;
+	Mon, 30 Dec 2024 15:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNK0mvWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbwUBZbi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DF72594B6;
-	Mon, 30 Dec 2024 15:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD1D15E8B;
+	Mon, 30 Dec 2024 15:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573635; cv=none; b=YY/wfhhxAnQ5oxhtCNJPvzVd79MT+M6Y9F9Dqta5ZVyIjxRYE6DfIOMHnWEcwbRAlRf8nBLJQyzA3mUMUlFVUIh+2EoqntxiIZQoZrLvjUNh30szrGnkCaV/xAap8X/1plG0W2P0m0+FD48QrbECAbknIJpWQMXov0buaB6ahRg=
+	t=1735574185; cv=none; b=lwKWpyAJJOmSRrzY1fUU7RnuUxHFi4H+Yelp/om1zfhih2NaNY475mneyLEfrC/BWSxXEKf2JBSkH39s+2kJ32d6IQ8lxEG+2h2mB9ExQboRp58o7eVZVWcp65kJ0hv1iUUgtcEG6NdYiETJRpQGbmHTIT4nhzeOJwKw2uP0Wkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573635; c=relaxed/simple;
-	bh=eilYYmeiTvc5zI4tJ6/LePwtavRThsC11U3XAlwV3AE=;
+	s=arc-20240116; t=1735574185; c=relaxed/simple;
+	bh=u27GJ90hHhZI3F8FdziX1ojJlWTcaem+k3q79+D9LQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pZfnvBlgsGDUs3eaIxuesUBmDu5tKqcxi8+tKUnlUKBFsu2zVaRnUX4dmmJbo9Oc5GjkXW17peA3no8jA7g2D/aCk5eWV91NFPyDGwMY/H7luTQqILWmniRqWPehwdeYbazBrZBkxdl4WeLt6Za6NcnmCBXE5C0SDB9EcaD4c3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNK0mvWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA7BC4CED0;
-	Mon, 30 Dec 2024 15:47:14 +0000 (UTC)
+	 MIME-Version; b=ZbwnUv1mfWV3axXK1juy1uaUqY30MidM3+vljizK+dFl+Ltn883eJNz+cXbME3jKd+ETpdYYfnuBaog9GZugXG3Sqj8cJq0Wf4k0WnvGK2DDyvelOkWKyXl4hB1ixmkbzh8GUKcNkexWZ3USF4Y/2DrOiVoDGw6vXXW+hmKgoW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbwUBZbi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911E9C4CED0;
+	Mon, 30 Dec 2024 15:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573634;
-	bh=eilYYmeiTvc5zI4tJ6/LePwtavRThsC11U3XAlwV3AE=;
+	s=korg; t=1735574185;
+	bh=u27GJ90hHhZI3F8FdziX1ojJlWTcaem+k3q79+D9LQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNK0mvWOGHngkIeLk8MCGbrtRoimEVXc1PZykfdE/n5tAh6EM9Mt5k1jr4SQR77AR
-	 i8SuAqg2GNy/rfg5i7RYHJ2SJtdljnbFpUaOpIrXlPisfZ6xXikdHszkbSUAvA0JXL
-	 G4yE57NHizEVyl6ilsk6dYeWiXfMB6ejq9N6UXTk=
+	b=gbwUBZbiMRK5R1rCVKrKzjcFqsa3Kc8m5vuUwueVpYMknsnOWX+17uDeyoWDNLpts
+	 iMR6kHvyR2KgGWxW3mKHD6FOEFhrR7GN79kfWl1pikdcI6mqBvOfG/p4T780SyDKio
+	 TzyTfWtCGeUAiqtR21tAREsjgqCaSLUSEepjCbv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 49/60] tracing: Constify string literal data member in struct trace_event_call
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 062/114] LoongArch: BPF: Adjust the parameter of emit_jirl()
 Date: Mon, 30 Dec 2024 16:42:59 +0100
-Message-ID: <20241230154209.133584613@linuxfoundation.org>
+Message-ID: <20241230154220.483718536@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
-References: <20241230154207.276570972@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +60,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 452f4b31e3f70a52b97890888eeb9eaa9a87139a upstream.
+[ Upstream commit c1474bb0b7cff4e8481095bd0618b8f6c2f0aeb4 ]
 
-The name member of the struct trace_event_call is assigned with
-generated string literals; declare them pointer to read-only.
+The branch instructions beq, bne, blt, bge, bltu, bgeu and jirl belong
+to the format reg2i16, but the sequence of oprand is different for the
+instruction jirl. So adjust the parameter order of emit_jirl() to make
+it more readable correspond with the Instruction Set Architecture manual.
 
-Reported by clang:
+Here are the instruction formats:
 
-    security/landlock/syscalls.c:179:1: warning: initializing 'char *' with an expression of type 'const char[34]' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
-      179 | SYSCALL_DEFINE3(landlock_create_ruleset,
-          | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      180 |                 const struct landlock_ruleset_attr __user *const, attr,
-          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      181 |                 const size_t, size, const __u32, flags)
-          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ./include/linux/syscalls.h:226:36: note: expanded from macro 'SYSCALL_DEFINE3'
-      226 | #define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)
-          |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ./include/linux/syscalls.h:234:2: note: expanded from macro 'SYSCALL_DEFINEx'
-      234 |         SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ./include/linux/syscalls.h:184:2: note: expanded from macro 'SYSCALL_METADATA'
-      184 |         SYSCALL_TRACE_ENTER_EVENT(sname);                       \
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ./include/linux/syscalls.h:151:30: note: expanded from macro 'SYSCALL_TRACE_ENTER_EVENT'
-      151 |                         .name                   = "sys_enter"#sname,    \
-          |                                                   ^~~~~~~~~~~~~~~~~
+  beq     rj, rd, offs16
+  bne     rj, rd, offs16
+  blt     rj, rd, offs16
+  bge     rj, rd, offs16
+  bltu    rj, rd, offs16
+  bgeu    rj, rd, offs16
+  jirl    rd, rj, offs16
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Mickaël Salaün <mic@digikod.net>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/20241125105028.42807-1-cgoettsche@seltendoof.de
-Fixes: b77e38aa240c3 ("tracing: add event trace infrastructure")
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#branch-instructions
+Suggested-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/inst.h | 12 +++++++++++-
+ arch/loongarch/kernel/inst.c      |  2 +-
+ arch/loongarch/net/bpf_jit.c      |  6 +++---
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -355,7 +355,7 @@ struct trace_event_call {
- 	struct list_head	list;
- 	struct trace_event_class *class;
- 	union {
--		char			*name;
-+		const char		*name;
- 		/* Set TRACE_EVENT_FL_TRACEPOINT flag when using "tp" */
- 		struct tracepoint	*tp;
- 	};
+diff --git a/arch/loongarch/include/asm/inst.h b/arch/loongarch/include/asm/inst.h
+index 944482063f14..3089785ca97e 100644
+--- a/arch/loongarch/include/asm/inst.h
++++ b/arch/loongarch/include/asm/inst.h
+@@ -683,7 +683,17 @@ DEF_EMIT_REG2I16_FORMAT(blt, blt_op)
+ DEF_EMIT_REG2I16_FORMAT(bge, bge_op)
+ DEF_EMIT_REG2I16_FORMAT(bltu, bltu_op)
+ DEF_EMIT_REG2I16_FORMAT(bgeu, bgeu_op)
+-DEF_EMIT_REG2I16_FORMAT(jirl, jirl_op)
++
++static inline void emit_jirl(union loongarch_instruction *insn,
++			     enum loongarch_gpr rd,
++			     enum loongarch_gpr rj,
++			     int offset)
++{
++	insn->reg2i16_format.opcode = jirl_op;
++	insn->reg2i16_format.immediate = offset;
++	insn->reg2i16_format.rd = rd;
++	insn->reg2i16_format.rj = rj;
++}
+ 
+ #define DEF_EMIT_REG2BSTRD_FORMAT(NAME, OP)				\
+ static inline void emit_##NAME(union loongarch_instruction *insn,	\
+diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
+index 3050329556d1..14d7d700bcb9 100644
+--- a/arch/loongarch/kernel/inst.c
++++ b/arch/loongarch/kernel/inst.c
+@@ -332,7 +332,7 @@ u32 larch_insn_gen_jirl(enum loongarch_gpr rd, enum loongarch_gpr rj, int imm)
+ 		return INSN_BREAK;
+ 	}
+ 
+-	emit_jirl(&insn, rj, rd, imm >> 2);
++	emit_jirl(&insn, rd, rj, imm >> 2);
+ 
+ 	return insn.word;
+ }
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index dd350cba1252..ea357a3edc09 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -181,13 +181,13 @@ static void __build_epilogue(struct jit_ctx *ctx, bool is_tail_call)
+ 		/* Set return value */
+ 		emit_insn(ctx, addiw, LOONGARCH_GPR_A0, regmap[BPF_REG_0], 0);
+ 		/* Return to the caller */
+-		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, LOONGARCH_GPR_ZERO, 0);
++		emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_RA, 0);
+ 	} else {
+ 		/*
+ 		 * Call the next bpf prog and skip the first instruction
+ 		 * of TCC initialization.
+ 		 */
+-		emit_insn(ctx, jirl, LOONGARCH_GPR_T3, LOONGARCH_GPR_ZERO, 1);
++		emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_T3, 1);
+ 	}
+ }
+ 
+@@ -904,7 +904,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx, bool ext
+ 			return ret;
+ 
+ 		move_addr(ctx, t1, func_addr);
+-		emit_insn(ctx, jirl, t1, LOONGARCH_GPR_RA, 0);
++		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, t1, 0);
+ 		move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
+ 		break;
+ 
+-- 
+2.39.5
+
 
 
 
