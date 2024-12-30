@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4536C9FE81F
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D069FE898
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 073E91610D6
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:50:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07ADC18831A4
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B972E414;
-	Mon, 30 Dec 2024 15:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4AF1A2550;
+	Mon, 30 Dec 2024 15:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2B6GyAeI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FylwTFnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14140537E9;
-	Mon, 30 Dec 2024 15:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE215537E9;
+	Mon, 30 Dec 2024 15:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573808; cv=none; b=P0xZEaPJEpqLgr/dub66MCzpLO5jSRDrryvcs1wCVfaAsWpn2Hxd0B7WCoqfcRsfPHAzXGkLHfnUpxpjEU5W0BcqG3VGhoduTzI0uHondNHVBH5TGN5Lg0dDOqD5BpxlexiVvPGZ0LrtEe9vQcZhnrBxeYTuDLNomlfPNRdquN8=
+	t=1735574213; cv=none; b=lGLNlNlDKDVlNhtpkpLAryKVv1kWIzO7FA3aJJEbu8Nz9tpB7onBTDBfwki0JPXnPx71t3l77pm9UQcuyKpRVh6jR5DW6y7c9RkejzothSbl+cvjtUGQ1FWpRoQE+SEN2ADwF4czVoA/jV9fG8vK3rnfXe+OGrSTcCH8ghHp7gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573808; c=relaxed/simple;
-	bh=Zbm8yqghCU+RyctjZJUd8yvzqAP2HAakTvPvY0g8Vng=;
+	s=arc-20240116; t=1735574213; c=relaxed/simple;
+	bh=AzqT5sdLyLMM6z3qB4hj/fXy7a1V//94ijxfbKJQoTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqNl/Ylj2COvD2A7uF7TzuFQX/dd9qjXlqZHDVh1C+NX50vESo/6e5Y6NVoq4t0AcdC2KzdShdexOTK5wjoL4VsgUIN67sBN7RbP2agU7vgoYsG41pdhx2ML3eBnQLIeEoQxwfG4YwLBLH5L2Fq4suRvpdBhz/nR0XvJRKVoquo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2B6GyAeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B03C4CED0;
-	Mon, 30 Dec 2024 15:50:07 +0000 (UTC)
+	 MIME-Version; b=lieA5q2/iDRVwA551QWQAVkQnGFdKAhtIs+OsUgFU1yS8gXXAA+SPtAdO5dTHWM+p2tz3JWhHvkb2lakHgsckbTVaOgbJalJBEQr4TAMN+4MWLPOsUt5S5tf4mxZPAoaYxzet9BSeYpy3btYh4N8Ld5gmgPPHm6m2RZE47JQp2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FylwTFnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AE3C4CED0;
+	Mon, 30 Dec 2024 15:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573807;
-	bh=Zbm8yqghCU+RyctjZJUd8yvzqAP2HAakTvPvY0g8Vng=;
+	s=korg; t=1735574212;
+	bh=AzqT5sdLyLMM6z3qB4hj/fXy7a1V//94ijxfbKJQoTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2B6GyAeItq9TvsBhQI8TAmegYYaQa2ZbarbbEpq/x8DdMX2Qdg6C4J9X1OftHCNN+
-	 gkpbs6bBEtsPeweVXcVDkeMLa3FBipU0wUMuGKtUxXsHCxieRfmHuZOcF6i28mYdUW
-	 z3zWypd/zRIZmBQ5ZeVF1Sf1E1vdrfDfJM4I7kn8=
+	b=FylwTFnIZnsxhrhWRlYjVktSwUSvJzqmvcJhi/yqxDKDbcqSrULZ5mYoLTXMttqss
+	 A8F54tQkrtXNLD2wdELB7YVy8YsPabBiAY5SnX1/5ZabaKAV4YobVdJDhHXrt10E6T
+	 J/B9DW2oimdM0Rz7KzWhg5s5ls5rYP0rpsP74pCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 40/86] regmap: Use correct format specifier for logging range errors
-Date: Mon, 30 Dec 2024 16:42:48 +0100
-Message-ID: <20241230154213.239742417@linuxfoundation.org>
+Subject: [PATCH 6.12 052/114] udf: Skip parent dir link count update if corrupted
+Date: Mon, 30 Dec 2024 16:42:49 +0100
+Message-ID: <20241230154220.061388209@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 3f1aa0c533d9dd8a835caf9a6824449c463ee7e2 ]
+[ Upstream commit c5566903af56dd1abb092f18dcb0c770d6cd8dcb ]
 
-The register addresses are unsigned ints so we should use %u not %d to
-log them.
+If the parent directory link count is too low (likely directory inode
+corruption), just skip updating its link count as if it goes to 0 too
+early it can cause unexpected issues.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20241127-regmap-test-high-addr-v1-1-74a48a9e0dc5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/udf/namei.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 1db04886def6..3011f7f9381b 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1062,13 +1062,13 @@ struct regmap *__regmap_init(struct device *dev,
- 
- 		/* Sanity check */
- 		if (range_cfg->range_max < range_cfg->range_min) {
--			dev_err(map->dev, "Invalid range %d: %d < %d\n", i,
-+			dev_err(map->dev, "Invalid range %d: %u < %u\n", i,
- 				range_cfg->range_max, range_cfg->range_min);
- 			goto err_range;
- 		}
- 
- 		if (range_cfg->range_max > map->max_register) {
--			dev_err(map->dev, "Invalid range %d: %d > %d\n", i,
-+			dev_err(map->dev, "Invalid range %d: %u > %u\n", i,
- 				range_cfg->range_max, map->max_register);
- 			goto err_range;
- 		}
+diff --git a/fs/udf/namei.c b/fs/udf/namei.c
+index 78a603129dd5..2be775d30ac1 100644
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -517,7 +517,11 @@ static int udf_rmdir(struct inode *dir, struct dentry *dentry)
+ 			 inode->i_nlink);
+ 	clear_nlink(inode);
+ 	inode->i_size = 0;
+-	inode_dec_link_count(dir);
++	if (dir->i_nlink >= 3)
++		inode_dec_link_count(dir);
++	else
++		udf_warn(inode->i_sb, "parent dir link count too low (%u)\n",
++			 dir->i_nlink);
+ 	udf_add_fid_counter(dir->i_sb, true, -1);
+ 	inode_set_mtime_to_ts(dir,
+ 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
 -- 
 2.39.5
 
