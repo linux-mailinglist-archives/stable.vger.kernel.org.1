@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-106468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFEC9FE872
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:54:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC589FE7E8
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C851161701
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:54:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7CC33A04DD
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A96E1537C8;
-	Mon, 30 Dec 2024 15:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFDA1531C4;
+	Mon, 30 Dec 2024 15:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1tLWAV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdt2nDZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F7C2E414;
-	Mon, 30 Dec 2024 15:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2A32594B6;
+	Mon, 30 Dec 2024 15:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574086; cv=none; b=K3cDntA2Rra2+WeiKqqVpZpDEBVFzFcBggXnmvGyp83lxOw5ViU2tP5IY/1WDKijAPP1B0xW3ijuUpdgM453sFXdcF5owmmhy1RNhD0U/fPbkE3+2cIgJ3GHh7KePijOC9QNTPsfPRnaXTtZxZPByKhIV4WeGcpaCAWmhk6/wuY=
+	t=1735573620; cv=none; b=H5we7riMsVtSs0Y2yUWdW4QWA5SvW1zqlmrl1wly8Td//vvuAO1nfD1CHuIv9ZhCIM7cAIF6LCkyxCGTQ0sn4UpP+S9am9iQ0E8705ZrbflXRiQhwDjxXqVuFwRUdll46Xu15/MBZDYhMYMWGic3hEHO586/KTqGiL+/8/9NAzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574086; c=relaxed/simple;
-	bh=/acXmkfBLN2OSDGMY8Piqo3VXseDpa2vDT8a5hDGtmU=;
+	s=arc-20240116; t=1735573620; c=relaxed/simple;
+	bh=Vi33kJO5hoX1zJZm//bmmuG8e9a9CeTFAwgdxHw/HUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmoAPHHE5yb5F+VxMpsrwz3eyuFh9KgQgYJMzPl1/KqlFqirFr6UHMBVkvRdC0QCSvZwZEZegXmbW90WID41FL3PnHhwBCDTL8xwBGDhU/WVs0OVd+nawRnbltYGBGu7WxbRl53RVfwyJGRBAio7bxFwX9uLMSY/BniKzK9i2Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1tLWAV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D11C4CED0;
-	Mon, 30 Dec 2024 15:54:45 +0000 (UTC)
+	 MIME-Version; b=Qxf9E27GMlQ4ABAEph8fuIrGIqpAM2y2vXU6Zlf2Y2D/J4kg9+hSScwptYmpt1hQeXQU4M+WGgCvUxLzzq3m/jaXy7N3wpk3NyJhKvgTToKy9/VlGZPxkuUXxFqIWYqNwCYnNB2RqDrHmOa9ejAs1tZyvvtpjrW3pHr5m0ky3Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdt2nDZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0FCC4CED0;
+	Mon, 30 Dec 2024 15:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574086;
-	bh=/acXmkfBLN2OSDGMY8Piqo3VXseDpa2vDT8a5hDGtmU=;
+	s=korg; t=1735573620;
+	bh=Vi33kJO5hoX1zJZm//bmmuG8e9a9CeTFAwgdxHw/HUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1tLWAV0/IlvGNdLxYT/2vSJAzkEw8TvWPBGG3Mj/D+eAuQ6LP50RZGpWvdtcPfLQ
-	 spsjxoEhQDNfTqIbAh6UDhStcPEZBWuNWG4yCqbsrAG1QJ+NuUBVZhXg/pejEF/9Uy
-	 E4zbefpZMJaqwIL9/u7gqGosqMQCta0Rg4lgiHjk=
+	b=tdt2nDZHQpvs6owY+qyxQvkLq9goMK5pAYZZXiYM+f9MzIwdw0ysoFEKqORxE3yAD
+	 EmJBesp16uf9RzylxQB56uYibICxjPqvQo7Jnr67wsnIX5+MeeJXG2MKkhzeQkKic5
+	 /KfDdGS6ju3ZT4/gk3s0vOeIl//zXSafgwGkBgl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Finkelstein <fnkl.kernel@gmail.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 033/114] dmaengine: apple-admac: Avoid accessing registers in probe
+Subject: [PATCH 6.1 20/60] dmaengine: tegra: Return correct DMA status when paused
 Date: Mon, 30 Dec 2024 16:42:30 +0100
-Message-ID: <20241230154219.336558768@linuxfoundation.org>
+Message-ID: <20241230154208.055372660@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Finkelstein <fnkl.kernel@gmail.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit 8d55e8a16f019211163f1180fd9f9fbe05901900 upstream.
+commit ebc008699fd95701c9af5ebaeb0793eef81a71d5 upstream.
 
-The ADMAC attached to the AOP has complex power sequencing, and is
-power gated when the probe callback runs. Move the register reads
-to other functions, where we can guarantee that the hardware is
-switched on.
+Currently, the driver does not return the correct DMA status when a DMA
+pause is issued by the client drivers. This causes GPCDMA users to
+assume that DMA is still running, while in reality, the DMA is paused.
 
-Fixes: 568aa6dd641f ("dmaengine: apple-admac: Allocate cache SRAM to channels")
-Signed-off-by: Sasha Finkelstein <fnkl.kernel@gmail.com>
-Link: https://lore.kernel.org/r/20241124-admac-power-v1-1-58f2165a4d55@gmail.com
+Return DMA_PAUSED for tx_status() if the channel is paused in the middle
+of a transfer.
+
+Fixes: ee17028009d4 ("dmaengine: tegra: Add tegra gpcdma driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Link: https://lore.kernel.org/r/20241212124412.5650-1-kkartik@nvidia.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/apple-admac.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/dma/tegra186-gpc-dma.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/dma/apple-admac.c
-+++ b/drivers/dma/apple-admac.c
-@@ -153,6 +153,8 @@ static int admac_alloc_sram_carveout(str
- {
- 	struct admac_sram *sram;
- 	int i, ret = 0, nblocks;
-+	ad->txcache.size = readl_relaxed(ad->base + REG_TX_SRAM_SIZE);
-+	ad->rxcache.size = readl_relaxed(ad->base + REG_RX_SRAM_SIZE);
- 
- 	if (dir == DMA_MEM_TO_DEV)
- 		sram = &ad->txcache;
-@@ -912,12 +914,7 @@ static int admac_probe(struct platform_d
- 		goto free_irq;
+--- a/drivers/dma/tegra186-gpc-dma.c
++++ b/drivers/dma/tegra186-gpc-dma.c
+@@ -228,6 +228,7 @@ struct tegra_dma_channel {
+ 	bool config_init;
+ 	char name[30];
+ 	enum dma_transfer_direction sid_dir;
++	enum dma_status status;
+ 	int id;
+ 	int irq;
+ 	int slave_id;
+@@ -389,6 +390,8 @@ static int tegra_dma_pause(struct tegra_
+ 		tegra_dma_dump_chan_regs(tdc);
  	}
  
--	ad->txcache.size = readl_relaxed(ad->base + REG_TX_SRAM_SIZE);
--	ad->rxcache.size = readl_relaxed(ad->base + REG_RX_SRAM_SIZE);
--
- 	dev_info(&pdev->dev, "Audio DMA Controller\n");
--	dev_info(&pdev->dev, "imprint %x TX cache %u RX cache %u\n",
--		 readl_relaxed(ad->base + REG_IMPRINT), ad->txcache.size, ad->rxcache.size);
++	tdc->status = DMA_PAUSED;
++
+ 	return ret;
+ }
  
- 	return 0;
+@@ -415,6 +418,8 @@ static void tegra_dma_resume(struct tegr
+ 	val = tdc_read(tdc, TEGRA_GPCDMA_CHAN_CSRE);
+ 	val &= ~TEGRA_GPCDMA_CHAN_CSRE_PAUSE;
+ 	tdc_write(tdc, TEGRA_GPCDMA_CHAN_CSRE, val);
++
++	tdc->status = DMA_IN_PROGRESS;
+ }
  
+ static int tegra_dma_device_resume(struct dma_chan *dc)
+@@ -540,6 +545,7 @@ static void tegra_dma_xfer_complete(stru
+ 
+ 	tegra_dma_sid_free(tdc);
+ 	tdc->dma_desc = NULL;
++	tdc->status = DMA_COMPLETE;
+ }
+ 
+ static void tegra_dma_chan_decode_error(struct tegra_dma_channel *tdc,
+@@ -712,6 +718,7 @@ static int tegra_dma_terminate_all(struc
+ 		tdc->dma_desc = NULL;
+ 	}
+ 
++	tdc->status = DMA_COMPLETE;
+ 	tegra_dma_sid_free(tdc);
+ 	vchan_get_all_descriptors(&tdc->vc, &head);
+ 	spin_unlock_irqrestore(&tdc->vc.lock, flags);
+@@ -765,6 +772,9 @@ static enum dma_status tegra_dma_tx_stat
+ 	if (ret == DMA_COMPLETE)
+ 		return ret;
+ 
++	if (tdc->status == DMA_PAUSED)
++		ret = DMA_PAUSED;
++
+ 	spin_lock_irqsave(&tdc->vc.lock, flags);
+ 	vd = vchan_find_desc(&tdc->vc, cookie);
+ 	if (vd) {
 
 
 
