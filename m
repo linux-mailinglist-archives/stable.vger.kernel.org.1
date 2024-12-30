@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-106492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E50A9FE88B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4114C9FE7C2
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:45:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F6C188312C
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E46F7A04EE
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89604156678;
-	Mon, 30 Dec 2024 15:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD741AA1E0;
+	Mon, 30 Dec 2024 15:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP9rRbyl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUsBENiG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453D015E8B;
-	Mon, 30 Dec 2024 15:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B935C126C13;
+	Mon, 30 Dec 2024 15:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574168; cv=none; b=XTV9QOT/W2ghrH7S0sUOmbYK4m5mQJ53lFulqx3Mf4W4C1kKjVaYAQn7JmgUWVCLEq9GP9ckmcN31V5lB+qqDkwlVmDCoSs8q8NsUbwWGHn4xccAN9St5V1OzhbL0BHTT67OkJILoYNmCumaBEOXuSyf3E7d/nfg7xuguyvxsjY=
+	t=1735573500; cv=none; b=XxJLtzq2CDze+n/m58FGh3bsqlkcklp7lFY/g6t4UsiNJBN6mC75mgpOFH2AVlZXTfJMXLtsloPKyuHxCg55HVzRjg6myUkhJ5vzja9VsL+p7VehI9CFQVncrTGzPLAbolSHewXo+nU6ivE8veJ593rdDBDzFGxAdrxa+vvHdLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574168; c=relaxed/simple;
-	bh=+KCc8DfCmZgh2jtLTHyheUPQwql55VH+e60ou2stAhI=;
+	s=arc-20240116; t=1735573500; c=relaxed/simple;
+	bh=y5zIUC0vBz0O/uotS+iVPiHYQqU9ie/251wUUVzTRsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ImTuf0WfTCbeFANkYluMGljqcwC180Tx7zLa4nKllyC04sW2YC7YhCljFB1u8FhWsSSuSW3K32QBW2ZMlhPCQNo6cZrNb1S8f1YjtNDDI3CTCkhQJHY+0rcnylhwFfI3jJmssKT43NNEd6b73O9LQVXlN/e9vhXrNWangaE/pyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP9rRbyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DB5C4CED0;
-	Mon, 30 Dec 2024 15:56:07 +0000 (UTC)
+	 MIME-Version; b=lvBtV4mt7NMUJ5NPhxZM1yMDizb31UIO9bVmo8CY6z3zZ9yAefPK1X/CGRxA5zA/JX79GJmkNcrv/gWu5451FKqEnPFYDu4o72gKnol5F5yxdtOi8H6rygAPpTB3VKhVRAZBBtSdh9QIZKkGsyqaHs7EZd7Dghk5uXpbHps5l3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUsBENiG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44CFC4CED0;
+	Mon, 30 Dec 2024 15:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574168;
-	bh=+KCc8DfCmZgh2jtLTHyheUPQwql55VH+e60ou2stAhI=;
+	s=korg; t=1735573500;
+	bh=y5zIUC0vBz0O/uotS+iVPiHYQqU9ie/251wUUVzTRsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aP9rRbylE+HhHp6ND8bZeEoOOslkqucu4omsNuiIUvUkUGpidXZYOLqUsIyrlhkOS
-	 9qF4JO1QaZ4U6cZef8MG7pEnFTWTbb3Meh8aeG7QUcfV/08MJaI6RrSxld+OU/MG3x
-	 +fFmhslOuFLwjLTJWYMawzGA8jxSxVTXuxAZU5yY=
+	b=zUsBENiGUKPtiPgHpaFEFcVuuOtzim7R9ADnDrGPbVVY3ftT5ksJIhbvDTPf5I6qX
+	 fsttUYyzY3iMf5G97mWrK75ykLGHIHbBPKmO5sDpVzd1Ea6jlRIZQM5YZdI4L0YWYM
+	 yuTjChKEq7hx6k+YKye41CINC47mrkUfFPfgG//A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Michael Zimmermann <sigmaepsilon92@gmail.com>,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 026/114] phy: rockchip: naneng-combphy: fix phy reset
-Date: Mon, 30 Dec 2024 16:42:23 +0100
-Message-ID: <20241230154219.070199198@linuxfoundation.org>
+Subject: [PATCH 6.1 14/60] phy: core: Fix that API devm_of_phy_provider_unregister() fails to unregister the phy provider
+Date: Mon, 30 Dec 2024 16:42:24 +0100
+Message-ID: <20241230154207.829201327@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit fbcbffbac994aca1264e3c14da96ac9bfd90466e upstream.
+commit c0b82ab95b4f1fbc3e3aeab9d829d012669524b6 upstream.
 
-Currently, the USB port via combophy on the RK3528/RK3588 SoC is broken.
+For devm_of_phy_provider_unregister(), its comment says it needs to invoke
+of_phy_provider_unregister() to unregister the phy provider, but it will
+not actually invoke the function since devres_destroy() does not call
+devm_phy_provider_release(), and the missing of_phy_provider_unregister()
+call will cause:
 
-  usb usb8-port1: Cannot enable. Maybe the USB cable is bad?
+- The phy provider fails to be unregistered.
+- Leak both memory and the OF node refcount.
 
-This is due to the combphy of RK3528/RK3588 SoC has multiple resets, but
-only "phy resets" need assert and deassert, "apb resets" don't need.
-So change the driver to only match the phy resets, which is also what
-the vendor kernel does.
+Fortunately, the faulty API has not been used by current kernel tree.
+Fix by using devres_release() instead of devres_destroy() within the API.
 
-Fixes: 7160820d742a ("phy: rockchip: add naneng combo phy for RK3568")
-Cc: FUKAUMI Naoki <naoki@radxa.com>
-Cc: Michael Zimmermann <sigmaepsilon92@gmail.com>
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://lore.kernel.org/r/20241122073006.99309-2-amadeus@jmu.edu.cn
+Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/stable/20241213-phy_core_fix-v6-2-40ae28f5015a%40quicinc.com
+Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-2-40ae28f5015a@quicinc.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/phy-rockchip-naneng-combphy.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/phy-core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-@@ -309,7 +309,7 @@ static int rockchip_combphy_parse_dt(str
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -1199,12 +1199,12 @@ EXPORT_SYMBOL_GPL(of_phy_provider_unregi
+  * of_phy_provider_unregister to unregister the phy provider.
+  */
+ void devm_of_phy_provider_unregister(struct device *dev,
+-	struct phy_provider *phy_provider)
++				     struct phy_provider *phy_provider)
+ {
+ 	int r;
  
- 	priv->ext_refclk = device_property_present(dev, "rockchip,ext-refclk");
- 
--	priv->phy_rst = devm_reset_control_array_get_exclusive(dev);
-+	priv->phy_rst = devm_reset_control_get(dev, "phy");
- 	if (IS_ERR(priv->phy_rst))
- 		return dev_err_probe(dev, PTR_ERR(priv->phy_rst), "failed to get phy reset\n");
- 
+-	r = devres_destroy(dev, devm_phy_provider_release, devm_phy_match,
+-		phy_provider);
++	r = devres_release(dev, devm_phy_provider_release, devm_phy_match,
++			   phy_provider);
+ 	dev_WARN_ONCE(dev, r, "couldn't find PHY provider device resource\n");
+ }
+ EXPORT_SYMBOL_GPL(devm_of_phy_provider_unregister);
 
 
 
