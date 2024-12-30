@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-106363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FD49FE805
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:48:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E50A9FE88B
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A778160E0A
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F6C188312C
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F4414F136;
-	Mon, 30 Dec 2024 15:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89604156678;
+	Mon, 30 Dec 2024 15:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLh5BXK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aP9rRbyl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0307715E8B;
-	Mon, 30 Dec 2024 15:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453D015E8B;
+	Mon, 30 Dec 2024 15:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573716; cv=none; b=FueWKbTzw/rKq/8gTQslXCCtnChZ4objf9YLM7en5dq/wGdOMdeQ6w35UNTF/2T+6yRJf00EI94olStm13QFTCXeNyQs8ge1RrYGkSms8+UnDjRiYKl2VkwnCGtqHHN3FTERrhOY3j45150gaMWrVNLbOjnfU1TbMCeySestJEc=
+	t=1735574168; cv=none; b=XTV9QOT/W2ghrH7S0sUOmbYK4m5mQJ53lFulqx3Mf4W4C1kKjVaYAQn7JmgUWVCLEq9GP9ckmcN31V5lB+qqDkwlVmDCoSs8q8NsUbwWGHn4xccAN9St5V1OzhbL0BHTT67OkJILoYNmCumaBEOXuSyf3E7d/nfg7xuguyvxsjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573716; c=relaxed/simple;
-	bh=xoCljlEtQLjDH2HtzB20r5CBK12DkBXblEtjoLIeTqY=;
+	s=arc-20240116; t=1735574168; c=relaxed/simple;
+	bh=+KCc8DfCmZgh2jtLTHyheUPQwql55VH+e60ou2stAhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7YdFJEScikY2TN8J3lxi+hc/4OrJdzTBdzBJzaXaaBF/c9P6330E1syHgmh9ZJQvbspvQ5srNeaAOFj8cWtuuQOGEIOMmuVQxzi/k4fCAXrGEzvhywTTgYNoMXewQTSv3YeURuPH4m/jrzEuiqQV6H4yoyH5VUezQz8yYc4JmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLh5BXK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C610C4CED0;
-	Mon, 30 Dec 2024 15:48:35 +0000 (UTC)
+	 MIME-Version; b=ImTuf0WfTCbeFANkYluMGljqcwC180Tx7zLa4nKllyC04sW2YC7YhCljFB1u8FhWsSSuSW3K32QBW2ZMlhPCQNo6cZrNb1S8f1YjtNDDI3CTCkhQJHY+0rcnylhwFfI3jJmssKT43NNEd6b73O9LQVXlN/e9vhXrNWangaE/pyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aP9rRbyl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DB5C4CED0;
+	Mon, 30 Dec 2024 15:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573715;
-	bh=xoCljlEtQLjDH2HtzB20r5CBK12DkBXblEtjoLIeTqY=;
+	s=korg; t=1735574168;
+	bh=+KCc8DfCmZgh2jtLTHyheUPQwql55VH+e60ou2stAhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLh5BXK3WAFMKISTX7qUN15PppDaKYp7z47x0TiIIvRf5CnkK5qQ+UEk2LOrYHFws
-	 k1YZu3lsCQqbENFy/MV0q8h7XQvkrmcuoITCH6opXEAPZYkhrEgIy41bh+tfZ5mNwl
-	 ikHBIrYrwIpkn1103L1mvbFpUJCCDlpAdrSfgrTE=
+	b=aP9rRbylE+HhHp6ND8bZeEoOOslkqucu4omsNuiIUvUkUGpidXZYOLqUsIyrlhkOS
+	 9qF4JO1QaZ4U6cZef8MG7pEnFTWTbb3Meh8aeG7QUcfV/08MJaI6RrSxld+OU/MG3x
+	 +fFmhslOuFLwjLTJWYMawzGA8jxSxVTXuxAZU5yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Michael Zimmermann <sigmaepsilon92@gmail.com>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 15/86] phy: core: Fix an OF node refcount leakage in _of_phy_get()
+Subject: [PATCH 6.12 026/114] phy: rockchip: naneng-combphy: fix phy reset
 Date: Mon, 30 Dec 2024 16:42:23 +0100
-Message-ID: <20241230154212.295378648@linuxfoundation.org>
+Message-ID: <20241230154219.070199198@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-commit 5ebdc6be16c2000e37fcb8b4072d442d268ad492 upstream.
+commit fbcbffbac994aca1264e3c14da96ac9bfd90466e upstream.
 
-_of_phy_get() will directly return when suffers of_device_is_compatible()
-error, but it forgets to decrease refcount of OF node @args.np before error
-return, the refcount was increased by previous of_parse_phandle_with_args()
-so causes the OF node's refcount leakage.
+Currently, the USB port via combophy on the RK3528/RK3588 SoC is broken.
 
-Fix by decreasing the refcount via of_node_put() before the error return.
+  usb usb8-port1: Cannot enable. Maybe the USB cable is bad?
 
-Fixes: b7563e2796f8 ("phy: work around 'phys' references to usb-nop-xceiv devices")
-Cc: stable@vger.kernel.org
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-4-40ae28f5015a@quicinc.com
+This is due to the combphy of RK3528/RK3588 SoC has multiple resets, but
+only "phy resets" need assert and deassert, "apb resets" don't need.
+So change the driver to only match the phy resets, which is also what
+the vendor kernel does.
+
+Fixes: 7160820d742a ("phy: rockchip: add naneng combo phy for RK3568")
+Cc: FUKAUMI Naoki <naoki@radxa.com>
+Cc: Michael Zimmermann <sigmaepsilon92@gmail.com>
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Tested-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20241122073006.99309-2-amadeus@jmu.edu.cn
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/phy-core.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-naneng-combphy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -577,8 +577,10 @@ static struct phy *_of_phy_get(struct de
- 		return ERR_PTR(-ENODEV);
+--- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+@@ -309,7 +309,7 @@ static int rockchip_combphy_parse_dt(str
  
- 	/* This phy type handled by the usb-phy subsystem for now */
--	if (of_device_is_compatible(args.np, "usb-nop-xceiv"))
--		return ERR_PTR(-ENODEV);
-+	if (of_device_is_compatible(args.np, "usb-nop-xceiv")) {
-+		phy = ERR_PTR(-ENODEV);
-+		goto out_put_node;
-+	}
+ 	priv->ext_refclk = device_property_present(dev, "rockchip,ext-refclk");
  
- 	mutex_lock(&phy_provider_mutex);
- 	phy_provider = of_phy_provider_lookup(args.np);
-@@ -600,6 +602,7 @@ out_put_module:
+-	priv->phy_rst = devm_reset_control_array_get_exclusive(dev);
++	priv->phy_rst = devm_reset_control_get(dev, "phy");
+ 	if (IS_ERR(priv->phy_rst))
+ 		return dev_err_probe(dev, PTR_ERR(priv->phy_rst), "failed to get phy reset\n");
  
- out_unlock:
- 	mutex_unlock(&phy_provider_mutex);
-+out_put_node:
- 	of_node_put(args.np);
- 
- 	return phy;
 
 
 
