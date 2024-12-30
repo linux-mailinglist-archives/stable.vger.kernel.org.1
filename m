@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-106370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A02B9FE80D
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:49:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B8A9FE7DB
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:46:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E5BA7A1286
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:48:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0D113A187D
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC91242AA6;
-	Mon, 30 Dec 2024 15:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5059315E8B;
+	Mon, 30 Dec 2024 15:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyVu4hUz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SN/A6SVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7974D15E8B;
-	Mon, 30 Dec 2024 15:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD7E537E9;
+	Mon, 30 Dec 2024 15:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573741; cv=none; b=Y48EdtcIV/yP2PX4vFkJoVha+6UzMgqUjLwBndmLifi7jxRUgA9Zicu6kdvrJ9uFkkOmvQTth+DvBrH+/VPIiotDWsfhW1eEpf/WA2AHPXtR8kXLZYDFrI7qY6dLO6Ex8kEg6xqS5GOS4yNSXmKEKsGravmuc6uhBbDK01M3YiE=
+	t=1735573584; cv=none; b=MAP0NL/Uof7xIH930pY6f17jbR8vi1hJN4WIWW52n8csCmkhybpM3iC7pDj/J8ZJ5Lt1RZ7CMc5k+lAWBcHcaU+tL7GksXWG71F4VYO2YbZrKm4sTkSOyKS1qxt8BujudVVOFX9CCpKG7nd/EJ1en2zE8BLKKBz7RMgL+B9ot6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573741; c=relaxed/simple;
-	bh=SIfhCKKXNrV2MQ1WoqLvTrXXdidF5k1PB5Gbqf4OQbE=;
+	s=arc-20240116; t=1735573584; c=relaxed/simple;
+	bh=frv26Nc95T++ohfuhiVknhTRqHxL53syBsT8hXs7YfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBvauW0BXbtNdEm0JA2mGRO/Obe2WWefobMNEGQSDUVZJNkJAW7xTgwKu8J43hGEdMWpSzQqG5Fy/er2rRLu2LNOv8TFYtFW7vcGyGyWNAjBx7Vzu8XSZyWgD4kwGRPhCZhQWvnWO+iDYxnmL+uS7E5oW4QeqtvB7CyPaM6igJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyVu4hUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93261C4CED0;
-	Mon, 30 Dec 2024 15:48:59 +0000 (UTC)
+	 MIME-Version; b=Z2OnssPi40/yxiVCEUBYu7AXXq0+6BjwknK/KBzBfxAqaNMasoRaWQD8Z0tp35pw+WcYijHQRWSZHZokiOvd0qD50DFfhomusG2CamSZD2Xp+JP0E76OmBbVcx8CLwG7DEiFB14Zc5sGevtIVTs05Jotzkie2xS8BaiMZyXaxyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SN/A6SVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CC4C4CED0;
+	Mon, 30 Dec 2024 15:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573740;
-	bh=SIfhCKKXNrV2MQ1WoqLvTrXXdidF5k1PB5Gbqf4OQbE=;
+	s=korg; t=1735573583;
+	bh=frv26Nc95T++ohfuhiVknhTRqHxL53syBsT8hXs7YfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VyVu4hUzUvI1wFfg7TudcU4QlmDjd4NTJJ3RWbbPOJqjvu+TbOb9HONk97SOmL56z
-	 5cY1DvoOsES537p8YxbHnuWSp1eJHwxCKTADalvNeveRWzNBUjvS/yzhvLINU8UOXq
-	 fA2y+5Ut63TD4VukCUZ+21Zzk9wQFD87BlWJJQ5E=
+	b=SN/A6SVeIod2y8k4deUdaJ6c5mhGMUUi8zMiJPWHJmFoTHlt6vTl2RyYmcrzCty4K
+	 wtF+Xwi0s/CN4jzhxLqyEVCnr5I4MZO5q6ZXsNVdAw5rmHPdJ1/dhrPsKtpKRJ56P+
+	 Sx8m6igqk2CZl73XR5dheyZKlvt8khWFnCT2N0fI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Michael Zimmermann <sigmaepsilon92@gmail.com>,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Ferry Toth <fntoth@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 21/86] phy: rockchip: naneng-combphy: fix phy reset
+Subject: [PATCH 6.1 19/60] dmaengine: dw: Select only supported masters for ACPI devices
 Date: Mon, 30 Dec 2024 16:42:29 +0100
-Message-ID: <20241230154212.527901746@linuxfoundation.org>
+Message-ID: <20241230154208.016893451@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154207.276570972@linuxfoundation.org>
+References: <20241230154207.276570972@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit fbcbffbac994aca1264e3c14da96ac9bfd90466e upstream.
+commit f0e870a0e9c5521f2952ea9f3ea9d3d122631a89 upstream.
 
-Currently, the USB port via combophy on the RK3528/RK3588 SoC is broken.
+The recently submitted fix-commit revealed a problem in the iDMA 32-bit
+platform code. Even though the controller supported only a single master
+the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
+0 and 1. As a result the sanity check implemented in the commit
+b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
+got incorrect interface data width and thus prevented the client drivers
+from configuring the DMA-channel with the EINVAL error returned. E.g.,
+the next error was printed for the PXA2xx SPI controller driver trying
+to configure the requested channels:
 
-  usb usb8-port1: Cannot enable. Maybe the USB cable is bad?
+> [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
+> [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
+> [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
 
-This is due to the combphy of RK3528/RK3588 SoC has multiple resets, but
-only "phy resets" need assert and deassert, "apb resets" don't need.
-So change the driver to only match the phy resets, which is also what
-the vendor kernel does.
+The problem would have been spotted much earlier if the iDMA 32-bit
+controller supported more than one master interfaces. But since it
+supports just a single master and the iDMA 32-bit specific code just
+ignores the master IDs in the CTLLO preparation method, the issue has
+been gone unnoticed so far.
 
-Fixes: 7160820d742a ("phy: rockchip: add naneng combo phy for RK3568")
-Cc: FUKAUMI Naoki <naoki@radxa.com>
-Cc: Michael Zimmermann <sigmaepsilon92@gmail.com>
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://lore.kernel.org/r/20241122073006.99309-2-amadeus@jmu.edu.cn
+Fix the problem by specifying the default master ID for both memory
+and peripheral devices in the driver data. Thus the issue noticed for
+the iDMA 32-bit controllers will be eliminated and the ACPI-probed
+DW DMA controllers will be configured with the correct master ID by
+default.
+
+Cc: stable@vger.kernel.org
+Fixes: b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
+Fixes: 199244d69458 ("dmaengine: dw: add support of iDMA 32-bit hardware")
+Reported-by: Ferry Toth <fntoth@gmail.com>
+Closes: https://lore.kernel.org/dmaengine/ZuXbCKUs1iOqFu51@black.fi.intel.com/
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Closes: https://lore.kernel.org/dmaengine/ZuXgI-VcHpMgbZ91@black.fi.intel.com/
+Tested-by: Ferry Toth <fntoth@gmail.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20241104095142.157925-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/phy-rockchip-naneng-combphy.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/dw/acpi.c     |    6 ++++--
+ drivers/dma/dw/internal.h |    8 ++++++++
+ drivers/dma/dw/pci.c      |    4 ++--
+ 3 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-@@ -309,7 +309,7 @@ static int rockchip_combphy_parse_dt(str
+--- a/drivers/dma/dw/acpi.c
++++ b/drivers/dma/dw/acpi.c
+@@ -8,13 +8,15 @@
  
- 	priv->ext_refclk = device_property_present(dev, "rockchip,ext-refclk");
+ static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
+ {
++	struct dw_dma *dw = to_dw_dma(chan->device);
++	struct dw_dma_chip_pdata *data = dev_get_drvdata(dw->dma.dev);
+ 	struct acpi_dma_spec *dma_spec = param;
+ 	struct dw_dma_slave slave = {
+ 		.dma_dev = dma_spec->dev,
+ 		.src_id = dma_spec->slave_id,
+ 		.dst_id = dma_spec->slave_id,
+-		.m_master = 0,
+-		.p_master = 1,
++		.m_master = data->m_master,
++		.p_master = data->p_master,
+ 	};
  
--	priv->phy_rst = devm_reset_control_array_get_exclusive(dev);
-+	priv->phy_rst = devm_reset_control_get(dev, "phy");
- 	if (IS_ERR(priv->phy_rst))
- 		return dev_err_probe(dev, PTR_ERR(priv->phy_rst), "failed to get phy reset\n");
+ 	return dw_dma_filter(chan, &slave);
+--- a/drivers/dma/dw/internal.h
++++ b/drivers/dma/dw/internal.h
+@@ -51,11 +51,15 @@ struct dw_dma_chip_pdata {
+ 	int (*probe)(struct dw_dma_chip *chip);
+ 	int (*remove)(struct dw_dma_chip *chip);
+ 	struct dw_dma_chip *chip;
++	u8 m_master;
++	u8 p_master;
+ };
+ 
+ static __maybe_unused const struct dw_dma_chip_pdata dw_dma_chip_pdata = {
+ 	.probe = dw_dma_probe,
+ 	.remove = dw_dma_remove,
++	.m_master = 0,
++	.p_master = 1,
+ };
+ 
+ static const struct dw_dma_platform_data idma32_pdata = {
+@@ -72,6 +76,8 @@ static __maybe_unused const struct dw_dm
+ 	.pdata = &idma32_pdata,
+ 	.probe = idma32_dma_probe,
+ 	.remove = idma32_dma_remove,
++	.m_master = 0,
++	.p_master = 0,
+ };
+ 
+ static const struct dw_dma_platform_data xbar_pdata = {
+@@ -88,6 +94,8 @@ static __maybe_unused const struct dw_dm
+ 	.pdata = &xbar_pdata,
+ 	.probe = idma32_dma_probe,
+ 	.remove = idma32_dma_remove,
++	.m_master = 0,
++	.p_master = 0,
+ };
+ 
+ #endif /* _DMA_DW_INTERNAL_H */
+--- a/drivers/dma/dw/pci.c
++++ b/drivers/dma/dw/pci.c
+@@ -56,10 +56,10 @@ static int dw_pci_probe(struct pci_dev *
+ 	if (ret)
+ 		return ret;
+ 
+-	dw_dma_acpi_controller_register(chip->dw);
+-
+ 	pci_set_drvdata(pdev, data);
+ 
++	dw_dma_acpi_controller_register(chip->dw);
++
+ 	return 0;
+ }
  
 
 
