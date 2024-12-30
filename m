@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-106384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3549FE81B
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:50:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F0F9FE87A
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 525287A155A
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:49:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2CA93A25FE
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB881ABECA;
-	Mon, 30 Dec 2024 15:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49A51531C4;
+	Mon, 30 Dec 2024 15:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b98wZJut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/ME/RLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265B31AB505;
-	Mon, 30 Dec 2024 15:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D1F2AE68;
+	Mon, 30 Dec 2024 15:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735573795; cv=none; b=A30ME7jil4DBOg7F0+8DUVswpipuTetJCKoITsRacrgEHIuDa9HVtYHJ5UDZqOjR+UiLzHPttkzjVpOtpvjnm7iKZpQ+sA4DvWraXQQvS1J8DslqaKHK+5c6l3+l8Pj1Li1ZxR/JMRUssZeLiKc2zifw2mgPIDCMCl0XoK99ssA=
+	t=1735574110; cv=none; b=OrI9gsjltijMb70z6fnlGTUo8yqLO/j3JGR+uCwvT06LRhD5SyzLWFhhe1QFQ8HLL8aMoo3YdAmWABRkG6ElNsxiC1vnTnZROYm2/0XItnTE9aBF8GeKHw7JngyBQR7nytnPlUXEpT8ORnuYeyRhrkdStImz8ARQyb+y4m4b7RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735573795; c=relaxed/simple;
-	bh=rl93Pfjd3ilbYk4UMIswZLXp+IXNL0CQj7hVNK7AR+0=;
+	s=arc-20240116; t=1735574110; c=relaxed/simple;
+	bh=4pmSZRdoh1m8bvowR7Bx1KTijlNBezG4FH/l0p6Sd+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOqUs4c5eyJ+NonehWJwHaOQfrghqWOnmq6/XsFOEEuqVpXOFIaWSI3KIPNd0DL8KNyCWQTBy0QjCt/VnOTByAvS5CsgEBgRWlM6PmWa/VNi+kVilijVpWHIR79lOW1GMVuorMqLUdr55HQZRXi+F9UR3TNZRW9w75fjSLzRgCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b98wZJut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0FEC4CED0;
-	Mon, 30 Dec 2024 15:49:54 +0000 (UTC)
+	 MIME-Version; b=YpDeu0vmkIrjCk+Ba17PrJ20ynY8oSYycpIDhgaPz6uj7bIzrXv143fE1FUcGK5BxXd10O/hSqrgZZbQ5ZO+eISWydk11KTyaIvVrtYz5EgR6yO2WOaadohbC956/e+RBcn4jM3UHO1idjJmzPwaorjTV40Xzg2wAz0pMnH8OEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/ME/RLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E549CC4CED0;
+	Mon, 30 Dec 2024 15:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735573795;
-	bh=rl93Pfjd3ilbYk4UMIswZLXp+IXNL0CQj7hVNK7AR+0=;
+	s=korg; t=1735574110;
+	bh=4pmSZRdoh1m8bvowR7Bx1KTijlNBezG4FH/l0p6Sd+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b98wZJutSEYQ3n69hYH2V2m7TCDLAMVuoNThoeWxAhbI9/8uILN63KKx9KN2FkRzE
-	 C0PnqzK1zNkIH1inzWzrQHtmSghvNB7WHWmi6w6bMSA/5T5Ak3tv+dshNNHgywFdAv
-	 SWZa7zu/afx7aAHVh/DDTSQJEDQLHxEDU8PNcBAM=
+	b=m/ME/RLwjAgcWxvi52rMjZxF4PDATMBSGX7SChJfV2Qu0GnFVtUpw8IYOeHlyj0nQ
+	 TtrQJr5ScHeENPqk7Y7FFbs95G3EUfsvUnlrMuGeQ6QjGqwz7yBpULZ9pFwdP5xF39
+	 O7X/RAauchWpMoFVYWc//BI/T16JNzF2BlqIh9yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 28/86] mtd: rawnand: fix double free in atmel_pmecc_create_user()
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 039/114] ASoC: Intel: sof_sdw: Fix DMI match for Lenovo 21QA and 21QB
 Date: Mon, 30 Dec 2024 16:42:36 +0100
-Message-ID: <20241230154212.789559287@linuxfoundation.org>
+Message-ID: <20241230154219.566935730@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
-References: <20241230154211.711515682@linuxfoundation.org>
+In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+References: <20241230154218.044787220@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit d8e4771f99c0400a1873235704b28bb803c83d17 upstream.
+commit ba7d47a54bf23a7201bdd2978e16b04fc1cb1f6e upstream.
 
-The "user" pointer was converted from being allocated with kzalloc() to
-being allocated by devm_kzalloc().  Calling kfree(user) will lead to a
-double free.
+Update the DMI match for a Lenovo laptop to the new DMI identifier.
 
-Fixes: 6d734f1bfc33 ("mtd: rawnand: atmel: Fix possible memory leak")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+This laptop ships with a different DMI identifier to what was expected,
+and now has two identifiers.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: ea657f6b24e1 ("ASoC: Intel: sof_sdw: Add quirk for cs42l43 system using host DMICs")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20241216140821.153670-3-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/pmecc.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/soc/intel/boards/sof_sdw.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/atmel/pmecc.c
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.c
-@@ -380,10 +380,8 @@ atmel_pmecc_create_user(struct atmel_pme
- 	user->delta = user->dmu + req->ecc.strength + 1;
- 
- 	gf_tables = atmel_pmecc_get_gf_tables(req);
--	if (IS_ERR(gf_tables)) {
--		kfree(user);
-+	if (IS_ERR(gf_tables))
- 		return ERR_CAST(gf_tables);
--	}
- 
- 	user->gf_tables = gf_tables;
- 
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -608,7 +608,16 @@ static const struct dmi_system_id sof_sd
+ 		.callback = sof_sdw_quirk_cb,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "233C")
++			DMI_MATCH(DMI_PRODUCT_NAME, "21QB")
++		},
++		/* Note this quirk excludes the CODEC mic */
++		.driver_data = (void *)(SOC_SDW_CODEC_MIC),
++	},
++	{
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21QA")
+ 		},
+ 		/* Note this quirk excludes the CODEC mic */
+ 		.driver_data = (void *)(SOC_SDW_CODEC_MIC),
 
 
 
