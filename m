@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-106511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A30B9FE8A1
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB65D9FE851
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:52:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11E24161BAC
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B43E7A15B9
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C64D1ABEB7;
-	Mon, 30 Dec 2024 15:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD4714F136;
+	Mon, 30 Dec 2024 15:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQwjTLnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZP8wWtXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538E82AE68;
-	Mon, 30 Dec 2024 15:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABBD15E8B;
+	Mon, 30 Dec 2024 15:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574233; cv=none; b=J9f0VebktPRbHzBHROmIom0KFk2/8mGsP1u+LTmZ8aIDWuGNZ56CLsMGRnc/DypJkS7ugE+c3tJhUmIlCkfJQM80TP+CpSecuWHNSqdmN8TuA+BkSmKkXU0UioAgtyuLELDOmhvsdai/aBwNGp4b63WbjPnP7hHMypwCjmqoWe4=
+	t=1735573973; cv=none; b=ABKjQ6eaENCrw1A4RFaJJmBR8V6JCxSrD5SuzMiRdbmenAJspIKdn1qiCEJT1U2x8LqA/Ba3gW86E4u04qmY1xTuTx9PvraI+2kbdvVZRjVniWIm2xpemnXMP3Bjv/TQXuduc4ELQl6tgJv5k+xEso1pQlwTY3NnfWVQ97/caCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574233; c=relaxed/simple;
-	bh=WIuqn3hKiia+3FQQRFC4h6nBs6kLoNQ63mFbJEC76eY=;
+	s=arc-20240116; t=1735573973; c=relaxed/simple;
+	bh=nFUlIluR10HKmaGxxUYOI7+UUTb/klX7ymoxPP6kPd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EN2mV3sikJxo85z+QfYawwt6qRc/YS7XwFwBFlHsWLDQKEGxEVu5n3vHbd4o2iEIfvSkMycVjtghDcydCnxpJIL2Y6SwoWzeCep5Pnr4ugTeE7uqDWBw6U/0bs637IDxiKdjZEVUqQh8Wf1HCU2aUK3Er6hEk+YxnSAZb2bYPoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQwjTLnW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6213AC4CED0;
-	Mon, 30 Dec 2024 15:57:12 +0000 (UTC)
+	 MIME-Version; b=FA0VkNtVc2nIWw97QLNmnvWblb2EDuMuRFSg8sRnvugMJdFPNL3yfAAK+PL12tO+2pf5o0Pg5pmEBLBbPHAGw97dJbhjb1+A1WnfLZqcrP/xSpc44a7oNX205QMSTQCWitwMz3R7wSbB3NLbJ4dicgqlh7qy+fbxT+WVh+M6aco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZP8wWtXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6429DC4CED0;
+	Mon, 30 Dec 2024 15:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574232;
-	bh=WIuqn3hKiia+3FQQRFC4h6nBs6kLoNQ63mFbJEC76eY=;
+	s=korg; t=1735573972;
+	bh=nFUlIluR10HKmaGxxUYOI7+UUTb/klX7ymoxPP6kPd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TQwjTLnWbY+RQUrvqaHnOAj7MzgdyNWu3GdmphMahp6jdmur2uX3JVuK7uj3kO9tP
-	 JDRwXBHNJXyFzKzLyi1tcuf/+ReX56LFIRjNXXGKdtE+q+0B3NTtLHrDixezmuvW3d
-	 I+5eZDZzeYZogle6WBnrskeT2xIlzM+bVDtZoBpo=
+	b=ZP8wWtXF7e899W6l1mi7J92Q6bn77aFHTcwn8qqA344TRIv0t8NZ+LG14+32CWMlB
+	 34XZgPjgbnnaaehuXf0ntyMonqfK68tDijik+XYY3NaDddNCDXlW2uBac5TCBhGj/q
+	 yiphzhYJ7zcs+uvOBbz3JqPSy/IqrFjDDH2DLfTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@unisoc.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Tony Luck <tony.luck@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/114] virtio-blk: dont keep queue frozen during system suspend
+Subject: [PATCH 6.6 64/86] x86/cpu/vfm: Add/initialize x86_vfm field to struct cpuinfo_x86
 Date: Mon, 30 Dec 2024 16:43:12 +0100
-Message-ID: <20241230154220.983328908@linuxfoundation.org>
+Message-ID: <20241230154214.148959706@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
+[ Upstream commit a9d0adce69075192961f3be466c4810a21b7bc9e ]
 
-Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
-deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
-PM callbacks. And the motivation is to drain inflight IOs before suspending.
+Refactor struct cpuinfo_x86 so that the vendor, family, and model
+fields are overlaid in a union with a 32-bit field that combines
+all three (together with a one byte reserved field in the upper
+byte).
 
-block layer's queue freeze looks very handy, but it is also easy to cause
-deadlock, such as, any attempt to call into bio_queue_enter() may run into
-deadlock if the queue is frozen in current context. There are all kinds
-of ->suspend() called in suspend context, so keeping queue frozen in the
-whole suspend context isn't one good idea. And Marek reported lockdep
-warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
+This will make it easy, cheap, and reliable to check all three
+values at once.
 
-[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
+See
 
-Given the motivation is to drain in-flight IOs, it can be done by calling
-freeze & unfreeze, meantime restore to previous behavior by keeping queue
-quiesced during suspend.
+  https://lore.kernel.org/r/Zgr6kT8oULbnmEXx@agluck-desk3
 
-Cc: Yi Sun <yi.sun@unisoc.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: virtualization@lists.linux.dev
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+for why the ordering is (low-to-high bits):
+
+  (vendor, family, model)
+
+  [ bp: Move comments over the line, add the backstory about the
+    particular order of the fields. ]
+
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240416211941.9369-2-tony.luck@intel.com
+Stable-dep-of: c9a4b55431e5 ("x86/cpu: Add Lunar Lake to list of CPUs with a broken MONITOR implementation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/processor.h | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 43c96b73a711..0e50b65e1dbf 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -1587,9 +1587,12 @@ static void virtblk_remove(struct virtio_device *vdev)
- static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
-+	struct request_queue *q = vblk->disk->queue;
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 6e775303d687..428348e7f06c 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -81,9 +81,23 @@ extern u16 __read_mostly tlb_lld_1g[NR_INFO];
+  */
  
- 	/* Ensure no requests in virtqueues before deleting vqs. */
--	blk_mq_freeze_queue(vblk->disk->queue);
-+	blk_mq_freeze_queue(q);
-+	blk_mq_quiesce_queue_nowait(q);
-+	blk_mq_unfreeze_queue(q);
- 
- 	/* Ensure we don't receive any more interrupts */
- 	virtio_reset_device(vdev);
-@@ -1613,8 +1616,8 @@ static int virtblk_restore(struct virtio_device *vdev)
- 		return ret;
- 
- 	virtio_device_ready(vdev);
-+	blk_mq_unquiesce_queue(vblk->disk->queue);
- 
--	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
+ struct cpuinfo_x86 {
+-	__u8			x86;		/* CPU family */
+-	__u8			x86_vendor;	/* CPU vendor */
+-	__u8			x86_model;
++	union {
++		/*
++		 * The particular ordering (low-to-high) of (vendor,
++		 * family, model) is done in case range of models, like
++		 * it is usually done on AMD, need to be compared.
++		 */
++		struct {
++			__u8	x86_model;
++			/* CPU family */
++			__u8	x86;
++			/* CPU vendor */
++			__u8	x86_vendor;
++			__u8	x86_reserved;
++		};
++		/* combined vendor, family, model */
++		__u32		x86_vfm;
++	};
+ 	__u8			x86_stepping;
+ #ifdef CONFIG_X86_64
+ 	/* Number of 4K pages in DTLB/ITLB combined(in pages): */
 -- 
 2.39.5
 
