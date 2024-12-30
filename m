@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-106517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B22E9FE8A8
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:57:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0D49FE83D
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 16:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBF2A1883177
-	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:57:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B65C1882BB3
+	for <lists+stable@lfdr.de>; Mon, 30 Dec 2024 15:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117801A9B54;
-	Mon, 30 Dec 2024 15:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6E2537E9;
+	Mon, 30 Dec 2024 15:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUGlkkpF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMBiWBPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE44D15E8B;
-	Mon, 30 Dec 2024 15:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6939C2AE68;
+	Mon, 30 Dec 2024 15:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735574252; cv=none; b=Ne/gf9oOyplys6Nj2AH/jQ+XAgleu8jxm8Qm0sebA9ku+2CrU+kl2ZaDNvLrkQ88ufEpBZreh/Jkhx+/xzKctoldIeP44tOzanKq2Nzdha64Wg/UPb/pE1PSg3Pximrx3dvxc+9UHrakCdCDB32nvPCGJa2dbk/bercjYplBky0=
+	t=1735573908; cv=none; b=fvglqEtzdzxGjgyMAsherFRVD8hcP2ho46xh0mJhPeRXJm1xtQ1d8iEcXZe3qnEialCoDShxCiQxKsgwwHqzcJXhrRb1fcr1aI9pvXx4aj83tZxoTpwPiCmsH9NHuoVp5DXevOChD+GTExwmiwWtzQvIMU2LuPwxbJj0QvhooYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735574252; c=relaxed/simple;
-	bh=ytWP7xm1N1BYDdL2xV7knjDbUMPzUcgaIdtH8igoumg=;
+	s=arc-20240116; t=1735573908; c=relaxed/simple;
+	bh=EyChwQoQ0uqzuRef3bV4pBCjqzyU31yxeaRWX1dRudA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sN69WRh+CILHnkssLuhlnEoUeatL29uCJBicUL7Qz4v0YRw+3TPFS5GWkVLz+yQkwZaz4z7LAGvN8Xk0nSl0kJDl0axIHT1e4mu0Y19fE3YogZnlxhf3gYuDAMhJ4j6fXFpzn/9a0rI7SGNC6KMhs6w17FSLbzT0TbNFlJxsxs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUGlkkpF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5CEC4CED0;
-	Mon, 30 Dec 2024 15:57:31 +0000 (UTC)
+	 MIME-Version; b=qcSCIDlk3E6+ipye52TuvYl4/6ElveM/Z0kXkM1/fmEYtpUjLm8yj14rFVjTKBHNmEXouxmI1JJZ6RPkgEudHmDcqwhcFFWl9nbYwRqzY2bnK9Eg4kzh/Ws1uzv76KZ2z6hOGAQcoFA1n3x9lvEeFSc+thAUYLGDXVQAfBLQtck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMBiWBPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F4FC4CED0;
+	Mon, 30 Dec 2024 15:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1735574252;
-	bh=ytWP7xm1N1BYDdL2xV7knjDbUMPzUcgaIdtH8igoumg=;
+	s=korg; t=1735573908;
+	bh=EyChwQoQ0uqzuRef3bV4pBCjqzyU31yxeaRWX1dRudA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUGlkkpFcYlpSIW2FGaRQaQYmq6LzPcNgZ9YaXl/LCqbN/xupDlFtzoHzflMoe6Uu
-	 2fhs3uTgT5+9ZdrMwo8jRgEsx40sowK+R95VJ593oFDFcKVAprl9TSM+aCG0lodQJU
-	 nR3Pq09eSCGjDvqLzXgqVWIGeMsJpTPp8C++3zQ0=
+	b=GMBiWBPNb7HjnBUbjUEzf8yDieWTpY8on/u26NeWzeaZ8GrcEjviVzrdq+ck4rWO7
+	 /PJUXVG7eijw/ELGsASywcrym4GMhRYpPkeZZNvzvCnMdHVm7msTNRYMbDHuWkjncZ
+	 dxO7YdNZTZ+DEZ+9JGCybCvPJzvIIzKExtXZh1vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Francois Dugast <francois.dugast@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	intel-xe@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	John Harrison <John.C.Harrison@Intel.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/114] drm/xe: Move the coredump registration to the worker thread
-Date: Mon, 30 Dec 2024 16:43:17 +0100
-Message-ID: <20241230154221.171449150@linuxfoundation.org>
+Subject: [PATCH 6.6 70/86] drm/amdkfd: Use device based logging for errors
+Date: Mon, 30 Dec 2024 16:43:18 +0100
+Message-ID: <20241230154214.376160670@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+In-Reply-To: <20241230154211.711515682@linuxfoundation.org>
+References: <20241230154211.711515682@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,154 +60,473 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Harrison <John.C.Harrison@Intel.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 5dce85fecb87751ec94526e1ac516dd7871e2e0c ]
+[ Upstream commit 62ec7d38b769ccf33b1080e69c2ae5b7344d116d ]
 
-Adding lockdep checking to the coredump code showed that there was an
-existing violation. The dev_coredumpm_timeout() call is used to
-register the dump with the base coredump subsystem. However, that
-makes multiple memory allocations, only some of which use the GFP_
-flags passed in. So that also needs to be deferred to the worker
-function where it is safe to allocate with arbitrary flags.
+Convert some pr_* to some dev_* APIs to identify the device.
 
-In order to not add protoypes for the callback functions, moving the
-_timeout call also means moving the worker thread function to later in
-the file.
-
-v2: Rebased after other changes to the worker function.
-
-Fixes: e799485044cb ("drm/xe: Introduce the dev_coredump infrastructure.")
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: intel-xe@lists.freedesktop.org
-Cc: linux-media@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linaro-mm-sig@lists.linaro.org
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241128210824.3302147-3-John.C.Harrison@Intel.com
-(cherry picked from commit 90f51a7f4ec1004fc4ddfbc6d1f1068d85ef4771)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 438b39ac74e2 ("drm/amdkfd: pause autosuspend when creating pdd")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_devcoredump.c | 73 +++++++++++++++--------------
- 1 file changed, 39 insertions(+), 34 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c  |  3 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c | 21 ++++---
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c  |  8 ++-
+ .../gpu/drm/amd/amdkfd/kfd_packet_manager.c   | 63 ++++++++++++-------
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c      | 24 ++++---
+ 5 files changed, 74 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_devcoredump.c b/drivers/gpu/drm/xe/xe_devcoredump.c
-index c40c91e27f71..c18e463092af 100644
---- a/drivers/gpu/drm/xe/xe_devcoredump.c
-+++ b/drivers/gpu/drm/xe/xe_devcoredump.c
-@@ -144,36 +144,6 @@ static void xe_devcoredump_snapshot_free(struct xe_devcoredump_snapshot *ss)
- 	ss->vm = NULL;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
+index 6604a3f99c5e..b22a036523b7 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
+@@ -373,7 +373,8 @@ int kfd_init_apertures(struct kfd_process *process)
+ 
+ 		pdd = kfd_create_process_device_data(dev, process);
+ 		if (!pdd) {
+-			pr_err("Failed to create process device data\n");
++			dev_err(dev->adev->dev,
++				"Failed to create process device data\n");
+ 			return -ENOMEM;
+ 		}
+ 		/*
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c b/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
+index 68d13c4fac8f..2c529339ff65 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
+@@ -68,7 +68,7 @@ static bool kq_initialize(struct kernel_queue *kq, struct kfd_node *dev,
+ 		kq->mqd_mgr = dev->dqm->mqd_mgrs[KFD_MQD_TYPE_HIQ];
+ 		break;
+ 	default:
+-		pr_err("Invalid queue type %d\n", type);
++		dev_err(dev->adev->dev, "Invalid queue type %d\n", type);
+ 		return false;
+ 	}
+ 
+@@ -78,13 +78,14 @@ static bool kq_initialize(struct kernel_queue *kq, struct kfd_node *dev,
+ 	prop.doorbell_ptr = kfd_get_kernel_doorbell(dev->kfd, &prop.doorbell_off);
+ 
+ 	if (!prop.doorbell_ptr) {
+-		pr_err("Failed to initialize doorbell");
++		dev_err(dev->adev->dev, "Failed to initialize doorbell");
+ 		goto err_get_kernel_doorbell;
+ 	}
+ 
+ 	retval = kfd_gtt_sa_allocate(dev, queue_size, &kq->pq);
+ 	if (retval != 0) {
+-		pr_err("Failed to init pq queues size %d\n", queue_size);
++		dev_err(dev->adev->dev, "Failed to init pq queues size %d\n",
++			queue_size);
+ 		goto err_pq_allocate_vidmem;
+ 	}
+ 
+@@ -332,7 +333,7 @@ struct kernel_queue *kernel_queue_init(struct kfd_node *dev,
+ 	if (kq_initialize(kq, dev, type, KFD_KERNEL_QUEUE_SIZE))
+ 		return kq;
+ 
+-	pr_err("Failed to init kernel queue\n");
++	dev_err(dev->adev->dev, "Failed to init kernel queue\n");
+ 
+ 	kfree(kq);
+ 	return NULL;
+@@ -351,26 +352,26 @@ static __attribute__((unused)) void test_kq(struct kfd_node *dev)
+ 	uint32_t *buffer, i;
+ 	int retval;
+ 
+-	pr_err("Starting kernel queue test\n");
++	dev_err(dev->adev->dev, "Starting kernel queue test\n");
+ 
+ 	kq = kernel_queue_init(dev, KFD_QUEUE_TYPE_HIQ);
+ 	if (unlikely(!kq)) {
+-		pr_err("  Failed to initialize HIQ\n");
+-		pr_err("Kernel queue test failed\n");
++		dev_err(dev->adev->dev, "  Failed to initialize HIQ\n");
++		dev_err(dev->adev->dev, "Kernel queue test failed\n");
+ 		return;
+ 	}
+ 
+ 	retval = kq_acquire_packet_buffer(kq, 5, &buffer);
+ 	if (unlikely(retval != 0)) {
+-		pr_err("  Failed to acquire packet buffer\n");
+-		pr_err("Kernel queue test failed\n");
++		dev_err(dev->adev->dev, "  Failed to acquire packet buffer\n");
++		dev_err(dev->adev->dev, "Kernel queue test failed\n");
+ 		return;
+ 	}
+ 	for (i = 0; i < 5; i++)
+ 		buffer[i] = kq->nop_packet;
+ 	kq_submit_packet(kq);
+ 
+-	pr_err("Ending kernel queue test\n");
++	dev_err(dev->adev->dev, "Ending kernel queue test\n");
  }
  
--static void xe_devcoredump_deferred_snap_work(struct work_struct *work)
--{
--	struct xe_devcoredump_snapshot *ss = container_of(work, typeof(*ss), work);
--	struct xe_devcoredump *coredump = container_of(ss, typeof(*coredump), snapshot);
--	struct xe_device *xe = coredump_to_xe(coredump);
--	unsigned int fw_ref;
--
--	xe_pm_runtime_get(xe);
--
--	/* keep going if fw fails as we still want to save the memory and SW data */
--	fw_ref = xe_force_wake_get(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL);
--	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL))
--		xe_gt_info(ss->gt, "failed to get forcewake for coredump capture\n");
--	xe_vm_snapshot_capture_delayed(ss->vm);
--	xe_guc_exec_queue_snapshot_capture_delayed(ss->ge);
--	xe_force_wake_put(gt_to_fw(ss->gt), fw_ref);
--
--	xe_pm_runtime_put(xe);
--
--	/* Calculate devcoredump size */
--	ss->read.size = __xe_devcoredump_read(NULL, INT_MAX, coredump);
--
--	ss->read.buffer = kvmalloc(ss->read.size, GFP_USER);
--	if (!ss->read.buffer)
--		return;
--
--	__xe_devcoredump_read(ss->read.buffer, ss->read.size, coredump);
--	xe_devcoredump_snapshot_free(ss);
--}
--
- static ssize_t xe_devcoredump_read(char *buffer, loff_t offset,
- 				   size_t count, void *data, size_t datalen)
+ 
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
+index b276bffcaaf3..0edae9ded68a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
+@@ -118,12 +118,14 @@ void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
+ 	 * attention grabbing.
+ 	 */
+ 	if (gfx_info->max_shader_engines > KFD_MAX_NUM_SE) {
+-		pr_err("Exceeded KFD_MAX_NUM_SE, chip reports %d\n",
+-		       gfx_info->max_shader_engines);
++		dev_err(mm->dev->adev->dev,
++			"Exceeded KFD_MAX_NUM_SE, chip reports %d\n",
++			gfx_info->max_shader_engines);
+ 		return;
+ 	}
+ 	if (gfx_info->max_sh_per_se > KFD_MAX_NUM_SH_PER_SE) {
+-		pr_err("Exceeded KFD_MAX_NUM_SH, chip reports %d\n",
++		dev_err(mm->dev->adev->dev,
++			"Exceeded KFD_MAX_NUM_SH, chip reports %d\n",
+ 			gfx_info->max_sh_per_se * gfx_info->max_shader_engines);
+ 		return;
+ 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager.c
+index 401096c103b2..ecb38a6e8013 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_packet_manager.c
+@@ -45,7 +45,8 @@ static void pm_calc_rlib_size(struct packet_manager *pm,
+ 	unsigned int process_count, queue_count, compute_queue_count, gws_queue_count;
+ 	unsigned int map_queue_size;
+ 	unsigned int max_proc_per_quantum = 1;
+-	struct kfd_node *dev = pm->dqm->dev;
++	struct kfd_node *node = pm->dqm->dev;
++	struct device *dev = node->adev->dev;
+ 
+ 	process_count = pm->dqm->processes_count;
+ 	queue_count = pm->dqm->active_queue_count;
+@@ -59,14 +60,14 @@ static void pm_calc_rlib_size(struct packet_manager *pm,
+ 	 */
+ 	*over_subscription = false;
+ 
+-	if (dev->max_proc_per_quantum > 1)
+-		max_proc_per_quantum = dev->max_proc_per_quantum;
++	if (node->max_proc_per_quantum > 1)
++		max_proc_per_quantum = node->max_proc_per_quantum;
+ 
+ 	if ((process_count > max_proc_per_quantum) ||
+ 	    compute_queue_count > get_cp_queues_num(pm->dqm) ||
+ 	    gws_queue_count > 1) {
+ 		*over_subscription = true;
+-		pr_debug("Over subscribed runlist\n");
++		dev_dbg(dev, "Over subscribed runlist\n");
+ 	}
+ 
+ 	map_queue_size = pm->pmf->map_queues_size;
+@@ -81,7 +82,7 @@ static void pm_calc_rlib_size(struct packet_manager *pm,
+ 	if (*over_subscription)
+ 		*rlib_size += pm->pmf->runlist_size;
+ 
+-	pr_debug("runlist ib size %d\n", *rlib_size);
++	dev_dbg(dev, "runlist ib size %d\n", *rlib_size);
+ }
+ 
+ static int pm_allocate_runlist_ib(struct packet_manager *pm,
+@@ -90,6 +91,8 @@ static int pm_allocate_runlist_ib(struct packet_manager *pm,
+ 				unsigned int *rl_buffer_size,
+ 				bool *is_over_subscription)
  {
-@@ -222,6 +192,45 @@ static void xe_devcoredump_free(void *data)
- 		 "Xe device coredump has been deleted.\n");
- }
++	struct kfd_node *node = pm->dqm->dev;
++	struct device *dev = node->adev->dev;
+ 	int retval;
  
-+static void xe_devcoredump_deferred_snap_work(struct work_struct *work)
-+{
-+	struct xe_devcoredump_snapshot *ss = container_of(work, typeof(*ss), work);
-+	struct xe_devcoredump *coredump = container_of(ss, typeof(*coredump), snapshot);
-+	struct xe_device *xe = coredump_to_xe(coredump);
-+	unsigned int fw_ref;
-+
-+	/*
-+	 * NB: Despite passing a GFP_ flags parameter here, more allocations are done
-+	 * internally using GFP_KERNEL expliictly. Hence this call must be in the worker
-+	 * thread and not in the initial capture call.
-+	 */
-+	dev_coredumpm_timeout(gt_to_xe(ss->gt)->drm.dev, THIS_MODULE, coredump, 0, GFP_KERNEL,
-+			      xe_devcoredump_read, xe_devcoredump_free,
-+			      XE_COREDUMP_TIMEOUT_JIFFIES);
-+
-+	xe_pm_runtime_get(xe);
-+
-+	/* keep going if fw fails as we still want to save the memory and SW data */
-+	fw_ref = xe_force_wake_get(gt_to_fw(ss->gt), XE_FORCEWAKE_ALL);
-+	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL))
-+		xe_gt_info(ss->gt, "failed to get forcewake for coredump capture\n");
-+	xe_vm_snapshot_capture_delayed(ss->vm);
-+	xe_guc_exec_queue_snapshot_capture_delayed(ss->ge);
-+	xe_force_wake_put(gt_to_fw(ss->gt), fw_ref);
-+
-+	xe_pm_runtime_put(xe);
-+
-+	/* Calculate devcoredump size */
-+	ss->read.size = __xe_devcoredump_read(NULL, INT_MAX, coredump);
-+
-+	ss->read.buffer = kvmalloc(ss->read.size, GFP_USER);
-+	if (!ss->read.buffer)
-+		return;
-+
-+	__xe_devcoredump_read(ss->read.buffer, ss->read.size, coredump);
-+	xe_devcoredump_snapshot_free(ss);
-+}
-+
- static void devcoredump_snapshot(struct xe_devcoredump *coredump,
- 				 struct xe_sched_job *job)
+ 	if (WARN_ON(pm->allocated))
+@@ -99,11 +102,10 @@ static int pm_allocate_runlist_ib(struct packet_manager *pm,
+ 
+ 	mutex_lock(&pm->lock);
+ 
+-	retval = kfd_gtt_sa_allocate(pm->dqm->dev, *rl_buffer_size,
+-					&pm->ib_buffer_obj);
++	retval = kfd_gtt_sa_allocate(node, *rl_buffer_size, &pm->ib_buffer_obj);
+ 
+ 	if (retval) {
+-		pr_err("Failed to allocate runlist IB\n");
++		dev_err(dev, "Failed to allocate runlist IB\n");
+ 		goto out;
+ 	}
+ 
+@@ -125,6 +127,8 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
  {
-@@ -305,10 +314,6 @@ void xe_devcoredump(struct xe_sched_job *job)
- 	drm_info(&xe->drm, "Xe device coredump has been created\n");
- 	drm_info(&xe->drm, "Check your /sys/class/drm/card%d/device/devcoredump/data\n",
- 		 xe->drm.primary->index);
--
--	dev_coredumpm_timeout(xe->drm.dev, THIS_MODULE, coredump, 0, GFP_KERNEL,
--			      xe_devcoredump_read, xe_devcoredump_free,
--			      XE_COREDUMP_TIMEOUT_JIFFIES);
- }
+ 	unsigned int alloc_size_bytes;
+ 	unsigned int *rl_buffer, rl_wptr, i;
++	struct kfd_node *node = pm->dqm->dev;
++	struct device *dev = node->adev->dev;
+ 	int retval, processes_mapped;
+ 	struct device_process_node *cur;
+ 	struct qcm_process_device *qpd;
+@@ -142,7 +146,7 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
+ 	*rl_size_bytes = alloc_size_bytes;
+ 	pm->ib_size_bytes = alloc_size_bytes;
  
- static void xe_driver_devcoredump_fini(void *arg)
+-	pr_debug("Building runlist ib process count: %d queues count %d\n",
++	dev_dbg(dev, "Building runlist ib process count: %d queues count %d\n",
+ 		pm->dqm->processes_count, pm->dqm->active_queue_count);
+ 
+ 	/* build the run list ib packet */
+@@ -150,7 +154,7 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
+ 		qpd = cur->qpd;
+ 		/* build map process packet */
+ 		if (processes_mapped >= pm->dqm->processes_count) {
+-			pr_debug("Not enough space left in runlist IB\n");
++			dev_dbg(dev, "Not enough space left in runlist IB\n");
+ 			pm_release_ib(pm);
+ 			return -ENOMEM;
+ 		}
+@@ -167,7 +171,8 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
+ 			if (!kq->queue->properties.is_active)
+ 				continue;
+ 
+-			pr_debug("static_queue, mapping kernel q %d, is debug status %d\n",
++			dev_dbg(dev,
++				"static_queue, mapping kernel q %d, is debug status %d\n",
+ 				kq->queue->queue, qpd->is_debug);
+ 
+ 			retval = pm->pmf->map_queues(pm,
+@@ -186,7 +191,8 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
+ 			if (!q->properties.is_active)
+ 				continue;
+ 
+-			pr_debug("static_queue, mapping user queue %d, is debug status %d\n",
++			dev_dbg(dev,
++				"static_queue, mapping user queue %d, is debug status %d\n",
+ 				q->queue, qpd->is_debug);
+ 
+ 			retval = pm->pmf->map_queues(pm,
+@@ -203,11 +209,13 @@ static int pm_create_runlist_ib(struct packet_manager *pm,
+ 		}
+ 	}
+ 
+-	pr_debug("Finished map process and queues to runlist\n");
++	dev_dbg(dev, "Finished map process and queues to runlist\n");
+ 
+ 	if (is_over_subscription) {
+ 		if (!pm->is_over_subscription)
+-			pr_warn("Runlist is getting oversubscribed. Expect reduced ROCm performance.\n");
++			dev_warn(
++				dev,
++				"Runlist is getting oversubscribed. Expect reduced ROCm performance.\n");
+ 		retval = pm->pmf->runlist(pm, &rl_buffer[rl_wptr],
+ 					*rl_gpu_addr,
+ 					alloc_size_bytes / sizeof(uint32_t),
+@@ -272,6 +280,8 @@ void pm_uninit(struct packet_manager *pm, bool hanging)
+ int pm_send_set_resources(struct packet_manager *pm,
+ 				struct scheduling_resources *res)
+ {
++	struct kfd_node *node = pm->dqm->dev;
++	struct device *dev = node->adev->dev;
+ 	uint32_t *buffer, size;
+ 	int retval = 0;
+ 
+@@ -281,7 +291,7 @@ int pm_send_set_resources(struct packet_manager *pm,
+ 					size / sizeof(uint32_t),
+ 					(unsigned int **)&buffer);
+ 	if (!buffer) {
+-		pr_err("Failed to allocate buffer on kernel queue\n");
++		dev_err(dev, "Failed to allocate buffer on kernel queue\n");
+ 		retval = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -343,6 +353,8 @@ int pm_send_runlist(struct packet_manager *pm, struct list_head *dqm_queues)
+ int pm_send_query_status(struct packet_manager *pm, uint64_t fence_address,
+ 			uint64_t fence_value)
+ {
++	struct kfd_node *node = pm->dqm->dev;
++	struct device *dev = node->adev->dev;
+ 	uint32_t *buffer, size;
+ 	int retval = 0;
+ 
+@@ -354,7 +366,7 @@ int pm_send_query_status(struct packet_manager *pm, uint64_t fence_address,
+ 	kq_acquire_packet_buffer(pm->priv_queue,
+ 			size / sizeof(uint32_t), (unsigned int **)&buffer);
+ 	if (!buffer) {
+-		pr_err("Failed to allocate buffer on kernel queue\n");
++		dev_err(dev, "Failed to allocate buffer on kernel queue\n");
+ 		retval = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -372,6 +384,8 @@ int pm_send_query_status(struct packet_manager *pm, uint64_t fence_address,
+ 
+ int pm_update_grace_period(struct packet_manager *pm, uint32_t grace_period)
+ {
++	struct kfd_node *node = pm->dqm->dev;
++	struct device *dev = node->adev->dev;
+ 	int retval = 0;
+ 	uint32_t *buffer, size;
+ 
+@@ -385,7 +399,8 @@ int pm_update_grace_period(struct packet_manager *pm, uint32_t grace_period)
+ 			(unsigned int **)&buffer);
+ 
+ 		if (!buffer) {
+-			pr_err("Failed to allocate buffer on kernel queue\n");
++			dev_err(dev,
++				"Failed to allocate buffer on kernel queue\n");
+ 			retval = -ENOMEM;
+ 			goto out;
+ 		}
+@@ -406,6 +421,8 @@ int pm_send_unmap_queue(struct packet_manager *pm,
+ 			enum kfd_unmap_queues_filter filter,
+ 			uint32_t filter_param, bool reset)
+ {
++	struct kfd_node *node = pm->dqm->dev;
++	struct device *dev = node->adev->dev;
+ 	uint32_t *buffer, size;
+ 	int retval = 0;
+ 
+@@ -414,7 +431,7 @@ int pm_send_unmap_queue(struct packet_manager *pm,
+ 	kq_acquire_packet_buffer(pm->priv_queue,
+ 			size / sizeof(uint32_t), (unsigned int **)&buffer);
+ 	if (!buffer) {
+-		pr_err("Failed to allocate buffer on kernel queue\n");
++		dev_err(dev, "Failed to allocate buffer on kernel queue\n");
+ 		retval = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -463,6 +480,8 @@ int pm_debugfs_runlist(struct seq_file *m, void *data)
+ 
+ int pm_debugfs_hang_hws(struct packet_manager *pm)
+ {
++	struct kfd_node *node = pm->dqm->dev;
++	struct device *dev = node->adev->dev;
+ 	uint32_t *buffer, size;
+ 	int r = 0;
+ 
+@@ -474,16 +493,16 @@ int pm_debugfs_hang_hws(struct packet_manager *pm)
+ 	kq_acquire_packet_buffer(pm->priv_queue,
+ 			size / sizeof(uint32_t), (unsigned int **)&buffer);
+ 	if (!buffer) {
+-		pr_err("Failed to allocate buffer on kernel queue\n");
++		dev_err(dev, "Failed to allocate buffer on kernel queue\n");
+ 		r = -ENOMEM;
+ 		goto out;
+ 	}
+ 	memset(buffer, 0x55, size);
+ 	kq_submit_packet(pm->priv_queue);
+ 
+-	pr_info("Submitting %x %x %x %x %x %x %x to HIQ to hang the HWS.",
+-		buffer[0], buffer[1], buffer[2], buffer[3],
+-		buffer[4], buffer[5], buffer[6]);
++	dev_info(dev, "Submitting %x %x %x %x %x %x %x to HIQ to hang the HWS.",
++		 buffer[0], buffer[1], buffer[2], buffer[3], buffer[4],
++		 buffer[5], buffer[6]);
+ out:
+ 	mutex_unlock(&pm->lock);
+ 	return r;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index fd640a061c96..577bdb6a9640 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -1308,7 +1308,8 @@ int kfd_process_init_cwsr_apu(struct kfd_process *p, struct file *filep)
+ 		if (IS_ERR_VALUE(qpd->tba_addr)) {
+ 			int err = qpd->tba_addr;
+ 
+-			pr_err("Failure to set tba address. error %d.\n", err);
++			dev_err(dev->adev->dev,
++				"Failure to set tba address. error %d.\n", err);
+ 			qpd->tba_addr = 0;
+ 			qpd->cwsr_kaddr = NULL;
+ 			return err;
+@@ -1603,7 +1604,8 @@ struct kfd_process_device *kfd_create_process_device_data(struct kfd_node *dev,
+ 						&pdd->proc_ctx_cpu_ptr,
+ 						false);
+ 		if (retval) {
+-			pr_err("failed to allocate process context bo\n");
++			dev_err(dev->adev->dev,
++				"failed to allocate process context bo\n");
+ 			goto err_free_pdd;
+ 		}
+ 		memset(pdd->proc_ctx_cpu_ptr, 0, AMDGPU_MES_PROC_CTX_SIZE);
+@@ -1667,7 +1669,7 @@ int kfd_process_device_init_vm(struct kfd_process_device *pdd,
+ 						     &p->kgd_process_info,
+ 						     &p->ef);
+ 	if (ret) {
+-		pr_err("Failed to create process VM object\n");
++		dev_err(dev->adev->dev, "Failed to create process VM object\n");
+ 		return ret;
+ 	}
+ 	pdd->drm_priv = drm_file->private_data;
+@@ -1714,7 +1716,7 @@ struct kfd_process_device *kfd_bind_process_to_device(struct kfd_node *dev,
+ 
+ 	pdd = kfd_get_process_device_data(dev, p);
+ 	if (!pdd) {
+-		pr_err("Process device data doesn't exist\n");
++		dev_err(dev->adev->dev, "Process device data doesn't exist\n");
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+@@ -1824,6 +1826,7 @@ int kfd_process_evict_queues(struct kfd_process *p, uint32_t trigger)
+ 
+ 	for (i = 0; i < p->n_pdds; i++) {
+ 		struct kfd_process_device *pdd = p->pdds[i];
++		struct device *dev = pdd->dev->adev->dev;
+ 
+ 		kfd_smi_event_queue_eviction(pdd->dev, p->lead_thread->pid,
+ 					     trigger);
+@@ -1835,7 +1838,7 @@ int kfd_process_evict_queues(struct kfd_process *p, uint32_t trigger)
+ 		 * them been add back since they actually not be saved right now.
+ 		 */
+ 		if (r && r != -EIO) {
+-			pr_err("Failed to evict process queues\n");
++			dev_err(dev, "Failed to evict process queues\n");
+ 			goto fail;
+ 		}
+ 		n_evicted++;
+@@ -1857,7 +1860,8 @@ int kfd_process_evict_queues(struct kfd_process *p, uint32_t trigger)
+ 
+ 		if (pdd->dev->dqm->ops.restore_process_queues(pdd->dev->dqm,
+ 							      &pdd->qpd))
+-			pr_err("Failed to restore queues\n");
++			dev_err(pdd->dev->adev->dev,
++				"Failed to restore queues\n");
+ 
+ 		n_evicted--;
+ 	}
+@@ -1873,13 +1877,14 @@ int kfd_process_restore_queues(struct kfd_process *p)
+ 
+ 	for (i = 0; i < p->n_pdds; i++) {
+ 		struct kfd_process_device *pdd = p->pdds[i];
++		struct device *dev = pdd->dev->adev->dev;
+ 
+ 		kfd_smi_event_queue_restore(pdd->dev, p->lead_thread->pid);
+ 
+ 		r = pdd->dev->dqm->ops.restore_process_queues(pdd->dev->dqm,
+ 							      &pdd->qpd);
+ 		if (r) {
+-			pr_err("Failed to restore process queues\n");
++			dev_err(dev, "Failed to restore process queues\n");
+ 			if (!ret)
+ 				ret = r;
+ 		}
+@@ -2039,7 +2044,7 @@ int kfd_reserved_mem_mmap(struct kfd_node *dev, struct kfd_process *process,
+ 	struct qcm_process_device *qpd;
+ 
+ 	if ((vma->vm_end - vma->vm_start) != KFD_CWSR_TBA_TMA_SIZE) {
+-		pr_err("Incorrect CWSR mapping size.\n");
++		dev_err(dev->adev->dev, "Incorrect CWSR mapping size.\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -2051,7 +2056,8 @@ int kfd_reserved_mem_mmap(struct kfd_node *dev, struct kfd_process *process,
+ 	qpd->cwsr_kaddr = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
+ 					get_order(KFD_CWSR_TBA_TMA_SIZE));
+ 	if (!qpd->cwsr_kaddr) {
+-		pr_err("Error allocating per process CWSR buffer.\n");
++		dev_err(dev->adev->dev,
++			"Error allocating per process CWSR buffer.\n");
+ 		return -ENOMEM;
+ 	}
+ 
 -- 
 2.39.5
 
