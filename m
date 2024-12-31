@@ -1,122 +1,116 @@
-Return-Path: <stable+bounces-106617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F099FF0BA
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 17:42:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A609FF152
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 19:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E9587A1575
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 16:42:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE8FC3A2FD4
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 18:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A051C19DF4C;
-	Tue, 31 Dec 2024 16:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E1D1ACEB8;
+	Tue, 31 Dec 2024 18:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b="DohU6D5w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPk6JNZx"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.com (mout.gmx.com [74.208.4.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342892A1BA;
-	Tue, 31 Dec 2024 16:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732A0182D9;
+	Tue, 31 Dec 2024 18:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735663323; cv=none; b=KENHZLjtq1G415/MtINBmlK1RGVa948EdUuWYTVfI/KX/ROkIESeK6o2BGxIk2E81hUrybflI9zqFjbwJA2Lr66ZjDWRVULlnXVPg22kWVbsxHoIpA7VA5qQCdKJnGEJpq3WRQmob7tuofUaH7oM5Onjb1PrBdf80ZGh6cuMIqg=
+	t=1735670492; cv=none; b=lG5Uy0xu8/G8ifBSHncwIjvgyN5CRhHgkvtGITUSNMIOT2u0SzzfivycwK5DGfhE61UXbFk0jvY4byZrR8vCfND5vc9ZU03rqHIvDo4Prvr0+cHP3bNI/5OvxVK0EimnnI5cg7bdecrShTwN2GKbu1Fs3G9Llx7ahckbjSjcr04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735663323; c=relaxed/simple;
-	bh=tzWjlGkq0gvv9aqRqZiW/06I+/RYgL7A+f2Hu+T1A28=;
-	h=MIME-Version:Message-ID:From:To:Cc:Subject:Content-Type:Date; b=aQ0nHm+pRo0abax8OoTA6IPipTTOjALrs7m2TsdOCDeU6DbQwyx+ev/O4OSE9OdE5pAZgEZrwAjLdwfgY2M6Kf+wKma8Lwlz8kEQ3vKnpUldPDfFygVUDjMLioF1WlpEnPmkEoszt7KIbmqvh6Ln/ZEiaKvUaf6WucqWIt/0Q28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com; spf=pass smtp.mailfrom=mail.com; dkim=pass (2048-bit key) header.d=mail.com header.i=gazo11@mail.com header.b=DohU6D5w; arc=none smtp.client-ip=74.208.4.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.com;
-	s=s1089575; t=1735663320; x=1736268120; i=gazo11@mail.com;
-	bh=VJkllFDb8o0ZOMglI2QhDJ5H1vp8AkF7zlhrTyhiq9A=;
-	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Cc:Subject:
-	 Content-Type:Date:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=DohU6D5w0P8UThMHMwPb4KCEEjmZa+w4JBibpq516cI2cum8h6t1w32y411UgIN1
-	 JzNuWFGf4sgBcr0htNSgiuRx/KkT25Wqq9mHhihBl0UL7kj7OAKNJRf1Jt+5bdvJX
-	 RXwnLMPdoix0SDGzrg7nPkdQjPpH5yUpEY2Yqt+9HkKlzDOoH81gQo8TIG99WhnBp
-	 i7Zb0wrAVrl8nxTs5tPGZwzuGd01Bbfv41PI9Q6J8F4gyjg476cUAeDPnoOXPRFwY
-	 66unkcO1AAoBrTvMuE0iODXyei7L5ZHzcaLdglT8rEef+HZ6nHqFWXS13owrhPTQB
-	 U9+DruT2dtA1N2X1og==
-X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
-Received: from [77.137.74.199] ([77.137.74.199]) by web-mail.mail.com
- (3c-app-mailcom-lxa11.server.lan [10.76.45.12]) (via HTTP); Tue, 31 Dec
- 2024 17:42:00 +0100
+	s=arc-20240116; t=1735670492; c=relaxed/simple;
+	bh=cQ7GGZlstkkYgmj258hdtKYfW8+a8BalT65IE1aQ6eo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YEJDRb/wxkS7PtE+ViDJR8f/lE001WPSDklneGaimn8zpYkqG4h6eG4Rjb43H0+TIVhgM38kV9NcooGARg4J8yZhDuqDXPcbvycSt6cmZWC5B06C4O7bLJVCDBOkn4gSCnZ8uP/ZbIKFulzKxHuz60KUmc8dg/4p2jk3BLyQ0/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPk6JNZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55A0C4CED2;
+	Tue, 31 Dec 2024 18:41:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735670491;
+	bh=cQ7GGZlstkkYgmj258hdtKYfW8+a8BalT65IE1aQ6eo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oPk6JNZxswwIho2gO88OSrGxt+zFDu0T55yug7kLeMInRRDSH+g96mLOZHNGkQJGU
+	 uvExdCCncXKyQgG+sK+AJM7FFHOvkqODXaovrvynch5uBbf2Fv3l4X/lofoLHkZ/Gu
+	 k6gf4cLg/3DnnNGGkD2yEtpehSycLM9z51/ygFWQGBfkXbRNmNG/1samdHm8oWsN1N
+	 Ro2IcAK2F3ugKw0WDOLsE1yCsGa/xH2Z9wXkOP0NwZsi7KcrJ8/JvuDXP20ooFVP71
+	 G9m92NF/z4G8LBrFIHXcRoVDoY6dYyS3o8YyQ51+tKILbPNpXgdXcuDebV0g9gHxc6
+	 Epui/VYxcYloA==
+Date: Tue, 31 Dec 2024 18:41:27 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Z qiang <qiang.zhang1211@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
+	jslaby@suse.cz, rcu <rcu@vger.kernel.org>
+Subject: Re: Linux 6.1.120
+Message-ID: <20241231-talisman-drone-77262b2af4a9@spud>
+References: <2024121411-multiple-activist-51a1@gregkh>
+ <20241216-comic-handling-3bcf108cc465@wendy>
+ <CALm+0cVd=yhCTXm4j+OcqiBQwwC=bf2ja7iQ87ypBb7KD2qbjA@mail.gmail.com>
+ <2024121703-bobbed-paced-99a5@gregkh>
+ <20241218-erupt-gratitude-1718d36bd1ac@spud>
+ <2024123014-snout-shed-fb50@gregkh>
+ <2024123018-lend-deflate-94d0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <trinity-1df112bc-962a-4f4e-96cd-f4089374378e-1735663320199@3c-app-mailcom-lxa11>
-From: Gustavo Azor <gazo11@mail.com>
-To: hdegoede@redhat.com
-Cc: stable@vger.kernel.org, linux-acpi@vger.kernel.org, rafael@kernel.org
-Subject: [PATCH] ACPI: resource: Add Asus Vivobook X1504VAP to
- irq1_level_low_skip_override[]
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 31 Dec 2024 17:42:00 +0100
-Importance: normal
-Sensitivity: Normal
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="aJjoDFGnXC+wgkRW"
+Content-Disposition: inline
+In-Reply-To: <2024123018-lend-deflate-94d0@gregkh>
+
+
+--aJjoDFGnXC+wgkRW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-X-Provags-ID: V03:K1:PV+Go9yvBLIqXkHr6SjDJZvhOTr/mvxXs5rwzWXtKOQ94SXNG8IViou9bG2rOBc5VPVJW
- p/oe5y5NPfBAyiIlkudVBC4pGmEi+W6pkiQsyeixJq7RGHgGY9ez+5aJUidxz3IQjqwvV5nL1bjx
- WDHLNpP40rX/VyEHmyn4ad2E1C1BFyWCW2+vNONbWGhiT+y+mhgWTV+pCUxhU33s0QAjHUmIerPy
- mpwJBrr6uSzOJqewPtDqCXG8IeHvb6i0XOmPsZa588qsXDdZhjzFrLc2FjXvWl5pM5xQMWaBhbxA
- 6I=
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XOxAtwagxgo=;bR/AGJZ4/B9EfpdpAo5uVLouzQn
- ABo8HpGvAt8baAy6zDKmeMrNNDSwtdpXrBGZ+70i4WZleVjJf4qj4fOmS6i2085l68EXdB9VZ
- NhhkqFIdMniZChUCIR4Juf0ohLKy8QWwgS1y5gIRgizRX/tcaVYX85VzSPqx6GKa9pe/c0NDB
- v+mca3m0I/1BsZFm79UKKYAWnjwuNEyKTBMjeB3QAJHK/Kpj2ODGjOdf0XBWsVEPGURJy50Ex
- ngbWnJfDN212uLX5sIKFKLhrxpcqgWoOGKATlfZQdrV3C33NS5uL5r6sO8ijo2p6zGR1pIlQw
- 9PdW3HRwLsxkodEbFfwoYxJMB9lj2Ck1SFGbCaT5O6rgX7NFEdl0PaYuu4ePWUkItsG8t7+fJ
- fi4IsKD33vq72QmnJgRqjyo4PzDRO1hXV/4u5btzWFu2cy2MjzWev+RC3MpJuWkTzC3K7gxjT
- 6BFbJj41AMgbW6RLEjB9AJZfCyLQfXQ78259afeHfXOKt31ywih5DHg2KV8be+SGUK6ZFZjPz
- Qnn6RRz/4vrzNujrqsniU97omqGjnBh2fVRj5udIf+cN1Lk1JMrxvaHeVXg8JhGprWFMOW4Mt
- m0ETgBzXzKhHjYN9hY14h1E4KzBje0ezs1Qr2TGVCzZxseHu9Mi+CbIMTVsw6P+AaZJuSQqrA
- k9N3Pa6P7HHc4OhWVIVn5OPCDvu0yZ2U2siWC7kW98lD8VU/VY9sK2YowwpSbg/cOZyojMVDg
- l9lHgCh4BXOj+DxVZKaLDvUoaTl/k39WDZu35kLEJOIZpT/OjkYzulIem3AQII6uBBy2yatbN
- 2L+rTvCN8pFYUxYMQVMxLuU1aGvPkScnzjLfqqkITnJ2EyGcw4Holy7Yme/+6BFszx8qM6ilZ
- fbmOMWaNrASCnBuggUHF0C54Yf+M7jtTWBkA=
 
+On Mon, Dec 30, 2024 at 03:47:26PM +0100, Greg Kroah-Hartman wrote:
 
-Estimated people:
-=C2=A0
-I can confirm what the next patch works:
-=C2=A0
-diff --git a/drivers/acpi/resource=2Ec b/drivers/acpi/resource=2Ec
-index 821867de43be=2E=2Eab4c0e0b6b8e 100644
---- a/drivers/acpi/resource=2Ec
-+++ b/drivers/acpi/resource=2Ec
-@@ -440,6 +440,13 @@ static const struct dmi_system_id irq1_level_low_skip=
-_override[] =3D {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook X1504VAP */
-+		=2Ematches =3D {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC=2E"),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1504VAP"),
-+		},
-+	},
- 	{
- 		/* Asus Vivobook X1704VAP */
- 		=2Ematches =3D {
---=20
-2=2E47=2E1
+> > > > > For v6.1.x kernels, the cblist_init_generic() is invoke in init t=
+ask context,
+> > > > > rtp->rtpcp_array is allocated use GFP_KERENL and in the critical =
+section
+> > > > > holding rcu_tasks.cbs_gbl_lock spinlock.  so might_resched() trig=
+ger warnings.
+> > > > > You should perform the operation of allocating rtpcp_array memory=
+ outside
+> > > > > the spinlock.
+> > > > > Are you willing to resend the patch?
+> > > >=20
+> > > > So should I revert this, or do you have a fixup patch somewhere?
+> > >=20
+> > > Is it too soon to push for a revert? It's interfering with my CIs
+> > > attempts to test the 121-rc.
+> >=20
+> > Sure, can someone send me a revert?
+>=20
+> Nevermind, I will just do it...
 
-I did all the steps in the tutorial https://docs=2Efedoraproject=2Eorg/en-=
-US/quick-docs/kernel-testing-patches/ and the keyboard Asus Vivobook X1504V=
-AP is working fine!!
-Please include the patch in future kernels=2E
-Thank you very much=2E
+ That'd be great, at least from where I'm sitting, since I'm still AFK
+ for Christmas :)
 
+--aJjoDFGnXC+wgkRW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ3Q60wAKCRB4tDGHoIJi
+0uEXAQCu4spx8d1Btgr+pRt25EfuVooNOu9xzpj+L8F38HPS0AD+O9Lntdi3id+S
+MX5u9JoxvXJdqEVBZBk7rHlini3JOA8=
+=1pbW
+-----END PGP SIGNATURE-----
+
+--aJjoDFGnXC+wgkRW--
 
