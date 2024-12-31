@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-106592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3F59FEC42
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 03:00:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB199FEC43
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 03:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ED6F161D47
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:00:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44422161D7F
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD625136352;
-	Tue, 31 Dec 2024 01:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF8313D521;
+	Tue, 31 Dec 2024 02:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vIfToODU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hGkASxmM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79499FC0B;
-	Tue, 31 Dec 2024 01:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128B413C9DE;
+	Tue, 31 Dec 2024 02:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735610399; cv=none; b=Z3nZjrBgAv3epe38yFXu5I7XYvs9qEgbEJZHegcUIFxiaX4QcFpk/bGVT5L02pro7Mgac3LKflFtqiq+aje6VV5nDIAZiY/z87YXDeRlyizWa1iFUQvZXI9WtGjB9hbPqJwdOY2SdDpbKATHXvtppV/+XTGfE59kpdZ3n02Nwjs=
+	t=1735610403; cv=none; b=ifExVAYvMwyzKmZgiXPoGpOFsv+aHrLVLLgylpdR87hy63pCkCDJdnYR6ANf1MitRyLWQ7Nh/FJ9/zFvhhuUr9ICCmIjrKPdkFBl/tDokX3g7+nxalRxQpRHRJxE0O79rIeEGmtH2kcelGEifUiqKMlyDFE8I5AeuOw2M403J00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735610399; c=relaxed/simple;
-	bh=2k6uBQSiE9eYbc9Me/9L4bBJBI0fhwyEuVSK0uQr7lk=;
-	h=Date:To:From:Subject:Message-Id; b=raKygGqwxEXKOgXjohyLQg8uWAQFzCenOTwHBVKEZiQuhkMqMLGkGbu2Va41FLTS9FE1RzGogmW7Wh6usPnefBtMGtcRJuwchUrzelPx7QiZkPXXw3Kdik3OhpXHsXGMrQq2RO59QnAjmsT+IDf2HtFCOWZBD2XCY+OafgAa9a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vIfToODU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B233C4CED0;
-	Tue, 31 Dec 2024 01:59:59 +0000 (UTC)
+	s=arc-20240116; t=1735610403; c=relaxed/simple;
+	bh=8QEcNhdnOvz8ra6ZNf4/GAow6KKFT1LyPZef7h+f8/Q=;
+	h=Date:To:From:Subject:Message-Id; b=ucCloZjB0mK52v8Z4qhRGCXFjPbsXqjSiRBbfwfqbcdmuhBeRJ+V8pHGhIG06lqCZsEm/xSeLrshkQdISZGKookT8DE/fMZenS5kVHEHlXlPVi9ELR0LjE0RmD2JPKoQDAVFNi3E8XG18G20p4PqQHj2M7RTuD9FblTGCXBFhNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hGkASxmM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58CFC4CED0;
+	Tue, 31 Dec 2024 02:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1735610399;
-	bh=2k6uBQSiE9eYbc9Me/9L4bBJBI0fhwyEuVSK0uQr7lk=;
+	s=korg; t=1735610402;
+	bh=8QEcNhdnOvz8ra6ZNf4/GAow6KKFT1LyPZef7h+f8/Q=;
 	h=Date:To:From:Subject:From;
-	b=vIfToODUe4Vr/F89I0VSiXnr2aChwa/v7fPMCbXVsOxoQmKs5YhrQDSq6U2Sx+WUU
-	 5LBe13BjHXV4KYQ+jeDssLSFCL9HLW68gSYx3c+De2huHRCwQiIGvX8vFd9yGcqt4+
-	 F1usnbg/dxUUc2Vumlis4AQSsmNZ2vELK4bAIK/0=
-Date: Mon, 30 Dec 2024 17:59:58 -0800
-To: mm-commits@vger.kernel.org,thomas.weissschuh@linutronix.de,stable@vger.kernel.org,rostedt@goodmis.org,juri.lelli@redhat.com,gpaoloni@redhat.com,echanude@redhat.com,clement.leger@bootlin.com,catalin.marinas@arm.com,bigeasy@linutronix.de,acarmina@redhat.com,akpm@linux-foundation.org
+	b=hGkASxmMPb5FdE9CtIru07Uo+G/ztcuifYwzd8vczAZ6yCFypyrEPIord6Kfeb2U5
+	 2oRd4J1w1oE44E1pyLfdrYrZgwSL6Pj5psSBds3+LlCLa4dJleVNhyUotplvEDvo6R
+	 aHt6dTK16s+ZKvBIeJrYqgVu3V8yi/BAJheyehoA=
+Date: Mon, 30 Dec 2024 18:00:02 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterz@infradead.org,nogikh@google.com,jpoimboe@kernel.org,elver@google.com,dvyukov@google.com,andreyknvl@gmail.com,arnd@arndb.de,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-kmemleak-fix-sleeping-function-called-from-invalid-context-at-print-message.patch removed from -mm tree
-Message-Id: <20241231015959.4B233C4CED0@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] kcov-mark-in_softirq_really-as-__always_inline.patch removed from -mm tree
+Message-Id: <20241231020002.A58CFC4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,122 +50,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/kmemleak: fix sleeping function called from invalid context at print message
+     Subject: kcov: mark in_softirq_really() as __always_inline
 has been removed from the -mm tree.  Its filename was
-     mm-kmemleak-fix-sleeping-function-called-from-invalid-context-at-print-message.patch
+     kcov-mark-in_softirq_really-as-__always_inline.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Alessandro Carminati <acarmina@redhat.com>
-Subject: mm/kmemleak: fix sleeping function called from invalid context at print message
-Date: Tue, 17 Dec 2024 14:20:33 +0000
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: kcov: mark in_softirq_really() as __always_inline
+Date: Tue, 17 Dec 2024 08:18:10 +0100
 
-Address a bug in the kernel that triggers a "sleeping function called from
-invalid context" warning when /sys/kernel/debug/kmemleak is printed under
-specific conditions:
-- CONFIG_PREEMPT_RT=y
-- Set SELinux as the LSM for the system
-- Set kptr_restrict to 1
-- kmemleak buffer contains at least one item
+If gcc decides not to inline in_softirq_really(), objtool warns about a
+function call with UACCESS enabled:
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 136, name: cat
-preempt_count: 1, expected: 0
-RCU nest depth: 2, expected: 2
-6 locks held by cat/136:
- #0: ffff32e64bcbf950 (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0xb8/0xe30
- #1: ffffafe6aaa9dea0 (scan_mutex){+.+.}-{3:3}, at: kmemleak_seq_start+0x34/0x128
- #3: ffff32e6546b1cd0 (&object->lock){....}-{2:2}, at: kmemleak_seq_show+0x3c/0x1e0
- #4: ffffafe6aa8d8560 (rcu_read_lock){....}-{1:2}, at: has_ns_capability_noaudit+0x8/0x1b0
- #5: ffffafe6aabbc0f8 (notif_lock){+.+.}-{2:2}, at: avc_compute_av+0xc4/0x3d0
-irq event stamp: 136660
-hardirqs last  enabled at (136659): [<ffffafe6a80fd7a0>] _raw_spin_unlock_irqrestore+0xa8/0xd8
-hardirqs last disabled at (136660): [<ffffafe6a80fd85c>] _raw_spin_lock_irqsave+0x8c/0xb0
-softirqs last  enabled at (0): [<ffffafe6a5d50b28>] copy_process+0x11d8/0x3df8
-softirqs last disabled at (0): [<0000000000000000>] 0x0
-Preemption disabled at:
-[<ffffafe6a6598a4c>] kmemleak_seq_show+0x3c/0x1e0
-CPU: 1 UID: 0 PID: 136 Comm: cat Tainted: G            E      6.11.0-rt7+ #34
-Tainted: [E]=UNSIGNED_MODULE
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- dump_backtrace+0xa0/0x128
- show_stack+0x1c/0x30
- dump_stack_lvl+0xe8/0x198
- dump_stack+0x18/0x20
- rt_spin_lock+0x8c/0x1a8
- avc_perm_nonode+0xa0/0x150
- cred_has_capability.isra.0+0x118/0x218
- selinux_capable+0x50/0x80
- security_capable+0x7c/0xd0
- has_ns_capability_noaudit+0x94/0x1b0
- has_capability_noaudit+0x20/0x30
- restricted_pointer+0x21c/0x4b0
- pointer+0x298/0x760
- vsnprintf+0x330/0xf70
- seq_printf+0x178/0x218
- print_unreferenced+0x1a4/0x2d0
- kmemleak_seq_show+0xd0/0x1e0
- seq_read_iter+0x354/0xe30
- seq_read+0x250/0x378
- full_proxy_read+0xd8/0x148
- vfs_read+0x190/0x918
- ksys_read+0xf0/0x1e0
- __arm64_sys_read+0x70/0xa8
- invoke_syscall.constprop.0+0xd4/0x1d8
- el0_svc+0x50/0x158
- el0t_64_sync+0x17c/0x180
+kernel/kcov.o: warning: objtool: __sanitizer_cov_trace_pc+0x1e: call to in_softirq_really() with UACCESS enabled
+kernel/kcov.o: warning: objtool: check_kcov_mode+0x11: call to in_softirq_really() with UACCESS enabled
 
-%pS and %pK, in the same back trace line, are redundant, and %pS can void
-%pK service in certain contexts.
+Mark this as __always_inline to avoid the problem.
 
-%pS alone already provides the necessary information, and if it cannot
-resolve the symbol, it falls back to printing the raw address voiding
-the original intent behind the %pK.
-
-Additionally, %pK requires a privilege check CAP_SYSLOG enforced through
-the LSM, which can trigger a "sleeping function called from invalid
-context" warning under RT_PREEMPT kernels when the check occurs in an
-atomic context. This issue may also affect other LSMs.
-
-This change avoids the unnecessary privilege check and resolves the
-sleeping function warning without any loss of information.
-
-Link: https://lkml.kernel.org/r/20241217142032.55793-1-acarmina@redhat.com
-Fixes: 3a6f33d86baa ("mm/kmemleak: use %pK to display kernel pointers in backtrace")
-Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Clément Léger <clement.leger@bootlin.com>
-Cc: Alessandro Carminati <acarmina@redhat.com>
-Cc: Eric Chanudet <echanude@redhat.com>
-Cc: Gabriele Paoloni <gpaoloni@redhat.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lkml.kernel.org/r/20241217071814.2261620-1-arnd@kernel.org
+Fixes: 7d4df2dad312 ("kcov: properly check for softirq context")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Aleksandr Nogikh <nogikh@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/kmemleak.c |    2 +-
+ kernel/kcov.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/kmemleak.c~mm-kmemleak-fix-sleeping-function-called-from-invalid-context-at-print-message
-+++ a/mm/kmemleak.c
-@@ -373,7 +373,7 @@ static void print_unreferenced(struct se
- 
- 	for (i = 0; i < nr_entries; i++) {
- 		void *ptr = (void *)entries[i];
--		warn_or_seq_printf(seq, "    [<%pK>] %pS\n", ptr, ptr);
-+		warn_or_seq_printf(seq, "    %pS\n", ptr);
- 	}
+--- a/kernel/kcov.c~kcov-mark-in_softirq_really-as-__always_inline
++++ a/kernel/kcov.c
+@@ -166,7 +166,7 @@ static void kcov_remote_area_put(struct
+  * Unlike in_serving_softirq(), this function returns false when called during
+  * a hardirq or an NMI that happened in the softirq context.
+  */
+-static inline bool in_softirq_really(void)
++static __always_inline bool in_softirq_really(void)
+ {
+ 	return in_serving_softirq() && !in_hardirq() && !in_nmi();
  }
- 
 _
 
-Patches currently in -mm which might be from acarmina@redhat.com are
+Patches currently in -mm which might be from arnd@arndb.de are
 
 
 
