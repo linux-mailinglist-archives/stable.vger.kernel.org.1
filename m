@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-106599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082059FEC4A
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 03:00:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0D49FEC4B
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 03:00:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BAF9188333E
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:00:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72B801620DE
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AAB13A26D;
-	Tue, 31 Dec 2024 02:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BF613B791;
+	Tue, 31 Dec 2024 02:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LdvfNCXP"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bPMR+6tb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A69487BF;
-	Tue, 31 Dec 2024 02:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0D6664C6;
+	Tue, 31 Dec 2024 02:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735610413; cv=none; b=iIDNwUPlMVGkXKmgAIAUeOUwcy+TDESbKnLVSeKzM9qobmVnviSeJpV3bx1Tnm+oBYZgV5COUxnSJHyIAFejzuRZ85pNlvFcY2NE40EgJabnc7COdv8fgg+aHJq+A0WLDjHhFzYzBUtA/RFX6EVL4RXSoU2sT9Au8NDGiOTqyu8=
+	t=1735610416; cv=none; b=HhT+EVwPNN/RG2ShhmCptYHfG2oIYyGb2BL5xXV3wwCC5xhfbQj7od2oYyJ0B7lakITOzj5rmzLvvFBRWvaCCOnFXFJQX7al2SS2EnNnZ2Z/j2sbIDSBvVKJ8+evlMBaf8nK42NsQPRgsjrUrm6L7tlBDTMHmW450PnBrV7KX30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735610413; c=relaxed/simple;
-	bh=r2wuNpqaIe87/duu5/9b0nz8O35JCX5Z5oI3vRQNKlI=;
-	h=Date:To:From:Subject:Message-Id; b=T8hPyzDRrkaMxcRrnlIN/z96XXT92qkXpSNuXXzXwvuG+tQuc5zF5j69La6NA0+1zf7a8S0ElMFb7wdfxo1ADmOAuGKFXmhYKDmHIDNYOiieLetuK7iLI0KUTzcZQ5Il5RSOWgP6vOKCeXU35GZlovhAZieZvn3eB1k+eQsIt04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LdvfNCXP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CEDC4CED7;
-	Tue, 31 Dec 2024 02:00:13 +0000 (UTC)
+	s=arc-20240116; t=1735610416; c=relaxed/simple;
+	bh=hh76XRgYnj5YKE5EAtXnRWYiimkHKfqhn6X9B1+d/pE=;
+	h=Date:To:From:Subject:Message-Id; b=PD+PCR2nzQczTiCDbl620CwC2LecBcT15i23kqkUbf3/ZzhkJ0cn+I9EjFkdmKeA6IS8mR3HcDjnh3sDobnCeTfD7VtM6FYeAfIKAbbh232n59HPcg82beLjxt1dDmXJELRGt+EgF1aB1eEovE2Cmqabc+xRyQAplw86CRyzMJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bPMR+6tb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41830C4CED0;
+	Tue, 31 Dec 2024 02:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1735610413;
-	bh=r2wuNpqaIe87/duu5/9b0nz8O35JCX5Z5oI3vRQNKlI=;
+	s=korg; t=1735610416;
+	bh=hh76XRgYnj5YKE5EAtXnRWYiimkHKfqhn6X9B1+d/pE=;
 	h=Date:To:From:Subject:From;
-	b=LdvfNCXPzF9zjQmLt1l/1EcdAonxektOFrtggoIbOZU+giXg16voR6+hx1IMul53S
-	 Sl9CwJtSjNAgQyEflBxLF4J5lp8rWpNBZLQqxTVYnwvRMS47GQmi4zJ0ma+O8fVxMe
-	 p/IvU5WelA9J/Nh6Hy2e8mzD/cPjk9kEI9e92+Y8=
-Date: Mon, 30 Dec 2024 18:00:13 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,bigeasy@linutronix.de,koichiro.den@canonical.com,akpm@linux-foundation.org
+	b=bPMR+6tbDWWJk7r0fiEeamzL04vuGCi7opUdJXneCBeOz6GXBnxTTmEQ7rPTTPJZx
+	 5eA56YPFvCJkF6OnV7uEKBSo1GBDTRp4k9kQoLr4pOsPO9HmjykgcsRFQ/onLHWXwJ
+	 W7cD9SNgja/3Mp27+Zr6giJBnCvOWhM8VSBQbKu0=
+Date: Mon, 30 Dec 2024 18:00:15 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] vmstat-disable-vmstat_work-on-vmstat_cpu_down_prep.patch removed from -mm tree
-Message-Id: <20241231020013.98CEDC4CED7@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-core-fix-new-damon_target-objects-leaks-on-damon_commit_targets.patch removed from -mm tree
+Message-Id: <20241231020016.41830C4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,79 +50,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: vmstat: disable vmstat_work on vmstat_cpu_down_prep()
+     Subject: mm/damon/core: fix new damon_target objects leaks on damon_commit_targets()
 has been removed from the -mm tree.  Its filename was
-     vmstat-disable-vmstat_work-on-vmstat_cpu_down_prep.patch
+     mm-damon-core-fix-new-damon_target-objects-leaks-on-damon_commit_targets.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Koichiro Den <koichiro.den@canonical.com>
-Subject: vmstat: disable vmstat_work on vmstat_cpu_down_prep()
-Date: Sat, 21 Dec 2024 12:33:20 +0900
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/core: fix new damon_target objects leaks on damon_commit_targets()
+Date: Sun, 22 Dec 2024 15:12:21 -0800
 
-Even after mm/vmstat:online teardown, shepherd may still queue work for
-the dying cpu until the cpu is removed from online mask.  While it's quite
-rare, this means that after unbind_workers() unbinds a per-cpu kworker, it
-potentially runs vmstat_update for the dying CPU on an irrelevant cpu
-before entering atomic AP states.  When CONFIG_DEBUG_PREEMPT=y, it results
-in the following error with the backtrace.
+Patch series "mm/damon/core: fix memory leaks and ignored inputs from
+damon_commit_ctx()".
 
-  BUG: using smp_processor_id() in preemptible [00000000] code: \
-                                               kworker/7:3/1702
-  caller is refresh_cpu_vm_stats+0x235/0x5f0
-  CPU: 0 UID: 0 PID: 1702 Comm: kworker/7:3 Tainted: G
-  Tainted: [N]=TEST
-  Workqueue: mm_percpu_wq vmstat_update
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x8d/0xb0
-   check_preemption_disabled+0xce/0xe0
-   refresh_cpu_vm_stats+0x235/0x5f0
-   vmstat_update+0x17/0xa0
-   process_one_work+0x869/0x1aa0
-   worker_thread+0x5e5/0x1100
-   kthread+0x29e/0x380
-   ret_from_fork+0x2d/0x70
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
+Due to two bugs in damon_commit_targets() and damon_commit_schemes(),
+which are called from damon_commit_ctx(), some user inputs can be ignored,
+and some mmeory objects can be leaked.  Fix those.
 
-So, for mm/vmstat:online, disable vmstat_work reliably on teardown and
-symmetrically enable it on startup.
+Note that only DAMON sysfs interface users are affected.  Other DAMON core
+API user modules that more focused more on simple and dedicated production
+usages, including DAMON_RECLAIM and DAMON_LRU_SORT are not using the buggy
+function in the way, so not affected.
 
-Link: https://lkml.kernel.org/r/20241221033321.4154409-1-koichiro.den@canonical.com
-Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+
+This patch (of 2):
+
+When new DAMON targets are added via damon_commit_targets(), the newly
+created targets are not deallocated when updating the internal data
+(damon_commit_target()) is failed.  Worse yet, even if the setup is
+successfully done, the new target is not linked to the context.  Hence,
+the new targets are always leaked regardless of the internal data setup
+failure.  Fix the leaks.
+
+Link: https://lkml.kernel.org/r/20241222231222.85060-2-sj@kernel.org
+Fixes: 9cb3d0b9dfce ("mm/damon/core: implement DAMON context commit function")
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/vmstat.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/damon/core.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/mm/vmstat.c~vmstat-disable-vmstat_work-on-vmstat_cpu_down_prep
-+++ a/mm/vmstat.c
-@@ -2148,13 +2148,14 @@ static int vmstat_cpu_online(unsigned in
- 	if (!node_state(cpu_to_node(cpu), N_CPU)) {
- 		node_set_state(cpu_to_node(cpu), N_CPU);
+--- a/mm/damon/core.c~mm-damon-core-fix-new-damon_target-objects-leaks-on-damon_commit_targets
++++ a/mm/damon/core.c
+@@ -961,8 +961,11 @@ static int damon_commit_targets(
+ 			return -ENOMEM;
+ 		err = damon_commit_target(new_target, false,
+ 				src_target, damon_target_has_pid(src));
+-		if (err)
++		if (err) {
++			damon_destroy_target(new_target);
+ 			return err;
++		}
++		damon_add_target(dst, new_target);
  	}
-+	enable_delayed_work(&per_cpu(vmstat_work, cpu));
- 
  	return 0;
  }
- 
- static int vmstat_cpu_down_prep(unsigned int cpu)
- {
--	cancel_delayed_work_sync(&per_cpu(vmstat_work, cpu));
-+	disable_delayed_work_sync(&per_cpu(vmstat_work, cpu));
- 	return 0;
- }
- 
 _
 
-Patches currently in -mm which might be from koichiro.den@canonical.com are
+Patches currently in -mm which might be from sj@kernel.org are
 
-hugetlb-prioritize-surplus-allocation-from-current-node.patch
+samples-add-a-skeleton-of-a-sample-damon-module-for-working-set-size-estimation.patch
+samples-damon-wsse-start-and-stop-damon-as-the-user-requests.patch
+samples-damon-wsse-implement-working-set-size-estimation-and-logging.patch
+samples-damon-introduce-a-skeleton-of-a-smaple-damon-module-for-proactive-reclamation.patch
+samples-damon-prcl-implement-schemes-setup.patch
+replace-free-hugepage-folios-after-migration-fix-2.patch
 
 
