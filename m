@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-106588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3BB89FEC3E
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:59:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA83A9FEC3F
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5782C161BCC
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 01:59:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BBB83A2942
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 01:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091B4130A54;
-	Tue, 31 Dec 2024 01:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0F884A2B;
+	Tue, 31 Dec 2024 01:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sL4p8EyQ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pyspbTy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82B7FC0B;
-	Tue, 31 Dec 2024 01:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA14FC0B;
+	Tue, 31 Dec 2024 01:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735610389; cv=none; b=cSU3iBiYOid9q4svVwQGj8rYzdv4k6RSnzWzIKeMlitsnPVcX6Zs3smXJ0lqgGyHNv7FU8FRdLGXPUE0sYgR9wmpaPY0J/CjuSD2wN6LmlmMj3QyR0VBndPy6RfrOiLYXBpeC3HD9umCaz3+xTGYxiX1174RvE9Z8sCqxgHoHb8=
+	t=1735610393; cv=none; b=JfyBnmAldiZcKMs4klqzu/Y2WulkppXiUXtgIos1v5Sf5Qp8O12/4Mkq5Uzup0CT46t3TU6gMCj0r6aWdaFuGzhroKrTRcSMSMWNvcp0tlfn6Q/VRzftsdLMnqoJe4LmwiqC6shZ9xIB7zdgHIOW2YBHS+5jtRPPN7w8N1zIfms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735610389; c=relaxed/simple;
-	bh=x1v9NsTa3uKuCdCqJX0s2X+KkLWkq2vL1bGNalVLeJk=;
-	h=Date:To:From:Subject:Message-Id; b=TRMysNQe9Q73xuy/qiQ117FqvEhyfMU2lzVFBfrhsF2RKOewSXa7fSK+DzA8Kcimum7dhnnvxMBx4UBPJBb7C3h0yaNL4sAhcz7AFB2jtJbTWwLk082JV5jW6o3UV6hkNEK75r+n8duQenKP+FPY5Ak+iDufeJAgWn0j36c8aOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sL4p8EyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EF9C4CED0;
-	Tue, 31 Dec 2024 01:59:49 +0000 (UTC)
+	s=arc-20240116; t=1735610393; c=relaxed/simple;
+	bh=9idB0Cn5ug2Q+nok94ViGE5A1Kspr+YZFJqzVFTHQwk=;
+	h=Date:To:From:Subject:Message-Id; b=MGaTUppizk8+NbBBg125Q5GDyGKIqghZdE2gzBJMUQl9K191ioq5RwFYX6a0GQyQffV3lC2eUYJJOS7i7aJbowiBwWLMULoG9Vo9hBM4IHVLxEXWbC+qrJTj9as/uHp2SnUuI3Uk94wQJXnmJzNxQsj6dpSL8+ksaeKfkznWMF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pyspbTy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8F2C4CED0;
+	Tue, 31 Dec 2024 01:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1735610389;
-	bh=x1v9NsTa3uKuCdCqJX0s2X+KkLWkq2vL1bGNalVLeJk=;
+	s=korg; t=1735610393;
+	bh=9idB0Cn5ug2Q+nok94ViGE5A1Kspr+YZFJqzVFTHQwk=;
 	h=Date:To:From:Subject:From;
-	b=sL4p8EyQcBAY0c0pigLTr6LR8Rul0EvqAyy4tvbRcKIMreAkCLpU25BwblkFeq64T
-	 Nt2V1dBR9145B3lccwdu3p9nE30SqULdtgcPC95oBj2b5HqYQpAAwoAHTJEIa+6X+O
-	 ZzC+btkdPeoin+Qpx6az2ljW+qR3oqK5EJqNT/as=
-Date: Mon, 30 Dec 2024 17:59:48 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mgorman@techsingularity.net,snishika@redhat.com,akpm@linux-foundation.org
+	b=pyspbTy4a3mio+AfvXtBX5VZkSjCK0xV+jVoVJe5q7E8fWXkPaeCY2NELs6s9bOIR
+	 L+61Qtw9woPCzvk2T+4k2bPBeISZmzeptok946cL5oW6qcwXf0Mjmb/v1jz+dkvmt8
+	 Rka2i/eo19U9pjAPrVu0WEaLdwUHwe0l246/wJ/A=
+Date: Mon, 30 Dec 2024 17:59:52 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,oliver.sang@intel.com,david@redhat.com,laoar.shao@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch removed from -mm tree
-Message-Id: <20241231015949.53EF9C4CED0@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-readahead-fix-large-folio-support-in-async-readahead.patch removed from -mm tree
+Message-Id: <20241231015953.5F8F2C4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,156 +50,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
+     Subject: mm/readahead: fix large folio support in async readahead
 has been removed from the -mm tree.  Its filename was
-     mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch
+     mm-readahead-fix-large-folio-support-in-async-readahead.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Seiji Nishikawa <snishika@redhat.com>
-Subject: mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
-Date: Sun, 1 Dec 2024 01:12:34 +0900
+From: Yafang Shao <laoar.shao@gmail.com>
+Subject: mm/readahead: fix large folio support in async readahead
+Date: Fri, 6 Dec 2024 16:30:25 +0800
 
-The task sometimes continues looping in throttle_direct_reclaim() because
-allow_direct_reclaim(pgdat) keeps returning false.  
+When testing large folio support with XFS on our servers, we observed that
+only a few large folios are mapped when reading large files via mmap. 
+After a thorough analysis, I identified it was caused by the
+`/sys/block/*/queue/read_ahead_kb` setting.  On our test servers, this
+parameter is set to 128KB.  After I tune it to 2MB, the large folio can
+work as expected.  However, I believe the large folio behavior should not
+be dependent on the value of read_ahead_kb.  It would be more robust if
+the kernel can automatically adopt to it.
 
- #0 [ffff80002cb6f8d0] __switch_to at ffff8000080095ac
- #1 [ffff80002cb6f900] __schedule at ffff800008abbd1c
- #2 [ffff80002cb6f990] schedule at ffff800008abc50c
- #3 [ffff80002cb6f9b0] throttle_direct_reclaim at ffff800008273550
- #4 [ffff80002cb6fa20] try_to_free_pages at ffff800008277b68
- #5 [ffff80002cb6fae0] __alloc_pages_nodemask at ffff8000082c4660
- #6 [ffff80002cb6fc50] alloc_pages_vma at ffff8000082e4a98
- #7 [ffff80002cb6fca0] do_anonymous_page at ffff80000829f5a8
- #8 [ffff80002cb6fce0] __handle_mm_fault at ffff8000082a5974
- #9 [ffff80002cb6fd90] handle_mm_fault at ffff8000082a5bd4
+With /sys/block/*/queue/read_ahead_kb set to 128KB and performing a
+sequential read on a 1GB file using MADV_HUGEPAGE, the differences in
+/proc/meminfo are as follows:
 
-At this point, the pgdat contains the following two zones:
+- before this patch
+  FileHugePages:     18432 kB
+  FilePmdMapped:      4096 kB
 
-        NODE: 4  ZONE: 0  ADDR: ffff00817fffe540  NAME: "DMA32"
-          SIZE: 20480  MIN/LOW/HIGH: 11/28/45
-          VM_STAT:
-                NR_FREE_PAGES: 359
-        NR_ZONE_INACTIVE_ANON: 18813
-          NR_ZONE_ACTIVE_ANON: 0
-        NR_ZONE_INACTIVE_FILE: 50
-          NR_ZONE_ACTIVE_FILE: 0
-          NR_ZONE_UNEVICTABLE: 0
-        NR_ZONE_WRITE_PENDING: 0
-                     NR_MLOCK: 0
-                    NR_BOUNCE: 0
-                   NR_ZSPAGES: 0
-            NR_FREE_CMA_PAGES: 0
+- after this patch
+  FileHugePages:   1067008 kB
+  FilePmdMapped:   1048576 kB
 
-        NODE: 4  ZONE: 1  ADDR: ffff00817fffec00  NAME: "Normal"
-          SIZE: 8454144  PRESENT: 98304  MIN/LOW/HIGH: 68/166/264
-          VM_STAT:
-                NR_FREE_PAGES: 146
-        NR_ZONE_INACTIVE_ANON: 94668
-          NR_ZONE_ACTIVE_ANON: 3
-        NR_ZONE_INACTIVE_FILE: 735
-          NR_ZONE_ACTIVE_FILE: 78
-          NR_ZONE_UNEVICTABLE: 0
-        NR_ZONE_WRITE_PENDING: 0
-                     NR_MLOCK: 0
-                    NR_BOUNCE: 0
-                   NR_ZSPAGES: 0
-            NR_FREE_CMA_PAGES: 0
+This shows that after applying the patch, the entire 1GB file is mapped to
+huge pages.  The stable list is CCed, as without this patch, large folios
+don't function optimally in the readahead path.
 
-In allow_direct_reclaim(), while processing ZONE_DMA32, the sum of
-inactive/active file-backed pages calculated in zone_reclaimable_pages()
-based on the result of zone_page_state_snapshot() is zero.  
+It's worth noting that if read_ahead_kb is set to a larger value that
+isn't aligned with huge page sizes (e.g., 4MB + 128KB), it may still fail
+to map to hugepages.
 
-Additionally, since this system lacks swap, the calculation of inactive/
-active anonymous pages is skipped.
-
-        crash> p nr_swap_pages
-        nr_swap_pages = $1937 = {
-          counter = 0
-        }
-
-As a result, ZONE_DMA32 is deemed unreclaimable and skipped, moving on to
-the processing of the next zone, ZONE_NORMAL, despite ZONE_DMA32 having
-free pages significantly exceeding the high watermark.
-
-The problem is that the pgdat->kswapd_failures hasn't been incremented.
-
-        crash> px ((struct pglist_data *) 0xffff00817fffe540)->kswapd_failures
-        $1935 = 0x0
-
-This is because the node deemed balanced.  The node balancing logic in
-balance_pgdat() evaluates all zones collectively.  If one or more zones
-(e.g., ZONE_DMA32) have enough free pages to meet their watermarks, the
-entire node is deemed balanced.  This causes balance_pgdat() to exit early
-before incrementing the kswapd_failures, as it considers the overall
-memory state acceptable, even though some zones (like ZONE_NORMAL) remain
-under significant pressure.
-
-
-The patch ensures that zone_reclaimable_pages() includes free pages
-(NR_FREE_PAGES) in its calculation when no other reclaimable pages are
-available (e.g., file-backed or anonymous pages).  This change prevents
-zones like ZONE_DMA32, which have sufficient free pages, from being
-mistakenly deemed unreclaimable.  By doing so, the patch ensures proper
-node balancing, avoids masking pressure on other zones like ZONE_NORMAL,
-and prevents infinite loops in throttle_direct_reclaim() caused by
-allow_direct_reclaim(pgdat) repeatedly returning false.
-
-
-The kernel hangs due to a task stuck in throttle_direct_reclaim(), caused
-by a node being incorrectly deemed balanced despite pressure in certain
-zones, such as ZONE_NORMAL.  This issue arises from
-zone_reclaimable_pages() returning 0 for zones without reclaimable file-
-backed or anonymous pages, causing zones like ZONE_DMA32 with sufficient
-free pages to be skipped.
-
-The lack of swap or reclaimable pages results in ZONE_DMA32 being ignored
-during reclaim, masking pressure in other zones.  Consequently,
-pgdat->kswapd_failures remains 0 in balance_pgdat(), preventing fallback
-mechanisms in allow_direct_reclaim() from being triggered, leading to an
-infinite loop in throttle_direct_reclaim().
-
-This patch modifies zone_reclaimable_pages() to account for free pages
-(NR_FREE_PAGES) when no other reclaimable pages exist.  This ensures zones
-with sufficient free pages are not skipped, enabling proper balancing and
-reclaim behavior.
-
-[akpm@linux-foundation.org: coding-style cleanups]
-Link: https://lkml.kernel.org/r/20241130164346.436469-1-snishika@redhat.com
-Link: https://lkml.kernel.org/r/20241130161236.433747-2-snishika@redhat.com
-Fixes: 5a1c84b404a7 ("mm: remove reclaim and compaction retry approximations")
-Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
+Link: https://lkml.kernel.org/r/20241108141710.9721-1-laoar.shao@gmail.com
+Link: https://lkml.kernel.org/r/20241206083025.3478-1-laoar.shao@gmail.com
+Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/vmscan.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ mm/readahead.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/vmscan.c~mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim
-+++ a/mm/vmscan.c
-@@ -374,7 +374,14 @@ unsigned long zone_reclaimable_pages(str
- 	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
- 		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
- 			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
--
-+	/*
-+	 * If there are no reclaimable file-backed or anonymous pages,
-+	 * ensure zones with sufficient free pages are not skipped.
-+	 * This prevents zones like DMA32 from being ignored in reclaim
-+	 * scenarios where they can still help alleviate memory pressure.
-+	 */
-+	if (nr == 0)
-+		nr = zone_page_state_snapshot(zone, NR_FREE_PAGES);
- 	return nr;
- }
- 
+--- a/mm/readahead.c~mm-readahead-fix-large-folio-support-in-async-readahead
++++ a/mm/readahead.c
+@@ -646,7 +646,11 @@ void page_cache_async_ra(struct readahea
+ 			1UL << order);
+ 	if (index == expected) {
+ 		ra->start += ra->size;
+-		ra->size = get_next_ra_size(ra, max_pages);
++		/*
++		 * In the case of MADV_HUGEPAGE, the actual size might exceed
++		 * the readahead window.
++		 */
++		ra->size = max(ra->size, get_next_ra_size(ra, max_pages));
+ 		ra->async_size = ra->size;
+ 		goto readit;
+ 	}
 _
 
-Patches currently in -mm which might be from snishika@redhat.com are
+Patches currently in -mm which might be from laoar.shao@gmail.com are
 
+kernel-remove-get_task_comm-and-print-task-comm-directly.patch
+arch-remove-get_task_comm-and-print-task-comm-directly.patch
+net-remove-get_task_comm-and-print-task-comm-directly.patch
+security-remove-get_task_comm-and-print-task-comm-directly.patch
+drivers-remove-get_task_comm-and-print-task-comm-directly.patch
 
 
