@@ -1,183 +1,180 @@
-Return-Path: <stable+bounces-106620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F45A9FF16A
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 20:04:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372F19FF174
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 20:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8F371882647
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 19:04:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D65AC16236D
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 19:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1F918A6DF;
-	Tue, 31 Dec 2024 19:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B991619DF4C;
+	Tue, 31 Dec 2024 19:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KcjktVWg"
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="mscJvldd"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE267189916
-	for <stable@vger.kernel.org>; Tue, 31 Dec 2024 19:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BA26EB7D;
+	Tue, 31 Dec 2024 19:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735671883; cv=none; b=SIWUFQlPECZX/7nZcBG/X+tQprTwJEwpmhW91tHY7+07UD2TIkJzk2W+TsSOLQjVK2GEfH2R33soWWMoShKDlx1s+60bV5N5PVMRFc4uswMxrR7cTHvB/1xiR+ZhGywGrOVZ3Vn8QTYwjjcXXayMFnCWHaYpDArEMlNysR5MewM=
+	t=1735672233; cv=none; b=QtebLzgZ7223WkK7ArFHwMWQhP8w2lJJK5bJ9/kNADjqVoSKFVcmg34dHszz0kdMeYlIiLzpWfj5Nr5rPQsPUIsiR4XIbuAiezAV+SVDQLx4qm6w48MyfWZi3eHvoj3wz8v6ebx0VIoQDLCuo43c2EHkVBNlKXbbuV1HD2ZHRl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735671883; c=relaxed/simple;
-	bh=ZX3Ib23MhAaOZ3D+oGP/O7t7bJ74JpA3W4ldTY/G+Ag=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pBQuERWhW+DTT9VZDHSmLclIDYd84Ywhcy6gLlitrvMEuKxJbwKn7553jopzTbzyhZWz5ndIwJJWGPJEfw7IfVh/fwF72yxsQ1l5UVYQS+t4FklQfYP1QACA3I9sI0NjdbFig92awJB+mvRV8cFHhuy8LgS+zGwBsxTjUkQA5io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KcjktVWg; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1735671880;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JhDDOdNBpVpswo8EuYIsLYoMu4Pnxo1biq0r/Q3W3Lw=;
-	b=KcjktVWgX4cVZXFB25nnMZVRW91iMzD6XFCOmtZHzYc4kSVbBYFXfCSK0Y1FG+KiptvwOH
-	PgecGTBv909GDQKClV8iVgBK6ijU6VtBSEXMbFZGoKmgkbfOEsmMdsak63IEAnkycqL7W6
-	PYl19GMaxTlTRyR3PsXph3iisWwr8Ko=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-BpLQJnRlMjaI6VzGW8zTrw-1; Tue, 31 Dec 2024 14:04:39 -0500
-X-MC-Unique: BpLQJnRlMjaI6VzGW8zTrw-1
-X-Mimecast-MFC-AGG-ID: BpLQJnRlMjaI6VzGW8zTrw
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-436723bf7ffso61562045e9.3
-        for <stable@vger.kernel.org>; Tue, 31 Dec 2024 11:04:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735671877; x=1736276677;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JhDDOdNBpVpswo8EuYIsLYoMu4Pnxo1biq0r/Q3W3Lw=;
-        b=L+TVSA7jqYoO0U9bQBo25vtarak2eaOz6MkZtyaZw6O1zmSf9/DbzvhHUpz7uniZGe
-         K8/3WPnlWmhrdamhrGGU24MvIhqG5dOj2wBNJDt/pVuMfNJ0FUAlXfdwE4Qs/btErzEi
-         uD2lcTR+BKUBV1Je94Iv57Q25l/DKw6/+k0peXhIDr1W0qsOCHm0eZh0mE2XczPfxLWf
-         m0rJcGE7y9ho74TMEZ2ZuJkMexzzmAVNhFVf/mgQb4zy3z/aly92S37JJ0E2iPJnnTw5
-         EOxAu9eYYDPUl+qxeatq1S8qfr/pb+QlA03lhT1cUMg0N/epJFvyaKzOJpIT3Icox5OC
-         CPNA==
-X-Forwarded-Encrypted: i=1; AJvYcCUmZF10B+kBV2ZSYRcjS15WOWzDJM5XBvN9E8Dx+6fu1V/NXYdyeeJLNo/r5D3F1ZNfE90ej+w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0SFP4vtCvqEF/SL33F0i6wbU9c0HMZGNfNXxOIs1b4BZkColo
-	JvqDZZrBqzaMHrWOUtU35yJaW06h/8t+n6RepmAH9V/5/dLROq50JXbpla8aq0B7GwMM0AaI8ah
-	4z0dv0SZxzETlXpoq+EFsNTDSeAFdn7gDwUWeH1Mhd+yIErPKJsq+qw==
-X-Gm-Gg: ASbGncvPpFia8JBLJCMQUULPGYhpjM4Y3f6I0R9dW4mcuqBFYD2ZA52anZbAQdzDE7z
-	j2kcQ1K2ZdEahBtFE/pYIyVIui5BGlqeQqRH2Yn1Zthlx6+tDd+iuzg2P08YOxmVrGFeFSrLWxv
-	fr83fNTRapBZymyD7qB/ZHcnKvoN5OqUy0ptShMGe/WAN8C9+aD2j9/cJ6O+3AUM5zb3DTx3yjP
-	vbhldIN9FaWdotJ2GEsECDFc+jeikO56JMALos7QVvWrn8TojOKUb3Ov2/7Y56LcCSEBXVVAwO9
-X-Received: by 2002:a05:600c:350c:b0:434:9ec0:9e4e with SMTP id 5b1f17b1804b1-43668b5f6f7mr365412605e9.30.1735671877625;
-        Tue, 31 Dec 2024 11:04:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFa8a8m7RDNw4uUVorjlPblNdvcvnmA8WMiAexDLorVnq8zdmKAgj1ehk8FuTdGNKsgepfNew==
-X-Received: by 2002:a05:600c:350c:b0:434:9ec0:9e4e with SMTP id 5b1f17b1804b1-43668b5f6f7mr365412405e9.30.1735671877300;
-        Tue, 31 Dec 2024 11:04:37 -0800 (PST)
-Received: from localhost (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4365c08afcbsm406389675e9.21.2024.12.31.11.04.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Dec 2024 11:04:36 -0800 (PST)
-From: Lubomir Rintel <lrintel@redhat.com>
-X-Google-Original-From: Lubomir Rintel <lkundrak@v3.sk>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	stable@vger.kernel.org
-Subject: [PATCH] media/mmp: Bring back registration of the device
-Date: Tue, 31 Dec 2024 20:04:34 +0100
-Message-ID: <20241231190434.438517-1-lkundrak@v3.sk>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1735672233; c=relaxed/simple;
+	bh=6mdb9kq54IORXSv1q+kP5CuZi3zo4YtFIMdHWe23cFM=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UkiQ3QQ1qfWXxuFL8wcuTVIHnituNmjyrmkLGqVW3EsLbaeQeqS4A9L8Rmgryn9yt4G6OoB7w0E6fLVoYZ5YHSrw5bBsUiOrleGwUW8cL8ovEJKRk7UZBHdZ/6/FHhujOXzGEZFQJcTr3YBnObs4oP6J6o+TdOT3ni9Zhn/UW2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=mscJvldd; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
+Date: Tue, 31 Dec 2024 20:10:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+	s=202107; t=1735672229;
+	bh=6mdb9kq54IORXSv1q+kP5CuZi3zo4YtFIMdHWe23cFM=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
+	 mime-version:references:reply-to:Sender:Subject:Subject:To:To;
+	b=mscJvldd5R680uzFp0w2l/WPFM7GIcff2C3u9IR0t7jarhZ0AIUxgJXx9zT2PCvI3
+	 uKJ228xdzahlaoJlRzomUVXSgt/k0WWlEwzSPfSw9LK0BPb2JCHzcTEsKq7fWvGvm0
+	 PmXkl76fGVw79wWP8+vp47WkWspepqntawCW1d+gXFpljN+siqhy53gyGE2+5PHkPe
+	 7sRn4x2AeWbYqrlwxRZl9TLADT0EvCtOfknm8cUIaux7E0rEH81jBPe5OyaRWowHr4
+	 XnKbvqfgJQvVgQIM2CEMEnShSxkJwTZS+RsPpF+yYFe/wBNjF6lpi7FC2U53a/pLJH
+	 CQs485qX4kprQ==
+From: Markus Reichelt <lkt+2023@mareichelt.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.12 000/114] 6.12.8-rc1 review
+Message-ID: <20241231191028.GD17604@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241230154218.044787220@linuxfoundation.org>
+ <20241231094242.GC17604@pc21.mareichelt.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241231094242.GC17604@pc21.mareichelt.com>
 
-In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
-earlier"), a call to v4l2_device_register() was moved away from
-mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
-This is not the only caller though -- there's also marvell/mmp.
+* Markus Reichelt <lkt+2023@mareichelt.com> wrote:
 
-Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camera
-driver, in a fashion analogous to what's been done to the Cafe driver.
-Same for the teardown path.
+> * Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>=20
+> > This is the start of the stable review cycle for the 6.12.8 release.
+> > There are 114 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >=20
+> > Responses should be made by Wed, 01 Jan 2025 15:41:48 +0000.
+> > Anything received after that time might be too late.
+>=20
+> Hi Greg
+>=20
+> 6.12.8-rc1 compiles, boots and runs here on x86_64
+> (AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
 
-Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlier")
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Cc: stable@vger.kernel.org # v6.6+
----
- drivers/media/platform/marvell/mmp-driver.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+heads up, there seems to be something wrong with -rc1
 
-diff --git a/drivers/media/platform/marvell/mmp-driver.c b/drivers/media/platform/marvell/mmp-driver.c
-index 3fd4fc1b9c48..d3da7ebb4a2b 100644
---- a/drivers/media/platform/marvell/mmp-driver.c
-+++ b/drivers/media/platform/marvell/mmp-driver.c
-@@ -231,13 +231,23 @@ static int mmpcam_probe(struct platform_device *pdev)
- 
- 	mcam_init_clk(mcam);
- 
-+	/*
-+	 * Register with V4L.
-+	 */
-+
-+	ret = v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * Create a match of the sensor against its OF node.
- 	 */
- 	ep = fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.of_node),
- 					    NULL);
--	if (!ep)
--		return -ENODEV;
-+	if (!ep) {
-+		ret = -ENODEV;
-+		goto out_v4l2_device_unregister;
-+	}
- 
- 	v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
- 
-@@ -246,7 +256,7 @@ static int mmpcam_probe(struct platform_device *pdev)
- 	fwnode_handle_put(ep);
- 	if (IS_ERR(asd)) {
- 		ret = PTR_ERR(asd);
--		goto out;
-+		goto out_v4l2_device_unregister;
- 	}
- 
- 	/*
-@@ -254,7 +264,7 @@ static int mmpcam_probe(struct platform_device *pdev)
- 	 */
- 	ret = mccic_register(mcam);
- 	if (ret)
--		goto out;
-+		goto out_v4l2_device_unregister;
- 
- 	/*
- 	 * Add OF clock provider.
-@@ -283,6 +293,8 @@ static int mmpcam_probe(struct platform_device *pdev)
- 	return 0;
- out:
- 	mccic_shutdown(mcam);
-+out_v4l2_device_unregister:
-+	v4l2_device_unregister(&mcam->v4l2_dev);
- 
- 	return ret;
- }
-@@ -293,6 +305,7 @@ static void mmpcam_remove(struct platform_device *pdev)
- 	struct mcam_camera *mcam = &cam->mcam;
- 
- 	mccic_shutdown(mcam);
-+	v4l2_device_unregister(&mcam->v4l2_dev);
- 	pm_runtime_force_suspend(mcam->dev);
- }
- 
--- 
-2.47.1
+on the lappy (Vivobook Go E1504FA) I got this:
 
+[Tue Dec 31 19:47:55 2024] ------------[ cut here ]------------
+[Tue Dec 31 19:47:55 2024] workqueue: WQ_MEM_RECLAIM sdma0:drm_sched_run_jo=
+b_work [gpu_sched] is flushing !WQ_MEM_RECLAIM events:amdgpu_device_delay_e=
+nable_gfx_off [amdgpu]
+[Tue Dec 31 19:47:55 2024] WARNING: CPU: 5 PID: 1734 at kernel/workqueue.c:=
+3704 check_flush_dependency+0xfa/0x110
+[Tue Dec 31 19:47:55 2024] Modules linked in: 8021q garp mrp stp llc qrtr a=
+lgif_hash algif_skcipher af_alg cmac bnep ipv6 zram uvcvideo uvc videobuf2_=
+vmalloc videobuf2_memops videobuf2_v4l2 btusb videobuf2_common btrtl btinte=
+l btbcm videodev btmtk bluetooth mc usbhid joydev intel_rapl_msr snd_soc_ac=
+p6x_mach snd_soc_dmic snd_acp6x_pdm_dma snd_ctl_led amdgpu snd_sof_amd_reno=
+ir snd_sof_amd_acp snd_sof_pci snd_hda_codec_realtek snd_sof_xtensa_dsp snd=
+_hda_codec_generic snd_hda_scodec_component snd_sof snd_sof_utils snd_hda_c=
+odec_hdmi hid_multitouch hid_generic snd_soc_core amdxcp amd_atl drm_exec r=
+tw88_8821ce snd_compress snd_hda_intel gpu_sched rtw88_8821c intel_rapl_com=
+mon snd_pcm_dmaengine drm_buddy snd_intel_dspcfg rtw88_pci drm_suballoc_hel=
+per snd_intel_sdw_acpi snd_hda_codec drm_ttm_helper asus_nb_wmi edac_mce_am=
+d ac97_bus snd_hda_core ttm rtw88_core asus_wmi crct10dif_pclmul crc32_pclm=
+ul sparse_keymap evdev wmi_bmof platform_profile mac80211 drm_display_helpe=
+r snd_hwdep snd_pci_acp6x i2c_hid_acpi ghash_clmulni_intel sha512_ssse3
+[Tue Dec 31 19:47:55 2024]  i2c_hid snd_pcm sha256_ssse3 drm_kms_helper hid=
+ sha1_ssse3 cfg80211 snd_timer snd_pci_acp5x xhci_pci snd_rn_pci_acp3x drm =
+rapl serio_raw agpgart snd snd_acp_config i2c_algo_bit rfkill snd_soc_acpi =
+xhci_hcd mfd_core snd_pci_acp3x soundcore i2c_piix4 k10temp i2c_smbus i2c_d=
+esignware_platform tpm_crb tiny_power_button tpm_tis video ccp tpm_tis_core=
+ button i2c_designware_core i2c_core amd_pmc wmi loop(O) efivarfs
+[Tue Dec 31 19:47:55 2024] CPU: 5 UID: 0 PID: 1734 Comm: kworker/u32:6 Tain=
+ted: G           O       6.12.8-rc1-jg71 #1
+[Tue Dec 31 19:47:55 2024] Tainted: [O]=3DOOT_MODULE
+[Tue Dec 31 19:47:55 2024] Hardware name: ASUSTeK COMPUTER INC. Vivobook Go=
+ E1504FA_E1504FA/E1504FA, BIOS E1504FA.309 12/26/2023
+[Tue Dec 31 19:47:55 2024] Workqueue: sdma0 drm_sched_run_job_work [gpu_sch=
+ed]
+[Tue Dec 31 19:47:55 2024] RIP: 0010:check_flush_dependency+0xfa/0x110
+[Tue Dec 31 19:47:55 2024] Code: ff ff 49 8b 55 18 48 8d 8b c0 00 00 00 49 =
+89 e8 48 81 c6 c0 00 00 00 48 c7 c7 50 96 e9 92 c6 05 90 35 3d 02 01 e8 66 =
+ab fd ff <0f> 0b e9 21 ff ff ff 80 3d 7e 35 3d 02 00 75 96 e9 4d ff ff ff 90
+[Tue Dec 31 19:47:55 2024] RSP: 0018:ffffbf038050bc88 EFLAGS: 00010086
+[Tue Dec 31 19:47:55 2024] RAX: 0000000000000000 RBX: ffff9d9040050c00 RCX:=
+ 0000000000000000
+[Tue Dec 31 19:47:55 2024] RDX: 0000000000000003 RSI: ffffffff92ea9253 RDI:=
+ 00000000ffffffff
+[Tue Dec 31 19:47:55 2024] RBP: ffffffffc0e8cb00 R08: 0000000000000000 R09:=
+ ffffbf038050bb20
+[Tue Dec 31 19:47:55 2024] R10: ffffbf038050bb18 R11: ffff9d934e3fffe8 R12:=
+ ffff9d9048ef4ec0
+[Tue Dec 31 19:47:55 2024] R13: ffff9d9043e0d3c0 R14: 0000000000000001 R15:=
+ ffff9d934e733ac0
+[Tue Dec 31 19:47:55 2024] FS:  0000000000000000(0000) GS:ffff9d934e880000(=
+0000) knlGS:0000000000000000
+[Tue Dec 31 19:47:55 2024] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[Tue Dec 31 19:47:55 2024] CR2: 00007f0e70000020 CR3: 00000003ff244000 CR4:=
+ 0000000000350ef0
+[Tue Dec 31 19:47:55 2024] Call Trace:
+[Tue Dec 31 19:47:55 2024]  <TASK>
+[Tue Dec 31 19:47:55 2024]  ? __warn+0x84/0x130
+[Tue Dec 31 19:47:55 2024]  ? check_flush_dependency+0xfa/0x110
+[Tue Dec 31 19:47:55 2024]  ? report_bug+0x1c3/0x1d0
+[Tue Dec 31 19:47:55 2024]  ? srso_return_thunk+0x5/0x5f
+[Tue Dec 31 19:47:55 2024]  ? prb_read_valid+0x17/0x20
+[Tue Dec 31 19:47:55 2024]  ? handle_bug+0x53/0x90
+[Tue Dec 31 19:47:55 2024]  ? exc_invalid_op+0x14/0x70
+[Tue Dec 31 19:47:55 2024]  ? asm_exc_invalid_op+0x16/0x20
+[Tue Dec 31 19:47:55 2024]  ? __pfx_amdgpu_device_delay_enable_gfx_off+0x10=
+/0x10 [amdgpu]
+[Tue Dec 31 19:47:55 2024]  ? check_flush_dependency+0xfa/0x110
+[Tue Dec 31 19:47:55 2024]  ? check_flush_dependency+0xfa/0x110
+[Tue Dec 31 19:47:55 2024]  __flush_work+0x20a/0x2a0
+[Tue Dec 31 19:47:55 2024]  ? srso_return_thunk+0x5/0x5f
+[Tue Dec 31 19:47:55 2024]  ? try_to_grab_pending+0xb0/0x1b0
+[Tue Dec 31 19:47:55 2024]  ? srso_return_thunk+0x5/0x5f
+[Tue Dec 31 19:47:55 2024]  ? __cancel_work+0x39/0x110
+[Tue Dec 31 19:47:55 2024]  ? __remove_hrtimer+0x39/0x90
+[Tue Dec 31 19:47:55 2024]  cancel_delayed_work_sync+0x62/0x80
+[Tue Dec 31 19:47:55 2024]  amdgpu_gfx_off_ctrl+0xa9/0x120 [amdgpu]
+[Tue Dec 31 19:47:55 2024]  amdgpu_ring_alloc+0x44/0x60 [amdgpu]
+[Tue Dec 31 19:47:55 2024]  amdgpu_ib_schedule+0xe3/0x7b0 [amdgpu]
+[Tue Dec 31 19:47:55 2024]  amdgpu_job_run+0x93/0x1f0 [amdgpu]
+[Tue Dec 31 19:47:55 2024]  drm_sched_run_job_work+0x23a/0x3c0 [gpu_sched]
+[Tue Dec 31 19:47:55 2024]  process_one_work+0x170/0x380
+[Tue Dec 31 19:47:55 2024]  worker_thread+0x294/0x3b0
+[Tue Dec 31 19:47:55 2024]  ? __pfx_worker_thread+0x10/0x10
+[Tue Dec 31 19:47:55 2024]  kthread+0xdd/0x110
+[Tue Dec 31 19:47:55 2024]  ? __pfx_kthread+0x10/0x10
+[Tue Dec 31 19:47:55 2024]  ret_from_fork+0x30/0x50
+[Tue Dec 31 19:47:55 2024]  ? __pfx_kthread+0x10/0x10
+[Tue Dec 31 19:47:55 2024]  ret_from_fork_asm+0x1a/0x30
+[Tue Dec 31 19:47:55 2024]  </TASK>
+[Tue Dec 31 19:47:55 2024] ---[ end trace 0000000000000000 ]---
+
+This doesn't happen with 6.12.7 - I tried reproducing it w/o the OOT module=
+ (loop) by booting once without it, to no avail.
+hm. Can't do so today, but will check this in more detail eventually.
 
