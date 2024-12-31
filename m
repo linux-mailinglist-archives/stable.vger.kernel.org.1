@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-106587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05EBD9FEC3D
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:59:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3BB89FEC3E
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE86D1882F53
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 01:59:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5782C161BCC
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 01:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12AF81732;
-	Tue, 31 Dec 2024 01:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091B4130A54;
+	Tue, 31 Dec 2024 01:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="p+19iy9l"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sL4p8EyQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2C8FC0B;
-	Tue, 31 Dec 2024 01:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82B7FC0B;
+	Tue, 31 Dec 2024 01:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735610387; cv=none; b=t0/WipMHBfUaUmaaVhmc+mngWoT1XDRgS5PBjVYHrn7vXXm0e84iyTG9U+ceuF9pu1CbQwPNCYlcT3bbmWo0UQrAkENKTD1G6O/BIcIST/u2AxU9vZ4CQV/+pSndphVxFenGPiAa0ZHiRqADhck2rQsBIK+X7F27nmtbFBpldSU=
+	t=1735610389; cv=none; b=cSU3iBiYOid9q4svVwQGj8rYzdv4k6RSnzWzIKeMlitsnPVcX6Zs3smXJ0lqgGyHNv7FU8FRdLGXPUE0sYgR9wmpaPY0J/CjuSD2wN6LmlmMj3QyR0VBndPy6RfrOiLYXBpeC3HD9umCaz3+xTGYxiX1174RvE9Z8sCqxgHoHb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735610387; c=relaxed/simple;
-	bh=0XBblbSl4fAG3gtVQ9WjijmeJWth2Xf0a0JHxCPo5k0=;
-	h=Date:To:From:Subject:Message-Id; b=UQOoSWwLVuobTkebls179qsHVAcol4JEG72hnK3Dp1vpppluNsZDu9foij9GhBeKyg3mqnyMov5Crrvy0kt3MqSc1hNr8ovqY9CFQD0yqntWI4jZpn4zKvlUiQzoF4TsWjPQg04PIqRFyRC/ceD6z9W0X+bTwx64a+G1BW76+Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=p+19iy9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B437BC4CED0;
-	Tue, 31 Dec 2024 01:59:46 +0000 (UTC)
+	s=arc-20240116; t=1735610389; c=relaxed/simple;
+	bh=x1v9NsTa3uKuCdCqJX0s2X+KkLWkq2vL1bGNalVLeJk=;
+	h=Date:To:From:Subject:Message-Id; b=TRMysNQe9Q73xuy/qiQ117FqvEhyfMU2lzVFBfrhsF2RKOewSXa7fSK+DzA8Kcimum7dhnnvxMBx4UBPJBb7C3h0yaNL4sAhcz7AFB2jtJbTWwLk082JV5jW6o3UV6hkNEK75r+n8duQenKP+FPY5Ak+iDufeJAgWn0j36c8aOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sL4p8EyQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EF9C4CED0;
+	Tue, 31 Dec 2024 01:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1735610386;
-	bh=0XBblbSl4fAG3gtVQ9WjijmeJWth2Xf0a0JHxCPo5k0=;
+	s=korg; t=1735610389;
+	bh=x1v9NsTa3uKuCdCqJX0s2X+KkLWkq2vL1bGNalVLeJk=;
 	h=Date:To:From:Subject:From;
-	b=p+19iy9l5WsrZiF61lf/YZvhdKLHpiKx26rm/Hyb/1jygP8jWNcs3Vo/g1cRKXt4U
-	 uS0r8URCggnUc5s80/W9c8STy62TCQ8vn9L4ji+i1oxfGX+eFf8r70/ZdFmWqHZm5g
-	 XPR9rDyxoXw8wiodmOe2MHhGfPd11fLzpU634OQ4=
-Date: Mon, 30 Dec 2024 17:59:46 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,torvalds@linux-foundation.org,stable@vger.kernel.org,shuah@kernel.org,Liam.Howlett@Oracle.com,ju.orth@gmail.com,jannh@google.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+	b=sL4p8EyQcBAY0c0pigLTr6LR8Rul0EvqAyy4tvbRcKIMreAkCLpU25BwblkFeq64T
+	 Nt2V1dBR9145B3lccwdu3p9nE30SqULdtgcPC95oBj2b5HqYQpAAwoAHTJEIa+6X+O
+	 ZzC+btkdPeoin+Qpx6az2ljW+qR3oqK5EJqNT/as=
+Date: Mon, 30 Dec 2024 17:59:48 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mgorman@techsingularity.net,snishika@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-reinstate-ability-to-map-write-sealed-memfd-mappings-read-only.patch removed from -mm tree
-Message-Id: <20241231015946.B437BC4CED0@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch removed from -mm tree
+Message-Id: <20241231015949.53EF9C4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,259 +50,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: reinstate ability to map write-sealed memfd mappings read-only
+     Subject: mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
 has been removed from the -mm tree.  Its filename was
-     mm-reinstate-ability-to-map-write-sealed-memfd-mappings-read-only.patch
+     mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: mm: reinstate ability to map write-sealed memfd mappings read-only
-Date: Thu, 28 Nov 2024 15:06:17 +0000
+From: Seiji Nishikawa <snishika@redhat.com>
+Subject: mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
+Date: Sun, 1 Dec 2024 01:12:34 +0900
 
-Patch series "mm: reinstate ability to map write-sealed memfd mappings
-read-only".
+The task sometimes continues looping in throttle_direct_reclaim() because
+allow_direct_reclaim(pgdat) keeps returning false.  
 
-In commit 158978945f31 ("mm: perform the mapping_map_writable() check
-after call_mmap()") (and preceding changes in the same series) it became
-possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
+ #0 [ffff80002cb6f8d0] __switch_to at ffff8000080095ac
+ #1 [ffff80002cb6f900] __schedule at ffff800008abbd1c
+ #2 [ffff80002cb6f990] schedule at ffff800008abc50c
+ #3 [ffff80002cb6f9b0] throttle_direct_reclaim at ffff800008273550
+ #4 [ffff80002cb6fa20] try_to_free_pages at ffff800008277b68
+ #5 [ffff80002cb6fae0] __alloc_pages_nodemask at ffff8000082c4660
+ #6 [ffff80002cb6fc50] alloc_pages_vma at ffff8000082e4a98
+ #7 [ffff80002cb6fca0] do_anonymous_page at ffff80000829f5a8
+ #8 [ffff80002cb6fce0] __handle_mm_fault at ffff8000082a5974
+ #9 [ffff80002cb6fd90] handle_mm_fault at ffff8000082a5bd4
 
-Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
-behaviour") unintentionally undid this logic by moving the
-mapping_map_writable() check before the shmem_mmap() hook is invoked,
-thereby regressing this change.
+At this point, the pgdat contains the following two zones:
 
-This series reworks how we both permit write-sealed mappings being mapped
-read-only and disallow mprotect() from undoing the write-seal, fixing this
-regression.
+        NODE: 4  ZONE: 0  ADDR: ffff00817fffe540  NAME: "DMA32"
+          SIZE: 20480  MIN/LOW/HIGH: 11/28/45
+          VM_STAT:
+                NR_FREE_PAGES: 359
+        NR_ZONE_INACTIVE_ANON: 18813
+          NR_ZONE_ACTIVE_ANON: 0
+        NR_ZONE_INACTIVE_FILE: 50
+          NR_ZONE_ACTIVE_FILE: 0
+          NR_ZONE_UNEVICTABLE: 0
+        NR_ZONE_WRITE_PENDING: 0
+                     NR_MLOCK: 0
+                    NR_BOUNCE: 0
+                   NR_ZSPAGES: 0
+            NR_FREE_CMA_PAGES: 0
 
-We also add a regression test to ensure that we do not accidentally
-regress this in future.
+        NODE: 4  ZONE: 1  ADDR: ffff00817fffec00  NAME: "Normal"
+          SIZE: 8454144  PRESENT: 98304  MIN/LOW/HIGH: 68/166/264
+          VM_STAT:
+                NR_FREE_PAGES: 146
+        NR_ZONE_INACTIVE_ANON: 94668
+          NR_ZONE_ACTIVE_ANON: 3
+        NR_ZONE_INACTIVE_FILE: 735
+          NR_ZONE_ACTIVE_FILE: 78
+          NR_ZONE_UNEVICTABLE: 0
+        NR_ZONE_WRITE_PENDING: 0
+                     NR_MLOCK: 0
+                    NR_BOUNCE: 0
+                   NR_ZSPAGES: 0
+            NR_FREE_CMA_PAGES: 0
 
-Thanks to Julian Orth for reporting this regression.
+In allow_direct_reclaim(), while processing ZONE_DMA32, the sum of
+inactive/active file-backed pages calculated in zone_reclaimable_pages()
+based on the result of zone_page_state_snapshot() is zero.  
+
+Additionally, since this system lacks swap, the calculation of inactive/
+active anonymous pages is skipped.
+
+        crash> p nr_swap_pages
+        nr_swap_pages = $1937 = {
+          counter = 0
+        }
+
+As a result, ZONE_DMA32 is deemed unreclaimable and skipped, moving on to
+the processing of the next zone, ZONE_NORMAL, despite ZONE_DMA32 having
+free pages significantly exceeding the high watermark.
+
+The problem is that the pgdat->kswapd_failures hasn't been incremented.
+
+        crash> px ((struct pglist_data *) 0xffff00817fffe540)->kswapd_failures
+        $1935 = 0x0
+
+This is because the node deemed balanced.  The node balancing logic in
+balance_pgdat() evaluates all zones collectively.  If one or more zones
+(e.g., ZONE_DMA32) have enough free pages to meet their watermarks, the
+entire node is deemed balanced.  This causes balance_pgdat() to exit early
+before incrementing the kswapd_failures, as it considers the overall
+memory state acceptable, even though some zones (like ZONE_NORMAL) remain
+under significant pressure.
 
 
-This patch (of 2):
+The patch ensures that zone_reclaimable_pages() includes free pages
+(NR_FREE_PAGES) in its calculation when no other reclaimable pages are
+available (e.g., file-backed or anonymous pages).  This change prevents
+zones like ZONE_DMA32, which have sufficient free pages, from being
+mistakenly deemed unreclaimable.  By doing so, the patch ensures proper
+node balancing, avoids masking pressure on other zones like ZONE_NORMAL,
+and prevents infinite loops in throttle_direct_reclaim() caused by
+allow_direct_reclaim(pgdat) repeatedly returning false.
 
-In commit 158978945f31 ("mm: perform the mapping_map_writable() check
-after call_mmap()") (and preceding changes in the same series) it became
-possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
 
-This was previously unnecessarily disallowed, despite the man page
-documentation indicating that it would be, thereby limiting the usefulness
-of F_SEAL_WRITE logic.
+The kernel hangs due to a task stuck in throttle_direct_reclaim(), caused
+by a node being incorrectly deemed balanced despite pressure in certain
+zones, such as ZONE_NORMAL.  This issue arises from
+zone_reclaimable_pages() returning 0 for zones without reclaimable file-
+backed or anonymous pages, causing zones like ZONE_DMA32 with sufficient
+free pages to be skipped.
 
-We fixed this by adapting logic that existed for the F_SEAL_FUTURE_WRITE
-seal (one which disallows future writes to the memfd) to also be used for
-F_SEAL_WRITE.
+The lack of swap or reclaimable pages results in ZONE_DMA32 being ignored
+during reclaim, masking pressure in other zones.  Consequently,
+pgdat->kswapd_failures remains 0 in balance_pgdat(), preventing fallback
+mechanisms in allow_direct_reclaim() from being triggered, leading to an
+infinite loop in throttle_direct_reclaim().
 
-For background - the F_SEAL_FUTURE_WRITE seal clears VM_MAYWRITE for a
-read-only mapping to disallow mprotect() from overriding the seal - an
-operation performed by seal_check_write(), invoked from shmem_mmap(), the
-f_op->mmap() hook used by shmem mappings.
+This patch modifies zone_reclaimable_pages() to account for free pages
+(NR_FREE_PAGES) when no other reclaimable pages exist.  This ensures zones
+with sufficient free pages are not skipped, enabling proper balancing and
+reclaim behavior.
 
-By extending this to F_SEAL_WRITE and critically - checking
-mapping_map_writable() to determine if we may map the memfd AFTER we
-invoke shmem_mmap() - the desired logic becomes possible.  This is because
-mapping_map_writable() explicitly checks for VM_MAYWRITE, which we will
-have cleared.
-
-Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
-behaviour") unintentionally undid this logic by moving the
-mapping_map_writable() check before the shmem_mmap() hook is invoked,
-thereby regressing this change.
-
-We reinstate this functionality by moving the check out of shmem_mmap()
-and instead performing it in do_mmap() at the point at which VMA flags are
-being determined, which seems in any case to be a more appropriate place
-in which to make this determination.
-
-In order to achieve this we rework memfd seal logic to allow us access to
-this information using existing logic and eliminate the clearing of
-VM_MAYWRITE from seal_check_write() which we are performing in do_mmap()
-instead.
-
-Link: https://lkml.kernel.org/r/99fc35d2c62bd2e05571cf60d9f8b843c56069e0.1732804776.git.lorenzo.stoakes@oracle.com
-Fixes: 5de195060b2e ("mm: resolve faulty mmap_region() error path behaviour")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Closes: https://lore.kernel.org/all/CAHijbEUMhvJTN9Xw1GmbM266FXXv=U7s4L_Jem5x3AaPZxrYpQ@mail.gmail.com/
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
+[akpm@linux-foundation.org: coding-style cleanups]
+Link: https://lkml.kernel.org/r/20241130164346.436469-1-snishika@redhat.com
+Link: https://lkml.kernel.org/r/20241130161236.433747-2-snishika@redhat.com
+Fixes: 5a1c84b404a7 ("mm: remove reclaim and compaction retry approximations")
+Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/memfd.h |   14 +++++++++
- include/linux/mm.h    |   58 +++++++++++++++++++++++++++-------------
- mm/memfd.c            |    2 -
- mm/mmap.c             |    4 ++
- 4 files changed, 59 insertions(+), 19 deletions(-)
+ mm/vmscan.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/include/linux/memfd.h~mm-reinstate-ability-to-map-write-sealed-memfd-mappings-read-only
-+++ a/include/linux/memfd.h
-@@ -7,6 +7,7 @@
- #ifdef CONFIG_MEMFD_CREATE
- extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int arg);
- struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
-+unsigned int *memfd_file_seals_ptr(struct file *file);
- #else
- static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned int a)
- {
-@@ -16,6 +17,19 @@ static inline struct folio *memfd_alloc_
- {
- 	return ERR_PTR(-EINVAL);
- }
-+
-+static inline unsigned int *memfd_file_seals_ptr(struct file *file)
-+{
-+	return NULL;
-+}
- #endif
- 
-+/* Retrieve memfd seals associated with the file, if any. */
-+static inline unsigned int memfd_file_seals(struct file *file)
-+{
-+	unsigned int *sealsp = memfd_file_seals_ptr(file);
-+
-+	return sealsp ? *sealsp : 0;
-+}
-+
- #endif /* __LINUX_MEMFD_H */
---- a/include/linux/mm.h~mm-reinstate-ability-to-map-write-sealed-memfd-mappings-read-only
-+++ a/include/linux/mm.h
-@@ -4101,6 +4101,37 @@ void mem_dump_obj(void *object);
- static inline void mem_dump_obj(void *object) {}
- #endif
- 
-+static inline bool is_write_sealed(int seals)
-+{
-+	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
-+}
-+
-+/**
-+ * is_readonly_sealed - Checks whether write-sealed but mapped read-only,
-+ *                      in which case writes should be disallowing moving
-+ *                      forwards.
-+ * @seals: the seals to check
-+ * @vm_flags: the VMA flags to check
-+ *
-+ * Returns whether readonly sealed, in which case writess should be disallowed
-+ * going forward.
-+ */
-+static inline bool is_readonly_sealed(int seals, vm_flags_t vm_flags)
-+{
-+	/*
-+	 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
-+	 * MAP_SHARED and read-only, take care to not allow mprotect to
-+	 * revert protections on such mappings. Do this only for shared
-+	 * mappings. For private mappings, don't need to mask
-+	 * VM_MAYWRITE as we still want them to be COW-writable.
-+	 */
-+	if (is_write_sealed(seals) &&
-+	    ((vm_flags & (VM_SHARED | VM_WRITE)) == VM_SHARED))
-+		return true;
-+
-+	return false;
-+}
-+
- /**
-  * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-  *                    handle them.
-@@ -4112,24 +4143,15 @@ static inline void mem_dump_obj(void *ob
-  */
- static inline int seal_check_write(int seals, struct vm_area_struct *vma)
- {
--	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
--		/*
--		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--		 * write seals are active.
--		 */
--		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
--			return -EPERM;
+--- a/mm/vmscan.c~mm-vmscan-account-for-free-pages-to-prevent-infinite-loop-in-throttle_direct_reclaim
++++ a/mm/vmscan.c
+@@ -374,7 +374,14 @@ unsigned long zone_reclaimable_pages(str
+ 	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
+ 		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
+ 			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
 -
--		/*
--		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
--		 * MAP_SHARED and read-only, take care to not allow mprotect to
--		 * revert protections on such mappings. Do this only for shared
--		 * mappings. For private mappings, don't need to mask
--		 * VM_MAYWRITE as we still want them to be COW-writable.
--		 */
--		if (vma->vm_flags & VM_SHARED)
--			vm_flags_clear(vma, VM_MAYWRITE);
--	}
-+	if (!is_write_sealed(seals))
-+		return 0;
-+
 +	/*
-+	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
-+	 * write seals are active.
++	 * If there are no reclaimable file-backed or anonymous pages,
++	 * ensure zones with sufficient free pages are not skipped.
++	 * This prevents zones like DMA32 from being ignored in reclaim
++	 * scenarios where they can still help alleviate memory pressure.
 +	 */
-+	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
-+		return -EPERM;
- 
- 	return 0;
- }
---- a/mm/memfd.c~mm-reinstate-ability-to-map-write-sealed-memfd-mappings-read-only
-+++ a/mm/memfd.c
-@@ -170,7 +170,7 @@ static int memfd_wait_for_pins(struct ad
- 	return error;
++	if (nr == 0)
++		nr = zone_page_state_snapshot(zone, NR_FREE_PAGES);
+ 	return nr;
  }
  
--static unsigned int *memfd_file_seals_ptr(struct file *file)
-+unsigned int *memfd_file_seals_ptr(struct file *file)
- {
- 	if (shmem_file(file))
- 		return &SHMEM_I(file_inode(file))->seals;
---- a/mm/mmap.c~mm-reinstate-ability-to-map-write-sealed-memfd-mappings-read-only
-+++ a/mm/mmap.c
-@@ -47,6 +47,7 @@
- #include <linux/oom.h>
- #include <linux/sched/mm.h>
- #include <linux/ksm.h>
-+#include <linux/memfd.h>
- 
- #include <linux/uaccess.h>
- #include <asm/cacheflush.h>
-@@ -368,6 +369,7 @@ unsigned long do_mmap(struct file *file,
- 
- 	if (file) {
- 		struct inode *inode = file_inode(file);
-+		unsigned int seals = memfd_file_seals(file);
- 		unsigned long flags_mask;
- 
- 		if (!file_mmap_ok(file, inode, pgoff, len))
-@@ -408,6 +410,8 @@ unsigned long do_mmap(struct file *file,
- 			vm_flags |= VM_SHARED | VM_MAYSHARE;
- 			if (!(file->f_mode & FMODE_WRITE))
- 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
-+			else if (is_readonly_sealed(seals, vm_flags))
-+				vm_flags &= ~VM_MAYWRITE;
- 			fallthrough;
- 		case MAP_PRIVATE:
- 			if (!(file->f_mode & FMODE_READ))
 _
 
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+Patches currently in -mm which might be from snishika@redhat.com are
 
-mm-vma-move-brk-internals-to-mm-vmac.patch
-mm-vma-move-brk-internals-to-mm-vmac-fix.patch
-mm-vma-move-unmapped_area-internals-to-mm-vmac.patch
-mm-abstract-get_arg_page-stack-expansion-and-mmap-read-lock.patch
-mm-vma-move-stack-expansion-logic-to-mm-vmac.patch
-mm-vma-move-__vm_munmap-to-mm-vmac.patch
-selftests-mm-add-fork-cow-guard-page-test.patch
-mm-enforce-__must_check-on-vma-merge-and-split.patch
-mm-perform-all-memfd-seal-checks-in-a-single-place.patch
-mm-perform-all-memfd-seal-checks-in-a-single-place-fix.patch
-maintainers-update-memory-mapping-section.patch
-mm-assert-mmap-write-lock-held-on-do_mmap-mmap_region.patch
-mm-add-comments-to-do_mmap-mmap_region-and-vm_mmap.patch
-tools-testing-add-simple-__mmap_region-userland-test.patch
 
 
