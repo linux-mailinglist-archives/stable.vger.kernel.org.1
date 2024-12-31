@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-106611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F109FEF2B
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 12:56:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F7E9FEF31
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 12:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E16BA3A300D
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 11:56:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C47718834E6
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 11:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CC6199EBB;
-	Tue, 31 Dec 2024 11:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64DE1993A3;
+	Tue, 31 Dec 2024 11:57:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FE417ADE8;
-	Tue, 31 Dec 2024 11:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6892F17ADE8;
+	Tue, 31 Dec 2024 11:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735646177; cv=none; b=sPAnQpZN1GfXcS7HXtIS1CN/D05iQYR+CPbv6iy1WPEKc1ci9Sgp8+yQdoaCM6Qawk2bYnLOLruwWvNpvjKjxP6jONikyBUrElvPMjPAecmwaVyCjRWDpvPC2Y1bUiwINmkOmiV+XKyxRar+sfzMReQTH71K/4Whbgb2cGvm0xY=
+	t=1735646238; cv=none; b=t8+LKoXm5WEhduqcKjOaSvhphZw3xnSHvVuon/HLM/5EnxaHsRYXi0zTRtsl3KvlsvK+EBnLaRWVzDAZtMgVkwHEHns1/CZ+sd/zWft2AWjyFFupwy9hJhhmSQMtOIrE8PAiHzZhMshEDd4N+hnv65QHxljKU4bk6c1EYbZx3KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735646177; c=relaxed/simple;
-	bh=NEa7i0iJmD8sL0TKhPbWUW7D7ttR8j9YpUHyZm1+pfM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pkj5XlP45xR4AtNzQc8lBy7Efbsc/fX0+MeWOZMRJ+qnw4EtBeLHzOdk8Vs3bAzYpzJXzZMTq43hd97m2mWLpCfCSQEFX4sQbsecDySMhfiNfY1Rb00XI3vk4l0gx0zUNqHrdwhCdbKIACl3E8x46+oPolWKIFkObCQd9c0rBu4=
+	s=arc-20240116; t=1735646238; c=relaxed/simple;
+	bh=VO6pRttZkuOmUmvrVbEyPqJoZcW2o+1qRLF2uIHaXFA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j3prtokrcuG/Yqe0E0qATG0jzfDS7hx4bs8M7n+F4egUU3rTCq7gfP8l9F6bCtnfRrwQeoZ7ELWBb2Abrppu0g5TnGdAIDcIpvqCX8B13rowicOZQKudFIl1jZOova9T4P+GhQP9KUwQ8fNg5hhvEUo6pJeNT++qOS0vd0oPUS8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id B54F42333B;
-	Tue, 31 Dec 2024 14:56:03 +0300 (MSK)
+	by air.basealt.ru (Postfix) with ESMTPSA id F03942333B;
+	Tue, 31 Dec 2024 14:57:13 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: stable@vger.kernel.org
 Cc: Jaegeuk Kim <jaegeuk@kernel.org>,
 	Chao Yu <chao@kernel.org>,
 	linux-f2fs-devel@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
 	kovalev@altlinux.org
-Subject: [PATCH 6.1.y] f2fs: fix to do sanity check on F2FS_INLINE_DATA flag in inode during GC
-Date: Tue, 31 Dec 2024 14:56:03 +0300
-Message-Id: <20241231115603.1307976-1-kovalev@altlinux.org>
+Subject: [PATCH 5.15.y] f2fs: fix to do sanity check on F2FS_INLINE_DATA flag in inode during GC
+Date: Tue, 31 Dec 2024 14:57:13 +0300
+Message-Id: <20241231115713.1308081-1-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -103,12 +102,12 @@ Link: https://www.cve.org/CVERecord/?id=CVE-2024-44942
  1 file changed, 11 insertions(+)
 
 diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 687b2ce82c8542..8e6e91fedbf32a 100644
+index 9a57754e6e0c1d..ef09b7fc065fab 100644
 --- a/fs/f2fs/gc.c
 +++ b/fs/f2fs/gc.c
-@@ -1577,6 +1577,17 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+@@ -1479,6 +1479,17 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+ 					special_file(inode->i_mode))
  				continue;
- 			}
  
 +			if (f2fs_has_inline_data(inode)) {
 +				iput(inode);
@@ -121,8 +120,8 @@ index 687b2ce82c8542..8e6e91fedbf32a 100644
 +				continue;
 +			}
 +
- 			err = f2fs_gc_pinned_control(inode, gc_type, segno);
- 			if (err == -EAGAIN) {
+ 			if (!down_write_trylock(
+ 				&F2FS_I(inode)->i_gc_rwsem[WRITE])) {
  				iput(inode);
 -- 
 2.33.8
