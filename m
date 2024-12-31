@@ -1,98 +1,108 @@
-Return-Path: <stable+bounces-106585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5939FEC34
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:50:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D329FEC39
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 02:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651A43A2897
-	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 01:50:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFE64161E43
+	for <lists+stable@lfdr.de>; Tue, 31 Dec 2024 01:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4588A12B17C;
-	Tue, 31 Dec 2024 01:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88967757F3;
+	Tue, 31 Dec 2024 01:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ASI7cQKA"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MWHkhwmm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDECB77102;
-	Tue, 31 Dec 2024 01:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA02224FA;
+	Tue, 31 Dec 2024 01:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735609809; cv=none; b=p46PLlSVRF3CadvnnWX1Ho7pH69JUN+ria8fp57KCzi+z7Y5qObZzvMhs8p1wQkLQlrT2/kzUYn9gN7CftnFFDeUz7CAmlXpc897tWGdvrByKCgb2dQy6Qze1kWz+j/S1V23cGzcVSClEWCxgW3FQo3n06WSntVdz4zV9yEWic4=
+	t=1735610128; cv=none; b=dEGCqwbSXLiymuiKBZK32abCcTNcxom886IOk54MR72hFbvWmo2FKV/hWd1MFFMwJWQ8QHnXgH9GuBHhLefKB2QAAZ0dsjZ5Rq1aAX2M75sIP+1Er7sNYlgGjl9gSIRCqKPlfEMrDWtydEaj5/XNaZj9B2BoiDpLNfKLewW6/bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735609809; c=relaxed/simple;
-	bh=ValXDmuvempSMVWdKZlqskyJtgIEV/Azfll+e48iKfU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PkSAxX9t9VQ7oQ4r7VwnNmUuC4uEn298ymTzJ5ElItw61IK9oBnb6ntQn63ADsBbMFlywt6O+RMJo98Jp7uhD6yldwqd7I0U2aU3NFHpaSADbvuhZC/yA3oOr+mmIyoYrWH/pe1dvrG3cc6czlz4yecbLQiPKKdm4iCxXUKf0cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASI7cQKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A771EC4CED2;
-	Tue, 31 Dec 2024 01:50:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735609808;
-	bh=ValXDmuvempSMVWdKZlqskyJtgIEV/Azfll+e48iKfU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ASI7cQKATyqRSX4N0ZNduZ+AStfuwgBcN62r1cavS+6duxvZUQH4/jrSeiZMeZdwl
-	 hBas4NyyKnVP6ANdEJEuRyfYf7eHho4Xa/L/pETghUikNhKDLR/ESQ1x6WX5hwngVj
-	 KSw+9jOzzQ1RuBWetLQcE2z3lDt4y5PHeV54FX8PWWf2pkKhlWYH4VQk86Nr/v++DL
-	 AbECjiZoKMZ5Ox3qdlofLirWc6cNFL0uBSaMWa8E1Kr8sPAa2jyU1Zauc13g1q0/hr
-	 sneixT80n1Td74LpqttYrGROJXiFwa5lPk2GpNaCBdLZ9O0O2gQMKgemAq45wL4NiH
-	 OVrO7W1PCO/Zw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF3B380A964;
-	Tue, 31 Dec 2024 01:50:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1735610128; c=relaxed/simple;
+	bh=u+zDPh+CyZaJ6ba26CKP/9c74jaZsbdDEw6lwpoJ6oQ=;
+	h=Date:To:From:Subject:Message-Id; b=g3S6fk3NRDI0gx+8iwuzoNBIHyVwO6ItBoEN4jpAABlXlX9GtZ98698IN/ft4DSS5qrOB4RQGJJFX+ONPwxZDT6Vs51fYmpvHipa4s6p0uECB05tzZXVmNlqBAPf7NdZ3aYfhlDBJuV/HSofUzPYt8ojkOqs/zHMfrnYYugRO8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MWHkhwmm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB7FC4CED2;
+	Tue, 31 Dec 2024 01:55:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1735610127;
+	bh=u+zDPh+CyZaJ6ba26CKP/9c74jaZsbdDEw6lwpoJ6oQ=;
+	h=Date:To:From:Subject:From;
+	b=MWHkhwmm5lovqfY4t//SCS9HruPt37hRVem5rmeOh6HT94HTSiQPGc7Adjq321vYt
+	 h3dk/bJ1q1pTDjy5jJAMbUxe8pVYe2HYd8/OW+MeYdXa7xcccR7j5el7d7ybHzl9dm
+	 07lqH9I8GlF6inTAD00ZGKFnzEbtAZMnVT2CpFzs=
+Date: Mon, 30 Dec 2024 17:55:27 -0800
+To: mm-commits@vger.kernel.org,yangerkun@huawei.com,stable@vger.kernel.org,chuck.lever@oracle.com,brauner@kernel.org,Liam.Howlett@Oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [folded-merged] maple_tree-reload-mas-before-the-second-call-for-mas_empty_area-fix.patch removed from -mm tree
+Message-Id: <20241231015527.AAB7FC4CED2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] gve: trigger RX NAPI instead of TX NAPI in gve_xsk_wakeup
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173560982825.1484600.10568371889170047273.git-patchwork-notify@kernel.org>
-Date: Tue, 31 Dec 2024 01:50:28 +0000
-References: <20241221032807.302244-1-pkaligineedi@google.com>
-In-Reply-To: <20241221032807.302244-1-pkaligineedi@google.com>
-To: Praveen Kaligineedi <pkaligineedi@google.com>
-Cc: netdev@vger.kernel.org, jeroendb@google.com, shailend@google.com,
- willemb@google.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- hramamurthy@google.com, joshwash@google.com, ziweixiao@google.com,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+The quilt patch titled
+     Subject: maple_tree: fix mas_alloc_cyclic() second search
+has been removed from the -mm tree.  Its filename was
+     maple_tree-reload-mas-before-the-second-call-for-mas_empty_area-fix.patch
 
-On Fri, 20 Dec 2024 19:28:06 -0800 you wrote:
-> From: Joshua Washington <joshwash@google.com>
-> 
-> Commit ba0925c34e0f ("gve: process XSK TX descriptors as part of RX NAPI")
-> moved XSK TX processing to be part of the RX NAPI. However, that commit
-> did not include triggering the RX NAPI in gve_xsk_wakeup. This is
-> necessary because the TX NAPI only processes TX completions, meaning
-> that a TX wakeup would not actually trigger XSK descriptor processing.
-> Also, the branch on XDP_WAKEUP_TX was supposed to have been removed, as
-> the NAPI should be scheduled whether the wakeup is for RX or TX.
-> 
-> [...]
+This patch was dropped because it was folded into maple_tree-reload-mas-before-the-second-call-for-mas_empty_area.patch
 
-Here is the summary with links:
-  - [net] gve: trigger RX NAPI instead of TX NAPI in gve_xsk_wakeup
-    https://git.kernel.org/netdev/net/c/fb3a9a1165ce
+------------------------------------------------------
+From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+Subject: maple_tree: fix mas_alloc_cyclic() second search
+Date: Mon, 16 Dec 2024 14:01:12 -0500
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+The first search may leave the maple state in an error state.  Reset the
+maple state before the second search so that the search has a chance of
+executing correctly after an exhausted first search.
 
+Link: https://lore.kernel.org/all/20241216060600.287B4C4CED0@smtp.kernel.org/
+Link: https://lkml.kernel.org/r/20241216190113.1226145-2-Liam.Howlett@oracle.com
+Fixes: 9b6713cc7522 ("maple_tree: Add mtree_alloc_cyclic()")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Chuck Lever <chuck.lever@oracle.com> says:
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/maple_tree.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+--- a/lib/maple_tree.c~maple_tree-reload-mas-before-the-second-call-for-mas_empty_area-fix
++++ a/lib/maple_tree.c
+@@ -4346,7 +4346,6 @@ int mas_alloc_cyclic(struct ma_state *ma
+ {
+ 	unsigned long min = range_lo;
+ 	int ret = 0;
+-	struct ma_state m = *mas;
+ 
+ 	range_lo = max(min, *next);
+ 	ret = mas_empty_area(mas, range_lo, range_hi, 1);
+@@ -4355,7 +4354,7 @@ int mas_alloc_cyclic(struct ma_state *ma
+ 		ret = 1;
+ 	}
+ 	if (ret < 0 && range_lo > min) {
+-		*mas = m;
++		mas_reset(mas);
+ 		ret = mas_empty_area(mas, min, range_hi, 1);
+ 		if (ret == 0)
+ 			ret = 1;
+_
+
+Patches currently in -mm which might be from Liam.Howlett@Oracle.com are
+
+maple_tree-reload-mas-before-the-second-call-for-mas_empty_area.patch
+test_maple_tree-test-exhausted-upper-limit-of-mtree_alloc_cyclic.patch
 
 
