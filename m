@@ -1,158 +1,134 @@
-Return-Path: <stable+bounces-106634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B379FF4F4
-	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 22:22:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31ACB9FF539
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 00:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F323318824E3
-	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 21:22:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0175B161524
+	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 23:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719017DA82;
-	Wed,  1 Jan 2025 21:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726CF76035;
+	Wed,  1 Jan 2025 23:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QErVk5ov"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XuHrS3Jr"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F502114
-	for <stable@vger.kernel.org>; Wed,  1 Jan 2025 21:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3444014293
+	for <stable@vger.kernel.org>; Wed,  1 Jan 2025 23:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735766537; cv=none; b=dolfHdGMTl7B5OJyYYLpzP1aVwQIH8tsSd98tWMQSEJg5coUVaZlSG/tdTLRKjkqbptC7asw0V8WOe+gFETyhkKynnLURedra+0XhRRUk3X0O0fZIfxUn/j9huVFpDkFzFpXcZwKEbkFr7CALUz1FhsdgCmATTDapttC972ZsJo=
+	t=1735775377; cv=none; b=Bu8GoROdOUb5pEfn7TVfVGqOtI2j3eYw3vzgr4+90Vup7EP1164OxfwFpf21SMeZAbuODiNsL4S9SwVV8xUO26Qk0EMVjvcf00wfBQt65dJ0xSEA3GMQfek7iKAMXVzHPEh61ljFSMs2OsmIXz0J262WeB8V1wmiZdaFY2B+z8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735766537; c=relaxed/simple;
-	bh=q8PZy0OLwHNafJiqpV45MhAmIayf0l49heNBXmnPlOs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N0rBwmjXx85ZPrNaMyNxXRUhc1UvVcKGV5ckDzOzGBpmAAHRCXJwOeRiEAQUHedUDyCJj71xbzLUwcQ95C9mOvBLZ/Fe40+NTaiYM5X/7xnwAt2rl/3k633zL1ceb1Lg70/nQ51Cd0fgY7t9E6m9s3RQxyp+muJy3r/jxwbvj4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QErVk5ov; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1735766533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=v2qYS4NDZTf6Vnz8Q7jkBwvtUek+QEkrIScYmX1jbP0=;
-	b=QErVk5ovFFyk/Y0qptuzKyIy6XDVH5a6cQSpmszblz6uHjpvuk56undQjq/9ByNgn3QOAp
-	Lmcxdd9Oryt3mnPXAexgtLHJJboIDeIYSh1dkObPYPAIqMGIfaysob+Hc5n0t77qVJUspf
-	UzkdbzodSkVqPX1QWxvDpR+pp6E7sNc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-CUkmq3xJPuKMiZU4na4wuQ-1; Wed, 01 Jan 2025 16:22:12 -0500
-X-MC-Unique: CUkmq3xJPuKMiZU4na4wuQ-1
-X-Mimecast-MFC-AGG-ID: CUkmq3xJPuKMiZU4na4wuQ
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385df115300so4765723f8f.2
-        for <stable@vger.kernel.org>; Wed, 01 Jan 2025 13:22:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735766531; x=1736371331;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+	s=arc-20240116; t=1735775377; c=relaxed/simple;
+	bh=0ifGb4dHYX7F/coxD3uUGV2VHVJYQVs4a64yKYZvhUA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VdYZu2hQPMv1b+6ob0Fb+jUXX1cE8RmQdoJv9d263HbfjT3ehAFuGqrbR92cVcQmKaZmj5SO9NacBRtqcBEzPf50LyQcW1R1GdxyXhpVgVxST11yO2mB7KdKRctYR3c4g6pYXsBZNF6HeXrUzrlxe58ztBjpYyX+JwO1QNb+uiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tweek.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XuHrS3Jr; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tweek.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ef35de8901so14489720a91.3
+        for <stable@vger.kernel.org>; Wed, 01 Jan 2025 15:49:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1735775374; x=1736380174; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=v2qYS4NDZTf6Vnz8Q7jkBwvtUek+QEkrIScYmX1jbP0=;
-        b=vGQj288Jnn8Ot0YfCIX8L0oBnoX0m8UxID8/DEDrnvndNvKhT1IIX55iRon722M6qr
-         SpG4cOy6n9tPsOSv0rSm7JA4dStj7q0m7p9C6h/YeXNFCeAT/aE1/+GwbpY+oJD4Ov3J
-         o8UfQ2KSiXVxVe9+C/M2PUTrjlFo59pNbrzPnEKYySrUYJU1MJZVk8htmOcwg/VLWPSz
-         PYrVv8Vozl8FSZHvRlAwxIfsBLbz8vbvsKKcaiYgi6CNcIOsZrwK/pcDxJ+56tvdpRyb
-         J//+onE4FmzZpop4FVp0SumiH37zeBLmDXcQaPmLGUOPPUHTgE6vAFttLNkCZHpPGWy5
-         ZLNw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGemz/c0jBGE7MFDXxaCGajr7fyotiQyPlK7d+U2dNEKg8TpJk+cmq+Jj+/XOTypdHsJgvotE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7GoRZIrqDTGKZwVXxbxOcmSWnSG2V48iEhWtx566ykoxKOham
-	7sdYYCpkf59fXVtCl4LtxXxUHYiVQ5zryVzMQKUlWEYzTkDJD9B0CFWmhQLqkuh29wdptIoIFZU
-	ZdPP8lZiNllmIpCTfMN8USnlf+tNFeFKOu8oSuumbOO1JUZg2ePsHDg==
-X-Gm-Gg: ASbGncuhi89cElMpICPNCRkSBalEWCHfP4tvKXsZFQyzXBCKHxVa8hcwSENws7bxk5M
-	ued0QPwLYU8f0iXEOaQWL0nnN/9KcMYiUfFwLMxFOQI+SMHWObFQR8cgh7cClNOUxm6XqNwvJRF
-	//dRrFZNTyguyZ1fC12Yky3bf4WlMLa7EsGppWvrUQzsns17a41cEpjpLZcWugxISaA5DgFJazh
-	xkI1fhAPfZDgKLMDy+F6rMQ9NiKrQaN7hpDVFAkb4IGBHAjE96E75uNYiSGg4BR+uEAt4zPhREh
-X-Received: by 2002:adf:a341:0:b0:38a:4b8b:c57a with SMTP id ffacd0b85a97d-38a4b8bc5d9mr14053199f8f.44.1735766531561;
-        Wed, 01 Jan 2025 13:22:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHT4nD1z7gy61VRAZS2kqMEi+O3r3YOUa2o6oASumVr0TX0ZHuRDLFyzmBf6vocqpniYQTA7A==
-X-Received: by 2002:adf:a341:0:b0:38a:4b8b:c57a with SMTP id ffacd0b85a97d-38a4b8bc5d9mr14053188f8f.44.1735766531139;
-        Wed, 01 Jan 2025 13:22:11 -0800 (PST)
-Received: from localhost (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c848a47sm35893449f8f.62.2025.01.01.13.22.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jan 2025 13:22:10 -0800 (PST)
-From: Lubomir Rintel <lrintel@redhat.com>
-X-Google-Original-From: Lubomir Rintel <lkundrak@v3.sk>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	usb-storage@lists.one-eyed-alien.net,
-	linux-kernel@vger.kernel.org,
-	Lubomir Rintel <lkundrak@v3.sk>,
-	stable@vger.kernel.org
-Subject: [PATCH] usb-storage: Add max sectors quirk for Nokia 208
-Date: Wed,  1 Jan 2025 22:22:06 +0100
-Message-ID: <20250101212206.2386207-1-lkundrak@v3.sk>
-X-Mailer: git-send-email 2.47.1
+        bh=viNudoDuQ/WqSPcEHxsEzLChPLqgUbZV1FHRz5da8nc=;
+        b=XuHrS3Jr6bjf7kdAQKUAdJ8AY8smfDD0CfT1NSzTk/IDvToupxmEZfo6SLltS9VWqb
+         n4wJRLFUkpt6788B4X8fRl4JT/dNTfbOnefhoYWICQ3+wrXLKzAuM/Xcq43vR48H40cp
+         LirYc2sLFgukjxJWqodKKGYIk107yFysmmu/SliWCk15QTNFOubop4JKJbBYPOcHFr2/
+         oLzrN0QUA6+Tvh5UOLodi1nnr9gypZn36ZjTlN5XcwR/5lgLvILwWAIr+mTCIHZjltdc
+         gnO71qGYNyG4Cl0CzngvYKd9gKIyLnKHzXIQt+jvANiKbbEDDU7HFbYcRyOvdd9E8heh
+         iSfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735775374; x=1736380174;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=viNudoDuQ/WqSPcEHxsEzLChPLqgUbZV1FHRz5da8nc=;
+        b=hK/ixKgFDcyldwaSO3fxStBS9SExBc3nQhmN11tzSx7nbylkFgyYCeJyoPuRU0fkOw
+         jWpE4ElFtn/7XcghSolWKuyhGr5e/Jj+5Xem+ezz3bb+S5hVOOaollgx1+8OOeAJk/vu
+         PIsXj0ZPmVW83bI22+MdKTmvWhptJOZds/sSHPGWHE5HQYk1RG0IuYitaYATH/vbGaYE
+         aVob1wIEf7pQEbsVuiwe72VIMmkjT0Lq6KKONsHKppTBpW3LpUjDu3nIIWArCqB4B9Ns
+         TbvaSErf0fsBY+qwC3OaKETH3SSJPU7H034d6RyrmJGBep37xHsOw0PtowmvSsFTGPvD
+         9AnQ==
+X-Gm-Message-State: AOJu0YwU41ZuL3bHC4RLnRyjU3NHEknP4Xn7Vn/hFFhpzvjcbhX0ypTO
+	8jF0iQ3iBQ9gS8IDNe6oSCDAJDwYU0saE335Me1bis/jwC5LHN4QPAo9hljjQfouOU562TtagpH
+	kiDoFHxvmRUznEfq7t9giCtUaHCNuuOZEBF0+H4enmxb4GmMbHxUuQhxbX6bYIxEi5VoaJjPEgl
+	LM4jc8RDlVVJaVIhDdNte0yj8525c=
+X-Google-Smtp-Source: AGHT+IGy5EuD8dZJmIgLuVXglsqCi2aCfdJ+Zx96K0I5biIkAUS4u3/p81UomC05vP3CM/kBnbnhgvDTJQ==
+X-Received: from pfbcm7.prod.google.com ([2002:a05:6a00:3387:b0:72a:89d4:9641])
+ (user=tweek job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1411:b0:725:f376:f4f4
+ with SMTP id d2e1a72fcca58-72abde01aa8mr64862241b3a.13.1735775374272; Wed, 01
+ Jan 2025 15:49:34 -0800 (PST)
+Date: Thu,  2 Jan 2025 10:49:03 +1100
+In-Reply-To: <2024122319-risk-starlit-ce4a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <2024122319-risk-starlit-ce4a@gregkh>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20250101234903.1565129-1-tweek@google.com>
+Subject: [PATCH stable 5.4 -> 6.12] selinux: ignore unknown extended permissions
+From: "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>
+To: stable@vger.kernel.org
+Cc: "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>, Paul Moore <paul@paul-moore.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This fixes data corruption when accessing the internal SD card in mass
-storage mode.
+commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6 upstream.
 
-I am actually not too sure why. I didn't figure a straightforward way to
-reproduce the issue, but i seem to get garbage when issuing a lot (over 50)
-of large reads (over 120 sectors) are done in a quick succession. That is,
-time seems to matter here -- larger reads are fine if they are done with
-some delay between them.
+When evaluating extended permissions, ignore unknown permissions instead
+of calling BUG(). This commit ensures that future permissions can be
+added without interfering with older kernels.
 
-But I'm not great at understanding this sort of things, so I'll assume
-the issue other, smarter, folks were seeing with similar phones is the
-same problem and I'll just put my quirk next to theirs.
-
-The "Software details" screen on the phone is as follows:
-
-  V 04.06
-  07-08-13
-  RM-849
-  (c) Nokia
-
-TL;DR version of the device descriptor:
-
-  idVendor           0x0421 Nokia Mobile Phones
-  idProduct          0x06c2
-  bcdDevice            4.06
-  iManufacturer           1 Nokia
-  iProduct                2 Nokia 208
-
-The patch assumes older firmwares are broken too (I'm unable to test, but
-no biggie if they aren't I guess), and I have no idea if newer firmware
-exists.
-
-Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-Cc: <stable@vger.kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
+Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+(cherry picked from commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6)
 ---
- drivers/usb/storage/unusual_devs.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ security/selinux/ss/services.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/storage/unusual_devs.h b/drivers/usb/storage/unusual_devs.h
-index e5ad23d86833..54f0b1c83317 100644
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -255,6 +255,13 @@ UNUSUAL_DEV(  0x0421, 0x06aa, 0x1110, 0x1110,
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_MAX_SECTORS_64 ),
- 
-+/* Added by Lubomir Rintel <lkundrak@v3.sk>, a very fine chap */
-+UNUSUAL_DEV(  0x0421, 0x06c2, 0x0000, 0x0406,
-+		"Nokia",
-+		"Nokia 208",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_MAX_SECTORS_64 ),
-+
- #ifdef NO_SDDR09
- UNUSUAL_DEV(  0x0436, 0x0005, 0x0100, 0x0100,
- 		"Microtech",
--- 
-2.47.1
+diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.=
+c
+index a9830fbfc5c6..88850405ded9 100644
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -955,7 +955,10 @@ void services_compute_xperms_decision(struct extended_=
+perms_decision *xpermd,
+ 					xpermd->driver))
+ 			return;
+ 	} else {
+-		BUG();
++		pr_warn_once(
++			"SELinux: unknown extended permission (%u) will be ignored\n",
++			node->datum.u.xperms->specified);
++		return;
+ 	}
+=20
+ 	if (node->key.specified =3D=3D AVTAB_XPERMS_ALLOWED) {
+@@ -992,7 +995,8 @@ void services_compute_xperms_decision(struct extended_p=
+erms_decision *xpermd,
+ 					node->datum.u.xperms->perms.p[i];
+ 		}
+ 	} else {
+-		BUG();
++		pr_warn_once("SELinux: unknown specified key (%u)\n",
++			     node->key.specified);
+ 	}
+ }
+=20
+--=20
+2.47.1.613.gc27f4b7a9f-goog
 
 
