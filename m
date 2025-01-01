@@ -1,117 +1,181 @@
-Return-Path: <stable+bounces-106630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9F59FF44D
-	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 16:34:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBADB9FF4C7
+	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 19:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D619B3A1CF0
-	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 15:34:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B32D218820BC
+	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 18:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F1F1E1C37;
-	Wed,  1 Jan 2025 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F611E260A;
+	Wed,  1 Jan 2025 18:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="GkvazkIs"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="DcWSbZFn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EA58F58
-	for <stable@vger.kernel.org>; Wed,  1 Jan 2025 15:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF4214F9C4
+	for <stable@vger.kernel.org>; Wed,  1 Jan 2025 18:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735745644; cv=none; b=JqcaG0uKqEJU0u6ZtB0tayx6waJchSzjNcvPS0CWodgyy1Q9JKncaqBFqymsOqNLWtSKwFbZ1Szaa/Z2yIZsgSqFFX9aMY4ZmxGvjQ95A4UG1d14WiTruXbfvIvQPCXwRlYAyz2nY7RniXxgwj5SfsKR5X/wE6MOINDZFLQsRUg=
+	t=1735757949; cv=none; b=W4/3nkyA6n+PPkwupfK4bLgR0thwVcO9Q4GOahBlzVrE/QbXtbe8PD28s6wCnlqkxO/GJJNMw+7Xqq34dLx4p1cfxjheRc70pfm2jdjwAFeamNZBjuqmITwsx95exbB2ngZ59ScRY5Edgf8BBw8rZPcIQgWR7O6NoqeWE8t2d0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735745644; c=relaxed/simple;
-	bh=P3+zuA+9A7xmJKZ2lRKOaQ0D+DuWoqd6XsHj041ni6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AWk/o08E/awXMF7KkeAzdE7NzgcyBqA+XlP4GzjLtocm+IGlOixrCatBOccUU8EdHAOhScHzOTdtZggKLVuhXUgJv7WjpnkpLGMtXZ9uBGKAUxBzy76xeJWe13X96wPD1g0Ts64hShgFVUZT9MFGQ2Qo4nBjoNfqVwd7VbJxPVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=GkvazkIs; arc=none smtp.client-ip=209.85.166.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-844e161a8b4so327451739f.0
-        for <stable@vger.kernel.org>; Wed, 01 Jan 2025 07:34:02 -0800 (PST)
+	s=arc-20240116; t=1735757949; c=relaxed/simple;
+	bh=hGlCrdyFUF433ifSGsYrvmsc+0ABCY5Bd9DWM8Ui9e8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q3/URoRjgx5BgE5c0do4WpGKjXT/Ci+VPsBJ/5vkzRrWGcXK5Hgm3HdJw5wPo2lHqM/Ib/50rR9Ko1Vb1HLhl+7SMxAeZQ9uR5MR/0+XiXZ3jWgo9XZbON2DUn08Tzp8dyeezOLFff4ji/Rdvc8ZnoqKlQuxqPhumDxgB43Gi2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=DcWSbZFn; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1735745642; x=1736350442; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hPYhkQDwj4+4j5it/H6S6WTOthbU+coHVFGtarpUVPQ=;
-        b=GkvazkIsLMxn2q5V/Qb6NBT0HMIFx7UeUTxpuW2VwDXYlL23J0SSeHgrGY3lM8EqfC
-         eZfNCiHTJ3sxfuf+aqnzTwdixcqCQnIjV/rwW3LAQuGsG1CiBr9vn8nKHANpm0nwe+O9
-         mgLpi8rmR5OiBojWjycrTw1CQOH2Ur6+3UXbU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735745642; x=1736350442;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hPYhkQDwj4+4j5it/H6S6WTOthbU+coHVFGtarpUVPQ=;
-        b=b/B7IJ7MYqYpo6LXUNm6h8svFhDheEi5wONeBxNYrHRk7rTeLLTZ/whY3O+nTd92NL
-         CUNvaSxqGOjh1aKvzXnorBKcaH6MxeU2guRpPh8tSEGXQB8RhZ9eqIoqMkSVBA/UuQNH
-         5SeIG9e963qrXfCau60CHSL1NBYmYAUDhKsWZvlzCF4JVfrewGihOg9EM6jbyOKpYyCz
-         P8XkOLMJ4ciCYjsBzJ7NoBlDf142nkmEOKMaFXpkSjgayZGpdnew9gtigVasAYf/IC5L
-         kp+tPQCIC3GtkBjvY5vEPvQnLb/6vlQAaR9ctXNkjuAb2xPZyP45bAVZbBqoBjBTYe10
-         9QIw==
-X-Gm-Message-State: AOJu0YyKthm369GvxwkBgp4ex3885+UeIOtRQlzlI1AB48cFbXgEH1Wi
-	WpuR4NMIsIHLw9cFj2LShOGYv/+C564ydf6nsm6b8QR0+AhqoKc9vmV3A1w2xQ==
-X-Gm-Gg: ASbGncuLlH1ArMeRzY5+9QyCWfKwT5NSNg0Ne9QOJ9PYdDqL26ckWiFcSWHh2cB4rPY
-	49gxoe0UyZkoXPvT8Dby0vCTwOS/GBu7oFUMsXE85O4fLdSXDyvSnnNixpyuK7Qce50d25xngKP
-	0EDbyzJjWU7IfkUTNQW+bjdApaqpZfuxOM+2rxeamDgT//d5F6qoUyFWi21ZGXH7hZ8uHZqpHRS
-	ymWMGwK8AFOsI+zp7YISgnx0YkHEIsYmitOUaPc0RgynclfR9ywo6vBXJD8QJtRts0PsBdo6w==
-X-Google-Smtp-Source: AGHT+IFvgp6d0hYeTh0NULR1nCaecGwhILzPF1W1Pxmq1/RTw+ezT3kqzKOvIHbJkPMRYjw3G+0NJQ==
-X-Received: by 2002:a05:6e02:1a47:b0:3a7:e67f:3c5b with SMTP id e9e14a558f8ab-3c2d18b388emr334369105ab.2.1735745641927;
-        Wed, 01 Jan 2025 07:34:01 -0800 (PST)
-Received: from fedora64.linuxtx.org ([72.42.103.70])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3c0debdac77sm68798955ab.19.2025.01.01.07.34.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jan 2025 07:34:01 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 1 Jan 2025 08:33:59 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.12 000/114] 6.12.8-rc1 review
-Message-ID: <Z3VgZx1zJ5f8-jyQ@fedora64.linuxtx.org>
-References: <20241230154218.044787220@linuxfoundation.org>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1735757948; x=1767293948;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tSCf1vqTZy5T4uG3mHMhQF6YNwxBn5hUVnGrzvpbKLI=;
+  b=DcWSbZFn5UKecFkGDc0+/sD6pUM+DlnUmgDGnFkHi79Ei9+11RccjrAG
+   WgAAPrHkP2UAgX49l3A1yA4qS8eZuFlPeiQCCX1RSMA/0Xkk0bDMG6A8N
+   1/RtC7WobDZBWp3JIbCT3T3PDhpxYmCPYmp9r56LYyGeAHms/9UOkFnh3
+   o=;
+X-IronPort-AV: E=Sophos;i="6.12,283,1728950400"; 
+   d="scan'208,223";a="455757427"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2025 18:59:05 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:36989]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.2.75:2525] with esmtp (Farcaster)
+ id 8b08c66a-a5d3-446d-a5b6-99e8a3da8069; Wed, 1 Jan 2025 18:59:04 +0000 (UTC)
+X-Farcaster-Flow-ID: 8b08c66a-a5d3-446d-a5b6-99e8a3da8069
+Received: from EX19D003ANC003.ant.amazon.com (10.37.240.197) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 1 Jan 2025 18:59:00 +0000
+Received: from b0be8375a521.amazon.com (10.119.15.26) by
+ EX19D003ANC003.ant.amazon.com (10.37.240.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 1 Jan 2025 18:58:58 +0000
+From: Kohei Enju <enjuk@amazon.com>
+To: Kohei Enju <enjuk@amazon.com>
+CC: <stable@vger.kernel.org>
+Subject: [PATCH v1] ftrace: Fix function profiler's filtering functionality
+Date: Thu, 2 Jan 2025 03:58:45 +0900
+Message-ID: <20250101185845.68814-1-enjuk@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241230154218.044787220@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D042UWA001.ant.amazon.com (10.13.139.92) To
+ EX19D003ANC003.ant.amazon.com (10.37.240.197)
 
-On Mon, Dec 30, 2024 at 04:41:57PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.8 release.
-> There are 114 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 01 Jan 2025 15:41:48 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From commit c132be2c4fcc ("function_graph: Have the instances use their own
+ ftrace_ops for filtering"), function profiler (enabled via function_profil
+e_enabled) has been showing statistics for all functions, ignoring set_ftra
+ce_filter settings.
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+While tracers are instantiated, the function profiler is not. Therefore, it
+ should use the global set_ftrace_filter for consistency.
+This patch modifies the function profiler to use the global filter, fixing
+the filtering functionality.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Before (filtering not working):
+```
+  Function                               Hit    Time            Avg
+     s^2
+  --------                               ---    ----            ---
+     ---
+  schedule                               314    22290594 us     70989.15 us
+     40372231 us
+  x64_sys_call                          1527    8762510 us      5738.382 us
+     3414354 us
+  schedule_hrtimeout_range               176    8665356 us      49234.98 us
+     405618876 us
+  __x64_sys_ppoll                        324    5656635 us      17458.75 us
+     19203976 us
+  do_sys_poll                            324    5653747 us      17449.83 us
+     19214945 us
+  schedule_timeout                        67    5531396 us      82558.15 us
+     2136740827 us
+  __x64_sys_pselect6                      12    3029540 us      252461.7 us
+     63296940171 us
+  do_pselect.constprop.0                  12    3029532 us      252461.0 us
+     63296952931 us
+```
+
+After (filtering working):
+```
+  Function                               Hit    Time            Avg
+     s^2
+  --------                               ---    ----            ---
+     ---
+  vfs_write                              462    68476.43 us     148.217 us
+     25874.48 us
+  vfs_read                               641    9611.356 us     14.994 us
+     28868.07 us
+  vfs_fstat                              890    878.094 us      0.986 us
+     1.667 us
+  vfs_fstatat                            227    757.176 us      3.335 us
+     18.928 us
+  vfs_statx                              226    610.610 us      2.701 us
+     17.749 us
+  vfs_getattr_nosec                     1187    460.919 us      0.388 us
+     0.326 us
+  vfs_statx_path                         297    343.287 us      1.155 us
+     11.116 us
+  vfs_rename                               6    291.575 us      48.595 us
+     9889.236 us
+```
+
+Cc: stable@vger.kernel.org
+Fixes: c132be2c4fcc ("function_graph: Have the instances use their own ftrace_ops for filtering")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+---
+ kernel/trace/ftrace.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 9b17efb1a87d..2e113f8b13a2 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -902,16 +902,13 @@ static void profile_graph_return(struct ftrace_graph_ret *trace,
+ }
+ 
+ static struct fgraph_ops fprofiler_ops = {
+-	.ops = {
+-		.flags = FTRACE_OPS_FL_INITIALIZED,
+-		INIT_OPS_HASH(fprofiler_ops.ops)
+-	},
+ 	.entryfunc = &profile_graph_entry,
+ 	.retfunc = &profile_graph_return,
+ };
+ 
+ static int register_ftrace_profiler(void)
+ {
++	ftrace_ops_set_global_filter(&fprofiler_ops.ops);
+ 	return register_ftrace_graph(&fprofiler_ops);
+ }
+ 
+@@ -922,12 +919,11 @@ static void unregister_ftrace_profiler(void)
+ #else
+ static struct ftrace_ops ftrace_profile_ops __read_mostly = {
+ 	.func		= function_profile_call,
+-	.flags		= FTRACE_OPS_FL_INITIALIZED,
+-	INIT_OPS_HASH(ftrace_profile_ops)
+ };
+ 
+ static int register_ftrace_profiler(void)
+ {
++	ftrace_ops_set_global_filter(&ftrace_profile_ops);
+ 	return register_ftrace_function(&ftrace_profile_ops);
+ }
+ 
+-- 
+2.39.5 (Apple Git-154)
+
 
