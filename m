@@ -1,67 +1,70 @@
-Return-Path: <stable+bounces-106631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBADB9FF4C7
-	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 19:59:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592349FF4CB
+	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 20:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B32D218820BC
-	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 18:59:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE18E7A128E
+	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 19:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F611E260A;
-	Wed,  1 Jan 2025 18:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B2217BA9;
+	Wed,  1 Jan 2025 19:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="DcWSbZFn"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Xzgqp3A+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF4214F9C4
-	for <stable@vger.kernel.org>; Wed,  1 Jan 2025 18:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CBA79E1;
+	Wed,  1 Jan 2025 19:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735757949; cv=none; b=W4/3nkyA6n+PPkwupfK4bLgR0thwVcO9Q4GOahBlzVrE/QbXtbe8PD28s6wCnlqkxO/GJJNMw+7Xqq34dLx4p1cfxjheRc70pfm2jdjwAFeamNZBjuqmITwsx95exbB2ngZ59ScRY5Edgf8BBw8rZPcIQgWR7O6NoqeWE8t2d0o=
+	t=1735758521; cv=none; b=YMHCzZuMqvHMDbIsgxeYBByDqmlvUAe6AlXKug9NfNFr4l93tFbd/5IzAgIfzqZpTzXU9I1HyCX5FnzVnw6kNYhuy0iFfsTUoscl4fOTbmLe1uGD7bM+5R8L2Rlej9BRWPjvZByN9fX2n2jk9QP1pJiu6wXMy60+DiduN971awY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735757949; c=relaxed/simple;
-	bh=hGlCrdyFUF433ifSGsYrvmsc+0ABCY5Bd9DWM8Ui9e8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q3/URoRjgx5BgE5c0do4WpGKjXT/Ci+VPsBJ/5vkzRrWGcXK5Hgm3HdJw5wPo2lHqM/Ib/50rR9Ko1Vb1HLhl+7SMxAeZQ9uR5MR/0+XiXZ3jWgo9XZbON2DUn08Tzp8dyeezOLFff4ji/Rdvc8ZnoqKlQuxqPhumDxgB43Gi2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=DcWSbZFn; arc=none smtp.client-ip=72.21.196.25
+	s=arc-20240116; t=1735758521; c=relaxed/simple;
+	bh=P+0y2TLmRO7pqjgmJI9L5h/PJXPqqryVP8ryiPG+PgI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UQvPXVzo6rOUaZ2SuMTJ1n66i+e5MDr4H5TxzFAdU/mEudJ5Hw6fuDk0YQODDERSb1BMe0mgV31POVQVpk0zmyskBEdIuqZS5bNLwLV+tBhXa93qcfsgh7WpGW0r5wrmDuDXcFGy8bkUyCdG8CSpAn959F7KnI/m68kC5Se+Y8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Xzgqp3A+; arc=none smtp.client-ip=99.78.197.217
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1735757948; x=1767293948;
+  t=1735758372; x=1767294372;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=tSCf1vqTZy5T4uG3mHMhQF6YNwxBn5hUVnGrzvpbKLI=;
-  b=DcWSbZFn5UKecFkGDc0+/sD6pUM+DlnUmgDGnFkHi79Ei9+11RccjrAG
-   WgAAPrHkP2UAgX49l3A1yA4qS8eZuFlPeiQCCX1RSMA/0Xkk0bDMG6A8N
-   1/RtC7WobDZBWp3JIbCT3T3PDhpxYmCPYmp9r56LYyGeAHms/9UOkFnh3
-   o=;
+  bh=Vl3J2ymtj17hTfc7xIB9ScQElhna+/JXnRmbV+pz1jU=;
+  b=Xzgqp3A+BRYkdBcaOHI0727EEZBBnhZ+xYvIUrMiZMuo93++dOvvwCcq
+   mVFgg1zocasCS7WQ1AuBsdjsL96ZuKK+HxHkCBQSuJqE/RA7SsLlyoO0+
+   HRCmz7vkl5aFC6rj9xdn3/s++bRxZN+YDRjAPVG8gH8NQfQJcFaA10g0J
+   0=;
 X-IronPort-AV: E=Sophos;i="6.12,283,1728950400"; 
-   d="scan'208,223";a="455757427"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2025 18:59:05 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:36989]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.2.75:2525] with esmtp (Farcaster)
- id 8b08c66a-a5d3-446d-a5b6-99e8a3da8069; Wed, 1 Jan 2025 18:59:04 +0000 (UTC)
-X-Farcaster-Flow-ID: 8b08c66a-a5d3-446d-a5b6-99e8a3da8069
+   d="scan'208,223";a="11201301"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2025 19:06:10 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:53390]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.144:2525] with esmtp (Farcaster)
+ id 3a57c88d-f93b-4f57-8de0-6a8e3ae283ee; Wed, 1 Jan 2025 19:08:38 +0000 (UTC)
+X-Farcaster-Flow-ID: 3a57c88d-f93b-4f57-8de0-6a8e3ae283ee
 Received: from EX19D003ANC003.ant.amazon.com (10.37.240.197) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Wed, 1 Jan 2025 18:59:00 +0000
+ Wed, 1 Jan 2025 19:08:37 +0000
 Received: from b0be8375a521.amazon.com (10.119.15.26) by
  EX19D003ANC003.ant.amazon.com (10.37.240.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
- Wed, 1 Jan 2025 18:58:58 +0000
+ Wed, 1 Jan 2025 19:08:34 +0000
 From: Kohei Enju <enjuk@amazon.com>
-To: Kohei Enju <enjuk@amazon.com>
-CC: <stable@vger.kernel.org>
+To: <linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>
+CC: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Kuniyuki Iwashima
+	<kuniyu@amazon.com>, Takamitsu Iwai <takamitz@amazon.co.jp>, Kohei Enju
+	<enjuk@amazon.com>, <stable@vger.kernel.org>
 Subject: [PATCH v1] ftrace: Fix function profiler's filtering functionality
-Date: Thu, 2 Jan 2025 03:58:45 +0900
-Message-ID: <20250101185845.68814-1-enjuk@amazon.com>
+Date: Thu, 2 Jan 2025 04:08:20 +0900
+Message-ID: <20250101190820.72534-1-enjuk@amazon.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -71,7 +74,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D042UWA001.ant.amazon.com (10.13.139.92) To
+X-ClientProxiedBy: EX19D046UWA001.ant.amazon.com (10.13.139.112) To
  EX19D003ANC003.ant.amazon.com (10.37.240.197)
 
 From commit c132be2c4fcc ("function_graph: Have the instances use their own
@@ -86,6 +89,11 @@ the filtering functionality.
 
 Before (filtering not working):
 ```
+root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
+root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# sleep 1
+root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# head /sys/kernel/tracing/trace_stat/*
   Function                               Hit    Time            Avg
      s^2
   --------                               ---    ----            ---
@@ -110,6 +118,11 @@ Before (filtering not working):
 
 After (filtering working):
 ```
+root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
+root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# sleep 1
+root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# head /sys/kernel/tracing/trace_stat/*
   Function                               Hit    Time            Avg
      s^2
   --------                               ---    ----            ---
