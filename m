@@ -1,115 +1,158 @@
-Return-Path: <stable+bounces-106633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EBF9FF4E3
-	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 21:55:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B379FF4F4
+	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 22:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98061882081
-	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 20:55:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F323318824E3
+	for <lists+stable@lfdr.de>; Wed,  1 Jan 2025 21:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C081E32A3;
-	Wed,  1 Jan 2025 20:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719017DA82;
+	Wed,  1 Jan 2025 21:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CbUTOZ5H"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QErVk5ov"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C33B1E25F8;
-	Wed,  1 Jan 2025 20:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F502114
+	for <stable@vger.kernel.org>; Wed,  1 Jan 2025 21:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735764943; cv=none; b=GuRgcDaq/HLe+NUXR8NmPEnTWg1/E4cL+BKK2Wg7lEXVIXFfmFG8yglR+cstLutrai63dmqT0/5x8Zm0Pj/hl1w5aoFrzPF1DCpHqHKyZR6uUyzHpAHXRBhNaq0R/O1AaFloJxVG7WCnKIbY+HKwdg/Za9KuvDgy9A4cM4aeBog=
+	t=1735766537; cv=none; b=dolfHdGMTl7B5OJyYYLpzP1aVwQIH8tsSd98tWMQSEJg5coUVaZlSG/tdTLRKjkqbptC7asw0V8WOe+gFETyhkKynnLURedra+0XhRRUk3X0O0fZIfxUn/j9huVFpDkFzFpXcZwKEbkFr7CALUz1FhsdgCmATTDapttC972ZsJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735764943; c=relaxed/simple;
-	bh=wJxE0VhI4245QsBRaUlZMHe9srJx5wH1Gs8qUjCkXj8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AmCVkyEg9IgAlMXs7uDBXpiIYgZem/s9mAxLGVJgM6ZMq7QOMKnYRljHipvFGaOgYugqZy4GOVAYwjF7+7bcJFxTyZwzZr/15wQFjpwbhdLnAGh2ufRNA1dD0Uj2rUTepcftFnQUsjBUif45EvM2B6xDSEdDn09pLhPTnlSZ00A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CbUTOZ5H; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735764942; x=1767300942;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=wJxE0VhI4245QsBRaUlZMHe9srJx5wH1Gs8qUjCkXj8=;
-  b=CbUTOZ5HBVWRrF8tWs2F8FGoM+QNL/qT5ya7dsFDigKXsd5I5s2p5dFh
-   8ZvQuCTCyox2RTJH+pQUq5cGCYG5U/SEkp8F6puveKbiauBTd8a/sO6bR
-   Gg+SxGQb1ruOWr8Jr6tNykEpGmwQP43yMxbkSPjnBBWPIaEORgNHxEIKh
-   ZHwFu8EKPzMIKEWedUgRSHXz7hUY6LYM3+mbMuoDdhcyBlzK5NrbpTFj5
-   VB5hPpEg73c6BUQc4BDgbLoM0DCPMZVBDrVOYWG5yRIqnVPOk8cdd/quZ
-   BXxlFGYhU2tWMqcfW3d314s3cBJ3JkAwR3n2/sSukiRG5rl/O7PyiR0uh
-   A==;
-X-CSE-ConnectionGUID: UPHup7CFRaOKHJ+y9p61CA==
-X-CSE-MsgGUID: rJvTHkq3SzayT58uL0NkNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="53405767"
-X-IronPort-AV: E=Sophos;i="6.12,283,1728975600"; 
-   d="scan'208";a="53405767"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2025 12:55:41 -0800
-X-CSE-ConnectionGUID: 3qFIqEp2QQ6I44z0qmp8mw==
-X-CSE-MsgGUID: Zjq9/VaAT+y6TKOAdzZ7+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="106377707"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO [10.245.246.202]) ([10.245.246.202])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2025 12:55:39 -0800
-Message-ID: <5ca1c5b64c313108ea2aa005ae273f1ba8051e7f.camel@linux.intel.com>
-Subject: Re: [REGRESSION][BISECTED] Re: 6.12.7 stable new error: event
- xe_bo_move has unsafe dereference of argument 4
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Genes Lists <lists@sapience.com>, Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, lucas.demarchi@intel.com,
- stable@vger.kernel.org, 	regressions@lists.linux.dev, Linus Torvalds
- <torvalds@linux-foundation.org>
-Date: Wed, 01 Jan 2025 21:55:26 +0100
-In-Reply-To: <0ef755e06b8f0bf1ee4dfd7e743d6222fd795b70.camel@sapience.com>
-References: <2e9332ab19c44918dbaacecd8c039fb0bbe6e1db.camel@sapience.com>
-			<9dee19b6185d325d0e6fa5f7cbba81d007d99166.camel@sapience.com>
-			<20241230141329.5f698715@batman.local.home>
-			<20241230145002.3cc11717@gandalf.local.home>
-			<5f756542aaaf241d512458f306707bda3b249671.camel@sapience.com>
-		 <20241230160311.4eec04da@gandalf.local.home>
-	 <0ef755e06b8f0bf1ee4dfd7e743d6222fd795b70.camel@sapience.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1735766537; c=relaxed/simple;
+	bh=q8PZy0OLwHNafJiqpV45MhAmIayf0l49heNBXmnPlOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N0rBwmjXx85ZPrNaMyNxXRUhc1UvVcKGV5ckDzOzGBpmAAHRCXJwOeRiEAQUHedUDyCJj71xbzLUwcQ95C9mOvBLZ/Fe40+NTaiYM5X/7xnwAt2rl/3k633zL1ceb1Lg70/nQ51Cd0fgY7t9E6m9s3RQxyp+muJy3r/jxwbvj4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QErVk5ov; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1735766533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=v2qYS4NDZTf6Vnz8Q7jkBwvtUek+QEkrIScYmX1jbP0=;
+	b=QErVk5ovFFyk/Y0qptuzKyIy6XDVH5a6cQSpmszblz6uHjpvuk56undQjq/9ByNgn3QOAp
+	Lmcxdd9Oryt3mnPXAexgtLHJJboIDeIYSh1dkObPYPAIqMGIfaysob+Hc5n0t77qVJUspf
+	UzkdbzodSkVqPX1QWxvDpR+pp6E7sNc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-CUkmq3xJPuKMiZU4na4wuQ-1; Wed, 01 Jan 2025 16:22:12 -0500
+X-MC-Unique: CUkmq3xJPuKMiZU4na4wuQ-1
+X-Mimecast-MFC-AGG-ID: CUkmq3xJPuKMiZU4na4wuQ
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385df115300so4765723f8f.2
+        for <stable@vger.kernel.org>; Wed, 01 Jan 2025 13:22:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735766531; x=1736371331;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v2qYS4NDZTf6Vnz8Q7jkBwvtUek+QEkrIScYmX1jbP0=;
+        b=vGQj288Jnn8Ot0YfCIX8L0oBnoX0m8UxID8/DEDrnvndNvKhT1IIX55iRon722M6qr
+         SpG4cOy6n9tPsOSv0rSm7JA4dStj7q0m7p9C6h/YeXNFCeAT/aE1/+GwbpY+oJD4Ov3J
+         o8UfQ2KSiXVxVe9+C/M2PUTrjlFo59pNbrzPnEKYySrUYJU1MJZVk8htmOcwg/VLWPSz
+         PYrVv8Vozl8FSZHvRlAwxIfsBLbz8vbvsKKcaiYgi6CNcIOsZrwK/pcDxJ+56tvdpRyb
+         J//+onE4FmzZpop4FVp0SumiH37zeBLmDXcQaPmLGUOPPUHTgE6vAFttLNkCZHpPGWy5
+         ZLNw==
+X-Forwarded-Encrypted: i=1; AJvYcCXGemz/c0jBGE7MFDXxaCGajr7fyotiQyPlK7d+U2dNEKg8TpJk+cmq+Jj+/XOTypdHsJgvotE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7GoRZIrqDTGKZwVXxbxOcmSWnSG2V48iEhWtx566ykoxKOham
+	7sdYYCpkf59fXVtCl4LtxXxUHYiVQ5zryVzMQKUlWEYzTkDJD9B0CFWmhQLqkuh29wdptIoIFZU
+	ZdPP8lZiNllmIpCTfMN8USnlf+tNFeFKOu8oSuumbOO1JUZg2ePsHDg==
+X-Gm-Gg: ASbGncuhi89cElMpICPNCRkSBalEWCHfP4tvKXsZFQyzXBCKHxVa8hcwSENws7bxk5M
+	ued0QPwLYU8f0iXEOaQWL0nnN/9KcMYiUfFwLMxFOQI+SMHWObFQR8cgh7cClNOUxm6XqNwvJRF
+	//dRrFZNTyguyZ1fC12Yky3bf4WlMLa7EsGppWvrUQzsns17a41cEpjpLZcWugxISaA5DgFJazh
+	xkI1fhAPfZDgKLMDy+F6rMQ9NiKrQaN7hpDVFAkb4IGBHAjE96E75uNYiSGg4BR+uEAt4zPhREh
+X-Received: by 2002:adf:a341:0:b0:38a:4b8b:c57a with SMTP id ffacd0b85a97d-38a4b8bc5d9mr14053199f8f.44.1735766531561;
+        Wed, 01 Jan 2025 13:22:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHT4nD1z7gy61VRAZS2kqMEi+O3r3YOUa2o6oASumVr0TX0ZHuRDLFyzmBf6vocqpniYQTA7A==
+X-Received: by 2002:adf:a341:0:b0:38a:4b8b:c57a with SMTP id ffacd0b85a97d-38a4b8bc5d9mr14053188f8f.44.1735766531139;
+        Wed, 01 Jan 2025 13:22:11 -0800 (PST)
+Received: from localhost (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c848a47sm35893449f8f.62.2025.01.01.13.22.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jan 2025 13:22:10 -0800 (PST)
+From: Lubomir Rintel <lrintel@redhat.com>
+X-Google-Original-From: Lubomir Rintel <lkundrak@v3.sk>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	usb-storage@lists.one-eyed-alien.net,
+	linux-kernel@vger.kernel.org,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	stable@vger.kernel.org
+Subject: [PATCH] usb-storage: Add max sectors quirk for Nokia 208
+Date: Wed,  1 Jan 2025 22:22:06 +0100
+Message-ID: <20250101212206.2386207-1-lkundrak@v3.sk>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+This fixes data corruption when accessing the internal SD card in mass
+storage mode.
 
-On Mon, 2024-12-30 at 16:07 -0500, Genes Lists wrote:
-> On Mon, 2024-12-30 at 16:03 -0500, Steven Rostedt wrote:
-> > >=20
-> >=20
-> > I'll start making it into an official patch. Can I add your
-> > "Tested-
-> > by" to it?
-> >=20
-> > -- Steve
-> Terrific thank you and sure:
-> =C2=A0Tested-by: Gene C <arch@sapience.com>
->=20
->=20
+I am actually not too sure why. I didn't figure a straightforward way to
+reproduce the issue, but i seem to get garbage when issuing a lot (over 50)
+of large reads (over 120 sectors) are done in a quick succession. That is,
+time seems to matter here -- larger reads are fine if they are done with
+some delay between them.
 
-FWIW, we actually worked around this during the holiday in the drm-xe-
-next branch in the xe driver since it was breaking our CI. Was planning
-to include it for drm-xe-fixes for tomorrow. Since xe appeared to be
-the only driver hitting this, our assumption was that it'd be better
-fixed in the driver.
+But I'm not great at understanding this sort of things, so I'll assume
+the issue other, smarter, folks were seeing with similar phones is the
+same problem and I'll just put my quirk next to theirs.
 
-Thanks,
-Thomas
+The "Software details" screen on the phone is as follows:
+
+  V 04.06
+  07-08-13
+  RM-849
+  (c) Nokia
+
+TL;DR version of the device descriptor:
+
+  idVendor           0x0421 Nokia Mobile Phones
+  idProduct          0x06c2
+  bcdDevice            4.06
+  iManufacturer           1 Nokia
+  iProduct                2 Nokia 208
+
+The patch assumes older firmwares are broken too (I'm unable to test, but
+no biggie if they aren't I guess), and I have no idea if newer firmware
+exists.
+
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Cc: <stable@vger.kernel.org>
+---
+ drivers/usb/storage/unusual_devs.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/usb/storage/unusual_devs.h b/drivers/usb/storage/unusual_devs.h
+index e5ad23d86833..54f0b1c83317 100644
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -255,6 +255,13 @@ UNUSUAL_DEV(  0x0421, 0x06aa, 0x1110, 0x1110,
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_MAX_SECTORS_64 ),
+ 
++/* Added by Lubomir Rintel <lkundrak@v3.sk>, a very fine chap */
++UNUSUAL_DEV(  0x0421, 0x06c2, 0x0000, 0x0406,
++		"Nokia",
++		"Nokia 208",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_MAX_SECTORS_64 ),
++
+ #ifdef NO_SDDR09
+ UNUSUAL_DEV(  0x0436, 0x0005, 0x0100, 0x0100,
+ 		"Microtech",
+-- 
+2.47.1
 
 
