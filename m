@@ -1,229 +1,161 @@
-Return-Path: <stable+bounces-106655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A8D9FFA8F
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 15:42:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 951679FFB7F
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 17:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F241883C93
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 14:42:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34CB77A10D8
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 16:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59881AC43A;
-	Thu,  2 Jan 2025 14:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC387EF09;
+	Thu,  2 Jan 2025 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="lYE/WLly"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="UcpVOSZk"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1A043ABD
-	for <stable@vger.kernel.org>; Thu,  2 Jan 2025 14:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0856C374CB
+	for <stable@vger.kernel.org>; Thu,  2 Jan 2025 16:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735828944; cv=none; b=G8GT/m12kZhDzvwwk6eBNYRpURlNKb9Lu7fDWxks+gBxRMj0W7LaLJOOUO91a8mD/RmuPYYNs8BORN6dwzWt+FfXfcExw0/tKExBUduSVneMeUEoXu++3W1dv3ap2KYZv5ctOk6aFx7Kpj9oC6rd9RATCyLV75RohZOIfaZtIx0=
+	t=1735834929; cv=none; b=Q2uQafrFl+QrK6cBc3ULKWduaVsmQMn/4SORmm415l0Bwyo5JINgJr1HOfhbCY0IgoUgIDDUKjOP9bIbaKudbiuQmjFZXbUn36WhkJuHevjA413mBFuvrcv/RI+I8pXhMGY+wrwmrUN1vtK8E4smIQkB6KXchchO7geItLjjWlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735828944; c=relaxed/simple;
-	bh=q2+RKs+1SDh8DvlcOtvjT0/egKK5/LQI/547KgeHcI0=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEynC7VRhSxQ8Le1QFm5uQO48v5HSlaSpkVib+s7ejXJ0djgu8sgrwPZYXd4ljEsWAnPWaGswWne87ijwLWE51BmJ/2nhAfQdeaEONPs9BI1dKbGLeABRKIufue9F7wOsxGaIRrjRfRzPt7DoezAniobByTZ73pO0AWNfQS40n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=lYE/WLly; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from namjain-hibernation.4uyjgaamrtuunfhsycmekme4ua.xx.internal.cloudapp.net (unknown [20.94.232.156])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 71CE22066C26;
-	Thu,  2 Jan 2025 06:42:22 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 71CE22066C26
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1735828942;
-	bh=LDOdKnYAqRb9rZKlUOZwSDXY4vJ/83n7moVetU5X1jU=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=lYE/WLlyu0gtf7+mtUZDDZ5U0rM6kZKMZW1C7ow9v+ylSJ9xoQYNdGkN/ON9FVc1r
-	 SfHPsOS2Lhl9SlKBIX0pDXj/TM9KJjTjNuDj0UPH8ow+B27kkJ1CZMciZzgFilXzXP
-	 T5RTr1Vurm23ni7ANf2Rqje4JeAIcFK2cgfVue6g=
-From: Naman Jain <namjain@linux.microsoft.com>
-To: stable@vger.kernel.org,
-	namjain@linux.microsoft.com
-Subject: [PATCH 6.1.y] x86/hyperv: Fix hv tsc page based sched_clock for hibernation
-Date: Thu,  2 Jan 2025 14:42:18 +0000
-Message-ID: <20250102144218.1848-1-namjain@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024122325-flavoring-mute-cb7e@gregkh>
-References: <2024122325-flavoring-mute-cb7e@gregkh>
+	s=arc-20240116; t=1735834929; c=relaxed/simple;
+	bh=8QPh+jIeQ0IBkfPRTmkE6+dC5nRC/Q8ErvJ33oHBX54=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T2fLg7a2F4FlUkKtpwbj571Qo4GFLywTONyfPLdsjVqNz8C2FgLl1H6rqx6kAkzvgOZMSHUEVtum6WWJfFE1N/KfMlX1emZMHS9D2AmgXncIKzON1tmJsomglZUh3pPAgpMHDsL8cbLHmvN0CLgfdbp07mV7Nva7IdBejG63PQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=UcpVOSZk; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b6e8fe401eso958742085a.2
+        for <stable@vger.kernel.org>; Thu, 02 Jan 2025 08:22:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1735834925; x=1736439725; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tWHzBldpxbOCgZcOrvwHEBYJhcR2y22SwrCIPpcGRuw=;
+        b=UcpVOSZkq+zG2pOcO27U+vUWEJuQxFJ5wFgQ91sAi0uadKNcQLQs40p1pqlTxN0pfC
+         AIHrPU+arjqHTq5wPwwBX2ngiGpoxD3zoCa+JHQi5PoYDGIZ9B3T9HmPrC5XOZ+fi5ul
+         QL12FRez0cQ60ljg/R3rHeeTz+ojMNb2F6juokPPT/yXs+esD3bXQkW+Ssa9Mn3P2/0A
+         u2IrVrVoY+ZSDE9Vmxf5nMN7/bfhxZYKmWU4Xq6Ms7PkK6DSBa+FYydu5nG4rJo/XjoO
+         Z7hM0sijq+V3qgg5OdiLSmXhq8HErDchyenTl/Wqy5mQ62HVzDJVAqPeZub3PmmM07hq
+         zVoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735834925; x=1736439725;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tWHzBldpxbOCgZcOrvwHEBYJhcR2y22SwrCIPpcGRuw=;
+        b=JT6WTYd+5gHX4VWJvKj2MUSyPrVcuakuNmjRhPFqSomUMssQUlhD48tn22zRoVHtF2
+         YdesWbg6HOeXbbHG0w8c+fHcBDab3NSZdtvszcefoXKALTj1e1E+5BHL2/jmuyP390Im
+         hiJwXhtJGxi7lbESLPvDCViLJXrfmH+mgDbnnYiDd0XEBnKvBtW2IJ69jK64CTy9ocyr
+         io86Jo5T2aYkf6EAKCMoTDSRW3gVigy+G1f75ny/uc3+f+c1oE3iONEhGH0InggXTjFL
+         BcKtRyZwlPD4wtHgehI1LTyVdHiULwsOvuWTBqUZbtsoTmhQkexzSDiq+ytZcum3Lqgf
+         xoAw==
+X-Forwarded-Encrypted: i=1; AJvYcCWVKTzkEx98kfpGACaawFXyedqh5bP3g90ucAfp6dcWvHdXHCAyGWVtNibV7DRmxQAFuzp/KqE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7zeHXAi/WsrdByffNhehLMhnp5R/9dkTuakUFI0ZTFsI5d/Yi
+	iPmfZrptFqr1mtkV3gLDH/nVbYwCx9EmeuyNLTciDWjgFSnXU6A1xBQYZXIW7Q==
+X-Gm-Gg: ASbGnctUmNtg+cs5eAct4hgndh6WIzLJLzx8hVYpzjxkN12CjdxGxjdFTO+UhtMEmnH
+	P94h09uI7bWzRX8cJvsbeG7fk5KJwXHX1gYM3HRbzD0pCN4gHPzeGNyksJkvbexN6nlhfrbwzs/
+	TyvCpvjQHl81xQ+qPLkBy7h5zSt7NLXO8Oxuk3e7XlSzV2+U3ejjhTaoHzkWlFaRPIcLdvjRtIc
+	iE985cSGtCFTEA/KOQvaqmxLBwvDNS0X2EBykX1wlJu2sl5bir2HVcE8Q==
+X-Google-Smtp-Source: AGHT+IGPeGlZhs3SZmzzPtxXieDoyxFut2a12WvTgbTRURZs2CA1LHQkvRcJOBxQaRRNLu4q/S33lQ==
+X-Received: by 2002:a05:620a:2911:b0:7b6:d870:ca2d with SMTP id af79cd13be357-7b9ba716910mr8209001685a.13.1735834924825;
+        Thu, 02 Jan 2025 08:22:04 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:681:fd10::5653])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b9ac4eef11sm1193928885a.126.2025.01.02.08.22.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jan 2025 08:22:04 -0800 (PST)
+Date: Thu, 2 Jan 2025 11:22:00 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Lubomir Rintel <lrintel@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	usb-storage@lists.one-eyed-alien.net, linux-kernel@vger.kernel.org,
+	Lubomir Rintel <lkundrak@v3.sk>, stable@vger.kernel.org
+Subject: Re: [PATCH] usb-storage: Add max sectors quirk for Nokia 208
+Message-ID: <729d6c93-a794-4102-a191-494bf86df219@rowland.harvard.edu>
+References: <20250101212206.2386207-1-lkundrak@v3.sk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250101212206.2386207-1-lkundrak@v3.sk>
 
-read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
-bigger than the variable hv_sched_clock_offset, which is cached during
-early boot, but depending on the timing this assumption may be false
-when a hibernated VM starts again (the clock counter starts from 0
-again) and is resuming back (Note: hv_init_tsc_clocksource() is not
-called during hibernation/resume); consequently,
-read_hv_sched_clock_tsc() may return a negative integer (which is
-interpreted as a huge positive integer since the return type is u64)
-and new kernel messages are prefixed with huge timestamps before
-read_hv_sched_clock_tsc() grows big enough (which typically takes
-several seconds).
+On Wed, Jan 01, 2025 at 10:22:06PM +0100, Lubomir Rintel wrote:
+> This fixes data corruption when accessing the internal SD card in mass
+> storage mode.
+> 
+> I am actually not too sure why. I didn't figure a straightforward way to
+> reproduce the issue, but i seem to get garbage when issuing a lot (over 50)
+> of large reads (over 120 sectors) are done in a quick succession. That is,
+> time seems to matter here -- larger reads are fine if they are done with
+> some delay between them.
+> 
+> But I'm not great at understanding this sort of things, so I'll assume
+> the issue other, smarter, folks were seeing with similar phones is the
+> same problem and I'll just put my quirk next to theirs.
+> 
+> The "Software details" screen on the phone is as follows:
+> 
+>   V 04.06
+>   07-08-13
+>   RM-849
+>   (c) Nokia
+> 
+> TL;DR version of the device descriptor:
+> 
+>   idVendor           0x0421 Nokia Mobile Phones
+>   idProduct          0x06c2
+>   bcdDevice            4.06
+>   iManufacturer           1 Nokia
+>   iProduct                2 Nokia 208
+> 
+> The patch assumes older firmwares are broken too (I'm unable to test, but
+> no biggie if they aren't I guess), and I have no idea if newer firmware
+> exists.
+> 
+> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> Cc: <stable@vger.kernel.org>
+> ---
 
-Fix the issue by saving the Hyper-V clock counter just before the
-suspend, and using it to correct the hv_sched_clock_offset in
-resume. This makes hv tsc page based sched_clock continuous and ensures
-that post resume, it starts from where it left off during suspend.
-Override x86_platform.save_sched_clock_state and
-x86_platform.restore_sched_clock_state routines to correct this as soon
-as possible.
+Hmmm, maybe we should automatically set this flag for all Nokia devices.  
+In any case,
 
-Note: if Invariant TSC is available, the issue doesn't happen because
-1) we don't register read_hv_sched_clock_tsc() for sched clock:
-See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
-clocksource and sched clock setup");
-2) the common x86 code adjusts TSC similarly: see
-__restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
-x86_platform.restore_sched_clock_state().
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
 
-Cc: stable@vger.kernel.org
-Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation")
-Co-developed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20240917053917.76787-1-namjain@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240917053917.76787-1-namjain@linux.microsoft.com>
-(cherry picked from commit bcc80dec91ee745b3d66f3e48f0ec2efdea97149)
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
----
- arch/x86/kernel/cpu/mshyperv.c     | 58 ++++++++++++++++++++++++++++++
- drivers/clocksource/hyperv_timer.c | 14 +++++++-
- include/clocksource/hyperv_timer.h |  2 ++
- 3 files changed, 73 insertions(+), 1 deletion(-)
+However, Greg's patch bot is going to ask why you didn't include a 
+Fixes: tag.
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 542b818c0d20..6090fe513d40 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -152,6 +152,63 @@ static void hv_machine_crash_shutdown(struct pt_regs *regs)
- 	hyperv_cleanup();
- }
- #endif /* CONFIG_KEXEC_CORE */
-+
-+static u64 hv_ref_counter_at_suspend;
-+static void (*old_save_sched_clock_state)(void);
-+static void (*old_restore_sched_clock_state)(void);
-+
-+/*
-+ * Hyper-V clock counter resets during hibernation. Save and restore clock
-+ * offset during suspend/resume, while also considering the time passed
-+ * before suspend. This is to make sure that sched_clock using hv tsc page
-+ * based clocksource, proceeds from where it left off during suspend and
-+ * it shows correct time for the timestamps of kernel messages after resume.
-+ */
-+static void save_hv_clock_tsc_state(void)
-+{
-+	hv_ref_counter_at_suspend = hv_read_reference_counter();
-+}
-+
-+static void restore_hv_clock_tsc_state(void)
-+{
-+	/*
-+	 * Adjust the offsets used by hv tsc clocksource to
-+	 * account for the time spent before hibernation.
-+	 * adjusted value = reference counter (time) at suspend
-+	 *                - reference counter (time) now.
-+	 */
-+	hv_adj_sched_clock_offset(hv_ref_counter_at_suspend - hv_read_reference_counter());
-+}
-+
-+/*
-+ * Functions to override save_sched_clock_state and restore_sched_clock_state
-+ * functions of x86_platform. The Hyper-V clock counter is reset during
-+ * suspend-resume and the offset used to measure time needs to be
-+ * corrected, post resume.
-+ */
-+static void hv_save_sched_clock_state(void)
-+{
-+	old_save_sched_clock_state();
-+	save_hv_clock_tsc_state();
-+}
-+
-+static void hv_restore_sched_clock_state(void)
-+{
-+	restore_hv_clock_tsc_state();
-+	old_restore_sched_clock_state();
-+}
-+
-+static void __init x86_setup_ops_for_tsc_pg_clock(void)
-+{
-+	if (!(ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE))
-+		return;
-+
-+	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
-+	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
-+
-+	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
-+	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
-+}
- #endif /* CONFIG_HYPERV */
- 
- static uint32_t  __init ms_hyperv_platform(void)
-@@ -454,6 +511,7 @@ static void __init ms_hyperv_init_platform(void)
- 
- 	/* Register Hyper-V specific clocksource */
- 	hv_init_clocksource();
-+	x86_setup_ops_for_tsc_pg_clock();
- #endif
- 	/*
- 	 * TSC should be marked as unstable only after Hyper-V
-diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
-index 18de1f439ffd..6b4f58ee66e0 100644
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -27,7 +27,8 @@
- #include <asm/mshyperv.h>
- 
- static struct clock_event_device __percpu *hv_clock_event;
--static u64 hv_sched_clock_offset __ro_after_init;
-+/* Note: offset can hold negative values after hibernation. */
-+static u64 hv_sched_clock_offset __read_mostly;
- 
- /*
-  * If false, we're using the old mechanism for stimer0 interrupts
-@@ -417,6 +418,17 @@ static void resume_hv_clock_tsc(struct clocksource *arg)
- 	hv_set_register(HV_REGISTER_REFERENCE_TSC, tsc_msr.as_uint64);
- }
- 
-+/*
-+ * Called during resume from hibernation, from overridden
-+ * x86_platform.restore_sched_clock_state routine. This is to adjust offsets
-+ * used to calculate time for hv tsc page based sched_clock, to account for
-+ * time spent before hibernation.
-+ */
-+void hv_adj_sched_clock_offset(u64 offset)
-+{
-+	hv_sched_clock_offset -= offset;
-+}
-+
- #ifdef HAVE_VDSO_CLOCKMODE_HVCLOCK
- static int hv_cs_enable(struct clocksource *cs)
- {
-diff --git a/include/clocksource/hyperv_timer.h b/include/clocksource/hyperv_timer.h
-index b3f5d73ae1d6..6668e92b1cc4 100644
---- a/include/clocksource/hyperv_timer.h
-+++ b/include/clocksource/hyperv_timer.h
-@@ -34,6 +34,8 @@ extern void hv_init_clocksource(void);
- 
- extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
- 
-+extern void hv_adj_sched_clock_offset(u64 offset);
-+
- static inline notrace u64
- hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg, u64 *cur_tsc)
- {
--- 
-2.43.0
-
+>  drivers/usb/storage/unusual_devs.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/usb/storage/unusual_devs.h b/drivers/usb/storage/unusual_devs.h
+> index e5ad23d86833..54f0b1c83317 100644
+> --- a/drivers/usb/storage/unusual_devs.h
+> +++ b/drivers/usb/storage/unusual_devs.h
+> @@ -255,6 +255,13 @@ UNUSUAL_DEV(  0x0421, 0x06aa, 0x1110, 0x1110,
+>  		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+>  		US_FL_MAX_SECTORS_64 ),
+>  
+> +/* Added by Lubomir Rintel <lkundrak@v3.sk>, a very fine chap */
+> +UNUSUAL_DEV(  0x0421, 0x06c2, 0x0000, 0x0406,
+> +		"Nokia",
+> +		"Nokia 208",
+> +		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+> +		US_FL_MAX_SECTORS_64 ),
+> +
+>  #ifdef NO_SDDR09
+>  UNUSUAL_DEV(  0x0436, 0x0005, 0x0100, 0x0100,
+>  		"Microtech",
+> -- 
+> 2.47.1
+> 
 
