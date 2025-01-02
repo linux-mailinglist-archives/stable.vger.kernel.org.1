@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-106664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2630A000F8
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 23:01:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DDFA000FB
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 23:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9D9C16287E
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 22:01:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E56163050
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 22:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8872B1940B1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39281B982E;
 	Thu,  2 Jan 2025 22:01:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3DB13CF82;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54261AAA22;
 	Thu,  2 Jan 2025 22:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735855313; cv=none; b=rqFgtrT1PtH+n+2GFWsxIiXXhrFEt5no6Bmh4Nx1IDwbD04XEUxqimeAG9Itn6CcoueEiAVy16n3A+p8/rGJzoYWCBgI/GXNUVatxvebL9H0v10G80IMvWE2ntcUyKZ7a971EDJGTtz1SMBjLZuHj5TcQ5T63xrDuYlE/WZwpDg=
+	t=1735855313; cv=none; b=Z5bULTqhAAOyt1+hykRnSnIja0ynScXKdlChVZHzSGy7h8TXOzF37CMCZQouAok9Yt1utXkeS3pJcHRRSpOoVP0G/TsghGMnnd3VCbxbyH1w2jhAItijVFLNqIUOIZhg/OfBvc8pwewNMaPO3sBGzmcr3/Z4aNfW9tsLPFh+yhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735855313; c=relaxed/simple;
-	bh=mg2GeBaUknbKMtOyH+kEmodhcBGpk2LgG9qzL2i+EwA=;
+	bh=/1O+5kOz7KTGVhdbBQyXehylW2sP5GGTL5wL/boKBT0=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=cdNXREYXLn9XJ14P7ScMwsBYcuSxqthw+feU3CRpkluwSiFS/+fdeF3Ynsy+gStTeRMKSbL08NdnHv58Dh7iE8lsAYR9CATrFXOLn7G/5977PUH4sQnLP0CAtO6tMZi6mILnRPw1ljMGR6dg+Kas4cqpTdKV1tCf8azF3Y5M1ss=
+	 Content-Type; b=ZEL6XlPxF0jWwY2sl8K/YKNnhfw8NPUOMqXRbiHcNf722NcGvqcM69DTtCDnLfdAE8mOJ6VUJcUyMUKzBrjtBjCMPkaDN78pADHmdLAQg6jrhwfFl9uSLQYaDzdpj3bIdIYhcKYli2B9HkI6VgbWLS4ksjyqd5jA2TXYbdcR8eA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A7EC4CEDD;
-	Thu,  2 Jan 2025 22:01:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB6CC4CEDF;
+	Thu,  2 Jan 2025 22:01:53 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.98)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1tTTHa-00000005UsW-0NG4;
+	id 1tTTHa-00000005Ut2-18DI;
 	Thu, 02 Jan 2025 17:03:10 -0500
-Message-ID: <20250102220309.941099662@goodmis.org>
+Message-ID: <20250102220310.109629698@goodmis.org>
 User-Agent: quilt/0.68
-Date: Thu, 02 Jan 2025 17:02:39 -0500
+Date: Thu, 02 Jan 2025 17:02:40 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -43,8 +43,8 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org,
- Zilin Guan <zilin@seu.edu.cn>
-Subject: [for-linus][PATCH 1/2] fgraph: Add READ_ONCE() when accessing fgraph_array[]
+ Kohei Enju <enjuk@amazon.com>
+Subject: [for-linus][PATCH 2/2] ftrace: Fix function profilers filtering functionality
 References: <20250102220238.225015816@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -54,43 +54,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Kohei Enju <enjuk@amazon.com>
 
-In __ftrace_return_to_handler(), a loop iterates over the fgraph_array[]
-elements, which are fgraph_ops. The loop checks if an element is a
-fgraph_stub to prevent using a fgraph_stub afterward.
+Commit c132be2c4fcc ("function_graph: Have the instances use their own
+ftrace_ops for filtering"), function profiler (enabled via
+function_profile_enabled) has been showing statistics for all functions,
+ignoring set_ftrace_filter settings.
 
-However, if the compiler reloads fgraph_array[] after this check, it might
-race with an update to fgraph_array[] that introduces a fgraph_stub. This
-could result in the stub being processed, but the stub contains a null
-"func_hash" field, leading to a NULL pointer dereference.
+While tracers are instantiated, the function profiler is not. Therefore, it
+should use the global set_ftrace_filter for consistency.  This patch
+modifies the function profiler to use the global filter, fixing the
+filtering functionality.
 
-To ensure that the gops compared against the fgraph_stub matches the gops
-processed later, add a READ_ONCE(). A similar patch appears in commit
-63a8dfb ("function_graph: Add READ_ONCE() when accessing fgraph_array[]").
+Before (filtering not working):
+```
+root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
+root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# sleep 1
+root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# head /sys/kernel/tracing/trace_stat/*
+  Function                               Hit    Time            Avg
+     s^2
+  --------                               ---    ----            ---
+     ---
+  schedule                               314    22290594 us     70989.15 us
+     40372231 us
+  x64_sys_call                          1527    8762510 us      5738.382 us
+     3414354 us
+  schedule_hrtimeout_range               176    8665356 us      49234.98 us
+     405618876 us
+  __x64_sys_ppoll                        324    5656635 us      17458.75 us
+     19203976 us
+  do_sys_poll                            324    5653747 us      17449.83 us
+     19214945 us
+  schedule_timeout                        67    5531396 us      82558.15 us
+     2136740827 us
+  __x64_sys_pselect6                      12    3029540 us      252461.7 us
+     63296940171 us
+  do_pselect.constprop.0                  12    3029532 us      252461.0 us
+     63296952931 us
+```
 
-Cc:stable@vger.kernel.org
-Fixes: 37238abe3cb47 ("ftrace/function_graph: Pass fgraph_ops to function graph callbacks")
-Link: https://lore.kernel.org/20241231113731.277668-1-zilin@seu.edu.cn
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+After (filtering working):
+```
+root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
+root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# sleep 1
+root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# head /sys/kernel/tracing/trace_stat/*
+  Function                               Hit    Time            Avg
+     s^2
+  --------                               ---    ----            ---
+     ---
+  vfs_write                              462    68476.43 us     148.217 us
+     25874.48 us
+  vfs_read                               641    9611.356 us     14.994 us
+     28868.07 us
+  vfs_fstat                              890    878.094 us      0.986 us
+     1.667 us
+  vfs_fstatat                            227    757.176 us      3.335 us
+     18.928 us
+  vfs_statx                              226    610.610 us      2.701 us
+     17.749 us
+  vfs_getattr_nosec                     1187    460.919 us      0.388 us
+     0.326 us
+  vfs_statx_path                         297    343.287 us      1.155 us
+     11.116 us
+  vfs_rename                               6    291.575 us      48.595 us
+     9889.236 us
+```
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250101190820.72534-1-enjuk@amazon.com
+Fixes: c132be2c4fcc ("function_graph: Have the instances use their own ftrace_ops for filtering")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/fgraph.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ftrace.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
-index ddedcb50917f..30e3ddc8a8a8 100644
---- a/kernel/trace/fgraph.c
-+++ b/kernel/trace/fgraph.c
-@@ -833,7 +833,7 @@ static unsigned long __ftrace_return_to_handler(struct fgraph_ret_regs *ret_regs
- #endif
- 	{
- 		for_each_set_bit(i, &bitmap, sizeof(bitmap) * BITS_PER_BYTE) {
--			struct fgraph_ops *gops = fgraph_array[i];
-+			struct fgraph_ops *gops = READ_ONCE(fgraph_array[i]);
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 9b17efb1a87d..2e113f8b13a2 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -902,16 +902,13 @@ static void profile_graph_return(struct ftrace_graph_ret *trace,
+ }
  
- 			if (gops == &fgraph_stub)
- 				continue;
+ static struct fgraph_ops fprofiler_ops = {
+-	.ops = {
+-		.flags = FTRACE_OPS_FL_INITIALIZED,
+-		INIT_OPS_HASH(fprofiler_ops.ops)
+-	},
+ 	.entryfunc = &profile_graph_entry,
+ 	.retfunc = &profile_graph_return,
+ };
+ 
+ static int register_ftrace_profiler(void)
+ {
++	ftrace_ops_set_global_filter(&fprofiler_ops.ops);
+ 	return register_ftrace_graph(&fprofiler_ops);
+ }
+ 
+@@ -922,12 +919,11 @@ static void unregister_ftrace_profiler(void)
+ #else
+ static struct ftrace_ops ftrace_profile_ops __read_mostly = {
+ 	.func		= function_profile_call,
+-	.flags		= FTRACE_OPS_FL_INITIALIZED,
+-	INIT_OPS_HASH(ftrace_profile_ops)
+ };
+ 
+ static int register_ftrace_profiler(void)
+ {
++	ftrace_ops_set_global_filter(&ftrace_profile_ops);
+ 	return register_ftrace_function(&ftrace_profile_ops);
+ }
+ 
 -- 
 2.45.2
 
