@@ -1,72 +1,112 @@
-Return-Path: <stable+bounces-106667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB5BA00113
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 23:08:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE0EA00119
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 23:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 069C1162F08
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 22:08:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE303A3847
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 22:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FDA1B85C5;
-	Thu,  2 Jan 2025 22:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245BD1B9831;
+	Thu,  2 Jan 2025 22:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gH/ulqOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2F41487E1;
-	Thu,  2 Jan 2025 22:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B431B85D3;
+	Thu,  2 Jan 2025 22:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735855731; cv=none; b=Er2Hnol2DpSmmU6zg/xC2V8T9UxmRtwriogKw2jr5KlSyE8i+r8ZIkE2e3J72yVKsKDA4pu1nYnGK/O8JktuT2r/55yADiPY9AoInwXSSR4C3NhAfUNIxupAQVKmwDuABU7nOsHri4B0oZk9jhvYNkb9PD7Uhfw2VvVVwTmJwjU=
+	t=1735855838; cv=none; b=n9Ylljtci8N1VJOwOg7WjZTYdvR5ikrWNFQSbW/viI0uO2fXW0v6XJAwdpvgcvQ50FrzPJcySDTqNyY1JHWG5gQTD6eAgo5GtmtCQdBsziwIv3b2EYkk3su+QHnot/ZL/beIRMP/SwZvnxrqx1ox4s/rHcwaMukPhRW4nOeuPOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735855731; c=relaxed/simple;
-	bh=LZCJlQr1BIlEMLtNZIjTfpKs1sPx8Klfp1O5HdYWRGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JiOpBb91rf98n5ClH19c5oNp3XgKlbHjRHi5JaKU47DSq+uchWP/dxCCM72br7Ndcxc4QnHeYjZnCgHHwfp9zEOnaXwXfumK4BkTtztXnW0s6pvArSrkc1VpHHchlGF7GngpUPAHZk4gkICM+9AjmyD9R2a873zTbp8z6Qdv4jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EF0C4CED0;
-	Thu,  2 Jan 2025 22:08:50 +0000 (UTC)
-Date: Thu, 2 Jan 2025 17:10:07 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: kernel test robot <lkp@intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [for-linus][PATCH 1/2] fgraph: Add READ_ONCE() when accessing
- fgraph_array[]
-Message-ID: <20250102171007.1c41355a@gandalf.local.home>
-In-Reply-To: <Z3cNawJpV5b4Ob8_@997da2bbb901>
-References: <20250102220309.941099662@goodmis.org>
-	<Z3cNawJpV5b4Ob8_@997da2bbb901>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1735855838; c=relaxed/simple;
+	bh=u77SrFDG2FUwtHUkecETXYGCZ8vA8MhoTEj0emRtF78=;
+	h=Date:To:From:Subject:Message-Id; b=TvTea0JLHjZvtAkPX2Zzo5QDgmkp//4Qdy8BsXcTImdR+v5vBQfZRUnv2rq+mQKUl0AlRZNFMPYQE0pZkfcN6K1P78byrU3p1h5F6yXFONI5l4TAAxcK26kaGj0D31MSP8x8aKmvQwvkedzkod4Wl2g5SQxMl1k2M+nfqTRe/tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gH/ulqOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE4CC4CED0;
+	Thu,  2 Jan 2025 22:10:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1735855838;
+	bh=u77SrFDG2FUwtHUkecETXYGCZ8vA8MhoTEj0emRtF78=;
+	h=Date:To:From:Subject:From;
+	b=gH/ulqOaoaYVCDBWzx9LzXc7p3k/dqwERtvGJxPOcp2Cua8BxYEcaNTBekaXduSaI
+	 sNSkPwURH1M7HUHL2UevGe9DIqh5hh3QMV/BP0/bNxlowANY4uA9pdN04LmBzzeU5S
+	 P7tu67ns/dBSIzqX3/iFoib9MhxrBtR+sKjn4Vn8=
+Date: Thu, 02 Jan 2025 14:10:37 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,marco.nelissen@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + filemap-avoid-truncating-64-bit-offset-to-32-bits.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250102221038.2CE4CC4CED0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Fri, 3 Jan 2025 06:04:27 +0800
-kernel test robot <lkp@intel.com> wrote:
 
-> Hi,
-> 
-> Thanks for your patch.
-> 
-> FYI: kernel test robot notices the stable kernel rule is not satisfied.
-> 
-> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-> 
-> Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-> Subject: [for-linus][PATCH 1/2] fgraph: Add READ_ONCE() when accessing fgraph_array[]
-> Link: https://lore.kernel.org/stable/20250102220309.941099662%40goodmis.org
-> 
+The patch titled
+     Subject: filemap: avoid truncating 64-bit offset to 32 bits
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     filemap-avoid-truncating-64-bit-offset-to-32-bits.patch
 
-I noticed that it has "Cc:stable@vger.kernel.org". I guess it needs a space
-before "stable"?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/filemap-avoid-truncating-64-bit-offset-to-32-bits.patch
 
--- Steve
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Marco Nelissen <marco.nelissen@gmail.com>
+Subject: filemap: avoid truncating 64-bit offset to 32 bits
+Date: Thu, 2 Jan 2025 11:04:11 -0800
+
+On 32-bit kernels, folio_seek_hole_data() was inadvertently truncating a
+64-bit value to 32 bits, leading to a possible infinite loop when writing
+to an xfs filesystem.
+
+Link: https://lkml.kernel.org/r/20250102190540.1356838-1-marco.nelissen@gmail.com
+Fixes: 54fa39ac2e00b ("iomap: use mapping_seek_hole_data")
+Signed-off-by: Marco Nelissen <marco.nelissen@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/filemap.c~filemap-avoid-truncating-64-bit-offset-to-32-bits
++++ a/mm/filemap.c
+@@ -2996,7 +2996,7 @@ static inline loff_t folio_seek_hole_dat
+ 		if (ops->is_partially_uptodate(folio, offset, bsz) ==
+ 							seek_data)
+ 			break;
+-		start = (start + bsz) & ~(bsz - 1);
++		start = (start + bsz) & ~((u64)bsz - 1);
+ 		offset += bsz;
+ 	} while (offset < folio_size(folio));
+ unlock:
+_
+
+Patches currently in -mm which might be from marco.nelissen@gmail.com are
+
+filemap-avoid-truncating-64-bit-offset-to-32-bits.patch
+
 
