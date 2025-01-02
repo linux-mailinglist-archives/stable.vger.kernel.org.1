@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-106636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024199FF57B
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 02:50:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D819FF667
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 07:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E9211882148
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 01:50:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F4C3A16A0
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 06:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55B34A00;
-	Thu,  2 Jan 2025 01:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A55190067;
+	Thu,  2 Jan 2025 06:07:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDDC8F58;
-	Thu,  2 Jan 2025 01:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EACA149E00;
+	Thu,  2 Jan 2025 06:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735782602; cv=none; b=p+iUEfknsOrjiol2G2G8AqqQ2z16ZYcjAUUoLe3I44G50skrcNmUgx7+cC4jSgoOnpXrQSdVfsvwt3hs6f2IdVXgjPo8ACYPdatI/h19itWF6ASOwdiu+KMPRN52w6TfBV4vU/I1E5qxPi7q69MInhWDu8yvy/Ail/nHEQY+6pg=
+	t=1735798076; cv=none; b=axio45q1rwVM0j59G8xat64dtEiJgBVJCtpsUSr8ASctS5UpyUqAXdFMvqcdil+sq9seyRY2mWXFSnFgf/f3uNzTmFTt2fgtAf/n2Y4Yha32vvshrswFofeY5U72jnn3Xq/bx3Oz8f6MeUgr9FtRk8eYWsgvMRfBekNTQ1SZII0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735782602; c=relaxed/simple;
-	bh=ewUhBs+a5wKT2xgr++ikbOYNpWCsfy8aZOAOYz8HYq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TPt3TChg72Q6RZuhArKUB14Rdvy3PrM6ko76xCA9t2AUcSrJaf0qcAy+RN/ViZYoiZD0X76T//EWIZ14gtom/JwMbd6Id93h68pDykquHq1t/ag9Lk69F3HMhW40BzsaWE38Z9SddIcBnvcJmGACsfuzMeNMUfPOwxYxxWOhdSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED26C4CECE;
-	Thu,  2 Jan 2025 01:50:00 +0000 (UTC)
-Date: Wed, 1 Jan 2025 20:49:59 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?= <thomas.hellstrom@linux.intel.com>
-Cc: Genes Lists <lists@sapience.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- lucas.demarchi@intel.com, stable@vger.kernel.org,
- regressions@lists.linux.dev, Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [REGRESSION][BISECTED] Re: 6.12.7 stable new error: event
- xe_bo_move has unsafe dereference of argument 4
-Message-ID: <20250101204959.6e297af6@batman.local.home>
-In-Reply-To: <5ca1c5b64c313108ea2aa005ae273f1ba8051e7f.camel@linux.intel.com>
-References: <2e9332ab19c44918dbaacecd8c039fb0bbe6e1db.camel@sapience.com>
-	<9dee19b6185d325d0e6fa5f7cbba81d007d99166.camel@sapience.com>
-	<20241230141329.5f698715@batman.local.home>
-	<20241230145002.3cc11717@gandalf.local.home>
-	<5f756542aaaf241d512458f306707bda3b249671.camel@sapience.com>
-	<20241230160311.4eec04da@gandalf.local.home>
-	<0ef755e06b8f0bf1ee4dfd7e743d6222fd795b70.camel@sapience.com>
-	<5ca1c5b64c313108ea2aa005ae273f1ba8051e7f.camel@linux.intel.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1735798076; c=relaxed/simple;
+	bh=C2xWx9+P4z0nX603meuePPwLoVjXtZGBdlS96zvGSiw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=eBXWvpm7qXSB1XRADnj4HkoUpYvUN3DBWfucKbhrq0Y7oLorxqZpUc7e/HD6IsAo/HtGDo4CCc4Cp4zOWr8gllbfJQf5ayZXmhRyNuK+AGQfdCtJ7u45WC45Q/UEf4vlwRCFkCtgnmeqgcfgQuUBN2n6FMIt9zazos1ccopn0dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 7DE0C92009C; Thu,  2 Jan 2025 07:07:45 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 7092A92009B;
+	Thu,  2 Jan 2025 06:07:45 +0000 (GMT)
+Date: Thu, 2 Jan 2025 06:07:45 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: WangYuli <wangyuli@uniontech.com>
+cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, sashal@kernel.org, 
+    stable@vger.kernel.org, jiaxun.yang@flygoat.com, 
+    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+    linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    guanwentao@uniontech.com, baimingcong@uniontech.com, revy@deepin.org
+Subject: Re: [PATCH 5.4~6.6] MIPS: Probe toolchain support of -msym32
+In-Reply-To: <183F7B3F0A07AC93+20241224060918.15199-1-wangyuli@uniontech.com>
+Message-ID: <alpine.DEB.2.21.2501020550110.20821@angie.orcam.me.uk>
+References: <183F7B3F0A07AC93+20241224060918.15199-1-wangyuli@uniontech.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 
-On Wed, 01 Jan 2025 21:55:26 +0100
-Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com> wrote:
+On Tue, 24 Dec 2024, WangYuli wrote:
 
-> FWIW, we actually worked around this during the holiday in the drm-xe-
-> next branch in the xe driver since it was breaking our CI. Was planning
-> to include it for drm-xe-fixes for tomorrow. Since xe appeared to be
-> the only driver hitting this, our assumption was that it'd be better
-> fixed in the driver.
+> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> 
+> [ Upstream commit 18ca63a2e23c5e170d2d7552b64b1f5ad019cd9b ]
+> 
+> msym32 is not supported by LLVM toolchain.
+> Workaround by probe toolchain support of msym32 for KBUILD_SYM32
+> feature.
 
-The driver wasn't broken. I changed the verifier and it incorrectly
-flagged that driver's trace event as unsafe. Yeah, it's the only driver
-to use an array of strings, but it doesn't mean it was wrong.
+ Doesn't this reintroduce the failure fixed with commit a79a404e6c22 
+("MIPS: Fix CONFIG_CPU_DADDI_WORKAROUNDS `modules_install' regression")?
 
--- Steve
+ If this call to `cc-option-yn' does need to be made here, then this whole 
+stuff has to be wrapped into a `need-compiler' check, see the discussion: 
+<https://lore.kernel.org/r/alpine.DEB.2.21.2307180025120.62448@angie.orcam.me.uk/> 
+and the other patches in the series.
+
+  Maciej
 
