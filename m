@@ -1,176 +1,100 @@
-Return-Path: <stable+bounces-106665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79DDFA000FB
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 23:02:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1079BA00100
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 23:05:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E56163050
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 22:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC9B7162FFA
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 22:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39281B982E;
-	Thu,  2 Jan 2025 22:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78A81B423C;
+	Thu,  2 Jan 2025 22:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PIjKEZ0P"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54261AAA22;
-	Thu,  2 Jan 2025 22:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18821A8F8E
+	for <stable@vger.kernel.org>; Thu,  2 Jan 2025 22:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735855313; cv=none; b=Z5bULTqhAAOyt1+hykRnSnIja0ynScXKdlChVZHzSGy7h8TXOzF37CMCZQouAok9Yt1utXkeS3pJcHRRSpOoVP0G/TsghGMnnd3VCbxbyH1w2jhAItijVFLNqIUOIZhg/OfBvc8pwewNMaPO3sBGzmcr3/Z4aNfW9tsLPFh+yhw=
+	t=1735855526; cv=none; b=T0etGkzTKEb/HCCN3NgbHs3V4PIqH4CDvZdYtJ1WUfUqa5Vd5uFdu7U4cvukithnfX+TkbUyr6l2tDrfhaapKYy/E3nKzCL2zau5mulCrhPB2OJU0ITUhhFJP5PvR01PZ0JROVWV8VAknrS2L9HrpeQ/Aq4TE2Mj/4j3XQ+LDvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735855313; c=relaxed/simple;
-	bh=/1O+5kOz7KTGVhdbBQyXehylW2sP5GGTL5wL/boKBT0=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=ZEL6XlPxF0jWwY2sl8K/YKNnhfw8NPUOMqXRbiHcNf722NcGvqcM69DTtCDnLfdAE8mOJ6VUJcUyMUKzBrjtBjCMPkaDN78pADHmdLAQg6jrhwfFl9uSLQYaDzdpj3bIdIYhcKYli2B9HkI6VgbWLS4ksjyqd5jA2TXYbdcR8eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB6CC4CEDF;
-	Thu,  2 Jan 2025 22:01:53 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1tTTHa-00000005Ut2-18DI;
-	Thu, 02 Jan 2025 17:03:10 -0500
-Message-ID: <20250102220310.109629698@goodmis.org>
-User-Agent: quilt/0.68
-Date: Thu, 02 Jan 2025 17:02:40 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Kohei Enju <enjuk@amazon.com>
-Subject: [for-linus][PATCH 2/2] ftrace: Fix function profilers filtering functionality
-References: <20250102220238.225015816@goodmis.org>
+	s=arc-20240116; t=1735855526; c=relaxed/simple;
+	bh=OIdTf/oMwvBm0dypgDZc9CH9XcIf8ulK+442afiVduo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=nBFHRXReS4rMz7NP4W4u0JSNBcwIideGoxN89SvMIwENPNTcdFDwqadLk//zQjwnkzQluBTP8MpY/sdse0T9yCnNQOhj+zWA0vIMHEjCzHo0tDXD99cWBXh5qUzHyqFfG2hkdr1nngEtltSBgqXHUVS/LmOTNv5GDQ50PjtLUuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PIjKEZ0P; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735855525; x=1767391525;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=OIdTf/oMwvBm0dypgDZc9CH9XcIf8ulK+442afiVduo=;
+  b=PIjKEZ0PpH0GYeVUuAfjP+RhzkZHOORRPox8Kby8GvoUchVT0CIHxDol
+   Ls3gq1IWiUBgbpdIz+KvE47yYSzxdQzn4SPlmpe0RuW3A203oX8gcyqhY
+   v3xS5HG1RAvwRmys3mgMLVu+rFPYZRuDNoWc6Qe9eMJ/Yi4Ws0ngwPNQl
+   yclOILooXR6p4XKqYKB7T6NKpgdC6SJCS/SPxsfj8zww7v57lIqvA3khy
+   x1sgewtiyqsvvLm7Luflqf8BCR/AZJenUzKz9Z7hnDsLoeRPGblvU1Td5
+   JZFE2C1zNII+vW8RfqSjGwl5bH6qJHEoT63WOOmv2Wa0dz9/wTErz4M4x
+   Q==;
+X-CSE-ConnectionGUID: EuowynBhTMaQdkAKu2arjA==
+X-CSE-MsgGUID: esiSUdTMTWKJuO0GgfxnjQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11303"; a="61481634"
+X-IronPort-AV: E=Sophos;i="6.12,286,1728975600"; 
+   d="scan'208";a="61481634"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 14:05:24 -0800
+X-CSE-ConnectionGUID: 6jneRFoLTFmNTZe44SSMRA==
+X-CSE-MsgGUID: p03XMMSTT5eWt49/MzzIGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="132536537"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 02 Jan 2025 14:05:23 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tTTJh-0008uB-10;
+	Thu, 02 Jan 2025 22:05:21 +0000
+Date: Fri, 3 Jan 2025 06:04:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [for-linus][PATCH 1/2] fgraph: Add READ_ONCE() when accessing
+ fgraph_array[]
+Message-ID: <Z3cNawJpV5b4Ob8_@997da2bbb901>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250102220309.941099662@goodmis.org>
 
-From: Kohei Enju <enjuk@amazon.com>
+Hi,
 
-Commit c132be2c4fcc ("function_graph: Have the instances use their own
-ftrace_ops for filtering"), function profiler (enabled via
-function_profile_enabled) has been showing statistics for all functions,
-ignoring set_ftrace_filter settings.
+Thanks for your patch.
 
-While tracers are instantiated, the function profiler is not. Therefore, it
-should use the global set_ftrace_filter for consistency.  This patch
-modifies the function profiler to use the global filter, fixing the
-filtering functionality.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Before (filtering not working):
-```
-root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
-root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
-root@localhost:~# sleep 1
-root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
-root@localhost:~# head /sys/kernel/tracing/trace_stat/*
-  Function                               Hit    Time            Avg
-     s^2
-  --------                               ---    ----            ---
-     ---
-  schedule                               314    22290594 us     70989.15 us
-     40372231 us
-  x64_sys_call                          1527    8762510 us      5738.382 us
-     3414354 us
-  schedule_hrtimeout_range               176    8665356 us      49234.98 us
-     405618876 us
-  __x64_sys_ppoll                        324    5656635 us      17458.75 us
-     19203976 us
-  do_sys_poll                            324    5653747 us      17449.83 us
-     19214945 us
-  schedule_timeout                        67    5531396 us      82558.15 us
-     2136740827 us
-  __x64_sys_pselect6                      12    3029540 us      252461.7 us
-     63296940171 us
-  do_pselect.constprop.0                  12    3029532 us      252461.0 us
-     63296952931 us
-```
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-After (filtering working):
-```
-root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
-root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
-root@localhost:~# sleep 1
-root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
-root@localhost:~# head /sys/kernel/tracing/trace_stat/*
-  Function                               Hit    Time            Avg
-     s^2
-  --------                               ---    ----            ---
-     ---
-  vfs_write                              462    68476.43 us     148.217 us
-     25874.48 us
-  vfs_read                               641    9611.356 us     14.994 us
-     28868.07 us
-  vfs_fstat                              890    878.094 us      0.986 us
-     1.667 us
-  vfs_fstatat                            227    757.176 us      3.335 us
-     18.928 us
-  vfs_statx                              226    610.610 us      2.701 us
-     17.749 us
-  vfs_getattr_nosec                     1187    460.919 us      0.388 us
-     0.326 us
-  vfs_statx_path                         297    343.287 us      1.155 us
-     11.116 us
-  vfs_rename                               6    291.575 us      48.595 us
-     9889.236 us
-```
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [for-linus][PATCH 1/2] fgraph: Add READ_ONCE() when accessing fgraph_array[]
+Link: https://lore.kernel.org/stable/20250102220309.941099662%40goodmis.org
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250101190820.72534-1-enjuk@amazon.com
-Fixes: c132be2c4fcc ("function_graph: Have the instances use their own ftrace_ops for filtering")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/ftrace.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 9b17efb1a87d..2e113f8b13a2 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -902,16 +902,13 @@ static void profile_graph_return(struct ftrace_graph_ret *trace,
- }
- 
- static struct fgraph_ops fprofiler_ops = {
--	.ops = {
--		.flags = FTRACE_OPS_FL_INITIALIZED,
--		INIT_OPS_HASH(fprofiler_ops.ops)
--	},
- 	.entryfunc = &profile_graph_entry,
- 	.retfunc = &profile_graph_return,
- };
- 
- static int register_ftrace_profiler(void)
- {
-+	ftrace_ops_set_global_filter(&fprofiler_ops.ops);
- 	return register_ftrace_graph(&fprofiler_ops);
- }
- 
-@@ -922,12 +919,11 @@ static void unregister_ftrace_profiler(void)
- #else
- static struct ftrace_ops ftrace_profile_ops __read_mostly = {
- 	.func		= function_profile_call,
--	.flags		= FTRACE_OPS_FL_INITIALIZED,
--	INIT_OPS_HASH(ftrace_profile_ops)
- };
- 
- static int register_ftrace_profiler(void)
- {
-+	ftrace_ops_set_global_filter(&ftrace_profile_ops);
- 	return register_ftrace_function(&ftrace_profile_ops);
- }
- 
 -- 
-2.45.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
 
 
