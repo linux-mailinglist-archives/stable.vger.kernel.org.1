@@ -1,124 +1,142 @@
-Return-Path: <stable+bounces-106638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9467B9FF676
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 07:22:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C529FF6CF
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 09:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 563803A1E2D
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 06:22:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93DF27A1228
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 08:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C1B18B499;
-	Thu,  2 Jan 2025 06:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EADD1946B1;
+	Thu,  2 Jan 2025 08:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uBKxo+9k";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E8/6kxGg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D03115C0
-	for <stable@vger.kernel.org>; Thu,  2 Jan 2025 06:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C9A13CF82;
+	Thu,  2 Jan 2025 08:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735798947; cv=none; b=by8OCFRwXwlkZRYr2nPq4Fcj66laFEgdD6+MtboH9JTyGfOtY0Tq2F98aGcBPUsOMzdtRtln/wU1E0Wj4DpC+iMdZdHEDOCiX4JtoWEhKFiMd8fQYMNq7SoPADHHXEdoa4OaasY8D9VIhZFSNzWKPCwG1Af2WLsUFlD8Xm7/2Og=
+	t=1735806194; cv=none; b=jBwEUsEAGr0rTOdhKjnxLHabNRAL2WXDafV756TrPOrKwmAAddKFCz1QBJcsudIPkfFAOEUVA6SleEFB/IN58UxYOAOUlnaMVKiWz9dshAOlCZdIPp+USK1BrczHcSCkQLajbs9UuNE9Sa/JwZo1aiW8cYH1cSOb6mHmcaqQmjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735798947; c=relaxed/simple;
-	bh=xrvutlmgto6C97iXeEUZM7hcVXsqqhpscWAKSN2SG94=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=COrIXBj7YoWiPkG7VsBbR8xE/wJ7CgW4zPAZ1qEz8EBp05JRxrsLKSCQl0db8ikzMlUwpJwifQSeh1ZNZzsfll5DuxWDI9SyTY3gIr9Kms8CD42V6MDA0DFPZmpo2acK36337U10iTdBavMUQsnQ1hC5AiRNSaHOn9PRbIYibeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=foxmail.com; spf=fail smtp.mailfrom=foxmail.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=foxmail.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5025xGof009542;
-	Wed, 1 Jan 2025 22:22:14 -0800
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43thqq3hgc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 01 Jan 2025 22:22:13 -0800 (PST)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Wed, 1 Jan 2025 22:22:13 -0800
-Received: from pek-blan-cn-d1.wrs.com (128.224.34.139) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Wed, 1 Jan 2025 22:22:12 -0800
-From: Alva Lan <alvalan9@foxmail.com>
-To: <stable@vger.kernel.org>, <chao@kernel.org>
-CC: <jaegeuk@kernel.org>
-Subject: [PATCH 6.6.y] f2fs: fix to wait dio completion
-Date: Thu, 2 Jan 2025 14:22:45 +0800
-Message-ID: <20250102062245.456512-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1735806194; c=relaxed/simple;
+	bh=TExUURZWJ583E2vNDs7uiTcwesEW6Z4FXqiuzGwNkfs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MRKdjkz5cl3vCMffPI0VozUpnv1gBJcwRHU4mVSNfGO0iHi+ieau66GHO4YXj4QsDynDZ1qnCH3OmmCtAETZ2PEudRWKvjNmW/0sxg7PcW/7ZsyxleknWOIkE/R+p8+u1X02wJ2y4nE6p2y9Ki5DF239q6lO47zFgBMYJUv9By4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uBKxo+9k; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E8/6kxGg; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1735806190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LIALOsxl/ryHqgD9kCZxM3tkMNvYUyPEPhH91OwzRvE=;
+	b=uBKxo+9k91cmQBpbDQCDJM4uh/sIt+vw45BkJKB6/rCBzciqg6AyUxDGmNh+zPMaFZ4yOR
+	wE2ln6eMc68svUVxeqeNmeVV5rnJt72A7SVdoLMjkcftF59o58i5KQEDnAZpij6k9GoGo2
+	E8vb0CSkMVlnnWuLGM7FvyZF1hSCZ2QlYXvtsZS8ekOY+w2BcyiYbt7BT6P+HuLgl8Oj5e
+	n4ONmxFlVBk/olSJF60qSvG2Te6XMRRem9Z264c4lskdJR0obpTykFuMZ/mhXIKE+ahDWi
+	spKmf0qY7mlamRZvWV/zY6bz3SC4AOQ0phhrtrsbnQkzxpyFTF9q/ym84DViRQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1735806190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LIALOsxl/ryHqgD9kCZxM3tkMNvYUyPEPhH91OwzRvE=;
+	b=E8/6kxGgdLkvuQ+D8S4oXpAcJvfUfdTw/jIIMLR7I4Qbop6BuMMZZ6i/iqcPL1cb+at8hi
+	gVnDAEUrDlK0G2BQ==
+To: Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Dylan Hatch <dylanbhatch@google.com>,
+	"Eric W . Biederman" <ebiederm@xmission.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] fs/proc: do_task_stat: Fix ESP not readable during coredump
+Date: Thu,  2 Jan 2025 09:22:56 +0100
+Message-Id: <d89af63d478d6c64cc46a01420b46fd6eb147d6f.1735805772.git.namcao@linutronix.de>
+In-Reply-To: <cover.1735805772.git.namcao@linutronix.de>
+References: <cover.1735805772.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=RoI/LDmK c=1 sm=1 tr=0 ts=67763095 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VdSt8ZQiCzkA:10 a=x7bEGLp0ZPQA:10 a=NwS9F1Xdo7AA:10 a=VwQbUJbxAAAA:8 a=bDN84i_9AAAA:8 a=bwK7ZqNxcec2lMBulLIA:9
- a=J2PsDwZO0S0EpbpLmD-j:22
-X-Proofpoint-GUID: e80Pqgpn5AlQ7SJ077tdlrqttg8AQpQw
-X-Proofpoint-ORIG-GUID: e80Pqgpn5AlQ7SJ077tdlrqttg8AQpQw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-02_02,2024-12-24_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0 suspectscore=0
- clxscore=1034 impostorscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
- bulkscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2501020054
+Content-Transfer-Encoding: quoted-printable
 
-From: Chao Yu <chao@kernel.org>
+The field "eip" (instruction pointer) and "esp" (stack pointer) of a task
+can be read from /proc/PID/stat. These fields can be interesting for
+coredump.
 
-[ Upstream commit 96cfeb0389530ae32ade8a48ae3ae1ac3b6c009d ]
+However, these fields were disabled by commit 0a1eb2d474ed ("fs/proc: Stop
+reporting eip and esp in /proc/PID/stat"), because it is generally unsafe
+to do so. But it is safe for a coredumping process, and therefore
+exceptions were made:
 
-It should wait all existing dio write IOs before block removal,
-otherwise, previous direct write IO may overwrite data in the
-block which may be reused by other inode.
+  - for a coredumping thread by commit fd7d56270b52 ("fs/proc: Report
+    eip/esp in /prod/PID/stat for coredumping").
 
+  - for all other threads in a coredumping process by commit cb8f381f1613
+    ("fs/proc/array.c: allow reporting eip/esp for all coredumping
+    threads").
+
+The above two commits check the PF_DUMPCORE flag to determine a coredump th=
+read
+and the PF_EXITING flag for the other threads.
+
+Unfortunately, commit 92307383082d ("coredump:  Don't perform any cleanups
+before dumping core") moved coredump to happen earlier and before PF_EXITIN=
+G is
+set. Thus, checking PF_EXITING is no longer the correct way to determine
+threads in a coredumping process.
+
+Instead of PF_EXITING, use PF_POSTCOREDUMP to determine the other threads.
+
+Checking of PF_EXITING was added for coredumping, so it probably can now be
+removed. But it doesn't hurt to keep.
+
+Fixes: 92307383082d ("coredump:  Don't perform any cleanups before dumping =
+core")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Resolve line conflicts to make it work on 6.6.y ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 ---
- fs/f2fs/file.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/proc/array.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 196755a34833..ae129044c52f 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1037,6 +1037,13 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 				return err;
- 		}
- 
-+		/*
-+		 * wait for inflight dio, blocks should be removed after
-+		 * IO completion.
-+		 */
-+		if (attr->ia_size < old_size)
-+			inode_dio_wait(inode);
-+
- 		f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
- 		filemap_invalidate_lock(inode->i_mapping);
- 
-@@ -1873,6 +1880,12 @@ static long f2fs_fallocate(struct file *file, int mode,
- 	if (ret)
- 		goto out;
- 
-+	/*
-+	 * wait for inflight dio, blocks should be removed after IO
-+	 * completion.
-+	 */
-+	inode_dio_wait(inode);
-+
- 	if (mode & FALLOC_FL_PUNCH_HOLE) {
- 		if (offset >= inode->i_size)
- 			goto out;
--- 
-2.43.0
+diff --git a/fs/proc/array.c b/fs/proc/array.c
+index 55ed3510d2bb..d6a0369caa93 100644
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -500,7 +500,7 @@ static int do_task_stat(struct seq_file *m, struct pid_=
+namespace *ns,
+ 		 * a program is not able to use ptrace(2) in that case. It is
+ 		 * safe because the task has stopped executing permanently.
+ 		 */
+-		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE))) {
++		if (permitted && (task->flags & (PF_EXITING|PF_DUMPCORE|PF_POSTCOREDUMP)=
+)) {
+ 			if (try_get_task_stack(task)) {
+ 				eip =3D KSTK_EIP(task);
+ 				esp =3D KSTK_ESP(task);
+--=20
+2.39.5
 
 
