@@ -1,115 +1,92 @@
-Return-Path: <stable+bounces-106658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A579FFC64
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 17:54:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED139FFCAE
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 18:23:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2E373A1551
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 16:54:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D181883413
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 17:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1091547F5;
-	Thu,  2 Jan 2025 16:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0628415B980;
+	Thu,  2 Jan 2025 17:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="kKgm3rMv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1w3++f9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5236E1F16B;
-	Thu,  2 Jan 2025 16:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA12D155321;
+	Thu,  2 Jan 2025 17:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735836870; cv=none; b=JKdLBmsKRe0bgf+yl8nprzUBWwrQcFSmYI9Mze5B8bpkFTLXRGjTT33LTPaH9IYgmh/UNuGz5OaHi2la3TONnLrE79SZcLk2Itq1wSoog4i+h5elLzJTSeNA2SyK6F3+oRW5CL6PuJP2Y41chS7LSk1uQv3GhLs9EZUf00WOpiA=
+	t=1735838611; cv=none; b=Zng7zxbIgke+WjElk2OUHSDV6tk4OLHxILaNUj5AH+p8Uc0gSX6r73c+W9BVTQJ/nkoB4mMCdZeG/uNDuOPPNLI/L+gWbb9B+f6POSXx9yqGSZ6g1gRjDlx9hN9Qy0WlaDep4bSXryGfokBfXcF/9F/z+PA85mPl6QnUiTQShFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735836870; c=relaxed/simple;
-	bh=WKBhCnvtMIY0gTCieqrMhUbL9KKmSsXX0ThPSNaPwls=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txXqFDXgXhjE4/OgE4XT0h2Okjr/96FnMynmIoTUGoOztgRHXsH4TR5OTvMEXnXG0VkldQBEoBOY53Kjp4oFuKk2hE2hXctHZ0//x/f0fGBDGv4c9tC/tykD9SR8zNRaeLMg7gNO1JWccNDF8Rw7Bhfoj6U3gioE8x43oEh1zMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=kKgm3rMv; arc=none smtp.client-ip=54.206.34.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1735836823;
-	bh=MGRV4JGUlwRUQzrhpkSdmx2FoinaZwX3vwgwN4+ubic=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=kKgm3rMvViCUwIdsVeFZnzBhSk+uQ8gnb0jmNueSavcjt0WEU0VawPd4z0cKOVQAc
-	 Ip/cNYwVssmBIPSQN2Jfq98a2MnCrMuw5UyHYUIRUVUC3E4/CpmiMaTV/6EgOioZKn
-	 XWcwaJrrA8aMy1jyTBnBpJQhwa4z/e3c/ryG3zHQ=
-X-QQ-mid: bizesmtpip2t1735836780t05d0rc
-X-QQ-Originating-IP: 7Ti20rk5NQiroZTWd+ILbIe3fPVqsLzx1brMy7bfJNI=
-Received: from avenger-OMEN-by-HP-Gaming-Lapto ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 03 Jan 2025 00:52:58 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 7390309620555676409
-From: WangYuli <wangyuli@uniontech.com>
-To: macro@orcam.me.uk
-Cc: baimingcong@uniontech.com,
-	gregkh@linuxfoundation.org,
-	guanwentao@uniontech.com,
-	jiaxun.yang@flygoat.com,
-	linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	revy@deepin.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org,
-	tsbogend@alpha.franken.de,
-	wangyuli@uniontech.com,
-	chenhuacai@kernel.org
-Subject: Re: Re: [PATCH 5.4~6.6] MIPS: Probe toolchain support of -msym32
-Date: Fri,  3 Jan 2025 00:52:58 +0800
-Message-ID: <8AC8E4D8519CF8E4+20250102165258.57525-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <alpine.DEB.2.21.2501020550110.20821@angie.orcam.me.uk>
-References: <alpine.DEB.2.21.2501020550110.20821@angie.orcam.me.uk>
+	s=arc-20240116; t=1735838611; c=relaxed/simple;
+	bh=Xph7yzU3rfw180r/MiXIXjmB/wThD+U6hLNEBbbHbpg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hV/Hb9PlWGes2X1W7gPuw2hycSFbFgKgslPaF9DD85D7CuJ5zl7RJvrzSVxtGTJe11eQOGmv6FnN5CVE+mbzUJwjKQ+6bwPSC+MK1GXFBYZjr/vShDs9WhisDNLo5d+iK7G+KJWzeGfiFKlEA/zZnLTtIWwfXuN2PHN+kjVnNUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1w3++f9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B3CC4CED0;
+	Thu,  2 Jan 2025 17:23:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735838611;
+	bh=Xph7yzU3rfw180r/MiXIXjmB/wThD+U6hLNEBbbHbpg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U1w3++f9r9qZY11J5GFIbueL0ue2WDvr91hEElaF/iGdoGAz54dpzawB13MjuJnWh
+	 8fCclqOwnZ50veURjiPeCPq5znZXnvr2BJtDjAz4JHd2Zi1BjZ/ziJ5Dm1lffLeopL
+	 Tc6rNGc6WE1u/Yw6dU3CY+o83+aQ6kQ/mNwyGEp1VC0mfQqnhgkZcnt204evJMFI5m
+	 ZONgwiJNnngKdGQwPoT2tHrW/2KkKN5Zu3lgMQl1f53ij0z54g0bSEdBCQ/RIYfKPO
+	 JmzMjWwv2VMBKvSXKc1lASeOrw4B2WyFV7cWEi/EBIOZd09vXPu6UJOyEcE+92zIXl
+	 8e9b9KYcIHf2Q==
+Date: Thu, 2 Jan 2025 17:23:29 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: axboe@kernel.dk, satyat@google.com, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] blk-crypto: Add check for mempool_alloc()
+Message-ID: <20250102172329.GA49952@google.com>
+References: <20250102083319.176310-1-haoxiang_li2024@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: Mf+wQkWJ2TuYBMzfbZT7ecSDB0dI4ood/OxEkTzSJHLy1N6AsQiOX2XQ
-	xy22vrjWCuWCRIZehXizuyIZwLrIkXOrtYoRNxnOuEnYjLcpbXcYoSrmHGbv3nP5Jnje7/y
-	bUNMZi1vPKftMy7TyY5DZVHvRYmJC9LxoTGhB2G+pt2ZT7HMrHFdjqSKOrN/xfpFpqoQEhl
-	xlOVBbXTsu4k/rXYY73hUT2kUDmgc8DQNi806SIJzApo3fxPv39yG53R/dMY989mu7gqEq8
-	4ClCyrt6Jcx6kg+s32SohUjDMrF6sg/m8BCpIKnNbO/a0EMFeHiiupARd4AcckbgwGDl86r
-	szUPcMJrauBcx+kpaybzKUcrB6Cyxy/eYQ4+0lrwcB1eMaggbwft+e+B6ddSkpljcSYO/KL
-	9qynecwJ6Fa0tUb2XCwJbxq0v7Y3KNqxtvuCx8s6qrzfI8HV/VZojmvSJ/t8n3jzdED5DIt
-	7Ol8nDQSYsFaBMV4m6bh8sOmNJojmnxPnmdl75aCkHWPn8oloC3ylDNb6M7muuA8VOLDura
-	a2DEL+Lf7dEkV/hSjQny7Z3yCab1+LQ+OXowpR6ZeTD7VVUtFdOEu20Ce80hB4dgX8RwQcj
-	b+odPuv6c8pUcIKrDrx0aKqLkOt6k12yfF21eNaJDbIAZzIKbI3yxcLEC9kNxESSPU8t36b
-	3IHvLzCXGVVEvZId4ImtLxYTRweeWz6aOEnYfVvEEgZp70pLFJD7hy05zEDhFG3hkgy7khW
-	46mSgIlfiqc9H6My0ELD/WOHtYF2n968Pv01Skzphzm2rfqAHoaCrbX60hZWauuxK5AiNoz
-	cjCwcr0OMMTNcBligi6aWVddBuHL7149FwsNYcIkpNo0X7gRFhUb5SGHNcUwS+4FyKYCWsi
-	Cxv2ASYHc3JOth0AlMRwIsCpQrepI626vvVO1wfbKYWXNBBu4lbcrKeDx0QTFBpyS+JeqzH
-	GPmTZbg9n/5ksWrn+M3U1LKmplkFoozM2247frgn8Ta1lN2igsxzq+swrOBmYQPmxYP8QyY
-	9ME5DSmQ==
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250102083319.176310-1-haoxiang_li2024@163.com>
 
-Are you suggesting that a commit from v6.8 reintroduced a regression that
-was fixed in v6.6?
+On Thu, Jan 02, 2025 at 04:33:19PM +0800, Haoxiang Li wrote:
+> Add check for the return value of mempool_alloc() to
+> catch the potential exception and avoid null pointer
+> dereference.
+> 
+> Fixes: 488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+>  block/blk-crypto-fallback.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
+> index 29a205482617..47acd7a48767 100644
+> --- a/block/blk-crypto-fallback.c
+> +++ b/block/blk-crypto-fallback.c
+> @@ -514,6 +514,12 @@ bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr)
+>  	 * bi_end_io appropriately to trigger decryption when the bio is ended.
+>  	 */
+>  	f_ctx = mempool_alloc(bio_fallback_crypt_ctx_pool, GFP_NOIO);
+> +
+> +	if (!f_ctx) {
+> +		bio->bi_status = BLK_STS_RESOURCE;
+> +		return false;
+> +	}
 
-If so, we should address this issue in the mainline first before backporting.
+mempool_alloc() with a mask that includes ___GFP_DIRECT_RECLAIM, such as the
+GFP_NOIO which is used here, never returns NULL.
 
-As a general rule, we avoid introducing out-of-tree commits to linux-stable
-except for reverts.
-
-For this patch, merging it into linux-stable is crucial, as it would prevent
-certain configurations like loongson3_defconfig from building the kernel with
-clang.
-
-To fix follow error with clang-19:
-	clang: error: unknown argument: '-msym32'
-
-Thanks,
---
-WangYuli
+- Eric
 
