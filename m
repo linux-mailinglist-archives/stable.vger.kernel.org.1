@@ -1,228 +1,135 @@
-Return-Path: <stable+bounces-106652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27BFC9FFA3E
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 15:12:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADD79FFA47
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 15:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BCB43A1E95
-	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 14:12:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 318347A1200
+	for <lists+stable@lfdr.de>; Thu,  2 Jan 2025 14:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8229919F40B;
-	Thu,  2 Jan 2025 14:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD4E1B3934;
+	Thu,  2 Jan 2025 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="b8ZnS3PV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HkcAXPpL"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85E87462
-	for <stable@vger.kernel.org>; Thu,  2 Jan 2025 14:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8E51AF0CB;
+	Thu,  2 Jan 2025 14:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735827124; cv=none; b=ALh9w3QIykSb59XeswnVGZnAcHc3q6pZBonan+1s81YUbo3xAt90unASROMuvUL6SrZ37KMJl4TTqkTbzCMrl6szkiyOdoVByv/AlZOrN08OVUoPRyG1RmG6HOl3n50Dz5J1N63ALf+ltEq+2uZS8I1ful6z4jIjaMH/qNGPAN4=
+	t=1735827163; cv=none; b=oevptllAUx7DmvvbypJvSPNZzMIltEjpq0FQBd8mTIKDVqGN8iVxCcV5VENDUO+ijguMG/STfo20Q9/d2ovC2fZHZ9QZLTaVtXn6EjI6ubJVWDsaI8ND1lLepbB4kaUMnM818DfqqVQjAa837C4IJVDH2MnA1lwl4GDExdYr+G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735827124; c=relaxed/simple;
-	bh=i5RlLYXzfSj8Vrv+AeFOa1iK3JetI7b/Fdt//eIFBEg=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Drw6PM3JUjeVcq1l2JfC21PoAnqLbbYgrKGI/OJJW2CoWic1wGJJ0xT2caHUTbwcqj9iVTVCdOi0SGIrGEQpR3mht95b5gTH/7oVY72GkIW36d3OskRpqjx/oF5JyJIZnbMlCoZIaWp0RmT2gaWSSKzMaQ9rNMHLIISHcX5OtUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=b8ZnS3PV; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from namjain-hibernation.4uyjgaamrtuunfhsycmekme4ua.xx.internal.cloudapp.net (unknown [20.94.232.156])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 51D9F2066C28
-	for <stable@vger.kernel.org>; Thu,  2 Jan 2025 06:12:02 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 51D9F2066C28
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1735827122;
-	bh=Jh7Zxpkq/iuCja/DKoq7M1HWWZXSk6N1GvoHPQij6Vs=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=b8ZnS3PVOMqaDDCeMNRZmdenVkidHyLPLi83ZqrqE+m9/NoT9KKrAYs1Y7wB1CPJj
-	 bboIBH7KEO6rMlZ+SRsFbJg2/KrfCaBYV8nH9Z434CnbFNUCalrjdpk6ingNBSUZZm
-	 CSSeQJbYL7S7FypBWJkZ+3tkqJqOj4mK6roh5pBk=
-From: Naman Jain <namjain@linux.microsoft.com>
-To: stable@vger.kernel.org
-Subject: [PATCH 6.6.y] x86/hyperv: Fix hv tsc page based sched_clock for hibernation
-Date: Thu,  2 Jan 2025 14:11:57 +0000
-Message-ID: <20250102141157.1785-1-namjain@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024122324-twitter-clustered-891d@gregkh>
-References: <2024122324-twitter-clustered-891d@gregkh>
+	s=arc-20240116; t=1735827163; c=relaxed/simple;
+	bh=OVHKWKqhT6GNOOLRLFZpB0wvxkRFdS/qQP80q6FshX4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hnOdpPSQUdqvfMBVl7ufCrQWcI9w7QKBqR4n0ZW0F85QtDEQrPo0MX4RxDJzGMaqd6mmsx+LeELVHOO5n6v1VaYhQStaKbuNe/bCJAOBwjY1Kn4+BMLT8mQS3+FGzKoHFbA+ysS5w8nAmaRRQ2rERex963K7/xXFeTu/fBQkxtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HkcAXPpL; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735827162; x=1767363162;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OVHKWKqhT6GNOOLRLFZpB0wvxkRFdS/qQP80q6FshX4=;
+  b=HkcAXPpL1M6eA+4FBpMMhbE0moj5b08fMdtmEKpfhyklwdMv4rF7+kIz
+   FiQnAA7mEafoVafW0JypunejiKt7H1KUjQ6V0n++vsMYWYECrAbSF72aC
+   VnVRPPi3gpRvnIqLLPCWG4g9jACttQYkaht6kSms/cxj/KU5ERfgzweat
+   vE9rMxTDuLcY/ewKdeNAT0vB3ZzaUrs7AYIZc/tERdUMjnHWBDX9YeZSb
+   YMGZU2iWgXMHCTCrHkv8hkOAtIdQv3XYyz5bvOZpTFJKn2d6vhUZZJEsj
+   00/d9d1ByitnIGO3hx/y2xYortACeVdhw6PWl7HWEM70B4GqFIoHfsCRj
+   A==;
+X-CSE-ConnectionGUID: K0K9zxHJT66oTpW/f7vbzg==
+X-CSE-MsgGUID: Cfjg3LgaQ/WdMWdun1wfkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="35940210"
+X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; 
+   d="scan'208";a="35940210"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:12:42 -0800
+X-CSE-ConnectionGUID: wCF5exS/SSGCBe8VcgXFjQ==
+X-CSE-MsgGUID: /lSz7rZIQWK2/i5Ed3duBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; 
+   d="scan'208";a="101299585"
+Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmviesa006.fm.intel.com with ESMTP; 02 Jan 2025 06:12:39 -0800
+Message-ID: <2c35ff52-78aa-4fa1-a61c-f53d1af4284d@linux.intel.com>
+Date: Thu, 2 Jan 2025 16:13:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] usb: xhci port capability storage change broke
+ fastboot android bootloader utility
+To: Forest <forestix@nom.one>
+Cc: linux-usb@vger.kernel.org, regressions@lists.linux.dev,
+ stable@vger.kernel.org
+References: <hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
-bigger than the variable hv_sched_clock_offset, which is cached during
-early boot, but depending on the timing this assumption may be false
-when a hibernated VM starts again (the clock counter starts from 0
-again) and is resuming back (Note: hv_init_tsc_clocksource() is not
-called during hibernation/resume); consequently,
-read_hv_sched_clock_tsc() may return a negative integer (which is
-interpreted as a huge positive integer since the return type is u64)
-and new kernel messages are prefixed with huge timestamps before
-read_hv_sched_clock_tsc() grows big enough (which typically takes
-several seconds).
+Hi
 
-Fix the issue by saving the Hyper-V clock counter just before the
-suspend, and using it to correct the hv_sched_clock_offset in
-resume. This makes hv tsc page based sched_clock continuous and ensures
-that post resume, it starts from where it left off during suspend.
-Override x86_platform.save_sched_clock_state and
-x86_platform.restore_sched_clock_state routines to correct this as soon
-as possible.
+On 27.12.2024 23.59, Forest wrote:
+> #regzbot introduced: 63a1f8454962
+> 
+> Dear maintainer,
+> 
+> I think I have found a regression in kernels version 6.10 and newer,
+> including the latest mainline v6.13-rc4:
+> 
+> fastboot (the tool for communicating with Android bootloaders) now fails to
+> perform various operations over USB.
+> 
+> The problem manifests as an error when attempting to 'fastboot flash' an
+> image (e.g. a new kernel containing security updates) to a LineageOS phone.
+> It also manifests with simpler operations like reading a variable from the
+> bootloader. For example:
+> 
+>    fastboot getvar kernel
+> 
+> A typical error message when the failure occurs:
+> 
+>    getvar:kernel  FAILED (remote: 'GetVar Variable Not found')
+> 
+> I can reproduce this at will. It happens about 50% of the time when I
+> run the above getvar command, and almost all the time when I try to push
+> a new kernel to a device.
+> 
+> A git bisect reveals this:
+> 
+> 63a1f8454962a64746a59441687dc2401290326c is the first bad commit
+> commit 63a1f8454962a64746a59441687dc2401290326c
+> Author: Mathias Nyman <mathias.nyman@linux.intel.com>
+> Date:   Mon Apr 29 17:02:28 2024 +0300
+>      xhci: stored cached port capability values in one place
 
-Note: if Invariant TSC is available, the issue doesn't happen because
-1) we don't register read_hv_sched_clock_tsc() for sched clock:
-See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
-clocksource and sched clock setup");
-2) the common x86 code adjusts TSC similarly: see
-__restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
-x86_platform.restore_sched_clock_state().
+It's not clear to me why this patch would cause regression.
 
-Cc: stable@vger.kernel.org
-Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation")
-Co-developed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20240917053917.76787-1-namjain@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240917053917.76787-1-namjain@linux.microsoft.com>
-(cherry picked from commit bcc80dec91ee745b3d66f3e48f0ec2efdea97149)
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
----
- arch/x86/kernel/cpu/mshyperv.c     | 58 ++++++++++++++++++++++++++++++
- drivers/clocksource/hyperv_timer.c | 14 +++++++-
- include/clocksource/hyperv_timer.h |  2 ++
- 3 files changed, 73 insertions(+), 1 deletion(-)
+Could you enable xhci and usb core dynamic debug before connecting the
+device, and then share dmesg after the issue is triggered.
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index bcb2d640a0cd..5ae77d966caf 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -222,6 +222,63 @@ static void hv_machine_crash_shutdown(struct pt_regs *regs)
- 	hyperv_cleanup();
- }
- #endif /* CONFIG_KEXEC_CORE */
-+
-+static u64 hv_ref_counter_at_suspend;
-+static void (*old_save_sched_clock_state)(void);
-+static void (*old_restore_sched_clock_state)(void);
-+
-+/*
-+ * Hyper-V clock counter resets during hibernation. Save and restore clock
-+ * offset during suspend/resume, while also considering the time passed
-+ * before suspend. This is to make sure that sched_clock using hv tsc page
-+ * based clocksource, proceeds from where it left off during suspend and
-+ * it shows correct time for the timestamps of kernel messages after resume.
-+ */
-+static void save_hv_clock_tsc_state(void)
-+{
-+	hv_ref_counter_at_suspend = hv_read_reference_counter();
-+}
-+
-+static void restore_hv_clock_tsc_state(void)
-+{
-+	/*
-+	 * Adjust the offsets used by hv tsc clocksource to
-+	 * account for the time spent before hibernation.
-+	 * adjusted value = reference counter (time) at suspend
-+	 *                - reference counter (time) now.
-+	 */
-+	hv_adj_sched_clock_offset(hv_ref_counter_at_suspend - hv_read_reference_counter());
-+}
-+
-+/*
-+ * Functions to override save_sched_clock_state and restore_sched_clock_state
-+ * functions of x86_platform. The Hyper-V clock counter is reset during
-+ * suspend-resume and the offset used to measure time needs to be
-+ * corrected, post resume.
-+ */
-+static void hv_save_sched_clock_state(void)
-+{
-+	old_save_sched_clock_state();
-+	save_hv_clock_tsc_state();
-+}
-+
-+static void hv_restore_sched_clock_state(void)
-+{
-+	restore_hv_clock_tsc_state();
-+	old_restore_sched_clock_state();
-+}
-+
-+static void __init x86_setup_ops_for_tsc_pg_clock(void)
-+{
-+	if (!(ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE))
-+		return;
-+
-+	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
-+	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
-+
-+	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
-+	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
-+}
- #endif /* CONFIG_HYPERV */
- 
- static uint32_t  __init ms_hyperv_platform(void)
-@@ -572,6 +629,7 @@ static void __init ms_hyperv_init_platform(void)
- 
- 	/* Register Hyper-V specific clocksource */
- 	hv_init_clocksource();
-+	x86_setup_ops_for_tsc_pg_clock();
- 	hv_vtl_init_platform();
- #endif
- 	/*
-diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
-index 8ff7cd4e20bb..5eec1457e139 100644
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -27,7 +27,8 @@
- #include <asm/mshyperv.h>
- 
- static struct clock_event_device __percpu *hv_clock_event;
--static u64 hv_sched_clock_offset __ro_after_init;
-+/* Note: offset can hold negative values after hibernation. */
-+static u64 hv_sched_clock_offset __read_mostly;
- 
- /*
-  * If false, we're using the old mechanism for stimer0 interrupts
-@@ -456,6 +457,17 @@ static void resume_hv_clock_tsc(struct clocksource *arg)
- 	hv_set_register(HV_REGISTER_REFERENCE_TSC, tsc_msr.as_uint64);
- }
- 
-+/*
-+ * Called during resume from hibernation, from overridden
-+ * x86_platform.restore_sched_clock_state routine. This is to adjust offsets
-+ * used to calculate time for hv tsc page based sched_clock, to account for
-+ * time spent before hibernation.
-+ */
-+void hv_adj_sched_clock_offset(u64 offset)
-+{
-+	hv_sched_clock_offset -= offset;
-+}
-+
- #ifdef HAVE_VDSO_CLOCKMODE_HVCLOCK
- static int hv_cs_enable(struct clocksource *cs)
- {
-diff --git a/include/clocksource/hyperv_timer.h b/include/clocksource/hyperv_timer.h
-index 6cdc873ac907..aa5233b1eba9 100644
---- a/include/clocksource/hyperv_timer.h
-+++ b/include/clocksource/hyperv_timer.h
-@@ -38,6 +38,8 @@ extern void hv_remap_tsc_clocksource(void);
- extern unsigned long hv_get_tsc_pfn(void);
- extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
- 
-+extern void hv_adj_sched_clock_offset(u64 offset);
-+
- static __always_inline bool
- hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
- 		     u64 *cur_tsc, u64 *time)
--- 
-2.43.0
+dmesg of a working case would also be good to have for comparison.
+
+mount -t debugfs none /sys/kernel/debug
+echo 'module xhci_hcd =p' >/sys/kernel/debug/dynamic_debug/control
+echo 'module usbcore =p' >/sys/kernel/debug/dynamic_debug/control
+< Reproduce issue >
+Send output of dmesg
+
+Thanks
+Mathias
+
 
 
