@@ -1,143 +1,99 @@
-Return-Path: <stable+bounces-106672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6514A0028B
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 02:53:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD760A002E1
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 03:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 484F3162E6A
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 01:53:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 492B37A03B4
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 02:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9E714901B;
-	Fri,  3 Jan 2025 01:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7E9199223;
+	Fri,  3 Jan 2025 02:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="b6USI4n8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E0w75b79"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4444FA93D
-	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 01:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEFFA47;
+	Fri,  3 Jan 2025 02:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735869189; cv=none; b=GIBShByOUxBDgY6/AwNnqJLzAXI2eyjnzyf3UR4XlWxgOsvSraU67jE0Ftg9ohAjIAZvRE9P4wOX2TKBBmMWTFEvV86sW3fq/Wvg70ZskrBRlFaI6FxChzIj7IJHuZjmRjya2iInPNatFhDYTL4uVWIxxI4lqvk8PIcZuTlYhe4=
+	t=1735872618; cv=none; b=cYoDTSkrA07t4m9TNGi7TX6S55TlONVjPjZBFUqYvKzC/jSEJ4O/mGa5qWxfEl+842WpONmprrzSa8KONns6TDRA/yhvXdcqH8xWEEAVmcaAnH0P4noyM/NF3xTZ4ByXneRnm4icy4MT9aAD3enUMZ3rhrs9JTsFkpUKuDYjJHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735869189; c=relaxed/simple;
-	bh=OFNvUjI3EtOYEnDMllvwVmm5oJwGKc+la90CkN22/8A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MKmSZJQUgMNJPV2nr72vOcrRqzOgNNzPv9LQQr++dsr5AneX9mpeyt0zTGpZcPWyiHQkB8vy/gItIc3SvHu9JsvycIhEuHiHlmulwOkydydwAKlVVb5MZ1+qE3T6Ge+qT2yiJuviHdtXQRYtPE2ppS4/8FBJtetSIKYURoRBWiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=b6USI4n8; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e399e904940so13580794276.2
-        for <stable@vger.kernel.org>; Thu, 02 Jan 2025 17:53:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1735869185; x=1736473985; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PKP73UFQch/IkR4S5eIFu+FFl9BnuZCrjgs+nueA+FM=;
-        b=b6USI4n8Q4uZ6Ox+7yZT4hRexhwFuoIXCjhm+5Re3sMCqezSty9sRDZzPEkhDBVlLa
-         78XXVpqt+6DiQ+TE7miYJFbqlII3cb3JZijqPcugQH3eT6bIScsXTqAGBS2g9+LD8WIz
-         npSJmlVtP61tgzntloL7F40k/zqDhBAlRs4Feyr/2YayMROyeFlna49BD/6nk/i6J+oj
-         HZwsjOE+UiYrwF/qcqGg4+U5ZhkgAE526nGLoz4zKh29Ytl95u9u7v19J9V1XjBU+3SD
-         i/yPdtpTBhZWGfYOoQJGJT46Mbz/dox9Nrh73SrVhVrVxEGYs4+AAtYCXgdvJO6op9MS
-         0fbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735869185; x=1736473985;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PKP73UFQch/IkR4S5eIFu+FFl9BnuZCrjgs+nueA+FM=;
-        b=bh7/hoysCDEaTrD/mgU//ElYsMMJVaQ3EZ9fbLMbHAsNGqDYM6rjVtryuucO0rcgZA
-         3X5L9AsboQhDIL4lLZtfKhQlmKqzvPBSOqKgh+Kfz0HxDSbs0IqpMftJ+KjkTONlKS/G
-         ZjiRZ/9VImmicoeQzCujx5M4pSmSa4HMHHAXfhpzPr4jvogv6qIdWrvUlM7WROC7EDsA
-         GbwFnNbzstHzbAkuGvy8fjKW2IVnOOcB4wAg+NnGhdZokoS5CIApkds9Za2hpiCg9NBS
-         URTPSav2+YMkXxTgwzrCDyRNyrP3qaE1VInIPrZLzvG1RXXvpCntCJkYWHr+aJH/MkMK
-         oqDQ==
-X-Gm-Message-State: AOJu0YzKqmtFC48Lc6LjNWOvLy+PQcmeDGNGgkHiem+UZ5tCmZIV2Sgq
-	w5PQXcszcp7huvHicJufg6gGuTwKWmlH95r7Emoch7uCJX4emJ7Ew7a8H7OrSzPgV9YVQbLs2jX
-	koDYreJRuQWo5jW81hPkn0Rve/6C0LomFMLT4oUMbrL+yDxU=
-X-Gm-Gg: ASbGncvlYQS1C2n/wqn7HgNaO/OjABKsrMCbRRO0e26ojbe0nD8g1pXJ2I9hmdyfK3v
-	NEvrY4ZomckkI1GN0GLX5/79CaY/3CmwQkFjE
-X-Google-Smtp-Source: AGHT+IFW0ReMuhu6VEYI5B6z4gkZEhxfZ98cnnR3ONrtMrjCPnkjn/ebYcqaJdNsu4CnozNOSnaR58BNPU6SXQ1n0pU=
-X-Received: by 2002:a05:690c:6f92:b0:6db:c847:c8c5 with SMTP id
- 00721157ae682-6f3f812540bmr363890747b3.16.1735869185249; Thu, 02 Jan 2025
- 17:53:05 -0800 (PST)
+	s=arc-20240116; t=1735872618; c=relaxed/simple;
+	bh=EpqeTAKnKBOlOLZyIFj5hBNbt83/nCCAOatv4ujyfng=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=TLYnxtmM/lTxs++VMEGc9UZsCUC4vQvdreTG4G+Y2ohrx/hwfCLgt3NHd2pf535NDBO2JV/uRbD7T65cjCWxAEbLJ7NVCyHUkHIrO5BtD5Y47CcL67anNCK+v5ONq+BmxXWO8V5ogk6S0U/Rhade1WYA3qpxy3oD3K3O3Z7FkG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E0w75b79; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE674C4CED1;
+	Fri,  3 Jan 2025 02:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735872616;
+	bh=EpqeTAKnKBOlOLZyIFj5hBNbt83/nCCAOatv4ujyfng=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=E0w75b79oZwKxpVuSlqXSLRd9+K/Ve+GUgyLbvp67FHNPzc3dCokNgUxoPOSfOn0W
+	 iizP7CTjQSJAsVllsXxox09Gn/hiDetV+x964QG3j48eo4aYaUxgQSUdS2I2Eaw86H
+	 VYVDlxRqmCQwSG2ibPMgYpAPKzlDTYZKJRlCbAFxWG79bIfK1ADKx2fIQ2O09f6My+
+	 YIzxvd2hx/x8yK5JM+MwMviwhgvBwC0eOzKkVxDlFmn9ZfmjfOrWFwWCDScY2oiTFL
+	 AXA2HCTFU0Ay9tocHaNjlI5ZJqZ0OwyZ/6u9sAbqj4+jsFZeOspq/YQVG5XRBSE4Dj
+	 aNH9eCczlTbnA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71D46380A964;
+	Fri,  3 Jan 2025 02:50:38 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024122319-risk-starlit-ce4a@gregkh> <20250101234903.1565129-1-tweek@google.com>
-In-Reply-To: <20250101234903.1565129-1-tweek@google.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 2 Jan 2025 20:52:54 -0500
-Message-ID: <CAHC9VhTnrgnFKF8=mMFuEd2tR=V-bMhMNEc5CakktnGRnKkGMg@mail.gmail.com>
-Subject: Re: [PATCH stable 5.4 -> 6.12] selinux: ignore unknown extended permissions
-To: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/3] mptcp: rx path fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173587263701.2091902.3534187243855965377.git-patchwork-notify@kernel.org>
+Date: Fri, 03 Jan 2025 02:50:37 +0000
+References: <20241230-net-mptcp-rbuf-fixes-v1-0-8608af434ceb@kernel.org>
+In-Reply-To: <20241230-net-mptcp-rbuf-fixes-v1-0-8608af434ceb@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
-On Wed, Jan 1, 2025 at 6:49=E2=80=AFPM Thi=C3=A9baud Weksteen <tweek@google=
-.com> wrote:
->
-> commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6 upstream.
->
-> When evaluating extended permissions, ignore unknown permissions instead
-> of calling BUG(). This commit ensures that future permissions can be
-> added without interfering with older kernels.
->
-> Cc: stable@vger.kernel.org
-> Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
-> Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
-> Signed-off-by: Paul Moore <paul@paul-moore.com>
-> (cherry picked from commit 900f83cf376bdaf798b6f5dcb2eae0c822e908b6)
-> ---
->  security/selinux/ss/services.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+Hello:
 
-The backport looks good to me.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+On Mon, 30 Dec 2024 19:12:29 +0100 you wrote:
+> Here are 3 different fixes, all related to the MPTCP receive buffer:
+> 
+> - Patch 1: fix receive buffer space when recvmsg() blocks after
+>   receiving some data. For a fix introduced in v6.12, backported to
+>   v6.1.
+> 
+> - Patch 2: mptcp_cleanup_rbuf() can be called when no data has been
+>   copied. For 5.11.
+> 
+> [...]
 
-> diff --git a/security/selinux/ss/services.c b/security/selinux/ss/service=
-s.c
-> index a9830fbfc5c6..88850405ded9 100644
-> --- a/security/selinux/ss/services.c
-> +++ b/security/selinux/ss/services.c
-> @@ -955,7 +955,10 @@ void services_compute_xperms_decision(struct extende=
-d_perms_decision *xpermd,
->                                         xpermd->driver))
->                         return;
->         } else {
-> -               BUG();
-> +               pr_warn_once(
-> +                       "SELinux: unknown extended permission (%u) will b=
-e ignored\n",
-> +                       node->datum.u.xperms->specified);
-> +               return;
->         }
->
->         if (node->key.specified =3D=3D AVTAB_XPERMS_ALLOWED) {
-> @@ -992,7 +995,8 @@ void services_compute_xperms_decision(struct extended=
-_perms_decision *xpermd,
->                                         node->datum.u.xperms->perms.p[i];
->                 }
->         } else {
-> -               BUG();
-> +               pr_warn_once("SELinux: unknown specified key (%u)\n",
-> +                            node->key.specified);
->         }
->  }
->
-> --
-> 2.47.1.613.gc27f4b7a9f-goog
+Here is the summary with links:
+  - [net,1/3] mptcp: fix recvbuffer adjust on sleeping rcvmsg
+    https://git.kernel.org/netdev/net/c/449e6912a252
+  - [net,2/3] mptcp: don't always assume copied data in mptcp_cleanup_rbuf()
+    https://git.kernel.org/netdev/net/c/551844f26da2
+  - [net,3/3] mptcp: prevent excessive coalescing on receive
+    https://git.kernel.org/netdev/net/c/56b824eb49d6
 
---=20
-paul-moore.com
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
