@@ -1,215 +1,112 @@
-Return-Path: <stable+bounces-106689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D05A0074A
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 10:52:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DB2A007D4
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 11:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78AF27A0814
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 09:52:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00D34163F00
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 10:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0561D516D;
-	Fri,  3 Jan 2025 09:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4071F940D;
+	Fri,  3 Jan 2025 10:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="nuu6TpXQ"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XAUlK8Xy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DFE1BD014
-	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 09:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B0917BA3;
+	Fri,  3 Jan 2025 10:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735897960; cv=none; b=uEWgu7vPYSus6Sg5I86Wv/5O7CpIHnzKbgAs9rknNUqtyH5cPuOOQHoFYZIJ/TQJYYtWyVQ8okfbw9I0vL+1JpjRptKwIKY51GW6GcLqeM5lsVgrHW+jqYZNMEnzcgQerSyYCqFfHlztnU78tyA4JuHyHDcct7/uoE4ePrrIAtI=
+	t=1735900164; cv=none; b=XzJl5wLV62xL0pr6cvKTObpyO59afoz3R4SOogXmpnOk2Hbmhf3jDIb17V8dA0VzX7czgMhzjWf2foqs/SSGkXm3i0EO4oZnU8QUtxIDk09DwthUldfk+pm8FHq9WQIZfU4vECzuu4gv2iAFcVO5+cPZZp5YX5cdHuQwxRSKdW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735897960; c=relaxed/simple;
-	bh=GAEFu1xWo+vq9A7a78naTFeqfSW00xJQU0a2ijC81L8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=CFE1uQSpDJW1CsEiX+xHL4KTH/JPOLzuL4nIREO1m/aje+wUodcssfas/makPueeY+tPUzazmV7MGorPcPZ6/bUAWEdntjzL1ExtAAWN+GbjKbXWOG3ialGojaSlOiI7QFZvel8zwaU7QSuc547KKK9c00AxqwTEXgguiT029GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=nuu6TpXQ; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aa6a618981eso1991698066b.3
-        for <stable@vger.kernel.org>; Fri, 03 Jan 2025 01:52:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1735897956; x=1736502756; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5Bkg7Flo+OpiEi1p9H/02JXt2rT+BbZkhOhMB9gCKV0=;
-        b=nuu6TpXQZUWMaRptwZ9mlxpNZSRaNE04Vt163B8QXXPRGu33ihdRhguFfFCTWRz+vh
-         dhNB3kOMmLJCa2LYpaJeqH8+3Xy/mquu9gzaHdCg6AT9TnzL4+BB4pJf8lOUoU0+N2XS
-         8/SvIBeo07eB1UySICDSXHwDqUeHtpSfa00RKBYQSre8DPkZDT0ZoD8+pX0jbKjB+Hyh
-         Abd7zY8rAiBT8YzHp5br6yNVAy/Sf+JTgVijdSl5Wtemjzm97mEeyJUMAoTHIpEZPwN9
-         eX+xJvz6nHUcSl0nBanC6JmxSbHZyNdpNoqfa8aozOXdzBLe7fix+Jv8ZzvlM3V9Titb
-         h56Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735897956; x=1736502756;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5Bkg7Flo+OpiEi1p9H/02JXt2rT+BbZkhOhMB9gCKV0=;
-        b=vShwW+JZi3ytkr6XmHoETa/3RQwiHyOvG0ZEwOSXg84nmtzLtGYimjrTGvLb08AhJD
-         hG60z30VXd2k2oqWaVzauQ1A1Z3Q4xMNYmR4P5h05vLmRfVGKes8NZEjpNy7Ng322/Yt
-         cHbhQYU7DozB4B2fyrjrqserlsv/ZkoZXi27Ng9mP++Fa47ppHgGdsYOIjtI9JHvIiTB
-         is+AWkmJyGH7e53zifD72TLaLi3F7C2n7yBHz5cxLrOYhWE5360uZEFg6zD9hgX0mC/T
-         s6k8GwtZXY4Xjq9zRtHXo5rPyD/RZ2ug0czcIj/0ohKWT1rAmcDmmBT0e/maUrmfrjjT
-         /kKA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6euKaei7MgE3SBsd0Hee1DSN9lq+b57HlGoxlXvWPf7sdBSUz+8qDlQrx1aU+x1VEcNCaHS0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxczzq4nGDCDbT+pGXjoLjVQhMV4fOrCeEpD5S37ySytz74hdEx
-	l8/nfdgR2ltovYf1/hrwqr5a/T96NL0e5AGttNV6GOl5j5dqi8cKj5C1ItUiuhc=
-X-Gm-Gg: ASbGncvieeF/QS+t56Eo8kwJns4dzYVar3z/Dr6hiBUmDcYm68gSHnUTyfh0p9Cl5T8
-	YjuwvJI1n1kE7ObpCwldRfDlOogJ8R0atdYbYkRxkfWOUCWKS1MH4fgP72Ui84+mr3LWRSMvfyA
-	1wCFEBsSXFzvJJ7OOoxmaqEpNUC2sK/tE/fY28klC3L5YhB285bFE1ZIdCTEg19sZlL3WOq2Zzx
-	NPxHP64qoMbu+7GyCBrhQDnYEsRtNI6W1OAYLieltTWFp1WxM1W7MHtJ8IhTeRyvQJGQCksb9cO
-	CQ4jUBh3TIg/CKs=
-X-Google-Smtp-Source: AGHT+IG8YuxqFunIcm8OWjQjnqMCuQk4ESRUGe0Bz62boxuF4DFyE+YgKQ/UVpnkrUFDSFaE7ssBFw==
-X-Received: by 2002:a17:907:724b:b0:aa6:7737:1991 with SMTP id a640c23a62f3a-aac2702ae51mr4867844966b.2.1735897955707;
-        Fri, 03 Jan 2025 01:52:35 -0800 (PST)
-Received: from localhost (31-151-138-250.dynamic.upc.nl. [31.151.138.250])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aaf697b1c27sm470866666b.122.2025.01.03.01.52.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jan 2025 01:52:35 -0800 (PST)
+	s=arc-20240116; t=1735900164; c=relaxed/simple;
+	bh=ak0q7tuOzVhCNT9bkU7Ws5dKTtwuPeO1RENfqpnaySM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Q4/tfObDCmRnJHu8vfaYPIfD4RtzYBflKJm9fxeZFDd/D/TkK+9fhKZJIbxdS+W9/LQFCj/RWnGq43ALQuy0ZZTSKgimEa0fvoW6QJPI+ou+0TJqrmKJQ6ST9L1TT9QCNbTvKQbYmeepGRrmqoF2Qk5L5C6NkOMWwp/ZbnQVE4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=XAUlK8Xy; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1735900125; x=1736504925; i=markus.elfring@web.de;
+	bh=ak0q7tuOzVhCNT9bkU7Ws5dKTtwuPeO1RENfqpnaySM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=XAUlK8Xyplrey4QUFb59VfiyhLMCH0ZH48L2DgjhUuYYgziL45GZyFE8Z7LV37vM
+	 3xlCzTaqy8NeDv5ft0WPWnuenGGGLJCJI02YO056elomf161u31xdRvRwZFYR3UMR
+	 UStbyB75Zt2WwYKgn5CMaXry3+z7kr0cPf87qu00XfLbjDCYv7t1DxBNdN2cxy/cz
+	 1es2MH2Tre1p3ApoTXvKeT+Et1CCAq3pVCR7ZCjZMK3N/GZCxJv6CDfgsQfIK+ArK
+	 xApZG64v6s91yJkXVdkpmRN1JV13rv+W0wZNduFfSzvdpOdk5z5gJzgj66zsz9u6I
+	 VkfofQkctZfRLcvg6Q==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.93.37]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MpCmT-1tpjf80rGB-00j96o; Fri, 03
+ Jan 2025 11:28:45 +0100
+Message-ID: <bc5eeafc-b6e1-4e71-8f7a-0f63c6130239@web.de>
+Date: Fri, 3 Jan 2025 11:28:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: make_ruc2021@163.com, linux-pci@vger.kernel.org,
+ Bjorn Helgaas <bhelgaas@google.com>, Joao Pinto <jpinto@synopsys.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ kernel-janitors@vger.kernel.org
+References: <20250102093058.177866-1-make_ruc2021@163.com>
+Subject: Re: [PATCH] PCI: endpoint: Fix a double free in __pci_epc_create()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250102093058.177866-1-make_ruc2021@163.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Jan 2025 10:52:34 +0100
-Message-Id: <D6SCGVFPV04C.1K6MEAYA72ETY@fairphone.com>
-Subject: Re: [PATCH 2/2] Input: goodix-berlin - fix vddio regulator
- references
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: <neil.armstrong@linaro.org>, "Bastien Nocera" <hadess@hadess.net>, "Hans
- de Goede" <hdegoede@redhat.com>, "Dmitry Torokhov"
- <dmitry.torokhov@gmail.com>, "Jeff LaBundy" <jeff@labundy.com>, "Charles
- Wang" <charles.goodix@gmail.com>, "Jens Reidel" <adrian@travitia.xyz>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-input@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20250103-goodix-berlin-fixes-v1-0-b014737b08b2@fairphone.com>
- <20250103-goodix-berlin-fixes-v1-2-b014737b08b2@fairphone.com>
- <0233a087-67c4-482e-8ef1-9c8dc610f9fb@linaro.org>
-In-Reply-To: <0233a087-67c4-482e-8ef1-9c8dc610f9fb@linaro.org>
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:ADqmyXZzrqoEI69yTnPRSHrApyc0qke0ibuLbIWq0hNQ68DlGv/
+ EuQpXR79OpUeBypPXOM6SNNHwYtSUY0RZ7MqRhVpl5wiC4fWmcSJWoTshZDD/mT85C8Z4xU
+ P6J6ukICqA4hHxa/CQvTx0y6BsprUvWycJvxMMHPo9xJHMNVqCjj+UhAqX6ys1ZJgF6uetg
+ +mWb8ZfgERn2gimURMbsg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:zLLNTpqj8JA=;hng/oeBi/xacoXIhsjVfeL5ujbI
+ 4StCbrpEuG8il0YXx/SekicBMOEyxUii93RBAkhK7/GSjGtczgTLFvOsf8dNt85/JyQS7srqn
+ 1NBWkEwFjXsPvPipkc3CUBFm+UmTr1Of9Bxo0U/rbG3m4OB1PRblUrs+5mytsxVwl2sWLBK5R
+ uKpjEBMVO1QPHJ5Wy62OCL6BNXvjqjRrp5B/QZQKvdm4tsbqyHS/TUcARXSoABbpAC4GwT/3U
+ /Y1GMkaPz3zTswmHUFkgcs5YU+mxQYElkk/YL4RiNsPgcVb9SgYbrAa1jQVxoLMIaXf1gwogq
+ nzMJWxVK1Tuy5iVmgBHSsGEms0RgkoYP3vUzTirqaFaQOnKD17kXbh+8FhDJpHXUUsqxRo0we
+ IH7HAQdpE+uFpOSSmSAn7kx7bZcB4EJ/5pOP1Ws5TuSiOBw3RUKz8lL2s/PJuDKRQIj0MlfKE
+ w/lW/Sog1CiPm8LmbEqhWeuJxBNOadaCSm5KcpL6lN251uBe98BcJiz+PNW4wkokcNYs6GcIx
+ bCOEOaIENQPf0rXLXyjKhx6aOtcJ3cBMDCglzcI4RmiBX04cuGtPvZq1ojkJOOjD4mu4/J8EV
+ y3Mm+XkteJBBBqVkhRPQSduDW9Y/iVxY8Epq1Tld9qtUMYuffQQ+T1fQfIX49xKsdUWWaFP1K
+ VFTrHbpw/Ym3SUF3c1xuNyvbtPdmnCGyoLzSnxgYPGYT0q0LI0jVG17YdWtd61P49r2zji5uc
+ hRFmf6bFshAB1TlPuuj1av+J/5b0mfOIGWObPhJiyfV2bShpkBFQkzg2I3zF6zik8vEs4ybjv
+ 2HBMnfzTqw8FIYqG+X7ge2Yid6SlC3tp1ghFYric3xnUeegyVIP+QkGg3psfAtxlpWsFjG9oD
+ kEdtstytf135q44NmPx10+3bH9cRLMMfSUQMZwtjWeeFqLTlog5glW8x319zakMEMBwnqwu+Q
+ ESR6jADWyouJIkaORXqBMRwM+MtgZUUoXc8HaJ0RscYnPdXLi5FG1FVj0nRHvDWfvVagxOaoX
+ L0jvPXtnQHHPK30VJIAsq/EWjJhFBTw2dlAjwBBB9e4N4b3od9drM0dpSq7zK8g7IKVHjDI3G
+ vdujHxSPo=
 
-On Fri Jan 3, 2025 at 10:27 AM CET, Neil Armstrong wrote:
-> Hi,
->
-> On 03/01/2025 10:21, Luca Weiss wrote:
-> > As per dt-bindings the property is called vddio-supply, so use the
-> > correct name in the driver instead of iovdd. The datasheet also calls
-> > the supply 'VDDIO'.
->
-> This is duplicate of https://lore.kernel.org/all/20240805155806.16203-1-d=
-anila@jiaxyga.com/
+> The put_device(&epc->dev) call will trigger pci_epc_release() which
+> frees "epc" so the kfree(epc) on the next line is a double free.
 
-Oh, any idea why it wasn't picked up since August?
+See also:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.13-rc5#n94
 
->
-> But it's still valid:
->
-> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-Thanks!
+> Found by code review.
 
-Regards
-Luca
+Would you become interested to check how many similar control flows
+can still be detected by the means of automated advanced source code analyses?
 
->
-> >=20
-> > Fixes: 44362279bdd4 ("Input: add core support for Goodix Berlin Touchsc=
-reen IC")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> >   drivers/input/touchscreen/goodix_berlin_core.c | 24 ++++++++++++-----=
--------
-> >   1 file changed, 12 insertions(+), 12 deletions(-)
-> >=20
-> > diff --git a/drivers/input/touchscreen/goodix_berlin_core.c b/drivers/i=
-nput/touchscreen/goodix_berlin_core.c
-> > index e273fb8edc6b92bcbad0fd35223a841d7da7d671..7f8cfdd106fae03a6b19758=
-2bca4eb61f80182c6 100644
-> > --- a/drivers/input/touchscreen/goodix_berlin_core.c
-> > +++ b/drivers/input/touchscreen/goodix_berlin_core.c
-> > @@ -165,7 +165,7 @@ struct goodix_berlin_core {
-> >   	struct device *dev;
-> >   	struct regmap *regmap;
-> >   	struct regulator *avdd;
-> > -	struct regulator *iovdd;
-> > +	struct regulator *vddio;
-> >   	struct gpio_desc *reset_gpio;
-> >   	struct touchscreen_properties props;
-> >   	struct goodix_berlin_fw_version fw_version;
-> > @@ -248,19 +248,19 @@ static int goodix_berlin_power_on(struct goodix_b=
-erlin_core *cd)
-> >   {
-> >   	int error;
-> >  =20
-> > -	error =3D regulator_enable(cd->iovdd);
-> > +	error =3D regulator_enable(cd->vddio);
-> >   	if (error) {
-> > -		dev_err(cd->dev, "Failed to enable iovdd: %d\n", error);
-> > +		dev_err(cd->dev, "Failed to enable vddio: %d\n", error);
-> >   		return error;
-> >   	}
-> >  =20
-> > -	/* Vendor waits 3ms for IOVDD to settle */
-> > +	/* Vendor waits 3ms for VDDIO to settle */
-> >   	usleep_range(3000, 3100);
-> >  =20
-> >   	error =3D regulator_enable(cd->avdd);
-> >   	if (error) {
-> >   		dev_err(cd->dev, "Failed to enable avdd: %d\n", error);
-> > -		goto err_iovdd_disable;
-> > +		goto err_vddio_disable;
-> >   	}
-> >  =20
-> >   	/* Vendor waits 15ms for AVDD to settle */
-> > @@ -283,8 +283,8 @@ static int goodix_berlin_power_on(struct goodix_ber=
-lin_core *cd)
-> >   err_dev_reset:
-> >   	gpiod_set_value_cansleep(cd->reset_gpio, 1);
-> >   	regulator_disable(cd->avdd);
-> > -err_iovdd_disable:
-> > -	regulator_disable(cd->iovdd);
-> > +err_vddio_disable:
-> > +	regulator_disable(cd->vddio);
-> >   	return error;
-> >   }
-> >  =20
-> > @@ -292,7 +292,7 @@ static void goodix_berlin_power_off(struct goodix_b=
-erlin_core *cd)
-> >   {
-> >   	gpiod_set_value_cansleep(cd->reset_gpio, 1);
-> >   	regulator_disable(cd->avdd);
-> > -	regulator_disable(cd->iovdd);
-> > +	regulator_disable(cd->vddio);
-> >   }
-> >  =20
-> >   static int goodix_berlin_read_version(struct goodix_berlin_core *cd)
-> > @@ -744,10 +744,10 @@ int goodix_berlin_probe(struct device *dev, int i=
-rq, const struct input_id *id,
-> >   		return dev_err_probe(dev, PTR_ERR(cd->avdd),
-> >   				     "Failed to request avdd regulator\n");
-> >  =20
-> > -	cd->iovdd =3D devm_regulator_get(dev, "iovdd");
-> > -	if (IS_ERR(cd->iovdd))
-> > -		return dev_err_probe(dev, PTR_ERR(cd->iovdd),
-> > -				     "Failed to request iovdd regulator\n");
-> > +	cd->vddio =3D devm_regulator_get(dev, "vddio");
-> > +	if (IS_ERR(cd->vddio))
-> > +		return dev_err_probe(dev, PTR_ERR(cd->vddio),
-> > +				     "Failed to request vddio regulator\n");
-> >  =20
-> >   	error =3D goodix_berlin_power_on(cd);
-> >   	if (error) {
-> >=20
-
+Regards,
+Markus
 
