@@ -1,87 +1,72 @@
-Return-Path: <stable+bounces-106683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645A9A00560
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 08:51:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3657DA00646
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 09:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A5AD1883FAA
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 07:51:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 023E63A08B4
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 08:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD411C5F0F;
-	Fri,  3 Jan 2025 07:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693881C5F09;
+	Fri,  3 Jan 2025 08:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kefQmGUJ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="AIC0S8b3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0BC1B21B2;
-	Fri,  3 Jan 2025 07:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A25A4C62;
+	Fri,  3 Jan 2025 08:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735890699; cv=none; b=FCiJz1FUwZOhChQRRhf0emsIZS9ZsJVlZCsIwFBhERWa+2sMuaN/FvK4QmcCN9FqdGg8KTYWsYrhvkqD8dSyGOpyVzUBYcE4bzol8s1c3hoK7P19ngVAOLDrpkDfvcDRxCd+7nXjys4Y7+ttNQsqhHHAE9bUUO0oOCmVOibU0QI=
+	t=1735894261; cv=none; b=ZD3PRFRVehrC+r2CHr95R3X7wUNCU96w4YXWwOIFtEAUBbdhVFHsYdfc02TFVNmPClw1xP+Y7czsbxj2WJTCkwmDCkeYTcIINvRpBi1TYgT+YOVnuROKDLjwfpVDEtcKWpgNcSqe0EZzB6IXhmMzpJ84lBD03Ek/7nVLZiPStzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735890699; c=relaxed/simple;
-	bh=n2GjOR/7chbnuLYqm/dg8k4ovBMU6K9WqEzyltW+Y04=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RleEnTBdtialFWY+yO05MEDSYM8ojZKjpExrNT1IHTiZcWAXAWLVsgLSmxxZ5wU5WY4YSoqLeDtLQW5ZpoEi1Cq5wQl5+MyGl7kYyj2WsTlbMPQXEjFccTOpW396ZG+/vKNiDOQoiFDMQmtUpgeaAEr356E11z9hMaN2TCdnoBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kefQmGUJ; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21661be2c2dso151542975ad.1;
-        Thu, 02 Jan 2025 23:51:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735890697; x=1736495497; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0ivF9EkL0Rz65+IH+vfWR7QI6Gk6ONwax6hJC9wnFvY=;
-        b=kefQmGUJbToDs8N9uOLs1nYWHsTJJ3uhv7nZxr/Y96b0bIy3sOTqnodH3fGdK/IVAE
-         5h7z14QWMgHTrJ6Lm9ZWPchv4He/7H11vUg8LgXoAszLeNpthm09P8ez8ZTvmLgnhIpo
-         cVDQkloGpOHHk+LsCWoKcHvVLIIC3pmg7fFr4VQeJc5dlxoaZe6++JKDNpayWkTUba+4
-         gHsj38Qftk//cK7+IpjaemHAqurgnLuRc4m61QGCt7LebdkiHKx+jROiAB3a3sicCeMj
-         rZ29PF4cQcY/G46zTYW50315T7CG1dTg6HzKjeql1V6TDpG145n5ZUwr/ksyPb0ZRzJN
-         cwtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735890697; x=1736495497;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0ivF9EkL0Rz65+IH+vfWR7QI6Gk6ONwax6hJC9wnFvY=;
-        b=MdimvhhszYoLmfyaLGEc7dFyjESQs6HfqIb16M0gPC4ou5c3O/5Bn+0r40NPhq5F7L
-         RVVReWScPc46uiuv9hWY9+0AdslC3EsAzCodCjNHC3RkaDgTRb80Je1cqaLs6JseafqW
-         WCAwgX/uCsUUWzS4vXzRPy26/xXAJ/uEvxoqTDFrkTxAUxuf1rqtT2zZ28VTPWXGv+1H
-         hQzgsBmoa5XryAuUuz6OuyVHecOelDgsdU3rayEhPRsh0RIuFgwsr2EAMEstHPws1D4R
-         RaNR/+HKYgbyM/YpEvoFb/yH0pr5cgBa05pLWDjf2GYjtdi2HXO2yTWcPEixngpzsdY8
-         D96Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVIFizBT/+GG67v/+ZTIxwmklqGjoWsKqugdiuF9YC6pPhf37JbT01QGhfgo6+xXnNBPdwoy6AYvk7ILQLjiPk=@vger.kernel.org, AJvYcCVsg/hkpEj9lsFJRGjvsLLOKlM5XWkn9n6rY6HDpEiQa0DNKg+n8Hwq4QEeFAwtvMSCkO9RS+bH@vger.kernel.org, AJvYcCXWuHoikKUdArsDtgn50BRxuqg2kx8mX1DE46nW0+NmWCymuAxNgh6DhYnbH7KcI/L7xkTxNI7oQWqF/d0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMeW0K5Avy5U+M/xRQGSz0sX0b40C9REEHeLw6LpK+QPNdmvCz
-	AI7gvzWC8Fz0T7BGL/hbbBMYCh/7SKbbkHIFFALYzppitaqiZ6Ur
-X-Gm-Gg: ASbGncuYMY57+LttM2KLHXD4t2OgmBede9rXbt6fYjDCIiGby64d+2SFptheim5QTL2
-	6lv6mPafMcHbeydL//IXVEXxwEFuQfo//3uco8mCGrJtazVFKloeQDlZC5VeaGqx1kGJus5sjVL
-	5l8YXWNWu9RSBAsSlVPwyjlpw4B214CmzYtNWutupIV5vScACy2RVVc8ftnPDnRT+/c46UWDqHm
-	eji7iorw5CfSDtz7TCDzcrE/vrupUGnR1ICreZNk8LNV10q4w==
-X-Google-Smtp-Source: AGHT+IFELh5oZZKaHHmgPTNDldXeTPO48beD4h7k0zdIiMthWxdDka/Cc6gvgdYt78okgNjzxhNh+w==
-X-Received: by 2002:a17:902:f705:b0:216:6fbc:3904 with SMTP id d9443c01a7336-219e6e9d91emr755493495ad.13.1735890697199;
-        Thu, 02 Jan 2025 23:51:37 -0800 (PST)
-Received: from anarsoul-xps15.lan ([2604:3d08:7780:1ca9::398])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc964a73sm238932935ad.45.2025.01.02.23.51.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jan 2025 23:51:36 -0800 (PST)
-From: Vasily Khoruzhick <anarsoul@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Fiona Klute <fiona.klute@gmx.de>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Vasily Khoruzhick <anarsoul@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: rtw88: 8703b: Fix RX/TX issues
-Date: Thu,  2 Jan 2025 23:50:53 -0800
-Message-ID: <20250103075107.1337533-1-anarsoul@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1735894261; c=relaxed/simple;
+	bh=572Uhc2dmQQhqBh+nJfJdh/04w4yfEtQwCjyzz4nVic=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DFcOo21iy1nbodt8lpyHinTCiqm62wYm1tdAO5hwpgN/dQ5UzJpnxVb1aZ783l8avn/UOtB94LvGUflvXdHVNH73iwn5LMrJoYaLHdPSbzBTQQ0kR/wTioYwyHeiFwQbbveO1qSIZaifXzZg+as66j0ke+Ohttj2poVoeGV8O7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=AIC0S8b3; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5037FfaZ010711;
+	Fri, 3 Jan 2025 08:50:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=EiTWrdPd+yj2FHOvAvudpC
+	J9LLU2BCANkcALvO3hnXg=; b=AIC0S8b3IAD6JaLfwl7qt0F4ciMStN5A2AfDLR
+	IjfQ7gImt5FfelRLKmmma0ibHhH/C2/QPs3QLVHlCx4WCkOBdRAWbGx1pVOLgkBD
+	uRZg5v40z2+LQ1Oyuoz5NH8IIJF5Pxyajxm3+lhx9K/6OFxbvyEIocycaT/RfLpW
+	dAL8FJdWl9y3x0mLM+UM0bivGBq7+gaeFvWv2dh/4PxzGj4RBy+Fj6CYZkFKKUYB
+	D9FqzueUbqIebYYbfj7A+QkGF4Rzm7SSsXFhOY8pPy5pDF+6gCnnREsT3hTDnDyk
+	2FH51hxkmb7n6t0+P7tGJ7FjgW40SmN6NdRsHLjQ5rw4aV0Q==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43xbbp06qy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 Jan 2025 08:50:33 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5038oWRY000962
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 3 Jan 2025 08:50:32 GMT
+Received: from ap-kernel-sh01-lnx.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 3 Jan 2025 00:50:28 -0800
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+To: <anshuman.khandual@arm.com>, <catalin.marinas@arm.com>
+CC: <will@kernel.org>, <ardb@kernel.org>, <ryan.roberts@arm.com>,
+        <mark.rutland@arm.com>, <joey.gouly@arm.com>,
+        <dave.hansen@linux.intel.com>, <akpm@linux-foundation.org>,
+        <chenfeiyang@loongson.cn>, <chenhuacai@kernel.org>,
+        <linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <quic_tingweiz@quicinc.com>,
+        Zhenhua Huang <quic_zhenhuah@quicinc.com>, <stable@vger.kernel.org>
+Subject: [PATCH v3] arm64: mm: Populate vmemmap at the page level for hotplugged sections
+Date: Fri, 3 Jan 2025 16:50:02 +0800
+Message-ID: <20250103085002.27243-1-quic_zhenhuah@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,59 +74,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: pbTVjusVWVeqDA3YjrrNTLMewUxKBtXN
+X-Proofpoint-GUID: pbTVjusVWVeqDA3YjrrNTLMewUxKBtXN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ phishscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ mlxscore=0 suspectscore=0 impostorscore=0 adultscore=0 mlxlogscore=934
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501030076
 
-Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
-fatal and do not seem to have any impact, just fix them to match vendor
-driver.
+Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+vmemmap to populate at the PMD section level which was suitable
+initially since hotplugging granule is always 128M. However,
+commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+which added 2M hotplugging granule disrupted the arm64 assumptions.
 
-However the last one in rtw8703b_set_channel_bb() clears too many bits
-in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
-above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
+Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
+pmd_sect() is true, the entire PMD section is cleared, even if there is
+other effective subsection. For example pagemap1 and pagemap2 are part
+of a single PMD entry and they are hot-added sequentially. Then pagemap1
+is removed, vmemmap_free() will clear the entire PMD entry freeing the
+struct page metadata for the whole section, even though pagemap2 is still
+active.
 
-With the last typo fixed, the driver is able to reach MCS7 on Pinebook
+To address the issue, we need to prevent PMD/PUD/CONT mappings for both
+linear and vmemmap for non-boot sections if the size exceeds 2MB
+(considering sub-section is 2MB). We only permit 2MB blocks in a 4KB page
+configuration.
 
-Cc: stable@vger.kernel.org
-Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Cc: stable@vger.kernel.org # v5.4+
+Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8703b.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Hi Catalin and Anshuman,
+Based on your review comments, I concluded below patch and tested with my setup.
+I have not folded patchset #2 since this patch seems to be enough for backporting..
+Please see if you have further suggestions.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-index a19b94d022ee..1d232adbdd7e 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-@@ -903,7 +903,7 @@ static void rtw8703b_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
- 		rtw_write32_mask(rtwdev, REG_FPGA0_RFMOD, BIT_MASK_RFMOD, 0x0);
- 		rtw_write32_mask(rtwdev, REG_FPGA1_RFMOD, BIT_MASK_RFMOD, 0x0);
- 		rtw_write32_mask(rtwdev, REG_OFDM0_TX_PSD_NOISE,
--				 GENMASK(31, 20), 0x0);
-+				 GENMASK(31, 30), 0x0);
- 		rtw_write32(rtwdev, REG_BBRX_DFIR, 0x4A880000);
- 		rtw_write32(rtwdev, REG_OFDM0_A_TX_AFE, 0x19F60000);
- 		break;
-@@ -1198,9 +1198,9 @@ static u8 rtw8703b_iqk_rx_path(struct rtw_dev *rtwdev,
- 	rtw_write32(rtwdev, REG_RXIQK_TONE_A_11N, 0x38008c1c);
- 	rtw_write32(rtwdev, REG_TX_IQK_TONE_B, 0x38008c1c);
- 	rtw_write32(rtwdev, REG_RX_IQK_TONE_B, 0x38008c1c);
--	rtw_write32(rtwdev, REG_TXIQK_PI_A_11N, 0x8216000f);
-+	rtw_write32(rtwdev, REG_TXIQK_PI_A_11N, 0x8214030f);
- 	rtw_write32(rtwdev, REG_RXIQK_PI_A_11N, 0x28110000);
--	rtw_write32(rtwdev, REG_TXIQK_PI_B, 0x28110000);
-+	rtw_write32(rtwdev, REG_TXIQK_PI_B, 0x82110000);
- 	rtw_write32(rtwdev, REG_RXIQK_PI_B, 0x28110000);
+ arch/arm64/mm/mmu.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index e2739b69e11b..2b4d23f01d85 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -42,9 +42,11 @@
+ #include <asm/pgalloc.h>
+ #include <asm/kfence.h>
  
- 	/* LOK setting */
-@@ -1372,7 +1372,7 @@ void rtw8703b_iqk_fill_a_matrix(struct rtw_dev *rtwdev, const s32 result[])
- 		return;
+-#define NO_BLOCK_MAPPINGS	BIT(0)
++#define NO_PMD_BLOCK_MAPPINGS	BIT(0)
+ #define NO_CONT_MAPPINGS	BIT(1)
+ #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
++#define NO_PUD_BLOCK_MAPPINGS	BIT(3)  /* Hotplug case: do not want block mapping for PUD */
++#define NO_BLOCK_MAPPINGS (NO_PMD_BLOCK_MAPPINGS | NO_PUD_BLOCK_MAPPINGS)
  
- 	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_X, result[IQK_S1_RX_X]);
--	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_Y1, result[IQK_S1_RX_X]);
-+	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_Y1, result[IQK_S1_RX_Y]);
- 	rtw_write32(rtwdev, REG_A_RXIQI, tmp_rx_iqi);
- 	rtw_write32_mask(rtwdev, REG_RXIQK_MATRIX_LSB_11N, BIT_MASK_RXIQ_S1_Y2,
- 			 BIT_SET_RXIQ_S1_Y2(result[IQK_S1_RX_Y]));
+ u64 kimage_voffset __ro_after_init;
+ EXPORT_SYMBOL(kimage_voffset);
+@@ -254,7 +256,7 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 
+ 		/* try section mapping first */
+ 		if (((addr | next | phys) & ~PMD_MASK) == 0 &&
+-		    (flags & NO_BLOCK_MAPPINGS) == 0) {
++		    (flags & NO_PMD_BLOCK_MAPPINGS) == 0) {
+ 			pmd_set_huge(pmdp, phys, prot);
+ 
+ 			/*
+@@ -356,10 +358,11 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 
+ 		/*
+ 		 * For 4K granule only, attempt to put down a 1GB block
++		 * Hotplug case: do not attempt 1GB block
+ 		 */
+ 		if (pud_sect_supported() &&
+ 		   ((addr | next | phys) & ~PUD_MASK) == 0 &&
+-		    (flags & NO_BLOCK_MAPPINGS) == 0) {
++		   (flags & NO_PUD_BLOCK_MAPPINGS) == 0) {
+ 			pud_set_huge(pudp, phys, prot);
+ 
+ 			/*
+@@ -1175,9 +1178,16 @@ int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+ 		struct vmem_altmap *altmap)
+ {
++	unsigned long start_pfn;
++	struct mem_section *ms;
++
+ 	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
+ 
+-	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
++	start_pfn = page_to_pfn((struct page *)start);
++	ms = __pfn_to_section(start_pfn);
++
++	/* Hotplugged section not support hugepages */
++	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) || !early_section(ms))
+ 		return vmemmap_populate_basepages(start, end, node, altmap);
+ 	else
+ 		return vmemmap_populate_hugepages(start, end, node, altmap);
+@@ -1339,9 +1349,24 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 		    struct mhp_params *params)
+ {
+ 	int ret, flags = NO_EXEC_MAPPINGS;
++	unsigned long start_pfn = page_to_pfn((struct page *)start);
++	struct mem_section *ms = __pfn_to_section(start_pfn);
+ 
+ 	VM_BUG_ON(!mhp_range_allowed(start, size, true));
+ 
++	/* Should not be invoked by early section */
++	WARN_ON(early_section(ms));
++
++	if (IS_ENABLED(CONFIG_ARM64_4K_PAGES))
++	/*
++	 * As per subsection granule is 2M, allow PMD block mapping in
++	 * case 4K PAGES.
++	 * Other cases forbid section mapping.
++	 */
++		flags |= NO_PUD_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
++	else
++		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
++
+ 	if (can_set_direct_map())
+ 		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+ 
 -- 
-2.47.1
+2.25.1
 
 
