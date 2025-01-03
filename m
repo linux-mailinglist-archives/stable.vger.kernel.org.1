@@ -1,89 +1,126 @@
-Return-Path: <stable+bounces-106678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E2CA003C5
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 06:49:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD91A004B9
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 08:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ABA77A1A29
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 05:49:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F413D18836B5
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 07:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BF413D28F;
-	Fri,  3 Jan 2025 05:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4483189902;
+	Fri,  3 Jan 2025 07:04:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A23A632;
-	Fri,  3 Jan 2025 05:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7796F26281;
+	Fri,  3 Jan 2025 07:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735883372; cv=none; b=qugumuvvRpM28jFAygOVoUf/ar18vxpZI2+XG07aTYP7nHGoNvt5BCVO5QxCV1pQv96BkWWS5VPcUh1BaFAoK8Y1Zu7fSaGdRy0MX/plFiIM6E09xkvAkuP135mWIZu0qBAwCJ/mfJVFNdgHHPJldGtXwEcVVqgS50hHVhGDyjA=
+	t=1735887885; cv=none; b=fBEc5c1EimZjGn4+G0Zwr9wAd+MV4GUpYeAzfMGntHav3KkXoI5w4uRMTPd6tV5EelOYYiV8kaAO3hhYfm0M9X7FnIkWjbmH2ERzgZoIS0RXEFTvbQaDDJnFiFrzbBNnOO7EbKWZAgRwbs3e7AJlMZ9Q0vudKTNVv7GWucHjgo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735883372; c=relaxed/simple;
-	bh=tZqBg6KFSz6RLBmK46x/Vo4Zf3qEH1aLtlSQ+ighRHw=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=TSIojpVH7ftjfxqyg9fnkq+eVqLuIsEoul/FESBCmx+f8pjmujRUtciI2Y9ZZWwCLyZPSG9lV1bm/vVZAR7LvAd8BomlO0uS5NkCOfLv6RPcx3qjK7PwBLJy+l7ShnI2MV9wfRC8gQYiOEk1xjKe0PY931/FNGEk5cQg+ss6EC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 959ED92009C; Fri,  3 Jan 2025 06:49:27 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 8F94692009B;
-	Fri,  3 Jan 2025 05:49:27 +0000 (GMT)
-Date: Fri, 3 Jan 2025 05:49:27 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: WangYuli <wangyuli@uniontech.com>
-cc: baimingcong@uniontech.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    guanwentao@uniontech.com, jiaxun.yang@flygoat.com, 
-    linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, revy@deepin.org, 
-    sashal@kernel.org, stable@vger.kernel.org, 
-    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, chenhuacai@kernel.org
-Subject: Re: Re: [PATCH 5.4~6.6] MIPS: Probe toolchain support of -msym32
-In-Reply-To: <8AC8E4D8519CF8E4+20250102165258.57525-1-wangyuli@uniontech.com>
-Message-ID: <alpine.DEB.2.21.2501030535080.49841@angie.orcam.me.uk>
-References: <alpine.DEB.2.21.2501020550110.20821@angie.orcam.me.uk> <8AC8E4D8519CF8E4+20250102165258.57525-1-wangyuli@uniontech.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	s=arc-20240116; t=1735887885; c=relaxed/simple;
+	bh=JgEyWt5hzpzISIA1DUDRlAo9FVhj6vvqe5FuuP/r7VA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=in7o5XJJEIyIETMCNevK0OUDHIQJDxlCoflXfob11KZW9wJZO5skPHPEJR8fOriyyTUnNjkltTKMLTreh2Wsib8UBKdhOWX8oLadRSlJmDRCW+dhgY3DYrY7EtKuHy+jGhxOfq6mJMfeGNm2sxKjUdFaIXNbCIEuibIIaqezfFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5036uarg007523;
+	Thu, 2 Jan 2025 23:04:23 -0800
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43thqq4mu4-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 02 Jan 2025 23:04:23 -0800 (PST)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Thu, 2 Jan 2025 23:04:22 -0800
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Thu, 2 Jan 2025 23:04:20 -0800
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <kxwang23@m.fudan.edu.cn>, <alexandre.belloni@bootlin.com>,
+        <patches@lists.linux.dev>, <pgaj@cadence.com>,
+        <linux-i3c@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <gregkh@linuxfoundation.org>
+Subject: [PATCH 6.1.y] i3c: master: cdns: Fix use after free vulnerability in cdns_i3c_master Driver Due to Race Condition
+Date: Fri, 3 Jan 2025 15:04:20 +0800
+Message-ID: <20250103070420.64714-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=RoI/LDmK c=1 sm=1 tr=0 ts=67778bf7 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=VdSt8ZQiCzkA:10 a=VwQbUJbxAAAA:8 a=P-IC7800AAAA:8 a=t7CeM3EgAAAA:8 a=7vRtop612t4TABFKEpQA:9 a=d3PnA9EDa4IxuAV0gXij:22
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: MrQQXBkYJNEOx04U5bT8dgVwxB6WF01K
+X-Proofpoint-ORIG-GUID: MrQQXBkYJNEOx04U5bT8dgVwxB6WF01K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-02_03,2025-01-02_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0 suspectscore=0
+ clxscore=1015 impostorscore=0 malwarescore=0 mlxlogscore=789 adultscore=0
+ bulkscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2411120000 definitions=main-2501030059
 
-On Fri, 3 Jan 2025, WangYuli wrote:
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-> Are you suggesting that a commit from v6.8 reintroduced a regression that
-> was fixed in v6.6?
+[ Upstream commit 609366e7a06d035990df78f1562291c3bf0d4a12 ]
 
- Correct.
+In the cdns_i3c_master_probe function, &master->hj_work is bound with
+cdns_i3c_master_hj. And cdns_i3c_master_interrupt can call
+cnds_i3c_master_demux_ibis function to start the work.
 
-> If so, we should address this issue in the mainline first before backporting.
+If we remove the module which will call cdns_i3c_master_remove to
+make cleanup, it will free master->base through i3c_master_unregister
+while the work mentioned above will be used. The sequence of operations
+that may lead to a UAF bug is as follows:
 
- I do not disagree.
+CPU0                                      CPU1
 
-> As a general rule, we avoid introducing out-of-tree commits to linux-stable
-> except for reverts.
+                                     | cdns_i3c_master_hj
+cdns_i3c_master_remove               |
+i3c_master_unregister(&master->base) |
+device_unregister(&master->dev)      |
+device_release                       |
+//free master->base                  |
+                                     | i3c_master_do_daa(&master->base)
+                                     | //use master->base
 
- Understood.
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in cdns_i3c_master_remove.
 
-> For this patch, merging it into linux-stable is crucial, as it would prevent
-> certain configurations like loongson3_defconfig from building the kernel with
-> clang.
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Link: https://lore.kernel.org/r/20240911153544.848398-1-kxwang23@m.fudan.edu.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+---
+ drivers/i3c/master/i3c-master-cdns.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- Conversely I don't think it's acceptable for -stable to merge a change 
-that replaces one known bug with another; it violates our rule #2:
+diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
+index b9cfda6ae9ae..4473c0b1ae2e 100644
+--- a/drivers/i3c/master/i3c-master-cdns.c
++++ b/drivers/i3c/master/i3c-master-cdns.c
+@@ -1668,6 +1668,7 @@ static int cdns_i3c_master_remove(struct platform_device *pdev)
+ 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
+ 	int ret;
+ 
++	cancel_work_sync(&master->hj_work);
+ 	ret = i3c_master_unregister(&master->base);
+ 	if (ret)
+ 		return ret;
+-- 
+2.25.1
 
- - It must be obviously correct and tested.
-
- If you care about support for building with Clang, then please either fix 
-your fix or fix the compiler to handle `-msym32' or an equivalent option 
-(which seems a good idea for n64 MIPS performance anyway -- you're wasting 
-a lot of cycles to explicitly put the sign-extension of bit 31 into the 
-high order 32 bits where the CPU architecture does it for you already).  
-And only then offer a backport of whatever you feel is needed to -stable.
-
-  Maciej
 
