@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-106710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2047A00AE9
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 15:55:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193A2A00AEA
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 15:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35A2C18843AA
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 14:55:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB7503A42BD
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 14:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679E41FA851;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A391FA8E2;
 	Fri,  3 Jan 2025 14:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZCUNaaJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2VAJ4/v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2837F17FE
-	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 14:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283E91FA82F
+	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 14:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735916130; cv=none; b=kKSH4MYVsDbCksd9i9FqhCdYdIB53tV8G8RYZsSgbkxTmbDvlTmaEqycpwiODxuPRwa2DlvVLXhHQDbJ2QDJPRQIIlAnsE9SkZ5frFM3O2TsLtQePI7Dy/Crs1KQSqx+Z+FUEIVkqvb07SE6yY0nf7fs1nLSBq6vhbKElzX17Dw=
+	t=1735916130; cv=none; b=g0uunutn30rQs+hoQK3DhpNhwO06nQW+x1Bqz4Cwng409rRcwN3PP0f4wFNohXmJ26UiTNRyeFmeF5D7aMXTWC06HchOSYttuNn+Ah9nL5mIu61sf3ysoVvg3gFa2U+OuBhV85qXQy7NE75Z7Aqpa0bxeMPv0K4FImitXl7dTo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735916130; c=relaxed/simple;
-	bh=BwW+3SBNnott5QjMaU1EIP/wXQZLr94UDmV+bunimCE=;
+	bh=uRNno6IZOYeyxWdazz9wgcopCZO1w2wY3Ofv8b+N7Zc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DPqfzMvgK+btUoLrJ9cbSbFTB8pen6KRd5RiFfhdeJ0jilXKGyuFUkLo+BKXDsxuxyszKH44hbys+fQbCw/Ojh3mZx7CUznLeIC7ausp9kydi7wIBegOpsh7Q8B8GcX/RG4a8NKInWcrWA5JpZNk8wtNYcqwHOExrvcK4gycB0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZCUNaaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BB3C4CEDC;
-	Fri,  3 Jan 2025 14:55:26 +0000 (UTC)
+	 MIME-Version; b=bPN7qSELRtideLGB5yrgAkJKqaY6wJ8RI9ZFWuRYbeKMHft5fXw1NSfhlQ96J8qGAfe1v6nflaV7Maz6z1BJw9351E1PEgw1R+6juxrhugzz4lRY1G05+6Qi/kn0ZVkOFS7uxyPPsHRoFS/N35FJaSQahcxnz3Hzm/OMR4LhpIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2VAJ4/v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B49C4CECE;
+	Fri,  3 Jan 2025 14:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735916126;
-	bh=BwW+3SBNnott5QjMaU1EIP/wXQZLr94UDmV+bunimCE=;
+	s=k20201202; t=1735916128;
+	bh=uRNno6IZOYeyxWdazz9wgcopCZO1w2wY3Ofv8b+N7Zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZCUNaaJ9yuGYUkRbKVtHGlmTXP0N8KZYZG+tOx4CDiGufS8oYXmDppTmoblbnlO2
-	 ADMSDNGeunGhJnsnnQ2Nx4VgV7NbtQPmNuJKSKrRNP/1++k77VDE8yJq39OnT6UUgU
-	 hCxEppw5QTEN9r28s3bSAqdJ27P1bJ0C0Y65iOQYuT64m8A+w4G5DKBZwqqK6TCVly
-	 uotzd+Dm4pa73a1SpFe1/XtTF1XaDU4p8wNSoXZsXgTkjA4SIlM1O1aX96kzgpW5XC
-	 bCcYGlo8kXnZtuVjWTsnUbmeLCd3alW8IIKNtrINM/oFpgGjf4V2uW1J+yG3JI6Gha
-	 gLe4S/DsQdckg==
+	b=d2VAJ4/vcM10qGFJmXFxpKGDT3ZTPd3DacYXRJ73ijkCc8LcKsF4Zs98fAqRsXJ83
+	 JC4JDTjyLJcrZ5tOwjhPIZ5r8JOUb4/teTj2VuoUZb1PaZ4uBX9N/VzmyUL+H+Xqah
+	 Qy1yk++gUtelKLa2MFAhjiBTvp3UdiIw44HJIPgYUp7OuBxi+rE8EHlB87W+k7Lho8
+	 b4djRKllG3ITP1PRBTLpoDcA7GkDX95SRkAo/dZL1a8ws0nJBHSNrieBK9viUwEFbX
+	 QkpPgtDdKGNW1OCfIWbgkmp29LoLyopK6mrkgsydYaWrHOczGslKm3Rb6N/j/Q6Ubu
+	 EQDICrp2qJ/8w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Naman Jain <namjain@linux.microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] x86/hyperv: Fix hv tsc page based sched_clock for hibernation
-Date: Fri,  3 Jan 2025 09:55:24 -0500
-Message-Id: <20250103091251-5a852191ea51fc2d@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] x86/hyperv: Fix hv tsc page based sched_clock for hibernation
+Date: Fri,  3 Jan 2025 09:55:26 -0500
+Message-Id: <20250102144247-72dffb843cf3d817@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250103054506.1748-1-namjain@linux.microsoft.com>
+In-Reply-To:  <20250102141157.1785-1-namjain@linux.microsoft.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,13 +69,10 @@ Found matching upstream commit: bcc80dec91ee745b3d66f3e48f0ec2efdea97149
 Status in newer kernel trees:
 6.12.y | Present (different SHA1: bacd0498dea0)
 6.6.y | Present (different SHA1: 4c8d45af23c2)
-6.1.y | Not found
-5.15.y | Not found
-5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  bcc80dec91ee ! 1:  caa35270fdd9 x86/hyperv: Fix hv tsc page based sched_clock for hibernation
+1:  bcc80dec91ee ! 1:  cc5a1702c099 x86/hyperv: Fix hv tsc page based sched_clock for hibernation
     @@ Commit message
          Link: https://lore.kernel.org/r/20240917053917.76787-1-namjain@linux.microsoft.com
          Signed-off-by: Wei Liu <wei.liu@kernel.org>
@@ -92,55 +89,20 @@ Note: The patch differs from the upstream commit:
      +
      +static u64 hv_ref_counter_at_suspend;
      +static void (*old_save_sched_clock_state)(void);
-    @@ arch/x86/kernel/cpu/mshyperv.c: static void __init ms_hyperv_init_platform(void)
-      	/* Register Hyper-V specific clocksource */
-      	hv_init_clocksource();
-     +	x86_setup_ops_for_tsc_pg_clock();
-    - 	hv_vtl_init_platform();
-      #endif
-      	/*
-    + 	 * TSC should be marked as unstable only after Hyper-V
-     
-      ## drivers/clocksource/hyperv_timer.c ##
-     @@
     @@ drivers/clocksource/hyperv_timer.c
       /*
        * If false, we're using the old mechanism for stimer0 interrupts
      @@ drivers/clocksource/hyperv_timer.c: static void resume_hv_clock_tsc(struct clocksource *arg)
     - 	hv_set_msr(HV_MSR_REFERENCE_TSC, tsc_msr.as_uint64);
-    + 	hv_set_reference_tsc(tsc_msr);
+    + 	hv_set_register(HV_REGISTER_REFERENCE_TSC, tsc_msr.as_uint64);
       }
       
      +/*
-    @@ drivers/clocksource/hyperv_timer.c: static void resume_hv_clock_tsc(struct clock
-     +	hv_sched_clock_offset -= offset;
-     +}
-     +
-    - #ifdef HAVE_VDSO_CLOCKMODE_HVCLOCK
-      static int hv_cs_enable(struct clocksource *cs)
-      {
-    + 	hv_enable_vdso_clocksource();
-     
-      ## include/clocksource/hyperv_timer.h ##
-    -@@ include/clocksource/hyperv_timer.h: extern void hv_remap_tsc_clocksource(void);
-    - extern unsigned long hv_get_tsc_pfn(void);
-    +@@ include/clocksource/hyperv_timer.h: extern void hv_init_clocksource(void);
-    + 
-      extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
-      
-     +extern void hv_adj_sched_clock_offset(u64 offset);
-     +
-    - static __always_inline bool
-    - hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
-    - 		     u64 *cur_tsc, u64 *time)
-    + static inline notrace u64
-    + hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg, u64 *cur_tsc)
-    + {
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
