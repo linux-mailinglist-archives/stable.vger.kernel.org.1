@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-106724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148C4A00CB0
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:19:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C00A00CAF
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B1D73A449C
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 17:19:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF211880621
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 17:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8081FCFF3;
-	Fri,  3 Jan 2025 17:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263511FC7C3;
+	Fri,  3 Jan 2025 17:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YliL4jvs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMAR0ZAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B971FC7C3;
-	Fri,  3 Jan 2025 17:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C445F1FDE00;
+	Fri,  3 Jan 2025 17:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735924695; cv=none; b=qMxQTC5o0YCcfvLkkW8TFxWCyjMDfwZd4XTV1TZ8iap7S6Vvajkx9rBmj6idLRWfkP4W56ifzXtZO1SzE+KrxJSnjPy38wy09J5UZVhdzR0LUPHBdEiLvWg3UhmhDcWak+YREnzrAuYsKDrYFqvPOy3pHPuxrKmWQhzxeQMBEkc=
+	t=1735924699; cv=none; b=qZvrSTAe4NsZDk7rDYCbGIIBnYLBtIPysfii+6C2c+CqDAKrPT4TcVHJXil52XnN1p4DledyAQq/8kMrPGqfNREBB4ogW5Dl+KmR3FdIhh1w8ShZhNXaEB2MAO1RvB5bUaKo1MwEqkxg+z8WKBKwlwOfgzJs3xEV0cbm6X5buio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735924695; c=relaxed/simple;
+	s=arc-20240116; t=1735924699; c=relaxed/simple;
 	bh=mw44W+PYGrqjZ0HN6yoFwgQwsPYabuNnIEX0ZTqK9F8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fJdhmx0lqpICJYTI3O2sLI1KgiUrUshj+iHTdXBmVZJny5qyS64hmvuouWyfAtM8yRAMlIk+ZC8+Bm6NKec/c8gRuhaYxEbVgro3am5dfSbwtcjfyHRRe6HnaSI164crcoasugUSAAtNUiVRpdWaI92KAWIupaEtbuXsRz8Miuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YliL4jvs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F036BC4CED7;
-	Fri,  3 Jan 2025 17:18:12 +0000 (UTC)
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MYEhvkg7NPbyOP8PVH/OVrXLXqQ6Y+5i80OdmICPxfeL8eYnOIH4rdOzyBGC62ZYhATCyTCci4vhjQbHN+Vy7biKCAGf+3bGyS3K3qwqwGy03whb023s6aDH8a7pL66aoqL/a+nsqX8nzcn+OFHiAj+xeNU/Isgdyf9CwjGdBvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMAR0ZAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54C1C4CECE;
+	Fri,  3 Jan 2025 17:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735924694;
+	s=k20201202; t=1735924699;
 	bh=mw44W+PYGrqjZ0HN6yoFwgQwsPYabuNnIEX0ZTqK9F8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=YliL4jvs1yhh1hLPmdtDI9rgAeT+maoFCCtyYihEJ55dJ3lZfaVpHHoIYsYwyunEt
-	 wQdMSKYYaofVdQZbpmOFkQgE0QQ0Pm+yEbL3/hWx8rTXX9vjpZ+VL39VCAPHRhnimJ
-	 zJ/9jcvVYSVWee8VyGgEG/6pF1ikoRHe9zC4Wako7BICh0UzIRGfqEUeHF4kvbeW2L
-	 7UF+fnawLzcy0QoSwzCuP0acxcH+iklUa3j8DmLwjdIKVIoxtEGwHZ1GzRNRvlVM4B
-	 HYprhOaVRTV3wfaY1MGkglGLCRxgsVXOs4XeivvLYwIGq0aXMHJtT8A5i63oRfj/Ji
-	 YzUf3T0cjhqWg==
+	b=cMAR0ZAyltx92fHcJl+CuEUdF7vTGwfO7VxDU5fbqwUiRgdAqtywiRCL2nKFwWtPM
+	 rlnlUo4gG6Veq3cPW8zmhHykJMhClyT83isamsdMHkEG6OPexLKefpxmjUozXzqm82
+	 /rAL6/0Y4K7ccuupHRU2q5A8AqVS9qlJ0IH4ix28I8kkzF1LlJEyLHc1ck5lJyP53S
+	 2bqIjd3hRz6yC1ZpcR1w172gr5xg1fSF1ysW2sTawC+N3dhFnMkhEQBYXcmmXn7dq2
+	 KGTRv9CQspR2aU0mmHAdlCfgVAAlyb1zK1hzh/idIyC0tdqoMph6OuMcLxnYSWn8RR
+	 9xmtO+OO+gbsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -55,9 +55,9 @@ Cc: Chen-Yu Tsai <wenst@chromium.org>,
 	linux-sound@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15] ASoC: mediatek: disable buffer pre-allocation
-Date: Fri,  3 Jan 2025 12:18:10 -0500
-Message-Id: <20250103171811.492271-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10] ASoC: mediatek: disable buffer pre-allocation
+Date: Fri,  3 Jan 2025 12:18:14 -0500
+Message-Id: <20250103171816.492299-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.175
+X-stable-base: Linux 5.10.232
 Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wenst@chromium.org>
