@@ -1,172 +1,155 @@
-Return-Path: <stable+bounces-106731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F7BA00D96
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 19:23:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68EB0A00DB1
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 19:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF0A53A44BE
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:23:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C8C81884AF7
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1951BD9E5;
-	Fri,  3 Jan 2025 18:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFF61FBEA6;
+	Fri,  3 Jan 2025 18:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3lTKe6w"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QiAEGKNS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0417BE4F
-	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 18:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8441FA14B
+	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 18:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735928584; cv=none; b=X61b1uKtJqG5w98YDMrCt2elsl0+t6kbFp3TPu0cpRmKkUbSt3T2AsJFqAGsQOML5boH3KHVqTW1PpTS+I9e6PvmxBdOV7dF7ti6Jo3g24HKloPvLQ4IaZRyNbWnLhb3a/YT/qGNbSwEB9X48RYDDz/+H2C2TQxHPWqQwLFtWHU=
+	t=1735929598; cv=none; b=Nm9AHiRo9NehQJ3nUqB5bcxUhhVnraMFxTF9mQOWeM/AYiXtxOgzv3RnooGaIwB/ZoDepOXploViV2eVJPuq/jvE/4ZDeMf8WbkZ2C+O36OIPYWrbLvmICt0Fe5KTWLehLhv+iojqMIqFkvP5SAYazos7hVIOheIT6zO26Avpf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735928584; c=relaxed/simple;
-	bh=I9ZWxC3vJEZtvxLSkxhlX/ZZ0eS3/MtVI65vC3th+mY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mlfIYNkSTvvXoThfK8kvRSmapmYXrdvj6gb8XVYL20EXFrYrgJoeXCpzVYCDYXtiH0KMQAalGyV4Voxtzf1ZAt4JCGrmRo6S9IvD3RF73omsu86vCfUEPDazjROAaAEF1OXI+TL7H9NMLpI37KOXRwu9InOXK1JUTTatkj54HAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3lTKe6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D417C4CECE;
-	Fri,  3 Jan 2025 18:23:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735928583;
-	bh=I9ZWxC3vJEZtvxLSkxhlX/ZZ0eS3/MtVI65vC3th+mY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=X3lTKe6wkYgZCWoUtIrpJHwYPzmGCeoiGMmVQ5ZzKOzBRF+1CUJzIL0wq/IJVJGPA
-	 zLNACuowp7YubVKq0Wir/DGDlfYVcpSbNz9OSjIuH3FOINntkwKXp4B2v59MHtISn1
-	 4rHwb4OoWhW3cRuCjtiChmxN9rKyv2bV3vIcTgD2qoFTb3SJ6qD/Znu/E3xs/IdSgP
-	 G/q2R1Ww8Lcg8q5bwyoYVBBHW+ufUs0ehNwcTsO5aIU6acjEE4uHOzlbJ23a4xyTLG
-	 QML1fSCvpzqsoQa03fg+hiGE0aA5JHFCh1ZAv1l2DUJX2ckt5mGn08w9QP+RJwvKo0
-	 s3hEksUsCGILw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tTmK5-008lqi-1F;
-	Fri, 03 Jan 2025 18:23:01 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
-Date: Fri,  3 Jan 2025 18:22:55 +0000
-Message-Id: <20250103182255.1763739-1-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1735929598; c=relaxed/simple;
+	bh=97CIyszQag73oA70YGJTbMbEDm/CPO+p2kR3J9o83lo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sNhI+F5PdCZLQL/16r2S1DBUZKhGkntwvSV2bMqUrjxPliAedvF113Bx+V8jMvztKbKF6PhhrbL294N3ktpx1D6rrVeqI6snDfv9hHmzltAVs8Sf6g1X9MfreZS4WtR8Y+LIdUZI70NA4eeZ6HOPiZjlXXXEGVifF++dhxIIzzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QiAEGKNS; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361d5730caso1075e9.1
+        for <stable@vger.kernel.org>; Fri, 03 Jan 2025 10:39:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1735929595; x=1736534395; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZTB+rEpkKE5yruA5DUop/88GQtExvYxyFAxV7mbTMv4=;
+        b=QiAEGKNSk3gVzEmXGqPeR57LAl7X36kQ8TegbpWkBQfk9RCKr7i3dxOO7Oegwg+i5K
+         aVzXP4H24yoeUaDRehmLdRwRkUM/7LCsWOonOj7axljlnXr4lJPbYGSBKwnCPQLqYEDL
+         9E75SkZrC/PnO06u+JjMmIInhs3jda+YA8UCqya8BENYeOrbvvDZSNQMRSTvS0DhL7aQ
+         mMmLS13nbjBZzv8AoK6q4rhNRRf3d8+dWuNI1JSChemq/zm7SiMPkv6MXae1aPbihg8r
+         TlTSOGvoIsR+/ogoABzM809MQojDBR8SVny3bHAahhdiE0by50kX1+SdPRLJv3bbvVf4
+         KfqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735929595; x=1736534395;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZTB+rEpkKE5yruA5DUop/88GQtExvYxyFAxV7mbTMv4=;
+        b=HdUrn76Ynmld77joWQaH/NP0xuonKynV1IgGmXRFckGthAhgoVJ80jbx5BHySv/lph
+         gjL4CZsWwcjdI6Zjzmf6XLCp+tO1Sr/HHyL+ezqS6cw7wjvX0su9jVcG7f9iH+G2AUpo
+         XmftHL4NSrfqw40+YiGUfsWH2QSkztUqWfbG0KsPCKGZBtfYjmR0KNx0sjVqXv2KYwJL
+         KwZ4Tyb38Ho4dit9clXcGbUy3EoVWRqBC6VpWBqSrw7CPVp4jknb1hCjFjtkQ2pOxwYs
+         /HU/xBvDjkkCI2LDEMtJa+ss1+0Cr0QEPHg//FEaTcFeE0BhYfR+MuL68dIT3pi7MMrO
+         KvAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWbC9JjfP5T+SvkDDPaltyCc9DB4TVII8XzbQgUvppwoZD0X/a2PWdZLVCtYJHG+R1YUFARs90=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJfTl9Ei3ZcJnbmcfuRJWIzJY37Cbrsvcer7zNGk9KzGCN61mw
+	k1V8kJAxFF0+ZNplxH0wRN8Ad+ZXnIZMfzah2zY6G2ZjJj1BEE/uuz1I7HvfYg==
+X-Gm-Gg: ASbGncumUpCT/7IfLPXvsTpv7n9jCuONxyNgkTjOwhH/oVs57C4UlEkVMoy/dGk88pr
+	9foRkxTmA0YFk40auWxA0wqyDvxu4bDnR+qd4q53Pvesh6LZEu5W9+2WBrbp+6LEA/NG54WdpfD
+	+DTMcwMv5kFfLm8EC4gXUQoN6OwwLzF/392FZ1UIOGx20tJkblPiMoRiPvyMnl4Dm5NVmrZuKtX
+	PefpOxheiktE8gXEHAhMQrJEvorJZsrxdkgQkoUV3Ygbg==
+X-Google-Smtp-Source: AGHT+IFD+qdlBvT4m+bB+dQfGAXCL9/oC0y2KEyf0p0e6iw0viHGlpNCT35HEwo5ybEDchapT4NykQ==
+X-Received: by 2002:a05:600c:2e51:b0:435:921b:3535 with SMTP id 5b1f17b1804b1-436ccb38391mr1048875e9.3.1735929594584;
+        Fri, 03 Jan 2025 10:39:54 -0800 (PST)
+Received: from localhost ([2a00:79e0:9d:4:7c21:a713:369e:c925])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b3b207sm522376935e9.32.2025.01.03.10.39.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jan 2025 10:39:53 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Date: Fri, 03 Jan 2025 19:39:38 +0100
+Subject: [PATCH] x86/mm: Fix flush_tlb_range() when used for zapping normal
+ PMDs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, broonie@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com>
+X-B4-Tracking: v=1; b=H4sIAOoueGcC/x2MQQqAIBAAvxJ7bsFKS/pKdBBba0EqXAoh+nvSc
+ QZmHhBKTAJj9UCim4WPvUBTV+A3t6+EvBSGVrVGNarDbHv0R4zuFMIQL9kwcMbg7OC8XoztNJT
+ 4TFT0P57m9/0AWvZML2gAAAA=
+X-Change-ID: 20250103-x86-collapse-flush-fix-fa87ac4d5834
+To: Dave Hansen <dave.hansen@linux.intel.com>, 
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1735929590; l=2120;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=97CIyszQag73oA70YGJTbMbEDm/CPO+p2kR3J9o83lo=;
+ b=AsMblhvWSFbPVWf7u4wvkWWLNo3Z1+4wo6Te885+A1ZZOVCluzXDn+PfRA4rPi6jxVEh+Fq2e
+ s2Odi8xML5OA20hDEPetOXyvHVa06FGQAwufMnDaBdAiwWDOUsSlXPB
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-The hwcaps code that exposes SVE features to userspace only
-considers ID_AA64ZFR0_EL1, while this is only valid when
-ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+On the following path, flush_tlb_range() can be used for zapping normal
+PMD entries (PMD entries that point to page tables) together with the PTE
+entries in the pointed-to page table:
 
-The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
-ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+    collapse_pte_mapped_thp
+      pmdp_collapse_flush
+        flush_tlb_range
 
-Things become a bit more interesting if the HW implements SME.
-In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
-features. And these fields overlap with their SVE interpretations.
-But the architecture says that the SME and SVE feature sets must
-match, so we're still hunky-dory.
+The arm64 version of flush_tlb_range() has a comment describing that it can
+be used for page table removal, and does not use any last-level
+invalidation optimizations. Fix the X86 version by making it behave the
+same way.
 
-This goes wrong if the HW implements SME, but not SVE. In this
-case, we end-up advertising some SVE features to userspace, even
-if the HW has none. That's because we never consider whether SVE
-is actually implemented. Oh well.
+Currently, X86 only uses this information for the following two purposes,
+which I think means the issue doesn't have much impact:
 
-Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
-being non-zero.
+ - In native_flush_tlb_multi() for checking if lazy TLB CPUs need to be
+   IPI'd to avoid issues with speculative page table walks.
+ - In Hyper-V TLB paravirtualization, again for lazy TLB stuff.
 
-Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
-Reported-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
+The patch "x86/mm: only invalidate final translations with INVLPGB" which
+is currently under review (see
+<https://lore.kernel.org/all/20241230175550.4046587-13-riel@surriel.com/>)
+would probably be making the impact of this a lot worse.
+
 Cc: stable@vger.kernel.org
+Fixes: 016c4d92cd16 ("x86/mm/tlb: Add freed_tables argument to flush_tlb_mm_range")
+Signed-off-by: Jann Horn <jannh@google.com>
 ---
- arch/arm64/kernel/cpufeature.c | 40 +++++++++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 13 deletions(-)
+ arch/x86/include/asm/tlbflush.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 6ce71f444ed84..6874aca5da9df 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -3022,6 +3022,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- 		.matches = match,						\
- 	}
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 02fc2aa06e9e0ecdba3fe948cafe5892b72e86c0..3da645139748538daac70166618d8ad95116eb74 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -242,7 +242,7 @@ void flush_tlb_multi(const struct cpumask *cpumask,
+ 	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
+ 			   ((vma)->vm_flags & VM_HUGETLB)		\
+ 				? huge_page_shift(hstate_vma(vma))	\
+-				: PAGE_SHIFT, false)
++				: PAGE_SHIFT, true)
  
-+#define HWCAP_CAP_MATCH_ID(match, reg, field, min_value, cap_type, cap)		\
-+	{									\
-+		__HWCAP_CAP(#cap, cap_type, cap)				\
-+		HWCAP_CPUID_MATCH(reg, field, min_value) 			\
-+		.matches = match,						\
-+	}
-+
- #ifdef CONFIG_ARM64_PTR_AUTH
- static const struct arm64_cpu_capabilities ptr_auth_hwcap_addr_matches[] = {
- 	{
-@@ -3050,6 +3057,13 @@ static const struct arm64_cpu_capabilities ptr_auth_hwcap_gen_matches[] = {
- };
- #endif
- 
-+#ifdef CONFIG_ARM64_SVE
-+static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
-+{
-+	return system_supports_sve() && has_user_cpuid_feature(cap, scope);
-+}
-+#endif
-+
- static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
-@@ -3092,19 +3106,19 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64MMFR2_EL1, AT, IMP, CAP_HWCAP, KERNEL_HWCAP_USCAT),
- #ifdef CONFIG_ARM64_SVE
- 	HWCAP_CAP(ID_AA64PFR0_EL1, SVE, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
- #endif
- #ifdef CONFIG_ARM64_GCS
- 	HWCAP_CAP(ID_AA64PFR1_EL1, GCS, IMP, CAP_HWCAP, KERNEL_HWCAP_GCS),
+ extern void flush_tlb_all(void);
+ extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+
+---
+base-commit: aa135d1d0902c49ed45bec98c61c1b4022652b7e
+change-id: 20250103-x86-collapse-flush-fix-fa87ac4d5834
+
 -- 
-2.39.2
+Jann Horn <jannh@google.com>
 
 
