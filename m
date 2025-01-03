@@ -1,153 +1,73 @@
-Return-Path: <stable+bounces-106727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E8FA00CBB
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:31:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8368AA00CF5
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:40:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8280C3A3FBF
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 17:31:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE3121883F03
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 17:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8586D1FC111;
-	Fri,  3 Jan 2025 17:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MPTSIQWU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265561FBE8C;
+	Fri,  3 Jan 2025 17:39:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E11F9EDF;
-	Fri,  3 Jan 2025 17:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F084D1FBC83
+	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 17:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735925468; cv=none; b=KJRzWq13LDFDYV91aclKUPYNp6BIgfj4WIXlJcrtwsXZ40x9/Z+LO7nMSpMLg0tTWvrVlRHaqJezgESKoZr0IE7jLa8jlU81iWncd9PcjJ6Tjs7i+7qheG5ZAydkD6SsvEAQUIbWJj6m3ll2l7PlZVLpbxc/kXHtUBalcuh4g34=
+	t=1735925983; cv=none; b=Zs93wAv3GEqeYnh5WtXQRu7V6RQmHAMAfPGM2IzTUP3FH5NSFymOcXyRdf2+NsP5Cxn8SzvPBAWkcBsW4+5V8XZzlC9plh9BnS6j5pFNfIHOavSkFMvhBXnLKJOTDdckZBDE9l0yWSqNDpVWYfey4tVOauY1BERhxm3S3Cypphw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735925468; c=relaxed/simple;
-	bh=VkCJQVoiRk2IblJ1K3+RMjfMrwoKMGDda4NAbDTenDM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H9z69/VHj/pAstG4fFcyfrCJJ5YgdsOPKD26pp6qYKcpXsqSTrkcpYwBgh50PI4tCrwjEuzy1EodxxBPxXNsdPSCXjWEPYr5/9qjlmxXBzP+Vhp3NAFuIe6SFMC5l2sOAJqm+1fowPnSJAgDUf4Rq8RRtGcfnR8cEXtbdM+F83k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MPTSIQWU; arc=none smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-29fad34bb62so6368121fac.1;
-        Fri, 03 Jan 2025 09:31:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735925466; x=1736530266; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VkCJQVoiRk2IblJ1K3+RMjfMrwoKMGDda4NAbDTenDM=;
-        b=MPTSIQWU5KagRXgpEof3wd7Zz40bf3K01f8ni9fm5yJ+zKHrLnjNm4wCRVIrgm2W/d
-         jprK4R3JehIuq4qEkvjL/r4jZEmQo20OcqPQEUrAFaZDCb4m5uZ24TjtTY80Yp/E7xg8
-         eR/9bhpHjPUIMxTxfG0UhoZiZQp9XsRUehqo7q0vJYevF3GENqQtTUUFO2gGiZaTFbH+
-         bEi6m6l7k5vG47XxNVDSX6yjCu//FC3JJFW8gBP0GGFfPa0LejeY3/hDJ+VRsqDxhWzf
-         1rskW/cO2WkyxC0vdLYj6Xwd7X7/gqTl7Z4T4MeH1ryHHJT1Pst4E/gdH8R8w/+/h3xi
-         5gjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735925466; x=1736530266;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VkCJQVoiRk2IblJ1K3+RMjfMrwoKMGDda4NAbDTenDM=;
-        b=Fso/MuJo0Trdb9ab4KSf4iV6mYEJLEbk+LDYdibLuvoRcpI/3+FMOpXNfi7Waz54uC
-         n8pWi6WkYGd1o2f8pBzCnrLfwqRdSdUnZ3ydLfnRwdVtRX/zgq304Ot/Ntdcq69rA6Fh
-         RT1MzKrJ4zQkb/vqp7OimL3v4rZCd/EnXIrbir2nPpXcjr0tH6CPfcfJevKg3gtOwFDm
-         gaklVvcpDapr5IhgfFsji5lnHdsck1i8Ytpz/xkOVfXLcMHpeibVdQzKImTrh5uCfxQ2
-         kTe7i6xBSDyrSP8kLDj4/C0YYKLBZ8srgZtwljJC3rcw/Fzey5s6J6HLYp9ARdwyGrYC
-         z5YA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTH9jCVQtMOLaIKGGk5aQQn6cDMS8UsiK1s5di+VBKr4olbWtgzBT/RBMfA4Yja7iWi3g8v82lsgqFfoY=@vger.kernel.org, AJvYcCWFMmUaqUMzQ4E/jHSVjzbY3b2VTIeRhXvQj8ux3nkkHgvmZSMMieoF+LcrG4QgesxpgOBXRrthxhKQneqIFKk=@vger.kernel.org, AJvYcCXxr39lNfv/xn47ipbrmq2OpwVQxKaRaQPFjKSDRkH623Y5rv4ITN9YpjDb42smQ4UJ/6huvTH0@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxeGqbz6wvPiMWZ6gbP6giDCNkkdKB7yORnKgs54Eq3J8m67PD
-	ZDtGTJbi8EIMhB3enU3kAjNNbiVGyTXruxa6/7dVxgj9q38rHI3vpPsL7PX5zaLzngPF0iyxOOY
-	3bYo9c0cMSvlCZsOAkiy1BGkS/4w=
-X-Gm-Gg: ASbGnct/qJM+Q8GlfOz0qXMcVpTpbN7m6qpC7uufFKZrbXGre1T81vJY5zW5SUDRa80
-	2mrmGI2aNwoBHZfS4t0vgffrU3LHl3TD0DQR1yM2Hw/fn2MFRwvug
-X-Google-Smtp-Source: AGHT+IGv8bsmLDf1bWVTKaXEgfvA2PqOOdYrUgxm71ByeJc5Z2kLhK08e9vgpB5bdpgBwwQ6hIWkcXkwMTwXA8Vva/0=
-X-Received: by 2002:a05:6871:530e:b0:29f:ecfc:32df with SMTP id
- 586e51a60fabf-2a7fb234a55mr31178294fac.14.1735925465925; Fri, 03 Jan 2025
- 09:31:05 -0800 (PST)
+	s=arc-20240116; t=1735925983; c=relaxed/simple;
+	bh=FDN9E3EwQFcL8rO5vmhOQCSIFqdHOo0yI3dnq1hhMOc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CcxWN2Dfu3Vtzpmh0zM+CUcxKGZX8wDK7fJB330VxCjNRJsoZzNnCHJuoBmC8HvEQuGPeWCi5ukcUjebiEFWMg4cPCL2q+7s8Z7a5oKu0dNEm+MHI6wgL5I/WMTddV0MIL4zi1882PdeI9fSjP2BaKgdrZbg8xRDhx7OoAhN9pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EA3C4CECE;
+	Fri,  3 Jan 2025 17:39:41 +0000 (UTC)
+Date: Fri, 3 Jan 2025 17:39:39 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: Filter out SVE hwcaps when FEAT_SVE isn't
+ implemented
+Message-ID: <Z3gg23G00THN-Ev5@arm.com>
+References: <20250103142635.1759674-1-maz@kernel.org>
+ <Z3gcRczN67LsMVST@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250103075107.1337533-1-anarsoul@gmail.com> <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
-In-Reply-To: <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
-From: Vasily Khoruzhick <anarsoul@gmail.com>
-Date: Fri, 3 Jan 2025 09:30:39 -0800
-Message-ID: <CA+E=qVfsHw_YqwVNPjhp9QydC9RUo=9U6ddA6StrmDNzgrUCxQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtw88: 8703b: Fix RX/TX issues
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@kernel.org>, Fiona Klute <fiona.klute@gmx.de>, 
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z3gcRczN67LsMVST@arm.com>
 
-On Fri, Jan 3, 2025 at 1:13=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> wr=
-ote:
->
-> Vasily Khoruzhick <anarsoul@gmail.com> wrote:
-> > Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
-> > fatal and do not seem to have any impact, just fix them to match vendor
-> > driver.
->
-> Just curious how you can find these typos?
+On Fri, Jan 03, 2025 at 05:20:05PM +0000, Catalin Marinas wrote:
+> On Fri, Jan 03, 2025 at 02:26:35PM +0000, Marc Zyngier wrote:
+> > @@ -3022,6 +3027,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+> >  		.matches = match,						\
+> >  	}
+> >  
+> > +#define HWCAP_CAP_MATCH_ID(match, reg, field, min_value, cap_type, cap)		\
+> > +	{									\
+> > +		__HWCAP_CAP(#cap, cap_type, cap)				\
+> > +		HWCAP_CPUID_MATCH(reg, field, min_value) 			\
+> > +		.matches = match,						\
+> > +	}
+> 
+> Do we actually need this macro?
 
-I added traces to sdio_* functions in linux (see [1]), so I can
-capture register access traces. I captured the traces from both rtw88
-and the vendor driver and wrote a simple parser that decodes the
-traces, see [2]. I guess it would be easier with an USB device, where
-we have usbmon. I really wish there was something like usbmon for
-SDIO.
+Ignore me, we still need this macro as HWCAP_CAP_MATCH does not take all
+the arguments. Maybe not the read_scoped_sysreg() change though.
 
-I also added traces for C2H messages to both drivers, since they go
-through sdio_memcpy_fromio() that I don't trace.
-
-Once I had the traces, I manually compared them (along with register
-dumps, rtw88 has it in debugfs, vendor driver in proc) trying to find
-the writes that do not match. Unfortunately, rtw88 and vendor driver
-flows are different enough, so I couldn't come up with a way to
-compare it automatically
-
-Adrian and Bitterblue supported me on #linux-wireless on IRC, and one
-of the typos in IQK calibration was actually found by Bitterblue.
-
-It took ~5 evenings and 1 weekend to get to REG_OFDM0_TX_PSD_NOISE
-(0xce4). Once I changed it from 0 to 0x10000000 via reg_write over
-debugfs, it magically fixed the issue. I changed it back to 0 to
-confirm that it breaks it again, and then back to 0x10000000 to see it
-working. Then it was just a matter of grep to find where this register
-is written in rtw88 and compare the corresponding code to the vendor
-driver.
-
-[1] https://github.com/anarsoul/rtl8723cs-re/blob/master/sdio_traces.patch
-[2] https://github.com/anarsoul/rtl8723cs-re
-
-> > However the last one in rtw8703b_set_channel_bb() clears too many bits
-> > in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
-> > above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
-> >
-> > With the last typo fixed, the driver is able to reach MCS7 on Pinebook
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
-> > Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
->
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
->
-> Is this urgent? If not, I will take this via rtw-next tree.
-
-Not really, since there aren't not a lot of users of 8723cs, but it
-makes rtw88_8723cs driver usable on rtl8723cs. I don't really have any
-preference on what tree it goes in
-
-Regards,
-Vasily
-
->
+-- 
+Catalin
 
