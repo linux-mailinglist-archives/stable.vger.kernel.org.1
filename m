@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-106690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DB2A007D4
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 11:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14919A008F1
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 12:56:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00D34163F00
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 10:29:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7035162E68
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 11:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4071F940D;
-	Fri,  3 Jan 2025 10:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473291F9AA1;
+	Fri,  3 Jan 2025 11:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XAUlK8Xy"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="g25HS2Vj"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B0917BA3;
-	Fri,  3 Jan 2025 10:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F7D1F9A96;
+	Fri,  3 Jan 2025 11:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735900164; cv=none; b=XzJl5wLV62xL0pr6cvKTObpyO59afoz3R4SOogXmpnOk2Hbmhf3jDIb17V8dA0VzX7czgMhzjWf2foqs/SSGkXm3i0EO4oZnU8QUtxIDk09DwthUldfk+pm8FHq9WQIZfU4vECzuu4gv2iAFcVO5+cPZZp5YX5cdHuQwxRSKdW0=
+	t=1735905372; cv=none; b=G09DTGu2ow154DM0pq6AYKn3M1lZaNgEjm3zbwcb+NTI9+szE82ReewNscNmjwdLh0Q6rM7G1bqbYF9FLWrNecQ9V8VWdiOVxuMToAC8ONTxXtTM44azbJkntwyMu4T1a1GP7OvLtq2fl+XpnGXGtrGuFWnbXF0sCvYhonSjLH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735900164; c=relaxed/simple;
-	bh=ak0q7tuOzVhCNT9bkU7Ws5dKTtwuPeO1RENfqpnaySM=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Q4/tfObDCmRnJHu8vfaYPIfD4RtzYBflKJm9fxeZFDd/D/TkK+9fhKZJIbxdS+W9/LQFCj/RWnGq43ALQuy0ZZTSKgimEa0fvoW6QJPI+ou+0TJqrmKJQ6ST9L1TT9QCNbTvKQbYmeepGRrmqoF2Qk5L5C6NkOMWwp/ZbnQVE4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=XAUlK8Xy; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1735900125; x=1736504925; i=markus.elfring@web.de;
-	bh=ak0q7tuOzVhCNT9bkU7Ws5dKTtwuPeO1RENfqpnaySM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=XAUlK8Xyplrey4QUFb59VfiyhLMCH0ZH48L2DgjhUuYYgziL45GZyFE8Z7LV37vM
-	 3xlCzTaqy8NeDv5ft0WPWnuenGGGLJCJI02YO056elomf161u31xdRvRwZFYR3UMR
-	 UStbyB75Zt2WwYKgn5CMaXry3+z7kr0cPf87qu00XfLbjDCYv7t1DxBNdN2cxy/cz
-	 1es2MH2Tre1p3ApoTXvKeT+Et1CCAq3pVCR7ZCjZMK3N/GZCxJv6CDfgsQfIK+ArK
-	 xApZG64v6s91yJkXVdkpmRN1JV13rv+W0wZNduFfSzvdpOdk5z5gJzgj66zsz9u6I
-	 VkfofQkctZfRLcvg6Q==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.37]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MpCmT-1tpjf80rGB-00j96o; Fri, 03
- Jan 2025 11:28:45 +0100
-Message-ID: <bc5eeafc-b6e1-4e71-8f7a-0f63c6130239@web.de>
-Date: Fri, 3 Jan 2025 11:28:33 +0100
+	s=arc-20240116; t=1735905372; c=relaxed/simple;
+	bh=A9b3OFX8SaM49UKKtrDec8vKbuaH5nmSwIWCKZ98mRs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=STBLpE/GtF9NvrLHjhx9Rip8nGgaiwWwyrsAPZzObrKBm/dnj1MZrlKf4h6mg1Wl44r4Zt1yq6sSGWgLyYyMb8jf/Dnm71KyBfdBbpmbWFrh6G8rdA3o8n+T5gDgBRLgrONDHPk4VbWNIYECqYVelr8xm/LU2ZXatiARAhfCguc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=g25HS2Vj; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1735905356; x=1736510156; i=fiona.klute@gmx.de;
+	bh=A9b3OFX8SaM49UKKtrDec8vKbuaH5nmSwIWCKZ98mRs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=g25HS2Vjmpf9y0VIOjsY/+PrVmNDOPM29oeEa8hUv7bGAWZq+8nc6ypzJ7M3/8Ki
+	 Mprw8uR7OLgYxyuunWdsex0JVS4b772zmymuQf3jCj5Q7DQP4LpOhwESd6QlM1rld
+	 iQ63KM6kdcZW2QhXHTSJ1FX9WEfjaTyMG6490T7rE6klRseutVEKFp86ymhMNxQP0
+	 mRG2uElFz239qQEeQhG3YUVzeQqSQU+jj0G3HYJ0YHuadSKcn1bHhEar6jl4Ubbv9
+	 oItzrCTxFA1RTxChGA1wTkoj9IBDFbogP/obyxXOQEEb5N6uvMWtDC8Ax13FctdJp
+	 hzcKo4PnkqyhNYr71Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.24] ([84.249.220.44]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MTiTt-1t45SQ3O0b-00R0DO; Fri, 03
+ Jan 2025 12:55:55 +0100
+Message-ID: <d6f4d483-6f05-4221-8412-5c245e5974b4@gmx.de>
+Date: Fri, 3 Jan 2025 13:55:54 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,56 +58,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: make_ruc2021@163.com, linux-pci@vger.kernel.org,
- Bjorn Helgaas <bhelgaas@google.com>, Joao Pinto <jpinto@synopsys.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- kernel-janitors@vger.kernel.org
-References: <20250102093058.177866-1-make_ruc2021@163.com>
-Subject: Re: [PATCH] PCI: endpoint: Fix a double free in __pci_epc_create()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250102093058.177866-1-make_ruc2021@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ADqmyXZzrqoEI69yTnPRSHrApyc0qke0ibuLbIWq0hNQ68DlGv/
- EuQpXR79OpUeBypPXOM6SNNHwYtSUY0RZ7MqRhVpl5wiC4fWmcSJWoTshZDD/mT85C8Z4xU
- P6J6ukICqA4hHxa/CQvTx0y6BsprUvWycJvxMMHPo9xJHMNVqCjj+UhAqX6ys1ZJgF6uetg
- +mWb8ZfgERn2gimURMbsg==
+Subject: Re: [PATCH] wifi: rtw88: 8703b: Fix RX/TX issues
+To: Ping-Ke Shih <pkshih@realtek.com>, Vasily Khoruzhick
+ <anarsoul@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250103075107.1337533-1-anarsoul@gmail.com>
+ <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
+Content-Language: en-US, de-DE-1901, de-DE
+From: Fiona Klute <fiona.klute@gmx.de>
+Autocrypt: addr=fiona.klute@gmx.de; keydata=
+ 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
+In-Reply-To: <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:3DZztg0NQZ08amkORvwisifWC3zO7pTLBqAEckchA+Vg9kuQyNk
+ 5+L+9P+pKWASX6ks9gLehcpL6AKdzMzPTAtE+1/Z16k6WBcRVixSEtrVVE1dPZp4H8LwAzR
+ YGyb7vVdKWbRAsR3X1Oa6YmLa5vcFkr/1Hg6ObCwitDz8uN16V9xfWLfBImDkSr/wOjmeOh
+ Ihkouq1uaYAHaY889MJSA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:zLLNTpqj8JA=;hng/oeBi/xacoXIhsjVfeL5ujbI
- 4StCbrpEuG8il0YXx/SekicBMOEyxUii93RBAkhK7/GSjGtczgTLFvOsf8dNt85/JyQS7srqn
- 1NBWkEwFjXsPvPipkc3CUBFm+UmTr1Of9Bxo0U/rbG3m4OB1PRblUrs+5mytsxVwl2sWLBK5R
- uKpjEBMVO1QPHJ5Wy62OCL6BNXvjqjRrp5B/QZQKvdm4tsbqyHS/TUcARXSoABbpAC4GwT/3U
- /Y1GMkaPz3zTswmHUFkgcs5YU+mxQYElkk/YL4RiNsPgcVb9SgYbrAa1jQVxoLMIaXf1gwogq
- nzMJWxVK1Tuy5iVmgBHSsGEms0RgkoYP3vUzTirqaFaQOnKD17kXbh+8FhDJpHXUUsqxRo0we
- IH7HAQdpE+uFpOSSmSAn7kx7bZcB4EJ/5pOP1Ws5TuSiOBw3RUKz8lL2s/PJuDKRQIj0MlfKE
- w/lW/Sog1CiPm8LmbEqhWeuJxBNOadaCSm5KcpL6lN251uBe98BcJiz+PNW4wkokcNYs6GcIx
- bCOEOaIENQPf0rXLXyjKhx6aOtcJ3cBMDCglzcI4RmiBX04cuGtPvZq1ojkJOOjD4mu4/J8EV
- y3Mm+XkteJBBBqVkhRPQSduDW9Y/iVxY8Epq1Tld9qtUMYuffQQ+T1fQfIX49xKsdUWWaFP1K
- VFTrHbpw/Ym3SUF3c1xuNyvbtPdmnCGyoLzSnxgYPGYT0q0LI0jVG17YdWtd61P49r2zji5uc
- hRFmf6bFshAB1TlPuuj1av+J/5b0mfOIGWObPhJiyfV2bShpkBFQkzg2I3zF6zik8vEs4ybjv
- 2HBMnfzTqw8FIYqG+X7ge2Yid6SlC3tp1ghFYric3xnUeegyVIP+QkGg3psfAtxlpWsFjG9oD
- kEdtstytf135q44NmPx10+3bH9cRLMMfSUQMZwtjWeeFqLTlog5glW8x319zakMEMBwnqwu+Q
- ESR6jADWyouJIkaORXqBMRwM+MtgZUUoXc8HaJ0RscYnPdXLi5FG1FVj0nRHvDWfvVagxOaoX
- L0jvPXtnQHHPK30VJIAsq/EWjJhFBTw2dlAjwBBB9e4N4b3od9drM0dpSq7zK8g7IKVHjDI3G
- vdujHxSPo=
+UI-OutboundReport: notjunk:1;M01:P0:73Hnc9kn0cI=;5qgxQvlND15ROPXQB3eS/EE/r+b
+ nftamQ4BCDBS5808B0XbzzbVZCDD7m54zbqNbTMD3q2S5RX7Dq5a3UkHNyyTibrDHvzurHiUH
+ khavbGc3/hdyNOSjuD795a8+yhAERR1l66tNUweWHRSmgcyPmGSw8PhYl0FrE9HJplVztW4Y3
+ FYKNEtVxSw8J6+ECxTCyF+7LEPW8I0lGNeupS6W/HEvNu9mNSs0m+ONBgIG2N03MpkPNpxJpi
+ Mervi2ZWYrVOHJyrXfkfzZ/0KTY4MBgRfKR0OpCetEUpQtPQPOHHlEwf/9hjSxndi/lqtYupb
+ cWP6RjE/b2HKWQOKf6FMosUM/BMfgdooZYUZXKsXmpnNdxF0MoM4j1qPDg65NKMHogw201nth
+ fzzzl36BAyJdNrEy7eBvU6lvvJu67nbgfP/2L3GN44ljrJzCzra17n8IoYCA+B0WEn4Q5wmGO
+ pBnO9NlzdZlpKjsBfRjnY4bupMjl1SqlDhhYo/xwbyv/mbG1nodddDHmcdR/8heSU3Ku8LgCm
+ GrmZCqpqx/IL5rWfBrnaxDOpMVfHstbgo7we7Q/i3F/mjQ33njAK9Lg+Nkeowtmu7fj3ZGujS
+ BIyANOlxhhGm6JhlRKBJt4MC8irc7/XKM24khiq4TskbfN9BcIXe6kgY/OAEF8cGXk+Rh6+QW
+ pzb35d0H58AZAxcwCiFUZVM24THOgJHuhxP4D6LINzWQA3d4OsMo4vRzgjFU2WxoNVJQH1Xa3
+ Y4nefbyCaxzSaziOGu9bfKIrhYWZEmrJwRzaPsg14/lss4M66xXNddwToP+kTKtODyNvCPdbR
+ effjnqWvwycddxwkNZOVPrIGbEmGoNtFkrN1IF0YpLOdok7f2/haDCi2PfxgV3c/MUzX+FAKz
+ tCQuHI54kVdKg8+rkv1Wmk7NQJKpoH6UIDZ7Mk9qNwVxLpluW7uooHtP7LAlqJJNqnwhm9d+Y
+ vtCDgXKkWu0/55y819Ab7bgL0GSzIXVGIRpkCrV/rzqz9bDXFqMc2U2u5vNZfBJtElWGoq1Pk
+ aQay8x7+yoFq09Pp8Q0yeDlhz/YspxUe9sqCYvM7s7wQFpPRPAMXywKnOJ1L7p/ExuRDqqy0b
+ nXtC2InQyrQRDATl+7V0qwr7n+ZnYC
 
-> The put_device(&epc->dev) call will trigger pci_epc_release() which
-> frees "epc" so the kfree(epc) on the next line is a double free.
+Am 03.01.25 um 11:12 schrieb Ping-Ke Shih:
+> Vasily Khoruzhick <anarsoul@gmail.com> wrote:
+>> Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
+>> fatal and do not seem to have any impact, just fix them to match vendor
+>> driver.
+>
+> Just curious how you can find these typos?
+>
+>>
+>> However the last one in rtw8703b_set_channel_bb() clears too many bits
+>> in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
+>> above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
+>>
+>> With the last typo fixed, the driver is able to reach MCS7 on Pinebook
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
+>> Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+>
+> Is this urgent? If not, I will take this via rtw-next tree.
+It's a huge performance improvement, 10x more RX throughput in Iperf
+tests, not just in the reported bit rate (residential, moderately noisy
+environment). TX improved too, but not as massively.
 
-See also:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.13-rc5#n94
+Tested-by: Fiona Klute <fiona.klute@gmx.de>
 
+Thank you very much Vasily for digging into this!
 
-> Found by code review.
+Best regards,
+Fiona
 
-Would you become interested to check how many similar control flows
-can still be detected by the means of automated advanced source code analyses?
-
-Regards,
-Markus
 
