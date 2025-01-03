@@ -1,57 +1,122 @@
-Return-Path: <stable+bounces-106728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8368AA00CF5
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:40:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0499A00D48
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE3121883F03
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 17:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A05216491B
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 17:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265561FBE8C;
-	Fri,  3 Jan 2025 17:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920BD1FBEB7;
+	Fri,  3 Jan 2025 17:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LN+6DiYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F084D1FBC83
-	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 17:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5076D1F9ECC
+	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735925983; cv=none; b=Zs93wAv3GEqeYnh5WtXQRu7V6RQmHAMAfPGM2IzTUP3FH5NSFymOcXyRdf2+NsP5Cxn8SzvPBAWkcBsW4+5V8XZzlC9plh9BnS6j5pFNfIHOavSkFMvhBXnLKJOTDdckZBDE9l0yWSqNDpVWYfey4tVOauY1BERhxm3S3Cypphw=
+	t=1735927099; cv=none; b=RwDfgDmMHfkcayfgdVfRtQsp64CTUXGn3iPqqUAezMUhd/Oyu9DrIzLoFSzyP06x6vgtqa8AJmjo6HXvuosug0tNWaym55/40eV0JfazaFqTv2JHl/bwT8OCJOifIVf6Dp8NN0SqSQ+JckUz6jLbha/YBGIrVqK1M2yl9UC9h/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735925983; c=relaxed/simple;
-	bh=FDN9E3EwQFcL8rO5vmhOQCSIFqdHOo0yI3dnq1hhMOc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CcxWN2Dfu3Vtzpmh0zM+CUcxKGZX8wDK7fJB330VxCjNRJsoZzNnCHJuoBmC8HvEQuGPeWCi5ukcUjebiEFWMg4cPCL2q+7s8Z7a5oKu0dNEm+MHI6wgL5I/WMTddV0MIL4zi1882PdeI9fSjP2BaKgdrZbg8xRDhx7OoAhN9pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EA3C4CECE;
-	Fri,  3 Jan 2025 17:39:41 +0000 (UTC)
-Date: Fri, 3 Jan 2025 17:39:39 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>,
+	s=arc-20240116; t=1735927099; c=relaxed/simple;
+	bh=xPTgQs/doiFDCJjEZ/ssYGg/MAyYHJOWQhy9vrGE9eg=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ma6xrZxcvZrS5Z1EIpc7DmvzBFb1mFQBORw9smoDyMszXWlweDGUQMPQJ2v0IsCCQ2IYL3s2prC4hMXA3G/N/eEV4KtDEOI+ND5Fb01KTvq73zspgvaSY2/jsNn3LSzyInrAToZvN2erjXfwUahA1UjwcmQGBQAoK6UulM2eK2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LN+6DiYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F56C4CECE;
+	Fri,  3 Jan 2025 17:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735927098;
+	bh=xPTgQs/doiFDCJjEZ/ssYGg/MAyYHJOWQhy9vrGE9eg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LN+6DiYtb1BUu5bUrsoF8G7Yg8CUYivxAYuTlruUIcD8U9vmRN2SPKNhmg0mpt2lv
+	 fVx7JnoswGDrEJddnOuPmUG0hiXAjLJj0p8LwOhE/rQGMCKvUAQn0WIpgxwKPr/UCB
+	 Qz9vyoWON3wbee88YwkWxJf5wKE756SEjEE0UXh/q2m1qk31WEISvHkSjncqWfMD6O
+	 kausnWkxFKqhx2UCjSsmKPtk4ziFlF3v5UVCk7Bu2dZfwprnUkesSvrHp8aDwXzk3M
+	 eXXh15bD3SK46QLi+2P23LfpnTm9YdHpevcXazgBb6Zp73vftrO1xsRy9harHJrzBQ
+	 fDxRkCIYvP4IQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tTlw8-008lRK-Os;
+	Fri, 03 Jan 2025 17:58:16 +0000
+Date: Fri, 03 Jan 2025 17:58:18 +0000
+Message-ID: <87msg7rd8l.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Will Deacon <will@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: Filter out SVE hwcaps when FEAT_SVE isn't
- implemented
-Message-ID: <Z3gg23G00THN-Ev5@arm.com>
+	Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
+In-Reply-To: <Z3gcRczN67LsMVST@arm.com>
 References: <20250103142635.1759674-1-maz@kernel.org>
- <Z3gcRczN67LsMVST@arm.com>
+	<Z3gcRczN67LsMVST@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z3gcRczN67LsMVST@arm.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: catalin.marinas@arm.com, linux-arm-kernel@lists.infradead.org, will@kernel.org, mark.rutland@arm.com, broonie@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Jan 03, 2025 at 05:20:05PM +0000, Catalin Marinas wrote:
+On Fri, 03 Jan 2025 17:20:05 +0000,
+Catalin Marinas <catalin.marinas@arm.com> wrote:
+> 
 > On Fri, Jan 03, 2025 at 02:26:35PM +0000, Marc Zyngier wrote:
+> > The hwcaps code that exposes SVE features to userspace only
+> > considers ID_AA64ZFR0_EL1, while this is only valid when
+> > ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+> > 
+> > The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
+> > ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+> > 
+> > Things become a bit more interesting if the HW implements SME.
+> > In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
+> > features. And these fields overlap with their SVE interpretations.
+> > But the architecture says that the SME and SVE feature sets must
+> > match, so we're still hunky-dory.
+> > 
+> > This goes wrong if the HW implements SME, but not SVE. In this
+> > case, we end-up advertising some SVE features to userspace, even
+> > if the HW has none. That's because we never consider whether SVE
+> > is actually implemented. Oh well.
+> > 
+> > Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
+> > being non-zero.
+> > 
+> > Reported-by: Catalin Marinas <catalin.marinas@arm.com>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: Mark Rutland <mark.rutland@arm.com>
+> > Cc: Mark Brown <broonie@kernel.org>
+> > Cc: stable@vger.kernel.org
+> 
+> I'd add:
+> 
+> Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
+> 
+> While at the time the code was correct, the architecture messed up our
+> assumptions with the introduction of SME.
+
+Good point.
+
+> 
 > > @@ -3022,6 +3027,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
 > >  		.matches = match,						\
 > >  	}
@@ -65,9 +130,87 @@ On Fri, Jan 03, 2025 at 05:20:05PM +0000, Catalin Marinas wrote:
 > 
 > Do we actually need this macro?
 
-Ignore me, we still need this macro as HWCAP_CAP_MATCH does not take all
-the arguments. Maybe not the read_scoped_sysreg() change though.
+It is either this macro, or a large-ish switch/case statement doing
+the same thing. See below.
+
+> 
+> > +
+> >  #ifdef CONFIG_ARM64_PTR_AUTH
+> >  static const struct arm64_cpu_capabilities ptr_auth_hwcap_addr_matches[] = {
+> >  	{
+> > @@ -3050,6 +3062,18 @@ static const struct arm64_cpu_capabilities ptr_auth_hwcap_gen_matches[] = {
+> >  };
+> >  #endif
+> >  
+> > +#ifdef CONFIG_ARM64_SVE
+> > +static bool has_sve(const struct arm64_cpu_capabilities *cap, int scope)
+> > +{
+> > +	u64 aa64pfr0 = __read_scoped_sysreg(SYS_ID_AA64PFR0_EL1, scope);
+> > +
+> > +	if (FIELD_GET(ID_AA64PFR0_EL1_SVE, aa64pfr0) < ID_AA64PFR0_EL1_SVE_IMP)
+> > +		return false;
+> > +
+> > +	return has_user_cpuid_feature(cap, scope);
+> > +}
+> > +#endif
+> 
+> We can name this has_sve_feature() and use it with the existing
+> HWCAP_CAP_MATCH() macro. I think it would look identical.
+
+I don't think that works. HWCAP_CAP_MATCH() doesn't take the
+reg/field/limit information that we need to compute the
+capability. Without such information neatly populated in
+arm64_cpu_capabilities, you can't call has_user_cpuid_feature().
+
+A previous incarnation of the same patch was using that macro. But you
+then end-up with having to map the cap with the field/limit and
+perform the check "by hand". Roughly, this would look like this:
+
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index d793ca08549cd..76566a8bcdd3c 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -3065,12 +3065,22 @@ static const struct arm64_cpu_capabilities ptr_auth_hwcap_gen_matches[] = {
+ #ifdef CONFIG_ARM64_SVE
+ static bool has_sve(const struct arm64_cpu_capabilities *cap, int scope)
+ {
+-	u64 aa64pfr0 = __read_scoped_sysreg(SYS_ID_AA64PFR0_EL1, scope);
++	u64 zfr0;
+ 
+-	if (FIELD_GET(ID_AA64PFR0_EL1_SVE, aa64pfr0) < ID_AA64PFR0_EL1_SVE_IMP)
++	if (!system_supports_sve())
+ 		return false;
+ 
+-	return has_user_cpuid_feature(cap, scope);
++	zfr0 = __read_scoped_sysreg(SYS_ID_AA64ZFR0_EL1, scope);
++
++	switch (cap->cap) {
++	case KERNEL_HWCAP_SVE2P1:
++		return SYS_FIELF_GET(SYS_ID_AA64ZFR0_EL1, SVEver) >= SYS_ID_AA64ZFR0_EL1_SVEver_SVE2p1;
++	case KERNEL_HWCAP_SVE2:
++		return SYS_FIELF_GET(SYS_ID_AA64ZFR0_EL1, SVEver) >= SYS_ID_AA64ZFR0_EL1_SVEver_SVE2;
++	case KERNEL_HWCAP_SVEAES:
++		return SYS_FIELF_GET(SYS_ID_AA64ZFR0_EL1, AES) >= SYS_ID_AA64ZFR0_EL1_AES_IMP;
++	[...]
++	}
+ }
+ #endif
+ 
+Frankly, I don't think this is worth it, and you still need to hack
+read_scoped_sysreg().
+
+> 
+> We might even be able to use system_supports_sve() directly and avoid
+> changing read_scoped_sysreg(). setup_user_features() is called in
+> smp_cpus_done() after setup_system_features(), so using
+> system_supports_sve() directly should be fine here.
+
+Yeah, that should work.
+
+Thanks,
+
+	M.
 
 -- 
-Catalin
+Without deviation from the norm, progress is not possible.
 
