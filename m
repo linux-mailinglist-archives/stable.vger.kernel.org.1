@@ -1,121 +1,103 @@
-Return-Path: <stable+bounces-106715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16605A00C5E
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 17:47:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58693A00C9A
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 18:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 716EE7A01AE
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 16:47:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 266C916451D
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 17:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BAC1FC117;
-	Fri,  3 Jan 2025 16:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3DA1FAC57;
+	Fri,  3 Jan 2025 17:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gu93XmBr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIf7RanJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DF938B
-	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 16:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6387D12C499;
+	Fri,  3 Jan 2025 17:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735922828; cv=none; b=miUHferGtP8JYYiBwCUwJB+e7beTtUyCTUmECZ6ozP986TRt0BYEFEOFBe4//vpQyipPNh4YUh/FD+8Libt7wMN4cX3MPz+LneFAma8px7nANq9plHtaATXxIS26H9Bg7i0fxq3XnuOvfxQlvtZTnFIrdWuge2JErXdiyuEJic0=
+	t=1735924670; cv=none; b=actGxLWQrflBgHgF1tIJTOuuUo1p60FhylDE6tsYJUhCVoQ1NfHjfSWWzL8JnB4OtgmZIfgUkwglZ5eMBOkg3RHJPQlIl2RhY9ODrgMhxIs+Ee6NwCThDXILC+f6CS8QEv2bf4CohcZ4kXpjkaVIvs3Eq8OMukpU5c+7ltTk64g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735922828; c=relaxed/simple;
-	bh=m7qp9fTT636KEfP5XR7gKLkK6ofVHujrpMEDrTxp4M4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pYhnDXvloNFp/n7dvZtOFVGPlG/N53w4RXHOj0ebnzQNHSrS4+HG6EXNvKavU1cOVwXzZA2jgMDPMdZDxJBMVPCTaHsZFS+g/4yI5jgpoB/caehog2E+zzrvKlV373Iyr/M/orXs2ZfN67xucfh5bgBBi09qK4WTKKsjA/7R0YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gu93XmBr; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5f4ce54feb8so6143727eaf.3
-        for <stable@vger.kernel.org>; Fri, 03 Jan 2025 08:47:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735922825; x=1736527625; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AXRmjGDnWqpOlwm2IfIXeCg0w4HEW4vPwZrYnuu4vcs=;
-        b=Gu93XmBr/u83kPlyR8ZoM51lOGjsgdRRasLeqzH7d3PK4VPAxmjA8gClqTaNmfGZRT
-         56J5tTi3agbB2Se+gUCT6Lpnsxs927y6y3STYW6uFMm5L8GdDKtRYWkON1Te2z4lTwEu
-         gMPHzP90wKHqhMutgLkIOKP6NiUcVksBwpQP9OCEQfpCrvb0Drf2UR08h1DWbGWEvH1m
-         BTZr9rMyP3hbCfERaUmfydYf+hVJWDc4iANEgtWUUJjZTi86va4uR+OFGfwKPMNBTo7D
-         qBes2m4sTC5ImU5lVd4HsTLAFeuU/JIZ12ZyEr+ctQJcDN0mHt6k0bDZTBxGjLP/zgzE
-         5yDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735922825; x=1736527625;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AXRmjGDnWqpOlwm2IfIXeCg0w4HEW4vPwZrYnuu4vcs=;
-        b=atudVeUKpesdhzXOEUxTAiX8tzonk2oxH8IZ7afaSVn1M8KhO0fqWafuYdmT+HBU+R
-         jMqQ3E3K+zLbpCht/XJPBGgod/rj7kx0rlrMnpfos2HlzaLUJgPxQyQ0nr9vY9Yt/FyZ
-         /rMlKXm6fD1cc3TMuSlVzSqnHRDxoReRXQBxgQec7kkX5sgKtedd1iRgL1Tyi8L9I1+o
-         0bGHZZtlY0s9OYb2JfgBDXLPZib+7WZ/+46s3Q9HWE/m9DV5RVoJks3dvERkBL/+eDIg
-         GJP88G4D1OLfUqbgfeEun4SGSUuHA9YdokEGyx4DYGAyoMBbUWYvLhuNx/Esl8sIL05O
-         zWDw==
-X-Gm-Message-State: AOJu0YwgyL561KLC8sjEwqVaH7Ggn6Dal6+q/JOKpdDNRWzgNQu6kSbz
-	CsAYYid9ua9g8XOsY2xj41SGbMTiEuzzCdVbAWfs1py7dd90PP7x/9bScef7xlzkGj0yTc0xJHO
-	o6s+mNVlUC6R+91WWL8R/OciaZ84YXiLIX8pHjJJL2/Xze6xB2IM=
-X-Gm-Gg: ASbGncvu5c+U4Gppk+HspPRn0PQX58/f6dBmfYve4V6f6v4cdL1g+S6+t/yTk2mPpSe
-	GnBPfPl2yAjOHv6kouZKcpK4acPZHSN5y0cD6yvo=
-X-Google-Smtp-Source: AGHT+IE/mFLw2lOHGAwZmVM4vNUjIXQQrzPAlhYrqP7V4gCf88sDGtQ1ENBVDq3dKh25MjtBSmEpU2nOP5EUTcHoWxw=
-X-Received: by 2002:a4a:c88c:0:b0:5f6:334e:8d6a with SMTP id
- 006d021491bc7-5f6334e8f9dmr18884886eaf.5.1735922825206; Fri, 03 Jan 2025
- 08:47:05 -0800 (PST)
+	s=arc-20240116; t=1735924670; c=relaxed/simple;
+	bh=lrvfhLvsWhVh8vTC8QXkYxmNihN0CivEa+G/I+yJ8r8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=X7f+YZ96k+XYfPu3Z1E+3QoikSllafCXBG+8PzZeVDjNwY7HEcxubQonaubniyJ+vQ36IouDcOINfL3bEVRJaDn1Z6i1WzbJXQm5LbGUegzkVAV3SUbq2V6IzfnkoU3GMxLj0tTn5OvGtv4e9LGod7Wlut0FDtpH4CmjYV25xxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIf7RanJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E253C4CECE;
+	Fri,  3 Jan 2025 17:17:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735924668;
+	bh=lrvfhLvsWhVh8vTC8QXkYxmNihN0CivEa+G/I+yJ8r8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CIf7RanJJhjNXgjV4NoEWHCTtrWjBfL019KF8tjr4lvQ90r29L8dKb+J70lDZ//sp
+	 ifmsbpLia5ru2LxaPGUDc+eemagKv3RvGErbCa0d9eCwmkAFfFsJMstDc/3+PMbCj+
+	 f7dYC8aiWzykFe2iMCj1H5maXE9WlLu21wUwDCObMdpq36iKgN7+8aEcRoC7xlaNb+
+	 jV5pWwhK+y1J/5K4Dcec8Mqce20G1y/nQS9+jsOxxgYKQxpmY5PKBVGBaUs2dk9hfH
+	 qDlyLVUr9gfXG5lAavRBem5pYCLhtKvJDwqQmKDlRaiY8N5PJapcBYWHKPT6gkTe32
+	 RfiM1mNytJXQQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	tglx@linutronix.de,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 1/4] perf/x86/intel/uncore: Add Clearwater Forest support
+Date: Fri,  3 Jan 2025 12:17:42 -0500
+Message-Id: <20250103171746.492127-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250103004519.474274-1-sashal@kernel.org>
-In-Reply-To: <20250103004519.474274-1-sashal@kernel.org>
-From: Peter Griffin <peter.griffin@linaro.org>
-Date: Fri, 3 Jan 2025 16:46:54 +0000
-Message-ID: <CADrjBPo_oiqboE4jAemR_2AjxJtSgMLpS8_ShWcX8wJLB4rszg@mail.gmail.com>
-Subject: Re: Patch "watchdog: s3c2410_wdt: use exynos_get_pmu_regmap_by_phandle()
- for PMU regs" has been added to the 6.6-stable tree
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, Wim Van Sebroeck <wim@linux-watchdog.org>, 
-	Guenter Roeck <linux@roeck-us.net>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.8
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+From: Kan Liang <kan.liang@linux.intel.com>
 
-+ cc stable@vger.kernel.org
+[ Upstream commit b6ccddd6fe1fd49c7a82b6fbed01cccad21a29c7 ]
 
-On Fri, 3 Jan 2025 at 00:45, Sasha Levin <sashal@kernel.org> wrote:
->
-> This is a note to let you know that I've just added the patch titled
->
->     watchdog: s3c2410_wdt: use exynos_get_pmu_regmap_by_phandle() for PMU regs
->
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->      watchdog-s3c2410_wdt-use-exynos_get_pmu_regmap_by_ph.patch
-> and it can be found in the queue-6.6 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+From the perspective of the uncore PMU, the Clearwater Forest is the
+same as the previous Sierra Forest. The only difference is the event
+list, which will be supported in the perf tool later.
 
-It doesn't make sense (to me at least) to add this patch and then also
-add the revert of it to v6.6 stable tree, as it becomes a no-op. The
-only reason I can think of is it somehow helps with your automated
-tooling?
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20241211161146.235253-1-kan.liang@linux.intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/events/intel/uncore.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Additionally the hardware (Pixel 6 & gs101 SoC ) which these patches
-and APIs were added for wasn't merged until v6.8. The revert is also
-only applicable if the kernel has the corresponding enhancements made
-to syscon driver to register custom regmaps. See 769cb63166d9 ("mfd:
-syscon: Add of_syscon_register_regmap() API")
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index d98fac567684..e7aba7349231 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -1910,6 +1910,7 @@ static const struct x86_cpu_id intel_uncore_match[] __initconst = {
+ 	X86_MATCH_VFM(INTEL_ATOM_GRACEMONT,	&adl_uncore_init),
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X,	&gnr_uncore_init),
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT,	&gnr_uncore_init),
++	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X,	&gnr_uncore_init),
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(x86cpu, intel_uncore_match);
+-- 
+2.39.5
 
-Thanks,
-
-Peter
 
