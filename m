@@ -1,133 +1,124 @@
-Return-Path: <stable+bounces-106739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3732AA0101F
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 23:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8828FA01067
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 23:57:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A03141884909
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 22:12:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D60AC18849C9
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 22:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429731C1F30;
-	Fri,  3 Jan 2025 22:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972001BD9E9;
+	Fri,  3 Jan 2025 22:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="va0M00/t"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N3fGoyW+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFA71C07E3
-	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 22:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23752E401;
+	Fri,  3 Jan 2025 22:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735942354; cv=none; b=t6wlH/y2TuVIqUyu7nqUKXbaGQZwXxw1P8g4kM0DURzQuZD5h4jpgIP8/zXaFlF0MHi097rR3ttZDBbdjgDxOkY6qFm7TO1r8NYVgBAGHfW5d7mH4zgszdZHsS/0w4gtb/Cw0MSQxGPm23MzDYuQbonEtN5ZwYPSKAH0LWt3rnY=
+	t=1735945060; cv=none; b=qXFTh2svzknMAYTIzNkjMKbMThZ/+OdyQJwiNb8IZu+eCrSGRVaKxUiqzGuUG7bal/HCFd/xfgnM9g1rZAV3lMbXtn/YFz0xYB/pep2Ne/fp6dC2fIQOvhNnvfYw5AqdB8tY1h2HLT3J6A7N6lC2l7NcS2wMyzvpAkQwrYDmXDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735942354; c=relaxed/simple;
-	bh=N7/d8BnRpznW25kvX1oaV/75TgA55ldiCx4YUh46ot8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Au5RxFVgpe6m3MOwOCNCkedOnNcxus3UdNMrPbLkTqfwuzabv+8YJi/FFGpk9PCjZnLQsN7/5xq5paGm2KeV7gK3xayY1gDch1AR0zIOAi2UpIiywZvq0i6K7+E0iLAY00KU70UVJfuJCGnrG01LQmzF1MQ6X7NmD2r5Qyj/few=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=va0M00/t; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5d3e638e1b4so286a12.1
-        for <stable@vger.kernel.org>; Fri, 03 Jan 2025 14:12:29 -0800 (PST)
+	s=arc-20240116; t=1735945060; c=relaxed/simple;
+	bh=ixjd2DQr/lsODi5OFC2ygCWre51K3Bv8GHaHULt9tHM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Db9oGVx80xcg2k0lo9y6uw/8x88HGH83GtpkC6UGVrS9e/UielWvIeCrFiLyy1tPZp5vnbfA5Tsu54YY9t+//FEZAVZY5dG/Mm+q6fSB+fVOJ0HzkfbQcmyTjwexHaA9EzT45f4x3vu6uCCVYO1aCmhG+Tf7nrzItcYpUbznyCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N3fGoyW+; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ffd6af012eso175057641fa.2;
+        Fri, 03 Jan 2025 14:57:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1735942347; x=1736547147; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ouzVuGMJ+dx/HtbR1hKCwiT87khuIIWB4azGn/h74wc=;
-        b=va0M00/tP9l8sIu+QGB9Cn2fWtJzEQrNwvi/iHL32VkGBcgbFwwSzMUPJtKYlkz6A7
-         wo/AKdzYXkYHiU8Om2KZDgjmPrHZeKu/WDWa8QvvtfLZ2VCcpUM4dpb1uGbWTxFRJ2ME
-         9TMgA3+URmRvnIIAJJjPgQiPSDO1Vnj+KgLNMIMwLH+SjrTC+lg9zjcnGcbAgGmGli5h
-         iNaUz5z3XX2mU2fBWNqavQCaxTjPBUNswzMAJ7lnmlLiTXtnPB93a4S2zkPoxGMMPsyq
-         KI2aogTE5no/PLJl8LsCwal4ebTlGMHdvNisMhyohh5Eg6Df6l1cfsZNzZ9PA2XfPnon
-         sFvQ==
+        d=gmail.com; s=20230601; t=1735945057; x=1736549857; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7nUee7pPrKPk0m11koHI0ErWRLElDWN258KawCg6rU0=;
+        b=N3fGoyW+H6rcspcLOdNZMqFetEH/pEnYq58u929EeuPbdKNb8fjG1EERti0VIF+31u
+         pIHU5NUwVRVKghWesqN55aJ9ZSoU0gZ4gx52HZz16V+fwGorC0iTPj/f5if52ut7w2J5
+         /1DY1kvFVnFepsLNF5V52sadTXsaJHvrNKytPdU6k+zY36BaOMBxRk17Gfv3ypAN4bpI
+         aLmOtUsUM0iI2Ciw77U1/smRQ47Ma3Hvn67oV6+cV21Fy2OJamFeeStH2kFnJ9baqQ4A
+         PQoSKQf3h+FINzsrfUuGtoBbOsj0ofkpWQWnoVEJqh2Ddollq7FIrzD5a+P0Wlt3R1SI
+         fDQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735942347; x=1736547147;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ouzVuGMJ+dx/HtbR1hKCwiT87khuIIWB4azGn/h74wc=;
-        b=mncIzo/EEvP2mOfT2Gygvdhh6PIpsVaX/UFS1u8qIb7dY+hX7Qar/uGOgpgppMxyOh
-         nbn7BUD7HC9TAdqJD05PDFBkpv4Nvk11WLiCnW6I5Yo0Rs+6pxD1/yW2XHLUdJhHxjS8
-         fbGRQjLX2k9a4XPFmDob6ciV+zAgTvHH4QFwQJJ0pr/ZEZZzNZ0ucmfSFcFEThgFwRSV
-         Uy/GnaiEBX2ud0ch5CO74wn8UEai4DJ+PSVqKzH2/uvfxEDu+ZiSD0eZ/VsrfmLHGRvM
-         8QiwCidaUTLIXpXQgEMmQcVqMK1s5gDWU2PEqDoNSC3Nfl60Pdyn8iSoedWYHJK2NQCW
-         jHow==
-X-Forwarded-Encrypted: i=1; AJvYcCUcFSD0OAms6j02Sne4bO16xxqYa27ncCDgzsTHOA2fb3tKY91/SejGHuUFH+ib6gCeudQm3Rw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT7vq+3zvXLpqbu7Ehw0OE9HU1ULqNApbiOQAakwLK0SgGfrEw
-	yyhbpxDHX8Eo7vrxHuZ92ghGPNGQkOfcZVwl4pvbtHC0nAXP7N6f8cm/BldpG9Qd2+fHlGDvUNT
-	xk4xqyvZp+1J1eHt1X9JuDsrysM/hRAsF+AeM
-X-Gm-Gg: ASbGncvgKl4QqakT/GYLRYH+QR5LGAlSlv11D8MkI+svomzdaWrgYXIiDs4murYX9To
-	F7z5AXRd2L0tsGqdcq8pq+f7Badr/KSDdDZXoa/5QE9YSspb27tKmO04idH+2c8W1Jw==
-X-Google-Smtp-Source: AGHT+IH2nTuYsUZwgLAEUP1UUEKgqxPZDFH+lco++J+d2KuQMwGjlQ499ykyAps9/L1ZD/dRxu2zG01eE7yQuJSJQPE=
-X-Received: by 2002:a50:f690:0:b0:5d1:22e1:7458 with SMTP id
- 4fb4d7f45d1cf-5d929e3dbb0mr17001a12.4.1735942347178; Fri, 03 Jan 2025
- 14:12:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1735945057; x=1736549857;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7nUee7pPrKPk0m11koHI0ErWRLElDWN258KawCg6rU0=;
+        b=XT9hhLX8JBP7Pzd0/rV2gF3+ligkE8Reg+vDAq8Rff7w0p3/g+dX67thRnSZ9uTmQs
+         fHxd6rSu/C34AhPWQ/Kr2acsjX5G+lY+mDlubxZItbgDMIl2EpT5SnMZqfEyxo5oe6Uf
+         3w/ts7UAXsX4J0Ww2uv0htY8Yy9yMF41YqDyvRy7x1qBNUbTT6EdKgfmkfxKQhRIULX1
+         AdRYCcU3fW0uIP+v+qSfYxLxDDS0QAS3gMHEKJLklo0PU4ATQ1Me2mqz6vu97IEyue97
+         i0IuFwkO1/ypqXm69sBZeaLPspUQ5mh8sid1GRKnAETkRbT+S1yZVkpQ4uJK/DRrJaSZ
+         js+A==
+X-Forwarded-Encrypted: i=1; AJvYcCUUGM9Lj/jYq1+EguSis5btbT9Yl3dXGAQCOUhwJxQkb7VvVZ+yMHuIL4URTf8fNIRQToOFLZze@vger.kernel.org, AJvYcCWVLPm6555B+T/hADtv7j4XLVqQTl6xQbi2RXsQJKF4Bnp8o7BbUQ/Zcxdg6xk+7eXqWwXfbz1tfPyUAEE=@vger.kernel.org, AJvYcCXd0znXo0+3gkXJgkX2lG1Xtww1i46EZw16imMQi9K0f2rnFVW2C5ua13AqRB+K85Z00KABcysxM7g2oiI9w4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfM5Z1X+htSeD1X9mrflK2EKRbIBlorUHVmotmsyzU14ExrIJQ
+	UAk0Xs8gUTAKykx6tCc9ExZPlDbQeExDDHl4cG4Xzds507t4sldY
+X-Gm-Gg: ASbGnctp8AZLq1QZT8AQbX7tUyfNKlgextH+UO/BGT3tRnuY87VS2DYlBpAC9U3seDU
+	OvoqZRwn/f+RJoaZ9HNug/08cI13ukhM3dyAR/H2xRAHV3fEDuiqJ4Iepn8T2fC6+UsiiGVju1A
+	A5+fzoyyqYDr4s3384mlp3mlWlBIq9eD3kdl0sFquN7TdGd0pUpS0ptdgLXPayrRtescvopZ9nl
+	8vQUQuVxKeBZiEmtn4Qh2Q6Xw3HFaYYlogFoVyskKjBfoXHsBdEjNxIbbF/pA==
+X-Google-Smtp-Source: AGHT+IG+km/QL0Pe+BNHWNbVelLIghkleOd/E0M1x76SXS7aTN8uT44z74I0BU6BYVLEPU0STgH0yg==
+X-Received: by 2002:a05:6512:12d1:b0:540:1abe:d6d2 with SMTP id 2adb3069b0e04-54229560310mr16906829e87.35.1735945056465;
+        Fri, 03 Jan 2025 14:57:36 -0800 (PST)
+Received: from localhost ([94.19.228.143])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223832002sm4296857e87.264.2025.01.03.14.57.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jan 2025 14:57:35 -0800 (PST)
+Date: Sat, 4 Jan 2025 01:57:35 +0300
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+To: Vasily Khoruzhick <anarsoul@gmail.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+	Fiona Klute <fiona.klute@gmx.de>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: rtw88: 8703b: Fix RX/TX issues
+Message-ID: <Z3hrX7I1z7zo9g5t@skv.local>
+Mail-Followup-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+	Fiona Klute <fiona.klute@gmx.de>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+References: <20250103075107.1337533-1-anarsoul@gmail.com>
+ <Z3g0MLOJlLsPnF1m@skv.local>
+ <CA+E=qVcmHzLkH9eijPqw0_o-pOZEhXpWoPGmRmzLRFGaZiNnwA@mail.gmail.com>
+ <Z3hGZLKQUvT5-8Al@skv.local>
+ <CA+E=qVf2ig48M4o8zotq7fsRvPsw_aPo0niTMVNs9Dx92hsp-g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com> <a1fff596435121b01766bed27e401e8a27bf8f92.camel@surriel.com>
-In-Reply-To: <a1fff596435121b01766bed27e401e8a27bf8f92.camel@surriel.com>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 3 Jan 2025 23:11:51 +0100
-X-Gm-Features: AbW1kvbz3sFjQRVgQTwK2nmJwfanIw07ifL6HQW9Fg9SPbjiINESXxchPM_6Vlc
-Message-ID: <CAG48ez1d9VdW+UQ3RYXMAe1-9muqz3SrC_cZ4UvcB=jpfR2X=Q@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm: Fix flush_tlb_range() when used for zapping
- normal PMDs
-To: Rik van Riel <riel@surriel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+E=qVf2ig48M4o8zotq7fsRvPsw_aPo0niTMVNs9Dx92hsp-g@mail.gmail.com>
 
-On Fri, Jan 3, 2025 at 10:55=E2=80=AFPM Rik van Riel <riel@surriel.com> wro=
-te:
-> On Fri, 2025-01-03 at 19:39 +0100, Jann Horn wrote:
-> > 02fc2aa06e9e0ecdba3fe948cafe5892b72e86c0..3da645139748538daac70166618d
-> > 8ad95116eb74 100644
-> > --- a/arch/x86/include/asm/tlbflush.h
-> > +++ b/arch/x86/include/asm/tlbflush.h
-> > @@ -242,7 +242,7 @@ void flush_tlb_multi(const struct cpumask
-> > *cpumask,
-> >       flush_tlb_mm_range((vma)->vm_mm, start,
-> > end,                  \
-> >                          ((vma)->vm_flags &
-> > VM_HUGETLB)           \
-> >                               ?
-> > huge_page_shift(hstate_vma(vma))      \
-> > -                             : PAGE_SHIFT, false)
-> > +                             : PAGE_SHIFT, true)
-> >
-> >
->
-> The code looks good, but should this macro get
-> a comment indicating that code that only frees
-> pages, but not page tables, should be calling
-> flush_tlb() instead?
+On 25-01-03 12:53, Vasily Khoruzhick wrote:
+> On Fri, Jan 3, 2025 at 12:19 PM Andrey Skvortsov
+> <andrej.skvortzov@gmail.com> wrote:
+> 
+> > Here are more detailed testing results:
+> 
+> I was able to reproduce it with an AP located 2 floors away.
+> Basically, in perfect conditions rtw88 is able to match vendor driver
+> performance, however when signal strength is low, rtw88 is ~2x slower
 
-Documentation/core-api/cachetlb.rst seems to be the common place
-that's supposed to document the rules - the macro I'm touching is just
-the x86 implementation. (The arm64 implementation also has some fairly
-extensive comments that say flush_tlb_range() "also invalidates any
-walk-cache entries associated with translations for the specified
-address range" while flush_tlb_page() "only invalidates a single,
-last-level page-table entry and therefore does not affect any
-walk-caches".) I wouldn't want to add yet more documentation for this
-API inside the X86 code. I guess it would make sense to add pointers
-from the x86 code to the documentation (and copy the details about
-last-level TLBs from the arm64 code into the docs).
+In my case AP was one meter away from the device. Maybe PinePhone's
+antenna isn't well designed as for PineBook.
 
-I don't see a function flush_tlb() outside of some (non-x86) arch code.
-
-I don't know if it makes sense to tell developers to not use
-flush_tlb_range() for freeing pages. If the performance of
-flush_tlb_range() actually is an issue, I guess one fix would be to
-refactor this and add a parameter or something?
+-- 
+Best regards,
+Andrey Skvortsov
 
