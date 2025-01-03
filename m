@@ -1,174 +1,129 @@
-Return-Path: <stable+bounces-106691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14919A008F1
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 12:56:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A22A009FA
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 14:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7035162E68
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 11:56:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5713F163E21
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 13:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473291F9AA1;
-	Fri,  3 Jan 2025 11:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BD91F9428;
+	Fri,  3 Jan 2025 13:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="g25HS2Vj"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="fz7rDcDC"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F7D1F9A96;
-	Fri,  3 Jan 2025 11:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255B813AD0;
+	Fri,  3 Jan 2025 13:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735905372; cv=none; b=G09DTGu2ow154DM0pq6AYKn3M1lZaNgEjm3zbwcb+NTI9+szE82ReewNscNmjwdLh0Q6rM7G1bqbYF9FLWrNecQ9V8VWdiOVxuMToAC8ONTxXtTM44azbJkntwyMu4T1a1GP7OvLtq2fl+XpnGXGtrGuFWnbXF0sCvYhonSjLH0=
+	t=1735911670; cv=none; b=D6O+Itu62wR/wpRm7Y2J+FXhpK+31wqj47D2j0WncmlBKX8PZRDNYT1++dY5zeFnP8Px3oSR9H46dNNZgQPmsPqL9wVU4S45RjcjaVFTUV/UTDSiLFn2/pr9GhMcO0keLxF3PnyvC8osStFazpCyUhs0qy/WjOnF1Pokaspgz8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735905372; c=relaxed/simple;
-	bh=A9b3OFX8SaM49UKKtrDec8vKbuaH5nmSwIWCKZ98mRs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=STBLpE/GtF9NvrLHjhx9Rip8nGgaiwWwyrsAPZzObrKBm/dnj1MZrlKf4h6mg1Wl44r4Zt1yq6sSGWgLyYyMb8jf/Dnm71KyBfdBbpmbWFrh6G8rdA3o8n+T5gDgBRLgrONDHPk4VbWNIYECqYVelr8xm/LU2ZXatiARAhfCguc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=g25HS2Vj; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1735905356; x=1736510156; i=fiona.klute@gmx.de;
-	bh=A9b3OFX8SaM49UKKtrDec8vKbuaH5nmSwIWCKZ98mRs=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=g25HS2Vjmpf9y0VIOjsY/+PrVmNDOPM29oeEa8hUv7bGAWZq+8nc6ypzJ7M3/8Ki
-	 Mprw8uR7OLgYxyuunWdsex0JVS4b772zmymuQf3jCj5Q7DQP4LpOhwESd6QlM1rld
-	 iQ63KM6kdcZW2QhXHTSJ1FX9WEfjaTyMG6490T7rE6klRseutVEKFp86ymhMNxQP0
-	 mRG2uElFz239qQEeQhG3YUVzeQqSQU+jj0G3HYJ0YHuadSKcn1bHhEar6jl4Ubbv9
-	 oItzrCTxFA1RTxChGA1wTkoj9IBDFbogP/obyxXOQEEb5N6uvMWtDC8Ax13FctdJp
-	 hzcKo4PnkqyhNYr71Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.24] ([84.249.220.44]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MTiTt-1t45SQ3O0b-00R0DO; Fri, 03
- Jan 2025 12:55:55 +0100
-Message-ID: <d6f4d483-6f05-4221-8412-5c245e5974b4@gmx.de>
-Date: Fri, 3 Jan 2025 13:55:54 +0200
+	s=arc-20240116; t=1735911670; c=relaxed/simple;
+	bh=2LoD89fr0gA0mToAdYXNti+rZqJbFVeRGGzGfWKuLW8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s99pHM2KjvbFqMDWdAgUm6pT1sLHfqW71JEvlBRMrfvr1aUz/GSP08W72KtkfbVk3dgfqj4Z9fMLiJ8dByap9JaVKqlDs4haHLbmqvMPWcVuGkAHlrE0ENi7j+Z+3Vuxvt/qNYSEP/HJdYqNXbs2xGcTjLvu6gjHWZ/IExgcpuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=fz7rDcDC; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1735911655;
+	bh=2LoD89fr0gA0mToAdYXNti+rZqJbFVeRGGzGfWKuLW8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=fz7rDcDCq6lsjCCc0Uy4EYINp8j+vfO0ZOujqppZ3Bo6eYQm77elD7VEDtOROkmRC
+	 pMcp6p5+XI/ZxRH3zwHMNzeq/bweAfHnts1/TJ2cnq71Qtls1rbZXn0MgOyDmzNck9
+	 sMSI8uLKfu4UDqj1Zb76YakDAGzE7Gof5B3yGM+Y=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Fri, 03 Jan 2025 14:40:49 +0100
+Subject: [PATCH net] ptp: limit number of virtual clocks per physical clock
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtw88: 8703b: Fix RX/TX issues
-To: Ping-Ke Shih <pkshih@realtek.com>, Vasily Khoruzhick
- <anarsoul@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20250103075107.1337533-1-anarsoul@gmail.com>
- <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
-Content-Language: en-US, de-DE-1901, de-DE
-From: Fiona Klute <fiona.klute@gmx.de>
-Autocrypt: addr=fiona.klute@gmx.de; keydata=
- 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
-In-Reply-To: <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:3DZztg0NQZ08amkORvwisifWC3zO7pTLBqAEckchA+Vg9kuQyNk
- 5+L+9P+pKWASX6ks9gLehcpL6AKdzMzPTAtE+1/Z16k6WBcRVixSEtrVVE1dPZp4H8LwAzR
- YGyb7vVdKWbRAsR3X1Oa6YmLa5vcFkr/1Hg6ObCwitDz8uN16V9xfWLfBImDkSr/wOjmeOh
- Ihkouq1uaYAHaY889MJSA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:73Hnc9kn0cI=;5qgxQvlND15ROPXQB3eS/EE/r+b
- nftamQ4BCDBS5808B0XbzzbVZCDD7m54zbqNbTMD3q2S5RX7Dq5a3UkHNyyTibrDHvzurHiUH
- khavbGc3/hdyNOSjuD795a8+yhAERR1l66tNUweWHRSmgcyPmGSw8PhYl0FrE9HJplVztW4Y3
- FYKNEtVxSw8J6+ECxTCyF+7LEPW8I0lGNeupS6W/HEvNu9mNSs0m+ONBgIG2N03MpkPNpxJpi
- Mervi2ZWYrVOHJyrXfkfzZ/0KTY4MBgRfKR0OpCetEUpQtPQPOHHlEwf/9hjSxndi/lqtYupb
- cWP6RjE/b2HKWQOKf6FMosUM/BMfgdooZYUZXKsXmpnNdxF0MoM4j1qPDg65NKMHogw201nth
- fzzzl36BAyJdNrEy7eBvU6lvvJu67nbgfP/2L3GN44ljrJzCzra17n8IoYCA+B0WEn4Q5wmGO
- pBnO9NlzdZlpKjsBfRjnY4bupMjl1SqlDhhYo/xwbyv/mbG1nodddDHmcdR/8heSU3Ku8LgCm
- GrmZCqpqx/IL5rWfBrnaxDOpMVfHstbgo7we7Q/i3F/mjQ33njAK9Lg+Nkeowtmu7fj3ZGujS
- BIyANOlxhhGm6JhlRKBJt4MC8irc7/XKM24khiq4TskbfN9BcIXe6kgY/OAEF8cGXk+Rh6+QW
- pzb35d0H58AZAxcwCiFUZVM24THOgJHuhxP4D6LINzWQA3d4OsMo4vRzgjFU2WxoNVJQH1Xa3
- Y4nefbyCaxzSaziOGu9bfKIrhYWZEmrJwRzaPsg14/lss4M66xXNddwToP+kTKtODyNvCPdbR
- effjnqWvwycddxwkNZOVPrIGbEmGoNtFkrN1IF0YpLOdok7f2/haDCi2PfxgV3c/MUzX+FAKz
- tCQuHI54kVdKg8+rkv1Wmk7NQJKpoH6UIDZ7Mk9qNwVxLpluW7uooHtP7LAlqJJNqnwhm9d+Y
- vtCDgXKkWu0/55y819Ab7bgL0GSzIXVGIRpkCrV/rzqz9bDXFqMc2U2u5vNZfBJtElWGoq1Pk
- aQay8x7+yoFq09Pp8Q0yeDlhz/YspxUe9sqCYvM7s7wQFpPRPAMXywKnOJ1L7p/ExuRDqqy0b
- nXtC2InQyrQRDATl+7V0qwr7n+ZnYC
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250103-ptp-max_vclocks-v1-1-2406b8eade97@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAODod2cC/x3MTQqAIBBA4avIrBOmpBZdJSL8mWqoTFQiiO6et
+ PwW7z2QKDIl6MUDkS5OfPqCuhJgV+0XkuyKocGmxRqVDDnIQ9/TZffTbkmi06Y1qAxiB6UKkWa
+ +/+MAnjKM7/sBqssLWWYAAAA=
+X-Change-ID: 20250103-ptp-max_vclocks-0dab5b03b006
+To: Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Yangbo Lu <yangbo.lu@nxp.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, cheung wall <zzqq0103.hey@gmail.com>, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1735911655; l=1977;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=2LoD89fr0gA0mToAdYXNti+rZqJbFVeRGGzGfWKuLW8=;
+ b=w82DqGyX9o/stC4bGVg2KUYn5zlZeQZvDY1lfm/JUFQnLu/r+9NcwaF1fAB1fe/Zo+w2UIZMt
+ ebrO0q5mVsCDbVW6TzL7I2m6tQRraepBXxwFTHUEE9ulAKwSgL6d1Qd
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-Am 03.01.25 um 11:12 schrieb Ping-Ke Shih:
-> Vasily Khoruzhick <anarsoul@gmail.com> wrote:
->> Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
->> fatal and do not seem to have any impact, just fix them to match vendor
->> driver.
->
-> Just curious how you can find these typos?
->
->>
->> However the last one in rtw8703b_set_channel_bb() clears too many bits
->> in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
->> above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
->>
->> With the last typo fixed, the driver is able to reach MCS7 on Pinebook
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
->> Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
->
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
->
-> Is this urgent? If not, I will take this via rtw-next tree.
-It's a huge performance improvement, 10x more RX throughput in Iperf
-tests, not just in the reported bit rate (residential, moderately noisy
-environment). TX improved too, but not as massively.
+The sysfs interface can be used to trigger arbitrarily large memory
+allocations. This can induce pressure on the VM layer to satisfy the
+request only to fail anyways.
 
-Tested-by: Fiona Klute <fiona.klute@gmx.de>
+Reported-by: cheung wall <zzqq0103.hey@gmail.com>
+Closes: https://lore.kernel.org/lkml/20250103091906.GD1977892@ZenIV/
+Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+The limit is completely made up, let me know if there is something
+better.
 
-Thank you very much Vasily for digging into this!
+I'm also wondering about the point of the max_vclocks sysfs attribute.
+It could easily be removed and all its logic moved into the n_vclocks
+attribute, simplifying the UAPI.
+---
+ drivers/ptp/ptp_private.h | 1 +
+ drivers/ptp/ptp_sysfs.c   | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index 18934e28469ee6e3bf9c9e6d1a1adb82808d88e6..07003339795e9c0fb813887e47eaee4ba0e20064 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -22,6 +22,7 @@
+ #define PTP_MAX_TIMESTAMPS 128
+ #define PTP_BUF_TIMESTAMPS 30
+ #define PTP_DEFAULT_MAX_VCLOCKS 20
++#define PTP_MAX_VCLOCKS_LIMIT 2048
+ #define PTP_MAX_CHANNELS 2048
+ 
+ struct timestamp_event_queue {
+diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
+index 6b1b8f57cd9510f269c86dd89a7a74f277f6916b..200eaf50069681eecc87d63c0e0440f28cccab77 100644
+--- a/drivers/ptp/ptp_sysfs.c
++++ b/drivers/ptp/ptp_sysfs.c
+@@ -284,7 +284,7 @@ static ssize_t max_vclocks_store(struct device *dev,
+ 	size_t size;
+ 	u32 max;
+ 
+-	if (kstrtou32(buf, 0, &max) || max == 0)
++	if (kstrtou32(buf, 0, &max) || max == 0 || max > PTP_MAX_VCLOCKS_LIMIT)
+ 		return -EINVAL;
+ 
+ 	if (max == ptp->max_vclocks)
+
+---
+base-commit: 582ef8a0c406e0b17030b0773392595ec331a0d2
+change-id: 20250103-ptp-max_vclocks-0dab5b03b006
 
 Best regards,
-Fiona
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
 
 
