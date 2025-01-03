@@ -1,198 +1,229 @@
-Return-Path: <stable+bounces-106676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C38A003AE
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 06:39:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A86FA003BD
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 06:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C831162DD5
-	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 05:39:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDB663A37F1
+	for <lists+stable@lfdr.de>; Fri,  3 Jan 2025 05:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E387914A614;
-	Fri,  3 Jan 2025 05:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A491B3929;
+	Fri,  3 Jan 2025 05:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GMv+6lHn"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cYM0dz6L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ADE1B0F1B
-	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 05:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86CC1B21A7
+	for <stable@vger.kernel.org>; Fri,  3 Jan 2025 05:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735882788; cv=none; b=QKjQ6yrG4CMLtVRXkIWUncXhdnV1xTufuvdraXIX74Xe22QaBpH+lEGl7Fv6pVjo2W+W+4NpeuqBER/BaEiTYB3juxkKhggMeUo8AUM8+RlYBFOsTM8su6y8wZecRFIubZymFVeWtRp3RzwcEYPmfn33eXx4ZZSdxzMLOSI6U2o=
+	t=1735883114; cv=none; b=e9f2nsEIcOA/RTMC9b97A/xBrAAH6XGVSO8sAzAiS4Npy2Ll8TgW0NwQf8gPaf6SX3n2oUJ/Vb5SUlNJfNX2c5hSYTNqLcoDR6c898AuOuz4Ob3Vt4zj7F4Ko00n566KnFkcRDKo/E8qPrhR1oRL0p2znl60HySIMK3A0LFlJZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735882788; c=relaxed/simple;
-	bh=dGAADOruDdVevfRRRw6q/kM1MBzw84JoMeDHeS339y4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uGic4mRSz99YEgRiPCn/5E0aQucZjq/io+w+EsgkfCnXAp/qWbUuJhkxRpYXAKKDiFMBb/Z6y6Dvff+WeBGPiyZgOcGpZInKuVTsEsEsOMquiCz7n4i0/6JJOpLlJ0juktmsMEItY6WwTIZCyi9uGPUfbN2nGsE2Wd7RhdYmClw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GMv+6lHn; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3023c51146cso125588961fa.1
-        for <stable@vger.kernel.org>; Thu, 02 Jan 2025 21:39:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735882785; x=1736487585; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5b+7A2P7nxK0BAHexMMe/vomjIPW53TQMc+8xGTDpTM=;
-        b=GMv+6lHnZJ0++mzfsWJbtQMwxBJX5ttLSwYkXK+Ilq+qTG2a7fr6rWtWGO2i50AHc5
-         h7QBJKPxdEyo5+7qq4SzNOXdLrHo/qZztukWJkn/mnhiqAcWmqLSlu7qZoOmQJKTCiDb
-         iK5pugwej0e2d+SLtLuJ/IfRDxUdYRe77oygfWHYX8LmmmFheasTyUF3I/HPFaLNuq0y
-         1TX6XzFYIadNLk9yIrgBO8RtCINWvBdrJOGkBXA1/4mctAycoRwxHn79cb9Ji5+RCi4k
-         SIAXaXFFeMfasWpRz83ndim/wOaICB4/fX/XJT50BeW8OMe8s4wLvUvkyBZcGVFCy7C5
-         xk1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735882785; x=1736487585;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5b+7A2P7nxK0BAHexMMe/vomjIPW53TQMc+8xGTDpTM=;
-        b=sKcjt671o7+Wu7fSG+y/s6gRMMZ4zSYYkuO/9zPY4VKQqAwpjQ7vdgZ2fP4fF0Tv9h
-         BBeKpCHHVBOE8g2SJKvks+y5nAjjx8xuM2CChVy3eCc5gZgLGNdyPHHb+ubCFSphRSnM
-         I14ZuXvrpXrfkiPnCMY1zYZEnidqORfJz7r0Q2O8O7hvtb6lfqY+chRXKIOTFDAfYdZD
-         Fipl2bmEiJ1DjlRknW0MD6s/ERmlAWdpANwAZQHlkZ9PU4VSc8hbuE+S1OZf8A4n+nCG
-         e8wD/+E0X5uxYe5JEzMNL1+1+5Yk0dc4TbyTyj8+ApsB9nVXw1g64bcCfjg/m6uLiddR
-         YxrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSGdNau/2dS04p781F8wt/PauBfI5aME0q+rHVJFY9TFXBuAQUDGOZhYzYDytEyVQYQmrClkI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGXjqN7V/n6E2Q5wYJ2SmTlTGhxSoyPA4zEyHizipoxWVzX3He
-	tqHk9pOHaEJp/EUXNONgsUqVyBjTpz2Vutv0IV+PEBTuPKP17Cv9TJyeBeFCJhwTu295e8r9ksW
-	Z
-X-Gm-Gg: ASbGncudmX4NVqdwUewsF6ZHuGn9AGzRJGJKpZKP9C/LQsXLgB/edIcP5KIi6iMZPMQ
-	lk4pb34Q3GbNIrtZQQHYXjwRV1yUMUK5rjOkRpVKuR98BxeoNT8WPFL6xq0Alz2EaYCFPPIX1Dp
-	ESAnHlHkYFOECDUg52nIHk4MjbF8NnvuK3+2YRkYea+aPgHG9gSD+blbI4k9YFJOS1FjlvlPgnD
-	1hlcTmX0YSz1zzsP4KZk5wL8wt2Ig6KQV8bM+BZDK+n+/C3dP8WXdcbyJIxM0WqGvm90oyGtNOQ
-	Lp5vh15nG9WT57ORgaOAgFY/SbMJYfkutkVg
-X-Google-Smtp-Source: AGHT+IFMjVY1uuT/QoNkXenKEQnnYtCwE848ro88ln+LVY+M3F/zoO4jh6ZHAeBMU0PNuvJB5LjqpA==
-X-Received: by 2002:a2e:b8d1:0:b0:302:2cb3:bb1d with SMTP id 38308e7fff4ca-30469b575fcmr125949051fa.12.1735882784793;
-        Thu, 02 Jan 2025 21:39:44 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3045ad6caf1sm44798991fa.4.2025.01.02.21.39.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jan 2025 21:39:44 -0800 (PST)
-Date: Fri, 3 Jan 2025 07:39:42 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Jos Wang <joswang1221@gmail.com>
-Cc: heikki.krogerus@linux.intel.com, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, rdbabiera@google.com, 
-	Jos Wang <joswang@lenovo.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2, 2/2] usb: typec: tcpm: fix the sender response time
- issue
-Message-ID: <j2icjry36lnmhhe2jskh4jpdxmogv4xy3mnbjasechbg5gf76u@wlakfperuk7q>
-References: <20241222105239.2618-1-joswang1221@gmail.com>
- <20241222105239.2618-2-joswang1221@gmail.com>
- <exu4kkmysquqfygz4gk26kfzediyqmq3wsxvu5ro454mi4fgyp@gr44ymyyxmng>
- <CAMtoTm0nCL7jL=Wno7Cv5upyPnF0wTOXbY+WNG+y1P94513Pgg@mail.gmail.com>
+	s=arc-20240116; t=1735883114; c=relaxed/simple;
+	bh=hz1RqTw1E/+PJaISYkmLCfE7Vsdg5C7rG+upHlBEbg0=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gonvPheOyEWHTuIJ5WjIA1MCuPHcdXO14rdF3diiRarPgqZYrZa1UY8n/fT0aUkQPqrRpju0hHhYi4d7lQ0sn8PWKxLTethurDt/TTJXUvrSQgbM/hpbVMgS9jIjPPPJzAjqUcRcHLn+gllxtwMP08m1iIC5DxS1tii9O4xvKFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cYM0dz6L; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from namjain-hibernation.4uyjgaamrtuunfhsycmekme4ua.xx.internal.cloudapp.net (unknown [20.94.232.156])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 538E02041A90;
+	Thu,  2 Jan 2025 21:45:11 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 538E02041A90
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1735883111;
+	bh=4fAtC6ThXpmeUAWUdJmyTFEK9WJ+iGL8jbP9AHW3ENE=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=cYM0dz6LEHttBLdDaah+0alFXQEiE1WfFFMl4daxgvwuvy5CRPdMT9ICpB4IBr0V3
+	 xDaYmyvGGIIYpgA4Tu6OFCI6lIFE8dBdKeRK+XghHS6WT9hQf+EtDHA1po2YwPHomW
+	 HgJ+ez+nVcig7Usqc1jYHozdLUJgp1BCoLpFc90s=
+From: Naman Jain <namjain@linux.microsoft.com>
+To: stable@vger.kernel.org,
+	namjain@linux.microsoft.com
+Subject: [PATCH 5.10.y] x86/hyperv: Fix hv tsc page based sched_clock for hibernation
+Date: Fri,  3 Jan 2025 05:45:06 +0000
+Message-ID: <20250103054506.1748-1-namjain@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024122327-imaginary-gizzard-8e8b@gregkh>
+References: <2024122327-imaginary-gizzard-8e8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMtoTm0nCL7jL=Wno7Cv5upyPnF0wTOXbY+WNG+y1P94513Pgg@mail.gmail.com>
 
-On Wed, Jan 01, 2025 at 09:00:01PM +0800, Jos Wang wrote:
-> Hi, thanks for your help in reviewing the code, and happy new year to
-> you and your family!
-> 
-> For the first commit you mentioned (modification time is 27ms), I
-> understand that just modify the include/linux/usb/pd.h file:
+read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
+bigger than the variable hv_sched_clock_offset, which is cached during
+early boot, but depending on the timing this assumption may be false
+when a hibernated VM starts again (the clock counter starts from 0
+again) and is resuming back (Note: hv_init_tsc_clocksource() is not
+called during hibernation/resume); consequently,
+read_hv_sched_clock_tsc() may return a negative integer (which is
+interpreted as a huge positive integer since the return type is u64)
+and new kernel messages are prefixed with huge timestamps before
+read_hv_sched_clock_tsc() grows big enough (which typically takes
+several seconds).
 
-In future please respond under the comment, not at the top of the
-message. Thank you.
+Fix the issue by saving the Hyper-V clock counter just before the
+suspend, and using it to correct the hv_sched_clock_offset in
+resume. This makes hv tsc page based sched_clock continuous and ensures
+that post resume, it starts from where it left off during suspend.
+Override x86_platform.save_sched_clock_state and
+x86_platform.restore_sched_clock_state routines to correct this as soon
+as possible.
 
-> diff --git a/include/linux/usb/pd.h b/include/linux/usb/pd.h
-> index d50098fb16b5..cd2cc535d21d 100644
-> --- a/include/linux/usb/pd.h
-> +++ b/include/linux/usb/pd.h
-> @@ -457,7 +457,7 @@ static inline unsigned int rdo_max_power(u32 rdo)
->  #define PD_T_NO_RESPONSE       5000    /* 4.5 - 5.5 seconds */
->  #define PD_T_DB_DETECT         10000   /* 10 - 15 seconds */
->  #define PD_T_SEND_SOURCE_CAP   150     /* 100 - 200 ms */
-> -#define PD_T_SENDER_RESPONSE   60      /* 24 - 30 ms, relaxed */
-> +#define PD_T_SENDER_RESPONSE   27      /* 24 - 30 ms, relaxed */
->  #define PD_T_RECEIVER_RESPONSE 15      /* 15ms max */
->  #define PD_T_SOURCE_ACTIVITY   45
->  #define PD_T_SINK_ACTIVITY     135
-> 
-> Is my understanding correct?
+Note: if Invariant TSC is available, the issue doesn't happen because
+1) we don't register read_hv_sched_clock_tsc() for sched clock:
+See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
+clocksource and sched clock setup");
+2) the common x86 code adjusts TSC similarly: see
+__restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
+x86_platform.restore_sched_clock_state().
 
-Yes.
+Cc: stable@vger.kernel.org
+Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation")
+Co-developed-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20240917053917.76787-1-namjain@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240917053917.76787-1-namjain@linux.microsoft.com>
+(cherry picked from commit bcc80dec91ee745b3d66f3e48f0ec2efdea97149)
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+---
+ arch/x86/kernel/cpu/mshyperv.c     | 58 ++++++++++++++++++++++++++++++
+ drivers/clocksource/hyperv_timer.c | 14 +++++++-
+ include/clocksource/hyperv_timer.h |  2 ++
+ 3 files changed, 73 insertions(+), 1 deletion(-)
 
-> 
-> 
-> Thanks
-> Jos Wang
-> 
-> On Sun, Dec 22, 2024 at 9:14 PM Dmitry Baryshkov
-> <dmitry.baryshkov@linaro.org> wrote:
-> >
-> > On Sun, Dec 22, 2024 at 06:52:39PM +0800, joswang wrote:
-> > > From: Jos Wang <joswang@lenovo.com>
-> > >
-> > > According to the USB PD3 CTS specification
-> > > (https://usb.org/document-library/
-> > > usb-power-delivery-compliance-test-specification-0/
-> > > USB_PD3_CTS_Q4_2024_OR.zip), the requirements for
-> > > tSenderResponse are different in PD2 and PD3 modes, see
-> > > Table 19 Timing Table & Calculations. For PD2 mode, the
-> > > tSenderResponse min 24ms and max 30ms; for PD3 mode, the
-> > > tSenderResponse min 27ms and max 33ms.
-> > >
-> > > For the "TEST.PD.PROT.SRC.2 Get_Source_Cap No Request" test
-> > > item, after receiving the Source_Capabilities Message sent by
-> > > the UUT, the tester deliberately does not send a Request Message
-> > > in order to force the SenderResponse timer on the Source UUT to
-> > > timeout. The Tester checks that a Hard Reset is detected between
-> > > tSenderResponse min and max，the delay is between the last bit of
-> > > the GoodCRC Message EOP has been sent and the first bit of Hard
-> > > Reset SOP has been received. The current code does not distinguish
-> > > between PD2 and PD3 modes, and tSenderResponse defaults to 60ms.
-> > > This will cause this test item and the following tests to fail:
-> > > TEST.PD.PROT.SRC3.2 SenderResponseTimer Timeout
-> > > TEST.PD.PROT.SNK.6 SenderResponseTimer Timeout
-> > >
-> > > Considering factors such as SOC performance, i2c rate, and the speed
-> > > of PD chip sending data, "pd2-sender-response-time-ms" and
-> > > "pd3-sender-response-time-ms" DT time properties are added to allow
-> > > users to define platform timing. For values that have not been
-> > > explicitly defined in DT using this property, a default value of 27ms
-> > > for PD2 tSenderResponse and 30ms for PD3 tSenderResponse is set.
-> >
-> > You have several different changes squashed into the same commit:
-> > - Change the timeout from 60 ms to 27-30 ms (I'd recommend using 27 ms
-> >   as it fits both 24-30 ms and 27-33 ms ranges,
-> > - Make timeout depend on the PD version,
-> > - Make timeouts configurable via DT.
-> >
-> > Only the first item is a fix per se and only that change should be
-> > considered for backporting. Please unsquash your changes into logical
-> > commits.  Theoretically the second change can be thought about as a part
-> > of the third change (making timeouts configurable) or of the fist change
-> > (fix the timeout to follow the standard), but I'd suggest having three
-> > separate commits.
-> >
-> > >
-> > > Fixes: 2eadc33f40d4 ("typec: tcpm: Add core support for sink side PPS")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Jos Wang <joswang@lenovo.com>
-> > > ---
-> > > v1 -> v2:
-> > > - modify the commit message
-> > > - patch 1/2 and patch 2/2 are placed in the same thread
-> >
-> > --
-> > With best wishes
-> > Dmitry
-
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index a91aad434d03..14e5e1d7d0e8 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -163,6 +163,63 @@ static void hv_machine_crash_shutdown(struct pt_regs *regs)
+ 	hyperv_cleanup();
+ }
+ #endif /* CONFIG_KEXEC_CORE */
++
++static u64 hv_ref_counter_at_suspend;
++static void (*old_save_sched_clock_state)(void);
++static void (*old_restore_sched_clock_state)(void);
++
++/*
++ * Hyper-V clock counter resets during hibernation. Save and restore clock
++ * offset during suspend/resume, while also considering the time passed
++ * before suspend. This is to make sure that sched_clock using hv tsc page
++ * based clocksource, proceeds from where it left off during suspend and
++ * it shows correct time for the timestamps of kernel messages after resume.
++ */
++static void save_hv_clock_tsc_state(void)
++{
++	hv_ref_counter_at_suspend = hv_read_reference_counter();
++}
++
++static void restore_hv_clock_tsc_state(void)
++{
++	/*
++	 * Adjust the offsets used by hv tsc clocksource to
++	 * account for the time spent before hibernation.
++	 * adjusted value = reference counter (time) at suspend
++	 *                - reference counter (time) now.
++	 */
++	hv_adj_sched_clock_offset(hv_ref_counter_at_suspend - hv_read_reference_counter());
++}
++
++/*
++ * Functions to override save_sched_clock_state and restore_sched_clock_state
++ * functions of x86_platform. The Hyper-V clock counter is reset during
++ * suspend-resume and the offset used to measure time needs to be
++ * corrected, post resume.
++ */
++static void hv_save_sched_clock_state(void)
++{
++	old_save_sched_clock_state();
++	save_hv_clock_tsc_state();
++}
++
++static void hv_restore_sched_clock_state(void)
++{
++	restore_hv_clock_tsc_state();
++	old_restore_sched_clock_state();
++}
++
++static void __init x86_setup_ops_for_tsc_pg_clock(void)
++{
++	if (!(ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE))
++		return;
++
++	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
++	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
++
++	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
++	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
++}
+ #endif /* CONFIG_HYPERV */
+ 
+ static uint32_t  __init ms_hyperv_platform(void)
+@@ -380,6 +437,7 @@ static void __init ms_hyperv_init_platform(void)
+ 
+ 	/* Register Hyper-V specific clocksource */
+ 	hv_init_clocksource();
++	x86_setup_ops_for_tsc_pg_clock();
+ #endif
+ 	/*
+ 	 * TSC should be marked as unstable only after Hyper-V
+diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
+index 7c617d8dff3f..a8875384fb02 100644
+--- a/drivers/clocksource/hyperv_timer.c
++++ b/drivers/clocksource/hyperv_timer.c
+@@ -23,7 +23,8 @@
+ #include <asm/mshyperv.h>
+ 
+ static struct clock_event_device __percpu *hv_clock_event;
+-static u64 hv_sched_clock_offset __ro_after_init;
++/* Note: offset can hold negative values after hibernation. */
++static u64 hv_sched_clock_offset __read_mostly;
+ 
+ /*
+  * If false, we're using the old mechanism for stimer0 interrupts
+@@ -370,6 +371,17 @@ static void resume_hv_clock_tsc(struct clocksource *arg)
+ 	hv_set_reference_tsc(tsc_msr);
+ }
+ 
++/*
++ * Called during resume from hibernation, from overridden
++ * x86_platform.restore_sched_clock_state routine. This is to adjust offsets
++ * used to calculate time for hv tsc page based sched_clock, to account for
++ * time spent before hibernation.
++ */
++void hv_adj_sched_clock_offset(u64 offset)
++{
++	hv_sched_clock_offset -= offset;
++}
++
+ static int hv_cs_enable(struct clocksource *cs)
+ {
+ 	hv_enable_vdso_clocksource();
+diff --git a/include/clocksource/hyperv_timer.h b/include/clocksource/hyperv_timer.h
+index 34eef083c988..7659942f7283 100644
+--- a/include/clocksource/hyperv_timer.h
++++ b/include/clocksource/hyperv_timer.h
+@@ -35,6 +35,8 @@ extern void hv_init_clocksource(void);
+ 
+ extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
+ 
++extern void hv_adj_sched_clock_offset(u64 offset);
++
+ static inline notrace u64
+ hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg, u64 *cur_tsc)
+ {
 -- 
-With best wishes
-Dmitry
+2.43.0
+
 
