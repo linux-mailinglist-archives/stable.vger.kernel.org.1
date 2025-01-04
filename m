@@ -1,204 +1,188 @@
-Return-Path: <stable+bounces-106744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0A2A01283
-	for <lists+stable@lfdr.de>; Sat,  4 Jan 2025 06:24:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BE7A012E4
+	for <lists+stable@lfdr.de>; Sat,  4 Jan 2025 08:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 773167A1DBD
-	for <lists+stable@lfdr.de>; Sat,  4 Jan 2025 05:24:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE29718849ED
+	for <lists+stable@lfdr.de>; Sat,  4 Jan 2025 07:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77545148FF6;
-	Sat,  4 Jan 2025 05:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A3D17C69;
+	Sat,  4 Jan 2025 07:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="al7PgydM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4PVFynW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93410168DA;
-	Sat,  4 Jan 2025 05:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707C62914
+	for <stable@vger.kernel.org>; Sat,  4 Jan 2025 07:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735968245; cv=none; b=TF9Zuk1KsIPA5PODKU+/ewRxF7RJdtqitPnlmEbupdfTKg1ka5RlEWrbq9z1NOtpQuVZSTC6ULusNNmgyMAV+VgWc+e2NKtZbXCTtXg9qtq5Ruita61iYMDMwfhhiIIN91FgwTd77mjq+LvCwlooKfS4dW2vRbJU84gKtYvORfo=
+	t=1735975208; cv=none; b=pfNUZpE3mJpemZHjH1M+OhWehG4syuNLf4DUEvMKI+26j68wz5Oi8arn9hZopuaraDYm0lCRNT8broXa4hkemiBv/t0O5Q+7gkWRFAdSrePETmT3NIQe0FbGD4FvqzCI9Ta2D+fZuzKxLwxcR4MiS9GLX1zB5VBnbS78CpIhyKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735968245; c=relaxed/simple;
-	bh=y3bxbAnBlKC1hENCikUB+10x7gYzgjtwbzOlqpoIyss=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pM+f+Ot6GuKysKxE/PhGxhpckY1ZGjMEwXGuaNxKz91sYZAVaFCksItPjug5Js8IJShwQFVy1V392FuEqCP9A+ppnzQmp9W693Bwltq7vYwwrwzY4p2qcigilnDIixHUbxkPuUqNn34K0H3Nyw6nFbSuH8fS+uh9KFexLFw2yIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=al7PgydM; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-71ded02b779so6942988a34.2;
-        Fri, 03 Jan 2025 21:24:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735968242; x=1736573042; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=acA1TDb0UrJFKrVaZCv/YccfOjk9TfQSmkM3PcsZWBI=;
-        b=al7PgydMqI41IrYcUuoJrKFhta+nOJ6O8zs6qX907UuISCXB7ch6p7sqswQMq8Lyrw
-         PL06ddfHh6xS2M7b6FYkRxnw5ml09eamBYjaNzG672ni89DDAirtKjlL9dPNlxNSIQYE
-         w3XpxPaMosW62dWZinIbx5SU0wj9qd+TjyGQFsQdN1OVKmet3FeQ07+ISL4WYnY7Xd+E
-         3QnhOHEpJbWoSXyIm3IYu+D43+b2Oz4rXm99o1C5ceVpp7jCR/f6+31Q0ZRBww90t97K
-         AybEfmvfFCBpexhAURAPGj7oa+sE53vJ4WtV9UxGXSvawSuS8lu4tPMzmyhO34qS5Iag
-         0kiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735968242; x=1736573042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=acA1TDb0UrJFKrVaZCv/YccfOjk9TfQSmkM3PcsZWBI=;
-        b=Cpvq0cJyj6LYk3aDpbRm8//2NShLuumOHYxQqt/gXKoWxjac6cMeHFfKP1CGMhHMun
-         mc6ydnLYkNKiF9c3xibCedO0uE41M2FY69gTKYsqAVlTqtmfxnzSGrgFkCK/oPQ0lZ4j
-         lVMgvfR9JOIrfIyR/UcWCWLc7c4mmEYhQY/ANHLDMeJE3QvYGIyb5lf52gtPy0pmjgb7
-         HBD+mVDe+hXqKHDc68p6AoU4Po/QQ94glIx9sW2axAJlC+dV1cn49CBlXoohhp1WLz+J
-         dnR0wzcpBGje9lHE8n1Kcx6bda1oyCG37o/jLICTNCnX5QvOG+gueUyI2N2P/NG96rXK
-         vS5w==
-X-Forwarded-Encrypted: i=1; AJvYcCUG+vayWjQGSARCbTfasNs1oLeHkUFl5EBx2v8KzvMsFqU/jpxqb3dDGXC+R+lcdkvJ8WNcfrFrxF45@vger.kernel.org, AJvYcCUa6i9fvkoy0nf5SqxsPkfWs6OqpuGvvqp7RJ7KMFkT/dqNpCULbHVH9QHeZplRPaBScPnbdfd7MPr1fkib@vger.kernel.org, AJvYcCVGCUrpoe1eJx5CMux5VBh6ou6wNHg9Gjj/CV0Hx0JDDXipP+D76tvdjf98yLgxCrNybHAUik71Rw/v@vger.kernel.org, AJvYcCWFfZnmFmu2cBemM5gRrsi3A0lrQuv1Df+VHZbOZ8IwaodZ9qWqvf6gH5pUKSAHGwIHXDJzpq5+@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaaziAuj7ma77E2YY5kqJIuEYGR7ZutGYlKcM0GPDd0BZV/cXm
-	KFpnPO3lNzF6o/fkMNF4c2UduhHnZoYbT6GCwvK/AM3t3AthTO/Nb8D0vHWpuxZl8mn3NFJJRCC
-	6hLkVj2p/6nanUQPJNRSJieBnXdSJyQ==
-X-Gm-Gg: ASbGnctieEqEMNM1IE9mi3d5LtiFswaldfUN/e/gytZcs/fwm3GcidnDGfmYvaph6cU
-	5BnDUjn4SZzL3VfmVT9DVW+rUaoxdx698cXKKEe0=
-X-Google-Smtp-Source: AGHT+IGDHHiShh2/RbztpLYfVEGR6eidVfvZztjSDJRPjbFLFEwSFq5vmkUnRgElcfTZadwZIwy8KqWQGeAYki9omSA=
-X-Received: by 2002:a05:6830:d86:b0:71d:5bfd:8537 with SMTP id
- 46e09a7af769-720ff867237mr32877210a34.14.1735968242581; Fri, 03 Jan 2025
- 21:24:02 -0800 (PST)
+	s=arc-20240116; t=1735975208; c=relaxed/simple;
+	bh=1wJJKmjS5umCABm6Goxeyjj7FjPU3ZKUhTI3lyi/VpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=daCTLAaqahHELM7YMXGS1fs7ghDkdvXnam+GGesFAyD681vt0pKMD3+XnZoqQ/WjBuNidAIaIXsCsZMIkUjahxDuwo8LH75HO13kj37qVSyoX4ZIz/3ph1ayZGtaEwa6YyCDtGxhjlwH2rQDtvBu/G9tqjJIEQstELN2N4ahsGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4PVFynW; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735975207; x=1767511207;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1wJJKmjS5umCABm6Goxeyjj7FjPU3ZKUhTI3lyi/VpE=;
+  b=X4PVFynWMvFkHIro6O4EOaHx5Ir/kisxD5CbyATZo4rnIXx2t4BsbKyP
+   8Y7gXcnidXpfAbi6ucoDB2p68aAYeW5PRUoHXk/DhFIVhq48VTIVmWgf7
+   TljcDiWWgkaUBx2fVKMhkw9h87yvo8vbgAk25TznzlRkUO+HvCZycfbG2
+   tECKFhQzoSdganW9hK/zVk0WWUQCx3Uz+mX4+NIZmoxNemBHCXav/ITLA
+   52LUQFEuwpsBkfR7tWH0+OcKeoaYkLeW6qUywu68UAKpEFS8l98rCyUq4
+   OpX+rbg87Yr8ExOwe7mlMyUxce7ZHi5LP9TopDxDOwgDrgJGXOAlcOb3P
+   g==;
+X-CSE-ConnectionGUID: PwncvcRpSeGPT2eid6nVHg==
+X-CSE-MsgGUID: hEcPfcgITlKwBbE4WdxoQw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11304"; a="23806785"
+X-IronPort-AV: E=Sophos;i="6.12,288,1728975600"; 
+   d="scan'208";a="23806785"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2025 23:20:06 -0800
+X-CSE-ConnectionGUID: EGz4RfmLSCKUVdcEIxjh7g==
+X-CSE-MsgGUID: aFvnHJtUTlqgRbhhv2ccRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,288,1728975600"; 
+   d="scan'208";a="102442703"
+Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2) ([10.125.110.22])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2025 23:20:05 -0800
+Date: Sat, 4 Jan 2025 01:19:59 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: intel-xe@lists.freedesktop.org, matthew.brost@intel.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/xe/client: Better correlate exec_queue and GT
+ timestamps
+Message-ID: <jamrxboal2ppniepfxpq5uzksd2v35ypymo7irt56oewcan5vh@zxmofyra5ruz>
+References: <20241212173432.1244440-1-lucas.demarchi@intel.com>
+ <Z2SGzHYsJ+CRoF9p@orsosgc001>
+ <wdcrw3du2ssykmsrda3mvwjhreengeovwasikmixdiowqsfnwj@lsputsgtmha4>
+ <Z2YMiTq5P81dmjVH@orsosgc001>
+ <7bvt3larl4sobadx57a255cvu7i5lkjpt2tdxa4baa324v6va6@ijl7gzqjh7qo>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241222105239.2618-1-joswang1221@gmail.com> <20241222105239.2618-2-joswang1221@gmail.com>
- <exu4kkmysquqfygz4gk26kfzediyqmq3wsxvu5ro454mi4fgyp@gr44ymyyxmng>
- <CAMtoTm0nCL7jL=Wno7Cv5upyPnF0wTOXbY+WNG+y1P94513Pgg@mail.gmail.com> <j2icjry36lnmhhe2jskh4jpdxmogv4xy3mnbjasechbg5gf76u@wlakfperuk7q>
-In-Reply-To: <j2icjry36lnmhhe2jskh4jpdxmogv4xy3mnbjasechbg5gf76u@wlakfperuk7q>
-From: Jos Wang <joswang1221@gmail.com>
-Date: Sat, 4 Jan 2025 13:23:53 +0800
-Message-ID: <CAMtoTm2ScJGwhMtr=KryxFaG16WeM22jqGY1PBvSC+92pLX5iw@mail.gmail.com>
-Subject: Re: [PATCH v2, 2/2] usb: typec: tcpm: fix the sender response time issue
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: heikki.krogerus@linux.intel.com, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	rdbabiera@google.com, Jos Wang <joswang@lenovo.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <7bvt3larl4sobadx57a255cvu7i5lkjpt2tdxa4baa324v6va6@ijl7gzqjh7qo>
 
-On Fri, Jan 3, 2025 at 1:39=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
+On Fri, Dec 20, 2024 at 06:42:09PM -0600, Lucas De Marchi wrote:
+>On Fri, Dec 20, 2024 at 04:32:09PM -0800, Umesh Nerlige Ramappa wrote:
+>>On Fri, Dec 20, 2024 at 12:32:16PM -0600, Lucas De Marchi wrote:
+>>>On Thu, Dec 19, 2024 at 12:49:16PM -0800, Umesh Nerlige Ramappa wrote:
+>>>>On Thu, Dec 12, 2024 at 09:34:32AM -0800, Lucas De Marchi wrote:
+>>>>>This partially reverts commit fe4f5d4b6616 ("drm/xe: Clean up VM / exec
+>>>>>queue file lock usage."). While it's desired to have the mutex to
+>>>>>protect only the reference to the exec queue, getting and dropping each
+>>>>>mutex and then later getting the GPU timestamp, doesn't produce a
+>>>>>correct result: it introduces multiple opportunities for the task to be
+>>>>>scheduled out and thus wrecking havoc the deltas reported to userspace.
+>>>>>
+>>>>>Also, to better correlate the timestamp from the exec queues with the
+>>>>>GPU, disable preemption so they can be updated without allowing the task
+>>>>>to be scheduled out. We leave interrupts enabled as that shouldn't be
+>>>>>enough disturbance for the deltas to matter to userspace.
+>>>>
+>>>>Like I said in the past, this is not trivial to solve and I 
+>>>>would hate to add anything in the KMD to do so.
+>>>
+>>>I think the best we can do in the kernel side is to try to guarantee the
+>>>correlated counters are sampled together... And that is already very
+>>>good per my tests. Also, it'd not only be good from a testing
+>>>perspective, but for any userspace trying to make sense of the 2
+>>>counters.
+>>>
+>>>Note that this is not much different from how e.g. perf samples group
+>>>events:
+>>>
+>>>	The unit of scheduling in perf is not an individual event, but rather an
+>>>	event group, which may contain one or more events (potentially on
+>>>	different PMUs). The notion of an event group is useful for ensuring
+>>>	that a set of mathematically related events are all simultaneously
+>>>	measured for the same period of time. For example, the number of L1
+>>>	cache misses should not be larger than the number of L2 cache accesses.
+>>>	Otherwise, it may happen that the events get multiplexed and their
+>>>	measurements would no longer be comparable, making the analysis more
+>>>	difficult.
+>>>
+>>>See __perf_event_read() that will call pmu->read() on all sibling events
+>>>while disabling preemption:
+>>>
+>>>	perf_event_read()
+>>>	{
+>>>		...
+>>>		preempt_disable();
+>>>		event_cpu = __perf_event_read_cpu(event, event_cpu);
+>>>		...
+>>>		(void)smp_call_function_single(event_cpu, __perf_event_read, &data, 1);
+>>>		preempt_enable();
+>>>		...
+>>>	}
+>>>
+>>>so... at least there's prior art for that... for the same reason that
+>>>userspace should see the values sampled together.
+>>
+>>Well, I have used the preempt_disable/enable when fixing some 
+>>selftest (i915), but was not happy that there were still some rare 
+>>failures. If reducing error rates is the intention, then it's fine. 
+>>In my mind, the issue still exists and once in a while we would end 
+>>up assessing such a failure. Maybe, in addition, fixing up the IGTs 
+>>like you suggest below is a worthwhile option.
 >
-> On Wed, Jan 01, 2025 at 09:00:01PM +0800, Jos Wang wrote:
-> > Hi, thanks for your help in reviewing the code, and happy new year to
-> > you and your family!
-> >
-> > For the first commit you mentioned (modification time is 27ms), I
-> > understand that just modify the include/linux/usb/pd.h file:
+>for me this fix is not targeted at tests, even if it improves them a
+>lot. It's more for consistent userspace behavior.
 >
-> In future please respond under the comment, not at the top of the
-> message. Thank you.
+>>
+>>>
+>>>>
+>>>>For IGT, why not just take 4 samples for the measurement 
+>>>>(separate out the 2 counters)
+>>>>
+>>>>1. get gt timestamp in the first sample
+>>>>2. get run ticks in the second sample
+>>>>3. get run ticks in the third sample
+>>>>4. get gt timestamp in the fourth sample
+>>>>
+>>>>Rely on 1 and 4 for gt timestamp delta and on 2 and 3 for run 
+>>>>ticks delta.
+>>>
+>>>this won't fix it for the general case: you get rid of the > 100% case,
+>>>you make the < 100% much worse.
+>>
+>>yeah, that's quite possible.
+>>
+>>>
+>>>For a testing perspective I think the non-flaky solution is to stop
+>>>calculating percentages and rather check that the execution timestamp
+>>>recorded by the GPU very closely matches (minus gpu scheduling delays)
+>>>the one we got via fdinfo once the fence signals and we wait for the job
+>>>completion.
+>>
+>>Agree, we should change how we validate the counters in IGT.
 >
-OK
+>I have a wip patch to cleanup and submit to igt. I will submit it soon.
 
-> > diff --git a/include/linux/usb/pd.h b/include/linux/usb/pd.h
-> > index d50098fb16b5..cd2cc535d21d 100644
-> > --- a/include/linux/usb/pd.h
-> > +++ b/include/linux/usb/pd.h
-> > @@ -457,7 +457,7 @@ static inline unsigned int rdo_max_power(u32 rdo)
-> >  #define PD_T_NO_RESPONSE       5000    /* 4.5 - 5.5 seconds */
-> >  #define PD_T_DB_DETECT         10000   /* 10 - 15 seconds */
-> >  #define PD_T_SEND_SOURCE_CAP   150     /* 100 - 200 ms */
-> > -#define PD_T_SENDER_RESPONSE   60      /* 24 - 30 ms, relaxed */
-> > +#define PD_T_SENDER_RESPONSE   27      /* 24 - 30 ms, relaxed */
-> >  #define PD_T_RECEIVER_RESPONSE 15      /* 15ms max */
-> >  #define PD_T_SOURCE_ACTIVITY   45
-> >  #define PD_T_SINK_ACTIVITY     135
-> >
-> > Is my understanding correct?
->
-> Yes.
->
-Thanks you
+Just submitted that as the last patch in the series:
+https://lore.kernel.org/igt-dev/20250104071548.737612-8-lucas.demarchi@intel.com/T/#u
 
-> >
-> >
-> > Thanks
-> > Jos Wang
-> >
-> > On Sun, Dec 22, 2024 at 9:14=E2=80=AFPM Dmitry Baryshkov
-> > <dmitry.baryshkov@linaro.org> wrote:
-> > >
-> > > On Sun, Dec 22, 2024 at 06:52:39PM +0800, joswang wrote:
-> > > > From: Jos Wang <joswang@lenovo.com>
-> > > >
-> > > > According to the USB PD3 CTS specification
-> > > > (https://usb.org/document-library/
-> > > > usb-power-delivery-compliance-test-specification-0/
-> > > > USB_PD3_CTS_Q4_2024_OR.zip), the requirements for
-> > > > tSenderResponse are different in PD2 and PD3 modes, see
-> > > > Table 19 Timing Table & Calculations. For PD2 mode, the
-> > > > tSenderResponse min 24ms and max 30ms; for PD3 mode, the
-> > > > tSenderResponse min 27ms and max 33ms.
-> > > >
-> > > > For the "TEST.PD.PROT.SRC.2 Get_Source_Cap No Request" test
-> > > > item, after receiving the Source_Capabilities Message sent by
-> > > > the UUT, the tester deliberately does not send a Request Message
-> > > > in order to force the SenderResponse timer on the Source UUT to
-> > > > timeout. The Tester checks that a Hard Reset is detected between
-> > > > tSenderResponse min and max=EF=BC=8Cthe delay is between the last b=
-it of
-> > > > the GoodCRC Message EOP has been sent and the first bit of Hard
-> > > > Reset SOP has been received. The current code does not distinguish
-> > > > between PD2 and PD3 modes, and tSenderResponse defaults to 60ms.
-> > > > This will cause this test item and the following tests to fail:
-> > > > TEST.PD.PROT.SRC3.2 SenderResponseTimer Timeout
-> > > > TEST.PD.PROT.SNK.6 SenderResponseTimer Timeout
-> > > >
-> > > > Considering factors such as SOC performance, i2c rate, and the spee=
-d
-> > > > of PD chip sending data, "pd2-sender-response-time-ms" and
-> > > > "pd3-sender-response-time-ms" DT time properties are added to allow
-> > > > users to define platform timing. For values that have not been
-> > > > explicitly defined in DT using this property, a default value of 27=
-ms
-> > > > for PD2 tSenderResponse and 30ms for PD3 tSenderResponse is set.
-> > >
-> > > You have several different changes squashed into the same commit:
-> > > - Change the timeout from 60 ms to 27-30 ms (I'd recommend using 27 m=
-s
-> > >   as it fits both 24-30 ms and 27-33 ms ranges,
-> > > - Make timeout depend on the PD version,
-> > > - Make timeouts configurable via DT.
-> > >
-> > > Only the first item is a fix per se and only that change should be
-> > > considered for backporting. Please unsquash your changes into logical
-> > > commits.  Theoretically the second change can be thought about as a p=
-art
-> > > of the third change (making timeouts configurable) or of the fist cha=
-nge
-> > > (fix the timeout to follow the standard), but I'd suggest having thre=
-e
-> > > separate commits.
-> > >
-> > > >
-> > > > Fixes: 2eadc33f40d4 ("typec: tcpm: Add core support for sink side P=
-PS")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Jos Wang <joswang@lenovo.com>
-> > > > ---
-> > > > v1 -> v2:
-> > > > - modify the commit message
-> > > > - patch 1/2 and patch 2/2 are placed in the same thread
-> > >
-> > > --
-> > > With best wishes
-> > > Dmitry
->
-> --
-> With best wishes
-> Dmitry
+but I'd also like to apply this one in the kernel and still looking for
+a review.
+
+thanks
+Lucas De Marchi
 
