@@ -1,159 +1,128 @@
-Return-Path: <stable+bounces-106753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66605A017DC
-	for <lists+stable@lfdr.de>; Sun,  5 Jan 2025 03:52:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FECAA01845
+	for <lists+stable@lfdr.de>; Sun,  5 Jan 2025 07:04:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBB77162CA8
-	for <lists+stable@lfdr.de>; Sun,  5 Jan 2025 02:51:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04945162AC9
+	for <lists+stable@lfdr.de>; Sun,  5 Jan 2025 06:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D87433D9;
-	Sun,  5 Jan 2025 02:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4703595A;
+	Sun,  5 Jan 2025 06:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7kvbRUJ"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="CmmbI6i1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com [209.85.218.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2FA36B;
-	Sun,  5 Jan 2025 02:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571B81BDC3
+	for <stable@vger.kernel.org>; Sun,  5 Jan 2025 06:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736045514; cv=none; b=WWRPq6eIP+9sMAzpUo1cdKV+54KxHqu9yfBAD4O5bnMnnYj4kTZuHYio7OgiqowG4t3XuKoaZqb2/xEqdUV3MEJC6iR9liLPYhJePfQMhIon9X9G14z21TedXPCwBu2TDuY8NmU9NKM6lVi3AHJsSKOyJxhDiQuo0YiXXOPHzYA=
+	t=1736057043; cv=none; b=grXIlyjpN8hy0m9NZHhN5h6mpYDfJD3Ikcuq4Xln17jB6o/PaI2d8w5cj3H1eqRZZ1nqSYOpT6I9FtjNJVAtTFbV+CT0RfOorR6fqUBqT6QssddbMuw4oPZw6f7GhPJ2xbYWrMN4isQuP6EGE8+YJtth8pu42X+QGWpedWV1r14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736045514; c=relaxed/simple;
-	bh=nyMeHaPYpNCyW6Rp8R3yTB/6GcmDyGW53GbzL4CA/BU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NfejFntrTEP/sbJEPhwkWNeIOGfammWlZd9e2OJRhii33fQJHWMcfTdU/zcORRb+IqwKRqfVo7kvtbf47w8aIZlANYDocqbiJo9csOObtbzscwThP7ZYi4XfZHgaywzVDm0knjVTqDsR0+fUndOe4LYrqK1cROnLz16o3N5Ig7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7kvbRUJ; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2a3bf796cccso5935672fac.1;
-        Sat, 04 Jan 2025 18:51:52 -0800 (PST)
+	s=arc-20240116; t=1736057043; c=relaxed/simple;
+	bh=9k1yjyi7W8w4GTtLWCbJ+fjErUI1KokvnLDEYz4Hg5E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dwsHgXjy8gJAtYGXrKKpQ3MEk05JP60Th+BZfYDp/B6YE/QY3RqScgnVsGOrN4fcB3JZyQUTNN42V7M735jfgS6NjZv6+Uc7wLUpqF7081ctGqMYhQGeNs/W1VNUNMgj3nmfkio24UlJ66TwjsryEi0n6K9+niy0H/bhVNVJK2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=CmmbI6i1; arc=none smtp.client-ip=209.85.218.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f66.google.com with SMTP id a640c23a62f3a-aa67f31a858so2398613866b.2
+        for <stable@vger.kernel.org>; Sat, 04 Jan 2025 22:04:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736045511; x=1736650311; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cg1rQ6/pZioByqQHGs1fGmHXEcQ58r83VoOaNc6DbIc=;
-        b=b7kvbRUJqUM45971sWEuv0RCNBHglO9ekMMoRZKB6/OS5QlK/y5eRAiP0SgPaUG2U0
-         KWTBN8abvtGwLcpOJjGM7zG2MMj1U0SxpboUq32JmuwzBzvqtPJA+iuAMvA5sQ/0FVOS
-         LojA9UeZsfVZAvQQdxB2ffwGRYbm7Cb2GoR3qxayenf5U5JLWfXYXCF6Whe2Sk4gnrTZ
-         x+7dYpvDd1SzPoAtYDsFlp/RiCJhB0dGsNalvj5uRXjmPHFHFPxvxVbtsw68j4yOthaW
-         9LDbBiF7tvj2vChOuXHngEq8Xl7ra/Haf7ZdLNEN9rhbMNiuestr23xvAcf3v9rbyuxa
-         xF4g==
+        d=suse.com; s=google; t=1736057040; x=1736661840; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=adQpZCzVwsUxJMH9Sl7u3Cnr0pIQV9APs23asxuPzjE=;
+        b=CmmbI6i1dOMqirdhfUX9aljcnEdb1bHeQnZPFqUgN1fdi1tVsIf45P3Hh02Swh3peH
+         Y8QGiAFouETH54kEnPiHBz/MPvkYHXfh6bgmDlVJbRC9xK2Kl8Zxt9Q7mcc6Icd7BOre
+         stzHNDJ1x+VaQoPhL7DQkkiTDP8ewF7seqkT6zFkP6A+OnaIER0DlGp4cBNNHtq0Ne/d
+         1Q1/U5iXKv5RnMvAfRHHQmnkEja+pIxk6sp8WtTUX4zJOGlm4em96+TbQPoFNxUxPZxC
+         8v3J+GLgHvKpCLyejv4rjr1wQ4X6Yspr9g7ylLhJF2AL57nsFIBN1CFaQZdxw2feLvQq
+         rIPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736045511; x=1736650311;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Cg1rQ6/pZioByqQHGs1fGmHXEcQ58r83VoOaNc6DbIc=;
-        b=IvQTOOQHwVrsKijhpTjsRqOghCeoTZ+I2y20tms4bdegDJ1HIPPLnjMmUiFZChHJH+
-         pZFWct8TmYVKpw6b7TVga7qYEsaUyA6B4CSq5sNwWzdPEGNt2nsv/Yyh8CSVCB1HnIOE
-         0iuhLDRFwnNqwjQ0qBBIEmx2R/JWOxv+xSBN79dByTyupQAD9K5Tu8lo2TVuSqs4DPu6
-         aAGts9hZrgxvpIFcwMZJqGhEjqBE+06W3FHwj5JcXQ12B7KMb0Wl4zzZ3GY8SMPdzEBo
-         CeVdf+Y2GbWDu/2IX9w+vay+si5M6riJR32b9/nPyla+0/YYqP5fAkDOEQwlwN22Rpto
-         4xww==
-X-Forwarded-Encrypted: i=1; AJvYcCUVhX/0XPQTq0uIFzzTgxh9N+Py+4qyonl1NErvC/0awxbGOnPPFIi9akW7XJ3EJKBGanlNfby6@vger.kernel.org, AJvYcCVplJ0ro/FZWEq+V4NNZAscLOFTmK6btNiYNOwSSzODxDm20Kt+voZWZU+OTWGQOff9ZeLH/EhdDWZz@vger.kernel.org, AJvYcCX3ymRIaOGy426xW9WGTRCTMyEi/yoM1UoIiCuHYRprTJiOpx5WL1zysRw3moXieLx13mRQ8LQ2lAZKEThm@vger.kernel.org, AJvYcCXtR+Mcm1Cv4zQ1ES/ylh5cvYolr+TrMtzc17ca0I3ZGw6YuSdP4a3GUXVEJufzJROot4hqYoqssOP9@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXso/yOToUf6dpfVNRoL2ZI5bP7ReVcT2FGeHTy94n47iFzSEh
-	K1nzAMxB4B/QcSNHq5OnPNAkQKjV6ov80SVXOmTASIlFhnYwop3lYKVlqDZAlErDLKa82SB4wU2
-	ETde6PNc0K7XdcwMyCBz51VGsT2QGPLAn
-X-Gm-Gg: ASbGncs37j3TsTmZJidBEiWXN31Varlg42f2pEQB1ym6ChrxI5fAyqew1kGU59iJwp2
-	aNtYhaw9xhlX5GhS4ECyD/BNJBHwGoKr9/i0wgPQ=
-X-Google-Smtp-Source: AGHT+IHfYnfEqKmuHhFrMYj1wSIh57uRQx+cE6q35RGY/y7/V0nIF2tAfR90LOz/sV3YyvNXpFJoGCobSvrU7k10LIA=
-X-Received: by 2002:a05:6870:a496:b0:2a3:c59f:4cba with SMTP id
- 586e51a60fabf-2a7fb0cf188mr24894561fac.17.1736045511414; Sat, 04 Jan 2025
- 18:51:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736057040; x=1736661840;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=adQpZCzVwsUxJMH9Sl7u3Cnr0pIQV9APs23asxuPzjE=;
+        b=iyLTNXbKYI0iNu4qoImEIRo+q6eM+mt7FOtkVAJ4Jyg7zy+PAew8ahVVj7yUAjb1/y
+         UNlY5lApoSxkjUrZPSwSl3KPpDTPc1BgjE0rZn/NVliRB+wMKA+qZdsbKU/NqNUkXx4Q
+         dKX6mOd5EhlzIfj7H2+LOrI0nBTULQ2xnKzRl8C7snEvxLH7jP2Otw0SvmjqoRNpGmUb
+         hfKP2VHRzWekJvow3mkPJZGb6EE9ErSb+i1bmHLKY7+T1JHzElqp1xLnVeOE1UCD2wXN
+         NCMZToMTd0tOmQ1P0sLUFj6aXNujbcYKjQEVIzq4n+VB5Wg2mHqZZ4NEMzCM2rc2kmPB
+         vchw==
+X-Gm-Message-State: AOJu0YwbzBjSZiR8QRXkxS/G0Ghm1QfRoMN50/RYttmwoVKCXwelis2w
+	kh+ASowCyeG6jBQoFvfMFQ8gRGisbcpWiBioZuxMV+qSi93TvPFtQyYyNAfO3M8=
+X-Gm-Gg: ASbGncvMK9iG3p1ypq1C7mDtZFy3L8Of6E9SEEcwmw0pfTsjcjY0DyBXI+eoObbZp0b
+	t5N0cAEsTrmj4MZhwrBQupWJX8VFO01MroIGGdgxhneJe81yzEQIaab05vtEz4Q5lFUWD5hHWYX
+	mWNGNrd9wzJK6GO1R4H0EaWRguXhrbZXv88uutncDnEAUoxjR4Og0o6iU5lUfPnyLXzvwu3zyFN
+	7jykoSG3hg/aYNNmTY5YoBbDU4QFA3tmxGZ6m0LD+fg/kR+JgpVcvXO56AYmB6qrvBGlXOGdV6w
+	8uDs+zNf79uItumJLW3RVtXMep+7g69gOrnqLlZ/eW8yFk1ExQ==
+X-Google-Smtp-Source: AGHT+IGClYInbuwyZWqu+tI/m1itPwDRjWX0jkhm8FqnMnP0zHChaoUy5ruEuD4xyAoAVLWQkyQ1gw==
+X-Received: by 2002:a17:906:f582:b0:aaf:c19b:6ca0 with SMTP id a640c23a62f3a-aafc19b6d75mr412596666b.5.1736057039635;
+        Sat, 04 Jan 2025 22:03:59 -0800 (PST)
+Received: from u94a (2001-b011-fa04-129f-b2dc-efff-fee8-7e7a.dynamic-ip6.hinet.net. [2001:b011:fa04:129f:b2dc:efff:fee8:7e7a])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72ad3393d5fsm24946303b3a.154.2025.01.04.22.03.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Jan 2025 22:03:59 -0800 (PST)
+Date: Sun, 5 Jan 2025 14:03:50 +0800
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: Levi Zim <rsworktech@outlook.com>
+Cc: stable@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Tao Lyu <tao.lyu@epfl.ch>, Alexei Starovoitov <ast@kernel.org>
+Subject: Re: [PATCH stable 6.6] bpf: support non-r10 register spill/fill
+ to/from stack in precision tracking
+Message-ID: <fz5bo35ahmtygtbwhbit7vobn6beg3gnlkdd6wvrv4bf3z3ixy@vim77gb777mk>
+References: <20241126073710.852888-1-shung-hsi.yu@suse.com>
+ <MEYP282MB2312C3C8801476C4F262D6E1C6162@MEYP282MB2312.AUSP282.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241222105239.2618-1-joswang1221@gmail.com> <20241222105239.2618-2-joswang1221@gmail.com>
- <exu4kkmysquqfygz4gk26kfzediyqmq3wsxvu5ro454mi4fgyp@gr44ymyyxmng>
-In-Reply-To: <exu4kkmysquqfygz4gk26kfzediyqmq3wsxvu5ro454mi4fgyp@gr44ymyyxmng>
-From: Jos Wang <joswang1221@gmail.com>
-Date: Sun, 5 Jan 2025 10:51:43 +0800
-Message-ID: <CAMtoTm2X+aQRpSbNPjw+b+TsYfYT3h6yx2ycXYwfQbcinrwyPQ@mail.gmail.com>
-Subject: Re: [PATCH v2, 2/2] usb: typec: tcpm: fix the sender response time issue
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: heikki.krogerus@linux.intel.com, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	rdbabiera@google.com, Jos Wang <joswang@lenovo.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <MEYP282MB2312C3C8801476C4F262D6E1C6162@MEYP282MB2312.AUSP282.PROD.OUTLOOK.COM>
 
-On Sun, Dec 22, 2024 at 9:14=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
->
-> On Sun, Dec 22, 2024 at 06:52:39PM +0800, joswang wrote:
-> > From: Jos Wang <joswang@lenovo.com>
-> >
-> > According to the USB PD3 CTS specification
-> > (https://usb.org/document-library/
-> > usb-power-delivery-compliance-test-specification-0/
-> > USB_PD3_CTS_Q4_2024_OR.zip), the requirements for
-> > tSenderResponse are different in PD2 and PD3 modes, see
-> > Table 19 Timing Table & Calculations. For PD2 mode, the
-> > tSenderResponse min 24ms and max 30ms; for PD3 mode, the
-> > tSenderResponse min 27ms and max 33ms.
-> >
-> > For the "TEST.PD.PROT.SRC.2 Get_Source_Cap No Request" test
-> > item, after receiving the Source_Capabilities Message sent by
-> > the UUT, the tester deliberately does not send a Request Message
-> > in order to force the SenderResponse timer on the Source UUT to
-> > timeout. The Tester checks that a Hard Reset is detected between
-> > tSenderResponse min and max=EF=BC=8Cthe delay is between the last bit o=
-f
-> > the GoodCRC Message EOP has been sent and the first bit of Hard
-> > Reset SOP has been received. The current code does not distinguish
-> > between PD2 and PD3 modes, and tSenderResponse defaults to 60ms.
-> > This will cause this test item and the following tests to fail:
-> > TEST.PD.PROT.SRC3.2 SenderResponseTimer Timeout
-> > TEST.PD.PROT.SNK.6 SenderResponseTimer Timeout
-> >
-> > Considering factors such as SOC performance, i2c rate, and the speed
-> > of PD chip sending data, "pd2-sender-response-time-ms" and
-> > "pd3-sender-response-time-ms" DT time properties are added to allow
-> > users to define platform timing. For values that have not been
-> > explicitly defined in DT using this property, a default value of 27ms
-> > for PD2 tSenderResponse and 30ms for PD3 tSenderResponse is set.
->
-> You have several different changes squashed into the same commit:
-> - Change the timeout from 60 ms to 27-30 ms (I'd recommend using 27 ms
->   as it fits both 24-30 ms and 27-33 ms ranges,
-> - Make timeout depend on the PD version,
-> - Make timeouts configurable via DT.
->
-> Only the first item is a fix per se and only that change should be
-> considered for backporting. Please unsquash your changes into logical
-> commits.  Theoretically the second change can be thought about as a part
-> of the third change (making timeouts configurable) or of the fist change
-> (fix the timeout to follow the standard), but I'd suggest having three
-> separate commits.
->
-The patch is divided into patch1 (fix the timeout to follow the
-standard), patch2 (Make timeout depend on the PD version)
-and patch3 (Make timeouts configurable via DT). Do you suggest that
-these three patches should be submitted as
-V3 version, or patch1 and patch2 should be submitted separately?
-Please help to confirm, thank you.
+Hi Levi,
 
-> >
-> > Fixes: 2eadc33f40d4 ("typec: tcpm: Add core support for sink side PPS")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jos Wang <joswang@lenovo.com>
-> > ---
-> > v1 -> v2:
-> > - modify the commit message
-> > - patch 1/2 and patch 2/2 are placed in the same thread
->
-> --
-> With best wishes
-> Dmitry
+On Sat, Jan 04, 2025 at 11:02:43AM +0800, Levi Zim wrote:
+[...]
+> Hi,
+> 
+> I think there's some problem with this backport.
+> 
+> My eBPF program fails to load due to this backport with a "BPF program is
+> too large." error. But it could successfully load on 6.13-rc5 and a kernel
+> built directly from 41f6f64e6999 ("bpf: support non-r10 register spill/fill
+> to/from stack in precision tracking").
+
+Can confirm. I think it's probably because missed opportunity of state
+pruning without patches from the same series[1].
+
+Given it's a regression, I'll sent a revert patch and try to figure out
+the rest later.
+
+Thanks for the report!
+
+Shung-Hsi
+
+1: https://lore.kernel.org/all/20231205184248.1502704-1-andrii@kernel.org/
+
+> To reproduce, run  ./tracexec ebpf log -- /bin/ls
+> 
+> Prebuilt binary: https://github.com/kxxt/tracexec/releases/download/v0.8.0/tracexec-x86_64-unknown-linux-gnu-static.tar.gz
+> Source code: https://github.com/kxxt/tracexec/
+> 
+> Best regards,
+> Levi
+[...]
 
