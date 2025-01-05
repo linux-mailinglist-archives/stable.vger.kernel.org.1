@@ -1,179 +1,159 @@
-Return-Path: <stable+bounces-106752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C706A016A1
-	for <lists+stable@lfdr.de>; Sat,  4 Jan 2025 21:09:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66605A017DC
+	for <lists+stable@lfdr.de>; Sun,  5 Jan 2025 03:52:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B45403A3382
-	for <lists+stable@lfdr.de>; Sat,  4 Jan 2025 20:09:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBB77162CA8
+	for <lists+stable@lfdr.de>; Sun,  5 Jan 2025 02:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F70191494;
-	Sat,  4 Jan 2025 20:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D87433D9;
+	Sun,  5 Jan 2025 02:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="gdYAxMyI";
-	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="U+fTYE3L"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7kvbRUJ"
 X-Original-To: stable@vger.kernel.org
-Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E523814A629;
-	Sat,  4 Jan 2025 20:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736021354; cv=fail; b=epIpqPMN5Vt9YxviC/TRIHGrWefQB5Cww2rhvl2PSIJmlsNYe7mo3guv+xjg3MZvazxlbbwCzaG2SqV7RVZ5g0OmoPDnsR9PYjNMbJ8CMOPpNOXqNJlBBqSsX5iIiy3lJc8j5F8l0ACTjRPy3HBdXi8m8/OhDQme6uaCoA9A9ug=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736021354; c=relaxed/simple;
-	bh=TXXMK3ueHNVgj1Xw102IRPlmmg+47Vt2x/v9kCxDVjs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Iz8o9+AS9TqKZ99VXJ9uUyo5qAp4J7CajdzVoBndmkACJQh1B1bxLwYyXpHT1aLR6NCIUu9inlRTPFeas6jIgnL/ELY7ApPI5alEZgbTh4loGU49EhMGij57FmsOhLhrXptmy4RSTt/USMKag0OVeCKDb53Xgc72U2+bBz/JzbY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=gdYAxMyI; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=U+fTYE3L; arc=fail smtp.client-ip=72.84.236.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
-Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
-   signature) header.d=sapience.com header.i=@sapience.com 
-   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
-   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
-Received: from srv8.sapience.com (srv8.sapience.com [x.x.x.x])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by s1.sapience.com (Postfix) with ESMTPS id B34CC480A2B;
-	Sat, 04 Jan 2025 15:09:11 -0500 (EST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1736021351;
- h=message-id : subject : from : to : cc : date : in-reply-to :
- references : content-type : mime-version : from;
- bh=7ggGgX62pkjAuf332zjLZgniYwxyVyVEojisAlm65fw=;
- b=gdYAxMyINb+GmfEn5cT2I5ExCsgJPbPowCrwETvPjFrIwcbWf+WgNhbmC1blGi7cTLuq7
- FQg7snQsPpUj88uDQ==
-ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1736021351;
-	cv=none; b=vZieBKqdMwEAZr6S7rJXlgZy1WxTpN+Y5C8hqfKVkUSsLGSvPG2Y16ID984jdM6n5gOq3VJnkAurk3qFDdmbxG4pzgeLaX2FuL5Snph5TT3rS2BO3wa+wxm04D9WGR3UUMGraKVdJxak1p+COgEUJUlPJGX5M7EKl30jE/2jSsTFJzmVkeqcWXnwHM8ea965pYmUHSGqgM7VcChNDA0uzL3VNjfV8LWdjaAjXsX7+W5CmO+JpRMZl5AnJVWXZdTduhTKLxakzPDgSO4uWYIVvSK/mgEfmFjsmQok13oApqr3u6E7fEtqH/pMd6IWrFjyI1IuTW0GFQao6A5nkxfdUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
-	t=1736021351; c=relaxed/simple;
-	bh=TXXMK3ueHNVgj1Xw102IRPlmmg+47Vt2x/v9kCxDVjs=;
-	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
-	 MIME-Version; b=ctxCc4ZVMgtJr65pJ1vToXP/eGTDgw7XIZwsFUHS//PTs4mXLdEFUVgyyvtTMsIQzMJIaxb3sLx+OTXYb5cog7ooHQ2xF82x2yfAqHfbG/TeNmOkXwmgPiYnNbWX/vy+fIThY6WLZcqyHlnShNKY9X/V1jrhbe5/KRSxvuBuLhq2O/lZWwZUPZipBYPx5hqwDyCEe7cmDTQJ+Q3xQzTWVoUeNFySIDe3TG8VSrk08QgsSEir39k02dIkYH9NxxhpkYp8PgVZ0uixg2XRWmotb1LE17J0+bhawLfUwvsXok2tE97D3DsZ0KtnuX8ravYLf1Al9DCb7ln5pqaIOT8gBA==
-ARC-Authentication-Results: i=1; arc-srv8.sapience.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1736021351;
- h=message-id : subject : from : to : cc : date : in-reply-to :
- references : content-type : mime-version : from;
- bh=7ggGgX62pkjAuf332zjLZgniYwxyVyVEojisAlm65fw=;
- b=U+fTYE3LbZx+hEbXF3PjXCcX02uHutJLrPeFG+ic+F0WsdB7DOCFsmoGtcpndv4YgPwOt
- +XkOyhsvTqpOQWh9UaEeJ1FX5kd8PMVH9hJ/rNMs/DLSmIxMk9vFx6Bf57tsXvq63lHNtgY
- wk1D8+YfBHxCXmTQcrqYqqeBBHWBFdKwDBkGe/5iQAVNZXzB/tFvxnQjRkzj4Ki2QoWbV1v
- flYDNcUiQLGoOIthpyQH+HY0oR6f2rXMWTQTdcFVoRr0tml+dv5jyB46+BBdsiwiM8lt8rh
- egpUr6sKCsW/g1a0Wbwkgl90tMTf7xII+jzTmuQNQo10qO722aBQNW42ezNw==
-Received: from lap7.sapience.com (lap7w.sapience.com [x.x.x.x])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by srv8.sapience.com (Postfix) with ESMTPS id 76D94280011;
-	Sat, 04 Jan 2025 15:09:11 -0500 (EST)
-Message-ID: <d5ef54d76188ec51d9e053fd097dc3f5bb6e6519.camel@sapience.com>
-Subject: Re: [REGRESSION][BISECTED] Re: 6.12.7 stable new error: event
- xe_bo_move has unsafe dereference of argument 4
-From: Genes Lists <lists@sapience.com>
-To: Andrea Amorosi <andrea.amorosi76@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, lucas.demarchi@intel.com, 
-	regressions@lists.linux.dev, rostedt@goodmis.org, stable@vger.kernel.org, 
-	thomas.hellstrom@linux.intel.com
-Date: Sat, 04 Jan 2025 15:09:10 -0500
-In-Reply-To: <73129e45-cf51-4e8d-95e8-49bc39ebc246@gmail.com>
-References: <9dee19b6185d325d0e6fa5f7cbba81d007d99166.camel@sapience.com>
-	 <73129e45-cf51-4e8d-95e8-49bc39ebc246@gmail.com>
-Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
- keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
- 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
- sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
- vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
- BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
-Content-Type: multipart/signed; micalg="pgp-sha384";
-	protocol="application/pgp-signature"; boundary="=-Cksclr6ZgK3uvhQ/YUvo"
-User-Agent: Evolution 3.54.3 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2FA36B;
+	Sun,  5 Jan 2025 02:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736045514; cv=none; b=WWRPq6eIP+9sMAzpUo1cdKV+54KxHqu9yfBAD4O5bnMnnYj4kTZuHYio7OgiqowG4t3XuKoaZqb2/xEqdUV3MEJC6iR9liLPYhJePfQMhIon9X9G14z21TedXPCwBu2TDuY8NmU9NKM6lVi3AHJsSKOyJxhDiQuo0YiXXOPHzYA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736045514; c=relaxed/simple;
+	bh=nyMeHaPYpNCyW6Rp8R3yTB/6GcmDyGW53GbzL4CA/BU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NfejFntrTEP/sbJEPhwkWNeIOGfammWlZd9e2OJRhii33fQJHWMcfTdU/zcORRb+IqwKRqfVo7kvtbf47w8aIZlANYDocqbiJo9csOObtbzscwThP7ZYi4XfZHgaywzVDm0knjVTqDsR0+fUndOe4LYrqK1cROnLz16o3N5Ig7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7kvbRUJ; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2a3bf796cccso5935672fac.1;
+        Sat, 04 Jan 2025 18:51:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736045511; x=1736650311; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cg1rQ6/pZioByqQHGs1fGmHXEcQ58r83VoOaNc6DbIc=;
+        b=b7kvbRUJqUM45971sWEuv0RCNBHglO9ekMMoRZKB6/OS5QlK/y5eRAiP0SgPaUG2U0
+         KWTBN8abvtGwLcpOJjGM7zG2MMj1U0SxpboUq32JmuwzBzvqtPJA+iuAMvA5sQ/0FVOS
+         LojA9UeZsfVZAvQQdxB2ffwGRYbm7Cb2GoR3qxayenf5U5JLWfXYXCF6Whe2Sk4gnrTZ
+         x+7dYpvDd1SzPoAtYDsFlp/RiCJhB0dGsNalvj5uRXjmPHFHFPxvxVbtsw68j4yOthaW
+         9LDbBiF7tvj2vChOuXHngEq8Xl7ra/Haf7ZdLNEN9rhbMNiuestr23xvAcf3v9rbyuxa
+         xF4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736045511; x=1736650311;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cg1rQ6/pZioByqQHGs1fGmHXEcQ58r83VoOaNc6DbIc=;
+        b=IvQTOOQHwVrsKijhpTjsRqOghCeoTZ+I2y20tms4bdegDJ1HIPPLnjMmUiFZChHJH+
+         pZFWct8TmYVKpw6b7TVga7qYEsaUyA6B4CSq5sNwWzdPEGNt2nsv/Yyh8CSVCB1HnIOE
+         0iuhLDRFwnNqwjQ0qBBIEmx2R/JWOxv+xSBN79dByTyupQAD9K5Tu8lo2TVuSqs4DPu6
+         aAGts9hZrgxvpIFcwMZJqGhEjqBE+06W3FHwj5JcXQ12B7KMb0Wl4zzZ3GY8SMPdzEBo
+         CeVdf+Y2GbWDu/2IX9w+vay+si5M6riJR32b9/nPyla+0/YYqP5fAkDOEQwlwN22Rpto
+         4xww==
+X-Forwarded-Encrypted: i=1; AJvYcCUVhX/0XPQTq0uIFzzTgxh9N+Py+4qyonl1NErvC/0awxbGOnPPFIi9akW7XJ3EJKBGanlNfby6@vger.kernel.org, AJvYcCVplJ0ro/FZWEq+V4NNZAscLOFTmK6btNiYNOwSSzODxDm20Kt+voZWZU+OTWGQOff9ZeLH/EhdDWZz@vger.kernel.org, AJvYcCX3ymRIaOGy426xW9WGTRCTMyEi/yoM1UoIiCuHYRprTJiOpx5WL1zysRw3moXieLx13mRQ8LQ2lAZKEThm@vger.kernel.org, AJvYcCXtR+Mcm1Cv4zQ1ES/ylh5cvYolr+TrMtzc17ca0I3ZGw6YuSdP4a3GUXVEJufzJROot4hqYoqssOP9@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXso/yOToUf6dpfVNRoL2ZI5bP7ReVcT2FGeHTy94n47iFzSEh
+	K1nzAMxB4B/QcSNHq5OnPNAkQKjV6ov80SVXOmTASIlFhnYwop3lYKVlqDZAlErDLKa82SB4wU2
+	ETde6PNc0K7XdcwMyCBz51VGsT2QGPLAn
+X-Gm-Gg: ASbGncs37j3TsTmZJidBEiWXN31Varlg42f2pEQB1ym6ChrxI5fAyqew1kGU59iJwp2
+	aNtYhaw9xhlX5GhS4ECyD/BNJBHwGoKr9/i0wgPQ=
+X-Google-Smtp-Source: AGHT+IHfYnfEqKmuHhFrMYj1wSIh57uRQx+cE6q35RGY/y7/V0nIF2tAfR90LOz/sV3YyvNXpFJoGCobSvrU7k10LIA=
+X-Received: by 2002:a05:6870:a496:b0:2a3:c59f:4cba with SMTP id
+ 586e51a60fabf-2a7fb0cf188mr24894561fac.17.1736045511414; Sat, 04 Jan 2025
+ 18:51:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-
---=-Cksclr6ZgK3uvhQ/YUvo
-Content-Type: multipart/alternative; boundary="=-hlkAZ8gh2/Rp7zinC2F3"
-
---=-hlkAZ8gh2/Rp7zinC2F3
+References: <20241222105239.2618-1-joswang1221@gmail.com> <20241222105239.2618-2-joswang1221@gmail.com>
+ <exu4kkmysquqfygz4gk26kfzediyqmq3wsxvu5ro454mi4fgyp@gr44ymyyxmng>
+In-Reply-To: <exu4kkmysquqfygz4gk26kfzediyqmq3wsxvu5ro454mi4fgyp@gr44ymyyxmng>
+From: Jos Wang <joswang1221@gmail.com>
+Date: Sun, 5 Jan 2025 10:51:43 +0800
+Message-ID: <CAMtoTm2X+aQRpSbNPjw+b+TsYfYT3h6yx2ycXYwfQbcinrwyPQ@mail.gmail.com>
+Subject: Re: [PATCH v2, 2/2] usb: typec: tcpm: fix the sender response time issue
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: heikki.krogerus@linux.intel.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	rdbabiera@google.com, Jos Wang <joswang@lenovo.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 2025-01-04 at 18:43 +0100, Andrea Amorosi wrote:
-> Hi to all,
->=20
-> I've just updated my archlinux to |6.12.8-arch1-1 and I still get the
-> same issue:|
->=20
->=20
-Right - 6.12.8 (and Arch build of same) does not have Steve Rostedt's
-patch.
-The patch is in mainline and I believe it will be in 6.12.9.
+On Sun, Dec 22, 2024 at 9:14=E2=80=AFPM Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org> wrote:
+>
+> On Sun, Dec 22, 2024 at 06:52:39PM +0800, joswang wrote:
+> > From: Jos Wang <joswang@lenovo.com>
+> >
+> > According to the USB PD3 CTS specification
+> > (https://usb.org/document-library/
+> > usb-power-delivery-compliance-test-specification-0/
+> > USB_PD3_CTS_Q4_2024_OR.zip), the requirements for
+> > tSenderResponse are different in PD2 and PD3 modes, see
+> > Table 19 Timing Table & Calculations. For PD2 mode, the
+> > tSenderResponse min 24ms and max 30ms; for PD3 mode, the
+> > tSenderResponse min 27ms and max 33ms.
+> >
+> > For the "TEST.PD.PROT.SRC.2 Get_Source_Cap No Request" test
+> > item, after receiving the Source_Capabilities Message sent by
+> > the UUT, the tester deliberately does not send a Request Message
+> > in order to force the SenderResponse timer on the Source UUT to
+> > timeout. The Tester checks that a Hard Reset is detected between
+> > tSenderResponse min and max=EF=BC=8Cthe delay is between the last bit o=
+f
+> > the GoodCRC Message EOP has been sent and the first bit of Hard
+> > Reset SOP has been received. The current code does not distinguish
+> > between PD2 and PD3 modes, and tSenderResponse defaults to 60ms.
+> > This will cause this test item and the following tests to fail:
+> > TEST.PD.PROT.SRC3.2 SenderResponseTimer Timeout
+> > TEST.PD.PROT.SNK.6 SenderResponseTimer Timeout
+> >
+> > Considering factors such as SOC performance, i2c rate, and the speed
+> > of PD chip sending data, "pd2-sender-response-time-ms" and
+> > "pd3-sender-response-time-ms" DT time properties are added to allow
+> > users to define platform timing. For values that have not been
+> > explicitly defined in DT using this property, a default value of 27ms
+> > for PD2 tSenderResponse and 30ms for PD3 tSenderResponse is set.
+>
+> You have several different changes squashed into the same commit:
+> - Change the timeout from 60 ms to 27-30 ms (I'd recommend using 27 ms
+>   as it fits both 24-30 ms and 27-33 ms ranges,
+> - Make timeout depend on the PD version,
+> - Make timeouts configurable via DT.
+>
+> Only the first item is a fix per se and only that change should be
+> considered for backporting. Please unsquash your changes into logical
+> commits.  Theoretically the second change can be thought about as a part
+> of the third change (making timeouts configurable) or of the fist change
+> (fix the timeout to follow the standard), but I'd suggest having three
+> separate commits.
+>
+The patch is divided into patch1 (fix the timeout to follow the
+standard), patch2 (Make timeout depend on the PD version)
+and patch3 (Make timeouts configurable via DT). Do you suggest that
+these three patches should be submitted as
+V3 version, or patch1 and patch2 should be submitted separately?
+Please help to confirm, thank you.
 
-Since the warning logged is a false positive it is benign.
-
-
---=20
-Gene
-
-
---=-hlkAZ8gh2/Rp7zinC2F3
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html><head><style>pre,code,address {
-  margin: 0px;
-}
-h1,h2,h3,h4,h5,h6 {
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
-}
-ol,ul {
-  margin-top: 0em;
-  margin-bottom: 0em;
-}
-blockquote {
-  margin-top: 0em;
-  margin-bottom: 0em;
-}
-</style></head><body><div>On Sat, 2025-01-04 at 18:43 +0100, Andrea Amorosi=
- wrote:</div><blockquote type=3D"cite" style=3D"margin:0 0 0 .8ex; border-l=
-eft:2px #729fcf solid;padding-left:1ex"><div>Hi to all,<br></div><div><br><=
-/div><div>I've just updated my archlinux to |6.12.8-arch1-1 and I still get=
- the <br></div><div>same issue:|<br></div><div><br></div><div><br></div></b=
-lockquote><div>Right - 6.12.8 (and Arch build of same) does not have Steve =
-Rostedt's patch.</div><div>The patch is in mainline and I believe it will b=
-e in 6.12.9.</div><div><br></div><div>Since the warning logged is a false p=
-ositive it is benign.</div><blockquote type=3D"cite" style=3D"margin:0 0 0 =
-.8ex; border-left:2px #729fcf solid;padding-left:1ex"></blockquote><div><br=
-></div><div><span><pre>-- <br></pre><div><span style=3D"background-color: i=
-nherit;">Gene</span></div><div><br></div></span></div></body></html>
-
---=-hlkAZ8gh2/Rp7zinC2F3--
-
---=-Cksclr6ZgK3uvhQ/YUvo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCZ3mVZgAKCRA5BdB0L6Ze
-29bOAQCva2nE9UkY4r7NY6ZxOBYBSiK+zSNJ4X6xuDreHzc8AgEAsviZ9znI2WfU
-nHJ8Ky3w16QE0ubSMYekNRu/z6FL0gw=
-=tVZk
------END PGP SIGNATURE-----
-
---=-Cksclr6ZgK3uvhQ/YUvo--
+> >
+> > Fixes: 2eadc33f40d4 ("typec: tcpm: Add core support for sink side PPS")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jos Wang <joswang@lenovo.com>
+> > ---
+> > v1 -> v2:
+> > - modify the commit message
+> > - patch 1/2 and patch 2/2 are placed in the same thread
+>
+> --
+> With best wishes
+> Dmitry
 
