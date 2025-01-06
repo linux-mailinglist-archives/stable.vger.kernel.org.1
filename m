@@ -1,36 +1,40 @@
-Return-Path: <stable+bounces-106856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD044A028CF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:10:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7EFA028D2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DB61609CF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:10:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C7331885122
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594CA13BC39;
-	Mon,  6 Jan 2025 15:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF4670820;
+	Mon,  6 Jan 2025 15:11:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2814F282F5;
-	Mon,  6 Jan 2025 15:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E504C35971;
+	Mon,  6 Jan 2025 15:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176243; cv=none; b=Ub9XIzJX103Pij3vFzb3tnbNlSEoZMKemyjRvhgBBfvFkxlkOq7vgmA30IxGW3MDNauVejE6/9qEhyC17+joUx3GASdO9wGtX95Al4kW9W0rc/m1CbTmFmRpJYpYlXRj2l8vCuF+hgS9yNC0SbopO8X7cNGR9FnDNI1yw0Weqo0=
+	t=1736176300; cv=none; b=FWFqz5CafJlJ6Z4XAqmuonWgC3Yc4IWkffezInUnJFFOzxn4H70ZqUkUO47SbeXA0cfvtv4kmmWgBF95K4p0J/Vf23Rl2oBEgrKqiOnO3TLX4wbM9jXa+DiYIXSMnAbAcW13puJWz4cm2wCebZfpRhaXL88mswSJZJh5G2MEhCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176243; c=relaxed/simple;
-	bh=Udj/ssRl13ZueoEAC6lXfXAtfPEkpbyAk/UTlVNvwTc=;
+	s=arc-20240116; t=1736176300; c=relaxed/simple;
+	bh=ptd8o47a1a0EjnlYtgCY0wElQyzXvS8GL2f5BayYJzQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GX6sClP6BUOc1I9Gs4DQDUSBN9Gj9Q93aHCZrXDQhQhPjhAXbDxGRZawLfXiLIYPglAzMf2ejLYOOvUUtn8GJTbGejY42f22eEbSoXaP7ex60RdHse7YhNdZ+Jis0JW87xJLlw2GTKuTa13hyObewJQsEqPqZh0BX6ISmcuX/MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E951C4CEE1;
-	Mon,  6 Jan 2025 15:10:40 +0000 (UTC)
-Message-ID: <eacf3201-2884-48e3-b54d-2e52e16999be@xs4all.nl>
-Date: Mon, 6 Jan 2025 16:10:39 +0100
+	 In-Reply-To:Content-Type; b=KW/0DwBdXkj+17fGLkTKVtMA9kFJeUD79so32yzeyRDYZ+xLeWdSblSrgoeiyjJLptlzepbdRQbk5hv7mBPBexZ3LlbXMPfMRoXSDRK7xPrA1w5CG5Exss5m1eF9wHUV0q5JDik0NL+c5we4Wvk1l/38EGMmLbI/yu0N+7fA6NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F161143D;
+	Mon,  6 Jan 2025 07:12:05 -0800 (PST)
+Received: from [10.163.54.142] (unknown [10.163.54.142])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0EFC93F59E;
+	Mon,  6 Jan 2025 07:11:31 -0800 (PST)
+Message-ID: <34dab81b-1b53-4ff0-89fd-2b5279a29942@arm.com>
+Date: Mon, 6 Jan 2025 20:41:27 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -38,155 +42,210 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media/mmp: Bring back registration of the device
-To: Lubomir Rintel <lrintel@redhat.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
+Subject: Re: [PATCH v3] arm64: mm: Populate vmemmap at the page level for
+ hotplugged sections
+To: Zhenhua Huang <quic_zhenhuah@quicinc.com>, catalin.marinas@arm.com
+Cc: will@kernel.org, ardb@kernel.org, ryan.roberts@arm.com,
+ mark.rutland@arm.com, joey.gouly@arm.com, dave.hansen@linux.intel.com,
+ akpm@linux-foundation.org, chenfeiyang@loongson.cn, chenhuacai@kernel.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, quic_tingweiz@quicinc.com,
  stable@vger.kernel.org
-References: <20241231190434.438517-1-lkundrak@v3.sk>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <20241231190434.438517-1-lkundrak@v3.sk>
+References: <20250103085002.27243-1-quic_zhenhuah@quicinc.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20250103085002.27243-1-quic_zhenhuah@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Lubomir,
+Hello Zhenhua,
 
-On 31/12/2024 20:04, Lubomir Rintel wrote:
-> In commit 4af65141e38e ("media: marvell: cafe: Register V4L2 device
-> earlier"), a call to v4l2_device_register() was moved away from
-> mccic_register() into its caller, marvell/cafe's cafe_pci_probe().
-> This is not the only caller though -- there's also marvell/mmp.
+On 1/3/25 14:20, Zhenhua Huang wrote:
+> Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+> vmemmap to populate at the PMD section level which was suitable
+> initially since hotplugging granule is always 128M. However,
+
+A small nit s/hotplugging/hot plug/
+
+Also please do mention that 128M is SECTION_SIZE_BITS == 27 on arm64
+platform for 4K base pages which is the page size in context here.
+
+
+> commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> which added 2M hotplugging granule disrupted the arm64 assumptions.
+
+A small nit s/hotplugging/hot plug/
+
+Also please do mention that 2M is SUB_SECTION_SIZE.
+
 > 
-> Add v4l2_device_register() into mmpcam_probe() to unbreak the MMP camera
-> driver, in a fashion analogous to what's been done to the Cafe driver.
-> Same for the teardown path.
+> Considering the vmemmap_free -> unmap_hotplug_pmd_range path, when
+> pmd_sect() is true, the entire PMD section is cleared, even if there is
+> other effective subsection. For example pagemap1 and pagemap2 are part
+> of a single PMD entry and they are hot-added sequentially. Then pagemap1
+> is removed, vmemmap_free() will clear the entire PMD entry freeing the
+> struct page metadata for the whole section, even though pagemap2 is still
+> active.
+
+I guess pagemap1/2 here indicates the struct pages virtual regions for two
+different vmemmap mapped sub sections covered via a single PMD entry ? But
+please do update the above paragraph appropriately because pagemap<N> might
+be confused with /proc/<pid>/pagemap mechanism.
+
+Also please do mention that similar problems exist with linear mapping for
+16K (PMD = 32M) and 64K (PMD = 512M) base pages as their block mappings
+exceed SUBSECTION_SIZE. Hence tearing down the entire PMD mapping too will
+leave other subsections unmapped in the linear mapping.
+
 > 
-> Fixes: 4af65141e38e ("media: marvell: cafe: Register V4L2 device earlier")
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+> To address the issue, we need to prevent PMD/PUD/CONT mappings for both
+> linear and vmemmap for non-boot sections if the size exceeds 2MB
 
-Should this be your redhat email? I have a mismatch between the From email
-and the email in this Sob.
+s/if the size/if corresponding size on the given base page/
 
-I can fix it either way, but you have to tell me what you prefer.
+> (considering sub-section is 2MB). We only permit 2MB blocks in a 4KB page
+> configuration.
 
-Regards,
+PMD block in 4K page size config as it's PMD_SIZE matches the SUBSECTION_SIZE
+but only for linear mapping.
 
-	Hans
 
-> Cc: stable@vger.kernel.org # v6.6+
+> 
+> Cc: stable@vger.kernel.org # v5.4+
+> Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 > ---
->  drivers/media/platform/marvell/mmp-driver.c | 21 +++++++++++++++++----
->  1 file changed, 17 insertions(+), 4 deletions(-)
+> Hi Catalin and Anshuman,
+> Based on your review comments, I concluded below patch and tested with my setup.
+> I have not folded patchset #2 since this patch seems to be enough for backporting..
+> Please see if you have further suggestions.
 > 
-> diff --git a/drivers/media/platform/marvell/mmp-driver.c b/drivers/media/platform/marvell/mmp-driver.c
-> index 3fd4fc1b9c48..d3da7ebb4a2b 100644
-> --- a/drivers/media/platform/marvell/mmp-driver.c
-> +++ b/drivers/media/platform/marvell/mmp-driver.c
-> @@ -231,13 +231,23 @@ static int mmpcam_probe(struct platform_device *pdev)
+>  arch/arm64/mm/mmu.c | 33 +++++++++++++++++++++++++++++----
+>  1 file changed, 29 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index e2739b69e11b..2b4d23f01d85 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -42,9 +42,11 @@
+>  #include <asm/pgalloc.h>
+>  #include <asm/kfence.h>
 >  
->  	mcam_init_clk(mcam);
->  
-> +	/*
-> +	 * Register with V4L.
-> +	 */
-> +
-> +	ret = v4l2_device_register(mcam->dev, &mcam->v4l2_dev);
-> +	if (ret)
-> +		return ret;
-> +
->  	/*
->  	 * Create a match of the sensor against its OF node.
->  	 */
->  	ep = fwnode_graph_get_next_endpoint(of_fwnode_handle(pdev->dev.of_node),
->  					    NULL);
-> -	if (!ep)
-> -		return -ENODEV;
-> +	if (!ep) {
-> +		ret = -ENODEV;
-> +		goto out_v4l2_device_unregister;
-> +	}
->  
->  	v4l2_async_nf_init(&mcam->notifier, &mcam->v4l2_dev);
->  
-> @@ -246,7 +256,7 @@ static int mmpcam_probe(struct platform_device *pdev)
->  	fwnode_handle_put(ep);
->  	if (IS_ERR(asd)) {
->  		ret = PTR_ERR(asd);
-> -		goto out;
-> +		goto out_v4l2_device_unregister;
->  	}
->  
->  	/*
-> @@ -254,7 +264,7 @@ static int mmpcam_probe(struct platform_device *pdev)
->  	 */
->  	ret = mccic_register(mcam);
->  	if (ret)
-> -		goto out;
-> +		goto out_v4l2_device_unregister;
->  
->  	/*
->  	 * Add OF clock provider.
-> @@ -283,6 +293,8 @@ static int mmpcam_probe(struct platform_device *pdev)
->  	return 0;
->  out:
->  	mccic_shutdown(mcam);
-> +out_v4l2_device_unregister:
-> +	v4l2_device_unregister(&mcam->v4l2_dev);
->  
->  	return ret;
->  }
-> @@ -293,6 +305,7 @@ static void mmpcam_remove(struct platform_device *pdev)
->  	struct mcam_camera *mcam = &cam->mcam;
->  
->  	mccic_shutdown(mcam);
-> +	v4l2_device_unregister(&mcam->v4l2_dev);
->  	pm_runtime_force_suspend(mcam->dev);
->  }
->  
+> -#define NO_BLOCK_MAPPINGS	BIT(0)
+> +#define NO_PMD_BLOCK_MAPPINGS	BIT(0)
+>  #define NO_CONT_MAPPINGS	BIT(1)
+>  #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+> +#define NO_PUD_BLOCK_MAPPINGS	BIT(3)  /* Hotplug case: do not want block mapping for PUD */
+> +#define NO_BLOCK_MAPPINGS (NO_PMD_BLOCK_MAPPINGS | NO_PUD_BLOCK_MAPPINGS)
 
+
+Should not NO_PMD_BLOCK_MAPPINGS and NO_PUD_BLOCK_MAPPINGS be adjacent bits
+for better readability ? But that will also cause some additional churn.
+
+>  
+>  u64 kimage_voffset __ro_after_init;
+>  EXPORT_SYMBOL(kimage_voffset);
+> @@ -254,7 +256,7 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  
+>  		/* try section mapping first */
+>  		if (((addr | next | phys) & ~PMD_MASK) == 0 &&
+> -		    (flags & NO_BLOCK_MAPPINGS) == 0) {
+> +		    (flags & NO_PMD_BLOCK_MAPPINGS) == 0) {
+
+Behavior will remain unchanged for all existing users of NO_BLOCK_MAPPINGS
+as it will now contain NO_PMD_BLOCK_MAPPINGS.
+
+>  			pmd_set_huge(pmdp, phys, prot);
+>  
+>  			/*
+> @@ -356,10 +358,11 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+>  
+>  		/*
+>  		 * For 4K granule only, attempt to put down a 1GB block
+> +		 * Hotplug case: do not attempt 1GB block
+>  		 */
+>  		if (pud_sect_supported() &&
+>  		   ((addr | next | phys) & ~PUD_MASK) == 0 &&
+> -		    (flags & NO_BLOCK_MAPPINGS) == 0) {
+> +		   (flags & NO_PUD_BLOCK_MAPPINGS) == 0) {
+
+Behavior will remain unchanged for all existing users of NO_BLOCK_MAPPINGS
+as it will now contain NO_PUD_BLOCK_MAPPINGS.
+
+>  			pud_set_huge(pudp, phys, prot);
+>  
+>  			/*
+> @@ -1175,9 +1178,16 @@ int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+>  int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+>  		struct vmem_altmap *altmap)
+>  {
+> +	unsigned long start_pfn;
+> +	struct mem_section *ms;
+> +
+>  	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
+>  
+> -	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
+> +	start_pfn = page_to_pfn((struct page *)start);
+> +	ms = __pfn_to_section(start_pfn);
+> +
+> +	/* Hotplugged section not support hugepages */
+
+Please update the comment as
+
+	/*
+	 * Hotplugged section does not support hugepages as
+	 * PMD_SIZE (hence PUD_SIZE) section mapping covers
+	 * struct page range that exceeds a SUBSECTION_SIZE
+	 * i.e 2MB - for all available base page sizes.
+	 */
+
+> +	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) || !early_section(ms))
+>  		return vmemmap_populate_basepages(start, end, node, altmap);
+>  	else
+>  		return vmemmap_populate_hugepages(start, end, node, altmap);
+> @@ -1339,9 +1349,24 @@ int arch_add_memory(int nid, u64 start, u64 size,
+>  		    struct mhp_params *params)
+>  {
+>  	int ret, flags = NO_EXEC_MAPPINGS;
+> +	unsigned long start_pfn = page_to_pfn((struct page *)start);
+> +	struct mem_section *ms = __pfn_to_section(start_pfn);
+>  
+>  	VM_BUG_ON(!mhp_range_allowed(start, size, true));
+>  
+> +	/* Should not be invoked by early section */
+> +	WARN_ON(early_section(ms));
+> +
+> +	if (IS_ENABLED(CONFIG_ARM64_4K_PAGES))
+> +	/*
+> +	 * As per subsection granule is 2M, allow PMD block mapping in
+> +	 * case 4K PAGES.
+> +	 * Other cases forbid section mapping.
+> +	 */
+
+IIUC subsection size is 2M regardless of the page size. But with 4K pages
+on arm64, PMD_SIZE happen to be 2M. Hence there is no problem in creating
+linear mappings at PMD block level, which will not be the case with other
+page sizes i.e 16K and 64K.
+
+include/linux/mmzone.h
+
+#define SUBSECTION_SHIFT 21
+#define SUBSECTION_SIZE (1UL << SUBSECTION_SHIFT)
+
+Please update the comment with following changes but above IS_ENABLED()
+statement as it talks about all page size configs.
+
+	/*
+	 * 4K base page's PMD_SIZE matches SUBSECTION_SIZE i.e 2MB. Hence
+	 * PMD section mapping can be allowed, but only for 4K base pages.
+	 * Where as PMD_SIZE (hence PUD_SIZE) for other page sizes exceed
+	 * SUBSECTION_SIZE.
+	 */
+> +		flags |= NO_PUD_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+> +	else
+> +		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+> +
+>  	if (can_set_direct_map())
+>  		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+>  
 
