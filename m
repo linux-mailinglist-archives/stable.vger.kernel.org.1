@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30799A02ACA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C626A02A0E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA173A1838
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F4C18868B9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5099682D98;
-	Mon,  6 Jan 2025 15:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A989C15575F;
+	Mon,  6 Jan 2025 15:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/UOf+VF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYRKg/st"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E76C73451;
-	Mon,  6 Jan 2025 15:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61757136E09;
+	Mon,  6 Jan 2025 15:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177781; cv=none; b=R+HKJZhysIsFFcWKF5f8+SjzJKHsoUV587twrdQgtWpZsHjUIgA5O2DdBs5uM6CTJ+ue05eXxredKw0Jwtr6ZD8iO8/WcGtwROgeSrmgNfeqn4cQyynmlaEVN+Zthis5h/MTaSCgOAR7+wDJOxfTCku1dRQ/p6fJgfjmFubQEjs=
+	t=1736177327; cv=none; b=jsGmJfPG7p7FD9ZxivmZDEfe2sXMbESbamCOu+iggMJc4WPjoxD4Za2Yiyhl5qWQE8lF73c6eZfkBz0hYE0bBLuI9WQQ+mk3V5Wdteq6RUlYckzP/xGFohf3W3A3uQxYn2t8M4GFwlLDexM4yIA9EQMoEmc2AiUXAvR+NtHTTZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177781; c=relaxed/simple;
-	bh=+1ua5QiFmu5blk1J1ru/ASb+5xDje5wAR7ITGWenRz8=;
+	s=arc-20240116; t=1736177327; c=relaxed/simple;
+	bh=tpIlHtk+IeP8jDdKiEQerdir9FFoFEoPSpcJIFdy51M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UPKiM9Xnrhsclw7btzwI3isKOd/Ksx06Dd6rETmnFh1CFz/MHy3aqgnEjo+4JpAveIhKzJ8VqPWjnshmIBhPUxDQ4zyIu0gFoebeKl4K3fza8dtiCNE0hn77jUdRwK2e3S3Qdc2OUkTe2FCwyzwrn920ZtIbxS13AjkU37v6FWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/UOf+VF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367DFC4CED2;
-	Mon,  6 Jan 2025 15:36:20 +0000 (UTC)
+	 MIME-Version; b=gTAKScszuZnoIxw08o7/hFvJveO9+jGXlGG3qfCjfVofSojruLuKReJO+JqHu7TGnU/OKdCmFzy1bPCb5rDefGqIv3Xs6Z0F1O49D3P2Fe3h9VHBnRmyL2cdjQ7VvBPUjN7TCbeIjqZk20XZ5IfkbrwIPrHkOElCaFlxLLqV6Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYRKg/st; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2A7C4CED2;
+	Mon,  6 Jan 2025 15:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177780;
-	bh=+1ua5QiFmu5blk1J1ru/ASb+5xDje5wAR7ITGWenRz8=;
+	s=korg; t=1736177326;
+	bh=tpIlHtk+IeP8jDdKiEQerdir9FFoFEoPSpcJIFdy51M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/UOf+VF4iJ6zpZoFaZ1cfTJisT95PbFFY3rRMSNyp1zMEz5Yy82VuDwTl5WwflVp
-	 JH5XUMYSI0WVI8d+daffpFjqIrgU9h+EY1IgsZM7u3E5Y7Pt12dPw+ThFbftyMCkll
-	 7rZqNRlsM6p3zb8+4u1lEbD+lrLOYLk3L6tgAt60=
+	b=ZYRKg/st1nKYIh9i/28x4TcauLfkKqG9O2A6tC2RTvSsLHWmmjlATMyRpC5Yb7oYx
+	 Z/HgMsbNhWN1K63/zq6Kj5tZ3uo9j3EjOImyEqo08HMsn2Gpv/rBCg7sRKyH6TBt0N
+	 RITvOx19usKCBESooMqLeO+7E53ScZ2XEWfladEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	guanjing <guanjing@cmss.chinamobile.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/156] sched_ext: fix application of sizeof to pointer
+Subject: [PATCH 6.6 095/222] ACPI/IORT: Add PMCG platform information for HiSilicon HIP10/11
 Date: Mon,  6 Jan 2025 16:14:59 +0100
-Message-ID: <20250106151142.244400806@linuxfoundation.org>
+Message-ID: <20250106151154.192460458@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: guanjing <guanjing@cmss.chinamobile.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-[ Upstream commit f24d192985cbd6782850fdbb3839039da2f0ee76 ]
+[ Upstream commit f3b78b470f28bb2a3a40e88bdf5c6de6a35a9b76 ]
 
-sizeof when applied to a pointer typed expression gives the size of
-the pointer.
+HiSilicon HIP10/11 platforms using the same SMMU PMCG with HIP09
+and thus suffers the same erratum. List them in the PMCG platform
+information list without introducing a new SMMU PMCG Model.
 
-The proper fix in this particular case is to code sizeof(*cpuset)
-instead of sizeof(cpuset).
+Update the silicon-errata.rst as well.
 
-This issue was detected with the help of Coccinelle.
-
-Fixes: 22a920209ab6 ("sched_ext: Implement tickless support")
-Signed-off-by: guanjing <guanjing@cmss.chinamobile.com>
-Acked-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240731092658.11012-1-yangyicong@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Stable-dep-of: c2b46ae02270 ("ACPI/IORT: Add PMCG platform information for HiSilicon HIP09A")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/sched_ext/scx_central.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/arch/arm64/silicon-errata.rst | 4 ++--
+ drivers/acpi/arm64/iort.c                   | 7 +++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tools/sched_ext/scx_central.c b/tools/sched_ext/scx_central.c
-index 21deea320bd7..e938156ed0a0 100644
---- a/tools/sched_ext/scx_central.c
-+++ b/tools/sched_ext/scx_central.c
-@@ -97,7 +97,7 @@ int main(int argc, char **argv)
- 	SCX_BUG_ON(!cpuset, "Failed to allocate cpuset");
- 	CPU_ZERO(cpuset);
- 	CPU_SET(skel->rodata->central_cpu, cpuset);
--	SCX_BUG_ON(sched_setaffinity(0, sizeof(cpuset), cpuset),
-+	SCX_BUG_ON(sched_setaffinity(0, sizeof(*cpuset), cpuset),
- 		   "Failed to affinitize to central CPU %d (max %d)",
- 		   skel->rodata->central_cpu, skel->rodata->nr_cpu_ids - 1);
- 	CPU_FREE(cpuset);
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index 3cf806733083..f4e6afd59630 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -244,8 +244,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| Hisilicon      | Hip08 SMMU PMCG | #162001900      | N/A                         |
+-|                | Hip09 SMMU PMCG |                 |                             |
++| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
++|                | ,11} SMMU PMCG  |                 |                             |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 6496ff5a6ba2..b1f483845bc0 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1712,6 +1712,13 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+ 	/* HiSilicon Hip09 Platform */
+ 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
++	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	{"HISI  ", "HIP10C  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	{"HISI  ", "HIP11   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+ 	{ }
+ };
+ 
 -- 
 2.39.5
 
