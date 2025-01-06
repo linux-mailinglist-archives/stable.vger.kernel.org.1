@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F4BA029C2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:27:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB1DA02A8D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6C3D1633C9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DCD81881C33
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D15B198842;
-	Mon,  6 Jan 2025 15:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699BE148316;
+	Mon,  6 Jan 2025 15:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cprk83t3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjV0CcTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BE3224CC;
-	Mon,  6 Jan 2025 15:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2432778F49;
+	Mon,  6 Jan 2025 15:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177238; cv=none; b=rm4rstU07vtYsHfAfRSA5/RvuDmKVv8K+ZQ0GL/Oxelb5HXx4IIHS7SRotXwUn0I5KHFUzfOO6GjqzeK0dkGSyr6GFhw5nwkCKUIHvSFN4xZB88gy9pOxSY/DVXZg0Mh4JJ2HyUeHBwLyBqh+Zow6RiqX8zjZJ2zkv2D6UrvCpM=
+	t=1736177674; cv=none; b=onHkXlYPoD6ZsSnMnIHnhKxAu5nd9RTy9vLLmKHLcAATcuJLDlHW7pvt/W/jQc+kYHdvfZWBWckNsboJ0reRBzPoHAiVSHRathbEkfRU05505Asdh6tHVEyTsfmbTxT4T5bKkTGX9S3LC6G4tA5UN+CnjdxPrBJrCxc9WFPVLPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177238; c=relaxed/simple;
-	bh=/C1cncUrT/iE8eIYdI53trrj8H7RPEHw+tXXvppg4cU=;
+	s=arc-20240116; t=1736177674; c=relaxed/simple;
+	bh=NH47iz4ROhYyWR5dEtup1j6vXynDTBQnhWQTIN1VNMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVZuyUwmwg7kZuApVXAFZOxZ9mmVMVjXUUxRAVa4clOT6RjQSMXGi+7LB82VGeuAXRiFzDD5wOANdiz/dkkHUvpdoHmkjn6nwgVRSEX5EC7YvJIv7lPhWw4WaxjqIQp4HGF+EvzIFPk5rlttS0svqjO93nGlVAujz+MB6JBvfgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cprk83t3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AF0C4CEE5;
-	Mon,  6 Jan 2025 15:27:17 +0000 (UTC)
+	 MIME-Version; b=D8TiFtUUsr5plJCgGUvZJ6Z6IQPsajAPPC7JeEnu/tTJNBOdSLPyN9ozGB+y5cpENP766GOLdq6UJckvU7yDEfeP1QzcNVKDTgORKF+1c5VPss/Lw1S6zimYYnKu+SCeftp2fuXmu7cLC0vY+oAghqqBAZFejJnEt+uC8gLUItc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjV0CcTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A571C4CED2;
+	Mon,  6 Jan 2025 15:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177238;
-	bh=/C1cncUrT/iE8eIYdI53trrj8H7RPEHw+tXXvppg4cU=;
+	s=korg; t=1736177674;
+	bh=NH47iz4ROhYyWR5dEtup1j6vXynDTBQnhWQTIN1VNMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cprk83t39Op56uTBNA4XhLfzLTuqzfEbTZZPjDKuH2MDqWNZqndF8S8Chm4T6rvki
-	 IJLoPIMzNZFay+s7fPItfD9icTHUjCfOdu+X3JpcbUZUj9vJpy6kVDdyOV9swHw9Lb
-	 QKliGxPypDpHm85L274URiyN/zdrU6FkEZwJ+BOE=
+	b=HjV0CcTcVf3CDGF7nIrqJ7/UNTL5FVAKZEwIEh+a37Mf4FxeJAABDTupc4N/25MR/
+	 qDI1iK8iTZWsx0OgGYGhzseovIhIN5D8ofMRhgsmoR9JC9OYCnh5twbvZNFGn3akfD
+	 EHS+8mFSWTRDpDbzfs+h8QZW61Y3m/7qCp5/TqM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/222] ALSA: ump: Dont open legacy substream for an inactive group
+	Lucas Stach <l.stach@pengutronix.de>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 008/156] pmdomain: core: add dummy release function to genpd device
 Date: Mon,  6 Jan 2025 16:14:54 +0100
-Message-ID: <20250106151154.004118628@linuxfoundation.org>
+Message-ID: <20250106151142.057904524@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit 3978d53df7236f0a517c2abeb43ddf6ac162cdd8 ]
+commit f64f610ec6ab59dd0391b03842cea3a4cd8ee34f upstream.
 
-When a UMP Group is inactive, we shouldn't allow users to access it
-via the legacy MIDI access.  Add the group active flag check and
-return -ENODEV if it's inactive.
+The genpd device, which is really only used as a handle to lookup
+OPP, but not even registered to the device core otherwise and thus
+lifetime linked to the genpd struct it is contained in, is missing
+a release function. After b8f7bbd1f4ec ("pmdomain: core: Add
+missing put_device()") the device will be cleaned up going through
+the driver core device_release() function, which will warn when no
+release callback is present for the device. Add a dummy release
+function to shut up the warning.
 
-Link: https://patch.msgid.link/20241129094546.32119-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: b8f7bbd1f4ec ("pmdomain: core: Add missing put_device()")
+Cc: stable@vger.kernel.org
+Message-ID: <20241218184433.1930532-1-l.stach@pengutronix.de>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/ump.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pmdomain/core.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/core/ump.c b/sound/core/ump.c
-index ada2625ce78f..5a4a7d0b7cca 100644
---- a/sound/core/ump.c
-+++ b/sound/core/ump.c
-@@ -1081,6 +1081,8 @@ static int snd_ump_legacy_open(struct snd_rawmidi_substream *substream)
- 	guard(mutex)(&ump->open_mutex);
- 	if (ump->legacy_substreams[dir][group])
- 		return -EBUSY;
-+	if (!ump->groups[group].active)
-+		return -ENODEV;
- 	if (dir == SNDRV_RAWMIDI_STREAM_OUTPUT) {
- 		if (!ump->legacy_out_opens) {
- 			err = snd_rawmidi_kernel_open(&ump->core, 0,
--- 
-2.39.5
-
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -2141,6 +2141,11 @@ static int genpd_set_default_power_state
+ 	return 0;
+ }
+ 
++static void genpd_provider_release(struct device *dev)
++{
++	/* nothing to be done here */
++}
++
+ static int genpd_alloc_data(struct generic_pm_domain *genpd)
+ {
+ 	struct genpd_governor_data *gd = NULL;
+@@ -2172,6 +2177,7 @@ static int genpd_alloc_data(struct gener
+ 
+ 	genpd->gd = gd;
+ 	device_initialize(&genpd->dev);
++	genpd->dev.release = genpd_provider_release;
+ 
+ 	if (!genpd_is_dev_name_fw(genpd)) {
+ 		dev_set_name(&genpd->dev, "%s", genpd->name);
 
 
 
