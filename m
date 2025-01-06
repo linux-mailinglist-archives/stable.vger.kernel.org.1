@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926EDA02B0F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5370EA0295E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9ED93A7132
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAD341885D00
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826B5DF71;
-	Mon,  6 Jan 2025 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A4B1514F6;
+	Mon,  6 Jan 2025 15:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f07OioM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFYxwXgc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D7E155352;
-	Mon,  6 Jan 2025 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3326F8635E;
+	Mon,  6 Jan 2025 15:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177930; cv=none; b=OunhxMm/ZHQT1SeE07FUC3RN9fuI0uoCZUr2ClymmLSRkgov0BN3eABzJUJYF4BoEtPR9uAx4J6nQ6DZ0XfkJFXG7TC67z2qkD1vbH+0/wNwH16/53N7MXlwX8gDS0oBXIxsyViqgGYLmW1VdUYqFfr0JprvbWn1aWRJlnomnT8=
+	t=1736176954; cv=none; b=HjapQrwA3Vi++oFEYjrZwbGyn7IU3yLLhG9uzNViZwR+dDyHTAymwNUBucKe4G2f8jqJeI6/nFkeMz5M33cAH7n525c4mDRlBzntk3f9gEZl3Lbj77ac9nVvRSXG/PWdx32rbg/74W8GB1Qa7rwHJiPXpYNDp6ISP+nQ3sUtCUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177930; c=relaxed/simple;
-	bh=e2WT5aWhLAjePag7sYc6QrnXmwhLdWYVpLvMzsqOJTM=;
+	s=arc-20240116; t=1736176954; c=relaxed/simple;
+	bh=2zgGxaI9h6VFYRZ+B1tDEIwZXZ7JaWdQtT+WwUYj+6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGHpGxq5fow97jbongdvG2Ga6+8y+Q5LWF7ZMrmOdevhl5XwfBIAUKiPyKDNTD+DFy63Ww+xZHwIxTspyaxWgfl4AwD45nwoAMY0SdRzuaCe1qxlauw72gvbIuGr1iJaB71J56JxweBoI8UfOrgeu7B8bCAmFaPcTctK4sh9yuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f07OioM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36A8C4CED2;
-	Mon,  6 Jan 2025 15:38:49 +0000 (UTC)
+	 MIME-Version; b=L8bTHudeyaYrRDR7489MV0yXhPnbCaqZ4nQjx2iB6P0VDEqhjCHWC1S+Ok4PMKtg/sUjN9IldgNlvd0y6Vvz66mYSykqLl4wXTO2hPeF56i1O9/CNepWmjboYI5XApQ24Zr6H5F9aqTorgAjO6RjHpWWaBhTay1l3iv94OG+goE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFYxwXgc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE75CC4CED2;
+	Mon,  6 Jan 2025 15:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177930;
-	bh=e2WT5aWhLAjePag7sYc6QrnXmwhLdWYVpLvMzsqOJTM=;
+	s=korg; t=1736176954;
+	bh=2zgGxaI9h6VFYRZ+B1tDEIwZXZ7JaWdQtT+WwUYj+6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f07OioM7L7MeMoJBYNI6TFyL6LU2v2kbjdFSxb9DxdPTGp3Ue6iUPipL+RLk3u0oc
-	 +cb7E6wEsKBdXSZuOEJlr1A168DKnn91W3PTjjtBtp8yvsG3gsmuLHIf0XcqJS3aAS
-	 RfBlATfngUIr/l/+hTAscYxt2bAaO4H6R2YWzkpk=
+	b=EFYxwXgcSNOAlsk/8OtTVyuhX0x8mSIUJ/Nyyy8+MmrsL8cVSlcFMCbUyrmB6Naw/
+	 o2rWSfAMHS8GRTueXY6fEnd7SdQwcTzc1chBnvSAebfvyOsCQuOFFQ24mv5+a+SdBB
+	 Kbs8pugOlU/e4xF9J3s+oC2yDKbmyaNbEbpsEoT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Takashi Iwai <tiwai@suse.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/156] bpf: refactor bpf_helper_changes_pkt_data to use helper number
+Subject: [PATCH 6.1 58/81] sound: usb: format: dont warn that raw DSD is unsupported
 Date: Mon,  6 Jan 2025 16:16:30 +0100
-Message-ID: <20250106151145.643394379@linuxfoundation.org>
+Message-ID: <20250106151131.625550325@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-[ Upstream commit b238e187b4a2d3b54d80aec05a9cab6466b79dde ]
+[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
 
-Use BPF helper number instead of function pointer in
-bpf_helper_changes_pkt_data(). This would simplify usage of this
-function in verifier.c:check_cfg() (in a follow-up patch),
-where only helper number is easily available and there is no real need
-to lookup helper proto.
+UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
+RAW_DATA type, typically used for DSD playback.
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241210041100.1898468-3-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 1a4607ffba35 ("bpf: consider that tail calls invalidate packet pointers")
+This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
+fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
+however a confusing and unnecessary message gets printed because
+the bit is not properly tested in the last "unsupported" if test:
+if (format & ~0x3F) { ... }
+
+For example the output:
+
+usb 7-1: new high-speed USB device number 5 using xhci_hcd
+usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
+usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
+usb 7-1: Product: TC44C
+usb 7-1: Manufacturer: TC44C
+usb 7-1: SerialNumber: 5000000001
+hid-generic 0003:262A:9302.001E: No inputs registered, leaving
+hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
+usb 7-1: 2:4 : unsupported format bits 0x100000000
+
+This last "unsupported format" is actually wrong: we know the
+format is a RAW_DATA which we assume is DSD, so there is no need
+to print the confusing message.
+
+This we unset bit 31 of the format after recognizing it, to avoid
+the message.
+
+Suggested-by: Takashi Iwai <tiwai@suse.com>
+Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h |  2 +-
- kernel/bpf/core.c      |  2 +-
- kernel/bpf/verifier.c  |  2 +-
- net/core/filter.c      | 63 +++++++++++++++++++-----------------------
- 4 files changed, 31 insertions(+), 38 deletions(-)
+ sound/usb/format.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 7d7578a8eac1..5118caf8aa1c 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1121,7 +1121,7 @@ bool bpf_jit_supports_arena(void);
- bool bpf_jit_supports_insn(struct bpf_insn *insn, bool in_arena);
- u64 bpf_arch_uaddress_limit(void);
- void arch_bpf_stack_walk(bool (*consume_fn)(void *cookie, u64 ip, u64 sp, u64 bp), void *cookie);
--bool bpf_helper_changes_pkt_data(void *func);
-+bool bpf_helper_changes_pkt_data(enum bpf_func_id func_id);
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index 3b45d0ee7693..3b3a5ea6fcbf 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -60,6 +60,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
+ 			/* flag potentially raw DSD capable altsettings */
+ 			fp->dsd_raw = true;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
+ 		}
  
- static inline bool bpf_dump_raw_ok(const struct cred *cred)
- {
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 3af5f42ea791..2b9c8c168a0b 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2940,7 +2940,7 @@ void __weak bpf_jit_compile(struct bpf_prog *prog)
- {
- }
+ 		format <<= 1;
+@@ -71,8 +73,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 		sample_width = as->bBitResolution;
+ 		sample_bytes = as->bSubslotSize;
  
--bool __weak bpf_helper_changes_pkt_data(void *func)
-+bool __weak bpf_helper_changes_pkt_data(enum bpf_func_id func_id)
- {
- 	return false;
- }
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 767f1cb8c27e..a0cab0d0252f 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -10476,7 +10476,7 @@ static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
- 	}
+-		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
++		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
++		}
  
- 	/* With LD_ABS/IND some JITs save/restore skb from r1. */
--	changes_data = bpf_helper_changes_pkt_data(fn->func);
-+	changes_data = bpf_helper_changes_pkt_data(func_id);
- 	if (changes_data && fn->arg1_type != ARG_PTR_TO_CTX) {
- 		verbose(env, "kernel subsystem misconfigured func %s#%d: r1 != ctx\n",
- 			func_id_name(func_id), func_id);
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 55495063621d..4b0ad74cfff5 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7918,42 +7918,35 @@ static const struct bpf_func_proto bpf_tcp_raw_check_syncookie_ipv6_proto = {
- 
- #endif /* CONFIG_INET */
- 
--bool bpf_helper_changes_pkt_data(void *func)
--{
--	if (func == bpf_skb_vlan_push ||
--	    func == bpf_skb_vlan_pop ||
--	    func == bpf_skb_store_bytes ||
--	    func == bpf_skb_change_proto ||
--	    func == bpf_skb_change_head ||
--	    func == sk_skb_change_head ||
--	    func == bpf_skb_change_tail ||
--	    func == sk_skb_change_tail ||
--	    func == bpf_skb_adjust_room ||
--	    func == sk_skb_adjust_room ||
--	    func == bpf_skb_pull_data ||
--	    func == sk_skb_pull_data ||
--	    func == bpf_clone_redirect ||
--	    func == bpf_l3_csum_replace ||
--	    func == bpf_l4_csum_replace ||
--	    func == bpf_xdp_adjust_head ||
--	    func == bpf_xdp_adjust_meta ||
--	    func == bpf_msg_pull_data ||
--	    func == bpf_msg_push_data ||
--	    func == bpf_msg_pop_data ||
--	    func == bpf_xdp_adjust_tail ||
--#if IS_ENABLED(CONFIG_IPV6_SEG6_BPF)
--	    func == bpf_lwt_seg6_store_bytes ||
--	    func == bpf_lwt_seg6_adjust_srh ||
--	    func == bpf_lwt_seg6_action ||
--#endif
--#ifdef CONFIG_INET
--	    func == bpf_sock_ops_store_hdr_opt ||
--#endif
--	    func == bpf_lwt_in_push_encap ||
--	    func == bpf_lwt_xmit_push_encap)
-+bool bpf_helper_changes_pkt_data(enum bpf_func_id func_id)
-+{
-+	switch (func_id) {
-+	case BPF_FUNC_clone_redirect:
-+	case BPF_FUNC_l3_csum_replace:
-+	case BPF_FUNC_l4_csum_replace:
-+	case BPF_FUNC_lwt_push_encap:
-+	case BPF_FUNC_lwt_seg6_action:
-+	case BPF_FUNC_lwt_seg6_adjust_srh:
-+	case BPF_FUNC_lwt_seg6_store_bytes:
-+	case BPF_FUNC_msg_pop_data:
-+	case BPF_FUNC_msg_pull_data:
-+	case BPF_FUNC_msg_push_data:
-+	case BPF_FUNC_skb_adjust_room:
-+	case BPF_FUNC_skb_change_head:
-+	case BPF_FUNC_skb_change_proto:
-+	case BPF_FUNC_skb_change_tail:
-+	case BPF_FUNC_skb_pull_data:
-+	case BPF_FUNC_skb_store_bytes:
-+	case BPF_FUNC_skb_vlan_pop:
-+	case BPF_FUNC_skb_vlan_push:
-+	case BPF_FUNC_store_hdr_opt:
-+	case BPF_FUNC_xdp_adjust_head:
-+	case BPF_FUNC_xdp_adjust_meta:
-+	case BPF_FUNC_xdp_adjust_tail:
- 		return true;
--
--	return false;
-+	default:
-+		return false;
-+	}
- }
- 
- const struct bpf_func_proto bpf_event_output_data_proto __weak;
+ 		format <<= 1;
+ 		break;
 -- 
 2.39.5
 
