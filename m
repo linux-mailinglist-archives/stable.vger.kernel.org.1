@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193FCA02B21
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02DBA02BD9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F340B165BEE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4391E1886BE1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B268517625C;
-	Mon,  6 Jan 2025 15:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE3E6088F;
+	Mon,  6 Jan 2025 15:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WacP/dvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGp9jeOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7CF16D9B8;
-	Mon,  6 Jan 2025 15:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6891547D8;
+	Mon,  6 Jan 2025 15:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178001; cv=none; b=cCU/DIq0oRu154dWN5IJ5zhs0yJQsACuYwxYNBCFLSWQwrKOUVL4P48AcmDLYcZWVcvOxRgWSu1DqwxJX9bosKcYaMUhXaod3A+pRZjEUF8vYLa0yq+8IoebPT6oxjouv0UbPbY4dXIvN1lDMIUmqTpwlvlw29mVCbWGNHk5gqQ=
+	t=1736178454; cv=none; b=tRRrFTxEKgb4nyW3bQAxrOHJiVvTa94aOyOuUhlg7agvpttxR4srNracFIha9LVzpgR7ntCm9VXd5M+3CuB2GUM3wsJFjrTdBy8b9tkzi5WKvW9krHWYHJertUSMcDaj0djKUAID5WAvAcJNAo1pqVVJxPdPZH1YSda0vZ4HsvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178001; c=relaxed/simple;
-	bh=hY5Qy27gjANYa0Y+6wytJ7TG3ee4bSWmqC+Q/qjxkyY=;
+	s=arc-20240116; t=1736178454; c=relaxed/simple;
+	bh=XH1OJ6WSUNMCWPR2hszxTkJBf0FLHtAgMg3J1OipIp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWobUM1xeJuEQyRWFpJUBDH82f0dJj0wvJc+srK+ECRkTuMKzdaGVGI1Op7Z8Qo26luUWhOnsyBSYQ/cSFVkjqCAJZKOe0seB/Geo2W4JaobB188+AtSYeDou8E5hkPlsBaRdMKXgVT2fTeBIVNEy5+qtrrJszJ0BqJ6UH3tM9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WacP/dvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55DFC4CED2;
-	Mon,  6 Jan 2025 15:40:00 +0000 (UTC)
+	 MIME-Version; b=iyg/k6A7nZSftvOrAU4jI0fxWEvv75zYFRFqlHrnsqL+ODTnhEjv+eI0P4gE61AYonSW/NMJ5GZUbGIv+SueiBXDPZ9wvQTYghfSNzd63nQyP2XHvLtnyZf/Z3FHD+o+E4DlldfFdJZ3/djdKsuS8o+5rgpIsACJ1BP2O/vHg3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGp9jeOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CCBC4CED6;
+	Mon,  6 Jan 2025 15:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178001;
-	bh=hY5Qy27gjANYa0Y+6wytJ7TG3ee4bSWmqC+Q/qjxkyY=;
+	s=korg; t=1736178454;
+	bh=XH1OJ6WSUNMCWPR2hszxTkJBf0FLHtAgMg3J1OipIp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WacP/dvE2lSr4GnbTwc67wCmgc4IP+cDa3zqHXBmY0sES8vEVrE4qr1F4a0OElt0a
-	 dcRbSs04LIYNnU+H5q7LGolY+2bLl6T9g/9XcPePXy/J1u5WDYR5qQGh3HjXXPjfCR
-	 PUKUZ7ChsEXouOIJ8g1GCnobZ+OwoMrDfhsH48XU=
+	b=rGp9jeOLfphzLZQqVna05/wnZ1Q0Q7IpgcuEhTl51YMSDOjwdhgyWAiaIEfc1ekTu
+	 pVnQWxFRfkmbl2gehuyZmbYElDT0Qr362FFgC0AI+hShJyJqT681IXZ4HIjBTt6/sx
+	 YlWYUGWzmPFdStQhv537xlnpiR7LXCExLjB9nTtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Huang <henry.hj@antgroup.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 129/156] sched_ext: initialize kit->cursor.flags
-Date: Mon,  6 Jan 2025 16:16:55 +0100
-Message-ID: <20250106151146.591015886@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 092/138] loop: let set_capacity_revalidate_and_notify update the bdev size
+Date: Mon,  6 Jan 2025 16:16:56 +0100
+Message-ID: <20250106151136.714988655@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Huang <henry.hj@antgroup.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 35bf430e08a18fdab6eb94492a06d9ad14c6179b upstream.
+[ Upstream commit 3b4f85d02a4bd85cbea999a064235a47694bbb7b ]
 
-struct bpf_iter_scx_dsq *it maybe not initialized.
-If we didn't call scx_bpf_dsq_move_set_vtime and scx_bpf_dsq_move_set_slice
-before scx_bpf_dsq_move, it would cause unexpected behaviors:
-1. Assign a huge slice into p->scx.slice
-2. Assign a invalid vtime into p->scx.dsq_vtime
+There is no good reason to call revalidate_disk_size separately.
 
-Signed-off-by: Henry Huang <henry.hj@antgroup.com>
-Fixes: 6462dd53a260 ("sched_ext: Compact struct bpf_iter_scx_dsq_kern")
-Cc: stable@vger.kernel.org # v6.12
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/loop.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6637,7 +6637,7 @@ __bpf_kfunc int bpf_iter_scx_dsq_new(str
- 		return -ENOENT;
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 7444cc2a6c86..198f7ce3234b 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -238,12 +238,8 @@ static void __loop_update_dio(struct loop_device *lo, bool dio)
+  */
+ static void loop_set_size(struct loop_device *lo, loff_t size)
+ {
+-	struct block_device *bdev = lo->lo_device;
+-
+-	bd_set_nr_sectors(bdev, size);
+-
+-	if (!set_capacity_revalidate_and_notify(lo->lo_disk, size, false))
+-		kobject_uevent(&disk_to_dev(bdev->bd_disk)->kobj, KOBJ_CHANGE);
++	if (!set_capacity_revalidate_and_notify(lo->lo_disk, size, true))
++		kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ }
  
- 	INIT_LIST_HEAD(&kit->cursor.node);
--	kit->cursor.flags |= SCX_DSQ_LNODE_ITER_CURSOR | flags;
-+	kit->cursor.flags = SCX_DSQ_LNODE_ITER_CURSOR | flags;
- 	kit->cursor.priv = READ_ONCE(kit->dsq->seq);
- 
- 	return 0;
+ static inline int
+-- 
+2.39.5
+
 
 
 
