@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-107311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AF1A02B61
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1180DA02C92
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3265A3A6244
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19CE13A3D57
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17DD1D5CE5;
-	Mon,  6 Jan 2025 15:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FDF1369B4;
+	Mon,  6 Jan 2025 15:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGImKIMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJ7i3Q5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABE11DC991;
-	Mon,  6 Jan 2025 15:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721C91DDC36;
+	Mon,  6 Jan 2025 15:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178085; cv=none; b=pT9cpQZAQlU/EtpEzj+v1YwFlXjKWg3VaWWdym7XcQKUsK7U/tIuEor/BnmlQMZ4bf6g7efSYn2AyVlV9uf82bfXc2G5so3vIRdT15Rzq0xdYcjosEF3BM9NyayukLaY47mWcL/gmeBu2psFLLoou5KMS87Nlqozkog+wFekhew=
+	t=1736178791; cv=none; b=mdrx3gStMiMR9+cwpfBApS8soDR/vp/X8uZIeN17T8FJCWpD3B+1B27lcJlYaZJd5ZRqlAyUOKz5eV7i1vphC0ngonT8GHpym33ZXOU3oJ9zTZOVuZZfJYAJHhyIzZVVZnjYFl+X3/Rcmpf8485sCjL/miFEp1prd/rTJkqKWrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178085; c=relaxed/simple;
-	bh=yXHlmevvbHmrUngPioYOhgArMc3g0DbrFCUs7JUYW88=;
+	s=arc-20240116; t=1736178791; c=relaxed/simple;
+	bh=ccsDKME1LCsX1XmeMxGeVLKBlnmxULuHU3KsQvSQhuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PZpahrjrJrQm1GQEdPWkK4tmLqOHqFf0FYk4Jhk14two89zjTwOWkiGgbpQgX25kKixCQisFM5HuzWDji4m6wH/UlKObSOklAfez8/DhCS27NjJ0vi65jlNWZXN9bU7K+ZBfTouLI3jIkAzxyfNXFSNt1H2w+QWftKwRDjdhTqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGImKIMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99209C4CED2;
-	Mon,  6 Jan 2025 15:41:24 +0000 (UTC)
+	 MIME-Version; b=QB6BHC2q4hCKpQXjHXL7ej2mgBIFEkYQ0nVygfa3Sh+7328I2CoSvdsBHpbkMdLtvvMjtOQYl9kDRJ/neLn61t8U+tgPZAhi3Xz4aRVPuEv5ST+loZopSuNyrkW6D3m4P/+Lg8+K1mIas/m7TQYAbwvsKip/rk+riheuwh2KeAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJ7i3Q5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76D8C4CED2;
+	Mon,  6 Jan 2025 15:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178085;
-	bh=yXHlmevvbHmrUngPioYOhgArMc3g0DbrFCUs7JUYW88=;
+	s=korg; t=1736178791;
+	bh=ccsDKME1LCsX1XmeMxGeVLKBlnmxULuHU3KsQvSQhuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGImKIMcjA8+Wy++/W0ny0uat+7aP84zWXVYjc4hCVaNUqRVhwAZGGNuNbxC36Z4U
-	 TIMge0d4t0jpMJFZdFPsgH6laIufViTEcAgCfnjT4V0PoW4jyIOc5y/fEsOE4O9tNH
-	 QOMliEH3NbGgVtEuP5AaXYlGexXxVg7qj5bdFoXE=
+	b=JJ7i3Q5hVH6DZbVMV1QgZgXHeJUX+ElxAFfLIGkhHSFGNA+F38S+kA2z56UGd7VO2
+	 QKgddEyRCfbuZLh9QhqzuxrodSAb8EHt6T8pPrM4gM3Ou+1ItGfvHaCqJYg95Tc3bz
+	 X/gX9cUylxEqCxn57AazKR/yKCw0eFgRuLhKVLGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH 6.12 115/156] drm/xe: Use non-interruptible wait when moving BO to system
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 093/168] arm64: Ensure bits ASID[15:8] are masked out when the kernel uses 8-bit ASIDs
 Date: Mon,  6 Jan 2025 16:16:41 +0100
-Message-ID: <20250106151146.058072507@linuxfoundation.org>
+Message-ID: <20250106151141.976873488@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit 528cef1b4170f328d28d4e9b437380d8e5a2d18f upstream.
+[ Upstream commit c0900d15d31c2597dd9f634c8be2b71762199890 ]
 
-Ensure a non-interruptible wait is used when moving a bo to
-XE_PL_SYSTEM. This prevents dma_mappings from being removed prematurely
-while a GPU job is still in progress, even if the CPU receives a
-signal during the operation.
+Linux currently sets the TCR_EL1.AS bit unconditionally during CPU
+bring-up. On an 8-bit ASID CPU, this is RES0 and ignored, otherwise
+16-bit ASIDs are enabled. However, if running in a VM and the hypervisor
+reports 8-bit ASIDs (ID_AA64MMFR0_EL1.ASIDBits == 0) on a 16-bit ASIDs
+CPU, Linux uses bits 8 to 63 as a generation number for tracking old
+process ASIDs. The bottom 8 bits of this generation end up being written
+to TTBR1_EL1 and also used for the ASID-based TLBI operations as the
+upper 8 bits of the ASID. Following an ASID roll-over event we can have
+threads of the same application with the same 8-bit ASID but different
+generation numbers running on separate CPUs. Both TLB caching and the
+TLBI operations will end up using different actual 16-bit ASIDs for the
+same process.
 
-Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system buffer objects to TT")
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: stable@vger.kernel.org # v6.11+
-Suggested-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241213122415.3880017-1-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-(cherry picked from commit dc5e20ae1f8a7c354dc9833faa2720254e5a5443)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A similar scenario can happen in a big.LITTLE configuration if the boot
+CPU only uses 8-bit ASIDs while secondary CPUs have 16-bit ASIDs.
+
+Ensure that the ASID generation is only tracked by bits 16 and up,
+leaving bits 15:8 as 0 if the kernel uses 8-bit ASIDs. Note that
+clearing TCR_EL1.AS is not sufficient since the architecture requires
+that the top 8 bits of the ASID passed to TLBI instructions are 0 rather
+than ignored in such configuration.
+
+Cc: stable@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: James Morse <james.morse@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241203151941.353796-1-catalin.marinas@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -722,7 +722,7 @@ static int xe_bo_move(struct ttm_buffer_
- 	    new_mem->mem_type == XE_PL_SYSTEM) {
- 		long timeout = dma_resv_wait_timeout(ttm_bo->base.resv,
- 						     DMA_RESV_USAGE_BOOKKEEP,
--						     true,
-+						     false,
- 						     MAX_SCHEDULE_TIMEOUT);
- 		if (timeout < 0) {
- 			ret = timeout;
+diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
+index bbc2708fe928..d160100c8dab 100644
+--- a/arch/arm64/mm/context.c
++++ b/arch/arm64/mm/context.c
+@@ -32,9 +32,9 @@ static unsigned long nr_pinned_asids;
+ static unsigned long *pinned_asid_map;
+ 
+ #define ASID_MASK		(~GENMASK(asid_bits - 1, 0))
+-#define ASID_FIRST_VERSION	(1UL << asid_bits)
++#define ASID_FIRST_VERSION	(1UL << 16)
+ 
+-#define NUM_USER_ASIDS		ASID_FIRST_VERSION
++#define NUM_USER_ASIDS		(1UL << asid_bits)
+ #define ctxid2asid(asid)	((asid) & ~ASID_MASK)
+ #define asid2ctxid(asid, genid)	((asid) | (genid))
+ 
+-- 
+2.39.5
+
 
 
 
