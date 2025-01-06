@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F061AA02A57
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F501A02B04
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D43D63A6996
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED8C3A6955
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8D61DDA2D;
-	Mon,  6 Jan 2025 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2BD14D28C;
+	Mon,  6 Jan 2025 15:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+9Y/uIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8xtsDvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D311DC9BC;
-	Mon,  6 Jan 2025 15:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D4A158525;
+	Mon,  6 Jan 2025 15:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177484; cv=none; b=fCTNLWcxLJ2gX5uDOf8qSpbHNLEUW1IRnVzrG8DvG3nnRz+u4JZQRcH0yvNRDPyHMb6boqnre3d10YvQG/LCXFfZJxnvnQocCnPaVHelne2SU3tBLbZq5aVMzR3BZ7e/CIUeoKBgehJX+DxpRziX3ndvBHokJ0b6oRxT7L393qI=
+	t=1736177900; cv=none; b=j3vQ36E1MeEbdIigYY/EOmJFNcIMK+bIrmF3bPdtH5yiIglGix5Gm1q0Nt4kAd/iNPCGC0iMVA63Y3ZIk/g53a2V4UBYF9KRgowjE+7PrAmR1Dp0oDtsewgDzrkqWJxm+x54mWon/fEA579TMo1EqHbchVKnNPwylOZgfXxI2is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177484; c=relaxed/simple;
-	bh=O0xTL3EK2Zc7uKZ9ZMY2s/S9S0cVEeXX9LW65kh4P6w=;
+	s=arc-20240116; t=1736177900; c=relaxed/simple;
+	bh=HrY0rkXhVgWiGVDQg2USHIWPLuuk5sQqRjSWpgEUt6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwmX2dYEQlMPncSik7Z3Hy6kA1X4fhsUqkt4uFjpupkIP05Wt6hbS2OEoj6PZ4Up3H3vzNFfIdgi5Ijzn7Y/H262jmH21kUirC+bUMRRBjzJ/Eu+KvsIIUbFcWkAQzDzIvE4Y/2ZpvJxpsEVdEvwAXR4oQSOBXdNAp4H2rY6ROs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+9Y/uIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F9CC4CED2;
-	Mon,  6 Jan 2025 15:31:22 +0000 (UTC)
+	 MIME-Version; b=Jh7hnxe7POMxGTH4VE+OUnsDeIxT3uXhs5SVCiKhb2W3/6IBRzJ/i/hqRJExaDL/qfZdtPAMKgrUxncZBjlQO6ptQccKRNIg7kMZOMcWo6/VNerlno2gl0Zpi9VHiDM1qzbQdQIKNwdjJcOFTEMPCPu1ks/brn0duZHlJVC5LIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8xtsDvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE45C4CED2;
+	Mon,  6 Jan 2025 15:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177483;
-	bh=O0xTL3EK2Zc7uKZ9ZMY2s/S9S0cVEeXX9LW65kh4P6w=;
+	s=korg; t=1736177900;
+	bh=HrY0rkXhVgWiGVDQg2USHIWPLuuk5sQqRjSWpgEUt6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+9Y/uIWvuGGuCquLwuxyVBCJpc9BsAGzXtFbo5B42dipCPvHYOMsdZ4ni4r0VQH+
-	 EU/t/8GgNnoj3BkRQqnchbw4e5fikISyfW+2vDCthLqGvWgBpo47FwHJ5PlPo3O2Wl
-	 ogBuZvMC1zw4G++Gnik8iYy51k76QaXe03tS1I4o=
+	b=B8xtsDvK3hdCWFlSaWTIGY7BC9yR9saLKKATV8ElGyNPmHpbBBD7nmV9PT4HNiQJk
+	 /kmh2bzE6GvJ7QHhpOSN1VMerUeaEJj/kBY23SI+a8iI5/eFPweVNN4nnS4r16zpuu
+	 GQ5V6cqLMMaywtHmTXFHErXyjSX44HM7NHwifcpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meghana Malladi <m-malladi@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Shahab Vahedi <list+bpf@vahedi.org>,
+	Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>,
+	Vineet Gupta <vgupta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/222] net: ti: icssg-prueth: Fix clearing of IEP_CMP_CFG registers during iep_init
+Subject: [PATCH 6.12 095/156] ARC: bpf: Correct conditional check in check_jmp_32
 Date: Mon,  6 Jan 2025 16:16:21 +0100
-Message-ID: <20250106151157.463511851@linuxfoundation.org>
+Message-ID: <20250106151145.302314405@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
 
-[ Upstream commit 9b115361248dc6cce182a2dc030c1c70b0a9639e ]
+[ Upstream commit 7dd9eb6ba88964b091b89855ce7d2a12405013af ]
 
-When ICSSG interfaces are brought down and brought up again, the
-pru cores are shut down and booted again, flushing out all the memories
-and start again in a clean state. Hence it is expected that the
-IEP_CMP_CFG register needs to be flushed during iep_init() to ensure
-that the existing residual configuration doesn't cause any unusual
-behavior. If the register is not cleared, existing IEP_CMP_CFG set for
-CMP1 will result in SYNC0_OUT signal based on the SYNC_OUT register values.
+The original code checks 'if (ARC_CC_AL)', which is always true since
+ARC_CC_AL is a constant. This makes the check redundant and likely
+obscures the intention of verifying whether the jump is conditional.
 
-After bringing the interface up, calling PPS enable doesn't work as
-the driver believes PPS is already enabled, (iep->pps_enabled is not
-cleared during interface bring down) and driver will just return true
-even though there is no signal. Fix this by disabling pps and perout.
+Updates the code to check cond == ARC_CC_AL instead, reflecting the intent
+to differentiate conditional from unconditional jumps.
 
-Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Acked-by: Shahab Vahedi <list+bpf@vahedi.org>
+Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arc/net/bpf_jit_arcv2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 3025e9c18970..f06cdec14ed7 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -290,6 +290,9 @@ static void icss_iep_enable_shadow_mode(struct icss_iep *iep)
- 	for (cmp = IEP_MIN_CMP; cmp < IEP_MAX_CMP; cmp++) {
- 		regmap_update_bits(iep->map, ICSS_IEP_CMP_STAT_REG,
- 				   IEP_CMP_STATUS(cmp), IEP_CMP_STATUS(cmp));
-+
-+		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
-+				   IEP_CMP_CFG_CMP_EN(cmp), 0);
- 	}
+diff --git a/arch/arc/net/bpf_jit_arcv2.c b/arch/arc/net/bpf_jit_arcv2.c
+index 4458e409ca0a..6d989b6d88c6 100644
+--- a/arch/arc/net/bpf_jit_arcv2.c
++++ b/arch/arc/net/bpf_jit_arcv2.c
+@@ -2916,7 +2916,7 @@ bool check_jmp_32(u32 curr_off, u32 targ_off, u8 cond)
+ 	addendum = (cond == ARC_CC_AL) ? 0 : INSN_len_normal;
+ 	disp = get_displacement(curr_off + addendum, targ_off);
  
- 	/* enable reset counter on CMP0 event */
-@@ -808,6 +811,11 @@ int icss_iep_exit(struct icss_iep *iep)
- 	}
- 	icss_iep_disable(iep);
- 
-+	if (iep->pps_enabled)
-+		icss_iep_pps_enable(iep, false);
-+	else if (iep->perout_enabled)
-+		icss_iep_perout_enable(iep, NULL, false);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(icss_iep_exit);
+-	if (ARC_CC_AL)
++	if (cond == ARC_CC_AL)
+ 		return is_valid_far_disp(disp);
+ 	else
+ 		return is_valid_near_disp(disp);
 -- 
 2.39.5
 
