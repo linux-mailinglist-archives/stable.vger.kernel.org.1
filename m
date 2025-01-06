@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA32BA02D18
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22707A02CB1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C24EF7A29D5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE581887896
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92573145A03;
-	Mon,  6 Jan 2025 16:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6471553BB;
+	Mon,  6 Jan 2025 15:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiG3/SU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11HB+ZUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C221DDC0F;
-	Mon,  6 Jan 2025 16:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF9B86332;
+	Mon,  6 Jan 2025 15:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179246; cv=none; b=kMz01wXjv9nNkWZdtC/fYpUN4c9gN1NWnVXgYj2UmO0njp+1D8g22IfzCVneJNCvqirFkeizVU/hX9XzawXEQEvuVJkkIpKo8aUNi3htk50XpjH7jvBmAVwDKNrOTQpTQsJY5PZjPaXY7QRqX5d8zVT8+6FeJQy51U+VwstC6w8=
+	t=1736179004; cv=none; b=b5pO5NwQc9OE2Ex9kvaun3lQfO+kBuYNxBMUNGXGbXgpCjtJpwT7YDvYEBnr9brw5RpIGFrS5bi2zfLEdr3p0GQLYlbM2JWi4xWQ3hattK17xefFrY9NRdqfUofRDDlftyMZvi3b7By7skQZ9/tLEAA5YRk37LaBYhBkSv2iyWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179246; c=relaxed/simple;
-	bh=EIf4j58T22LTkPhkQPs8G5iArnaH6khw+IInm54aWP4=;
+	s=arc-20240116; t=1736179004; c=relaxed/simple;
+	bh=8bV2s/pQXWX29+2wnr+WmEydEynYUG7rCeilW/jOUJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fS5orKR74T6ewHXLaKZv/VN4+TxNJyluDGoF1fm7hrmvPb03KzvjN6ZJjHiIFui3ZJ2tA6u/cOMdhemzapVzcCPaudWMi4QcxpVGf8sx2mBTLQyhuZSAmRwfXZsN0o03YbX5Xws6FEHi8D7EWPac9syTkRF+dRo/2lXD48XLYyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiG3/SU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75202C4CED6;
-	Mon,  6 Jan 2025 16:00:45 +0000 (UTC)
+	 MIME-Version; b=FWWUl3UHQ5uT5UE/We5o5r8RXvk9+qDMpfakSrHZ7w6CSZTDE+NSRaDN84uHEedqyLlvCgYuPxJjHuFwjhk5ObQ46YbyCOCRwMMxl8zXZXLmXHSJNQTczgEsnG908kV4p8EXXjzTZUJqkaJwBIK6jgyKMJxFYdYW5MEyva9+5ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11HB+ZUS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9469DC4CED2;
+	Mon,  6 Jan 2025 15:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179245;
-	bh=EIf4j58T22LTkPhkQPs8G5iArnaH6khw+IInm54aWP4=;
+	s=korg; t=1736179004;
+	bh=8bV2s/pQXWX29+2wnr+WmEydEynYUG7rCeilW/jOUJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hiG3/SU2W4lzfrnxXQh8dbbknBUD8s7NrtUiHgIp2ofQOvdAuN8RHpUVqC2V9yOyO
-	 AJqVObYBsx2P9z9gJ/mD0wDR0OvXX7rkxCQgaaIJHHqjrkL38emEVaGv9zed1bONpn
-	 poLA24CRhQDVNMYXFpDivQDrEGQtVGPjAmoJ8Ojc=
+	b=11HB+ZUSYxn4QnAFoiT9CeM1OgngVNpfk9o5Rgx0t5C3Su70fOSrfhT4ZtC1oomgc
+	 gdecM8f2XY56zZMqcHAMB6OKh+j0TDluc+sp3i4IPJco2549h/MoexIeY2TDSDiPsh
+	 LhiaH9gwoJZbVjl64u9v+juB1s6/hE9hADYfJG8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 74/93] netfilter: nft_set_hash: unaligned atomic read on struct nft_set_ext
-Date: Mon,  6 Jan 2025 16:17:50 +0100
-Message-ID: <20250106151131.498482861@linuxfoundation.org>
+	Evgenii Shatokhin <e.shatokhin@yadro.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.15 163/168] pinctrl: mcp23s08: Fix sleeping in atomic context due to regmap locking
+Date: Mon,  6 Jan 2025 16:17:51 +0100
+Message-ID: <20250106151144.584834430@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Evgenii Shatokhin <e.shatokhin@yadro.com>
 
-[ Upstream commit 542ed8145e6f9392e3d0a86a0e9027d2ffd183e4 ]
+commit a37eecb705f33726f1fb7cd2a67e514a15dfe693 upstream.
 
-Access to genmask field in struct nft_set_ext results in unaligned
-atomic read:
+If a device uses MCP23xxx IO expander to receive IRQs, the following
+bug can happen:
 
-[   72.130109] Unable to handle kernel paging request at virtual address ffff0000c2bb708c
-[   72.131036] Mem abort info:
-[   72.131213]   ESR = 0x0000000096000021
-[   72.131446]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   72.132209]   SET = 0, FnV = 0
-[   72.133216]   EA = 0, S1PTW = 0
-[   72.134080]   FSC = 0x21: alignment fault
-[   72.135593] Data abort info:
-[   72.137194]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
-[   72.142351]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   72.145989]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   72.150115] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000237d27000
-[   72.154893] [ffff0000c2bb708c] pgd=0000000000000000, p4d=180000023ffff403, pud=180000023f84b403, pmd=180000023f835403,
-+pte=0068000102bb7707
-[   72.163021] Internal error: Oops: 0000000096000021 [#1] SMP
-[...]
-[   72.170041] CPU: 7 UID: 0 PID: 54 Comm: kworker/7:0 Tainted: G            E      6.13.0-rc3+ #2
-[   72.170509] Tainted: [E]=UNSIGNED_MODULE
-[   72.170720] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202302-for-qemu 03/01/2023
-[   72.171192] Workqueue: events_power_efficient nft_rhash_gc [nf_tables]
-[   72.171552] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   72.171915] pc : nft_rhash_gc+0x200/0x2d8 [nf_tables]
-[   72.172166] lr : nft_rhash_gc+0x128/0x2d8 [nf_tables]
-[   72.172546] sp : ffff800081f2bce0
-[   72.172724] x29: ffff800081f2bd40 x28: ffff0000c2bb708c x27: 0000000000000038
-[   72.173078] x26: ffff0000c6780ef0 x25: ffff0000c643df00 x24: ffff0000c6778f78
-[   72.173431] x23: 000000000000001a x22: ffff0000c4b1f000 x21: ffff0000c6780f78
-[   72.173782] x20: ffff0000c2bb70dc x19: ffff0000c2bb7080 x18: 0000000000000000
-[   72.174135] x17: ffff0000c0a4e1c0 x16: 0000000000003000 x15: 0000ac26d173b978
-[   72.174485] x14: ffffffffffffffff x13: 0000000000000030 x12: ffff0000c6780ef0
-[   72.174841] x11: 0000000000000000 x10: ffff800081f2bcf8 x9 : ffff0000c3000000
-[   72.175193] x8 : 00000000000004be x7 : 0000000000000000 x6 : 0000000000000000
-[   72.175544] x5 : 0000000000000040 x4 : ffff0000c3000010 x3 : 0000000000000000
-[   72.175871] x2 : 0000000000003a98 x1 : ffff0000c2bb708c x0 : 0000000000000004
-[   72.176207] Call trace:
-[   72.176316]  nft_rhash_gc+0x200/0x2d8 [nf_tables] (P)
-[   72.176653]  process_one_work+0x178/0x3d0
-[   72.176831]  worker_thread+0x200/0x3f0
-[   72.176995]  kthread+0xe8/0xf8
-[   72.177130]  ret_from_fork+0x10/0x20
-[   72.177289] Code: 54fff984 d503201f d2800080 91003261 (f820303f)
-[   72.177557] ---[ end trace 0000000000000000 ]---
+  BUG: sleeping function called from invalid context
+    at kernel/locking/mutex.c:283
+  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, ...
+  preempt_count: 1, expected: 0
+  ...
+  Call Trace:
+  ...
+  __might_resched+0x104/0x10e
+  __might_sleep+0x3e/0x62
+  mutex_lock+0x20/0x4c
+  regmap_lock_mutex+0x10/0x18
+  regmap_update_bits_base+0x2c/0x66
+  mcp23s08_irq_set_type+0x1ae/0x1d6
+  __irq_set_trigger+0x56/0x172
+  __setup_irq+0x1e6/0x646
+  request_threaded_irq+0xb6/0x160
+  ...
 
-Align struct nft_set_ext to word size to address this and
-documentation it.
+We observed the problem while experimenting with a touchscreen driver which
+used MCP23017 IO expander (I2C).
 
-pahole reports that this increases the size of elements for rhash and
-pipapo in 8 bytes on x86_64.
+The regmap in the pinctrl-mcp23s08 driver uses a mutex for protection from
+concurrent accesses, which is the default for regmaps without .fast_io,
+.disable_locking, etc.
 
-Fixes: 7ffc7481153b ("netfilter: nft_set_hash: skip duplicated elements pending gc run")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+mcp23s08_irq_set_type() calls regmap_update_bits_base(), and the latter
+locks the mutex.
+
+However, __setup_irq() locks desc->lock spinlock before calling these
+functions. As a result, the system tries to lock the mutex whole holding
+the spinlock.
+
+It seems, the internal regmap locks are not needed in this driver at all.
+mcp->lock seems to protect the regmap from concurrent accesses already,
+except, probably, in mcp_pinconf_get/set.
+
+mcp23s08_irq_set_type() and mcp23s08_irq_mask/unmask() are called under
+chip_bus_lock(), which calls mcp23s08_irq_bus_lock(). The latter takes
+mcp->lock and enables regmap caching, so that the potentially slow I2C
+accesses are deferred until chip_bus_unlock().
+
+The accesses to the regmap from mcp23s08_probe_one() do not need additional
+locking.
+
+In all remaining places where the regmap is accessed, except
+mcp_pinconf_get/set(), the driver already takes mcp->lock.
+
+This patch adds locking in mcp_pinconf_get/set() and disables internal
+locking in the regmap config. Among other things, it fixes the sleeping
+in atomic context described above.
+
+Fixes: 8f38910ba4f6 ("pinctrl: mcp23s08: switch to regmap caching")
+Cc: stable@vger.kernel.org
+Signed-off-by: Evgenii Shatokhin <e.shatokhin@yadro.com>
+Link: https://lore.kernel.org/20241209074659.1442898-1-e.shatokhin@yadro.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index c50dee30a70c..92551a765a44 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -571,15 +571,18 @@ struct nft_set_ext_tmpl {
- /**
-  *	struct nft_set_ext - set extensions
-  *
-- *	@genmask: generation mask
-+ *	@genmask: generation mask, but also flags (see NFT_SET_ELEM_DEAD_BIT)
-  *	@offset: offsets of individual extension types
-  *	@data: beginning of extension data
-+ *
-+ *	This structure must be aligned to word size, otherwise atomic bitops
-+ *	on genmask field can cause alignment failure on some archs.
-  */
- struct nft_set_ext {
- 	u8	genmask;
- 	u8	offset[NFT_SET_EXT_NUM];
- 	char	data[];
--};
-+} __aligned(BITS_PER_LONG / 8);
+--- a/drivers/pinctrl/pinctrl-mcp23s08.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08.c
+@@ -85,6 +85,7 @@ const struct regmap_config mcp23x08_regm
+ 	.num_reg_defaults = ARRAY_SIZE(mcp23x08_defaults),
+ 	.cache_type = REGCACHE_FLAT,
+ 	.max_register = MCP_OLAT,
++	.disable_locking = true, /* mcp->lock protects the regmap */
+ };
+ EXPORT_SYMBOL_GPL(mcp23x08_regmap);
  
- static inline void nft_set_ext_prepare(struct nft_set_ext_tmpl *tmpl)
- {
--- 
-2.39.5
-
+@@ -131,6 +132,7 @@ const struct regmap_config mcp23x17_regm
+ 	.num_reg_defaults = ARRAY_SIZE(mcp23x17_defaults),
+ 	.cache_type = REGCACHE_FLAT,
+ 	.val_format_endian = REGMAP_ENDIAN_LITTLE,
++	.disable_locking = true, /* mcp->lock protects the regmap */
+ };
+ EXPORT_SYMBOL_GPL(mcp23x17_regmap);
+ 
+@@ -228,7 +230,9 @@ static int mcp_pinconf_get(struct pinctr
+ 
+ 	switch (param) {
+ 	case PIN_CONFIG_BIAS_PULL_UP:
++		mutex_lock(&mcp->lock);
+ 		ret = mcp_read(mcp, MCP_GPPU, &data);
++		mutex_unlock(&mcp->lock);
+ 		if (ret < 0)
+ 			return ret;
+ 		status = (data & BIT(pin)) ? 1 : 0;
+@@ -257,7 +261,9 @@ static int mcp_pinconf_set(struct pinctr
+ 
+ 		switch (param) {
+ 		case PIN_CONFIG_BIAS_PULL_UP:
++			mutex_lock(&mcp->lock);
+ 			ret = mcp_set_bit(mcp, MCP_GPPU, pin, arg);
++			mutex_unlock(&mcp->lock);
+ 			break;
+ 		default:
+ 			dev_dbg(mcp->dev, "Invalid config param %04x\n", param);
 
 
 
