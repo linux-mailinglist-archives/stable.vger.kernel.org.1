@@ -1,101 +1,146 @@
-Return-Path: <stable+bounces-106780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816CDA01F22
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 07:12:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44CDA01F6D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 07:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66400162F19
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 06:12:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527FF18840F1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 06:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216531D5140;
-	Mon,  6 Jan 2025 06:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3690E1D5140;
+	Mon,  6 Jan 2025 06:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EfjpnBz/"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783F818E373;
-	Mon,  6 Jan 2025 06:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3825617C;
+	Mon,  6 Jan 2025 06:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736143959; cv=none; b=uhqL1NRIE2GQjAF8jKInU2asxurEhPBubmzGLuGNaSJ5Gm+y3b4a6rgoCxMHJZyuU+1ipOffzIyheSjY5ZumgjyLjCdvDmhE7jyHCsTPkR60uDRiWwSfpeM5ICgLPy/hOKz+hJG4gFCCPm5YIAy3tb+Xhm+EBeJPNtz1lISDvBg=
+	t=1736146625; cv=none; b=GINHEaBW4xr4WTvtnFjtHYOmrPwwNzTschVe6V61n13qCP1HyS6dPy1GMbu+TP6PrLw4m3MEZROjsnmxl30PtWjKxOmHJVtr9G1l0J5Oj4Vq1w5O+UQtTQGA8A/0T46R/yIJH6TzJYhmYavGdRsi2W5VX32zT/ymh7You3IZ+fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736143959; c=relaxed/simple;
-	bh=e6Ak4qiCnKRc2WX5YQdF9LD/btZ+poT99yq8H/yeEcI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Nu1oypBVgy0MmhE4mJJFZCA8Cmnj4dMetdkrww4IEDrFYgts3VZYz8367b4YHSzi94a5HurXWlj6//FsurZ2h9P1a/zDfRenMQUkNvFGEgArkhIS/IUSlN6dgq+fKOwvQDEDr4EUSiYnD4LJV0PiFGIIZCscXvRKTbQ8VuJ2EHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4YRP123LY5zRkxQ;
-	Mon,  6 Jan 2025 14:10:14 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5CFC31401F1;
-	Mon,  6 Jan 2025 14:12:27 +0800 (CST)
-Received: from [10.67.111.104] (10.67.111.104) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 6 Jan 2025 14:12:26 +0800
-Message-ID: <026f56f6-f299-4cd8-b430-042755cb0141@huawei.com>
-Date: Mon, 6 Jan 2025 14:12:25 +0800
+	s=arc-20240116; t=1736146625; c=relaxed/simple;
+	bh=sox/Vho4kqO2T9syxTthA2DS1C0JtMnYHzVSeLffzNI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EIfl1L1VZo/GpQS8wRv3UwNYZouYE8oZa2WF5dd05E809CtUc1m18MWp6teEvk/HxEfXBub8zLyak9A1V9DsUZ3hZBHS5M9kFtZw0pX0YmI/Ar/+ezXKFXQ+XOkzrNYsh4AhvAGa0PvxM+ZiAAj44Cfcej/oSMEv910wTApG+m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EfjpnBz/; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-216426b0865so195353805ad.0;
+        Sun, 05 Jan 2025 22:57:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736146622; x=1736751422; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=spawWA94/tAfE9Yli/yskQTG9oZ6NS1/5TPyygSuwlw=;
+        b=EfjpnBz/Gby/y2lWJN0Ydj/UrmZmvL6HNbcFvy3Js0StanPdvYb3FDniZWCyqVQYCj
+         4UE7Yyeu2op6wdVHej33B9akVJEDe4Fnt8h0KSsoiMOxfUxpev5iglQ0zw5Qpucr/lSJ
+         ZxLiZmZEfbMg1/xFNIw9ZDYDVc4KbP4llbbe2iuNTwUZ+MV5X4XqtxrTo2HUaRNUnxF6
+         QO1lO1nTkOJ05SWV/k3WjrlV+74Bn6AAnfwyaTs/2SPOjiQCvL7mzwxrVblWUvB1HhsG
+         RMkWxaCMFYaSE9ePhzpAD6iwxznhWF/YpOQfv4tpqRo9qIhmHNbTyvkW+HtYa4dwhK6T
+         hx6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736146622; x=1736751422;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=spawWA94/tAfE9Yli/yskQTG9oZ6NS1/5TPyygSuwlw=;
+        b=eQpnlOEJIs1P5f1HCZhxlPxthnwjYxx2vOAz+LmNlfYeqn3fbST7QPmctdXtmd0LZX
+         VbTeRvfKaPllvB5deFKcAsnbgIvoPK6urFNOksoxQGGnNVynvTT3ygYOFnOOY+XH4dZQ
+         JvCQu8q1vprTNoQrdFLKzon0ZWnZ2ZeyHHtU1Ji6/wU75d5pumDvD2rC5D1guXcFTyVj
+         Fy0G4tEBg1oqW6y4SRpVeECFrQKzS/Qz/U2hT+q2A4cYO/lqYvj+9e/Mq/DHVlCA/ny0
+         rvd+nZufdNAnXf4+iwO2duE8/vcZkbnlsb5VPPKoOmjFkH8UZistGdL1Mdn7K2NZET0L
+         sCYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/DNEyhARccupAoanB0Z/Kl8/O1aBxXK3bYf1E4ENa+7lozlcxEWc+AVyW6XyOPYM/YaJ4uV2niZpQcQ==@vger.kernel.org, AJvYcCWPxkgaZsDyp6pGM9s2qJZT1jpaf7jLGLtHmDODxr+GssBNG+92ZvtNhbJkAQIbcGw15KwbxGubddISpBBB@vger.kernel.org, AJvYcCXAeOUShY+nAY0MRAQspcwqxTt2IFX8lqEWfNIOLTPkoDGFFtCDWvmczSifqjjeKQY4taVZZwho@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeXT2nUIN+l+MdrJ3tJZ7NUWQlvyc8ixxzdnCHPwYPVdoZonHj
+	ZRW6/qOCU/DoFZQ5hF3D9cQqPiQ9r0s0483hnlqugbb3oWkAEh96
+X-Gm-Gg: ASbGncv9VjRoYRqI6li6CvdF6AhBriov1QMFpCZHy4oP4ruCJ2c7QxBOJBNK67aRVsZ
+	fs03sPeIB8X5MQp3uoJ+rsV0tTUxE8LmrUj3kngL0fcYtckvsV8/VVUtNkH5m7Dj6J4lqBVTOOC
+	DmSw8G9I208Hm6lOC1fshTNuPEhwS+zOHibDTIceICZzbHyMApE8TOetNg6VkfGJEygrKC7N0CT
+	HZY1NL3VBVBNCN1i76bYZ0tzDcfyqfBLz86hSiRV07vJf4Vms8+pXW+zA==
+X-Google-Smtp-Source: AGHT+IG0ibFg2cymQLsLBrPT0DUZl69wu+gu+2ZwUu4ugAgLGotwLBZp0DMcXCXam2H97qk3KElZmg==
+X-Received: by 2002:a17:902:cf09:b0:216:3889:6f6f with SMTP id d9443c01a7336-219e6e9fa8amr787537235ad.17.1736146622320;
+        Sun, 05 Jan 2025 22:57:02 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:6998:e192:65f1:e7c0])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc96eb40sm285842475ad.86.2025.01.05.22.57.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jan 2025 22:57:01 -0800 (PST)
+Date: Sun, 5 Jan 2025 22:56:59 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: jeff@labundy.com, bentiss@kernel.org, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Input: Fix error handling in input_register_device()
+Message-ID: <Z3t-uz2UaskMd_Wy@google.com>
+References: <20250105092448.274424-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlb: fix NULL pointer dereference in
- trace_hugetlbfs_alloc_inode
-To: Muchun Song <songmuchun@bytedance.com>, <muchun.song@linux.dev>,
-	<brauner@kernel.org>, <akpm@linux-foundation.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Cheung Wall <zzqq0103.hey@gmail.com>
-References: <20250106033118.4640-1-songmuchun@bytedance.com>
-Content-Language: en-US
-From: Hongbo Li <lihongbo22@huawei.com>
-In-Reply-To: <20250106033118.4640-1-songmuchun@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250105092448.274424-1-make24@iscas.ac.cn>
 
+Hi,
 
+On Sun, Jan 05, 2025 at 05:24:48PM +0800, Ma Ke wrote:
+> When device_add(&dev->dev) failed, calling put_device() to explicitly
+> release dev->dev. Otherwise, it could cause double free problem.
 
-On 2025/1/6 11:31, Muchun Song wrote:
-> hugetlb_file_setup() will pass a NULL @dir to hugetlbfs_get_inode(), so
-> we will access a NULL pointer for @dir. Fix it and set __entry->dr to
-> 0 if @dir is NULL. Because ->i_ino cannot be 0 (see get_next_ino()),
-> there is no confusing if user sees a 0 inode number.
+How exactly allegedly missing put would cause double free?
+
 > 
+> As comment of device_add() says, if device_add() succeeds, you should
+> call device_del() when you want to get rid of it. If device_add() has
+> not succeeded, use only put_device() to drop the reference count.
 
-Thanks for fixing!
+As explained in the kerneldoc for input_register_device(), in case of
+the failure caller must call input_free_device() which will do the
+required "put" as well as will handle devm-allocated input devices
+properly.
 
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
+Adding call to put_device() as proposed by this patch will indeed
+introduce double-free.
 
-> Fixes: 318580ad7f28 ("hugetlbfs: support tracepoint")
+> 
+> Found by code review.
+> 
 > Cc: stable@vger.kernel.org
-> Reported-by: Cheung Wall <zzqq0103.hey@gmail.com>
-> Closes: https://lore.kernel.org/linux-mm/02858D60-43C1-4863-A84F-3C76A8AF1F15@linux.dev/T/#
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Fixes: 0cd587735205 ("Input: preallocate memory to hold event values")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 > ---
->   include/trace/events/hugetlbfs.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/input/input.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/trace/events/hugetlbfs.h b/include/trace/events/hugetlbfs.h
-> index 8331c904a9ba8..59605dfaeeb43 100644
-> --- a/include/trace/events/hugetlbfs.h
-> +++ b/include/trace/events/hugetlbfs.h
-> @@ -23,7 +23,7 @@ TRACE_EVENT(hugetlbfs_alloc_inode,
->   	TP_fast_assign(
->   		__entry->dev		= inode->i_sb->s_dev;
->   		__entry->ino		= inode->i_ino;
-> -		__entry->dir		= dir->i_ino;
-> +		__entry->dir		= dir ? dir->i_ino : 0;
->   		__entry->mode		= mode;
->   	),
->   
+> diff --git a/drivers/input/input.c b/drivers/input/input.c
+> index 7f0477e04ad2..a0a36aa90ecc 100644
+> --- a/drivers/input/input.c
+> +++ b/drivers/input/input.c
+> @@ -2456,8 +2456,10 @@ int input_register_device(struct input_dev *dev)
+>  		input_dev_poller_finalize(dev->poller);
+>  
+>  	error = device_add(&dev->dev);
+> -	if (error)
+> +	if (error) {
+> +		put_device(&dev->dev);
+>  		goto err_devres_free;
+> +	}
+>  
+>  	path = kobject_get_path(&dev->dev.kobj, GFP_KERNEL);
+>  	pr_info("%s as %s\n",
+> -- 
+> 2.25.1
+> 
+
+Thanks.
+
+-- 
+Dmitry
 
