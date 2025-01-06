@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40442A02AFB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B85A02C59
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E9DB3A639B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87459166FB2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E6B1791F4;
-	Mon,  6 Jan 2025 15:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AA713BC39;
+	Mon,  6 Jan 2025 15:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBE1STig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYRG8ekl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B173C15C120;
-	Mon,  6 Jan 2025 15:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BFE8634A;
+	Mon,  6 Jan 2025 15:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177876; cv=none; b=oAdLlksfiZ2Z6TLi0mbrhMbkmlg17sHYOMOpIKiPiA4h0toqF4EYO9UggWs6xu+EWb568sdoQjq/8xnMHS00vNxRxk1zoWGBaQS5/SNWqqbWJL6Lsq5ommUqrFoc8Hc1C0xpDKeITyTYU/BGf4ucjGqJ1Qy2cYA7nrH9fFxj5io=
+	t=1736178735; cv=none; b=Y6bM12axVawbSegdSeIXqEZfDJ5jrQW5IlcC+tXT3GuR0tQBFrgOoHuffaarjVIv0h8rRThYzm39YVUWgBh/7SdkWdfsVmq/HledQ+wu0Ml7nsI4Bs3LEMj2OvXLP4fxdwGOx3WtjY1FSL99Uikys1RGckOJ9Ue2Ld3oRZWXtj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177876; c=relaxed/simple;
-	bh=ZRGya5HBifPt1E4veVLcb+SwKYOYajOlxbFf4ujFgRA=;
+	s=arc-20240116; t=1736178735; c=relaxed/simple;
+	bh=OqSnRGruXUP7EKdk3Cm+ph9A9nBt0YWW2O41CCogQPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezZojPIC0/RpaXb/xph0rzJDfdXxTw5Gvuc1W1h7Jr1ggtTC768Y4VJxblSDAhGfDw2O8SJ2AlxEzhoVQsskfEQKzkx8wuJ49WT+y6VV4X+ekdO9kW1MCsPwaQE55Xb6/fErVFjuNOs9D59nKntIXliwvmE3vHwXSaVNbfe7GEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBE1STig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C41C4CED2;
-	Mon,  6 Jan 2025 15:37:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XTzSyLmk/RfgBI4VF+3UV8dtOdYfdZs+FMxUbKRW97gLEvUBEV/cb0UsXm+nrqd/B5ei8qeqJHQsp5JBO+HkZ8RmRPDSsv6q38jc4pK92a35juq/I19euBskXs83mCtAlmyFfvIdW+Ef+7n33UtR50RCBUs5sJ1QqbVvvdPeZ1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYRG8ekl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D130C4CED2;
+	Mon,  6 Jan 2025 15:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177876;
-	bh=ZRGya5HBifPt1E4veVLcb+SwKYOYajOlxbFf4ujFgRA=;
+	s=korg; t=1736178734;
+	bh=OqSnRGruXUP7EKdk3Cm+ph9A9nBt0YWW2O41CCogQPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YBE1STigOP9a4xGLQ07M2HaWXs6jjNKH+liAagO/rw3tHLhOyejnDwPRGn61DreNy
-	 uhXyWuPZ9qtAZBVJPekNS4Gi7YDXixY0BHS702TDwTZe9ogwOmPZ1MoeZguP9voVWP
-	 fhgWaDceyD+lA9KhsVtTLOo0YyH1TkeA1lRlU80w=
+	b=bYRG8eklJOI4dZmatAUlLjGT3Pm0aWvXhKSHslmgYn8T5B+DCdLoJEjscuo9HXhrM
+	 eiXzloU+Vjw+hlJZX5RNj1xPMCFR4MK6mjlMvqSQ+CbroLeQleEKThgvGtuniQ0+MI
+	 ecu5JW3tK7t+acDiCGEXvYLDyeHa8WK9/DQgtzts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/156] drm/i915/dg1: Fix power gate sequence.
+	syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 5.15 033/168] drm/modes: Avoid divide by zero harder in drm_mode_vrefresh()
 Date: Mon,  6 Jan 2025 16:15:41 +0100
-Message-ID: <20250106151143.807239302@linuxfoundation.org>
+Message-ID: <20250106151139.714179001@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 20e7c5313ffbf11c34a46395345677adbe890bee ]
+commit 9398332f23fab10c5ec57c168b44e72997d6318e upstream.
 
-sub-pipe PG is not present on DG1. Setting these bits can disable
-other power gates and cause GPU hangs on video playbacks.
+drm_mode_vrefresh() is trying to avoid divide by zero
+by checking whether htotal or vtotal are zero. But we may
+still end up with a div-by-zero of vtotal*htotal*...
 
-VLK: 16314, 4304
-
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13381
-Fixes: 85a12d7eb8fe ("drm/i915/tgl: Fix Media power gate sequence.")
-Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241219210019.70532-1-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit de7061947b4ed4be857d452c60d5fb795831d79e)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+622bba18029bcde672e1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=622bba18029bcde672e1
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241129042629.18280-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_rc6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_modes.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_rc6.c b/drivers/gpu/drm/i915/gt/intel_rc6.c
-index c864d101faf9..9378d5901c49 100644
---- a/drivers/gpu/drm/i915/gt/intel_rc6.c
-+++ b/drivers/gpu/drm/i915/gt/intel_rc6.c
-@@ -133,7 +133,7 @@ static void gen11_rc6_enable(struct intel_rc6 *rc6)
- 			GEN9_MEDIA_PG_ENABLE |
- 			GEN11_MEDIA_SAMPLER_PG_ENABLE;
+--- a/drivers/gpu/drm/drm_modes.c
++++ b/drivers/gpu/drm/drm_modes.c
+@@ -757,14 +757,11 @@ EXPORT_SYMBOL(drm_mode_set_name);
+  */
+ int drm_mode_vrefresh(const struct drm_display_mode *mode)
+ {
+-	unsigned int num, den;
++	unsigned int num = 1, den = 1;
  
--	if (GRAPHICS_VER(gt->i915) >= 12) {
-+	if (GRAPHICS_VER(gt->i915) >= 12 && !IS_DG1(gt->i915)) {
- 		for (i = 0; i < I915_MAX_VCS; i++)
- 			if (HAS_ENGINE(gt, _VCS(i)))
- 				pg_enable |= (VDN_HCP_POWERGATE_ENABLE(i) |
--- 
-2.39.5
-
+ 	if (mode->htotal == 0 || mode->vtotal == 0)
+ 		return 0;
+ 
+-	num = mode->clock;
+-	den = mode->htotal * mode->vtotal;
+-
+ 	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+ 		num *= 2;
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+@@ -772,6 +769,12 @@ int drm_mode_vrefresh(const struct drm_d
+ 	if (mode->vscan > 1)
+ 		den *= mode->vscan;
+ 
++	if (check_mul_overflow(mode->clock, num, &num))
++		return 0;
++
++	if (check_mul_overflow(mode->htotal * mode->vtotal, den, &den))
++		return 0;
++
+ 	return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(num, 1000), den);
+ }
+ EXPORT_SYMBOL(drm_mode_vrefresh);
 
 
 
