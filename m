@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774ACA02A08
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A17A02C33
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 630D57A26D4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F49E161C56
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2F1136E09;
-	Mon,  6 Jan 2025 15:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871031DE4CE;
+	Mon,  6 Jan 2025 15:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0D/xF1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0fLycAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AC578F49;
-	Mon,  6 Jan 2025 15:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D6816A930;
+	Mon,  6 Jan 2025 15:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177359; cv=none; b=ROsVgbhKl3KB9k2bC/XzW2vmLTvUm6uSWKU4mCvdC3HRAg17wWtYzPfszQ6J/jpIffD+Nka+7Vvv2ocSasOL3tHfycWpg3OFEUn8Y5DxXDRHxWs8dh5syo5KlcuqWEXshpNkixvvCL1xkWfmgMzPzUOfWtY2lZOD88TcCxm5kXU=
+	t=1736178631; cv=none; b=lzBKkPUdDQX0coHnOId13JG0dRO7Bb7Lpkh/s49RKAGR0QK44BUmwGdE1b0JaYvokpyTAmI2mE4nP0tjhzddoDrh7RBHHxYwsFiv3CAQZyhVnX6FeEx5irB4MF9EhieIZtNj3gKovNiJX8ZAHwGFP5I076VUCTw33mxNetDRgV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177359; c=relaxed/simple;
-	bh=2OmV95Ks4TdgExp5InDPnl4AbOdUFHXBe6yaiO0dpIA=;
+	s=arc-20240116; t=1736178631; c=relaxed/simple;
+	bh=d2n4IAHoQQWPZPNxrKsge0KSGpTaLKd4CZbFpL+SAkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYfUx+13UCMsYf5xATQhTJaA7Usnp9uT/nE7RurDMtFlcM6wpBtezAkQkDjntOIk/7bCVh/q08bciOKivjwA2qtqDUzIFTs0f4/tGVnxW8KK7g48WEguUTEeo7Lb+PKziUgCnPJRmU3XSnGYN6jQ+LA9eEoS7BWY59DT/uJKYtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0D/xF1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ABBC4CED2;
-	Mon,  6 Jan 2025 15:29:18 +0000 (UTC)
+	 MIME-Version; b=NrJ/qnt82gcNN3/7QMS6V5eB6KuBPVFgWmMsGYRWx8GkXnFzGOMIg98ggoqgK8yTpuEfBlYc4ZX+Ab0dkbSDcOErGGkhnxX0kwk5phH7I2L5zQrKpQ4eIxPm4w04ip77EqnAz5hQaMNnDSlyoYhfgmfRaj3uJCFgIbfnb/39hCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0fLycAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B676AC4CED2;
+	Mon,  6 Jan 2025 15:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177358;
-	bh=2OmV95Ks4TdgExp5InDPnl4AbOdUFHXBe6yaiO0dpIA=;
+	s=korg; t=1736178631;
+	bh=d2n4IAHoQQWPZPNxrKsge0KSGpTaLKd4CZbFpL+SAkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0D/xF1rdQoY3Eh9iXtbuITkBC3eCNU/S47RqLd5eIZJVmyPLS9eARmUe9AVcOHa3
-	 2Kdar+Z3wgtusBHqb+/Eu/hyrIF7DhTvobsu+oZOnt+u8jLxwRYmwyEIldwHxC2agk
-	 I4S64V9rzLr9AuNBBcIxPGLjUktXWcG9evbMtMBo=
+	b=l0fLycAOWyiCXQHeJ31jasyIhia1PDVJX1uLzbmmiEbzNhmXHIyYWqWzjVu+qXXa3
+	 4Yy6tUvzhCkvp/qi9JOt+cdQ4PsbNpnEOt0/gBlwKRlUU7bpGa3Qxe9azMpkT/SrNN
+	 hUt8ua169GcyCHkuPcUGj2/D2Vopm0cjVX7WI9l8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/222] RDMA/bnxt_re: Disable use of reserved wqes
+Subject: [PATCH 5.15 034/168] hwmon: (tmp513) Dont use "proxy" headers
 Date: Mon,  6 Jan 2025 16:15:42 +0100
-Message-ID: <20250106151155.991840745@linuxfoundation.org>
+Message-ID: <20250106151139.751420846@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d5a38bf2f35979537c526acbc56bc435ed40685f ]
+[ Upstream commit 5d9ad4e0fa7cc27199fdb94beb6ec5f655ba9489 ]
 
-Disabling the reserved wqes logic for Gen P5/P7 devices
-because this workaround is required only for legacy devices.
+The driver uses math.h and not util_macros.h.
 
-Fixes: ecb53febfcad ("RDMA/bnxt_en: Enable RDMA driver support for 57500 chip")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241217102649.1377704-3-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+All the same for the kernel.h, replace it with what the driver is using.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231128180654.395692-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 74d7e038fd07 ("hwmon: (tmp513) Fix interpretation of values of Shunt Voltage and Limit Registers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_sp.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/hwmon/tmp513.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index a46df2a5ab33..577a6eaca4ce 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -130,11 +130,13 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
- 		sb->max_qp_init_rd_atom > BNXT_QPLIB_MAX_OUT_RD_ATOM ?
- 		BNXT_QPLIB_MAX_OUT_RD_ATOM : sb->max_qp_init_rd_atom;
- 	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr) - 1;
--	/*
--	 * 128 WQEs needs to be reserved for the HW (8916). Prevent
--	 * reporting the max number
--	 */
--	attr->max_qp_wqes -= BNXT_QPLIB_RESERVED_QP_WRS + 1;
-+	if (!bnxt_qplib_is_chip_gen_p5_p7(rcfw->res->cctx)) {
-+		/*
-+		 * 128 WQEs needs to be reserved for the HW (8916). Prevent
-+		 * reporting the max number on legacy devices
-+		 */
-+		attr->max_qp_wqes -= BNXT_QPLIB_RESERVED_QP_WRS + 1;
-+	}
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index b9a93ee9c236..fe3f1113b64e 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -19,15 +19,19 @@
+  * the Free Software Foundation; version 2 of the License.
+  */
  
- 	attr->max_qp_sges = cctx->modes.wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE ?
- 			    min_t(u32, sb->max_sge_var_wqe, BNXT_VAR_MAX_SGE) : 6;
++#include <linux/bitops.h>
++#include <linux/bug.h>
++#include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/hwmon.h>
+ #include <linux/i2c.h>
+ #include <linux/init.h>
+-#include <linux/kernel.h>
++#include <linux/math.h>
+ #include <linux/module.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+-#include <linux/util_macros.h>
++#include <linux/types.h>
+ 
+ // Common register definition
+ #define TMP51X_SHUNT_CONFIG		0x00
 -- 
 2.39.5
 
