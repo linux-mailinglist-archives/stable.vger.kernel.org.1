@@ -1,72 +1,111 @@
-Return-Path: <stable+bounces-106782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BE9A01FC1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 08:18:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB186A02004
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 08:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD05B1884279
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 07:18:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA27A163644
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 07:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0F91D5AC0;
-	Mon,  6 Jan 2025 07:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCnrcnEx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EE119C566;
+	Mon,  6 Jan 2025 07:41:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784751D5149;
-	Mon,  6 Jan 2025 07:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C891E511;
+	Mon,  6 Jan 2025 07:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736147884; cv=none; b=I1aePu0Lcb2NXj91DdhI7r0ewHzO181z4XmQtrByBcph98K2uN3671AtwfGzlt1Mw+STYjV998Dk67eAT5ma3cZ9gutgeI0zaG7s0cNloomxbVVFXWBxGRCDUksve0fiHRqKnehpWeW7OIr4XJ0Hje9LSS4sZTkh1+svhNDPOB0=
+	t=1736149275; cv=none; b=PqS6VPVjnAo3BtAUuPq5rB4QBpZzmUn++CICpzo1E8dpKJvoNmunr1g0h8phC2/rRlHrsmAjUfJKsvhKZvPFbrLvCZbYpr/mT0ziP1MVIiGX7ebn/kLMqYnqxbN+p8bqeXeZzAL3ntL8RDE7h7RRSJLdk00D04jx7Z57fHMoLjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736147884; c=relaxed/simple;
-	bh=iCVBAmDJGuQ7L0qb4KshnfccErTrJX4g2OYIbINxqeY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GRFTWECWDZ5OsPTtULnMixpokjZjbl2LY6Jpm5pSftReKVn+M7G70IliZRTX56PRgJU7qYtLiXUvNOwc8vLo3wXzDVW3Tq4xW3dAqpbNFraj1vf4xx4sjA3Z74drbEDZYFPI07FWumBMpKdk76MNj4fV8THM449tCKRfKtRmHaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCnrcnEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9656AC4CED2;
-	Mon,  6 Jan 2025 07:18:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736147884;
-	bh=iCVBAmDJGuQ7L0qb4KshnfccErTrJX4g2OYIbINxqeY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XCnrcnExF+LX/CgvwTY/2oO3QCdf1kR7os6yKPPp81iJTJg5L7AOSULhMNGlceZhu
-	 b3zajNkCxLACuWHJWKssGxwgMPVu9aqvoazp04JeGzS4E/Gb2m2sim/YFYOnKe++yl
-	 1RdSTcwQuKIKPKwmjbbAgqleVyI8NE1FOJcmoSgM=
-Date: Mon, 6 Jan 2025 08:18:01 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: jianqi.ren.cn@windriver.com
-Cc: stable@vger.kernel.org, kxwang23@m.fudan.edu.cn,
-	alexandre.belloni@bootlin.com, patches@lists.linux.dev,
-	pgaj@cadence.com, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] i3c: master: cdns: Fix use after free
- vulnerability in cdns_i3c_master Driver Due to Race Condition
-Message-ID: <2025010606-startling-cushy-d79c@gregkh>
-References: <20250106022939.2197708-1-jianqi.ren.cn@windriver.com>
+	s=arc-20240116; t=1736149275; c=relaxed/simple;
+	bh=Bc0Af2iaSeEWl74r0shKj+7+Gy9ECNaYA6mveKyD7WI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MB4cBkXno725RiMfd/t3LB3hsmf+ZqaUEKXj2NSK9f8n/TOOm4UsJYMLU813sV/mDA6Ryoh2jffUq40HSWp4G33tJK4qGMX9rGwNd0tETLIw7lNPWIIIoiMdTcu4hkAe2DKr7ViN6XTqLpVxnYcPHWHCUFLdRTcJaZoAU2LjgxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowACnrSkHiXtnhbibBQ--.6936S2;
+	Mon, 06 Jan 2025 15:41:01 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: kumaravel.thiagarajan@microchip.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] misc: microchip: pci1xxxx: Fix possible double free in error handling path
+Date: Mon,  6 Jan 2025 15:40:53 +0800
+Message-Id: <20250106074053.312243-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250106022939.2197708-1-jianqi.ren.cn@windriver.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACnrSkHiXtnhbibBQ--.6936S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kr48ZryUGry8tF4xWF15Jwb_yoW8Wry8pa
+	9xX3W7Zry8twsxKr48Za4UtF1fAw40ka45WrZFkw1a93ZxJF9IyFWv9r9F9w1DWrWUt3Wf
+	tF1UKrWUGa1DZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+	1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxh
+	VjvjDU0xZFpf9x0JUvg4fUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Mon, Jan 06, 2025 at 10:29:39AM +0800, jianqi.ren.cn@windriver.com wrote:
-> From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-> 
-> [ Upstream commit 609366e7a06d035990df78f1562291c3bf0d4a12 ]
+When auxiliary_device_add() returns error and then calls
+auxiliary_device_uninit(), the callback function
+gp_auxiliary_device_release() calls kfree() to free memory. Do not
+call kfree() again in the error handling path.
 
-Again, sorry, but no, I will not take any more stable backports from
-your company at this point in time.  Please go tell your managers this
-as somehow the previous emails from me seem to have been ignored.
+Fix this by skipping the redundant kfree().
 
-greg k-h
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+index 32af2b14ff34..fbd712938bdc 100644
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+@@ -111,6 +111,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
+ 
+ err_aux_dev_add_1:
+ 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
++	goto err_aux_dev_add_0;
+ 
+ err_aux_dev_init_1:
+ 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[1]->aux_dev.id);
+@@ -120,6 +121,7 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
+ 
+ err_aux_dev_add_0:
+ 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[0]->aux_dev);
++	goto err_ret;
+ 
+ err_aux_dev_init_0:
+ 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[0]->aux_dev.id);
+-- 
+2.25.1
+
 
