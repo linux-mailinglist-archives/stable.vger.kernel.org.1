@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D05CA02A2E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E87A02B77
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 661BD18821A5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE79B164852
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6E71514F6;
-	Mon,  6 Jan 2025 15:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117941DA100;
+	Mon,  6 Jan 2025 15:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytGatHwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ym+LuLIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB9B146D6B;
-	Mon,  6 Jan 2025 15:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09181607AA;
+	Mon,  6 Jan 2025 15:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177409; cv=none; b=HvQ/n2ZsaifSmfCFT7Z2YW1OAJuxu5V7qsjMWaURuQXrzv4orw3P2WnscVszz5yQUacOQ9mwhbhHmHXf1EkPfNQmFrBfJxaBERtXXkxfS0QLD0HmQBScaJWdNC7Y7ss8IUi6FLMu4JuU+Ejqe9uFsanvDvXOnZ9nb+vewCju2QM=
+	t=1736178185; cv=none; b=pLBB7DWMRScL7bziO98Fjez9hEc3sUomQ01hx5h7KTPU9ka7Cu13JDwfUbDMz8XZQhJBc6ouCqcn2NkLziSiran8PeZagmx9ujOGthdlSuSZYK3nBWg9oUxBChAaMfs6/kkncLOSjZtRd9bLVPZGUSE5FwqkV4HZnq26ThgselM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177409; c=relaxed/simple;
-	bh=RbsDNxqB0wEngDNw1gi7yue6nwVTheTsvx8UpDNFt0o=;
+	s=arc-20240116; t=1736178185; c=relaxed/simple;
+	bh=RKRpVBOu31udq3et9UTI7cONVd4t4kg00neEgT4WGKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5eYEVyNkepS9NZJtyrRRYzLklIUBJt5ggA/ngB8mzNEaXWlNavFUWRvQaBryW9Z5iBp8e2dOZPjFxGXggeWZNS9vSYbsAbxykd56D62Bw65o0YW+gOe0IFdIbisalqqsc4D/HXRmg5YMPgacUsH9jr95DNttBBpfwBatwz/7PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytGatHwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C704AC4CEE3;
-	Mon,  6 Jan 2025 15:30:08 +0000 (UTC)
+	 MIME-Version; b=qulizTgFaAH0GWZL+w7/6FoF6aLwb9rp4cueQcBuJbjbLMBlPhYJf4iOYkwhTLLj/ZNhE8yFv6yA7OiSNvopE4R3X1kWUev5MZuJ8bCKipEndLkeRAzpOKZaJQcizVfi0hqNpHgXlYD48mAdYb8XWU7K8avh+qTBO882WoUBXGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ym+LuLIa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD18C4CED2;
+	Mon,  6 Jan 2025 15:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177409;
-	bh=RbsDNxqB0wEngDNw1gi7yue6nwVTheTsvx8UpDNFt0o=;
+	s=korg; t=1736178185;
+	bh=RKRpVBOu31udq3et9UTI7cONVd4t4kg00neEgT4WGKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytGatHwYzHsWFUTXQt6R+C2GAI7Mr6omCuvfpfbX4WEucyshhp1h1E7BRXoc3mPAH
-	 qvi6F7V5QbuOJgkjfwn8jwlj/YkQhfQAsWahln/9IQ1GBwG/xTmBFYXdYvmhW21pgz
-	 bvInzr/XTnfsOZ/k8W1qP1m3/b2rb9nwjItKu7QE=
+	b=ym+LuLIa6zKtrwbmM4bk+cb2hdCuOnqmjj5dwzIrUAiQaxlDl4WY0mZCJamttBgyt
+	 l3yrd+wfnf1PXxsLhscanE5j3Ay2/TeCIR3ZYmGoPysfqNwgoqkK3lCopS4+6QU3aI
+	 NqJDkh5NZgQKXTF7kKtuFya3HsplV6jqK1906x2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/222] ip_tunnel: annotate data-races around t->parms.link
-Date: Mon,  6 Jan 2025 16:15:57 +0100
-Message-ID: <20250106151156.555353953@linuxfoundation.org>
+	Frankie Fisher <frankie@terrorise.me.uk>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 034/138] btrfs: tree-checker: reject inline extent items with 0 ref count
+Date: Mon,  6 Jan 2025 16:15:58 +0100
+Message-ID: <20250106151134.514415288@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit f694eee9e1c00d6ca06c5e59c04e3b6ff7d64aa9 ]
+commit dfb92681a19e1d5172420baa242806414b3eff6f upstream.
 
-t->parms.link is read locklessly, annotate these reads
-and opposite writes accordingly.
+[BUG]
+There is a bug report in the mailing list where btrfs_run_delayed_refs()
+failed to drop the ref count for logical 25870311358464 num_bytes
+2113536.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: b5a7b661a073 ("net: Fix netns for ip_tunnel_init_flow()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The involved leaf dump looks like this:
+
+  item 166 key (25870311358464 168 2113536) itemoff 10091 itemsize 50
+    extent refs 1 gen 84178 flags 1
+    ref#0: shared data backref parent 32399126528000 count 0 <<<
+    ref#1: shared data backref parent 31808973717504 count 1
+
+Notice the count number is 0.
+
+[CAUSE]
+There is no concrete evidence yet, but considering 0 -> 1 is also a
+single bit flipped, it's possible that hardware memory bitflip is
+involved, causing the on-disk extent tree to be corrupted.
+
+[FIX]
+To prevent us reading such corrupted extent item, or writing such
+damaged extent item back to disk, enhance the handling of
+BTRFS_EXTENT_DATA_REF_KEY and BTRFS_SHARED_DATA_REF_KEY keys for both
+inlined and key items, to detect such 0 ref count and reject them.
+
+CC: stable@vger.kernel.org # 5.4+
+Link: https://lore.kernel.org/linux-btrfs/7c69dd49-c346-4806-86e7-e6f863a66f48@app.fastmail.com/
+Reported-by: Frankie Fisher <frankie@terrorise.me.uk>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_tunnel.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ fs/btrfs/tree-checker.c |   27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 72b2d68ef4da..0f5cfe3caa2e 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -102,10 +102,9 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
- 		if (!ip_tunnel_key_match(&t->parms, flags, key))
- 			continue;
- 
--		if (t->parms.link == link)
-+		if (READ_ONCE(t->parms.link) == link)
- 			return t;
--		else
--			cand = t;
-+		cand = t;
- 	}
- 
- 	hlist_for_each_entry_rcu(t, head, hash_node) {
-@@ -117,9 +116,9 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
- 		if (!ip_tunnel_key_match(&t->parms, flags, key))
- 			continue;
- 
--		if (t->parms.link == link)
-+		if (READ_ONCE(t->parms.link) == link)
- 			return t;
--		else if (!cand)
-+		if (!cand)
- 			cand = t;
- 	}
- 
-@@ -137,9 +136,9 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
- 		if (!ip_tunnel_key_match(&t->parms, flags, key))
- 			continue;
- 
--		if (t->parms.link == link)
-+		if (READ_ONCE(t->parms.link) == link)
- 			return t;
--		else if (!cand)
-+		if (!cand)
- 			cand = t;
- 	}
- 
-@@ -150,9 +149,9 @@ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
- 		    !(t->dev->flags & IFF_UP))
- 			continue;
- 
--		if (t->parms.link == link)
-+		if (READ_ONCE(t->parms.link) == link)
- 			return t;
--		else if (!cand)
-+		if (!cand)
- 			cand = t;
- 	}
- 
-@@ -221,7 +220,7 @@ static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
- 	hlist_for_each_entry_rcu(t, head, hash_node) {
- 		if (local == t->parms.iph.saddr &&
- 		    remote == t->parms.iph.daddr &&
--		    link == t->parms.link &&
-+		    link == READ_ONCE(t->parms.link) &&
- 		    type == t->dev->type &&
- 		    ip_tunnel_key_match(&t->parms, flags, key))
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1367,6 +1367,11 @@ static int check_extent_item(struct exte
+ 					   dref_offset, fs_info->sectorsize);
+ 				return -EUCLEAN;
+ 			}
++			if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
++				extent_err(leaf, slot,
++			"invalid data ref count, should have non-zero value");
++				return -EUCLEAN;
++			}
+ 			inline_refs += btrfs_extent_data_ref_count(leaf, dref);
  			break;
-@@ -774,7 +773,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 
- 	ip_tunnel_init_flow(&fl4, protocol, dst, tnl_params->saddr,
- 			    tunnel->parms.o_key, RT_TOS(tos),
--			    dev_net(dev), tunnel->parms.link,
-+			    dev_net(dev), READ_ONCE(tunnel->parms.link),
- 			    tunnel->fwmark, skb_get_hash(skb), 0);
- 
- 	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
-@@ -894,7 +893,7 @@ static void ip_tunnel_update(struct ip_tunnel_net *itn,
- 	if (t->parms.link != p->link || t->fwmark != fwmark) {
- 		int mtu;
- 
--		t->parms.link = p->link;
-+		WRITE_ONCE(t->parms.link, p->link);
- 		t->fwmark = fwmark;
- 		mtu = ip_tunnel_bind_dev(dev);
- 		if (set_mtu)
-@@ -1084,9 +1083,9 @@ EXPORT_SYMBOL(ip_tunnel_get_link_net);
- 
- int ip_tunnel_get_iflink(const struct net_device *dev)
+ 		/* Contains parent bytenr and ref count */
+@@ -1378,6 +1383,11 @@ static int check_extent_item(struct exte
+ 					   inline_offset, fs_info->sectorsize);
+ 				return -EUCLEAN;
+ 			}
++			if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
++				extent_err(leaf, slot,
++			"invalid shared data ref count, should have non-zero value");
++				return -EUCLEAN;
++			}
+ 			inline_refs += btrfs_shared_data_ref_count(leaf, sref);
+ 			break;
+ 		default:
+@@ -1429,8 +1439,18 @@ static int check_simple_keyed_refs(struc
  {
--	struct ip_tunnel *tunnel = netdev_priv(dev);
-+	const struct ip_tunnel *tunnel = netdev_priv(dev);
+ 	u32 expect_item_size = 0;
  
--	return tunnel->parms.link;
-+	return READ_ONCE(tunnel->parms.link);
+-	if (key->type == BTRFS_SHARED_DATA_REF_KEY)
++	if (key->type == BTRFS_SHARED_DATA_REF_KEY) {
++		struct btrfs_shared_data_ref *sref;
++
++		sref = btrfs_item_ptr(leaf, slot, struct btrfs_shared_data_ref);
++		if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
++			extent_err(leaf, slot,
++		"invalid shared data backref count, should have non-zero value");
++			return -EUCLEAN;
++		}
++
+ 		expect_item_size = sizeof(struct btrfs_shared_data_ref);
++	}
+ 
+ 	if (btrfs_item_size_nr(leaf, slot) != expect_item_size) {
+ 		generic_err(leaf, slot,
+@@ -1490,6 +1510,11 @@ static int check_extent_data_ref(struct
+ 				   offset, leaf->fs_info->sectorsize);
+ 			return -EUCLEAN;
+ 		}
++		if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
++			extent_err(leaf, slot,
++	"invalid extent data backref count, should have non-zero value");
++			return -EUCLEAN;
++		}
+ 	}
+ 	return 0;
  }
- EXPORT_SYMBOL(ip_tunnel_get_iflink);
- 
--- 
-2.39.5
-
 
 
 
