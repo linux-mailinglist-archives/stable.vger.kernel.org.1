@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F16A02B0B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC00FA02C66
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 390313A3C73
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C11D3A762F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6B015B0E2;
-	Mon,  6 Jan 2025 15:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDAF14A098;
+	Mon,  6 Jan 2025 15:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJkWucYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cytq3F5K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD3C159565;
-	Mon,  6 Jan 2025 15:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D73413B59A;
+	Mon,  6 Jan 2025 15:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177918; cv=none; b=E/xblXgCT7VMP6v6OJ2SuanvUvTBpRijuS1+XndbFU81C6kwKqsHdEDkzfR2UGfqJumt0ANW9BsdvyQhU+UnfmfTDiPSa+8wUuZ9ujZYZeNDNAVmvN73/Nbs3Wp471Vksa2fXnVgOQo5K9R8n/IxeytWxSehFtgaMGjrDnHZubs=
+	t=1736178696; cv=none; b=KjIsFIJz7DcyP8pHrOSoIY1yFyriQ2W5/pmg9CsHdi23UR8EKszim86JLUuxWzgm3BJzQKWq+DSI5JyvtNgKcEdX9mbd8GQSQvyXwsKzchv0xzWo078nQo0grhfSdkG2Ckb+zfmKzJFXwk1WIpjLUpvIT7K/yLsbbr/ll/z/vjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177918; c=relaxed/simple;
-	bh=srrWm9h3W0f/Uyxms1aeedWNqBErvPqNoAs5OcQ+q4c=;
+	s=arc-20240116; t=1736178696; c=relaxed/simple;
+	bh=d4NFqzuaQR4z6xsltoPTgD3YPqt5r6vnjrQ7FPZ2n1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YW9B1scwllCZRyjpJiNYcATCtJpbm+z681wuK7tZDmepZmFeZabq2FemykW92aD6t8+WVbAFR39hEjkh7/ULOH5hTw8pJ4C1ATfz9VgB5UoOXdM1kMRdRIlIbxobV7k+cR/Su9alghLBiPLyLtcj4PaJE9BRCCxmmLezvWM4hiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJkWucYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF348C4CED2;
-	Mon,  6 Jan 2025 15:38:37 +0000 (UTC)
+	 MIME-Version; b=DHP4aEUVwVdbDLC9Q2OaDVR15OC8LT1pcepP5XbqXtnY89qc7Wyrpzx5epkELf2vvdhTAg3RJ3XwD9TSck/a5y7EwwAdetBo2ZbBUsDa+tfqdXBAyoPal6aCUGZ0b/e4dIcIKEDANv8ciHbrdE/YzQefNpbMcIgDmiMkKhKNIUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cytq3F5K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD23C4CED2;
+	Mon,  6 Jan 2025 15:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177918;
-	bh=srrWm9h3W0f/Uyxms1aeedWNqBErvPqNoAs5OcQ+q4c=;
+	s=korg; t=1736178696;
+	bh=d4NFqzuaQR4z6xsltoPTgD3YPqt5r6vnjrQ7FPZ2n1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UJkWucYJHZW5QLPk/8JaQEjAVmThVu5myib239v4GGrMQIa6TxJ6EAZWSV+7E82/I
-	 69u7BeMEPRW4rH6/6l2DPFQqUGCSXk10yj34XziUA9UsaABOUaHaqfiDRTkbNty/WV
-	 bIi7R5Db8kN7uyZsCKIO0842xh/p5EdRrixBug4Y=
+	b=cytq3F5KSaYiuSH72KK4Wl5FAmeizTuqGEvo3KjD7zD05LQ6Ad9B7FkKA1KdHU8WN
+	 9nxLxR0bQ/Acv2fJf9bQZhZKG+c2xl9UmuE/JKDzxyzCysNbWf75JTVRxe2HjyQ7Nl
+	 4qgsjQ7+djCg8CeO7q8gbyF21vZ3ICn/5W9G/jGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/156] ALSA: hda: cs35l56: Remove calls to cs35l56_force_sync_asp1_registers_from_cache()
+Subject: [PATCH 5.15 061/168] bpf: Check negative offsets in __bpf_skb_min_len()
 Date: Mon,  6 Jan 2025 16:16:09 +0100
-Message-ID: <20250106151144.857515245@linuxfoundation.org>
+Message-ID: <20250106151140.767056616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit 47b17ba05a463b22fa79f132e6f6899d53538802 ]
+[ Upstream commit 9ecc4d858b92c1bb0673ad9c327298e600c55659 ]
 
-Commit 5d7e328e20b3 ("ASoC: cs35l56: Revert support for dual-ownership
-of ASP registers")
-replaced cs35l56_force_sync_asp1_registers_from_cache() with a dummy
-implementation so that the HDA driver would continue to build.
+skb_network_offset() and skb_transport_offset() can be negative when
+they are called after we pull the transport header, for example, when
+we use eBPF sockmap at the point of ->sk_data_ready().
 
-Remove the calls from HDA and remove the stub function.
+__bpf_skb_min_len() uses an unsigned int to get these offsets, this
+leads to a very large number which then causes bpf_skb_change_tail()
+failed unexpectedly.
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20241206105757.718750-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix this by using a signed int to get these offsets and ensure the
+minimum is at least zero.
+
+Fixes: 5293efe62df8 ("bpf: add bpf_skb_change_tail helper")
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241213034057.246437-2-xiyou.wangcong@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/cs35l56.h     | 6 ------
- sound/pci/hda/cs35l56_hda.c | 8 --------
- 2 files changed, 14 deletions(-)
+ net/core/filter.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
-index 94e8185c4795..3dc7a1551ac3 100644
---- a/include/sound/cs35l56.h
-+++ b/include/sound/cs35l56.h
-@@ -271,12 +271,6 @@ struct cs35l56_base {
- 	struct gpio_desc *reset_gpio;
- };
+diff --git a/net/core/filter.c b/net/core/filter.c
+index e35d86ba00e2..d6042d285aa2 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3683,13 +3683,22 @@ static const struct bpf_func_proto bpf_skb_adjust_room_proto = {
  
--/* Temporary to avoid a build break with the HDA driver */
--static inline int cs35l56_force_sync_asp1_registers_from_cache(struct cs35l56_base *cs35l56_base)
--{
--	return 0;
--}
--
- static inline bool cs35l56_is_otp_register(unsigned int reg)
+ static u32 __bpf_skb_min_len(const struct sk_buff *skb)
  {
- 	return (reg >> 16) == 3;
-diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
-index e3ac0e23ae32..7baf3b506eef 100644
---- a/sound/pci/hda/cs35l56_hda.c
-+++ b/sound/pci/hda/cs35l56_hda.c
-@@ -151,10 +151,6 @@ static int cs35l56_hda_runtime_resume(struct device *dev)
- 		}
- 	}
+-	u32 min_len = skb_network_offset(skb);
++	int offset = skb_network_offset(skb);
++	u32 min_len = 0;
  
--	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
--	if (ret)
--		goto err;
--
- 	return 0;
+-	if (skb_transport_header_was_set(skb))
+-		min_len = skb_transport_offset(skb);
+-	if (skb->ip_summed == CHECKSUM_PARTIAL)
+-		min_len = skb_checksum_start_offset(skb) +
+-			  skb->csum_offset + sizeof(__sum16);
++	if (offset > 0)
++		min_len = offset;
++	if (skb_transport_header_was_set(skb)) {
++		offset = skb_transport_offset(skb);
++		if (offset > 0)
++			min_len = offset;
++	}
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		offset = skb_checksum_start_offset(skb) +
++			 skb->csum_offset + sizeof(__sum16);
++		if (offset > 0)
++			min_len = offset;
++	}
+ 	return min_len;
+ }
  
- err:
-@@ -1059,9 +1055,6 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int hid, int id)
- 
- 	regmap_multi_reg_write(cs35l56->base.regmap, cs35l56_hda_dai_config,
- 			       ARRAY_SIZE(cs35l56_hda_dai_config));
--	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
--	if (ret)
--		goto dsp_err;
- 
- 	/*
- 	 * By default only enable one ASP1TXn, where n=amplifier index,
-@@ -1087,7 +1080,6 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int hid, int id)
- 
- pm_err:
- 	pm_runtime_disable(cs35l56->base.dev);
--dsp_err:
- 	cs_dsp_remove(&cs35l56->cs_dsp);
- err:
- 	gpiod_set_value_cansleep(cs35l56->base.reset_gpio, 0);
 -- 
 2.39.5
 
