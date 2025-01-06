@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1013EA02B4D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C13A02BFF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1574D1885F7F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C04D18802C5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4152A1DDC12;
-	Mon,  6 Jan 2025 15:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B861547F3;
+	Mon,  6 Jan 2025 15:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9hqqr+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnRS1Dhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EE116D9B8;
-	Mon,  6 Jan 2025 15:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B309C145348;
+	Mon,  6 Jan 2025 15:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178112; cv=none; b=WvmdBUS/JYLxXVzjrV9vCvfqNJzBoHSFEBsrMu83HuAAV8lSfF5EHV8qlSeNTFHkBxHXSsQhbiYEg32FsFAzi0J5Jw28+8l3rhCdGPxDO0oA9L14kHkMTJBxSXddT11ckRgAnirnNEs9CEXxLelHpBQddDSF0kMuDqiJPIOWefI=
+	t=1736178549; cv=none; b=L0RKi8NBlm7pJ9whvqfl7eUTfIssNoQ4RU7q3dA4yDohLvw3OCwX51WRuXKm5/saeFE801BMqoAf6sqJ353AUqkiKLdLmgyQGnGyXaCuxWcPx/Lr47Y7pjNSBRDSVqrvTei03wrFhTguXc//1XJhCEcW57BdeEqBTUDGOe7AzsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178112; c=relaxed/simple;
-	bh=46n9B6XXb2nfPQ451zID9BJsU02x9HWZk2zB2vvgAm4=;
+	s=arc-20240116; t=1736178549; c=relaxed/simple;
+	bh=AcSGX/39iJhpwWoHClaVE811VTIdtTgBFXjL9u9R0xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hipsljo1GwwJJwCtBM5eCRJYI7IRXDxCSXTlGx+4F1adtjJdyHX7GwQadLsuRtL3ekeUfTcbtw1VKnZgps7QJ/qRjgVFt/PSwrWbRdH24KsOCRz9JUUd1+UK4DavQ0/epLz1Ocv2vWNNjRYw0XIfuI7fLZjGhe8Ee36MaW8bS/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9hqqr+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762B5C4CED2;
-	Mon,  6 Jan 2025 15:41:51 +0000 (UTC)
+	 MIME-Version; b=AsPfZLFDa+KTWEetRCNidPIra3hcTXka9rSEMOuzmcnw6rvFpBO4pq7DFETKcvah68D+bAUWdFtdDIm6pGRoP8v+IRR6XIRGImVHHLiCP9u7JpFBSD9Ptbd33vSYJ61A22EPBoZXajYNfQdcaGLxRXWYehM/FYtFxXZviTiHvAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnRS1Dhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4A0C4CED2;
+	Mon,  6 Jan 2025 15:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178111;
-	bh=46n9B6XXb2nfPQ451zID9BJsU02x9HWZk2zB2vvgAm4=;
+	s=korg; t=1736178549;
+	bh=AcSGX/39iJhpwWoHClaVE811VTIdtTgBFXjL9u9R0xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9hqqr+uafmom11ImJ26bgSrgG00dj9tZRGtojBOFQ1Y9n6vOsAqfcPYVrv6JyZhX
-	 3gzMYOruRc1/azrRSAHbm3lH1obcA4Me3f2dIQ0fPwjCpJAeHDrCUnal3MEG5SFcf4
-	 EQyH1Xqsltblm00y37wfK96q0vc/Roac/0cDiLqU=
+	b=fnRS1DhkrMlkjCqGlMY2fyNO/foFqAtZaS+t+G+6t/ma656gZR370b5i/TdMjVkT3
+	 TJOXLMPhgZXSiwxjuHuiLxS0EloaRUSLDOWiWLp49wLSbjN8YoBfdwpXXOhq8z8+jo
+	 S29f8z7X8IoeYjtlQySWm4MZpXX1BifFSv1rBRXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lion Ackermann <nnamrec@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Artem Metla <ametla@google.com>
-Subject: [PATCH 5.10 001/138] net: sched: fix ordering of qlen adjustment
+	syzbot+ea40e4294e58b0292f74@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 017/168] netdevsim: prevent bad user input in nsim_dev_health_break_write()
 Date: Mon,  6 Jan 2025 16:15:25 +0100
-Message-ID: <20250106151133.268907860@linuxfoundation.org>
+Message-ID: <20250106151139.113581416@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
+[ Upstream commit ee76746387f6233bdfa93d7406990f923641568f ]
 
-Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
-_before_ a call to said function because otherwise it may fail to notify
-parent qdiscs when the child is about to become empty.
+If either a zero count or a large one is provided, kernel can crash.
 
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Cc: Artem Metla <ametla@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82c93a87bf8b ("netdevsim: implement couple of testing devlink health reporters")
+Reported-by: syzbot+ea40e4294e58b0292f74@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/675c6862.050a0220.37aaf.00b1.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20241213172518.2415666-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c  |    2 +-
- net/sched/sch_choke.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/netdevsim/health.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1541,7 +1541,6 @@ static unsigned int cake_drop(struct Qdi
- 	b->backlogs[idx]    -= len;
- 	b->tin_backlog      -= len;
- 	sch->qstats.backlog -= len;
--	qdisc_tree_reduce_backlog(sch, 1, len);
+diff --git a/drivers/net/netdevsim/health.c b/drivers/net/netdevsim/health.c
+index 04aebdf85747..c9306506b741 100644
+--- a/drivers/net/netdevsim/health.c
++++ b/drivers/net/netdevsim/health.c
+@@ -235,6 +235,8 @@ static ssize_t nsim_dev_health_break_write(struct file *file,
+ 	char *break_msg;
+ 	int err;
  
- 	flow->dropped++;
- 	b->tin_dropped++;
-@@ -1552,6 +1551,7 @@ static unsigned int cake_drop(struct Qdi
- 
- 	__qdisc_drop(skb, to_free);
- 	sch->q.qlen--;
-+	qdisc_tree_reduce_backlog(sch, 1, len);
- 
- 	cake_heapify(q, 0);
- 
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -124,10 +124,10 @@ static void choke_drop_by_idx(struct Qdi
- 	if (idx == q->tail)
- 		choke_zap_tail_holes(q);
- 
-+	--sch->q.qlen;
- 	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 	qdisc_drop(skb, sch, to_free);
--	--sch->q.qlen;
- }
- 
- struct choke_skb_cb {
++	if (count == 0 || count > PAGE_SIZE)
++		return -EINVAL;
+ 	break_msg = memdup_user_nul(data, count);
+ 	if (IS_ERR(break_msg))
+ 		return PTR_ERR(break_msg);
+-- 
+2.39.5
+
 
 
 
