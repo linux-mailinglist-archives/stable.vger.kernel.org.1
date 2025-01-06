@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F565A02C0B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AC9A02A9A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 742FA3A64B8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 923C918863BA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA736088F;
-	Mon,  6 Jan 2025 15:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F781DDA2F;
+	Mon,  6 Jan 2025 15:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfKvs5qF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjnkKvoH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1727A13DB9F;
-	Mon,  6 Jan 2025 15:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D68A1DD9A6;
+	Mon,  6 Jan 2025 15:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178526; cv=none; b=m+qqRsO/1betLjWqdYpDOfKtN8iA3BULqAMa9R2VJizoTP/sh/wx/4OPjOyILFINTq1c1s/YPkSurePfGbU/yjG1DemHFkWeXAgYZ7rMPvywgkviNZZka3UiscXVvNsPEHdF4ek1f6YtRIAHj3UUojvb9bpPnjPYiqYxSgTZWD0=
+	t=1736177689; cv=none; b=NbDSROUB/NBmCnwfwkwwQfKwiFeGUiB6U68vJgIwxjzTOhi8dGAUN5qpBmFj7FYmQgU1lX16wxs548Hg7oO02+JIRWL9Zi7B4PRTbTCHwzH6bR4hQoXPj8I/wTMnlKVXPIlOeUSxwqtdeix9hrJFgiVD7TH00jrNMIE6nZfsgZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178526; c=relaxed/simple;
-	bh=qfJM4ApOzZ9GbacWIwp+hjtTkUC5rxlEudILxDZIbNk=;
+	s=arc-20240116; t=1736177689; c=relaxed/simple;
+	bh=R5ytUBjOpU0atyZqS+CvA+XPAFwCHjg1BULbfhEVLTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ovz9C7OY57R6aemVCrf3qlN7dAJMakVUmHJ5GPDMzOyAhTyCCcJTzz3w+x3NdkDtRtJZhYfkqN9vD+3kftixmbYigfoMvlvnQV9b9Ipkn6rD/MmFPt5gWelLitb0HTFi0lbBeN8Njjye9ugcF8tRHnXemkQNCBIggo0AIHI/aPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfKvs5qF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6C8C4CED2;
-	Mon,  6 Jan 2025 15:48:45 +0000 (UTC)
+	 MIME-Version; b=SoESHk6uVKZ65oKDsAjA4KFqiIU9jAtJ3DZjTiTWLCeizROb/KYhqYj+t+8H0N5anFR+3IyXONRW2JuV+kodxVMMEe6qVajXJlNep8b66uyN0p3dRODC1NRyClHBtDMOr0sSpeA7JOKNihR23nfI64qRfiz28tR+sg1vrsGwrn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjnkKvoH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736FBC4CED2;
+	Mon,  6 Jan 2025 15:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178525;
-	bh=qfJM4ApOzZ9GbacWIwp+hjtTkUC5rxlEudILxDZIbNk=;
+	s=korg; t=1736177688;
+	bh=R5ytUBjOpU0atyZqS+CvA+XPAFwCHjg1BULbfhEVLTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfKvs5qFwK51m1q9r5o4ioreXHeGNd36LXnGZk2QtsUihyBL5uNbpZV2Nj9x3zuSW
-	 9hnPQNBYJs47dS0Yu+H0J+40X0rxD0ah0zFVgmmqlOsgwzD5msW1JiR+sJXmVuc6RD
-	 J9sUN7S4Bu+apS+c03S3wCA0tylqmDbRq6391goA=
+	b=TjnkKvoH/o1L3HOdx6a6IW4ODzLqPYBW4DFS+25DgGEB8wsgL8wZ0PWLI1CW4EesI
+	 hfV+qTzlKqSt+TtG/zUcK2h6fpu1NpXNocGiPMcg20kV9pzfl1AdUd9omAIrMxydHi
+	 xovqNfoZbbeykD1mbhqXciYlLJaWpFrt+HnZWS3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lion Ackermann <nnamrec@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Artem Metla <ametla@google.com>
-Subject: [PATCH 5.15 001/168] net: sched: fix ordering of qlen adjustment
-Date: Mon,  6 Jan 2025 16:15:09 +0100
-Message-ID: <20250106151138.511853520@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Chiara Meiohas <cmeiohas@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 024/156] RDMA/nldev: Set error code in rdma_nl_notify_event
+Date: Mon,  6 Jan 2025 16:15:10 +0100
+Message-ID: <20250106151142.652669307@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Chiara Meiohas <cmeiohas@nvidia.com>
 
-commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
+[ Upstream commit 13a6691910cc23ea9ba4066e098603088673d5b0 ]
 
-Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
-_before_ a call to said function because otherwise it may fail to notify
-parent qdiscs when the child is about to become empty.
+In case of error set the error code before the goto.
 
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Cc: Artem Metla <ametla@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ff57a2ea7c2 ("RDMA/nldev: Fix NULL pointer dereferences issue in rdma_nl_notify_event")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-rdma/a84a2fc3-33b6-46da-a1bd-3343fa07eaf9@stanley.mountain/
+Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Link: https://patch.msgid.link/13eb25961923f5de9eb9ecbbc94e26113d6049ef.1733815944.git.leonro@nvidia.com
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c  |    2 +-
- net/sched/sch_choke.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/core/nldev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1541,7 +1541,6 @@ static unsigned int cake_drop(struct Qdi
- 	b->backlogs[idx]    -= len;
- 	b->tin_backlog      -= len;
- 	sch->qstats.backlog -= len;
--	qdisc_tree_reduce_backlog(sch, 1, len);
+diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
+index 7dc8e2ec62cc..f12189986303 100644
+--- a/drivers/infiniband/core/nldev.c
++++ b/drivers/infiniband/core/nldev.c
+@@ -2802,8 +2802,8 @@ int rdma_nl_notify_event(struct ib_device *device, u32 port_num,
+ 			  enum rdma_nl_notify_event_type type)
+ {
+ 	struct sk_buff *skb;
++	int ret = -EMSGSIZE;
+ 	struct net *net;
+-	int ret = 0;
+ 	void *nlh;
  
- 	flow->dropped++;
- 	b->tin_dropped++;
-@@ -1552,6 +1551,7 @@ static unsigned int cake_drop(struct Qdi
- 
- 	__qdisc_drop(skb, to_free);
- 	sch->q.qlen--;
-+	qdisc_tree_reduce_backlog(sch, 1, len);
- 
- 	cake_heapify(q, 0);
- 
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -124,10 +124,10 @@ static void choke_drop_by_idx(struct Qdi
- 	if (idx == q->tail)
- 		choke_zap_tail_holes(q);
- 
-+	--sch->q.qlen;
- 	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 	qdisc_drop(skb, sch, to_free);
--	--sch->q.qlen;
- }
- 
- struct choke_skb_cb {
+ 	net = read_pnet(&device->coredev.rdma_net);
+-- 
+2.39.5
+
 
 
 
