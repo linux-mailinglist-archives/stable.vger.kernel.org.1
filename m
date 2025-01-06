@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E87A02B77
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18E1A02946
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE79B164852
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE3573A2308
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117941DA100;
-	Mon,  6 Jan 2025 15:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE9D78F49;
+	Mon,  6 Jan 2025 15:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ym+LuLIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zb8DoPHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09181607AA;
-	Mon,  6 Jan 2025 15:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECF61487F4;
+	Mon,  6 Jan 2025 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178185; cv=none; b=pLBB7DWMRScL7bziO98Fjez9hEc3sUomQ01hx5h7KTPU9ka7Cu13JDwfUbDMz8XZQhJBc6ouCqcn2NkLziSiran8PeZagmx9ujOGthdlSuSZYK3nBWg9oUxBChAaMfs6/kkncLOSjZtRd9bLVPZGUSE5FwqkV4HZnq26ThgselM=
+	t=1736176870; cv=none; b=F+Ziuidl+hmDnvLOWeTTbqZfI2tZDXMkrb/dKOTAeIX4Z/s45ARr6/kBXKxJnX6OBTBLnMcjVk8ElfqbI5s9j0sO5jWzuhz7Xt094EYV6QxGfPpYD9TVekyn15VXiFF6GoR9tGN2qIJkHM/5gMOHr69F9Y2gwbV9VOAKYhwG/e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178185; c=relaxed/simple;
-	bh=RKRpVBOu31udq3et9UTI7cONVd4t4kg00neEgT4WGKo=;
+	s=arc-20240116; t=1736176870; c=relaxed/simple;
+	bh=EY39v9bDx1+4qNStfO7XeaQxWnfVOWqrQfTW7v7Xltw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qulizTgFaAH0GWZL+w7/6FoF6aLwb9rp4cueQcBuJbjbLMBlPhYJf4iOYkwhTLLj/ZNhE8yFv6yA7OiSNvopE4R3X1kWUev5MZuJ8bCKipEndLkeRAzpOKZaJQcizVfi0hqNpHgXlYD48mAdYb8XWU7K8avh+qTBO882WoUBXGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ym+LuLIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD18C4CED2;
-	Mon,  6 Jan 2025 15:43:05 +0000 (UTC)
+	 MIME-Version; b=KWEeIL9w7kFsvrAw6RoG3ltKuJhjKa4YQN9tbRR5N1b50hX30wQRoSXn/MV56uF+MMuVr1NSlgT+OILo3YZ8p7YzkDPGhkgO7QmC6JD7GPNU/oTcGMUDoCQnTN6/zBY5naxRwyz274+DFdR+PD2YmBciJfrugxVvh+r0Vi4trVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zb8DoPHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CE4C4CED2;
+	Mon,  6 Jan 2025 15:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178185;
-	bh=RKRpVBOu31udq3et9UTI7cONVd4t4kg00neEgT4WGKo=;
+	s=korg; t=1736176870;
+	bh=EY39v9bDx1+4qNStfO7XeaQxWnfVOWqrQfTW7v7Xltw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ym+LuLIa6zKtrwbmM4bk+cb2hdCuOnqmjj5dwzIrUAiQaxlDl4WY0mZCJamttBgyt
-	 l3yrd+wfnf1PXxsLhscanE5j3Ay2/TeCIR3ZYmGoPysfqNwgoqkK3lCopS4+6QU3aI
-	 NqJDkh5NZgQKXTF7kKtuFya3HsplV6jqK1906x2g=
+	b=Zb8DoPHRoXNRFFLvQM/7TW4XyOJKcNt58MEAfi/DV+lpxBE8+hIaYvADR4r4tnLal
+	 FG4Tx3ALa2c4zSsDADgIZdRgceVISI4Xak2ghv7MYHSmepg1i+AE5vrQ5nhtrdWrcV
+	 ArLoCydxb/sSVDSLXKWme9uz0ihLIKgxt9roni8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frankie Fisher <frankie@terrorise.me.uk>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 034/138] btrfs: tree-checker: reject inline extent items with 0 ref count
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 26/81] net: stmmac: platform: provide devm_stmmac_probe_config_dt()
 Date: Mon,  6 Jan 2025 16:15:58 +0100
-Message-ID: <20250106151134.514415288@linuxfoundation.org>
+Message-ID: <20250106151130.426193634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit dfb92681a19e1d5172420baa242806414b3eff6f upstream.
+[ Upstream commit d74065427374da6659a2d7fad4ec55c8926d43c4 ]
 
-[BUG]
-There is a bug report in the mailing list where btrfs_run_delayed_refs()
-failed to drop the ref count for logical 25870311358464 num_bytes
-2113536.
+Provide a devres variant of stmmac_probe_config_dt() that allows users to
+skip calling stmmac_remove_config_dt() at driver detach.
 
-The involved leaf dump looks like this:
-
-  item 166 key (25870311358464 168 2113536) itemoff 10091 itemsize 50
-    extent refs 1 gen 84178 flags 1
-    ref#0: shared data backref parent 32399126528000 count 0 <<<
-    ref#1: shared data backref parent 31808973717504 count 1
-
-Notice the count number is 0.
-
-[CAUSE]
-There is no concrete evidence yet, but considering 0 -> 1 is also a
-single bit flipped, it's possible that hardware memory bitflip is
-involved, causing the on-disk extent tree to be corrupted.
-
-[FIX]
-To prevent us reading such corrupted extent item, or writing such
-damaged extent item back to disk, enhance the handling of
-BTRFS_EXTENT_DATA_REF_KEY and BTRFS_SHARED_DATA_REF_KEY keys for both
-inlined and key items, to detect such 0 ref count and reject them.
-
-CC: stable@vger.kernel.org # 5.4+
-Link: https://lore.kernel.org/linux-btrfs/7c69dd49-c346-4806-86e7-e6f863a66f48@app.fastmail.com/
-Reported-by: Frankie Fisher <frankie@terrorise.me.uk>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20230623100417.93592-9-brgl@bgdev.pl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 2b6ffcd7873b ("net: stmmac: restructure the error path of stmmac_probe_config_dt()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c |   27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 41 +++++++++++++++++++
+ .../ethernet/stmicro/stmmac/stmmac_platform.h |  2 +
+ 2 files changed, 43 insertions(+)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1367,6 +1367,11 @@ static int check_extent_item(struct exte
- 					   dref_offset, fs_info->sectorsize);
- 				return -EUCLEAN;
- 			}
-+			if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
-+				extent_err(leaf, slot,
-+			"invalid data ref count, should have non-zero value");
-+				return -EUCLEAN;
-+			}
- 			inline_refs += btrfs_extent_data_ref_count(leaf, dref);
- 			break;
- 		/* Contains parent bytenr and ref count */
-@@ -1378,6 +1383,11 @@ static int check_extent_item(struct exte
- 					   inline_offset, fs_info->sectorsize);
- 				return -EUCLEAN;
- 			}
-+			if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
-+				extent_err(leaf, slot,
-+			"invalid shared data ref count, should have non-zero value");
-+				return -EUCLEAN;
-+			}
- 			inline_refs += btrfs_shared_data_ref_count(leaf, sref);
- 			break;
- 		default:
-@@ -1429,8 +1439,18 @@ static int check_simple_keyed_refs(struc
- {
- 	u32 expect_item_size = 0;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 0046a4ee6e64..5b4517b0ca08 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -8,6 +8,7 @@
+   Author: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+ *******************************************************************************/
  
--	if (key->type == BTRFS_SHARED_DATA_REF_KEY)
-+	if (key->type == BTRFS_SHARED_DATA_REF_KEY) {
-+		struct btrfs_shared_data_ref *sref;
-+
-+		sref = btrfs_item_ptr(leaf, slot, struct btrfs_shared_data_ref);
-+		if (unlikely(btrfs_shared_data_ref_count(leaf, sref) == 0)) {
-+			extent_err(leaf, slot,
-+		"invalid shared data backref count, should have non-zero value");
-+			return -EUCLEAN;
-+		}
-+
- 		expect_item_size = sizeof(struct btrfs_shared_data_ref);
-+	}
- 
- 	if (btrfs_item_size_nr(leaf, slot) != expect_item_size) {
- 		generic_err(leaf, slot,
-@@ -1490,6 +1510,11 @@ static int check_extent_data_ref(struct
- 				   offset, leaf->fs_info->sectorsize);
- 			return -EUCLEAN;
- 		}
-+		if (unlikely(btrfs_extent_data_ref_count(leaf, dref) == 0)) {
-+			extent_err(leaf, slot,
-+	"invalid extent data backref count, should have non-zero value");
-+			return -EUCLEAN;
-+		}
- 	}
- 	return 0;
++#include <linux/device.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/module.h>
+@@ -628,6 +629,39 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	return ret;
  }
+ 
++static void devm_stmmac_remove_config_dt(void *data)
++{
++	struct plat_stmmacenet_data *plat = data;
++
++	/* Platform data argument is unused */
++	stmmac_remove_config_dt(NULL, plat);
++}
++
++/**
++ * devm_stmmac_probe_config_dt
++ * @pdev: platform_device structure
++ * @mac: MAC address to use
++ * Description: Devres variant of stmmac_probe_config_dt(). Does not require
++ * the user to call stmmac_remove_config_dt() at driver detach.
++ */
++struct plat_stmmacenet_data *
++devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
++{
++	struct plat_stmmacenet_data *plat;
++	int ret;
++
++	plat = stmmac_probe_config_dt(pdev, mac);
++	if (IS_ERR(plat))
++		return plat;
++
++	ret = devm_add_action_or_reset(&pdev->dev,
++				       devm_stmmac_remove_config_dt, plat);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return plat;
++}
++
+ /**
+  * stmmac_remove_config_dt - undo the effects of stmmac_probe_config_dt()
+  * @pdev: platform_device structure
+@@ -650,12 +684,19 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	return ERR_PTR(-EINVAL);
+ }
+ 
++struct plat_stmmacenet_data *
++devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
++{
++	return ERR_PTR(-EINVAL);
++}
++
+ void stmmac_remove_config_dt(struct platform_device *pdev,
+ 			     struct plat_stmmacenet_data *plat)
+ {
+ }
+ #endif /* CONFIG_OF */
+ EXPORT_SYMBOL_GPL(stmmac_probe_config_dt);
++EXPORT_SYMBOL_GPL(devm_stmmac_probe_config_dt);
+ EXPORT_SYMBOL_GPL(stmmac_remove_config_dt);
+ 
+ int stmmac_get_platform_resources(struct platform_device *pdev,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
+index 3fff3f59d73d..2102c6d41464 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.h
+@@ -13,6 +13,8 @@
+ 
+ struct plat_stmmacenet_data *
+ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
++struct plat_stmmacenet_data *
++devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac);
+ void stmmac_remove_config_dt(struct platform_device *pdev,
+ 			     struct plat_stmmacenet_data *plat);
+ 
+-- 
+2.39.5
+
 
 
 
