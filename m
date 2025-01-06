@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-107589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0DDA02CC3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 754CFA02A5C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E8C33A8FCC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52092164484
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221B113C3D6;
-	Mon,  6 Jan 2025 15:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7E015C120;
+	Mon,  6 Jan 2025 15:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCyvedRe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRCo336K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFC2DF71;
-	Mon,  6 Jan 2025 15:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCBC146D40;
+	Mon,  6 Jan 2025 15:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178923; cv=none; b=TdPEm1EVOsUsPvcDQuMx9t9FbqEinZE+8tUBUuE1ZGZgNQ2OJWy6oyT9+Sh9qpi7qMaUw6cIC6hGDodHSqW7MUfiPLVHCh+kZcZdXAGbNNd0DEAP2zo5HWRrbQIUAix3c6cRdE5NhxBHNmHx9X0nEkdwSk7rKdoVRSntszCLDZ0=
+	t=1736177581; cv=none; b=dyeN4CGVgsL9Q8visR0/35z0r/M2R4whqw0tedBIDwqCfbdX49cOshLiKoLdSg/Ak5HLNPuRAC8anNacZ2qsBKM7lgo6WxYzKqMBrAc+2NbIvR2qIwJhXT3IzNNI1zvoI046gD8uthzfpjlvK+tDT4GGAa4NoKcfUI7gLhy6JcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178923; c=relaxed/simple;
-	bh=CCzfWJHzhCbY459WQGJy20IryTDHQwWnrY86r+qfPMo=;
+	s=arc-20240116; t=1736177581; c=relaxed/simple;
+	bh=TzSknap+OxCCiJT6z7KFjMGSN7SZI+JMS9fnHTpnAWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2PeEw30kkGwr/YiU3G5i5RbC6dyeMjggG2IgSni6h83tC32SVfJH6DWe593FP35Yku6rsl+psverfiXPxzFiG1QQ9ekLUHwvJvY52lmk97Qoemvmrj7deA3naLeW013oz6OmxsgIzUAr5g7d0HFeYiy2NR0fB/Vj1rnBq3yYD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCyvedRe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D02C4CED2;
-	Mon,  6 Jan 2025 15:55:22 +0000 (UTC)
+	 MIME-Version; b=d5xmvply0Jxw6f3z17wgQvvqTA6VsXlCwd9hPj87oJXcEy3579pzsodtL8+TdabZYTIALpLB4Vh14tAlGOtFZMvNE5ZZnlHCmTkdL1VsbO1OEp7cPd8c8rVSlrt7Y7HWmPOGkt5TNxJh8R3mm7Pl4T1trZffJN1A2MQj3s8l0QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRCo336K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C73C4CED2;
+	Mon,  6 Jan 2025 15:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178923;
-	bh=CCzfWJHzhCbY459WQGJy20IryTDHQwWnrY86r+qfPMo=;
+	s=korg; t=1736177581;
+	bh=TzSknap+OxCCiJT6z7KFjMGSN7SZI+JMS9fnHTpnAWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCyvedReK08spgA3zae7LRuwwf7sft0azlmVRQcCTlMd0dIQ5NWgC6qUJbPpi/Ew/
-	 WNJa2W6vSpmss27mqrIRbQ8C714CWgtzDd2r5K8fiiJKcQPN/ilSPvpWj7RdMQzAaF
-	 XLtKAwhtQ6Kiu7EPFr2iNyYsZUh5SwDDiTM+23LI=
+	b=QRCo336K+lpwduycGbPNRvgnv6ZGTSmYIOvc34djJ4sFZPlp6OYovEqx6Q0JSavb0
+	 x/8aAV0dbGC8jfcG6j7RcmcjGEfwwEVS2K+Sq5pqYQ/OGm3IuWEB51oG3WoQJu1Tv1
+	 uAnawWwo6y6AO7LZX0V3hu6xkporlompvu+BYTKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Genes Lists <lists@sapience.com>,
-	Gene C <arch@sapience.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 106/168] tracing: Have process_string() also allow arrays
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.6 210/222] dt-bindings: display: adi,adv7533: Drop single lane support
 Date: Mon,  6 Jan 2025 16:16:54 +0100
-Message-ID: <20250106151142.463396393@linuxfoundation.org>
+Message-ID: <20250106151158.714903498@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit afc6717628f959941d7b33728570568b4af1c4b8 upstream.
+commit ee8f9ed57a397605434caeef351bafa3ec4dfdd4 upstream.
 
-In order to catch a common bug where a TRACE_EVENT() TP_fast_assign()
-assigns an address of an allocated string to the ring buffer and then
-references it in TP_printk(), which can be executed hours later when the
-string is free, the function test_event_printk() runs on all events as
-they are registered to make sure there's no unwanted dereferencing.
+As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
+unsupported 1-lane from bindings.
 
-It calls process_string() to handle cases in TP_printk() format that has
-"%s". It returns whether or not the string is safe. But it can have some
-false positives.
+[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
+[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
 
-For instance, xe_bo_move() has:
-
- TP_printk("move_lacks_source:%s, migrate object %p [size %zu] from %s to %s device_id:%s",
-            __entry->move_lacks_source ? "yes" : "no", __entry->bo, __entry->size,
-            xe_mem_type_to_name[__entry->old_placement],
-            xe_mem_type_to_name[__entry->new_placement], __get_str(device_id))
-
-Where the "%s" references into xe_mem_type_to_name[]. This is an array of
-pointers that should be safe for the event to access. Instead of flagging
-this as a bad reference, if a reference points to an array, where the
-record field is the index, consider it safe.
-
-Link: https://lore.kernel.org/all/9dee19b6185d325d0e6fa5f7cbba81d007d99166.camel@sapience.com/
-
+Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241231000646.324fb5f7@gandalf.local.home
-Fixes: 65a25d9f7ac02 ("tracing: Add "%s" check in test_event_printk()")
-Reported-by: Genes Lists <lists@sapience.com>
-Tested-by: Gene C <arch@sapience.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -346,6 +346,18 @@ static bool process_string(const char *f
- 	} while (s < e);
+--- a/Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml
+@@ -87,7 +87,7 @@ properties:
+   adi,dsi-lanes:
+     description: Number of DSI data lanes connected to the DSI host.
+     $ref: /schemas/types.yaml#/definitions/uint32
+-    enum: [ 1, 2, 3, 4 ]
++    enum: [ 2, 3, 4 ]
  
- 	/*
-+	 * Check for arrays. If the argument has: foo[REC->val]
-+	 * then it is very likely that foo is an array of strings
-+	 * that are safe to use.
-+	 */
-+	r = strstr(s, "[");
-+	if (r && r < e) {
-+		r = strstr(r, "REC->");
-+		if (r && r < e)
-+			return true;
-+	}
-+
-+	/*
- 	 * If there's any strings in the argument consider this arg OK as it
- 	 * could be: REC->field ? "foo" : "bar" and we don't want to get into
- 	 * verifying that logic here.
+   ports:
+     description:
 
 
 
