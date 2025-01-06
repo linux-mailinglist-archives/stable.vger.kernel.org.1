@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF01FA02B01
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E358A02A37
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B53E1881497
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 708841886C23
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C295D14D28C;
-	Mon,  6 Jan 2025 15:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339631DDC1B;
+	Mon,  6 Jan 2025 15:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Hm6qVvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpvsGXEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E01BDF71;
-	Mon,  6 Jan 2025 15:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78E015252D;
+	Mon,  6 Jan 2025 15:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177971; cv=none; b=TiylmuZ3E+ZhmZRr3y+voPVJ24pHZGdJd6OD+vNNPJIaUe22Vg+hM1omi0XUrLOZU6A30wan0IPBEdV1bmnTM039lwHNi1hNneQhyjjM2Ix09qjbpxTesxsx1gUvmXTIw8l/k/JYTn2hES9zq8hlQaAKOrcobVHec9xnn0gaaIA=
+	t=1736177452; cv=none; b=TcU3ClyoUk/GXFjDrJHr7/eJniQZ5z5FERj9qoR4djwuqdfcB2Zxi80rUtfmdi+uXM90iJMPtsJLw+Mp7DW0YueffxTvd3jsheYV6gL/6UNx8wFC0DyB0g0iVQJMgqj8kTx3yvKLu+MnCJ9KXJB+okDBXOvNUJ3Ldti9chj3En8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177971; c=relaxed/simple;
-	bh=S6yqeSBnokvLVZiA/hfcyrEi5RZaMx7+drhPOhQRllU=;
+	s=arc-20240116; t=1736177452; c=relaxed/simple;
+	bh=aTRKU/R917Rp9r+R/oj3Z/vKARRYYLbeUsCwmza6iIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSpDugCKCOkpEg7pxMNyDa6mcqHZM0HPHEEtg2IOE5G/1KyR3gLeUX5HMxMmSGsIEcYo72mxd9LBWgyJnQeLa5mf3fu42pMWv5TZm5NYi5CSzOZEeDW4b35uYluGLi/W/yXgRtEK2tpxHsQ8mg6TJjiCrGDSh+i0YaoEQPP/SZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Hm6qVvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CCBC4CEDF;
-	Mon,  6 Jan 2025 15:39:30 +0000 (UTC)
+	 MIME-Version; b=K9kC+bBnlQE1dbQNk8ZoFOj4CVVzE53g6CvBgSlRdvcH+PQN1mb4G9skD3BnkEJ83b7x5kYnBA7bWfdcnXt+ro6IBiIirFb4epUhWpG14a1zVr7VyvfqHArFkZ7NC9GfeZx58VW+IRDgpnxrvm+uRFsD5Gj3dVkqNhZiDrp01yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpvsGXEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99E0C4CED2;
+	Mon,  6 Jan 2025 15:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177971;
-	bh=S6yqeSBnokvLVZiA/hfcyrEi5RZaMx7+drhPOhQRllU=;
+	s=korg; t=1736177452;
+	bh=aTRKU/R917Rp9r+R/oj3Z/vKARRYYLbeUsCwmza6iIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Hm6qVvOqHtCjniBnJS09mAnpuVpcG01X7oNfa1OsgOUx8eM535KMyCYfSiqTHqsA
-	 DssVrWCsdHEJxu2ReFXp9zuy6JUrn10vQaBKPAe6bbhEjThVBw4rySifnPiMflkwr+
-	 IoSpP3fjVW2dkuv+R1mo4/VJVX3xpuOamSz3pPvc=
+	b=jpvsGXEhJL2bXiQPkBbnFbQITLF+hBkxbbGJImHlGYC+qlP453/7whUKix8ukJoAB
+	 a0RUbl6D9o69zfFHEedKxLWj0MxNJyuC6MSJPhuDdN/y4QPFKo/ltgGF6AOtlLXbHT
+	 Y6Xlj6TxkN/k/qBBZSVqwJfpsWXHSPBKduYkaiEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/156] ALSA: hda/ca0132: Use standard HD-audio quirk matching helpers
+Subject: [PATCH 6.6 169/222] RDMA/rtrs: Ensure ib_sge list is accessible
 Date: Mon,  6 Jan 2025 16:16:13 +0100
-Message-ID: <20250106151145.007991194@linuxfoundation.org>
+Message-ID: <20250106151157.161364622@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,143 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 7c005292e20ac53dfa601bf2a7375fd4815511ad ]
+[ Upstream commit fb514b31395946022f13a08e06a435f53cf9e8b3 ]
 
-CA0132 used the PCI SSID lookup helper that doesn't support the model
-string matching or quirk aliasing.
+Move the declaration of the 'ib_sge list' variable outside the
+'always_invalidate' block to ensure it remains accessible for use
+throughout the function.
 
-Replace it with the standard HD-audio quirk helpers for supporting
-those, and add the definition of the model strings for supported
-quirks, too.  There should be no visible change to the outside for the
-working system, but the driver will parse the model option and apply
-the quirk based on it from now on.
+Previously, 'ib_sge list' was declared within the 'always_invalidate'
+block, limiting its accessibility, then caused a
+'BUG: kernel NULL pointer dereference'[1].
+ ? __die_body.cold+0x19/0x27
+ ? page_fault_oops+0x15a/0x2d0
+ ? search_module_extables+0x19/0x60
+ ? search_bpf_extables+0x5f/0x80
+ ? exc_page_fault+0x7e/0x180
+ ? asm_exc_page_fault+0x26/0x30
+ ? memcpy_orig+0xd5/0x140
+ rxe_mr_copy+0x1c3/0x200 [rdma_rxe]
+ ? rxe_pool_get_index+0x4b/0x80 [rdma_rxe]
+ copy_data+0xa5/0x230 [rdma_rxe]
+ rxe_requester+0xd9b/0xf70 [rdma_rxe]
+ ? finish_task_switch.isra.0+0x99/0x2e0
+ rxe_sender+0x13/0x40 [rdma_rxe]
+ do_task+0x68/0x1e0 [rdma_rxe]
+ process_one_work+0x177/0x330
+ worker_thread+0x252/0x390
+ ? __pfx_worker_thread+0x10/0x10
 
-Link: https://patch.msgid.link/20241207133754.3658-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This change ensures the variable is available for subsequent operations
+that require it.
+
+[1] https://lore.kernel.org/linux-rdma/6a1f3e8f-deb0-49f9-bc69-a9b03ecfcda7@fujitsu.com/
+
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Link: https://patch.msgid.link/20241231013416.1290920-1-lizhijian@fujitsu.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_ca0132.c | 37 ++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index e4673a71551a..d40197fb5fbd 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -1134,7 +1134,6 @@ struct ca0132_spec {
- 
- 	struct hda_codec *codec;
- 	struct delayed_work unsol_hp_work;
--	int quirk;
- 
- #ifdef ENABLE_TUNING_CONTROLS
- 	long cur_ctl_vals[TUNING_CTLS_COUNT];
-@@ -1166,7 +1165,6 @@ struct ca0132_spec {
-  * CA0132 quirks table
-  */
- enum {
--	QUIRK_NONE,
- 	QUIRK_ALIENWARE,
- 	QUIRK_ALIENWARE_M17XR4,
- 	QUIRK_SBZ,
-@@ -1176,10 +1174,11 @@ enum {
- 	QUIRK_R3D,
- 	QUIRK_AE5,
- 	QUIRK_AE7,
-+	QUIRK_NONE = HDA_FIXUP_ID_NOT_SET,
- };
- 
- #ifdef CONFIG_PCI
--#define ca0132_quirk(spec)		((spec)->quirk)
-+#define ca0132_quirk(spec)		((spec)->codec->fixup_id)
- #define ca0132_use_pci_mmio(spec)	((spec)->use_pci_mmio)
- #define ca0132_use_alt_functions(spec)	((spec)->use_alt_functions)
- #define ca0132_use_alt_controls(spec)	((spec)->use_alt_controls)
-@@ -1293,7 +1292,7 @@ static const struct hda_pintbl ae7_pincfgs[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk ca0132_quirks[] = {
-+static const struct hda_quirk ca0132_quirks[] = {
- 	SND_PCI_QUIRK(0x1028, 0x057b, "Alienware M17x R4", QUIRK_ALIENWARE_M17XR4),
- 	SND_PCI_QUIRK(0x1028, 0x0685, "Alienware 15 2015", QUIRK_ALIENWARE),
- 	SND_PCI_QUIRK(0x1028, 0x0688, "Alienware 17 2015", QUIRK_ALIENWARE),
-@@ -1316,6 +1315,19 @@ static const struct snd_pci_quirk ca0132_quirks[] = {
- 	{}
- };
- 
-+static const struct hda_model_fixup ca0132_quirk_models[] = {
-+	{ .id = QUIRK_ALIENWARE, .name = "alienware" },
-+	{ .id = QUIRK_ALIENWARE_M17XR4, .name = "alienware-m17xr4" },
-+	{ .id = QUIRK_SBZ, .name = "sbz" },
-+	{ .id = QUIRK_ZXR, .name = "zxr" },
-+	{ .id = QUIRK_ZXR_DBPRO, .name = "zxr-dbpro" },
-+	{ .id = QUIRK_R3DI, .name = "r3di" },
-+	{ .id = QUIRK_R3D, .name = "r3d" },
-+	{ .id = QUIRK_AE5, .name = "ae5" },
-+	{ .id = QUIRK_AE7, .name = "ae7" },
-+	{}
-+};
-+
- /* Output selection quirk info structures. */
- #define MAX_QUIRK_MMIO_GPIO_SET_VALS 3
- #define MAX_QUIRK_SCP_SET_VALS 2
-@@ -9957,17 +9969,15 @@ static int ca0132_prepare_verbs(struct hda_codec *codec)
-  */
- static void sbz_detect_quirk(struct hda_codec *codec)
- {
--	struct ca0132_spec *spec = codec->spec;
--
- 	switch (codec->core.subsystem_id) {
- 	case 0x11020033:
--		spec->quirk = QUIRK_ZXR;
-+		codec->fixup_id = QUIRK_ZXR;
- 		break;
- 	case 0x1102003f:
--		spec->quirk = QUIRK_ZXR_DBPRO;
-+		codec->fixup_id = QUIRK_ZXR_DBPRO;
- 		break;
- 	default:
--		spec->quirk = QUIRK_SBZ;
-+		codec->fixup_id = QUIRK_SBZ;
- 		break;
- 	}
- }
-@@ -9976,7 +9986,6 @@ static int patch_ca0132(struct hda_codec *codec)
- {
- 	struct ca0132_spec *spec;
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 758a3d9c2844..84d1654148d7 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -346,6 +346,7 @@ static int send_io_resp_imm(struct rtrs_srv_con *con, struct rtrs_srv_op *id,
+ 	struct rtrs_srv_mr *srv_mr;
+ 	bool need_inval = false;
+ 	enum ib_send_flags flags;
++	struct ib_sge list;
+ 	u32 imm;
  	int err;
--	const struct snd_pci_quirk *quirk;
  
- 	codec_dbg(codec, "patch_ca0132\n");
+@@ -398,7 +399,6 @@ static int send_io_resp_imm(struct rtrs_srv_con *con, struct rtrs_srv_op *id,
+ 	imm = rtrs_to_io_rsp_imm(id->msg_id, errno, need_inval);
+ 	imm_wr.wr.next = NULL;
+ 	if (always_invalidate) {
+-		struct ib_sge list;
+ 		struct rtrs_msg_rkey_rsp *msg;
  
-@@ -9987,11 +9996,7 @@ static int patch_ca0132(struct hda_codec *codec)
- 	spec->codec = codec;
- 
- 	/* Detect codec quirk */
--	quirk = snd_pci_quirk_lookup(codec->bus->pci, ca0132_quirks);
--	if (quirk)
--		spec->quirk = quirk->value;
--	else
--		spec->quirk = QUIRK_NONE;
-+	snd_hda_pick_fixup(codec, ca0132_quirk_models, ca0132_quirks, NULL);
- 	if (ca0132_quirk(spec) == QUIRK_SBZ)
- 		sbz_detect_quirk(codec);
- 
-@@ -10068,7 +10073,7 @@ static int patch_ca0132(struct hda_codec *codec)
- 		spec->mem_base = pci_iomap(codec->bus->pci, 2, 0xC20);
- 		if (spec->mem_base == NULL) {
- 			codec_warn(codec, "pci_iomap failed! Setting quirk to QUIRK_NONE.");
--			spec->quirk = QUIRK_NONE;
-+			codec->fixup_id = QUIRK_NONE;
- 		}
- 	}
- #endif
+ 		srv_mr = &srv_path->mrs[id->msg_id];
 -- 
 2.39.5
 
