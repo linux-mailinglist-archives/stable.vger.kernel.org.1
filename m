@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3CAA02BCE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4837A02CEF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0122C3A56BE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95DA83A6AA8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433DF1DD0FE;
-	Mon,  6 Jan 2025 15:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4827939FCE;
+	Mon,  6 Jan 2025 15:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOMnr3hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKAt667u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CD41DE2DE;
-	Mon,  6 Jan 2025 15:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A97BA34;
+	Mon,  6 Jan 2025 15:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178337; cv=none; b=VuWYfLT6I/SgaLo4nZ7L2srz7R9iFlfAu1l1CxRrRI2BOX4etL6f5xGtf4QfOYDo/lLnI+f7OOsstUcd7LYWBZcb1Wpab+bO7lpY8V6ZP6SvQIHRCW7B3G3obrbPYCKwC7RzpRrCNFdd3e6DYaajeqX2BgYV42GDI5c9aIJsMb8=
+	t=1736179052; cv=none; b=tswIeMhNzZLciYIVzWYKUGQPu6cYPiAWuGXioE1sZfe1iNizfa7l+feH50SvWxEYwRn5V26h/Fmu1n/B44MMXxbjLVxWz4ZkZhGqEMIk7AldXwmZJfwGuNvTKbU6gzctiSeUuNVkctClmVi1BEs0FhA7L7Q28aM417sADpGFa2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178337; c=relaxed/simple;
-	bh=TlFZQJrYhFm4AH/K1wBNPQV+ZMHtH07PWU57Pm/oVL4=;
+	s=arc-20240116; t=1736179052; c=relaxed/simple;
+	bh=V1rgS+B8b+NMIVNmZwAv2K9nV4trQwrabpgKClo1SgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThlzrCrq4jJSXi6E17IsZ0U9/YSjbHP3Vhv924xK/+QYAqAEeFrriLnUWt9awyruLfjtjbtxvm1ctfLbaPq55J/J9r7pfh1GJb2nIOB5p62kT2x00XaAJwmj33A5L05BU7bX52s87R/IuFldr5rioNlZA2PFbnrEo5MIUuXVJ3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOMnr3hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6464AC4CED2;
-	Mon,  6 Jan 2025 15:45:37 +0000 (UTC)
+	 MIME-Version; b=pB3XMIRWhWPSlD9ZsJc9kWKCKjPlGa8ebyvqAS6GrO2FE/zAg5MI7XHTz6/sBB2KPD47EKVlcKvyD2wMp3dopaODUEeB4xI4Xq14NOWVltlLyMF8/xoPUi9cvj5I3RAl6bXtICW6QDXabw/y9RDKUphVhMEBLxX2bntAg1fWq2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKAt667u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA32C4CED2;
+	Mon,  6 Jan 2025 15:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178337;
-	bh=TlFZQJrYhFm4AH/K1wBNPQV+ZMHtH07PWU57Pm/oVL4=;
+	s=korg; t=1736179051;
+	bh=V1rgS+B8b+NMIVNmZwAv2K9nV4trQwrabpgKClo1SgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iOMnr3hzlvB0PMizcNuSXcuNIA2ia70shO5maZwQCi1yROosZH3jDJuGXSgmn9Oqd
-	 WwRRzIjumPWfzvYg5Iroc+0s1F+70lMLSLgJsVPNslAfG84/mBp9SpBGSZblfpv6VW
-	 XSZ5Rbfz9fKFP1oKfdh4oTY+ZPhnZzPvaGapgPbc=
+	b=IKAt667uMQoBOeLtzw2OnzkVu7RIh/WnostwvC+ZesgTudAjvlyHPyX7QDuUbxI65
+	 6hMKtqSDNpmgh8QQDeA+THyJwb/LspYLGYEd+p/dF2dhQuQkm0z1DndvHbRg20Q74B
+	 pDuFOtl5XMQBr/t0aX9EopOXdxdO79NklPhSsfco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Vasily Averin <vasily.averin@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 083/138] ipv6: prevent possible UAF in ip6_xmit()
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 11/93] ionic: use ee->offset when returning sprom data
 Date: Mon,  6 Jan 2025 16:16:47 +0100
-Message-ID: <20250106151136.377891705@linuxfoundation.org>
+Message-ID: <20250106151129.126583523@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-commit 2d5ff7e339d04622d8282661df36151906d0e1c7 upstream.
+[ Upstream commit b096d62ba1323391b2db98b7704e2468cf3b1588 ]
 
-If skb_expand_head() returns NULL, skb has been freed
-and the associated dst/idev could also have been freed.
+Some calls into ionic_get_module_eeprom() don't use a single
+full buffer size, but instead multiple calls with an offset.
+Teach our driver to use the offset correctly so we can
+respond appropriately to the caller.
 
-We must use rcu_read_lock() to prevent a possible UAF.
-
-Fixes: 0c9f227bee11 ("ipv6: use skb_expand_head in ip6_xmit")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Vasily Averin <vasily.averin@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240820160859.3786976-4-edumazet@google.com
+Fixes: 4d03e00a2140 ("ionic: Add initial ethtool support")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20241212213157.12212-4-shannon.nelson@amd.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -272,11 +272,15 @@ int ip6_xmit(const struct sock *sk, stru
- 		head_room += opt->opt_nflen + opt->opt_flen;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index c53d2271d8ab..dd4b89c90d67 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -711,8 +711,8 @@ static int ionic_get_module_eeprom(struct net_device *netdev,
+ 	len = min_t(u32, sizeof(xcvr->sprom), ee->len);
  
- 	if (unlikely(head_room > skb_headroom(skb))) {
-+		/* Make sure idev stays alive */
-+		rcu_read_lock();
- 		skb = skb_expand_head(skb, head_room);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
-+			rcu_read_unlock();
- 			return -ENOBUFS;
- 		}
-+		rcu_read_unlock();
- 	}
+ 	do {
+-		memcpy(data, xcvr->sprom, len);
+-		memcpy(tbuf, xcvr->sprom, len);
++		memcpy(data, &xcvr->sprom[ee->offset], len);
++		memcpy(tbuf, &xcvr->sprom[ee->offset], len);
  
- 	if (opt) {
+ 		/* Let's make sure we got a consistent copy */
+ 		if (!memcmp(data, tbuf, len))
+-- 
+2.39.5
+
 
 
 
