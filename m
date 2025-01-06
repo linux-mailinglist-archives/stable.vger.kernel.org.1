@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12EBA029DA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65865A02A77
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 881A73A6AFB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57299164CCF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675EB1C5F11;
-	Mon,  6 Jan 2025 15:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A09142E7C;
+	Mon,  6 Jan 2025 15:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPEkEZK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSD9ALaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5BF16DEBB;
-	Mon,  6 Jan 2025 15:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08F883A14;
+	Mon,  6 Jan 2025 15:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177193; cv=none; b=aokUgyjiGnFu12KoOivESzZ+RbU+YLapQqX9WvCcPDInN8Ae3vczCS7bYbSKYY8dioRbdjvE32WA8vbpz1djcI4csB2SAakElMvQKrJRucFac2+08rrbIU4X+3920SrsEiezA07md3ICRaI8RMrixQ97zcR3Z6xJ87rMV0s8QAI=
+	t=1736177644; cv=none; b=nPuscxI7qSM5IPBu0Y/X9fnedPPcEpiMcl8ZPZIjPAw4TbxKbYFC1QpfBEPm11LENa6yUzfOPgDyWxpBDpH0zEBHeJni2SCzqdWFsmHpEpJ09aJ+rz67kNuYac2hMmuf+3oRHQHIZMbWz2ZKuqJNDLc5anFkSdw5EejbPuQ8u2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177193; c=relaxed/simple;
-	bh=dARvEaCIfmDH6Y1hNKu8XLF2RMPGlY6DUp81fKYtSt0=;
+	s=arc-20240116; t=1736177644; c=relaxed/simple;
+	bh=oFIyTP2qSsvz2NQS7k0hwpzopon/4njC5Y3HgdokrB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ithqznFv3GoLmdrUpEdw+Asm+f5a4+Ns6GK3/7IHP1RgbJRKqLpeIoDYo6ygRSnaTvfnBv1O4oE9l2kIdhY3tmJUWjwCpuCtvyfesTWaFLh4g6V9DW9uC6trK+ipH/HpqeTX1f0pLvhvqcT54J9B5cJh4JU2NR15rngaWEBuCO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPEkEZK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54670C4CED2;
-	Mon,  6 Jan 2025 15:26:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m/OiMGAVpqMYPzLjqkuB72Hc8f/0pGwbVTuIVwzErbJz6Cc4+4k8kmZVg2rEe6wpJuUbNk3B/J3Gyj+dNeOQYwcxURGgkmFNuJ5zJos+VP9iTLdPbewMMmJh4DVbamIxOkmdZdffCr0doTNwgO7aoH+xwAqtVhODd15vNDHBxZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSD9ALaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1321C4CED2;
+	Mon,  6 Jan 2025 15:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177192;
-	bh=dARvEaCIfmDH6Y1hNKu8XLF2RMPGlY6DUp81fKYtSt0=;
+	s=korg; t=1736177644;
+	bh=oFIyTP2qSsvz2NQS7k0hwpzopon/4njC5Y3HgdokrB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPEkEZK2Ap0AQziaMTwoFUFQuEhOLncJlZ7Cdp6kDs9TvAqGrps/6y9XIx0kXxb4K
-	 9D4vWaFCVTikYNuJbh3ORcFzd9FDs/SikjK4BDk6LShapmeJ2kDW0+2TwLlFdRISLP
-	 G81Kvu+5yM50UyBbNGC9rotNSaf4thNm3qgtcDh4=
+	b=OSD9ALaByLeFjD6cwSUWbyWTMK4FGi/UxrtnJHNwIBhYv8a3F+SCP8/5idL9E+sb6
+	 aEFqQ+0GadjSrjPAs6WeL9u0e2HSSfdroQNBUkEiUhp4A511K0H0poM4QujoEri6Bw
+	 NUUpRvVDYhNU2ruQ69/+I8nALqOqXX8L7JtUAW8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/222] of: address: Store number of bus flag cells rather than bool
-Date: Mon,  6 Jan 2025 16:14:46 +0100
-Message-ID: <20250106151153.705372476@linuxfoundation.org>
+Subject: [PATCH 6.12 001/156] platform/x86: mlx-platform: call pci_dev_put() to balance the refcount
+Date: Mon,  6 Jan 2025 16:14:47 +0100
+Message-ID: <20250106151141.796762044@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 88696db08b7efa3b6bb722014ea7429e78f6be32 ]
+[ Upstream commit 185e1b1d91e419445d3fd99c1c0376a970438acf ]
 
-It is more useful to know how many flags cells a bus has rather than
-whether a bus has flags or not as ultimately the number of cells is the
-information used. Replace 'has_flags' boolean with 'flag_cells' count.
+mlxplat_pci_fpga_device_init() calls pci_get_device() but does not
+release the refcount on error path. Call pci_dev_put() on the error path
+and in mlxplat_pci_fpga_device_exit() to fix this.
 
-Acked-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20231026135358.3564307-2-robh@kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 7f05e20b989a ("of: address: Preserve the flags portion on 1:1 dma-ranges mapping")
+This bug was found by an experimental static analysis tool that I am
+developing.
+
+Fixes: 02daa222fbdd ("platform: mellanox: Add initial support for PCIe based programming logic device")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20241216022538.381209-1-joe@pf.is.s.u-tokyo.ac.jp
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/address.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/platform/x86/mlx-platform.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index cfe5a11b620a..cdefe5a89e5d 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -46,7 +46,7 @@ struct of_bus {
- 	u64		(*map)(__be32 *addr, const __be32 *range,
- 				int na, int ns, int pna);
- 	int		(*translate)(__be32 *addr, u64 offset, int na);
--	bool	has_flags;
-+	int		flag_cells;
- 	unsigned int	(*get_flags)(const __be32 *addr);
- };
+diff --git a/drivers/platform/x86/mlx-platform.c b/drivers/platform/x86/mlx-platform.c
+index 9d70146fd742..1a09f2dfb7bc 100644
+--- a/drivers/platform/x86/mlx-platform.c
++++ b/drivers/platform/x86/mlx-platform.c
+@@ -6237,6 +6237,7 @@ mlxplat_pci_fpga_device_init(unsigned int device, const char *res_name, struct p
+ fail_pci_request_regions:
+ 	pci_disable_device(pci_dev);
+ fail_pci_enable_device:
++	pci_dev_put(pci_dev);
+ 	return err;
+ }
  
-@@ -371,7 +371,7 @@ static struct of_bus of_busses[] = {
- 		.count_cells = of_bus_pci_count_cells,
- 		.map = of_bus_pci_map,
- 		.translate = of_bus_default_flags_translate,
--		.has_flags = true,
-+		.flag_cells = 1,
- 		.get_flags = of_bus_pci_get_flags,
- 	},
- #endif /* CONFIG_PCI */
-@@ -383,7 +383,7 @@ static struct of_bus of_busses[] = {
- 		.count_cells = of_bus_isa_count_cells,
- 		.map = of_bus_isa_map,
- 		.translate = of_bus_default_flags_translate,
--		.has_flags = true,
-+		.flag_cells = 1,
- 		.get_flags = of_bus_isa_get_flags,
- 	},
- 	/* Default with flags cell */
-@@ -394,7 +394,7 @@ static struct of_bus of_busses[] = {
- 		.count_cells = of_bus_default_count_cells,
- 		.map = of_bus_default_flags_map,
- 		.translate = of_bus_default_flags_translate,
--		.has_flags = true,
-+		.flag_cells = 1,
- 		.get_flags = of_bus_default_flags_get_flags,
- 	},
- 	/* Default */
-@@ -827,7 +827,7 @@ struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
- 	int na = parser->na;
- 	int ns = parser->ns;
- 	int np = parser->pna + na + ns;
--	int busflag_na = 0;
-+	int busflag_na = parser->bus->flag_cells;
+@@ -6247,6 +6248,7 @@ mlxplat_pci_fpga_device_exit(struct pci_dev *pci_bridge,
+ 	iounmap(pci_bridge_addr);
+ 	pci_release_regions(pci_bridge);
+ 	pci_disable_device(pci_bridge);
++	pci_dev_put(pci_bridge);
+ }
  
- 	if (!range)
- 		return NULL;
-@@ -837,10 +837,6 @@ struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
- 
- 	range->flags = parser->bus->get_flags(parser->range);
- 
--	/* A extra cell for resource flags */
--	if (parser->bus->has_flags)
--		busflag_na = 1;
--
- 	range->bus_addr = of_read_number(parser->range + busflag_na, na - busflag_na);
- 
- 	if (parser->dma)
+ static int
 -- 
 2.39.5
 
