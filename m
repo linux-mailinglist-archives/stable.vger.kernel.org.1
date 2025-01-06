@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-107425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3577FA02BDF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B59A02B45
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BBBB16479E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 916A018859EE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6607F1DDA3D;
-	Mon,  6 Jan 2025 15:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840631DACBB;
+	Mon,  6 Jan 2025 15:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+9XMi4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mj8e3bTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BFB1DE3B8;
-	Mon,  6 Jan 2025 15:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FA0182D2;
+	Mon,  6 Jan 2025 15:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178424; cv=none; b=n8qNvsZ/tICsVmoqrz98yXjrXU3R/L2939YnaHroKYok1Jr/3umrnwrBd5ZfCmP1dEmI6cx8KYOFLP/KWcg6TKKVFUjgJ3V/lD+PuaWNtBapjVGk9syRrX+Deziwj2plxzxq0vFb70dIakWzKxIGphLURDzWbCfnuhSudVjDoKk=
+	t=1736178094; cv=none; b=gW2vzJpsFezT+7QUosfjXWJy2wFtoT/ZK/sjVahqMGG5AQlyv0LDId5HD4aoxVKaYNULfZ8Ot5Likb4QfOZkdygAI9KpDTN3j643pP7tziEhiZUiq9nrTJNn1f59rKaObafA6SjMtiDQwLuhz1xicT8wC33ahpYF98FMV/vY3XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178424; c=relaxed/simple;
-	bh=+YzaeLsfoE2AfsvMs7hICv6FJDPgZVBbKS4jrrI09lo=;
+	s=arc-20240116; t=1736178094; c=relaxed/simple;
+	bh=04dHs1GRmcxcOhv6ieDF2wsAn6+Jq5xG1fBLJlrJqYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=deEj4U9fthxdZN0+8zTmvmtTEkiRpuGJ5S15FJkOZBt8Z8O2Vx8QspW9CoWQnkP6HgHveSsrycwdt4K+SPBQzwFZ8CvIa4/UZmEQsR+5qHTKhZCBrCFoMOArYU8bo64mzQ0umAzk/IERgr/y1kNLZnI6SWbAlL0pCGfomuknB1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+9XMi4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B656C4CED2;
-	Mon,  6 Jan 2025 15:47:03 +0000 (UTC)
+	 MIME-Version; b=TvcBP8E7mNU0FaVug022cuA2+rXcM672fY15K51AgFsTIlToNRxxsLbAmd2u1ZN2oji4hB5OSsf3+l3UAxNv/7kQTt72LEuSm5u7hX4tC1YouVHr2EBV5tFoj/zx7NUpCFJH93UUjIeRj0mrvxExnn9oDngnoL3zMzdSau/yX1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mj8e3bTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC217C4CED2;
+	Mon,  6 Jan 2025 15:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178423;
-	bh=+YzaeLsfoE2AfsvMs7hICv6FJDPgZVBbKS4jrrI09lo=;
+	s=korg; t=1736178094;
+	bh=04dHs1GRmcxcOhv6ieDF2wsAn6+Jq5xG1fBLJlrJqYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+9XMi4/ZLOjx+gSABehrWcICwtH+iYQCkeDIT92rgj9Pz7y1Bia6d0AIGk2Q8y9z
-	 mAI84yH5Ws884tu2N/6K25roLm1C4qSRGhdWf/u9H7tPhC4WIWOohz9/UwdAzugzTq
-	 T6AXTipgXz0kL1FpJ0np60IzdwvMnQFWZwMMnqjs=
+	b=mj8e3bTQbDKHm6C8iaOiHCVgvBIoN9bBmNeSjy6imG1gKSpL0nGbByAQNLITwSdgx
+	 +DcKLrZ1ykHOYBKf0EFPe60OB+eC/7aVQ8yW2jjZ0fDjrbCjt5FSQ9Zh8iD9pNgrsv
+	 kcQuqzXvXb/NdgNUxwja2kqY4/YZhntfHUoHwfS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+74f70bb1cb968bf09e4f@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Chengen Du <chengen.du@canonical.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 113/138] af_packet: fix vlan_get_protocol_dgram() vs MSG_PEEK
-Date: Mon,  6 Jan 2025 16:17:17 +0100
-Message-ID: <20250106151137.506865559@linuxfoundation.org>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Julian Orth <ju.orth@gmail.com>,
+	Jann Horn <jannh@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 152/156] mm: reinstate ability to map write-sealed memfd mappings read-only
+Date: Mon,  6 Jan 2025 16:17:18 +0100
+Message-ID: <20250106151147.456273657@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,154 +67,238 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit f91a5b8089389eb408501af2762f168c3aaa7b79 ]
+commit 8ec396d05d1b737c87311fb7311f753b02c2a6b1 upstream.
 
-Blamed commit forgot MSG_PEEK case, allowing a crash [1] as found
-by syzbot.
+Patch series "mm: reinstate ability to map write-sealed memfd mappings
+read-only".
 
-Rework vlan_get_protocol_dgram() to not touch skb at all,
-so that it can be used from many cpus on the same skb.
+In commit 158978945f31 ("mm: perform the mapping_map_writable() check
+after call_mmap()") (and preceding changes in the same series) it became
+possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
 
-Add a const qualifier to skb argument.
+Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
+behaviour") unintentionally undid this logic by moving the
+mapping_map_writable() check before the shmem_mmap() hook is invoked,
+thereby regressing this change.
 
-[1]
-skbuff: skb_under_panic: text:ffffffff8a8ccd05 len:29 put:14 head:ffff88807fc8e400 data:ffff88807fc8e3f4 tail:0x11 end:0x140 dev:<NULL>
-------------[ cut here ]------------
- kernel BUG at net/core/skbuff.c:206 !
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 5892 Comm: syz-executor883 Not tainted 6.13.0-rc4-syzkaller-00054-gd6ef8b40d075 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
- RIP: 0010:skb_panic net/core/skbuff.c:206 [inline]
- RIP: 0010:skb_under_panic+0x14b/0x150 net/core/skbuff.c:216
-Code: 0b 8d 48 c7 c6 86 d5 25 8e 48 8b 54 24 08 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 41 54 41 57 41 56 e8 5a 69 79 f7 48 83 c4 20 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
-RSP: 0018:ffffc900038d7638 EFLAGS: 00010282
-RAX: 0000000000000087 RBX: dffffc0000000000 RCX: 609ffd18ea660600
-RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-RBP: ffff88802483c8d0 R08: ffffffff817f0a8c R09: 1ffff9200071ae60
-R10: dffffc0000000000 R11: fffff5200071ae61 R12: 0000000000000140
-R13: ffff88807fc8e400 R14: ffff88807fc8e3f4 R15: 0000000000000011
-FS:  00007fbac5e006c0(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fbac5e00d58 CR3: 000000001238e000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  skb_push+0xe5/0x100 net/core/skbuff.c:2636
-  vlan_get_protocol_dgram+0x165/0x290 net/packet/af_packet.c:585
-  packet_recvmsg+0x948/0x1ef0 net/packet/af_packet.c:3552
-  sock_recvmsg_nosec net/socket.c:1033 [inline]
-  sock_recvmsg+0x22f/0x280 net/socket.c:1055
-  ____sys_recvmsg+0x1c6/0x480 net/socket.c:2803
-  ___sys_recvmsg net/socket.c:2845 [inline]
-  do_recvmmsg+0x426/0xab0 net/socket.c:2940
-  __sys_recvmmsg net/socket.c:3014 [inline]
-  __do_sys_recvmmsg net/socket.c:3037 [inline]
-  __se_sys_recvmmsg net/socket.c:3030 [inline]
-  __x64_sys_recvmmsg+0x199/0x250 net/socket.c:3030
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This series reworks how we both permit write-sealed mappings being mapped
+read-only and disallow mprotect() from undoing the write-seal, fixing this
+regression.
 
-Fixes: 79eecf631c14 ("af_packet: Handle outgoing VLAN packets without hardware offloading")
-Reported-by: syzbot+74f70bb1cb968bf09e4f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6772c485.050a0220.2f3838.04c5.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Chengen Du <chengen.du@canonical.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20241230161004.2681892-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We also add a regression test to ensure that we do not accidentally
+regress this in future.
+
+Thanks to Julian Orth for reporting this regression.
+
+
+This patch (of 2):
+
+In commit 158978945f31 ("mm: perform the mapping_map_writable() check
+after call_mmap()") (and preceding changes in the same series) it became
+possible to mmap() F_SEAL_WRITE sealed memfd mappings read-only.
+
+This was previously unnecessarily disallowed, despite the man page
+documentation indicating that it would be, thereby limiting the usefulness
+of F_SEAL_WRITE logic.
+
+We fixed this by adapting logic that existed for the F_SEAL_FUTURE_WRITE
+seal (one which disallows future writes to the memfd) to also be used for
+F_SEAL_WRITE.
+
+For background - the F_SEAL_FUTURE_WRITE seal clears VM_MAYWRITE for a
+read-only mapping to disallow mprotect() from overriding the seal - an
+operation performed by seal_check_write(), invoked from shmem_mmap(), the
+f_op->mmap() hook used by shmem mappings.
+
+By extending this to F_SEAL_WRITE and critically - checking
+mapping_map_writable() to determine if we may map the memfd AFTER we
+invoke shmem_mmap() - the desired logic becomes possible.  This is because
+mapping_map_writable() explicitly checks for VM_MAYWRITE, which we will
+have cleared.
+
+Commit 5de195060b2e ("mm: resolve faulty mmap_region() error path
+behaviour") unintentionally undid this logic by moving the
+mapping_map_writable() check before the shmem_mmap() hook is invoked,
+thereby regressing this change.
+
+We reinstate this functionality by moving the check out of shmem_mmap()
+and instead performing it in do_mmap() at the point at which VMA flags are
+being determined, which seems in any case to be a more appropriate place
+in which to make this determination.
+
+In order to achieve this we rework memfd seal logic to allow us access to
+this information using existing logic and eliminate the clearing of
+VM_MAYWRITE from seal_check_write() which we are performing in do_mmap()
+instead.
+
+Link: https://lkml.kernel.org/r/99fc35d2c62bd2e05571cf60d9f8b843c56069e0.1732804776.git.lorenzo.stoakes@oracle.com
+Fixes: 5de195060b2e ("mm: resolve faulty mmap_region() error path behaviour")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: Julian Orth <ju.orth@gmail.com>
+Closes: https://lore.kernel.org/all/CAHijbEUMhvJTN9Xw1GmbM266FXXv=U7s4L_Jem5x3AaPZxrYpQ@mail.gmail.com/
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/if_vlan.h | 16 +++++++++++++---
- net/packet/af_packet.c  | 16 ++++------------
- 2 files changed, 17 insertions(+), 15 deletions(-)
+ include/linux/memfd.h |   14 ++++++++++++
+ include/linux/mm.h    |   58 ++++++++++++++++++++++++++++++++++----------------
+ mm/memfd.c            |    2 -
+ mm/mmap.c             |    4 +++
+ 4 files changed, 59 insertions(+), 19 deletions(-)
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index ce6714bec65f..64cfe7cd292c 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -582,13 +582,16 @@ static inline int vlan_get_tag(const struct sk_buff *skb, u16 *vlan_tci)
-  * vlan_get_protocol - get protocol EtherType.
-  * @skb: skbuff to query
-  * @type: first vlan protocol
-+ * @mac_offset: MAC offset
-  * @depth: buffer to store length of eth and vlan tags in bytes
-  *
-  * Returns the EtherType of the packet, regardless of whether it is
-  * vlan encapsulated (normal or hardware accelerated) or not.
-  */
--static inline __be16 __vlan_get_protocol(const struct sk_buff *skb, __be16 type,
--					 int *depth)
-+static inline __be16 __vlan_get_protocol_offset(const struct sk_buff *skb,
-+						__be16 type,
-+						int mac_offset,
-+						int *depth)
+--- a/include/linux/memfd.h
++++ b/include/linux/memfd.h
+@@ -7,6 +7,7 @@
+ #ifdef CONFIG_MEMFD_CREATE
+ extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int arg);
+ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
++unsigned int *memfd_file_seals_ptr(struct file *file);
+ #else
+ static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned int a)
  {
- 	unsigned int vlan_depth = skb->mac_len, parse_depth = VLAN_MAX_DEPTH;
- 
-@@ -607,7 +610,8 @@ static inline __be16 __vlan_get_protocol(const struct sk_buff *skb, __be16 type,
- 		do {
- 			struct vlan_hdr vhdr, *vh;
- 
--			vh = skb_header_pointer(skb, vlan_depth, sizeof(vhdr), &vhdr);
-+			vh = skb_header_pointer(skb, mac_offset + vlan_depth,
-+						sizeof(vhdr), &vhdr);
- 			if (unlikely(!vh || !--parse_depth))
- 				return 0;
- 
-@@ -622,6 +626,12 @@ static inline __be16 __vlan_get_protocol(const struct sk_buff *skb, __be16 type,
- 	return type;
+@@ -16,6 +17,19 @@ static inline struct folio *memfd_alloc_
+ {
+ 	return ERR_PTR(-EINVAL);
  }
- 
-+static inline __be16 __vlan_get_protocol(const struct sk_buff *skb, __be16 type,
-+					 int *depth)
++
++static inline unsigned int *memfd_file_seals_ptr(struct file *file)
 +{
-+	return __vlan_get_protocol_offset(skb, type, 0, depth);
++	return NULL;
++}
+ #endif
+ 
++/* Retrieve memfd seals associated with the file, if any. */
++static inline unsigned int memfd_file_seals(struct file *file)
++{
++	unsigned int *sealsp = memfd_file_seals_ptr(file);
++
++	return sealsp ? *sealsp : 0;
++}
++
+ #endif /* __LINUX_MEMFD_H */
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4079,6 +4079,37 @@ void mem_dump_obj(void *object);
+ static inline void mem_dump_obj(void *object) {}
+ #endif
+ 
++static inline bool is_write_sealed(int seals)
++{
++	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
++}
++
++/**
++ * is_readonly_sealed - Checks whether write-sealed but mapped read-only,
++ *                      in which case writes should be disallowing moving
++ *                      forwards.
++ * @seals: the seals to check
++ * @vm_flags: the VMA flags to check
++ *
++ * Returns whether readonly sealed, in which case writess should be disallowed
++ * going forward.
++ */
++static inline bool is_readonly_sealed(int seals, vm_flags_t vm_flags)
++{
++	/*
++	 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
++	 * MAP_SHARED and read-only, take care to not allow mprotect to
++	 * revert protections on such mappings. Do this only for shared
++	 * mappings. For private mappings, don't need to mask
++	 * VM_MAYWRITE as we still want them to be COW-writable.
++	 */
++	if (is_write_sealed(seals) &&
++	    ((vm_flags & (VM_SHARED | VM_WRITE)) == VM_SHARED))
++		return true;
++
++	return false;
 +}
 +
  /**
-  * vlan_get_protocol - get protocol EtherType.
-  * @skb: skbuff to query
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 49baa5924d74..2f69cf5270db 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -533,21 +533,13 @@ static u16 vlan_get_tci(const struct sk_buff *skb, struct net_device *dev)
- 	return ntohs(vh->h_vlan_TCI);
- }
- 
--static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
-+static __be16 vlan_get_protocol_dgram(const struct sk_buff *skb)
+  * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
+  *                    handle them.
+@@ -4090,24 +4121,15 @@ static inline void mem_dump_obj(void *ob
+  */
+ static inline int seal_check_write(int seals, struct vm_area_struct *vma)
  {
- 	__be16 proto = skb->protocol;
- 
--	if (unlikely(eth_type_vlan(proto))) {
--		u8 *skb_orig_data = skb->data;
--		int skb_orig_len = skb->len;
+-	if (seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE)) {
+-		/*
+-		 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
+-		 * write seals are active.
+-		 */
+-		if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
+-			return -EPERM;
 -
--		skb_push(skb, skb->data - skb_mac_header(skb));
--		proto = __vlan_get_protocol(skb, proto, NULL);
--		if (skb_orig_data != skb->data) {
--			skb->data = skb_orig_data;
--			skb->len = skb_orig_len;
--		}
+-		/*
+-		 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
+-		 * MAP_SHARED and read-only, take care to not allow mprotect to
+-		 * revert protections on such mappings. Do this only for shared
+-		 * mappings. For private mappings, don't need to mask
+-		 * VM_MAYWRITE as we still want them to be COW-writable.
+-		 */
+-		if (vma->vm_flags & VM_SHARED)
+-			vm_flags_clear(vma, VM_MAYWRITE);
 -	}
-+	if (unlikely(eth_type_vlan(proto)))
-+		proto = __vlan_get_protocol_offset(skb, proto,
-+						   skb_mac_offset(skb), NULL);
++	if (!is_write_sealed(seals))
++		return 0;
++
++	/*
++	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
++	 * write seals are active.
++	 */
++	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
++		return -EPERM;
  
- 	return proto;
+ 	return 0;
  }
--- 
-2.39.5
-
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -170,7 +170,7 @@ static int memfd_wait_for_pins(struct ad
+ 	return error;
+ }
+ 
+-static unsigned int *memfd_file_seals_ptr(struct file *file)
++unsigned int *memfd_file_seals_ptr(struct file *file)
+ {
+ 	if (shmem_file(file))
+ 		return &SHMEM_I(file_inode(file))->seals;
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -47,6 +47,7 @@
+ #include <linux/oom.h>
+ #include <linux/sched/mm.h>
+ #include <linux/ksm.h>
++#include <linux/memfd.h>
+ 
+ #include <linux/uaccess.h>
+ #include <asm/cacheflush.h>
+@@ -368,6 +369,7 @@ unsigned long do_mmap(struct file *file,
+ 
+ 	if (file) {
+ 		struct inode *inode = file_inode(file);
++		unsigned int seals = memfd_file_seals(file);
+ 		unsigned long flags_mask;
+ 
+ 		if (!file_mmap_ok(file, inode, pgoff, len))
+@@ -408,6 +410,8 @@ unsigned long do_mmap(struct file *file,
+ 			vm_flags |= VM_SHARED | VM_MAYSHARE;
+ 			if (!(file->f_mode & FMODE_WRITE))
+ 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
++			else if (is_readonly_sealed(seals, vm_flags))
++				vm_flags &= ~VM_MAYWRITE;
+ 			fallthrough;
+ 		case MAP_PRIVATE:
+ 			if (!(file->f_mode & FMODE_READ))
 
 
 
