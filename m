@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-107135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E038A02A63
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363F1A02CEE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47E7518843C9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 433253A6953
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D004C1553BB;
-	Mon,  6 Jan 2025 15:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26056145348;
+	Mon,  6 Jan 2025 15:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bk7Yr4Wo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGMnQU1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E6B132103;
-	Mon,  6 Jan 2025 15:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AE4282F5;
+	Mon,  6 Jan 2025 15:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177560; cv=none; b=ZOF/O1+vTggoqpn4zVJsukDoy7c9/limh38LkV0XV6/bZ2rwS/8mRK5zTjxGAb/Nw/GK+WkJehA8zsPVmPNPMLDWMnbcqeAnwgGn5j1QlQn/HKYHuzUYhOPFvoxLfRFMCJES44wxnaMWV6dPEgPFc/oELtACrDa4RX5pvEqS1xQ=
+	t=1736179054; cv=none; b=ZmhlOzlsKY7z06Ee2VpZpHUt2+3xLN+5L/qRuSwI+oCx9YISqvbxgjBhvqOathBIAc4CuIp1Xo54CuiOQnXQeUuJK6oAtA7Yv3ZBEnaMcuNzZD5XQlSWb+M0VdR4pkUYFRWw0SN6XKxkeJ4xzy7Xj4FbhXkmGTGddJl2TNGpzeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177560; c=relaxed/simple;
-	bh=+1xoZMOkCD1p+spJyh7JeXPDy6MsdXnUgqQtTssSTOE=;
+	s=arc-20240116; t=1736179054; c=relaxed/simple;
+	bh=v8rIU4uMv2rxromXo3FVGIL5KjUW39LnIE9x/CROV58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+24mGAtI7IIUaGGYbuSbI5mBpeZPpwsaQBsRxI0Pt9aTnwKHmGXFO9K2K4VsA8RJ5niNgn9rFyo26ce0V4Gp5PGpBz5o6JkWvQBn8j4FKJf69YfmPSVLRatwWnNMRANlr+RfT739S3yLnKLKOQ9bo+P1jitCiXwER7lesbRZzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bk7Yr4Wo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B776C4CED2;
-	Mon,  6 Jan 2025 15:32:39 +0000 (UTC)
+	 MIME-Version; b=OQtaChrKaXt9+dq4HT8OQsgBba9tOSk8iK1l0SscQfwNP5/EjS80qGPpMOBSHa/Am0L1pOcsqfnTPB0eMjcfoSv8T1uN+OI0tl1NTWcQOYGFz8sVsWw1OWylowm4dORNQjEDekc2ESugBXHNUiaxeq+qSx8avSItiJ1MTfUmcmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGMnQU1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3B5C4CED2;
+	Mon,  6 Jan 2025 15:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177560;
-	bh=+1xoZMOkCD1p+spJyh7JeXPDy6MsdXnUgqQtTssSTOE=;
+	s=korg; t=1736179054;
+	bh=v8rIU4uMv2rxromXo3FVGIL5KjUW39LnIE9x/CROV58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bk7Yr4WofBMSGqAsIYN/j8KS48lPy5tVKex34uh/WrIzrZhnr/nIX1COktdAHp1gR
-	 fj3ItxBe5MI4xXvAZT9DINThOVyzG+cz/qd/MRPYI0NfaucnKFNfrK31EquCSSyWEl
-	 7RE/N77AupX8QYffoQ4kAnGz7f1/8426SbOeSPGI=
+	b=oGMnQU1y4uyYsmG1UphIdT7cmUT03dtXet448LZcB/LnuCE1rAGxloNBWzxoRsvgy
+	 8ei3kxJOEd3QPWCRvdMLp9m6p2/t5azncf/LkCGwGrAsbzjHtBFBElxgvrW5OCRbKJ
+	 NaIdB5jkQSfBRbICN0kJFERiDr/rBbW4Tc6i0Vqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Ching-Chun (Jim) Huang" <jserv@ccns.ncku.edu.tw>,
-	chuang@cs.nycu.edu.tw,
-	Ingo Molnar <mingo@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Shile Zhang <shile.zhang@linux.alibaba.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 204/222] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 12/93] net: hinic: Fix cleanup in create_rxqs/txqs()
 Date: Mon,  6 Jan 2025 16:16:48 +0100
-Message-ID: <20250106151158.485595159@linuxfoundation.org>
+Message-ID: <20250106151129.163800647@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 0210d251162f4033350a94a43f95b1c39ec84a90 upstream.
+[ Upstream commit 7203d10e93b6e6e1d19481ef7907de6a9133a467 ]
 
-The orc_sort_cmp() function, used with qsort(), previously violated the
-symmetry and transitivity rules required by the C standard.  Specifically,
-when both entries are ORC_TYPE_UNDEFINED, it could result in both a < b
-and b < a, which breaks the required symmetry and transitivity.  This can
-lead to undefined behavior and incorrect sorting results, potentially
-causing memory corruption in glibc implementations [1].
+There is a check for NULL at the start of create_txqs() and
+create_rxqs() which tess if "nic_dev->txqs" is non-NULL.  The
+intention is that if the device is already open and the queues
+are already created then we don't create them a second time.
 
-Symmetry: If x < y, then y > x.
-Transitivity: If x < y and y < z, then x < z.
+However, the bug is that if we have an error in the create_txqs()
+then the pointer doesn't get set back to NULL.  The NULL check
+at the start of the function will say that it's already open when
+it's not and the device can't be used.
 
-Fix the comparison logic to return 0 when both entries are
-ORC_TYPE_UNDEFINED, ensuring compliance with qsort() requirements.
+Set ->txqs back to NULL on cleanup on error.
 
-Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-Link: https://lkml.kernel.org/r/20241226140332.2670689-1-visitorckw@gmail.com
-Fixes: 57fa18994285 ("scripts/sorttable: Implement build-time ORC unwind table sorting")
-Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
-Cc: <chuang@cs.nycu.edu.tw>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Shile Zhang <shile.zhang@linux.alibaba.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c3e79baf1b03 ("net-next/hinic: Add logical Txq and Rxq")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/0cc98faf-a0ed-4565-a55b-0fa2734bc205@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sorttable.h |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/huawei/hinic/hinic_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -110,7 +110,7 @@ static inline unsigned long orc_ip(const
+diff --git a/drivers/net/ethernet/huawei/hinic/hinic_main.c b/drivers/net/ethernet/huawei/hinic/hinic_main.c
+index 3f739ce40201..4361e56d7dd3 100644
+--- a/drivers/net/ethernet/huawei/hinic/hinic_main.c
++++ b/drivers/net/ethernet/huawei/hinic/hinic_main.c
+@@ -161,6 +161,7 @@ static int create_txqs(struct hinic_dev *nic_dev)
+ 		hinic_clean_txq(&nic_dev->txqs[j]);
  
- static int orc_sort_cmp(const void *_a, const void *_b)
- {
--	struct orc_entry *orc_a;
-+	struct orc_entry *orc_a, *orc_b;
- 	const int *a = g_orc_ip_table + *(int *)_a;
- 	const int *b = g_orc_ip_table + *(int *)_b;
- 	unsigned long a_val = orc_ip(a);
-@@ -128,6 +128,9 @@ static int orc_sort_cmp(const void *_a,
- 	 * whitelisted .o files which didn't get objtool generation.
- 	 */
- 	orc_a = g_orc_table + (a - g_orc_ip_table);
-+	orc_b = g_orc_table + (b - g_orc_ip_table);
-+	if (orc_a->type == ORC_TYPE_UNDEFINED && orc_b->type == ORC_TYPE_UNDEFINED)
-+		return 0;
- 	return orc_a->type == ORC_TYPE_UNDEFINED ? -1 : 1;
+ 	devm_kfree(&netdev->dev, nic_dev->txqs);
++	nic_dev->txqs = NULL;
+ 	return err;
  }
  
+@@ -221,6 +222,7 @@ static int create_rxqs(struct hinic_dev *nic_dev)
+ 		hinic_clean_rxq(&nic_dev->rxqs[j]);
+ 
+ 	devm_kfree(&netdev->dev, nic_dev->rxqs);
++	nic_dev->rxqs = NULL;
+ 	return err;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
