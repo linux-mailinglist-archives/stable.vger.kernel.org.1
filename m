@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-106928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88BCA02959
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8F3A02B5E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D8E83A1D80
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F04B3A2CD7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D2F1514F6;
-	Mon,  6 Jan 2025 15:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AC11C5F11;
+	Mon,  6 Jan 2025 15:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZ480xvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsaGcskH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67998634A;
-	Mon,  6 Jan 2025 15:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1341ADFE3;
+	Mon,  6 Jan 2025 15:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176936; cv=none; b=d7oKvjatlhYh7kDnM68L9finK37HXoDG2ZiHLPBGBX2JSbb/CJoOPO3df56TktzHQ6AJV7sYEvVUFe0LRzzJ6WIAr7k6SzA2ziPifmy+m0fuGo72qVWz9ExDZmQt0+eGk54qSgymtex0OJfaFsZ3E7jxruS3gJPQUHGxq3+IL70=
+	t=1736178082; cv=none; b=jilkJRL0Mjp4ejBv1+VLJaPwv2ATucYmVM0JlQs6RQqsucdTAeQtvCXXnXZfhThg+cSzM53skTplQO7r65InpPHjXrQPyee8OtC5stxtJd2m+aCauGZKVt4BSvhtQEZwLucoLSyCpojiDAmL+5eA4m7V0/7X50QPrUXdAFfezxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176936; c=relaxed/simple;
-	bh=1M/8KYmoWapeK3+T++xPjPtY4NWPu005eXMIkSSuTgE=;
+	s=arc-20240116; t=1736178082; c=relaxed/simple;
+	bh=rBB4ffMLEdnILfBffsHlDM22aDV3TXFUT48X3s0AEiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVP9nf1z/0ZMmxBgNzhTzxWbehwAruFC4wZNOGmIPoSneqrSZTh5xFV+DHIyyLsS0gruq+7lwvJbqpa3fXJIfShOlyrAqazuGLEL2BKvIQV5iusgtBdHGXruOLdWnE9bwnjVup6vZWrg12Lx37pZsEW2HOXOzh9uz3SeCBcJC3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZ480xvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF5AC4CEDF;
-	Mon,  6 Jan 2025 15:22:15 +0000 (UTC)
+	 MIME-Version; b=u+qx3Ux4gHREoPRJvF3N9z+35OMptfuOd3vstoTR3Bw8acOk0I+Cq4hzNThReJ+SgcirU+PbjLyBeRUEgCL4ffOiILeuellNiNviUvef+gFK6UdFJLZWdTN2qlGIIoE4eD5yCDW1LI5BETDj3dHgFqRszLhKxgHp5XulfeDBMeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsaGcskH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E7FC4CED2;
+	Mon,  6 Jan 2025 15:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176936;
-	bh=1M/8KYmoWapeK3+T++xPjPtY4NWPu005eXMIkSSuTgE=;
+	s=korg; t=1736178082;
+	bh=rBB4ffMLEdnILfBffsHlDM22aDV3TXFUT48X3s0AEiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZ480xvLq6wHggCBDoX6aScLiYFpLbR+vHaXARwc6m+uWI7G0Ppi+tfsyVz1nHi8w
-	 EnICc3WE/+SVhIVmvUMsA1s1a9hj+i1pr5US5HdB9Y1P/8JS782ny1M5Ej+1elKf5n
-	 5YMydKpZdxBIm9IXVlsHVRzDi6RStP5Jo/Orm+XI=
+	b=dsaGcskH59DrU90FtI/bLj4/tUTFa3cEySk1HMu1zN9RH0OPYARGoRJOgSJc7Cbyz
+	 ut4bXPwYhjuSj4RaPfuubVfJPTE4qk5tGZUVzdMqCjfbmt69Ej/1xjX7YpgtF7hawb
+	 bpA76fc7DTuiK2OhgaEH7xTzlHEtViN4B/CrEvl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seiji Nishikawa <snishika@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 78/81] mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
+	Tejun Heo <tj@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@pm.me>
+Subject: [PATCH 6.12 124/156] sched_ext: Fix invalid irq restore in scx_ops_bypass()
 Date: Mon,  6 Jan 2025 16:16:50 +0100
-Message-ID: <20250106151132.371873989@linuxfoundation.org>
+Message-ID: <20250106151146.401182127@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seiji Nishikawa <snishika@redhat.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit 6aaced5abd32e2a57cd94fd64f824514d0361da8 upstream.
+commit 18b2093f4598d8ee67a8153badc93f0fa7686b8a upstream.
 
-The task sometimes continues looping in throttle_direct_reclaim() because
-allow_direct_reclaim(pgdat) keeps returning false.
+While adding outer irqsave/restore locking, 0e7ffff1b811 ("scx: Fix raciness
+in scx_ops_bypass()") forgot to convert an inner rq_unlock_irqrestore() to
+rq_unlock() which could re-enable IRQ prematurely leading to the following
+warning:
 
- #0 [ffff80002cb6f8d0] __switch_to at ffff8000080095ac
- #1 [ffff80002cb6f900] __schedule at ffff800008abbd1c
- #2 [ffff80002cb6f990] schedule at ffff800008abc50c
- #3 [ffff80002cb6f9b0] throttle_direct_reclaim at ffff800008273550
- #4 [ffff80002cb6fa20] try_to_free_pages at ffff800008277b68
- #5 [ffff80002cb6fae0] __alloc_pages_nodemask at ffff8000082c4660
- #6 [ffff80002cb6fc50] alloc_pages_vma at ffff8000082e4a98
- #7 [ffff80002cb6fca0] do_anonymous_page at ffff80000829f5a8
- #8 [ffff80002cb6fce0] __handle_mm_fault at ffff8000082a5974
- #9 [ffff80002cb6fd90] handle_mm_fault at ffff8000082a5bd4
+  raw_local_irq_restore() called with IRQs enabled
+  WARNING: CPU: 1 PID: 96 at kernel/locking/irqflag-debug.c:10 warn_bogus_irq_restore+0x30/0x40
+  ...
+  Sched_ext: create_dsq (enabling)
+  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : warn_bogus_irq_restore+0x30/0x40
+  lr : warn_bogus_irq_restore+0x30/0x40
+  ...
+  Call trace:
+   warn_bogus_irq_restore+0x30/0x40 (P)
+   warn_bogus_irq_restore+0x30/0x40 (L)
+   scx_ops_bypass+0x224/0x3b8
+   scx_ops_enable.isra.0+0x2c8/0xaa8
+   bpf_scx_reg+0x18/0x30
+  ...
+  irq event stamp: 33739
+  hardirqs last  enabled at (33739): [<ffff8000800b699c>] scx_ops_bypass+0x174/0x3b8
+  hardirqs last disabled at (33738): [<ffff800080d48ad4>] _raw_spin_lock_irqsave+0xb4/0xd8
 
-At this point, the pgdat contains the following two zones:
+Drop the stray _irqrestore().
 
-        NODE: 4  ZONE: 0  ADDR: ffff00817fffe540  NAME: "DMA32"
-          SIZE: 20480  MIN/LOW/HIGH: 11/28/45
-          VM_STAT:
-                NR_FREE_PAGES: 359
-        NR_ZONE_INACTIVE_ANON: 18813
-          NR_ZONE_ACTIVE_ANON: 0
-        NR_ZONE_INACTIVE_FILE: 50
-          NR_ZONE_ACTIVE_FILE: 0
-          NR_ZONE_UNEVICTABLE: 0
-        NR_ZONE_WRITE_PENDING: 0
-                     NR_MLOCK: 0
-                    NR_BOUNCE: 0
-                   NR_ZSPAGES: 0
-            NR_FREE_CMA_PAGES: 0
-
-        NODE: 4  ZONE: 1  ADDR: ffff00817fffec00  NAME: "Normal"
-          SIZE: 8454144  PRESENT: 98304  MIN/LOW/HIGH: 68/166/264
-          VM_STAT:
-                NR_FREE_PAGES: 146
-        NR_ZONE_INACTIVE_ANON: 94668
-          NR_ZONE_ACTIVE_ANON: 3
-        NR_ZONE_INACTIVE_FILE: 735
-          NR_ZONE_ACTIVE_FILE: 78
-          NR_ZONE_UNEVICTABLE: 0
-        NR_ZONE_WRITE_PENDING: 0
-                     NR_MLOCK: 0
-                    NR_BOUNCE: 0
-                   NR_ZSPAGES: 0
-            NR_FREE_CMA_PAGES: 0
-
-In allow_direct_reclaim(), while processing ZONE_DMA32, the sum of
-inactive/active file-backed pages calculated in zone_reclaimable_pages()
-based on the result of zone_page_state_snapshot() is zero.
-
-Additionally, since this system lacks swap, the calculation of inactive/
-active anonymous pages is skipped.
-
-        crash> p nr_swap_pages
-        nr_swap_pages = $1937 = {
-          counter = 0
-        }
-
-As a result, ZONE_DMA32 is deemed unreclaimable and skipped, moving on to
-the processing of the next zone, ZONE_NORMAL, despite ZONE_DMA32 having
-free pages significantly exceeding the high watermark.
-
-The problem is that the pgdat->kswapd_failures hasn't been incremented.
-
-        crash> px ((struct pglist_data *) 0xffff00817fffe540)->kswapd_failures
-        $1935 = 0x0
-
-This is because the node deemed balanced.  The node balancing logic in
-balance_pgdat() evaluates all zones collectively.  If one or more zones
-(e.g., ZONE_DMA32) have enough free pages to meet their watermarks, the
-entire node is deemed balanced.  This causes balance_pgdat() to exit early
-before incrementing the kswapd_failures, as it considers the overall
-memory state acceptable, even though some zones (like ZONE_NORMAL) remain
-under significant pressure.
-
-
-The patch ensures that zone_reclaimable_pages() includes free pages
-(NR_FREE_PAGES) in its calculation when no other reclaimable pages are
-available (e.g., file-backed or anonymous pages).  This change prevents
-zones like ZONE_DMA32, which have sufficient free pages, from being
-mistakenly deemed unreclaimable.  By doing so, the patch ensures proper
-node balancing, avoids masking pressure on other zones like ZONE_NORMAL,
-and prevents infinite loops in throttle_direct_reclaim() caused by
-allow_direct_reclaim(pgdat) repeatedly returning false.
-
-
-The kernel hangs due to a task stuck in throttle_direct_reclaim(), caused
-by a node being incorrectly deemed balanced despite pressure in certain
-zones, such as ZONE_NORMAL.  This issue arises from
-zone_reclaimable_pages() returning 0 for zones without reclaimable file-
-backed or anonymous pages, causing zones like ZONE_DMA32 with sufficient
-free pages to be skipped.
-
-The lack of swap or reclaimable pages results in ZONE_DMA32 being ignored
-during reclaim, masking pressure in other zones.  Consequently,
-pgdat->kswapd_failures remains 0 in balance_pgdat(), preventing fallback
-mechanisms in allow_direct_reclaim() from being triggered, leading to an
-infinite loop in throttle_direct_reclaim().
-
-This patch modifies zone_reclaimable_pages() to account for free pages
-(NR_FREE_PAGES) when no other reclaimable pages exist.  This ensures zones
-with sufficient free pages are not skipped, enabling proper balancing and
-reclaim behavior.
-
-[akpm@linux-foundation.org: coding-style cleanups]
-Link: https://lkml.kernel.org/r/20241130164346.436469-1-snishika@redhat.com
-Link: https://lkml.kernel.org/r/20241130161236.433747-2-snishika@redhat.com
-Fixes: 5a1c84b404a7 ("mm: remove reclaim and compaction retry approximations")
-Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Link: http://lkml.kernel.org/r/qC39k3UsonrBYD_SmuxHnZIQLsuuccoCrkiqb_BT7DvH945A1_LZwE4g-5Pu9FcCtqZt4lY1HhIPi0homRuNWxkgo1rgP3bkxa0donw8kV4=@pm.me
+Fixes: 0e7ffff1b811 ("scx: Fix raciness in scx_ops_bypass()")
+Cc: stable@vger.kernel.org # v6.12
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/sched/ext.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -588,7 +588,14 @@ unsigned long zone_reclaimable_pages(str
- 	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
- 		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
- 			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
--
-+	/*
-+	 * If there are no reclaimable file-backed or anonymous pages,
-+	 * ensure zones with sufficient free pages are not skipped.
-+	 * This prevents zones like DMA32 from being ignored in reclaim
-+	 * scenarios where they can still help alleviate memory pressure.
-+	 */
-+	if (nr == 0)
-+		nr = zone_page_state_snapshot(zone, NR_FREE_PAGES);
- 	return nr;
- }
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4367,7 +4367,7 @@ static void scx_ops_bypass(bool bypass)
+ 		 * sees scx_rq_bypassing() before moving tasks to SCX.
+ 		 */
+ 		if (!scx_enabled()) {
+-			rq_unlock_irqrestore(rq, &rf);
++			rq_unlock(rq, &rf);
+ 			continue;
+ 		}
  
 
 
