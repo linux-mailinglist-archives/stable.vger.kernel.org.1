@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-107166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695A9A02A97
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30799A02ACA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88A5C3A1157
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA173A1838
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E32F135A63;
-	Mon,  6 Jan 2025 15:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5099682D98;
+	Mon,  6 Jan 2025 15:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjUR8sRX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/UOf+VF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2373F83A14;
-	Mon,  6 Jan 2025 15:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E76C73451;
+	Mon,  6 Jan 2025 15:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177653; cv=none; b=g/G53mHuterhGRHvQ5fu5G+QcMFFKcv6HvCpS+rkXaPRA/POUSI0I0FsDr8fw2N513CGT5qaOCrNoNd7HJyAv6qWKKncRrlbEXhT2hbRuX0ZcWp70+ZftDw1D/48CROD2khtED0H7mxFVdn11trbJdQhAYQ/FBYEWlxPj/tBnJQ=
+	t=1736177781; cv=none; b=R+HKJZhysIsFFcWKF5f8+SjzJKHsoUV587twrdQgtWpZsHjUIgA5O2DdBs5uM6CTJ+ue05eXxredKw0Jwtr6ZD8iO8/WcGtwROgeSrmgNfeqn4cQyynmlaEVN+Zthis5h/MTaSCgOAR7+wDJOxfTCku1dRQ/p6fJgfjmFubQEjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177653; c=relaxed/simple;
-	bh=7rBFAzXqetaSSkLZBsKDEVnfwYWMod++Q26DvasYHVI=;
+	s=arc-20240116; t=1736177781; c=relaxed/simple;
+	bh=+1ua5QiFmu5blk1J1ru/ASb+5xDje5wAR7ITGWenRz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LD7dQOwg1dh8CoxakQTnxUtAcf95ZN5CMHEnvdvNrqbTJ3dKQyxCJGNOkY+xofCrP2/a0ThLTQ9PC2JwdRRV5PpDUQf8XuzZ2Gl3lL7V0y8VqxS1tmaUdL7jDcgQqKPUQqFnMTXTIPgTqGVaXQRt81ZwcZaMiFm7870kK7n9GS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjUR8sRX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDCBC4CED2;
-	Mon,  6 Jan 2025 15:34:12 +0000 (UTC)
+	 MIME-Version; b=UPKiM9Xnrhsclw7btzwI3isKOd/Ksx06Dd6rETmnFh1CFz/MHy3aqgnEjo+4JpAveIhKzJ8VqPWjnshmIBhPUxDQ4zyIu0gFoebeKl4K3fza8dtiCNE0hn77jUdRwK2e3S3Qdc2OUkTe2FCwyzwrn920ZtIbxS13AjkU37v6FWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/UOf+VF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367DFC4CED2;
+	Mon,  6 Jan 2025 15:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177653;
-	bh=7rBFAzXqetaSSkLZBsKDEVnfwYWMod++Q26DvasYHVI=;
+	s=korg; t=1736177780;
+	bh=+1ua5QiFmu5blk1J1ru/ASb+5xDje5wAR7ITGWenRz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjUR8sRXrcJyU1xBi9CQVWvEEviWv5/Wk62kK2XGq/4/25BeEB+Ulktslni2cSIoZ
-	 jjRgivU1YtHO2B/SSft6/840HLbDXeqEufy30rRoNC6AQgVEHaj5RZripHoNn9qztz
-	 qdR2HgNq/mncgn5PCsUtFlazjmQrOnBpZV36RHds=
+	b=0/UOf+VF4iJ6zpZoFaZ1cfTJisT95PbFFY3rRMSNyp1zMEz5Yy82VuDwTl5WwflVp
+	 JH5XUMYSI0WVI8d+daffpFjqIrgU9h+EY1IgsZM7u3E5Y7Pt12dPw+ThFbftyMCkll
+	 7rZqNRlsM6p3zb8+4u1lEbD+lrLOYLk3L6tgAt60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
+	guanjing <guanjing@cmss.chinamobile.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/156] RDMA/bnxt_re: Remove always true dattr validity check
-Date: Mon,  6 Jan 2025 16:14:58 +0100
-Message-ID: <20250106151142.208043355@linuxfoundation.org>
+Subject: [PATCH 6.12 013/156] sched_ext: fix application of sizeof to pointer
+Date: Mon,  6 Jan 2025 16:14:59 +0100
+Message-ID: <20250106151142.244400806@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
 References: <20250106151141.738050441@linuxfoundation.org>
@@ -68,44 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: guanjing <guanjing@cmss.chinamobile.com>
 
-[ Upstream commit eb867d797d294a00a092b5027d08439da68940b2 ]
+[ Upstream commit f24d192985cbd6782850fdbb3839039da2f0ee76 ]
 
-res->dattr is always valid at this point as it was initialized
-during device addition in bnxt_re_add_device().
+sizeof when applied to a pointer typed expression gives the size of
+the pointer.
 
-This change is fixing the following smatch error:
-drivers/infiniband/hw/bnxt_re/qplib_fp.c:1090 bnxt_qplib_create_qp()
-     error: we previously assumed 'res->dattr' could be null (see line 985)
+The proper fix in this particular case is to code sizeof(*cpuset)
+instead of sizeof(cpuset).
 
-Fixes: 07f830ae4913 ("RDMA/bnxt_re: Adds MSN table capability for Gen P7 adapters")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202411222329.YTrwonWi-lkp@intel.com/
-Link: https://patch.msgid.link/be0d8836b64cba3e479fbcbca717acad04aae02e.1732626579.git.leonro@nvidia.com
-Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+This issue was detected with the help of Coccinelle.
+
+Fixes: 22a920209ab6 ("sched_ext: Implement tickless support")
+Signed-off-by: guanjing <guanjing@cmss.chinamobile.com>
+Acked-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/sched_ext/scx_central.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 7ad83566ab0f..be374d8ed430 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -999,9 +999,7 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
- 	u32 tbl_indx;
- 	u16 nsge;
- 
--	if (res->dattr)
--		qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
--
-+	qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
- 	sq->dbinfo.flags = 0;
- 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
- 				 CMDQ_BASE_OPCODE_CREATE_QP,
+diff --git a/tools/sched_ext/scx_central.c b/tools/sched_ext/scx_central.c
+index 21deea320bd7..e938156ed0a0 100644
+--- a/tools/sched_ext/scx_central.c
++++ b/tools/sched_ext/scx_central.c
+@@ -97,7 +97,7 @@ int main(int argc, char **argv)
+ 	SCX_BUG_ON(!cpuset, "Failed to allocate cpuset");
+ 	CPU_ZERO(cpuset);
+ 	CPU_SET(skel->rodata->central_cpu, cpuset);
+-	SCX_BUG_ON(sched_setaffinity(0, sizeof(cpuset), cpuset),
++	SCX_BUG_ON(sched_setaffinity(0, sizeof(*cpuset), cpuset),
+ 		   "Failed to affinitize to central CPU %d (max %d)",
+ 		   skel->rodata->central_cpu, skel->rodata->nr_cpu_ids - 1);
+ 	CPU_FREE(cpuset);
 -- 
 2.39.5
 
