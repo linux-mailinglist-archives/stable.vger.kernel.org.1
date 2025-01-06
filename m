@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-107770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623A8A03324
-	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 00:05:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B05A03338
+	for <lists+stable@lfdr.de>; Tue,  7 Jan 2025 00:18:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB7B81885C45
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 23:05:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDAF3163BDC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 23:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCABF1E1022;
-	Mon,  6 Jan 2025 23:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBAA1E1A23;
+	Mon,  6 Jan 2025 23:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNAok+rn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwkgpLUT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDB41DE2DA
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 23:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6711E1021
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 23:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736204735; cv=none; b=WezNPrs+ROVYGw5q5BOCgQpznONhaNy++LjNOM8OBE1cydRJnww5vHzQMJvVK2xYQLbYjFmxIPaDJTvLz+izaEOcB046NuktOIcVoM5HC1RH3LYgjsmHSuhHxvEtu2FBKGPPW+UPpdo5J4SkHRAVW7n8o08nCBFP7NL6TX6d6lg=
+	t=1736205499; cv=none; b=ug6KkCxFbYLT0c0TbwOLYMxlGXu+20FmA3v/jxwqWPhuajiJx2Iebv55IpRrTcyZtoma2rXUEn2p+ZvWrm6/gPczFlEB74ClSGc23H6yoeke1ZJ1sBGS4dgCy2H1xLAEFdk2C99NQ7JEbKM51Mq1OrrPozhqWHJxzqG4Jx662Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736204735; c=relaxed/simple;
-	bh=ER5Yz9kOS4M3qneRwV1W+hbll4azflGc7w+oKnUTlGU=;
+	s=arc-20240116; t=1736205499; c=relaxed/simple;
+	bh=gO2Bm1IZF3AWN3dj/3Xdr2Av4Jtxxm2g8RH7nthTdU8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Km+3QqYNW7rGDq62BBdrRhZ+FKoZtafAcixeXsJE9I1GGoRXmDorGK0NcLAXt7GzUezkkj0QJeQXxZdDmZWpcnH7CD6KNIsZPRCuWfZ+8V+j8opPZcXcoFGqhSiexYli0xHrj2qFBDLC6LfqGbsKOLocVSr2bI9MRTlvWXLyyD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNAok+rn; arc=none smtp.client-ip=209.85.166.178
+	 In-Reply-To:Content-Type; b=D1RV0UZtAjSSOSveWHOSs+4tYPFz71J3e7Ou9ftNSShvuFpH5zyK1tpIWMbf3GDnJDvpD5Ac084THB/Y1w0zNk3U7orwcS28qMVt4MEi38Qzim1+0s/neOzCYlK0D/YZC0l3sp7WOhT5hZsPfmjNuR8IBZGTxQl61SqvxD2fYn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwkgpLUT; arc=none smtp.client-ip=209.85.166.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3a9628d20f0so115231915ab.2
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 15:05:32 -0800 (PST)
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-844de072603so1363056539f.0
+        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 15:18:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1736204732; x=1736809532; darn=vger.kernel.org;
+        d=linuxfoundation.org; s=google; t=1736205496; x=1736810296; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WO8rgVVnKrlIP7QnNtiMdBIDZhjxV64FAnnGDxLCHec=;
-        b=UNAok+rncTTt2h39oB9YYZNhWoweOhaR2N3xNr+sl2m4G5skjeGJ5LkxtNhHRTzZAT
-         ud+DHVxafa6e20FY2ID5J8G7XqBIeRz5mdD+Wa5XYmZt6KP5d4yvd85I/NPtQseZi2y6
-         RbZlwfvc0GrHDD/t008gQhe0M2iCuFmxrEabo=
+        bh=YZAGLmj9Hq6ZyNiaxFkgAyqEQnJO2cAbCGC7nBnlbbM=;
+        b=UwkgpLUTAl0ga3ORpPYeiS4FO+w45+lGZY04nl1weIFCwYYCZKd6ZxElxBgpDd2IRY
+         JMo2OQCNawgt8vwAoV4ECNzOFGR7XUC3wBH8NZq1Mect5iyGzdftK/bzxitrx0ebk5np
+         C/nGMTh2LfHhI+gp72zJMCNvMKOcqiGj6vDyg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736204732; x=1736809532;
+        d=1e100.net; s=20230601; t=1736205496; x=1736810296;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WO8rgVVnKrlIP7QnNtiMdBIDZhjxV64FAnnGDxLCHec=;
-        b=TH7NidiHAVzK/rugCvK54zw5UcStI0Yyboi1MkChTRwxSZeE3Joystuhi8FlPA1Obo
-         oKzetC8RG4XFd/qe8eds/o06G7tM24u49dgzUGXj6JbS12Yx0eR+EVUMpCq53eX/8pId
-         mhjsHpbL/BgC2dIxaz4KGIl5NoVxnXkyJiQeDhuXKeZ/TbW5YOAz0LKHWVqCgBkX3Hl3
-         W++iObICQ+gpN0MxEyUvMAVJlm4HZSdfksxoSROd+pyDyxC/RteER0xDHjBAYQmrSzlg
-         1GdaQcqQ1wmIXqk7z9XZS6t/d7/Xje6WfcJWgBK78kehp8VScgY/xArSMGj2Qail0xPj
-         YqCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWHnq7JFsvQB8HFU1iDkKpz5dbO9YL59w1NIfjAIcYsHeTAck6jUtZeSGSpxq0fMO1S0lXZJI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjI8N3hclZKl+bV+2DhufQdVP0GaCGxRkvgEd+GeWQkpuhUYWG
-	0QK00Ewz7QSsH6pzvy/Dhoid4VDFYd7R3crgLwFqvzsRlyYQFfo/SUK6hOHUm/M=
-X-Gm-Gg: ASbGncs1jKq885kYj1gnkZtWcr0HCR56OvLjxNbCXfLsDTWs9wZlTerYLosaxNDIaqw
-	T6w6tFMADYEMFPBzR7FsGHt3iVXkYhT2OQ219aIqimHdMnvVp73DYf3cQqIrZviA7I56pk8hgWk
-	9PRpv1fnIfkpEqTl8s93zQ5x0h9MW16JP1Ob/4FPM2qtJYysLiW4PanTjh4GNQ9rr1UqbqsvTAm
-	hknWg3hsr+H2sykRmUeel1+c34Vnljre3EOSbh+63Ea6gCrfqu6+hBwxrh/xVEnevLp
-X-Google-Smtp-Source: AGHT+IE1ug/ECMGbNrZ04hdqCJXBEemo+rZ1EKtJhngCH2J1PkN1z+o+R3HTuRNgGuKy8C5cyCciog==
-X-Received: by 2002:a05:6e02:52f:b0:3cd:d6a7:dbd1 with SMTP id e9e14a558f8ab-3cdd6a7e190mr63730045ab.13.1736204731905;
-        Mon, 06 Jan 2025 15:05:31 -0800 (PST)
+        bh=YZAGLmj9Hq6ZyNiaxFkgAyqEQnJO2cAbCGC7nBnlbbM=;
+        b=Z4//Dis6djqSE6OZdVBrxzYUajITNow5wQxUiSngWBEmGYbPL6dMYCWhmzlLWVtPcz
+         eo81lf2fKaKRuCCTfs3hx4irrN5lgvS042jU5zPwZ3JdeJ62bDIUEo/Glojj6NnvDJz0
+         og1xrop1U/soCcUv9o9rmGiA31UgjwjmRaaDu5qxDk88w/JelRlezrNUFqtg3K8LvWGj
+         Z0m0h2eK4yb8gVLAFO2Q2bM+kMJ+h3XPIzNj++ezcwru9yKxtvQx26QhmsfUw4I97m72
+         IiRcnfIhZuhJV7JYEQipzFzuGrXeIm6n18bqlMtmGipiYLnE7Yfi5lP+PPp3FkcFfzuj
+         nYOA==
+X-Forwarded-Encrypted: i=1; AJvYcCWULMpWBQGwWtHawPn27sU9/y/ODNDIxeYsffQeq8wJOQYWk7B4WRb0zqF9zQV88i2HfnHWT0Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxH/TGUfhYpTRRNlfoYOesLfmVwny1CqkrGgVEgpYpffR1Fk0XO
+	yDoNQH4Tt7e2Mmey2+pXOADDBzMV4QdQsDMFSB0mQkUsjCyyqQWcoQR6sY0WCvA=
+X-Gm-Gg: ASbGncvqEcHOw31nK7feNVtvfXzYguUpmTCSqN4WpsJAFFf7SqgHfJmWAtXSsuJmmPb
+	LAyRCp+qhfetnemj1Vxrs3MNaSSahC5PC3Vu/1pOwIiOYLSSaa4EfCgatJFVeEIjrmqKgsM0nO/
+	4nnSzjLkhz6CUp0q6mT0qXqdJdWqMP3HvwcXS6sldrfFRPvRDgC8+IlxCtz1zc/dL8vFfeysCtY
+	2CyVpumx4usGbFoD3KnjhZeqQXn89Tc4fSSYJ+4fzw6rTb8Uq64iKHJakxuyAkwLtrY
+X-Google-Smtp-Source: AGHT+IHuFKZJjaLxLujpfcuZqDgfl4m/olLWGIl7JgnrVzG5vQ9yEEu78XPtGOihdsgSwtamgMbsYw==
+X-Received: by 2002:a92:c24c:0:b0:3a7:c5cb:8bf3 with SMTP id e9e14a558f8ab-3c2d277f5aamr476694085ab.9.1736205496621;
+        Mon, 06 Jan 2025 15:18:16 -0800 (PST)
 Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4e68bf7ed01sm9645635173.66.2025.01.06.15.05.30
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4e68c199922sm9743651173.103.2025.01.06.15.18.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2025 15:05:31 -0800 (PST)
-Message-ID: <d0e2b7d8-cde9-48f7-a931-ba204deb3a47@linuxfoundation.org>
-Date: Mon, 6 Jan 2025 16:05:30 -0700
+        Mon, 06 Jan 2025 15:18:16 -0800 (PST)
+Message-ID: <5c3ac106-f18e-4237-83ff-52398839f635@linuxfoundation.org>
+Date: Mon, 6 Jan 2025 16:18:15 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,7 +77,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/168] 5.15.176-rc1 review
+Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -86,16 +86,16 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
  rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
  Shuah Khan <skhan@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 Content-Language: en-US
 From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 1/6/25 08:15, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.176 release.
-> There are 168 patches in this series, all will be posted as a response
+On 1/6/25 08:14, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.9 release.
+> There are 156 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -103,9 +103,9 @@ On 1/6/25 08:15, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.176-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.9-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
 > and the diffstat can be found below.
 > 
 > thanks,
@@ -113,34 +113,23 @@ On 1/6/25 08:15, Greg Kroah-Hartman wrote:
 > greg k-h
 > 
 
-Build failed on my test system with this commit:
+Compile failed during modpost stage:
 
-	999976126ca826e40fd85007a1b325d83e102164
+   MODPOST Module.symvers
+ERROR: modpost: "i915_gem_object_set_to_cpu_domain" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "intel_ring_begin" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "shmem_unpin_map" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "intel_gvt_set_ops" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "intel_gvt_clear_ops" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "i915_gem_object_alloc" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "intel_runtime_pm_get" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "i915_gem_object_create_shmem" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "i915_gem_object_pin_map" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
+ERROR: modpost: "__px_dma" [drivers/gpu/drm/i915/kvmgt.ko] undefined!
 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-5.15.y&id=999976126ca826e40fd85007a1b325d83e102164
-
-Worked when I removed this commit.
-
-Errors:
-  CC [M]  drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.o
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c: In function ‘dcn20_split_stream_for_odm’:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c:1945:40: error: ‘const struct opp_funcs’ has no member named ‘opp_get_left_edge_extra_pixel_count’; did you mean ‘opp_program_left_edge_extra_pixel’?
-  1945 |                 if (opp && opp->funcs->opp_get_left_edge_extra_pixel_count
-       |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-       |                                        opp_program_left_edge_extra_pixel
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c:1946:48: error: ‘const struct opp_funcs’ has no member named ‘opp_get_left_edge_extra_pixel_count’; did you mean ‘opp_program_left_edge_extra_pixel’?
-  1946 |                                 && opp->funcs->opp_get_left_edge_extra_pixel_count(
-       |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-       |                                                opp_program_left_edge_extra_pixel
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c:1948:41: error: implicit declaration of function ‘resource_is_pipe_type’; did you mean ‘resource_list_first_type’? [-Werror=implicit-function-declaration]
-  1948 |                                         resource_is_pipe_type(next_odm_pipe, OTG_MASTER)) == 1) {
-       |                                         ^~~~~~~~~~~~~~~~~~~~~
-       |                                         resource_list_first_type
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.c:1948:78: error: ‘OTG_MASTER’ undeclared (first use in this function); did you mean ‘IFF_MASTER’?
-  1948 |                                         resource_is_pipe_type(next_odm_pipe, OTG_MASTER)) == 1) {
-       |                                                                              ^~~~~~~~~~
-       |
+I am looking into this to find the problem commit.
 
 thanks,
 -- Shuah
+
 
