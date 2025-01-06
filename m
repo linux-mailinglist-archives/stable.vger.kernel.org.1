@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2332CA02AFD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39AC8A02B96
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CFEC3A1A96
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0C2F163967
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2601FBA34;
-	Mon,  6 Jan 2025 15:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFF61547D8;
+	Mon,  6 Jan 2025 15:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjC8lrlB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amVu90Nh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23F260890;
-	Mon,  6 Jan 2025 15:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DE61422DD;
+	Mon,  6 Jan 2025 15:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177879; cv=none; b=KO/FZulGf+OmNcsN+EitYfqqCPVHpZEibMVFLQTRiDinhys5cWVmnFve6QSzws8GH5ljIKHYLZ7eb6Kgi0NGFZy+8JQRciAAjgFWy/KQHr/022hP5Dba6N/Tbpp3BZXLvkPTMvihe/2ZbRDT++gHFZcHMTX/Ozso5z3vLpXm2k0=
+	t=1736178262; cv=none; b=ndVsTG/i8GK3H2bgZSG0Lk7yls90W/pN43syyYnIdg96JUxtYYT5II/du5/BOOiq/z0SEzinIElXVx2qBG8l64fsNAWVUYImr3uCCcp43kSL3rRvcQHsquklgf8UYERKDaaAK3BKMHx8pEuYFV4g+D2I13hSW9ANavRhWnpEa6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177879; c=relaxed/simple;
-	bh=1tyv8IA88LVRHITAFtvGZJdEUU4VxlsZpIL9W/caElU=;
+	s=arc-20240116; t=1736178262; c=relaxed/simple;
+	bh=D1QCr3MVALaYdh/8VEgMbVSOFCtGfmYaHekajkLgsgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EllbNHRDeFn2DXH+5CToKMZSW7JoAWhqpNvMTnOw9kg2A4Pc7RPYENwPdXtUJxBkYuMfeHM+Lo0/NaZh8Bchwv5S5MEGplcicE+4nVZ37f9TriEwSwqEUcEtjTLACPKEZhImhFKA9GuX+EXDyCXKJeXxchAfgsRywYBi9flyk9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjC8lrlB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A338C4CED2;
-	Mon,  6 Jan 2025 15:37:58 +0000 (UTC)
+	 MIME-Version; b=ZhsLUMU5k6FJjO7WrfDukXE44XrRySF4Swb3NnrILk53pRUzXYkpkk5ApDbg6J6GRpcBr+I7EVySvjMtobSMS0jt9qXxwKDgbEy3S0kHgGHgEquMQmJAmVDhapR8elPO3GjZXqnTgu54bSboIAmTwGVs3iivyWR7Yv5j6JnsguU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amVu90Nh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E355C4CED2;
+	Mon,  6 Jan 2025 15:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177879;
-	bh=1tyv8IA88LVRHITAFtvGZJdEUU4VxlsZpIL9W/caElU=;
+	s=korg; t=1736178261;
+	bh=D1QCr3MVALaYdh/8VEgMbVSOFCtGfmYaHekajkLgsgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjC8lrlBVn/crHdHqEQIEBUztMNGuVckrHLTZrBgr1Dxd++aX6nMXuzwL/aDZ0LFE
-	 oRD4QN2GYDybPScVrOIPQXLsc7jCYTmlyZbHG/Kj/FU6l4xU1ul0StAeoIEH42bKNu
-	 lhx58sQgZBpmxchSR8/i/TSi+7RndwcpDDH3Ekrs=
+	b=amVu90Nh9ZvczJj2Upi4krSYV73V+X2ZHKcpfGHmumejSuUw7vHsdSWxFXPiOxgXt
+	 e21HEep/YC0L+eIrgPb2LzXQtMaVz7MAoS3Z6qQ0njnUyXDWAkLjw1zTt77q1o715m
+	 ynE8BfdPf9QFSTQm6KiAz2grkyfKuA0VwjiZAHcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Tejun Heo <tj@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/156] workqueue: add printf attribute to __alloc_workqueue()
+Subject: [PATCH 5.10 018/138] net: hinic: Fix cleanup in create_rxqs/txqs()
 Date: Mon,  6 Jan 2025 16:15:42 +0100
-Message-ID: <20250106151143.843802232@linuxfoundation.org>
+Message-ID: <20250106151133.909134015@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d57212f281fda9056412cd6cca983d9d2eb89f53 ]
+[ Upstream commit 7203d10e93b6e6e1d19481ef7907de6a9133a467 ]
 
-Fix a compiler warning with W=1:
-kernel/workqueue.c: error:
-function ‘__alloc_workqueue’ might be a candidate for ‘gnu_printf’
-format attribute[-Werror=suggest-attribute=format]
- 5657 |  name_len = vsnprintf(wq->name, sizeof(wq->name), fmt, args);
-      |  ^~~~~~~~
+There is a check for NULL at the start of create_txqs() and
+create_rxqs() which tess if "nic_dev->txqs" is non-NULL.  The
+intention is that if the device is already open and the queues
+are already created then we don't create them a second time.
 
-Fixes: 9b59a85a84dc ("workqueue: Don't call va_start / va_end twice")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+However, the bug is that if we have an error in the create_txqs()
+then the pointer doesn't get set back to NULL.  The NULL check
+at the start of the function will say that it's already open when
+it's not and the device can't be used.
+
+Set ->txqs back to NULL on cleanup on error.
+
+Fixes: c3e79baf1b03 ("net-next/hinic: Add logical Txq and Rxq")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/0cc98faf-a0ed-4565-a55b-0fa2734bc205@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/huawei/hinic/hinic_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 9949ffad8df0..25bdd9af7eb6 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -5627,6 +5627,7 @@ static void wq_adjust_max_active(struct workqueue_struct *wq)
- 	} while (activated);
+diff --git a/drivers/net/ethernet/huawei/hinic/hinic_main.c b/drivers/net/ethernet/huawei/hinic/hinic_main.c
+index 6ec042d48cd1..dd5c96557976 100644
+--- a/drivers/net/ethernet/huawei/hinic/hinic_main.c
++++ b/drivers/net/ethernet/huawei/hinic/hinic_main.c
+@@ -173,6 +173,7 @@ static int create_txqs(struct hinic_dev *nic_dev)
+ 	hinic_sq_dbgfs_uninit(nic_dev);
+ 
+ 	devm_kfree(&netdev->dev, nic_dev->txqs);
++	nic_dev->txqs = NULL;
+ 	return err;
  }
  
-+__printf(1, 0)
- static struct workqueue_struct *__alloc_workqueue(const char *fmt,
- 						  unsigned int flags,
- 						  int max_active, va_list args)
+@@ -269,6 +270,7 @@ static int create_rxqs(struct hinic_dev *nic_dev)
+ 	hinic_rq_dbgfs_uninit(nic_dev);
+ 
+ 	devm_kfree(&netdev->dev, nic_dev->rxqs);
++	nic_dev->rxqs = NULL;
+ 	return err;
+ }
+ 
 -- 
 2.39.5
 
