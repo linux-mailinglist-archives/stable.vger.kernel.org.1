@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-107402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0163A02BAD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876A0A02AF0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68226188602A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17DE4165991
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315691DE3AA;
-	Mon,  6 Jan 2025 15:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F7C148316;
+	Mon,  6 Jan 2025 15:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGbozUKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMF4PU9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C295A1DE3B8;
-	Mon,  6 Jan 2025 15:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ED9DF71;
+	Mon,  6 Jan 2025 15:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178355; cv=none; b=b2CdM96oW+nYrEXJJJLlodSJ8exo7q0OAuMoHndkemIQjY154CNZ7VnfGokdb9ygkq/jBrL7t7NUBFVKZClEVwrYRVxTDf4Lhr328p53bASjq8MkwoOjwIe9TcbXcVGP4N1f23AZxBnmQFx8xCRx5W9QfYkzVoy4QtrTEzwdPj0=
+	t=1736177906; cv=none; b=UHvz1bmg2i52woQ31KNBIxjS29lTbYUaxuBfIa0Rx+wEyTa3Bcux4iCeycdD91kpUh3cDo+Wmpa0TNI03D8ZwIl/f1oYuwvqpcT8sxI5OL7R2VO6vxGak7fbbHs+IE0tBMIlZsPOfSddwJh0Kkf5GIDPphWwHQSsVaViQMkzAYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178355; c=relaxed/simple;
-	bh=0UnfP0Ntk2BhQDj70eOzbCbCVz6QQE1cYJceOAuxTs4=;
+	s=arc-20240116; t=1736177906; c=relaxed/simple;
+	bh=LTj8nTSQ3QHfN3aQyDwgwCQ+5AquuJvTBGjox1KkLOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnfjCu8aIPSqctChTGgn4FkJNo8TjmtZSTlaeqXyqI+jg3UoRMTuL7j6UQZ9M56PMlo8hTziir6bjfCSoAZrjRg0+ce93UP+n9bS8OBXJyanaRDBzwzuDfWUaUFuElIfrDJNzvdNqi2z33/xRAx9HFhlabiT2XDxvRcbp16Eaug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGbozUKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EE2C4CED2;
-	Mon,  6 Jan 2025 15:45:55 +0000 (UTC)
+	 MIME-Version; b=eVABM4UE/HHBVF8hnqq/7VoPYKIjd/Mbij/Tq/QCX4QVG7YUu4fnZvJ8gPWHEtMQsmRNhyfDJ27ifZEW0qkRdGSspp6t7bJ/BZfTesWSxoOvKKpGLBnTr0vMKNbqpOG99bPw3rehfTlKttq37+BygcxOVXvhEp9SM7MWUMbjJp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMF4PU9K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9B8C4CED2;
+	Mon,  6 Jan 2025 15:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178355;
-	bh=0UnfP0Ntk2BhQDj70eOzbCbCVz6QQE1cYJceOAuxTs4=;
+	s=korg; t=1736177906;
+	bh=LTj8nTSQ3QHfN3aQyDwgwCQ+5AquuJvTBGjox1KkLOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGbozUKUN7/We//9RgMfG672d53mchckbzKWtTqZpLQkMxgvFza0dz6omyjI5L+3n
-	 KJ9tOXqto4VtJsk9ynuSOWP2PyLbstLxFXNnHTWDwp1+PET1tt/5mYFhgC7JwhxEQr
-	 FjS/94kWpXd8gs3rVkv81MFmYbnwM7ZX12DVg3ZE=
+	b=JMF4PU9KW3j97tAIrchdJ3cq0dBgC3EjM2K4Sss+h9Vl6AedMWfLgnftT6r/f5au8
+	 V3woi5xVjnJMgQrCydqJJ2/dU8ZH9snV/gyHSbZfzwNrqvd10ceVEXGEuEsqxBcRR7
+	 QPUS15CmNrnj/tonj32K4Qq1xoRGK0+9HsbB1lm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Hilliard <james.hilliard1@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Hobin Woo <hobin.woo@samsung.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Yoonho Shin <yoonho.shin@samsung.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 059/138] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
+Subject: [PATCH 6.12 097/156] ksmbd: retry iterate_dir in smb2_query_dir
 Date: Mon,  6 Jan 2025 16:16:23 +0100
-Message-ID: <20250106151135.470408481@linuxfoundation.org>
+Message-ID: <20250106151145.380808157@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hilliard <james.hilliard1@gmail.com>
+From: Hobin Woo <hobin.woo@samsung.com>
 
-[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
+[ Upstream commit 2b904d61a97e8ba79e3bc216ba290fd7e1d85028 ]
 
-For the watchdog timer to work properly on the QCML04 board we need to
-set PWRGD enable in the Environment Controller Configuration Registers
-Special Configuration Register 1 when it is not already set, this may
-be the case when the watchdog is not enabled from within the BIOS.
+Some file systems do not ensure that the single call of iterate_dir
+reaches the end of the directory. For example, FUSE fetches entries from
+a daemon using 4KB buffer and stops fetching if entries exceed the
+buffer. And then an actor of caller, KSMBD, is used to fill the entries
+from the buffer.
+Thus, pattern searching on FUSE, files located after the 4KB could not
+be found and STATUS_NO_SUCH_FILE was returned.
 
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
+Tested-by: Yoonho Shin <yoonho.shin@samsung.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ fs/smb/server/smb2pdu.c | 12 +++++++++++-
+ fs/smb/server/vfs.h     |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
-index 6340ca058f89..da9e24e4a8b6 100644
---- a/drivers/watchdog/it87_wdt.c
-+++ b/drivers/watchdog/it87_wdt.c
-@@ -20,6 +20,8 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/bits.h>
-+#include <linux/dmi.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-@@ -40,6 +42,7 @@
- #define VAL		0x2f
- 
- /* Logical device Numbers LDN */
-+#define EC		0x04
- #define GPIO		0x07
- 
- /* Configuration Registers and Functions */
-@@ -71,6 +74,12 @@
- #define IT8784_ID	0x8784
- #define IT8786_ID	0x8786
- 
-+/* Environment Controller Configuration Registers LDN=0x04 */
-+#define SCR1		0xfa
-+
-+/* Environment Controller Bits SCR1 */
-+#define WDT_PWRGD	0x20
-+
- /* GPIO Configuration Registers LDN=0x07 */
- #define WDTCTRL		0x71
- #define WDTCFG		0x72
-@@ -241,6 +250,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
- 	return ret;
- }
- 
-+enum {
-+	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
-+};
-+
-+static const struct dmi_system_id it87_quirks[] = {
-+	{
-+		/* Qotom Q30900P (IT8786) */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
-+		},
-+		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
-+	},
-+	{}
-+};
-+
- static const struct watchdog_info ident = {
- 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
- 	.firmware_version = 1,
-@@ -262,8 +286,10 @@ static struct watchdog_device wdt_dev = {
- 
- static int __init it87_wdt_init(void)
- {
-+	const struct dmi_system_id *dmi_id;
- 	u8  chip_rev;
- 	u8 ctrl;
-+	int quirks = 0;
- 	int rc;
- 
- 	rc = superio_enter();
-@@ -274,6 +300,10 @@ static int __init it87_wdt_init(void)
- 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
- 	superio_exit();
- 
-+	dmi_id = dmi_first_match(it87_quirks);
-+	if (dmi_id)
-+		quirks = (long)dmi_id->driver_data;
-+
- 	switch (chip_type) {
- 	case IT8702_ID:
- 		max_units = 255;
-@@ -334,6 +364,15 @@ static int __init it87_wdt_init(void)
- 		superio_outb(0x00, WDTCTRL);
- 	}
- 
-+	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
-+		superio_select(EC);
-+		ctrl = superio_inb(SCR1);
-+		if (!(ctrl & WDT_PWRGD)) {
-+			ctrl |= WDT_PWRGD;
-+			superio_outb(ctrl, SCR1);
-+		}
-+	}
-+
- 	superio_exit();
- 
- 	if (timeout < 1 || timeout > max_units * 60) {
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 7d01dd313351..aef5a1b7c490 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4224,6 +4224,7 @@ static bool __query_dir(struct dir_context *ctx, const char *name, int namlen,
+ 	/* dot and dotdot entries are already reserved */
+ 	if (!strcmp(".", name) || !strcmp("..", name))
+ 		return true;
++	d_info->num_scan++;
+ 	if (ksmbd_share_veto_filename(priv->work->tcon->share_conf, name))
+ 		return true;
+ 	if (!match_pattern(name, namlen, priv->search_pattern))
+@@ -4384,8 +4385,17 @@ int smb2_query_dir(struct ksmbd_work *work)
+ 	query_dir_private.info_level		= req->FileInformationClass;
+ 	dir_fp->readdir_data.private		= &query_dir_private;
+ 	set_ctx_actor(&dir_fp->readdir_data.ctx, __query_dir);
+-
++again:
++	d_info.num_scan = 0;
+ 	rc = iterate_dir(dir_fp->filp, &dir_fp->readdir_data.ctx);
++	/*
++	 * num_entry can be 0 if the directory iteration stops before reaching
++	 * the end of the directory and no file is matched with the search
++	 * pattern.
++	 */
++	if (rc >= 0 && !d_info.num_entry && d_info.num_scan &&
++	    d_info.out_buf_len > 0)
++		goto again;
+ 	/*
+ 	 * req->OutputBufferLength is too small to contain even one entry.
+ 	 * In this case, it immediately returns OutputBufferLength 0 to client.
+diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
+index cb76f4b5bafe..06903024a2d8 100644
+--- a/fs/smb/server/vfs.h
++++ b/fs/smb/server/vfs.h
+@@ -43,6 +43,7 @@ struct ksmbd_dir_info {
+ 	char		*rptr;
+ 	int		name_len;
+ 	int		out_buf_len;
++	int		num_scan;
+ 	int		num_entry;
+ 	int		data_count;
+ 	int		last_entry_offset;
 -- 
 2.39.5
 
