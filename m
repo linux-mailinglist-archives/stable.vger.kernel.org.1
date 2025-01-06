@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B259A02CC7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55021A02BB1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86EC31887BFF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 009A81665EF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E3F13B592;
-	Mon,  6 Jan 2025 15:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944D41DDC12;
+	Mon,  6 Jan 2025 15:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1LgL6Q1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5EIMlxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9E76088F;
-	Mon,  6 Jan 2025 15:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF7F16D9B8;
+	Mon,  6 Jan 2025 15:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179061; cv=none; b=GVR9phEDrxSSvnvkFknPNkU4O6mY4tF1uulpxf7Hz7LptYOnoHfsoYFN879EGotlTXLeA7DEW1YUvoruQa/+tyukRki6hlO0ztKq8k6RB6XNLtxU1FWxzBhh+FD8cTLpyZ9teJl8/VakLOK5wesHEnQJLtFQvn+crAAmt96Pq54=
+	t=1736178314; cv=none; b=ooAjpLrllov0clhU0v2kCyI/z5Fm4vSlBJHZG+Xp4uuCZJDpFI3hOEghZ254TuOaSl56SKvz0hly5ke9m9l2OGTY0FZEjWruvNI0c6FLFbB+BK5funx4O+hgspf/6Om5hZhR9iRFRDqMeQbVFyiwDGZyET5jtSSEvM2G/BYCpCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179061; c=relaxed/simple;
-	bh=h8SmvPzjKRu3AmOniGkd8Td5yQj/73UVjTQK6b4ejmc=;
+	s=arc-20240116; t=1736178314; c=relaxed/simple;
+	bh=KqiZ0w1gkXaAgKKCZ06HRzKJ3tUkrNSfM3RHo+GRWIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7QB4yPUklW/PPiMp+lYEziodDOV1nhvt1Saah+CeXLvwDcubdDJydSYTDO8d3womOKBwDDu2DaHGo/SIrxSUPGisWBYdGRX1qf5DbsD+pMutCY1Bs95pBpdEFeqldJM1rCsIcmEl6Db3vTMr9aEtnnjn/yFuOEzQDutcC5poGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1LgL6Q1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3DAC4CED2;
-	Mon,  6 Jan 2025 15:57:39 +0000 (UTC)
+	 MIME-Version; b=bfZVgFNtLdECM0aFfu83O0/LHf+bSC9Z0mOyPPJhpne76qaMKczfkDtEu7cdTSXot5SeK7pJalhWFPuhJSlhdf57VkA170bJrBPX+yUjdxD0oE5Tf0O/B3yy2yHWaHN0TENwMcfNQU+GZoS+V5DWZegmuDRlQv/6Qauchtd35yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5EIMlxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF27EC4CED2;
+	Mon,  6 Jan 2025 15:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179060;
-	bh=h8SmvPzjKRu3AmOniGkd8Td5yQj/73UVjTQK6b4ejmc=;
+	s=korg; t=1736178314;
+	bh=KqiZ0w1gkXaAgKKCZ06HRzKJ3tUkrNSfM3RHo+GRWIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W1LgL6Q1BQTjyV41OTM6JBkGvnTYsZ0cCVXMXMSQ41evB3wfJE/G8j0KWS/9beEW1
-	 2p8BN2091kjTO3rgr6PPMiabmLQYS1W/HSH3ZoHdKzSKXmQoy32ysDOnQNLw+o87zt
-	 jMz6+VuvxFaRkPdHTVxg5x7lYIe5drSRq2BDaxsM=
+	b=z5EIMlxNRI/KsKqw4A29g4wFRzcEdYrb9kpYto7KxYmjIc3Q54Jrkj9TD5l96PFQV
+	 +mTs/pFQzSzfLzccwhu2YHBUdHta8G+bmUZcaadV7e+INhOY121f2vdmyitJSlHLK6
+	 kg6y/qteeNr807h9hb03HUlC1mSbS2CYq2+svOak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Yunfeng Ye <yeyunfeng@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 03/93] PCI/AER: Disable AER service on suspend
-Date: Mon,  6 Jan 2025 16:16:39 +0100
-Message-ID: <20250106151128.821714701@linuxfoundation.org>
+Subject: [PATCH 5.10 076/138] arm64: mm: Rename asid2idx() to ctxid2asid()
+Date: Mon,  6 Jan 2025 16:16:40 +0100
+Message-ID: <20250106151136.110027089@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Yunfeng Ye <yeyunfeng@huawei.com>
 
-[ Upstream commit 5afc2f763edc5daae4722ee46fea4e627d01fa90 ]
+[ Upstream commit a3a5b763410c7bceacf41a52071134d9dc26202a ]
 
-If the link is powered off during suspend, electrical noise may cause
-errors that are logged via AER.  If the AER interrupt is enabled and shares
-an IRQ with PME, that causes a spurious wakeup during suspend.
+The commit 0c8ea531b774 ("arm64: mm: Allocate ASIDs in pairs") introduce
+the asid2idx and idx2asid macro, but these macros are not really useful
+after the commit f88f42f853a8 ("arm64: context: Free up kernel ASIDs if
+KPTI is not in use").
 
-Disable the AER interrupt during suspend to prevent this.  Clear error
-status before re-enabling IRQ interrupts during resume so we don't get an
-interrupt for errors that occurred during the suspend/resume process.
+The code "(asid & ~ASID_MASK)" can be instead by a macro, which is the
+same code with asid2idx(). So rename it to ctxid2asid() for a better
+understanding.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
-Link: https://lore.kernel.org/r/20240416043225.1462548-2-kai.heng.feng@canonical.com
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-[bhelgaas: drop pci_ancestor_pr3_present() etc, commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Also we add asid2ctxid() macro, the contextid can be generated based on
+the asid and generation through this macro.
+
+Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Link: https://lore.kernel.org/r/c31516eb-6d15-94e0-421c-305fc010ea79@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Stable-dep-of: c0900d15d31c ("arm64: Ensure bits ASID[15:8] are masked out when the kernel uses 8-bit ASIDs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/arm64/mm/context.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 6b5c9f7916fa..ee38ca162a7c 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1407,6 +1407,22 @@ static int aer_probe(struct pcie_device *dev)
- 	return 0;
+diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
+index 001737a8f309..171f2fcd3cf2 100644
+--- a/arch/arm64/mm/context.c
++++ b/arch/arm64/mm/context.c
+@@ -35,8 +35,8 @@ static unsigned long *pinned_asid_map;
+ #define ASID_FIRST_VERSION	(1UL << asid_bits)
+ 
+ #define NUM_USER_ASIDS		ASID_FIRST_VERSION
+-#define asid2idx(asid)		((asid) & ~ASID_MASK)
+-#define idx2asid(idx)		asid2idx(idx)
++#define ctxid2asid(asid)	((asid) & ~ASID_MASK)
++#define asid2ctxid(asid, genid)	((asid) | (genid))
+ 
+ /* Get the ASIDBits supported by the current CPU */
+ static u32 get_cpu_asid_bits(void)
+@@ -120,7 +120,7 @@ static void flush_context(void)
+ 		 */
+ 		if (asid == 0)
+ 			asid = per_cpu(reserved_asids, i);
+-		__set_bit(asid2idx(asid), asid_map);
++		__set_bit(ctxid2asid(asid), asid_map);
+ 		per_cpu(reserved_asids, i) = asid;
+ 	}
+ 
+@@ -162,7 +162,7 @@ static u64 new_context(struct mm_struct *mm)
+ 	u64 generation = atomic64_read(&asid_generation);
+ 
+ 	if (asid != 0) {
+-		u64 newasid = generation | (asid & ~ASID_MASK);
++		u64 newasid = asid2ctxid(ctxid2asid(asid), generation);
+ 
+ 		/*
+ 		 * If our current ASID was active during a rollover, we
+@@ -183,7 +183,7 @@ static u64 new_context(struct mm_struct *mm)
+ 		 * We had a valid ASID in a previous life, so try to re-use
+ 		 * it if possible.
+ 		 */
+-		if (!__test_and_set_bit(asid2idx(asid), asid_map))
++		if (!__test_and_set_bit(ctxid2asid(asid), asid_map))
+ 			return newasid;
+ 	}
+ 
+@@ -209,7 +209,7 @@ static u64 new_context(struct mm_struct *mm)
+ set_asid:
+ 	__set_bit(asid, asid_map);
+ 	cur_idx = asid;
+-	return idx2asid(asid) | generation;
++	return asid2ctxid(asid, generation);
  }
  
-+static int aer_suspend(struct pcie_device *dev)
-+{
-+	struct aer_rpc *rpc = get_service_data(dev);
-+
-+	aer_disable_rootport(rpc);
-+	return 0;
-+}
-+
-+static int aer_resume(struct pcie_device *dev)
-+{
-+	struct aer_rpc *rpc = get_service_data(dev);
-+
-+	aer_enable_rootport(rpc);
-+	return 0;
-+}
-+
- /**
-  * aer_root_reset - reset link on Root Port
-  * @dev: pointer to Root Port's pci_dev data structure
-@@ -1447,6 +1463,8 @@ static struct pcie_port_service_driver aerdriver = {
- 	.service	= PCIE_PORT_SERVICE_AER,
+ void check_and_switch_context(struct mm_struct *mm)
+@@ -300,13 +300,13 @@ unsigned long arm64_mm_context_get(struct mm_struct *mm)
+ 	}
  
- 	.probe		= aer_probe,
-+	.suspend	= aer_suspend,
-+	.resume		= aer_resume,
- 	.remove		= aer_remove,
- 	.reset_link	= aer_root_reset,
- };
+ 	nr_pinned_asids++;
+-	__set_bit(asid2idx(asid), pinned_asid_map);
++	__set_bit(ctxid2asid(asid), pinned_asid_map);
+ 	refcount_set(&mm->context.pinned, 1);
+ 
+ out_unlock:
+ 	raw_spin_unlock_irqrestore(&cpu_asid_lock, flags);
+ 
+-	asid &= ~ASID_MASK;
++	asid = ctxid2asid(asid);
+ 
+ 	/* Set the equivalent of USER_ASID_BIT */
+ 	if (asid && arm64_kernel_unmapped_at_el0())
+@@ -327,7 +327,7 @@ void arm64_mm_context_put(struct mm_struct *mm)
+ 	raw_spin_lock_irqsave(&cpu_asid_lock, flags);
+ 
+ 	if (refcount_dec_and_test(&mm->context.pinned)) {
+-		__clear_bit(asid2idx(asid), pinned_asid_map);
++		__clear_bit(ctxid2asid(asid), pinned_asid_map);
+ 		nr_pinned_asids--;
+ 	}
+ 
 -- 
 2.39.5
 
