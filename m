@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8028A02915
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E55D0A029FD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F591885FA3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86141649D9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED092146D6B;
-	Mon,  6 Jan 2025 15:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492C413775E;
+	Mon,  6 Jan 2025 15:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKkt0BP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SACQRiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A705D145335;
-	Mon,  6 Jan 2025 15:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0498935973;
+	Mon,  6 Jan 2025 15:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176767; cv=none; b=Z3UYGlHVH8ucvw9UrBn7EgXa547Q0y5v+v4fj6Fu88/WyWc16sj/FvczsamDqjYMzU96HzBzuMhZhIoenmD9uUyViqorh9nxh6DyzFWUg32PgZEBqBYINIb4ZpG3sTIq6OeaVfCl/xrnjKKoLtxYgy6nqk33ooAiUyCJwkRVdBE=
+	t=1736177353; cv=none; b=FZ7TiACJlfFxSjV/jym3B96dSxnEQa3v/ONqqazzLMYHtKbQMc+IeRGjRwEydNT0I15kQgImpopY3L+mGxW6MQ/l2G2lD7eKcZ8ClKMqXbQitdTEEWT7LhT+cH+8lP0Hb3IRkvBLurLdLLLtk+YRTqqZIpPIBOcBAUFMpHjWiZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176767; c=relaxed/simple;
-	bh=SPKhKYjyQoFWZdZLEgaayk9thiKmR7iTxH8TZ8ePZAY=;
+	s=arc-20240116; t=1736177353; c=relaxed/simple;
+	bh=Yp4tb0Jihn4tGMTFzAWjJUG6V92CvnkSV6314nhDA8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHlfIJ0/YKnqgwAPexu4HI+ILlPuuM4rfo5EOJKqw1phAFSY+CsPKqxOVv9LpJHURppcHZ6RBICFG+pJ9hghxwvUlU1tx4AQHfwaFQkJbszXoyPgg5spZQDw1blo4oYd4oUFND/qYE6j5C7Yq4d8EGAXuXyxrpoxuzNsM1WyXS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKkt0BP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247B8C4CED2;
-	Mon,  6 Jan 2025 15:19:26 +0000 (UTC)
+	 MIME-Version; b=iKh03dJXT4BluLl5+EH1EaKBV9tK0BgLQWv349b6G5neUdApLMdANixUaK19G2KV9g9Gh+CZGFynWZJjOuKT2wdmfglbnroXCtydrJ2oRxD/tfsyCzg6msnOTYZDaRKZi4hJ7zXOi+8sA8hlYCttZlz6EM7n0krpeK9g0ERb/HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SACQRiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA00C4CED2;
+	Mon,  6 Jan 2025 15:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176767;
-	bh=SPKhKYjyQoFWZdZLEgaayk9thiKmR7iTxH8TZ8ePZAY=;
+	s=korg; t=1736177352;
+	bh=Yp4tb0Jihn4tGMTFzAWjJUG6V92CvnkSV6314nhDA8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKkt0BP1AV5bbRkVVyOD4HFuQzqsozHif+r9SUOyFl1P+kHmLMOG/x2tim8FrC7Qf
-	 scTTRdiU0NF1hXLcMZvsNheCmF8uo2XpBshOVQsofHSAcACMLKcMZo2qMoDCxtMaXb
-	 T4m/p2gznXgiB3Zw6nk3p1S8UVhMO2/NTLO5vvh8=
+	b=0SACQRiz9gAYKbebCro9Tw8lxGe3TP71zwLUIQdpW8jLFAm5nRbEDrJvgtGEIrVDD
+	 0sEeOj/I+MDhwXIn2eyE6lQfMlN6iLz2BR4ZqWuoSDpvQAgdgPBe90XbShcQxC4F4O
+	 +FBSo3wxTDnCv3c4L83cU9uXDeIPnZo1PisG91qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 08/81] xhci: retry Stop Endpoint on buggy NEC controllers
+Subject: [PATCH 6.6 136/222] RDMA/bnxt_re: Fix max_qp_wrs reported
 Date: Mon,  6 Jan 2025 16:15:40 +0100
-Message-ID: <20250106151129.753656143@linuxfoundation.org>
+Message-ID: <20250106151155.914768253@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit fd9d55d190c0e5fefd3a9165ea361809427885a1 ]
+[ Upstream commit 40be32303ec829ea12f9883e499bfd3fe9e52baf ]
 
-Two NEC uPD720200 adapters have been observed to randomly misbehave:
-a Stop Endpoint command fails with Context Error, the Output Context
-indicates Stopped state, and the endpoint keeps running. Very often,
-Set TR Dequeue Pointer is seen to fail next with Context Error too,
-in addition to problems from unexpectedly completed cancelled work.
+While creating qps, driver adds one extra entry to the sq size
+passed by the ULPs in order to avoid queue full condition.
+When ULPs creates QPs with max_qp_wr reported, driver creates
+QP with 1 more than the max_wqes supported by HW. Create QP fails
+in this case. To avoid this error, reduce 1 entry in max_qp_wqes
+and report it to the stack.
 
-The pathology is common on fast running isoc endpoints like uvcvideo,
-but has also been reproduced on a full-speed bulk endpoint of pl2303.
-It seems all EPs are affected, with risk proportional to their load.
-
-Reproduction involves receiving any kind of stream and closing it to
-make the device driver cancel URBs already queued in advance.
-
-Deal with it by retrying the command like in the Running state.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240229141438.619372-8-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: e21ebe51af68 ("xhci: Turn NEC specific quirk for handling Stop Endpoint errors generic")
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241217102649.1377704-2-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 975d825091cb..d193d5ad8789 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1141,6 +1141,15 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 				break;
- 			ep->ep_state &= ~EP_STOP_CMD_PENDING;
- 			return;
-+		case EP_STATE_STOPPED:
-+			/*
-+			 * NEC uPD720200 sometimes sets this state and fails with
-+			 * Context Error while continuing to process TRBs.
-+			 * Be conservative and trust EP_CTX_STATE on other chips.
-+			 */
-+			if (!(xhci->quirks & XHCI_NEC_HOST))
-+				break;
-+			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ep is running\n");
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 420f8613bcd5..0f6bae009af1 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -127,7 +127,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+ 	attr->max_qp_init_rd_atom =
+ 		sb->max_qp_init_rd_atom > BNXT_QPLIB_MAX_OUT_RD_ATOM ?
+ 		BNXT_QPLIB_MAX_OUT_RD_ATOM : sb->max_qp_init_rd_atom;
+-	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr);
++	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr) - 1;
+ 	/*
+ 	 * 128 WQEs needs to be reserved for the HW (8916). Prevent
+ 	 * reporting the max number
 -- 
 2.39.5
 
