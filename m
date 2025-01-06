@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-106920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87159A0294E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C6DA02CF3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCE391885354
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D1B73A344C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEC3148838;
-	Mon,  6 Jan 2025 15:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E662B6088F;
+	Mon,  6 Jan 2025 15:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEjvTRwk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFMS9D36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297F349652;
-	Mon,  6 Jan 2025 15:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A220FBA34;
+	Mon,  6 Jan 2025 15:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176912; cv=none; b=pXDb2y1bdwsmZJ0GsZiBmEBdMt2BeASm04+Ecxg0rQQREs9XC5eLEpZ0QHttCyEQ5EqDQlcgEWK0ayyDxZI5tL+YiE1WV/SjR1s59ZwIM2UeolEdwWKrTFM/a/Y8qmXJs0g1k3P2OG/8g0si4qnxMMynnIwdIDEed1hMHKhbfxQ=
+	t=1736179072; cv=none; b=r80E6Mx45xTALapSQ1x0duJPf4I4AK2yrEJHw72r/CM88LS61606DLHySS6rcDas8Z+hg8AA+tYd8kNnSoiuuDhmh42Ht7gKm+7y+dQDO3Zygm9lPeKt879Df39CSQk3hQxCvKx/hnMxm86qiIsK8hFx4nwC2iSYADBcNnKGQRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176912; c=relaxed/simple;
-	bh=1NLlNAvkCqBorTOdPefM10e8U6Yxa+eG9X34gtjurQE=;
+	s=arc-20240116; t=1736179072; c=relaxed/simple;
+	bh=lQg0ozWEqk820Qo5qcY1S8BUMMy0yUYq9C3WaSXtHzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0Xy34iYzYiJfQfXsJnxJIVH3vSCGPRQKgm0EWfUwDskGwhrT2P2+8zD7AVO0f/2/331sj6pPnO075yEf2RSuvWvYr1b9wrdLnXYmz2V/57wPBrYqqJlCm63F5AwxDaYAIzT+idukztKi2Nq/Cw7hKFPQYhyZGwi0QVe//ja1yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEjvTRwk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5E5C4CED2;
-	Mon,  6 Jan 2025 15:21:50 +0000 (UTC)
+	 MIME-Version; b=Vrk9kgtR9BVgUoIXk/KBLJUPJQzoV+786Rb1GIhbdTB+AD2dcvK2p6FgJIBBem8X8Pr8owKQJLbmpdPtatNtbvDooYK8e53ifPz+eFCrrCXEocc9iEL3iX9fZjo8teX/iHxbN7zG4yr2/h2pnG0uQZqGtuOGGOcJayWZn2F8M1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFMS9D36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1021C4CED2;
+	Mon,  6 Jan 2025 15:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176911;
-	bh=1NLlNAvkCqBorTOdPefM10e8U6Yxa+eG9X34gtjurQE=;
+	s=korg; t=1736179072;
+	bh=lQg0ozWEqk820Qo5qcY1S8BUMMy0yUYq9C3WaSXtHzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEjvTRwkeC8W5Ixoy37QY5Wyd6VQSgY8WZkV0JQODjN3YFWhZlXKW2wCVJN6njs4q
-	 xVSL5crrADldev6mdCMBVUFc8KtWvOSpjtKrklb8x4zqXOU1stCnLOeEaA4cXj1bgv
-	 2fOUmOqoFS6OODmQ2EBNNRJDlMZZUyR6joL2lSes=
+	b=OFMS9D36p9/ABFc2rXXsaLjcpg4lQILCcdIGyfP5cDQ+hQyY5gmsdNxmpzH3YdEWH
+	 jy7QBkBEJlzOgYw+z/q982ketA0O41+35ApMiCa9ECbIv96c7Fi+eJQklmuIsYfola
+	 cCoON493jZRdvptyrq5tVjzDUKxk5cJqPVJ5B/rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.1 71/81] RDMA/uverbs: Prevent integer overflow issue
+	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 07/93] drm/i915: Fix memory leak by correcting cache object name in error handler
 Date: Mon,  6 Jan 2025 16:16:43 +0100
-Message-ID: <20250106151132.110649689@linuxfoundation.org>
+Message-ID: <20250106151128.973196173@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit d0257e089d1bbd35c69b6c97ff73e3690ab149a9 upstream.
+[ Upstream commit 9bc5e7dc694d3112bbf0fa4c46ef0fa0f114937a ]
 
-In the expression "cmd.wqe_size * cmd.wr_count", both variables are u32
-values that come from the user so the multiplication can lead to integer
-wrapping.  Then we pass the result to uverbs_request_next_ptr() which also
-could potentially wrap.  The "cmd.sge_count * sizeof(struct ib_uverbs_sge)"
-multiplication can also overflow on 32bit systems although it's fine on
-64bit systems.
+Replace "slab_priorities" with "slab_dependencies" in the error handler
+to avoid memory leak.
 
-This patch does two things.  First, I've re-arranged the condition in
-uverbs_request_next_ptr() so that the use controlled variable "len" is on
-one side of the comparison by itself without any math.  Then I've modified
-all the callers to use size_mul() for the multiplications.
-
-Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/b8765ab3-c2da-4611-aae0-ddd6ba173d23@stanley.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241127201042.29620-1-jiashengjiangcool@gmail.com
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/i915_scheduler.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -161,7 +161,7 @@ static const void __user *uverbs_request
- {
- 	const void __user *res = iter->cur;
+diff --git a/drivers/gpu/drm/i915/i915_scheduler.c b/drivers/gpu/drm/i915/i915_scheduler.c
+index 0ef205fe5e29..7ef068dcc48b 100644
+--- a/drivers/gpu/drm/i915/i915_scheduler.c
++++ b/drivers/gpu/drm/i915/i915_scheduler.c
+@@ -533,6 +533,6 @@ int __init i915_global_scheduler_init(void)
+ 	return 0;
  
--	if (iter->cur + len > iter->end)
-+	if (len > iter->end - iter->cur)
- 		return (void __force __user *)ERR_PTR(-ENOSPC);
- 	iter->cur += len;
- 	return res;
-@@ -2009,11 +2009,13 @@ static int ib_uverbs_post_send(struct uv
- 	ret = uverbs_request_start(attrs, &iter, &cmd, sizeof(cmd));
- 	if (ret)
- 		return ret;
--	wqes = uverbs_request_next_ptr(&iter, cmd.wqe_size * cmd.wr_count);
-+	wqes = uverbs_request_next_ptr(&iter, size_mul(cmd.wqe_size,
-+						       cmd.wr_count));
- 	if (IS_ERR(wqes))
- 		return PTR_ERR(wqes);
--	sgls = uverbs_request_next_ptr(
--		&iter, cmd.sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(&iter,
-+				       size_mul(cmd.sge_count,
-+						sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return PTR_ERR(sgls);
- 	ret = uverbs_request_finish(&iter);
-@@ -2199,11 +2201,11 @@ ib_uverbs_unmarshall_recv(struct uverbs_
- 	if (wqe_size < sizeof(struct ib_uverbs_recv_wr))
- 		return ERR_PTR(-EINVAL);
- 
--	wqes = uverbs_request_next_ptr(iter, wqe_size * wr_count);
-+	wqes = uverbs_request_next_ptr(iter, size_mul(wqe_size, wr_count));
- 	if (IS_ERR(wqes))
- 		return ERR_CAST(wqes);
--	sgls = uverbs_request_next_ptr(
--		iter, sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(iter, size_mul(sge_count,
-+						      sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return ERR_CAST(sgls);
- 	ret = uverbs_request_finish(iter);
+ err_priorities:
+-	kmem_cache_destroy(global.slab_priorities);
++	kmem_cache_destroy(global.slab_dependencies);
+ 	return -ENOMEM;
+ }
+-- 
+2.39.5
+
 
 
 
