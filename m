@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3EEA02C53
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8BAA02B1C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43051188760E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05503A5C71
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75F017625C;
-	Mon,  6 Jan 2025 15:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0E0156C5E;
+	Mon,  6 Jan 2025 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xdtx9XUy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICQ/Tvr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854A71607AA;
-	Mon,  6 Jan 2025 15:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59E3DF71;
+	Mon,  6 Jan 2025 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178782; cv=none; b=ka8QDkwrXzNUGe3HbZm8eT7f3KJFjV2Sy36yCLSCs1bgk/HAXC8SJM/kXzb1RWvzbcVo8uae/r+nUnxNMv1ElGCKd9bx46ZJ8amiFEtGGR5l1L9ugdBDn8K3GHX3DP43ckaM990nGMIZ5qwSzmVbDZlP4B1g8Q80iM/U2dSbaM0=
+	t=1736177956; cv=none; b=VqTs+UCKbAdNt1QJUCWx8YZBTNlkRGtmIfzez941IWJJyxieBApin+9FZJRZDgM7dfEFMtBhw/9eFIP9WVyrC+wLMv/KPNZioN+sF8DtKDiYDDFIUyvVaruJUm36Ouh+9JRy3U/h1OWSeaEwWd7r60vneCBmtiyFJ6Ww276YO5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178782; c=relaxed/simple;
-	bh=HgVqZzxzskBqEhkjK8exEA9xBfI2gUH7PQE5GuZFlnU=;
+	s=arc-20240116; t=1736177956; c=relaxed/simple;
+	bh=Z5DE41UUzw0iAPx/SVGELuLlZEYpRVxDKgcXV7V53X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKRkGKXN77V01OWGo9rvTrdxguYruM3s4Ab8dHmOQ8+Z2ZSNMVjUqZbjvY+d7TJvF3VdI+ISB9n6qAeBPJLo9Z4zsuq0v35ZIH8+PjMQtbMXEtZM5TVlBQwgw65Ot3FLfOybZmlLeww6gZQTx5BGrH5H1Pm8QynuQAYCOg51Uew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xdtx9XUy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06658C4CED2;
-	Mon,  6 Jan 2025 15:53:01 +0000 (UTC)
+	 MIME-Version; b=ArD2jW19JzRbptwIzIgsh8nkXeXVW4MjyLrlHI+JTczkz/iKWpGkaCQGJYjZWfFoUvtpCNOIEmxNRDb9jLZq1UOX53/Ng4GrEutpRDsUI2hVPLAXfoADhgXeOKXnCB1VYZYX6NuNJTrH5XJboUFVnORSnughwgOP5N/JsbCpAKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICQ/Tvr/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DECEC4CED2;
+	Mon,  6 Jan 2025 15:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178782;
-	bh=HgVqZzxzskBqEhkjK8exEA9xBfI2gUH7PQE5GuZFlnU=;
+	s=korg; t=1736177956;
+	bh=Z5DE41UUzw0iAPx/SVGELuLlZEYpRVxDKgcXV7V53X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xdtx9XUyJEd539IFcaK+P7+L0gHpYTDP9XcCxvpVLXtac2y+77z5uTJ68mAtTNYJQ
-	 CEiHjZZnLaJQlfUxKEAJ63ZtiAPzhtUo5CLshwfqB720iQ9PTEPr+wdjKUhP63gyzY
-	 DXhcwgcJRafEZsa03TJdtJYwSDcHqzXpnwWdA8uQ=
+	b=ICQ/Tvr/Qzwiq4SPIfeXI4YpjYrMXaFn0FH74yxsiPa/OhwmoOLub4/RP0zJTZ+Bn
+	 98nNKbZY31uJ83WXn6U9tUIc86be+KkBrEAv03853c0M+8UPYvKU3czZVBmib/dWfc
+	 +Ge5Eei9uM3GMYytrAo+9qeWr+3ea/qTqvadm2z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordy Zomer <jordyzomer@google.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/168] ksmbd: fix Out-of-Bounds Write in ksmbd_vfs_stream_write
+	Gwendal Fernet <gwendalfernet@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 112/156] io_uring/kbuf: use pre-committed buffer address for non-pollable file
 Date: Mon,  6 Jan 2025 16:16:38 +0100
-Message-ID: <20250106151141.863137627@linuxfoundation.org>
+Message-ID: <20250106151145.945914906@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordy Zomer <jordyzomer@google.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 313dab082289e460391c82d855430ec8a28ddf81 ]
+commit ed123c948d06688d10f3b10a7bce1d6fbfd1ed07 upstream.
 
-An offset from client could be a negative value, It could allows
-to write data outside the bounds of the allocated buffer.
-Note that this issue is coming when setting
-'vfs objects = streams_xattr parameter' in ksmbd.conf.
+For non-pollable files, buffer ring consumption will commit upfront.
+This is fine, but io_ring_buffer_select() will return the address of the
+buffer after having committed it. For incrementally consumed buffers,
+this is incorrect as it will modify the buffer address.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Signed-off-by: Jordy Zomer <jordyzomer@google.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Store the pre-committed value and return that. If that isn't done, then
+the initial part of the buffer is not used and the application will
+correctly assume the content arrived at the start of the userspace
+buffer, but the kernel will have put it later in the buffer. Or it can
+cause a spurious -EFAULT returned in the CQE, depending on the buffer
+size. As bounds are suitably checked for doing the actual IO, no adverse
+side effects are possible - it's just a data misplacement within the
+existing buffer.
+
+Reported-by: Gwendal Fernet <gwendalfernet@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/kbuf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 35914c9809aa..0f97830d1ebc 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -6567,6 +6567,8 @@ int smb2_write(struct ksmbd_work *work)
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index d407576ddfb7..eec5eb7de843 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -139,6 +139,7 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
+ 	struct io_uring_buf_ring *br = bl->buf_ring;
+ 	__u16 tail, head = bl->head;
+ 	struct io_uring_buf *buf;
++	void __user *ret;
+ 
+ 	tail = smp_load_acquire(&br->tail);
+ 	if (unlikely(tail == head))
+@@ -153,6 +154,7 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
+ 	req->flags |= REQ_F_BUFFER_RING | REQ_F_BUFFERS_COMMIT;
+ 	req->buf_list = bl;
+ 	req->buf_index = buf->bid;
++	ret = u64_to_user_ptr(buf->addr);
+ 
+ 	if (issue_flags & IO_URING_F_UNLOCKED || !io_file_can_poll(req)) {
+ 		/*
+@@ -168,7 +170,7 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
+ 		io_kbuf_commit(req, bl, *len, 1);
+ 		req->buf_list = NULL;
  	}
+-	return u64_to_user_ptr(buf->addr);
++	return ret;
+ }
  
- 	offset = le64_to_cpu(req->Offset);
-+	if (offset < 0)
-+		return -EINVAL;
- 	length = le32_to_cpu(req->Length);
- 
- 	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
+ void __user *io_buffer_select(struct io_kiocb *req, size_t *len,
 -- 
-2.39.5
+2.47.1
 
 
 
