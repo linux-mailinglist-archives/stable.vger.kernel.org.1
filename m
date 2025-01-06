@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-107178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AC9A02A9A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D4EA029F7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 923C918863BA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79B403A6820
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F781DDA2F;
-	Mon,  6 Jan 2025 15:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72496166F07;
+	Mon,  6 Jan 2025 15:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjnkKvoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADwwhcj3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D68A1DD9A6;
-	Mon,  6 Jan 2025 15:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3D715C120;
+	Mon,  6 Jan 2025 15:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177689; cv=none; b=NbDSROUB/NBmCnwfwkwwQfKwiFeGUiB6U68vJgIwxjzTOhi8dGAUN5qpBmFj7FYmQgU1lX16wxs548Hg7oO02+JIRWL9Zi7B4PRTbTCHwzH6bR4hQoXPj8I/wTMnlKVXPIlOeUSxwqtdeix9hrJFgiVD7TH00jrNMIE6nZfsgZA=
+	t=1736177262; cv=none; b=GMPvRsaddngHZZCV5KCZqPQaGlXGV21eBmwKvWyBHs+1odLy0FSoHIdj/Ig5DaexORCkEFibMFYjsP2TsR32ra95gC1GjcTljkh4sCRjTXWbOrAnn8aD3C9l+aI18D6yEpx8nZ2/eckjqAF+X3D/AyPFge3u48C1B9yDzfUUhv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177689; c=relaxed/simple;
-	bh=R5ytUBjOpU0atyZqS+CvA+XPAFwCHjg1BULbfhEVLTg=;
+	s=arc-20240116; t=1736177262; c=relaxed/simple;
+	bh=J/xnrYvBChV4FW40mIlUIahcTNCu36Fs9fxa3npnwP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SoESHk6uVKZ65oKDsAjA4KFqiIU9jAtJ3DZjTiTWLCeizROb/KYhqYj+t+8H0N5anFR+3IyXONRW2JuV+kodxVMMEe6qVajXJlNep8b66uyN0p3dRODC1NRyClHBtDMOr0sSpeA7JOKNihR23nfI64qRfiz28tR+sg1vrsGwrn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjnkKvoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736FBC4CED2;
-	Mon,  6 Jan 2025 15:34:48 +0000 (UTC)
+	 MIME-Version; b=jG8JiaCbZjbaBFg6NJ+HUH5YDBAijB0ewnJ/8ucdfRRRBHnn9rJ9utW9PEtz2tDE4WRwYR221ECFTGIAwxSVzuqnQMLgyCh//ivyT0LPvZ2RVE1tgKc6JlMkix6chSm62qwScC9GJyMy6BxhbOTgQp9iCcrxU4iYxLbmO4J1Fag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADwwhcj3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F34C4CED2;
+	Mon,  6 Jan 2025 15:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177688;
-	bh=R5ytUBjOpU0atyZqS+CvA+XPAFwCHjg1BULbfhEVLTg=;
+	s=korg; t=1736177262;
+	bh=J/xnrYvBChV4FW40mIlUIahcTNCu36Fs9fxa3npnwP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjnkKvoH/o1L3HOdx6a6IW4ODzLqPYBW4DFS+25DgGEB8wsgL8wZ0PWLI1CW4EesI
-	 hfV+qTzlKqSt+TtG/zUcK2h6fpu1NpXNocGiPMcg20kV9pzfl1AdUd9omAIrMxydHi
-	 xovqNfoZbbeykD1mbhqXciYlLJaWpFrt+HnZWS3s=
+	b=ADwwhcj34y1rejCdB36+MRODwvoBH/8TGWnkJPBPUmdJtb7LDlocUjdS1aPzp1XkQ
+	 egpnSA2xS7KgsYZdyHnDR8tbXuSarfmuqGpnavfmvY6Q+T8U821PGoN5pvJQN+2mCb
+	 8vcVwrimyJZe/l9g0i22szsODIu+w4/jEmGLTsHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/156] RDMA/nldev: Set error code in rdma_nl_notify_event
+Subject: [PATCH 6.6 106/222] cleanup: Remove address space of returned pointer
 Date: Mon,  6 Jan 2025 16:15:10 +0100
-Message-ID: <20250106151142.652669307@linuxfoundation.org>
+Message-ID: <20250106151154.610373855@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 13a6691910cc23ea9ba4066e098603088673d5b0 ]
+[ Upstream commit f730fd535fc51573f982fad629f2fc6b4a0cde2f ]
 
-In case of error set the error code before the goto.
+Guard functions in local_lock.h are defined using DEFINE_GUARD() and
+DEFINE_LOCK_GUARD_1() macros having lock type defined as pointer in
+the percpu address space. The functions, defined by these macros
+return value in generic address space, causing:
 
-Fixes: 6ff57a2ea7c2 ("RDMA/nldev: Fix NULL pointer dereferences issue in rdma_nl_notify_event")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-rdma/a84a2fc3-33b6-46da-a1bd-3343fa07eaf9@stanley.mountain/
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Link: https://patch.msgid.link/13eb25961923f5de9eb9ecbbc94e26113d6049ef.1733815944.git.leonro@nvidia.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+cleanup.h:157:18: error: return from pointer to non-enclosed address space
+
+and
+
+cleanup.h:214:18: error: return from pointer to non-enclosed address space
+
+when strict percpu checks are enabled.
+
+Add explicit casts to remove address space of the returned pointer.
+
+Found by GCC's named address space checks.
+
+Fixes: e4ab322fbaaa ("cleanup: Add conditional guard support")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240819074124.143565-1-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/nldev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/cleanup.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index 7dc8e2ec62cc..f12189986303 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -2802,8 +2802,8 @@ int rdma_nl_notify_event(struct ib_device *device, u32 port_num,
- 			  enum rdma_nl_notify_event_type type)
- {
- 	struct sk_buff *skb;
-+	int ret = -EMSGSIZE;
- 	struct net *net;
--	int ret = 0;
- 	void *nlh;
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index f0c6d1d45e67..64b8600eb8c0 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -123,7 +123,7 @@ static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
+ 	__DEFINE_CLASS_IS_CONDITIONAL(_name, false); \
+ 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
+ 	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
+-	{ return *_T; }
++	{ return (void *)(__force unsigned long)*_T; }
  
- 	net = read_pnet(&device->coredev.rdma_net);
+ #define DEFINE_GUARD_COND(_name, _ext, _condlock) \
+ 	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true); \
+@@ -204,7 +204,7 @@ static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
+ 									\
+ static inline void *class_##_name##_lock_ptr(class_##_name##_t *_T)	\
+ {									\
+-	return _T->lock;						\
++	return (void *)(__force unsigned long)_T->lock;			\
+ }
+ 
+ 
 -- 
 2.39.5
 
