@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-106897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE196A02937
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AC7A02BA4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D5EA3A51E5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8979D188526C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF66E157E82;
-	Mon,  6 Jan 2025 15:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529601DDC0F;
+	Mon,  6 Jan 2025 15:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jg7ILg7p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMwlYKJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921DF14F12D;
-	Mon,  6 Jan 2025 15:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0213F1DE2A1;
+	Mon,  6 Jan 2025 15:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176838; cv=none; b=De7ovqEyHoxYyHp8PmXOrNOh0ltLmWraMBsOUzjSlHJwautgdISRrC8f5QrwUyz9RUBDhMCLsXzE/SimZWDR6WweP3KsjPIgqaw/7OumMrlAzCokTFKnm5dgH9LLT0hD49Cp+aDkEE0X4KsCqDMaJA3G2a1uhiJ6fe+yo7q+5+s=
+	t=1736178332; cv=none; b=ZZV7QKTSyGmQKRbFD3Lg+PKmoQbQiIbCZY0KMH5p4cYHhcrpRWJXkjtRtjZ9qiFO41R1qy9BwQuSYrv/Do1OJJ2ZKQ6HZT/yP3+mymWt3uh0PNCEAerwNNSWy3hm+OCrpysYZ595FGbWj0GH+YuabrdksODxfskmvzmc5qpIL/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176838; c=relaxed/simple;
-	bh=BWYEKX4Ff31hG2f+qMQAz+hKrCCAnAxLkPdimV2bHH4=;
+	s=arc-20240116; t=1736178332; c=relaxed/simple;
+	bh=8hBZbDrfU6JLcmBkIpfOOFuadFGjiIEqRdRNpauqWkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGpNt4dAyCEm1VBCm8SF0Agfw3SpfzCwPy0dqKkpHv9T3zeKHA0zNGNUCcP40OxR+f8RUwpSENk8D6RcyKNPwhr0hzvgSrnOHDq7tFLN1UjALf6vBElonW6RoIHGSqxflZXARHoDSbDiLqwKzZwOwtmGz2ZijtkI9jV1R3wyTjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jg7ILg7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C804CC4CED2;
-	Mon,  6 Jan 2025 15:20:37 +0000 (UTC)
+	 MIME-Version; b=BCPrQfUeTUc9MWOoKTOcjSnPNTSIOAbgfIAIXukMOx+0nb0UPRSTSVaYZd9vWtqDubBLHoWhks0KjTxnx4226cDQqSd2oeDlPaZ9lR+67CXMuV7tlevRqW55XPdz9aP+gCjoyA4hc5QAQEbectcD2H4xURUfeGJqu/ccnUvPEeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMwlYKJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4A6C4CED2;
+	Mon,  6 Jan 2025 15:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176838;
-	bh=BWYEKX4Ff31hG2f+qMQAz+hKrCCAnAxLkPdimV2bHH4=;
+	s=korg; t=1736178331;
+	bh=8hBZbDrfU6JLcmBkIpfOOFuadFGjiIEqRdRNpauqWkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jg7ILg7pp7Dq3pLAhMMT0E3RNN3RR6KeBD6rbl8WEacbwoL1Xf2JLB7LGFtofe/F/
-	 kSFwoTte1fDerND2DRoJv+SD4C/0bX7Uqllip1hCXhnlZA7Qt1SRcwfS2Y1w1wevrS
-	 6EQ5jmeYF6McOIdGoE1vZoavQhn8xUDpxwoQt8Tg=
+	b=LMwlYKJ7dqP2CkoRhCE2uFhDp7hZzOPaLmTSYtl+tqwubDdYFMJkPi6qOgjoclA7n
+	 BF0EglXDJZX0KmM80wvkk6xS4B+R7eDiaXTCKizk4wPxK7h8gMHBuFfJSkl0BFlkDx
+	 ys34XijL1F3OQNxiIR86ibPcbwexzWh/reusLsHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/81] net: wwan: iosm: Properly check for valid exec stage in ipc_mmio_init()
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 055/138] dmaengine: mv_xor: fix child node refcount handling in early exit
 Date: Mon,  6 Jan 2025 16:16:19 +0100
-Message-ID: <20250106151131.210824406@linuxfoundation.org>
+Message-ID: <20250106151135.318335573@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit a7af435df0e04cfb4a4004136d597c42639a2ae7 ]
+commit 362f1bf98a3ecb5a2a4fcbdaa9718c8403beceb2 upstream.
 
-ipc_mmio_init() used the post-decrement operator in its loop continuing
-condition of "retries" counter being "> 0", which meant that when this
-condition caused loop exit "retries" counter reached -1.
+The for_each_child_of_node() loop requires explicit calls to
+of_node_put() to decrement the child's refcount upon early exits (break,
+goto, return).
 
-But the later valid exec stage failure check only tests for "retries"
-counter being exactly zero, so it didn't trigger in this case (but
-would wrongly trigger if the code reaches a valid exec stage in the
-very last loop iteration).
+Add the missing calls in the two early exits before the goto
+instructions.
 
-Fix this by using the pre-decrement operator instead, so the loop counter
-is exactly zero on valid exec stage failure.
-
-Fixes: dc0514f5d828 ("net: iosm: mmio scratchpad")
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Link: https://patch.msgid.link/8b19125a825f9dcdd81c667c1e5c48ba28d505a6.1735490770.git.mail@maciej.szmigiero.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f7d12ef53ddf ("dma: mv_xor: add Device Tree binding")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241011-dma_mv_xor_of_node_put-v1-1-3c2de819f463@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_mmio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/mv_xor.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_mmio.c b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-index 63eb08c43c05..6764c13530b9 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_mmio.c
-@@ -104,7 +104,7 @@ struct iosm_mmio *ipc_mmio_init(void __iomem *mmio, struct device *dev)
- 			break;
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1393,6 +1393,7 @@ static int mv_xor_probe(struct platform_
+ 			irq = irq_of_parse_and_map(np, 0);
+ 			if (!irq) {
+ 				ret = -ENODEV;
++				of_node_put(np);
+ 				goto err_channel_add;
+ 			}
  
- 		msleep(20);
--	} while (retries-- > 0);
-+	} while (--retries > 0);
+@@ -1401,6 +1402,7 @@ static int mv_xor_probe(struct platform_
+ 			if (IS_ERR(chan)) {
+ 				ret = PTR_ERR(chan);
+ 				irq_dispose_mapping(irq);
++				of_node_put(np);
+ 				goto err_channel_add;
+ 			}
  
- 	if (!retries) {
- 		dev_err(ipc_mmio->dev, "invalid exec stage %X", stage);
--- 
-2.39.5
-
 
 
 
