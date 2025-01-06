@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9175AA02B1D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445D7A02A95
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E08FA3A56B0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8043A6146
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF65914D28C;
-	Mon,  6 Jan 2025 15:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09457603F;
+	Mon,  6 Jan 2025 15:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptqy+80a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqOEfzMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C987200A3;
-	Mon,  6 Jan 2025 15:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC8E7405A;
+	Mon,  6 Jan 2025 15:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177962; cv=none; b=hvYRbBNgSad8vsYCjV8O+Dw1G4RJzM1VjI3s4jfd4/iEJRwGT07+o6mYoXAx7wcbSRqLSme+H1F2XNJ+mbQ5YnX4o78ti53zE8JhNHmyGNiT8H2JxerfWsaLkAMO+L8ZW/uzyM6od4MI2d42yQocMe2U/4UM4MS6W42PtSNcg2A=
+	t=1736177629; cv=none; b=gz+US8UIvDymOW96s8f6Oa60rNbQ/zCC3TnRQzjsJsCWRHwDD+4zYcZJ9y7oXtM0ZP/xQrAoKLCSFzK49Cs5xADF0bWexu+s9Ew7Dwx0OpTeoqF28nos6LBclT70kmW9KG+rc1Fbw1lwlkg6jKxzdwJQ5b1cmOZM/F8gJ8jq3Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177962; c=relaxed/simple;
-	bh=Gz3i3OaE2C+aeX/dcL/Gkv/2B1nwjXaDSkZ2J5+Ey6I=;
+	s=arc-20240116; t=1736177629; c=relaxed/simple;
+	bh=mCdEhtJ55N4cy4O8F6i9fSZ4IvCa4szkwtMh2y8EqQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWovLfSEGI9cgeX4GeJsoLhvp8h9wYs0OSuaTZrHxQ2WG7A3WPldV9K+WilCSK8FYWtM69MmxpS6o6E3MvyGIQTPBX3d11T91ggAspB4PwWbHRI2QJSHgbtO2R/DLhuGormmqJp0GeQEMztyLp3hhMImrErPERTQwe6SlsnTtEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptqy+80a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AD1C4CED2;
-	Mon,  6 Jan 2025 15:39:21 +0000 (UTC)
+	 MIME-Version; b=uQNzTRJ0imjfDK6L1M5zz5ci+keC9wa3kGjPBoKWIy6NsHE0LAe6agC8I98w+tW22uIXLvOfCLRJiY/FsvuUsuK5++YQacXS52k273ymozWZFGA1MQ/x+qiXOaTMhLHVBQcf+gIboQUCCN1C4lr2KpV2dntZlLKS0G5u5KD3Ir0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqOEfzMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D498AC4CED2;
+	Mon,  6 Jan 2025 15:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177962;
-	bh=Gz3i3OaE2C+aeX/dcL/Gkv/2B1nwjXaDSkZ2J5+Ey6I=;
+	s=korg; t=1736177629;
+	bh=mCdEhtJ55N4cy4O8F6i9fSZ4IvCa4szkwtMh2y8EqQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptqy+80aNFjwrnhwReTNWIJm1PFL0tKgUgtt7IbSv5Dcn2XHz1aK9DsW57vZo/6yS
-	 GNd/zajMrqv/O4MQLUPXagcTBVdPOPm9Vp2PTu5zzrzObg0cXdX5Lgo/tEp/ng3FxB
-	 WsF1GOhPNkhe3CPZ2AMn/aeEbQeOepZEdS9FxO0M=
+	b=cqOEfzMvK34G6rCxPfCcswtvoXCpHR7CEskCAdV48qwGDQmAzidUTNpF9vcopsTzO
+	 nI9CY+KLB65nnKSQFNfALorpqgOXW105xapISo14skPgfcLKDzJe6+PQh89fGjcVJk
+	 399fkyWh/bRl+brdLwty02GNdwg847IXPfDoSo58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 114/156] ftrace: Fix function profilers filtering functionality
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 196/222] modpost: fix input MODULE_DEVICE_TABLE() built for 64-bit on 32-bit host
 Date: Mon,  6 Jan 2025 16:16:40 +0100
-Message-ID: <20250106151146.020538634@linuxfoundation.org>
+Message-ID: <20250106151158.180834407@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 789a8cff8d2dbe4b5c617c3004b5eb63fa7a3b35 upstream.
+[ Upstream commit 77dc55a978e69625f9718460012e5ef0172dc4de ]
 
-Commit c132be2c4fcc ("function_graph: Have the instances use their own
-ftrace_ops for filtering"), function profiler (enabled via
-function_profile_enabled) has been showing statistics for all functions,
-ignoring set_ftrace_filter settings.
+When building a 64-bit kernel on a 32-bit build host, incorrect
+input MODULE_ALIAS() entries may be generated.
 
-While tracers are instantiated, the function profiler is not. Therefore, it
-should use the global set_ftrace_filter for consistency.  This patch
-modifies the function profiler to use the global filter, fixing the
-filtering functionality.
+For example, when compiling a 64-bit kernel with CONFIG_INPUT_MOUSEDEV=m
+on a 64-bit build machine, you will get the correct output:
 
-Before (filtering not working):
-```
-root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
-root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
-root@localhost:~# sleep 1
-root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
-root@localhost:~# head /sys/kernel/tracing/trace_stat/*
-  Function                               Hit    Time            Avg
-     s^2
-  --------                               ---    ----            ---
-     ---
-  schedule                               314    22290594 us     70989.15 us
-     40372231 us
-  x64_sys_call                          1527    8762510 us      5738.382 us
-     3414354 us
-  schedule_hrtimeout_range               176    8665356 us      49234.98 us
-     405618876 us
-  __x64_sys_ppoll                        324    5656635 us      17458.75 us
-     19203976 us
-  do_sys_poll                            324    5653747 us      17449.83 us
-     19214945 us
-  schedule_timeout                        67    5531396 us      82558.15 us
-     2136740827 us
-  __x64_sys_pselect6                      12    3029540 us      252461.7 us
-     63296940171 us
-  do_pselect.constprop.0                  12    3029532 us      252461.0 us
-     63296952931 us
-```
+  $ grep MODULE_ALIAS drivers/input/mousedev.mod.c
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*2,*k*110,*r*0,*1,*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*2,*k*r*8,*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*14A,*r*a*0,*1,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*145,*r*a*0,*1,*18,*1C,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*110,*r*a*0,*1,*m*l*s*f*w*");
 
-After (filtering working):
-```
-root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
-root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
-root@localhost:~# sleep 1
-root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
-root@localhost:~# head /sys/kernel/tracing/trace_stat/*
-  Function                               Hit    Time            Avg
-     s^2
-  --------                               ---    ----            ---
-     ---
-  vfs_write                              462    68476.43 us     148.217 us
-     25874.48 us
-  vfs_read                               641    9611.356 us     14.994 us
-     28868.07 us
-  vfs_fstat                              890    878.094 us      0.986 us
-     1.667 us
-  vfs_fstatat                            227    757.176 us      3.335 us
-     18.928 us
-  vfs_statx                              226    610.610 us      2.701 us
-     17.749 us
-  vfs_getattr_nosec                     1187    460.919 us      0.388 us
-     0.326 us
-  vfs_statx_path                         297    343.287 us      1.155 us
-     11.116 us
-  vfs_rename                               6    291.575 us      48.595 us
-     9889.236 us
-```
+However, building the same kernel on a 32-bit machine results in
+incorrect output:
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250101190820.72534-1-enjuk@amazon.com
-Fixes: c132be2c4fcc ("function_graph: Have the instances use their own ftrace_ops for filtering")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ grep MODULE_ALIAS drivers/input/mousedev.mod.c
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*2,*k*110,*130,*r*0,*1,*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*2,*k*r*8,*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*14A,*16A,*r*a*0,*1,*20,*21,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*145,*165,*r*a*0,*1,*18,*1C,*20,*21,*38,*3C,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*3,*k*110,*130,*r*a*0,*1,*20,*21,*m*l*s*f*w*");
+
+A similar issue occurs with CONFIG_INPUT_JOYDEV=m. On a 64-bit build
+machine, the output is:
+
+  $ grep MODULE_ALIAS drivers/input/joydev.mod.c
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*0,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*2,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*8,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*6,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*120,*r*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*130,*r*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*2C0,*r*a*m*l*s*f*w*");
+
+However, on a 32-bit machine, the output is incorrect:
+
+  $ grep MODULE_ALIAS drivers/input/joydev.mod.c
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*0,*20,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*2,*22,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*8,*28,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*3,*k*r*a*6,*26,*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*11F,*13F,*r*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*11F,*13F,*r*a*m*l*s*f*w*");
+  MODULE_ALIAS("input:b*v*p*e*-e*1,*k*2C0,*2E0,*r*a*m*l*s*f*w*");
+
+When building a 64-bit kernel, BITS_PER_LONG is defined as 64. However,
+on a 32-bit build machine, the constant 1L is a signed 32-bit value.
+Left-shifting it beyond 32 bits causes wraparound, and shifting by 31
+or 63 bits makes it a negative value.
+
+The fix in commit e0e92632715f ("[PATCH] PATCH: 1 line 2.6.18 bugfix:
+modpost-64bit-fix.patch") is incorrect; it only addresses cases where
+a 64-bit kernel is built on a 64-bit build machine, overlooking cases
+on a 32-bit build machine.
+
+Using 1ULL ensures a 64-bit width on both 32-bit and 64-bit machines,
+avoiding the wraparound issue.
+
+Fixes: e0e92632715f ("[PATCH] PATCH: 1 line 2.6.18 bugfix: modpost-64bit-fix.patch")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: bf36b4bf1b9a ("modpost: fix the missed iteration for the max bit in do_input()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ scripts/mod/file2alias.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -883,16 +883,13 @@ static void profile_graph_return(struct
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index efbb4836ec66..96f37fe1b992 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -743,7 +743,7 @@ static void do_input(char *alias,
+ 	for (i = min / BITS_PER_LONG; i < max / BITS_PER_LONG + 1; i++)
+ 		arr[i] = TO_NATIVE(arr[i]);
+ 	for (i = min; i < max; i++)
+-		if (arr[i / BITS_PER_LONG] & (1L << (i%BITS_PER_LONG)))
++		if (arr[i / BITS_PER_LONG] & (1ULL << (i%BITS_PER_LONG)))
+ 			sprintf(alias + strlen(alias), "%X,*", i);
  }
  
- static struct fgraph_ops fprofiler_ops = {
--	.ops = {
--		.flags = FTRACE_OPS_FL_INITIALIZED,
--		INIT_OPS_HASH(fprofiler_ops.ops)
--	},
- 	.entryfunc = &profile_graph_entry,
- 	.retfunc = &profile_graph_return,
- };
- 
- static int register_ftrace_profiler(void)
- {
-+	ftrace_ops_set_global_filter(&fprofiler_ops.ops);
- 	return register_ftrace_graph(&fprofiler_ops);
- }
- 
-@@ -903,12 +900,11 @@ static void unregister_ftrace_profiler(v
- #else
- static struct ftrace_ops ftrace_profile_ops __read_mostly = {
- 	.func		= function_profile_call,
--	.flags		= FTRACE_OPS_FL_INITIALIZED,
--	INIT_OPS_HASH(ftrace_profile_ops)
- };
- 
- static int register_ftrace_profiler(void)
- {
-+	ftrace_ops_set_global_filter(&ftrace_profile_ops);
- 	return register_ftrace_function(&ftrace_profile_ops);
- }
- 
+-- 
+2.39.5
+
 
 
 
