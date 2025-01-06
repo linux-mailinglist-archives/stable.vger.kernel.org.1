@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7157CA02A4A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622A5A02B8A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C15067A2BD0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB4D118815D4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF3983A14;
-	Mon,  6 Jan 2025 15:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5775D7082A;
+	Mon,  6 Jan 2025 15:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mF7ZaGgg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVgSq3T/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9D718B46A;
-	Mon,  6 Jan 2025 15:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD571514F6;
+	Mon,  6 Jan 2025 15:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177505; cv=none; b=BT4+B2Gyqmhsg8omXhO1f+5Rv4XpHkjLrEmjXlvArzjTdEWDHR6TsG1/XSPMeskZG7QsZXxzqW2zWUlPCFgoQIlsGVafVQfgbHvZUaIo1gwWKXoJhftowJWyEUPGWvzaJUrKt7WAMoY3Y9ZrRUPzt/unLqzt1Mw+GjrfXr4nxTM=
+	t=1736178274; cv=none; b=JSX7GFbQvaiZjRY57n+8ZqeQbgz+fEt6d3Zq/byRqn7E9ucc5shoqlvsfcHn/QvDutNBgpF3myntvfwDduTQ9XHz46akfwvIyghSKDBWv5zit5so7nY2r5DxM81A0kmpGm67D+oZmay8Bp4ZjOYbb33Ol0ViGWev2GKfrVBv55Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177505; c=relaxed/simple;
-	bh=E7+ToMoqz4TbUfg0ddktefrg14EYBlgOP5fPORL+c1c=;
+	s=arc-20240116; t=1736178274; c=relaxed/simple;
+	bh=/Ik1wLDW3LRa929s/edNU3vypNr2S34NnEUJ6kU2h4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSC4E63zYPem+tvivzvmE2TVaqGCU64wtbp6svR+2xvj+EMRYYqWxlXJTCT/oAKs+FEUKfBI2wh1CDgrULZYR0uyyRkUi7Nj9ugxWf6EkyMXZru/H0wM6OGmjV5xHb8QLDFbXEXkQu5cPkZKD02a/Eg/exPKMQyWArie5dSm5oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mF7ZaGgg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02752C4CED2;
-	Mon,  6 Jan 2025 15:31:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lkf/oJrwNfbX8n+shVo23jmjmlZGde6UfgH/D6qkfUblh1xbV/JuWVtRWwKxpfVIxwQZ/pt/qakKcGSGgNDcDjS3PKes5KqVJzucVVbixWKIYkuKxk4BtfhbENYuG3qta0VpKX0w/AVEHyr53ZRsgQshFdg7CV81BcjnzesmdL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVgSq3T/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867D7C4CED2;
+	Mon,  6 Jan 2025 15:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177504;
-	bh=E7+ToMoqz4TbUfg0ddktefrg14EYBlgOP5fPORL+c1c=;
+	s=korg; t=1736178273;
+	bh=/Ik1wLDW3LRa929s/edNU3vypNr2S34NnEUJ6kU2h4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mF7ZaGggO89HNk9uU8khk6OwbrELA54usFe/ZumjupBWvzDBfMrNFFaR+81sVd55Y
-	 JYGr2GIvVaMY5dmXYR2oPe9K7phiO0w8Ke+qTq9gm3WzOTPT1mW1j4/Og0LoppYtvV
-	 4uM4H8P84giAU9N4aEEMIZk5MQRYBd2Coc/xooVc=
+	b=QVgSq3T/NI9zKJCWj4UuKieXe3bA/fFAHBi+/aDi2BrjOV7NByFouJpRZF23GMdI7
+	 nIWBmFWMv2uA9sizdx7AoDauLB2E2PmwcpN1s/V7/Duw4tNWGGl4DMrV7ZQB+Uqq++
+	 chfzfZ1M+domK/0BEzLqTnxNwHoWGQXbYVQ+MaLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Ratiu <adrian.ratiu@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Pau Espin Pedrol <pespin@espeweb.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/222] sound: usb: enable DSD output for ddHiFi TC44C
+Subject: [PATCH 5.10 064/138] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
 Date: Mon,  6 Jan 2025 16:16:28 +0100
-Message-ID: <20250106151157.730014776@linuxfoundation.org>
+Message-ID: <20250106151135.658074856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Ratiu <adrian.ratiu@collabora.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c84bd6c810d1880194fea2229c7086e4b73fddc1 ]
+[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
 
-This is a UAC 2 DAC capable of raw DSD on intf 2 alt 4:
+On the Asus X541UAK an unknown event 0xCF is emited when the charger
+is plugged in. This is caused by the following AML code:
 
-Bus 007 Device 004: ID 262a:9302 SAVITECH Corp. TC44C
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 [unknown]
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x262a SAVITECH Corp.
-  idProduct          0x9302 TC44C
-  bcdDevice            0.01
-  iManufacturer           1 DDHIFI
-  iProduct                2 TC44C
-  iSerial                 6 5000000001
-.......
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        2
-      bAlternateSetting       4
-      bNumEndpoints           2
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      32
-      iInterface              0
-	AudioStreaming Interface Descriptor:
-          bLength                16
-          bDescriptorType        36
-          bDescriptorSubtype     1 (AS_GENERAL)
-          bTerminalLink          3
-          bmControls             0x00
-          bFormatType            1
-          bmFormats              0x80000000
-          bNrChannels            2
-          bmChannelConfig        0x00000000
-          iChannelNames          0
-.......
+    If (ACPS ())
+    {
+        ACPF = One
+        Local0 = 0x58
+        If (ATKP)
+        {
+            ^^^^ATKD.IANE (0xCF)
+        }
+    }
+    Else
+    {
+        ACPF = Zero
+        Local0 = 0x57
+    }
 
-Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
-Link: https://patch.msgid.link/20241209090529.16134-1-adrian.ratiu@collabora.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+    Notify (AC0, 0x80) // Status Change
+    If (ATKP)
+    {
+        ^^^^ATKD.IANE (Local0)
+    }
+
+    Sleep (0x64)
+    PNOT ()
+    Sleep (0x0A)
+    NBAT (0x80)
+
+Ignore the 0xCF event to silence the unknown event warning.
+
+Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
+Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/asus-nb-wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 8eed8d9742fd..ec81b47c41c9 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2225,6 +2225,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x2522, 0x0007, /* LH Labs Geek Out HD Audio 1V5 */
- 		   QUIRK_FLAG_SET_IFACE_FIRST),
-+	DEVICE_FLG(0x262a, 0x9302, /* ddHiFi TC44C */
-+		   QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x2708, 0x0002, /* Audient iD14 */
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x2912, 0x30c8, /* Audioengine D1 */
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index 49505939352a..224c1f1c271b 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -574,6 +574,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
+ 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
+ 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
+ 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
++	{ KE_IGNORE, 0xCF, },	/* AC mode */
+ 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
+ 	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
+ 	{ KE_END, 0},
 -- 
 2.39.5
 
