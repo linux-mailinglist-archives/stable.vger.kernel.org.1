@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EC5A02A5F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6DAA02C69
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 675213A6030
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A69187A0379
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0116148838;
-	Mon,  6 Jan 2025 15:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EC91DD0FE;
+	Mon,  6 Jan 2025 15:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vx6c3pwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdNb3d1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A02146D40;
-	Mon,  6 Jan 2025 15:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FFA1D7E21;
+	Mon,  6 Jan 2025 15:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177493; cv=none; b=oxpe1ljGWsjHEm+gj+/s7wJC+Mu0x79OUypNYAgc662mSDSmAxa72AbDkVK7qU8BwdIMSNfZwVUUoQprEPUnVQi6OGCn+iPHvvVIuuKe7wT925vRaATvUCoz9G0cKZV9K6CwM7/LiS45uXYrwzt3Vd1DXbv6bUGi3JtPMOdssFw=
+	t=1736178833; cv=none; b=ufTqgGXy1+POow2+mU8LkpVUN+NiFBvn7IgsUHTISBpTZ2In11NDHDVfpB5XMFI/wpzo7vTGQP8Kog3qThVPeWBpflKZFk69Jbq4Solagr+qOhCiK9AcnpsiflZczwCJrmwN8QQDJvodI4Ngfhdm8J0n5NrOKTjlXVfOmicjYg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177493; c=relaxed/simple;
-	bh=sKspONzmF5WC7EKCqeX5qhsaF8ulFuo3h0k2UsMRhFs=;
+	s=arc-20240116; t=1736178833; c=relaxed/simple;
+	bh=kbX7E9CcLHp2g+Alex0Z6NQyWet1armrxOZcOM4E2rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXR6txTMAY3LgsWBDhFm00IddqcXwB7j3ya6K1Ul1/He6a1usmRXNneZMx2ZIy86XZbcYoGkugc2sA4JILEl6XWqutF6MjYGFOqLfcwEbAVWPICaHjt7M6VzS4UT22Hn/mYxiPTx1qlhJ0W2hLLxKasyg3LGPkQSulO/7x+T/oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vx6c3pwi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C29C4CED2;
-	Mon,  6 Jan 2025 15:31:31 +0000 (UTC)
+	 MIME-Version; b=crs9AZEVxriG86Q7c6GYzahWHbW0vWOYasQuTOAUlfyt76909MIqfXyvKhReQXCQ86Zwx/Tu08r25xOzGRieBs3an6/KruDf25Nxs/VDUOVOukBroEsO3yA7LtCPrNoH7yJ69NtTAza2m/IJokvyKlcNtBYP8egtIyKQjXF0i6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdNb3d1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C02C4CED2;
+	Mon,  6 Jan 2025 15:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177492;
-	bh=sKspONzmF5WC7EKCqeX5qhsaF8ulFuo3h0k2UsMRhFs=;
+	s=korg; t=1736178832;
+	bh=kbX7E9CcLHp2g+Alex0Z6NQyWet1armrxOZcOM4E2rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vx6c3pwijyehMZnErmd7ipqiZqfR+gwyeYPZef0XRUr2/nMMsaKsRgmeiwxH4qhdP
-	 v8/JChfQ6Hd9F3mdgjjw5lF/J7NX3AWt5Yx96SPIZIGyB3gmwDdnvYn/sJOFQaIia7
-	 4wkAESF4QQHgPCOS8JHO1XxHogBieNrM9T4CC1rA=
+	b=XdNb3d1QQ0zRoP3eV8oHNEFLDWwcDL8rlWfype+G3ZU1JGNnDtYEboiGI6+PoDEVi
+	 IRgahgX/XDuzJUJgZaNIFqCZtywsvAxNXZ77C3jup/gE8DYT+wC5Pyecr3AqF+Se2v
+	 +kNIRSOlFD3AYC1K+cWBSBuKPg34LSSHPeUf34yQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	James Hilliard <james.hilliard1@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/222] drm/amdkfd: Correct the migration DMA map direction
+Subject: [PATCH 5.15 076/168] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
 Date: Mon,  6 Jan 2025 16:16:24 +0100
-Message-ID: <20250106151157.580974547@linuxfoundation.org>
+Message-ID: <20250106151141.337140882@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,161 +61,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: James Hilliard <james.hilliard1@gmail.com>
 
-[ Upstream commit 5c3de6b02d38eb9386edf50490e050bb44398e40 ]
+[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
 
-The SVM DMA device map direction should be set the same as
-the DMA unmap setting, otherwise the DMA core will report
-the following warning.
+For the watchdog timer to work properly on the QCML04 board we need to
+set PWRGD enable in the Environment Controller Configuration Registers
+Special Configuration Register 1 when it is not already set, this may
+be the case when the watchdog is not enabled from within the BIOS.
 
-Before finialize this solution, there're some discussion on
-the DMA mapping type(stream-based or coherent) in this KFD
-migration case, followed by https://lore.kernel.org/all/04d4ab32
--45a1-4b88-86ee-fb0f35a0ca40@amd.com/T/.
-
-As there's no dma_sync_single_for_*() in the DMA buffer accessed
-that because this migration operation should be sync properly and
-automatically. Give that there's might not be a performance problem
-in various cache sync policy of DMA sync. Therefore, in order to
-simplify the DMA direction setting alignment, let's set the DMA map
-direction as BIDIRECTIONAL.
-
-[  150.834218] WARNING: CPU: 8 PID: 1812 at kernel/dma/debug.c:1028 check_u=
-nmap+0x1cc/0x930
-[  150.834225] Modules linked in: amdgpu(OE) amdxcp drm_exec(OE) gpu_sched =
-drm_buddy(OE) drm_ttm_helper(OE) ttm(OE) drm_suballoc_helper(OE) drm_displa=
-y_helper(OE) drm_kms_helper(OE) i2c_algo_bit rpcsec_gss_krb5 auth_rpcgss nf=
-sv4 nfs lockd grace netfs xt_conntrack xt_MASQUERADE nf_conntrack_netlink x=
-frm_user xfrm_algo iptable_nat xt_addrtype iptable_filter br_netfilter nvme=
-_fabrics overlay nfnetlink_cttimeout nfnetlink openvswitch nsh nf_conncount=
- nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c bridge stp llc=
- sch_fq_codel intel_rapl_msr amd_atl intel_rapl_common snd_hda_codec_realte=
-k snd_hda_codec_generic snd_hda_scodec_component snd_hda_codec_hdmi snd_hda=
-_intel snd_intel_dspcfg edac_mce_amd snd_pci_acp6x snd_hda_codec snd_acp_co=
-nfig snd_hda_core snd_hwdep snd_soc_acpi kvm_amd sunrpc snd_pcm kvm binfmt_=
-misc snd_seq_midi crct10dif_pclmul snd_seq_midi_event ghash_clmulni_intel s=
-ha512_ssse3 snd_rawmidi nls_iso8859_1 sha256_ssse3 sha1_ssse3 snd_seq aesni=
-_intel snd_seq_device crypto_simd snd_timer cryptd input_leds
-[  150.834310]  wmi_bmof serio_raw k10temp rapl snd sp5100_tco ipmi_devintf=
- soundcore ccp ipmi_msghandler cm32181 industrialio mac_hid msr parport_pc =
-ppdev lp parport efi_pstore drm(OE) ip_tables x_tables pci_stub crc32_pclmu=
-l nvme ahci libahci i2c_piix4 r8169 nvme_core i2c_designware_pci realtek i2=
-c_ccgx_ucsi video wmi hid_generic cdc_ether usbnet usbhid hid r8152 mii
-[  150.834354] CPU: 8 PID: 1812 Comm: rocrtst64 Tainted: G           OE    =
-  6.10.0-custom #492
-[  150.834358] Hardware name: AMD Majolica-RN/Majolica-RN, BIOS RMJ1009A 06=
-/13/2021
-[  150.834360] RIP: 0010:check_unmap+0x1cc/0x930
-[  150.834363] Code: c0 4c 89 4d c8 e8 34 bf 86 00 4c 8b 4d c8 4c 8b 45 c0 =
-48 8b 4d b8 48 89 c6 41 57 4c 89 ea 48 c7 c7 80 49 b4 84 e8 b4 81 f3 ff <0f=
-> 0b 48 c7 c7 04 83 ac 84 e8 76 ba fc ff 41 8b 76 4c 49 8d 7e 50
-[  150.834365] RSP: 0018:ffffaac5023739e0 EFLAGS: 00010086
-[  150.834368] RAX: 0000000000000000 RBX: ffffffff8566a2e0 RCX: 00000000000=
-00027
-[  150.834370] RDX: ffff8f6a8f621688 RSI: 0000000000000001 RDI: ffff8f6a8f6=
-21680
-[  150.834372] RBP: ffffaac502373a30 R08: 00000000000000c9 R09: ffffaac5023=
-73850
-[  150.834373] R10: ffffaac502373848 R11: ffffffff84f46328 R12: ffffaac5023=
-73a40
-[  150.834375] R13: ffff8f6741045330 R14: ffff8f6741a77700 R15: ffffffff84a=
-c831b
-[  150.834377] FS:  00007faf0fc94c00(0000) GS:ffff8f6a8f600000(0000) knlGS:=
-0000000000000000
-[  150.834379] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  150.834381] CR2: 00007faf0b600020 CR3: 000000010a52e000 CR4: 00000000003=
-50ef0
-[  150.834383] Call Trace:
-[  150.834385]  <TASK>
-[  150.834387]  ? show_regs+0x6d/0x80
-[  150.834393]  ? __warn+0x8c/0x140
-[  150.834397]  ? check_unmap+0x1cc/0x930
-[  150.834400]  ? report_bug+0x193/0x1a0
-[  150.834406]  ? handle_bug+0x46/0x80
-[  150.834410]  ? exc_invalid_op+0x1d/0x80
-[  150.834413]  ? asm_exc_invalid_op+0x1f/0x30
-[  150.834420]  ? check_unmap+0x1cc/0x930
-[  150.834425]  debug_dma_unmap_page+0x86/0x90
-[  150.834431]  ? srso_return_thunk+0x5/0x5f
-[  150.834435]  ? rmap_walk+0x28/0x50
-[  150.834438]  ? srso_return_thunk+0x5/0x5f
-[  150.834441]  ? remove_migration_ptes+0x79/0x80
-[  150.834445]  ? srso_return_thunk+0x5/0x5f
-[  150.834448]  dma_unmap_page_attrs+0xfa/0x1d0
-[  150.834453]  svm_range_dma_unmap_dev+0x8a/0xf0 [amdgpu]
-[  150.834710]  svm_migrate_ram_to_vram+0x361/0x740 [amdgpu]
-[  150.834914]  svm_migrate_to_vram+0xa8/0xe0 [amdgpu]
-[  150.835111]  svm_range_set_attr+0xff2/0x1450 [amdgpu]
-[  150.835311]  svm_ioctl+0x4a/0x50 [amdgpu]
-[  150.835510]  kfd_ioctl_svm+0x54/0x90 [amdgpu]
-[  150.835701]  kfd_ioctl+0x3c2/0x530 [amdgpu]
-[  150.835888]  ? __pfx_kfd_ioctl_svm+0x10/0x10 [amdgpu]
-[  150.836075]  ? srso_return_thunk+0x5/0x5f
-[  150.836080]  ? tomoyo_file_ioctl+0x20/0x30
-[  150.836086]  __x64_sys_ioctl+0x9c/0xd0
-[  150.836091]  x64_sys_call+0x1219/0x20d0
-[  150.836095]  do_syscall_64+0x51/0x120
-[  150.836098]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  150.836102] RIP: 0033:0x7faf0f11a94f
-[  150.836105] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 =
-00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41=
-> 89 c0 3d 00 f0 ff ff 77 1f 48 8b 44 24 18 64 48 2b 04 25 28 00
-[  150.836107] RSP: 002b:00007ffeced26bc0 EFLAGS: 00000246 ORIG_RAX: 000000=
-0000000010
-[  150.836110] RAX: ffffffffffffffda RBX: 000055c683528fb0 RCX: 00007faf0f1=
-1a94f
-[  150.836112] RDX: 00007ffeced26c60 RSI: 00000000c0484b20 RDI: 00000000000=
-00003
-[  150.836114] RBP: 00007ffeced26c50 R08: 0000000000000000 R09: 00000000000=
-00001
-[  150.836115] R10: 0000000000000032 R11: 0000000000000246 R12: 000055c6835=
-28bd0
-[  150.836117] R13: 0000000000000000 R14: 0000000000000021 R15: 00000000000=
-00000
-[  150.836122]  </TASK>
-[  150.836124] ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd=
-/amdkfd/kfd_migrate.c
-index 3263b5fa182d..f99e3b812ee4 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -319,7 +319,7 @@ svm_migrate_copy_to_vram(struct kfd_node *node, struct =
-svm_range *prange,
- 		spage =3D migrate_pfn_to_page(migrate->src[i]);
- 		if (spage && !is_zone_device_page(spage)) {
- 			src[i] =3D dma_map_page(dev, spage, 0, PAGE_SIZE,
--					      DMA_TO_DEVICE);
-+					      DMA_BIDIRECTIONAL);
- 			r =3D dma_mapping_error(dev, src[i]);
- 			if (r) {
- 				dev_err(dev, "%s: fail %d dma_map_page\n",
-@@ -634,7 +634,7 @@ svm_migrate_copy_to_ram(struct amdgpu_device *adev, str=
-uct svm_range *prange,
- 			goto out_oom;
- 		}
-=20
--		dst[i] =3D dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_FROM_DEVICE);
-+		dst[i] =3D dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_BIDIRECTIONAL);
- 		r =3D dma_mapping_error(dev, dst[i]);
- 		if (r) {
- 			dev_err(adev->dev, "%s: fail %d dma_map_page\n", __func__, r);
---=20
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index 843f9f8e3917..239947df613d 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -20,6 +20,8 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/bits.h>
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -40,6 +42,7 @@
+ #define VAL		0x2f
+ 
+ /* Logical device Numbers LDN */
++#define EC		0x04
+ #define GPIO		0x07
+ 
+ /* Configuration Registers and Functions */
+@@ -71,6 +74,12 @@
+ #define IT8784_ID	0x8784
+ #define IT8786_ID	0x8786
+ 
++/* Environment Controller Configuration Registers LDN=0x04 */
++#define SCR1		0xfa
++
++/* Environment Controller Bits SCR1 */
++#define WDT_PWRGD	0x20
++
+ /* GPIO Configuration Registers LDN=0x07 */
+ #define WDTCTRL		0x71
+ #define WDTCFG		0x72
+@@ -233,6 +242,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
+ 	return ret;
+ }
+ 
++enum {
++	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
++};
++
++static const struct dmi_system_id it87_quirks[] = {
++	{
++		/* Qotom Q30900P (IT8786) */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
++		},
++		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
++	},
++	{}
++};
++
+ static const struct watchdog_info ident = {
+ 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
+ 	.firmware_version = 1,
+@@ -254,8 +278,10 @@ static struct watchdog_device wdt_dev = {
+ 
+ static int __init it87_wdt_init(void)
+ {
++	const struct dmi_system_id *dmi_id;
+ 	u8  chip_rev;
+ 	u8 ctrl;
++	int quirks = 0;
+ 	int rc;
+ 
+ 	rc = superio_enter();
+@@ -266,6 +292,10 @@ static int __init it87_wdt_init(void)
+ 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
+ 	superio_exit();
+ 
++	dmi_id = dmi_first_match(it87_quirks);
++	if (dmi_id)
++		quirks = (long)dmi_id->driver_data;
++
+ 	switch (chip_type) {
+ 	case IT8702_ID:
+ 		max_units = 255;
+@@ -326,6 +356,15 @@ static int __init it87_wdt_init(void)
+ 		superio_outb(0x00, WDTCTRL);
+ 	}
+ 
++	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
++		superio_select(EC);
++		ctrl = superio_inb(SCR1);
++		if (!(ctrl & WDT_PWRGD)) {
++			ctrl |= WDT_PWRGD;
++			superio_outb(ctrl, SCR1);
++		}
++	}
++
+ 	superio_exit();
+ 
+ 	if (timeout < 1 || timeout > max_units * 60) {
+-- 
 2.39.5
 
 
