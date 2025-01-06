@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-107081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A2DA02A09
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B390A02C39
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 229B01644DF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9270165D27
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D2D13775E;
-	Mon,  6 Jan 2025 15:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38541DDC3A;
+	Mon,  6 Jan 2025 15:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0ep6epp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPH5Rang"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399B714884C;
-	Mon,  6 Jan 2025 15:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284EEBA34;
+	Mon,  6 Jan 2025 15:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177394; cv=none; b=SSYSHRaiBVBrv4my7YqdrINjjGCT6UaTaMnEgg+aNSynDkPvfJZizVdE7NeWppX9DPmc0gg5fpd+er3OhzXu8073PH24Dpp/KGEUAw+xO3bnBB7j+Hgx44yJ+OwCnlYJUWqWAoazNCxPNKSWYUlvL40EJXMCihc7mpkbSTYITQs=
+	t=1736178644; cv=none; b=iQBqkClTAuJ0I36eS9QhzP3xK5HfLQ/CiuxVEfHn7HZzv6/sGzDtD+HcvjySa0hLfwQaBPi7hZeJDsPa8F0bUTsEbuusCO1ZVbgB770PqtVFOQEGYoFMkViRVHnlxsasXisTj+dBUi6b07zjSnBBqg2wWjuUmsGWNvR3JPeRIdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177394; c=relaxed/simple;
-	bh=1vFW0mltXMfEtscWt+orFz2ObB0rfQ8csNJBETHarc0=;
+	s=arc-20240116; t=1736178644; c=relaxed/simple;
+	bh=zWrTSvVs4g7yFzS2EJ+x6UtGCP6lrCMvIxltpiAVCgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axHjOv4rd7nJm16fHZOV5Mf4jNZ7r7KMhUVrLNN6+lMrn/uYvm/81epc4OvdIvyZlhUxJsh34gCMU3Q1JHt8dne9HPbrETGE5+PxnM/t6FSpeaGThPOuEdDEUiH96/+rybOrdkLBjbbtVmqsbqg1fsaGmYCICmv2sFasuNx2yhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0ep6epp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6061C4CED2;
-	Mon,  6 Jan 2025 15:29:53 +0000 (UTC)
+	 MIME-Version; b=aivAwNYwFJ4UHzgS21IpR4l9Gq5cmZWylyPoO0kasoxVvgSb+tb5wO5XTPOmiIEH1uSIu1wjNibvgJi1uMNpac2NGfcKbIGNgcNcLYz7JQDccTYpd9fD8NfX/XzF2ouSOiEXm4ES8hke5xmJkGN9khFWmo5tDe/auA/aBnsZzLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPH5Rang; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37035C4CED2;
+	Mon,  6 Jan 2025 15:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177394;
-	bh=1vFW0mltXMfEtscWt+orFz2ObB0rfQ8csNJBETHarc0=;
+	s=korg; t=1736178643;
+	bh=zWrTSvVs4g7yFzS2EJ+x6UtGCP6lrCMvIxltpiAVCgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0ep6eppSg2TScHgu1necJdWSPF7aYBu8j70Jz0DpHtORiXJZqaJVAqkO1HYFRaBv
-	 9sS+Nk3DH38Xk5QzcvaD+kfvjGTDV8IH4hxZQe0Bn1zZcmTNONYfOl3V1lcZijs6ba
-	 cniSl6B4qP9uz/CUSVCoZ6XXL9McbOsw6gGqi7tY=
+	b=EPH5RangiPb1V6ytF66/TdHMn0nd8bC8LceagGSnlGJe/MFXNg+3FCk8xMMiCB23m
+	 mPe6jF3mK0XcTF5UgrJgcpCaaFRNS0Ucr2EGEvVO1zaOkQsGDM4YlC9gb1/zSpvFk8
+	 CrHEzrn0dWN/6VbVhNIDDbKyJ559UpeHwr2fv4+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/222] RDMA/hns: Fix missing flush CQE for DWQE
-Date: Mon,  6 Jan 2025 16:15:53 +0100
-Message-ID: <20250106151156.405662780@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 046/168] tracing: Add missing helper functions in event pointer dereference check
+Date: Mon,  6 Jan 2025 16:15:54 +0100
+Message-ID: <20250106151140.202990461@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +66,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit e3debdd48423d3d75b9d366399228d7225d902cd ]
+commit 917110481f6bc1c96b1e54b62bb114137fbc6d17 upstream.
 
-Flush CQE handler has not been called if QP state gets into errored
-mode in DWQE path. So, the new added outstanding WQEs will never be
-flushed.
+The process_pointer() helper function looks to see if various trace event
+macros are used. These macros are for storing data in the event. This
+makes it safe to dereference as the dereference will then point into the
+event on the ring buffer where the content of the data stays with the
+event itself.
 
-It leads to a hung task timeout when using NFS over RDMA:
-    __switch_to+0x7c/0xd0
-    __schedule+0x350/0x750
-    schedule+0x50/0xf0
-    schedule_timeout+0x2c8/0x340
-    wait_for_common+0xf4/0x2b0
-    wait_for_completion+0x20/0x40
-    __ib_drain_sq+0x140/0x1d0 [ib_core]
-    ib_drain_sq+0x98/0xb0 [ib_core]
-    rpcrdma_xprt_disconnect+0x68/0x270 [rpcrdma]
-    xprt_rdma_close+0x20/0x60 [rpcrdma]
-    xprt_autoclose+0x64/0x1cc [sunrpc]
-    process_one_work+0x1d8/0x4e0
-    worker_thread+0x154/0x420
-    kthread+0x108/0x150
-    ret_from_fork+0x10/0x18
+A few helper functions were missing. Those were:
 
-Fixes: 01584a5edcc4 ("RDMA/hns: Add support of direct wqe")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241220055249.146943-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  __get_rel_dynamic_array()
+  __get_dynamic_array_len()
+  __get_rel_dynamic_array_len()
+  __get_rel_sockaddr()
+
+Also add a helper function find_print_string() to not need to use a middle
+man variable to test if the string exists.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/20241217024720.521836792@goodmis.org
+Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/trace/trace_events.c |   21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index c9c9be122471..aded0a7f4283 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -673,6 +673,10 @@ static void write_dwqe(struct hns_roce_dev *hr_dev, struct hns_roce_qp *qp,
- #define HNS_ROCE_SL_SHIFT 2
- 	struct hns_roce_v2_rc_send_wqe *rc_sq_wqe = wqe;
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -257,6 +257,15 @@ static bool test_field(const char *fmt,
+ 	return false;
+ }
  
-+	if (unlikely(qp->state == IB_QPS_ERR)) {
-+		flush_cqe(hr_dev, qp);
-+		return;
-+	}
- 	/* All kinds of DirectWQE have the same header field layout */
- 	hr_reg_enable(rc_sq_wqe, RC_SEND_WQE_FLAG);
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_DB_SL_L, qp->sl);
--- 
-2.39.5
-
++/* Look for a string within an argument */
++static bool find_print_string(const char *arg, const char *str, const char *end)
++{
++	const char *r;
++
++	r = strstr(arg, str);
++	return r && r < end;
++}
++
+ /* Return true if the argument pointer is safe */
+ static bool process_pointer(const char *fmt, int len, struct trace_event_call *call)
+ {
+@@ -275,9 +284,17 @@ static bool process_pointer(const char *
+ 		a = strchr(fmt, '&');
+ 		if ((a && (a < r)) || test_field(r, call))
+ 			return true;
+-	} else if ((r = strstr(fmt, "__get_dynamic_array(")) && r < e) {
++	} else if (find_print_string(fmt, "__get_dynamic_array(", e)) {
++		return true;
++	} else if (find_print_string(fmt, "__get_rel_dynamic_array(", e)) {
++		return true;
++	} else if (find_print_string(fmt, "__get_dynamic_array_len(", e)) {
++		return true;
++	} else if (find_print_string(fmt, "__get_rel_dynamic_array_len(", e)) {
++		return true;
++	} else if (find_print_string(fmt, "__get_sockaddr(", e)) {
+ 		return true;
+-	} else if ((r = strstr(fmt, "__get_sockaddr(")) && r < e) {
++	} else if (find_print_string(fmt, "__get_rel_sockaddr(", e)) {
+ 		return true;
+ 	}
+ 	return false;
 
 
 
