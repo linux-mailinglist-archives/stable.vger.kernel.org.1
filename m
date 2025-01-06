@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C626A02A0E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBA0A02A92
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F4C18868B9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57E4A1886787
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A989C15575F;
-	Mon,  6 Jan 2025 15:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A0A155352;
+	Mon,  6 Jan 2025 15:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYRKg/st"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJlZNtDL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61757136E09;
-	Mon,  6 Jan 2025 15:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F42E154C04;
+	Mon,  6 Jan 2025 15:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177327; cv=none; b=jsGmJfPG7p7FD9ZxivmZDEfe2sXMbESbamCOu+iggMJc4WPjoxD4Za2Yiyhl5qWQE8lF73c6eZfkBz0hYE0bBLuI9WQQ+mk3V5Wdteq6RUlYckzP/xGFohf3W3A3uQxYn2t8M4GFwlLDexM4yIA9EQMoEmc2AiUXAvR+NtHTTZg=
+	t=1736177683; cv=none; b=nhXTunF1nTcLFvctJ1INkP29BjWciynYTadyjvSBHfCGFPLU8pRy6uxnIWArP7yAIlPBoxxNg5AlifONx2YXubIOoQQyT8F+pGkj+IbQFEuM8pTWco/6YI0iSy9H/PaMkQhqO+x8A/NqpGqezF7loWHDBwIu86BhxgGyZ54DgQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177327; c=relaxed/simple;
-	bh=tpIlHtk+IeP8jDdKiEQerdir9FFoFEoPSpcJIFdy51M=;
+	s=arc-20240116; t=1736177683; c=relaxed/simple;
+	bh=VTeaCM43qO0I2V4FPY571WJw7TYSRM391w3hXgJMwRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTAKScszuZnoIxw08o7/hFvJveO9+jGXlGG3qfCjfVofSojruLuKReJO+JqHu7TGnU/OKdCmFzy1bPCb5rDefGqIv3Xs6Z0F1O49D3P2Fe3h9VHBnRmyL2cdjQ7VvBPUjN7TCbeIjqZk20XZ5IfkbrwIPrHkOElCaFlxLLqV6Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYRKg/st; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2A7C4CED2;
-	Mon,  6 Jan 2025 15:28:45 +0000 (UTC)
+	 MIME-Version; b=MZ0G7ZtEZD6103fAMkinbSB5nRvcMz2k7c5Fpwut7m+viakBSdbc3tXpwYx/wxlZmPic8+Iq+CSZuRwxfn6Uu8vRJP7ztujSc7k6EBWF98TouShtzOdThTxJ577ItCxhFcsDJ8MFWCi4sYWsLZFPvFlqX1pzvDezan02F84ogkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJlZNtDL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96ED9C4CEE2;
+	Mon,  6 Jan 2025 15:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177326;
-	bh=tpIlHtk+IeP8jDdKiEQerdir9FFoFEoPSpcJIFdy51M=;
+	s=korg; t=1736177683;
+	bh=VTeaCM43qO0I2V4FPY571WJw7TYSRM391w3hXgJMwRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYRKg/st1nKYIh9i/28x4TcauLfkKqG9O2A6tC2RTvSsLHWmmjlATMyRpC5Yb7oYx
-	 Z/HgMsbNhWN1K63/zq6Kj5tZ3uo9j3EjOImyEqo08HMsn2Gpv/rBCg7sRKyH6TBt0N
-	 RITvOx19usKCBESooMqLeO+7E53ScZ2XEWfladEo=
+	b=dJlZNtDLAyuMyjMeNx17afx1W0vN20OvdBkLUqEgsiaJZoymyyb3UyyppNBxGRL7J
+	 arQDnQ2IG37fBDfLA6eNrbfuKjqBpDChIUipGyggU2tY+8I34Fze1gBurRzhAZTgJn
+	 9p3LqeTDqdD18T9+L5tbFMlRbxbD9pmE1kq2mS78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Will Deacon <will@kernel.org>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/222] ACPI/IORT: Add PMCG platform information for HiSilicon HIP10/11
-Date: Mon,  6 Jan 2025 16:14:59 +0100
-Message-ID: <20250106151154.192460458@linuxfoundation.org>
+Subject: [PATCH 6.12 014/156] RDMA/mlx5: Enforce same type port association for multiport RoCE
+Date: Mon,  6 Jan 2025 16:15:00 +0100
+Message-ID: <20250106151142.280768646@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit f3b78b470f28bb2a3a40e88bdf5c6de6a35a9b76 ]
+[ Upstream commit e05feab22fd7dabcd6d272c4e2401ec1acdfdb9b ]
 
-HiSilicon HIP10/11 platforms using the same SMMU PMCG with HIP09
-and thus suffers the same erratum. List them in the PMCG platform
-information list without introducing a new SMMU PMCG Model.
+Different core device types such as PFs and VFs shouldn't be affiliated
+together since they have different capabilities, fix that by enforcing
+type check before doing the affiliation.
 
-Update the silicon-errata.rst as well.
-
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20240731092658.11012-1-yangyicong@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: c2b46ae02270 ("ACPI/IORT: Add PMCG platform information for HiSilicon HIP09A")
+Fixes: 32f69e4be269 ("{net, IB}/mlx5: Manage port association for multiport RoCE")
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Link: https://patch.msgid.link/88699500f690dff1c1852c1ddb71f8a1cc8b956e.1733233480.git.leonro@nvidia.com
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst | 4 ++--
- drivers/acpi/arm64/iort.c                   | 7 +++++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/main.c | 6 ++++--
+ include/linux/mlx5/driver.h       | 6 ++++++
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-index 3cf806733083..f4e6afd59630 100644
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -244,8 +244,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
--| Hisilicon      | Hip08 SMMU PMCG | #162001900      | N/A                         |
--|                | Hip09 SMMU PMCG |                 |                             |
-+| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
-+|                | ,11} SMMU PMCG  |                 |                             |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 6496ff5a6ba2..b1f483845bc0 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1712,6 +1712,13 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
- 	/* HiSilicon Hip09 Platform */
- 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
- 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
-+	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
-+	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
-+	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
-+	{"HISI  ", "HIP10C  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
-+	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
-+	{"HISI  ", "HIP11   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
-+	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
- 	{ }
- };
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index ac20ab3bbabf..35f83aea9516 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -3631,7 +3631,8 @@ static int mlx5_ib_init_multiport_master(struct mlx5_ib_dev *dev)
+ 		list_for_each_entry(mpi, &mlx5_ib_unaffiliated_port_list,
+ 				    list) {
+ 			if (dev->sys_image_guid == mpi->sys_image_guid &&
+-			    (mlx5_core_native_port_num(mpi->mdev) - 1) == i) {
++			    (mlx5_core_native_port_num(mpi->mdev) - 1) == i &&
++			    mlx5_core_same_coredev_type(dev->mdev, mpi->mdev)) {
+ 				bound = mlx5_ib_bind_slave_port(dev, mpi);
+ 			}
  
+@@ -4776,7 +4777,8 @@ static int mlx5r_mp_probe(struct auxiliary_device *adev,
+ 
+ 	mutex_lock(&mlx5_ib_multiport_mutex);
+ 	list_for_each_entry(dev, &mlx5_ib_dev_list, ib_dev_list) {
+-		if (dev->sys_image_guid == mpi->sys_image_guid)
++		if (dev->sys_image_guid == mpi->sys_image_guid &&
++		    mlx5_core_same_coredev_type(dev->mdev, mpi->mdev))
+ 			bound = mlx5_ib_bind_slave_port(dev, mpi);
+ 
+ 		if (bound) {
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index e23c692a34c7..a9fca765b3d1 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -1233,6 +1233,12 @@ static inline bool mlx5_core_is_vf(const struct mlx5_core_dev *dev)
+ 	return dev->coredev_type == MLX5_COREDEV_VF;
+ }
+ 
++static inline bool mlx5_core_same_coredev_type(const struct mlx5_core_dev *dev1,
++					       const struct mlx5_core_dev *dev2)
++{
++	return dev1->coredev_type == dev2->coredev_type;
++}
++
+ static inline bool mlx5_core_is_ecpf(const struct mlx5_core_dev *dev)
+ {
+ 	return dev->caps.embedded_cpu;
 -- 
 2.39.5
 
