@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E46EA029F1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 695A9A02A97
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8AE1645A8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88A5C3A1157
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FB61917E9;
-	Mon,  6 Jan 2025 15:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E32F135A63;
+	Mon,  6 Jan 2025 15:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHSXH0xq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjUR8sRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49111C5F11;
-	Mon,  6 Jan 2025 15:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2373F83A14;
+	Mon,  6 Jan 2025 15:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177324; cv=none; b=PelrsS3qu4u+nUWoyH2czFCoN2BeeDmwyNUeF1tKp5AFpacEnRwSf7Ev5rfFGtgrMPtQCluVaUsz/R/Ld1g6qbE6SUb/iYYPxR5LzAn5VOza9/s8WxW3Oc7rzhrl5xLVd8KNb9ZLBytL5OaTNEHdg3bry7LDivdwaSIzrVTEux0=
+	t=1736177653; cv=none; b=g/G53mHuterhGRHvQ5fu5G+QcMFFKcv6HvCpS+rkXaPRA/POUSI0I0FsDr8fw2N513CGT5qaOCrNoNd7HJyAv6qWKKncRrlbEXhT2hbRuX0ZcWp70+ZftDw1D/48CROD2khtED0H7mxFVdn11trbJdQhAYQ/FBYEWlxPj/tBnJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177324; c=relaxed/simple;
-	bh=hsu5u7xJ2CytjLETgs+My/ziKWQjBOKYSGLVGujzeM8=;
+	s=arc-20240116; t=1736177653; c=relaxed/simple;
+	bh=7rBFAzXqetaSSkLZBsKDEVnfwYWMod++Q26DvasYHVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzKFAUzJj42CPDfsHBGNqeIO3J0s1pjSI+MqBroqmy6pn8/uNb30mXkcH3j2Oj+b8GjseZtTlQtO41zAw8AzkNfG05zqsnu9ItOguVrn/oe1CvnnqyDy+HAISsXb2sFyPPAVvDEdEfjE6bcRvh+nzqoOkauArYYC0rcWb0TYqCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHSXH0xq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C4CC4CED2;
-	Mon,  6 Jan 2025 15:28:42 +0000 (UTC)
+	 MIME-Version; b=LD7dQOwg1dh8CoxakQTnxUtAcf95ZN5CMHEnvdvNrqbTJ3dKQyxCJGNOkY+xofCrP2/a0ThLTQ9PC2JwdRRV5PpDUQf8XuzZ2Gl3lL7V0y8VqxS1tmaUdL7jDcgQqKPUQqFnMTXTIPgTqGVaXQRt81ZwcZaMiFm7870kK7n9GS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjUR8sRX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDCBC4CED2;
+	Mon,  6 Jan 2025 15:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177323;
-	bh=hsu5u7xJ2CytjLETgs+My/ziKWQjBOKYSGLVGujzeM8=;
+	s=korg; t=1736177653;
+	bh=7rBFAzXqetaSSkLZBsKDEVnfwYWMod++Q26DvasYHVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHSXH0xqQkHU8sgBvve/Th30kXmyzfdCmPIVAsuNiMOaqLJwuXdnb9Q7/eTfdYto3
-	 qtFLP+ihulMQU2CP+LM+zlTzL6AJlsfXQETFFF8IxBAGeIvqGYHyvZgZYaVBw7oFTS
-	 KhR8PUoRoJlHzw8oS+Qzt2nDXC+Kx2c99O/zZ0Ps=
+	b=OjUR8sRXrcJyU1xBi9CQVWvEEviWv5/Wk62kK2XGq/4/25BeEB+Ulktslni2cSIoZ
+	 jjRgivU1YtHO2B/SSft6/840HLbDXeqEufy30rRoNC6AQgVEHaj5RZripHoNn9qztz
+	 qdR2HgNq/mncgn5PCsUtFlazjmQrOnBpZV36RHds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/222] scsi: mpi3mr: Start controller indexing from 0
+Subject: [PATCH 6.12 012/156] RDMA/bnxt_re: Remove always true dattr validity check
 Date: Mon,  6 Jan 2025 16:14:58 +0100
-Message-ID: <20250106151154.154856055@linuxfoundation.org>
+Message-ID: <20250106151142.208043355@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 0d32014f1e3e7a7adf1583c45387f26b9bb3a49d ]
+[ Upstream commit eb867d797d294a00a092b5027d08439da68940b2 ]
 
-Instead of displaying the controller index starting from '1' make the
-driver display the controller index starting from '0'.
+res->dattr is always valid at this point as it was initialized
+during device addition in bnxt_re_add_device().
 
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20241110194405.10108-4-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This change is fixing the following smatch error:
+drivers/infiniband/hw/bnxt_re/qplib_fp.c:1090 bnxt_qplib_create_qp()
+     error: we previously assumed 'res->dattr' could be null (see line 985)
+
+Fixes: 07f830ae4913 ("RDMA/bnxt_re: Adds MSN table capability for Gen P7 adapters")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202411222329.YTrwonWi-lkp@intel.com/
+Link: https://patch.msgid.link/be0d8836b64cba3e479fbcbca717acad04aae02e.1732626579.git.leonro@nvidia.com
+Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_os.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 3f86f1d0a9be..7880675a68db 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -5066,7 +5066,7 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	}
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 7ad83566ab0f..be374d8ed430 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -999,9 +999,7 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	u32 tbl_indx;
+ 	u16 nsge;
  
- 	mrioc = shost_priv(shost);
--	retval = ida_alloc_range(&mrioc_ida, 1, U8_MAX, GFP_KERNEL);
-+	retval = ida_alloc_range(&mrioc_ida, 0, U8_MAX, GFP_KERNEL);
- 	if (retval < 0)
- 		goto id_alloc_failed;
- 	mrioc->id = (u8)retval;
+-	if (res->dattr)
+-		qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
+-
++	qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
+ 	sq->dbinfo.flags = 0;
+ 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
+ 				 CMDQ_BASE_OPCODE_CREATE_QP,
 -- 
 2.39.5
 
