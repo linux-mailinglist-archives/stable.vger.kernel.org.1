@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-107357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB66A02B79
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E1AA02A2A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D787318859F2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9847E7A29FF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A4A1D7E21;
-	Mon,  6 Jan 2025 15:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489B81DD874;
+	Mon,  6 Jan 2025 15:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LI/Syy5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8bQZfms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643551547D8;
-	Mon,  6 Jan 2025 15:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FD8149C7B;
+	Mon,  6 Jan 2025 15:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178220; cv=none; b=Mjr9JP8yRdsLs2Uxy8NML4cmAS0Pco+CdfoKnHF+K2bZKDSznr1lNK1DEQGzMECalAzYpks3+jTdn11zcHp2gpl40wVzPKnjWlpqU2dcQjLATczYnngeUfU8Jue2lb9Nmv8qvt1KBFFNp5tnupXhpdmZqvWLOdxKlhr+Gbweb8Q=
+	t=1736177442; cv=none; b=ASE1c3hWHmWBfR/ji4CdnYH8bqoSE8SL/4bJrnN/qMAhqMQfv3rk6xUD+Scd6cUblV9ydwnKrzYYNN4qhUIfxiLCyKZTIuO5IJIcz5LPnhoTdHNcvrCNQBxaTXSK1I88Le/iphsonsb7PhYOCCsAED8KDSLB0Ou/V6MfnFI7NWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178220; c=relaxed/simple;
-	bh=g0MVkStH1uv2UsBvc2NrgX0S+Al5Dtim0r4PJS+2u8s=;
+	s=arc-20240116; t=1736177442; c=relaxed/simple;
+	bh=YuXpynjOIJv3hSylJ/EtmRtbltllW16xEjAJWcuNQrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIXDHYBP2MTvjvyxhd6aI2WYghVaeWPXw7xHr9U+/orDB3wSZIspWJ+t742agxB/f2QvTesYNzYDK+ewlrK7tvuFgkdgiZczEUqM8QB9W4jt2sxENGv2QmPsu9eTbQrCRvHdBgHqYvmKsxYnYbjnd3Dxq/VvmhJv7tyLYwDZW8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LI/Syy5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FA7C4CED2;
-	Mon,  6 Jan 2025 15:43:39 +0000 (UTC)
+	 MIME-Version; b=P5B5Ohj3D1isE3etGsS1k0q9l1DYfqa4nX6AV9G7gieCcaYfgCjLQLoOTTuy9EPUzuAa0yTiI7P9RrDlCCTGqSM5Ew1JhZsL8dYzzH8GI7tRZhQVpsOEzrNAytg14V0zChHH7ck+rM4v/MB4aRT0/RMxnzkfohPXisI0HFyUiWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8bQZfms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C84C4CED2;
+	Mon,  6 Jan 2025 15:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178220;
-	bh=g0MVkStH1uv2UsBvc2NrgX0S+Al5Dtim0r4PJS+2u8s=;
+	s=korg; t=1736177441;
+	bh=YuXpynjOIJv3hSylJ/EtmRtbltllW16xEjAJWcuNQrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LI/Syy5TgpP9r6Idx+TGQhS6hFwCDrq5VV27E2cw6fk/51bqiU6al7UMFeEJTa3kj
-	 IUCoLjT8mZxseUN78tRj/CrF0kyy2ujR6X6j3BVFSKrlykWCO+n6SnpLJYoMYsJUvp
-	 aOEVycj0hTa+LlgfOt23q1q4sjLLS0SWEnCoixNo=
+	b=p8bQZfmswX3eW33mNWdh4MSi8lZbmdiFC9+sFX2uq2ySgvTD/sUs4pmYBzFJQghkM
+	 BkohcGjo1TfutLOIgo9lDJ06w0xYlQfShzn5JLnitiQUBcExGEtsX9G/bFr+cGvmVJ
+	 joprGsYLAYwn0ScWpE8LekiTw2Q5UNmTKPztt6X8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Vitalii Mordan <mordan@ispras.ru>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/138] mm/vmstat: fix a W=1 clang compiler warning
-Date: Mon,  6 Jan 2025 16:16:09 +0100
-Message-ID: <20250106151134.943999768@linuxfoundation.org>
+Subject: [PATCH 6.6 166/222] eth: bcmsysport: fix call balance of priv->clk handling routines
+Date: Mon,  6 Jan 2025 16:16:10 +0100
+Message-ID: <20250106151157.048415436@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit 30c2de0a267c04046d89e678cc0067a9cfb455df ]
+[ Upstream commit b255ef45fcc2141c1bf98456796abb956d843a27 ]
 
-Fix the following clang compiler warning that is reported if the kernel is
-built with W=1:
+Check the return value of clk_prepare_enable to ensure that priv->clk has
+been successfully enabled.
 
-./include/linux/vmstat.h:518:36: error: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Werror,-Wenum-enum-conversion]
-  518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-      |                               ~~~~~~~~~~~ ^ ~~~
+If priv->clk was not enabled during bcm_sysport_probe, bcm_sysport_resume,
+or bcm_sysport_open, it must not be disabled in any subsequent execution
+paths.
 
-Link: https://lkml.kernel.org/r/20241212213126.1269116-1-bvanassche@acm.org
-Fixes: 9d7ea9a297e6 ("mm/vmstat: add helpers to get vmstat item names for each enum type")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 31bc72d97656 ("net: systemport: fetch and use clock resources")
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20241227123007.2333397-1-mordan@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/vmstat.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index 322dcbfcc933..1ca120344b00 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -428,7 +428,7 @@ static inline const char *node_stat_name(enum node_stat_item item)
+diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
+index 49e890a7e04a..23cc2d85994e 100644
+--- a/drivers/net/ethernet/broadcom/bcmsysport.c
++++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+@@ -1967,7 +1967,11 @@ static int bcm_sysport_open(struct net_device *dev)
+ 	unsigned int i;
+ 	int ret;
  
- static inline const char *lru_list_name(enum lru_list lru)
- {
--	return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-+	return node_stat_name(NR_LRU_BASE + (enum node_stat_item)lru) + 3; // skip "nr_"
- }
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		netdev_err(dev, "could not enable priv clock\n");
++		return ret;
++	}
  
- static inline const char *writeback_stat_name(enum writeback_stat_item item)
+ 	/* Reset UniMAC */
+ 	umac_reset(priv);
+@@ -2625,7 +2629,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
+ 		goto err_deregister_notifier;
+ 	}
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		dev_err(&pdev->dev, "could not enable priv clock\n");
++		goto err_deregister_netdev;
++	}
+ 
+ 	priv->rev = topctrl_readl(priv, REV_CNTL) & REV_MASK;
+ 	dev_info(&pdev->dev,
+@@ -2639,6 +2647,8 @@ static int bcm_sysport_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ 
++err_deregister_netdev:
++	unregister_netdev(dev);
+ err_deregister_notifier:
+ 	unregister_netdevice_notifier(&priv->netdev_notifier);
+ err_deregister_fixed_link:
+@@ -2810,7 +2820,12 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
+ 	if (!netif_running(dev))
+ 		return 0;
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		netdev_err(dev, "could not enable priv clock\n");
++		return ret;
++	}
++
+ 	if (priv->wolopts)
+ 		clk_disable_unprepare(priv->wol_clk);
+ 
 -- 
 2.39.5
 
