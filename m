@@ -1,124 +1,209 @@
-Return-Path: <stable+bounces-107745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4B3A02F61
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:01:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8130A02F63
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:01:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9138F16434A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 18:01:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0920C7A0124
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 18:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D45C8DF;
-	Mon,  6 Jan 2025 18:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FE51DF72D;
+	Mon,  6 Jan 2025 18:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U9JtwSRg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGxxrFl8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A1E1DEFE8;
-	Mon,  6 Jan 2025 18:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D7D1DF279;
+	Mon,  6 Jan 2025 18:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736186497; cv=none; b=p/m+t+CamDYii04ECzke1yrxZlWkHH/NFTle4amHwG2eU+7PvPyRd9U6x4P2XreO+Rw3XLPh04esY5n9kPGL6QPM9T/ZtNNsh5Cm/Va2MkOwYDSVirix0H7ikVSBTrpVnn/Ihesz4O/V5cE8pQnPXC+2p2WpQqLENkyOt5mUugU=
+	t=1736186501; cv=none; b=RbGXBSfyqrFdbrgQpSqUsv8RtMlJ+ZateEPhNGd1SrAc+imn4sCJbKfIVmorTHAy9mfounwCDOIezlYFiwCPgkvrbLz+kjknsqWYTMF6MEnVwcaKNwrQINocxDz7Pd6Xyrkrkb9Sy6QInVL5IWhSqZ8jwddMaDQLoHgnfw7DawA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736186497; c=relaxed/simple;
-	bh=25zFiJ9WjdEaOSKemZTpzQCKjyijqwYYUDaKfAMPw0I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ckS9Zi7tgaaMXbmz13J3S4aj0EmscgODMPJ6TVariiWNmbWfaovPCugqI3hFwfL4f69w2Af63TFjrKMAEcdd3PsQiCq3yunBUUEot3GyAOepv9JRjoy05vRM7//f8DBmDRI5HUToWQWV2yA+CvxlOG66Fyg23XTAnaxODyjr5tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U9JtwSRg; arc=none smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-29fe83208a4so7031194fac.0;
-        Mon, 06 Jan 2025 10:01:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736186491; x=1736791291; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o2RF1hIS1QqUJA0GJuODmz1eNECfJRbd58h+IrA3gWc=;
-        b=U9JtwSRgEVwRj0VRE7ftVXMcY5O/Zn2GeHcwnTnsJq9EetHbzTSiDVl88fedZCcd/4
-         4mhreEUF0o9TuJhm1zwroaor8HEH36h/kBw/jjB4+nBqWFLffeajESsn4A7ZU465kHc4
-         XQL3gnogxV/HDlasLLopdd6b41rqz4ZPkTH+HfKYGc0S/siZ1uSYAUBMSzrwsG8u9RF/
-         KlH4rKixmHd9wloFRdEdCKzYP1YjvlUqZo+pTV4kp2DmD088cQPNnO3y7h+T3ClRvIyd
-         rsXTpE0URGNH0vlUY+X8xcF4RDdl1JYOUdwjoHy8FNsjHGmcLyWC2gCS8mcDOO86rGSp
-         wNNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736186491; x=1736791291;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o2RF1hIS1QqUJA0GJuODmz1eNECfJRbd58h+IrA3gWc=;
-        b=ZoMDY3HGdwf5JI9tTUVJBUHB0CoVYQJ74UCvT4FjdX+3+iCebrHPVXFnbj+ha61sWZ
-         hSQvzdgSsmPeC8U6x/oCHxf6auuYNJ3NP0ESgb89hupvtMYS6/NKPtpFY7Nn160kmw4t
-         v40cIT3eNKkQyjVP5QEprw3QmvGYwps9cqoDDL09WBzcavmeGvHh4SvQjmBhBoEx5Z/0
-         9Td/SxOm63LaAZUn0CBg5LP3mHpv72RHuo4FhZR5vGZ6lfNwMngzcK8nc4I7D12O93rK
-         EmeRMtsfx+uCutJXuxdWiJwVY5JHf6yihzoywbTcEJu1Ffbe9Pbx0GpMDplB7Kt0FEjW
-         8J5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV5A6hJnYZoN+EzVQg7JkvWPE7eROkkW6UGE8GK9pzvLUkhMAucr9CHumzlIsP1bQ8tDNuuLdTWAAoO8pEr1Q==@vger.kernel.org, AJvYcCWKrSP+XRWuoHYrdB+4GBbCPWr70iBu238ew0JZm848SNLkB3s5n7Jk61kkXr5B88kO0Uv+vEI+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzec7RERtdPFV7gHziJTrCAnb+BHNBzWHxsMTIndwLZJGokLgOx
-	QeGyrpUImcikNoDoTpAXao7qDOFJjSl/y8EElrzzAs/17aNfKlGEzBkRLuwrP4OwnzqmUE8zUYE
-	kkk0UMBXrYQ+e05zg/2nVaNXriC6HBA==
-X-Gm-Gg: ASbGnctpC6qdisVTtj6zgs+3V1AjI0ECmhjt6PBz3E8BWTaFZQ7rKhrTZ9deo7rL1lN
-	04xQiFOghgSK3lqW1Tn8kc4ctrY/RZxwfZRAF1s8yysWNANjKWPeHfT2KdsSOv8GH8OPRGP+K
-X-Google-Smtp-Source: AGHT+IHMMQMkhdcjtXckGaDXHbmnwQmQ9zOSfOOKxy4QAUALfxddplOM2flNcf+B+K19MWN4bfFtInVgfHk9UzabP60=
-X-Received: by 2002:a05:6871:53c6:b0:29f:c94b:3a06 with SMTP id
- 586e51a60fabf-2a9eaaa6de6mr143701fac.8.1736186490022; Mon, 06 Jan 2025
- 10:01:30 -0800 (PST)
+	s=arc-20240116; t=1736186501; c=relaxed/simple;
+	bh=ES3Hn8JKqH4OQ0VaEkExuR3ZULx5S4/3pNmynXMRrPs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EEVd4cDuQ6L9Ff38oMwsyHB0NeKx7Idja2gwFQmbyL0EabXvW84NvslQ3gyw45U6/PZGgiKwzxoiM+wEJj5nQ503SfDX7Xm4CgD8GwauZfW4SBY6ldpWV6OWXUVRGq0a6yYqBZkxjpyZ2owgxjN38EG+Xy7zXfH8gjaC+Cd+DEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGxxrFl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520A9C4CEDF;
+	Mon,  6 Jan 2025 18:01:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736186500;
+	bh=ES3Hn8JKqH4OQ0VaEkExuR3ZULx5S4/3pNmynXMRrPs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fGxxrFl8R37KxmbVgzKKpmGuhUkyNCnpYG2BryOl5k5UbjzcyBNE85NePOwJrgR7k
+	 JJpZofyk1u4Ytfzbz4pjIRxo/5NEiYeKtik+n01eFHQRPJiSZhuGxmJvUSOZfCcA7T
+	 Q8DGhhczF6wdX2nUdMEt7OfCsZEBOYbCrtAeM2LxBRD5kBDvlsarSFvNaDOImdY34L
+	 gUVvsAYJZCOjulaZETfy5G5EdPXSgOiGQ/AEmRMfk3RiOeAB9V86tsvXwKd7EofWj5
+	 7GS8c/ml+aw7uAvNTqU9P7fvO0tU3B6faBhv1VskC2AXTTBcoG3MmOMM1YgIVXwnDw
+	 pBrB0DBsLLmNw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	stable@vger.kernel.org,
+	jdamato@fastly.com,
+	almasrymina@google.com,
+	amritha.nambiar@intel.com,
+	sridhar.samudrala@intel.com
+Subject: [PATCH net] netdev: prevent accessing NAPI instances from another namespace
+Date: Mon,  6 Jan 2025 10:01:36 -0800
+Message-ID: <20250106180137.1861472-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250106135434.35936-1-fiona.klute@gmx.de>
-In-Reply-To: <20250106135434.35936-1-fiona.klute@gmx.de>
-From: Vasily Khoruzhick <anarsoul@gmail.com>
-Date: Mon, 6 Jan 2025 10:01:03 -0800
-Message-ID: <CA+E=qVfEdGjDQOftmGfx4e+iw0an6x+ff=Eg_EjRkm-98Vw2Xg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtw88: sdio: Fix disconnection after beacon loss
-To: Fiona Klute <fiona.klute@gmx.de>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, 
-	Kalle Valo <kvalo@kernel.org>, Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ondrej Jirman <megi@xff.cz>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 6, 2025 at 5:54=E2=80=AFAM Fiona Klute <fiona.klute@gmx.de> wro=
-te:
->
-> This is the equivalent of 28818b4d871bc93cc4f5c7c7d7c526a6a096c09c
-> "wifi: rtw88: usb: Fix disconnection after beacon loss" for SDIO
-> chips. Tested on Pinephone (RTL8723CS), random disconnections became
-> rare, instead of a frequent nuisance.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+The NAPI IDs were not fully exposed to user space prior to the netlink
+API, so they were never namespaced. The netlink API must ensure that
+at the very least NAPI instance belongs to the same netns as the owner
+of the genl sock.
 
-Tested-by: Vasily Khoruzhick <anarsoul@gmail.com> # Tested on Pinebook
+napi_by_id() can become static now, but it needs to move because of
+dev_get_by_napi_id().
 
-> ---
->  drivers/net/wireless/realtek/rtw88/sdio.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wire=
-less/realtek/rtw88/sdio.c
-> index 799230eb5f1..e024061bdbf 100644
-> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
-> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-> @@ -1192,6 +1192,8 @@ static void rtw_sdio_indicate_tx_status(struct rtw_=
-dev *rtwdev,
->         struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
->         struct ieee80211_hw *hw =3D rtwdev->hw;
->
-> +       skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
-> +
->         /* enqueue to wait for tx report */
->         if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
->                 rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
-> --
-> 2.47.1
->
+Cc: stable@vger.kernel.org
+Fixes: 1287c1ae0fc2 ("netdev-genl: Support setting per-NAPI config values")
+Fixes: 27f91aaf49b3 ("netdev-genl: Add netlink framework functions for napi")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+Splitting this into fix per-version is a bit tricky, because we need
+to replace the napi_by_id() helper with a better one. I'll send the
+stable versions manually.
+
+CC: jdamato@fastly.com
+CC: almasrymina@google.com
+CC: amritha.nambiar@intel.com
+CC: sridhar.samudrala@intel.com
+---
+ net/core/dev.c         | 43 +++++++++++++++++++++++++++++-------------
+ net/core/dev.h         |  3 ++-
+ net/core/netdev-genl.c |  6 ++----
+ 3 files changed, 34 insertions(+), 18 deletions(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 7c63d97b13c1..e001df4cb486 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -753,6 +753,36 @@ int dev_fill_forward_path(const struct net_device *dev, const u8 *daddr,
+ }
+ EXPORT_SYMBOL_GPL(dev_fill_forward_path);
+ 
++/* must be called under rcu_read_lock(), as we dont take a reference */
++static struct napi_struct *napi_by_id(unsigned int napi_id)
++{
++	unsigned int hash = napi_id % HASH_SIZE(napi_hash);
++	struct napi_struct *napi;
++
++	hlist_for_each_entry_rcu(napi, &napi_hash[hash], napi_hash_node)
++		if (napi->napi_id == napi_id)
++			return napi;
++
++	return NULL;
++}
++
++/* must be called under rcu_read_lock(), as we dont take a reference */
++struct napi_struct *netdev_napi_by_id(struct net *net, unsigned int napi_id)
++{
++	struct napi_struct *napi;
++
++	napi = napi_by_id(napi_id);
++	if (!napi)
++		return NULL;
++
++	if (WARN_ON_ONCE(!napi->dev))
++		return NULL;
++	if (!net_eq(net, dev_net(napi->dev)))
++		return NULL;
++
++	return napi;
++}
++
+ /**
+  *	__dev_get_by_name	- find a device by its name
+  *	@net: the applicable net namespace
+@@ -6293,19 +6323,6 @@ bool napi_complete_done(struct napi_struct *n, int work_done)
+ }
+ EXPORT_SYMBOL(napi_complete_done);
+ 
+-/* must be called under rcu_read_lock(), as we dont take a reference */
+-struct napi_struct *napi_by_id(unsigned int napi_id)
+-{
+-	unsigned int hash = napi_id % HASH_SIZE(napi_hash);
+-	struct napi_struct *napi;
+-
+-	hlist_for_each_entry_rcu(napi, &napi_hash[hash], napi_hash_node)
+-		if (napi->napi_id == napi_id)
+-			return napi;
+-
+-	return NULL;
+-}
+-
+ static void skb_defer_free_flush(struct softnet_data *sd)
+ {
+ 	struct sk_buff *skb, *next;
+diff --git a/net/core/dev.h b/net/core/dev.h
+index aa91eed55a40..08812a025a9b 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -22,6 +22,8 @@ struct sd_flow_limit {
+ 
+ extern int netdev_flow_limit_table_len;
+ 
++struct napi_struct *netdev_napi_by_id(struct net *net, unsigned int napi_id);
++
+ #ifdef CONFIG_PROC_FS
+ int __init dev_proc_init(void);
+ #else
+@@ -269,7 +271,6 @@ void xdp_do_check_flushed(struct napi_struct *napi);
+ static inline void xdp_do_check_flushed(struct napi_struct *napi) { }
+ #endif
+ 
+-struct napi_struct *napi_by_id(unsigned int napi_id);
+ void kick_defer_list_purge(struct softnet_data *sd, unsigned int cpu);
+ 
+ #define XMIT_RECURSION_LIMIT	8
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index 125b660004d3..a3bdaf075b6b 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -167,8 +167,6 @@ netdev_nl_napi_fill_one(struct sk_buff *rsp, struct napi_struct *napi,
+ 	void *hdr;
+ 	pid_t pid;
+ 
+-	if (WARN_ON_ONCE(!napi->dev))
+-		return -EINVAL;
+ 	if (!(napi->dev->flags & IFF_UP))
+ 		return 0;
+ 
+@@ -234,7 +232,7 @@ int netdev_nl_napi_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 	rtnl_lock();
+ 	rcu_read_lock();
+ 
+-	napi = napi_by_id(napi_id);
++	napi = netdev_napi_by_id(genl_info_net(info), napi_id);
+ 	if (napi) {
+ 		err = netdev_nl_napi_fill_one(rsp, napi, info);
+ 	} else {
+@@ -355,7 +353,7 @@ int netdev_nl_napi_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 	rtnl_lock();
+ 	rcu_read_lock();
+ 
+-	napi = napi_by_id(napi_id);
++	napi = netdev_napi_by_id(genl_info_net(info), napi_id);
+ 	if (napi) {
+ 		err = netdev_nl_napi_set_config(napi, info);
+ 	} else {
+-- 
+2.47.1
+
 
