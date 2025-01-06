@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B689A029F3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275F2A02AAD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA9B73A635F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE45F188138A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2E61DACBE;
-	Mon,  6 Jan 2025 15:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C44F86332;
+	Mon,  6 Jan 2025 15:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hcWXS2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cw3mHqtU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8C3158536;
-	Mon,  6 Jan 2025 15:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AA544C7C;
+	Mon,  6 Jan 2025 15:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177244; cv=none; b=qmSKSQRB/K6ojMFlbYhUJ7yzAzxG0jLhV/pj/VEHMtXbzZp1qD+GSnRMEKNDk7h7LJeWKubjvjpa6FaaQID2JXvVftwll564w1QEeJJWBA3Dv49gx+0WO0zmivFoABptYPCppPedkxxV0QseAaDav1/9ee8SDntt/gc5oWA1A7Y=
+	t=1736177766; cv=none; b=sd+TPOcSpw6ZHRFGh0O9zq6XxgWhkZMaQCs7HcFgdt04j/A4E46yFdaKouUT12ExBDa7FRe+NCIyuPik/JyLtT29BTgN1e0ZuFFjw2MQ/SIjW+x31CwqEGVmQ2mFBq8Pd5cITHkRbNY6E9kvEe+qpBE/sb+uVHxv4FHU3XjNEU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177244; c=relaxed/simple;
-	bh=PlYIuwhio31cqtKfIt3+MHAXUqI0z3YVeRqprSr7G+Q=;
+	s=arc-20240116; t=1736177766; c=relaxed/simple;
+	bh=hKBBfiaqH0JOLEBiNzUNJ6z5Ju7xPeC/RBKg0wm8ljg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlU0Ckx2cgSbfsZupH+R8Am0up5ZNBAYxFZ8A0beepaG/iiwSkk0jxzeAx1Ssd9PqPhQgvQukJDX0UEqGW9LicBNwiJzFafYIhKbfclZab2fnUEpxUfaDPkZLwFyo0ug5SBK9Vf7Pyh3uUzuoB7qRq8d1azP+Wt9jc9qqz+nfIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hcWXS2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5078C4CED2;
-	Mon,  6 Jan 2025 15:27:23 +0000 (UTC)
+	 MIME-Version; b=ctV+lel78GNUP3MzLs0nxUi+kejRkxJAFCCE4RmgRbE8unrQBGcarpR4nYSeCdkWj8VEf0xt81QOZVPXIXL5Y9Lddyfm/KEkzT4qchqCeS6iLEQzJzw0Rxx3zhn2gBnIHdY7P9J/dOf34/mDqPDuazS7zP+++PjSqy1KAiGxLZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cw3mHqtU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED32C4CED2;
+	Mon,  6 Jan 2025 15:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177244;
-	bh=PlYIuwhio31cqtKfIt3+MHAXUqI0z3YVeRqprSr7G+Q=;
+	s=korg; t=1736177765;
+	bh=hKBBfiaqH0JOLEBiNzUNJ6z5Ju7xPeC/RBKg0wm8ljg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hcWXS2xwyMT2F221SvXWpCleF717VIvQQcGUSss7EyrW57qrcb5mlGAaoPjK5rfD
-	 3S04Gl1LLh27u+8C+JwJDkrmjQTcy1hrx7hUrSBj33Ln9l6n+igXholCIJXhluFfGn
-	 e6UMqLVvoIp3YQfBbYHtRMmj7s+g3nK5YzV97Hc4=
+	b=Cw3mHqtUHMfSObAB3PHp+mnk6jXoHwHwNI0TAFSY3Fc6++CAYjfSwHXXVwtfdovkV
+	 ziHZdA9hIWq4kS7pONmsCeZiDlZGVDxC69NzItUvYHdcd09EpMTqh7mSDm872zivBH
+	 MQu5/x1TgKpoGSHIUqBPC23qgPXGhHxeo5DJr7yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/222] btrfs: rename and export __btrfs_cow_block()
+Subject: [PATCH 6.12 018/156] RDMA/core: Fix ENODEV error for iWARP test over vlan
 Date: Mon,  6 Jan 2025 16:15:04 +0100
-Message-ID: <20250106151154.381618251@linuxfoundation.org>
+Message-ID: <20250106151142.428616813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
 
-[ Upstream commit 95f93bc4cbcac6121a5ee85cd5019ee8e7447e0b ]
+[ Upstream commit a4048c83fd87c65657a4acb17d639092d4b6133d ]
 
-Rename and export __btrfs_cow_block() as btrfs_force_cow_block(). This is
-to allow to move defrag specific code out of ctree.c and into defrag.c in
-one of the next patches.
+If traffic is over vlan, cma_validate_port() fails to match
+net_device ifindex with bound_if_index and results in ENODEV error.
+As iWARP gid table is static, it contains entry corresponding  to
+only one net device which is either real netdev or vlan netdev for
+cases like  siw attached to a vlan interface.
+This patch fixes the issue by assigning bound_if_index with net
+device index, if real net device obtained from bound if index matches
+with net device retrieved from gid table
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 44f52bbe96df ("btrfs: fix use-after-free when COWing tree bock and tracing is enabled")
+Fixes: f8ef1be816bf ("RDMA/cma: Avoid GID lookups on iWARP devices")
+Link: https://lore.kernel.org/all/ZzNgdrjo1kSCGbRz@chelsio.com/
+Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
+Link: https://patch.msgid.link/20241203140052.3985-1-anumula@chelsio.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 30 +++++++++++++++---------------
- fs/btrfs/ctree.h |  7 +++++++
- 2 files changed, 22 insertions(+), 15 deletions(-)
+ drivers/infiniband/core/cma.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 25c902e7556d..62032d3fda85 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -526,13 +526,13 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
-  * bytes the allocator should try to find free next to the block it returns.
-  * This is just a hint and may be ignored by the allocator.
-  */
--static noinline int __btrfs_cow_block(struct btrfs_trans_handle *trans,
--			     struct btrfs_root *root,
--			     struct extent_buffer *buf,
--			     struct extent_buffer *parent, int parent_slot,
--			     struct extent_buffer **cow_ret,
--			     u64 search_start, u64 empty_size,
--			     enum btrfs_lock_nesting nest)
-+int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
-+			  struct btrfs_root *root,
-+			  struct extent_buffer *buf,
-+			  struct extent_buffer *parent, int parent_slot,
-+			  struct extent_buffer **cow_ret,
-+			  u64 search_start, u64 empty_size,
-+			  enum btrfs_lock_nesting nest)
- {
- 	struct btrfs_fs_info *fs_info = root->fs_info;
- 	struct btrfs_disk_key disk_key;
-@@ -699,7 +699,7 @@ static inline int should_cow_block(struct btrfs_trans_handle *trans,
- }
+diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
+index 64ace0b968f0..91db10515d74 100644
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -690,6 +690,7 @@ cma_validate_port(struct ib_device *device, u32 port,
+ 	int bound_if_index = dev_addr->bound_dev_if;
+ 	int dev_type = dev_addr->dev_type;
+ 	struct net_device *ndev = NULL;
++	struct net_device *pdev = NULL;
  
- /*
-- * cows a single block, see __btrfs_cow_block for the real work.
-+ * COWs a single block, see btrfs_force_cow_block() for the real work.
-  * This version of it has extra checks so that a block isn't COWed more than
-  * once per transaction, as long as it hasn't been written yet
-  */
-@@ -752,8 +752,8 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 	 * Also We don't care about the error, as it's handled internally.
- 	 */
- 	btrfs_qgroup_trace_subtree_after_cow(trans, root, buf);
--	ret = __btrfs_cow_block(trans, root, buf, parent,
--				 parent_slot, cow_ret, search_start, 0, nest);
-+	ret = btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
-+				    cow_ret, search_start, 0, nest);
+ 	if (!rdma_dev_access_netns(device, id_priv->id.route.addr.dev_addr.net))
+ 		goto out;
+@@ -714,6 +715,21 @@ cma_validate_port(struct ib_device *device, u32 port,
  
- 	trace_btrfs_cow_block(root, buf, *cow_ret);
- 
-@@ -904,11 +904,11 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
- 			search_start = last_block;
- 
- 		btrfs_tree_lock(cur);
--		err = __btrfs_cow_block(trans, root, cur, parent, i,
--					&cur, search_start,
--					min(16 * blocksize,
--					    (end_slot - i) * blocksize),
--					BTRFS_NESTING_COW);
-+		err = btrfs_force_cow_block(trans, root, cur, parent, i,
-+					    &cur, search_start,
-+					    min(16 * blocksize,
-+						(end_slot - i) * blocksize),
-+					    BTRFS_NESTING_COW);
- 		if (err) {
- 			btrfs_tree_unlock(cur);
- 			free_extent_buffer(cur);
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index f7bb4c34b984..7df3ed2945b0 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -538,6 +538,13 @@ int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 		    struct extent_buffer *parent, int parent_slot,
- 		    struct extent_buffer **cow_ret,
- 		    enum btrfs_lock_nesting nest);
-+int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
-+			  struct btrfs_root *root,
-+			  struct extent_buffer *buf,
-+			  struct extent_buffer *parent, int parent_slot,
-+			  struct extent_buffer **cow_ret,
-+			  u64 search_start, u64 empty_size,
-+			  enum btrfs_lock_nesting nest);
- int btrfs_copy_root(struct btrfs_trans_handle *trans,
- 		      struct btrfs_root *root,
- 		      struct extent_buffer *buf,
+ 		rcu_read_lock();
+ 		ndev = rcu_dereference(sgid_attr->ndev);
++		if (ndev->ifindex != bound_if_index) {
++			pdev = dev_get_by_index_rcu(dev_addr->net, bound_if_index);
++			if (pdev) {
++				if (is_vlan_dev(pdev)) {
++					pdev = vlan_dev_real_dev(pdev);
++					if (ndev->ifindex == pdev->ifindex)
++						bound_if_index = pdev->ifindex;
++				}
++				if (is_vlan_dev(ndev)) {
++					pdev = vlan_dev_real_dev(ndev);
++					if (bound_if_index == pdev->ifindex)
++						bound_if_index = ndev->ifindex;
++				}
++			}
++		}
+ 		if (!net_eq(dev_net(ndev), dev_addr->net) ||
+ 		    ndev->ifindex != bound_if_index) {
+ 			rdma_put_gid_attr(sgid_attr);
 -- 
 2.39.5
 
