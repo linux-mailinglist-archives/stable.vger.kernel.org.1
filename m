@@ -1,210 +1,165 @@
-Return-Path: <stable+bounces-107713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37820A02D27
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AAA7A02C81
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B4E21667BA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72392166B91
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880651DE4DE;
-	Mon,  6 Jan 2025 16:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E921CFEB2;
+	Mon,  6 Jan 2025 15:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhTYYQu0"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="IkK8LumY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417D41DE2DF;
-	Mon,  6 Jan 2025 16:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909C9155352;
+	Mon,  6 Jan 2025 15:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179304; cv=none; b=DXqOiUvQjo6fxSpsTEF7IXO21fox4e/1K2L329B/dblOMH2LODnEd6Cty8WvXoAQQC66sqf7MWn70H9vLmtB4SX82Ng+itOFn/9Exgwu3I1PM3hySlDnuT5pbeLwN6205qHoy1kIbRDQPIMDjCdO6thY+wC2B7CxbnXF+p2UJaA=
+	t=1736178850; cv=none; b=V39+ZF7mDppm86WtYAlD1DWlWpkCaOW3kM9hblenPrent5ryOtm+e6Zkk3WedFYSB2qL4v/cOjl9Z0jgF7VCebGW6lpyJz68emS887yvl5dLGGPAgf00pTEebWvcUfgWMWVS21syP+MnlqDOdghyPg6YTPv2CquGFC+kRwb61HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179304; c=relaxed/simple;
-	bh=+DSHQup9JeFlUFWuxj2MKW6iJdsQzkaufo2XGLCiX24=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuJQJvU8CFPp2smXQBYshzRITaH0s/dCqE/FWvmZHSh3YoFAkeP5+eL1SyQOtxihRPxqxXirceVuiXF9sF71g1eDKnOOXwto8Fgs7u0BHDQcQYILGp1rkYSdGEiG7RWf6lxOXSp39ShYB4YQbi9rzT4LHceuwkEoEW2pmfVr/CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhTYYQu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EA5C4CED2;
-	Mon,  6 Jan 2025 16:01:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179303;
-	bh=+DSHQup9JeFlUFWuxj2MKW6iJdsQzkaufo2XGLCiX24=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhTYYQu0mRhTE+klBwnD6Xs+st/C3C0DcH4ojTsMzXhC00nRpPgS0Iz2XLQR4nMxH
-	 SnXs3ihQUy+XVv6sNdycPmfZFo+bz2qJSh8YAK4PNqrA37oX9ifNtvpJbBIa2cKME1
-	 ebKNko3UfA6PwPUzy7fzFeGbd/9fZt7q1Am70YPk=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Seiji Nishikawa <snishika@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 93/93] mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
-Date: Mon,  6 Jan 2025 16:18:09 +0100
-Message-ID: <20250106151132.213551251@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1736178850; c=relaxed/simple;
+	bh=6WaJWwIcdDpS4dogVu9o1AB9CekvLCEUlOnOFjlyCFc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Alavsk1d54kMgNn9jYVrIuAEZ2T4c3Njm33DhzAZDVItP/QR8SSTBC0UeauNbF/qq92xnWyKUisfsJnnn/EMaBng7IC19WuM6En+EsRf+0pAdSpq2ofMgnywjaSTVLOd1gx0FcahXVGVStCCxqWHrW+WiBgLZxvMg1zih1XPVnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=IkK8LumY; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id D8CB8A087A;
+	Mon,  6 Jan 2025 16:48:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=U3rxMNi65rLW9FILTb0vIx/aX0FXP8OpMsz35GckwCU=; b=
+	IkK8LumYhpB3qM2PAqqurobgZE9TK1/wZXygRhNDUE0OJNhqHHLZlsZzoAQtG2Rp
+	19OiMwCHpIOQBMXGJtnyKLkBYT2IkFOMFlDm6kMKBx4Zpz3lr9j/mxryPT6ieuwE
+	zVJG6K9l426O/3E/2J2bEEgltorz88LA0QHuzq+x0wjXV9yjyq42E01Lg7CDQfxk
+	h7mP3ZhFfA+fnGYVnWp0XqZCyw1+EPTD2ySwgleoJlxRjRYe2yWswfwUZ9dMtzHz
+	gkD4lhqrHWRh+hyPjin4tBlk4dOUwzk5zicjfBrmfLuKweVOr+ZC1T/Kt02YQD3q
+	hpjmPqlSk8yvRVTZI4O4JLW3fqXf2WdK3amce3mP/haObNctpK1WdABhpvbImqLh
+	Vf2qR7V9i/2ZDHQfKRvZnihbTwFXuae+6QukR9WGkMdQLuysYJKtoypzWzNLwueA
+	jgzfvTAI8GsUC3OFPF9DmgIDRkWTnslMU7FmMN6oykDPMSepDPTjuLvGhScAZmjp
+	CcAODVbLmun3a8pEXaUg0lxn6bGntTFRS0flJSt6J9cXEWNUPXdUypmb8pRgt5eU
+	ECMzpfaVNHmieXMdryZfL5oMscEa5dO43R7B+47Apq956ZApjBsFe1WamPRgt5Lh
+	b8s9XGIFTf9b+o2lH3fnjU0LBp0d9vtTHXS+B/A2mp4=
+From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+To: Mark Brown <broonie@kernel.org>, Piotr Bugalski
+	<bugalski.piotr@gmail.com>, <linux-spi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
+	<Hari.PrasathGE@microchip.com>, <Mahesh.Abotula@microchip.com>,
+	<Marco.Cardellini@microchip.com>, <stable@vger.kernel.org>, Nicolas Ferre
+	<nicolas.ferre@microchip.com>, Alexandre Belloni
+	<alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Subject: [PATCH resubmit v2] spi: atmel-qspi: Memory barriers after memory-mapped I/O
+Date: Mon, 6 Jan 2025 16:48:06 +0100
+Message-ID: <20250106154806.1959266-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1736178500;VERSION=7982;MC=3895028276;ID=224790;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94852657067
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+The QSPI peripheral control and status registers are
+accessible via the SoC's APB bus, whereas MMIO transactions'
+data travels on the AHB bus.
 
-------------------
+Microchip documentation and even sample code from Atmel
+emphasises the need for a memory barrier before the first
+MMIO transaction to the AHB-connected QSPI, and before the
+last write to its registers via APB. This is achieved by
+the following lines in `atmel_qspi_transfer()`:
 
-From: Seiji Nishikawa <snishika@redhat.com>
+	/* Dummy read of QSPI_IFR to synchronize APB and AHB accesses */
+	(void)atmel_qspi_read(aq, QSPI_IFR);
 
-commit 6aaced5abd32e2a57cd94fd64f824514d0361da8 upstream.
+However, the current documentation makes no mention to
+synchronization requirements in the other direction, i.e.
+after the last data written via AHB, and before the first
+register access on APB.
 
-The task sometimes continues looping in throttle_direct_reclaim() because
-allow_direct_reclaim(pgdat) keeps returning false.
+In our case, we were facing an issue where the QSPI peripheral
+would cease to send any new CSR (nCS Rise) interrupts,
+leading to a timeout in `atmel_qspi_wait_for_completion()`
+and ultimately this panic in higher levels:
 
- #0 [ffff80002cb6f8d0] __switch_to at ffff8000080095ac
- #1 [ffff80002cb6f900] __schedule at ffff800008abbd1c
- #2 [ffff80002cb6f990] schedule at ffff800008abc50c
- #3 [ffff80002cb6f9b0] throttle_direct_reclaim at ffff800008273550
- #4 [ffff80002cb6fa20] try_to_free_pages at ffff800008277b68
- #5 [ffff80002cb6fae0] __alloc_pages_nodemask at ffff8000082c4660
- #6 [ffff80002cb6fc50] alloc_pages_vma at ffff8000082e4a98
- #7 [ffff80002cb6fca0] do_anonymous_page at ffff80000829f5a8
- #8 [ffff80002cb6fce0] __handle_mm_fault at ffff8000082a5974
- #9 [ffff80002cb6fd90] handle_mm_fault at ffff8000082a5bd4
+	ubi0 error: ubi_io_write: error -110 while writing 63108 bytes
+ to PEB 491:128, written 63104 bytes
 
-At this point, the pgdat contains the following two zones:
+After months of extensive research of the codebase, fiddling
+around the debugger with kgdb, and back-and-forth with
+Microchip, we came to the conclusion that the issue is
+probably that the peripheral is still busy receiving on AHB
+when the LASTXFER bit is written to its Control Register
+on APB, therefore this write gets lost, and the peripheral
+still thinks there is more data to come in the MMIO transfer.
+This was first formulated when we noticed that doubling the
+write() of QSPI_CR_LASTXFER seemed to solve the problem.
 
-        NODE: 4  ZONE: 0  ADDR: ffff00817fffe540  NAME: "DMA32"
-          SIZE: 20480  MIN/LOW/HIGH: 11/28/45
-          VM_STAT:
-                NR_FREE_PAGES: 359
-        NR_ZONE_INACTIVE_ANON: 18813
-          NR_ZONE_ACTIVE_ANON: 0
-        NR_ZONE_INACTIVE_FILE: 50
-          NR_ZONE_ACTIVE_FILE: 0
-          NR_ZONE_UNEVICTABLE: 0
-        NR_ZONE_WRITE_PENDING: 0
-                     NR_MLOCK: 0
-                    NR_BOUNCE: 0
-                   NR_ZSPAGES: 0
-            NR_FREE_CMA_PAGES: 0
+Ultimately, the solution is to introduce memory barriers
+after the AHB-mapped MMIO transfers, to ensure ordering.
 
-        NODE: 4  ZONE: 1  ADDR: ffff00817fffec00  NAME: "Normal"
-          SIZE: 8454144  PRESENT: 98304  MIN/LOW/HIGH: 68/166/264
-          VM_STAT:
-                NR_FREE_PAGES: 146
-        NR_ZONE_INACTIVE_ANON: 94668
-          NR_ZONE_ACTIVE_ANON: 3
-        NR_ZONE_INACTIVE_FILE: 735
-          NR_ZONE_ACTIVE_FILE: 78
-          NR_ZONE_UNEVICTABLE: 0
-        NR_ZONE_WRITE_PENDING: 0
-                     NR_MLOCK: 0
-                    NR_BOUNCE: 0
-                   NR_ZSPAGES: 0
-            NR_FREE_CMA_PAGES: 0
-
-In allow_direct_reclaim(), while processing ZONE_DMA32, the sum of
-inactive/active file-backed pages calculated in zone_reclaimable_pages()
-based on the result of zone_page_state_snapshot() is zero.
-
-Additionally, since this system lacks swap, the calculation of inactive/
-active anonymous pages is skipped.
-
-        crash> p nr_swap_pages
-        nr_swap_pages = $1937 = {
-          counter = 0
-        }
-
-As a result, ZONE_DMA32 is deemed unreclaimable and skipped, moving on to
-the processing of the next zone, ZONE_NORMAL, despite ZONE_DMA32 having
-free pages significantly exceeding the high watermark.
-
-The problem is that the pgdat->kswapd_failures hasn't been incremented.
-
-        crash> px ((struct pglist_data *) 0xffff00817fffe540)->kswapd_failures
-        $1935 = 0x0
-
-This is because the node deemed balanced.  The node balancing logic in
-balance_pgdat() evaluates all zones collectively.  If one or more zones
-(e.g., ZONE_DMA32) have enough free pages to meet their watermarks, the
-entire node is deemed balanced.  This causes balance_pgdat() to exit early
-before incrementing the kswapd_failures, as it considers the overall
-memory state acceptable, even though some zones (like ZONE_NORMAL) remain
-under significant pressure.
-
-
-The patch ensures that zone_reclaimable_pages() includes free pages
-(NR_FREE_PAGES) in its calculation when no other reclaimable pages are
-available (e.g., file-backed or anonymous pages).  This change prevents
-zones like ZONE_DMA32, which have sufficient free pages, from being
-mistakenly deemed unreclaimable.  By doing so, the patch ensures proper
-node balancing, avoids masking pressure on other zones like ZONE_NORMAL,
-and prevents infinite loops in throttle_direct_reclaim() caused by
-allow_direct_reclaim(pgdat) repeatedly returning false.
-
-
-The kernel hangs due to a task stuck in throttle_direct_reclaim(), caused
-by a node being incorrectly deemed balanced despite pressure in certain
-zones, such as ZONE_NORMAL.  This issue arises from
-zone_reclaimable_pages() returning 0 for zones without reclaimable file-
-backed or anonymous pages, causing zones like ZONE_DMA32 with sufficient
-free pages to be skipped.
-
-The lack of swap or reclaimable pages results in ZONE_DMA32 being ignored
-during reclaim, masking pressure in other zones.  Consequently,
-pgdat->kswapd_failures remains 0 in balance_pgdat(), preventing fallback
-mechanisms in allow_direct_reclaim() from being triggered, leading to an
-infinite loop in throttle_direct_reclaim().
-
-This patch modifies zone_reclaimable_pages() to account for free pages
-(NR_FREE_PAGES) when no other reclaimable pages exist.  This ensures zones
-with sufficient free pages are not skipped, enabling proper balancing and
-reclaim behavior.
-
-[akpm@linux-foundation.org: coding-style cleanups]
-Link: https://lkml.kernel.org/r/20241130164346.436469-1-snishika@redhat.com
-Link: https://lkml.kernel.org/r/20241130161236.433747-2-snishika@redhat.com
-Fixes: 5a1c84b404a7 ("mm: remove reclaim and compaction retry approximations")
-Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d5433def3153 ("mtd: spi-nor: atmel-quadspi: Add spi-mem support to atmel-quadspi")
+Cc: Hari.PrasathGE@microchip.com
+Cc: Mahesh.Abotula@microchip.com
+Cc: Marco.Cardellini@microchip.com
+Cc: <stable@vger.kernel.org> # c0a0203cf579: ("spi: atmel-quadspi: Create `atmel_qspi_ops`"...)
+Cc: <stable@vger.kernel.org> # 6.x.y
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
 ---
- mm/vmscan.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -342,7 +342,14 @@ unsigned long zone_reclaimable_pages(str
- 	if (get_nr_swap_pages() > 0)
- 		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
- 			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
--
-+	/*
-+	 * If there are no reclaimable file-backed or anonymous pages,
-+	 * ensure zones with sufficient free pages are not skipped.
-+	 * This prevents zones like DMA32 from being ignored in reclaim
-+	 * scenarios where they can still help alleviate memory pressure.
-+	 */
-+	if (nr == 0)
-+		nr = zone_page_state_snapshot(zone, NR_FREE_PAGES);
- 	return nr;
- }
+Notes:
+    Changes in v2:
+    * dropping --- from commit msg
+    
+    Resubmit: rebased on current spi-next
+
+ drivers/spi/atmel-quadspi.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index f46da363574f..8fdc9d27a95e 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -661,13 +661,20 @@ static int atmel_qspi_transfer(struct spi_mem *mem,
+ 	(void)atmel_qspi_read(aq, QSPI_IFR);
  
+ 	/* Send/Receive data */
+-	if (op->data.dir == SPI_MEM_DATA_IN)
++	if (op->data.dir == SPI_MEM_DATA_IN) {
+ 		memcpy_fromio(op->data.buf.in, aq->mem + offset,
+ 			      op->data.nbytes);
+-	else
++
++		/* Synchronize AHB and APB accesses again */
++		rmb();
++	} else {
+ 		memcpy_toio(aq->mem + offset, op->data.buf.out,
+ 			    op->data.nbytes);
+ 
++		/* Synchronize AHB and APB accesses again */
++		wmb();
++	}
++
+ 	/* Release the chip-select */
+ 	atmel_qspi_write(QSPI_CR_LASTXFER, aq, QSPI_CR);
+ 
+-- 
+2.34.1
 
 
 
