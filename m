@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA03A02C01
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C626CA02CA3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5BA3A5417
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4260D161F5F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149A9149C7B;
-	Mon,  6 Jan 2025 15:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE51F86332;
+	Mon,  6 Jan 2025 15:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Qk1IHu5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMUfQLkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C445D42040;
-	Mon,  6 Jan 2025 15:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC96156237;
+	Mon,  6 Jan 2025 15:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178480; cv=none; b=XgD7RG08kzjgwcS4NsOfKKXCT6VykdbeF2P5fvYwso/MtkLSJZQCDF1NLL0MEzO+AB8D19Pg8foGoFAewnaQOLUyTH76IuwlCIgl2mqrr/ukYRITe5L41ftDk0gFxsnUe0FM2XfcCq8GluzSICwJod/0vwZQ8cBcJWvlGseEMeM=
+	t=1736178960; cv=none; b=ZQb/4hOdJtVqVKaG1gtn+vTtG0LxIDELYtGo7VDn/Hi2Otj2BjNyKXZrZ6F/Lguv5oIF4V+aBLVPHuyBNWhoO+pi3uCHU4RBjDuFlYeYPiVOn/hQY9Sc51YavNAn/9ero+cjdw1W12atHQ1sPu9vicXhmW3tem44Vm5+6183X2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178480; c=relaxed/simple;
-	bh=5Le5pmZUgGeRmp9P23/rfgcGx/ZiQrLNyDxTUPVCAy4=;
+	s=arc-20240116; t=1736178960; c=relaxed/simple;
+	bh=isyEJo/qEc4AfIDAOu0iWZEUagSOxINONfTs3FB8NB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsxMNXP5SE6Y5iQ/+NmPZE7YroCZJAmGqfEC1sU+7pRML67oJ2iIRnHF0Cj9bIp0Gf+ZnyN3EpM1K+BdVuDqURmY1cxYIxuyE6C4aiT5Dtl4MUhWH8ZAFO4jt2vSojwFay9QavdwhnRgJXZBDfJtJ4+EY5G7VPZs0IznUxtcDCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Qk1IHu5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED24BC4CED2;
-	Mon,  6 Jan 2025 15:47:59 +0000 (UTC)
+	 MIME-Version; b=WOpTVQk8FoZ1+9qnTKd+9LwjXOZ6qDwajCa7Q392WkCJRy0wSHQMBL1lsVAgHJcadETZiRy/sp8JlQTU+5ydqqMPmYZHbnWPqXKBepiG8lAtR9wDLiEgb2XE8i4qCcKAbRORHwTsN0r4Ju1tWrc6RjLbjqVccchJ3k2TJgcnoyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMUfQLkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14027C4CED2;
+	Mon,  6 Jan 2025 15:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178480;
-	bh=5Le5pmZUgGeRmp9P23/rfgcGx/ZiQrLNyDxTUPVCAy4=;
+	s=korg; t=1736178960;
+	bh=isyEJo/qEc4AfIDAOu0iWZEUagSOxINONfTs3FB8NB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Qk1IHu5de/1d0/NAhaRB4xVERjFcdnopTteGMYy/TueSAdsHi1LRou9kN+/t6gxj
-	 TW5EMqcnupBaCBxzKnZZZeznYPbVCrVKkwg2OQZ5C1Zd8dgcrda2pEUoFzZfzuFPFM
-	 XUfxOHVTsxxlQtyIDDcWYHOUlwg8W+qOBOS/PI18=
+	b=GMUfQLkVHpYGhR1yUfKPd8pZqetOCjRrNoMXrAtDtgGO1jSK2syCdzTiiMXvqXdyL
+	 PnEmK2dzzDao425ymj6ZrFEcUgvQG/+yPgSKi9+xU6xme7wKafkAaOk24HKuMRKMWb
+	 1j7MH/KX7pxzLiFV5pQvejGymCwvih6AwQAjFlXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.10 133/138] RDMA/uverbs: Prevent integer overflow issue
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 149/168] wifi: mac80211: wake the queues in case of failure in resume
 Date: Mon,  6 Jan 2025 16:17:37 +0100
-Message-ID: <20250106151138.268701511@linuxfoundation.org>
+Message-ID: <20250106151144.062806079@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit d0257e089d1bbd35c69b6c97ff73e3690ab149a9 upstream.
+[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
 
-In the expression "cmd.wqe_size * cmd.wr_count", both variables are u32
-values that come from the user so the multiplication can lead to integer
-wrapping.  Then we pass the result to uverbs_request_next_ptr() which also
-could potentially wrap.  The "cmd.sge_count * sizeof(struct ib_uverbs_sge)"
-multiplication can also overflow on 32bit systems although it's fine on
-64bit systems.
+In case we fail to resume, we'll WARN with
+"Hardware became unavailable during restart." and we'll wait until user
+space does something. It'll typically bring the interface down and up to
+recover. This won't work though because the queues are still stopped on
+IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
+Make sure we clear that reason so that we give a chance to the recovery
+to succeed.
 
-This patch does two things.  First, I've re-arranged the condition in
-uverbs_request_next_ptr() so that the use controlled variable "len" is on
-one side of the comparison by itself without any math.  Then I've modified
-all the callers to use size_mul() for the multiplications.
-
-Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/b8765ab3-c2da-4611-aae0-ddd6ba173d23@stanley.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ net/mac80211/util.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -161,7 +161,7 @@ static const void __user *uverbs_request
- {
- 	const void __user *res = iter->cur;
- 
--	if (iter->cur + len > iter->end)
-+	if (len > iter->end - iter->cur)
- 		return (void __force __user *)ERR_PTR(-ENOSPC);
- 	iter->cur += len;
- 	return res;
-@@ -2004,11 +2004,13 @@ static int ib_uverbs_post_send(struct uv
- 	ret = uverbs_request_start(attrs, &iter, &cmd, sizeof(cmd));
- 	if (ret)
- 		return ret;
--	wqes = uverbs_request_next_ptr(&iter, cmd.wqe_size * cmd.wr_count);
-+	wqes = uverbs_request_next_ptr(&iter, size_mul(cmd.wqe_size,
-+						       cmd.wr_count));
- 	if (IS_ERR(wqes))
- 		return PTR_ERR(wqes);
--	sgls = uverbs_request_next_ptr(
--		&iter, cmd.sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(&iter,
-+				       size_mul(cmd.sge_count,
-+						sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return PTR_ERR(sgls);
- 	ret = uverbs_request_finish(&iter);
-@@ -2194,11 +2196,11 @@ ib_uverbs_unmarshall_recv(struct uverbs_
- 	if (wqe_size < sizeof (struct ib_uverbs_recv_wr))
- 		return ERR_PTR(-EINVAL);
- 
--	wqes = uverbs_request_next_ptr(iter, wqe_size * wr_count);
-+	wqes = uverbs_request_next_ptr(iter, size_mul(wqe_size, wr_count));
- 	if (IS_ERR(wqes))
- 		return ERR_CAST(wqes);
--	sgls = uverbs_request_next_ptr(
--		iter, sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(iter, size_mul(sge_count,
-+						      sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return ERR_CAST(sgls);
- 	ret = uverbs_request_finish(iter);
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 85d3d2034d43..cc78d3cba45e 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2374,6 +2374,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
+ 		else
+ 			WARN(1, "Hardware became unavailable during restart.\n");
++		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
++						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
++						false);
+ 		ieee80211_handle_reconfig_failure(local);
+ 		return res;
+ 	}
+-- 
+2.39.5
+
 
 
 
