@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFC8A02BF2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDBEA02D23
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D481886F3B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C40243A762E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65450BA34;
-	Mon,  6 Jan 2025 15:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEB01917E9;
+	Mon,  6 Jan 2025 15:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2NDDzCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrOlx61e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228646088F;
-	Mon,  6 Jan 2025 15:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64FB13B59A;
+	Mon,  6 Jan 2025 15:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178523; cv=none; b=oOZfwi/zR0c9/p/OKGhKKwSlzUqmeKVTUyjK9IucQ2YwDJI7VLptsX7kUVR2I6BxtNDsFTCiEp7A/8MmDRfPYdz9MZZJPie+qdw03Xp+az9W7amV2hcfi+ux8Ipn72Kj787E1UjcSymEGs+7FKwytiLT93D+FZIIbLeGzCVrRAU=
+	t=1736179190; cv=none; b=qZ6bc4fQzTUJ8cNnsAsQlaJX1PrKIIfJqomaqVqFnq16NOolMRZi7kncNS8lfEQHESaU3ZQyLb6l++5ogeBVrjc1nSrv2pjxj03TgGqQ0GclIJPPBUlshE3Qa6iyW7Ijl7IGYXrUksErgKSxXxlilw6T99L58F92Dp+SL2j3/NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178523; c=relaxed/simple;
-	bh=6dKG0xDnt/3oJmsuzrc9KkasIRhMPLLznf7Mh5Fv/4w=;
+	s=arc-20240116; t=1736179190; c=relaxed/simple;
+	bh=OXSOMhCqQ4pI/Yi7scKcr53bAyVdMgKVMNe9lJ7Vd3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FejTiL5vHwupeAVztmH0hmseClhxVNf1YaOErGtZTu2xVW3kIO7Ohdujy8ycVGAQg7xn9qW3gx0BkSNcnLJeZtymM8jfwqGc1Eiw/8FtkgQbH2J4IuHcjHbCCnsonzVFaJ+CCD+oJSZWkh9feX6YReeG1dwxU84dNU0gq2y1SqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2NDDzCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45884C4CED2;
-	Mon,  6 Jan 2025 15:48:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K0ry8sSHeA0/+RmPzRp03mSCIMpacakdG9xw1ZHw0cGD+R0vuyGEjMCjwBNnIuCHq/0rY+5FR8ZIQOIxiqsRGuKRwIvyp/RU32v3Cr9JrSvjqPiZoAmeqbyScn1Elb6Hf34XQnbZm+zA8bZPmnyxweXhLDBNFNDnkxRzR5/Tla4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrOlx61e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D59AC4CEE6;
+	Mon,  6 Jan 2025 15:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178522;
-	bh=6dKG0xDnt/3oJmsuzrc9KkasIRhMPLLznf7Mh5Fv/4w=;
+	s=korg; t=1736179189;
+	bh=OXSOMhCqQ4pI/Yi7scKcr53bAyVdMgKVMNe9lJ7Vd3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2NDDzCUCGPdb0dUcMgAizpdFUISWm+E3eEucsWl2bk2WG9x5QF+kNGkHSPMLo/D8
-	 fSe/pyrz5LHey4hffZVplaCyu53s7NTxYF31NEgFvt6XhyBOKZzxNMXQhvhRy/Tm67
-	 JjpWh7TSwYmudMp0/cbCK+8S5KlZLE3QwifzIoCY=
+	b=KrOlx61ew6LWqceHv3mi7GH+xkqnAGHF04hSAzYG87B3LSdCtBhaEVp3sWlQecONb
+	 WQRbBd4UpZbg7u/e3g2MNIUw8QTVpaTAeZuTxYn8r60sMhDdV5lqAeEtuxceAIo3iM
+	 1AKC1XOZdr5Ie/G0LnipgbYRpex4v8vHY8zauoLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+	Pau Espin Pedrol <pespin@espeweb.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/138] kernel: Initialize cpumask before parsing
+Subject: [PATCH 5.4 48/93] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
 Date: Mon,  6 Jan 2025 16:17:24 +0100
-Message-ID: <20250106151137.773276374@linuxfoundation.org>
+Message-ID: <20250106151130.515530955@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c5e3a41187ac01425f5ad1abce927905e4ac44e4 ]
+[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
 
-KMSAN complains that new_value at cpumask_parse_user() from
-write_irq_affinity() from irq_affinity_proc_write() is uninitialized.
+On the Asus X541UAK an unknown event 0xCF is emited when the charger
+is plugged in. This is caused by the following AML code:
 
-  [  148.133411][ T5509] =====================================================
-  [  148.135383][ T5509] BUG: KMSAN: uninit-value in find_next_bit+0x325/0x340
-  [  148.137819][ T5509]
-  [  148.138448][ T5509] Local variable ----new_value.i@irq_affinity_proc_write created at:
-  [  148.140768][ T5509]  irq_affinity_proc_write+0xc3/0x3d0
-  [  148.142298][ T5509]  irq_affinity_proc_write+0xc3/0x3d0
-  [  148.143823][ T5509] =====================================================
+    If (ACPS ())
+    {
+        ACPF = One
+        Local0 = 0x58
+        If (ATKP)
+        {
+            ^^^^ATKD.IANE (0xCF)
+        }
+    }
+    Else
+    {
+        ACPF = Zero
+        Local0 = 0x57
+    }
 
-Since bitmap_parse() from cpumask_parse_user() calls find_next_bit(),
-any alloc_cpumask_var() + cpumask_parse_user() sequence has possibility
-that find_next_bit() accesses uninitialized cpu mask variable. Fix this
-problem by replacing alloc_cpumask_var() with zalloc_cpumask_var().
+    Notify (AC0, 0x80) // Status Change
+    If (ATKP)
+    {
+        ^^^^ATKD.IANE (Local0)
+    }
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/r/20210401055823.3929-1-penguin-kernel@I-love.SAKURA.ne.jp
-Stable-dep-of: 98feccbf32cf ("tracing: Prevent bad count for tracing_cpumask_write")
+    Sleep (0x64)
+    PNOT ()
+    Sleep (0x0A)
+    NBAT (0x80)
+
+Ignore the 0xCF event to silence the unknown event warning.
+
+Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
+Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/proc.c    | 4 ++--
- kernel/profile.c     | 2 +-
- kernel/trace/trace.c | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
-index 72513ed2a5fc..0df62a3a1f37 100644
---- a/kernel/irq/proc.c
-+++ b/kernel/irq/proc.c
-@@ -144,7 +144,7 @@ static ssize_t write_irq_affinity(int type, struct file *file,
- 	if (!irq_can_set_affinity_usr(irq) || no_irq_affinity)
- 		return -EIO;
- 
--	if (!alloc_cpumask_var(&new_value, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&new_value, GFP_KERNEL))
- 		return -ENOMEM;
- 
- 	if (type)
-@@ -238,7 +238,7 @@ static ssize_t default_affinity_write(struct file *file,
- 	cpumask_var_t new_value;
- 	int err;
- 
--	if (!alloc_cpumask_var(&new_value, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&new_value, GFP_KERNEL))
- 		return -ENOMEM;
- 
- 	err = cpumask_parse_user(buffer, count, new_value);
-diff --git a/kernel/profile.c b/kernel/profile.c
-index 737b1c704aa8..0db1122855c0 100644
---- a/kernel/profile.c
-+++ b/kernel/profile.c
-@@ -438,7 +438,7 @@ static ssize_t prof_cpu_mask_proc_write(struct file *file,
- 	cpumask_var_t new_value;
- 	int err;
- 
--	if (!alloc_cpumask_var(&new_value, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&new_value, GFP_KERNEL))
- 		return -ENOMEM;
- 
- 	err = cpumask_parse_user(buffer, count, new_value);
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 9f5b9036f001..3ecd7c700579 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4910,7 +4910,7 @@ tracing_cpumask_write(struct file *filp, const char __user *ubuf,
- 	cpumask_var_t tracing_cpumask_new;
- 	int err;
- 
--	if (!alloc_cpumask_var(&tracing_cpumask_new, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&tracing_cpumask_new, GFP_KERNEL))
- 		return -ENOMEM;
- 
- 	err = cpumask_parse_user(ubuf, count, tracing_cpumask_new);
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index 78d357de2f04..18d963916b7f 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -585,6 +585,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
+ 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
+ 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
+ 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
++	{ KE_IGNORE, 0xCF, },	/* AC mode */
+ 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
+ 	{ KE_END, 0},
+ };
 -- 
 2.39.5
 
