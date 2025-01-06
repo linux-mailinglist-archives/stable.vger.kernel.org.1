@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-107347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA2DA02B7D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9D3A02A50
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBA41665D2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66959164B2C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7D51DC759;
-	Mon,  6 Jan 2025 15:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B2B1DDC23;
+	Mon,  6 Jan 2025 15:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWhMMVkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHhakaU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FC41DC9BC;
-	Mon,  6 Jan 2025 15:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C42BDF71;
+	Mon,  6 Jan 2025 15:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178191; cv=none; b=WscD7+T+1eVA10gUw3l2yexv0VxNJeX0/AemmLBIV5fUeb9ntovPLkfDVLd9azuSVo9VhG3IWqf1dQae6jSr8rhU/Kvt6z2oTbdbeJS2FKPQbZ6GAH5XfmPr7DLErYuEHmDMmPiffqkdJoZ1guHBuNU8IZTGAgiPdjg69WM1K5g=
+	t=1736177543; cv=none; b=SvYM5Ogl+1q1019zkZGjdmOQbv6p67xns3GF1mY/SbBVbrdQ/j23OxPaHzXthwjxFX0HCB9qg6MiMGp33v9Jw3i717IfXvMU+T/lsD3PCFbP4/5UOXY7bt0PAi8HW5d14wku1MmqaVJLg9sgMb+OKEZ1inixUneJPW3jPcopDA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178191; c=relaxed/simple;
-	bh=fKei1Berpkx42oMk2US6QrF0/qz+aF6Saa1wRpSk0BQ=;
+	s=arc-20240116; t=1736177543; c=relaxed/simple;
+	bh=DvJkZJMOCcx26FUUT2+5SRaceXcr9RHj/05YXmapA/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mo6BS0eGGwQW4B4ut282ZLh2E0GxZ/UGSnVptswhIUxo2lUrW9eha/4pPmjGrLms1Z8/zudf88eUGESorTG3DynpMB7TYh2g661FzAqFEWHGOwdIfF83XusF3UJRH2H3fya+zywZaCFjc9Fi7d7qpVseL23rZuwzJUmZC6hIEEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWhMMVkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DACC4CED6;
-	Mon,  6 Jan 2025 15:43:10 +0000 (UTC)
+	 MIME-Version; b=QdRfPXjq/SaKCylvnjeiW8sM9+WSeaGkhXstYkUUWdNQ6ApREzPthB2wlelSJyaBNO2GLN4HiKbXo4L5AalMpp++X2pzVSnutxQuo3rzev8b06jEjVBCQn/pfPHkOkUwiPFtpwWsbOZp8vpU4OnBbr2lN93tJhWp4jg0XdZZbvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHhakaU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD77C4CED2;
+	Mon,  6 Jan 2025 15:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178191;
-	bh=fKei1Berpkx42oMk2US6QrF0/qz+aF6Saa1wRpSk0BQ=;
+	s=korg; t=1736177542;
+	bh=DvJkZJMOCcx26FUUT2+5SRaceXcr9RHj/05YXmapA/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWhMMVkgQwF29Q8OSqoyBKY93kPMJGLOcSNi7kp287w2FhjZswgj/M8RCRULdvOBB
-	 c5/oft7SXjAlCLMjm3EahA5r52ILvwrt5vy3x0CanZJ+5XaDRG6SfCKbkCd9j0Wacf
-	 1RjJXfxjTtFLVRy9CZGU0+6UK0zPbWi1pAEo3CaM=
+	b=HHhakaU/noAVn3G8PZNM0Deuh4Xckhcn3Lj5wSezkqPWtXQOGXpk9KStoUkLrrw/p
+	 inKZA0zuK987CCjBBw56Tjhlt1His4mmB3NC/C36OqEpVCRyD2d40EpBd3GK4SHP+h
+	 XBr0Z7DAGp6KRK+HAtNA2JwDwMOlPmrS+pSR+zIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 5.10 036/138] NFS/pnfs: Fix a live lock between recalled layouts and layoutget
+	Ido Schimmel <idosch@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 156/222] ipv4: ip_tunnel: Unmask upper DSCP bits in ip_tunnel_xmit()
 Date: Mon,  6 Jan 2025 16:16:00 +0100
-Message-ID: <20250106151134.590757025@linuxfoundation.org>
+Message-ID: <20250106151156.669252883@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 62e2a47ceab8f3f7d2e3f0e03fdd1c5e0059fd8b upstream.
+[ Upstream commit c2b639f9f3b7a058ca9c7349b096f355773f2cd8 ]
 
-When the server is recalling a layout, we should ignore the count of
-outstanding layoutget calls, since the server is expected to return
-either NFS4ERR_RECALLCONFLICT or NFS4ERR_RETURNCONFLICT for as long as
-the recall is outstanding.
-Currently, we may end up livelocking, causing the layout to eventually
-be forcibly revoked.
+Unmask the upper DSCP bits when initializing an IPv4 flow key via
+ip_tunnel_init_flow() before passing it to ip_route_output_key() so that
+in the future we could perform the FIB lookup according to the full DSCP
+value.
 
-Fixes: bf0291dd2267 ("pNFS: Ensure LAYOUTGET and LAYOUTRETURN are properly serialised")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that the 'tos' variable includes the full DS field. Either the one
+specified as part of the tunnel parameters or the one inherited from the
+inner packet.
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: b5a7b661a073 ("net: Fix netns for ip_tunnel_init_flow()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c |    2 +-
+ net/ipv4/ip_tunnel.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -1199,7 +1199,7 @@ pnfs_prepare_layoutreturn(struct pnfs_la
- 		enum pnfs_iomode *iomode)
- {
- 	/* Serialise LAYOUTGET/LAYOUTRETURN */
--	if (atomic_read(&lo->plh_outstanding) != 0)
-+	if (atomic_read(&lo->plh_outstanding) != 0 && lo->plh_return_seq == 0)
- 		return false;
- 	if (test_and_set_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags))
- 		return false;
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index b5437755365c..fd8923561b18 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -773,7 +773,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	}
+ 
+ 	ip_tunnel_init_flow(&fl4, protocol, dst, tnl_params->saddr,
+-			    tunnel->parms.o_key, RT_TOS(tos),
++			    tunnel->parms.o_key, tos & INET_DSCP_MASK,
+ 			    dev_net(dev), READ_ONCE(tunnel->parms.link),
+ 			    tunnel->fwmark, skb_get_hash(skb), 0);
+ 
+-- 
+2.39.5
+
 
 
 
