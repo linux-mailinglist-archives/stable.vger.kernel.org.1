@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74208A02BEF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8054DA02D05
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48F7D164DDF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02206188303F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C4E145348;
-	Mon,  6 Jan 2025 15:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6783012F399;
+	Mon,  6 Jan 2025 16:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqSkiBts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws2STI3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712731422DD;
-	Mon,  6 Jan 2025 15:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2336E1A8F79;
+	Mon,  6 Jan 2025 16:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178477; cv=none; b=cp1Db96V2NfvLEq0oIDOp8mDnGeuax7IB+Hc+zwnjuSMTJYFcJHQLCMckEG1k9rY07eytYrYqFIb3JEvqzEoMsawDk5QDwbnMS0n5zpP2ZaPyaxSpYuVRkyivsQuT1WYOIMJ7VsX9EgpdCi8vJ9ZPubsoQtdbdMmLTnHVE0+mak=
+	t=1736179204; cv=none; b=RUGfB/iD18Cf096W+/Ii7bLb6eT5NCD5eEgGs5SMxc/5cosE5TQqsnHpME4fVR3h+6/v3rN96Ul8NxWRbB3eIFmoCPCj7W6CddWXcoz8LXksc26uWnhnWV9l95MvYpsSyIkNttQ4JJCdbd/V5zZsydd6q2zEl0CjuWyJusC8ZlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178477; c=relaxed/simple;
-	bh=SlJumpOQNkFYFPdABzaP6uzn/WN6ACTV907UcBeq4JQ=;
+	s=arc-20240116; t=1736179204; c=relaxed/simple;
+	bh=tR0ULnQT4PMamV1w8U5qy5iCx7PUBuFKmeDPIPdI2Z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MtcYMFWMNB97eILAfv20DF21SEH/9eKZghD9FB5CcblwY50/mya4fce0wVeEhgFyV2FBSeuHN/6w/O3eFSvFV9Im/j7p7xs7gkUALdLdKDCiLeT3+hypjulWwqb+bipazkKOTkV62HdBQrx6zcpG9HtRfLy9ERLaWV2d8UwAa9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqSkiBts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE2AC4CED2;
-	Mon,  6 Jan 2025 15:47:56 +0000 (UTC)
+	 MIME-Version; b=gRFn8NEv+WMorPUO2+BZva/pVmlojgDD8pAHstz9jJmEfNKFNYoc+NeGgM+PNrzucfaaZkQX7pjk3was2cd1XW55qqhTx9jg2vXOcIJUcx1rv/UDL0NymN227WjeeMgLpT1uTTsLe1Vkh55+G3QyIgc6EUQvo4uZCQCywnSjq/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws2STI3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFD9C4CED2;
+	Mon,  6 Jan 2025 16:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178477;
-	bh=SlJumpOQNkFYFPdABzaP6uzn/WN6ACTV907UcBeq4JQ=;
+	s=korg; t=1736179204;
+	bh=tR0ULnQT4PMamV1w8U5qy5iCx7PUBuFKmeDPIPdI2Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqSkiBts7Uly9Gj3ZiIcOAxvEh6X4s99nUZAdHX1FX6urA+1xRbF4wR0U9Z86S6WX
-	 66h+x79Ry2Zs9H7EcIv8Tf2oeZUjsZzdrCr5J6KCi/DXDnjlEn7pcVQ2j6nzHzroea
-	 BtkW4Ou+bPOQiu/zgLmopVwZz3jHVsg34itnLBRY=
+	b=ws2STI3p5ZMHAZ5wOUaqDyuHknxOnFK2GUSGe2NCcx6cBUvc9We3W1ZMoVagLcLMk
+	 9IjpE2kRAc0nDTApZemWCDR5aH/EEffg0e9do2yCHyURoDPkC75c+4lf7ogNHYj3BG
+	 H+XtOk0y1iLWy7hW4+5vqj6Vd+9YtWHfGSTm0ZY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 132/138] modpost: fix the missed iteration for the max bit in do_input()
-Date: Mon,  6 Jan 2025 16:17:36 +0100
-Message-ID: <20250106151138.232007033@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Vasily Averin <vasily.averin@linux.dev>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 61/93] ipv6: prevent possible UAF in ip6_xmit()
+Date: Mon,  6 Jan 2025 16:17:37 +0100
+Message-ID: <20250106151131.008803986@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bf36b4bf1b9a7a0015610e2f038ee84ddb085de2 ]
+commit 2d5ff7e339d04622d8282661df36151906d0e1c7 upstream.
 
-This loop should iterate over the range from 'min' to 'max' inclusively.
-The last interation is missed.
+If skb_expand_head() returns NULL, skb has been freed
+and the associated dst/idev could also have been freed.
 
-Fixes: 1d8f430c15b3 ("[PATCH] Input: add modalias support")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We must use rcu_read_lock() to prevent a possible UAF.
+
+Fixes: 0c9f227bee11 ("ipv6: use skb_expand_head in ip6_xmit")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Vasily Averin <vasily.averin@linux.dev>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240820160859.3786976-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/file2alias.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ip6_output.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 2febe2b8bedb..92b9b9e8bf10 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -719,7 +719,7 @@ static void do_input(char *alias,
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -271,11 +271,15 @@ int ip6_xmit(const struct sock *sk, stru
+ 		head_room += opt->opt_nflen + opt->opt_flen;
  
- 	for (i = min / BITS_PER_LONG; i < max / BITS_PER_LONG + 1; i++)
- 		arr[i] = TO_NATIVE(arr[i]);
--	for (i = min; i < max; i++)
-+	for (i = min; i <= max; i++)
- 		if (arr[i / BITS_PER_LONG] & (1ULL << (i%BITS_PER_LONG)))
- 			sprintf(alias + strlen(alias), "%X,*", i);
- }
--- 
-2.39.5
-
+ 	if (unlikely(head_room > skb_headroom(skb))) {
++		/* Make sure idev stays alive */
++		rcu_read_lock();
+ 		skb = skb_expand_head(skb, head_room);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
++			rcu_read_unlock();
+ 			return -ENOBUFS;
+ 		}
++		rcu_read_unlock();
+ 	}
+ 
+ 	if (opt) {
 
 
 
