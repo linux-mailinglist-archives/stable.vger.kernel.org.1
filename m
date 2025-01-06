@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-106905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D228A02945
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFEAAA02A39
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0C43A19E9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F283A4E97
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A609B13775E;
-	Mon,  6 Jan 2025 15:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BD283A14;
+	Mon,  6 Jan 2025 15:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qU1XB9oN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDUlAm2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC9682D98;
-	Mon,  6 Jan 2025 15:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC0115854A;
+	Mon,  6 Jan 2025 15:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176864; cv=none; b=c/MAzt2JJ1effTpHiRsiOkB25Pg1TbFaYKJpkS9PrxjXNlJxQHawslDxvJ5SCoYMzjL8kSc7Y/yPzhkwAJQnffv1X/J2l/UbXwqbfd+6eAGgjwOFZk5VrniKXEJZGCfPB5oj32RRokitrZBuC8ojxOrMqdH4hiGx7ShWYJ4cfYw=
+	t=1736177403; cv=none; b=gl/pKx9p9fpCjSX0P2VMikDif4hNrGvpHUrg7fG3COcDxKekuNvyth91NrD4PbOn8XqvTbJA2c9ZBFArdoNV0+qX8d+BPAYQdg/Wt8SkTVyGgXDoK4d/J/0V78T1VQYLXA8nr7UGnwPtkmV9ACCa2eB8XxF+/73DGnPZ891eCFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176864; c=relaxed/simple;
-	bh=rKhGRD6T+8/cO0VtLwzlSsjMz9S2ve4YJRvZ9l1vPu4=;
+	s=arc-20240116; t=1736177403; c=relaxed/simple;
+	bh=arX0aoCT9PN/c7B0VomNDIwFlkd8h4gqpFu3OKHt9oE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsE2Z6hJqelIA0OCKALYQLrcD/Oa1bMUNoyjK/DVuQ/caB1e7Z5R2N/FvL6wmo29+kutgh0Qncyj1m8QcPnWzaxINqMsP4Uo75DzQH4nVtlbiHTumkXbEAac5ZPS96zOMAsTYshG7OCqwuaWxoqfjc0Ls54YWaQ2S/vCCvPoACY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qU1XB9oN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C741AC4CED2;
-	Mon,  6 Jan 2025 15:21:03 +0000 (UTC)
+	 MIME-Version; b=X43cGn/vTgR0nEwbiqOnzjbeQjr/cOcHxyW3oBZX7UmdaAjcj9ix6bTVU66edS/vKaPSBcCF8ZeJAu9T8edQv7e1n4SjupnecuPe8p/LzFhsCqRxq9bQO4cNg7z7JjolgG2U3Sneq78PwpZyArHwyjPJhDR5nYhXOcSoi+lGC7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDUlAm2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9714EC4CED2;
+	Mon,  6 Jan 2025 15:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176864;
-	bh=rKhGRD6T+8/cO0VtLwzlSsjMz9S2ve4YJRvZ9l1vPu4=;
+	s=korg; t=1736177403;
+	bh=arX0aoCT9PN/c7B0VomNDIwFlkd8h4gqpFu3OKHt9oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qU1XB9oN4UtJX/lawny9UjALj/5yO2fuPnKKu91/Ebz+s2KjUHEDwDWSfOYIfeeBC
-	 CTSETXbhv3B0VhS9CoPAKcS8e4aOGAyR+btCNv44BnaufLXshAM7mfeazVAW44LmXk
-	 CSEiO1RHjZSj+ZdP2vq8QkuH9Bu7JNE5JVP51oOM=
+	b=NDUlAm2UWhp8dCAMmhlBONBMOFtmjtB7S3ug4GDNKR6OmevORjhdj3xk9bN3f770G
+	 7HfN6kHyy4UwJzK/aJB7sX+N8RuexVeA6iT8WcKsHu5eCPMeYqMbSWLpANAHyP/39x
+	 IuS97GKxnEqYlASjbCalcn3QN42lRAtII8cyJlBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Wang Liang <wangliang74@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/81] RDMA/hns: Fix warning storm caused by invalid input in IO path
+Subject: [PATCH 6.6 152/222] net: fix memory leak in tcp_conn_request()
 Date: Mon,  6 Jan 2025 16:15:56 +0100
-Message-ID: <20250106151130.349924896@linuxfoundation.org>
+Message-ID: <20250106151156.517393724@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit fa5c4ba8cdbfd2c2d6422e001311c8213283ebbf ]
+[ Upstream commit 4f4aa4aa28142d53f8b06585c478476cfe325cfc ]
 
-WARN_ON() is called in the IO path. And it could lead to a warning
-storm. Use WARN_ON_ONCE() instead of WARN_ON().
+If inet_csk_reqsk_queue_hash_add() return false, tcp_conn_request() will
+return without free the dst memory, which allocated in af_ops->route_req.
 
-Fixes: 12542f1de179 ("RDMA/hns: Refactor process about opcode in post_send()")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241220055249.146943-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Here is the kmemleak stack:
+
+unreferenced object 0xffff8881198631c0 (size 240):
+  comm "softirq", pid 0, jiffies 4299266571 (age 1802.392s)
+  hex dump (first 32 bytes):
+    00 10 9b 03 81 88 ff ff 80 98 da bc ff ff ff ff  ................
+    81 55 18 bb ff ff ff ff 00 00 00 00 00 00 00 00  .U..............
+  backtrace:
+    [<ffffffffb93e8d4c>] kmem_cache_alloc+0x60c/0xa80
+    [<ffffffffba11b4c5>] dst_alloc+0x55/0x250
+    [<ffffffffba227bf6>] rt_dst_alloc+0x46/0x1d0
+    [<ffffffffba23050a>] __mkroute_output+0x29a/0xa50
+    [<ffffffffba23456b>] ip_route_output_key_hash+0x10b/0x240
+    [<ffffffffba2346bd>] ip_route_output_flow+0x1d/0x90
+    [<ffffffffba254855>] inet_csk_route_req+0x2c5/0x500
+    [<ffffffffba26b331>] tcp_conn_request+0x691/0x12c0
+    [<ffffffffba27bd08>] tcp_rcv_state_process+0x3c8/0x11b0
+    [<ffffffffba2965c6>] tcp_v4_do_rcv+0x156/0x3b0
+    [<ffffffffba299c98>] tcp_v4_rcv+0x1cf8/0x1d80
+    [<ffffffffba239656>] ip_protocol_deliver_rcu+0xf6/0x360
+    [<ffffffffba2399a6>] ip_local_deliver_finish+0xe6/0x1e0
+    [<ffffffffba239b8e>] ip_local_deliver+0xee/0x360
+    [<ffffffffba239ead>] ip_rcv+0xad/0x2f0
+    [<ffffffffba110943>] __netif_receive_skb_one_core+0x123/0x140
+
+Call dst_release() to free the dst memory when
+inet_csk_reqsk_queue_hash_add() return false in tcp_conn_request().
+
+Fixes: ff46e3b44219 ("Fix race for duplicate reqsk on identical SYN")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Link: https://patch.msgid.link/20241219072859.3783576-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_input.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 60628ef1c46e..23667cfbf8e7 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -471,7 +471,7 @@ static inline int set_ud_wqe(struct hns_roce_qp *qp,
- 	valid_num_sge = calc_wr_sge_num(wr, &msg_len);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index fb053942dba2..f6a213bae5cc 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -7192,6 +7192,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 			if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req,
+ 								    req->timeout))) {
+ 				reqsk_free(req);
++				dst_release(dst);
+ 				return 0;
+ 			}
  
- 	ret = set_ud_opcode(ud_sq_wqe, wr);
--	if (WARN_ON(ret))
-+	if (WARN_ON_ONCE(ret))
- 		return ret;
- 
- 	ud_sq_wqe->msg_len = cpu_to_le32(msg_len);
-@@ -575,7 +575,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
- 	rc_sq_wqe->msg_len = cpu_to_le32(msg_len);
- 
- 	ret = set_rc_opcode(hr_dev, rc_sq_wqe, wr);
--	if (WARN_ON(ret))
-+	if (WARN_ON_ONCE(ret))
- 		return ret;
- 
- 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
 -- 
 2.39.5
 
