@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3154DA02C35
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7A7A02B15
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B19018872E4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66BB916559E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DA51DE3A4;
-	Mon,  6 Jan 2025 15:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D083A166F1B;
+	Mon,  6 Jan 2025 15:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeCaT2XJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rs0fiyOT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55CE1474A0;
-	Mon,  6 Jan 2025 15:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893A6157E82;
+	Mon,  6 Jan 2025 15:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178691; cv=none; b=RbW6CCXurrp7qab+oc6d5E6NbgDVs3ZfdLID8sGwBw1JIbggHSwQgCSHbtTNsv8T80ot+MhJdDRVGukb7Knu29rVXcWfdD5OaMKIbYgy7SaH3wXWvrZGO6mQ4VjEcVzgzqrrzWKKE2EMzwq+BgFDzENGI/fjGNajKhaUb16PpcY=
+	t=1736177983; cv=none; b=d7ta4sfvgDfjotW9a6pxmCCdhPrj2D8gY3WDb80oniZtGfMG9FYRyLPHljnJtuWMboQkS29S69gLLajcaXVyReQ+fSFbYunxSampBnPKptK1yz4yEdXh3Y4PjZr8RypO5BA768tAXC9BVakjC7zN+aKj1iXGrhltKtKdKs1ufJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178691; c=relaxed/simple;
-	bh=BGf1qN7/VnIlBHcZbn4z1EYQFY760+05xMH4GviyRA8=;
+	s=arc-20240116; t=1736177983; c=relaxed/simple;
+	bh=tB7W+zvbqIl4mwhTkXOy3jE+0ASKOzIzz2Dt7ksueVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGsBWsBO4K9gKzIn98R1rRua1FTfXpSBs3V3DByhUEYuqJYx9ldFAYXOJM7/FcA86bfO6zQvU5OS8v9+IXLYUHHNC8U7bCxIGV+Wr0XWN+2RV/f4g6hb+ZYoxuHvXJkcX2r3kD+If1fE3vd5FahJ51lhgXSVnYFLttnanKXwnPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeCaT2XJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACD9C4CED2;
-	Mon,  6 Jan 2025 15:51:29 +0000 (UTC)
+	 MIME-Version; b=gKJBDANKiU8nR6lKygpWTVKuxy6C9xvqVlHCxtpq/FfRg3K6to0aIr7BO6giESmNrJOXYScgRTVlYz4RjpFiduF4LAUitqodg8TxfiOteBYwRAmGZFSxV+/cwXhFJcjUzLAUsHJbEJmOeBDwC3PmiYfCes9XIXEeLRoEe9Ro5VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rs0fiyOT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0130AC4CED2;
+	Mon,  6 Jan 2025 15:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178690;
-	bh=BGf1qN7/VnIlBHcZbn4z1EYQFY760+05xMH4GviyRA8=;
+	s=korg; t=1736177983;
+	bh=tB7W+zvbqIl4mwhTkXOy3jE+0ASKOzIzz2Dt7ksueVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeCaT2XJPNCOjyhiLYxjvXoLgnCWuglUASU3didG0u8XPyF/hoAmGkbhNs9IcWA7l
-	 xFK+ZJryWDFD/gJUOS8+9y0ViEcq0JA/g/605CAq6bMvlEctzl6OZB9RLwx9L1Sx6J
-	 eD5lWZ9eqru/6Tm6jTz9e7Z1xGVDD/yFfT++XRA0=
+	b=Rs0fiyOTQPlgKm8ljRvRnUkYkySElEjIpkzSXycVR8ep6bd/4fh+99IbJgvzI5e82
+	 Od8S5oww+/SauLw5n0C8OJaqGrjXWq1mT7nM7mHaM8PkO8J2J+daYWesHbKVNCffHY
+	 WLKFH6NqaXtBppQFq14k2hpYqeLvVHZUxWRcYXFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <cong.wang@bytedance.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Victor Zhao <Victor.Zhao@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 059/168] tcp_bpf: Charge receive socket buffer in bpf_tcp_ingress()
+Subject: [PATCH 6.12 081/156] drm/amdgpu: use sjt mec fw on gfx943 for sriov
 Date: Mon,  6 Jan 2025 16:16:07 +0100
-Message-ID: <20250106151140.692456178@linuxfoundation.org>
+Message-ID: <20250106151144.784175388@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Victor Zhao <Victor.Zhao@amd.com>
 
-[ Upstream commit 54f89b3178d5448dd4457afbb98fc1ab99090a65 ]
+[ Upstream commit 9a4ab400f1fad0e6e8686b8f5fc5376383860ce8 ]
 
-When bpf_tcp_ingress() is called, the skmsg is being redirected to the
-ingress of the destination socket. Therefore, we should charge its
-receive socket buffer, instead of sending socket buffer.
+Use second jump table in sriov for live migration or mulitple VF
+support so different VF can load different version of MEC as long
+as they support sjt
 
-Because sk_rmem_schedule() tests pfmemalloc of skb, we need to
-introduce a wrapper and call it for skmsg.
-
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20241210012039.1669389-2-zijianzhang@bytedance.com
+Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 10 ++++++++--
- net/ipv4/tcp_bpf.c |  2 +-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 1680d6dc4d19..ca3cc2b325d7 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1570,7 +1570,7 @@ static inline bool sk_wmem_schedule(struct sock *sk, int size)
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index c100845409f7..ffdb966c4127 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -45,6 +45,8 @@ MODULE_FIRMWARE("amdgpu/gc_9_4_3_mec.bin");
+ MODULE_FIRMWARE("amdgpu/gc_9_4_4_mec.bin");
+ MODULE_FIRMWARE("amdgpu/gc_9_4_3_rlc.bin");
+ MODULE_FIRMWARE("amdgpu/gc_9_4_4_rlc.bin");
++MODULE_FIRMWARE("amdgpu/gc_9_4_3_sjt_mec.bin");
++MODULE_FIRMWARE("amdgpu/gc_9_4_4_sjt_mec.bin");
  
- static inline bool
--sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
-+__sk_rmem_schedule(struct sock *sk, int size, bool pfmemalloc)
+ #define GFX9_MEC_HPD_SIZE 4096
+ #define RLCG_UCODE_LOADING_START_ADDRESS 0x00002000L
+@@ -574,8 +576,12 @@ static int gfx_v9_4_3_init_cp_compute_microcode(struct amdgpu_device *adev,
  {
- 	int delta;
+ 	int err;
  
-@@ -1578,7 +1578,13 @@ sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
- 		return true;
- 	delta = size - sk->sk_forward_alloc;
- 	return delta <= 0 || __sk_mem_schedule(sk, delta, SK_MEM_RECV) ||
--		skb_pfmemalloc(skb);
-+	       pfmemalloc;
-+}
-+
-+static inline bool
-+sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
-+{
-+	return __sk_rmem_schedule(sk, size, skb_pfmemalloc(skb));
- }
- 
- static inline void sk_mem_reclaim(struct sock *sk)
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index f2ae1e51e59f..dc1291827381 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -31,7 +31,7 @@ static int bpf_tcp_ingress(struct sock *sk, struct sk_psock *psock,
- 		sge = sk_msg_elem(msg, i);
- 		size = (apply && apply_bytes < sge->length) ?
- 			apply_bytes : sge->length;
--		if (!sk_wmem_schedule(sk, size)) {
-+		if (!__sk_rmem_schedule(sk, size, false)) {
- 			if (!copied)
- 				ret = -ENOMEM;
- 			break;
+-	err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
+-				   "amdgpu/%s_mec.bin", chip_name);
++	if (amdgpu_sriov_vf(adev))
++		err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
++				"amdgpu/%s_sjt_mec.bin", chip_name);
++	else
++		err = amdgpu_ucode_request(adev, &adev->gfx.mec_fw,
++				"amdgpu/%s_mec.bin", chip_name);
+ 	if (err)
+ 		goto out;
+ 	amdgpu_gfx_cp_init_microcode(adev, AMDGPU_UCODE_ID_CP_MEC1);
 -- 
 2.39.5
 
