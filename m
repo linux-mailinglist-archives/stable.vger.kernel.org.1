@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D38EA02C6D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9175AA02B1D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B705E16719B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E08FA3A56B0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCEC1DC759;
-	Mon,  6 Jan 2025 15:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF65914D28C;
+	Mon,  6 Jan 2025 15:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIyCgiIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptqy+80a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5217F1448F2;
-	Mon,  6 Jan 2025 15:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C987200A3;
+	Mon,  6 Jan 2025 15:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178788; cv=none; b=VMPm1aMUNNbkcSQLy3dRcW13ntU/frZExsebYcm6x4ICdEscJfm2uc68l8Kaz/RY0DePAVqdIb2pzDs2EyjtKNOUfczru1Pn6DICbS423jditKKfgcjfzNR3NrGz97jjC2ervz2M32vh3jgNfTJZSwaMuHpIHUStDVOElUV73dI=
+	t=1736177962; cv=none; b=hvYRbBNgSad8vsYCjV8O+Dw1G4RJzM1VjI3s4jfd4/iEJRwGT07+o6mYoXAx7wcbSRqLSme+H1F2XNJ+mbQ5YnX4o78ti53zE8JhNHmyGNiT8H2JxerfWsaLkAMO+L8ZW/uzyM6od4MI2d42yQocMe2U/4UM4MS6W42PtSNcg2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178788; c=relaxed/simple;
-	bh=tWsBoTZlXZcOOUTlUjMcvyCV3hXLUGalKsvxDCmkyrc=;
+	s=arc-20240116; t=1736177962; c=relaxed/simple;
+	bh=Gz3i3OaE2C+aeX/dcL/Gkv/2B1nwjXaDSkZ2J5+Ey6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhMwZ0R/vIq0rv27KJSDRyUkTKPAM/KYtnv1HZJzwH11DghVXf56GdumYhht6+N9tsajl8gzV8tXFDVn5LfWOVwlpY63GA3vq1K5KMN90Gq1fdHQy0NTEPT+nVm5ZNrpdvj1d+q3plNSbzdgWl+db1iDZkuMUWCX0fN+SgZWBgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIyCgiIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE218C4CED2;
-	Mon,  6 Jan 2025 15:53:07 +0000 (UTC)
+	 MIME-Version; b=uWovLfSEGI9cgeX4GeJsoLhvp8h9wYs0OSuaTZrHxQ2WG7A3WPldV9K+WilCSK8FYWtM69MmxpS6o6E3MvyGIQTPBX3d11T91ggAspB4PwWbHRI2QJSHgbtO2R/DLhuGormmqJp0GeQEMztyLp3hhMImrErPERTQwe6SlsnTtEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptqy+80a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AD1C4CED2;
+	Mon,  6 Jan 2025 15:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178788;
-	bh=tWsBoTZlXZcOOUTlUjMcvyCV3hXLUGalKsvxDCmkyrc=;
+	s=korg; t=1736177962;
+	bh=Gz3i3OaE2C+aeX/dcL/Gkv/2B1nwjXaDSkZ2J5+Ey6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIyCgiIY7cHI7MFkb9LtU8MRlLtvqQGfRfm2+l1dRuDWzPgBWCHRSsGoL1rjx/Z23
-	 cd6ihRS+qtHHGDBAcI43MjrO47iuyYyWs/OpH9Ojokxs45ueZt4wwFG/mHw2M9GJay
-	 hyRDNUvP+T224I/r0hlH12df0zIyS1gaR76JMMKM=
+	b=ptqy+80aNFjwrnhwReTNWIJm1PFL0tKgUgtt7IbSv5Dcn2XHz1aK9DsW57vZo/6yS
+	 GNd/zajMrqv/O4MQLUPXagcTBVdPOPm9Vp2PTu5zzrzObg0cXdX5Lgo/tEp/ng3FxB
+	 WsF1GOhPNkhe3CPZ2AMn/aeEbQeOepZEdS9FxO0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunfeng Ye <yeyunfeng@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/168] arm64: mm: Rename asid2idx() to ctxid2asid()
+	Kohei Enju <enjuk@amazon.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 114/156] ftrace: Fix function profilers filtering functionality
 Date: Mon,  6 Jan 2025 16:16:40 +0100
-Message-ID: <20250106151141.939942150@linuxfoundation.org>
+Message-ID: <20250106151146.020538634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +61,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunfeng Ye <yeyunfeng@huawei.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit a3a5b763410c7bceacf41a52071134d9dc26202a ]
+commit 789a8cff8d2dbe4b5c617c3004b5eb63fa7a3b35 upstream.
 
-The commit 0c8ea531b774 ("arm64: mm: Allocate ASIDs in pairs") introduce
-the asid2idx and idx2asid macro, but these macros are not really useful
-after the commit f88f42f853a8 ("arm64: context: Free up kernel ASIDs if
-KPTI is not in use").
+Commit c132be2c4fcc ("function_graph: Have the instances use their own
+ftrace_ops for filtering"), function profiler (enabled via
+function_profile_enabled) has been showing statistics for all functions,
+ignoring set_ftrace_filter settings.
 
-The code "(asid & ~ASID_MASK)" can be instead by a macro, which is the
-same code with asid2idx(). So rename it to ctxid2asid() for a better
-understanding.
+While tracers are instantiated, the function profiler is not. Therefore, it
+should use the global set_ftrace_filter for consistency.  This patch
+modifies the function profiler to use the global filter, fixing the
+filtering functionality.
 
-Also we add asid2ctxid() macro, the contextid can be generated based on
-the asid and generation through this macro.
+Before (filtering not working):
+```
+root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
+root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# sleep 1
+root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# head /sys/kernel/tracing/trace_stat/*
+  Function                               Hit    Time            Avg
+     s^2
+  --------                               ---    ----            ---
+     ---
+  schedule                               314    22290594 us     70989.15 us
+     40372231 us
+  x64_sys_call                          1527    8762510 us      5738.382 us
+     3414354 us
+  schedule_hrtimeout_range               176    8665356 us      49234.98 us
+     405618876 us
+  __x64_sys_ppoll                        324    5656635 us      17458.75 us
+     19203976 us
+  do_sys_poll                            324    5653747 us      17449.83 us
+     19214945 us
+  schedule_timeout                        67    5531396 us      82558.15 us
+     2136740827 us
+  __x64_sys_pselect6                      12    3029540 us      252461.7 us
+     63296940171 us
+  do_pselect.constprop.0                  12    3029532 us      252461.0 us
+     63296952931 us
+```
 
-Signed-off-by: Yunfeng Ye <yeyunfeng@huawei.com>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Link: https://lore.kernel.org/r/c31516eb-6d15-94e0-421c-305fc010ea79@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Stable-dep-of: c0900d15d31c ("arm64: Ensure bits ASID[15:8] are masked out when the kernel uses 8-bit ASIDs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After (filtering working):
+```
+root@localhost:~# echo 'vfs*' > /sys/kernel/tracing/set_ftrace_filter
+root@localhost:~# echo 1 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# sleep 1
+root@localhost:~# echo 0 > /sys/kernel/tracing/function_profile_enabled
+root@localhost:~# head /sys/kernel/tracing/trace_stat/*
+  Function                               Hit    Time            Avg
+     s^2
+  --------                               ---    ----            ---
+     ---
+  vfs_write                              462    68476.43 us     148.217 us
+     25874.48 us
+  vfs_read                               641    9611.356 us     14.994 us
+     28868.07 us
+  vfs_fstat                              890    878.094 us      0.986 us
+     1.667 us
+  vfs_fstatat                            227    757.176 us      3.335 us
+     18.928 us
+  vfs_statx                              226    610.610 us      2.701 us
+     17.749 us
+  vfs_getattr_nosec                     1187    460.919 us      0.388 us
+     0.326 us
+  vfs_statx_path                         297    343.287 us      1.155 us
+     11.116 us
+  vfs_rename                               6    291.575 us      48.595 us
+     9889.236 us
+```
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250101190820.72534-1-enjuk@amazon.com
+Fixes: c132be2c4fcc ("function_graph: Have the instances use their own ftrace_ops for filtering")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/context.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/trace/ftrace.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/mm/context.c b/arch/arm64/mm/context.c
-index cd72576ae2b7..bbc2708fe928 100644
---- a/arch/arm64/mm/context.c
-+++ b/arch/arm64/mm/context.c
-@@ -35,8 +35,8 @@ static unsigned long *pinned_asid_map;
- #define ASID_FIRST_VERSION	(1UL << asid_bits)
- 
- #define NUM_USER_ASIDS		ASID_FIRST_VERSION
--#define asid2idx(asid)		((asid) & ~ASID_MASK)
--#define idx2asid(idx)		asid2idx(idx)
-+#define ctxid2asid(asid)	((asid) & ~ASID_MASK)
-+#define asid2ctxid(asid, genid)	((asid) | (genid))
- 
- /* Get the ASIDBits supported by the current CPU */
- static u32 get_cpu_asid_bits(void)
-@@ -120,7 +120,7 @@ static void flush_context(void)
- 		 */
- 		if (asid == 0)
- 			asid = per_cpu(reserved_asids, i);
--		__set_bit(asid2idx(asid), asid_map);
-+		__set_bit(ctxid2asid(asid), asid_map);
- 		per_cpu(reserved_asids, i) = asid;
- 	}
- 
-@@ -162,7 +162,7 @@ static u64 new_context(struct mm_struct *mm)
- 	u64 generation = atomic64_read(&asid_generation);
- 
- 	if (asid != 0) {
--		u64 newasid = generation | (asid & ~ASID_MASK);
-+		u64 newasid = asid2ctxid(ctxid2asid(asid), generation);
- 
- 		/*
- 		 * If our current ASID was active during a rollover, we
-@@ -183,7 +183,7 @@ static u64 new_context(struct mm_struct *mm)
- 		 * We had a valid ASID in a previous life, so try to re-use
- 		 * it if possible.
- 		 */
--		if (!__test_and_set_bit(asid2idx(asid), asid_map))
-+		if (!__test_and_set_bit(ctxid2asid(asid), asid_map))
- 			return newasid;
- 	}
- 
-@@ -209,7 +209,7 @@ static u64 new_context(struct mm_struct *mm)
- set_asid:
- 	__set_bit(asid, asid_map);
- 	cur_idx = asid;
--	return idx2asid(asid) | generation;
-+	return asid2ctxid(asid, generation);
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -883,16 +883,13 @@ static void profile_graph_return(struct
  }
  
- void check_and_switch_context(struct mm_struct *mm)
-@@ -300,13 +300,13 @@ unsigned long arm64_mm_context_get(struct mm_struct *mm)
- 	}
+ static struct fgraph_ops fprofiler_ops = {
+-	.ops = {
+-		.flags = FTRACE_OPS_FL_INITIALIZED,
+-		INIT_OPS_HASH(fprofiler_ops.ops)
+-	},
+ 	.entryfunc = &profile_graph_entry,
+ 	.retfunc = &profile_graph_return,
+ };
  
- 	nr_pinned_asids++;
--	__set_bit(asid2idx(asid), pinned_asid_map);
-+	__set_bit(ctxid2asid(asid), pinned_asid_map);
- 	refcount_set(&mm->context.pinned, 1);
+ static int register_ftrace_profiler(void)
+ {
++	ftrace_ops_set_global_filter(&fprofiler_ops.ops);
+ 	return register_ftrace_graph(&fprofiler_ops);
+ }
  
- out_unlock:
- 	raw_spin_unlock_irqrestore(&cpu_asid_lock, flags);
+@@ -903,12 +900,11 @@ static void unregister_ftrace_profiler(v
+ #else
+ static struct ftrace_ops ftrace_profile_ops __read_mostly = {
+ 	.func		= function_profile_call,
+-	.flags		= FTRACE_OPS_FL_INITIALIZED,
+-	INIT_OPS_HASH(ftrace_profile_ops)
+ };
  
--	asid &= ~ASID_MASK;
-+	asid = ctxid2asid(asid);
+ static int register_ftrace_profiler(void)
+ {
++	ftrace_ops_set_global_filter(&ftrace_profile_ops);
+ 	return register_ftrace_function(&ftrace_profile_ops);
+ }
  
- 	/* Set the equivalent of USER_ASID_BIT */
- 	if (asid && arm64_kernel_unmapped_at_el0())
-@@ -327,7 +327,7 @@ void arm64_mm_context_put(struct mm_struct *mm)
- 	raw_spin_lock_irqsave(&cpu_asid_lock, flags);
- 
- 	if (refcount_dec_and_test(&mm->context.pinned)) {
--		__clear_bit(asid2idx(asid), pinned_asid_map);
-+		__clear_bit(ctxid2asid(asid), pinned_asid_map);
- 		nr_pinned_asids--;
- 	}
- 
--- 
-2.39.5
-
 
 
 
