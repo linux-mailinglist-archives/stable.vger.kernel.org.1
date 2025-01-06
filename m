@@ -1,141 +1,268 @@
-Return-Path: <stable+bounces-107740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E633A02ED7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 18:24:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE173A02F32
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 18:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D38F1885410
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:24:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1DAA7A05A8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D1C1DED77;
-	Mon,  6 Jan 2025 17:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0161DED64;
+	Mon,  6 Jan 2025 17:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gykxl4gz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pY3YegAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BF01DE4FE;
-	Mon,  6 Jan 2025 17:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31A01DE8B4
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 17:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736184234; cv=none; b=UBQfAxTR2In3hruADz7QBVK102PR72hDXFQPDLBFqC2qBanUWX5pokIdc57T+o2O5dMt3DXTN0+oEgjLATNeRzj4cS9cI2FETUAI38w+8XGaBF38gTMoEFl4j4e3sCCXrKOvS8o6VnpPls/7fsOtJOqXC+bq06cyeXJjZHRCUY0=
+	t=1736185240; cv=none; b=U1Jff8sQpOQRw0HdIsObgs8MAczk1lcTiy2w9WBKv7sG2COBoYB2nfuCwe+M3EbxNRrTiPBGr5mCui023F6jDWDOg7WpEN8eXSo+k5ExgjbbCaZMe6VZnNngCzHv6gZa88O0gWAGHR2rQoyiMFmr5e6fuX7OELw/azp21c32EUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736184234; c=relaxed/simple;
-	bh=efG3H2hD7NAQzoCtc0eCarWNq6bEDlIWe1vwEj2j7Jk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bJQ9oR1XLgPUOVxTmPE8dUQxoLTu22Mp1rCipGfXiJukfkTBZu67rjYbt5/n1ITQymp9H7hNFplTa9ZsshGOib60kpKJ3n9yJkI8iL9ZdNGb24e+cKAzmjQ9hfirfTy8RYws+86VJSa3ibhnvfHeEVReOjVHV/bUWNc0+5kS5GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gykxl4gz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B42C4CEE3;
-	Mon,  6 Jan 2025 17:23:53 +0000 (UTC)
+	s=arc-20240116; t=1736185240; c=relaxed/simple;
+	bh=mUoXQgU52UdzJX2yG8+A9IVtQHAEeJaBP/s/xGYQ0yE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZX7FFov8mMmh+AVIQ1jgZRBSkDitbaIWzYBgdcgONlM5BksvKOxHz3A4ccCqO5jOf6l4XYEiDV9gWHtfJMFMSAIaBuSlbuXCMVtBfAKzSfyuSTXXMVqkeUrekHPyIOngmZKJ4YcOyrYoJhcWe2s4tbzedcCCbblNF5Ga4gkzt2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pY3YegAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A71C4CED2;
+	Mon,  6 Jan 2025 17:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736184233;
-	bh=efG3H2hD7NAQzoCtc0eCarWNq6bEDlIWe1vwEj2j7Jk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Gykxl4gzUqNsRtiuT9ce7Od2dpmlSYD1s1fdqHHoKIF3IdM5RAzC3ymWcO4BtcZ2I
-	 Vx40NFc5lCHRQyz1SGDt258nIxpJ7BhyN5wlrVsZ7kTnF2+C3oOFPqtFxwrdWxtxG+
-	 hGU9oSJaVqha3Qo4XbXcFqA5DRVVJm3IL1ZRbB+YDRes87wwYFoOxUONa1hnKx5qJf
-	 da8NY/Pc8lh+CpjIBmJSGaMGR/n/ygTTdAjKfPACbuafxfpkAMSF6kP48MJVhNe1Wo
-	 ji7b63KR9IfhGVnij0ZSFcXx9q57BAfBkyG4tf6NPLn6nQRzXMOF7wWelL4D3ArgQj
-	 ZQJkqOxFqk14Q==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-54252789365so8093996e87.0;
-        Mon, 06 Jan 2025 09:23:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCURWI3l0Vk9FHLAMv+PoKSKl+viSAgcJxvqnixre+Ugs19GrhhcUgKQvcnyaLHhuiijrApyJaRi@vger.kernel.org, AJvYcCW8nTfzFe99eQDC5YTp6TktHrDV3bOCW2xI1LKSYeI/buLLgiD+xqTBNcWByatlcbCZcGg62bUUXfxLyF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMxDHhNGlSEw4UX/Nb3MJyDl+ar7iGO56vcEFHHd5NSjTG4jPh
-	dt0bB7guvcl3LiB8b04zGVxsDV6cR7pYluaPp3nNdfTz/38q/4Ss8SaoeJOuMquq+px/gdnEOMz
-	Cwd3d0kF/qFxG554arq6lsff9ALI=
-X-Google-Smtp-Source: AGHT+IFsWkSx2Ba9vB7qrNFaGiPYVMK0HTHAQVlb2dNFzhN7QCq4dSfD1GNd+jcx9fAXyOA+8+w4bT+MzoJoVPvf0O0=
-X-Received: by 2002:a05:6512:3994:b0:542:214c:532 with SMTP id
- 2adb3069b0e04-54229538b3amr15388747e87.13.1736184231936; Mon, 06 Jan 2025
- 09:23:51 -0800 (PST)
+	s=k20201202; t=1736185240;
+	bh=mUoXQgU52UdzJX2yG8+A9IVtQHAEeJaBP/s/xGYQ0yE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pY3YegAAobYpH7rkHJ/NPWXwUf2NyO7c9iuINCpC7RokkRMTLPtZOg8excVf0okgJ
+	 KI0KSCeV7BV/+yeqS42zmXHQW2TwCsRp+P0bXgg0EiBudGqQNiEXcVxuc+HmBv4xuM
+	 mLbSOR2GIaEMNENos5gWRiNI9UTBhdoh1+67NS7F7iLST87jB/1aD+uX2brRQNdMX6
+	 wtepZ6TYSaFDwNKTg/fak9jwyraCvb2BBCADWFRQDm1Bx66Umqbve1oUKev1uqKDwI
+	 eu86BZfpwnLwc3qrpQSHkXnarev6vMkTa67bKs1lSjVLuZ19UfDRDBQHAKdpvnohl3
+	 xOh1q4D1PmXGA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tUr5i-009VF0-1C;
+	Mon, 06 Jan 2025 17:40:38 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
+Date: Mon,  6 Jan 2025 17:40:20 +0000
+Message-Id: <20250106174020.1793678-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241224040334.11533-1-jarkko@kernel.org> <CAMj1kXGOcqEH68-Pp4+-WMpG-2D-iN6xAHFTQvQLobO1sE3QFA@mail.gmail.com>
- <D6KW1JU6RBR0.2QL8BTX01XZNP@kernel.org>
-In-Reply-To: <D6KW1JU6RBR0.2QL8BTX01XZNP@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 6 Jan 2025 18:23:40 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHTJ_=g1dnuGV2PWiNC1o=wKFOkZxEAcrMWYbUNWkxKNg@mail.gmail.com>
-Message-ID: <CAMj1kXHTJ_=g1dnuGV2PWiNC1o=wKFOkZxEAcrMWYbUNWkxKNg@mail.gmail.com>
-Subject: Re: [PATCH v5] tpm: Map the ACPI provided event log
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Colin Ian King <colin.i.king@gmail.com>, 
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Stefan Berger <stefanb@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Kylene Jo Hall <kjhall@us.ibm.com>, 
-	Reiner Sailer <sailer@us.ibm.com>, Seiji Munetoh <munetoh@jp.ibm.com>, Andrew Morton <akpm@osdl.org>, 
-	stable@vger.kernel.org, Andy Liang <andy.liang@hpe.com>, 
-	Matthew Garrett <mjg59@srcf.ucam.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, broonie@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 25 Dec 2024 at 16:31, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
-> On Tue Dec 24, 2024 at 6:05 PM EET, Ard Biesheuvel wrote:
-> > On Tue, 24 Dec 2024 at 05:03, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > >
-> > > The following failure was reported:
-> > >
-> > > [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, rev-id 0)
-> > > [   10.848132][    T1] ------------[ cut here ]------------
-> > > [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4727 __alloc_pages_noprof+0x2ca/0x330
-> > > [   10.862827][    T1] Modules linked in:
-> > > [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 588cd98293a7c9eba9013378d807364c088c9375
-> > > [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProLiant DL320 Gen12, BIOS 1.20 10/28/2024
-> > > [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
-> > > [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8 e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 80 e1
-> > > [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
-> > > [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 RCX: 0000000000000000
-> > > [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c RDI: 0000000000040cc0
-> > >
-> > > Above shows that ACPI pointed a 16 MiB buffer for the log events because
-> > > RSI maps to the 'order' parameter of __alloc_pages_noprof(). Address the
-> > > bug by mapping the region when needed instead of copying.
-> > >
-> >
-> > How can you be sure the memory contents will be preserved? Does it say
-> > anywhere in the TCG spec that this needs to use a memory type that is
-> > preserved by default?
->
-> TCG log calls the size as the minimum size for the log area but is not
-> too accurate on details [1]. I don't actually know what "minimum" even
-> means in this context as it is just a fixed size cut of the physical
-> address space.
->
-> I don't think that can ever change. It would be oddballs if some
-> dynamic change would make ACPI tables show incorrect information
-> on memory ranges. Do you know any pre-existing example of such
-> behavior (not sarcasm, just interested)?
->
-> Anyway considering this type of dynamics TCG spec is inaccurate.
->
+The hwcaps code that exposes SVE features to userspace only
+considers ID_AA64ZFR0_EL1, while this is only valid when
+ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
 
-Thanks for the context but that is not at all what I was asking.
+The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
+ID_AA64ZFR0_EL1 register is also 0. So far, so good.
 
-This change assumes that the contents of the memory region described
-by the ACPI table will be reserved in some way, and not be released to
-the kernel for general allocation.
+Things become a bit more interesting if the HW implements SME.
+In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
+features. And these fields overlap with their SVE interpretations.
+But the architecture says that the SME and SVE feature sets must
+match, so we're still hunky-dory.
 
-This is not always the case for firmware tables: EFI configuration
-tables need to be reserved explicitly unless the memory type is
-EfiRuntimeServicesData. For ACPI tables, the situation might be
-different but there is at least one example (BGRT) where the memory
-type typically used is not one that the kernel usually reserves by
-default.
+This goes wrong if the HW implements SME, but not SVE. In this
+case, we end-up advertising some SVE features to userspace, even
+if the HW has none. That's because we never consider whether SVE
+is actually implemented. Oh well.
 
-So my question is whether there is anything in the TCG platform spec
-(or whichever spec describes this ACPI table) that guarantees that the
-region that the TCPA or TPM2 table points to is of a type that does
-not require an explicit reservation?
+Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
+being non-zero. The HWCAPS documentation is amended to reflect the
+actually checks performed by the kernel.
 
+Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
+Reported-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ Documentation/arch/arm64/elf_hwcaps.rst | 39 ++++++++++++++++--------
+ arch/arm64/kernel/cpufeature.c          | 40 +++++++++++++++++--------
+ 2 files changed, 53 insertions(+), 26 deletions(-)
+
+diff --git a/Documentation/arch/arm64/elf_hwcaps.rst b/Documentation/arch/arm64/elf_hwcaps.rst
+index 2ff922a406ad8..1a31723e79fd2 100644
+--- a/Documentation/arch/arm64/elf_hwcaps.rst
++++ b/Documentation/arch/arm64/elf_hwcaps.rst
+@@ -178,22 +178,28 @@ HWCAP2_DCPODP
+     Functionality implied by ID_AA64ISAR1_EL1.DPB == 0b0010.
+ 
+ HWCAP2_SVE2
+-    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.SVEver == 0b0001.
+ 
+ HWCAP2_SVEAES
+-    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.AES == 0b0001.
+ 
+ HWCAP2_SVEPMULL
+-    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0010.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.AES == 0b0010.
+ 
+ HWCAP2_SVEBITPERM
+-    Functionality implied by ID_AA64ZFR0_EL1.BitPerm == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.BitPerm == 0b0001.
+ 
+ HWCAP2_SVESHA3
+-    Functionality implied by ID_AA64ZFR0_EL1.SHA3 == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.SHA3 == 0b0001.
+ 
+ HWCAP2_SVESM4
+-    Functionality implied by ID_AA64ZFR0_EL1.SM4 == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.SM4 == 0b0001.
+ 
+ HWCAP2_FLAGM2
+     Functionality implied by ID_AA64ISAR0_EL1.TS == 0b0010.
+@@ -202,16 +208,20 @@ HWCAP2_FRINT
+     Functionality implied by ID_AA64ISAR1_EL1.FRINTTS == 0b0001.
+ 
+ HWCAP2_SVEI8MM
+-    Functionality implied by ID_AA64ZFR0_EL1.I8MM == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.I8MM == 0b0001.
+ 
+ HWCAP2_SVEF32MM
+-    Functionality implied by ID_AA64ZFR0_EL1.F32MM == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.F32MM == 0b0001.
+ 
+ HWCAP2_SVEF64MM
+-    Functionality implied by ID_AA64ZFR0_EL1.F64MM == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.F64MM == 0b0001.
+ 
+ HWCAP2_SVEBF16
+-    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.BF16 == 0b0001.
+ 
+ HWCAP2_I8MM
+     Functionality implied by ID_AA64ISAR1_EL1.I8MM == 0b0001.
+@@ -277,7 +287,8 @@ HWCAP2_EBF16
+     Functionality implied by ID_AA64ISAR1_EL1.BF16 == 0b0010.
+ 
+ HWCAP2_SVE_EBF16
+-    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0010.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.BF16 == 0b0010.
+ 
+ HWCAP2_CSSC
+     Functionality implied by ID_AA64ISAR2_EL1.CSSC == 0b0001.
+@@ -286,7 +297,8 @@ HWCAP2_RPRFM
+     Functionality implied by ID_AA64ISAR2_EL1.RPRFM == 0b0001.
+ 
+ HWCAP2_SVE2P1
+-    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0010.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.SVEver == 0b0010.
+ 
+ HWCAP2_SME2
+     Functionality implied by ID_AA64SMFR0_EL1.SMEver == 0b0001.
+@@ -313,7 +325,8 @@ HWCAP2_HBC
+     Functionality implied by ID_AA64ISAR2_EL1.BC == 0b0001.
+ 
+ HWCAP2_SVE_B16B16
+-    Functionality implied by ID_AA64ZFR0_EL1.B16B16 == 0b0001.
++    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
++    ID_AA64ZFR0_EL1.B16B16 == 0b0001.
+ 
+ HWCAP2_LRCPC3
+     Functionality implied by ID_AA64ISAR1_EL1.LRCPC == 0b0011.
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 6ce71f444ed84..6874aca5da9df 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -3022,6 +3022,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ 		.matches = match,						\
+ 	}
+ 
++#define HWCAP_CAP_MATCH_ID(match, reg, field, min_value, cap_type, cap)		\
++	{									\
++		__HWCAP_CAP(#cap, cap_type, cap)				\
++		HWCAP_CPUID_MATCH(reg, field, min_value) 			\
++		.matches = match,						\
++	}
++
+ #ifdef CONFIG_ARM64_PTR_AUTH
+ static const struct arm64_cpu_capabilities ptr_auth_hwcap_addr_matches[] = {
+ 	{
+@@ -3050,6 +3057,13 @@ static const struct arm64_cpu_capabilities ptr_auth_hwcap_gen_matches[] = {
+ };
+ #endif
+ 
++#ifdef CONFIG_ARM64_SVE
++static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
++{
++	return system_supports_sve() && has_user_cpuid_feature(cap, scope);
++}
++#endif
++
+ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
+ 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
+ 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
+@@ -3092,19 +3106,19 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
+ 	HWCAP_CAP(ID_AA64MMFR2_EL1, AT, IMP, CAP_HWCAP, KERNEL_HWCAP_USCAT),
+ #ifdef CONFIG_ARM64_SVE
+ 	HWCAP_CAP(ID_AA64PFR0_EL1, SVE, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
+-	HWCAP_CAP(ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
++	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
+ #endif
+ #ifdef CONFIG_ARM64_GCS
+ 	HWCAP_CAP(ID_AA64PFR1_EL1, GCS, IMP, CAP_HWCAP, KERNEL_HWCAP_GCS),
 -- 
-Ard.
+2.39.2
+
 
