@@ -1,157 +1,154 @@
-Return-Path: <stable+bounces-107763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43470A03160
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 21:27:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 020A3A031FC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 22:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2AC61886B18
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02E8C3A00E3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 21:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258D81DDC0F;
-	Mon,  6 Jan 2025 20:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739FC1DFD84;
+	Mon,  6 Jan 2025 21:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dswdM0Ju"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzL90aou"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665DADDBC
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 20:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267BE15886C;
+	Mon,  6 Jan 2025 21:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736195267; cv=none; b=nKvBIPYXnYj84oP95Za1YoEAnQUGYTSoD2zvJl9bJODqK3WskgydD0s3/D7YRaMHliKBMIIA40z1bq6pvXy7UkxW3gQZ+M7Orx+MHq3sWaKWibmMiD/hpFrFxaS7mwEXYvlvTH5Mw80XImOYZJ6qJNWELS/2TGTtUUhNmGLyku4=
+	t=1736198455; cv=none; b=BWDMLxERZSBWjKfzgMgDNMKofnCOpq1mrlGNEDyTZm0gwO5eFoyyFu1DcnBNCiPEaK1v2kOfhCC3CJT1r6xST54MNaXhQWQ4qVypQjhsVPmzRvOTExDkGRTjNsB450YLytp58jLwF46vZ31hhA1p6MwV88TBTr+y5uaBM4lpVck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736195267; c=relaxed/simple;
-	bh=fSekIhehtZmEYM8m+UMCn4RAjCnAIb1B35lBYxB0u2I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N7RbA3qt26gjuaaTzJdtuNN2B1aaxF7/kxJ6xiyEvdZhhTo0T/9iYZpt+DAe2FDyFcWm68AYGIcLIZHcLWnp8ZTna9xZ+Iz154x9MsMITbH2359JBHKsJcCSm2PjqlYW1upjvQWK4/bOhnZdhbKhjocMBA7aW/DhsJe6j+Nj7I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dswdM0Ju; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ef728e36d5so21353484a91.3
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 12:27:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736195266; x=1736800066; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wiCvifj8dcSeBO9EgRDuEKt4b5UC2vhbCgxGSNIBg4E=;
-        b=dswdM0JuZNVC3b0sOdN1ui6lrKRnDCMFbnD2YjWM+A+ny9C9fCiVbqEPvsYUwoI0XA
-         S4ru6f7v5bxSBPaPloBaTHtHCio3BdfeHaGYzHpm5I4x7EFUE4Yzwfp14mZhENiOKpl5
-         nGvEWwFhzy8oCVTYh1narYZewxZd8v8F4rrSkLmQaU+AbvDB7yHs0F4p5hV34KADbeOU
-         UVvl25MSXxAtTtJGjVHDwclrXpqgw+jCBCEZnMdWh8+qAmkmGfSKgJCLe3tMJqHu5Q36
-         paGbvF2cMyEPsaGJ6M6TbMpJvm6wleywBZtbKSht5IOcKGzuuWyroX2wVL75fd58ThGd
-         /ssA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736195266; x=1736800066;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wiCvifj8dcSeBO9EgRDuEKt4b5UC2vhbCgxGSNIBg4E=;
-        b=sXyScqw7t1FgoaF5AVw+iscenTjpsfyY60m5KKK2hnOqJjl40azZKnKgV5ZY2sl8J1
-         pLlc50HYwWWk7NIzkGPoIWQyL5J9f0Yb4ymD2QTv4VjNSSLpLlCmU15iaSAwOo1CCjS3
-         v+JQ3JVp1ERN+sZBimQqXtmMjsbdcpGQHWeFWrn5SGRFeRdcuKg1YIw/Ynozka/hzTlp
-         gFUpouGTN79z4UJIkd4Y/T4XDzJJTqIITB74Z1eE1nqNjaCGOH0U+iV3LWBC+sPTHML2
-         9kotpf669eM6zj0RPngt0smyHLIJv2wDVaa0Cwn3SxkZrN6bn/5kkB/U217Cpx2IViL6
-         jHiA==
-X-Forwarded-Encrypted: i=1; AJvYcCWEsMBJCpNlh/FG2r7pYpsTwDdQRkkUss2z/RjNtc5s5Li2g3WsPuxv4UMgEzmBkt3frj6m63Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRtTzPTtGDTznAz5Zih3kuEVthp6Hhqep1JjoxXrKtRv9vkuED
-	MkL706Llq3kWKb8RRvXzaVZnY5s6sgpP1a6UWbxIW9KgH/CfWdhPvP21LIjs4SUQ6IF7HIK4rBg
-	XNg==
-X-Google-Smtp-Source: AGHT+IFHqTblkO6OHD8AhzygsDlYDwlbvubT/lnkJmxd2ec6upce4F2a9c5d4m1oJ88l3tpl8ctQEaZxo/I=
-X-Received: from pjbsn6.prod.google.com ([2002:a17:90b:2e86:b0:2f4:432d:250c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2649:b0:2ee:dd9b:e402
- with SMTP id 98e67ed59e1d1-2f452e0e152mr109962634a91.12.1736195265768; Mon,
- 06 Jan 2025 12:27:45 -0800 (PST)
-Date: Mon, 6 Jan 2025 12:27:44 -0800
-In-Reply-To: <Z3AWJjUDmfCnD99S@lappy>
+	s=arc-20240116; t=1736198455; c=relaxed/simple;
+	bh=zDmervT9GBXH5Lv4juG3yIw7tNrPmUjt9WDwtI0ZY9o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=uHrOVYwxzyQlkIufo4KU9tGrEqldKH5m7VlVEYD9TwvHczmxmat5TNtmM3cKJOn2EyYc4NMUoOPKp81Kt4I9cO9AgDxpY7X9fTnz9UZG5sFuH97lM56418cl6xQ13GlM0Ch8DTVxqK3MknmTdvGWoEY2nXUD/mDbxmFZaPuW7rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzL90aou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BB3C4CED2;
+	Mon,  6 Jan 2025 21:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736198454;
+	bh=zDmervT9GBXH5Lv4juG3yIw7tNrPmUjt9WDwtI0ZY9o=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=QzL90aou1k8ioKSHfW9q482SoIQyIdOf1upsKB8h0JQFO6BYt6UhgzKyRyxLzBeqc
+	 +2QZbM+n/rWHPFB90pm8xlpZfeUiPY+OXpQDEud0fclEcLgiJqBEF6RroCY+q+cKpF
+	 4FOGntB2iwg40OE+GRMq2L6kWujmnlgrLCy/KGRNMRuz2vVVELWr5QPSdzpL173p0e
+	 62+ba2wikkD/qWXfS4oTuqhLW/dY//WqRvEcrW2d7XG45NIvKSr/NfelSZ6TXs/syd
+	 5qRp829V+EEGj4dmB7A7jD1eGDRz+Z/lgJ5dz8RaJh1mDJ2OckW46NgXvtEzXzY7vj
+	 5PXs+rSXybD4Q==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20241226033847.760293-1-gavinguo@igalia.com> <Z3AWJjUDmfCnD99S@lappy>
-Message-ID: <Z3w8wPRvjNyDXSQS@google.com>
-Subject: Re: [PATCH 6.6] KVM: x86: Make x2APIC ID 100% readonly
-From: Sean Christopherson <seanjc@google.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Gavin Guo <gavinguo@igalia.com>, stable@vger.kernel.org, mhal@rbox.co, 
-	haoyuwu254@gmail.com, pbonzini@redhat.com
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 06 Jan 2025 23:20:49 +0200
+Message-Id: <D6VAZGXPWLUY.31RHNWW6ROQMA@kernel.org>
+Cc: <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Colin Ian King"
+ <colin.i.king@gmail.com>, "Joe Hattori" <joe@pf.is.s.u-tokyo.ac.jp>, "James
+ Bottomley" <James.Bottomley@hansenpartnership.com>, "Stefan Berger"
+ <stefanb@linux.ibm.com>, "Mimi Zohar" <zohar@linux.ibm.com>, "Al Viro"
+ <viro@zeniv.linux.org.uk>, "Kylene Jo Hall" <kjhall@us.ibm.com>, "Reiner
+ Sailer" <sailer@us.ibm.com>, "Seiji Munetoh" <munetoh@jp.ibm.com>, "Andrew
+ Morton" <akpm@osdl.org>, <stable@vger.kernel.org>, "Andy Liang"
+ <andy.liang@hpe.com>, "Matthew Garrett" <mjg59@srcf.ucam.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5] tpm: Map the ACPI provided event log
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Ard Biesheuvel" <ardb@kernel.org>
+X-Mailer: aerc 0.18.2
+References: <20241224040334.11533-1-jarkko@kernel.org>
+ <CAMj1kXGOcqEH68-Pp4+-WMpG-2D-iN6xAHFTQvQLobO1sE3QFA@mail.gmail.com>
+ <D6KW1JU6RBR0.2QL8BTX01XZNP@kernel.org>
+ <CAMj1kXHTJ_=g1dnuGV2PWiNC1o=wKFOkZxEAcrMWYbUNWkxKNg@mail.gmail.com>
+In-Reply-To: <CAMj1kXHTJ_=g1dnuGV2PWiNC1o=wKFOkZxEAcrMWYbUNWkxKNg@mail.gmail.com>
 
-On Sat, Dec 28, 2024, Sasha Levin wrote:
-> On Thu, Dec 26, 2024 at 11:38:47AM +0800, Gavin Guo wrote:
-> > From: Sean Christopherson <seanjc@google.com>
-> > 
-> > [ Upstream commit 4b7c3f6d04bd53f2e5b228b6821fb8f5d1ba3071 ]
-> > 
-> > Ignore the userspace provided x2APIC ID when fixing up APIC state for
-> > KVM_SET_LAPIC, i.e. make the x2APIC fully readonly in KVM.  Commit
-> > a92e2543d6a8 ("KVM: x86: use hardware-compatible format for APIC ID
-> > register"), which added the fixup, didn't intend to allow userspace to
-> > modify the x2APIC ID.  In fact, that commit is when KVM first started
-> > treating the x2APIC ID as readonly, apparently to fix some race:
-> > 
-> > static inline u32 kvm_apic_id(struct kvm_lapic *apic)
-> > {
-> > -       return (kvm_lapic_get_reg(apic, APIC_ID) >> 24) & 0xff;
-> > +       /* To avoid a race between apic_base and following APIC_ID update when
-> > +        * switching to x2apic_mode, the x2apic mode returns initial x2apic id.
-> > +        */
-> > +       if (apic_x2apic_mode(apic))
-> > +               return apic->vcpu->vcpu_id;
-> > +
-> > +       return kvm_lapic_get_reg(apic, APIC_ID) >> 24;
-> > }
-> > 
-> > Furthermore, KVM doesn't support delivering interrupts to vCPUs with a
-> > modified x2APIC ID, but KVM *does* return the modified value on a guest
-> > RDMSR and for KVM_GET_LAPIC.  I.e. no remotely sane setup can actually
-> > work with a modified x2APIC ID.
-> > 
-> > Making the x2APIC ID fully readonly fixes a WARN in KVM's optimized map
-> > calculation, which expects the LDR to align with the x2APIC ID.
-> > 
-> >  WARNING: CPU: 2 PID: 958 at arch/x86/kvm/lapic.c:331 kvm_recalculate_apic_map+0x609/0xa00 [kvm]
-> >  CPU: 2 PID: 958 Comm: recalc_apic_map Not tainted 6.4.0-rc3-vanilla+ #35
-> >  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.2-1-1 04/01/2014
-> >  RIP: 0010:kvm_recalculate_apic_map+0x609/0xa00 [kvm]
-> >  Call Trace:
-> >   <TASK>
-> >   kvm_apic_set_state+0x1cf/0x5b0 [kvm]
-> >   kvm_arch_vcpu_ioctl+0x1806/0x2100 [kvm]
-> >   kvm_vcpu_ioctl+0x663/0x8a0 [kvm]
-> >   __x64_sys_ioctl+0xb8/0xf0
-> >   do_syscall_64+0x56/0x80
-> >   entry_SYSCALL_64_after_hwframe+0x46/0xb0
-> >  RIP: 0033:0x7fade8b9dd6f
-> > 
-> > Unfortunately, the WARN can still trigger for other CPUs than the current
-> > one by racing against KVM_SET_LAPIC, so remove it completely.
-> > 
-> > Reported-by: Michal Luczaj <mhal@rbox.co>
-> > Closes: https://lore.kernel.org/all/814baa0c-1eaa-4503-129f-059917365e80@rbox.co
-> > Reported-by: Haoyu Wu <haoyuwu254@gmail.com>
-> > Closes: https://lore.kernel.org/all/20240126161633.62529-1-haoyuwu254@gmail.com
-> > Reported-by: syzbot+545f1326f405db4e1c3e@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/all/000000000000c2a6b9061cbca3c3@google.com
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > Message-ID: <20240802202941.344889-2-seanjc@google.com>
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-> 
-> As this one isn't tagged for stable, the KVM maintainers should ack the
-> backport before we take it.
+On Mon Jan 6, 2025 at 7:23 PM EET, Ard Biesheuvel wrote:
+> On Wed, 25 Dec 2024 at 16:31, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Tue Dec 24, 2024 at 6:05 PM EET, Ard Biesheuvel wrote:
+> > > On Tue, 24 Dec 2024 at 05:03, Jarkko Sakkinen <jarkko@kernel.org> wro=
+te:
+> > > >
+> > > > The following failure was reported:
+> > > >
+> > > > [   10.693310][    T1] tpm_tis STM0925:00: 2.0 TPM (device-id 0x3, =
+rev-id 0)
+> > > > [   10.848132][    T1] ------------[ cut here ]------------
+> > > > [   10.853559][    T1] WARNING: CPU: 59 PID: 1 at mm/page_alloc.c:4=
+727 __alloc_pages_noprof+0x2ca/0x330
+> > > > [   10.862827][    T1] Modules linked in:
+> > > > [   10.866671][    T1] CPU: 59 UID: 0 PID: 1 Comm: swapper/0 Not ta=
+inted 6.12.0-lp155.2.g52785e2-default #1 openSUSE Tumbleweed (unreleased) 5=
+88cd98293a7c9eba9013378d807364c088c9375
+> > > > [   10.882741][    T1] Hardware name: HPE ProLiant DL320 Gen12/ProL=
+iant DL320 Gen12, BIOS 1.20 10/28/2024
+> > > > [   10.892170][    T1] RIP: 0010:__alloc_pages_noprof+0x2ca/0x330
+> > > > [   10.898103][    T1] Code: 24 08 e9 4a fe ff ff e8 34 36 fa ff e9=
+ 88 fe ff ff 83 fe 0a 0f 86 b3 fd ff ff 80 3d 01 e7 ce 01 00 75 09 c6 05 f8=
+ e6 ce 01 01 <0f> 0b 45 31 ff e9 e5 fe ff ff f7 c2 00 00 08 00 75 42 89 d9 =
+80 e1
+> > > > [   10.917750][    T1] RSP: 0000:ffffb7cf40077980 EFLAGS: 00010246
+> > > > [   10.923777][    T1] RAX: 0000000000000000 RBX: 0000000000040cc0 =
+RCX: 0000000000000000
+> > > > [   10.931727][    T1] RDX: 0000000000000000 RSI: 000000000000000c =
+RDI: 0000000000040cc0
+> > > >
+> > > > Above shows that ACPI pointed a 16 MiB buffer for the log events be=
+cause
+> > > > RSI maps to the 'order' parameter of __alloc_pages_noprof(). Addres=
+s the
+> > > > bug by mapping the region when needed instead of copying.
+> > > >
+> > >
+> > > How can you be sure the memory contents will be preserved? Does it sa=
+y
+> > > anywhere in the TCG spec that this needs to use a memory type that is
+> > > preserved by default?
+> >
+> > TCG log calls the size as the minimum size for the log area but is not
+> > too accurate on details [1]. I don't actually know what "minimum" even
+> > means in this context as it is just a fixed size cut of the physical
+> > address space.
+> >
+> > I don't think that can ever change. It would be oddballs if some
+> > dynamic change would make ACPI tables show incorrect information
+> > on memory ranges. Do you know any pre-existing example of such
+> > behavior (not sarcasm, just interested)?
+> >
+> > Anyway considering this type of dynamics TCG spec is inaccurate.
+> >
+>
+> Thanks for the context but that is not at all what I was asking.
+>
+> This change assumes that the contents of the memory region described
+> by the ACPI table will be reserved in some way, and not be released to
+> the kernel for general allocation.
+>
+> This is not always the case for firmware tables: EFI configuration
+> tables need to be reserved explicitly unless the memory type is
+> EfiRuntimeServicesData. For ACPI tables, the situation might be
+> different but there is at least one example (BGRT) where the memory
+> type typically used is not one that the kernel usually reserves by
+> default.
+>
+> So my question is whether there is anything in the TCG platform spec
+> (or whichever spec describes this ACPI table) that guarantees that the
+> region that the TCPA or TPM2 table points to is of a type that does
+> not require an explicit reservation?
 
-What's the motivation for applying this to 6.6?  AFAIK, there's no real world use
-case that benefits from the patch, the fix is purely to plug a hole where fuzzers,
-e.g. syzkaller, can trip a WARN.
+I agree that we must assume that we cannot guarantee taht  since it is
+open in the spec. I think I went over the top with this.
 
-That said, this is essentially a prerequisite for "KVM: x86: Re-split x2APIC ICR
-into ICR+ICR2 for AMD (x2AVIC)"[*], and it's relatively low risk, so I'm not
-opposed to landing it in 6.6.
+Let's go with the simpler devm_add_action_or_reset() fix.
 
-[*] https://lore.kernel.org/all/2024100123-unreached-enrage-2cb1@gregkh
+BR, Jarkko
 
