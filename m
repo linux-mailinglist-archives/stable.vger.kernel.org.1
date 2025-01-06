@@ -1,115 +1,138 @@
-Return-Path: <stable+bounces-106815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9979CA02398
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:56:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD9EA0239D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88801161F6F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 986523A49C4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43D51DC989;
-	Mon,  6 Jan 2025 10:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgwX4Mk+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88011DC982;
+	Mon,  6 Jan 2025 10:57:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834541DC980
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 10:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3B51DC1A7
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 10:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736161005; cv=none; b=UgBWcvbTKPigxz17FTvFEhRpvdsD2BWHBusrfJicXEjzy8dXl8w5af4RWrCV/nPaPfYnXMPbng+kVqvWJLi7cm4O9NcIQIvKnzkx3g2Vun8G6lY4SmmIV2ACuieCG6GqofSp3EYWL9xMSERCWUxGLoZ7+xSE3MtWSCSj1TrP14g=
+	t=1736161039; cv=none; b=fUhN0FDX61zd8tmaItqbCMiAFXCVjMuskZfOnWFInxQusqxEwXUJjLtT+zaNMzWErCAYtYOj0xMM02i1UproavQQOiKWv3LSEAQTZ9oyrvFCfq1c7MtzOMk7cjtyiNL/ZPCCoMpnMHpR6QEP/f2NSmZdvQgSmRW7yHRJEeVSKLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736161005; c=relaxed/simple;
-	bh=d+Qkrz1gLnOmsoupzL8OS21ucUlZqy5hMrs7w5nBk+Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eMXHcbJVtWvFSWUKjKK5zDdLXjvXTaNmgkP7Y8KUDitEsqIuKEOaZBSAu5JX+BCxSvTbTnvfZUGLGg7aiWyBl+gFZi9WsjKjGTN0L6qfY4KeX2nYCBqQDQvUE9azGGKsCmRy6vzuFBjaMYDebz168NAqTl/t0zZ1hjZi7KfQhwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgwX4Mk+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFBCC4CED2;
-	Mon,  6 Jan 2025 10:56:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736161005;
-	bh=d+Qkrz1gLnOmsoupzL8OS21ucUlZqy5hMrs7w5nBk+Y=;
-	h=Subject:To:Cc:From:Date:From;
-	b=VgwX4Mk+eoaEyzM34q8ByWu+bvIqjtfjQTmVJ9DezHmPdFX0wILntLcmZWk+IrKmG
-	 pusXZNoauBaHFaKAMNxW09TnIJHCHMgKz2uGnWXJYjZG+NXpMXRKQP3C4CzZfb4A9R
-	 +uumRQKVLybbsoRY4NuDzHDYI65Es/lkctGTJtHs=
-Subject: FAILED: patch "[PATCH] gve: clean XDP queues in gve_tx_stop_ring_gqi" failed to apply to 6.6-stable tree
-To: joshwash@google.com,davem@davemloft.net,pkaligineedi@google.com,willemb@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 06 Jan 2025 11:56:42 +0100
-Message-ID: <2025010642-annually-shirt-b4e1@gregkh>
+	s=arc-20240116; t=1736161039; c=relaxed/simple;
+	bh=IgNYAaMtVr381ogwKzq+7rVFLBo2p3kr8NDW1bzPsLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fBLCKxnLUAiclAnldhu5AvL/kiJTf/hkQ5R7UMDWOgZd5GUAEf7UjQGuXnSb/Iu9m2D0p+60yJB+whY3EeuAXHfFZK+zqC48oRZw8WDh607QdJGEuLgUdyRJFCXaeIOnTZghCupQ/3zeThotkKroo5LBxFYj2yhxjDnlJLVO1cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAF6C4CED2;
+	Mon,  6 Jan 2025 10:57:17 +0000 (UTC)
+Date: Mon, 6 Jan 2025 10:57:15 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	Will Deacon <will@kernel.org>, Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: Filter out SVE hwcaps when FEAT_SVE isn't
+ implemented
+Message-ID: <Z3u3C87U7LKJZ77B@arm.com>
+References: <20250103182255.1763739-1-maz@kernel.org>
+ <Z3ulKMeKQcHFErgr@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z3ulKMeKQcHFErgr@J2N7QTR9R3>
 
+On Mon, Jan 06, 2025 at 09:40:56AM +0000, Mark Rutland wrote:
+> On Fri, Jan 03, 2025 at 06:22:55PM +0000, Marc Zyngier wrote:
+> > The hwcaps code that exposes SVE features to userspace only
+> > considers ID_AA64ZFR0_EL1, while this is only valid when
+> > ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+> > 
+> > The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
+> > ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+> > 
+> > Things become a bit more interesting if the HW implements SME.
+> > In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
+> > features. And these fields overlap with their SVE interpretations.
+> > But the architecture says that the SME and SVE feature sets must
+> > match, so we're still hunky-dory.
+> > 
+> > This goes wrong if the HW implements SME, but not SVE. In this
+> > case, we end-up advertising some SVE features to userspace, even
+> > if the HW has none. That's because we never consider whether SVE
+> > is actually implemented. Oh well.
+> 
+> Ugh; this is a massive pain. :(
+> 
+> Was this found by inspection, or is some real software going wrong?
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+It goes wrong on M4 in a VM. The latest macOS (15.2 I think) enabled
+those ID regs for guests and Linux user space started falling apart
+(first one reported was a fairly recent JDK getting SIGILL when trying
+to use the INCB instruction). Reported initially on the Parallels forum.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> > Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
+> > being non-zero.
+> 
+> Unfortunately, I'm not sure this fix is correct+complete.
+> 
+> We expose ID_AA64PFR0_EL1 and ID_AA64ZFR0_EL1 via ID register emulation,
+> so any userspace software reading ID_AA64ZFR0_EL1 will encounter the
+> same surprise. If we hide that I'm worried we might hide some SME-only
+> information that isn't exposed elsewhere, and I'm not sure we can
+> reasonably hide ID_AA64ZFR0_EL1 emulation for SME-only (more on that
+> below).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6321f5fb70d502d95de8a212a7b484c297ec9644
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025010642-annually-shirt-b4e1@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Good point about the user also accessing these registers through
+emulation.
 
-Possible dependencies:
+> Secondly, all our HWCAP documentation is written in the form:
+> 
+> | HWCAP2_SVEBF16
+> |     Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
+> 
+> ... so while the architectural behaviour is a surprise, the kernel is
+> (techincallyy) behaving exactly as documented prior to this patch. Maybe
+> we need to change that documentation?
 
+The kernel is also reporting HWCAP2_SVE2 based on ID_AA64ZFR0_EL1.SVEver
+which I don't think it should (my reading of the spec). I suspect that's
+what's causing JDK failures.
 
+> Do we have equivalent SME hwcaps for the relevant features?
+> 
+> ... looking at:
+> 
+>   https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/ID-AA64ZFR0-EL1--SVE-Feature-ID-Register-0?lang=en
+> 
+> ... I see that ID_AA64ZFR0_EL1.B16B16 >= 0b0010 implies the presence of
+> SME BFMUL and BFSCALE instructions, but I don't see something equivalent
+> in ID_AA64SMFR0_EL1 per:
+> 
+>   https://developer.arm.com/documentation/ddi0601/2024-12/AArch64-Registers/ID-AA64SMFR0-EL1--SME-Feature-ID-Register-0?lang=en
+> 
+> ... so I suspect ID_AA64ZFR0_EL1 might be the only source of truth for
+> this.
+> 
+> It is bizarre that ID_AA64SMFR0_EL1 doesn't follow the same format, and
+> ID_AA64SMFR0_EL1.B16B16 is a single-bit field that cannot encode the
+> same values as ID_AA64ZFR0_EL1.B16B16 (which is a 4-bit field).
 
-thanks,
+Oh, I'm getting confused now. Do we have this information exposed twice
+in the ID regs? I think in the kernel we use ZFR0 for SVE and SMFR0 for
+the SME equivalent but the architecture is actually confusing with ZFR0
+describing both SME and SVE features available. I guess at some point
+the architects thought we can't have SME without SVE but changed their
+mind and we haven't spotted.
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 6321f5fb70d502d95de8a212a7b484c297ec9644 Mon Sep 17 00:00:00 2001
-From: Joshua Washington <joshwash@google.com>
-Date: Wed, 18 Dec 2024 05:34:11 -0800
-Subject: [PATCH] gve: clean XDP queues in gve_tx_stop_ring_gqi
-
-When stopping XDP TX rings, the XDP clean function needs to be called to
-clean out the entire queue, similar to what happens in the normal TX
-queue case. Otherwise, the FIFO won't be cleared correctly, and
-xsk_tx_completed won't be reported.
-
-Fixes: 75eaae158b1b ("gve: Add XDP DROP and TX support for GQI-QPL format")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-
-diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
-index e7fb7d6d283d..83ad278ec91f 100644
---- a/drivers/net/ethernet/google/gve/gve_tx.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx.c
-@@ -206,7 +206,10 @@ void gve_tx_stop_ring_gqi(struct gve_priv *priv, int idx)
- 		return;
- 
- 	gve_remove_napi(priv, ntfy_idx);
--	gve_clean_tx_done(priv, tx, priv->tx_desc_cnt, false);
-+	if (tx->q_num < priv->tx_cfg.num_queues)
-+		gve_clean_tx_done(priv, tx, priv->tx_desc_cnt, false);
-+	else
-+		gve_clean_xdp_done(priv, tx, priv->tx_desc_cnt);
- 	netdev_tx_reset_queue(tx->netdev_txq);
- 	gve_tx_remove_from_block(priv, idx);
- }
-
+-- 
+Catalin
 
