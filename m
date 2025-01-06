@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0508A02B9C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF01FA02B01
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEE623A7B11
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B53E1881497
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504C514A617;
-	Mon,  6 Jan 2025 15:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C295D14D28C;
+	Mon,  6 Jan 2025 15:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFTqSB52"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Hm6qVvO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD8B7082A;
-	Mon,  6 Jan 2025 15:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E01BDF71;
+	Mon,  6 Jan 2025 15:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178235; cv=none; b=tsLjcW8ZCx9W+Uf9mSGHZfyzqubZhk59EmlFttUR/Cp6kdfNhWZoRDeDaZRdUhllUe5aKtnZ/o3puqO43EdeuPG/Ur7pYlHid0T7Gp3z6eXUTWRMgkUclUWE41bn940sgXnfXP/bLEGuYXKzdDEjUUUSbu+WEqYv4vwsBwrRRe4=
+	t=1736177971; cv=none; b=TiylmuZ3E+ZhmZRr3y+voPVJ24pHZGdJd6OD+vNNPJIaUe22Vg+hM1omi0XUrLOZU6A30wan0IPBEdV1bmnTM039lwHNi1hNneQhyjjM2Ix09qjbpxTesxsx1gUvmXTIw8l/k/JYTn2hES9zq8hlQaAKOrcobVHec9xnn0gaaIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178235; c=relaxed/simple;
-	bh=gyAGZq/6yV7/2P+aa/d6NEgpvFxN80M+plXJf3O2wq4=;
+	s=arc-20240116; t=1736177971; c=relaxed/simple;
+	bh=S6yqeSBnokvLVZiA/hfcyrEi5RZaMx7+drhPOhQRllU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdVPy5FV6E6+c+FXONUStKX+fxHZygh/Jby8jkCU2EdNVmBnXye27WOasTBT2jbiRszcOAueujB8LC7KMXtFRMlQbxVX+EJmFqvpA0pYi8cjjYVWR//19qpOtokyMZ/dNEfSTxFLH6+IWtN3n8QqLG0tM9QwFilbkcgKaWwb3ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFTqSB52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B23C4CED2;
-	Mon,  6 Jan 2025 15:43:54 +0000 (UTC)
+	 MIME-Version; b=bSpDugCKCOkpEg7pxMNyDa6mcqHZM0HPHEEtg2IOE5G/1KyR3gLeUX5HMxMmSGsIEcYo72mxd9LBWgyJnQeLa5mf3fu42pMWv5TZm5NYi5CSzOZEeDW4b35uYluGLi/W/yXgRtEK2tpxHsQ8mg6TJjiCrGDSh+i0YaoEQPP/SZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Hm6qVvO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CCBC4CEDF;
+	Mon,  6 Jan 2025 15:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178234;
-	bh=gyAGZq/6yV7/2P+aa/d6NEgpvFxN80M+plXJf3O2wq4=;
+	s=korg; t=1736177971;
+	bh=S6yqeSBnokvLVZiA/hfcyrEi5RZaMx7+drhPOhQRllU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uFTqSB52xvPfttfY3LSzOIdjTvKNadQQ0oHXoOhLMKtUCOl36li2jAf0ePawlRPTn
-	 vUSA8AiXrFEkHdIAzqxtYxYuhvdSHi0MfLz6KX7lnResC38IxVGKtr6S2ZROb99CnX
-	 ATRTjAfP9CAYG/7xRCNicXxVy0UCMzWHDFBx0tFQ=
+	b=1Hm6qVvOqHtCjniBnJS09mAnpuVpcG01X7oNfa1OsgOUx8eM535KMyCYfSiqTHqsA
+	 DssVrWCsdHEJxu2ReFXp9zuy6JUrn10vQaBKPAe6bbhEjThVBw4rySifnPiMflkwr+
+	 IoSpP3fjVW2dkuv+R1mo4/VJVX3xpuOamSz3pPvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 049/138] mtd: diskonchip: Cast an operand to prevent potential overflow
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 087/156] ALSA: hda/ca0132: Use standard HD-audio quirk matching helpers
 Date: Mon,  6 Jan 2025 16:16:13 +0100
-Message-ID: <20250106151135.092589760@linuxfoundation.org>
+Message-ID: <20250106151145.007991194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 9b458e8be0d13e81ed03fffa23f8f9b528bbd786 upstream.
+[ Upstream commit 7c005292e20ac53dfa601bf2a7375fd4815511ad ]
 
-There may be a potential integer overflow issue in inftl_partscan().
-parts[0].size is defined as "uint64_t"  while mtd->erasesize and
-ip->firstUnit are defined as 32-bit unsigned integer. The result of
-the calculation will be limited to 32 bits without correct casting.
+CA0132 used the PCI SSID lookup helper that doesn't support the model
+string matching or quirk aliasing.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace it with the standard HD-audio quirk helpers for supporting
+those, and add the definition of the model strings for supported
+quirks, too.  There should be no visible change to the outside for the
+working system, but the driver will parse the model option and apply
+the quirk based on it from now on.
+
+Link: https://patch.msgid.link/20241207133754.3658-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/diskonchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_ca0132.c | 37 ++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
---- a/drivers/mtd/nand/raw/diskonchip.c
-+++ b/drivers/mtd/nand/raw/diskonchip.c
-@@ -1098,7 +1098,7 @@ static inline int __init inftl_partscan(
- 		    (i == 0) && (ip->firstUnit > 0)) {
- 			parts[0].name = " DiskOnChip IPL / Media Header partition";
- 			parts[0].offset = 0;
--			parts[0].size = mtd->erasesize * ip->firstUnit;
-+			parts[0].size = (uint64_t)mtd->erasesize * ip->firstUnit;
- 			numparts = 1;
- 		}
+diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
+index e4673a71551a..d40197fb5fbd 100644
+--- a/sound/pci/hda/patch_ca0132.c
++++ b/sound/pci/hda/patch_ca0132.c
+@@ -1134,7 +1134,6 @@ struct ca0132_spec {
  
+ 	struct hda_codec *codec;
+ 	struct delayed_work unsol_hp_work;
+-	int quirk;
+ 
+ #ifdef ENABLE_TUNING_CONTROLS
+ 	long cur_ctl_vals[TUNING_CTLS_COUNT];
+@@ -1166,7 +1165,6 @@ struct ca0132_spec {
+  * CA0132 quirks table
+  */
+ enum {
+-	QUIRK_NONE,
+ 	QUIRK_ALIENWARE,
+ 	QUIRK_ALIENWARE_M17XR4,
+ 	QUIRK_SBZ,
+@@ -1176,10 +1174,11 @@ enum {
+ 	QUIRK_R3D,
+ 	QUIRK_AE5,
+ 	QUIRK_AE7,
++	QUIRK_NONE = HDA_FIXUP_ID_NOT_SET,
+ };
+ 
+ #ifdef CONFIG_PCI
+-#define ca0132_quirk(spec)		((spec)->quirk)
++#define ca0132_quirk(spec)		((spec)->codec->fixup_id)
+ #define ca0132_use_pci_mmio(spec)	((spec)->use_pci_mmio)
+ #define ca0132_use_alt_functions(spec)	((spec)->use_alt_functions)
+ #define ca0132_use_alt_controls(spec)	((spec)->use_alt_controls)
+@@ -1293,7 +1292,7 @@ static const struct hda_pintbl ae7_pincfgs[] = {
+ 	{}
+ };
+ 
+-static const struct snd_pci_quirk ca0132_quirks[] = {
++static const struct hda_quirk ca0132_quirks[] = {
+ 	SND_PCI_QUIRK(0x1028, 0x057b, "Alienware M17x R4", QUIRK_ALIENWARE_M17XR4),
+ 	SND_PCI_QUIRK(0x1028, 0x0685, "Alienware 15 2015", QUIRK_ALIENWARE),
+ 	SND_PCI_QUIRK(0x1028, 0x0688, "Alienware 17 2015", QUIRK_ALIENWARE),
+@@ -1316,6 +1315,19 @@ static const struct snd_pci_quirk ca0132_quirks[] = {
+ 	{}
+ };
+ 
++static const struct hda_model_fixup ca0132_quirk_models[] = {
++	{ .id = QUIRK_ALIENWARE, .name = "alienware" },
++	{ .id = QUIRK_ALIENWARE_M17XR4, .name = "alienware-m17xr4" },
++	{ .id = QUIRK_SBZ, .name = "sbz" },
++	{ .id = QUIRK_ZXR, .name = "zxr" },
++	{ .id = QUIRK_ZXR_DBPRO, .name = "zxr-dbpro" },
++	{ .id = QUIRK_R3DI, .name = "r3di" },
++	{ .id = QUIRK_R3D, .name = "r3d" },
++	{ .id = QUIRK_AE5, .name = "ae5" },
++	{ .id = QUIRK_AE7, .name = "ae7" },
++	{}
++};
++
+ /* Output selection quirk info structures. */
+ #define MAX_QUIRK_MMIO_GPIO_SET_VALS 3
+ #define MAX_QUIRK_SCP_SET_VALS 2
+@@ -9957,17 +9969,15 @@ static int ca0132_prepare_verbs(struct hda_codec *codec)
+  */
+ static void sbz_detect_quirk(struct hda_codec *codec)
+ {
+-	struct ca0132_spec *spec = codec->spec;
+-
+ 	switch (codec->core.subsystem_id) {
+ 	case 0x11020033:
+-		spec->quirk = QUIRK_ZXR;
++		codec->fixup_id = QUIRK_ZXR;
+ 		break;
+ 	case 0x1102003f:
+-		spec->quirk = QUIRK_ZXR_DBPRO;
++		codec->fixup_id = QUIRK_ZXR_DBPRO;
+ 		break;
+ 	default:
+-		spec->quirk = QUIRK_SBZ;
++		codec->fixup_id = QUIRK_SBZ;
+ 		break;
+ 	}
+ }
+@@ -9976,7 +9986,6 @@ static int patch_ca0132(struct hda_codec *codec)
+ {
+ 	struct ca0132_spec *spec;
+ 	int err;
+-	const struct snd_pci_quirk *quirk;
+ 
+ 	codec_dbg(codec, "patch_ca0132\n");
+ 
+@@ -9987,11 +9996,7 @@ static int patch_ca0132(struct hda_codec *codec)
+ 	spec->codec = codec;
+ 
+ 	/* Detect codec quirk */
+-	quirk = snd_pci_quirk_lookup(codec->bus->pci, ca0132_quirks);
+-	if (quirk)
+-		spec->quirk = quirk->value;
+-	else
+-		spec->quirk = QUIRK_NONE;
++	snd_hda_pick_fixup(codec, ca0132_quirk_models, ca0132_quirks, NULL);
+ 	if (ca0132_quirk(spec) == QUIRK_SBZ)
+ 		sbz_detect_quirk(codec);
+ 
+@@ -10068,7 +10073,7 @@ static int patch_ca0132(struct hda_codec *codec)
+ 		spec->mem_base = pci_iomap(codec->bus->pci, 2, 0xC20);
+ 		if (spec->mem_base == NULL) {
+ 			codec_warn(codec, "pci_iomap failed! Setting quirk to QUIRK_NONE.");
+-			spec->quirk = QUIRK_NONE;
++			codec->fixup_id = QUIRK_NONE;
+ 		}
+ 	}
+ #endif
+-- 
+2.39.5
+
 
 
 
