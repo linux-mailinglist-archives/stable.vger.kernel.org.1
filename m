@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-107343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0636A02B7E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0649DA02C3B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CDC3A5DC5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36701658BA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398831607AA;
-	Mon,  6 Jan 2025 15:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C6B1DE4C7;
+	Mon,  6 Jan 2025 15:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMN4NW/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVIBLgIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0F67082A;
-	Mon,  6 Jan 2025 15:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54851607AA;
+	Mon,  6 Jan 2025 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178180; cv=none; b=k5SW7OF+cQ0eAiZhwNMynutCJsVO8yhyMnNpwSCfJgfdWuP5fyfDPUAUZkxFYglaNK7xdMNQgGTUr06+/T4VbiHQykOVyJ53Hy609ykYWlsjwTgnwzzuG5vCIIoMmxXrdHhBvKujHXUziqetIxLocCVRm2O1zjqs9EkXuRKtu1A=
+	t=1736178650; cv=none; b=GHH7v5OZ/dgDWpBKW7E5Gy8Bg12EG9Hn7UafHL5DjFR9fWuGvNW03hDXvulWsddr+JuN3Q+KmnG/TZyvQvsCpLHttLSQjSpVFfsbEVVE5nHtPR+fD98FzJ8mRA4rsbXFzZOON5YliUCxl6hXyeTJBsLrJOSFHhJ470gQMRbTFHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178180; c=relaxed/simple;
-	bh=b8zDzWaIqxRRTvj+rZBKZPl9xZNsl7xLJ1bsr+vZvTA=;
+	s=arc-20240116; t=1736178650; c=relaxed/simple;
+	bh=O4hKSF9UrrlxwQt6m3ecEvhUpz9Ab+pCbcSMi+2h5zE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sauzl1DczCfp/iqJy+C24yjRa16UUxl3ndViztkYwjQlMZIR/Qhpi3fDjGHop//SuDlljiMu0ZBad86tEGiaS1LIHDlpsTpw2glyyiCU4iwmRTuJLZXaEOZ6EQ+o0hCabUZFp0i7Dc48ELq4gc/6dIUkfWI48wJPuhwFo1Qlyt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMN4NW/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FACC4CED2;
-	Mon,  6 Jan 2025 15:42:59 +0000 (UTC)
+	 MIME-Version; b=Umb0RAY5784mBOZydrMb8PINnL6E4A2oObrQospITJiInvEK5aRtCROD/VHRo79+Ec6Zdoa5B+6+rZhz+NwcKojV9jW+xaLJezv9Knk25brwczjrfwCETiZ+wvObAXmSr6gQ44dkbmVhLHS+TqSuDutHZ4vW1AryARe/3ratTXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVIBLgIa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E42C4CED2;
+	Mon,  6 Jan 2025 15:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178179;
-	bh=b8zDzWaIqxRRTvj+rZBKZPl9xZNsl7xLJ1bsr+vZvTA=;
+	s=korg; t=1736178650;
+	bh=O4hKSF9UrrlxwQt6m3ecEvhUpz9Ab+pCbcSMi+2h5zE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMN4NW/NX0jW3LIX5Cy4pH53deVkflgjYH/wZbQgognArkMdFeys8u2FgQpERLnff
-	 JMJJDMrCc64yROjQmFGAOnqtjATDXU4VTIXaXV/LaqErsdioxGlseQaKAVl843wlc9
-	 8qEV1BDjrYlKaizid/wtfS2TmGyHPQsKc/bD0TX4=
+	b=qVIBLgIajRBTb/uo9Jj3Bo/SNK8gECpeEcqz1GCwv+8mk5P+ZBfyjtGbF26ZarD1E
+	 PKr1nXDLnd1WlG4r9AHEMFwQawVWdeJ58EQlcrVmMfBFzzowSRI8lPpsbl8Ezr7O5j
+	 64EoEg4gMBuQ/9B0dSYDPnVEQ6w71iLqaQyk9J5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 5.10 032/138] sh: clk: Fix clk_enable() to return 0 on NULL clk
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.15 048/168] NFS/pnfs: Fix a live lock between recalled layouts and layoutget
 Date: Mon,  6 Jan 2025 16:15:56 +0100
-Message-ID: <20250106151134.437283986@linuxfoundation.org>
+Message-ID: <20250106151140.279118870@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit ff30bd6a6618e979b16977617371c0f28a95036e upstream.
+commit 62e2a47ceab8f3f7d2e3f0e03fdd1c5e0059fd8b upstream.
 
-On SH, devm_clk_get_optional_enabled() fails with -EINVAL if the clock
-is not found.  This happens because __devm_clk_get() assumes it can pass
-a NULL clock pointer (as returned by clk_get_optional()) to the init()
-function (clk_prepare_enable() in this case), while the SH
-implementation of clk_enable() considers that an error.
+When the server is recalling a layout, we should ignore the count of
+outstanding layoutget calls, since the server is expected to return
+either NFS4ERR_RECALLCONFLICT or NFS4ERR_RETURNCONFLICT for as long as
+the recall is outstanding.
+Currently, we may end up livelocking, causing the layout to eventually
+be forcibly revoked.
 
-Fix this by making the SH clk_enable() implementation return zero
-instead, like the Common Clock Framework does.
-
-Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/b53e6b557b4240579933b3359dda335ff94ed5af.1675354849.git.geert+renesas@glider.be
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fixes: bf0291dd2267 ("pNFS: Ensure LAYOUTGET and LAYOUTRETURN are properly serialised")
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/sh/clk/core.c |    2 +-
+ fs/nfs/pnfs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/sh/clk/core.c
-+++ b/drivers/sh/clk/core.c
-@@ -295,7 +295,7 @@ int clk_enable(struct clk *clk)
- 	int ret;
- 
- 	if (!clk)
--		return -EINVAL;
-+		return 0;
- 
- 	spin_lock_irqsave(&clock_lock, flags);
- 	ret = __clk_enable(clk);
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1193,7 +1193,7 @@ pnfs_prepare_layoutreturn(struct pnfs_la
+ 		enum pnfs_iomode *iomode)
+ {
+ 	/* Serialise LAYOUTGET/LAYOUTRETURN */
+-	if (atomic_read(&lo->plh_outstanding) != 0)
++	if (atomic_read(&lo->plh_outstanding) != 0 && lo->plh_return_seq == 0)
+ 		return false;
+ 	if (test_and_set_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags))
+ 		return false;
 
 
 
