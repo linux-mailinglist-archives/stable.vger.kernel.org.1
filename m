@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-106987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110FFA0299E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:26:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F5BA029E0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9830E7A1480
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:25:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7710818860B5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3671D619D;
-	Mon,  6 Jan 2025 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9352C15C120;
+	Mon,  6 Jan 2025 15:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOOXmXYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptGZrCF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACF1154C04;
-	Mon,  6 Jan 2025 15:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB6158DC5;
+	Mon,  6 Jan 2025 15:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177113; cv=none; b=q21iLQsjbLzdVHbpKTZQ57yCw+YRrRkkG/WI0R9X88WEHFZ3/vR/q/Z7vqpaAmhPXDkysNZ+aTJAuqLEIQSzEH4c+5H8oDPUsOFHzAVU2WOiSWtcpN9+OKFomyNwZVJpaf44kDriGk83lmkp684GtJdcuRqW2DSpzHqY23bFYiI=
+	t=1736177235; cv=none; b=TLC5l1eeEuh4UO/l0+Dd/Q0RLjFPG9usJIn4RuykEi9IlGATbe25JMbm0U4eVC+v80uumFj9+m3yLn/q0rycm9X+9P/ToXpAyeRc9tUlew4xcBDHaf0K6poEyYFlmj24s7A2d8a0CkGdt031fgEuqg8ol35QUTgl8vLVAD58pTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177113; c=relaxed/simple;
-	bh=iVARYi28QNd5wycPEb6PX2pYMlKCNhgs1RrajOltfzY=;
+	s=arc-20240116; t=1736177235; c=relaxed/simple;
+	bh=3RpcHIG7XfOn/5mWJdQL3PalmblX5norgdtZjdfk7io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ivc4C3Yc5SaQUIlFlC61iAzyCtPlsLKyk6st1CS3bw4x9sZJIVlWRGaLg1xgHzwhp9F5jOu3R9NV63lwhlEhy1gdc4ykPmH6vu+/Df7BTbptjhyJJcu4QetjL/2k1qN3+1TNFj1d+9vYOFr+w4axHiZjyLeNWxByQ9TZm/2V/TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOOXmXYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD9AC4CED2;
-	Mon,  6 Jan 2025 15:25:12 +0000 (UTC)
+	 MIME-Version; b=a8FL4V/CgM4/4X7RARG92n+1fqZJS3gJy/DnV+Nf9n3JEfKqMQ0Z0bs6jbDC3vIfvXlYBCN8iT0GbaPxAtUxqWzH3xafoew8vwQuXqNEURAO1I8qiwuKXPby9x9cePqU72jMvoa/QHmYYOODh5AEP5XA2UvZRO/6qnrN15Fjs5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptGZrCF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB05C4CED2;
+	Mon,  6 Jan 2025 15:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177113;
-	bh=iVARYi28QNd5wycPEb6PX2pYMlKCNhgs1RrajOltfzY=;
+	s=korg; t=1736177235;
+	bh=3RpcHIG7XfOn/5mWJdQL3PalmblX5norgdtZjdfk7io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOOXmXYME1cCAZL0ybdDLY/NT0cznW5jNXagTQ0DjMHTU+psRuxgTO1oodd7iuopZ
-	 bA7BcRovJVj4pdn3bTjTeTmBQXn90lYgsA5ul2gQuABhBlsl7HLl8EY5u4ILLR5yuY
-	 TU2C5LxSJFD4phI7nKEHmk87zPPydBGCFC9sBmfc=
+	b=ptGZrCF+dBNgw8iFrn8gAQ7+DBDPwdmufc9iNnkO0msxvYRVjgS62XSJIl7qH5+gT
+	 VxrYiP8kXwlQxZQMn4mXcLceuP6VE+WyLc8ctzTrSNFppRXrgmpDtWrJQkUxmkXZe2
+	 qmrYSCuVoGZplMztdumQQUZdqxxaNRgK6+AMohgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengfei Fan <quic_tengfan@quicinc.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/222] remoteproc: qcom: pas: Add support for SA8775p ADSP, CDSP and GPDSP
-Date: Mon,  6 Jan 2025 16:14:18 +0100
-Message-ID: <20250106151152.651080060@linuxfoundation.org>
+Subject: [PATCH 6.6 055/222] remoteproc: qcom: pas: enable SAR2130P audio DSP support
+Date: Mon,  6 Jan 2025 16:14:19 +0100
+Message-ID: <20250106151152.688374795@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
 References: <20250106151150.585603565@linuxfoundation.org>
@@ -67,145 +67,31 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tengfei Fan <quic_tengfan@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 9091225ba28c0106d3cd041c7abf5551a94bb524 ]
+[ Upstream commit 009e288c989b3fe548a45c82da407d7bd00418a9 ]
 
-Add support for PIL loading on ADSP, CDSP0, CDSP1, GPDSP0 and GPDSP1 on
-SA8775p SoCs.
+Enable support for the Audio DSP on the Qualcomm SAR2130P platform,
+reusing the SM8350 resources.
 
-Signed-off-by: Tengfei Fan <quic_tengfan@quicinc.com>
-Co-developed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20240805-topic-sa8775p-iot-remoteproc-v4-3-86affdc72c04@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241027-sar2130p-adsp-v1-3-bd204e39d24e@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 009e288c989b ("remoteproc: qcom: pas: enable SAR2130P audio DSP support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 92 ++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ drivers/remoteproc/qcom_q6v5_pas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index fd66bb8b23f8..4a73723e375a 100644
+index 4a73723e375a..fd6bf9e77afc 100644
 --- a/drivers/remoteproc/qcom_q6v5_pas.c
 +++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -786,6 +786,23 @@ static const struct adsp_data adsp_resource_init = {
- 		.ssctl_id = 0x14,
- };
- 
-+static const struct adsp_data sa8775p_adsp_resource = {
-+	.crash_reason_smem = 423,
-+	.firmware_name = "adsp.mbn",
-+	.pas_id = 1,
-+	.minidump_id = 5,
-+	.auto_boot = true,
-+	.proxy_pd_names = (char*[]){
-+		"lcx",
-+		"lmx",
-+		NULL
-+	},
-+	.load_state = "adsp",
-+	.ssr_name = "lpass",
-+	.sysmon_name = "adsp",
-+	.ssctl_id = 0x14,
-+};
-+
- static const struct adsp_data sdm845_adsp_resource_init = {
- 		.crash_reason_smem = 423,
- 		.firmware_name = "adsp.mdt",
-@@ -885,6 +902,42 @@ static const struct adsp_data cdsp_resource_init = {
- 	.ssctl_id = 0x17,
- };
- 
-+static const struct adsp_data sa8775p_cdsp0_resource = {
-+	.crash_reason_smem = 601,
-+	.firmware_name = "cdsp0.mbn",
-+	.pas_id = 18,
-+	.minidump_id = 7,
-+	.auto_boot = true,
-+	.proxy_pd_names = (char*[]){
-+		"cx",
-+		"mxc",
-+		"nsp",
-+		NULL
-+	},
-+	.load_state = "cdsp",
-+	.ssr_name = "cdsp",
-+	.sysmon_name = "cdsp",
-+	.ssctl_id = 0x17,
-+};
-+
-+static const struct adsp_data sa8775p_cdsp1_resource = {
-+	.crash_reason_smem = 633,
-+	.firmware_name = "cdsp1.mbn",
-+	.pas_id = 30,
-+	.minidump_id = 20,
-+	.auto_boot = true,
-+	.proxy_pd_names = (char*[]){
-+		"cx",
-+		"mxc",
-+		"nsp",
-+		NULL
-+	},
-+	.load_state = "nsp",
-+	.ssr_name = "cdsp1",
-+	.sysmon_name = "cdsp1",
-+	.ssctl_id = 0x20,
-+};
-+
- static const struct adsp_data sdm845_cdsp_resource_init = {
- 	.crash_reason_smem = 601,
- 	.firmware_name = "cdsp.mdt",
-@@ -987,6 +1040,40 @@ static const struct adsp_data sm8350_cdsp_resource = {
- 	.ssctl_id = 0x17,
- };
- 
-+static const struct adsp_data sa8775p_gpdsp0_resource = {
-+	.crash_reason_smem = 640,
-+	.firmware_name = "gpdsp0.mbn",
-+	.pas_id = 39,
-+	.minidump_id = 21,
-+	.auto_boot = true,
-+	.proxy_pd_names = (char*[]){
-+		"cx",
-+		"mxc",
-+		NULL
-+	},
-+	.load_state = "gpdsp0",
-+	.ssr_name = "gpdsp0",
-+	.sysmon_name = "gpdsp0",
-+	.ssctl_id = 0x21,
-+};
-+
-+static const struct adsp_data sa8775p_gpdsp1_resource = {
-+	.crash_reason_smem = 641,
-+	.firmware_name = "gpdsp1.mbn",
-+	.pas_id = 40,
-+	.minidump_id = 22,
-+	.auto_boot = true,
-+	.proxy_pd_names = (char*[]){
-+		"cx",
-+		"mxc",
-+		NULL
-+	},
-+	.load_state = "gpdsp1",
-+	.ssr_name = "gpdsp1",
-+	.sysmon_name = "gpdsp1",
-+	.ssctl_id = 0x22,
-+};
-+
- static const struct adsp_data mpss_resource_init = {
- 	.crash_reason_smem = 421,
- 	.firmware_name = "modem.mdt",
-@@ -1163,6 +1250,11 @@ static const struct of_device_id adsp_of_match[] = {
- 	{ .compatible = "qcom,qcs404-adsp-pas", .data = &adsp_resource_init },
- 	{ .compatible = "qcom,qcs404-cdsp-pas", .data = &cdsp_resource_init },
- 	{ .compatible = "qcom,qcs404-wcss-pas", .data = &wcss_resource_init },
-+	{ .compatible = "qcom,sa8775p-adsp-pas", .data = &sa8775p_adsp_resource},
-+	{ .compatible = "qcom,sa8775p-cdsp0-pas", .data = &sa8775p_cdsp0_resource},
-+	{ .compatible = "qcom,sa8775p-cdsp1-pas", .data = &sa8775p_cdsp1_resource},
-+	{ .compatible = "qcom,sa8775p-gpdsp0-pas", .data = &sa8775p_gpdsp0_resource},
-+	{ .compatible = "qcom,sa8775p-gpdsp1-pas", .data = &sa8775p_gpdsp1_resource},
+@@ -1255,6 +1255,7 @@ static const struct of_device_id adsp_of_match[] = {
+ 	{ .compatible = "qcom,sa8775p-cdsp1-pas", .data = &sa8775p_cdsp1_resource},
+ 	{ .compatible = "qcom,sa8775p-gpdsp0-pas", .data = &sa8775p_gpdsp0_resource},
+ 	{ .compatible = "qcom,sa8775p-gpdsp1-pas", .data = &sa8775p_gpdsp1_resource},
++	{ .compatible = "qcom,sar2130p-adsp-pas", .data = &sm8350_adsp_resource},
  	{ .compatible = "qcom,sc7180-adsp-pas", .data = &sm8250_adsp_resource},
  	{ .compatible = "qcom,sc7180-mpss-pas", .data = &mpss_resource_init},
  	{ .compatible = "qcom,sc7280-mpss-pas", .data = &mpss_resource_init},
