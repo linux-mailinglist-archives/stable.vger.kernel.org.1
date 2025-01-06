@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-107482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA521A02C44
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66878A02B6E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 822BB3A56C7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061FA3A754C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C261D7999;
-	Mon,  6 Jan 2025 15:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543981422DD;
+	Mon,  6 Jan 2025 15:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+vPAa1f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuzmeHTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042FB1514F6;
-	Mon,  6 Jan 2025 15:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1233060890;
+	Mon,  6 Jan 2025 15:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178597; cv=none; b=iGGhWwbe6c4ZpqmGoXKFQ52h8z8MKWTVslUwo1jiPdZBl6DJjIJ/5DfRpnYULDAVldvaE+UiOGf97+yhxD6RL0DyTWiw0ZZiBEMUEBrNB0D7XT4l0TqOF+Vd+spYVULb5WB/AayGkuAazcgu1jy0QrPwK4DgvNmyokvdtYbwpeQ=
+	t=1736178127; cv=none; b=N3CQ94sVlHdKbkrYg6Z/HlXJgIICPbwuPlIad/8iEDJ/XONUA+z6zUeie5P+d3/sUIKLr3PyXxNyeyw2JdlzJ6RVDebr6zAPBK+BmUaN+uvLVUsz2JMmNk/8YX4JhcZ3dg4VUIfPVBdCiQFBvhi7PuV2Xpg5/DsSewfITVWLXj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178597; c=relaxed/simple;
-	bh=EZmzJEUQSfE2cnWht/1CE133B4QuWK88YcfFS2XQHTg=;
+	s=arc-20240116; t=1736178127; c=relaxed/simple;
+	bh=pMg1fGS7f4UH7lJn/bRBHz4JABjaTkbmV+Zxf26TcPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJu1CX6O6BXBGJPPzeG/PlMEMq2HqqYreBL2Tuq2zCGKZR2OGh9vf6ktq8FjI7On9habSBCEYET1yk49+qXHaBWx+EqRl4kZlQYMxywLLiKKe0epNlW1jaKZZViIHJEO2WbvkZw5KFfcME5haOh2YPaVkwWyYt1NHGUbEM2WxIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+vPAa1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF5FC4CED2;
-	Mon,  6 Jan 2025 15:49:55 +0000 (UTC)
+	 MIME-Version; b=KiFuKYOa315IEJQPZ1tP6uOmgCZLiylUw4A2Rc4qbYiVa7g3jVglKB5tkb5DupvxD5mZZFciGq255LjkApp11k8JUewVwxex6J3BbyRASJNkNDY5BIJoE/hFY2PM0IWpna2bJ9KNuHFrgJwGaY8LqXvxMCZwXOzEeOUh5jyhMus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuzmeHTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4634DC4CED2;
+	Mon,  6 Jan 2025 15:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178596;
-	bh=EZmzJEUQSfE2cnWht/1CE133B4QuWK88YcfFS2XQHTg=;
+	s=korg; t=1736178126;
+	bh=pMg1fGS7f4UH7lJn/bRBHz4JABjaTkbmV+Zxf26TcPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+vPAa1foLsnm2mX+DmZj1AsNhrGPvWwNc0Q5pP32u1YfYJWkumGsJEPxTjl2WlR5
-	 mUYkvZ85jmMRLT/IwqBUhKTA891HvJ5aUtrAmH4O8Dd2OfOjCXynLP3gG4xextvZtL
-	 Fnf/gnt36Ck41SlXLpRR6Ixu/qgR0JG1bAqWo/Eg=
+	b=WuzmeHTf4svypjdJmBBqdzIYMEuaBDQ4EZP7cGFQYos3YAJoLJwS+cO7zcy+Cojdq
+	 zJKqko3enUKWdWRwLHQCbMMpsGC3ZTMshW5zyXxacxh7uCOcP6hfB4RDQ9EPNdXc69
+	 SUMwTyY1zljlLMIM3gZbSH72IBUjq6/WxdQ5bipI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mank Wang <mank.wang@netprisma.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 030/168] USB: serial: option: add Netprisma LCUK54 modules for WWAN Ready
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 014/138] net/smc: check return value of sock_recvmsg when draining clc data
 Date: Mon,  6 Jan 2025 16:15:38 +0100
-Message-ID: <20250106151139.601186465@linuxfoundation.org>
+Message-ID: <20250106151133.758201499@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mank Wang <mank.wang@netprisma.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-commit aa954ae08262bb5cd6ab18dd56a0b58c1315db8b upstream.
+[ Upstream commit c5b8ee5022a19464783058dc6042e8eefa34e8cd ]
 
-LCUK54-WRD's pid/vid
-0x3731/0x010a
-0x3731/0x010c
+When receiving clc msg, the field length in smc_clc_msg_hdr indicates the
+length of msg should be received from network and the value should not be
+fully trusted as it is from the network. Once the value of length exceeds
+the value of buflen in function smc_clc_wait_msg it may run into deadloop
+when trying to drain the remaining data exceeding buflen.
 
-LCUK54-WWD's pid/vid
-0x3731/0x010b
-0x3731/0x010d
+This patch checks the return value of sock_recvmsg when draining data in
+case of deadloop in draining.
 
-Above products use the exact same interface layout and option
-driver:
-MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
-
-T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  5 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=3731 ProdID=0101 Rev= 5.04
-S:  Manufacturer=NetPrisma
-S:  Product=LCUK54-WRD
-S:  SerialNumber=feeba631
-C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Mank Wang <mank.wang@netprisma.com>
-[ johan: use lower case hex notation ]
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fb4f79264c0f ("net/smc: tolerate future SMCD versions")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/smc/smc_clc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2377,6 +2377,18 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Golbal EDU */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for WWAN Ready */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for WWAN Ready */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for WWAN Ready */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for WWAN Ready */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index 32cbdc321aec..2aa69e29fa1d 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -427,6 +427,11 @@ int smc_clc_wait_msg(struct smc_sock *smc, void *buf, int buflen,
+ 						SMC_CLC_RECV_BUF_LEN : datlen;
+ 		iov_iter_kvec(&msg.msg_iter, READ, &vec, 1, recvlen);
+ 		len = sock_recvmsg(smc->clcsock, &msg, krflags);
++		if (len < recvlen) {
++			smc->sk.sk_err = EPROTO;
++			reason_code = -EPROTO;
++			goto out;
++		}
+ 		datlen -= len;
+ 	}
+ 	if (clcm->type == SMC_CLC_DECLINE) {
+-- 
+2.39.5
+
 
 
 
