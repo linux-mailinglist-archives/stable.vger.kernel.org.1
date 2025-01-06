@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-107534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CCCA02C62
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0EBCA02BA8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45A8C16565C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3403D164FC7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33576156237;
-	Mon,  6 Jan 2025 15:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BFD1DDC0F;
+	Mon,  6 Jan 2025 15:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0a62vSsW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PINvQZlO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0112145A03;
-	Mon,  6 Jan 2025 15:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089451DACBB;
+	Mon,  6 Jan 2025 15:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178762; cv=none; b=nlfdxaYdWhkhc8asQp9+XVHWD4ywhuDITgojjT2zwaNdtlOHICVyR90dPTnJSHL4Y1mLVEiPaeaAL0Cu1cShha8Nm0FWQGXsAv9Ln/fVTHMbqP0RY/FacNnbRnzItEZSIyLgq36ICFLzwY/a84zGyPCysyfHcDb/bae7rAgqzMg=
+	t=1736178286; cv=none; b=dfHBkv3UpI9KwDuP/z66WzUgNYKi/4SRi2CkXgGC6njzKJ/yUcaMjZ2nfUXx6RVYDi7acwVo82UecwDM/LNiaGDH/U5JfP5Q2zN0ohp8f0GiDhnkvnuLEho0MqnALMLaCuS4J58HmjH9bXA8W9qUnBGAPf4JuIDrf3rD0UoXqIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178762; c=relaxed/simple;
-	bh=TiXxgUaFckb5egeaqCd8OizG2jG+JQGWUxXb6RUpqpU=;
+	s=arc-20240116; t=1736178286; c=relaxed/simple;
+	bh=J5NLRhKGSoDXhIY0vlnudwQwo04NQPhT/bc/T2jlSNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCpRlr1B4FwzRCNFhGDrmq8TsCAtA7JRrYijPQkx4zeL+mSRSw5YjtyQ6ImhmRSREla26TJIqJ1WgZdA3LjUyrvp7MieUIDkJHbTuzB+YAmifa5OK0LplCEVwuZArJUf5m3U9QPHUol4IajiesFM2NxLR/kOAq6IknKjanQmkrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0a62vSsW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DEAC4CED2;
-	Mon,  6 Jan 2025 15:52:41 +0000 (UTC)
+	 MIME-Version; b=lcZGkuFb6pB3FlJO3GXZSmKVO8FcOIC4TsFjc5N9htMEn+hUTZdHQSDq0vxEEwVMk9paGJZo3ELomHXbSVlyskG52WnJznjNvCmVrhYswP40f6BR2QJNDCp5CgyAkIQgg6gqYLteLnccaZAbor3VkDd0KFyzu7ZHc/7jhoE+ODA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PINvQZlO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8601EC4CED2;
+	Mon,  6 Jan 2025 15:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178761;
-	bh=TiXxgUaFckb5egeaqCd8OizG2jG+JQGWUxXb6RUpqpU=;
+	s=korg; t=1736178285;
+	bh=J5NLRhKGSoDXhIY0vlnudwQwo04NQPhT/bc/T2jlSNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0a62vSsW2NWetnXlMg7CcFvjatutdjEelsPN4jNdtmhg7Lw+fQCML5znp4aOIkmWN
-	 oqvDxtjY/T0wgfsIWiNZjDPtU77f64sJCNZIALUwt/g1xaD84+ojgMlnYFt/bI5eva
-	 NJcCluszWMWEPP5LCM3VlPykaPdOEdiE8Phg+T6E=
+	b=PINvQZlO4GByqFEolFkNdDGt537TW2m00cbBlI1TMmTO+st6ZXtn6zECNe9sSQrjx
+	 0XYPfbwnuuF/LvWaT3ogm1yFcLTCRvuY7K0tjo5oa5HHMwU6wUOC3Hk2xmEPSZtw/F
+	 BIU8SUi0vxGiKSoUFzGITs3wJXdtY6hs66OWC5kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@unisoc.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	WangYuli <wangyuli@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/168] virtio-blk: dont keep queue frozen during system suspend
+Subject: [PATCH 5.10 068/138] MIPS: Probe toolchain support of -msym32
 Date: Mon,  6 Jan 2025 16:16:32 +0100
-Message-ID: <20250106151141.636375230@linuxfoundation.org>
+Message-ID: <20250106151135.808579284@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
+[ Upstream commit 18ca63a2e23c5e170d2d7552b64b1f5ad019cd9b ]
 
-Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
-deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
-PM callbacks. And the motivation is to drain inflight IOs before suspending.
+msym32 is not supported by LLVM toolchain.
+Workaround by probe toolchain support of msym32 for KBUILD_SYM32
+feature.
 
-block layer's queue freeze looks very handy, but it is also easy to cause
-deadlock, such as, any attempt to call into bio_queue_enter() may run into
-deadlock if the queue is frozen in current context. There are all kinds
-of ->suspend() called in suspend context, so keeping queue frozen in the
-whole suspend context isn't one good idea. And Marek reported lockdep
-warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
-
-[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
-
-Given the motivation is to drain in-flight IOs, it can be done by calling
-freeze & unfreeze, meantime restore to previous behavior by keeping queue
-quiesced during suspend.
-
-Cc: Yi Sun <yi.sun@unisoc.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: virtualization@lists.linux.dev
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1544
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/mips/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 7f73e7447ecb..c1087dfa332e 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -988,9 +988,12 @@ static void virtblk_remove(struct virtio_device *vdev)
- static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
-+	struct request_queue *q = vblk->disk->queue;
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index acab8018ab44..289fb4b88d0e 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -272,7 +272,7 @@ drivers-$(CONFIG_PCI)		+= arch/mips/pci/
+ ifdef CONFIG_64BIT
+   ifndef KBUILD_SYM32
+     ifeq ($(shell expr $(load-y) \< 0xffffffff80000000), 0)
+-      KBUILD_SYM32 = y
++      KBUILD_SYM32 = $(call cc-option-yn, -msym32)
+     endif
+   endif
  
- 	/* Ensure no requests in virtqueues before deleting vqs. */
--	blk_mq_freeze_queue(vblk->disk->queue);
-+	blk_mq_freeze_queue(q);
-+	blk_mq_quiesce_queue_nowait(q);
-+	blk_mq_unfreeze_queue(q);
- 
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
-@@ -1014,8 +1017,8 @@ static int virtblk_restore(struct virtio_device *vdev)
- 		return ret;
- 
- 	virtio_device_ready(vdev);
-+	blk_mq_unquiesce_queue(vblk->disk->queue);
- 
--	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
 -- 
 2.39.5
 
