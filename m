@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-107056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CA1A02A12
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D63DA02A7E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAC4C3A5F31
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 252A41883269
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60B2166F1B;
-	Mon,  6 Jan 2025 15:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A34146D6B;
+	Mon,  6 Jan 2025 15:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mu2F94XJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mT8sY+Iz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8315318A6C1;
-	Mon,  6 Jan 2025 15:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963D57405A;
+	Mon,  6 Jan 2025 15:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177320; cv=none; b=MMRgK+aPBnpBhKjmXMUoNaNi/dJiXufv0LUnG7YjXzGHbCE4ATSDhlcmRxE4Vme97B7f9oDy3NXBrGJFsbhGXk1gtKLyeZNZEnpNyyPOc1h/1g61maL8bNVrDAzxSTFSro6aeG6SRFuydB5sFMjxpOJXR83wyQsRpuF01L6tYj0=
+	t=1736177650; cv=none; b=kI+45LTjNsAUAPJE+hHpJAwmd0b0uT5VR0x3i2WohzlprZtIil5IZ1ANqD4tQadEjTTQoKujKL9q0Ft0FZ4O3pbZbU7joKr5d64c9kVK/2obBIkgOWeh6XAOCCz6+LDHYE/DOWpcoZ5010rKgkQ6+BrSpCQ+hc3wxzM0s3VAncY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177320; c=relaxed/simple;
-	bh=glKbAY8kJrQdbHT9uJyH+vhDRwB2yqgC9VzvBcMKo58=;
+	s=arc-20240116; t=1736177650; c=relaxed/simple;
+	bh=BnC+zLrcqMGpTxHf261I67ULaTYMtQgfDbJ15BQtWcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drBDng5dJ1JnFpQWKTLyDyJStWlUrxrQvdsos9ESZFWsDmw7wsT3HRSLdUZyYDrsNkL5OE4ETmM0L/Sm5B1JX2Go84f5ZMx5gRmMdx4I3U7Fi1j/wwKVUs3iKjxbWActi2qg6dJkw9+19XLEKC3j1X71RqDanG51NCQkDnUUKbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mu2F94XJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D72C4CED2;
-	Mon,  6 Jan 2025 15:28:39 +0000 (UTC)
+	 MIME-Version; b=GsbSZ/PDIEdjdr4FZAWgmGrI+OCv1JRPG9A0j9DezsPbBqYRZYWlId92DtEsEgWtC6wulW6Bhe32Px0BrS6VBcyAiFjPfna6oFi7A5TZ+iv4E1h/80CrTVCayk/GT5nOQFIRcVvcNRcRG3guAkkMp0FW6wVMQyt1nQLmiFX+kBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mT8sY+Iz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83A6C4CED2;
+	Mon,  6 Jan 2025 15:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177320;
-	bh=glKbAY8kJrQdbHT9uJyH+vhDRwB2yqgC9VzvBcMKo58=;
+	s=korg; t=1736177650;
+	bh=BnC+zLrcqMGpTxHf261I67ULaTYMtQgfDbJ15BQtWcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mu2F94XJ6DDHlslpQ5wHv4QgSMTKtWnBck/KZTbUV11nsBxGhZe4l5D0A6GF/O1/E
-	 LnYx4idRvulrI+3FbH58W7D7vMVD9VowiMsd38FEo/9CT/deGKqeXvBZMaJd0ByeIY
-	 nnKaKL4+8J1upLMCK6f2mVr3tLep/0QRyk39xcS4=
+	b=mT8sY+IzwIm/rYhOmXfjcqjT2B9DAQ27ddpKQuEyCr4X59Igk72fCHHppNUQopGBe
+	 S35pIgahXjFcf1ss7wKMayBPA/XORJgWnf1xhSf0xlOgF6i112hA6F5lHJoF+7hT87
+	 H/fVpoevUDqSklcAYYQoShpXdAwzS7gK5ibCWAKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Lee Duncan <lduncan@suse.com>,
-	Martin Wilck <mwilck@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/222] scsi: mpi3mr: Use ida to manage mrioc ID
+Subject: [PATCH 6.12 011/156] btrfs: use bio_is_zone_append() in the completion handler
 Date: Mon,  6 Jan 2025 16:14:57 +0100
-Message-ID: <20250106151154.117096194@linuxfoundation.org>
+Message-ID: <20250106151142.169739137@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 29b75184f721b16c51ef6e67eec0e40ed88381c7 ]
+[ Upstream commit 6c3864e055486fadb5b97793b57688082e14b43b ]
 
-To ensure that the same ID is not obtained during concurrent execution of
-the probe, an ida is used to manage the mrioc's ID.
+Otherwise it won't catch bios turned into regular writes by the block
+level zone write plugging. The additional test it adds is for emulated
+zone append.
 
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20231229040331.52518-1-kanie@linux.alibaba.com
-Reviewed-by: Lee Duncan <lduncan@suse.com>
-Reviewed-by: Martin Wilck <mwilck@suse.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 0d32014f1e3e ("scsi: mpi3mr: Start controller indexing from 0")
+Fixes: 9b1ce7f0c6f8 ("block: Implement zone append emulation")
+CC: stable@vger.kernel.org # 6.12
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_os.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ fs/btrfs/bio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 7f3261923469..3f86f1d0a9be 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -8,11 +8,12 @@
-  */
+diff --git a/fs/btrfs/bio.c b/fs/btrfs/bio.c
+index 3d2376caedfa..31f96c2d8691 100644
+--- a/fs/btrfs/bio.c
++++ b/fs/btrfs/bio.c
+@@ -355,7 +355,7 @@ static void btrfs_simple_end_io(struct bio *bio)
+ 		INIT_WORK(&bbio->end_io_work, btrfs_end_bio_work);
+ 		queue_work(btrfs_end_io_wq(fs_info, bio), &bbio->end_io_work);
+ 	} else {
+-		if (bio_op(bio) == REQ_OP_ZONE_APPEND && !bio->bi_status)
++		if (bio_is_zone_append(bio) && !bio->bi_status)
+ 			btrfs_record_physical_zoned(bbio);
+ 		btrfs_bio_end_io(bbio, bbio->bio.bi_status);
+ 	}
+@@ -398,7 +398,7 @@ static void btrfs_orig_write_end_io(struct bio *bio)
+ 	else
+ 		bio->bi_status = BLK_STS_OK;
  
- #include "mpi3mr.h"
-+#include <linux/idr.h>
+-	if (bio_op(bio) == REQ_OP_ZONE_APPEND && !bio->bi_status)
++	if (bio_is_zone_append(bio) && !bio->bi_status)
+ 		stripe->physical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
  
- /* global driver scop variables */
- LIST_HEAD(mrioc_list);
- DEFINE_SPINLOCK(mrioc_list_lock);
--static int mrioc_ids;
-+static DEFINE_IDA(mrioc_ida);
- static int warn_non_secure_ctlr;
- atomic64_t event_counter;
- 
-@@ -5065,7 +5066,10 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	btrfs_bio_end_io(bbio, bbio->bio.bi_status);
+@@ -412,7 +412,7 @@ static void btrfs_clone_write_end_io(struct bio *bio)
+ 	if (bio->bi_status) {
+ 		atomic_inc(&stripe->bioc->error);
+ 		btrfs_log_dev_io_error(bio, stripe->dev);
+-	} else if (bio_op(bio) == REQ_OP_ZONE_APPEND) {
++	} else if (bio_is_zone_append(bio)) {
+ 		stripe->physical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
  	}
  
- 	mrioc = shost_priv(shost);
--	mrioc->id = mrioc_ids++;
-+	retval = ida_alloc_range(&mrioc_ida, 1, U8_MAX, GFP_KERNEL);
-+	if (retval < 0)
-+		goto id_alloc_failed;
-+	mrioc->id = (u8)retval;
- 	sprintf(mrioc->driver_name, "%s", MPI3MR_DRIVER_NAME);
- 	sprintf(mrioc->name, "%s%d", mrioc->driver_name, mrioc->id);
- 	INIT_LIST_HEAD(&mrioc->list);
-@@ -5215,9 +5219,11 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- resource_alloc_failed:
- 	destroy_workqueue(mrioc->fwevt_worker_thread);
- fwevtthread_failed:
-+	ida_free(&mrioc_ida, mrioc->id);
- 	spin_lock(&mrioc_list_lock);
- 	list_del(&mrioc->list);
- 	spin_unlock(&mrioc_list_lock);
-+id_alloc_failed:
- 	scsi_host_put(shost);
- shost_failed:
- 	return retval;
-@@ -5303,6 +5309,7 @@ static void mpi3mr_remove(struct pci_dev *pdev)
- 		mrioc->sas_hba.num_phys = 0;
- 	}
- 
-+	ida_free(&mrioc_ida, mrioc->id);
- 	spin_lock(&mrioc_list_lock);
- 	list_del(&mrioc->list);
- 	spin_unlock(&mrioc_list_lock);
-@@ -5518,6 +5525,7 @@ static void __exit mpi3mr_exit(void)
- 			   &driver_attr_event_counter);
- 	pci_unregister_driver(&mpi3mr_pci_driver);
- 	sas_release_transport(mpi3mr_transport_template);
-+	ida_destroy(&mrioc_ida);
- }
- 
- module_init(mpi3mr_init);
 -- 
 2.39.5
 
