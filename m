@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-107545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06F0A02C70
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6D4A02948
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95AA9166E0F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C1B71642C4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E68D146D6B;
-	Mon,  6 Jan 2025 15:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB901146D40;
+	Mon,  6 Jan 2025 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrdiWpE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpdimR/p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB8078F2B;
-	Mon,  6 Jan 2025 15:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E1B14900B;
+	Mon,  6 Jan 2025 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178794; cv=none; b=jbBk0ETmX6657ufQ+TAruYaGquDuFECnPYjnSRBTRX03xjEw2oFO46hraDJTnjF6cuxHTD32qDXgnb+GSDxbtcRqcnTl8yoTQH3yPexxFPFji2lnl+w8yQ+s133MurSgfNqsS+nBRTAPdwcCL7waLaSq/GPuV+YVK8DPHXTFuZs=
+	t=1736176908; cv=none; b=pHqHdXkejDyy5Q7lu88KVCbiGvz325T3SdYKWAPb27bL3AlTqOproqKBp14wz37ADyIZupfL4kg8VSvRf7j5fP+tR+NALUoBSPQRhV+3Nfm5zOmOX7Dr/kpaKtVZZ0Liis+g6YkkqIs7QRWt6T3kqYK250FuWRlniyfrRCjUGt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178794; c=relaxed/simple;
-	bh=OEtd23vVEDGMGnGe5nj95wHZqwoB0EQALp/Y6clt3io=;
+	s=arc-20240116; t=1736176908; c=relaxed/simple;
+	bh=OPpt48QnJNAFASUL122AL3UBvkkjFQBlQT/sYymk9Mw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLJN8N7d4Qr5eUaBuS5BKRtn0VFTneMOVPcMfU83udhufpkDbS3+l6oBjbIuOI8x0vBM48aJPhUsstLqYu5dYCL/2j7rJyH6MH4+STLWF12YKX041+rk9lUv6wCG0qU3uc8g/FSlLBz46okIVT2VjAFAfy/65WZilpevjL476kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrdiWpE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF162C4CED2;
-	Mon,  6 Jan 2025 15:53:13 +0000 (UTC)
+	 MIME-Version; b=rJFRNIU3q0nc7E9A+aziMO8EJzT/6C4ZHoQwThaXBSoXxFs1NWIyNA0mJ5mXdf5UnvH3EYej6n9oislwEvZMQ5hHUPWRIH+NKDMbotTdF27NioNJW88mI6no30lnbttN6tjOEoCW34BPtqN+h5Hr7nm+qN8hYqwyESOP4VCz5kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpdimR/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6821C4CED2;
+	Mon,  6 Jan 2025 15:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178794;
-	bh=OEtd23vVEDGMGnGe5nj95wHZqwoB0EQALp/Y6clt3io=;
+	s=korg; t=1736176908;
+	bh=OPpt48QnJNAFASUL122AL3UBvkkjFQBlQT/sYymk9Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XrdiWpE7w0wlQkiUhTdcdccdMS3o16c0ZFJR1xkpv8Sb7s8eUViQiTri4QXTc7MnQ
-	 tL1MSykDhzsFnGmQOvdO6TOaZdZVTD4UYw3IwI/ogTAWR/jWPGwmKrr7Z6rzEvpDrE
-	 k1gDUul7gKyw/VFukxgBGKadOE4xD7LYVwl/hP98=
+	b=MpdimR/p+Q3mXbScBGg+lZ0RIzodumTQ6EdMoZA5ZGVclvhX4Omu/HE8RSRQNRT9D
+	 GbBmUXAcOfeOSveQH769fG1YqNqh4fWOkLXnBV2Ecwg2hPHnlFpFETQsA0GyT6BThb
+	 P1C5yo17oyQtzimF2gAcVZmTj/CMTf/7hcKp0fJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/168] drm/dp_mst: Verify request type in the corresponding down message reply
+	Arnd Bergmann <arnd@arndb.de>,
+	Marco Elver <elver@google.com>,
+	Aleksandr Nogikh <nogikh@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 70/81] kcov: mark in_softirq_really() as __always_inline
 Date: Mon,  6 Jan 2025 16:16:42 +0100
-Message-ID: <20250106151142.014171922@linuxfoundation.org>
+Message-ID: <20250106151132.072897008@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +67,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4d49e77a973d3b5d1881663c3f122906a0702940 ]
+commit cb0ca08b326aa03f87fe94bb91872ce8d2ef1ed8 upstream.
 
-After receiving the response for an MST down request message, the
-response should be accepted/parsed only if the response type matches
-that of the request. Ensure this by checking if the request type code
-stored both in the request and the reply match, dropping the reply in
-case of a mismatch.
+If gcc decides not to inline in_softirq_really(), objtool warns about a
+function call with UACCESS enabled:
 
-This fixes the topology detection for an MST hub, as described in the
-Closes link below, where the hub sends an incorrect reply message after
-a CLEAR_PAYLOAD_TABLE -> LINK_ADDRESS down request message sequence.
+kernel/kcov.o: warning: objtool: __sanitizer_cov_trace_pc+0x1e: call to in_softirq_really() with UACCESS enabled
+kernel/kcov.o: warning: objtool: check_kcov_mode+0x11: call to in_softirq_really() with UACCESS enabled
 
-Cc: Lyude Paul <lyude@redhat.com>
+Mark this as __always_inline to avoid the problem.
+
+Link: https://lkml.kernel.org/r/20241217071814.2261620-1-arnd@kernel.org
+Fixes: 7d4df2dad312 ("kcov: properly check for softirq context")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Aleksandr Nogikh <nogikh@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: <stable@vger.kernel.org>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12804
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-3-imre.deak@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_dp_mst_topology.c | 31 +++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ kernel/kcov.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_dp_mst_topology.c b/drivers/gpu/drm/drm_dp_mst_topology.c
-index f72b4ff169a8..86e1a61b6b6d 100644
---- a/drivers/gpu/drm/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/drm_dp_mst_topology.c
-@@ -3993,6 +3993,34 @@ drm_dp_get_one_sb_msg(struct drm_dp_mst_topology_mgr *mgr, bool up,
- 	return true;
- }
- 
-+static int get_msg_request_type(u8 data)
-+{
-+	return data & 0x7f;
-+}
-+
-+static bool verify_rx_request_type(struct drm_dp_mst_topology_mgr *mgr,
-+				   const struct drm_dp_sideband_msg_tx *txmsg,
-+				   const struct drm_dp_sideband_msg_rx *rxmsg)
-+{
-+	const struct drm_dp_sideband_msg_hdr *hdr = &rxmsg->initial_hdr;
-+	const struct drm_dp_mst_branch *mstb = txmsg->dst;
-+	int tx_req_type = get_msg_request_type(txmsg->msg[0]);
-+	int rx_req_type = get_msg_request_type(rxmsg->msg[0]);
-+	char rad_str[64];
-+
-+	if (tx_req_type == rx_req_type)
-+		return true;
-+
-+	drm_dp_mst_rad_to_str(mstb->rad, mstb->lct, rad_str, sizeof(rad_str));
-+	drm_dbg_kms(mgr->dev,
-+		    "Got unexpected MST reply, mstb: %p seqno: %d lct: %d rad: %s rx_req_type: %s (%02x) != tx_req_type: %s (%02x)\n",
-+		    mstb, hdr->seqno, mstb->lct, rad_str,
-+		    drm_dp_mst_req_type_str(rx_req_type), rx_req_type,
-+		    drm_dp_mst_req_type_str(tx_req_type), tx_req_type);
-+
-+	return false;
-+}
-+
- static int drm_dp_mst_handle_down_rep(struct drm_dp_mst_topology_mgr *mgr)
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -165,7 +165,7 @@ static void kcov_remote_area_put(struct
+  * Unlike in_serving_softirq(), this function returns false when called during
+  * a hardirq or an NMI that happened in the softirq context.
+  */
+-static inline bool in_softirq_really(void)
++static __always_inline bool in_softirq_really(void)
  {
- 	struct drm_dp_sideband_msg_tx *txmsg;
-@@ -4022,6 +4050,9 @@ static int drm_dp_mst_handle_down_rep(struct drm_dp_mst_topology_mgr *mgr)
- 		goto out_clear_reply;
- 	}
- 
-+	if (!verify_rx_request_type(mgr, txmsg, msg))
-+		goto out_clear_reply;
-+
- 	drm_dp_sideband_parse_reply(mgr, msg, &txmsg->reply);
- 
- 	if (txmsg->reply.reply_type == DP_SIDEBAND_REPLY_NAK) {
--- 
-2.39.5
-
+ 	return in_serving_softirq() && !in_hardirq() && !in_nmi();
+ }
 
 
 
