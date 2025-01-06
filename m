@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A81A029F6
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F565A02C0B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 608D73A6762
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 742FA3A64B8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7587B15575F;
-	Mon,  6 Jan 2025 15:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA736088F;
+	Mon,  6 Jan 2025 15:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ormt3eG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfKvs5qF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31766146D40;
-	Mon,  6 Jan 2025 15:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1727A13DB9F;
+	Mon,  6 Jan 2025 15:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177259; cv=none; b=OaBDxw399yG36WV087GNfbBOsQskCq5en+n7vFu/BWP9YrTEz8ADHW6SQ5qdjisU/HfXHR1G4VlGRPr+O6kZDh2K2osffMs2E7RUvJ/rGC8Cq3fyDCY4CLkdwEUfjNjoy9LkrVf0AxRWBTm+ubKmjfj7jZ3K/bdDY2OmO5c47rY=
+	t=1736178526; cv=none; b=m+qqRsO/1betLjWqdYpDOfKtN8iA3BULqAMa9R2VJizoTP/sh/wx/4OPjOyILFINTq1c1s/YPkSurePfGbU/yjG1DemHFkWeXAgYZ7rMPvywgkviNZZka3UiscXVvNsPEHdF4ek1f6YtRIAHj3UUojvb9bpPnjPYiqYxSgTZWD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177259; c=relaxed/simple;
-	bh=pCVJuX2u6YyFZcngH4cil7LheQ0kS0pb5HJR081cMqg=;
+	s=arc-20240116; t=1736178526; c=relaxed/simple;
+	bh=qfJM4ApOzZ9GbacWIwp+hjtTkUC5rxlEudILxDZIbNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqZThrDqMoTlvkF0b6Pgk50Eq1Zm/IPByx9dsjJ9THf7C2Gx6F8EjUwa91h++U3e8wWXIkQGr3QA+9wlJ+zmfClmBS8cUR89vqQ4osYnsdoAVII3yZK56p85oYLkIn/d3us7iUnGER6ccFud7Yu/zy7iYsRWoXCpYFQazrc5hYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ormt3eG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C66C4CED2;
-	Mon,  6 Jan 2025 15:27:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ovz9C7OY57R6aemVCrf3qlN7dAJMakVUmHJ5GPDMzOyAhTyCCcJTzz3w+x3NdkDtRtJZhYfkqN9vD+3kftixmbYigfoMvlvnQV9b9Ipkn6rD/MmFPt5gWelLitb0HTFi0lbBeN8Njjye9ugcF8tRHnXemkQNCBIggo0AIHI/aPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfKvs5qF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6C8C4CED2;
+	Mon,  6 Jan 2025 15:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177259;
-	bh=pCVJuX2u6YyFZcngH4cil7LheQ0kS0pb5HJR081cMqg=;
+	s=korg; t=1736178525;
+	bh=qfJM4ApOzZ9GbacWIwp+hjtTkUC5rxlEudILxDZIbNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ormt3eG3Y6xzxSDVHa64FVO/M79UVgUl73Dr8FUAHqO1iDpyrovxZ0dP/jHZy2rEV
-	 0uTSVk29Gn7CUWyq+RRyq/06+pMvjPVRcQtM8NZQHE4TlSntTHPUq4gURU13b3XFG2
-	 uIL606DqxM5AQBkyKUqQMWVW3v46bViILG9T3GNw=
+	b=MfKvs5qFwK51m1q9r5o4ioreXHeGNd36LXnGZk2QtsUihyBL5uNbpZV2Nj9x3zuSW
+	 9hnPQNBYJs47dS0Yu+H0J+40X0rxD0ah0zFVgmmqlOsgwzD5msW1JiR+sJXmVuc6RD
+	 J9sUN7S4Bu+apS+c03S3wCA0tylqmDbRq6391goA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/222] crypto: ecc - Prevent ecc_digits_from_bytes from reading too many bytes
+	Lion Ackermann <nnamrec@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Artem Metla <ametla@google.com>
+Subject: [PATCH 5.15 001/168] net: sched: fix ordering of qlen adjustment
 Date: Mon,  6 Jan 2025 16:15:09 +0100
-Message-ID: <20250106151154.572580943@linuxfoundation.org>
+Message-ID: <20250106151138.511853520@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-[ Upstream commit c6ab5c915da460c0397960af3c308386c3f3247b ]
+commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 upstream.
 
-Prevent ecc_digits_from_bytes from reading too many bytes from the input
-byte array in case an insufficient number of bytes is provided to fill the
-output digit array of ndigits. Therefore, initialize the most significant
-digits with 0 to avoid trying to read too many bytes later on. Convert the
-function into a regular function since it is getting too big for an inline
-function.
+Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
+_before_ a call to said function because otherwise it may fail to notify
+parent qdiscs when the child is about to become empty.
 
-If too many bytes are provided on the input byte array the extra bytes
-are ignored since the input variable 'ndigits' limits the number of digits
-that will be filled.
-
-Fixes: d67c96fb97b5 ("crypto: ecdsa - Convert byte arrays with key coordinates to digits")
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Artem Metla <ametla@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/ecc.c                  | 22 ++++++++++++++++++++++
- include/crypto/internal/ecc.h | 15 ++-------------
- 2 files changed, 24 insertions(+), 13 deletions(-)
+ net/sched/sch_cake.c  |    2 +-
+ net/sched/sch_choke.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/ecc.c b/crypto/ecc.c
-index f53fb4d6af99..21504280aca2 100644
---- a/crypto/ecc.c
-+++ b/crypto/ecc.c
-@@ -66,6 +66,28 @@ const struct ecc_curve *ecc_get_curve(unsigned int curve_id)
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1541,7 +1541,6 @@ static unsigned int cake_drop(struct Qdi
+ 	b->backlogs[idx]    -= len;
+ 	b->tin_backlog      -= len;
+ 	sch->qstats.backlog -= len;
+-	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	flow->dropped++;
+ 	b->tin_dropped++;
+@@ -1552,6 +1551,7 @@ static unsigned int cake_drop(struct Qdi
+ 
+ 	__qdisc_drop(skb, to_free);
+ 	sch->q.qlen--;
++	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	cake_heapify(q, 0);
+ 
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -124,10 +124,10 @@ static void choke_drop_by_idx(struct Qdi
+ 	if (idx == q->tail)
+ 		choke_zap_tail_holes(q);
+ 
++	--sch->q.qlen;
+ 	qdisc_qstats_backlog_dec(sch, skb);
+ 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
+ 	qdisc_drop(skb, sch, to_free);
+-	--sch->q.qlen;
  }
- EXPORT_SYMBOL(ecc_get_curve);
  
-+void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
-+			   u64 *out, unsigned int ndigits)
-+{
-+	int diff = ndigits - DIV_ROUND_UP(nbytes, sizeof(u64));
-+	unsigned int o = nbytes & 7;
-+	__be64 msd = 0;
-+
-+	/* diff > 0: not enough input bytes: set most significant digits to 0 */
-+	if (diff > 0) {
-+		ndigits -= diff;
-+		memset(&out[ndigits - 1], 0, diff * sizeof(u64));
-+	}
-+
-+	if (o) {
-+		memcpy((u8 *)&msd + sizeof(msd) - o, in, o);
-+		out[--ndigits] = be64_to_cpu(msd);
-+		in += o;
-+	}
-+	ecc_swap_digits(in, out, ndigits);
-+}
-+EXPORT_SYMBOL(ecc_digits_from_bytes);
-+
- static u64 *ecc_alloc_digits_space(unsigned int ndigits)
- {
- 	size_t len = ndigits * sizeof(u64);
-diff --git a/include/crypto/internal/ecc.h b/include/crypto/internal/ecc.h
-index ab722a8986b7..c0b8be63cbde 100644
---- a/include/crypto/internal/ecc.h
-+++ b/include/crypto/internal/ecc.h
-@@ -63,19 +63,8 @@ static inline void ecc_swap_digits(const void *in, u64 *out, unsigned int ndigit
-  * @out       Output digits array
-  * @ndigits:  Number of digits to create from byte array
-  */
--static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
--					 u64 *out, unsigned int ndigits)
--{
--	unsigned int o = nbytes & 7;
--	__be64 msd = 0;
--
--	if (o) {
--		memcpy((u8 *)&msd + sizeof(msd) - o, in, o);
--		out[--ndigits] = be64_to_cpu(msd);
--		in += o;
--	}
--	ecc_swap_digits(in, out, ndigits);
--}
-+void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
-+			   u64 *out, unsigned int ndigits);
- 
- /**
-  * ecc_is_key_valid() - Validate a given ECDH private key
--- 
-2.39.5
-
+ struct choke_skb_cb {
 
 
 
