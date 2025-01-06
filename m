@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-107725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2D9A02DF6
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:42:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10577A02DFA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B1423A221A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02AFB162368
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0881DE89A;
-	Mon,  6 Jan 2025 16:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8911DED5C;
+	Mon,  6 Jan 2025 16:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2v0K/M8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJ4+DsJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B45417799F;
-	Mon,  6 Jan 2025 16:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D6E1DED49;
+	Mon,  6 Jan 2025 16:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736181707; cv=none; b=qjpCIRkxh2wm/MX8noXnGt7PY7HZop/AhQH3WvT1EpAdDE9Yg6hPJicefrmf/Fr3O7+pUVspaEamNwqMTA6vH9wUqaNwAHNFNT+A7GQKkNpKgUl/dV3vG+JRd3seVc9A/xaf2dkg3xuCBf1tVaroPu6zioFAZfi1RB51iP4z4II=
+	t=1736181709; cv=none; b=ESZvp6u1qc32cu0CuEVzxJC4WcUR2M7XAGQhYutpgBMPfF5A+7bOTF2nkOeoQ48preVtMpZ0GRkt0jnfCp5NwBQ6cK68hi23p9lAlYf1Z2IPx4T3jd69DRvqBCdG7SD8M9A7MvZ07YbWm6Ub327BQTy0x7XHj3QAY+BHY1dWs8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736181707; c=relaxed/simple;
-	bh=s/GI9bVnn4LQqCwM0MxAhz73zr7JiTx7pgwq91tohf0=;
+	s=arc-20240116; t=1736181709; c=relaxed/simple;
+	bh=pqZ9b/s4QO1eG2Yb1XLdjRCZrTPGoo0GVnFZ/BJoM9Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ElzUVPzRdU4kdU2ETYwOZqMTnb+84tkI6LYF0J96QqC/BqgzWC7NrsbPy/Nf63FeSAaibQjD9x/uhCujkcjoKvwvIb9pJOieuchUqJrx/AyDWtBHAJI6GsT8Kts9ia8lB3kLJFtUXI3MpyW6dbVqi6t/yJcEYc27EFn8a2mSh4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2v0K/M8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CA2C4CED2;
-	Mon,  6 Jan 2025 16:41:45 +0000 (UTC)
+	 MIME-Version; b=dxKDo9RKQNCBr5ch6MtXAnLz24Dm3K/zUKDmhYAL0qWAoGKlW6ikGcpMO1wTCUlinlzM9CQF0DLEHIdI9liKznZCbJkHmlmKfClV20oUI5s4pESCxLacKdRSHMF8qX6rbcguOf9cpbNKpgkS/IqcCVE1np4QVilr4lYy+cLTtpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AJ4+DsJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A3AC4CED2;
+	Mon,  6 Jan 2025 16:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736181706;
-	bh=s/GI9bVnn4LQqCwM0MxAhz73zr7JiTx7pgwq91tohf0=;
+	s=k20201202; t=1736181708;
+	bh=pqZ9b/s4QO1eG2Yb1XLdjRCZrTPGoo0GVnFZ/BJoM9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2v0K/M86O9a5OqmFwldcNAR2ctezIi7+i+NxyZb/g4KbmyJu7bb8i4fF5KcSMeEG
-	 biXr81YETbU2uJB/Rsx/tuYaB0oUdMBZdr8iu4Mkotc+pXHh78ihbMYjLFfmdiwkkI
-	 EZqDn/86mxQ5MnVYKLb7JVXuMOoo9OtDd/81sTDTtlQ/l5VhaA3F0etzNqz17y3Sr+
-	 bO5uC2SVZjnZEIEDL7CXMmzvvLz/A9N2nuwCNA9cqjdoN9eYlk16mccj7xO+v45W7A
-	 7PKDBRFUvNYwnVGYXT7SgpvGHa21S9cqxXwFluHEOEtlZodtMsHAkw1PWLe7AKD18n
-	 LNATPQlCFfgUQ==
+	b=AJ4+DsJfkVn6CQ1JQn6R4AsS4JaDJC1YBKJ6jzPPAXnQzn/MuiHqbuTKmhTIggbX0
+	 b2ZSn9hfDxAbbWQxz+S0RMhJiwGXqez/VKp5ftXUQgX4q2oOSiUzVQU63pGH2VpAKY
+	 RI8CLvFbARtXMaEokns39YLVN8zeNbQve1rKwDNWUTShS9zswVV0F42rsOaoIzFxpu
+	 yf1vls8FjDRRXZQ7P1U490JMoPROCgFKMvuud9y58TUuHlMhUtaaw7N60WY2t3XGrR
+	 YLjqJNSOGVyh6afp1+V/VIdN2QJOCxBhTgGYUEtiK3eLrpSEMTA5nW+7oEyL4bMXQv
+	 nbhM81LIMywPA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Vernet <void@manifault.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
+Cc: Hongguang Gao <hongguang.gao@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shuah@kernel.org,
-	brho@google.com,
-	haoluo@google.com,
-	vishalc@linux.ibm.com,
-	ihor.solodrai@pm.me,
-	linux-kselftest@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 2/8] scx: Fix maximal BPF selftest prog
-Date: Mon,  6 Jan 2025 11:41:02 -0500
-Message-Id: <20250106164138.1122164-2-sashal@kernel.org>
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 3/8] RDMA/bnxt_re: Fix to export port num to ib_query_qp
+Date: Mon,  6 Jan 2025 11:41:03 -0500
+Message-Id: <20250106164138.1122164-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250106164138.1122164-1-sashal@kernel.org>
 References: <20250106164138.1122164-1-sashal@kernel.org>
@@ -72,61 +68,79 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.8
 Content-Transfer-Encoding: 8bit
 
-From: David Vernet <void@manifault.com>
+From: Hongguang Gao <hongguang.gao@broadcom.com>
 
-[ Upstream commit b8f614207b0d5e4abd6df8d5cb3cc11f009d1d93 ]
+[ Upstream commit 34db8ec931b84d1426423f263b1927539e73b397 ]
 
-maximal.bpf.c is still dispatching to and consuming from SCX_DSQ_GLOBAL.
-Let's have it use its own DSQ to avoid any runtime errors.
+Current driver implementation doesn't populate the port_num
+field in query_qp. Adding the code to convert internal firmware
+port id to ibv defined port number and export it.
 
-Signed-off-by: David Vernet <void@manifault.com>
-Tested-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Hongguang Gao <hongguang.gao@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241211083931.968831-5-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/sched_ext/maximal.bpf.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 1 +
+ drivers/infiniband/hw/bnxt_re/ib_verbs.h | 4 ++++
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 1 +
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h | 1 +
+ 4 files changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/sched_ext/maximal.bpf.c b/tools/testing/selftests/sched_ext/maximal.bpf.c
-index 4c005fa71810..430f5e13bf55 100644
---- a/tools/testing/selftests/sched_ext/maximal.bpf.c
-+++ b/tools/testing/selftests/sched_ext/maximal.bpf.c
-@@ -12,6 +12,8 @@
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 160096792224..a814292c5a45 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2267,6 +2267,7 @@ int bnxt_re_query_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
+ 	qp_attr->retry_cnt = qplib_qp->retry_cnt;
+ 	qp_attr->rnr_retry = qplib_qp->rnr_retry;
+ 	qp_attr->min_rnr_timer = qplib_qp->min_rnr_timer;
++	qp_attr->port_num = __to_ib_port_num(qplib_qp->port_id);
+ 	qp_attr->rq_psn = qplib_qp->rq.psn;
+ 	qp_attr->max_rd_atomic = qplib_qp->max_rd_atomic;
+ 	qp_attr->sq_psn = qplib_qp->sq.psn;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.h b/drivers/infiniband/hw/bnxt_re/ib_verbs.h
+index b789e47ec97a..9cd8f770d1b2 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.h
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.h
+@@ -264,6 +264,10 @@ void bnxt_re_dealloc_ucontext(struct ib_ucontext *context);
+ int bnxt_re_mmap(struct ib_ucontext *context, struct vm_area_struct *vma);
+ void bnxt_re_mmap_free(struct rdma_user_mmap_entry *rdma_entry);
  
- char _license[] SEC("license") = "GPL";
++static inline u32 __to_ib_port_num(u16 port_id)
++{
++	return (u32)port_id + 1;
++}
  
-+#define DSQ_ID 0
-+
- s32 BPF_STRUCT_OPS(maximal_select_cpu, struct task_struct *p, s32 prev_cpu,
- 		   u64 wake_flags)
- {
-@@ -20,7 +22,7 @@ s32 BPF_STRUCT_OPS(maximal_select_cpu, struct task_struct *p, s32 prev_cpu,
+ unsigned long bnxt_re_lock_cqs(struct bnxt_re_qp *qp);
+ void bnxt_re_unlock_cqs(struct bnxt_re_qp *qp, unsigned long flags);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 7ad83566ab0f..02d87a8f81c9 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1470,6 +1470,7 @@ int bnxt_qplib_query_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	qp->dest_qpn = le32_to_cpu(sb->dest_qp_id);
+ 	memcpy(qp->smac, sb->src_mac, 6);
+ 	qp->vlan_id = le16_to_cpu(sb->vlan_pcp_vlan_dei_vlan_id);
++	qp->port_id = le16_to_cpu(sb->port_id);
+ bail:
+ 	dma_free_coherent(&rcfw->pdev->dev, sbuf.size,
+ 			  sbuf.sb, sbuf.dma_addr);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index f55958e5fddb..296ed6afebb7 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -299,6 +299,7 @@ struct bnxt_qplib_qp {
+ 	u32				dest_qpn;
+ 	u8				smac[6];
+ 	u16				vlan_id;
++	u16				port_id;
+ 	u8				nw_type;
+ 	struct bnxt_qplib_ah		ah;
  
- void BPF_STRUCT_OPS(maximal_enqueue, struct task_struct *p, u64 enq_flags)
- {
--	scx_bpf_dsq_insert(p, SCX_DSQ_GLOBAL, SCX_SLICE_DFL, enq_flags);
-+	scx_bpf_dsq_insert(p, DSQ_ID, SCX_SLICE_DFL, enq_flags);
- }
- 
- void BPF_STRUCT_OPS(maximal_dequeue, struct task_struct *p, u64 deq_flags)
-@@ -28,7 +30,7 @@ void BPF_STRUCT_OPS(maximal_dequeue, struct task_struct *p, u64 deq_flags)
- 
- void BPF_STRUCT_OPS(maximal_dispatch, s32 cpu, struct task_struct *prev)
- {
--	scx_bpf_dsq_move_to_local(SCX_DSQ_GLOBAL);
-+	scx_bpf_dsq_move_to_local(DSQ_ID);
- }
- 
- void BPF_STRUCT_OPS(maximal_runnable, struct task_struct *p, u64 enq_flags)
-@@ -123,7 +125,7 @@ void BPF_STRUCT_OPS(maximal_cgroup_set_weight, struct cgroup *cgrp, u32 weight)
- 
- s32 BPF_STRUCT_OPS_SLEEPABLE(maximal_init)
- {
--	return 0;
-+	return scx_bpf_create_dsq(DSQ_ID, -1);
- }
- 
- void BPF_STRUCT_OPS(maximal_exit, struct scx_exit_info *info)
 -- 
 2.39.5
 
