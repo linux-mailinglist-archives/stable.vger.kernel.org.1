@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-107221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1705CA02ACB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13AD7A02C34
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963861881733
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:37:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EB533A63A1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BAE1D7999;
-	Mon,  6 Jan 2025 15:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27261DF24E;
+	Mon,  6 Jan 2025 15:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQGJ/a1s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZA3Vb8f7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5881DDC3C;
-	Mon,  6 Jan 2025 15:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE82F1DF242;
+	Mon,  6 Jan 2025 15:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177817; cv=none; b=NamtAm5NUwhdc8UwZ1OBwlqokQOfY4+kXpSwc8oBSx+wUekTl79XTSDdNqebYnDjWAd3RY6SSAVwiZH8zf+pMycOVgq0MVTuUoKVivPiqzmoG/14ebMBIFc/vzCAICYVPSF+rDPSWzP/hdMP+M3e3hDzuFqOQSdNUPXbx0NGKoE=
+	t=1736178582; cv=none; b=qQB6Y32BzSJNKOr9L2zrFaoMKLP+vjMZaNEZtuAN6f04EtvWZOIQnJWXUn7F/xM0aeFQo65GdPkMBRHbgpdLDORn8vtF1rzNeexriPxaVIlSde+0j9sSvrhjctPkdZ0tqCrscmGszX7Z/J7Js/lsCyRJ96y/i2IW9PPbdA+z4c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177817; c=relaxed/simple;
-	bh=gGaorNxwJWy2Xa/x8l9H4YUG6WiKCF0B8TOMAleaHtM=;
+	s=arc-20240116; t=1736178582; c=relaxed/simple;
+	bh=uwvn/10bcTPlknh9HzCsW2pIxPAdAs3WAt4YzT0+ICk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0upuSInqU2mIbprP4hBm5MfurjVWkwCGSguCLkmbUoSQCu5lgBM9S/r52qD+biclJWkxkQO0M4IE9+RfvUuRsh7s5B5oNYHOdfsURdcEEhd2zaEMRYYZ2oARizdcqw+NvPCsPHUSFN4zrlbhB7ugBM0B3Ya4bUaFPZCYJ+8SrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQGJ/a1s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B89C4CEE2;
-	Mon,  6 Jan 2025 15:36:56 +0000 (UTC)
+	 MIME-Version; b=sSqyoVHtKETpOgaJInd+s50+RJ7+CadGPDX1jn0zcQpbfTt+7rXV5DNWFiJULlxdpqUkm8SYdeQiPsapuQjx7l73XmKEhIDJYL/hsFmz8Xyl7D5wMXmwndByZwEti/wrE8WmHdcKJYY4HXgRhrsv3UkM/YgH1OmSQDtgUzr+MtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZA3Vb8f7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA84C4CED6;
+	Mon,  6 Jan 2025 15:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177816;
-	bh=gGaorNxwJWy2Xa/x8l9H4YUG6WiKCF0B8TOMAleaHtM=;
+	s=korg; t=1736178582;
+	bh=uwvn/10bcTPlknh9HzCsW2pIxPAdAs3WAt4YzT0+ICk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQGJ/a1spKpsBuazJafhMPR5eVeqRmDsAw2tMlmfeUvsRLDD1ZXiS/8jSbZuEgFE6
-	 rBhZO7ZTG7L8eC8GDwhgYftTxgTztNRFc9F39wxUsGelnZpAZEu64g2FrJ7uEi+krV
-	 y7Pc8SrWfXTQA1kOPykdJXtZ/ricErYiTALvk9YY=
+	b=ZA3Vb8f7CiAjvzydbKzQ0hIlOGyf10VzN2TEJjqim8b2DuB4yjelyIp0pIo29Jh6d
+	 5nHfgnOEdgUI7jn9b7AvAid/solrbH1aOThX6HGWvW735L+0JvdYn3dBjEyA+zltYb
+	 xcylj4bpc/Pys51IimgOQYZWYD0sDfL4MYCYv1us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/156] net/mlx5: DR, select MSIX vector 0 for completion queue creation
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.15 027/168] efivarfs: Fix error on non-existent file
 Date: Mon,  6 Jan 2025 16:15:35 +0100
-Message-ID: <20250106151143.581665628@linuxfoundation.org>
+Message-ID: <20250106151139.489730410@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-[ Upstream commit 050a4c011b0dfeb91664a5d7bd3647ff38db08ce ]
+commit 2ab0837cb91b7de507daa145d17b3b6b2efb3abf upstream.
 
-When creating a software steering completion queue (CQ), an arbitrary
-MSIX vector n is selected. This results in the CQ sharing the same
-Ethernet traffic channel n associated with the chosen vector. However,
-the value of n is often unpredictable, which can introduce complications
-for interrupt monitoring and verification tools.
+When looking up a non-existent file, efivarfs returns -EINVAL if the
+file does not conform to the NAME-GUID format and -ENOENT if it does.
+This is caused by efivars_d_hash() returning -EINVAL if the name is not
+formatted correctly.  This error is returned before simple_lookup()
+returns a negative dentry, and is the error value that the user sees.
 
-Moreover, SW steering uses polling rather than event-driven interrupts.
-Therefore, there is no need to select any MSIX vector other than the
-existing vector 0 for CQ creation.
+Fix by removing this check.  If the file does not exist, simple_lookup()
+will return a negative dentry leading to -ENOENT and efivarfs_create()
+already has a validity check before it creates an entry (and will
+correctly return -EINVAL)
 
-In light of these factors, and to enhance predictability, we modify the
-code to consistently select MSIX vector 0 for CQ creation.
-
-Fixes: 297cccebdc5a ("net/mlx5: DR, Expose an internal API to issue RDMA operations")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241220081505.1286093-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: <stable@vger.kernel.org>
+[ardb: make efivarfs_valid_name() static]
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/efivarfs/inode.c    |    2 +-
+ fs/efivarfs/internal.h |    1 -
+ fs/efivarfs/super.c    |    3 ---
+ 3 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
-index 6fa06ba2d346..f57c84e5128b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
-@@ -1067,7 +1067,6 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
- 	int inlen, err, eqn;
- 	void *cqc, *in;
- 	__be64 *pas;
--	int vector;
- 	u32 i;
+--- a/fs/efivarfs/inode.c
++++ b/fs/efivarfs/inode.c
+@@ -47,7 +47,7 @@ struct inode *efivarfs_get_inode(struct
+  *
+  *	VariableName-12345678-1234-1234-1234-1234567891bc
+  */
+-bool efivarfs_valid_name(const char *str, int len)
++static bool efivarfs_valid_name(const char *str, int len)
+ {
+ 	const char *s = str + len - EFI_VARIABLE_GUID_LEN;
  
- 	cq = kzalloc(sizeof(*cq), GFP_KERNEL);
-@@ -1096,8 +1095,7 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
- 	if (!in)
- 		goto err_cqwq;
+--- a/fs/efivarfs/internal.h
++++ b/fs/efivarfs/internal.h
+@@ -10,7 +10,6 @@
  
--	vector = raw_smp_processor_id() % mlx5_comp_vectors_max(mdev);
--	err = mlx5_comp_eqn_get(mdev, vector, &eqn);
-+	err = mlx5_comp_eqn_get(mdev, 0, &eqn);
- 	if (err) {
- 		kvfree(in);
- 		goto err_cqwq;
--- 
-2.39.5
-
+ extern const struct file_operations efivarfs_file_operations;
+ extern const struct inode_operations efivarfs_dir_inode_operations;
+-extern bool efivarfs_valid_name(const char *str, int len);
+ extern struct inode *efivarfs_get_inode(struct super_block *sb,
+ 			const struct inode *dir, int mode, dev_t dev,
+ 			bool is_removable);
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -64,9 +64,6 @@ static int efivarfs_d_hash(const struct
+ 	const unsigned char *s = qstr->name;
+ 	unsigned int len = qstr->len;
+ 
+-	if (!efivarfs_valid_name(s, len))
+-		return -EINVAL;
+-
+ 	while (len-- > EFI_VARIABLE_GUID_LEN)
+ 		hash = partial_name_hash(*s++, hash);
+ 
 
 
 
