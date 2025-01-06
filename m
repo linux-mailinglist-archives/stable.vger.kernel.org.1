@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA9AA02B2A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77436A02BE6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0BB23A6A52
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F00D7164E1A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B4D1D88AC;
-	Mon,  6 Jan 2025 15:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984BFBA34;
+	Mon,  6 Jan 2025 15:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkNZ8e9r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wF+mcd/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A97B155352;
-	Mon,  6 Jan 2025 15:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519AE6088F;
+	Mon,  6 Jan 2025 15:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177998; cv=none; b=bLxZ5Zz/WlBfP6eVCh8ewOdpHF62KfckoZvReQr2eh8MSQGDxZHX7gW/rJNrycbg7EHh/PpPizlUWFLnxXEl2Ve0ivfioqzxsHSleEIoreMKCmEfQtZOeiwCVVLAqoiMDfqhvF9MLBLEBrAisIInDDo9gOJKibBXLBZcxzgG6ug=
+	t=1736178448; cv=none; b=gpYUQPV1Icbhn/gv7BV4qiETy2778GT5mG/wlpbThZjLnTUIbiDbuDVYntfWDS8iSVUCwP80kjcU3FYaFZ6krJztcy1RtrGOaOEhBtIoCPRU9RsHLneJV+sPrzFqdbgoGU1AKEjp7Bqf7VAFreg/2+ufReHN7u9A5UoamC9kbdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177998; c=relaxed/simple;
-	bh=5nfVyHtmUIR7pY1V1nxEaR13TayNzVmil/9z2eTwFRk=;
+	s=arc-20240116; t=1736178448; c=relaxed/simple;
+	bh=hZamCHXmpHxfMX+spi48T4Zf2u8FgBwLPhhveDF5+oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IUix9oo1SOoaWjVXgSLgseOLNyKRn35DkeUfsiC3gHf15mRvGHKHyx/qpTKu17Cn6CmMKDqB4IEEAmzM4vs8LzD5aWSaGSP8BU8cEaanA+MYElZv6zwJfM6lnyWH2S+xhqWrsv2KhlSIs6N7woO6iAHcg7iAvf84E3+DX2imHRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkNZ8e9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE21C4CED2;
-	Mon,  6 Jan 2025 15:39:57 +0000 (UTC)
+	 MIME-Version; b=J4hleFrhdwS0VHBSZfWPJKH2oGn10u6/AhVlxmty/b6wmEYIHBISodPRFxqc1nXnRwI6XxjOfsj/QU5vAtjuF+q7Np7ZIeLu9VaVWEkeEPiBezA4UXluI1qaSCnhqvHkPS9sMSnONoGxWil+/ngyo/l0MMYef9mbMQUv9O6pHPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wF+mcd/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B6DC4CED2;
+	Mon,  6 Jan 2025 15:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177998;
-	bh=5nfVyHtmUIR7pY1V1nxEaR13TayNzVmil/9z2eTwFRk=;
+	s=korg; t=1736178448;
+	bh=hZamCHXmpHxfMX+spi48T4Zf2u8FgBwLPhhveDF5+oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkNZ8e9rw6qA70gXdOoe4HKqlvnS/gtZOMZMH/q3376Kah5IX01GuwS1S+NtXrF2O
-	 QGRsIQouSXHBcZHkUzkV14yA7qo3hBvuF+LbpgNvxUK99k2SXeLoD7OJj1kcoEpXta
-	 JfnNefKF0KvhUdArWvWqTYKdRsclshjy+c1y7tn0=
+	b=wF+mcd/Xc7WTlBmK2ds9Og0jCZaWdscIS+SFRKsK3HGFXjUofR1YYT5xV3MQHwhx1
+	 WvOXDcRuTY67pNQkov9BOlkt2cq+69NtomhOsjOCnEr6npjNphNp3qz1l6p8vG2ita
+	 /C1sf5oWIeP8fMtttiXnAOFiq7fyClb2vsPdsEIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pascal Hambourg <pascal@plouf.fr.eu.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 128/156] sky2: Add device ID 11ab:4373 for Marvell 88E8075
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 090/138] thunderbolt: Add support for Intel Lunar Lake
 Date: Mon,  6 Jan 2025 16:16:54 +0100
-Message-ID: <20250106151146.553966450@linuxfoundation.org>
+Message-ID: <20250106151136.640961912@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pascal Hambourg <pascal@plouf.fr.eu.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 03c8d0af2e409e15c16130b185e12b5efba0a6b9 upstream.
+[ Upstream commit 2cd3da4e37453019e21a486d9de3144f46b4fdf7 ]
 
-A Marvell 88E8075 ethernet controller has this device ID instead of
-11ab:4370 and works fine with the sky2 driver.
+Intel Lunar Lake has similar integrated Thunderbolt/USB4 controller as
+Intel Meteor Lake with some small differences in the host router (it has
+3 DP IN adapters for instance). Add the Intel Lunar Lake PCI IDs to the
+driver list of supported devices.
 
-Signed-off-by: Pascal Hambourg <pascal@plouf.fr.eu.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/10165a62-99fb-4be6-8c64-84afd6234085@plouf.fr.eu.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/sky2.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/thunderbolt/nhi.c | 4 ++++
+ drivers/thunderbolt/nhi.h | 2 ++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/marvell/sky2.c
-+++ b/drivers/net/ethernet/marvell/sky2.c
-@@ -130,6 +130,7 @@ static const struct pci_device_id sky2_i
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436C) }, /* 88E8072 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436D) }, /* 88E8055 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4370) }, /* 88E8075 */
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4373) }, /* 88E8075 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4380) }, /* 88E8057 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4381) }, /* 88E8059 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4382) }, /* 88E8079 */
+diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
+index 331157b99e24..ada11c239e73 100644
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1363,6 +1363,10 @@ static struct pci_device_id nhi_ids[] = {
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
+ 
+diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
+index c15a0c46c9cf..4b0fccf033e1 100644
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -88,6 +88,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
+ #define PCI_DEVICE_ID_INTEL_TGL_H_NHI1			0x9a21
+ #define PCI_DEVICE_ID_INTEL_RPL_NHI0			0xa73e
+ #define PCI_DEVICE_ID_INTEL_RPL_NHI1			0xa76d
++#define PCI_DEVICE_ID_INTEL_LNL_NHI0			0xa833
++#define PCI_DEVICE_ID_INTEL_LNL_NHI1			0xa834
+ 
+ #define PCI_CLASS_SERIAL_USB_USB4			0x0c0340
+ 
+-- 
+2.39.5
+
 
 
 
