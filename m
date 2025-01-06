@@ -1,110 +1,100 @@
-Return-Path: <stable+bounces-107731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CA1A02E09
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:43:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906DFA02DEB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727673A548D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81D54163B25
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8831DF97A;
-	Mon,  6 Jan 2025 16:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D661922F6;
+	Mon,  6 Jan 2025 16:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AEMy0A9g"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="j3wIh7QD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EED91DF96B;
-	Mon,  6 Jan 2025 16:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8911448F2;
+	Mon,  6 Jan 2025 16:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736181725; cv=none; b=K10XnrTu/pu1SWD7nJd8cguAJeiUHbbJzRz+TBiJh46QVmbtSyFhiLZsxcAZJECnTF3rT51UnWSEm96E94qvv5H5gIe1XlZ4/7zZBC4vOsgmEUc3dxtSvNgx5N9Id8oFV5cWOF78naMbh98jq9gG41tjxMKM72SBuIhOetdHUbk=
+	t=1736181678; cv=none; b=Vbyol97T2Kw+GMevBnbjseZPhhYPfsbLXkQqRGpWMFGuKhGEQzGbP95UVuDkU5NkDOkcj+M9MrZ575IrxGX6W4QLAZgtA7kZnQ2DA3ep1P6taSwqyGmoEg4OkaO8tqNv1D94NN/Z/Ik5a8jymsI+KMNw9YGjxLecJ80RBoWcHBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736181725; c=relaxed/simple;
-	bh=5hRT5JhPOF/CNkdmGdwTsuExu0jUtGaApAIcaepzHHQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JrQ0H1FJNk6AE0PgKXXo4F+qEG/tb8RgPec2rWgygZqQaQIf2pgcfpmhzLYRK3vmcEyLouPgvsCEpzziydiEdlExU6LGiqLreiShyJtkwkPzssSn1KkzDWhv7VGzheZ1oal0GosJiIalKGLcdTk7PSepTID5AvGz30H/iOmn0co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AEMy0A9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E05C4CED2;
-	Mon,  6 Jan 2025 16:42:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736181725;
-	bh=5hRT5JhPOF/CNkdmGdwTsuExu0jUtGaApAIcaepzHHQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEMy0A9g/wbbbwkIYc+uLw2W5pZ9uDEYimBJ4WfDmCMxzEEmJgUaMw55Nf2AQ7g9j
-	 kSi4/bar9PFJnw2W/KYo5Gf5q7dIpgFTuA8ozUWxFl0GCMs4Mq5sRsSlEMd8l7y9qH
-	 Brl60gLW/uzjKeYfWlhLZOQ6ncafvdjwEc7w/ECS3PyTJkZo/H+smi20Kcpih0uU7N
-	 AXFgjFRWn8oshVsM1k8jgii1P2hmqaEA3YaHkvPp54wEvCwNzWQ6XFIubf9QgldRDz
-	 HiHa2IvkK2mpYfT/XuOIc7XUygxTKsoK7ZcjHLnldo1tF1cKlqIBw8478V0siw/j5z
-	 u5j1gF7MwDyrQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	zhangjiao2@cmss.chinamobile.com,
-	luoyifan@cmss.chinamobile.com,
-	andriy.shevchenko@linux.intel.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 8/8] Revert "ALSA: ump: Don't enumeration invalid groups for legacy rawmidi"
-Date: Mon,  6 Jan 2025 11:41:08 -0500
-Message-Id: <20250106164138.1122164-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250106164138.1122164-1-sashal@kernel.org>
-References: <20250106164138.1122164-1-sashal@kernel.org>
+	s=arc-20240116; t=1736181678; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t3E1Lzj9XboQsVI4dMzYQHA9n4Ui0nv7ga9NFyekcOkUD+Pl6UxlWuMbvJmwTNCHSIxdpPGcP6umfmP1wclKQBQ8h84D7swAuGD6ADzMVS05RE12xDgob8X6D+UP/IOEdLyYLNcoijEpi0uYvewcj+UxChHTTjBgESBQ0LmA494=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=j3wIh7QD; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1736181673; x=1736786473; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=j3wIh7QDqJqHJEdI0CfxzVRTxt78vyptu5Ls/tZakbMunhkIaNZjE0cxrSr4xq57
+	 fSLfjoWiLz2IPSuaR+F5tWPmTXFE2Y39Jm8b2KikzoswsHusePmVrHAMQXw7hutUK
+	 xAAgZtR5X6wwHhUlrvJekUA+mehr5+tp5CWxQDgbFJukhcG6xRhG9Q5HPnQH1D6cF
+	 UT4OXARAcTOvJiuTraVO1WtYRw8eKEeYumK2+9bI2nNV9X9zVM0WCGzVOzYChaxXh
+	 1cttCfRhISeZ1ohp7e5xXkBzzZzuXyZIzb6SSzocvduc5qqkYRO/mAw9yyy1RRxx+
+	 Ye3jEq9+Rm6xnMP1fA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.32.208]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N17UQ-1tcEj444CI-011AQ9; Mon, 06
+ Jan 2025 17:41:13 +0100
+Message-ID: <1a6c1d61-4139-4cf2-a121-39479a5814d2@gmx.de>
+Date: Mon, 6 Jan 2025 17:41:12 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+References: <20250106151141.738050441@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:UqZVxLMWLwj4IOFIxYoxRb/a3Wj1lINg9TNUhumOZc5wHINrZlc
+ b1FLc/+KWzxgI5Kapj9tEAQt14lKTLr1ZgWHs3nt+mE/gMXciWQtDqzs/mfX5fI5hktmWXl
+ Qzd6sULJFw2j4gLKQilkZHqQmJSsrKKrpqu0s03AljLS55DL+MTY5eb9b+COxhZWMIpcYMn
+ e2M0jRlbvghCQoKH4FV5g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:UMYFphQ/4RU=;+mHn55bp4/aQuEJHvpS7/9TjarU
+ G+G8PAfE4XXHQ9OV3TMaclAf0E/AC4PWTu9ay8LO7SZFIqkQ/fB9/TZ5fRkvN0J0fnFiZMOQQ
+ sKJecEcQozAddM4oVXGjAHc3/wn5Q29zmP+JMoxL8v4kpPJJgsVt1h5qg2PFHR35OEpnSxirB
+ owLlVrWdGPmVLLBVsJzaQHR+KeC4/suFrpGxtxlzS48swEsOVgPJq0R4xLlg9GoeU9dAv8e9J
+ EhP9gNpYesnKWqDt6wknzjxaTQJXtpGUa/2aC7mewJQGZKzMDEIDD86YJRGXGEuYbXC3DbDR4
+ pJ69ANxPP5tvAUYEpVw2Xj5zFeDmFrmVYdD+8DHBndmSMjHQffQjONrZiRMWgJmGPWH1vwk4O
+ SfkCkj3OPvG8x8Wv0dlXqC6Q75sQ3YnPowwW3OhMv7rfvM3d2J4lUpBCrZCPQotHfo/rp5Ue+
+ uJz85WrMuI963VJKNLxRQty2Y4o3Dcyn6NCrxYpXYKl6Yoyb0jHtAZfSWiyBLC2woImIldXyh
+ kTUvkKmTk0tnv6bNkHC2bbFzKSxunHP6bhaKz8kUbxPZArfy65inEjwhcXtxeH3iGFS9SQhBg
+ BwmIYxIi2EtneMV7ZGVhN5d8j+6tIKSlX3NAtKFZx6hzcLtAD2HLVRlaEMdcHET4kKqyfQBIe
+ VESLVlEsmerjkDa2UMpKRFq/nZuh4biF0w7WvFMsdFDCBh9HfnKv/R7JM4DmiH8CXuGIr7lbJ
+ YHi+icP/H1CkWfr8VTvG+ZcQX2oxtKQol3MZsY0Q6xKtP9xfNolT3D5YvLirD1Rjdyl1+R2pr
+ 352tyZBPMtc2M4SHhqWSeYGxh04EjLmG2lmsg6DT85rK3uVVcHtW4KtgQqmpoNFBi2qS/S4ra
+ e5BNY+xXG9cay0k1AG5xCMhtPF+JwiiNlESC1BDkDLCLnvhjwh/x5Oig7Fk1ilnA6MJ3HnvSU
+ hJDUhN8HyC4jGfcnDVbNr4UbLATtRX7VOeWEjsHFYtmIt/0RWsxYsnNMdB++Kk1Vknt3XyyFO
+ b4cJthFlzzBDlcMpC+uVnpcGHAK6qscoRQhYCb0S87WmWG1IeqBDGt3Jdr8nyBHZatbT4PLTC
+ iwSxs3aPI=
 
-From: Takashi Iwai <tiwai@suse.de>
+Hi Greg
 
-[ Upstream commit abbff41b6932cde359589fd51f4024b7c85f366b ]
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-This reverts commit c2d188e137e77294323132a760a4608321a36a70.
+Thanks
 
-Although it's fine to filter the invalid UMP groups at the first probe
-time, this will become a problem when UMP groups are updated and
-(re-)activated.  Then there is no way to re-add the substreams
-properly for the legacy rawmidi, and the new active groups will be
-still invisible.
-
-So let's revert the change.  This will move back to showing the full
-16 groups, but it's better than forever lost.
-
-Link: https://patch.msgid.link/20241230114023.3787-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/core/ump.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/sound/core/ump.c b/sound/core/ump.c
-index bd26bb2210cb..abc537d54b73 100644
---- a/sound/core/ump.c
-+++ b/sound/core/ump.c
-@@ -1244,7 +1244,7 @@ static int fill_legacy_mapping(struct snd_ump_endpoint *ump)
- 
- 	num = 0;
- 	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++)
--		if ((group_maps & (1U << i)) && ump->groups[i].valid)
-+		if (group_maps & (1U << i))
- 			ump->legacy_mapping[num++] = i;
- 
- 	return num;
--- 
-2.39.5
-
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
