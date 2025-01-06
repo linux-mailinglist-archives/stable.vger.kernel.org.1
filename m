@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454B7A02BD7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB70CA02B08
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E0133A5C71
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 390453A69A0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4331DE2AD;
-	Mon,  6 Jan 2025 15:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE63F155C9E;
+	Mon,  6 Jan 2025 15:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWMe2jNx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9yvLpb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE57814F9F3;
-	Mon,  6 Jan 2025 15:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADF714A617;
+	Mon,  6 Jan 2025 15:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178361; cv=none; b=GzqFb+fobdqEIaw0tnxfI6y6pKFQ/cr2qAqqC6AsE+jGBQJcqb8EFV5qUbOHA5fmZlOH0jb1masT8AhxMkjL8oLnRoovicDTnJQUtc9zFrRU0hejHeoNp1zRvR8RoLmeBbKROMnQt4Qx2Sp3FB9av5b8G8KesU+FH8miwoyt9Zo=
+	t=1736177912; cv=none; b=apTmnAnP9B9L9nwg0voOA4B9lW1ILK1HTPb/MdhutbQq1aY8KU9y3Zf2RjyzaucI6t6WtJo6GgEK7/hqKt2cqhM+3A+6Z5FhR4P5WTZACqb4rz3NdzfqrnK2eE7YiP8GPF9Q7x1TNLZMPAFJwczzZltuv9Vgr1wVt72imrTLh3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178361; c=relaxed/simple;
-	bh=+dr2bzZve6BnVk44+8iMrujNZpb+WVOWC/aQZ6BEL9w=;
+	s=arc-20240116; t=1736177912; c=relaxed/simple;
+	bh=CFokBEMoaHM6di8G3nUzhBwuE1KTw2yWNlD5xA/2ALk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEgUQicTp4J652Rm6N7r22p+ct4RAB4ENUwPkPs/f3ATQ9PEOY7tXYNRlw+SN9mtVQsK8iLm6ZZ2Vhf95d1MOESDA3EpdJ2TPVXxI5ZJ0spPFVXLl8v/308uI1XkHjm5zJVbswOLQ165hb98mnV8f/v7hh2GmpdlqUmB9VD+kGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWMe2jNx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A741C4CED2;
-	Mon,  6 Jan 2025 15:46:01 +0000 (UTC)
+	 MIME-Version; b=gZIodhP8myhUkBMpNjne4HgVSFKLIoLKXzE0BeChY2rXZ+uJ02DHRrxp+dhZLj4BVfc0a/0bJ5NCN/Zwb9HSFOOr2r0yUq/RDvR2OMqhq5wmMKQvpQBJExrQaSZ7n7uXfgsCzFKvqHetRb142yLyFv8NGQkYPzmno+4BuR2Sqis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9yvLpb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09B2C4CED2;
+	Mon,  6 Jan 2025 15:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178361;
-	bh=+dr2bzZve6BnVk44+8iMrujNZpb+WVOWC/aQZ6BEL9w=;
+	s=korg; t=1736177912;
+	bh=CFokBEMoaHM6di8G3nUzhBwuE1KTw2yWNlD5xA/2ALk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FWMe2jNx+TpvHEFkZ3dQ8dG1u8019oBI+ZzyA90iDTO1Invab9TL+nQCe8is12Sog
-	 041k5WNUrWD95UqqMBJFtDkd77j6SpTaJxEF+VBpMG8sFR1jB136iQ1Qu5o3/qqF4L
-	 m0OBSl4O3YHbDxGVNo+Mas3t2G+g2bWgYg5a8Qqw=
+	b=Y9yvLpb6h8MnXFtBbUNsiIpYtX4sj3HyHWzgpHHzdY1cfqk9jsKeFVrCpCx56rX1Z
+	 9w19rObpGhNR7WpErxbUWFVPybDjheyQISUglCL/3Sodx5tWrdjFEGecBaJXQviWoX
+	 SUtsbg6YSxaliJ3XeayJPTkOTdfJxjBIuBs0Zk98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Henzl <thenzl@redhat.com>,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/138] scsi: megaraid_sas: Fix for a potential deadlock
+Subject: [PATCH 6.12 099/156] smb: client: destroy cfid_put_wq on module exit
 Date: Mon,  6 Jan 2025 16:16:25 +0100
-Message-ID: <20250106151135.545816255@linuxfoundation.org>
+Message-ID: <20250106151145.454560212@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Henzl <thenzl@redhat.com>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-[ Upstream commit 50740f4dc78b41dec7c8e39772619d5ba841ddd7 ]
+[ Upstream commit 633609c48a358134d3f8ef8241dff24841577f58 ]
 
-This fixes a 'possible circular locking dependency detected' warning
-      CPU0                    CPU1
-      ----                    ----
- lock(&instance->reset_mutex);
-                              lock(&shost->scan_mutex);
-                              lock(&instance->reset_mutex);
- lock(&shost->scan_mutex);
+Fix potential problem in rmmod
 
-Fix this by temporarily releasing the reset_mutex.
-
-Signed-off-by: Tomas Henzl <thenzl@redhat.com>
-Link: https://lore.kernel.org/r/20240923174833.45345-1-thenzl@redhat.com
-Acked-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/smb/client/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
-index 365279d7c982..d709d261d0ad 100644
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -8868,8 +8868,11 @@ megasas_aen_polling(struct work_struct *work)
- 						   (ld_target_id / MEGASAS_MAX_DEV_PER_CHANNEL),
- 						   (ld_target_id - MEGASAS_MAX_DEV_PER_CHANNEL),
- 						   0);
--			if (sdev1)
-+			if (sdev1) {
-+				mutex_unlock(&instance->reset_mutex);
- 				megasas_remove_scsi_device(sdev1);
-+				mutex_lock(&instance->reset_mutex);
-+			}
- 
- 			event_type = SCAN_VD_CHANNEL;
- 			break;
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index bf909c2f6b96..0ceebde38f9f 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -2018,6 +2018,7 @@ exit_cifs(void)
+ 	destroy_workqueue(decrypt_wq);
+ 	destroy_workqueue(fileinfo_put_wq);
+ 	destroy_workqueue(serverclose_wq);
++	destroy_workqueue(cfid_put_wq);
+ 	destroy_workqueue(cifsiod_wq);
+ 	cifs_proc_clean();
+ }
 -- 
 2.39.5
 
