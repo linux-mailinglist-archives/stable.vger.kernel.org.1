@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-107165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D63DA02A7E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E46EA029F1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 252A41883269
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:34:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8AE1645A8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A34146D6B;
-	Mon,  6 Jan 2025 15:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FB61917E9;
+	Mon,  6 Jan 2025 15:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mT8sY+Iz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHSXH0xq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963D57405A;
-	Mon,  6 Jan 2025 15:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49111C5F11;
+	Mon,  6 Jan 2025 15:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177650; cv=none; b=kI+45LTjNsAUAPJE+hHpJAwmd0b0uT5VR0x3i2WohzlprZtIil5IZ1ANqD4tQadEjTTQoKujKL9q0Ft0FZ4O3pbZbU7joKr5d64c9kVK/2obBIkgOWeh6XAOCCz6+LDHYE/DOWpcoZ5010rKgkQ6+BrSpCQ+hc3wxzM0s3VAncY=
+	t=1736177324; cv=none; b=PelrsS3qu4u+nUWoyH2czFCoN2BeeDmwyNUeF1tKp5AFpacEnRwSf7Ev5rfFGtgrMPtQCluVaUsz/R/Ld1g6qbE6SUb/iYYPxR5LzAn5VOza9/s8WxW3Oc7rzhrl5xLVd8KNb9ZLBytL5OaTNEHdg3bry7LDivdwaSIzrVTEux0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177650; c=relaxed/simple;
-	bh=BnC+zLrcqMGpTxHf261I67ULaTYMtQgfDbJ15BQtWcw=;
+	s=arc-20240116; t=1736177324; c=relaxed/simple;
+	bh=hsu5u7xJ2CytjLETgs+My/ziKWQjBOKYSGLVGujzeM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsbSZ/PDIEdjdr4FZAWgmGrI+OCv1JRPG9A0j9DezsPbBqYRZYWlId92DtEsEgWtC6wulW6Bhe32Px0BrS6VBcyAiFjPfna6oFi7A5TZ+iv4E1h/80CrTVCayk/GT5nOQFIRcVvcNRcRG3guAkkMp0FW6wVMQyt1nQLmiFX+kBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mT8sY+Iz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83A6C4CED2;
-	Mon,  6 Jan 2025 15:34:09 +0000 (UTC)
+	 MIME-Version; b=PzKFAUzJj42CPDfsHBGNqeIO3J0s1pjSI+MqBroqmy6pn8/uNb30mXkcH3j2Oj+b8GjseZtTlQtO41zAw8AzkNfG05zqsnu9ItOguVrn/oe1CvnnqyDy+HAISsXb2sFyPPAVvDEdEfjE6bcRvh+nzqoOkauArYYC0rcWb0TYqCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHSXH0xq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C4CC4CED2;
+	Mon,  6 Jan 2025 15:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177650;
-	bh=BnC+zLrcqMGpTxHf261I67ULaTYMtQgfDbJ15BQtWcw=;
+	s=korg; t=1736177323;
+	bh=hsu5u7xJ2CytjLETgs+My/ziKWQjBOKYSGLVGujzeM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mT8sY+IzwIm/rYhOmXfjcqjT2B9DAQ27ddpKQuEyCr4X59Igk72fCHHppNUQopGBe
-	 S35pIgahXjFcf1ss7wKMayBPA/XORJgWnf1xhSf0xlOgF6i112hA6F5lHJoF+7hT87
-	 H/fVpoevUDqSklcAYYQoShpXdAwzS7gK5ibCWAKo=
+	b=oHSXH0xqQkHU8sgBvve/Th30kXmyzfdCmPIVAsuNiMOaqLJwuXdnb9Q7/eTfdYto3
+	 qtFLP+ihulMQU2CP+LM+zlTzL6AJlsfXQETFFF8IxBAGeIvqGYHyvZgZYaVBw7oFTS
+	 KhR8PUoRoJlHzw8oS+Qzt2nDXC+Kx2c99O/zZ0Ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	David Sterba <dsterba@suse.com>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/156] btrfs: use bio_is_zone_append() in the completion handler
-Date: Mon,  6 Jan 2025 16:14:57 +0100
-Message-ID: <20250106151142.169739137@linuxfoundation.org>
+Subject: [PATCH 6.6 094/222] scsi: mpi3mr: Start controller indexing from 0
+Date: Mon,  6 Jan 2025 16:14:58 +0100
+Message-ID: <20250106151154.154856055@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 6c3864e055486fadb5b97793b57688082e14b43b ]
+[ Upstream commit 0d32014f1e3e7a7adf1583c45387f26b9bb3a49d ]
 
-Otherwise it won't catch bios turned into regular writes by the block
-level zone write plugging. The additional test it adds is for emulated
-zone append.
+Instead of displaying the controller index starting from '1' make the
+driver display the controller index starting from '0'.
 
-Fixes: 9b1ce7f0c6f8 ("block: Implement zone append emulation")
-CC: stable@vger.kernel.org # 6.12
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20241110194405.10108-4-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/bio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/bio.c b/fs/btrfs/bio.c
-index 3d2376caedfa..31f96c2d8691 100644
---- a/fs/btrfs/bio.c
-+++ b/fs/btrfs/bio.c
-@@ -355,7 +355,7 @@ static void btrfs_simple_end_io(struct bio *bio)
- 		INIT_WORK(&bbio->end_io_work, btrfs_end_bio_work);
- 		queue_work(btrfs_end_io_wq(fs_info, bio), &bbio->end_io_work);
- 	} else {
--		if (bio_op(bio) == REQ_OP_ZONE_APPEND && !bio->bi_status)
-+		if (bio_is_zone_append(bio) && !bio->bi_status)
- 			btrfs_record_physical_zoned(bbio);
- 		btrfs_bio_end_io(bbio, bbio->bio.bi_status);
- 	}
-@@ -398,7 +398,7 @@ static void btrfs_orig_write_end_io(struct bio *bio)
- 	else
- 		bio->bi_status = BLK_STS_OK;
- 
--	if (bio_op(bio) == REQ_OP_ZONE_APPEND && !bio->bi_status)
-+	if (bio_is_zone_append(bio) && !bio->bi_status)
- 		stripe->physical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
- 
- 	btrfs_bio_end_io(bbio, bbio->bio.bi_status);
-@@ -412,7 +412,7 @@ static void btrfs_clone_write_end_io(struct bio *bio)
- 	if (bio->bi_status) {
- 		atomic_inc(&stripe->bioc->error);
- 		btrfs_log_dev_io_error(bio, stripe->dev);
--	} else if (bio_op(bio) == REQ_OP_ZONE_APPEND) {
-+	} else if (bio_is_zone_append(bio)) {
- 		stripe->physical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 3f86f1d0a9be..7880675a68db 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -5066,7 +5066,7 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
  	}
  
+ 	mrioc = shost_priv(shost);
+-	retval = ida_alloc_range(&mrioc_ida, 1, U8_MAX, GFP_KERNEL);
++	retval = ida_alloc_range(&mrioc_ida, 0, U8_MAX, GFP_KERNEL);
+ 	if (retval < 0)
+ 		goto id_alloc_failed;
+ 	mrioc->id = (u8)retval;
 -- 
 2.39.5
 
