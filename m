@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22707A02CB1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17404A02D16
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE581887896
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08C26166777
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6471553BB;
-	Mon,  6 Jan 2025 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D6A166F1B;
+	Mon,  6 Jan 2025 16:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11HB+ZUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opnsMEpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF9B86332;
-	Mon,  6 Jan 2025 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578AB1DC046;
+	Mon,  6 Jan 2025 16:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179004; cv=none; b=b5pO5NwQc9OE2Ex9kvaun3lQfO+kBuYNxBMUNGXGbXgpCjtJpwT7YDvYEBnr9brw5RpIGFrS5bi2zfLEdr3p0GQLYlbM2JWi4xWQ3hattK17xefFrY9NRdqfUofRDDlftyMZvi3b7By7skQZ9/tLEAA5YRk37LaBYhBkSv2iyWk=
+	t=1736179249; cv=none; b=GykSu1zm8YF3FbUzQKdWN2xKRgTlae0mfJi7JlLeINRDm1wyfGTqPncwQKIoql0sBiU85W4fK6jm+YH9PoVC+DR1EaVol+DQts5oH7Pv4eOOMYb9jalkEuOb7jS+jtg3qNQGUYo7YbU6u8SqVAAw9n1qW0/Jw5zHhAelBmhJFWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179004; c=relaxed/simple;
-	bh=8bV2s/pQXWX29+2wnr+WmEydEynYUG7rCeilW/jOUJA=;
+	s=arc-20240116; t=1736179249; c=relaxed/simple;
+	bh=I2dZvzn9LjfaETG873FoE5S4ba+BI/aQox+IszPQNFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWWUl3UHQ5uT5UE/We5o5r8RXvk9+qDMpfakSrHZ7w6CSZTDE+NSRaDN84uHEedqyLlvCgYuPxJjHuFwjhk5ObQ46YbyCOCRwMMxl8zXZXLmXHSJNQTczgEsnG908kV4p8EXXjzTZUJqkaJwBIK6jgyKMJxFYdYW5MEyva9+5ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11HB+ZUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9469DC4CED2;
-	Mon,  6 Jan 2025 15:56:43 +0000 (UTC)
+	 MIME-Version; b=hjkVCAwwb5Pv27yba83eSRFSWJcnwY2ePJb2vTw6TW7HUH5pkP3MZij+5H23MjNEhq4a4nouIqLdEMHIyF6mY1sN8NRkYLPA44wFiSPXx29vbodEMcl4wLTocqRaOqzafJOPq9ubdcafXPIxX3cIfvF2+7fuMwNybIps06khexg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opnsMEpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962ADC4CED2;
+	Mon,  6 Jan 2025 16:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179004;
-	bh=8bV2s/pQXWX29+2wnr+WmEydEynYUG7rCeilW/jOUJA=;
+	s=korg; t=1736179249;
+	bh=I2dZvzn9LjfaETG873FoE5S4ba+BI/aQox+IszPQNFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11HB+ZUSYxn4QnAFoiT9CeM1OgngVNpfk9o5Rgx0t5C3Su70fOSrfhT4ZtC1oomgc
-	 gdecM8f2XY56zZMqcHAMB6OKh+j0TDluc+sp3i4IPJco2549h/MoexIeY2TDSDiPsh
-	 LhiaH9gwoJZbVjl64u9v+juB1s6/hE9hADYfJG8k=
+	b=opnsMEpF0Ql3XSK5ovWbDvYAjqVP3UqYMfXYgSkfnXynqWLPzMLt9cdcjuXXDlVsX
+	 6a3+VOsNbxPTsvmfB/Xy5azzgQMEsdtuGWkxCjy/sS4Ylz0wz5XKi5KRnstVJCvjSv
+	 bNPz1tD9/gM1p2NZcYHhdJEvkB9/wSpD//C4f4+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Evgenii Shatokhin <e.shatokhin@yadro.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.15 163/168] pinctrl: mcp23s08: Fix sleeping in atomic context due to regmap locking
+	Antonio Pastor <antonio.pastor@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 75/93] net: llc: reset skb->transport_header
 Date: Mon,  6 Jan 2025 16:17:51 +0100
-Message-ID: <20250106151144.584834430@linuxfoundation.org>
+Message-ID: <20250106151131.537192076@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgenii Shatokhin <e.shatokhin@yadro.com>
+From: Antonio Pastor <antonio.pastor@gmail.com>
 
-commit a37eecb705f33726f1fb7cd2a67e514a15dfe693 upstream.
+[ Upstream commit a024e377efed31ecfb39210bed562932321345b3 ]
 
-If a device uses MCP23xxx IO expander to receive IRQs, the following
-bug can happen:
+802.2+LLC+SNAP frames received by napi_complete_done with GRO and DSA
+have skb->transport_header set two bytes short, or pointing 2 bytes
+before network_header & skb->data. As snap_rcv expects transport_header
+to point to SNAP header (OID:PID) after LLC processing advances offset
+over LLC header (llc_rcv & llc_fixup_skb), code doesn't find a match
+and packet is dropped.
 
-  BUG: sleeping function called from invalid context
-    at kernel/locking/mutex.c:283
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, ...
-  preempt_count: 1, expected: 0
-  ...
-  Call Trace:
-  ...
-  __might_resched+0x104/0x10e
-  __might_sleep+0x3e/0x62
-  mutex_lock+0x20/0x4c
-  regmap_lock_mutex+0x10/0x18
-  regmap_update_bits_base+0x2c/0x66
-  mcp23s08_irq_set_type+0x1ae/0x1d6
-  __irq_set_trigger+0x56/0x172
-  __setup_irq+0x1e6/0x646
-  request_threaded_irq+0xb6/0x160
-  ...
+Between napi_complete_done and snap_rcv, transport_header is not used
+until __netif_receive_skb_core, where originally it was being reset.
+Commit fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
+only does so if not set, on the assumption the value was set correctly
+by GRO (and also on assumption that "network stacks usually reset the
+transport header anyway"). Afterwards it is moved forward by
+llc_fixup_skb.
 
-We observed the problem while experimenting with a touchscreen driver which
-used MCP23017 IO expander (I2C).
+Locally generated traffic shows up at __netif_receive_skb_core with no
+transport_header set and is processed without issue. On a setup with
+GRO but no DSA, transport_header and network_header are both set to
+point to skb->data which is also correct.
 
-The regmap in the pinctrl-mcp23s08 driver uses a mutex for protection from
-concurrent accesses, which is the default for regmaps without .fast_io,
-.disable_locking, etc.
+As issue is LLC specific, to avoid impacting non-LLC traffic, and to
+follow up on original assumption made on previous code change,
+llc_fixup_skb to reset the offset after skb pull. llc_fixup_skb
+assumes the LLC header is at skb->data, and by definition SNAP header
+immediately follows.
 
-mcp23s08_irq_set_type() calls regmap_update_bits_base(), and the latter
-locks the mutex.
-
-However, __setup_irq() locks desc->lock spinlock before calling these
-functions. As a result, the system tries to lock the mutex whole holding
-the spinlock.
-
-It seems, the internal regmap locks are not needed in this driver at all.
-mcp->lock seems to protect the regmap from concurrent accesses already,
-except, probably, in mcp_pinconf_get/set.
-
-mcp23s08_irq_set_type() and mcp23s08_irq_mask/unmask() are called under
-chip_bus_lock(), which calls mcp23s08_irq_bus_lock(). The latter takes
-mcp->lock and enables regmap caching, so that the potentially slow I2C
-accesses are deferred until chip_bus_unlock().
-
-The accesses to the regmap from mcp23s08_probe_one() do not need additional
-locking.
-
-In all remaining places where the regmap is accessed, except
-mcp_pinconf_get/set(), the driver already takes mcp->lock.
-
-This patch adds locking in mcp_pinconf_get/set() and disables internal
-locking in the regmap config. Among other things, it fixes the sleeping
-in atomic context described above.
-
-Fixes: 8f38910ba4f6 ("pinctrl: mcp23s08: switch to regmap caching")
-Cc: stable@vger.kernel.org
-Signed-off-by: Evgenii Shatokhin <e.shatokhin@yadro.com>
-Link: https://lore.kernel.org/20241209074659.1442898-1-e.shatokhin@yadro.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
+Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241225010723.2830290-1-antonio.pastor@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/llc/llc_input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -85,6 +85,7 @@ const struct regmap_config mcp23x08_regm
- 	.num_reg_defaults = ARRAY_SIZE(mcp23x08_defaults),
- 	.cache_type = REGCACHE_FLAT,
- 	.max_register = MCP_OLAT,
-+	.disable_locking = true, /* mcp->lock protects the regmap */
- };
- EXPORT_SYMBOL_GPL(mcp23x08_regmap);
+diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
+index f4fb309185ce..4229c349651d 100644
+--- a/net/llc/llc_input.c
++++ b/net/llc/llc_input.c
+@@ -124,8 +124,8 @@ static inline int llc_fixup_skb(struct sk_buff *skb)
+ 	if (unlikely(!pskb_may_pull(skb, llc_len)))
+ 		return 0;
  
-@@ -131,6 +132,7 @@ const struct regmap_config mcp23x17_regm
- 	.num_reg_defaults = ARRAY_SIZE(mcp23x17_defaults),
- 	.cache_type = REGCACHE_FLAT,
- 	.val_format_endian = REGMAP_ENDIAN_LITTLE,
-+	.disable_locking = true, /* mcp->lock protects the regmap */
- };
- EXPORT_SYMBOL_GPL(mcp23x17_regmap);
- 
-@@ -228,7 +230,9 @@ static int mcp_pinconf_get(struct pinctr
- 
- 	switch (param) {
- 	case PIN_CONFIG_BIAS_PULL_UP:
-+		mutex_lock(&mcp->lock);
- 		ret = mcp_read(mcp, MCP_GPPU, &data);
-+		mutex_unlock(&mcp->lock);
- 		if (ret < 0)
- 			return ret;
- 		status = (data & BIT(pin)) ? 1 : 0;
-@@ -257,7 +261,9 @@ static int mcp_pinconf_set(struct pinctr
- 
- 		switch (param) {
- 		case PIN_CONFIG_BIAS_PULL_UP:
-+			mutex_lock(&mcp->lock);
- 			ret = mcp_set_bit(mcp, MCP_GPPU, pin, arg);
-+			mutex_unlock(&mcp->lock);
- 			break;
- 		default:
- 			dev_dbg(mcp->dev, "Invalid config param %04x\n", param);
+-	skb->transport_header += llc_len;
+ 	skb_pull(skb, llc_len);
++	skb_reset_transport_header(skb);
+ 	if (skb->protocol == htons(ETH_P_802_2)) {
+ 		__be16 pdulen;
+ 		s32 data_size;
+-- 
+2.39.5
+
 
 
 
