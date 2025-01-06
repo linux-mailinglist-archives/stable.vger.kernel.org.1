@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2BDA02C56
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD385A02B80
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2CA6163561
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB83C1886D99
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633B51DDC12;
-	Mon,  6 Jan 2025 15:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A374165F1F;
+	Mon,  6 Jan 2025 15:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3FuiAMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PBhOwTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A4E81728;
-	Mon,  6 Jan 2025 15:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA50F14A617;
+	Mon,  6 Jan 2025 15:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178723; cv=none; b=ilYrU5wx/foibxyErYeuU5yDrIwkbzd5mu1Z9I0xDS+dZKjqMyENcilOkRZXUsMhE8ruqhpXQzf+cX8EnCXHzMfMWZacFOQeJDgLBCq84dKu7/lmDe3nE5FEpzSA2GwKAQ2CPXZZzzSGpUDw0dg72zpX6uG/7NTG1YUd9IvWISU=
+	t=1736178247; cv=none; b=aNrgMaHAhopVy2I5aMtvxM0HxhpM/sCkBMImWyWPu+OMvHHqXyTgO/HMpR9gkEDbUgfSdHHG/xFTNgH8A/nq1W/TvICAR4JPcwoSYbJMZxixe149zxpvhf8E6yuRZkYK6HHbyiHfWzjqzxTByrXSYRbwuLFX+Zoo9Ge2VHPkBbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178723; c=relaxed/simple;
-	bh=FPYAJrD3lnMsZMuJ4AiWrDUCMhdnk986jQGMXVIkYKo=;
+	s=arc-20240116; t=1736178247; c=relaxed/simple;
+	bh=nyhTCd4Fp7rUA9bSDFIzRR+lULjPJGq9TIjRhJ2XLrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfghDkaPxa6B06remLBo9OI9cdJk5hRmFK0G7XXp65FHtlN+tQfVOA7cRAjM8hyNUXampx8M9Nh03NfzqY9El3/NVNlymnuicPViwSkbvQYgLxFYauQZ6iTOlodMUzXqNjRUZnYpVWEVoAS8PvXTlpsFcpuUN58uR0e8vTJP6eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3FuiAMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C15C4CED2;
-	Mon,  6 Jan 2025 15:52:02 +0000 (UTC)
+	 MIME-Version; b=jxjWdONlu/LlQO9/c+8QO639FIHYvMmfOM1T3Rl+EqB8YqLzik8nZhHvyE+T1KL9gpG3NXmvvKU9uTR/FhJn2WgN8R4nO9qBDWo3yLt0e9BXuSSULg14d9NMSArgXwbGZ0Zac6wNzV/dzvLzOdYd0Ckt9kWnMq1EC5H77Un0v+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PBhOwTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7363BC4CED2;
+	Mon,  6 Jan 2025 15:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178723;
-	bh=FPYAJrD3lnMsZMuJ4AiWrDUCMhdnk986jQGMXVIkYKo=;
+	s=korg; t=1736178246;
+	bh=nyhTCd4Fp7rUA9bSDFIzRR+lULjPJGq9TIjRhJ2XLrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j3FuiAMvDJkIHoEAkGEz0JhR0povlyAud3BW5X5OsspaAtqMUZHnWOMN8TV5EJuyu
-	 IOcRCYf7pAQZgKKBl42PCmiev7vJ45zMjbCBqDFdlnhARObkHgPcyplBR9vqAqDzSa
-	 NJUtKu/xBLPi+Y6gjT0WXe5RZ1p8Zw9DNK2yz6AE=
+	b=0PBhOwTmAKHDNf8D6a5baHih42alMe/16aM0yL8nQ30BhyZ5Yaq11deOdLpnKeMJP
+	 vd1Bbv1oSU1W0lxW+WL41rL8i0bRucoM3bPFsx9TcaQJ0DGK5o8Zw+xnXgwcS27ynV
+	 Gc/Ew/F9BbhDjlrXnWW1v6TIGXBAJmF0mnxh+VG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@maxima.ru>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/168] hwmon: (tmp513) Fix interpretation of values of Temperature Result and Limit Registers
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.10 023/138] i2c: riic: Always round-up when calculating bus period
 Date: Mon,  6 Jan 2025 16:15:47 +0100
-Message-ID: <20250106151139.939253858@linuxfoundation.org>
+Message-ID: <20250106151134.097311095@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@maxima.ru>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit dd471e25770e7e632f736b90db1e2080b2171668 ]
+commit de6b43798d9043a7c749a0428dbb02d5fff156e5 upstream.
 
-The values returned by the driver after processing the contents of the
-Temperature Result and the Temperature Limit Registers do not correspond to
-the TMP512/TMP513 specifications. A raw register value is converted to a
-signed integer value by a sign extension in accordance with the algorithm
-provided in the specification, but due to the off-by-one error in the sign
-bit index, the result is incorrect.
+Currently, the RIIC driver may run the I2C bus faster than requested,
+which may cause subtle failures.  E.g. Biju reported a measured bus
+speed of 450 kHz instead of the expected maximum of 400 kHz on RZ/G2L.
 
-According to the TMP512 and TMP513 datasheets, the Temperature Result (08h
-to 0Bh) and Limit (11h to 14h) Registers are 13-bit two's complement
-integer values, shifted left by 3 bits. The value is scaled by 0.0625
-degrees Celsius per bit.  E.g., if regval = 1 1110 0111 0000 000, the
-output should be -25 degrees, but the driver will return +487 degrees.
+The initial calculation of the bus period uses DIV_ROUND_UP(), to make
+sure the actual bus speed never becomes faster than the requested bus
+speed.  However, the subsequent division-by-two steps do not use
+round-up, which may lead to a too-small period, hence a too-fast and
+possible out-of-spec bus speed.  E.g. on RZ/Five, requesting a bus speed
+of 100 resp. 400 kHz will yield too-fast target bus speeds of 100806
+resp. 403226 Hz instead of 97656 resp. 390625 Hz.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix this by using DIV_ROUND_UP() in the subsequent divisions, too.
 
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
-Link: https://lore.kernel.org/r/20241216173648.526-4-m.masimov@maxima.ru
-[groeck: fixed description line length]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested on RZ/A1H, RZ/A2M, and RZ/Five.
+
+Fixes: d982d66514192cdb ("i2c: riic: remove clock and frequency restrictions")
+Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: <stable@vger.kernel.org> # v4.15+
+Link: https://lore.kernel.org/r/c59aea77998dfea1b4456c4b33b55ab216fcbf5e.1732284746.git.geert+renesas@glider.be
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/tmp513.c | 2 +-
+ drivers/i2c/busses/i2c-riic.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index 4ab06852efd9..aaba9521ebef 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -230,7 +230,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
- 	case TMP51X_REMOTE_TEMP_LIMIT_2:
- 	case TMP513_REMOTE_TEMP_LIMIT_3:
- 		// 1lsb = 0.0625 degrees centigrade
--		*val = sign_extend32(regval, 16) >> TMP51X_TEMP_SHIFT;
-+		*val = sign_extend32(regval, 15) >> TMP51X_TEMP_SHIFT;
- 		*val = DIV_ROUND_CLOSEST(*val * 625, 10);
- 		break;
- 	case TMP51X_N_FACTOR_AND_HYST_1:
--- 
-2.39.5
-
+--- a/drivers/i2c/busses/i2c-riic.c
++++ b/drivers/i2c/busses/i2c-riic.c
+@@ -323,7 +323,7 @@ static int riic_init_hw(struct riic_dev
+ 		if (brl <= (0x1F + 3))
+ 			break;
+ 
+-		total_ticks /= 2;
++		total_ticks = DIV_ROUND_UP(total_ticks, 2);
+ 		rate /= 2;
+ 	}
+ 
 
 
 
