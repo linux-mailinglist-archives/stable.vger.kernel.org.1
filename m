@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2947CA02C98
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B006A02BEE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4975188606A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B030163D17
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3723814A617;
-	Mon,  6 Jan 2025 15:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208D61547F3;
+	Mon,  6 Jan 2025 15:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATbEXRuZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoGOg8bB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E781A13B59A;
-	Mon,  6 Jan 2025 15:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE4116D9B8;
+	Mon,  6 Jan 2025 15:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178948; cv=none; b=ikT1t6w09xbKHh/33LgO7QXTkW3cD4ExlsQxAYhwtGWNKXL+dNd02K29vz7IVWQ+Y4yZ4ZPf9J6xEnV5u5QPQZyE04M1QYdw7NalrbtmhuSAInEnTu75iIf2R17Y4iiAelzsouGxQfXWMzsMY/vqBg4+N5UEMTdnGn8nTaHaWEk=
+	t=1736178471; cv=none; b=lXgYUENeBJx1RrCgST72PFQjEhg9B4/ZXjX4VP0nhP+mocXND6/DYWjbRoLSvRtLK7JDa0E3ADsk7DNjJldxP+/n96a5T6e1Owo99v7AmDsvtIpp09kFEOlibZHhD0somICCGgMiyZMslORkyA6Z9J64cQ1qVLQvjY+z2LFiH6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178948; c=relaxed/simple;
-	bh=cDrnrY5ZItaFZ+Z19TLw3orhUN77RboH/VXBFfyTDM0=;
+	s=arc-20240116; t=1736178471; c=relaxed/simple;
+	bh=K1dw0xbAcakC/pIXscgxiDnS4WQSISD1XjWflTrGg84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KuiUx7PYZNAf+6UpcuEWWhXIJRzpPOawzVmTkXMbHbf/In6nyoQXGpN/W8hphT1MPFgoV9HrzSlYt31KCJ/7gXEE8sC2UwSHbiawSZDymYbOnNlTcfm+tJBKRvquDeMf7evO957ouu1ziQ3FQirFnkArU8vMYo2zUB+xbzp9+XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATbEXRuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518D3C4CED2;
-	Mon,  6 Jan 2025 15:55:47 +0000 (UTC)
+	 MIME-Version; b=HJCBf46vHQXtj1etmsUavciLKzgNT2YVlti8Z8hBYIcJJRXOkD0SXo+6pKfPnEm+WoD80YT53qOYuQtqQV+pWPVjeJKhlAmZ1wgdLHcG8Pip2KAp+Tk0SnMvFn06fY6veGxNHIQ/yvOeXhsvYAjAL2xiv4xGPNEObVanrG8xgFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoGOg8bB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4EAC4CED2;
+	Mon,  6 Jan 2025 15:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178947;
-	bh=cDrnrY5ZItaFZ+Z19TLw3orhUN77RboH/VXBFfyTDM0=;
+	s=korg; t=1736178471;
+	bh=K1dw0xbAcakC/pIXscgxiDnS4WQSISD1XjWflTrGg84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATbEXRuZjAYL12CWv+43R7EpoSC1T1bBz619IS2ameYybXeKCkWzfEZ+wAJJg+BV+
-	 BvdAjpltWDp9LWFwHOAksB1fnmjfe5whyJwqXYg7XLLx0HpSW2ywTlpaO45O9anSEK
-	 EZOaNs4TNMKhOyAjPSFdBpBz2m71IThbyEh9wCGk=
+	b=RoGOg8bBBRMDYwjqz4aOKb4sap5V3uW2XommffoGTbHFMgz5rIm4O35BYUcgn5rYA
+	 CmR6TfsxS7B1kk372S7aettzXXitaQOiwxSV/DH5G29VxiQssEzBDcIdJtpexLzysy
+	 exN345I895LIaL6VQDpOtNddHoqn3Zp+3H+XPzLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Nikolay Borisov <nborisov@suse.com>,
 	Filipe Manana <fdmanana@suse.com>,
+	Zygo Blaxell <ce3g8jdj@umail.furryterror.org>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 145/168] btrfs: rename and export __btrfs_cow_block()
-Date: Mon,  6 Jan 2025 16:17:33 +0100
-Message-ID: <20250106151143.913139524@linuxfoundation.org>
+Subject: [PATCH 5.10 130/138] btrfs: dont set lock_owner when locking extent buffer for reading
+Date: Mon,  6 Jan 2025 16:17:34 +0100
+Message-ID: <20250106151138.156141653@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Zygo Blaxell <ce3g8jdj@umail.furryterror.org>
 
-[ Upstream commit 95f93bc4cbcac6121a5ee85cd5019ee8e7447e0b ]
+[ Upstream commit 97e86631bccddfbbe0c13f9a9605cdef11d31296 ]
 
-Rename and export __btrfs_cow_block() as btrfs_force_cow_block(). This is
-to allow to move defrag specific code out of ctree.c and into defrag.c in
-one of the next patches.
+In 196d59ab9ccc "btrfs: switch extent buffer tree lock to rw_semaphore"
+the functions for tree read locking were rewritten, and in the process
+the read lock functions started setting eb->lock_owner = current->pid.
+Previously lock_owner was only set in tree write lock functions.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
+Read locks are shared, so they don't have exclusive ownership of the
+underlying object, so setting lock_owner to any single value for a
+read lock makes no sense.  It's mostly harmless because write locks
+and read locks are mutually exclusive, and none of the existing code
+in btrfs (btrfs_init_new_buffer and print_eb_refs_lock) cares what
+nonsense is written in lock_owner when no writer is holding the lock.
+
+KCSAN does care, and will complain about the data race incessantly.
+Remove the assignments in the read lock functions because they're
+useless noise.
+
+Fixes: 196d59ab9ccc ("btrfs: switch extent buffer tree lock to rw_semaphore")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Zygo Blaxell <ce3g8jdj@umail.furryterror.org>
 Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 44f52bbe96df ("btrfs: fix use-after-free when COWing tree bock and tracing is enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 30 +++++++++++++++---------------
- fs/btrfs/ctree.h |  7 +++++++
- 2 files changed, 22 insertions(+), 15 deletions(-)
+ fs/btrfs/locking.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 345f205af619..42562c61f52e 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -386,13 +386,13 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
-  * bytes the allocator should try to find free next to the block it returns.
-  * This is just a hint and may be ignored by the allocator.
-  */
--static noinline int __btrfs_cow_block(struct btrfs_trans_handle *trans,
--			     struct btrfs_root *root,
--			     struct extent_buffer *buf,
--			     struct extent_buffer *parent, int parent_slot,
--			     struct extent_buffer **cow_ret,
--			     u64 search_start, u64 empty_size,
--			     enum btrfs_lock_nesting nest)
-+int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
-+			  struct btrfs_root *root,
-+			  struct extent_buffer *buf,
-+			  struct extent_buffer *parent, int parent_slot,
-+			  struct extent_buffer **cow_ret,
-+			  u64 search_start, u64 empty_size,
-+			  enum btrfs_lock_nesting nest)
- {
- 	struct btrfs_fs_info *fs_info = root->fs_info;
- 	struct btrfs_disk_key disk_key;
-@@ -541,7 +541,7 @@ static inline int should_cow_block(struct btrfs_trans_handle *trans,
+diff --git a/fs/btrfs/locking.c b/fs/btrfs/locking.c
+index 1e36a66fcefa..3d177ef92ab6 100644
+--- a/fs/btrfs/locking.c
++++ b/fs/btrfs/locking.c
+@@ -47,7 +47,6 @@ void __btrfs_tree_read_lock(struct extent_buffer *eb, enum btrfs_lock_nesting ne
+ 		start_ns = ktime_get_ns();
+ 
+ 	down_read_nested(&eb->lock, nest);
+-	eb->lock_owner = current->pid;
+ 	trace_btrfs_tree_read_lock(eb, start_ns);
  }
  
- /*
-- * cows a single block, see __btrfs_cow_block for the real work.
-+ * COWs a single block, see btrfs_force_cow_block() for the real work.
-  * This version of it has extra checks so that a block isn't COWed more than
-  * once per transaction, as long as it hasn't been written yet
-  */
-@@ -594,8 +594,8 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 	 * Also We don't care about the error, as it's handled internally.
- 	 */
- 	btrfs_qgroup_trace_subtree_after_cow(trans, root, buf);
--	ret = __btrfs_cow_block(trans, root, buf, parent,
--				 parent_slot, cow_ret, search_start, 0, nest);
-+	ret = btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
-+				    cow_ret, search_start, 0, nest);
+@@ -64,7 +63,6 @@ void btrfs_tree_read_lock(struct extent_buffer *eb)
+ int btrfs_try_tree_read_lock(struct extent_buffer *eb)
+ {
+ 	if (down_read_trylock(&eb->lock)) {
+-		eb->lock_owner = current->pid;
+ 		trace_btrfs_try_tree_read_lock(eb);
+ 		return 1;
+ 	}
+@@ -92,7 +90,6 @@ int btrfs_try_tree_write_lock(struct extent_buffer *eb)
+ void btrfs_tree_read_unlock(struct extent_buffer *eb)
+ {
+ 	trace_btrfs_tree_read_unlock(eb);
+-	eb->lock_owner = 0;
+ 	up_read(&eb->lock);
+ }
  
- 	trace_btrfs_cow_block(root, buf, *cow_ret);
- 
-@@ -746,11 +746,11 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
- 			search_start = last_block;
- 
- 		btrfs_tree_lock(cur);
--		err = __btrfs_cow_block(trans, root, cur, parent, i,
--					&cur, search_start,
--					min(16 * blocksize,
--					    (end_slot - i) * blocksize),
--					BTRFS_NESTING_COW);
-+		err = btrfs_force_cow_block(trans, root, cur, parent, i,
-+					    &cur, search_start,
-+					    min(16 * blocksize,
-+						(end_slot - i) * blocksize),
-+					    BTRFS_NESTING_COW);
- 		if (err) {
- 			btrfs_tree_unlock(cur);
- 			free_extent_buffer(cur);
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index 17ebcf19b444..61ec4ba5414d 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -2885,6 +2885,13 @@ int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 		    struct extent_buffer *parent, int parent_slot,
- 		    struct extent_buffer **cow_ret,
- 		    enum btrfs_lock_nesting nest);
-+int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
-+			  struct btrfs_root *root,
-+			  struct extent_buffer *buf,
-+			  struct extent_buffer *parent, int parent_slot,
-+			  struct extent_buffer **cow_ret,
-+			  u64 search_start, u64 empty_size,
-+			  enum btrfs_lock_nesting nest);
- int btrfs_copy_root(struct btrfs_trans_handle *trans,
- 		      struct btrfs_root *root,
- 		      struct extent_buffer *buf,
 -- 
 2.39.5
 
