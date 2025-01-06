@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-107285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B42A02B31
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91897A02A8E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3F573A1D6F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8D53A5519
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF79155300;
-	Mon,  6 Jan 2025 15:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3CB1DC046;
+	Mon,  6 Jan 2025 15:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mjwslzv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="km4WO/F/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD453148316;
-	Mon,  6 Jan 2025 15:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD501DA631;
+	Mon,  6 Jan 2025 15:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178009; cv=none; b=vC3We2iezyNT6lJWAe9a8qUDWeydU6JkeUNlyiROZfpYHlbV63yFWa/7LK3F6TaHIXNi2hlAzJdgAyK6bsSh5O3EQGlKaZDva4jywXR7gF/LAncfzRnSQtLhluY9VU+GyoCJ3tFlSj/mQNm6QoM8INHKbbh6SGe7UQly/JPK7H0=
+	t=1736177590; cv=none; b=jRZmxiFX4VAMsPYJsQFBgtHAgZEXjvZFO8pAZdpDUWanp2XMKkDY8LTy3TQ/ApkSd+AjL3k4NukUYIKNuSMgmH5j3IWrQgUchIVNwWPp1aoVC21qwSRdv7wWtBRbgZ8GwbanyeDToh9y4wQTmjwd0FvAk72bg4272UnpBaatEVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178009; c=relaxed/simple;
-	bh=N/erQIczHCHmasM8XDKSEs+u2OHslM/q7K+n9k83xHs=;
+	s=arc-20240116; t=1736177590; c=relaxed/simple;
+	bh=gtU6ZTo7CV2JxD2Po+P0Ub3eYFOw7dQG0kmR6KogHlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtJczSHXpx5poB9MQR9DFMa2vYJp66+ViB4hpjEbsNnfN50sow1XsRXBGmDmKZM2TM/t+XGW2NpX7U575JlIKV6k6XnOzB5SQYK4Q3Nj3AS+7OP0Ko47pSPZvmJb4Fa3rJwNrluZZmn+08I2k7Blyle/kL6BA6oCMuqXolu7XPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mjwslzv6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F51C4CED2;
-	Mon,  6 Jan 2025 15:40:06 +0000 (UTC)
+	 MIME-Version; b=RsftVtpfIPCfJ+X7lwm/xPjpsdu0IZloKOLnANPADqeWdGAGhojjBqxesR8gQJmvJnIGKcppxhAn8AwU7IvhYBNjbAaRsrK9OdssJ+RvJ3sKSXsKXKt2dOKgOOv5K2t6RWxMhtSVxhERFPbV9FbOJtFKPbbobPw9d5U0Ak0cDm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=km4WO/F/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9966C4CED2;
+	Mon,  6 Jan 2025 15:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178007;
-	bh=N/erQIczHCHmasM8XDKSEs+u2OHslM/q7K+n9k83xHs=;
+	s=korg; t=1736177590;
+	bh=gtU6ZTo7CV2JxD2Po+P0Ub3eYFOw7dQG0kmR6KogHlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mjwslzv6n4frmYAYBahmessl++pp78rvNngHVv9NTnGA3KonfJz6Mu1LerWHtZ/xH
-	 BlUv+eNeFwHShiH4cARM7SjYIRruCa9JtAgeEh/ZRGEDnRPrxfyJYwjzbqG06dCipe
-	 Jy9Ar+PTfGRJ0NLQMbmbnKlX6jOI49WGCVcE6h6A=
+	b=km4WO/F/gSN1yH0BpxmMpZpxT3ZpO/rNXUJWzXeIGyXJXdY1JJUvSEbuo5wdEVLMh
+	 RbAZ4nHG3jN70qOQxb8/7zm2zDfms80x8AYu+ALAkya1fBf6vYfsniw32z1vHOde1B
+	 xXNZTPavqFeCCCW74rHAt2frDK+hFV6z0mHBOjUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chase xd <sl1589472800@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 131/156] io_uring/rw: fix downgraded mshot read
+	Joshua Washington <joshwash@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 213/222] gve: guard XSK operations on the existence of queues
 Date: Mon,  6 Jan 2025 16:16:57 +0100
-Message-ID: <20250106151146.666840477@linuxfoundation.org>
+Message-ID: <20250106151158.829897172@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Joshua Washington <joshwash@google.com>
 
-commit 38fc96a58ce40257aec79b32e9b310c86907c63c upstream.
+commit 40338d7987d810fcaa95c500b1068a52b08eec9b upstream.
 
-The io-wq path can downgrade a multishot request to oneshot mode,
-however io_read_mshot() doesn't handle that and would still post
-multiple CQEs. That's not allowed, because io_req_post_cqe() requires
-stricter context requirements.
+This patch predicates the enabling and disabling of XSK pools on the
+existence of queues. As it stands, if the interface is down, disabling
+or enabling XSK pools would result in a crash, as the RX queue pointer
+would be NULL. XSK pool registration will occur as part of the next
+interface up.
 
-The described can only happen with pollable files that don't support
-FMODE_NOWAIT, which is an odd combination, so if even allowed it should
-be fairly rare.
+Similarly, xsk_wakeup needs be guarded against queues disappearing
+while the function is executing, so a check against the
+GVE_PRIV_FLAGS_NAPI_ENABLED flag is added to synchronize with the
+disabling of the bit and the synchronize_net() in gve_turndown.
 
+Fixes: fd8e40321a12 ("gve: Add AF_XDP zero-copy support for GQI-QPL format")
 Cc: stable@vger.kernel.org
-Reported-by: chase xd <sl1589472800@gmail.com>
-Fixes: bee1d5becdf5b ("io_uring: disable io-wq execution of multishot NOWAIT requests")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/c5c8c4a50a882fd581257b81bf52eee260ac29fd.1735407848.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Shailend Chand <shailend@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/rw.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/google/gve/gve_main.c |   22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -979,6 +979,8 @@ int io_read_mshot(struct io_kiocb *req,
- 		io_kbuf_recycle(req, issue_flags);
- 		if (ret < 0)
- 			req_set_fail(req);
-+	} else if (!(req->flags & REQ_F_APOLL_MULTISHOT)) {
-+		cflags = io_put_kbuf(req, ret, issue_flags);
- 	} else {
- 		/*
- 		 * Any successful return value will keep the multishot read
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1528,8 +1528,8 @@ static int gve_xsk_pool_enable(struct ne
+ 	if (err)
+ 		return err;
+ 
+-	/* If XDP prog is not installed, return */
+-	if (!priv->xdp_prog)
++	/* If XDP prog is not installed or interface is down, return. */
++	if (!priv->xdp_prog || !netif_running(dev))
+ 		return 0;
+ 
+ 	rx = &priv->rx[qid];
+@@ -1574,21 +1574,16 @@ static int gve_xsk_pool_disable(struct n
+ 	if (qid >= priv->rx_cfg.num_queues)
+ 		return -EINVAL;
+ 
+-	/* If XDP prog is not installed, unmap DMA and return */
+-	if (!priv->xdp_prog)
++	/* If XDP prog is not installed or interface is down, unmap DMA and
++	 * return.
++	 */
++	if (!priv->xdp_prog || !netif_running(dev))
+ 		goto done;
+ 
+-	tx_qid = gve_xdp_tx_queue_id(priv, qid);
+-	if (!netif_running(dev)) {
+-		priv->rx[qid].xsk_pool = NULL;
+-		xdp_rxq_info_unreg(&priv->rx[qid].xsk_rxq);
+-		priv->tx[tx_qid].xsk_pool = NULL;
+-		goto done;
+-	}
+-
+ 	napi_rx = &priv->ntfy_blocks[priv->rx[qid].ntfy_id].napi;
+ 	napi_disable(napi_rx); /* make sure current rx poll is done */
+ 
++	tx_qid = gve_xdp_tx_queue_id(priv, qid);
+ 	napi_tx = &priv->ntfy_blocks[priv->tx[tx_qid].ntfy_id].napi;
+ 	napi_disable(napi_tx); /* make sure current tx poll is done */
+ 
+@@ -1616,6 +1611,9 @@ static int gve_xsk_wakeup(struct net_dev
+ 	struct gve_priv *priv = netdev_priv(dev);
+ 	int tx_queue_id = gve_xdp_tx_queue_id(priv, queue_id);
+ 
++	if (!gve_get_napi_enabled(priv))
++		return -ENETDOWN;
++
+ 	if (queue_id >= priv->rx_cfg.num_queues || !priv->xdp_prog)
+ 		return -EINVAL;
+ 
 
 
 
