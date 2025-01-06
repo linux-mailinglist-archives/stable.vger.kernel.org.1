@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-107302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40B1A02B2F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13804A02CE5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 631F81885403
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05874165C3A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EAF18B46A;
-	Mon,  6 Jan 2025 15:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3A514A617;
+	Mon,  6 Jan 2025 15:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDRA7I3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxMc6QdB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9902D156C5E;
-	Mon,  6 Jan 2025 15:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D97DBA34;
+	Mon,  6 Jan 2025 15:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178057; cv=none; b=JNRg6htqfZBNdgd1Str1EjIDHG5Us25+gKQ/tz0zJYJbJqC/xtPomSomymtaKje7dSFlnmuiLo/x6dGQPOOVlCa0xTxdbBK4yJr54afIuJRstSa5WRglAg/uclJNVlc0/bTdfotV9/aQDu3AWuxKLvMnPa9vBls8BLBVQTGIJLk=
+	t=1736179131; cv=none; b=fdhpfGsW+UadQ5OlLjKZRjfTpv6F/Fw1TVlp079KeuBJ1L5ufI9/oeDyTvrEDyguqcCRx8A0zQCz5XxTDLZ2CLtstLnLdzNuZHUqZ8qa+3ty1OM5wTUirrmNPYPxmNLWa5g7q4wnnnJrESZPnDC/U6CavvvzP+WOvhKKp5v0Qc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178057; c=relaxed/simple;
-	bh=tWfOdCm46Ku3flze02GJx8ZWvB6lwLrcKOlMs0GXe7M=;
+	s=arc-20240116; t=1736179131; c=relaxed/simple;
+	bh=/U8NJTAwZQMZmxUU97oEYdbfOvsh+km0LtNaMolrYWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzkSbuwSSazbJUYPq2bdYoBZdsKAa9s7SeuJC9TRgaFTZnb+5A3iylPXH/M9ntCQaWdN+SKB+0b0zPCaBDqS2a8OQCn31CQWJelXC36MXegWCP5PEv3H5KWwttb0T0uNGPd0CT4cnDbH1/pVDY0BLNrJ2ixxQOpjhFm6Z0rKTmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDRA7I3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DA0C4CED2;
-	Mon,  6 Jan 2025 15:40:56 +0000 (UTC)
+	 MIME-Version; b=a1VV4bABhyvAre1oz3SXEBOyoLSKJrn2Vfxp4TrIITNHspnHpC73sBVhc1VZHXGV7SMRAFyI2YD1GHNOEX7w1QtRSRZSJp6LY6MwHkl9GUMi7/ZUpuQzUp9jiJGQQ0qaFkDJOdmaL7LKJ2EWVpG+D367xUeXH7OdrIuaNe2joLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxMc6QdB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D294C4CEEB;
+	Mon,  6 Jan 2025 15:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178057;
-	bh=tWfOdCm46Ku3flze02GJx8ZWvB6lwLrcKOlMs0GXe7M=;
+	s=korg; t=1736179130;
+	bh=/U8NJTAwZQMZmxUU97oEYdbfOvsh+km0LtNaMolrYWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDRA7I3PkGyhQYo71Cx5btkibz+iF0JgoC4jbQeHcGIcVwRUHx7VeGjWZcMUOZgRN
-	 hjAQDxVyqa3zudM7FHp/L4Nrw0HcxRU4ru4uDOMJa9b6c3WhuapAXGgCdwiFZBPI7V
-	 GDdbiZY7NpJOkf63QacKGtyj7ojhY0KXM+NUS7fA=
+	b=CxMc6QdBLNX+UnMAe6saIZyMS/O0/RgshwStfq7RxqSZ4hvWVyfUV8w5ZDZ9lLXX5
+	 PT5+Jc1pHmERp1+HZ9iT66UwfzGB7D7H+vIv9HA6EIqwCrFc6I8MwET0DizfHVrMsF
+	 ijHuxi4Ve0OYcKtLlZmetJAoE9yr/nDAPpV9bIaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Washington <joshwash@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Shailend Chand <shailend@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.12 146/156] gve: fix XDP allocation path in edge cases
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.4 36/93] mtd: diskonchip: Cast an operand to prevent potential overflow
 Date: Mon,  6 Jan 2025 16:17:12 +0100
-Message-ID: <20250106151147.227373805@linuxfoundation.org>
+Message-ID: <20250106151130.064855333@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-commit de63ac44a527b2c5067551dbd70d939fe151325a upstream.
+commit 9b458e8be0d13e81ed03fffa23f8f9b528bbd786 upstream.
 
-This patch fixes a number of consistency issues in the queue allocation
-path related to XDP.
+There may be a potential integer overflow issue in inftl_partscan().
+parts[0].size is defined as "uint64_t"  while mtd->erasesize and
+ip->firstUnit are defined as 32-bit unsigned integer. The result of
+the calculation will be limited to 32 bits without correct casting.
 
-As it stands, the number of allocated XDP queues changes in three
-different scenarios.
-1) Adding an XDP program while the interface is up via
-   gve_add_xdp_queues
-2) Removing an XDP program while the interface is up via
-   gve_remove_xdp_queues
-3) After queues have been allocated and the old queue memory has been
-   removed in gve_queues_start.
-
-However, the requirement for the interface to be up for
-gve_(add|remove)_xdp_queues to be called, in conjunction with the fact
-that the number of queues stored in priv isn't updated until _after_ XDP
-queues have been allocated in the normal queue allocation path means
-that if an XDP program is added while the interface is down, XDP queues
-won't be added until the _second_ if_up, not the first.
-
-Given the expectation that the number of XDP queues is equal to the
-number of RX queues, scenario (3) has another problematic implication.
-When changing the number of queues while an XDP program is loaded, the
-number of XDP queues must be updated as well, as there is logic in the
-driver (gve_xdp_tx_queue_id()) which relies on every RX queue having a
-corresponding XDP TX queue. However, the number of XDP queues stored in
-priv would not be updated until _after_ a close/open leading to a
-mismatch in the number of XDP queues reported vs the number of XDP
-queues which actually exist after the queue count update completes.
-
-This patch remedies these issues by doing the following:
-1) The allocation config getter function is set up to retrieve the
-   _expected_ number of XDP queues to allocate instead of relying
-   on the value stored in `priv` which is only updated once the queues
-   have been allocated.
-2) When adjusting queues, XDP queues are adjusted to match the number of
-   RX queues when XDP is enabled. This only works in the case when
-   queues are live, so part (1) of the fix must still be available in
-   the case that queues are adjusted when there is an XDP program and
-   the interface is down.
-
-Fixes: 5f08cd3d6423 ("gve: Alloc before freeing when adjusting queues")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Shailend Chand <shailend@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/diskonchip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -930,11 +930,13 @@ static void gve_init_sync_stats(struct g
- static void gve_tx_get_curr_alloc_cfg(struct gve_priv *priv,
- 				      struct gve_tx_alloc_rings_cfg *cfg)
- {
-+	int num_xdp_queues = priv->xdp_prog ? priv->rx_cfg.num_queues : 0;
-+
- 	cfg->qcfg = &priv->tx_cfg;
- 	cfg->raw_addressing = !gve_is_qpl(priv);
- 	cfg->ring_size = priv->tx_desc_cnt;
- 	cfg->start_idx = 0;
--	cfg->num_rings = gve_num_tx_queues(priv);
-+	cfg->num_rings = priv->tx_cfg.num_queues + num_xdp_queues;
- 	cfg->tx = priv->tx;
- }
+--- a/drivers/mtd/nand/raw/diskonchip.c
++++ b/drivers/mtd/nand/raw/diskonchip.c
+@@ -1221,7 +1221,7 @@ static inline int __init inftl_partscan(
+ 		    (i == 0) && (ip->firstUnit > 0)) {
+ 			parts[0].name = " DiskOnChip IPL / Media Header partition";
+ 			parts[0].offset = 0;
+-			parts[0].size = mtd->erasesize * ip->firstUnit;
++			parts[0].size = (uint64_t)mtd->erasesize * ip->firstUnit;
+ 			numparts = 1;
+ 		}
  
-@@ -1843,6 +1845,7 @@ int gve_adjust_queues(struct gve_priv *p
- {
- 	struct gve_tx_alloc_rings_cfg tx_alloc_cfg = {0};
- 	struct gve_rx_alloc_rings_cfg rx_alloc_cfg = {0};
-+	int num_xdp_queues;
- 	int err;
- 
- 	gve_get_curr_alloc_cfgs(priv, &tx_alloc_cfg, &rx_alloc_cfg);
-@@ -1853,6 +1856,10 @@ int gve_adjust_queues(struct gve_priv *p
- 	rx_alloc_cfg.qcfg = &new_rx_config;
- 	tx_alloc_cfg.num_rings = new_tx_config.num_queues;
- 
-+	/* Add dedicated XDP TX queues if enabled. */
-+	num_xdp_queues = priv->xdp_prog ? new_rx_config.num_queues : 0;
-+	tx_alloc_cfg.num_rings += num_xdp_queues;
-+
- 	if (netif_running(priv->dev)) {
- 		err = gve_adjust_config(priv, &tx_alloc_cfg, &rx_alloc_cfg);
- 		return err;
 
 
 
