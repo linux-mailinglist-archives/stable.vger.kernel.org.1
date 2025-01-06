@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583FFA02B5A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25701A02ACC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35E001886340
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91EBD1882170
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826531DA100;
-	Mon,  6 Jan 2025 15:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47215155352;
+	Mon,  6 Jan 2025 15:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZ71yVU+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l94KLoY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30707155352;
-	Mon,  6 Jan 2025 15:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038B914D28C;
+	Mon,  6 Jan 2025 15:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178171; cv=none; b=GxWyd45pfcslMH98+MjizqShYRYUa1lj3KIsh+OiqTkSv5mzhknI+a95njWShBLZdq6aE+IGprzCVz439ker79FVsMVHx8x2VvixSKUoWO7HVn0l5LkKWn/U2jJaRH597Qo5fgthtq2Hn6ASufIM7m3Gs2mdCInHxFG6gHrMqnE=
+	t=1736177820; cv=none; b=egt/Gbhw7Kz9c8AX41BH7g/7LuYYasHiVTAhgnFBVE1AxzZv8UzjSsAIaJ+jHlM2wsr+RIfGGl8VTZjp8uBRH6TtHxAFcim9L6tAdltQMUJxgM/CIrq4lC2JoXKT8WCb4wg8f9g51gkpoW2l1K0rhFE/TngeadAEDej51E001Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178171; c=relaxed/simple;
-	bh=l8P+v5diPu+3X+erDp7g7gxyDv3PRU2mF4nlQuQAsUM=;
+	s=arc-20240116; t=1736177820; c=relaxed/simple;
+	bh=x119f9Qp3tLDCK8b33LvBIZXErZclCMKJETt0WU57tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPS/+1vxQs/9By93z7zgBrJimTDLpi0gdcSMiLn9rcPEKcSJ+BCqG8V6aOiW5uYvU92NoP3Risx7R3T5stupd7CNNS6T8WF2D2vis2KFx5zxbqoJ39QQR1eaeqppvo9909qauqo5SzcWe1o5uNpwNcl+lLKbRWJ+UVjCS/O8iHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZ71yVU+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD810C4CED2;
-	Mon,  6 Jan 2025 15:42:50 +0000 (UTC)
+	 MIME-Version; b=fLZzs1Zo8oM2hCQT1295n3T4O3BhVTkx+vIeB4qOvc4xUZgmPblDyFKU59+cDNchjr9yisRNwI3GdQCELzMkuZp1NZtgect2Yboa4OVucsTaXkKQnlrEYEUXzH0n2xWIis937HzqyvjffkEfO1SKIEutX6EyQpTb0xRT6I0XTBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l94KLoY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5695FC4CEE1;
+	Mon,  6 Jan 2025 15:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178171;
-	bh=l8P+v5diPu+3X+erDp7g7gxyDv3PRU2mF4nlQuQAsUM=;
+	s=korg; t=1736177819;
+	bh=x119f9Qp3tLDCK8b33LvBIZXErZclCMKJETt0WU57tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RZ71yVU+SEng4nD1M68L07l+D+B8SuigoUyTRrp56j5XC/NtEFbZJQ19mKTVoL0nW
-	 1k8a7sqRu9Wyx1X10PVGkMqZcGNSY+suHZR0pn1U7P6KvJWrrRbGSsM8gASkzoe8aY
-	 T8RynPMKrdbynIw1zJXlnAs9WVLreiqrx8AdTrcE=
+	b=l94KLoY/qvnnV6fBxEqOswKzwRD2fd4J8xoC8EB3nR309Zk3ZxQ9Mjz9yjVzxhy3c
+	 3BGZV0yu1Bg8wbX3rzZqDeNvzPt946tXyHTRqjOAyJoFzFSCyC0ap8LjGLTCeM7rNO
+	 8S0DPvR8o0oroDhKTyQgrDEdbhTMxucKFNTnR94A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 029/138] USB: serial: option: add Telit FE910C04 rmnet compositions
+	Liang Jie <liangjie@lixiang.com>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 067/156] net: sfc: Correct key_len for efx_tc_ct_zone_ht_params
 Date: Mon,  6 Jan 2025 16:15:53 +0100
-Message-ID: <20250106151134.321928436@linuxfoundation.org>
+Message-ID: <20250106151144.259306595@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Liang Jie <liangjie@lixiang.com>
 
-commit 8366e64a4454481339e7c56a8ad280161f2e441d upstream.
+[ Upstream commit a8620de72e5676993ec3a3b975f7c10908f5f60f ]
 
-Add the following Telit FE910C04 compositions:
+In efx_tc_ct_zone_ht_params, the key_len was previously set to
+offsetof(struct efx_tc_ct_zone, linkage). This calculation is incorrect
+because it includes any padding between the zone field and the linkage
+field due to structure alignment, which can vary between systems.
 
-0x10c0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 13 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This patch updates key_len to use sizeof_field(struct efx_tc_ct_zone, zone)
+, ensuring that the hash table correctly uses the zone as the key. This fix
+prevents potential hash lookup errors and improves connection tracking
+reliability.
 
-0x10c4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x10c8: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c8 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c3bb5c6acd4e ("sfc: functions to register for conntrack zone offload")
+Signed-off-by: Liang Jie <liangjie@lixiang.com>
+Acked-by: Edward Cree <ecree.xilinx@gmail.com>
+Link: https://patch.msgid.link/20241230093709.3226854-1-buaajxlj@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/sfc/tc_conntrack.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1397,6 +1397,12 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c0, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c4, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+diff --git a/drivers/net/ethernet/sfc/tc_conntrack.c b/drivers/net/ethernet/sfc/tc_conntrack.c
+index d90206f27161..c0603f54cec3 100644
+--- a/drivers/net/ethernet/sfc/tc_conntrack.c
++++ b/drivers/net/ethernet/sfc/tc_conntrack.c
+@@ -16,7 +16,7 @@ static int efx_tc_flow_block(enum tc_setup_type type, void *type_data,
+ 			     void *cb_priv);
+ 
+ static const struct rhashtable_params efx_tc_ct_zone_ht_params = {
+-	.key_len	= offsetof(struct efx_tc_ct_zone, linkage),
++	.key_len	= sizeof_field(struct efx_tc_ct_zone, zone),
+ 	.key_offset	= 0,
+ 	.head_offset	= offsetof(struct efx_tc_ct_zone, linkage),
+ };
+-- 
+2.39.5
+
 
 
 
