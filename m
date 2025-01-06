@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97F8A02B51
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A96A02BC6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E2A23A25DE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB9371886872
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D86E1CFEB2;
-	Mon,  6 Jan 2025 15:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E6C1DEFF5;
+	Mon,  6 Jan 2025 15:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZHTHrbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFOWYOEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2B516D9B8;
-	Mon,  6 Jan 2025 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D471DED64;
+	Mon,  6 Jan 2025 15:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178063; cv=none; b=dnl/Y8Qiylk5B9AjsGzunXIqSfSLz4SF7uLR14Hc8Y92aSE4KzccbIJy1HH5isLzo1XvJN7CZNp29Bjb6Np2llAKCjv1v2K6WJlIE7/M2T+tZHyjAEwwX1dcBxxeVwoTIB1S8tBw9QMIJPCZVypDy1SEcfMTJVux9TadrhBwBXs=
+	t=1736178416; cv=none; b=LzcrgtFs1agR40sbyAL+i9921hIfihIoJTpYejN5XPjb1ZidklyMiXKk80xaxE1Te4eU4BsjmbnQkd4hEo16fwJ8oV++FLUyFhQ43gUi0WFPL8robQgwe0/PIWBTaHhvgVt7uVUeQQSlxUHw+Pp0Sgf+engiqqcA/9Qelp487IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178063; c=relaxed/simple;
-	bh=+wDlo9R50pJegD2MbagxfKRnn/h0Mn+rMj0rF+rhqVM=;
+	s=arc-20240116; t=1736178416; c=relaxed/simple;
+	bh=KN5FeK4RZDyOnaLk6q285263m+MGC/DAU/NevG5aHEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b10YeSLvxuijvsJBQ6jLRXAIS2XZSeTpLi4XkbuuQugO6SUdPPRRdEgepn4s3blHaT54dOWhTtJ0v6fL5MJ2ky6P6JlHwPbbGq7I3ArAOVLSzIbxpxkEBRG6+qd81eGiOFXJdRIBkDBATs2+5J4S3muwEDnvPZfI92p4pCuCHyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZHTHrbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3F0C4CED2;
-	Mon,  6 Jan 2025 15:41:03 +0000 (UTC)
+	 MIME-Version; b=WDk4a4MzGMhlOH/1ZBBC1/VcN/VqcHMhx9i44McYAD9aQrbaCJW+y+8aSRBySCi0BKFqMuLDruf+jGcCVDv6LA/+l7oJBS5yQ3Pvo/wTzJWeXbzeg3FxN+WZxoJJ3OyOAXhSp7Ve6Z4Tpmyc6akfgBe3YwKKzomsIqk0tawOxN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFOWYOEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FD5C4CED2;
+	Mon,  6 Jan 2025 15:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178063;
-	bh=+wDlo9R50pJegD2MbagxfKRnn/h0Mn+rMj0rF+rhqVM=;
+	s=korg; t=1736178415;
+	bh=KN5FeK4RZDyOnaLk6q285263m+MGC/DAU/NevG5aHEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ZHTHrbUimFZnZE8L/edvVZd0EusJe21ghdzXqnb0D1gt6C2B4hTuOMecKTVjgxoI
-	 HygQ904FAHI9QxLzdpH11HRVVWZqIxIcMTOD83DyBCEtMUoo6qciqcFtNTvmOnEjY8
-	 UhpoKo5X9yfh5V1JYLODnmyv2VE45yzb2t/3rG00=
+	b=UFOWYOEastygZME4J9LsxEtphuTdnaaM6e5OEmr/hqIwFVaUaJh1DWtVzDZOnVFvR
+	 i2sGDVY7ZouH6dZI5SndVGWjSxwmnoOUE9Vg+sXdYp5Yx980lGTVQaUV+ArzrZ8mOK
+	 gDb3v9PSSxNYk8gRpdDHYBhOFRKXg/BuH+vpA5zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Washington <joshwash@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 148/156] gve: trigger RX NAPI instead of TX NAPI in gve_xsk_wakeup
+	Vitalii Mordan <mordan@ispras.ru>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 110/138] eth: bcmsysport: fix call balance of priv->clk handling routines
 Date: Mon,  6 Jan 2025 16:17:14 +0100
-Message-ID: <20250106151147.303047066@linuxfoundation.org>
+Message-ID: <20250106151137.392826000@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-commit fb3a9a1165cea104b5ab3753e88218e4497b01c1 upstream.
+[ Upstream commit b255ef45fcc2141c1bf98456796abb956d843a27 ]
 
-Commit ba0925c34e0f ("gve: process XSK TX descriptors as part of RX NAPI")
-moved XSK TX processing to be part of the RX NAPI. However, that commit
-did not include triggering the RX NAPI in gve_xsk_wakeup. This is
-necessary because the TX NAPI only processes TX completions, meaning
-that a TX wakeup would not actually trigger XSK descriptor processing.
-Also, the branch on XDP_WAKEUP_TX was supposed to have been removed, as
-the NAPI should be scheduled whether the wakeup is for RX or TX.
+Check the return value of clk_prepare_enable to ensure that priv->clk has
+been successfully enabled.
 
-Fixes: ba0925c34e0f ("gve: process XSK TX descriptors as part of RX NAPI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Link: https://patch.msgid.link/20241221032807.302244-1-pkaligineedi@google.com
+If priv->clk was not enabled during bcm_sysport_probe, bcm_sysport_resume,
+or bcm_sysport_open, it must not be disabled in any subsequent execution
+paths.
+
+Fixes: 31bc72d97656 ("net: systemport: fetch and use clock resources")
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20241227123007.2333397-1-mordan@ispras.ru
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c |   21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1714,7 +1714,7 @@ done:
- static int gve_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags)
- {
- 	struct gve_priv *priv = netdev_priv(dev);
--	int tx_queue_id = gve_xdp_tx_queue_id(priv, queue_id);
-+	struct napi_struct *napi;
+diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
+index ae1cf2ead9a9..1c6b7808a100 100644
+--- a/drivers/net/ethernet/broadcom/bcmsysport.c
++++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+@@ -1951,7 +1951,11 @@ static int bcm_sysport_open(struct net_device *dev)
+ 	unsigned int i;
+ 	int ret;
  
- 	if (!gve_get_napi_enabled(priv))
- 		return -ENETDOWN;
-@@ -1722,19 +1722,12 @@ static int gve_xsk_wakeup(struct net_dev
- 	if (queue_id >= priv->rx_cfg.num_queues || !priv->xdp_prog)
- 		return -EINVAL;
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		netdev_err(dev, "could not enable priv clock\n");
++		return ret;
++	}
  
--	if (flags & XDP_WAKEUP_TX) {
--		struct gve_tx_ring *tx = &priv->tx[tx_queue_id];
--		struct napi_struct *napi =
--			&priv->ntfy_blocks[tx->ntfy_id].napi;
--
--		if (!napi_if_scheduled_mark_missed(napi)) {
--			/* Call local_bh_enable to trigger SoftIRQ processing */
--			local_bh_disable();
--			napi_schedule(napi);
--			local_bh_enable();
--		}
--
--		tx->xdp_xsk_wakeup++;
-+	napi = &priv->ntfy_blocks[gve_rx_idx_to_ntfy(priv, queue_id)].napi;
-+	if (!napi_if_scheduled_mark_missed(napi)) {
-+		/* Call local_bh_enable to trigger SoftIRQ processing */
-+		local_bh_disable();
-+		napi_schedule(napi);
-+		local_bh_enable();
+ 	/* Reset UniMAC */
+ 	umac_reset(priv);
+@@ -2622,7 +2626,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
+ 		goto err_deregister_notifier;
  	}
  
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		dev_err(&pdev->dev, "could not enable priv clock\n");
++		goto err_deregister_netdev;
++	}
+ 
+ 	priv->rev = topctrl_readl(priv, REV_CNTL) & REV_MASK;
+ 	dev_info(&pdev->dev,
+@@ -2636,6 +2644,8 @@ static int bcm_sysport_probe(struct platform_device *pdev)
+ 
  	return 0;
+ 
++err_deregister_netdev:
++	unregister_netdev(dev);
+ err_deregister_notifier:
+ 	unregister_dsa_notifier(&priv->dsa_notifier);
+ err_deregister_fixed_link:
+@@ -2807,7 +2817,12 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
+ 	if (!netif_running(dev))
+ 		return 0;
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		netdev_err(dev, "could not enable priv clock\n");
++		return ret;
++	}
++
+ 	if (priv->wolopts)
+ 		clk_disable_unprepare(priv->wol_clk);
+ 
+-- 
+2.39.5
+
 
 
 
