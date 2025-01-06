@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-107431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B83CA02BD2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3605FA02C89
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D24E21886A06
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9A9B1882889
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E02818B46A;
-	Mon,  6 Jan 2025 15:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1495014A60D;
+	Mon,  6 Jan 2025 15:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/QBp9zI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibdqXBut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428346088F;
-	Mon,  6 Jan 2025 15:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46E713B59A;
+	Mon,  6 Jan 2025 15:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178442; cv=none; b=G0t48foy8K4kwOl1fxl6wHE6Lbv45GBH98pcuwWjtSHyK4vppZq1roGXGaOJ8xbCW4D9gb/Th0k5+myX1ErZmq7Mz9/HZaccz/ZQOtFSkbyZETL0y+8HpkH0q+n8J3mrYrneUQH76eywbEDIyadwiovfFNAG95tNxAIxHETrAlQ=
+	t=1736178916; cv=none; b=qB5fukwT/fPCMmYgkieK/isfSSw8k0dJB9tWAYg7A2b2rT6gm0gu2mFcibhSMg2CoB4Xn3H9S3vZeMIfkRlBUuscrT2vah7RE/nVollEksTnej29DYwgKXt7WFXIhoigWyNn/fgeyHdVjgvJPKeZlSCYUmljgS2zxqihACucTy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178442; c=relaxed/simple;
-	bh=4eSyPqUBhvi/AeBcJ33/aj5uA3o4Ffx/EpnkW/vd0+0=;
+	s=arc-20240116; t=1736178916; c=relaxed/simple;
+	bh=qyPmKsHc80lri3fZDDaaCznwa7gdR5EmUlOd4x6/mX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDMI734Kon4mvSoiMZTrwP6DODsBXJZvVp1Zede4q7MWfm3SMzDWQUjJHm9/iI6BgTKnUFu3MQFw1Ix0PrmIOQDxSUkGCi7gMNDa/SCZ5cscKwn8LOxwYoxzUHT50loVTJhlFugvMKiLvTyI4vzy8RRtQt04dymh2xvAxakl7j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/QBp9zI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2F1C4CED2;
-	Mon,  6 Jan 2025 15:47:21 +0000 (UTC)
+	 MIME-Version; b=avUdk6ud1CFduhN9TBu609htw+/YoRNcu6pEx4rO+1U9rUGWiMWvu37Ix0rLXqTQZkIpuQCTedGm4CO2iAk+3jin+fWCF4Q6zTop+uQTLxY8PStg0Q2QBQF2jWaRUqdFnP1UMvCXqIOYwhV83EuxK8F5PBoJ9onT/ldH/wpqC5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibdqXBut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F80C4CED2;
+	Mon,  6 Jan 2025 15:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178442;
-	bh=4eSyPqUBhvi/AeBcJ33/aj5uA3o4Ffx/EpnkW/vd0+0=;
+	s=korg; t=1736178916;
+	bh=qyPmKsHc80lri3fZDDaaCznwa7gdR5EmUlOd4x6/mX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/QBp9zIO9+NSK39yacr8xMDqJJe7Aea8Py9w33aHdO7WNTSkhI30EirMKHEXEZqc
-	 qITR/0PPNScKU8lgw4WxRmbvxND9f+LgININbajgIYU40/rqXFMYWA00vACwVCeATs
-	 eRH4V8aUTxfBVB9zfe3geTzcWD6onn8gvxYFNDr4=
+	b=ibdqXButPAmh9VjQjmXZB28Cws2lE3Fm4Uva//IeaWLhlAr+SibB9YdKR9M6iF3sS
+	 eaRhdXRPfWh/RgPWR34vOpUxfybO1XdB6szhJHuxOMv1txzsS75kbpnp5BjRwm+D3g
+	 9w39Vm3hZ4oz8Q5s7KuQEwiKYPHt9X6ArZ+9vTEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 118/138] btrfs: rename and export __btrfs_cow_block()
+Subject: [PATCH 5.15 134/168] netfilter: nft_set_hash: unaligned atomic read on struct nft_set_ext
 Date: Mon,  6 Jan 2025 16:17:22 +0100
-Message-ID: <20250106151137.697153186@linuxfoundation.org>
+Message-ID: <20250106151143.500363413@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 95f93bc4cbcac6121a5ee85cd5019ee8e7447e0b ]
+[ Upstream commit 542ed8145e6f9392e3d0a86a0e9027d2ffd183e4 ]
 
-Rename and export __btrfs_cow_block() as btrfs_force_cow_block(). This is
-to allow to move defrag specific code out of ctree.c and into defrag.c in
-one of the next patches.
+Access to genmask field in struct nft_set_ext results in unaligned
+atomic read:
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 44f52bbe96df ("btrfs: fix use-after-free when COWing tree bock and tracing is enabled")
+[   72.130109] Unable to handle kernel paging request at virtual address ffff0000c2bb708c
+[   72.131036] Mem abort info:
+[   72.131213]   ESR = 0x0000000096000021
+[   72.131446]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   72.132209]   SET = 0, FnV = 0
+[   72.133216]   EA = 0, S1PTW = 0
+[   72.134080]   FSC = 0x21: alignment fault
+[   72.135593] Data abort info:
+[   72.137194]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
+[   72.142351]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   72.145989]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   72.150115] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000237d27000
+[   72.154893] [ffff0000c2bb708c] pgd=0000000000000000, p4d=180000023ffff403, pud=180000023f84b403, pmd=180000023f835403,
++pte=0068000102bb7707
+[   72.163021] Internal error: Oops: 0000000096000021 [#1] SMP
+[...]
+[   72.170041] CPU: 7 UID: 0 PID: 54 Comm: kworker/7:0 Tainted: G            E      6.13.0-rc3+ #2
+[   72.170509] Tainted: [E]=UNSIGNED_MODULE
+[   72.170720] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202302-for-qemu 03/01/2023
+[   72.171192] Workqueue: events_power_efficient nft_rhash_gc [nf_tables]
+[   72.171552] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   72.171915] pc : nft_rhash_gc+0x200/0x2d8 [nf_tables]
+[   72.172166] lr : nft_rhash_gc+0x128/0x2d8 [nf_tables]
+[   72.172546] sp : ffff800081f2bce0
+[   72.172724] x29: ffff800081f2bd40 x28: ffff0000c2bb708c x27: 0000000000000038
+[   72.173078] x26: ffff0000c6780ef0 x25: ffff0000c643df00 x24: ffff0000c6778f78
+[   72.173431] x23: 000000000000001a x22: ffff0000c4b1f000 x21: ffff0000c6780f78
+[   72.173782] x20: ffff0000c2bb70dc x19: ffff0000c2bb7080 x18: 0000000000000000
+[   72.174135] x17: ffff0000c0a4e1c0 x16: 0000000000003000 x15: 0000ac26d173b978
+[   72.174485] x14: ffffffffffffffff x13: 0000000000000030 x12: ffff0000c6780ef0
+[   72.174841] x11: 0000000000000000 x10: ffff800081f2bcf8 x9 : ffff0000c3000000
+[   72.175193] x8 : 00000000000004be x7 : 0000000000000000 x6 : 0000000000000000
+[   72.175544] x5 : 0000000000000040 x4 : ffff0000c3000010 x3 : 0000000000000000
+[   72.175871] x2 : 0000000000003a98 x1 : ffff0000c2bb708c x0 : 0000000000000004
+[   72.176207] Call trace:
+[   72.176316]  nft_rhash_gc+0x200/0x2d8 [nf_tables] (P)
+[   72.176653]  process_one_work+0x178/0x3d0
+[   72.176831]  worker_thread+0x200/0x3f0
+[   72.176995]  kthread+0xe8/0xf8
+[   72.177130]  ret_from_fork+0x10/0x20
+[   72.177289] Code: 54fff984 d503201f d2800080 91003261 (f820303f)
+[   72.177557] ---[ end trace 0000000000000000 ]---
+
+Align struct nft_set_ext to word size to address this and
+documentation it.
+
+pahole reports that this increases the size of elements for rhash and
+pipapo in 8 bytes on x86_64.
+
+Fixes: 7ffc7481153b ("netfilter: nft_set_hash: skip duplicated elements pending gc run")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 30 +++++++++++++++---------------
- fs/btrfs/ctree.h |  7 +++++++
- 2 files changed, 22 insertions(+), 15 deletions(-)
+ include/net/netfilter/nf_tables.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index c71b02beb358..a376e42de9b2 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -1009,13 +1009,13 @@ static struct extent_buffer *alloc_tree_block_no_bg_flush(
-  * bytes the allocator should try to find free next to the block it returns.
-  * This is just a hint and may be ignored by the allocator.
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index e2c786af2fc6..9ee225cff611 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -690,15 +690,18 @@ struct nft_set_ext_tmpl {
+ /**
+  *	struct nft_set_ext - set extensions
+  *
+- *	@genmask: generation mask
++ *	@genmask: generation mask, but also flags (see NFT_SET_ELEM_DEAD_BIT)
+  *	@offset: offsets of individual extension types
+  *	@data: beginning of extension data
++ *
++ *	This structure must be aligned to word size, otherwise atomic bitops
++ *	on genmask field can cause alignment failure on some archs.
   */
--static noinline int __btrfs_cow_block(struct btrfs_trans_handle *trans,
--			     struct btrfs_root *root,
--			     struct extent_buffer *buf,
--			     struct extent_buffer *parent, int parent_slot,
--			     struct extent_buffer **cow_ret,
--			     u64 search_start, u64 empty_size,
--			     enum btrfs_lock_nesting nest)
-+int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
-+			  struct btrfs_root *root,
-+			  struct extent_buffer *buf,
-+			  struct extent_buffer *parent, int parent_slot,
-+			  struct extent_buffer **cow_ret,
-+			  u64 search_start, u64 empty_size,
-+			  enum btrfs_lock_nesting nest)
+ struct nft_set_ext {
+ 	u8	genmask;
+ 	u8	offset[NFT_SET_EXT_NUM];
+ 	char	data[];
+-};
++} __aligned(BITS_PER_LONG / 8);
+ 
+ static inline void nft_set_ext_prepare(struct nft_set_ext_tmpl *tmpl)
  {
- 	struct btrfs_fs_info *fs_info = root->fs_info;
- 	struct btrfs_disk_key disk_key;
-@@ -1469,7 +1469,7 @@ static inline int should_cow_block(struct btrfs_trans_handle *trans,
- }
- 
- /*
-- * cows a single block, see __btrfs_cow_block for the real work.
-+ * COWs a single block, see btrfs_force_cow_block() for the real work.
-  * This version of it has extra checks so that a block isn't COWed more than
-  * once per transaction, as long as it hasn't been written yet
-  */
-@@ -1511,8 +1511,8 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 	 * Also We don't care about the error, as it's handled internally.
- 	 */
- 	btrfs_qgroup_trace_subtree_after_cow(trans, root, buf);
--	ret = __btrfs_cow_block(trans, root, buf, parent,
--				 parent_slot, cow_ret, search_start, 0, nest);
-+	ret = btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
-+				    cow_ret, search_start, 0, nest);
- 
- 	trace_btrfs_cow_block(root, buf, *cow_ret);
- 
-@@ -1678,11 +1678,11 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
- 			search_start = last_block;
- 
- 		btrfs_tree_lock(cur);
--		err = __btrfs_cow_block(trans, root, cur, parent, i,
--					&cur, search_start,
--					min(16 * blocksize,
--					    (end_slot - i) * blocksize),
--					BTRFS_NESTING_COW);
-+		err = btrfs_force_cow_block(trans, root, cur, parent, i,
-+					    &cur, search_start,
-+					    min(16 * blocksize,
-+						(end_slot - i) * blocksize),
-+					    BTRFS_NESTING_COW);
- 		if (err) {
- 			btrfs_tree_unlock(cur);
- 			free_extent_buffer(cur);
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index 3ddb09f2b168..7ad3091db571 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -2713,6 +2713,13 @@ int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 		    struct extent_buffer *parent, int parent_slot,
- 		    struct extent_buffer **cow_ret,
- 		    enum btrfs_lock_nesting nest);
-+int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
-+			  struct btrfs_root *root,
-+			  struct extent_buffer *buf,
-+			  struct extent_buffer *parent, int parent_slot,
-+			  struct extent_buffer **cow_ret,
-+			  u64 search_start, u64 empty_size,
-+			  enum btrfs_lock_nesting nest);
- int btrfs_copy_root(struct btrfs_trans_handle *trans,
- 		      struct btrfs_root *root,
- 		      struct extent_buffer *buf,
 -- 
 2.39.5
 
