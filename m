@@ -1,100 +1,144 @@
-Return-Path: <stable+bounces-107723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906DFA02DEB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:41:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4A4A02E0B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81D54163B25
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 780DA3A549E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D661922F6;
-	Mon,  6 Jan 2025 16:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA421DFD84;
+	Mon,  6 Jan 2025 16:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="j3wIh7QD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOeYQxOB"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8911448F2;
-	Mon,  6 Jan 2025 16:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D301DF977;
+	Mon,  6 Jan 2025 16:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736181678; cv=none; b=Vbyol97T2Kw+GMevBnbjseZPhhYPfsbLXkQqRGpWMFGuKhGEQzGbP95UVuDkU5NkDOkcj+M9MrZ575IrxGX6W4QLAZgtA7kZnQ2DA3ep1P6taSwqyGmoEg4OkaO8tqNv1D94NN/Z/Ik5a8jymsI+KMNw9YGjxLecJ80RBoWcHBo=
+	t=1736181729; cv=none; b=mPjVYu4mTwfv5/V1Ktocs0QCDNgH2Hc++IBUvQx+FZdUuGA9SsyQVj3w3ni+tjnxEros05uMc9P1DS/cY/7Bud6dvxnpjO14ahGZzqN0SMWInGYmXV4G1q7iCCtuG+ssD58/ewI0dH2p7Rdx7hQr2rtGRY6BGqFim4advWmjzNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736181678; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t3E1Lzj9XboQsVI4dMzYQHA9n4Ui0nv7ga9NFyekcOkUD+Pl6UxlWuMbvJmwTNCHSIxdpPGcP6umfmP1wclKQBQ8h84D7swAuGD6ADzMVS05RE12xDgob8X6D+UP/IOEdLyYLNcoijEpi0uYvewcj+UxChHTTjBgESBQ0LmA494=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=j3wIh7QD; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1736181673; x=1736786473; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=j3wIh7QDqJqHJEdI0CfxzVRTxt78vyptu5Ls/tZakbMunhkIaNZjE0cxrSr4xq57
-	 fSLfjoWiLz2IPSuaR+F5tWPmTXFE2Y39Jm8b2KikzoswsHusePmVrHAMQXw7hutUK
-	 xAAgZtR5X6wwHhUlrvJekUA+mehr5+tp5CWxQDgbFJukhcG6xRhG9Q5HPnQH1D6cF
-	 UT4OXARAcTOvJiuTraVO1WtYRw8eKEeYumK2+9bI2nNV9X9zVM0WCGzVOzYChaxXh
-	 1cttCfRhISeZ1ohp7e5xXkBzzZzuXyZIzb6SSzocvduc5qqkYRO/mAw9yyy1RRxx+
-	 Ye3jEq9+Rm6xnMP1fA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.32.208]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N17UQ-1tcEj444CI-011AQ9; Mon, 06
- Jan 2025 17:41:13 +0100
-Message-ID: <1a6c1d61-4139-4cf2-a121-39479a5814d2@gmx.de>
-Date: Mon, 6 Jan 2025 17:41:12 +0100
+	s=arc-20240116; t=1736181729; c=relaxed/simple;
+	bh=Y8fYE1YFF8k0KskaUUCPy3tiBp5tshWng+TrJSW92qk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HUChTz7G8uDNJmwWX4VtZ7jYono4e0YOecpkfIWzzwnJmfCvBcv+G90XzGm8tLNw/WTA+Ry/X3cTAgAbzQXUTQC2yC0K56gwttelrruZKiUSrFLtnaDRVlVK/HkAn+gsmnVZG8nvYRvxM4HZAnkUmGyMVh3LsF415v8PyeIiItw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOeYQxOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D6CC4CED6;
+	Mon,  6 Jan 2025 16:42:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736181728;
+	bh=Y8fYE1YFF8k0KskaUUCPy3tiBp5tshWng+TrJSW92qk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HOeYQxOBsTjPnrmM8veIXCcYUMln2riVu23+RXIevPOjH5ADwriuENfk027Uvk4OD
+	 oWF91RbuclEbiEZZ+WRaGgjq9YxwaSX76Q67g4GZRSa0Qve60vvQkmBeubep+uSHp3
+	 GCqlUKtzLyVGRjkb8TSsHMxTjSVgZTFW7dUqghIcTpSSI9axAEjfXOoHkdVPRsfR0K
+	 HD4eOaR/C+ESf98npFfenRP+wbINrjiQKujiY4bSlwYrgXUEPOY9yKnXNVAk+Kjhfd
+	 PXvypz5N4LXIXYkBjpmETaOEnmPym8okPZs/+5OprztZGPYG5HjQ7Bhgl0JJ16JSBy
+	 DHxvMga73DMfQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Hongguang Gao <hongguang.gao@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 1/2] RDMA/bnxt_re: Fix to export port num to ib_query_qp
+Date: Mon,  6 Jan 2025 11:42:04 -0500
+Message-Id: <20250106164206.1122310-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/156] 6.12.9-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-References: <20250106151141.738050441@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:UqZVxLMWLwj4IOFIxYoxRb/a3Wj1lINg9TNUhumOZc5wHINrZlc
- b1FLc/+KWzxgI5Kapj9tEAQt14lKTLr1ZgWHs3nt+mE/gMXciWQtDqzs/mfX5fI5hktmWXl
- Qzd6sULJFw2j4gLKQilkZHqQmJSsrKKrpqu0s03AljLS55DL+MTY5eb9b+COxhZWMIpcYMn
- e2M0jRlbvghCQoKH4FV5g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:UMYFphQ/4RU=;+mHn55bp4/aQuEJHvpS7/9TjarU
- G+G8PAfE4XXHQ9OV3TMaclAf0E/AC4PWTu9ay8LO7SZFIqkQ/fB9/TZ5fRkvN0J0fnFiZMOQQ
- sKJecEcQozAddM4oVXGjAHc3/wn5Q29zmP+JMoxL8v4kpPJJgsVt1h5qg2PFHR35OEpnSxirB
- owLlVrWdGPmVLLBVsJzaQHR+KeC4/suFrpGxtxlzS48swEsOVgPJq0R4xLlg9GoeU9dAv8e9J
- EhP9gNpYesnKWqDt6wknzjxaTQJXtpGUa/2aC7mewJQGZKzMDEIDD86YJRGXGEuYbXC3DbDR4
- pJ69ANxPP5tvAUYEpVw2Xj5zFeDmFrmVYdD+8DHBndmSMjHQffQjONrZiRMWgJmGPWH1vwk4O
- SfkCkj3OPvG8x8Wv0dlXqC6Q75sQ3YnPowwW3OhMv7rfvM3d2J4lUpBCrZCPQotHfo/rp5Ue+
- uJz85WrMuI963VJKNLxRQty2Y4o3Dcyn6NCrxYpXYKl6Yoyb0jHtAZfSWiyBLC2woImIldXyh
- kTUvkKmTk0tnv6bNkHC2bbFzKSxunHP6bhaKz8kUbxPZArfy65inEjwhcXtxeH3iGFS9SQhBg
- BwmIYxIi2EtneMV7ZGVhN5d8j+6tIKSlX3NAtKFZx6hzcLtAD2HLVRlaEMdcHET4kKqyfQBIe
- VESLVlEsmerjkDa2UMpKRFq/nZuh4biF0w7WvFMsdFDCBh9HfnKv/R7JM4DmiH8CXuGIr7lbJ
- YHi+icP/H1CkWfr8VTvG+ZcQX2oxtKQol3MZsY0Q6xKtP9xfNolT3D5YvLirD1Rjdyl1+R2pr
- 352tyZBPMtc2M4SHhqWSeYGxh04EjLmG2lmsg6DT85rK3uVVcHtW4KtgQqmpoNFBi2qS/S4ra
- e5BNY+xXG9cay0k1AG5xCMhtPF+JwiiNlESC1BDkDLCLnvhjwh/x5Oig7Fk1ilnA6MJ3HnvSU
- hJDUhN8HyC4jGfcnDVbNr4UbLATtRX7VOeWEjsHFYtmIt/0RWsxYsnNMdB++Kk1Vknt3XyyFO
- b4cJthFlzzBDlcMpC+uVnpcGHAK6qscoRQhYCb0S87WmWG1IeqBDGt3Jdr8nyBHZatbT4PLTC
- iwSxs3aPI=
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.69
+Content-Transfer-Encoding: 8bit
 
-Hi Greg
+From: Hongguang Gao <hongguang.gao@broadcom.com>
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+[ Upstream commit 34db8ec931b84d1426423f263b1927539e73b397 ]
 
-Thanks
+Current driver implementation doesn't populate the port_num
+field in query_qp. Adding the code to convert internal firmware
+port id to ibv defined port number and export it.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Hongguang Gao <hongguang.gao@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241211083931.968831-5-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 1 +
+ drivers/infiniband/hw/bnxt_re/ib_verbs.h | 4 ++++
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 1 +
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h | 1 +
+ 4 files changed, 7 insertions(+)
+
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index df5897260601..5f6b1d7278da 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2214,6 +2214,7 @@ int bnxt_re_query_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
+ 	qp_attr->retry_cnt = qplib_qp->retry_cnt;
+ 	qp_attr->rnr_retry = qplib_qp->rnr_retry;
+ 	qp_attr->min_rnr_timer = qplib_qp->min_rnr_timer;
++	qp_attr->port_num = __to_ib_port_num(qplib_qp->port_id);
+ 	qp_attr->rq_psn = qplib_qp->rq.psn;
+ 	qp_attr->max_rd_atomic = qplib_qp->max_rd_atomic;
+ 	qp_attr->sq_psn = qplib_qp->sq.psn;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.h b/drivers/infiniband/hw/bnxt_re/ib_verbs.h
+index 98baea98fc17..ef910e6e2ccb 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.h
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.h
+@@ -245,6 +245,10 @@ void bnxt_re_dealloc_ucontext(struct ib_ucontext *context);
+ int bnxt_re_mmap(struct ib_ucontext *context, struct vm_area_struct *vma);
+ void bnxt_re_mmap_free(struct rdma_user_mmap_entry *rdma_entry);
+ 
++static inline u32 __to_ib_port_num(u16 port_id)
++{
++	return (u32)port_id + 1;
++}
+ 
+ unsigned long bnxt_re_lock_cqs(struct bnxt_re_qp *qp);
+ void bnxt_re_unlock_cqs(struct bnxt_re_qp *qp, unsigned long flags);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index b624c255eee6..00df8360dcd8 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1451,6 +1451,7 @@ int bnxt_qplib_query_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	qp->dest_qpn = le32_to_cpu(sb->dest_qp_id);
+ 	memcpy(qp->smac, sb->src_mac, 6);
+ 	qp->vlan_id = le16_to_cpu(sb->vlan_pcp_vlan_dei_vlan_id);
++	qp->port_id = le16_to_cpu(sb->port_id);
+ bail:
+ 	dma_free_coherent(&rcfw->pdev->dev, sbuf.size,
+ 			  sbuf.sb, sbuf.dma_addr);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index 5d4c49089a20..0e0df5083ed3 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -297,6 +297,7 @@ struct bnxt_qplib_qp {
+ 	u32				dest_qpn;
+ 	u8				smac[6];
+ 	u16				vlan_id;
++	u16				port_id;
+ 	u8				nw_type;
+ 	struct bnxt_qplib_ah		ah;
+ 
+-- 
+2.39.5
+
 
