@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C69A02C65
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1F1A02AFE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBEC1658E8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C20B3A6797
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0B9149C7B;
-	Mon,  6 Jan 2025 15:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4E9DF71;
+	Mon,  6 Jan 2025 15:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4zrQKBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNDL0+0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C22313AD20;
-	Mon,  6 Jan 2025 15:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE9F7603F;
+	Mon,  6 Jan 2025 15:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178770; cv=none; b=CZ9xtr6ht2gefOQlI2M4Qk6HJxbF+OizymFMRWSLg5xwsew4/cN1tFFbxXZjwfV/rF4MRtaoXbgfBIr8lzrwEHaqNjBRBoBV1Nf3XHgycemwT40Zwm3PRAg+Dtnjd15Rcq3SRpFooYmqVNj4IecIQPPBAwo8XoAQ6feDIjHDGiU=
+	t=1736177888; cv=none; b=lAWPK8t4hxGS1W/fB1MXJZ1wzWfZaJmkzUxfNDxF42gjqqrHcyx3yTmaWM5v7E79coBY7VFE0NKOoVWcSooY/MOCnRVyqNXiBjQ5NVmIUQX0kuCEVsKLP29Tp1wq3Uf6khSKwgQ1aNnAJhc+rL6YYMeAkWV6wzrHuT1cCZRuOdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178770; c=relaxed/simple;
-	bh=JlJAr6dug6TzWwhSbjxu6h1U5GciBd6wa/fWBWec4nI=;
+	s=arc-20240116; t=1736177888; c=relaxed/simple;
+	bh=OZiKYH0qsxACi91MYfHSrvI/atY12vtrKmCPHwPlKAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBv40qNiKpRcQ6+AL1QCbNgVXEDawY4X2lyIt5jsKHApkD6KJoBuv9C2xw9C3jdRhT/pT3sQGmXjlAaDyjOCcq6Y8u1KftuHk3Mxh8XQIPQ4w2UlMrBJTtihf9R4/ctM4k+HK370jzvuXE3p0YKfSGb9zJepQJl4AnjC8RWjLGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4zrQKBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13362C4CED2;
-	Mon,  6 Jan 2025 15:52:49 +0000 (UTC)
+	 MIME-Version; b=MlHKHDbobbI/D5NoURfgLzXEZ7KbOr0u/TTYkIYHoOLrME5vpidWSk7qNAaeHOks8Y4k+uc/fs29rmvXb2oBhqUgdkR1RIDDzFbKopTQMWhjp8gkRiwewBxvS1l21GROwnN1uPdkf2r2yySTd5vElZwk6HyT9D+Q249R9I6JOgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNDL0+0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03607C4CED2;
+	Mon,  6 Jan 2025 15:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178770;
-	bh=JlJAr6dug6TzWwhSbjxu6h1U5GciBd6wa/fWBWec4nI=;
+	s=korg; t=1736177888;
+	bh=OZiKYH0qsxACi91MYfHSrvI/atY12vtrKmCPHwPlKAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4zrQKBZr8h5fmBPk7d0RdxaT6eIzZei2Y9T8G7TYfanVSfLrUqypqG9+h9ZsQs7B
-	 vh1/01/vOZUtVGrN8ZBt/k46Mnw6jgluH6IVLgXKhR+JjjHnqf/wuBrUFu58LuVaXU
-	 gfe14buVNKaA4LymXawZBh4ipFKatRJT4iVqXLiQ=
+	b=XNDL0+0dvwuocLNyEyIigeKdqVx1G61/5Y5OvTOf6x9lZ08IXMnLBFvAvLrQmJVSI
+	 WuPvoIAdCScLQbHWglv3SNk5V+xvhMlM52z139NCx2Y9Nw14NTxZwBGnqxi1/6ibw/
+	 va8ynM+sjl8UrXIj51JJ/FPPmbYpa3aj4JSnkhfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 069/168] phy: core: Fix that API devm_of_phy_provider_unregister() fails to unregister the phy provider
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 091/156] spi: spi-cadence-qspi: Disable STIG mode for Altera SoCFPGA.
 Date: Mon,  6 Jan 2025 16:16:17 +0100
-Message-ID: <20250106151141.072343226@linuxfoundation.org>
+Message-ID: <20250106151145.155415932@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-commit c0b82ab95b4f1fbc3e3aeab9d829d012669524b6 upstream.
+[ Upstream commit 25fb0e77b90e290a1ca30900d54c6a495eea65e2 ]
 
-For devm_of_phy_provider_unregister(), its comment says it needs to invoke
-of_phy_provider_unregister() to unregister the phy provider, but it will
-not actually invoke the function since devres_destroy() does not call
-devm_phy_provider_release(), and the missing of_phy_provider_unregister()
-call will cause:
+STIG mode is enabled by default for less than 8 bytes data read/write.
+STIG mode doesn't work with Altera SocFPGA platform due hardware
+limitation.
+Add a quirks to disable STIG mode for Altera SoCFPGA platform.
 
-- The phy provider fails to be unregistered.
-- Leak both memory and the OF node refcount.
-
-Fortunately, the faulty API has not been used by current kernel tree.
-Fix by using devres_release() instead of devres_destroy() within the API.
-
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/stable/20241213-phy_core_fix-v6-2-40ae28f5015a%40quicinc.com
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-2-40ae28f5015a@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Link: https://patch.msgid.link/20241204063338.296959-1-niravkumar.l.rabara@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -1161,12 +1161,12 @@ EXPORT_SYMBOL_GPL(of_phy_provider_unregi
-  * of_phy_provider_unregister to unregister the phy provider.
-  */
- void devm_of_phy_provider_unregister(struct device *dev,
--	struct phy_provider *phy_provider)
-+				     struct phy_provider *phy_provider)
- {
- 	int r;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 1755ca026f08..73b1edd0531b 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -43,6 +43,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_CS_CNT_MAX);
+ #define CQSPI_SLOW_SRAM		BIT(4)
+ #define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(5)
+ #define CQSPI_RD_NO_IRQ			BIT(6)
++#define CQSPI_DISABLE_STIG_MODE		BIT(7)
  
--	r = devres_destroy(dev, devm_phy_provider_release, devm_phy_match,
--		phy_provider);
-+	r = devres_release(dev, devm_phy_provider_release, devm_phy_match,
-+			   phy_provider);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY provider device resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_of_phy_provider_unregister);
+ /* Capabilities */
+ #define CQSPI_SUPPORTS_OCTAL		BIT(0)
+@@ -103,6 +104,7 @@ struct cqspi_st {
+ 	bool			apb_ahb_hazard;
+ 
+ 	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
++	bool			disable_stig_mode;
+ 
+ 	const struct cqspi_driver_platdata *ddata;
+ };
+@@ -1416,7 +1418,8 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	 * reads, prefer STIG mode for such small reads.
+ 	 */
+ 		if (!op->addr.nbytes ||
+-		    op->data.nbytes <= CQSPI_STIG_DATA_LEN_MAX)
++		    (op->data.nbytes <= CQSPI_STIG_DATA_LEN_MAX &&
++		     !cqspi->disable_stig_mode))
+ 			return cqspi_command_read(f_pdata, op);
+ 
+ 		return cqspi_read(f_pdata, op);
+@@ -1880,6 +1883,8 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			if (ret)
+ 				goto probe_reset_failed;
+ 		}
++		if (ddata->quirks & CQSPI_DISABLE_STIG_MODE)
++			cqspi->disable_stig_mode = true;
+ 
+ 		if (of_device_is_compatible(pdev->dev.of_node,
+ 					    "xlnx,versal-ospi-1.0")) {
+@@ -2043,7 +2048,8 @@ static const struct cqspi_driver_platdata intel_lgm_qspi = {
+ static const struct cqspi_driver_platdata socfpga_qspi = {
+ 	.quirks = CQSPI_DISABLE_DAC_MODE
+ 			| CQSPI_NO_SUPPORT_WR_COMPLETION
+-			| CQSPI_SLOW_SRAM,
++			| CQSPI_SLOW_SRAM
++			| CQSPI_DISABLE_STIG_MODE,
+ };
+ 
+ static const struct cqspi_driver_platdata versal_ospi = {
+-- 
+2.39.5
+
 
 
 
