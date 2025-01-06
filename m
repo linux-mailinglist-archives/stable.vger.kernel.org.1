@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D77A02C24
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFA0A0294A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0753188729D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004543A4E39
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299BB16A930;
-	Mon,  6 Jan 2025 15:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB43938FB9;
+	Mon,  6 Jan 2025 15:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kumhe+NB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osQQUPh/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8351F1DE883;
-	Mon,  6 Jan 2025 15:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E2578F49;
+	Mon,  6 Jan 2025 15:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178634; cv=none; b=Rry4z+3F7CvHtntyffgzsPXy9h01YdHsqsr/p0U+hWq70737dZmGrkX/2SI6FfUxbvLFptnjOMX1MptDHIUG4T5AqTVb5M0xftp+Xn7l5ipweWM0BzWq0+2uML+iykvmqSf636m3RZ3g5x5QXRd4ROWwP3Acd3QdVO8qVb/UZQo=
+	t=1736176880; cv=none; b=RHgBNb5Z59XZrxR2TeDdhYxr+W/0P6eMLfCbcfO33F9S1hHAkOO0ivTXrbK4kIlbpcU2QKwvtUfuyiF3TjMRi1qBWLGhZBNIWZp3Clq2gJpQgCAALnkCnII674atj5AscQa1ESn82KBO9b7WVi3WXSNOjibaRem10D4jRI0a5jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178634; c=relaxed/simple;
-	bh=lzKTMzMxe+YoxaQw+R/oVz0ogdAw+I1enjhi2pmtMUc=;
+	s=arc-20240116; t=1736176880; c=relaxed/simple;
+	bh=pQvSzM7En5Worw9f2s+elHVFerw2WhGvSqbR0fQzhIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OK0JRlcahmeZJYZtIe1stPDC275/AWDwFMZPAvJn782lD8joNz1otURdhUMEENQVF0dmqz7JDNQIL8S0G6wwhMRRvftgKtFaGJjbeiVV+xQ3AubjS4wHHce4yeLYFIIHZMsp9Cx3SaRIa+WYiXTEgZio1mj58bcglBrm62LPpM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kumhe+NB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AF0C4CEDF;
-	Mon,  6 Jan 2025 15:50:33 +0000 (UTC)
+	 MIME-Version; b=NG4XgIK2CahZiAcB7zshDBr1r3kJCouahk3S3db6H2BX1w8XHb4WxmjpUdUf+t3sQFh7wWLO91YrlxfFtEs19ZJVKKuerOvaCH6pWfzBmD+QWKVhqeK4QBSKmXCO22e8RXuUodY4Eo+QQWQ8opTcnkb4/ung7V2ebTe9qAQ7r4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osQQUPh/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E59C4CED2;
+	Mon,  6 Jan 2025 15:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178634;
-	bh=lzKTMzMxe+YoxaQw+R/oVz0ogdAw+I1enjhi2pmtMUc=;
+	s=korg; t=1736176880;
+	bh=pQvSzM7En5Worw9f2s+elHVFerw2WhGvSqbR0fQzhIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kumhe+NB5wZh5yYMIBR0RF7JNerZYvfDC57DP8HT+rFiSMjA02JK//UO49T/BvgUy
-	 74k5EiOa5iovHYBlaim5ChQ6X3VSTGq6dbUAWSPXaRQ2CStux7CDKlck9suiuNb7hc
-	 4j/Rk/acAkFvG5hGUqhP0/r6DdxJQRiz2+nWOXwU=
+	b=osQQUPh/BMVddYUmeqOzmd4QBRm/3lm7ahfFeXWG978M9Lrk3Do8U/E9dM0sK0gX+
+	 nSQH5CeEWjPztRlSPR/2njnZQUTBLIu0zuHWMQXHwl4MsGwFsXNx/Clr3I6LuL59gp
+	 Nxyw4iBYIDRXarauKh8KgQjtpiHq2LJWce6CH1cQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.15 043/168] Drivers: hv: util: Avoid accessing a ringbuffer not initialized yet
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 19/81] net: dsa: microchip: add ksz_rmw8() function
 Date: Mon,  6 Jan 2025 16:15:51 +0100
-Message-ID: <20250106151140.091042768@linuxfoundation.org>
+Message-ID: <20250106151130.160793441@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,174 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 07a756a49f4b4290b49ea46e089cbe6f79ff8d26 upstream.
+[ Upstream commit 6f1b986a43ce9aa67b11a7e54ac75530705d04e7 ]
 
-If the KVP (or VSS) daemon starts before the VMBus channel's ringbuffer is
-fully initialized, we can hit the panic below:
+Add ksz_rmw8(), it will be used in the next patch.
 
-hv_utils: Registering HyperV Utility Driver
-hv_vmbus: registering driver hv_utils
-...
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-CPU: 44 UID: 0 PID: 2552 Comm: hv_kvp_daemon Tainted: G E 6.11.0-rc3+ #1
-RIP: 0010:hv_pkt_iter_first+0x12/0xd0
-Call Trace:
-...
- vmbus_recvpacket
- hv_kvp_onchannelcallback
- vmbus_on_event
- tasklet_action_common
- tasklet_action
- handle_softirqs
- irq_exit_rcu
- sysvec_hyperv_stimer0
- </IRQ>
- <TASK>
- asm_sysvec_hyperv_stimer0
-...
- kvp_register_done
- hvt_op_read
- vfs_read
- ksys_read
- __x64_sys_read
-
-This can happen because the KVP/VSS channel callback can be invoked
-even before the channel is fully opened:
-1) as soon as hv_kvp_init() -> hvutil_transport_init() creates
-/dev/vmbus/hv_kvp, the kvp daemon can open the device file immediately and
-register itself to the driver by writing a message KVP_OP_REGISTER1 to the
-file (which is handled by kvp_on_msg() ->kvp_handle_handshake()) and
-reading the file for the driver's response, which is handled by
-hvt_op_read(), which calls hvt->on_read(), i.e. kvp_register_done().
-
-2) the problem with kvp_register_done() is that it can cause the
-channel callback to be called even before the channel is fully opened,
-and when the channel callback is starting to run, util_probe()->
-vmbus_open() may have not initialized the ringbuffer yet, so the
-callback can hit the panic of NULL pointer dereference.
-
-To reproduce the panic consistently, we can add a "ssleep(10)" for KVP in
-__vmbus_open(), just before the first hv_ringbuffer_init(), and then we
-unload and reload the driver hv_utils, and run the daemon manually within
-the 10 seconds.
-
-Fix the panic by reordering the steps in util_probe() so the char dev
-entry used by the KVP or VSS daemon is not created until after
-vmbus_open() has completed. This reordering prevents the race condition
-from happening.
-
-Reported-by: Dexuan Cui <decui@microsoft.com>
-Fixes: e0fa3e5e7df6 ("Drivers: hv: utils: fix a race on userspace daemons registration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Acked-by: Wei Liu <wei.liu@kernel.org>
-Link: https://lore.kernel.org/r/20241106154247.2271-3-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20241106154247.2271-3-mhklinux@outlook.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Arun Ramadoss <arun.ramadoss@microchip.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: bb9869043438 ("net: dsa: microchip: Fix LAN937X set_ageing_time function")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/hv_kvp.c       |    6 ++++++
- drivers/hv/hv_snapshot.c  |    6 ++++++
- drivers/hv/hv_util.c      |    9 +++++++++
- drivers/hv/hyperv_vmbus.h |    2 ++
- include/linux/hyperv.h    |    1 +
- 5 files changed, 24 insertions(+)
+ drivers/net/dsa/microchip/ksz_common.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/hv/hv_kvp.c
-+++ b/drivers/hv/hv_kvp.c
-@@ -767,6 +767,12 @@ hv_kvp_init(struct hv_util_service *srv)
- 	 */
- 	kvp_transaction.state = HVUTIL_DEVICE_INIT;
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index d1b2db8e6533..a3a7a90dad96 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -454,6 +454,11 @@ static inline int ksz_write64(struct ksz_device *dev, u32 reg, u64 value)
+ 	return regmap_bulk_write(dev->regmap[2], reg, val, 2);
+ }
  
-+	return 0;
++static inline int ksz_rmw8(struct ksz_device *dev, int offset, u8 mask, u8 val)
++{
++	return regmap_update_bits(dev->regmap[0], offset, mask, val);
 +}
 +
-+int
-+hv_kvp_init_transport(void)
-+{
- 	hvt = hvutil_transport_init(kvp_devname, CN_KVP_IDX, CN_KVP_VAL,
- 				    kvp_on_msg, kvp_on_reset);
- 	if (!hvt)
---- a/drivers/hv/hv_snapshot.c
-+++ b/drivers/hv/hv_snapshot.c
-@@ -385,6 +385,12 @@ hv_vss_init(struct hv_util_service *srv)
- 	 */
- 	vss_transaction.state = HVUTIL_DEVICE_INIT;
- 
-+	return 0;
-+}
-+
-+int
-+hv_vss_init_transport(void)
-+{
- 	hvt = hvutil_transport_init(vss_devname, CN_VSS_IDX, CN_VSS_VAL,
- 				    vss_on_msg, vss_on_reset);
- 	if (!hvt) {
---- a/drivers/hv/hv_util.c
-+++ b/drivers/hv/hv_util.c
-@@ -141,6 +141,7 @@ static struct hv_util_service util_heart
- static struct hv_util_service util_kvp = {
- 	.util_cb = hv_kvp_onchannelcallback,
- 	.util_init = hv_kvp_init,
-+	.util_init_transport = hv_kvp_init_transport,
- 	.util_pre_suspend = hv_kvp_pre_suspend,
- 	.util_pre_resume = hv_kvp_pre_resume,
- 	.util_deinit = hv_kvp_deinit,
-@@ -149,6 +150,7 @@ static struct hv_util_service util_kvp =
- static struct hv_util_service util_vss = {
- 	.util_cb = hv_vss_onchannelcallback,
- 	.util_init = hv_vss_init,
-+	.util_init_transport = hv_vss_init_transport,
- 	.util_pre_suspend = hv_vss_pre_suspend,
- 	.util_pre_resume = hv_vss_pre_resume,
- 	.util_deinit = hv_vss_deinit,
-@@ -592,6 +594,13 @@ static int util_probe(struct hv_device *
- 	if (ret)
- 		goto error;
- 
-+	if (srv->util_init_transport) {
-+		ret = srv->util_init_transport();
-+		if (ret) {
-+			vmbus_close(dev->channel);
-+			goto error;
-+		}
-+	}
- 	return 0;
- 
- error:
---- a/drivers/hv/hyperv_vmbus.h
-+++ b/drivers/hv/hyperv_vmbus.h
-@@ -356,12 +356,14 @@ void vmbus_on_event(unsigned long data);
- void vmbus_on_msg_dpc(unsigned long data);
- 
- int hv_kvp_init(struct hv_util_service *srv);
-+int hv_kvp_init_transport(void);
- void hv_kvp_deinit(void);
- int hv_kvp_pre_suspend(void);
- int hv_kvp_pre_resume(void);
- void hv_kvp_onchannelcallback(void *context);
- 
- int hv_vss_init(struct hv_util_service *srv);
-+int hv_vss_init_transport(void);
- void hv_vss_deinit(void);
- int hv_vss_pre_suspend(void);
- int hv_vss_pre_resume(void);
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -1526,6 +1526,7 @@ struct hv_util_service {
- 	void *channel;
- 	void (*util_cb)(void *);
- 	int (*util_init)(struct hv_util_service *);
-+	int (*util_init_transport)(void);
- 	void (*util_deinit)(void);
- 	int (*util_pre_suspend)(void);
- 	int (*util_pre_resume)(void);
+ static inline int ksz_pread8(struct ksz_device *dev, int port, int offset,
+ 			     u8 *data)
+ {
+-- 
+2.39.5
+
 
 
 
