@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E358A02A37
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 480AFA02933
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 708841886C23
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DBBD3A5169
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339631DDC1B;
-	Mon,  6 Jan 2025 15:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9EB149C7B;
+	Mon,  6 Jan 2025 15:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpvsGXEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pe0KtC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78E015252D;
-	Mon,  6 Jan 2025 15:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142CD148838;
+	Mon,  6 Jan 2025 15:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177452; cv=none; b=TcU3ClyoUk/GXFjDrJHr7/eJniQZ5z5FERj9qoR4djwuqdfcB2Zxi80rUtfmdi+uXM90iJMPtsJLw+Mp7DW0YueffxTvd3jsheYV6gL/6UNx8wFC0DyB0g0iVQJMgqj8kTx3yvKLu+MnCJ9KXJB+okDBXOvNUJ3Ldti9chj3En8=
+	t=1736176820; cv=none; b=r5qHF8i9l5r/wRKaog/4GJo4ZKvRb+gttM6G9UyXNSB4IG38Mf14SIUE5B7U/pKwUzPYKYv+wTP2rBgKWa8wk+fFqSKganW1EV1/Z7JkXSlN8dlm9rgAb4QD+4/fRDFsRBpnTr2WPzEyci+USQ9I9tjQAkMMk5I+JOjAZw2ub3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177452; c=relaxed/simple;
-	bh=aTRKU/R917Rp9r+R/oj3Z/vKARRYYLbeUsCwmza6iIY=;
+	s=arc-20240116; t=1736176820; c=relaxed/simple;
+	bh=tHSx7VZIBs3znsVV2iv38cD/koCyPxisI0NuEt3YwKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9kC+bBnlQE1dbQNk8ZoFOj4CVVzE53g6CvBgSlRdvcH+PQN1mb4G9skD3BnkEJ83b7x5kYnBA7bWfdcnXt+ro6IBiIirFb4epUhWpG14a1zVr7VyvfqHArFkZ7NC9GfeZx58VW+IRDgpnxrvm+uRFsD5Gj3dVkqNhZiDrp01yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpvsGXEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99E0C4CED2;
-	Mon,  6 Jan 2025 15:30:51 +0000 (UTC)
+	 MIME-Version; b=FlliBzYE0jAE1gcjOHkp2ZZXYLJfrsS/RVjn6sAx1YTWnbaZY5bpnlGv5IdCM7tJIALY1qGsNKrJoaOsLUdSXKS71qlNwGIe59K2mZ8IvuHK3CHRe5C0t4OjOFqDhifxKDIaruX/oP1mfSgvNUgjIzWhs6gfJ5S1d3PDzmF3l0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pe0KtC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA03C4CED2;
+	Mon,  6 Jan 2025 15:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177452;
-	bh=aTRKU/R917Rp9r+R/oj3Z/vKARRYYLbeUsCwmza6iIY=;
+	s=korg; t=1736176820;
+	bh=tHSx7VZIBs3znsVV2iv38cD/koCyPxisI0NuEt3YwKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpvsGXEhJL2bXiQPkBbnFbQITLF+hBkxbbGJImHlGYC+qlP453/7whUKix8ukJoAB
-	 a0RUbl6D9o69zfFHEedKxLWj0MxNJyuC6MSJPhuDdN/y4QPFKo/ltgGF6AOtlLXbHT
-	 Y6Xlj6TxkN/k/qBBZSVqwJfpsWXHSPBKduYkaiEE=
+	b=1pe0KtC2rCElu4Ory44JwMq/sKFXImCPcG7dTvLKpuo83h9LbACtSAolBf1TbrfPh
+	 DsO5bjRR+3fRrgEXw8Z+IxDHBiHudwdjELyHDbVkyA7OVg7KtMsm9w6nJEM5oJPLE8
+	 dVreHqB+Stz9+8O3bjEf/oFkZedOreeAvb42yr8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Vitalii Mordan <mordan@ispras.ru>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/222] RDMA/rtrs: Ensure ib_sge list is accessible
+Subject: [PATCH 6.1 41/81] eth: bcmsysport: fix call balance of priv->clk handling routines
 Date: Mon,  6 Jan 2025 16:16:13 +0100
-Message-ID: <20250106151157.161364622@linuxfoundation.org>
+Message-ID: <20250106151130.988744888@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit fb514b31395946022f13a08e06a435f53cf9e8b3 ]
+[ Upstream commit b255ef45fcc2141c1bf98456796abb956d843a27 ]
 
-Move the declaration of the 'ib_sge list' variable outside the
-'always_invalidate' block to ensure it remains accessible for use
-throughout the function.
+Check the return value of clk_prepare_enable to ensure that priv->clk has
+been successfully enabled.
 
-Previously, 'ib_sge list' was declared within the 'always_invalidate'
-block, limiting its accessibility, then caused a
-'BUG: kernel NULL pointer dereference'[1].
- ? __die_body.cold+0x19/0x27
- ? page_fault_oops+0x15a/0x2d0
- ? search_module_extables+0x19/0x60
- ? search_bpf_extables+0x5f/0x80
- ? exc_page_fault+0x7e/0x180
- ? asm_exc_page_fault+0x26/0x30
- ? memcpy_orig+0xd5/0x140
- rxe_mr_copy+0x1c3/0x200 [rdma_rxe]
- ? rxe_pool_get_index+0x4b/0x80 [rdma_rxe]
- copy_data+0xa5/0x230 [rdma_rxe]
- rxe_requester+0xd9b/0xf70 [rdma_rxe]
- ? finish_task_switch.isra.0+0x99/0x2e0
- rxe_sender+0x13/0x40 [rdma_rxe]
- do_task+0x68/0x1e0 [rdma_rxe]
- process_one_work+0x177/0x330
- worker_thread+0x252/0x390
- ? __pfx_worker_thread+0x10/0x10
+If priv->clk was not enabled during bcm_sysport_probe, bcm_sysport_resume,
+or bcm_sysport_open, it must not be disabled in any subsequent execution
+paths.
 
-This change ensures the variable is available for subsequent operations
-that require it.
-
-[1] https://lore.kernel.org/linux-rdma/6a1f3e8f-deb0-49f9-bc69-a9b03ecfcda7@fujitsu.com/
-
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Link: https://patch.msgid.link/20241231013416.1290920-1-lizhijian@fujitsu.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 31bc72d97656 ("net: systemport: fetch and use clock resources")
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20241227123007.2333397-1-mordan@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bcmsysport.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 758a3d9c2844..84d1654148d7 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -346,6 +346,7 @@ static int send_io_resp_imm(struct rtrs_srv_con *con, struct rtrs_srv_op *id,
- 	struct rtrs_srv_mr *srv_mr;
- 	bool need_inval = false;
- 	enum ib_send_flags flags;
-+	struct ib_sge list;
- 	u32 imm;
- 	int err;
+diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
+index 1693f6c60efc..e53ab9b5482e 100644
+--- a/drivers/net/ethernet/broadcom/bcmsysport.c
++++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+@@ -1956,7 +1956,11 @@ static int bcm_sysport_open(struct net_device *dev)
+ 	unsigned int i;
+ 	int ret;
  
-@@ -398,7 +399,6 @@ static int send_io_resp_imm(struct rtrs_srv_con *con, struct rtrs_srv_op *id,
- 	imm = rtrs_to_io_rsp_imm(id->msg_id, errno, need_inval);
- 	imm_wr.wr.next = NULL;
- 	if (always_invalidate) {
--		struct ib_sge list;
- 		struct rtrs_msg_rkey_rsp *msg;
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		netdev_err(dev, "could not enable priv clock\n");
++		return ret;
++	}
  
- 		srv_mr = &srv_path->mrs[id->msg_id];
+ 	/* Reset UniMAC */
+ 	umac_reset(priv);
+@@ -2614,7 +2618,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
+ 		goto err_deregister_notifier;
+ 	}
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		dev_err(&pdev->dev, "could not enable priv clock\n");
++		goto err_deregister_netdev;
++	}
+ 
+ 	priv->rev = topctrl_readl(priv, REV_CNTL) & REV_MASK;
+ 	dev_info(&pdev->dev,
+@@ -2628,6 +2636,8 @@ static int bcm_sysport_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ 
++err_deregister_netdev:
++	unregister_netdev(dev);
+ err_deregister_notifier:
+ 	unregister_netdevice_notifier(&priv->netdev_notifier);
+ err_deregister_fixed_link:
+@@ -2799,7 +2809,12 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
+ 	if (!netif_running(dev))
+ 		return 0;
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret) {
++		netdev_err(dev, "could not enable priv clock\n");
++		return ret;
++	}
++
+ 	if (priv->wolopts)
+ 		clk_disable_unprepare(priv->wol_clk);
+ 
 -- 
 2.39.5
 
