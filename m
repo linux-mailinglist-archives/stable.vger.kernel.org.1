@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF20A02C03
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0466FA02CB3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EA803A60D1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B4A01887A5E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432961422DD;
-	Mon,  6 Jan 2025 15:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4571553BB;
+	Mon,  6 Jan 2025 15:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1K13fsrE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJWO16oZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D0F42040;
-	Mon,  6 Jan 2025 15:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F039E14A617;
+	Mon,  6 Jan 2025 15:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178499; cv=none; b=saGcmNiZU6YC1QOI9Fn/YZoSqcB5ONjAUARJ5Uvf87ZgS+3x+degtbaaathgKeCxJoJWASqB1HgCWJp0qYUDSBIC+3yJN0o+toKcQMWWaDAyVny2jncyPOM+wJGX6o8FE6UdPOcNkipsLDSI/GK2P/fYWs//IoCZfNiZ1z+8HkE=
+	t=1736179010; cv=none; b=KVkFD1wPglAzHtVVOHapPbwmPhkIdvgbR79ilxbIcfqPnSe49zX80Xu8ePckjEF6pVSFYEayxNmvcyOZOpwP5K/pSIISjFF8yb4a509pzdkJ2oGAvMtmQRBeOwa6VU2YnZ5nK/slLgVSGU/QLVSYSpl14EwEmyJdhPdUYo9ip1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178499; c=relaxed/simple;
-	bh=magPaCqBr0sXHlDZ1KPtubazDwuVZKPk8n/XlcrM3Fs=;
+	s=arc-20240116; t=1736179010; c=relaxed/simple;
+	bh=Oo8X2zoQB9K/gB4zrVUym79bTgI4iYBNB04L1/SCERE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sbTNzKkWSk/tSQKEwnIhsFjGXj3Qxk+S4fbMDtVhJ8DE8CqnUH1MgROnxqdVvGtkhSvcW3yUyz3deSOfvJ8EfAI9otwthH45xxjDY5tQ3C7QXqp83zDO75nFTaeHgSV+UK54Aq7SOTvmZbTzJb/7XqN2a5aVJw3wVi6yAMqesL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1K13fsrE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2432DC4CED2;
-	Mon,  6 Jan 2025 15:48:17 +0000 (UTC)
+	 MIME-Version; b=lhPYzXeRSFa9CKuDFLxnT6pq29V4JBEkAS+1MC5dtaXjs/L4PXszlAbtzTXlo5FElC5vqpuEk30rIAjiSkVhgxIn2V3O1rCzROgs45UsCw80LsJq5bFhnnqtGPMW/zl6MwG8KZU6k5kp3iSFVAp/IMkqHQxuVPxd16/Wat1vEfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJWO16oZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D55C4CED2;
+	Mon,  6 Jan 2025 15:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178498;
-	bh=magPaCqBr0sXHlDZ1KPtubazDwuVZKPk8n/XlcrM3Fs=;
+	s=korg; t=1736179009;
+	bh=Oo8X2zoQB9K/gB4zrVUym79bTgI4iYBNB04L1/SCERE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1K13fsrEGzJlT2KNOC00+4X1OvzziNKk7g8sJ2fZr/HGry2ui2MKbggIwVm6+ew8A
-	 9zm8cqEsQHUfQgN4MYhMwYN4clisjmJThWlKA9yl3utMn7GOO0bfWoJOLry+iRWwdc
-	 9G1m5Zc6kYP5TEaoalyFJZMU0uJ1d+a2Mqyw2yrw=
+	b=HJWO16oZa93UZ2ktKRsEvAxRtqYX81qg3zLo8ePtw1I+VijfvoF1v1xn35i9a8fIs
+	 6UOyjlpgg23PE81kkEFKWQSq1HTTKhKDOefAjGl8mlBXzh5GDhE3MO/yJ2dCvaUZXJ
+	 WAcS2E89xc9bDxZ7xSybxJ8NeKjuybqJPFTno+wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 122/138] wifi: mac80211: wake the queues in case of failure in resume
+Subject: [PATCH 5.15 138/168] net: mv643xx_eth: fix an OF node reference leak
 Date: Mon,  6 Jan 2025 16:17:26 +0100
-Message-ID: <20250106151137.851054642@linuxfoundation.org>
+Message-ID: <20250106151143.648604677@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
+[ Upstream commit ad5c318086e2e23b577eca33559c5ebf89bc7eb9 ]
 
-In case we fail to resume, we'll WARN with
-"Hardware became unavailable during restart." and we'll wait until user
-space does something. It'll typically bring the interface down and up to
-recover. This won't work though because the queues are still stopped on
-IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
-Make sure we clear that reason so that we give a chance to the recovery
-to succeed.
+Current implementation of mv643xx_eth_shared_of_add_port() calls
+of_parse_phandle(), but does not release the refcount on error. Call
+of_node_put() in the error path and in mv643xx_eth_shared_of_remove().
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This bug was found by an experimental verification tool that I am
+developing.
+
+Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241221081448.3313163-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/util.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/marvell/mv643xx_eth.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index e49355cbb1ce..0da845d9d486 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2351,6 +2351,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
- 		else
- 			WARN(1, "Hardware became unavailable during restart.\n");
-+		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
-+						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
-+						false);
- 		ieee80211_handle_reconfig_failure(local);
- 		return res;
+diff --git a/drivers/net/ethernet/marvell/mv643xx_eth.c b/drivers/net/ethernet/marvell/mv643xx_eth.c
+index d37a0fba3d16..6174b4bd44d3 100644
+--- a/drivers/net/ethernet/marvell/mv643xx_eth.c
++++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
+@@ -2703,9 +2703,15 @@ static struct platform_device *port_platdev[3];
+ 
+ static void mv643xx_eth_shared_of_remove(void)
+ {
++	struct mv643xx_eth_platform_data *pd;
+ 	int n;
+ 
+ 	for (n = 0; n < 3; n++) {
++		if (!port_platdev[n])
++			continue;
++		pd = dev_get_platdata(&port_platdev[n]->dev);
++		if (pd)
++			of_node_put(pd->phy_node);
+ 		platform_device_del(port_platdev[n]);
+ 		port_platdev[n] = NULL;
  	}
+@@ -2766,8 +2772,10 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+ 	}
+ 
+ 	ppdev = platform_device_alloc(MV643XX_ETH_NAME, dev_num);
+-	if (!ppdev)
+-		return -ENOMEM;
++	if (!ppdev) {
++		ret = -ENOMEM;
++		goto put_err;
++	}
+ 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
+ 	ppdev->dev.of_node = pnp;
+ 
+@@ -2789,6 +2797,8 @@ static int mv643xx_eth_shared_of_add_port(struct platform_device *pdev,
+ 
+ port_err:
+ 	platform_device_put(ppdev);
++put_err:
++	of_node_put(ppd.phy_node);
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
