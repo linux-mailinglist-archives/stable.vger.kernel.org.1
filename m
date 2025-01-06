@@ -1,159 +1,153 @@
-Return-Path: <stable+bounces-106841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38098A0264F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C865A0265B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B633A19EA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:15:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B2333A4369
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6158B1DDC23;
-	Mon,  6 Jan 2025 13:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E681F5E6;
+	Mon,  6 Jan 2025 13:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bleNyzdt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B291DDA32;
-	Mon,  6 Jan 2025 13:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0245E23A6;
+	Mon,  6 Jan 2025 13:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736169333; cv=none; b=U/zbkrzRp66PDQynlARzhDdEzfCeTNtNUn/S/ZNkgz9JzhcuydG+JT0HBwOV0IfbMquNxJNhZ1vtnThzeJc8WHucrJ5FVN11zfLsh1pE0dvkJD8HubqMbWgQE6qLwSSqbRakP/57oOLkIU6s11o1H2H3URnB+BTxRUbiwZFtABw=
+	t=1736169527; cv=none; b=SNqpIkUK9YiwBV88z/xxvi/0RrBoi0lBhEA1oqAlz1b+9g2XGVDYLmx98EJPrqRPLfehlrB1RuZom4rye/FVo4/K/U+S8SQo1xleNtrHt5WS5y0EidhuqBYIBfg32yYjrHLAOfEjsqOTEShIfv4mmJTHHig8YPUzwr5KD2iR1MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736169333; c=relaxed/simple;
-	bh=up81xfhYj3kH2+FjlokG/f4N9nQHVhtss6yXY7eccRE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h0OeGX5uZ7ZhBLSIOy3Be3tdxZsovTfujClU6HiGjG9xPTEaqRldKnmTtUzjTwQgmELjnpZvfVYicCBRawqPwbXEggRAST35uKtrj9AVIhKCMJfpkwqgBhT8F1eWrypwCmaYbbt4IyqYWziUvxh/9T/jqoPAzYbVLM/Hla/WcxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EF3C4CEE0;
-	Mon,  6 Jan 2025 13:15:30 +0000 (UTC)
-Message-ID: <bd751d52-c378-4706-b93d-a063d1b8352d@xs4all.nl>
-Date: Mon, 6 Jan 2025 14:15:28 +0100
+	s=arc-20240116; t=1736169527; c=relaxed/simple;
+	bh=W4BDmqmJ9PozrQK7DKfY37cULx8hNl3vN55ZfwaSmfE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=UAux77iGS+BuC2gCrCk8tOX9SlX73UBfZ7yIfi/WLq5oaJHGcYhB3LuL+YoH5zdNnlypE9iJTbStCUW7LPrtMs39iON1sDu4ZLjxNJRDICkk8wrACQVR6ZUkm6S/slJu6NC6y0UJdlxDGyF/YT7nPXR1yOOwu4zQQpsVK1v6cyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bleNyzdt; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0352340E0264;
+	Mon,  6 Jan 2025 13:18:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id xIXHXCgpuURJ; Mon,  6 Jan 2025 13:18:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1736169511; bh=GWYthY8YuSjedyiFPCoHIKYRq8nXpqOqPggDkul6uek=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=bleNyzdtrhuLB28SoH/FZ/cOoMZRdVSrW9h7H/88Umy1+kz+5fKrdgZ3indrt8gRc
+	 q5ooVoLq/Xe484t89vUoHqAbR1YD0jWrEZFJN8oz8O/cB5WpOTf+0YdRNP6pmc3TSa
+	 iyAVzostj7bXgPspIG1gS7mL6iO68/5InE7vr9k8fpZ2m9KK03ZgqawWlQ0ajJsev/
+	 H7BjbfaQ//jHimcg40sbN8Qu7w5CQl675DnjyWfCgat1CaU5FSJYbHHkS3jKQJT3bJ
+	 /FFUbKjbwGh+HrFT6I2u/9EEgAf5WKa2RHkicuQlpj1C1dotIUQAzQ/jpxggcxYMfm
+	 9BWtBMraW9Uuhc2gE5Tz1wt/mUEmXayUMosYb3q6Am2jTN28h1Cvv3xX3HrvMlrIEA
+	 HkD6JdXwaKQu6ylFqpa8ZkUIFmeiP2qdDI2H8+EK794/hNENKzHQkYRCTb7TYee1Fx
+	 YbjugFSD2bNN6GUi+QDJzxg96ITjoI5VQXHu9JVJMGdnp6suD1UrqZerP73cBJMEMQ
+	 e10DFHlNqXCcBXRStJ7stp5VXgMtEuglNE9WtNSMpnbZtfA2xvznhoQf11IGmJGzrQ
+	 tPiW6d4TAE0zDLEkemQJy/7eNeCm53yzl/Euo7aL2Uong5ZunSwWPHzUXs7gmNVQsN
+	 nDTgKb6NPh5pKBKrWrEWAkwo=
+Received: from zn.tnic (p200300ea971F93E8329c23ffFEa6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:93e8:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6BF3A40E0163;
+	Mon,  6 Jan 2025 13:18:25 +0000 (UTC)
+Date: Mon, 6 Jan 2025 14:18:17 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Koichiro Den <koichiro.den@canonical.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
+Subject: Re: Linux 6.13-rc6
+Message-ID: <20250106131817.GAZ3vYGVr3-hWFFPLj@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 1/2] media: venus: destroy hfi session after m2m_ctx
- release
-To: Sergey Senozhatsky <senozhatsky@chromium.org>,
- Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
- Vikash Garodia <quic_vgarodia@quicinc.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Nathan Hebert <nhebert@google.com>
-References: <20241224072444.2044956-1-senozhatsky@chromium.org>
- <20241224072444.2044956-2-senozhatsky@chromium.org>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <20241224072444.2044956-2-senozhatsky@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgjfaLyhU2L84XbkY+Jj47hryY_f1SBxmnnZi4QOJKGaw@mail.gmail.com>
 
-Hi Sergey,
-
-On 24/12/2024 08:24, Sergey Senozhatsky wrote:
-> This partially reverts commit that made hfi_session_destroy()
-> the first step of vdec/venc close().  The reason being is a
-> regression report when, supposedly, encode/decoder is closed
-> with still active streaming (no ->stop_streaming() call before
-> close()) and pending pkts, so isr_thread cannot find instance
-> and fails to process those pending pkts.  This was the idea
-> behind the original patch - make it impossible to use instance
-> under destruction, because this is racy, but apparently there
-> are uses cases that depend on that unsafe pattern.  Return to
-> the old (unsafe) behaviour for the time being (until a better
-> fix is found).
+On Sun, Jan 05, 2025 at 02:20:54PM -0800, Linus Torvalds wrote:
+> So we had a slight pickup in commits this last week, but as expected
+> and hoped for, things were still pretty quiet. About twice as many
+> commits as the holiday week, but that's still not all that many.
 > 
-> Fixes: 45b1a1b348ec1 ("media: venus: sync with threaded IRQ during inst destruction")
-> Cc: stable@vger.kernel.org
-> Reported-by: Nathan Hebert <nhebert@google.com>
-
-Do you have a link to Nathan's report so I can add a 'Closes' tag
-afterwards?
-
-Regards,
-
-	Hans
-
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> ---
->  drivers/media/platform/qcom/venus/core.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+> I expect things will start becoming more normal now that people are
+> back from the holidays and are starting to recover and wake up from
+> their food comas.
 > 
-> diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-> index 2d27c5167246..807487a1f536 100644
-> --- a/drivers/media/platform/qcom/venus/core.c
-> +++ b/drivers/media/platform/qcom/venus/core.c
-> @@ -506,18 +506,14 @@ static __maybe_unused int venus_runtime_suspend(struct device *dev)
->  void venus_close_common(struct venus_inst *inst)
->  {
->  	/*
-> -	 * First, remove the inst from the ->instances list, so that
-> -	 * to_instance() will return NULL.
-> -	 */
-> -	hfi_session_destroy(inst);
-> -	/*
-> -	 * Second, make sure we don't have IRQ/IRQ-thread currently running
-> +	 * Make sure we don't have IRQ/IRQ-thread currently running
->  	 * or pending execution, which would race with the inst destruction.
->  	 */
->  	synchronize_irq(inst->core->irq);
->  
->  	v4l2_m2m_ctx_release(inst->m2m_ctx);
->  	v4l2_m2m_release(inst->m2m_dev);
-> +	hfi_session_destroy(inst);
->  	v4l2_fh_del(&inst->fh);
->  	v4l2_fh_exit(&inst->fh);
->  	v4l2_ctrl_handler_free(&inst->ctrl_handler);
+> In the meantime, below is the shortlog for the last week. Nothing
+> particularly stands out, the changes are dominated by various driver
+> updates (gpu, rdma and networking), with a random smattering of fixes
+> elsewhere.
 
+Something not well baked managed to sneak in and it is tagged for stable:
+
+adcfb264c3ed ("vmstat: disable vmstat_work on vmstat_cpu_down_prep()")
+
+Reverting it fixes the warn splat below.
+
+[    0.310373] smpboot: x86: Booting SMP configuration:
+[    0.311074] .... node  #0, CPUs:        #1  #2  #3  #4  #5  #6  #7  #8  #9 #10 #11 #12 #13 #14 #15
+[    0.313798] ------------[ cut here ]------------
+[    0.317530] workqueue: work disable count underflowed
+[    0.317530] WARNING: CPU: 1 PID: 21 at kernel/workqueue.c:4317 enable_work+0xa4/0xb0
+[    0.317530] Modules linked in:
+[    0.317530] CPU: 1 UID: 0 PID: 21 Comm: cpuhp/1 Not tainted 6.13.0-rc6 #11
+[    0.317530] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 2023.11-8 02/21/2024
+[    0.317530] RIP: 0010:enable_work+0xa4/0xb0
+[    0.317530] Code: c0 48 83 c4 18 5b 5d e9 ca 25 9f 00 80 3d 0a c7 48 08 00 75 b3 c6 05 01 c7 48 08 01 90 48 c7 c7 c8 eb 1d 82 e8 5d 77 fd ff 90 <0f> 0b 90 90 eb 98 90 0f 0b 90 eb b1 90 90 90 90 90 90 90 90 90 90
+[    0.317530] RSP: 0018:ffffc90000137e18 EFLAGS: 00010082
+[    0.317530] RAX: 0000000000000029 RBX: ffff88807d66dda0 RCX: 00000000ffefffff
+[    0.317530] RDX: 0000000000000001 RSI: ffffc90000137ce0 RDI: 0000000000000001
+[    0.317530] RBP: 0000000000000000 R08: 00000000ffefffff R09: 0000000000000058
+[    0.317530] R10: 0000000000000000 R11: ffffffff8244df00 R12: 0000000000000000
+[    0.317530] R13: ffff88807d6604e0 R14: ffffffff812439f0 R15: ffff88807d660508
+[    0.317530] FS:  0000000000000000(0000) GS:ffff88807d640000(0000) knlGS:0000000000000000
+[    0.317530] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.317530] CR2: 0000000000000000 CR3: 0000000002c1a000 CR4: 00000000003506f0
+[    0.317530] Call Trace:
+[    0.317530]  <TASK>
+[    0.317530]  ? __warn+0xa0/0x160
+[    0.317530]  ? enable_work+0xa4/0xb0
+[    0.317530]  ? report_bug+0x18c/0x1c0
+[    0.317530]  ? handle_bug+0x54/0x90
+[    0.317530]  ? exc_invalid_op+0x1b/0x80
+[    0.317530]  ? asm_exc_invalid_op+0x1a/0x20
+[    0.317530]  ? __pfx_vmstat_cpu_online+0x10/0x10
+[    0.317530]  ? enable_work+0xa4/0xb0
+[    0.317530]  ? enable_work+0xa3/0xb0
+[    0.317530]  vmstat_cpu_online+0x61/0x80
+[    0.317530]  cpuhp_invoke_callback+0x10f/0x480
+[    0.317530]  ? srso_return_thunk+0x5/0x5f
+[    0.317530]  cpuhp_thread_fun+0xd4/0x160
+[    0.317530]  smpboot_thread_fn+0xdd/0x1f0
+[    0.317530]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[    0.317530]  kthread+0xca/0xf0
+[    0.317530]  ? __pfx_kthread+0x10/0x10
+[    0.317530]  ret_from_fork+0x50/0x60
+[    0.317530]  ? __pfx_kthread+0x10/0x10
+[    0.317530]  ret_from_fork_asm+0x1a/0x30
+[    0.317530]  </TASK>
+[    0.317530] ---[ end trace 0000000000000000 ]---
+[    0.377680] smp: Brought up 1 node, 16 CPUs
+[    0.378345] smpboot: Total of 16 processors activated (118393.24 BogoMIPS)
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
