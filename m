@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFFAA02A78
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498CDA02925
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F2073A1799
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1160C1886345
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C803F1DE8A0;
-	Mon,  6 Jan 2025 15:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C686A1662EF;
+	Mon,  6 Jan 2025 15:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLucHeb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgRvFWYv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5632E17625C;
-	Mon,  6 Jan 2025 15:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81948157E82;
+	Mon,  6 Jan 2025 15:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177534; cv=none; b=HlHXNJgy1m3890g/R9T2Z2pVxK2ZLhLkZ6r8/RDzGuW1Y8+vYEGlD9G2+/5mOkqHEJ0ilS4yQdjyJ/6q1LoWAdsWpn8FyaQexRY6MVqu99f+S/t0oaVGXmU9XKg1wkyT2hnezq1/peMnO23n6ZFOHSO15baEQe1Ac0Y5Dck5iOs=
+	t=1736176797; cv=none; b=BKQx9LjZpm8QFfVrf2Qod9crr7hZvTpf+zItLGkmBtzl2hgcQS0OP5Kr64KvsYcjfsuoYSm3SrtD6Vcuew+3eOReuhniuSuwR+6pjiEf7tPV6ssFbgQgBzxAceeTPe+dX70B95S2DpX8OeDAVtGZAaUqb++bEajA57WQIc7W/y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177534; c=relaxed/simple;
-	bh=LemSZQDCrBMO0k66j0cTqUaJPIInFkNVeXjY4xBct4A=;
+	s=arc-20240116; t=1736176797; c=relaxed/simple;
+	bh=2er5CSH0vC738TbF9so/uP7ynA0O3kg2sFgR4MmNVTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EwrTcng0LFo6kMhM3wcoUtjCNZdJml2ATtG0vqXTTVs69CNn95nwlKPu1ynsjiyrJrecDfBpBHuGYs3Gfd+rLaaOujM8PKFI3DMTdBQy02ognAOJIo/Iyj2Yml3j7YdmIN0I0lBWvIIK+wyM/2Gh6tScZM8yKGT+TtpjXYsdP74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLucHeb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DE3C4CED2;
-	Mon,  6 Jan 2025 15:32:13 +0000 (UTC)
+	 MIME-Version; b=vDmaSt6ROwavIylqCZZCK0vboPUnirmBC+bLQ/VNArh68AGsywqdocQYOrxWexrezNjdPRsZQsxwJ2sfLZENwHbPHZcYivcMKa5r9vS9sYJJvLOSR9vatEneI8aDaEHrR+h71dLinlIbSeq1VKkQxdwn+PZAwLqd+nQ5EC8Jn4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgRvFWYv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994B5C4CED6;
+	Mon,  6 Jan 2025 15:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177533;
-	bh=LemSZQDCrBMO0k66j0cTqUaJPIInFkNVeXjY4xBct4A=;
+	s=korg; t=1736176797;
+	bh=2er5CSH0vC738TbF9so/uP7ynA0O3kg2sFgR4MmNVTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLucHeb8iknftq4qfPIWYyYssJwxzZemDBpbSMA89KYujlQOK8HpUlCtfWKoKLSCm
-	 ULWGJXCzP1KnXYjYvLJgip4tnqW4jHY775LKvj3azYT5f5JgQiE1KOzlHCMaCUX6Kx
-	 /nrO7O0OI1PQ0zQP+SdGfn6xTpDZBaornzUfshyI=
+	b=UgRvFWYvkvka4RVZvGHT+61sG8jrMrzntMQcscQETGycUh+Fr9p6XoC5i4n29smke
+	 s5FMJzMHlq4L1bKNjKdOyc/sSQT+wYKYHz/yO6WOA0yH8CzBbtbkqMGNq1xCXLZ7F9
+	 G/Uu7kkQiT7UqfUP/otKrDMHPOpKkpM2HkvNbr+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/222] netfilter: nft_set_hash: unaligned atomic read on struct nft_set_ext
+Subject: [PATCH 6.1 35/81] net: Fix netns for ip_tunnel_init_flow()
 Date: Mon,  6 Jan 2025 16:16:07 +0100
-Message-ID: <20250106151156.936092505@linuxfoundation.org>
+Message-ID: <20250106151130.763819370@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Xiao Liang <shaw.leon@gmail.com>
 
-[ Upstream commit 542ed8145e6f9392e3d0a86a0e9027d2ffd183e4 ]
+[ Upstream commit b5a7b661a073727219fedc35f5619f62418ffe72 ]
 
-Access to genmask field in struct nft_set_ext results in unaligned
-atomic read:
+The device denoted by tunnel->parms.link resides in the underlay net
+namespace. Therefore pass tunnel->net to ip_tunnel_init_flow().
 
-[   72.130109] Unable to handle kernel paging request at virtual address ffff0000c2bb708c
-[   72.131036] Mem abort info:
-[   72.131213]   ESR = 0x0000000096000021
-[   72.131446]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   72.132209]   SET = 0, FnV = 0
-[   72.133216]   EA = 0, S1PTW = 0
-[   72.134080]   FSC = 0x21: alignment fault
-[   72.135593] Data abort info:
-[   72.137194]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
-[   72.142351]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   72.145989]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   72.150115] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000237d27000
-[   72.154893] [ffff0000c2bb708c] pgd=0000000000000000, p4d=180000023ffff403, pud=180000023f84b403, pmd=180000023f835403,
-+pte=0068000102bb7707
-[   72.163021] Internal error: Oops: 0000000096000021 [#1] SMP
-[...]
-[   72.170041] CPU: 7 UID: 0 PID: 54 Comm: kworker/7:0 Tainted: G            E      6.13.0-rc3+ #2
-[   72.170509] Tainted: [E]=UNSIGNED_MODULE
-[   72.170720] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202302-for-qemu 03/01/2023
-[   72.171192] Workqueue: events_power_efficient nft_rhash_gc [nf_tables]
-[   72.171552] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   72.171915] pc : nft_rhash_gc+0x200/0x2d8 [nf_tables]
-[   72.172166] lr : nft_rhash_gc+0x128/0x2d8 [nf_tables]
-[   72.172546] sp : ffff800081f2bce0
-[   72.172724] x29: ffff800081f2bd40 x28: ffff0000c2bb708c x27: 0000000000000038
-[   72.173078] x26: ffff0000c6780ef0 x25: ffff0000c643df00 x24: ffff0000c6778f78
-[   72.173431] x23: 000000000000001a x22: ffff0000c4b1f000 x21: ffff0000c6780f78
-[   72.173782] x20: ffff0000c2bb70dc x19: ffff0000c2bb7080 x18: 0000000000000000
-[   72.174135] x17: ffff0000c0a4e1c0 x16: 0000000000003000 x15: 0000ac26d173b978
-[   72.174485] x14: ffffffffffffffff x13: 0000000000000030 x12: ffff0000c6780ef0
-[   72.174841] x11: 0000000000000000 x10: ffff800081f2bcf8 x9 : ffff0000c3000000
-[   72.175193] x8 : 00000000000004be x7 : 0000000000000000 x6 : 0000000000000000
-[   72.175544] x5 : 0000000000000040 x4 : ffff0000c3000010 x3 : 0000000000000000
-[   72.175871] x2 : 0000000000003a98 x1 : ffff0000c2bb708c x0 : 0000000000000004
-[   72.176207] Call trace:
-[   72.176316]  nft_rhash_gc+0x200/0x2d8 [nf_tables] (P)
-[   72.176653]  process_one_work+0x178/0x3d0
-[   72.176831]  worker_thread+0x200/0x3f0
-[   72.176995]  kthread+0xe8/0xf8
-[   72.177130]  ret_from_fork+0x10/0x20
-[   72.177289] Code: 54fff984 d503201f d2800080 91003261 (f820303f)
-[   72.177557] ---[ end trace 0000000000000000 ]---
-
-Align struct nft_set_ext to word size to address this and
-documentation it.
-
-pahole reports that this increases the size of elements for rhash and
-pipapo in 8 bytes on x86_64.
-
-Fixes: 7ffc7481153b ("netfilter: nft_set_hash: skip duplicated elements pending gc run")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: db53cd3d88dc ("net: Handle l3mdev in ip_tunnel_init_flow")
+Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20241219130336.103839-1-shaw.leon@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c | 3 +--
+ net/ipv4/ip_tunnel.c                                | 6 +++---
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index b5f9ee5810a3..8321915dddb2 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -721,15 +721,18 @@ struct nft_set_ext_tmpl {
- /**
-  *	struct nft_set_ext - set extensions
-  *
-- *	@genmask: generation mask
-+ *	@genmask: generation mask, but also flags (see NFT_SET_ELEM_DEAD_BIT)
-  *	@offset: offsets of individual extension types
-  *	@data: beginning of extension data
-+ *
-+ *	This structure must be aligned to word size, otherwise atomic bitops
-+ *	on genmask field can cause alignment failure on some archs.
-  */
- struct nft_set_ext {
- 	u8	genmask;
- 	u8	offset[NFT_SET_EXT_NUM];
- 	char	data[];
--};
-+} __aligned(BITS_PER_LONG / 8);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
+index b3472fb94617..8883ef012747 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
+@@ -423,8 +423,7 @@ mlxsw_sp_span_gretap4_route(const struct net_device *to_dev,
  
- static inline void nft_set_ext_prepare(struct nft_set_ext_tmpl *tmpl)
- {
+ 	parms = mlxsw_sp_ipip_netdev_parms4(to_dev);
+ 	ip_tunnel_init_flow(&fl4, parms.iph.protocol, *daddrp, *saddrp,
+-			    0, 0, dev_net(to_dev), parms.link, tun->fwmark, 0,
+-			    0);
++			    0, 0, tun->net, parms.link, tun->fwmark, 0, 0);
+ 
+ 	rt = ip_route_output_key(tun->net, &fl4);
+ 	if (IS_ERR(rt))
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 4f30ccf2d321..67cabc40f1dc 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -294,7 +294,7 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
+ 
+ 		ip_tunnel_init_flow(&fl4, iph->protocol, iph->daddr,
+ 				    iph->saddr, tunnel->parms.o_key,
+-				    iph->tos & INET_DSCP_MASK, dev_net(dev),
++				    iph->tos & INET_DSCP_MASK, tunnel->net,
+ 				    tunnel->parms.link, tunnel->fwmark, 0, 0);
+ 		rt = ip_route_output_key(tunnel->net, &fl4);
+ 
+@@ -611,7 +611,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	}
+ 	ip_tunnel_init_flow(&fl4, proto, key->u.ipv4.dst, key->u.ipv4.src,
+ 			    tunnel_id_to_key32(key->tun_id),
+-			    tos & INET_DSCP_MASK, dev_net(dev), 0, skb->mark,
++			    tos & INET_DSCP_MASK, tunnel->net, 0, skb->mark,
+ 			    skb_get_hash(skb), key->flow_flags);
+ 
+ 	if (!tunnel_hlen)
+@@ -774,7 +774,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	ip_tunnel_init_flow(&fl4, protocol, dst, tnl_params->saddr,
+ 			    tunnel->parms.o_key, tos & INET_DSCP_MASK,
+-			    dev_net(dev), READ_ONCE(tunnel->parms.link),
++			    tunnel->net, READ_ONCE(tunnel->parms.link),
+ 			    tunnel->fwmark, skb_get_hash(skb), 0);
+ 
+ 	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
 -- 
 2.39.5
 
