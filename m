@@ -1,56 +1,79 @@
-Return-Path: <stable+bounces-107331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE6EA02B72
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0097A02A16
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6A13A46BD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91E23A63DE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EE514A617;
-	Mon,  6 Jan 2025 15:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C738157E82;
+	Mon,  6 Jan 2025 15:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXmgRq8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1o8ahf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500CCDF71;
-	Mon,  6 Jan 2025 15:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28120146D40;
+	Mon,  6 Jan 2025 15:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178144; cv=none; b=FCBcurhgvbOTZQIbHKuLBA01cE+6IK3zeXinO7dE8etCpz1RFFH6XOdehgLschNxyM/ekQfMwZuz+2vpQIwdgUwqS8fWmlr3QlEfWuoMVPJSpYF3W8REoQzWabAtEGeC8nQGf/1eqA8GyplBBYI6ZnzIlhujPfEVHTwRtzyhh2U=
+	t=1736177341; cv=none; b=JlOuzdyHxwo7J438KbUSbBnLL0QCxZPIQD3SIGhU9i+zx9EfHkdLMJYVbGymZETJBVzneTD8ENYeKwiaJj8VesDRIStkg+cOp5SKXprJwWgm+VG9ssqcvidLmWt6scEie3FlHaBlaCAb5aHi4NRFwm9EcCQ3K3OH13e3qJKJJn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178144; c=relaxed/simple;
-	bh=mGlQJ8CYOo7oUJ+vV62SdFNjcPkC3fwh79ytwRM70E8=;
+	s=arc-20240116; t=1736177341; c=relaxed/simple;
+	bh=ad+zbkeJ8/AZpl6QHmBz4avBSXdszzStPk/nRy1816Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPRe2fw6NOcAo5VOT9WTYigcu7+qSZbGvWm1agDr7asKMJpDbRZcyiqskZk3czQQ5QuhqOg6+DtFpL4j+fQOkzRziW/T2u8c6ZI2ASuJzbG0SFI4h1KKeEDExobRCl896qzMY3KSZ/nIeYRd6rG/CeZNTSUoPOeywZRc9tsUJAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXmgRq8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C747CC4CED2;
-	Mon,  6 Jan 2025 15:42:23 +0000 (UTC)
+	 MIME-Version; b=bW/iH901So+YmeES5TCHArtI4GlW8IYElCbPDQK3FpWm3oAOrCqQNQhHeIuV27beushGYNsHyzK7E+m0/i8A+GV+/JhAefIpZ8D/7WW6XA/9mM+lt9jHX2v16U29fOVd2eOhO97MeGwtmiHOGUKPxHXNO5yy7aQgItdSzG75DRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1o8ahf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C2BC4CED2;
+	Mon,  6 Jan 2025 15:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178144;
-	bh=mGlQJ8CYOo7oUJ+vV62SdFNjcPkC3fwh79ytwRM70E8=;
+	s=korg; t=1736177341;
+	bh=ad+zbkeJ8/AZpl6QHmBz4avBSXdszzStPk/nRy1816Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXmgRq8GSJq9eTl42Z2WUteVaQa+Kixk1FbUuEtqqWyXgo/Tsago3nxcaQa+auC0A
-	 kBulPa2cxoYotmFrFUtinv7WmC1dL0kAKwhz5J2iNA0okBaHe0FqP9wESO2iwlehz8
-	 j0dsJeENZAZW7pOyL66Awwx1GYqQo6Jes7hH92Xs=
+	b=H1o8ahf3XavmmM4j4LhKrd+Q//rNn2EAEYH66UxCzdbWV35I/GJt6lKzZyanfjPAW
+	 6xCv7mIbOOlneI7NqbxXsQJ6phdAbmU3impI1wzP4u8Zobx6q5XQxvQKKyaaerhjT2
+	 5G5mUOd22pV47djxftNOdnsM9cBQ1pyD6sj2xEZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Daniel Bristot de Oliveira <bristot@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vineeth Pillai <vineeth@bitbyteword.org>,
+	Youssef Esmat <youssefesmat@google.com>,
+	Beau Belgrave <beaub@linux.microsoft.com>,
+	Alexander Graf <graf@amazon.com>,
+	Baoquan He <bhe@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Ross Zwisler <zwisler@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/138] MIPS: Loongson64: DTS: Fix msi node for ls7a
+Subject: [PATCH 6.6 124/222] tracing: Handle old buffer mappings for event strings and functions
 Date: Mon,  6 Jan 2025 16:15:28 +0100
-Message-ID: <20250106151133.381851827@linuxfoundation.org>
+Message-ID: <20250106151155.303357040@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +85,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 98a9e2ac3755a353eefea8c52e23d5b0c50f3899 ]
+[ Upstream commit 07714b4bb3f9800261c8b4b2f47e9010ed60979d ]
 
-Add it to silent warning:
-arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
-arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts:32.31-40.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
-arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+Use the saved text_delta and data_delta of a persistent memory mapped ring
+buffer that was saved from a previous boot, and use the delta in the trace
+event print output so that strings and functions show up normally.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+That is, for an event like trace_kmalloc() that prints the callsite via
+"%pS", if it used the address saved in the ring buffer it will not match
+the function that was saved in the previous boot if the kernel remaps
+itself between boots.
+
+For RCU events that point to saved static strings where only the address
+of the string is saved in the ring buffer, it too will be adjusted to
+point to where the string is on the current boot.
+
+Link: https://lkml.kernel.org/r/20240612232026.821020753@goodmis.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vineeth Pillai <vineeth@bitbyteword.org>
+Cc: Youssef Esmat <youssefesmat@google.com>
+Cc: Beau Belgrave <beaub@linux.microsoft.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Ross Zwisler <zwisler@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace.c | 42 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 39 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
-index c945f8565d54..fb180cb2b8e2 100644
---- a/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
-+++ b/arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dts
-@@ -33,6 +33,7 @@
- 		compatible = "loongson,pch-msi-1.0";
- 		reg = <0 0x2ff00000 0 0x8>;
- 		interrupt-controller;
-+		#interrupt-cells = <1>;
- 		msi-controller;
- 		loongson,msi-base-vec = <64>;
- 		loongson,msi-num-vecs = <192>;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index d9406a1f8795..2a45efc4e417 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -3858,8 +3858,11 @@ static void test_can_verify(void)
+ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
+ 			 va_list ap)
+ {
++	long text_delta = iter->tr->text_delta;
++	long data_delta = iter->tr->data_delta;
+ 	const char *p = fmt;
+ 	const char *str;
++	bool good;
+ 	int i, j;
+ 
+ 	if (WARN_ON_ONCE(!fmt))
+@@ -3878,7 +3881,10 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
+ 
+ 		j = 0;
+ 
+-		/* We only care about %s and variants */
++		/*
++		 * We only care about %s and variants
++		 * as well as %p[sS] if delta is non-zero
++		 */
+ 		for (i = 0; p[i]; i++) {
+ 			if (i + 1 >= iter->fmt_size) {
+ 				/*
+@@ -3907,6 +3913,11 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
+ 				}
+ 				if (p[i+j] == 's')
+ 					break;
++
++				if (text_delta && p[i+1] == 'p' &&
++				    ((p[i+2] == 's' || p[i+2] == 'S')))
++					break;
++
+ 				star = false;
+ 			}
+ 			j = 0;
+@@ -3920,6 +3931,24 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
+ 		iter->fmt[i] = '\0';
+ 		trace_seq_vprintf(&iter->seq, iter->fmt, ap);
+ 
++		/* Add delta to %pS pointers */
++		if (p[i+1] == 'p') {
++			unsigned long addr;
++			char fmt[4];
++
++			fmt[0] = '%';
++			fmt[1] = 'p';
++			fmt[2] = p[i+2]; /* Either %ps or %pS */
++			fmt[3] = '\0';
++
++			addr = va_arg(ap, unsigned long);
++			addr += text_delta;
++			trace_seq_printf(&iter->seq, fmt, (void *)addr);
++
++			p += i + 3;
++			continue;
++		}
++
+ 		/*
+ 		 * If iter->seq is full, the above call no longer guarantees
+ 		 * that ap is in sync with fmt processing, and further calls
+@@ -3938,6 +3967,14 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
+ 		/* The ap now points to the string data of the %s */
+ 		str = va_arg(ap, const char *);
+ 
++		good = trace_safe_str(iter, str, star, len);
++
++		/* Could be from the last boot */
++		if (data_delta && !good) {
++			str += data_delta;
++			good = trace_safe_str(iter, str, star, len);
++		}
++
+ 		/*
+ 		 * If you hit this warning, it is likely that the
+ 		 * trace event in question used %s on a string that
+@@ -3947,8 +3984,7 @@ void trace_check_vprintf(struct trace_iterator *iter, const char *fmt,
+ 		 * instead. See samples/trace_events/trace-events-sample.h
+ 		 * for reference.
+ 		 */
+-		if (WARN_ONCE(!trace_safe_str(iter, str, star, len),
+-			      "fmt: '%s' current_buffer: '%s'",
++		if (WARN_ONCE(!good, "fmt: '%s' current_buffer: '%s'",
+ 			      fmt, seq_buf_str(&iter->seq.seq))) {
+ 			int ret;
+ 
 -- 
 2.39.5
 
