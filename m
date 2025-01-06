@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-107590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3CBA02CC4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCD1A02CFA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7E3C3A8FEB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05DF18850A7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1040DF71;
-	Mon,  6 Jan 2025 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9741514F6;
+	Mon,  6 Jan 2025 15:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsBV5+yh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hx+fadNm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A50D13B59A;
-	Mon,  6 Jan 2025 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACB081728;
+	Mon,  6 Jan 2025 15:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178927; cv=none; b=alq79vR75JyGFMpngpJWDZ88UT7ONxhONG6yKnEFA7Ymdo/kEruCgt1gUZCFMlkX1ATf2RsNHz1GEIIMng2pGWDpbqxoUncTnHn/pYy7A4QDf8pyCcVJB/tFtiCUyUaslexgy41bksoJJYGcH+6pBsWsqsPvnv7bUafgaa5oM+I=
+	t=1736179174; cv=none; b=BYy4a3nAjTnjoEvFR5sn0ie+xAXaI5pzolia8xxgzDNNmcBLQSxDXZ61uEd9h36KScxg25sz2lHE3DqVPqLULF5gJRN8+w5PBeUHnjaaEQj8nKxcyf0FVLWFqjNhijgAdVWGl9AxnirIbz8q0kPI5fL1du0QXKW7mzBy+nerEkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178927; c=relaxed/simple;
-	bh=ht5tZ67BKPzyUqwCKRAvSOOLQwEu7Rk+yZLl7yETLXQ=;
+	s=arc-20240116; t=1736179174; c=relaxed/simple;
+	bh=xp3eF2H2sfnkG3R4udk94QHSlgQs4pW5C56etR+oIPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBS52POWj0xiiSH4j3bc6F/3SOp/fChV3dsexsVOnZFLrI2I3VfXYix7SYEp3kU1ukk9vWjHcWXUFPo7xjqmn8SR7lG+l+OqLe/2OoqZBvpajfdSS1w3V6F8MbOz2nJKDNjd5/t7jM34irkzc3WvCHYpbVnYa3WGnVRqv0L5fuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsBV5+yh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FD1C4CED2;
-	Mon,  6 Jan 2025 15:55:26 +0000 (UTC)
+	 MIME-Version; b=urw4NvX2rEFU8mjScZjS65PAAq6ulZRu67bJK2Jjd/Do0NuKEZtr7cggmD6acF8wNAZv+g1ooszaYttOEkjXghE0i5rw7aEWoztqLImd69HpgDKXKp3z+Ilsvm8RhfWCyuhDWGZdVJpkuC4xHVtk9+//03dHtNBYH2wSRJB0UsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hx+fadNm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390A6C4CED2;
+	Mon,  6 Jan 2025 15:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178927;
-	bh=ht5tZ67BKPzyUqwCKRAvSOOLQwEu7Rk+yZLl7yETLXQ=;
+	s=korg; t=1736179174;
+	bh=xp3eF2H2sfnkG3R4udk94QHSlgQs4pW5C56etR+oIPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsBV5+yhR+tS1tUqcedVkcMPspYmA7L82aBEUwhu5HjhHKb0/byRRL3yGTQN75Buv
-	 MyEYUnM7mqqByihUvwiuLXBdi4vAmina3I2zpL+Siz1ZEEjbU3X2rAQkKBLHsMfDGX
-	 BYu5RqqTzUA6v9SCqh198D3swKvXtYND2pAP+UeY=
+	b=Hx+fadNmEYQHUqv+3GPs4MI8AvBbvXssZ3GdseOSdjEScnoJNKwC6wQ9CviaoIr75
+	 4O/pEb57DObqvylUhwQd91tMll8VV0QsNkf7o6l63WqRPSp0/cja+wxlSPKA9W07Iz
+	 xcreuAg41lOIc/avukO20aZbgkxj1iHyXGJWkIIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	George D Sworo <george.d.sworo@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/168] thunderbolt: Add support for Intel Raptor Lake
+	Daniel Swanemar <d.swanemar@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 19/93] USB: serial: option: add TCL IK512 MBIM & ECM
 Date: Mon,  6 Jan 2025 16:16:55 +0100
-Message-ID: <20250106151142.500452459@linuxfoundation.org>
+Message-ID: <20250106151129.429038861@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George D Sworo <george.d.sworo@intel.com>
+From: Daniel Swanemar <d.swanemar@gmail.com>
 
-[ Upstream commit 7ec58378a985618909ffae18e4ac0de2ae625f33 ]
+commit fdad4fb7c506bea8b419f70ff2163d99962e8ede upstream.
 
-Intel Raptor Lake has the same integrated Thunderbolt/USB4 controller as
-Intel Alder Lake. By default it is still using firmware based connection
-manager so we can use most of the Alder Lake flows.
+Add the following TCL IK512 compositions:
 
-Signed-off-by: George D Sworo <george.d.sworo@intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x0530: Modem + Diag + AT + MBIM
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=10000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1bbb ProdID=0530 Rev=05.04
+S:  Manufacturer=TCL
+S:  Product=TCL 5G USB Dongle
+S:  SerialNumber=3136b91a
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 4 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+0x0640: ECM + Modem + Diag + AT
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=10000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1bbb ProdID=0640 Rev=05.04
+S:  Manufacturer=TCL
+S:  Product=TCL 5G USB Dongle
+S:  SerialNumber=3136b91a
+C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Daniel Swanemar <d.swanemar@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/icm.c | 2 ++
- drivers/thunderbolt/nhi.c | 4 ++++
- drivers/thunderbolt/nhi.h | 2 ++
- 3 files changed, 8 insertions(+)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
-index 11c0207ebd7e..e4e92f014a8b 100644
---- a/drivers/thunderbolt/icm.c
-+++ b/drivers/thunderbolt/icm.c
-@@ -2511,6 +2511,8 @@ struct tb *icm_probe(struct tb_nhi *nhi)
- 	case PCI_DEVICE_ID_INTEL_TGL_H_NHI1:
- 	case PCI_DEVICE_ID_INTEL_ADL_NHI0:
- 	case PCI_DEVICE_ID_INTEL_ADL_NHI1:
-+	case PCI_DEVICE_ID_INTEL_RPL_NHI0:
-+	case PCI_DEVICE_ID_INTEL_RPL_NHI1:
- 		icm->is_supported = icm_tgl_is_supported;
- 		icm->driver_ready = icm_icl_driver_ready;
- 		icm->set_uuid = icm_icl_set_uuid;
-diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
-index 7341376140eb..99faa8a5e9c0 100644
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1437,6 +1437,10 @@ static struct pci_device_id nhi_ids[] = {
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ADL_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_RPL_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_RPL_NHI1),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 
- 	/* Any USB4 compliant host */
- 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_USB4, ~0) },
-diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
-index 5091677b3f4b..01190d9ced16 100644
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -81,6 +81,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
- #define PCI_DEVICE_ID_INTEL_TGL_NHI1			0x9a1d
- #define PCI_DEVICE_ID_INTEL_TGL_H_NHI0			0x9a1f
- #define PCI_DEVICE_ID_INTEL_TGL_H_NHI1			0x9a21
-+#define PCI_DEVICE_ID_INTEL_RPL_NHI0			0xa73e
-+#define PCI_DEVICE_ID_INTEL_RPL_NHI1			0xa76d
- 
- #define PCI_CLASS_SERIAL_USB_USB4			0x0c0340
- 
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2385,6 +2385,10 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
++	  .driver_info = NCTRL(1) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
++	  .driver_info = NCTRL(3) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
