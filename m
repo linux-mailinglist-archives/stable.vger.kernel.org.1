@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43561A02BA3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D46A02902
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D493A1A96
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3DD61880111
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C98B142E77;
-	Mon,  6 Jan 2025 15:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13988136326;
+	Mon,  6 Jan 2025 15:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdvSw/I5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQSypzJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55F0136E09;
-	Mon,  6 Jan 2025 15:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EBA200A3;
+	Mon,  6 Jan 2025 15:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178253; cv=none; b=MmtN+osIjug95nt7nuCKzM5z+9rGlr2R56Xx/WPu7xKT8qUzJzwDuI9DJwn/MYpEnwqeCWi7ML/4OC0ub4dlhB9wkLus+Ta71mlPSv0Xd6kt1WZF+OfKX83ZJoczrHYqM4sCknPeFgGDGUMEFSuIM7voEVtFClewRK/AVsp1ujY=
+	t=1736176743; cv=none; b=KjXltza5gwZI5Nm39n4isBKs7ZdRav1D3LRzga9Y7Lhxujg/qaYQ3L+U19MUKsxW6MZNu2zir2u71A2s0NVcMBzs7xJeuKD0txt65UhD/sEuV8IOez9V9l8FnC/Wt9z8QSS18iER2w3K9gUrjKXNFbVjUJdukewMAkslwn3XdYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178253; c=relaxed/simple;
-	bh=2lbtQiFcSeDJ/AxaRi/l/1tP0nosWe/j8zR3Iyc1d7Y=;
+	s=arc-20240116; t=1736176743; c=relaxed/simple;
+	bh=eGffaGcftuYB5pAc5vsA1QvD3MtbqKAGXFDc/npV684=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1wErjx6G+3ETbwFsWodowxf33FZgY9g72v4yb/2WxtL+tWPAHQsusgfrDbEBmYzmjQQO4fQPJiCQbDHPx7jsLa8sJmrL7pDdyrt8mR9+UAeP+W7nvcgIqqNZS5aX47cLVfH1iZ3e9LLtMHBOebDTESRrvYa80BDV90EYXXdGd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdvSw/I5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E58C4CED2;
-	Mon,  6 Jan 2025 15:44:12 +0000 (UTC)
+	 MIME-Version; b=Oh5cr+XlbXV+XWV5Eznn42mQ7Q2cKj7r1ncH/AjXY95Upu9//eZK7tEkUHK3ngU5qVGp6ZJ12stYueRViK/gRwo49LlNej9GIxAFfwfmJpJ0ZpTd3bAhgGjZ8WOcOHrVuZCtY2GC1ZSHbimrLWHqbVmoBlUdfExKIRpbCrwhQjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQSypzJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4350C4CED2;
+	Mon,  6 Jan 2025 15:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178252;
-	bh=2lbtQiFcSeDJ/AxaRi/l/1tP0nosWe/j8zR3Iyc1d7Y=;
+	s=korg; t=1736176743;
+	bh=eGffaGcftuYB5pAc5vsA1QvD3MtbqKAGXFDc/npV684=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdvSw/I5wwy/UVjGIavtR9xr7UIm7ewIr4EntPSrbO8KRdm8IYalCyDGclzNLb1ig
-	 +Xl2a32k3thG9TgoJVZQ5HbBNPerb6aXYq7L8JUyar6sxDU7uBGG0j8dcumxpJS3w4
-	 YanXsZxyBp4oZuBm9y3Wy9nko9XrBb9kNB0EhUV4=
+	b=yQSypzJxMOlsLJKLDmPtRPzhVbPD7Nn9yNRQG1oVBd1PwuZl4r6y/jSRi13Cu1f4O
+	 LULPUehMqMnAxO2dHkaak29aFbb/YKpK4VnTWYWMpdplXYW6wHS11Vzft3omtOL4gD
+	 Ycjle2vFzR7JAIQtQgZMy/ZnuVJrTo54JvNLx1Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Swanemar <d.swanemar@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 025/138] USB: serial: option: add TCL IK512 MBIM & ECM
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Stefan Ekenberg <stefan.ekenberg@axis.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 17/81] drm/bridge: adv7511_audio: Update Audio InfoFrame properly
 Date: Mon,  6 Jan 2025 16:15:49 +0100
-Message-ID: <20250106151134.172999676@linuxfoundation.org>
+Message-ID: <20250106151130.087167756@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Swanemar <d.swanemar@gmail.com>
+From: Stefan Ekenberg <stefan.ekenberg@axis.com>
 
-commit fdad4fb7c506bea8b419f70ff2163d99962e8ede upstream.
+[ Upstream commit 902806baf3c1e8383c1fe3ff0b6042b8cb5c2707 ]
 
-Add the following TCL IK512 compositions:
+AUDIO_UPDATE bit (Bit 5 of MAIN register 0x4A) needs to be set to 1
+while updating Audio InfoFrame information and then set to 0 when done.
+Otherwise partially updated Audio InfoFrames could be sent out. Two
+cases where this rule were not followed are fixed:
+ - In adv7511_hdmi_hw_params() make sure AUDIO_UPDATE bit is updated
+   before/after setting ADV7511_REG_AUDIO_INFOFRAME.
+ - In audio_startup() use the correct register for clearing
+   AUDIO_UPDATE bit.
 
-0x0530: Modem + Diag + AT + MBIM
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=10000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=1bbb ProdID=0530 Rev=05.04
-S:  Manufacturer=TCL
-S:  Product=TCL 5G USB Dongle
-S:  SerialNumber=3136b91a
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 4 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+The problem with corrupted audio infoframes were discovered by letting
+a HDMI logic analyser check the output of ADV7535.
 
-0x0640: ECM + Modem + Diag + AT
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  4 Spd=10000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=1bbb ProdID=0640 Rev=05.04
-S:  Manufacturer=TCL
-S:  Product=TCL 5G USB Dongle
-S:  SerialNumber=3136b91a
-C:  #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+Note that this patchs replaces writing REG_GC(1) with
+REG_INFOFRAME_UPDATE. Bit 5 of REG_GC(1) is positioned within field
+GC_PP[3:0] and that field doesn't control audio infoframe and is read-
+only. My conclusion therefore was that the author if this code meant to
+clear bit 5 of REG_INFOFRAME_UPDATE from the very beginning.
 
-Signed-off-by: Daniel Swanemar <d.swanemar@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+Fixes: 53c515befe28 ("drm/bridge: adv7511: Add Audio support")
+Signed-off-by: Stefan Ekenberg <stefan.ekenberg@axis.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119-adv7511-audio-info-frame-v4-1-4ae68e76c89c@axis.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2385,6 +2385,10 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
-+	  .driver_info = NCTRL(1) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
-+	  .driver_info = NCTRL(3) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+index 61f4a38e7d2b..8f786592143b 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+@@ -153,7 +153,16 @@ static int adv7511_hdmi_hw_params(struct device *dev, void *data,
+ 			   ADV7511_AUDIO_CFG3_LEN_MASK, len);
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
+ 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
+-	regmap_write(adv7511->regmap, 0x73, 0x1);
++
++	/* send current Audio infoframe values while updating */
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++			   BIT(5), BIT(5));
++
++	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
++
++	/* use Audio infoframe updated info */
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++			   BIT(5), 0);
+ 
+ 	return 0;
+ }
+@@ -184,8 +193,9 @@ static int audio_startup(struct device *dev, void *data)
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
+ 				BIT(7) | BIT(6), BIT(7));
+ 	/* use Audio infoframe updated info */
+-	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
+ 				BIT(5), 0);
++
+ 	/* enable SPDIF receiver */
+ 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
+ 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
+-- 
+2.39.5
+
 
 
 
