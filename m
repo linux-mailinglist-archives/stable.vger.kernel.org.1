@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-106913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D1EDA0293E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D52A02B05
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DFCF164138
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 621697A2E25
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4BC14900B;
-	Mon,  6 Jan 2025 15:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1528F157E82;
+	Mon,  6 Jan 2025 15:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfbm/36B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qM+WjXv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B4F224CC;
-	Mon,  6 Jan 2025 15:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3477200A3;
+	Mon,  6 Jan 2025 15:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176889; cv=none; b=Bj8mM/zAw5U116pG+zu+LONOXAGH58Bv/dcqEuAG/JE1t5aCwIMpGL00SbrmlYsOeKH/cj8pWo3DXLtcQc7U05xarSkcY3rZeufAQvdkwWvaVnWG5TS9oZSLZClW9n/G/Co6uTekcpHeqs1bRtgX7n8XaPw/8l7ry/Y+5WaBgf4=
+	t=1736177947; cv=none; b=vGaFB3l2SXT5Cj6UQaA9CYwXzieN7zAJ1lMqGh+TZAO0k0YcXrsZyhJo0+mhqgvkpuzMsd2Ec/h5Kj2NBYQhAoP3qaTOSOsStc8NtcphAf//kxhgN85WZ1F1zQfF6JDNhQLQJhqdWyq2V3+GRD76GsrRy1XzIeUgl+arfk3nbkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176889; c=relaxed/simple;
-	bh=5Wo4BchbMNlTppw6DbEDBemjyhPFnpRiFw3lt9hr9HI=;
+	s=arc-20240116; t=1736177947; c=relaxed/simple;
+	bh=GYstxlJ9kALKFrB9U9pPGwsyzENcrQIXic+Un5ykbdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MLukCz4YU/P58793J1YGyQe/a+VPZxxIjxD9LDHP4IveLX6YeX8t9MRPTnyPgKzcf/2Gj7V+tqnp3W9s/d5cjRuJFcj4IAPMf7ph0cZmM/uxWL8hykzZd6Eq3s9fS8njFdWYlah3BZLa6uyQaqEd4U8E6YAGXz28pXi4mIit1eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfbm/36B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A03FC4CEE1;
-	Mon,  6 Jan 2025 15:21:29 +0000 (UTC)
+	 MIME-Version; b=ICMJFV2q2G+OObkfKhlBtiWDylezvVzVRy84Hc57mtU9F86CNYGbQ6kDzhdvh7REh+IJ36SoYc4IRGEqe2J/+0jDceLZQOMLUNg11eSnXo9gBen/1ACKunHaYQWG1vHFVL5/GgPU9C615qOKQtUqfuNHLpwMjDUzobKX9UBOmtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qM+WjXv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDB2C4CED2;
+	Mon,  6 Jan 2025 15:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176889;
-	bh=5Wo4BchbMNlTppw6DbEDBemjyhPFnpRiFw3lt9hr9HI=;
+	s=korg; t=1736177947;
+	bh=GYstxlJ9kALKFrB9U9pPGwsyzENcrQIXic+Un5ykbdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gfbm/36BMajtpCQGUpBiJwHBj9lRJiHuuHBojYgUmSUjGAdWbnaLJwOjUql66XNaQ
-	 ly/BhGfCnUbgRJoiBULq80VpqzPQ/S3wGYLjQ17nSyzbzuUvjktiwURPw2/z4xCKyg
-	 PUlimzpPLTntyFVDNtkLQNGPn+XDo6F0OFtIO0TY=
+	b=qM+WjXv59eyCBCCoEknCrvp5jJTPm0RgRquAkPB5LwSnFWDjp+e1UeBPWNarO+84h
+	 GQdacqBUrG1TEyr9wfPY4oCxswKYODFss70XyAnVD8A8OAZ/0SisfYM/HSrQtFVHBP
+	 nb0seu3gII0z5AwrLY3mJY3dnwQDQiqkiv6bKD9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 64/81] ARC: build: Try to guess GCC variant of cross compiler
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 110/156] Revert "ALSA: ump: Dont enumeration invalid groups for legacy rawmidi"
 Date: Mon,  6 Jan 2025 16:16:36 +0100
-Message-ID: <20250106151131.851191748@linuxfoundation.org>
+Message-ID: <20250106151145.871036269@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 824927e88456331c7a999fdf5d9d27923b619590 ]
+commit abbff41b6932cde359589fd51f4024b7c85f366b upstream.
 
-ARC GCC compiler is packaged starting from Fedora 39i and the GCC
-variant of cross compile tools has arc-linux-gnu- prefix and not
-arc-linux-. This is causing that CROSS_COMPILE variable is left unset.
+This reverts commit c2d188e137e77294323132a760a4608321a36a70.
 
-This change allows builds without need to supply CROSS_COMPILE argument
-if distro package is used.
+Although it's fine to filter the invalid UMP groups at the first probe
+time, this will become a problem when UMP groups are updated and
+(re-)activated.  Then there is no way to re-add the substreams
+properly for the legacy rawmidi, and the new active groups will be
+still invisible.
 
-Before this change:
-$ make -j 128 ARCH=arc W=1 drivers/infiniband/hw/mlx4/
-  gcc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
-  gcc: error: unrecognized command-line option ‘-mmedium-calls’
-  gcc: error: unrecognized command-line option ‘-mlock’
-  gcc: error: unrecognized command-line option ‘-munaligned-access’
+So let's revert the change.  This will move back to showing the full
+16 groups, but it's better than forever lost.
 
-[1] https://packages.fedoraproject.org/pkgs/cross-gcc/gcc-arc-linux-gnu/index.html
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20241230114023.3787-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arc/Makefile | 2 +-
+ sound/core/ump.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arc/Makefile b/arch/arc/Makefile
-index 329400a1c355..8e6f52c6626d 100644
---- a/arch/arc/Makefile
-+++ b/arch/arc/Makefile
-@@ -6,7 +6,7 @@
- KBUILD_DEFCONFIG := haps_hs_smp_defconfig
+diff --git a/sound/core/ump.c b/sound/core/ump.c
+index fe4d39ae1159..9198bff4768c 100644
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -1244,7 +1244,7 @@ static int fill_legacy_mapping(struct snd_ump_endpoint *ump)
  
- ifeq ($(CROSS_COMPILE),)
--CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux-)
-+CROSS_COMPILE := $(call cc-cross-prefix, arc-linux- arceb-linux- arc-linux-gnu-)
- endif
+ 	num = 0;
+ 	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++)
+-		if ((group_maps & (1U << i)) && ump->groups[i].valid)
++		if (group_maps & (1U << i))
+ 			ump->legacy_mapping[num++] = i;
  
- cflags-y	+= -fno-common -pipe -fno-builtin -mmedium-calls -D__linux__
+ 	return num;
 -- 
-2.39.5
+2.47.1
 
 
 
