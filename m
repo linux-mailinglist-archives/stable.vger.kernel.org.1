@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF8CA02D3B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:02:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27738A02BE9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34133A4CE2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE231886DF7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FCD1DE3BB;
-	Mon,  6 Jan 2025 16:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96E91422DD;
+	Mon,  6 Jan 2025 15:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxS5aeX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhpbRAwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621B51DDC1B;
-	Mon,  6 Jan 2025 16:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A568713B592;
+	Mon,  6 Jan 2025 15:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179274; cv=none; b=uqoZVRYCyueN5I/lJiQEf1lNNp8DOtw+03n8fOeXz2878Yw1KfFlBDgGvrjkXPde2fbhJgNbAH3tB2KeKPju1IUQB4lVFwoqNNCI7oHJ7vTsR8T9GoSCabkHi43T0/mPFHBdWUEtRD9Fo77mGKi6JWh4376cCj5Srn6C59txoQE=
+	t=1736178504; cv=none; b=cRSsPs6UYuLO6jFp8Td4aCb7D3V1yZrtwAmYys70PWixivmgjOrPZdcg4cwXp9Zg3YXaHmuMsTbNGozqDG3dogGrk1uRteIV15PHNSEA5fI6OUU8jZURdQnuH+kG9PUpP2tCcpgd/2YH/sfhWAakK5SBRRd/pFCJz+uDn57Nrds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179274; c=relaxed/simple;
-	bh=LXsYLOk1cjR5a0dBpGRG5Yhk+aNrhZ80y/BEHr/Nxpk=;
+	s=arc-20240116; t=1736178504; c=relaxed/simple;
+	bh=VHlgCjQ25kzWdW4J7BQGLJu0/A9Ws2UFxhPAEpOwtWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWGHzq2T1sJ9l24DYnSSVBEyvLoizW1bQXTAUuzrevaxo+2tDVzGVavLO4vKzmBZ+GRSXgHYvlaUBugHq8iZxU2q6SEXGZuPY0me9o7SCvKRTqQEgcYLf1eNN2bK7rZhJJ3DmR6OwD1AgUw04RLHV5O+weduI8RhkSyJ6NvZYA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxS5aeX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB19C4CED2;
-	Mon,  6 Jan 2025 16:01:13 +0000 (UTC)
+	 MIME-Version; b=PP5GjTgL0wObTvkvtTnJc7MrVo9JvyjW5r9zBt87uBBvHLz4aVwKp+2Cfdu0+lZ0nHBLSmTl3Geb4cyZ1aGOeeW8Nae+G+n10BBe8F/zN7xwE3YkZ0CewLxZITncQ00OopvD/TZrIA7S66MOo3CrWi2VYiCNfQ70oj88hiHJH5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhpbRAwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06353C4CED2;
+	Mon,  6 Jan 2025 15:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179274;
-	bh=LXsYLOk1cjR5a0dBpGRG5Yhk+aNrhZ80y/BEHr/Nxpk=;
+	s=korg; t=1736178504;
+	bh=VHlgCjQ25kzWdW4J7BQGLJu0/A9Ws2UFxhPAEpOwtWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxS5aeX5jtGxYs6ryUCg8d2lx46vYVBkBJR5ZWVb9mqpw/OjrbfhUDFs4b1GaVbtw
-	 8IefPPz6sm4mW2BZnZZyIJwPp5EXoMJPu39EnFiG8Umh+P56PMopuILQ6JS3MuFDbq
-	 tfa/0kgE08dW0+bC6SVGTdixfx14yXFD0/dTvpVs=
+	b=mhpbRAwbEZEyy60j15YAxZhjZ8WdA5TxxfAMvequHGwSROJAbxxqGpvw/2S45yg11
+	 E4aBylaYEsHSYHznXOCYkKRNsJzmDcS8oY92jHAD8Y8wr8yfHNlTA8B4iackANsvQp
+	 k92OM7Vx7a5wzFVAVwHQLh+cKg7Cxyc+Ybq5Fy34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	WangYuli <wangyuli@uniontech.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 52/93] MIPS: Probe toolchain support of -msym32
+Subject: [PATCH 5.10 124/138] sound: usb: format: dont warn that raw DSD is unsupported
 Date: Mon,  6 Jan 2025 16:17:28 +0100
-Message-ID: <20250106151130.667939481@linuxfoundation.org>
+Message-ID: <20250106151137.926857583@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-[ Upstream commit 18ca63a2e23c5e170d2d7552b64b1f5ad019cd9b ]
+[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
 
-msym32 is not supported by LLVM toolchain.
-Workaround by probe toolchain support of msym32 for KBUILD_SYM32
-feature.
+UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
+RAW_DATA type, typically used for DSD playback.
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1544
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
+This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
+fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
+however a confusing and unnecessary message gets printed because
+the bit is not properly tested in the last "unsupported" if test:
+if (format & ~0x3F) { ... }
+
+For example the output:
+
+usb 7-1: new high-speed USB device number 5 using xhci_hcd
+usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
+usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
+usb 7-1: Product: TC44C
+usb 7-1: Manufacturer: TC44C
+usb 7-1: SerialNumber: 5000000001
+hid-generic 0003:262A:9302.001E: No inputs registered, leaving
+hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
+usb 7-1: 2:4 : unsupported format bits 0x100000000
+
+This last "unsupported format" is actually wrong: we know the
+format is a RAW_DATA which we assume is DSD, so there is no need
+to print the confusing message.
+
+This we unset bit 31 of the format after recognizing it, to avoid
+the message.
+
+Suggested-by: Takashi Iwai <tiwai@suse.com>
+Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/format.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 9ff2c70763a0..e2a2e5df4fde 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -272,7 +272,7 @@ drivers-$(CONFIG_PCI)		+= arch/mips/pci/
- ifdef CONFIG_64BIT
-   ifndef KBUILD_SYM32
-     ifeq ($(shell expr $(load-y) \< 0xffffffff80000000), 0)
--      KBUILD_SYM32 = y
-+      KBUILD_SYM32 = $(call cc-option-yn, -msym32)
-     endif
-   endif
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index 29ed301c6f06..552094012c49 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -61,6 +61,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
+ 			/* flag potentially raw DSD capable altsettings */
+ 			fp->dsd_raw = true;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
+ 		}
  
+ 		format <<= 1;
+@@ -72,8 +74,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 		sample_width = as->bBitResolution;
+ 		sample_bytes = as->bSubslotSize;
+ 
+-		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
++		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
++		}
+ 
+ 		format <<= 1;
+ 		break;
 -- 
 2.39.5
 
