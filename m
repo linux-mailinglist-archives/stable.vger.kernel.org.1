@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89BFA02B8B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:44:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38704A02AF9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4B70164714
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:43:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B74D13A59FF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378E11DE2DF;
-	Mon,  6 Jan 2025 15:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A28D86332;
+	Mon,  6 Jan 2025 15:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8zfR7+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cINZ27u8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5ACA1DE2C7;
-	Mon,  6 Jan 2025 15:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8D383A14;
+	Mon,  6 Jan 2025 15:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178211; cv=none; b=FqppXD7ohzkgwbxUxOTRLOLNarX79mV9MCgrKKwlCXu+e4pVTjaFaCHZwS/goUESWBJcumGoQ+YuDhyMqcuqtueeHepqemFxmXNYaLiFsOrV7Hf4nkeWFJhQs9T8FKSEd5gb0E/Zx7yDMZNt5n786UK8ggKxq2csAXINjq2mFwE=
+	t=1736177861; cv=none; b=pSO1VTjul1pYMbOlQq8hkD24PSKG0vYQBmScdo6Inp5MmiUrS2bmJqLAGSZSoP5rvWCSn5bAiEGVxY4wJVkzMNSMeChsqjUD9E6noGku1aj/ilgvoErXMTTLV2VSy0LU8Pqy0nQ6eVU7y/WcYk/hFnWxuGZB+jxpiiVVSqUL+ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178211; c=relaxed/simple;
-	bh=WVdayttM5TvRNT8CiPW7VG97/Yxtd4mQ+SFo5OHaAnc=;
+	s=arc-20240116; t=1736177861; c=relaxed/simple;
+	bh=8lQTHNb+vdIZWKYiEfA53Yq2z0upA1HwDVIBkJPo6Oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6N9o1qZGy/krHDpAJSd3OQPTlrqWdKN9l0kKwAaZnYdUUr7EkwTXHxsM6h4bATk8ywk1zHtTjT5kuolCLzFPHnKJQkTYXRdIxZDH2cxvJmNS6kPsQqUS8kObqEAkM5UNnqJVVnMGKOYMlfeTG/qRMFWvINXWja6lxiQwTiWBfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8zfR7+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47368C4CED6;
-	Mon,  6 Jan 2025 15:43:31 +0000 (UTC)
+	 MIME-Version; b=XDZmlANUTUsczBNW2hml55dYwcpynt3vDtByjtTRJPoDXveOjlZV3a50F0Ju5ijm2Xb36aYFruKDI1VVzCHTFUOYL8JdLDGH/MkIPDpYS/rZLQOi/ZoIFslYrmzdMLMKK4V9UXbI4WVI60aXkM0B/4Npt5OkG+c6SoAeR1tW0Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cINZ27u8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43486C4CED2;
+	Mon,  6 Jan 2025 15:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178211;
-	bh=WVdayttM5TvRNT8CiPW7VG97/Yxtd4mQ+SFo5OHaAnc=;
+	s=korg; t=1736177861;
+	bh=8lQTHNb+vdIZWKYiEfA53Yq2z0upA1HwDVIBkJPo6Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8zfR7+fprLkyeXTmujVv3SPk4brXQlLcruRL3PtU3aeE2tsk30daRVKLLxsy4/5V
-	 kcfNxWI06uf4bppu6aoj5FpnxQiLop5H3OKkrGgvymW7x/LHfwBNHCnwR98THlEt2a
-	 KqXbp8vhrpdDgI+CbQZfIpkQ30wFdGQHbXkPL2og=
+	b=cINZ27u8yQFpTxvXOWhLwe8X3nvKF++bHSrdkd/qxZV3EBjq4bp87kRmqrIo/UrEh
+	 hd0mhf/6FzNtd2qwpC7CEAUDUnKq0nVG1TQu5e5d+vryecO6LNKN62lAzczWFSfi/l
+	 Nb4PiQLgLWSrAihNtmTTschs8HwR8Yr4v3mMjFew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>
-Subject: [PATCH 5.10 042/138] ceph: validate snapdirname option length when mounting
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 080/156] wifi: mac80211: wake the queues in case of failure in resume
 Date: Mon,  6 Jan 2025 16:16:06 +0100
-Message-ID: <20250106151134.830197218@linuxfoundation.org>
+Message-ID: <20250106151144.745232204@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 12eb22a5a609421b380c3c6ca887474fb2089b2c upstream.
+[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
 
-It becomes a path component, so it shouldn't exceed NAME_MAX
-characters.  This was hardened in commit c152737be22b ("ceph: Use
-strscpy() instead of strcpy() in __get_snap_name()"), but no actual
-check was put in place.
+In case we fail to resume, we'll WARN with
+"Hardware became unavailable during restart." and we'll wait until user
+space does something. It'll typically bring the interface down and up to
+recover. This won't work though because the queues are still stopped on
+IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
+Make sure we clear that reason so that we give a chance to the recovery
+to succeed.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/super.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/util.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -301,6 +301,8 @@ static int ceph_parse_mount_param(struct
- 
- 	switch (token) {
- 	case Opt_snapdirname:
-+		if (strlen(param->string) > NAME_MAX)
-+			return invalfc(fc, "snapdirname too long");
- 		kfree(fsopt->snapdir_name);
- 		fsopt->snapdir_name = param->string;
- 		param->string = NULL;
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index b4814e97cf74..38c30e4ddda9 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1825,6 +1825,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
+ 		else
+ 			WARN(1, "Hardware became unavailable during restart.\n");
++		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
++						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
++						false);
+ 		ieee80211_handle_reconfig_failure(local);
+ 		return res;
+ 	}
+-- 
+2.39.5
+
 
 
 
