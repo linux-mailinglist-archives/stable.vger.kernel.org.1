@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E688A02C14
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:50:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E32A02AC7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC49E1667DA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:50:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 476627A28A6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFD71DC9BE;
-	Mon,  6 Jan 2025 15:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE23D14D28C;
+	Mon,  6 Jan 2025 15:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcksjHoR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eotq6uHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785B91DD0FE;
-	Mon,  6 Jan 2025 15:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE1F146D6B;
+	Mon,  6 Jan 2025 15:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178567; cv=none; b=QfeTQHi6oPVmAZWlntfutrpBl3+y543WENybP3zxRWq89FkWybC+6x7QurV22UYSgCjK4M/Fi3SXmO7QkFZlNjcI3dn8h0qn5/hfx9VhsSk4UubQRj0FUADBcw+DP9OwrNtUfHzHaL4Ei6pdKRI4mX0ZBkqK3Wpq7mr2weddDQ0=
+	t=1736177754; cv=none; b=pWaTIQavakfEHMPDmLI52eQJdE0Gtu5je+p1bazvBUirFlRKKGBM1NX98iFWXewOWAnGz7d9P7u5s5og1N3gddXUig7Am58SHyFvABzrclMBGhjTmKZzmoNm//PAVdqCoCR61eOh9uXzoEgl9ViJO+6NcrIesWRHcYxdUN2GrVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178567; c=relaxed/simple;
-	bh=HV/eNpsaF1I0qTr0HMMkdCP8ANPNC57OgYF7+k6v4jA=;
+	s=arc-20240116; t=1736177754; c=relaxed/simple;
+	bh=Yiusp/zFRRw9Q5O3NsfEsXK+6BmgD5ACRjfRFC1J/fE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKnyKAU5OZByZf6TGJrA3gDHFS0PjFxMc0OK1fNzjv9cBTVm28I+NbOh+YSfs7DW+bvDqkZ6uBxcnTD5+gmkUrOdb1wIEXnMSrnhxSSkd2/0jkwbXfTbtVQbSgsxKw3MV/t1eim/f4seps/t50eIg3XSxjFKCgkeEsBtxLKcCf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcksjHoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13AFC4CED2;
-	Mon,  6 Jan 2025 15:49:26 +0000 (UTC)
+	 MIME-Version; b=JlVpnvEbS82MZReRcsIdWUAi5j0DmYvwAaASaqYWB38uYTgHoAvO+e6tBD1v3FGS/GFCVAmdFmuVDgdsu4ow5iag2tl4HjQJVlTX9kkDm7fGIRDP767NDCBud0jvWj+72dRGaxw0t2GByox9KILWVDSNxpx+gsruRJhb+isSzE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eotq6uHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89307C4CED2;
+	Mon,  6 Jan 2025 15:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178567;
-	bh=HV/eNpsaF1I0qTr0HMMkdCP8ANPNC57OgYF7+k6v4jA=;
+	s=korg; t=1736177753;
+	bh=Yiusp/zFRRw9Q5O3NsfEsXK+6BmgD5ACRjfRFC1J/fE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcksjHoRmbBPmbP0WqngTgt8QTR5CzHmmgY+AmQfavgdWUIX+VoRIseyoTUX5yVvs
-	 8bBVZljScU8isqZfLfjjhExBBRC6Kz1YsTNRaS3aySutowDkAI8SKnjnqj9OK3ROWs
-	 jJKPm4nveEwQDIr08QUfOLJE1LcudOjdoaO/Ga+Y=
+	b=Eotq6uHVeZBzUzWWrwpoY8f3NIMYQxW6mdygvgpAH5mICUcWnt+Ysk89QH0Gmod91
+	 uJ+TvVElXVswJtc1LA737EYbUuSLgcAbxsVvZuYBExBWNzp0FYTQ7J8Wx3cxhnKwMA
+	 VNJNHsPitBTy3Nbqy2oZJ5F65J9e/zfI91j3ZWQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/168] netfilter: ipset: Fix for recursive locking warning
+Subject: [PATCH 6.12 044/156] net: stmmac: restructure the error path of stmmac_probe_config_dt()
 Date: Mon,  6 Jan 2025 16:15:30 +0100
-Message-ID: <20250106151139.301506339@linuxfoundation.org>
+Message-ID: <20250106151143.396411007@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 70b6f46a4ed8bd56c85ffff22df91e20e8c85e33 ]
+[ Upstream commit 2b6ffcd7873b7e8a62c3e15a6f305bfc747c466b ]
 
-With CONFIG_PROVE_LOCKING, when creating a set of type bitmap:ip, adding
-it to a set of type list:set and populating it from iptables SET target
-triggers a kernel warning:
+Current implementation of stmmac_probe_config_dt() does not release the
+OF node reference obtained by of_parse_phandle() in some error paths.
+The problem is that some error paths call stmmac_remove_config_dt() to
+clean up but others use and unwind ladder.  These two types of error
+handling have not kept in sync and have been a recurring source of bugs.
+Re-write the error handling in stmmac_probe_config_dt() to use an unwind
+ladder. Consequently, stmmac_remove_config_dt() is not needed anymore,
+thus remove it.
 
-| WARNING: possible recursive locking detected
-| 6.12.0-rc7-01692-g5e9a28f41134-dirty #594 Not tainted
-| --------------------------------------------
-| ping/4018 is trying to acquire lock:
-| ffff8881094a6848 (&set->lock){+.-.}-{2:2}, at: ip_set_add+0x28c/0x360 [ip_set]
-|
-| but task is already holding lock:
-| ffff88811034c048 (&set->lock){+.-.}-{2:2}, at: ip_set_add+0x28c/0x360 [ip_set]
+This bug was found by an experimental verification tool that I am
+developing.
 
-This is a false alarm: ipset does not allow nested list:set type, so the
-loop in list_set_kadd() can never encounter the outer set itself. No
-other set type supports embedded sets, so this is the only case to
-consider.
-
-To avoid the false report, create a distinct lock class for list:set
-type ipset locks.
-
-Fixes: f830837f0eed ("netfilter: ipset: list:set set type support")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 4838a5405028 ("net: stmmac: Fix wrapper drivers not detecting PHY")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20241219024119.2017012-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_list_set.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 43 ++++++++-----------
+ 1 file changed, 17 insertions(+), 26 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
-index 902ff2f3bc72..5cc35b553a04 100644
---- a/net/netfilter/ipset/ip_set_list_set.c
-+++ b/net/netfilter/ipset/ip_set_list_set.c
-@@ -611,6 +611,8 @@ init_list_set(struct net *net, struct ip_set *set, u32 size)
- 	return true;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index ad868e8d195d..aaf008bdbbcd 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -405,22 +405,6 @@ static int stmmac_of_get_mac_mode(struct device_node *np)
+ 	return -ENODEV;
  }
  
-+static struct lock_class_key list_set_lockdep_key;
-+
- static int
- list_set_create(struct net *net, struct ip_set *set, struct nlattr *tb[],
- 		u32 flags)
-@@ -627,6 +629,7 @@ list_set_create(struct net *net, struct ip_set *set, struct nlattr *tb[],
- 	if (size < IP_SET_LIST_MIN_SIZE)
- 		size = IP_SET_LIST_MIN_SIZE;
+-/**
+- * stmmac_remove_config_dt - undo the effects of stmmac_probe_config_dt()
+- * @pdev: platform_device structure
+- * @plat: driver data platform structure
+- *
+- * Release resources claimed by stmmac_probe_config_dt().
+- */
+-static void stmmac_remove_config_dt(struct platform_device *pdev,
+-				    struct plat_stmmacenet_data *plat)
+-{
+-	clk_disable_unprepare(plat->stmmac_clk);
+-	clk_disable_unprepare(plat->pclk);
+-	of_node_put(plat->phy_node);
+-	of_node_put(plat->mdio_node);
+-}
+-
+ /**
+  * stmmac_probe_config_dt - parse device-tree driver parameters
+  * @pdev: platform_device structure
+@@ -490,8 +474,10 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 		dev_warn(&pdev->dev, "snps,phy-addr property is deprecated\n");
  
-+	lockdep_set_class(&set->lock, &list_set_lockdep_key);
- 	set->variant = &set_variant;
- 	set->dsize = ip_set_elem_len(set, tb, sizeof(struct set_elem),
- 				     __alignof__(struct set_elem));
+ 	rc = stmmac_mdio_setup(plat, np, &pdev->dev);
+-	if (rc)
+-		return ERR_PTR(rc);
++	if (rc) {
++		ret = ERR_PTR(rc);
++		goto error_put_phy;
++	}
+ 
+ 	of_property_read_u32(np, "tx-fifo-depth", &plat->tx_fifo_size);
+ 
+@@ -580,8 +566,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	dma_cfg = devm_kzalloc(&pdev->dev, sizeof(*dma_cfg),
+ 			       GFP_KERNEL);
+ 	if (!dma_cfg) {
+-		stmmac_remove_config_dt(pdev, plat);
+-		return ERR_PTR(-ENOMEM);
++		ret = ERR_PTR(-ENOMEM);
++		goto error_put_mdio;
+ 	}
+ 	plat->dma_cfg = dma_cfg;
+ 
+@@ -609,8 +595,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 
+ 	rc = stmmac_mtl_setup(pdev, plat);
+ 	if (rc) {
+-		stmmac_remove_config_dt(pdev, plat);
+-		return ERR_PTR(rc);
++		ret = ERR_PTR(rc);
++		goto error_put_mdio;
+ 	}
+ 
+ 	/* clock setup */
+@@ -662,6 +648,10 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	clk_disable_unprepare(plat->pclk);
+ error_pclk_get:
+ 	clk_disable_unprepare(plat->stmmac_clk);
++error_put_mdio:
++	of_node_put(plat->mdio_node);
++error_put_phy:
++	of_node_put(plat->phy_node);
+ 
+ 	return ret;
+ }
+@@ -670,16 +660,17 @@ static void devm_stmmac_remove_config_dt(void *data)
+ {
+ 	struct plat_stmmacenet_data *plat = data;
+ 
+-	/* Platform data argument is unused */
+-	stmmac_remove_config_dt(NULL, plat);
++	clk_disable_unprepare(plat->stmmac_clk);
++	clk_disable_unprepare(plat->pclk);
++	of_node_put(plat->mdio_node);
++	of_node_put(plat->phy_node);
+ }
+ 
+ /**
+  * devm_stmmac_probe_config_dt
+  * @pdev: platform_device structure
+  * @mac: MAC address to use
+- * Description: Devres variant of stmmac_probe_config_dt(). Does not require
+- * the user to call stmmac_remove_config_dt() at driver detach.
++ * Description: Devres variant of stmmac_probe_config_dt().
+  */
+ struct plat_stmmacenet_data *
+ devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
 -- 
 2.39.5
 
