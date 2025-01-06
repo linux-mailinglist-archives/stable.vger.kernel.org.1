@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-107726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10577A02DFA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:42:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D709A02DFC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02AFB162368
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E7BF3A293A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8911DED5C;
-	Mon,  6 Jan 2025 16:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A470E1DEFF1;
+	Mon,  6 Jan 2025 16:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJ4+DsJf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fnKNTvf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D6E1DED49;
-	Mon,  6 Jan 2025 16:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E26D1DDC3A;
+	Mon,  6 Jan 2025 16:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736181709; cv=none; b=ESZvp6u1qc32cu0CuEVzxJC4WcUR2M7XAGQhYutpgBMPfF5A+7bOTF2nkOeoQ48preVtMpZ0GRkt0jnfCp5NwBQ6cK68hi23p9lAlYf1Z2IPx4T3jd69DRvqBCdG7SD8M9A7MvZ07YbWm6Ub327BQTy0x7XHj3QAY+BHY1dWs8E=
+	t=1736181716; cv=none; b=p1U3WvCkwpPopKtAX+US4MuRb/5PF9TESmCsHV6LNKWLzu9H9Ca2m2u6HJD/vgxSaw94C+yRbTItRnFh8oSUpFVUpNvXWoYU07wJuCsVW1ktyhcKVah7jJJxqkRB9peby+KlQzs7xtONwgUfnXI4a4J6H01Hh88tADrvkwy8KCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736181709; c=relaxed/simple;
-	bh=pqZ9b/s4QO1eG2Yb1XLdjRCZrTPGoo0GVnFZ/BJoM9Y=;
+	s=arc-20240116; t=1736181716; c=relaxed/simple;
+	bh=QbFbT//zDPiIzy5J3MmytHrSEmvbPNG9OKmJHznXZ8A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dxKDo9RKQNCBr5ch6MtXAnLz24Dm3K/zUKDmhYAL0qWAoGKlW6ikGcpMO1wTCUlinlzM9CQF0DLEHIdI9liKznZCbJkHmlmKfClV20oUI5s4pESCxLacKdRSHMF8qX6rbcguOf9cpbNKpgkS/IqcCVE1np4QVilr4lYy+cLTtpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AJ4+DsJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A3AC4CED2;
-	Mon,  6 Jan 2025 16:41:47 +0000 (UTC)
+	 MIME-Version; b=WvOMKxq+G7bA9xU26IZKsWJb3So5Qz3xUWPcG9zeBjC49sidKTP7stpnYmJbtRYsOHzrwgSDDh2YuEb6vYCr52epiljC0rZaf1o/Z4eHFwmXc/5qcVCPwbv+iudy8g/0QTzqNiJOt3jNpREl3sb4mWA7qqOa4A7ecsRsizmYWMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fnKNTvf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815CDC4CED6;
+	Mon,  6 Jan 2025 16:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736181708;
-	bh=pqZ9b/s4QO1eG2Yb1XLdjRCZrTPGoo0GVnFZ/BJoM9Y=;
+	s=k20201202; t=1736181715;
+	bh=QbFbT//zDPiIzy5J3MmytHrSEmvbPNG9OKmJHznXZ8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJ4+DsJfkVn6CQ1JQn6R4AsS4JaDJC1YBKJ6jzPPAXnQzn/MuiHqbuTKmhTIggbX0
-	 b2ZSn9hfDxAbbWQxz+S0RMhJiwGXqez/VKp5ftXUQgX4q2oOSiUzVQU63pGH2VpAKY
-	 RI8CLvFbARtXMaEokns39YLVN8zeNbQve1rKwDNWUTShS9zswVV0F42rsOaoIzFxpu
-	 yf1vls8FjDRRXZQ7P1U490JMoPROCgFKMvuud9y58TUuHlMhUtaaw7N60WY2t3XGrR
-	 YLjqJNSOGVyh6afp1+V/VIdN2QJOCxBhTgGYUEtiK3eLrpSEMTA5nW+7oEyL4bMXQv
-	 nbhM81LIMywPA==
+	b=fnKNTvf8QgzbsE0daif9rTksXA2VWGVmYE3V7cmGafJsAV07hvZWwt2bOZjwi+/1C
+	 vSKwE/l6zf44Gy9hqNSiXge4xrSjpOpm8Za8TjBHunPiSKkD2Sg6tSoXQKHhHho5mN
+	 S9DZXKS4QIoEJ5dd7OMFStvdXDnQiqA/TZpyGZXkt5NpDH0kTLcCPEuQcav1gXOClE
+	 q5BFgmLn+pc32/PPUhGNn4mCALCqD4x1cBoffQFakarluB1P0DloLhsAA/1Nq8HCZh
+	 99z6O5UuxnuL+QKvK8WQNOfqSz/DoANf0CmAK4WNuWwBJvNnjMBhhdEmgreDIM5Po0
+	 U4QTPc7B/lT0g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hongguang Gao <hongguang.gao@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Tejun Heo <tj@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@pm.me>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 3/8] RDMA/bnxt_re: Fix to export port num to ib_query_qp
-Date: Mon,  6 Jan 2025 11:41:03 -0500
-Message-Id: <20250106164138.1122164-3-sashal@kernel.org>
+	shuah@kernel.org,
+	dvernet@meta.com,
+	vishalc@linux.ibm.com,
+	arighi@nvidia.com,
+	linux-kselftest@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 4/8] sched_ext: Fix dsq_local_on selftest
+Date: Mon,  6 Jan 2025 11:41:04 -0500
+Message-Id: <20250106164138.1122164-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250106164138.1122164-1-sashal@kernel.org>
 References: <20250106164138.1122164-1-sashal@kernel.org>
@@ -68,79 +70,72 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.8
 Content-Transfer-Encoding: 8bit
 
-From: Hongguang Gao <hongguang.gao@broadcom.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 34db8ec931b84d1426423f263b1927539e73b397 ]
+[ Upstream commit ce2b93fc1dfa1c82f2576aa571731c4e5dcc8dd7 ]
 
-Current driver implementation doesn't populate the port_num
-field in query_qp. Adding the code to convert internal firmware
-port id to ibv defined port number and export it.
+The dsp_local_on selftest expects the scheduler to fail by trying to
+schedule an e.g. CPU-affine task to the wrong CPU. However, this isn't
+guaranteed to happen in the 1 second window that the test is running.
+Besides, it's odd to have this particular exception path tested when there
+are no other tests that verify that the interface is working at all - e.g.
+the test would pass if dsp_local_on interface is completely broken and fails
+on any attempt.
 
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241211083931.968831-5-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Flip the test so that it verifies that the feature works. While at it, fix a
+typo in the info message.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Link: http://lkml.kernel.org/r/Z1n9v7Z6iNJ-wKmq@slm.duckdns.org
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 1 +
- drivers/infiniband/hw/bnxt_re/ib_verbs.h | 4 ++++
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 1 +
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 1 +
- 4 files changed, 7 insertions(+)
+ tools/testing/selftests/sched_ext/dsp_local_on.bpf.c | 5 ++++-
+ tools/testing/selftests/sched_ext/dsp_local_on.c     | 5 +++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 160096792224..a814292c5a45 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2267,6 +2267,7 @@ int bnxt_re_query_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
- 	qp_attr->retry_cnt = qplib_qp->retry_cnt;
- 	qp_attr->rnr_retry = qplib_qp->rnr_retry;
- 	qp_attr->min_rnr_timer = qplib_qp->min_rnr_timer;
-+	qp_attr->port_num = __to_ib_port_num(qplib_qp->port_id);
- 	qp_attr->rq_psn = qplib_qp->rq.psn;
- 	qp_attr->max_rd_atomic = qplib_qp->max_rd_atomic;
- 	qp_attr->sq_psn = qplib_qp->sq.psn;
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.h b/drivers/infiniband/hw/bnxt_re/ib_verbs.h
-index b789e47ec97a..9cd8f770d1b2 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.h
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.h
-@@ -264,6 +264,10 @@ void bnxt_re_dealloc_ucontext(struct ib_ucontext *context);
- int bnxt_re_mmap(struct ib_ucontext *context, struct vm_area_struct *vma);
- void bnxt_re_mmap_free(struct rdma_user_mmap_entry *rdma_entry);
+diff --git a/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c b/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
+index 6325bf76f47e..fbda6bf54671 100644
+--- a/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
++++ b/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
+@@ -43,7 +43,10 @@ void BPF_STRUCT_OPS(dsp_local_on_dispatch, s32 cpu, struct task_struct *prev)
+ 	if (!p)
+ 		return;
  
-+static inline u32 __to_ib_port_num(u16 port_id)
-+{
-+	return (u32)port_id + 1;
-+}
+-	target = bpf_get_prandom_u32() % nr_cpus;
++	if (p->nr_cpus_allowed == nr_cpus)
++		target = bpf_get_prandom_u32() % nr_cpus;
++	else
++		target = scx_bpf_task_cpu(p);
  
- unsigned long bnxt_re_lock_cqs(struct bnxt_re_qp *qp);
- void bnxt_re_unlock_cqs(struct bnxt_re_qp *qp, unsigned long flags);
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 7ad83566ab0f..02d87a8f81c9 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1470,6 +1470,7 @@ int bnxt_qplib_query_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
- 	qp->dest_qpn = le32_to_cpu(sb->dest_qp_id);
- 	memcpy(qp->smac, sb->src_mac, 6);
- 	qp->vlan_id = le16_to_cpu(sb->vlan_pcp_vlan_dei_vlan_id);
-+	qp->port_id = le16_to_cpu(sb->port_id);
- bail:
- 	dma_free_coherent(&rcfw->pdev->dev, sbuf.size,
- 			  sbuf.sb, sbuf.dma_addr);
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index f55958e5fddb..296ed6afebb7 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -299,6 +299,7 @@ struct bnxt_qplib_qp {
- 	u32				dest_qpn;
- 	u8				smac[6];
- 	u16				vlan_id;
-+	u16				port_id;
- 	u8				nw_type;
- 	struct bnxt_qplib_ah		ah;
+ 	scx_bpf_dsq_insert(p, SCX_DSQ_LOCAL_ON | target, SCX_SLICE_DFL, 0);
+ 	bpf_task_release(p);
+diff --git a/tools/testing/selftests/sched_ext/dsp_local_on.c b/tools/testing/selftests/sched_ext/dsp_local_on.c
+index 472851b56854..0ff27e57fe43 100644
+--- a/tools/testing/selftests/sched_ext/dsp_local_on.c
++++ b/tools/testing/selftests/sched_ext/dsp_local_on.c
+@@ -34,9 +34,10 @@ static enum scx_test_status run(void *ctx)
+ 	/* Just sleeping is fine, plenty of scheduling events happening */
+ 	sleep(1);
  
+-	SCX_EQ(skel->data->uei.kind, EXIT_KIND(SCX_EXIT_ERROR));
+ 	bpf_link__destroy(link);
+ 
++	SCX_EQ(skel->data->uei.kind, EXIT_KIND(SCX_EXIT_UNREG));
++
+ 	return SCX_TEST_PASS;
+ }
+ 
+@@ -50,7 +51,7 @@ static void cleanup(void *ctx)
+ struct scx_test dsp_local_on = {
+ 	.name = "dsp_local_on",
+ 	.description = "Verify we can directly dispatch tasks to a local DSQs "
+-		       "from osp.dispatch()",
++		       "from ops.dispatch()",
+ 	.setup = setup,
+ 	.run = run,
+ 	.cleanup = cleanup,
 -- 
 2.39.5
 
