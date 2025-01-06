@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60B0A02AE5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:38:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B4EA02C5F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9F71164843
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73F7A3A74D0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E0514F12D;
-	Mon,  6 Jan 2025 15:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F4E1DD539;
+	Mon,  6 Jan 2025 15:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S35j8syB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vx/k6r9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5D586332;
-	Mon,  6 Jan 2025 15:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817A21D7999;
+	Mon,  6 Jan 2025 15:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177858; cv=none; b=q8alN8xb73RrKXOqoB2We1bv+2Jih4a/8VkDJVrji8ojCCdVoO5i/NGVBf/+dDiVU6oflCHwk872E/zx/+ll+NBpEoAGbm6H6w825odHWAOiiRsw5D+ZnjBxgHTRqIXgsduLtJqjj3mT0TCA9fDnvYkoSL6I68+e8Y4meExgjiI=
+	t=1736178684; cv=none; b=JSda7ljEgkg2wAjl7V2bdSPXOu3eBXn8wyEIORiZOiChpmGGUzYUR8iGIMi8MD9AB35/GaidxuoTSmHgOrfEHHH6SIR2koYLLdVyHAYe57gZecQfa4H6P5n1eUGpnAmtKcYHOwLV55Xm7MDWnrPt1+twJiJmGkOyjmJWTnkYpeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177858; c=relaxed/simple;
-	bh=ADIYJ0lJGYQlmtgYK3syHPEIydVGwkgUlIrDaYYqUuE=;
+	s=arc-20240116; t=1736178684; c=relaxed/simple;
+	bh=bRnaYNvZdiNI6AhJF2ydnt4iKP2av2Dg+8M4KLbKJFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kX5jstaFx041o5LU8C09/+5u/Tlo08SfAvZzosncjsO8lmtWcHhwZWqmw4cBVsWyrFoCRLbuBtur3HwGfleu4pNpOnC8sE7mr/uvMmFbkCDk2V5xFdg+SqQSV9o2OgOysfG566OehSx7kormZ34Kg5HpFyIdmBFFCi3YvsxXvgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S35j8syB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF97C4CED2;
-	Mon,  6 Jan 2025 15:37:38 +0000 (UTC)
+	 MIME-Version; b=dNTv6UAsHNIqBFY+6vAaF8zS8U73xFV0gjGi1R50Ev+YPoAiPCrT0EadZDHyC8CnqCmOn5B84g910qdmDKhtWYQVrt0TH5rgbukaO6oEhAZyHN9azr29M9XyHWChMnAaXqEk0Ywa8g+NWWHI1E85Ie8nuK85liMDFeW3cLlkbpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vx/k6r9q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0690FC4CED2;
+	Mon,  6 Jan 2025 15:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177858;
-	bh=ADIYJ0lJGYQlmtgYK3syHPEIydVGwkgUlIrDaYYqUuE=;
+	s=korg; t=1736178684;
+	bh=bRnaYNvZdiNI6AhJF2ydnt4iKP2av2Dg+8M4KLbKJFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S35j8syBLe+GDSN/U6c3uxjrbBHJbxB8n7hxbo4KxQbs7jPhf134pIJAQiAhSgDS1
-	 rB+V6V+wLvbnqKVC16DRZ2J/RSJ99gJ6AfwjWXlHvdbKSaCYgbLE3foNAlTC3e0vBu
-	 o614O/wpyBnu52L8yRWh5ToRE/07BGOG7cAvo6K8=
+	b=vx/k6r9qpUjmzcv3R14ai0SSFic4ekIrif3k7DKfHY5LRJTssBQhpIoim1G6FSFSe
+	 AFxkS/d09vEdMmZRfaLkZEiv1hviSEQWnX0gYz9Y4Du7hm07ZX/vNKwic03Eoe8Yyp
+	 knccdOF8B74j7+aDur9rRd2foswR4mdKe+5vYtjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/156] wifi: cfg80211: clear link ID from bitmap during link delete after clean up
+Subject: [PATCH 5.15 057/168] media: dvb-frontends: dib3000mb: fix uninit-value in dib3000_write_reg
 Date: Mon,  6 Jan 2025 16:16:05 +0100
-Message-ID: <20250106151144.707551242@linuxfoundation.org>
+Message-ID: <20250106151140.617039644@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit b5c32ff6a3a38c74facdd1fe34c0d709a55527fd ]
+[ Upstream commit 2dd59fe0e19e1ab955259978082b62e5751924c7 ]
 
-Currently, during link deletion, the link ID is first removed from the
-valid_links bitmap before performing any clean-up operations. However, some
-functions require the link ID to remain in the valid_links bitmap. One
-such example is cfg80211_cac_event(). The flow is -
+Syzbot reports [1] an uninitialized value issue found by KMSAN in
+dib3000_read_reg().
 
-nl80211_remove_link()
-    cfg80211_remove_link()
-        ieee80211_del_intf_link()
-            ieee80211_vif_set_links()
-                ieee80211_vif_update_links()
-                    ieee80211_link_stop()
-                        cfg80211_cac_event()
+Local u8 rb[2] is used in i2c_transfer() as a read buffer; in case
+that call fails, the buffer may end up with some undefined values.
 
-cfg80211_cac_event() requires link ID to be present but it is cleared
-already in cfg80211_remove_link(). Ultimately, WARN_ON() is hit.
+Since no elaborate error handling is expected in dib3000_write_reg(),
+simply zero out rb buffer to mitigate the problem.
 
-Therefore, clear the link ID from the bitmap only after completing the link
-clean-up.
+[1] Syzkaller report
+dvb-usb: bulk message failed: -22 (6/0)
+=====================================================
+BUG: KMSAN: uninit-value in dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+ dib3000mb_attach+0x2d8/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+ dibusb_dib3000mb_frontend_attach+0x155/0x2f0 drivers/media/usb/dvb-usb/dibusb-mb.c:31
+ dvb_usb_adapter_frontend_init+0xed/0x9a0 drivers/media/usb/dvb-usb/dvb-usb-dvb.c:290
+ dvb_usb_adapter_init drivers/media/usb/dvb-usb/dvb-usb-init.c:90 [inline]
+ dvb_usb_init drivers/media/usb/dvb-usb/dvb-usb-init.c:186 [inline]
+ dvb_usb_device_init+0x25a8/0x3760 drivers/media/usb/dvb-usb/dvb-usb-init.c:310
+ dibusb_probe+0x46/0x250 drivers/media/usb/dvb-usb/dibusb-mb.c:110
+...
+Local variable rb created at:
+ dib3000_read_reg+0x86/0x4e0 drivers/media/dvb-frontends/dib3000mb.c:54
+ dib3000mb_attach+0x123/0x3c0 drivers/media/dvb-frontends/dib3000mb.c:758
+...
 
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Link: https://patch.msgid.link/20241121-mlo_dfs_fix-v2-1-92c3bf7ab551@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 74340b0a8bc6 ("V4L/DVB (4457): Remove dib3000-common-module")
+Reported-by: syzbot+c88fc0ebe0d5935c70da@syzkaller.appspotmail.com
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20240517155800.9881-1-n.zhandarovich@fintech.ru
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c  | 8 +++++++-
- net/wireless/util.c | 3 +--
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/media/dvb-frontends/dib3000mb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 1b1bf044378d..f11fd360b422 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4992,10 +4992,16 @@ static void ieee80211_del_intf_link(struct wiphy *wiphy,
- 				    unsigned int link_id)
+diff --git a/drivers/media/dvb-frontends/dib3000mb.c b/drivers/media/dvb-frontends/dib3000mb.c
+index c598b2a63325..7c452ddd9e40 100644
+--- a/drivers/media/dvb-frontends/dib3000mb.c
++++ b/drivers/media/dvb-frontends/dib3000mb.c
+@@ -51,7 +51,7 @@ MODULE_PARM_DESC(debug, "set debugging level (1=info,2=xfer,4=setfe,8=getfe (|-a
+ static int dib3000_read_reg(struct dib3000_state *state, u16 reg)
  {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
-+	u16 new_links = wdev->valid_links & ~BIT(link_id);
- 
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
- 
--	ieee80211_vif_set_links(sdata, wdev->valid_links, 0);
-+	/* During the link teardown process, certain functions require the
-+	 * link_id to remain in the valid_links bitmap. Therefore, instead
-+	 * of removing the link_id from the bitmap, pass a masked value to
-+	 * simulate as if link_id does not exist anymore.
-+	 */
-+	ieee80211_vif_set_links(sdata, new_links, 0);
- }
- 
- static int
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index f49b55724f83..18585b1416c6 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -2843,10 +2843,9 @@ void cfg80211_remove_link(struct wireless_dev *wdev, unsigned int link_id)
- 		break;
- 	}
- 
--	wdev->valid_links &= ~BIT(link_id);
--
- 	rdev_del_intf_link(rdev, wdev, link_id);
- 
-+	wdev->valid_links &= ~BIT(link_id);
- 	eth_zero_addr(wdev->links[link_id].addr);
- }
- 
+ 	u8 wb[] = { ((reg >> 8) | 0x80) & 0xff, reg & 0xff };
+-	u8 rb[2];
++	u8 rb[2] = {};
+ 	struct i2c_msg msg[] = {
+ 		{ .addr = state->config.demod_address, .flags = 0,        .buf = wb, .len = 2 },
+ 		{ .addr = state->config.demod_address, .flags = I2C_M_RD, .buf = rb, .len = 2 },
 -- 
 2.39.5
 
