@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-107689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73866A02D0E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE209A02CD5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B693166565
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2361D3A4BF6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054C71DDC2D;
-	Mon,  6 Jan 2025 16:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB2A15A842;
+	Mon,  6 Jan 2025 15:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdchLh2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glZXIKGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D2B1D88AC;
-	Mon,  6 Jan 2025 16:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF89781728;
+	Mon,  6 Jan 2025 15:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179228; cv=none; b=fQ3UXZ+ZwKKrRGgxMt4I3nU7eRz07zxVXIe4e/6tH66UZsmjWzgWJHBqfENweA6nNZ1oDNLasMpVVO3tVFN1NhxztphQYW94G0h8URJ6KW4L1eR08kONN4AXHM4+xSyUcBffM34PPkHKOljl3arNKCksCJ570pTFIg06wGOv6hA=
+	t=1736178983; cv=none; b=hc+Y1oNPTvahvEX/hjn7gFvt1DE7vIoIfVvaPAm9zf8lIO8pmI+inQU6qK3l1vuFcgRsWpittqk8f8q4kRtVzFRNfLOth0jc4QY9bkF+ZhAkOW4BKfqdBKhWiYJhX8trpVSrUoX88xKr5mxX7UqZd2DIEQav7LC3D1nRYvD4g0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179228; c=relaxed/simple;
-	bh=Ude5wyPEZRM88mk+A1eT7ZAFgSUde46XvYYijZU3tA4=;
+	s=arc-20240116; t=1736178983; c=relaxed/simple;
+	bh=MGhp82U/E0OLVf/Y6Zut4BaHHfFLzV3eCDCcSE36b+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A6iHmrDOc8E1Bl2p8D6VvmrmzXnt01S4/y1Dlu9Z6dP8q975XWkD1bMQ9alll0OALJ8Dm6JLJHhgOGLcPY6KSN2F8YpwW9BShTpQYdHlp5zZ7ICs29wjhVt+BgfUxbzxH0TIVuA6jOXMsZI6zDpxfi8EKJiCCMEPdWa7oZF7x5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdchLh2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1176C4CED2;
-	Mon,  6 Jan 2025 16:00:27 +0000 (UTC)
+	 MIME-Version; b=o9r3Skp7jSkval0ScwZ766KKV2esE+GrHVyZSgxC9ko4lXmr5ug4I6UN6sOVbF7t+oqRUkRmynfLco/+vaRP2GQ4fVcNCU1ZDQqBXnbxSMH0PYYdqSz2w3HHn4bNOQtf4BP2EMUG72pQyoED3Yy6MNR7fLwTrX3xMKPT8s2kqcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glZXIKGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F20C4CED2;
+	Mon,  6 Jan 2025 15:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179228;
-	bh=Ude5wyPEZRM88mk+A1eT7ZAFgSUde46XvYYijZU3tA4=;
+	s=korg; t=1736178983;
+	bh=MGhp82U/E0OLVf/Y6Zut4BaHHfFLzV3eCDCcSE36b+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SdchLh2MvAJw4bFYKWtLj2j0FzueOAiuwYgSjSy//jG9TdoCl/7K2g9c3o9TRcHrP
-	 LK/by6ck1pPx4AVVS3RMlChn1zSiNwlEYlikAf6cxbk+fDh2j3mo/nNkc3ll5JfF1q
-	 7O6kXCVGWbxWM53gghE8hB2PXTXcOkVHy9POHThg=
+	b=glZXIKGPB0RJvY1gkHcud3xuYixhZqDXigC8hAShxBigwero0ba2GiohxguRr/1w9
+	 p6yb0riJiH3g3nXYDtBbVSeFgeR7tNI7isYO3yXdlULS/kP/oBEyzgwpbXqSJFJwWq
+	 WaUEQyDPnZi1VWtugQcLsiV7Y0492bd65PMnkY5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Preethi G <preethi.gurusiddalingeswaraswamy@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 68/93] RDMA/bnxt_re: Fix reporting hw_ver in query_device
+Subject: [PATCH 5.15 156/168] irqchip/gic: Correct declaration of *percpu_base pointer in union gic_base
 Date: Mon,  6 Jan 2025 16:17:44 +0100
-Message-ID: <20250106151131.270838981@linuxfoundation.org>
+Message-ID: <20250106151144.324512105@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 7179fe0074a3c962e43a9e51169304c4911989ed ]
+[ Upstream commit a1855f1b7c33642c9f7a01991fb763342a312e9b ]
 
-Driver currently populates subsystem_device id in the
-"hw_ver" field of ib_attr structure in query_device.
+percpu_base is used in various percpu functions that expect variable in
+__percpu address space. Correct the declaration of percpu_base to
 
-Updated to populate PCI revision ID.
+void __iomem * __percpu *percpu_base;
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Reviewed-by: Preethi G <preethi.gurusiddalingeswaraswamy@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241211083931.968831-6-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+to declare the variable as __percpu pointer.
+
+The patch fixes several sparse warnings:
+
+irq-gic.c:1172:44: warning: incorrect type in assignment (different address spaces)
+irq-gic.c:1172:44:    expected void [noderef] __percpu *[noderef] __iomem *percpu_base
+irq-gic.c:1172:44:    got void [noderef] __iomem *[noderef] __percpu *
+...
+irq-gic.c:1231:43: warning: incorrect type in argument 1 (different address spaces)
+irq-gic.c:1231:43:    expected void [noderef] __percpu *__pdata
+irq-gic.c:1231:43:    got void [noderef] __percpu *[noderef] __iomem *percpu_base
+
+There were no changes in the resulting object files.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/all/20241213145809.2918-2-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 2 +-
+ drivers/irqchip/irq-gic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index d0ed8e14e3da..563a0f37810d 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -137,7 +137,7 @@ int bnxt_re_query_device(struct ib_device *ibdev,
+diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
+index 99077f30f699..c941037199c8 100644
+--- a/drivers/irqchip/irq-gic.c
++++ b/drivers/irqchip/irq-gic.c
+@@ -62,7 +62,7 @@ static void gic_check_cpu_features(void)
  
- 	ib_attr->vendor_id = rdev->en_dev->pdev->vendor;
- 	ib_attr->vendor_part_id = rdev->en_dev->pdev->device;
--	ib_attr->hw_ver = rdev->en_dev->pdev->subsystem_device;
-+	ib_attr->hw_ver = rdev->en_dev->pdev->revision;
- 	ib_attr->max_qp = dev_attr->max_qp;
- 	ib_attr->max_qp_wr = dev_attr->max_qp_wqes;
- 	ib_attr->device_cap_flags =
+ union gic_base {
+ 	void __iomem *common_base;
+-	void __percpu * __iomem *percpu_base;
++	void __iomem * __percpu *percpu_base;
+ };
+ 
+ struct gic_chip_data {
 -- 
 2.39.5
 
