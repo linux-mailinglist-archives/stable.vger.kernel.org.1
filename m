@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9E8A02AAA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248DCA02A31
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DC461651A9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E1501886468
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB55143C7E;
-	Mon,  6 Jan 2025 15:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3311514F6;
+	Mon,  6 Jan 2025 15:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpQ7H+0o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeLxqWQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A6178F49;
-	Mon,  6 Jan 2025 15:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33306155C9E;
+	Mon,  6 Jan 2025 15:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177757; cv=none; b=qfQuDm25+VzbxYWc26cxhK4foWk9rFNksB2mNjeuYI40cAHojr9ZY8RR6JZSVJcrlNT5cjTX/JLNr0Vh4whFzDMLo3Cj48io8ASop4TntWPqCeMTG9KImlNKi/uSE6bevHgNpsRAqip67GdqVkSb6EgbGox6eD6JYngUV/eUZKc=
+	t=1736177418; cv=none; b=npiJOXKnwOS8QcbWf8aQp9hkp3I87RD2OhKhwxJnuvmubJHkG/4vt4TDLuhZIqJwMqZdunsmhF8k1bHX07P/XuDuJBu98miau7jdHYjbfRNxQ4DW6RScByvPhhesrmZqhigMKL3u2PBbRgQNCN7htm/RuvyRzrMKukPruI52Czo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177757; c=relaxed/simple;
-	bh=yL/qadHIa/qmPcZs8354neSdi5sGHDbKy/FbEhJzG1U=;
+	s=arc-20240116; t=1736177418; c=relaxed/simple;
+	bh=2RPO8hqDE9Gp9L0619IkNR4Wk2Iyeff+17K4Um9HtgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhIfQdhEtSLGw7rE4rA0/MrP6c+ZZ698H7insRr4wjQswX7ItlCOLwuPIhNKUT7f/iBXZZgE96gt3US65tpEI5QhXW5+m9UmiCh0GzAL9JzoFr4WEkGdU2qAh0Gw2eCEMe6az4LBA83YAI+9VrLRF3AIj2hQ0TcmNxnb5RiursE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpQ7H+0o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9EBC4CED2;
-	Mon,  6 Jan 2025 15:35:56 +0000 (UTC)
+	 MIME-Version; b=B7P1dr5PKJoyL0hh5U+YWDFHI9eoXEsJb21wTwabkZDFZXrhHNIFmX3I9xAL7V9sE9pZpxC9btHPXEOQl9uF7SvJQn9zbu4OmtFFfSCUsQY6PiiwwutBycaEMz6DC/LcNkZKPC8JwvdF2+HavhNYzGACJ5pI5A9uaIKvPSZGf7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeLxqWQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF76C4CED2;
+	Mon,  6 Jan 2025 15:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177756;
-	bh=yL/qadHIa/qmPcZs8354neSdi5sGHDbKy/FbEhJzG1U=;
+	s=korg; t=1736177418;
+	bh=2RPO8hqDE9Gp9L0619IkNR4Wk2Iyeff+17K4Um9HtgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpQ7H+0ou+V8v1BLY78lk0+IFZ3v4Z1R4GLXyZQqzxV+F4f0y8h6j2gOXXyaoXMcB
-	 LI/62Fva7h10Hz/bpuMiybM5HatVeX/g57XP4Kl/Pazr9GcHZWBQ7u8J1Kzune70Lf
-	 dgAH7rUC+wUQnfeHEVWMBXxFw8rnsoUHmoGkoAOs=
+	b=LeLxqWQ0cT/fG2Bk6S/pgAZ+oq9TT2NvfK9jl+M97BfBb70xBc2nnlyUdPMd9JskO
+	 WiwdM0wdq0ELxNgNymyzLYCTSZzYl0y7avI4tRIAsaV8kW4aPqrH34NUbrz04XG1H7
+	 a3OgYexV74SKv5dBQa52bhkeTGxxSdjzB7A21ukU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/156] net: fix memory leak in tcp_conn_request()
+Subject: [PATCH 6.6 127/222] RDMA/bnxt_re: Allow MSN table capability check
 Date: Mon,  6 Jan 2025 16:15:31 +0100
-Message-ID: <20250106151143.433072107@linuxfoundation.org>
+Message-ID: <20250106151155.415262813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit 4f4aa4aa28142d53f8b06585c478476cfe325cfc ]
+[ Upstream commit 8d310ba845827a38fcd463d86bfe3b730ce7ab8f ]
 
-If inet_csk_reqsk_queue_hash_add() return false, tcp_conn_request() will
-return without free the dst memory, which allocated in af_ops->route_req.
+FW reports the HW capability to use PSN table or MSN table and
+driver/library need to select it based on this capability.
+Use the new capability instead of the older capability check for HW
+retransmission while handling the MSN/PSN table. FW report
+zero (PSN table) for older adapters to maintain backward compatibility.
 
-Here is the kmemleak stack:
+Also, Updated the FW interface structures to handle the new fields.
 
-unreferenced object 0xffff8881198631c0 (size 240):
-  comm "softirq", pid 0, jiffies 4299266571 (age 1802.392s)
-  hex dump (first 32 bytes):
-    00 10 9b 03 81 88 ff ff 80 98 da bc ff ff ff ff  ................
-    81 55 18 bb ff ff ff ff 00 00 00 00 00 00 00 00  .U..............
-  backtrace:
-    [<ffffffffb93e8d4c>] kmem_cache_alloc+0x60c/0xa80
-    [<ffffffffba11b4c5>] dst_alloc+0x55/0x250
-    [<ffffffffba227bf6>] rt_dst_alloc+0x46/0x1d0
-    [<ffffffffba23050a>] __mkroute_output+0x29a/0xa50
-    [<ffffffffba23456b>] ip_route_output_key_hash+0x10b/0x240
-    [<ffffffffba2346bd>] ip_route_output_flow+0x1d/0x90
-    [<ffffffffba254855>] inet_csk_route_req+0x2c5/0x500
-    [<ffffffffba26b331>] tcp_conn_request+0x691/0x12c0
-    [<ffffffffba27bd08>] tcp_rcv_state_process+0x3c8/0x11b0
-    [<ffffffffba2965c6>] tcp_v4_do_rcv+0x156/0x3b0
-    [<ffffffffba299c98>] tcp_v4_rcv+0x1cf8/0x1d80
-    [<ffffffffba239656>] ip_protocol_deliver_rcu+0xf6/0x360
-    [<ffffffffba2399a6>] ip_local_deliver_finish+0xe6/0x1e0
-    [<ffffffffba239b8e>] ip_local_deliver+0xee/0x360
-    [<ffffffffba239ead>] ip_rcv+0xad/0x2f0
-    [<ffffffffba110943>] __netif_receive_skb_one_core+0x123/0x140
-
-Call dst_release() to free the dst memory when
-inet_csk_reqsk_queue_hash_add() return false in tcp_conn_request().
-
-Fixes: ff46e3b44219 ("Fix race for duplicate reqsk on identical SYN")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20241219072859.3783576-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1716876697-25970-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: eb867d797d29 ("RDMA/bnxt_re: Remove always true dattr validity check")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c  | 12 ++++-----
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h  |  2 +-
+ drivers/infiniband/hw/bnxt_re/qplib_res.h |  6 +++++
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c  |  1 +
+ drivers/infiniband/hw/bnxt_re/qplib_sp.h  |  1 +
+ drivers/infiniband/hw/bnxt_re/roce_hsi.h  | 30 ++++++++++++++++++++++-
+ 6 files changed, 44 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 2d844e1f867f..2d43b29da15e 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7328,6 +7328,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 			if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req,
- 								    req->timeout))) {
- 				reqsk_free(req);
-+				dst_release(dst);
- 				return 0;
- 			}
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index b624c255eee6..3e07500dcbcf 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -981,7 +981,7 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	u16 nsge;
  
+ 	if (res->dattr)
+-		qp->dev_cap_flags = res->dattr->dev_cap_flags;
++		qp->is_host_msn_tbl = _is_host_msn_table(res->dattr->dev_cap_flags2);
+ 
+ 	sq->dbinfo.flags = 0;
+ 	bnxt_qplib_rcfw_cmd_prep((struct cmdq_base *)&req,
+@@ -999,7 +999,7 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 			 sizeof(struct sq_psn_search_ext) :
+ 			 sizeof(struct sq_psn_search);
+ 
+-		if (BNXT_RE_HW_RETX(qp->dev_cap_flags)) {
++		if (qp->is_host_msn_tbl) {
+ 			psn_sz = sizeof(struct sq_msn_search);
+ 			qp->msn = 0;
+ 		}
+@@ -1013,7 +1013,7 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
+ 	hwq_attr.aux_depth = psn_sz ? bnxt_qplib_set_sq_size(sq, qp->wqe_mode)
+ 				    : 0;
+ 	/* Update msn tbl size */
+-	if (BNXT_RE_HW_RETX(qp->dev_cap_flags) && psn_sz) {
++	if (qp->is_host_msn_tbl && psn_sz) {
+ 		hwq_attr.aux_depth = roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
+ 		qp->msn_tbl_sz = hwq_attr.aux_depth;
+ 		qp->msn = 0;
+@@ -1638,7 +1638,7 @@ static void bnxt_qplib_fill_psn_search(struct bnxt_qplib_qp *qp,
+ 	if (!swq->psn_search)
+ 		return;
+ 	/* Handle MSN differently on cap flags  */
+-	if (BNXT_RE_HW_RETX(qp->dev_cap_flags)) {
++	if (qp->is_host_msn_tbl) {
+ 		bnxt_qplib_fill_msn_search(qp, wqe, swq);
+ 		return;
+ 	}
+@@ -1820,7 +1820,7 @@ int bnxt_qplib_post_send(struct bnxt_qplib_qp *qp,
+ 	}
+ 
+ 	swq = bnxt_qplib_get_swqe(sq, &wqe_idx);
+-	bnxt_qplib_pull_psn_buff(qp, sq, swq, BNXT_RE_HW_RETX(qp->dev_cap_flags));
++	bnxt_qplib_pull_psn_buff(qp, sq, swq, qp->is_host_msn_tbl);
+ 
+ 	idx = 0;
+ 	swq->slot_idx = hwq->prod;
+@@ -2010,7 +2010,7 @@ int bnxt_qplib_post_send(struct bnxt_qplib_qp *qp,
+ 		rc = -EINVAL;
+ 		goto done;
+ 	}
+-	if (!BNXT_RE_HW_RETX(qp->dev_cap_flags) || msn_update) {
++	if (!qp->is_host_msn_tbl || msn_update) {
+ 		swq->next_psn = sq->psn & BTH_PSN_MASK;
+ 		bnxt_qplib_fill_psn_search(qp, wqe, swq);
+ 	}
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index 5d4c49089a20..3a15ca7feb2b 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -340,7 +340,7 @@ struct bnxt_qplib_qp {
+ 	struct list_head		rq_flush;
+ 	u32				msn;
+ 	u32				msn_tbl_sz;
+-	u16				dev_cap_flags;
++	bool				is_host_msn_tbl;
+ };
+ 
+ #define BNXT_QPLIB_MAX_CQE_ENTRY_SIZE	sizeof(struct cq_base)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.h b/drivers/infiniband/hw/bnxt_re/qplib_res.h
+index f9e7aa3757cf..c2152122a432 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.h
+@@ -523,6 +523,12 @@ static inline bool _is_hw_retx_supported(u16 dev_cap_flags)
+ 
+ #define BNXT_RE_HW_RETX(a) _is_hw_retx_supported((a))
+ 
++static inline bool _is_host_msn_table(u16 dev_cap_ext_flags2)
++{
++	return (dev_cap_ext_flags2 & CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_MASK) ==
++		CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_HOST_MSN_TABLE;
++}
++
+ static inline u8 bnxt_qplib_dbr_pacing_en(struct bnxt_qplib_chip_ctx *cctx)
+ {
+ 	return cctx->modes.dbr_pacing;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 0b98577cd708..420f8613bcd5 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -165,6 +165,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+ 	attr->max_sgid = le32_to_cpu(sb->max_gid);
+ 	attr->max_sgid = min_t(u32, BNXT_QPLIB_NUM_GIDS_SUPPORTED, 2 * attr->max_sgid);
+ 	attr->dev_cap_flags = le16_to_cpu(sb->dev_cap_flags);
++	attr->dev_cap_flags2 = le16_to_cpu(sb->dev_cap_ext_flags_2);
+ 
+ 	bnxt_qplib_query_version(rcfw, attr->fw_ver);
+ 
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.h b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+index 755765e68eaa..2f16f3db093e 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.h
+@@ -73,6 +73,7 @@ struct bnxt_qplib_dev_attr {
+ 	u8				tqm_alloc_reqs[MAX_TQM_ALLOC_REQ];
+ 	bool				is_atomic;
+ 	u16                             dev_cap_flags;
++	u16                             dev_cap_flags2;
+ 	u32                             max_dpi;
+ };
+ 
+diff --git a/drivers/infiniband/hw/bnxt_re/roce_hsi.h b/drivers/infiniband/hw/bnxt_re/roce_hsi.h
+index 2909608f4b5d..cb4e7e19fbaf 100644
+--- a/drivers/infiniband/hw/bnxt_re/roce_hsi.h
++++ b/drivers/infiniband/hw/bnxt_re/roce_hsi.h
+@@ -2157,8 +2157,36 @@ struct creq_query_func_resp_sb {
+ 	__le32	tqm_alloc_reqs[12];
+ 	__le32	max_dpi;
+ 	u8	max_sge_var_wqe;
+-	u8	reserved_8;
++	u8	dev_cap_ext_flags;
++	#define CREQ_QUERY_FUNC_RESP_SB_ATOMIC_OPS_NOT_SUPPORTED         0x1UL
++	#define CREQ_QUERY_FUNC_RESP_SB_DRV_VERSION_RGTR_SUPPORTED       0x2UL
++	#define CREQ_QUERY_FUNC_RESP_SB_CREATE_QP_BATCH_SUPPORTED        0x4UL
++	#define CREQ_QUERY_FUNC_RESP_SB_DESTROY_QP_BATCH_SUPPORTED       0x8UL
++	#define CREQ_QUERY_FUNC_RESP_SB_ROCE_STATS_EXT_CTX_SUPPORTED     0x10UL
++	#define CREQ_QUERY_FUNC_RESP_SB_CREATE_SRQ_SGE_SUPPORTED         0x20UL
++	#define CREQ_QUERY_FUNC_RESP_SB_FIXED_SIZE_WQE_DISABLED          0x40UL
++	#define CREQ_QUERY_FUNC_RESP_SB_DCN_SUPPORTED                    0x80UL
+ 	__le16	max_inline_data_var_wqe;
++	__le32	start_qid;
++	u8	max_msn_table_size;
++	u8	reserved8_1;
++	__le16	dev_cap_ext_flags_2;
++	#define CREQ_QUERY_FUNC_RESP_SB_OPTIMIZE_MODIFY_QP_SUPPORTED             0x1UL
++	#define CREQ_QUERY_FUNC_RESP_SB_CHANGE_UDP_SRC_PORT_WQE_SUPPORTED        0x2UL
++	#define CREQ_QUERY_FUNC_RESP_SB_CQ_COALESCING_SUPPORTED                  0x4UL
++	#define CREQ_QUERY_FUNC_RESP_SB_MEMORY_REGION_RO_SUPPORTED               0x8UL
++	#define CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_MASK          0x30UL
++	#define CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_SFT           4
++	#define CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_HOST_PSN_TABLE  (0x0UL << 4)
++	#define CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_HOST_MSN_TABLE  (0x1UL << 4)
++	#define CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_IQM_MSN_TABLE   (0x2UL << 4)
++	#define CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_LAST	\
++			CREQ_QUERY_FUNC_RESP_SB_REQ_RETRANSMISSION_SUPPORT_IQM_MSN_TABLE
++	__le16	max_xp_qp_size;
++	__le16	create_qp_batch_size;
++	__le16	destroy_qp_batch_size;
++	__le16	reserved16;
++	__le64	reserved64;
+ };
+ 
+ /* cmdq_set_func_resources (size:448b/56B) */
 -- 
 2.39.5
 
