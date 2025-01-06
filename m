@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-107268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8BAA02B1C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79CCA02BB0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05503A5C71
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDBF5165925
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0E0156C5E;
-	Mon,  6 Jan 2025 15:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0353B1DDC1A;
+	Mon,  6 Jan 2025 15:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICQ/Tvr/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2BM78Ow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59E3DF71;
-	Mon,  6 Jan 2025 15:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5B81DC9AD;
+	Mon,  6 Jan 2025 15:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177956; cv=none; b=VqTs+UCKbAdNt1QJUCWx8YZBTNlkRGtmIfzez941IWJJyxieBApin+9FZJRZDgM7dfEFMtBhw/9eFIP9WVyrC+wLMv/KPNZioN+sF8DtKDiYDDFIUyvVaruJUm36Ouh+9JRy3U/h1OWSeaEwWd7r60vneCBmtiyFJ6Ww276YO5c=
+	t=1736178307; cv=none; b=qYYIrDlIqdM6BAd+tRV/cKRI6Jffth6rnzXRL+SYJJ9CEJVLUaAw5g9R2WQEHe9xQYjiooS5Shgb+LE9SCSCbGU+53uRwc4olPkDbCNgmGSORdub6jratu4c9hNbld/XdWbUlYe08wppIFjOEN+wtsennEyluYRr5PKs30WzYSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177956; c=relaxed/simple;
-	bh=Z5DE41UUzw0iAPx/SVGELuLlZEYpRVxDKgcXV7V53X4=;
+	s=arc-20240116; t=1736178307; c=relaxed/simple;
+	bh=gBq02eoNxMubUIs08iXEq/xfibTnrFx3GYRzCHNlRCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArD2jW19JzRbptwIzIgsh8nkXeXVW4MjyLrlHI+JTczkz/iKWpGkaCQGJYjZWfFoUvtpCNOIEmxNRDb9jLZq1UOX53/Ng4GrEutpRDsUI2hVPLAXfoADhgXeOKXnCB1VYZYX6NuNJTrH5XJboUFVnORSnughwgOP5N/JsbCpAKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICQ/Tvr/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DECEC4CED2;
-	Mon,  6 Jan 2025 15:39:15 +0000 (UTC)
+	 MIME-Version; b=mBNHQgarzr6F/oKhhxwB/sQeC/3g66WRh1a/q26mi7k4R4j4dUUw/mkYcf750Cub/qN6YYVIHsU5EAZ56gdebD+9T9iwU58DThQ8JfyKK1mhPFNQL246/TARaiXdT/tWHddg1xvRDOIwENxyymK5Lpv5YyFLzIOut3F16OF3leY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2BM78Ow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD60C4CED2;
+	Mon,  6 Jan 2025 15:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177956;
-	bh=Z5DE41UUzw0iAPx/SVGELuLlZEYpRVxDKgcXV7V53X4=;
+	s=korg; t=1736178307;
+	bh=gBq02eoNxMubUIs08iXEq/xfibTnrFx3GYRzCHNlRCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ICQ/Tvr/Qzwiq4SPIfeXI4YpjYrMXaFn0FH74yxsiPa/OhwmoOLub4/RP0zJTZ+Bn
-	 98nNKbZY31uJ83WXn6U9tUIc86be+KkBrEAv03853c0M+8UPYvKU3czZVBmib/dWfc
-	 +Ge5Eei9uM3GMYytrAo+9qeWr+3ea/qTqvadm2z8=
+	b=n2BM78OwwW7DHMTIou3wBDE1pV8sIXwdvse0hEZUHqZF6hWk85ad4x86o4/snIlGS
+	 uOYpqU/CB/iWjohKTPun+segdIuWK9OxTbGCo4Ax9tu4CtLBQPfaR9HE9wPhFGujHY
+	 xkHemKcZ7N32D6NkWgnf1sLqlvTLq9TudbRlLtyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwendal Fernet <gwendalfernet@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 112/156] io_uring/kbuf: use pre-committed buffer address for non-pollable file
+	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Srish Srinivasan <srishwap4@gmail.com>
+Subject: [PATCH 5.10 074/138] bpf: fix recursive lock when verdict program return SK_PASS
 Date: Mon,  6 Jan 2025 16:16:38 +0100
-Message-ID: <20250106151145.945914906@linuxfoundation.org>
+Message-ID: <20250106151136.035157711@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Jiayuan Chen <mrpre@163.com>
 
-commit ed123c948d06688d10f3b10a7bce1d6fbfd1ed07 upstream.
+commit 8ca2a1eeadf09862190b2810697702d803ceef2d upstream.
 
-For non-pollable files, buffer ring consumption will commit upfront.
-This is fine, but io_ring_buffer_select() will return the address of the
-buffer after having committed it. For incrementally consumed buffers,
-this is incorrect as it will modify the buffer address.
+When the stream_verdict program returns SK_PASS, it places the received skb
+into its own receive queue, but a recursive lock eventually occurs, leading
+to an operating system deadlock. This issue has been present since v6.9.
 
-Store the pre-committed value and return that. If that isn't done, then
-the initial part of the buffer is not used and the application will
-correctly assume the content arrived at the start of the userspace
-buffer, but the kernel will have put it later in the buffer. Or it can
-cause a spurious -EFAULT returned in the CQE, depending on the buffer
-size. As bounds are suitably checked for doing the actual IO, no adverse
-side effects are possible - it's just a data misplacement within the
-existing buffer.
+'''
+sk_psock_strp_data_ready
+    write_lock_bh(&sk->sk_callback_lock)
+    strp_data_ready
+      strp_read_sock
+        read_sock -> tcp_read_sock
+          strp_recv
+            cb.rcv_msg -> sk_psock_strp_read
+              # now stream_verdict return SK_PASS without peer sock assign
+              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
+              sk_psock_verdict_apply
+                sk_psock_skb_ingress_self
+                  sk_psock_skb_ingress_enqueue
+                    sk_psock_data_ready
+                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
 
-Reported-by: Gwendal Fernet <gwendalfernet@gmail.com>
-Cc: stable@vger.kernel.org
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+'''
+
+This topic has been discussed before, but it has not been fixed.
+Previous discussion:
+https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
+
+Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
+Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[srish: Apply to stable branch linux-5.10.y]
+Signed-off-by: Srish Srinivasan <srishwap4@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/core/skmsg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index d407576ddfb7..eec5eb7de843 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -139,6 +139,7 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
- 	struct io_uring_buf_ring *br = bl->buf_ring;
- 	__u16 tail, head = bl->head;
- 	struct io_uring_buf *buf;
-+	void __user *ret;
- 
- 	tail = smp_load_acquire(&br->tail);
- 	if (unlikely(tail == head))
-@@ -153,6 +154,7 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
- 	req->flags |= REQ_F_BUFFER_RING | REQ_F_BUFFERS_COMMIT;
- 	req->buf_list = bl;
- 	req->buf_index = buf->bid;
-+	ret = u64_to_user_ptr(buf->addr);
- 
- 	if (issue_flags & IO_URING_F_UNLOCKED || !io_file_can_poll(req)) {
- 		/*
-@@ -168,7 +170,7 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
- 		io_kbuf_commit(req, bl, *len, 1);
- 		req->buf_list = NULL;
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 51792dda1b73..890e16bbc072 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -940,9 +940,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
+ 		if (tls_sw_has_ctx_rx(sk)) {
+ 			psock->parser.saved_data_ready(sk);
+ 		} else {
+-			write_lock_bh(&sk->sk_callback_lock);
++			read_lock_bh(&sk->sk_callback_lock);
+ 			strp_data_ready(&psock->parser.strp);
+-			write_unlock_bh(&sk->sk_callback_lock);
++			read_unlock_bh(&sk->sk_callback_lock);
+ 		}
  	}
--	return u64_to_user_ptr(buf->addr);
-+	return ret;
- }
- 
- void __user *io_buffer_select(struct io_kiocb *req, size_t *len,
+ 	rcu_read_unlock();
 -- 
-2.47.1
+2.39.5
 
 
 
