@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-107329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7037CA02B68
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C40ECA029F0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 830771654D9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5B4E163E95
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939CB165F1F;
-	Mon,  6 Jan 2025 15:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43600153808;
+	Mon,  6 Jan 2025 15:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjOvb8st"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHS54C7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F55744C7C;
-	Mon,  6 Jan 2025 15:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0A782D98;
+	Mon,  6 Jan 2025 15:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178138; cv=none; b=gymB0G7tFlAT/RWldZR7tYpXQ1q6ztPGXFUgQq5euerJMppAQZ9rhb91vfBjY+2PidfwdDfa6H2yev6rOlW8JJyAtLBwV0msxjxYtk8X3EGn12BC3kQWj1jRhqsSwaqIJ02Yxl9livDP16ELFLULiwXAPCTAeWn1J9Uz/kWWd44=
+	t=1736177318; cv=none; b=mMB9DgACJxTQPpRYxwr7lo9peShKNQ2F4ssTCPvX125B1nWF6egrftOu566Pqu5BfGwZskuQCrgiK1Jvlhn5okydcEUwTOvSVV1nLLrcjFPj5RDLzs2BBhpYGoOySO9AVc6vNQwseDoDjDW+durFd5p6m5wTKB/1gIcc6/Dff9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178138; c=relaxed/simple;
-	bh=QHF5/kwkg6Ckb4j17mn83uNWKFXvFpTUWc6pY98zOxc=;
+	s=arc-20240116; t=1736177318; c=relaxed/simple;
+	bh=YOx1wtp08iybp4cRQhbjkFxLIwZT8iYio33AZjJ99+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juHZCD/cLxmktm7IaRuj5HYfgU6813dLqzc8BjSPZDPdqzFuHihGCLb3+AOJjW15c5+M8bucelXYSYTeqiz1QW37ub15zS0GzSVeIiDVk0NMGYfyiQT9zgheUsclKHtE2utc0f71WNTZEboHVBGZD438VYifbcCzAGjdMBwj86E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjOvb8st; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3CBC4CED2;
-	Mon,  6 Jan 2025 15:42:17 +0000 (UTC)
+	 MIME-Version; b=EN5XaEGoAdz+EMa0wp0lgaP8R7Koi9DUOuLHKRyGt1sCz6QdS0t7c2B9Prn7wxLj0sIIA9JwRBfxrivTyj6tIDJ7hiX6Os0T/5rDzdMibBJXOGMEsQsgy6QxFV2RH7/3KlWBbhGqlofGZGI0FMj1/tltaJrMHfibq5G0OTVMwqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHS54C7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA58AC4CED2;
+	Mon,  6 Jan 2025 15:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178138;
-	bh=QHF5/kwkg6Ckb4j17mn83uNWKFXvFpTUWc6pY98zOxc=;
+	s=korg; t=1736177317;
+	bh=YOx1wtp08iybp4cRQhbjkFxLIwZT8iYio33AZjJ99+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjOvb8stz+TLjEoQSagm9+d1bUPIw4vUinHpwwefgDJuDt/vB4XMPIQzwfgKLcrQl
-	 FDg7SfbYRZ5WK0DFSWNjNdLoRK6//s0tZTvGaeJYyygpadV7GtT9Mhmiu3ezdEJMA/
-	 LgwOzlGa6lfHCs/yKa37Gz394dAFy5CB04o+ZXgE=
+	b=GHS54C7GbFMrAO4nvVb/IhZKe27f6MkI4ihvt4SozGhqD5bAigyAjACl7kZbDtWoN
+	 EQS8MoV8nyH9GMtzYeVrRd1wNwvZREvnf6f8GVxhfEOd8aiSC+IW7tozwP9AWHEskp
+	 2XEf5//Swe9Jk/g09rJ4O55nVQ4IpfZb4vPc6zvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Justin Stitt <justinstitt@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Petr Mladek <pmladek@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Kees Cook <keescook@chromium.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/138] PCI/AER: Disable AER service on suspend
+Subject: [PATCH 6.6 122/222] powerpc: Remove initialisation of readpos
 Date: Mon,  6 Jan 2025 16:15:26 +0100
-Message-ID: <20250106151133.306865601@linuxfoundation.org>
+Message-ID: <20250106151155.227307401@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +71,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 5afc2f763edc5daae4722ee46fea4e627d01fa90 ]
+[ Upstream commit 0f7f544af60a6082cfaa3ed4c8f4ca1a858807ee ]
 
-If the link is powered off during suspend, electrical noise may cause
-errors that are logged via AER.  If the AER interrupt is enabled and shares
-an IRQ with PME, that causes a spurious wakeup during suspend.
+While powerpc doesn't use the seq_buf readpos, it did explicitly
+initialise it for no good reason.
 
-Disable the AER interrupt during suspend to prevent this.  Clear error
-status before re-enabling IRQ interrupts during resume so we don't get an
-interrupt for errors that occurred during the suspend/resume process.
+Link: https://lore.kernel.org/linux-trace-kernel/20231024145600.739451-1-willy@infradead.org
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
-Link: https://lore.kernel.org/r/20240416043225.1462548-2-kai.heng.feng@canonical.com
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-[bhelgaas: drop pci_ancestor_pr3_present() etc, commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Fixes: d0ed46b60396 ("tracing: Move readpos from seq_buf to trace_seq")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/powerpc/kernel/setup-common.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index d58b02237075..974d56644973 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1373,6 +1373,22 @@ static int aer_probe(struct pcie_device *dev)
- 	return 0;
- }
- 
-+static int aer_suspend(struct pcie_device *dev)
-+{
-+	struct aer_rpc *rpc = get_service_data(dev);
-+
-+	aer_disable_rootport(rpc);
-+	return 0;
-+}
-+
-+static int aer_resume(struct pcie_device *dev)
-+{
-+	struct aer_rpc *rpc = get_service_data(dev);
-+
-+	aer_enable_rootport(rpc);
-+	return 0;
-+}
-+
- /**
-  * aer_root_reset - reset Root Port hierarchy or RCEC
-  * @dev: pointer to Root Port or RCEC
-@@ -1431,6 +1447,8 @@ static struct pcie_port_service_driver aerdriver = {
- 	.service	= PCIE_PORT_SERVICE_AER,
- 
- 	.probe		= aer_probe,
-+	.suspend	= aer_suspend,
-+	.resume		= aer_resume,
- 	.remove		= aer_remove,
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index d43db8150767..dddf4f31c219 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -601,7 +601,6 @@ struct seq_buf ppc_hw_desc __initdata = {
+ 	.buffer = ppc_hw_desc_buf,
+ 	.size = sizeof(ppc_hw_desc_buf),
+ 	.len = 0,
+-	.readpos = 0,
  };
  
+ static __init void probe_machine(void)
 -- 
 2.39.5
 
