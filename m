@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20B9A02B22
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A98BA02CCA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A8E83A372A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7C7165A4E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9ACE156C5E;
-	Mon,  6 Jan 2025 15:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF8D13B592;
+	Mon,  6 Jan 2025 15:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QumhJjtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLDjYJBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87C514A617;
-	Mon,  6 Jan 2025 15:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577B9BA34;
+	Mon,  6 Jan 2025 15:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177986; cv=none; b=NwTWrGoeADOHT6qysTNKOnp4fRgKJ7WXZC2nCakgJt+NK+ccFU0FwHw9E0McY0USa6oTkFu29jVPIzOmTTnoCK8mAwwWwIJRYWJRbHro/GvInA0hdfg9F1YiT+WYhSPRpOCAeYgbfDzNVv41iSg8rCQR7mF0+Fz2KO/dJgMPV8c=
+	t=1736179069; cv=none; b=fr6bAxTG3O3M+K2EkdztWei1NSMQUxKg4GAQKDoJdJY7yA48sAQ/8wmB1PKgiBSDHX1xSQtCn5v9q4dHERu8EJvSC3vbt7oTKFcmZRdY+Qq2nll21yHItU9sKjgrdUJ68u2JE1RwoOed7xkdo/vimDHwTKqFb/GGKnKIIbxLukQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177986; c=relaxed/simple;
-	bh=2s1mCsUkhr+XGrQnqQg/3CaH65VRSGOgbtS81dS/PFU=;
+	s=arc-20240116; t=1736179069; c=relaxed/simple;
+	bh=EVuctLCK9ZVq5IQQpbZxBBN73V6ePcmp32+nLslKnA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QqtXp9Hm5oLIk5C8yY+0Dbojbi/Uhih/nhDR1qTWr+QIF7Dt8lBFHm/30VzybQbAStaFX2gG9w4OyD5CrKYtHulMSJuXVL6UyuMY60l2EwhlPLP8obGwGbW93bhQcvlkLqyVL5jI5KR6v8OKSZhGPuzV3UdbaZ4SQ5zb/XyT79U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QumhJjtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274A8C4CED2;
-	Mon,  6 Jan 2025 15:39:45 +0000 (UTC)
+	 MIME-Version; b=PhuThNLYqVFxGTBMJUqWE7NL2qaRa7/ey9z57s8oCmbCHPt9C1iCgTmVVDtpWq5WTOfXsE31L5HbJLmpF93v05fB+3T0Q7bgG5equMfxEcdHACxR90zFZQak8XM+Z0D4F3nNNpdpE13VIkeKY/nRPmOPaFa0jIhTspS73x1vXgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLDjYJBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D194AC4CED2;
+	Mon,  6 Jan 2025 15:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177986;
-	bh=2s1mCsUkhr+XGrQnqQg/3CaH65VRSGOgbtS81dS/PFU=;
+	s=korg; t=1736179069;
+	bh=EVuctLCK9ZVq5IQQpbZxBBN73V6ePcmp32+nLslKnA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QumhJjtV/GgmSsp0j/LmXnX0yO714/3/rIdcEWGaQe0qADRamaiI6n/lVSWzLe/XB
-	 grOoSiuN8HXPhETV7d/svDbDEgG/pc1qDgnn8JDlRtk/FyDnw3WAY56ZAsbZwOdWuA
-	 G1aZrXFDUctrJos+ETclP3QrEqElCI6WihCg4nwI=
+	b=wLDjYJBiBglcFrxTG+LG0czkXGWpsHjareZxWMfZJKd4EPI085Tl65bp7lOaVDJRg
+	 ol20GIPNk4PnoOyPsgjeOwYlNtzPvL4Hd+07e5K+dzfaqRtAOGzwXv9x8fgFG5Ueuq
+	 j1CYxtkOx2ID4Zvdq8/Ihf4zLGoL0EKQijLfSVso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>
-Subject: [PATCH 6.12 116/156] drm/xe: Wait for migration job before unmapping pages
+	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 06/93] i2c: pnx: Fix timeout in wait functions
 Date: Mon,  6 Jan 2025 16:16:42 +0100
-Message-ID: <20250106151146.096678532@linuxfoundation.org>
+Message-ID: <20250106151128.935219293@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
 
-commit 5e0a67fdb894d34c5f109e969320eef9ddae7480 upstream.
+[ Upstream commit 7363f2d4c18557c99c536b70489187bb4e05c412 ]
 
-Fix a potential GPU page fault during tt -> system moves by waiting for
-migration jobs to complete before unmapping SG. This ensures that IOMMU
-mappings are not prematurely torn down while a migration job is still in
-progress.
+Since commit f63b94be6942 ("i2c: pnx: Fix potential deadlock warning
+from del_timer_sync() call in isr") jiffies are stored in
+i2c_pnx_algo_data.timeout, but wait_timeout and wait_reset are still
+using it as milliseconds. Convert jiffies back to milliseconds to wait
+for the expected amount of time.
 
-v2: Use intr=false(Matt A)
-v3: Update commit message(Matt A)
-v4: s/DMA_RESV_USAGE_BOOKKEEP/DMA_RESV_USAGE_KERNEL(Thomas)
-
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3466
-Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system buffer objects to TT")
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: stable@vger.kernel.org # v6.11+
-Cc: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241213122415.3880017-2-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-(cherry picked from commit cda06412c06893a6f07a2fbf89d42a0972ec9e8e)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f63b94be6942 ("i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr")
+Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-pnx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -846,8 +846,16 @@ static int xe_bo_move(struct ttm_buffer_
+diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
+index 4d09665a72e5..6ba534c983de 100644
+--- a/drivers/i2c/busses/i2c-pnx.c
++++ b/drivers/i2c/busses/i2c-pnx.c
+@@ -95,7 +95,7 @@ enum {
  
- out:
- 	if ((!ttm_bo->resource || ttm_bo->resource->mem_type == XE_PL_SYSTEM) &&
--	    ttm_bo->ttm)
-+	    ttm_bo->ttm) {
-+		long timeout = dma_resv_wait_timeout(ttm_bo->base.resv,
-+						     DMA_RESV_USAGE_KERNEL,
-+						     false,
-+						     MAX_SCHEDULE_TIMEOUT);
-+		if (timeout < 0)
-+			ret = timeout;
-+
- 		xe_tt_unmap_sg(ttm_bo->ttm);
-+	}
+ static inline int wait_timeout(struct i2c_pnx_algo_data *data)
+ {
+-	long timeout = data->timeout;
++	long timeout = jiffies_to_msecs(data->timeout);
+ 	while (timeout > 0 &&
+ 			(ioread32(I2C_REG_STS(data)) & mstatus_active)) {
+ 		mdelay(1);
+@@ -106,7 +106,7 @@ static inline int wait_timeout(struct i2c_pnx_algo_data *data)
  
- 	return ret;
- }
+ static inline int wait_reset(struct i2c_pnx_algo_data *data)
+ {
+-	long timeout = data->timeout;
++	long timeout = jiffies_to_msecs(data->timeout);
+ 	while (timeout > 0 &&
+ 			(ioread32(I2C_REG_CTL(data)) & mcntrl_reset)) {
+ 		mdelay(1);
+-- 
+2.39.5
+
 
 
 
