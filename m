@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-107223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A4EA02AD2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42354A02A18
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0BD4162D34
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:37:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E88D7A29DD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671B815855C;
-	Mon,  6 Jan 2025 15:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0EB156886;
+	Mon,  6 Jan 2025 15:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qs3qFEW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6UXl+Tn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24804158536;
-	Mon,  6 Jan 2025 15:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36461469D;
+	Mon,  6 Jan 2025 15:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177823; cv=none; b=acrrUeThEtYc0IkrNjbXmRoIxEPYIdNcfDD5G73h/F+X5BJSKavHzJ0nIJWK0Hn9dTdqDOKzLxMI27VpsjtVMk+irDS+//IaQheWDHhTW6+YniY9Apmt5vCvGJDVVrPhJo+mknrGD1Ur5BcnAUswlNnCJCmNYSqKTUQAx0ICwho=
+	t=1736177397; cv=none; b=eJSbWuUUOCOEkfLX4XJZg2g7335+liJUxIbu0vCQZuqKiAqzmRdS6eIZlrElYWI7pq6MzGrsQ1hU2NDJtBUFuluEA1Io5Iy5YeQgyzj7w4vN+KX/zJujgmmjd5eNbZ6WVy6hMGywJN4UCubTHWgrlOCPNnHXvWYbSFusQTOdp08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177823; c=relaxed/simple;
-	bh=zMS7FQDAG+2tG8yV6Su+xGbbYQ/yJIQ7cLyr5b3r9b0=;
+	s=arc-20240116; t=1736177397; c=relaxed/simple;
+	bh=Y3bsMFOxWiGdbIysumWWaBA9VJTJTo/UHI16frzzcKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Na2vYZWulXVq7yC4PZlQnFFN5xcYG9sjuvb3w1c0dueKcLH7IMjJVt1d2aoeXOoSw9axQYZwwhEU51nGn9yeQOFafnn8zjhFowdPx+2KCE/PXTMrlfVoQOKP44Pj61YaOiYvizeio49PC5aRfyS/PPfrbTnJCt4gnIe5ghhtWz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qs3qFEW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F151C4CEDF;
-	Mon,  6 Jan 2025 15:37:02 +0000 (UTC)
+	 MIME-Version; b=H5NYKvdE4mfM3yE1qlpSkSy1yCCYnDPD89j61QGRfMIGhCecOXK47iLhHNLwnBMfnr19BBO63UMwCaMX8nkyGy9eDhEz4RE9qkVjq4aChdFECdWjEYqRs3klD/j3V5+H9/6LjIPogTuXecqYRFWGHDYiCQRYPweEfE+7CC6vS3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6UXl+Tn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD955C4CED2;
+	Mon,  6 Jan 2025 15:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177822;
-	bh=zMS7FQDAG+2tG8yV6Su+xGbbYQ/yJIQ7cLyr5b3r9b0=;
+	s=korg; t=1736177397;
+	bh=Y3bsMFOxWiGdbIysumWWaBA9VJTJTo/UHI16frzzcKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qs3qFEW6If3MttQfL5Hl8wgC8WfytGTDnJoJVgtsE9aQevqvsz62eY90EgydTe2us
-	 FrsZi3RcL4xvrLZnQqCObCOpwBup1saAhiBPqGTXpiWxLkomnz1LTfINrQV5JKkh2L
-	 U/bzwr3auetZrjUButRG7sASlRKE3sIb+LJX9DyI=
+	b=w6UXl+TnUTOJYbbyNUq/st+g6s/iNONBfqSZo6JUIYzsdA1DblPmBhM9J5Y+JTK7m
+	 DxYDWtP61rC0M+48llFtePFoNvgr1TxVqUluvbbBjqwNymGDhxLPX1RL5vlE8LOrQx
+	 8K/4opeWeeYidU2KwE4o98M2/knjAJD/bfQ8E9vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/156] net: reenable NETIF_F_IPV6_CSUM offload for BIG TCP packets
+Subject: [PATCH 6.6 150/222] net: stmmac: dont create a MDIO bus if unnecessary
 Date: Mon,  6 Jan 2025 16:15:54 +0100
-Message-ID: <20250106151144.296221451@linuxfoundation.org>
+Message-ID: <20250106151156.442357108@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,250 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 68e068cabd2c6c533ef934c2e5151609cf6ecc6d ]
+[ Upstream commit f3c2caacee824ce4a331cdafb0b8dc8e987f105e ]
 
-The blamed commit disabled hardware offoad of IPv6 packets with
-extension headers on devices that advertise NETIF_F_IPV6_CSUM,
-based on the definition of that feature in skbuff.h:
+Currently a MDIO bus is created if the devicetree description is either:
 
- *   * - %NETIF_F_IPV6_CSUM
- *     - Driver (device) is only able to checksum plain
- *       TCP or UDP packets over IPv6. These are specifically
- *       unencapsulated packets of the form IPv6|TCP or
- *       IPv6|UDP where the Next Header field in the IPv6
- *       header is either TCP or UDP. IPv6 extension headers
- *       are not supported with this feature. This feature
- *       cannot be set in features for a device with
- *       NETIF_F_HW_CSUM also set. This feature is being
- *       DEPRECATED (see below).
+    1. Not fixed-link
+    2. fixed-link but contains a MDIO bus as well
 
-The change causes skb_warn_bad_offload to fire for BIG TCP
-packets.
+The "1" case above isn't always accurate. If there's a phy-handle,
+it could be referencing a phy on another MDIO controller's bus[1]. In
+this case, where the MDIO bus is not described at all, currently
+stmmac will make a MDIO bus and scan its address space to discover
+phys (of which there are none). This process takes time scanning a bus
+that is known to be empty, delaying time to complete probe.
 
-[  496.310233] WARNING: CPU: 13 PID: 23472 at net/core/dev.c:3129 skb_warn_bad_offload+0xc4/0xe0
+There are also a lot of upstream devicetrees[2] that expect a MDIO bus
+to be created, scanned for phys, and the first one found connected
+to the MAC. This case can be inferred from the platform description by
+not having a phy-handle && not being fixed-link. This hits case "1" in
+the current driver's logic, and must be handled in any logic change here
+since it is a valid legacy dt-binding.
 
-[  496.310297]  ? skb_warn_bad_offload+0xc4/0xe0
-[  496.310300]  skb_checksum_help+0x129/0x1f0
-[  496.310303]  skb_csum_hwoffload_help+0x150/0x1b0
-[  496.310306]  validate_xmit_skb+0x159/0x270
-[  496.310309]  validate_xmit_skb_list+0x41/0x70
-[  496.310312]  sch_direct_xmit+0x5c/0x250
-[  496.310317]  __qdisc_run+0x388/0x620
+Let's improve the logic to create a MDIO bus if either:
 
-BIG TCP introduced an IPV6_TLV_JUMBO IPv6 extension header to
-communicate packet length, as this is an IPv6 jumbogram. But, the
-feature is only enabled on devices that support BIG TCP TSO. The
-header is only present for PF_PACKET taps like tcpdump, and not
-transmitted by physical devices.
+    - Devicetree contains a MDIO bus
+    - !fixed-link && !phy-handle (legacy handling)
 
-For this specific case of extension headers that are not
-transmitted, return to the situation before the blamed commit
-and support hardware offload.
+This way the case where no MDIO bus should be made is handled, as well
+as retaining backwards compatibility with the valid cases.
 
-ipv6_has_hopopt_jumbo() tests not only whether this header is present,
-but also that it is the only extension header before a terminal (L4)
-header.
+Below devicetree snippets can be found that explain some of
+the cases above more concretely.
 
-Fixes: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reported-by: Eric Dumazet <edumazet@google.com>
-Closes: https://lore.kernel.org/netdev/CANn89iK1hdC3Nt8KPhOtTF8vCPc1AHDCtse_BTNki1pWxAByTQ@mail.gmail.com/
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250101164909.1331680-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Here's[0] a devicetree example where the MAC is both fixed-link and
+driving a switch on MDIO (case "2" above). This needs a MDIO bus to
+be created:
+
+    &fec1 {
+            phy-mode = "rmii";
+
+            fixed-link {
+                    speed = <100>;
+                    full-duplex;
+            };
+
+            mdio1: mdio {
+                    switch0: switch0@0 {
+                            compatible = "marvell,mv88e6190";
+                            pinctrl-0 = <&pinctrl_gpio_switch0>;
+                    };
+            };
+    };
+
+Here's[1] an example where there is no MDIO bus or fixed-link for
+the ethernet1 MAC, so no MDIO bus should be created since ethernet0
+is the MDIO master for ethernet1's phy:
+
+    &ethernet0 {
+            phy-mode = "sgmii";
+            phy-handle = <&sgmii_phy0>;
+
+            mdio {
+                    compatible = "snps,dwmac-mdio";
+                    sgmii_phy0: phy@8 {
+                            compatible = "ethernet-phy-id0141.0dd4";
+                            reg = <0x8>;
+                            device_type = "ethernet-phy";
+                    };
+
+                    sgmii_phy1: phy@a {
+                            compatible = "ethernet-phy-id0141.0dd4";
+                            reg = <0xa>;
+                            device_type = "ethernet-phy";
+                    };
+            };
+    };
+
+    &ethernet1 {
+            phy-mode = "sgmii";
+            phy-handle = <&sgmii_phy1>;
+    };
+
+Finally there's descriptions like this[2] which don't describe the
+MDIO bus but expect it to be created and the whole address space
+scanned for a phy since there's no phy-handle or fixed-link described:
+
+    &gmac {
+            phy-supply = <&vcc_lan>;
+            phy-mode = "rmii";
+            snps,reset-gpio = <&gpio3 RK_PB4 GPIO_ACTIVE_HIGH>;
+            snps,reset-active-low;
+            snps,reset-delays-us = <0 10000 1000000>;
+    };
+
+[0] https://elixir.bootlin.com/linux/v6.5-rc5/source/arch/arm/boot/dts/nxp/vf/vf610-zii-ssmb-dtu.dts
+[1] https://elixir.bootlin.com/linux/v6.6-rc5/source/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
+[2] https://elixir.bootlin.com/linux/v6.6-rc5/source/arch/arm64/boot/dts/rockchip/rk3368-r88.dts#L164
+
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Co-developed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2b6ffcd7873b ("net: stmmac: restructure the error path of stmmac_probe_config_dt()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 91 +++++++++++--------
+ 1 file changed, 54 insertions(+), 37 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 8453e14d301b..f3fa8353d262 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3640,8 +3640,10 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index b4fdd40be63c..d73b2c17cc6c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -296,62 +296,80 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
+ }
  
- 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
- 		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
--		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-+		    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
-+		    !ipv6_has_hopopt_jumbo(skb))
- 			goto sw_checksum;
+ /**
+- * stmmac_dt_phy - parse device-tree driver parameters to allocate PHY resources
+- * @plat: driver data platform structure
+- * @np: device tree node
+- * @dev: device pointer
+- * Description:
+- * The mdio bus will be allocated in case of a phy transceiver is on board;
+- * it will be NULL if the fixed-link is configured.
+- * If there is the "snps,dwmac-mdio" sub-node the mdio will be allocated
+- * in any case (for DSA, mdio must be registered even if fixed-link).
+- * The table below sums the supported configurations:
+- *	-------------------------------
+- *	snps,phy-addr	|     Y
+- *	-------------------------------
+- *	phy-handle	|     Y
+- *	-------------------------------
+- *	fixed-link	|     N
+- *	-------------------------------
+- *	snps,dwmac-mdio	|
+- *	  even if	|     Y
+- *	fixed-link	|
+- *	-------------------------------
++ * stmmac_of_get_mdio() - Gets the MDIO bus from the devicetree.
++ * @np: devicetree node
+  *
+- * It returns 0 in case of success otherwise -ENODEV.
++ * The MDIO bus will be searched for in the following ways:
++ * 1. The compatible is "snps,dwc-qos-ethernet-4.10" && a "mdio" named
++ *    child node exists
++ * 2. A child node with the "snps,dwmac-mdio" compatible is present
++ *
++ * Return: The MDIO node if present otherwise NULL
+  */
+-static int stmmac_dt_phy(struct plat_stmmacenet_data *plat,
+-			 struct device_node *np, struct device *dev)
++static struct device_node *stmmac_of_get_mdio(struct device_node *np)
+ {
+-	bool mdio = !of_phy_is_fixed_link(np);
+ 	static const struct of_device_id need_mdio_ids[] = {
+ 		{ .compatible = "snps,dwc-qos-ethernet-4.10" },
+ 		{},
+ 	};
++	struct device_node *mdio_node = NULL;
+ 
+ 	if (of_match_node(need_mdio_ids, np)) {
+-		plat->mdio_node = of_get_child_by_name(np, "mdio");
++		mdio_node = of_get_child_by_name(np, "mdio");
+ 	} else {
+ 		/**
+ 		 * If snps,dwmac-mdio is passed from DT, always register
+ 		 * the MDIO
+ 		 */
+-		for_each_child_of_node(np, plat->mdio_node) {
+-			if (of_device_is_compatible(plat->mdio_node,
++		for_each_child_of_node(np, mdio_node) {
++			if (of_device_is_compatible(mdio_node,
+ 						    "snps,dwmac-mdio"))
+ 				break;
+ 		}
+ 	}
+ 
+-	if (plat->mdio_node) {
++	return mdio_node;
++}
 +
- 		switch (skb->csum_offset) {
- 		case offsetof(struct tcphdr, check):
- 		case offsetof(struct udphdr, check):
++/**
++ * stmmac_mdio_setup() - Populate platform related MDIO structures.
++ * @plat: driver data platform structure
++ * @np: devicetree node
++ * @dev: device pointer
++ *
++ * This searches for MDIO information from the devicetree.
++ * If an MDIO node is found, it's assigned to plat->mdio_node and
++ * plat->mdio_bus_data is allocated.
++ * If no connection can be determined, just plat->mdio_bus_data is allocated
++ * to indicate a bus should be created and scanned for a phy.
++ * If it's determined there's no MDIO bus needed, both are left NULL.
++ *
++ * This expects that plat->phy_node has already been searched for.
++ *
++ * Return: 0 on success, errno otherwise.
++ */
++static int stmmac_mdio_setup(struct plat_stmmacenet_data *plat,
++			     struct device_node *np, struct device *dev)
++{
++	bool legacy_mdio;
++
++	plat->mdio_node = stmmac_of_get_mdio(np);
++	if (plat->mdio_node)
+ 		dev_dbg(dev, "Found MDIO subnode\n");
+-		mdio = true;
+-	}
+ 
+-	if (mdio) {
+-		plat->mdio_bus_data =
+-			devm_kzalloc(dev, sizeof(struct stmmac_mdio_bus_data),
+-				     GFP_KERNEL);
++	/* Legacy devicetrees allowed for no MDIO bus description and expect
++	 * the bus to be scanned for devices. If there's no phy or fixed-link
++	 * described assume this is the case since there must be something
++	 * connected to the MAC.
++	 */
++	legacy_mdio = !of_phy_is_fixed_link(np) && !plat->phy_node;
++	if (legacy_mdio)
++		dev_info(dev, "Deprecated MDIO bus assumption used\n");
++
++	if (plat->mdio_node || legacy_mdio) {
++		plat->mdio_bus_data = devm_kzalloc(dev,
++						   sizeof(*plat->mdio_bus_data),
++						   GFP_KERNEL);
+ 		if (!plat->mdio_bus_data)
+ 			return -ENOMEM;
+ 
+@@ -455,8 +473,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	if (of_property_read_u32(np, "snps,phy-addr", &plat->phy_addr) == 0)
+ 		dev_warn(&pdev->dev, "snps,phy-addr property is deprecated\n");
+ 
+-	/* To Configure PHY by using all device-tree supported properties */
+-	rc = stmmac_dt_phy(plat, np, &pdev->dev);
++	rc = stmmac_mdio_setup(plat, np, &pdev->dev);
+ 	if (rc)
+ 		return ERR_PTR(rc);
+ 
 -- 
 2.39.5
 
