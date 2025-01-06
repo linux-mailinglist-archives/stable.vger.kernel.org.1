@@ -1,112 +1,106 @@
-Return-Path: <stable+bounces-106849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4ECA0272B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:55:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227ECA02738
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FC58160B8C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:55:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12FE316148A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 13:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CA81DDC15;
-	Mon,  6 Jan 2025 13:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="nvsBjFPN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B071DDC1A;
+	Mon,  6 Jan 2025 13:56:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A160C73451;
-	Mon,  6 Jan 2025 13:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9501D63D8;
+	Mon,  6 Jan 2025 13:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736171702; cv=none; b=VkIWSl6W5FCej8tT7MUGO1bB/mL5tRSsK90t36HRy5JQUwWP/RCjlGGT0h9/biB6WP7qhYAviGeV2JG99gWT2C96B1a59fHRk2CHEyyGrH4+U22FzjCa8IMmqjdi4RCC5fN3pxMSZKy3cdI56hF61XfxIOwBaqJjWWNY05aILL0=
+	t=1736171782; cv=none; b=Ze2lf+lWQxikhFPce/O497AXR3Q7XHH8tS1CJgAsfsP0YLicXgKXqj/o7tQVeq5pq6BMt3YNR/eouXr2bLgPPHcukpy2iCXpIQrZnvup7sbngzNzwJpblUe1VmvcC1xUTNLL7FJqOS2ItRJhr1CpecbBL+Mg43KDY/rKqEQidPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736171702; c=relaxed/simple;
-	bh=OfAWVIhquapKWdH0NOhugaf+FOe2nhzQ4nySOzgCuEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mAvpxKbAZvjoBBNfSJEZRlVUxtdyzfKIGcf+NtwKOj+pherndEz4HOPGlhAATMkA2VG2DL5jvMelJ3uADJmY6dNq8SFfzzrbocShqQHh+C7hn5lnwsobOSsC34zrU67CvmWOKa4rCl9tP0tgvMSDOj7sMpdxMSnS1fgYi/M/Fm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=nvsBjFPN; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1736171686; x=1736776486; i=fiona.klute@gmx.de;
-	bh=OfAWVIhquapKWdH0NOhugaf+FOe2nhzQ4nySOzgCuEI=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=nvsBjFPNqEA53WpEcWah5/XtDyl/R49biT64fF/4JVMP//Z4NFvoaSezkC6TczwK
-	 b1D9m2kGX8hFcQnMG3IAP2ohK5QfcANkif5NxALNoNNQDakbiJvSGV5gpUAFsGj7J
-	 tDIcAD1ma3EdPuxtUVKnApy2/B3tCLs1/0IYs65nISZvHoYDT0L4rM6y7f5ZXYQ+z
-	 ArbU88PUJIdA6QF9dfJpaJ9vnGOCsAxk/ctkgWWDVum76wLmqXyB7O1PpHQdTbKfm
-	 DrKVw59BBnIPCLbf8PuWA9rCKeX20VWL64QncgXtKY06VOLEayfizil8IZeeLoiG8
-	 13Mhu34GKL4MP8cwhg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from chiaki.cable.inet.fi ([84.249.220.44]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MgNh1-1txZDG3yNr-00do1P; Mon, 06 Jan 2025 14:54:46 +0100
-From: Fiona Klute <fiona.klute@gmx.de>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	linux-wireless@vger.kernel.org
-Cc: Vasily Khoruzhick <anarsoul@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ondrej Jirman <megi@xff.cz>,
-	Fiona Klute <fiona.klute@gmx.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: rtw88: sdio: Fix disconnection after beacon loss
-Date: Mon,  6 Jan 2025 15:54:34 +0200
-Message-ID: <20250106135434.35936-1-fiona.klute@gmx.de>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1736171782; c=relaxed/simple;
+	bh=HM2oA0Iu+B0P3p49ym9mPmXZW0CpYiLy6d3dd8OnNZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y9d++Ge5jxW4H6Ny50ZpoWrV0ppkUKkQ+bpu4fqhDvAfLymrB1QKyH6F50rCaqIJ9STYfR6iVwIbPUA0Fqu23u6+ax8XUHguBqPlUBO+8f01tqUWCZbsgpTHJ1h7Z6laOl3Usyv5wCV70IJ9Vx4JyUdOx4+ZkAjKz4y0F4P6zh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5d3f65844deso24644481a12.0;
+        Mon, 06 Jan 2025 05:56:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736171777; x=1736776577;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mMTdUkld4falIbel3Xtgcu5G1Kj7VOUe8eE1JDQEfdQ=;
+        b=uUlpyxwCK9T6ba0efiBcm3V6rcuJjOmcUodpXBPWJaeCwRjUA+uVpfcumO8aOPv7uA
+         d2TH0GiRP/a0PDe8EbBePAIP1SreJoUJzYQCofG6+2aBKAfyYdet4H6rVnopRkdIlwxN
+         0wM+EpMo+9v95IVaI5MkMMIPzMgZOshQrbyrWZv6BxrTFpW2U/qwuOHbZ9P/MQsUm3jC
+         B5Tzmw6MDdSVPQWsLjB/xC5jNIV2s6xdNf9oYaTVMhg0k/TM0lsjzDAkKkrlQQ7l2fmr
+         e6PYkTaF349txUFFA89hjP3m3DagQ+eczpaVL6M+BeEfAfxR4X2RfVp0CdFt495RQAH2
+         sJ8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVl2UvkEn6roKSJr0+SrsmiDOFd9rOG5LWJw6odKS3o+tlUtIuI7W1IRMSfNCN5AhlCW3vVAMB/kclC9qw=@vger.kernel.org, AJvYcCVxpRHAl93uKYY7+FS32Nhz6vrfZyJrlhXVmHRMwiTfXBJ60QZAuORP0TRNCv81MdYOWGLVMAVF@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+vilzu2TXOMSwz2p0zN46Wl9s7ISrd8+kd9OOx/4Rxy7AQz/H
+	FYzzquBpHTMdydvVpvyiSBjGsOmvkr6cHatfLbTByEDPFqCOGs5WgeWwqw==
+X-Gm-Gg: ASbGncvC5hmf8Qmr3CtjdoyAczAtyJe0Plh6x7I5MQjnUiIAp0psEU1TkZxmVnBgnxJ
+	8U05AAfRrxAEp9QNyFthxTKMk3APYkkse4KuGZ8St+oc7hCFrGKxliEZPkHLVZp0iydggx6fhl3
+	g9NdI2gcJGrDPmqXTouG5e/bsSp7Vr7XC5AzKt/v85Jg3m5mjWws6/FYZKnxjCADsUtCq8jeHcy
+	1zpSo+j+NLAlw1U1zwa11r61l5rirECWlT/NqOf4c3JCN0=
+X-Google-Smtp-Source: AGHT+IH2gOLsw+NWWJjXJCRfeF410OTxzAogVH61WaHH+G5+icl5YqxcdHBiOySy4P64j6Lr45Q5/Q==
+X-Received: by 2002:a17:907:7f0f:b0:aac:1e96:e7cf with SMTP id a640c23a62f3a-aac334425abmr5920773066b.20.1736171776509;
+        Mon, 06 Jan 2025 05:56:16 -0800 (PST)
+Received: from gmail.com ([2a03:2880:30ff:6::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0efe4c1dsm2282462666b.109.2025.01.06.05.56.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2025 05:56:16 -0800 (PST)
+Date: Mon, 6 Jan 2025 05:56:13 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Borislav Petkov <bp@alien8.de>, koichiro.den@canonical.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Koichiro Den <koichiro.den@canonical.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
+Subject: Re: Linux 6.13-rc6
+Message-ID: <20250106-original-opal-shrew-4ecbf0@leitao>
+References: <CAHk-=wgjfaLyhU2L84XbkY+Jj47hryY_f1SBxmnnZi4QOJKGaw@mail.gmail.com>
+ <20250106131817.GAZ3vYGVr3-hWFFPLj@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Provags-ID: V03:K1:p3goXPO60eNJJrumrqiwu6F/r2SRjhFyfsP9SQzHcAf2AMN1Yqm
- hGJ/9VGngs5+gr6rSOm14Ewoez7Duv1PrCvR7n2Q16inkOXJyInYL/VwKppDoDLLTPLuCBA
- ap5J/x2SBE9iuU86biqbVPT61lwg1Z7Hyed9/Z1a82wI5aoUH1ksjLGSzNYRyzs+40wzfeD
- dt7DbUcqP7KW9dl06Ot7A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:urP0PKoSD2A=;MjqvAmBXGKfm1IRan1MZLbfaEUG
- 4u2eR6+z6BijSvWPrwOOvetjaf+haOFatL2++iZjGBGWdPH+0o75Smq5eECXognyjpJIVzMvw
- 6QfBl+ytvQA7O+A0ecWFLYeP+5AQU+ijz5/txyVHdemuDQBdr28MWmhFSUBAroQpjy9lAaLHE
- lq7+VIotmIF0sQUns8sJ8ugwUWvxrtOuw26ItmZUrS34WdhhKBVXzxRdWUtvnvgDbbOphbtCj
- xbETSSCYRbI0q/gHgftLrkSx3Khp3/6gAFKIMPokB9/NW2sjUpoOpgtJZmay+dc0vegJnEYwW
- 4mgmU2nQKZEuNoeAgjY/zXMS1FHYkqMpWBKLOLIjWMwsonMbmgy+4Xr6w7QDN3zk4YbKTpEkN
- j5MAIuHEnH8TBph5k+U3LQRVB51+Jys8ZGpjj7mG8zCJrQ6FRtAqyqq/mB+A30a6Kg3cm/oEV
- DG5eJJCQP9qls4n6SIbJZuGXbLGqNAl903DQg0rM1jsVNHBElCCZwWDayBEY48SWTsKk07m8T
- XX+oEV6auZA2mBVou3HuHKoHqfN8UE2rpOSZfC90IGWcwaAMGqoyVdghIwDlzUpcispoqpioL
- nHJ0OXIxiOqD5xv1juRENmPWwkI5KTP8q/sHt3It2z3yWxAhRKXLYHRSaHQHyYDjQRIXmktrI
- ifxyv4OL2JcZ+5OWevwoz+I5nEJHs7E9MTv7qP7SaMoT1yUAhpHbJNfZ5iuR1VSV/ptBu9ALD
- HEEtELmKWCNn8C5rytjpp0noXUOTxoixfZV1i+UVNOeVnieLF3+41oOXbrplBcKlwwrBwVhqO
- SWFpPmP5swhacurnQ+T15bZ5VKp8+ctu1mdgFGjPGBomCIjnLbO+/hPFfnLTFLiK3155RDqVa
- Kj3ydeH4k+4an6r45HeABes84oXdas+M7FO0mu4j7iNOR5p0CGG7wIDVkQDRsFgJStKrvN+dX
- CZlyjYF5zFmohugf3FyYysluG4kmAdGO0qBZ4YmZ4n/9GMZhD1IFKsEjTfcwpgW8Y+P8lP7Ox
- yZ7CqAdETMWb2CFzHL6YgzJ6KXJN0wJ6lc9wBjEoJFthzVDr5jrUkk30xpGsyjTXfLmI1zx51
- DDXPp3rC7iOFagUkbe6KHCC5ucL4rD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250106131817.GAZ3vYGVr3-hWFFPLj@fat_crate.local>
 
-VGhpcyBpcyB0aGUgZXF1aXZhbGVudCBvZiAyODgxOGI0ZDg3MWJjOTNjYzRmNWM3YzdkN2M1MjZh
-NmEwOTZjMDljCiJ3aWZpOiBydHc4ODogdXNiOiBGaXggZGlzY29ubmVjdGlvbiBhZnRlciBiZWFj
-b24gbG9zcyIgZm9yIFNESU8KY2hpcHMuIFRlc3RlZCBvbiBQaW5lcGhvbmUgKFJUTDg3MjNDUyks
-IHJhbmRvbSBkaXNjb25uZWN0aW9ucyBiZWNhbWUKcmFyZSwgaW5zdGVhZCBvZiBhIGZyZXF1ZW50
-IG51aXNhbmNlLgoKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogRmlv
-bmEgS2x1dGUgPGZpb25hLmtsdXRlQGdteC5kZT4KLS0tCiBkcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg4L3NkaW8uYyB8IDIgKysKIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
-KykKCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3NkaW8u
-YyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvc2Rpby5jCmluZGV4IDc5OTIz
-MGViNWYxLi5lMDI0MDYxYmRiZiAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydHc4OC9zZGlvLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
-OC9zZGlvLmMKQEAgLTExOTIsNiArMTE5Miw4IEBAIHN0YXRpYyB2b2lkIHJ0d19zZGlvX2luZGlj
-YXRlX3R4X3N0YXR1cyhzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LAogCXN0cnVjdCBpZWVlODAyMTFf
-dHhfaW5mbyAqaW5mbyA9IElFRUU4MDIxMV9TS0JfQ0Ioc2tiKTsKIAlzdHJ1Y3QgaWVlZTgwMjEx
-X2h3ICpodyA9IHJ0d2Rldi0+aHc7CiAKKwlza2JfcHVsbChza2IsIHJ0d2Rldi0+Y2hpcC0+dHhf
-cGt0X2Rlc2Nfc3opOworCiAJLyogZW5xdWV1ZSB0byB3YWl0IGZvciB0eCByZXBvcnQgKi8KIAlp
-ZiAoaW5mby0+ZmxhZ3MgJiBJRUVFODAyMTFfVFhfQ1RMX1JFUV9UWF9TVEFUVVMpIHsKIAkJcnR3
-X3R4X3JlcG9ydF9lbnF1ZXVlKHJ0d2Rldiwgc2tiLCB0eF9kYXRhLT5zbik7Ci0tIAoyLjQ3LjEK
-Cg==
+On Mon, Jan 06, 2025 at 02:18:17PM +0100, Borislav Petkov wrote:
+> On Sun, Jan 05, 2025 at 02:20:54PM -0800, Linus Torvalds wrote:
+> > So we had a slight pickup in commits this last week, but as expected
+> > and hoped for, things were still pretty quiet. About twice as many
+> > commits as the holiday week, but that's still not all that many.
+> > 
+> > I expect things will start becoming more normal now that people are
+> > back from the holidays and are starting to recover and wake up from
+> > their food comas.
+> > 
+> > In the meantime, below is the shortlog for the last week. Nothing
+> > particularly stands out, the changes are dominated by various driver
+> > updates (gpu, rdma and networking), with a random smattering of fixes
+> > elsewhere.
+> 
+> Something not well baked managed to sneak in and it is tagged for stable:
+> 
+> adcfb264c3ed ("vmstat: disable vmstat_work on vmstat_cpu_down_prep()")
+
+Thanks for bissecting it.
+
+I've just confirmed that reverting adcfb264c3ed ("vmstat: disable
+vmstat_work on vmstat_cpu_down_prep()") gets rid of the "workqueue: work
+disable count underflow" WARNING.
 
