@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB57EA02A36
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D7C0A02C68
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42F3A1886BF9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E87753A7874
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1ED155300;
-	Mon,  6 Jan 2025 15:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DFF1D934B;
+	Mon,  6 Jan 2025 15:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCLvYwch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQMs5h1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9411DACBB;
-	Mon,  6 Jan 2025 15:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75033145A03;
+	Mon,  6 Jan 2025 15:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177449; cv=none; b=Wq6YmomzOlr5aYC6yZO+jhEInrn0kAPO7XZ1eHFLv9Nr7mtwExulQ7pGmFmJldzpG6z+myyQgtMGNEsKbN/mLt2E1gBUJpHHGvFI86Uis0CCpnjVcDoa3PKQCmArO+CAh61zB/BvsPTE3gpAuzJ6DRBMeYZQpLr1cagzdCwQw2I=
+	t=1736178708; cv=none; b=UJ0lPNioaVUTwkQMVPBJwC8PRTsOKSbfr2daCZ1A4aO1Az//A9Q/+mprwtDSB8Tg3gA+q5RumA9qC0sZmiVZyZOufyc+Y+4V/DArqoTkoFHZoaRtRdNZW9/peFcWyNHRNXIlkn7m97y1a/c4/wyb4GFzHOkhmfbkoQ0GrsC3Y3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177449; c=relaxed/simple;
-	bh=n9FN667Qwe9altqEiaV2Iedpf/youikn2ALrJ/Z7VA8=;
+	s=arc-20240116; t=1736178708; c=relaxed/simple;
+	bh=Lbf4q2qVfagWCT7U61ydO8PI+KnrEoQy2plyO7jBNzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQyF6D1NfZEO4PEZeVdQpGvKTNcszLRjU34JtulorvQfTDMC3ynn2yPKN8G1T4jyzbLCS9umymNNdc/P/mj7sH67BjwfCPgK3y41ka9mh0B6VLfxcA9Uz/NEjYFsaCJ0AZbwYVa9F+8+rZK+rJNeicwm/oazVA+valiU6FpKels=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCLvYwch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360DAC4CED2;
-	Mon,  6 Jan 2025 15:30:47 +0000 (UTC)
+	 MIME-Version; b=AuagAqsBqtaErYCDKRqmt9ufD6I9DKyAtAG/cUL4ZCau/MwtUpez87sCWd4zSgIFLvegjdEjBzgaM/nK3JK1TtTJ9HbIsgLTkFhrqLSPb+d/3UR91qxU/2V4nvbD0VYqNDB+cnHU3ppN3jk6c05r1uq1hZT5/7ZeZ3IFvcZmcsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQMs5h1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B91C4CED2;
+	Mon,  6 Jan 2025 15:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177448;
-	bh=n9FN667Qwe9altqEiaV2Iedpf/youikn2ALrJ/Z7VA8=;
+	s=korg; t=1736178708;
+	bh=Lbf4q2qVfagWCT7U61ydO8PI+KnrEoQy2plyO7jBNzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCLvYwch59ja/m/A3Fwi1tou+cL/T5i3Ez3VXe3HCmZradwM5mC2OjkdRd7b37gKF
-	 naHwXUHWuY86aL9Gaf84uDbufUJ0Ez1D3Td7y/nfHci72dKvLGlQfSM+VaCIeJ8fWq
-	 mBTsUwYbAvg0EjQkIoGcjGyp01nq73OV3pwHYrp0=
+	b=aQMs5h1xq2pVpneO0SnyfYuJHL82pxerpn9OH+FC9B8e6w/+GKp85+uhBRU05g2Lz
+	 GqrcglPBNLEsN0eFw8mGtyviC2niF1uk9j9wqJmrIcC8f2kAYIlUWRofEVwNT3KfhH
+	 id72ojyh/2x5CDk9kXh82q9EV7iw/Mz95iGbc5DI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjian Song <jinjian.song@fibocom.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/222] net: wwan: t7xx: Fix FSM command timeout issue
+	Maciej Andrzejewski <maciej.andrzejewski@m-works.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 064/168] mtd: rawnand: arasan: Fix double assertion of chip-select
 Date: Mon,  6 Jan 2025 16:16:12 +0100
-Message-ID: <20250106151157.122894765@linuxfoundation.org>
+Message-ID: <20250106151140.878027155@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjian Song <jinjian.song@fibocom.com>
+From: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
 
-[ Upstream commit 4f619d518db9cd1a933c3a095a5f95d0c1584ae8 ]
+commit b086a46dae48829e11c0c02580e30d920b76743c upstream.
 
-When driver processes the internal state change command, it use an
-asynchronous thread to process the command operation. If the main
-thread detects that the task has timed out, the asynchronous thread
-will panic when executing the completion notification because the
-main thread completion object has been released.
+When two chip-selects are configured in the device tree, and the second is
+a non-native GPIO, both the GPIO-based chip-select and the first native
+chip-select may be asserted simultaneously. This double assertion causes
+incorrect read and write operations.
 
-BUG: unable to handle page fault for address: fffffffffffffff8
-PGD 1f283a067 P4D 1f283a067 PUD 1f283c067 PMD 0
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:complete_all+0x3e/0xa0
-[...]
-Call Trace:
- <TASK>
- ? __die_body+0x68/0xb0
- ? page_fault_oops+0x379/0x3e0
- ? exc_page_fault+0x69/0xa0
- ? asm_exc_page_fault+0x22/0x30
- ? complete_all+0x3e/0xa0
- fsm_main_thread+0xa3/0x9c0 [mtk_t7xx (HASH:1400 5)]
- ? __pfx_autoremove_wake_function+0x10/0x10
- kthread+0xd8/0x110
- ? __pfx_fsm_main_thread+0x10/0x10 [mtk_t7xx (HASH:1400 5)]
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x38/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
-[...]
-CR2: fffffffffffffff8
----[ end trace 0000000000000000 ]---
+The issue occurs because when nfc->ncs <= 2, nfc->spare_cs is always
+initialized to 0 due to static initialization. Consequently, when the
+second chip-select (GPIO-based) is selected in anfc_assert_cs(), it is
+detected by anfc_is_gpio_cs(), and nfc->native_cs is assigned the value 0.
+This results in both the GPIO-based chip-select being asserted and the
+NAND controller register receiving 0, erroneously selecting the native
+chip-select.
 
-Use the reference counter to ensure safe release as Sergey suggests:
-https://lore.kernel.org/all/da90f64c-260a-4329-87bf-1f9ff20a5951@gmail.com/
+This patch resolves the issue, as confirmed by oscilloscope testing with
+configurations involving two or more chip-selects in the device tree.
 
-Fixes: 13e920d93e37 ("net: wwan: t7xx: Add core components")
-Signed-off-by: Jinjian Song <jinjian.song@fibocom.com>
-Acked-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Link: https://patch.msgid.link/20241224041552.8711-1-jinjian.song@fibocom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: acbd3d0945f9 ("mtd: rawnand: arasan: Leverage additional GPIO CS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maciej Andrzejewski <maciej.andrzejewski@m-works.net>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/t7xx/t7xx_state_monitor.c | 26 ++++++++++++++--------
- drivers/net/wwan/t7xx/t7xx_state_monitor.h |  5 +++--
- 2 files changed, 20 insertions(+), 11 deletions(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_state_monitor.c b/drivers/net/wwan/t7xx/t7xx_state_monitor.c
-index 80edb8e75a6a..64868df3640d 100644
---- a/drivers/net/wwan/t7xx/t7xx_state_monitor.c
-+++ b/drivers/net/wwan/t7xx/t7xx_state_monitor.c
-@@ -97,14 +97,21 @@ void t7xx_fsm_broadcast_state(struct t7xx_fsm_ctl *ctl, enum md_state state)
- 	fsm_state_notify(ctl->md, state);
- }
- 
-+static void fsm_release_command(struct kref *ref)
-+{
-+	struct t7xx_fsm_command *cmd = container_of(ref, typeof(*cmd), refcnt);
-+
-+	kfree(cmd);
-+}
-+
- static void fsm_finish_command(struct t7xx_fsm_ctl *ctl, struct t7xx_fsm_command *cmd, int result)
- {
- 	if (cmd->flag & FSM_CMD_FLAG_WAIT_FOR_COMPLETION) {
--		*cmd->ret = result;
--		complete_all(cmd->done);
-+		cmd->result = result;
-+		complete_all(&cmd->done);
- 	}
- 
--	kfree(cmd);
-+	kref_put(&cmd->refcnt, fsm_release_command);
- }
- 
- static void fsm_del_kf_event(struct t7xx_fsm_event *event)
-@@ -396,7 +403,6 @@ static int fsm_main_thread(void *data)
- 
- int t7xx_fsm_append_cmd(struct t7xx_fsm_ctl *ctl, enum t7xx_fsm_cmd_state cmd_id, unsigned int flag)
- {
--	DECLARE_COMPLETION_ONSTACK(done);
- 	struct t7xx_fsm_command *cmd;
- 	unsigned long flags;
- 	int ret;
-@@ -408,11 +414,13 @@ int t7xx_fsm_append_cmd(struct t7xx_fsm_ctl *ctl, enum t7xx_fsm_cmd_state cmd_id
- 	INIT_LIST_HEAD(&cmd->entry);
- 	cmd->cmd_id = cmd_id;
- 	cmd->flag = flag;
-+	kref_init(&cmd->refcnt);
- 	if (flag & FSM_CMD_FLAG_WAIT_FOR_COMPLETION) {
--		cmd->done = &done;
--		cmd->ret = &ret;
-+		init_completion(&cmd->done);
-+		kref_get(&cmd->refcnt);
- 	}
- 
-+	kref_get(&cmd->refcnt);
- 	spin_lock_irqsave(&ctl->command_lock, flags);
- 	list_add_tail(&cmd->entry, &ctl->command_queue);
- 	spin_unlock_irqrestore(&ctl->command_lock, flags);
-@@ -422,11 +430,11 @@ int t7xx_fsm_append_cmd(struct t7xx_fsm_ctl *ctl, enum t7xx_fsm_cmd_state cmd_id
- 	if (flag & FSM_CMD_FLAG_WAIT_FOR_COMPLETION) {
- 		unsigned long wait_ret;
- 
--		wait_ret = wait_for_completion_timeout(&done,
-+		wait_ret = wait_for_completion_timeout(&cmd->done,
- 						       msecs_to_jiffies(FSM_CMD_TIMEOUT_MS));
--		if (!wait_ret)
--			return -ETIMEDOUT;
- 
-+		ret = wait_ret ? cmd->result : -ETIMEDOUT;
-+		kref_put(&cmd->refcnt, fsm_release_command);
- 		return ret;
- 	}
- 
-diff --git a/drivers/net/wwan/t7xx/t7xx_state_monitor.h b/drivers/net/wwan/t7xx/t7xx_state_monitor.h
-index b6e76f3903c8..74f96fd2605e 100644
---- a/drivers/net/wwan/t7xx/t7xx_state_monitor.h
-+++ b/drivers/net/wwan/t7xx/t7xx_state_monitor.h
-@@ -109,8 +109,9 @@ struct t7xx_fsm_command {
- 	struct list_head	entry;
- 	enum t7xx_fsm_cmd_state	cmd_id;
- 	unsigned int		flag;
--	struct completion	*done;
--	int			*ret;
-+	struct completion	done;
-+	int			result;
-+	struct kref		refcnt;
- };
- 
- struct t7xx_fsm_notifier {
--- 
-2.39.5
-
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -1425,8 +1425,8 @@ static int anfc_parse_cs(struct arasan_n
+ 	 * case, the "not" chosen CS is assigned to nfc->spare_cs and selected
+ 	 * whenever a GPIO CS must be asserted.
+ 	 */
+-	if (nfc->cs_array && nfc->ncs > 2) {
+-		if (!nfc->cs_array[0] && !nfc->cs_array[1]) {
++	if (nfc->cs_array) {
++		if (nfc->ncs > 2 && !nfc->cs_array[0] && !nfc->cs_array[1]) {
+ 			dev_err(nfc->dev,
+ 				"Assign a single native CS when using GPIOs\n");
+ 			return -EINVAL;
 
 
 
