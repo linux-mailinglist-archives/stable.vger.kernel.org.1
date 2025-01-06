@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-107236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38704A02AF9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C53A02C61
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B74D13A59FF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7004F3A7529
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A28D86332;
-	Mon,  6 Jan 2025 15:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7BD1DD9AD;
+	Mon,  6 Jan 2025 15:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cINZ27u8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Es6ahUXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8D383A14;
-	Mon,  6 Jan 2025 15:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C071D5146;
+	Mon,  6 Jan 2025 15:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177861; cv=none; b=pSO1VTjul1pYMbOlQq8hkD24PSKG0vYQBmScdo6Inp5MmiUrS2bmJqLAGSZSoP5rvWCSn5bAiEGVxY4wJVkzMNSMeChsqjUD9E6noGku1aj/ilgvoErXMTTLV2VSy0LU8Pqy0nQ6eVU7y/WcYk/hFnWxuGZB+jxpiiVVSqUL+ek=
+	t=1736178689; cv=none; b=YkieENqQ93mckbAb0AU98uv38Hbsf8BDzO7OEiSbHu7Gw1oHlHD30e7n+htcj+vSDEobFdPHp15hT304Kw6yFXdmbSIPGxlAaBOrqfevyXjdb1X8ra5WW6TTHLt/nwK8jNVAfqG+VnrRkLKGlVB+oxjujd8BPc5GICCEBCGtF4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177861; c=relaxed/simple;
-	bh=8lQTHNb+vdIZWKYiEfA53Yq2z0upA1HwDVIBkJPo6Oc=;
+	s=arc-20240116; t=1736178689; c=relaxed/simple;
+	bh=qoCvyioFYbDSGRsr2k8AWj0NQRnr2MkgsR77JQpYagg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDZmlANUTUsczBNW2hml55dYwcpynt3vDtByjtTRJPoDXveOjlZV3a50F0Ju5ijm2Xb36aYFruKDI1VVzCHTFUOYL8JdLDGH/MkIPDpYS/rZLQOi/ZoIFslYrmzdMLMKK4V9UXbI4WVI60aXkM0B/4Npt5OkG+c6SoAeR1tW0Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cINZ27u8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43486C4CED2;
-	Mon,  6 Jan 2025 15:37:41 +0000 (UTC)
+	 MIME-Version; b=k7tdEQa6mbUeRwiKcxcWWGs2RQxHlf4RXaZ3pQQrLiJNXtOABv+sgiXill8GFg6ry6kEuecXc1QHP762/EPxuKTJ0dAdDFV3linp8W4KmlaTrIRSMWotUbMvcAKzICpOP/Jtec4r7EivszAurV//0t4hU04QmWbJZXtjLZ53PSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Es6ahUXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4C3C4CED2;
+	Mon,  6 Jan 2025 15:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177861;
-	bh=8lQTHNb+vdIZWKYiEfA53Yq2z0upA1HwDVIBkJPo6Oc=;
+	s=korg; t=1736178687;
+	bh=qoCvyioFYbDSGRsr2k8AWj0NQRnr2MkgsR77JQpYagg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cINZ27u8yQFpTxvXOWhLwe8X3nvKF++bHSrdkd/qxZV3EBjq4bp87kRmqrIo/UrEh
-	 hd0mhf/6FzNtd2qwpC7CEAUDUnKq0nVG1TQu5e5d+vryecO6LNKN62lAzczWFSfi/l
-	 Nb4PiQLgLWSrAihNtmTTschs8HwR8Yr4v3mMjFew=
+	b=Es6ahUXPwajzLKi0n9O8D0zepTyHcfdRMN7RJeycIyXF/NyR937cOZ+/sKog8Hw6Z
+	 iCF+nhMDfLS1FyILkvk8bHnAqupm4/bQBnROn4RjPU+ysPLp0BwWfPt4vh7/LjzEGh
+	 wemEbAkJcZiwfI7eLiUmO9t3YQxXw3+tZt/FLk8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/156] wifi: mac80211: wake the queues in case of failure in resume
+Subject: [PATCH 5.15 058/168] mm/vmstat: fix a W=1 clang compiler warning
 Date: Mon,  6 Jan 2025 16:16:06 +0100
-Message-ID: <20250106151144.745232204@linuxfoundation.org>
+Message-ID: <20250106151140.654703436@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 220bf000530f9b1114fa2a1022a871c7ce8a0b38 ]
+[ Upstream commit 30c2de0a267c04046d89e678cc0067a9cfb455df ]
 
-In case we fail to resume, we'll WARN with
-"Hardware became unavailable during restart." and we'll wait until user
-space does something. It'll typically bring the interface down and up to
-recover. This won't work though because the queues are still stopped on
-IEEE80211_QUEUE_STOP_REASON_SUSPEND reason.
-Make sure we clear that reason so that we give a chance to the recovery
-to succeed.
+Fix the following clang compiler warning that is reported if the kernel is
+built with W=1:
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219447
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241119173108.cd628f560f97.I76a15fdb92de450e5329940125f3c58916be3942@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+./include/linux/vmstat.h:518:36: error: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Werror,-Wenum-enum-conversion]
+  518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+      |                               ~~~~~~~~~~~ ^ ~~~
+
+Link: https://lkml.kernel.org/r/20241212213126.1269116-1-bvanassche@acm.org
+Fixes: 9d7ea9a297e6 ("mm/vmstat: add helpers to get vmstat item names for each enum type")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/util.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/vmstat.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index b4814e97cf74..38c30e4ddda9 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1825,6 +1825,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
- 		else
- 			WARN(1, "Hardware became unavailable during restart.\n");
-+		ieee80211_wake_queues_by_reason(hw, IEEE80211_MAX_QUEUE_MAP,
-+						IEEE80211_QUEUE_STOP_REASON_SUSPEND,
-+						false);
- 		ieee80211_handle_reconfig_failure(local);
- 		return res;
- 	}
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index d6a6cf53b127..bcb2b2b037c0 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -447,7 +447,7 @@ static inline const char *node_stat_name(enum node_stat_item item)
+ 
+ static inline const char *lru_list_name(enum lru_list lru)
+ {
+-	return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
++	return node_stat_name(NR_LRU_BASE + (enum node_stat_item)lru) + 3; // skip "nr_"
+ }
+ 
+ static inline const char *writeback_stat_name(enum writeback_stat_item item)
 -- 
 2.39.5
 
