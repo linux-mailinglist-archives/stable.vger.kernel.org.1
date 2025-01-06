@@ -1,137 +1,133 @@
-Return-Path: <stable+bounces-106785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC6AA0208F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 09:22:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF99A020DA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 09:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AAEA1882E52
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 08:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48B671885F5E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 08:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC451D7E30;
-	Mon,  6 Jan 2025 08:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E1F1D90A2;
+	Mon,  6 Jan 2025 08:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ghtj0Ebr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cOKiGDxQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF6515886D
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 08:22:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BCE1D8DE1;
+	Mon,  6 Jan 2025 08:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736151768; cv=none; b=CvS0kewsl7XP74esK9sBx5t3ejopHVxMtq0+MqqQwpwmc14wmCbuHLtYASuQnNmLbr+LnZSuoWrKFoNHLlWO3wDISuGniNqzADyvbiW01cjo7eORrIAmNuJddyQATShaxeR3anGk+9P8deEV7R1nsI5kOgYVbz4LPVi8FejejUo=
+	t=1736152524; cv=none; b=q3QrF08RHRO1eoEZrg2Uwz+Jv6+mQanfOTbOhDRnsIA2eGyOr6tgE1s4ogPkZ/piyY3c9bCqwccjUHr4ElVebZaIhhzHS5oOrzskoeiYJy5y2pgN0IwCqnAoX/IyYfkRUqMktAAQIdtnXqfP2otuYURVX/TXzl5XY7uSvUpnftw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736151768; c=relaxed/simple;
-	bh=xgnzeomWE7uMqNRrmeQoXEkFyyw5GPqG4aj5suU4g20=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=F6llUzoVwx/09eILdlrlgNnOIZZkE96tJW4SBt6TO5dh6vw7BAYW9Q2ju1wF/A0jj7iYr7ys1r3rbIyNWL6fY2ZkdYK1G71wX051Fc0kCRAmo0GcsGBLW/MnkplE4ol7BdGBOfWB3bUorEiQLMArTvksnt5tARynzs8RhxR2iSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--raychi.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ghtj0Ebr; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--raychi.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-216750b679eso158533585ad.1
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 00:22:46 -0800 (PST)
+	s=arc-20240116; t=1736152524; c=relaxed/simple;
+	bh=H+gFINVbb+nOCEqT9QQN/XMGSyGN9OGVfjvZIOdNJwc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RHlBGbQiDJ17U+Mh38+DFUXdezIhQvwi+eA5DgT2fO3mS8pOBH1y/j1kxngYO/Jz4n2UBMzNrKZM0eVSKKamp5e9kM0cT6fBLRh2rsbS5N6UVm+9YSk1LC5UhsUrrNzyCAYkkQFuhzNC5ntmBFKGspeGgdOo1qVXNSOJt6nRbcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cOKiGDxQ; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5401e6efffcso16580626e87.3;
+        Mon, 06 Jan 2025 00:35:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736151766; x=1736756566; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kLcY5dYvYA+U3xZ+KKGVQ0TL38zqS9Oi8od1Fn2VGlA=;
-        b=ghtj0EbrOMPiYP9w/ePx4WaWqQ3Kea6XIIYwDxYGRVMrS1hkYFpO4d7ywmIuqOazw9
-         edvqo9h88vaB1PBo2+qZfFiH2Z3Z9zPNv935gD6X1YwdOFWCm/YzWC9YMhZDSO1Yz/k6
-         G9P1fTyyrWGwj8j92URXhCJ66fKxY1U2lZXi2cjdTvcm6uDSNaMca52A32oCDjJyFMN7
-         N6E8HNSjGmPjEeNLA9SOvW6R/gHsUVgHpiiaMnpPqPi95ezePm1RAWfP2p09kdbQh9uu
-         o+X4nIdRjLXOxvCrUmG6fmBoW0REqTI/cw22zUDbYMTB3eEvdJR3+BcxXTr1AFT8Xq/I
-         H7+A==
+        d=gmail.com; s=20230601; t=1736152517; x=1736757317; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nq36ONrrzNeUzm/WBB++1PFiUlFmJ9wXn3DMdB5FnEA=;
+        b=cOKiGDxQl3KgGY77mXBhdWLcU68pPWMCxqutclKtvqfvRbkjb/n2qkHqHC1fq8Jsdo
+         vfBkjJEnlERaV1CBCrvbE9rb0s9CldrQrh9Hv2BB3SSZ1v7/goaW7xOT4AJ4eZEA37re
+         jqnzkacg3CagTqvavf3A/gW7ysxaaMKuPMw2d67ilct9Kc+vA8BeeKuMqRBfcp5/EBr7
+         Ws+LeXe5zw1Cdtf/vbXs/5e0GypmBVEnFyBzgZJDg3S4J9zsjoGsl5IDrMpKBNIl8Fr8
+         DpFXYl8Od2Ec/MAFLLuECJVOlS/j7qly7PgskWyi4fhEKo0YZGGQORtu79Pe05Uv19E8
+         pJLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736151766; x=1736756566;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kLcY5dYvYA+U3xZ+KKGVQ0TL38zqS9Oi8od1Fn2VGlA=;
-        b=Im2AWNMO8vNoUCHkfdLJn/wAabVmwPAEHZ+PIc4DP3fNCcPMb44ktpEkIWnejUGN0c
-         LyQx1udwjEScCBHZ1PZN8TVaDayCg4e4JMMTEv92XEsdn4XnrkFw7FCrGUgR/fVo4NUQ
-         lGMYh+HUmfvvJzAF5ZpIpUWgs+VGtdR1q443j8GjP6Xm+bL6/kgRt85Uja1HGbbBTUiY
-         c6U6hIeYlrxqnTo9L/Exj5i9BZ48zm2pgNk+dfoiW6hvW7Po3yPf5VduZ9p9IOh/MgfZ
-         BH2t0q6/Ske9b7xkcr3W7cH2zLH2xnlzqVgwSkF82oZCStgwunMAKi9X0kJu2ayc/NMD
-         VFmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXR19+X16KpYCjgrbTjTZG4nx8HDO6eihaNPiLHaVFaLE+XjytZuuHN9K4GE3rC09qXTyR2aC8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmnIEOMu8jtg8t6sKePF4iap2XJqYSiG9McTKHmzT0mz3UDPJ4
-	/aiJAw969XI4XX74Y+2d4PHnw4trSIhiNiD0yMo4LAre3GLAgbambgZkYpoewNkeVqK1UXl6P/Q
-	BNA==
-X-Google-Smtp-Source: AGHT+IFkODRVqzcq3JPVmBdGE7hRQbifWf7dOsu2AtQlu9+rJsceIy5DnsyKzJUIK3TEg6NjKQXEzEe/hLU=
-X-Received: from pfhu9.prod.google.com ([2002:a62:ed09:0:b0:72a:c48a:eefd])
- (user=raychi job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3a41:b0:1e0:d8c1:cfe2
- with SMTP id adf61e73a8af0-1e5e08012e0mr94100948637.34.1736151766375; Mon, 06
- Jan 2025 00:22:46 -0800 (PST)
-Date: Mon,  6 Jan 2025 16:22:37 +0800
+        d=1e100.net; s=20230601; t=1736152517; x=1736757317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nq36ONrrzNeUzm/WBB++1PFiUlFmJ9wXn3DMdB5FnEA=;
+        b=MaR//1tfhtoooNcYExM1bMJPavC4vRY490XuKwrsypKhLsmc93k73ZXBaJw9Ys+BlU
+         qbQOptYw80815TFY4oxZsYeyNIBgdhKY7o9p2O5HeFDSJFfv/qcxyKjzRH0rxlfACgeP
+         EQIKr3Tq9JPhWMreoiP9tZNUMdkJrbhgjt6cDyBRdOtMAYbHX8py9bN5kF8fJsDdTqDf
+         DiJsWycFuVUI+3UzegFbK/+w3NsOBZwV9cgN79MSAGlR7LqC6TA7MZJvds/rsUKTWuy9
+         YUAbBp1piLAoFXz6cO311f+FqcaFdN68D1wBfYZhb0dX1XbmtJdRw7JxYj1ALgI5lQrW
+         +28w==
+X-Forwarded-Encrypted: i=1; AJvYcCUN6DfEUv5EipNovDbGwnxJJH8C532rL9XC6NC4FmguS5A8w33cpbIBUyeYkicUchnbZkZ+aHqS+frz@vger.kernel.org, AJvYcCW0kQrdXWOHVPENrwCblxDgkD18k+OkDfGW3LLd1wJUbj1TfPWy5L/3PCZBqs+32azkMSzEcerf8KEKpqpI@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkfZ2egRqg6blMioFNGxxmX9ZEkfk9cQp2Rv1c24E/4VbMtuC7
+	hHQK/S3fZlWfGUbWASlTyxUmZeJ90X25r1ZWF7MSqNkbr+yLmeiJPu7dwAnscEWgJBdpfg7UKyt
+	mbuC1t/yEyogaWfP0ZYGdTzF5SEpLCefoyzTZ2wYj
+X-Gm-Gg: ASbGncueeFr8sZHNfB4010SAdv6x8r22GHhKUPO971sgr7UX9CY+ZuWRxhv6OTKdRiO
+	TtuEJmC/fy4ScILwZHB5m+Wj4AbTn+FtQtxd1oV8=
+X-Google-Smtp-Source: AGHT+IF58MtI8FTeFFToH4mIQ4HnNZKlvKx8EUWDToPP070VoXPwU3tV9FWEzY8FSPGyvsgv1QKAWyv/q8qb9uQKgtQ=
+X-Received: by 2002:a05:6512:3d86:b0:542:218a:2af7 with SMTP id
+ 2adb3069b0e04-54229538b19mr18578842e87.15.1736152516643; Mon, 06 Jan 2025
+ 00:35:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20250106082240.3822059-1-raychi@google.com>
-Subject: [PATCH] usb: dwc3: Skip resume if pm_runtime_set_active() fails
-From: Ray Chi <raychi@google.com>
-To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org
-Cc: albertccwang@google.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, pumahsu@google.com, Ray Chi <raychi@google.com>, 
-	stable@vger.kernel.org
+MIME-Version: 1.0
+References: <20240920122851.215641-1-sunjunchao2870@gmail.com> <20240925-gewillt-bankintern-0fd0ba5bca82@brauner>
+In-Reply-To: <20240925-gewillt-bankintern-0fd0ba5bca82@brauner>
+From: Julian Sun <sunjunchao2870@gmail.com>
+Date: Mon, 6 Jan 2025 16:35:05 +0800
+Message-ID: <CAHB1NaicZFAGDHaOxiKDL+wcSx2ncWcKNLBBATDBfJ+9bxLa+w@mail.gmail.com>
+Subject: Re: [PATCH 2/3] vfs: Fix implicit conversion problem when testing
+ overflow case
+To: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-xfs@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When the system begins to enter suspend mode, dwc3_suspend() is called
-by PM suspend. There is a problem that if someone interrupt the system
-suspend process between dwc3_suspend() and pm_suspend() of its parent
-device, PM suspend will be canceled and attempt to resume suspended
-devices so that dwc3_resume() will be called. However, dwc3 and its
-parent device (like the power domain or glue driver) may already be
-suspended by runtime PM in fact. If this sutiation happened, the
-pm_runtime_set_active() in dwc3_resume() will return an error since
-parent device was suspended. This can lead to unexpected behavior if
-DWC3 proceeds to execute dwc3_resume_common().
+Hi,
 
-EX.
-RPM suspend: ... -> dwc3_runtime_suspend()
-                      -> rpm_suspend() of parent device
-...
-PM suspend: ... -> dwc3_suspend() -> pm_suspend of parent device
-                                 ^ interrupt, so resume suspended device
-          ...  <-  dwc3_resume()  <-/
-                      ^ pm_runtime_set_active() returns error
+I noticed this patch hasn=E2=80=99t been merged into 6.13. Was it overlooke=
+d
+or rejected?
 
-To prevent the problem, this commit will skip dwc3_resume_common() and
-return the error if pm_runtime_set_active() fails.
+Christian Brauner <brauner@kernel.org> =E4=BA=8E2024=E5=B9=B49=E6=9C=8825=
+=E6=97=A5=E5=91=A8=E4=B8=89 16:37=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Fri, 20 Sep 2024 20:28:51 +0800, Julian Sun wrote:
+> > The overflow check in generic_copy_file_checks() and generic_remap_chec=
+ks()
+> > is now broken because the result of the addition is implicitly converte=
+d to
+> > an unsigned type, which disrupts the comparison with signed numbers.
+> > This caused the kernel to not return EOVERFLOW in copy_file_range()
+> > call with len is set to 0xffffffffa003e45bul.
+> >
+> > Use the check_add_overflow() macro to fix this issue.
+> >
+> > [...]
+>
+> Applied to the vfs.misc.v6.13 branch of the vfs/vfs.git tree.
+> Patches in the vfs.misc.v6.13 branch should appear in linux-next soon.
+>
+> Please report any outstanding bugs that were missed during review in a
+> new review to the original patch series allowing us to drop it.
+>
+> It's encouraged to provide Acked-bys and Reviewed-bys even though the
+> patch has now been applied. If possible patch trailers will be updated.
+>
+> Note that commit hashes shown below are subject to change due to rebase,
+> trailer updates or similar. If in doubt, please check the listed branch.
+>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+> branch: vfs.misc.v6.13
+>
+> [2/3] vfs: Fix implicit conversion problem when testing overflow case
+>       https://git.kernel.org/vfs/vfs/c/8f3ab2511887
 
-Fixes: 68c26fe58182 ("usb: dwc3: set pm runtime active before resume common")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ray Chi <raychi@google.com>
----
- drivers/usb/dwc3/core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index c22b8678e02e..7578c5133568 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -2609,12 +2609,15 @@ static int dwc3_resume(struct device *dev)
- 	pinctrl_pm_select_default_state(dev);
- 
- 	pm_runtime_disable(dev);
--	pm_runtime_set_active(dev);
-+	ret = pm_runtime_set_active(dev);
-+	if (ret)
-+		goto out;
- 
- 	ret = dwc3_resume_common(dwc, PMSG_RESUME);
- 	if (ret)
- 		pm_runtime_set_suspended(dev);
- 
-+out:
- 	pm_runtime_enable(dev);
- 
- 	return ret;
--- 
-2.47.1.613.gc27f4b7a9f-goog
 
+--=20
+Julian Sun <sunjunchao2870@gmail.com>
 
