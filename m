@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0792A02B49
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B83CA02BD2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20D691885DCE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D24E21886A06
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42A415B0E2;
-	Mon,  6 Jan 2025 15:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E02818B46A;
+	Mon,  6 Jan 2025 15:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhmaFEFg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/QBp9zI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDF314D28C;
-	Mon,  6 Jan 2025 15:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428346088F;
+	Mon,  6 Jan 2025 15:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178106; cv=none; b=N5LyaAHjuJjjBoIgtvJdNikOoyeBhoanwYJUoERVauWEiAj1sPZ+9hwzZccs684KHIJoWcFafMZJVCOD8KFp4qXXobu0w27DMTWoR6Jz7Q8HQJ+Tt1Sdz2GIO72/l+3lSXOBAciNzsWJ4fQP7qipSLN4l9bHgAdqI80JTuQJ1xc=
+	t=1736178442; cv=none; b=G0t48foy8K4kwOl1fxl6wHE6Lbv45GBH98pcuwWjtSHyK4vppZq1roGXGaOJ8xbCW4D9gb/Th0k5+myX1ErZmq7Mz9/HZaccz/ZQOtFSkbyZETL0y+8HpkH0q+n8J3mrYrneUQH76eywbEDIyadwiovfFNAG95tNxAIxHETrAlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178106; c=relaxed/simple;
-	bh=Pxmrj4PYUuOmtiN933OK7T65F09BJMZ9ToRw2B8nyzM=;
+	s=arc-20240116; t=1736178442; c=relaxed/simple;
+	bh=4eSyPqUBhvi/AeBcJ33/aj5uA3o4Ffx/EpnkW/vd0+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqCIXCpLQFwW9ACivvENjMi8dYNPuNiHHaNh6N/5L+r4jdRSEo44MjHkTo39sn9Y7eJOdklyUDWqmLQEeSNAc91R/f31oBlbPAvlwC8G8xUeQTmu5l7YScNwHCzwHZNJkkOENPQhjdC5dsl210Dxb4e/ruiyIL71rHGe2U9UzRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhmaFEFg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D67BC4CEDF;
-	Mon,  6 Jan 2025 15:41:45 +0000 (UTC)
+	 MIME-Version; b=nDMI734Kon4mvSoiMZTrwP6DODsBXJZvVp1Zede4q7MWfm3SMzDWQUjJHm9/iI6BgTKnUFu3MQFw1Ix0PrmIOQDxSUkGCi7gMNDa/SCZ5cscKwn8LOxwYoxzUHT50loVTJhlFugvMKiLvTyI4vzy8RRtQt04dymh2xvAxakl7j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/QBp9zI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2F1C4CED2;
+	Mon,  6 Jan 2025 15:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178106;
-	bh=Pxmrj4PYUuOmtiN933OK7T65F09BJMZ9ToRw2B8nyzM=;
+	s=korg; t=1736178442;
+	bh=4eSyPqUBhvi/AeBcJ33/aj5uA3o4Ffx/EpnkW/vd0+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhmaFEFgsRK5wxNDsKtdIMY8HZimxDTI0ejKzP70ht68MWOA4xQ1TPtWAKecX8KLu
-	 QN1eil92uV2gn1qQdbjkCmeB03c90IsZPhQ+8T7r3C5HAHJsCYN8HS4sRJvIB0r7Y/
-	 gcweZvK+xEWsh32+XK9JOK+LkzqloLpPu6cDWx3M=
+	b=U/QBp9zIO9+NSK39yacr8xMDqJJe7Aea8Py9w33aHdO7WNTSkhI30EirMKHEXEZqc
+	 qITR/0PPNScKU8lgw4WxRmbvxND9f+LgININbajgIYU40/rqXFMYWA00vACwVCeATs
+	 eRH4V8aUTxfBVB9zfe3geTzcWD6onn8gvxYFNDr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 156/156] mptcp: dont always assume copied data in mptcp_cleanup_rbuf()
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 118/138] btrfs: rename and export __btrfs_cow_block()
 Date: Mon,  6 Jan 2025 16:17:22 +0100
-Message-ID: <20250106151147.605381335@linuxfoundation.org>
+Message-ID: <20250106151137.697153186@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 551844f26da2a9f76c0a698baaffa631d1178645 upstream.
+[ Upstream commit 95f93bc4cbcac6121a5ee85cd5019ee8e7447e0b ]
 
-Under some corner cases the MPTCP protocol can end-up invoking
-mptcp_cleanup_rbuf() when no data has been copied, but such helper
-assumes the opposite condition.
+Rename and export __btrfs_cow_block() as btrfs_force_cow_block(). This is
+to allow to move defrag specific code out of ctree.c and into defrag.c in
+one of the next patches.
 
-Explicitly drop such assumption and performs the costly call only
-when strictly needed - before releasing the msk socket lock.
-
-Fixes: fd8976790a6c ("mptcp: be careful on MPTCP-level ack.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-2-8608af434ceb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 44f52bbe96df ("btrfs: fix use-after-free when COWing tree bock and tracing is enabled")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/btrfs/ctree.c | 30 +++++++++++++++---------------
+ fs/btrfs/ctree.h |  7 +++++++
+ 2 files changed, 22 insertions(+), 15 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -528,13 +528,13 @@ static void mptcp_send_ack(struct mptcp_
- 		mptcp_subflow_send_ack(mptcp_subflow_tcp_sock(subflow));
- }
- 
--static void mptcp_subflow_cleanup_rbuf(struct sock *ssk)
-+static void mptcp_subflow_cleanup_rbuf(struct sock *ssk, int copied)
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index c71b02beb358..a376e42de9b2 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -1009,13 +1009,13 @@ static struct extent_buffer *alloc_tree_block_no_bg_flush(
+  * bytes the allocator should try to find free next to the block it returns.
+  * This is just a hint and may be ignored by the allocator.
+  */
+-static noinline int __btrfs_cow_block(struct btrfs_trans_handle *trans,
+-			     struct btrfs_root *root,
+-			     struct extent_buffer *buf,
+-			     struct extent_buffer *parent, int parent_slot,
+-			     struct extent_buffer **cow_ret,
+-			     u64 search_start, u64 empty_size,
+-			     enum btrfs_lock_nesting nest)
++int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
++			  struct btrfs_root *root,
++			  struct extent_buffer *buf,
++			  struct extent_buffer *parent, int parent_slot,
++			  struct extent_buffer **cow_ret,
++			  u64 search_start, u64 empty_size,
++			  enum btrfs_lock_nesting nest)
  {
- 	bool slow;
- 
- 	slow = lock_sock_fast(ssk);
- 	if (tcp_can_send_ack(ssk))
--		tcp_cleanup_rbuf(ssk, 1);
-+		tcp_cleanup_rbuf(ssk, copied);
- 	unlock_sock_fast(ssk, slow);
+ 	struct btrfs_fs_info *fs_info = root->fs_info;
+ 	struct btrfs_disk_key disk_key;
+@@ -1469,7 +1469,7 @@ static inline int should_cow_block(struct btrfs_trans_handle *trans,
  }
  
-@@ -551,7 +551,7 @@ static bool mptcp_subflow_could_cleanup(
- 			      (ICSK_ACK_PUSHED2 | ICSK_ACK_PUSHED)));
- }
+ /*
+- * cows a single block, see __btrfs_cow_block for the real work.
++ * COWs a single block, see btrfs_force_cow_block() for the real work.
+  * This version of it has extra checks so that a block isn't COWed more than
+  * once per transaction, as long as it hasn't been written yet
+  */
+@@ -1511,8 +1511,8 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
+ 	 * Also We don't care about the error, as it's handled internally.
+ 	 */
+ 	btrfs_qgroup_trace_subtree_after_cow(trans, root, buf);
+-	ret = __btrfs_cow_block(trans, root, buf, parent,
+-				 parent_slot, cow_ret, search_start, 0, nest);
++	ret = btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
++				    cow_ret, search_start, 0, nest);
  
--static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
-+static void mptcp_cleanup_rbuf(struct mptcp_sock *msk, int copied)
- {
- 	int old_space = READ_ONCE(msk->old_wspace);
- 	struct mptcp_subflow_context *subflow;
-@@ -559,14 +559,14 @@ static void mptcp_cleanup_rbuf(struct mp
- 	int space =  __mptcp_space(sk);
- 	bool cleanup, rx_empty;
+ 	trace_btrfs_cow_block(root, buf, *cow_ret);
  
--	cleanup = (space > 0) && (space >= (old_space << 1));
--	rx_empty = !__mptcp_rmem(sk);
-+	cleanup = (space > 0) && (space >= (old_space << 1)) && copied;
-+	rx_empty = !__mptcp_rmem(sk) && copied;
+@@ -1678,11 +1678,11 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
+ 			search_start = last_block;
  
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		if (cleanup || mptcp_subflow_could_cleanup(ssk, rx_empty))
--			mptcp_subflow_cleanup_rbuf(ssk);
-+			mptcp_subflow_cleanup_rbuf(ssk, copied);
- 	}
- }
- 
-@@ -2220,9 +2220,6 @@ static int mptcp_recvmsg(struct sock *sk
- 
- 		copied += bytes_read;
- 
--		/* be sure to advertise window change */
--		mptcp_cleanup_rbuf(msk);
--
- 		if (skb_queue_empty(&msk->receive_queue) && __mptcp_move_skbs(msk))
- 			continue;
- 
-@@ -2271,6 +2268,7 @@ static int mptcp_recvmsg(struct sock *sk
- 		}
- 
- 		pr_debug("block timeout %ld\n", timeo);
-+		mptcp_cleanup_rbuf(msk, copied);
- 		err = sk_wait_data(sk, &timeo, NULL);
- 		if (err < 0) {
- 			err = copied ? : err;
-@@ -2278,6 +2276,8 @@ static int mptcp_recvmsg(struct sock *sk
- 		}
- 	}
- 
-+	mptcp_cleanup_rbuf(msk, copied);
-+
- out_err:
- 	if (cmsg_flags && copied >= 0) {
- 		if (cmsg_flags & MPTCP_CMSG_TS)
+ 		btrfs_tree_lock(cur);
+-		err = __btrfs_cow_block(trans, root, cur, parent, i,
+-					&cur, search_start,
+-					min(16 * blocksize,
+-					    (end_slot - i) * blocksize),
+-					BTRFS_NESTING_COW);
++		err = btrfs_force_cow_block(trans, root, cur, parent, i,
++					    &cur, search_start,
++					    min(16 * blocksize,
++						(end_slot - i) * blocksize),
++					    BTRFS_NESTING_COW);
+ 		if (err) {
+ 			btrfs_tree_unlock(cur);
+ 			free_extent_buffer(cur);
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index 3ddb09f2b168..7ad3091db571 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -2713,6 +2713,13 @@ int btrfs_cow_block(struct btrfs_trans_handle *trans,
+ 		    struct extent_buffer *parent, int parent_slot,
+ 		    struct extent_buffer **cow_ret,
+ 		    enum btrfs_lock_nesting nest);
++int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
++			  struct btrfs_root *root,
++			  struct extent_buffer *buf,
++			  struct extent_buffer *parent, int parent_slot,
++			  struct extent_buffer **cow_ret,
++			  u64 search_start, u64 empty_size,
++			  enum btrfs_lock_nesting nest);
+ int btrfs_copy_root(struct btrfs_trans_handle *trans,
+ 		      struct btrfs_root *root,
+ 		      struct extent_buffer *buf,
+-- 
+2.39.5
+
 
 
 
