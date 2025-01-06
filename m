@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-107742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9332A02F3A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 18:45:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547A1A02F57
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 18:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29B923A104D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:45:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81C4F7A1F1E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB5F1DF269;
-	Mon,  6 Jan 2025 17:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D41F1DEFEE;
+	Mon,  6 Jan 2025 17:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i9QP4Ns5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fzRNIhHJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CD51DEFF1
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 17:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9165614600C
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 17:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736185547; cv=none; b=uQyzgPw46jn20rQSrBJXm58gWNmijAd22sUVDs0eN3AxwdTFI1Ymokh9LHEtUik84Ww0bmeszR/z03CxDlpN33NPtm17jC7SCqDwxOwDc1O1zK30xRfq+S2m0qg/3ae+eLOWIIztykTcJoKH19uxUDX6IJgxABYi8Xaol3CuiV8=
+	t=1736186017; cv=none; b=OnnwqVryz6qLRL0yb3bvqsoydqL56oxaZtnRJuXPBpwqj0dpt+wEqm6UzP4rM4nKKyYxbUheKhNg7z7jqNVwcaiy53Oxa+ot4+ZJcPpaWBsEQIfseh/qg/gMmQwZFweTWzPlrUqXxAlUrRB41kXIYEopY8LdCsoUTGs2igYXF6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736185547; c=relaxed/simple;
-	bh=0IC7yMFjZC8G+vkeou5M/K02sqJWzLSUoF/iPbgiDlw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mKwDYZs4mjCeyXjYfgr3ZJqdEClC+xMYVtehCuqWrOcXgce/kDr60UFNGfeZeQdu2zXEYHbqcasOmMnBO0ubSXIRLlwZG9/8e8HR86tZQb6Ie6QDszX3KpjeGvX4fAlIcyFQ3KCAOKak+HZCZz3gd8lkAgdkzQgP6ZJQEQerVf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i9QP4Ns5; arc=none smtp.client-ip=209.85.216.43
+	s=arc-20240116; t=1736186017; c=relaxed/simple;
+	bh=eYi1147B35Q00JC37zdPENis23ZxZk+iYmYCwbyeO5E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QX0BU7Pr8oc0IRTkcJ8AEfEgTI0eUFBpTaZPFiucue5OGnQiUTiaTntpDmsl3J+p4ky0rT2M02LwVJwq/9x9eQOIj/tFz7Q5aQHY8hl2sbyyVsimohr396r2RvnZ3hpi1+dHF5zM2rV6DibOIB9n3jrDfx3xhm+cztn8aFrp3to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fzRNIhHJ; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ee74291415so17236471a91.3
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 09:45:45 -0800 (PST)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21628b3fe7dso205416155ad.3
+        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 09:53:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736185544; x=1736790344; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736186014; x=1736790814; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9slCdyJ1Dq49ypkOy6VrSFCrbQ2Jm984D2G96XSnD1E=;
-        b=i9QP4Ns5nb05YoY9tIj+iP19lZrEeJ1tOdagNYJK89NmebNMi0xyiZt6lbtxNIs6mR
-         B+OXE27b5nlG6vEAk5HJx4LMdlxmCsA8k1o8RhqSxMpcMO+K188yY65tL4IvYjUzhnXv
-         CE6KTUsSoYXQW6ndQE1WhQGy56U7i2fbMJAOS7q9f/8J/gjkodgmxR/E0gURCCp6bs3B
-         0B5Eqk/gbmZAAbOkzzhp5xmQ+Vfwb7rMMHV1t+WUC1GwRCCvyncl/Lj+o8YOWzkgNqkb
-         ki6ddz1tCPDB9/4cZNpU3B/Fb2Xuw42p+XiGZ/BTeZRzcVOjdJMbiaCZkyB/m4ENHmQW
-         tJbA==
+        bh=7ZlsjB+xkhGgc0AqfkXua6V5y7D9WflVCAYdHA6CIC0=;
+        b=fzRNIhHJZCmq/PoJYj3lGhe5Kh/SquVBjbThdBwkB740vy1KH0Uq70p/UK88boS7Dt
+         kqDZbPzdZ1++sKFiuFeDmoWEmnD/2mmQjdLJlCbba3Az8+d1CqOzso68rDMTPvqOQr/N
+         3pQZpX8YB6wydZVvhUX74nJ4BxZOJkFm+s2nw/TZxl01J4jOS+1iiu66WuZ/X2UIv02U
+         z1z1YLGU529TXGq6th35qLGpgGtnYqsmJYk2T5TFU05fzl3fk7CISuWVOxCIeQEKsX3n
+         2+kHOtf/MuLjwPGFcD8rPzVgQN8uSmPEAMXy/6YKIiix0Qkqw/Wh+dUZvsmmHpz4w1Br
+         lGwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736185544; x=1736790344;
+        d=1e100.net; s=20230601; t=1736186014; x=1736790814;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9slCdyJ1Dq49ypkOy6VrSFCrbQ2Jm984D2G96XSnD1E=;
-        b=Lnzfrlhl/8mmyHAmRoAfurvd6yt9eRGM2lcmP+XWVmRiYsvfvCEVwonv1vOPGyy3Rw
-         rG8XyXDdDbKrjecl/Roge8VPEOxfiX5a3EcKmFzq5UwhBmKdpPw9rdgSE6nSOWctfMmI
-         /P0zzYNn/dtLGKU33DvRR4mvf+cE2zbHZkd/lD5yo/511xK39xCYzT18jkS+LMpou8Lv
-         ICcLIGILrCUItuNBCC9QOEjgq098Rpyz36bquLAIB1rTQ1j/VqPz+Lv+8C5FDcWUlRPY
-         hyuqd8hrlaAzYDJ7xxSwl8MkzhVHT29rlkBo/N0BILb3iW/tmdvXGNJvnteV/CmxtjEp
-         cjWQ==
-X-Gm-Message-State: AOJu0YxL4Vn9ooTUpd23NkO8u+yeX2vZU32c1PhBi4qKZFwb9TK6ltr2
-	hjMp8qpjRjrm+1dqCK20l9t3y1BrWloXwR/bsWA8XixIZdsjB+thpVZkrl+9
-X-Gm-Gg: ASbGncvkUZiQYqY7sT2buV5DzW0VNi9Mh1yoOY5rUmhSXa8X/kDJe1hjIHgOOm3GTcM
-	7gC5ObZox1Y1KWt2NptRxto47gI+rI+6hk4BTeBMSN0D7El3jNZ3ok61EdTvknbEyTXx0F4ndx8
-	RiJhB+Jv/Q4IohHhi/pbONM/CmmDvr72dqwWtFrM97JHnLCA0Uz9vdLosBERKUfacTjhT1fS2vv
-	nISkyhySb77p2b9q1KSQ4norHaPsfZWXsnd7GmbrwxNjUO7UhluqhWTN4Pd9MoTJu8oxE3h5NPi
-	T/zbpuWoJtA=
-X-Google-Smtp-Source: AGHT+IEYiNF3g81SstGifC/2aQMwVhOV5FUSPufd/z+U1EyIER7lh1ELXVW2Fs8tP7K+CJA9ld46gQ==
-X-Received: by 2002:a17:90b:2e0b:b0:2ee:d371:3227 with SMTP id 98e67ed59e1d1-2f452e4b9f2mr93736526a91.17.1736185544544;
-        Mon, 06 Jan 2025 09:45:44 -0800 (PST)
+        bh=7ZlsjB+xkhGgc0AqfkXua6V5y7D9WflVCAYdHA6CIC0=;
+        b=vpI9bu/5jQZRJ9KKGtgR4oazNlIDKHjwVxHtDUYiYf06mNhOKucBmJW6UlSulYI0M5
+         uPpWo5V/+9XluFSV3p92By+l9GdTHjlyaL6DwZegUOOTPiyYYW2ZUX74of3hpzGPQ0DD
+         a9qBAzrr9QEsMvAKQ0zQ5YTkC2fOIDFS7OFbeJacTQ5LPgMUR7CC1v/K7LddD7LO31A4
+         7Jtnnuz3vSYax/llsNzEAsIBV+exDFeh0REyv5FF+ZdecwpE/Wnx1wqCbbiFPArbwwP8
+         YwoVBV2s57TuoW2DMF4a8f8v3/RChFJtaHTzgrCpHdEI6Wkd5d3pfKPtVGDugr69rMp5
+         WPeQ==
+X-Gm-Message-State: AOJu0YzyKgNIGHmdJxiUFw4Qhka7bJvlSXXwhcKqgzgVgTZZVe3SLSRD
+	bzMqXnQCvrzfV8aksgzpmTivWKtRPjcoOOMe0MwMkQPgTNk8GDLaXAD206xx
+X-Gm-Gg: ASbGncu5P4nPIhLcbEzUsbdL/vcepXQJXQHWDx7x5vk59rHm6qSzLsYmdSrLbgW6CiJ
+	co2kfCAKX92YGzjrv8hlWnIqQzAHrAhSXQynvH5b7gEs1ot7LNAYDzb07AsV3/wd81DnJPizkpE
+	5Zv3wCajetX5jtiQEPX/D/lQ3WswVkBb7fR+bO39LPjBh18PZ9rg/8V1aVLlYJKL8i4e/0AUe4G
+	htHqAfN+UP/2x93XN6Nw1aYvktd6muupmp+FbplavhZr7JLecCaE/IKfsYnlIOJxs6OmlDFemib
+	ht5RVfNW+v0=
+X-Google-Smtp-Source: AGHT+IGVSW/60CyfHX0i+svkOZonnKdXNHXgQKHACAc/csIdS7p835lJoKgFZje6wUQQQy+4i+dm6g==
+X-Received: by 2002:a05:6a00:3910:b0:729:49a:2db9 with SMTP id d2e1a72fcca58-72abdecbf94mr83759262b3a.21.1736186012893;
+        Mon, 06 Jan 2025 09:53:32 -0800 (PST)
 Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ee26d5c7sm36009838a91.45.2025.01.06.09.45.41
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad90c1c7sm32557696b3a.182.2025.01.06.09.53.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 09:45:44 -0800 (PST)
+        Mon, 06 Jan 2025 09:53:32 -0800 (PST)
 From: Kuan-Wei Chiu <visitorckw@gmail.com>
 To: stable@vger.kernel.org
 Cc: gregkh@linuxfoundation.org,
@@ -82,9 +82,9 @@ Cc: gregkh@linuxfoundation.org,
 	Shile Zhang <shile.zhang@linux.alibaba.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.y] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
-Date: Tue,  7 Jan 2025 01:44:59 +0800
-Message-Id: <20250106174459.3206507-1-visitorckw@gmail.com>
+Subject: [PATCH 5.15.y] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
+Date: Tue,  7 Jan 2025 01:53:18 +0800
+Message-Id: <20250106175318.3256899-1-visitorckw@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -128,10 +128,10 @@ Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/sorttable.h b/scripts/sorttable.h
-index deb7c1d3e979..f0ba2bf5a886 100644
+index a2baa2fefb13..9013b6984d68 100644
 --- a/scripts/sorttable.h
 +++ b/scripts/sorttable.h
-@@ -110,7 +110,7 @@ static inline unsigned long orc_ip(const int *ip)
+@@ -103,7 +103,7 @@ static inline unsigned long orc_ip(const int *ip)
  
  static int orc_sort_cmp(const void *_a, const void *_b)
  {
@@ -140,7 +140,7 @@ index deb7c1d3e979..f0ba2bf5a886 100644
  	const int *a = g_orc_ip_table + *(int *)_a;
  	const int *b = g_orc_ip_table + *(int *)_b;
  	unsigned long a_val = orc_ip(a);
-@@ -128,6 +128,10 @@ static int orc_sort_cmp(const void *_a, const void *_b)
+@@ -121,6 +121,10 @@ static int orc_sort_cmp(const void *_a, const void *_b)
  	 * whitelisted .o files which didn't get objtool generation.
  	 */
  	orc_a = g_orc_table + (a - g_orc_ip_table);
