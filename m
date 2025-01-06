@@ -1,62 +1,91 @@
-Return-Path: <stable+bounces-107741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE173A02F32
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 18:40:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9332A02F3A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 18:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1DAA7A05A8
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:40:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29B923A104D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0161DED64;
-	Mon,  6 Jan 2025 17:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB5F1DF269;
+	Mon,  6 Jan 2025 17:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pY3YegAA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i9QP4Ns5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31A01DE8B4
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 17:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CD51DEFF1
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 17:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736185240; cv=none; b=U1Jff8sQpOQRw0HdIsObgs8MAczk1lcTiy2w9WBKv7sG2COBoYB2nfuCwe+M3EbxNRrTiPBGr5mCui023F6jDWDOg7WpEN8eXSo+k5ExgjbbCaZMe6VZnNngCzHv6gZa88O0gWAGHR2rQoyiMFmr5e6fuX7OELw/azp21c32EUk=
+	t=1736185547; cv=none; b=uQyzgPw46jn20rQSrBJXm58gWNmijAd22sUVDs0eN3AxwdTFI1Ymokh9LHEtUik84Ww0bmeszR/z03CxDlpN33NPtm17jC7SCqDwxOwDc1O1zK30xRfq+S2m0qg/3ae+eLOWIIztykTcJoKH19uxUDX6IJgxABYi8Xaol3CuiV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736185240; c=relaxed/simple;
-	bh=mUoXQgU52UdzJX2yG8+A9IVtQHAEeJaBP/s/xGYQ0yE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZX7FFov8mMmh+AVIQ1jgZRBSkDitbaIWzYBgdcgONlM5BksvKOxHz3A4ccCqO5jOf6l4XYEiDV9gWHtfJMFMSAIaBuSlbuXCMVtBfAKzSfyuSTXXMVqkeUrekHPyIOngmZKJ4YcOyrYoJhcWe2s4tbzedcCCbblNF5Ga4gkzt2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pY3YegAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A71C4CED2;
-	Mon,  6 Jan 2025 17:40:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736185240;
-	bh=mUoXQgU52UdzJX2yG8+A9IVtQHAEeJaBP/s/xGYQ0yE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pY3YegAAobYpH7rkHJ/NPWXwUf2NyO7c9iuINCpC7RokkRMTLPtZOg8excVf0okgJ
-	 KI0KSCeV7BV/+yeqS42zmXHQW2TwCsRp+P0bXgg0EiBudGqQNiEXcVxuc+HmBv4xuM
-	 mLbSOR2GIaEMNENos5gWRiNI9UTBhdoh1+67NS7F7iLST87jB/1aD+uX2brRQNdMX6
-	 wtepZ6TYSaFDwNKTg/fak9jwyraCvb2BBCADWFRQDm1Bx66Umqbve1oUKev1uqKDwI
-	 eu86BZfpwnLwc3qrpQSHkXnarev6vMkTa67bKs1lSjVLuZ19UfDRDBQHAKdpvnohl3
-	 xOh1q4D1PmXGA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tUr5i-009VF0-1C;
-	Mon, 06 Jan 2025 17:40:38 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] arm64: Filter out SVE hwcaps when FEAT_SVE isn't implemented
-Date: Mon,  6 Jan 2025 17:40:20 +0000
-Message-Id: <20250106174020.1793678-1-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1736185547; c=relaxed/simple;
+	bh=0IC7yMFjZC8G+vkeou5M/K02sqJWzLSUoF/iPbgiDlw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mKwDYZs4mjCeyXjYfgr3ZJqdEClC+xMYVtehCuqWrOcXgce/kDr60UFNGfeZeQdu2zXEYHbqcasOmMnBO0ubSXIRLlwZG9/8e8HR86tZQb6Ie6QDszX3KpjeGvX4fAlIcyFQ3KCAOKak+HZCZz3gd8lkAgdkzQgP6ZJQEQerVf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i9QP4Ns5; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ee74291415so17236471a91.3
+        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 09:45:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736185544; x=1736790344; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9slCdyJ1Dq49ypkOy6VrSFCrbQ2Jm984D2G96XSnD1E=;
+        b=i9QP4Ns5nb05YoY9tIj+iP19lZrEeJ1tOdagNYJK89NmebNMi0xyiZt6lbtxNIs6mR
+         B+OXE27b5nlG6vEAk5HJx4LMdlxmCsA8k1o8RhqSxMpcMO+K188yY65tL4IvYjUzhnXv
+         CE6KTUsSoYXQW6ndQE1WhQGy56U7i2fbMJAOS7q9f/8J/gjkodgmxR/E0gURCCp6bs3B
+         0B5Eqk/gbmZAAbOkzzhp5xmQ+Vfwb7rMMHV1t+WUC1GwRCCvyncl/Lj+o8YOWzkgNqkb
+         ki6ddz1tCPDB9/4cZNpU3B/Fb2Xuw42p+XiGZ/BTeZRzcVOjdJMbiaCZkyB/m4ENHmQW
+         tJbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736185544; x=1736790344;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9slCdyJ1Dq49ypkOy6VrSFCrbQ2Jm984D2G96XSnD1E=;
+        b=Lnzfrlhl/8mmyHAmRoAfurvd6yt9eRGM2lcmP+XWVmRiYsvfvCEVwonv1vOPGyy3Rw
+         rG8XyXDdDbKrjecl/Roge8VPEOxfiX5a3EcKmFzq5UwhBmKdpPw9rdgSE6nSOWctfMmI
+         /P0zzYNn/dtLGKU33DvRR4mvf+cE2zbHZkd/lD5yo/511xK39xCYzT18jkS+LMpou8Lv
+         ICcLIGILrCUItuNBCC9QOEjgq098Rpyz36bquLAIB1rTQ1j/VqPz+Lv+8C5FDcWUlRPY
+         hyuqd8hrlaAzYDJ7xxSwl8MkzhVHT29rlkBo/N0BILb3iW/tmdvXGNJvnteV/CmxtjEp
+         cjWQ==
+X-Gm-Message-State: AOJu0YxL4Vn9ooTUpd23NkO8u+yeX2vZU32c1PhBi4qKZFwb9TK6ltr2
+	hjMp8qpjRjrm+1dqCK20l9t3y1BrWloXwR/bsWA8XixIZdsjB+thpVZkrl+9
+X-Gm-Gg: ASbGncvkUZiQYqY7sT2buV5DzW0VNi9Mh1yoOY5rUmhSXa8X/kDJe1hjIHgOOm3GTcM
+	7gC5ObZox1Y1KWt2NptRxto47gI+rI+6hk4BTeBMSN0D7El3jNZ3ok61EdTvknbEyTXx0F4ndx8
+	RiJhB+Jv/Q4IohHhi/pbONM/CmmDvr72dqwWtFrM97JHnLCA0Uz9vdLosBERKUfacTjhT1fS2vv
+	nISkyhySb77p2b9q1KSQ4norHaPsfZWXsnd7GmbrwxNjUO7UhluqhWTN4Pd9MoTJu8oxE3h5NPi
+	T/zbpuWoJtA=
+X-Google-Smtp-Source: AGHT+IEYiNF3g81SstGifC/2aQMwVhOV5FUSPufd/z+U1EyIER7lh1ELXVW2Fs8tP7K+CJA9ld46gQ==
+X-Received: by 2002:a17:90b:2e0b:b0:2ee:d371:3227 with SMTP id 98e67ed59e1d1-2f452e4b9f2mr93736526a91.17.1736185544544;
+        Mon, 06 Jan 2025 09:45:44 -0800 (PST)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ee26d5c7sm36009838a91.45.2025.01.06.09.45.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2025 09:45:44 -0800 (PST)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Ching-Chun Huang <jserv@ccns.ncku.edu.tw>,
+	chuang@cs.nycu.edu.tw,
+	Ingo Molnar <mingo@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Shile Zhang <shile.zhang@linux.alibaba.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1.y] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
+Date: Tue,  7 Jan 2025 01:44:59 +0800
+Message-Id: <20250106174459.3206507-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,205 +93,65 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, broonie@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The hwcaps code that exposes SVE features to userspace only
-considers ID_AA64ZFR0_EL1, while this is only valid when
-ID_AA64PFR0_EL1.SVE advertises that SVE is actually supported.
+The orc_sort_cmp() function, used with qsort(), previously violated the
+symmetry and transitivity rules required by the C standard.  Specifically,
+when both entries are ORC_REG_UNDEFINED, it could result in both a < b
+and b < a, which breaks the required symmetry and transitivity.  This can
+lead to undefined behavior and incorrect sorting results, potentially
+causing memory corruption in glibc implementations [1].
 
-The expectations are that when ID_AA64PFR0_EL1.SVE is 0, the
-ID_AA64ZFR0_EL1 register is also 0. So far, so good.
+Symmetry: If x < y, then y > x.
+Transitivity: If x < y and y < z, then x < z.
 
-Things become a bit more interesting if the HW implements SME.
-In this case, a few ID_AA64ZFR0_EL1 fields indicate *SME*
-features. And these fields overlap with their SVE interpretations.
-But the architecture says that the SME and SVE feature sets must
-match, so we're still hunky-dory.
+Fix the comparison logic to return 0 when both entries are
+ORC_REG_UNDEFINED, ensuring compliance with qsort() requirements.
 
-This goes wrong if the HW implements SME, but not SVE. In this
-case, we end-up advertising some SVE features to userspace, even
-if the HW has none. That's because we never consider whether SVE
-is actually implemented. Oh well.
-
-Fix it by restricting all SVE capabilities to ID_AA64PFR0_EL1.SVE
-being non-zero. The HWCAPS documentation is amended to reflect the
-actually checks performed by the kernel.
-
-Fixes: 06a916feca2b ("arm64: Expose SVE2 features for userspace")
-Reported-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
+Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+Link: https://lkml.kernel.org/r/20241226140332.2670689-1-visitorckw@gmail.com
+Fixes: 57fa18994285 ("scripts/sorttable: Implement build-time ORC unwind table sorting")
+Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
+Cc: <chuang@cs.nycu.edu.tw>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Shile Zhang <shile.zhang@linux.alibaba.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 0210d251162f4033350a94a43f95b1c39ec84a90)
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
 ---
- Documentation/arch/arm64/elf_hwcaps.rst | 39 ++++++++++++++++--------
- arch/arm64/kernel/cpufeature.c          | 40 +++++++++++++++++--------
- 2 files changed, 53 insertions(+), 26 deletions(-)
+ scripts/sorttable.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/arch/arm64/elf_hwcaps.rst b/Documentation/arch/arm64/elf_hwcaps.rst
-index 2ff922a406ad8..1a31723e79fd2 100644
---- a/Documentation/arch/arm64/elf_hwcaps.rst
-+++ b/Documentation/arch/arm64/elf_hwcaps.rst
-@@ -178,22 +178,28 @@ HWCAP2_DCPODP
-     Functionality implied by ID_AA64ISAR1_EL1.DPB == 0b0010.
+diff --git a/scripts/sorttable.h b/scripts/sorttable.h
+index deb7c1d3e979..f0ba2bf5a886 100644
+--- a/scripts/sorttable.h
++++ b/scripts/sorttable.h
+@@ -110,7 +110,7 @@ static inline unsigned long orc_ip(const int *ip)
  
- HWCAP2_SVE2
--    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SVEver == 0b0001.
+ static int orc_sort_cmp(const void *_a, const void *_b)
+ {
+-	struct orc_entry *orc_a;
++	struct orc_entry *orc_a, *orc_b;
+ 	const int *a = g_orc_ip_table + *(int *)_a;
+ 	const int *b = g_orc_ip_table + *(int *)_b;
+ 	unsigned long a_val = orc_ip(a);
+@@ -128,6 +128,10 @@ static int orc_sort_cmp(const void *_a, const void *_b)
+ 	 * whitelisted .o files which didn't get objtool generation.
+ 	 */
+ 	orc_a = g_orc_table + (a - g_orc_ip_table);
++	orc_b = g_orc_table + (b - g_orc_ip_table);
++	if (orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end &&
++	    orc_b->sp_reg == ORC_REG_UNDEFINED && !orc_b->end)
++		return 0;
+ 	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
+ }
  
- HWCAP2_SVEAES
--    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.AES == 0b0001.
- 
- HWCAP2_SVEPMULL
--    Functionality implied by ID_AA64ZFR0_EL1.AES == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.AES == 0b0010.
- 
- HWCAP2_SVEBITPERM
--    Functionality implied by ID_AA64ZFR0_EL1.BitPerm == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BitPerm == 0b0001.
- 
- HWCAP2_SVESHA3
--    Functionality implied by ID_AA64ZFR0_EL1.SHA3 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SHA3 == 0b0001.
- 
- HWCAP2_SVESM4
--    Functionality implied by ID_AA64ZFR0_EL1.SM4 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SM4 == 0b0001.
- 
- HWCAP2_FLAGM2
-     Functionality implied by ID_AA64ISAR0_EL1.TS == 0b0010.
-@@ -202,16 +208,20 @@ HWCAP2_FRINT
-     Functionality implied by ID_AA64ISAR1_EL1.FRINTTS == 0b0001.
- 
- HWCAP2_SVEI8MM
--    Functionality implied by ID_AA64ZFR0_EL1.I8MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.I8MM == 0b0001.
- 
- HWCAP2_SVEF32MM
--    Functionality implied by ID_AA64ZFR0_EL1.F32MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.F32MM == 0b0001.
- 
- HWCAP2_SVEF64MM
--    Functionality implied by ID_AA64ZFR0_EL1.F64MM == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.F64MM == 0b0001.
- 
- HWCAP2_SVEBF16
--    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BF16 == 0b0001.
- 
- HWCAP2_I8MM
-     Functionality implied by ID_AA64ISAR1_EL1.I8MM == 0b0001.
-@@ -277,7 +287,8 @@ HWCAP2_EBF16
-     Functionality implied by ID_AA64ISAR1_EL1.BF16 == 0b0010.
- 
- HWCAP2_SVE_EBF16
--    Functionality implied by ID_AA64ZFR0_EL1.BF16 == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.BF16 == 0b0010.
- 
- HWCAP2_CSSC
-     Functionality implied by ID_AA64ISAR2_EL1.CSSC == 0b0001.
-@@ -286,7 +297,8 @@ HWCAP2_RPRFM
-     Functionality implied by ID_AA64ISAR2_EL1.RPRFM == 0b0001.
- 
- HWCAP2_SVE2P1
--    Functionality implied by ID_AA64ZFR0_EL1.SVEver == 0b0010.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.SVEver == 0b0010.
- 
- HWCAP2_SME2
-     Functionality implied by ID_AA64SMFR0_EL1.SMEver == 0b0001.
-@@ -313,7 +325,8 @@ HWCAP2_HBC
-     Functionality implied by ID_AA64ISAR2_EL1.BC == 0b0001.
- 
- HWCAP2_SVE_B16B16
--    Functionality implied by ID_AA64ZFR0_EL1.B16B16 == 0b0001.
-+    Functionality implied by ID_AA64PFR0_EL1.SVE == 0b0001 and
-+    ID_AA64ZFR0_EL1.B16B16 == 0b0001.
- 
- HWCAP2_LRCPC3
-     Functionality implied by ID_AA64ISAR1_EL1.LRCPC == 0b0011.
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 6ce71f444ed84..6874aca5da9df 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -3022,6 +3022,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- 		.matches = match,						\
- 	}
- 
-+#define HWCAP_CAP_MATCH_ID(match, reg, field, min_value, cap_type, cap)		\
-+	{									\
-+		__HWCAP_CAP(#cap, cap_type, cap)				\
-+		HWCAP_CPUID_MATCH(reg, field, min_value) 			\
-+		.matches = match,						\
-+	}
-+
- #ifdef CONFIG_ARM64_PTR_AUTH
- static const struct arm64_cpu_capabilities ptr_auth_hwcap_addr_matches[] = {
- 	{
-@@ -3050,6 +3057,13 @@ static const struct arm64_cpu_capabilities ptr_auth_hwcap_gen_matches[] = {
- };
- #endif
- 
-+#ifdef CONFIG_ARM64_SVE
-+static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
-+{
-+	return system_supports_sve() && has_user_cpuid_feature(cap, scope);
-+}
-+#endif
-+
- static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
- 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
-@@ -3092,19 +3106,19 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64MMFR2_EL1, AT, IMP, CAP_HWCAP, KERNEL_HWCAP_USCAT),
- #ifdef CONFIG_ARM64_SVE
- 	HWCAP_CAP(ID_AA64PFR0_EL1, SVE, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
--	HWCAP_CAP(ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2p1, CAP_HWCAP, KERNEL_HWCAP_SVE2P1),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SVEver, SVE2, CAP_HWCAP, KERNEL_HWCAP_SVE2),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEAES),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, AES, PMULL128, CAP_HWCAP, KERNEL_HWCAP_SVEPMULL),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBITPERM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVE_B16B16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, BF16, EBF16, CAP_HWCAP, KERNEL_HWCAP_SVE_EBF16),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SHA3, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESHA3),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, SM4, IMP, CAP_HWCAP, KERNEL_HWCAP_SVESM4),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, I8MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEI8MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F32MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF32MM),
-+	HWCAP_CAP_MATCH_ID(has_sve_feature, ID_AA64ZFR0_EL1, F64MM, IMP, CAP_HWCAP, KERNEL_HWCAP_SVEF64MM),
- #endif
- #ifdef CONFIG_ARM64_GCS
- 	HWCAP_CAP(ID_AA64PFR1_EL1, GCS, IMP, CAP_HWCAP, KERNEL_HWCAP_GCS),
 -- 
-2.39.2
+2.34.1
 
 
