@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-107118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54614A02A4D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65A1A02C5D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05F8188628A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62B5F3A61D0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B49156886;
-	Mon,  6 Jan 2025 15:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4991DED4C;
+	Mon,  6 Jan 2025 15:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7bcusvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCcfHFHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87A01DE4CE;
-	Mon,  6 Jan 2025 15:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3E11DED46;
+	Mon,  6 Jan 2025 15:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177510; cv=none; b=qGf8oit75RtXbUF70sCau0Ercgpj73As7BdlBlSR9562mcrlTWuvvllttanl9gUuN6pJbU29dV6nsCMxqbbxju9qiYUdw6uWOeB0X+CDOmBwrNkRtban3eOvc6HHEkiCUsi74xMwY909yz9bFtea7W3zWcktdRCX5DBuTeT0EPA=
+	t=1736178678; cv=none; b=LgufThN1xkL7zSOoXgtFs+s4FyFx3pODQPjVZ1MaX13Tu7MiwLuzT4dqb/9lYn9fX4gw1gRuQu8VHE4CUtBDgiQrg9jr9W8jXk4vP3ieezMWmhdTu/zEOgByUpuLQj5g1oWfkbVOvVMAuX/xT95wX/nIQZCQTcAy1MJPggpqgic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177510; c=relaxed/simple;
-	bh=MgWgEq4N/mAxX16aLzmL35SK7niGilt96yhFTPKNXfA=;
+	s=arc-20240116; t=1736178678; c=relaxed/simple;
+	bh=w1eM1FPwAiPoqmpkP6xClGVfmPtwrhBBUv/VAO7FsTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTQPUeOZf1dKCC99fTbuvq59myRLDUq7v6lZdROTRcGlwlU8Huha+2T80uSBl7SUaNXIdgEl28QN2Qx9+qHigjwEuTBw5wSC511Ho+FPQYqLY1WQs/3qbcv5z8r1jvoHLrzLoAGNYNsx37XMEcuCbo2kA31mdLjfwXw/ii00SrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7bcusvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09AAC4CED6;
-	Mon,  6 Jan 2025 15:31:49 +0000 (UTC)
+	 MIME-Version; b=plV3c3t8JrSgjt4P6eBIbuhxVmglJRhhhJgigS7qKqARmtp8oR8rus06ggXB2bOGM/xCiUEbis83QFkx4CLKEXtspX9QCmMGBTcst7zs8DrN5zF5wv7mGuCaIfKygx66MCKiGJrmGj65Zol1R87A4Ydo842c8AFU37Z8lC+N+0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCcfHFHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DE1C4CED2;
+	Mon,  6 Jan 2025 15:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177510;
-	bh=MgWgEq4N/mAxX16aLzmL35SK7niGilt96yhFTPKNXfA=;
+	s=korg; t=1736178678;
+	bh=w1eM1FPwAiPoqmpkP6xClGVfmPtwrhBBUv/VAO7FsTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7bcusvrbAzt1YHARMGA6MTxuzf2xxKIxIYtzGI+GrQ5NRFgILktXaBFY8rAOQAOa
-	 pNKLsgcVJRjW0BLth4Ch6JSa7lzsxZKHEa0LblvETzhjP2QA/Muu+yyO+8q/siT0E7
-	 UjoaV1qVi25TXo0uNcAh1Dp4oqxUXjQPce8yZVyw=
+	b=YCcfHFHMFaDxRInVZ0wM5c85cddZjfuX122oYX55SMIepx5T0ZeOYdhAVSAxxEuWf
+	 snkIFy8BM3NxFEE41iXvT42xKbhmbSKTfpwzfp8iFmbFeAaKQ/IcQ/nAy354xHLICT
+	 lJiODHJFuxOpsuHTyBJsWbemwGsi9BSFiflDCk3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/222] net/mlx5: DR, select MSIX vector 0 for completion queue creation
+	Jing Xia <jing.xia@unisoc.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	Brian Geffon <bgeffon@google.com>,
+	Benoit Lize <lizeb@google.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 055/168] epoll: Add synchronous wakeup support for ep_poll_callback
 Date: Mon,  6 Jan 2025 16:16:03 +0100
-Message-ID: <20250106151156.780539220@linuxfoundation.org>
+Message-ID: <20250106151140.541375193@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-[ Upstream commit 050a4c011b0dfeb91664a5d7bd3647ff38db08ce ]
+commit 900bbaae67e980945dec74d36f8afe0de7556d5a upstream.
 
-When creating a software steering completion queue (CQ), an arbitrary
-MSIX vector n is selected. This results in the CQ sharing the same
-Ethernet traffic channel n associated with the chosen vector. However,
-the value of n is often unpredictable, which can introduce complications
-for interrupt monitoring and verification tools.
+Now, the epoll only use wake_up() interface to wake up task.
+However, sometimes, there are epoll users which want to use
+the synchronous wakeup flag to hint the scheduler, such as
+Android binder driver.
+So add a wake_up_sync() define, and use the wake_up_sync()
+when the sync is true in ep_poll_callback().
 
-Moreover, SW steering uses polling rather than event-driven interrupts.
-Therefore, there is no need to select any MSIX vector other than the
-existing vector 0 for CQ creation.
-
-In light of these factors, and to enhance predictability, we modify the
-code to consistently select MSIX vector 0 for CQ creation.
-
-Fixes: 297cccebdc5a ("net/mlx5: DR, Expose an internal API to issue RDMA operations")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241220081505.1286093-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Co-developed-by: Jing Xia <jing.xia@unisoc.com>
+Signed-off-by: Jing Xia <jing.xia@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Link: https://lore.kernel.org/r/20240426080548.8203-1-xuewen.yan@unisoc.com
+Tested-by: Brian Geffon <bgeffon@google.com>
+Reviewed-by: Brian Geffon <bgeffon@google.com>
+Reported-by: Benoit Lize <lizeb@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/eventpoll.c       |    5 ++++-
+ include/linux/wait.h |    1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
-index 6fa06ba2d346..f57c84e5128b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_send.c
-@@ -1067,7 +1067,6 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
- 	int inlen, err, eqn;
- 	void *cqc, *in;
- 	__be64 *pas;
--	int vector;
- 	u32 i;
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -1230,7 +1230,10 @@ static int ep_poll_callback(wait_queue_e
+ 				break;
+ 			}
+ 		}
+-		wake_up(&ep->wq);
++		if (sync)
++			wake_up_sync(&ep->wq);
++		else
++			wake_up(&ep->wq);
+ 	}
+ 	if (waitqueue_active(&ep->poll_wait))
+ 		pwake++;
+--- a/include/linux/wait.h
++++ b/include/linux/wait.h
+@@ -224,6 +224,7 @@ void __wake_up_pollfree(struct wait_queu
+ #define wake_up_all(x)			__wake_up(x, TASK_NORMAL, 0, NULL)
+ #define wake_up_locked(x)		__wake_up_locked((x), TASK_NORMAL, 1)
+ #define wake_up_all_locked(x)		__wake_up_locked((x), TASK_NORMAL, 0)
++#define wake_up_sync(x)			__wake_up_sync(x, TASK_NORMAL)
  
- 	cq = kzalloc(sizeof(*cq), GFP_KERNEL);
-@@ -1096,8 +1095,7 @@ static struct mlx5dr_cq *dr_create_cq(struct mlx5_core_dev *mdev,
- 	if (!in)
- 		goto err_cqwq;
- 
--	vector = raw_smp_processor_id() % mlx5_comp_vectors_max(mdev);
--	err = mlx5_comp_eqn_get(mdev, vector, &eqn);
-+	err = mlx5_comp_eqn_get(mdev, 0, &eqn);
- 	if (err) {
- 		kvfree(in);
- 		goto err_cqwq;
--- 
-2.39.5
-
+ #define wake_up_interruptible(x)	__wake_up(x, TASK_INTERRUPTIBLE, 1, NULL)
+ #define wake_up_interruptible_nr(x, nr)	__wake_up(x, TASK_INTERRUPTIBLE, nr, NULL)
 
 
 
