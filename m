@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF81A02A0B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2BDA02C56
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38C467A20FB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2CA6163561
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06983156237;
-	Mon,  6 Jan 2025 15:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633B51DDC12;
+	Mon,  6 Jan 2025 15:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfFbTXrJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3FuiAMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A956A146D40;
-	Mon,  6 Jan 2025 15:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A4E81728;
+	Mon,  6 Jan 2025 15:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177370; cv=none; b=UyUFFDK0yCu6g8zotjmRXjjXo+G0Cf5dAJAZN917TchEEeReSoRqeP7FcVRBdTiq+VBOtF8gxNfETtQlrUjKMA7MFL/R+RZZBAGXtU36wmn9OHAiGsNAreBBLC+p9CZ91iY2AB/Zx9Jg8JF5tHguPtxtlltFa0CRKcwgXWGchEs=
+	t=1736178723; cv=none; b=ilYrU5wx/foibxyErYeuU5yDrIwkbzd5mu1Z9I0xDS+dZKjqMyENcilOkRZXUsMhE8ruqhpXQzf+cX8EnCXHzMfMWZacFOQeJDgLBCq84dKu7/lmDe3nE5FEpzSA2GwKAQ2CPXZZzzSGpUDw0dg72zpX6uG/7NTG1YUd9IvWISU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177370; c=relaxed/simple;
-	bh=76iYJ/grmIxY4bACiJ4brKPno8vrCrelHVVRSSy9jUo=;
+	s=arc-20240116; t=1736178723; c=relaxed/simple;
+	bh=FPYAJrD3lnMsZMuJ4AiWrDUCMhdnk986jQGMXVIkYKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJh9HM27hDOVOcA5Qduw8ptnGhhyTL0S74cUrn9XROFsqwRFa7sdsT71aj3myXNu6VBYGuq9/yoLvO0IbLdw+BYJz/gmf9P3KGH482WUfvnVy/Xct+GrEc5IHuu3TaLNbfY6JlbaCQSqqs9jXFe3f9ZR2ixyuFT21gYLV94CSBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfFbTXrJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322D7C4CED2;
-	Mon,  6 Jan 2025 15:29:30 +0000 (UTC)
+	 MIME-Version; b=ZfghDkaPxa6B06remLBo9OI9cdJk5hRmFK0G7XXp65FHtlN+tQfVOA7cRAjM8hyNUXampx8M9Nh03NfzqY9El3/NVNlymnuicPViwSkbvQYgLxFYauQZ6iTOlodMUzXqNjRUZnYpVWEVoAS8PvXTlpsFcpuUN58uR0e8vTJP6eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3FuiAMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C15C4CED2;
+	Mon,  6 Jan 2025 15:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177370;
-	bh=76iYJ/grmIxY4bACiJ4brKPno8vrCrelHVVRSSy9jUo=;
+	s=korg; t=1736178723;
+	bh=FPYAJrD3lnMsZMuJ4AiWrDUCMhdnk986jQGMXVIkYKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfFbTXrJc/CVBRmUbouG8sUNYYPk0PSmraySA8fF3PHVUdTpYCEfLOFdHoDEs80tz
-	 cnxKoCET2fwfILPVOFgYpgDBBAjE5UtqeeJ7/MmlsBEa/EmVKpE5T6hY4l6KBxucKx
-	 7qTZvMONhxTIENYsKp6zwfmn8Y7yp4lBdjs4cvaU=
+	b=j3FuiAMvDJkIHoEAkGEz0JhR0povlyAud3BW5X5OsspaAtqMUZHnWOMN8TV5EJuyu
+	 IOcRCYf7pAQZgKKBl42PCmiev7vJ45zMjbCBqDFdlnhARObkHgPcyplBR9vqAqDzSa
+	 NJUtKu/xBLPi+Y6gjT0WXe5RZ1p8Zw9DNK2yz6AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Stefan Ekenberg <stefan.ekenberg@axis.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Murad Masimov <m.masimov@maxima.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/222] drm/bridge: adv7511_audio: Update Audio InfoFrame properly
-Date: Mon,  6 Jan 2025 16:15:46 +0100
-Message-ID: <20250106151156.142057796@linuxfoundation.org>
+Subject: [PATCH 5.15 039/168] hwmon: (tmp513) Fix interpretation of values of Temperature Result and Limit Registers
+Date: Mon,  6 Jan 2025 16:15:47 +0100
+Message-ID: <20250106151139.939253858@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Ekenberg <stefan.ekenberg@axis.com>
+From: Murad Masimov <m.masimov@maxima.ru>
 
-[ Upstream commit 902806baf3c1e8383c1fe3ff0b6042b8cb5c2707 ]
+[ Upstream commit dd471e25770e7e632f736b90db1e2080b2171668 ]
 
-AUDIO_UPDATE bit (Bit 5 of MAIN register 0x4A) needs to be set to 1
-while updating Audio InfoFrame information and then set to 0 when done.
-Otherwise partially updated Audio InfoFrames could be sent out. Two
-cases where this rule were not followed are fixed:
- - In adv7511_hdmi_hw_params() make sure AUDIO_UPDATE bit is updated
-   before/after setting ADV7511_REG_AUDIO_INFOFRAME.
- - In audio_startup() use the correct register for clearing
-   AUDIO_UPDATE bit.
+The values returned by the driver after processing the contents of the
+Temperature Result and the Temperature Limit Registers do not correspond to
+the TMP512/TMP513 specifications. A raw register value is converted to a
+signed integer value by a sign extension in accordance with the algorithm
+provided in the specification, but due to the off-by-one error in the sign
+bit index, the result is incorrect.
 
-The problem with corrupted audio infoframes were discovered by letting
-a HDMI logic analyser check the output of ADV7535.
+According to the TMP512 and TMP513 datasheets, the Temperature Result (08h
+to 0Bh) and Limit (11h to 14h) Registers are 13-bit two's complement
+integer values, shifted left by 3 bits. The value is scaled by 0.0625
+degrees Celsius per bit.  E.g., if regval = 1 1110 0111 0000 000, the
+output should be -25 degrees, but the driver will return +487 degrees.
 
-Note that this patchs replaces writing REG_GC(1) with
-REG_INFOFRAME_UPDATE. Bit 5 of REG_GC(1) is positioned within field
-GC_PP[3:0] and that field doesn't control audio infoframe and is read-
-only. My conclusion therefore was that the author if this code meant to
-clear bit 5 of REG_INFOFRAME_UPDATE from the very beginning.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-Fixes: 53c515befe28 ("drm/bridge: adv7511: Add Audio support")
-Signed-off-by: Stefan Ekenberg <stefan.ekenberg@axis.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119-adv7511-audio-info-frame-v4-1-4ae68e76c89c@axis.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
+Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+Link: https://lore.kernel.org/r/20241216173648.526-4-m.masimov@maxima.ru
+[groeck: fixed description line length]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/hwmon/tmp513.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index 61f4a38e7d2b..8f786592143b 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -153,7 +153,16 @@ static int adv7511_hdmi_hw_params(struct device *dev, void *data,
- 			   ADV7511_AUDIO_CFG3_LEN_MASK, len);
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
- 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
--	regmap_write(adv7511->regmap, 0x73, 0x1);
-+
-+	/* send current Audio infoframe values while updating */
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+			   BIT(5), BIT(5));
-+
-+	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
-+
-+	/* use Audio infoframe updated info */
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+			   BIT(5), 0);
- 
- 	return 0;
- }
-@@ -184,8 +193,9 @@ static int audio_startup(struct device *dev, void *data)
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
- 				BIT(7) | BIT(6), BIT(7));
- 	/* use Audio infoframe updated info */
--	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
- 				BIT(5), 0);
-+
- 	/* enable SPDIF receiver */
- 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
- 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
+diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
+index 4ab06852efd9..aaba9521ebef 100644
+--- a/drivers/hwmon/tmp513.c
++++ b/drivers/hwmon/tmp513.c
+@@ -230,7 +230,7 @@ static int tmp51x_get_value(struct tmp51x_data *data, u8 reg, u8 pos,
+ 	case TMP51X_REMOTE_TEMP_LIMIT_2:
+ 	case TMP513_REMOTE_TEMP_LIMIT_3:
+ 		// 1lsb = 0.0625 degrees centigrade
+-		*val = sign_extend32(regval, 16) >> TMP51X_TEMP_SHIFT;
++		*val = sign_extend32(regval, 15) >> TMP51X_TEMP_SHIFT;
+ 		*val = DIV_ROUND_CLOSEST(*val * 625, 10);
+ 		break;
+ 	case TMP51X_N_FACTOR_AND_HYST_1:
 -- 
 2.39.5
 
