@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B7BA02C8C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFF1A02D0F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4F19163D58
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 586E03A5F3B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9137E156237;
-	Mon,  6 Jan 2025 15:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C03158525;
+	Mon,  6 Jan 2025 15:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8VsCl84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJGg0ggK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FD6182D2;
-	Mon,  6 Jan 2025 15:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DDDBA34;
+	Mon,  6 Jan 2025 15:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178877; cv=none; b=O04AF+b9u8gaCXaSj+2lX5zbleVMTllFHSI6VsKGQsOHqXVtwOcjfSvozmXAA6jSeLApgoOHeeV2Mm9TgIo6v15jNugR8AE3xXit9SVLa24SDsCAbHjKl5rsgbqsfAOyrt8NqdHqJd+4aZHxVVrwU96eUhm5EY0+i5WZE3Ujz/Q=
+	t=1736179124; cv=none; b=LWCkw0XjpxqGvD9uvZbIZIhDyo8ntqihTUsg6nsq17OHlrr0k+9UgnGG4mhLS0MGWNjOKLBtHfcvPmPYDPmtB941lt7IsLUtB8AI7vHSEFv9nfpeJOdvZ4WWxPR0UPP2O8tQ42PD2mSUw0hIdRqwWM8zBIzvs6KhFTEt1p3VZMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178877; c=relaxed/simple;
-	bh=Od+M1buuAo2g1zR1iazABrapLvv/CsboE1M/5d7BJtA=;
+	s=arc-20240116; t=1736179124; c=relaxed/simple;
+	bh=A44yEl0d7Hs5p+wiYrwjEzirTRDslHQuqEd8xDvqBLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ll2Y5JJDX6FmKgGJQQRblG3nQ613of83UnMJmG44luG5+uhXxlAwHWdSXTir6QHfpnVp075QPCqUzKDOcerGZkIYR1ls8StbpVAu5/IKNjCGDhjlkKH77GnEbygjAQVt/gXLRsE8RB7yWbkWSfjzuLAszvLwvWYJIGC/ntABAFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8VsCl84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9ECCC4CED2;
-	Mon,  6 Jan 2025 15:54:36 +0000 (UTC)
+	 MIME-Version; b=qmjUDYFjXMwWNtTXAQSnjaaaPfTgOx8y99R7t6IV8+8kh4S0BfTf+3FhS7UU96VWPYgfBUoun7JSNe/6LdLHX4L+UV6hfeO7+Y7gL2meSs4t3E+AYhiKJvZ/sxafEMki3TbYLE49SLgdeN2sUV4mznh4ZiurEyzQA6IwuVxNmP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJGg0ggK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1CCC4CED2;
+	Mon,  6 Jan 2025 15:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178877;
-	bh=Od+M1buuAo2g1zR1iazABrapLvv/CsboE1M/5d7BJtA=;
+	s=korg; t=1736179124;
+	bh=A44yEl0d7Hs5p+wiYrwjEzirTRDslHQuqEd8xDvqBLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X8VsCl84k7Son4VHvf40cmiH9WlgErdl4CQA798ewGONd7YecdGqt9YxW4CXKQxbY
-	 QZSEA6iUbVOlb3TGL+ooH8dfAkpYVBcelOa+ymIBKOppx5shdLAPtR9bBEcOhVSd/M
-	 SLWrZ63daQEhjolYTmVdUjtVuvhOSVsIKGmcAoJE=
+	b=MJGg0ggK6INuWdDF5l6N8cu6lpcwGrTOU+clsv3T7HZ26UkLHyS9ar7T/jJTLSShh
+	 gz1Em0z/6ElZCUgbEbm5SEaxNPhnBK32lbQCc9hUdQOr1MXveEwRyT0mViVZevwjQz
+	 srJKTIlCpWDWEaNs+9fSCb2t/knUuJX1HhEUNcm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Stefan Ekenberg <stefan.ekenberg@axis.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 122/168] drm/bridge: adv7511_audio: Update Audio InfoFrame properly
+Subject: [PATCH 5.4 34/93] bpf: Check negative offsets in __bpf_skb_min_len()
 Date: Mon,  6 Jan 2025 16:17:10 +0100
-Message-ID: <20250106151143.055905241@linuxfoundation.org>
+Message-ID: <20250106151129.990746372@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Ekenberg <stefan.ekenberg@axis.com>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit 902806baf3c1e8383c1fe3ff0b6042b8cb5c2707 ]
+[ Upstream commit 9ecc4d858b92c1bb0673ad9c327298e600c55659 ]
 
-AUDIO_UPDATE bit (Bit 5 of MAIN register 0x4A) needs to be set to 1
-while updating Audio InfoFrame information and then set to 0 when done.
-Otherwise partially updated Audio InfoFrames could be sent out. Two
-cases where this rule were not followed are fixed:
- - In adv7511_hdmi_hw_params() make sure AUDIO_UPDATE bit is updated
-   before/after setting ADV7511_REG_AUDIO_INFOFRAME.
- - In audio_startup() use the correct register for clearing
-   AUDIO_UPDATE bit.
+skb_network_offset() and skb_transport_offset() can be negative when
+they are called after we pull the transport header, for example, when
+we use eBPF sockmap at the point of ->sk_data_ready().
 
-The problem with corrupted audio infoframes were discovered by letting
-a HDMI logic analyser check the output of ADV7535.
+__bpf_skb_min_len() uses an unsigned int to get these offsets, this
+leads to a very large number which then causes bpf_skb_change_tail()
+failed unexpectedly.
 
-Note that this patchs replaces writing REG_GC(1) with
-REG_INFOFRAME_UPDATE. Bit 5 of REG_GC(1) is positioned within field
-GC_PP[3:0] and that field doesn't control audio infoframe and is read-
-only. My conclusion therefore was that the author if this code meant to
-clear bit 5 of REG_INFOFRAME_UPDATE from the very beginning.
+Fix this by using a signed int to get these offsets and ensure the
+minimum is at least zero.
 
-Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-Fixes: 53c515befe28 ("drm/bridge: adv7511: Add Audio support")
-Signed-off-by: Stefan Ekenberg <stefan.ekenberg@axis.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119-adv7511-audio-info-frame-v4-1-4ae68e76c89c@axis.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 5293efe62df8 ("bpf: add bpf_skb_change_tail helper")
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241213034057.246437-2-xiyou.wangcong@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/core/filter.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index 61f4a38e7d2b..8f786592143b 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -153,7 +153,16 @@ static int adv7511_hdmi_hw_params(struct device *dev, void *data,
- 			   ADV7511_AUDIO_CFG3_LEN_MASK, len);
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
- 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
--	regmap_write(adv7511->regmap, 0x73, 0x1);
-+
-+	/* send current Audio infoframe values while updating */
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+			   BIT(5), BIT(5));
-+
-+	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
-+
-+	/* use Audio infoframe updated info */
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
-+			   BIT(5), 0);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 9f67d9f20ae0..6ba1121a9f34 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3252,13 +3252,22 @@ static const struct bpf_func_proto bpf_skb_adjust_room_proto = {
  
- 	return 0;
- }
-@@ -184,8 +193,9 @@ static int audio_startup(struct device *dev, void *data)
- 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
- 				BIT(7) | BIT(6), BIT(7));
- 	/* use Audio infoframe updated info */
--	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
-+	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
- 				BIT(5), 0);
+ static u32 __bpf_skb_min_len(const struct sk_buff *skb)
+ {
+-	u32 min_len = skb_network_offset(skb);
+-
+-	if (skb_transport_header_was_set(skb))
+-		min_len = skb_transport_offset(skb);
+-	if (skb->ip_summed == CHECKSUM_PARTIAL)
+-		min_len = skb_checksum_start_offset(skb) +
+-			  skb->csum_offset + sizeof(__sum16);
++	int offset = skb_network_offset(skb);
++	u32 min_len = 0;
 +
- 	/* enable SPDIF receiver */
- 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
- 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
++	if (offset > 0)
++		min_len = offset;
++	if (skb_transport_header_was_set(skb)) {
++		offset = skb_transport_offset(skb);
++		if (offset > 0)
++			min_len = offset;
++	}
++	if (skb->ip_summed == CHECKSUM_PARTIAL) {
++		offset = skb_checksum_start_offset(skb) +
++			 skb->csum_offset + sizeof(__sum16);
++		if (offset > 0)
++			min_len = offset;
++	}
+ 	return min_len;
+ }
+ 
 -- 
 2.39.5
 
