@@ -1,158 +1,129 @@
-Return-Path: <stable+bounces-107759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30569A030D9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:45:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE8CA03119
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 21:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EE351885FB3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AED363A116A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BCF1DF27D;
-	Mon,  6 Jan 2025 19:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25CE1DE8A6;
+	Mon,  6 Jan 2025 20:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lkzqYFtK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaXhUaZ6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2421DED4C;
-	Mon,  6 Jan 2025 19:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962341D5CF4;
+	Mon,  6 Jan 2025 20:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736192736; cv=none; b=Ijjyyh8PYjh0djLSbn3l8gtlyBvWx89xy35YxYMJiLXk7GtUo4lYb6OoNi8iFc4jQ7j3w5lNCeAxpry8d6N5taKXLgUSy2VBFlK6XdOlJFy238uUjL6ENbAJpDB1uQaDSg0POGPe+49OZ0HklCBJZMMR5gHiN4qeMX0X7NHLnzE=
+	t=1736193910; cv=none; b=hecLCFfS7jJEr6ml8+OO4dGcAK6GoM89hwtWPkmuRSwL1fiwrk8JFGXx/XKYwQx6atAoZN1bSmLcWFcOnAu9IzwDVe5d+aPlllPvjW4jzeZn7xHNc1lFcPdscs2jHEvyadloovcAPLiBT151nIedE7Nljp+O6af1j4D9M2gtAV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736192736; c=relaxed/simple;
-	bh=IWcJ929/9inRj5jhjgQxzqfgzV7m01g5j7K5dy7Ow9s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=avSuFNY12PFqEw4jzuuEwBIE5xKgVp/CnGpwU10sRWq8WONI0QkOW5QDl9OeVrUWm9Up6UhV9k1r9nsyOHLAtdJPgVweCQBktn8jmRXteRbO2k//YovgmfHTN4Yz/1MhkTz3yjMJVM9nIV8SUllBIwEWecLDAXgbJ383gKC9zbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lkzqYFtK; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2163b0c09afso211596425ad.0;
-        Mon, 06 Jan 2025 11:45:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736192733; x=1736797533; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=pOQbHTIpJwowN7PSlF4vQq7w1O+77ce6EHIhiyVp8N8=;
-        b=lkzqYFtK06KkCtTTrCy/lFObW1ehEIF7cyMpaBmJXJcy3uPf8WO6/yiDtVhqxeTYO9
-         otSoLZMLKQE0DP+FqD8FT+EeAwQVWE0Zw/hSGIJ49AtnHfjEqauLkKxSPNfuVFSetmfh
-         BghLvm7Umn9+3dV74nvCyedH13Q/yfqBnK5iJn6I+KMrnp9Dft9n9JKvT5BId/hkf92X
-         Ogz1NVfq5y4NzmkXc1naeO7+tIcuUi37kdRxSvA81AvQ6IOoQCB2DqcVqzwytic/pAmt
-         5/5o9lolvEtBfYe952WlECfFdZQ2/lcD3zkF3sOzPuVW0U4hVphrFGD7TWgNSUamw3xe
-         M8yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736192733; x=1736797533;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pOQbHTIpJwowN7PSlF4vQq7w1O+77ce6EHIhiyVp8N8=;
-        b=aCXf0vVw8mwUWefjkz2OIydKV4uxhpP7dJO8VYSu50eqX547uar8AYTp15xF2e1sc6
-         YXXSJYvHExkrOzYv9Sjy/4z4lr9S30ypRJNdCGDzmzRs7NABP03BBDRtltiy9soOWNHB
-         lTtVTqJvcNWjH7dEZ3ztXFRdROR/Q6uZIj9+4FdD2VuYtC/9AMQIy7I69R2V4JMbOgmR
-         D0SaedCbtvXNpiVHy84jYtxh4HMWHqHyTgO6hxEH5lqGkBbbPAST8mQMFEYPI4YkyczZ
-         fqogGwXuOBpGPBCamBOCftv6y6XKaT8vMfJg08xDoKD/xSMgNx//gJHgYKo6Pe/e4EaU
-         xU7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUMh27sqtZuiYo5mYpcDO2kdlwMqcvnQUQ0afSQEo6/5PiEK/SCqna1o8BggDWSv/5wDx2mUcr1@vger.kernel.org, AJvYcCWhJcuyw6zJY//buY5aZJ6JUbqVmcTj2qvKpBCiAL9Qc2QLrK7l4kIzSA5mAB4qDHZd7pG+kByoxeGYeJc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcMCuZmPIIGZEhihcTTa1WYwDJyt38dIeemuQLJfwFWgSHaO52
-	KsTSwI1HfSwz52cXJpLTLOAhdGiFptY/l2Q6zTmg2oRMPp4k/agN
-X-Gm-Gg: ASbGnctYHLb7bW6vIgUszlg63WlRCyQMV7WERyKbnAqxtLvcnGRouGvNE1LkgMgjbaK
-	wCTl3U7Vg9SJ8/+yikfuNSB4Yk7oNZ5S/uLtFZUY4HScR0vEIPUkstGwFJ0PvXEBG5ixl+fEI05
-	TXmGXn53b0l5Vx15uPX1Z47d/xLd2rr4X/d6x5kfBqwm62cVTycZQxiMYrBTvrWRfkfTgXQOkvc
-	9cidQjjAy315ym+qji8HNz7Z58nvlytwLJ78COke3JWXPIepgZ3oj/F8D7u756zZ73xJO+L9kWU
-	E+boc4d8
-X-Google-Smtp-Source: AGHT+IG+H/BD87SJUjPNTCGw985rgYSu3/rv+yovjdRlhXccpwI7SucI25+vhhhZDV3j8Tow7PDmYw==
-X-Received: by 2002:a17:902:d481:b0:216:770e:f46 with SMTP id d9443c01a7336-219e6f26692mr817731815ad.54.1736192733026;
-        Mon, 06 Jan 2025 11:45:33 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9cdeabsm286631335ad.125.2025.01.06.11.45.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2025 11:45:31 -0800 (PST)
-Message-ID: <449fcb1a-9e16-4e25-84ee-e10db7ca1440@gmail.com>
-Date: Mon, 6 Jan 2025 11:45:29 -0800
+	s=arc-20240116; t=1736193910; c=relaxed/simple;
+	bh=8HK07wHCIbF/eQHYUA1A5peATTHCqVByA9t6WEclQ/Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aXwyJ7v7Ggr3ewbLo60UQvYIPJDb0HxKcUbQGWZIffOO5QSAXvxZ2xacBFUQhPShUx4GNaGSilHKN9UxNNIk6ULO8K59MYPHJAc4P2c3qNNpC74SiVcj/U0oGmww1ixGTmkSUfjePgjlxiKiuOww+19ckJB5Cwu+YrIHIo0SDcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaXhUaZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DB4C4CED2;
+	Mon,  6 Jan 2025 20:05:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736193910;
+	bh=8HK07wHCIbF/eQHYUA1A5peATTHCqVByA9t6WEclQ/Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BaXhUaZ61RW1EYv2RNBeLM4EpNTvkoE9rkKL8pqIFuXD8tezHPwv76pYgL7HJrvtH
+	 IAq4p+kkO38KcieirZ9UlT43RBi5GRD+I5TG4QpDYxw+AubsheadtIygPUrMAOvig9
+	 hKMYkxR6QJZOOvU5xlv+cKxbO67nSYYYftRJ4KrZ4+RII4G2dRkCk7fdf+dhjtdEzO
+	 a8d7wWDSzv/7Fh/7+4Qiujd2lOh6b7abLmhUPTrpIQX9WfDjwbplmfIqs9bXnGplcn
+	 gyF1fB9E3K2c82YCHwx5MCso7oN5VrSNW0WVkjqkHeKfaRGTWZu+wNlKfhnYcoH4jx
+	 Pnb7KlpzG7dag==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org
+Subject: Re: [PATCH 6.6 000/222] 6.6.70-rc1 review
+Date: Mon,  6 Jan 2025 21:04:53 +0100
+Message-ID: <20250106200453.1546073-1-ojeda@kernel.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/168] 5.15.176-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250106151138.451846855@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/6/25 07:15, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.176 release.
-> There are 168 patches in this series, all will be posted as a response
+On Mon, 06 Jan 2025 16:13:24 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.70 release.
+> There are 222 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
-> 
+>
 > Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
 > Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.176-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+I got (in both the two runs I did):
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+    [    0.022989] ------------[ cut here ]------------
+    [    0.023006] Usage of MAX_NUMNODES is deprecated. Use NUMA_NO_NODE instead
+    [    0.023362] WARNING: CPU: 0 PID: 0 at mm/memblock.c:1325 memblock_set_node+0xcf/0xe0
+    [    0.023841] Modules linked in:
+    [    0.023988] CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.70-rc1-g5652330123c6 #1
+    [    0.024062] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+    [    0.024156] RIP: 0010:memblock_set_node+0xcf/0xe0
+    [    0.024215] Code: 2c 07 48 83 c0 18 48 ff c9 75 f0 48 89 df e8 78 01 00 00 31 c0 eb a8 c6 05 a7 24 a6 ff 01 48 c7 c7 1e 37 7b a7 e8 71 aa 07 fe <0f> 0b e9 67 ff ff ff e8 75 f3 e3 fe 0f 1f 44 00 00 55 41 57 41 56
+    [    0.024361] RSP: 0000:ffffffffa7a03eb0 EFLAGS: 00000046 ORIG_RAX: 0000000000000000
+    [    0.024386] RAX: 0000000000000000 RBX: ffffffffa82a2240 RCX: ffffffffa7a52068
+    [    0.024397] RDX: ffffffffa7a03daf RSI: 0000000000000082 RDI: ffffffffa7a52060
+    [    0.024407] RBP: 0000000000000000 R08: ffffffffa7a52240 R09: 4f4e5f414d554e20
+    [    0.024417] R10: 2045444f4e5f4f4e R11: 0a64616574736e69 R12: 0000000000000040
+    [    0.024428] R13: 0000000000000000 R14: ffffffffffffffff R15: 0000000000000000
+    [    0.024465] FS:  0000000000000000(0000) GS:ffffffffa81a4000(0000) knlGS:0000000000000000
+    [    0.024490] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [    0.024502] CR2: ffff8c88c6001000 CR3: 0000000005628000 CR4: 00000000000000b0
+    [    0.024585] Call Trace:
+    [    0.024778]  <TASK>
+    [    0.024953]  ? __warn+0xc3/0x1c0
+    [    0.025012]  ? memblock_set_node+0xcf/0xe0
+    [    0.025024]  ? report_bug+0x144/0x1e0
+    [    0.025042]  ? early_fixup_exception+0x46/0x90
+    [    0.025051]  ? early_idt_handler_common+0x2f/0x40
+    [    0.025065]  ? memblock_set_node+0xcf/0xe0
+    [    0.025074]  ? acpi_numa_processor_affinity_init+0x80/0x80
+    [    0.025084]  ? numa_init+0x5e/0x190
+    [    0.025091]  ? x86_numa_init+0x15/0x40
+    [    0.025099]  ? setup_arch+0x4a3/0x5a0
+    [    0.025105]  ? start_kernel+0x5a/0x3a0
+    [    0.025115]  ? x86_64_start_reservations+0x20/0x20
+    [    0.025122]  ? x86_64_start_kernel+0xa7/0xb0
+    [    0.025128]  ? secondary_startup_64_no_verify+0x179/0x17b
+    [    0.025156]  </TASK>
+    [    0.025196] ---[ end trace 0000000000000000 ]---
+
+I hope the helps!
+
+Cheers,
+Miguel
 
