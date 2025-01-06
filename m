@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3B5A02BFB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF1CA02AC2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E91A18819C7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:49:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D2CE7A24C9
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068F8149C7B;
-	Mon,  6 Jan 2025 15:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB20C1553BB;
+	Mon,  6 Jan 2025 15:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSZP02oA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwyqJ1Pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AF513DB9F;
-	Mon,  6 Jan 2025 15:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F18143C7E;
+	Mon,  6 Jan 2025 15:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178540; cv=none; b=VuQkYK4jVR6MFDFdHUD3niQZ3YxS4LxQ+IMA1urfYZHBJGSXjHW7T1cJ1tbYNC/3s31ZLw7+eYMbJCnJZvRAxC8aC+cuFDzSskS3TBQEzeFHaOoicTdyWDw2d9oqn/IsI5QJV2tA63R9WQR4u7k//QbZ1wA61h3TrWU/8FlImIY=
+	t=1736177729; cv=none; b=mmCWNqLz1N6RD2xslgojB0YQYEYXsekg+XDlJkiILfhHh3Nz6i1iV/UArOxAyKwsyEz3DRhUE6SdVCkjJhXCg6A03O6qF2T4u6+p5q/Wvn2KLrYe9kXXyGQO9nWMdhghFJ3Yy5ltopqjIMKOGVguqTfXK0xmwa2p5k9WP90yGKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178540; c=relaxed/simple;
-	bh=9HrpxWr8nJA90b/67oNEZoP8TNtzm9fBt8ZFvkM1aeg=;
+	s=arc-20240116; t=1736177729; c=relaxed/simple;
+	bh=pQJUoaOQXqcmNwLn4r7wCk/7erKaWqPPFgQ/IAYZofM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dr0GLI8fGcR0dSb+JQqSY7Ff3E73nR/D5BGMNstCCGA+jqO4T+iGdLdUOnQILVXNWfxk10dg3MhBzSyWdJ65GohqVQlmQPGg06AbmRTOL+5kQmMSytqq3pa0rFWywLrGaiXNiiKj62Q0C8Mz5tePFbGrIP4vDJu+9tXiDjy51oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSZP02oA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBD5C4CED2;
-	Mon,  6 Jan 2025 15:49:00 +0000 (UTC)
+	 MIME-Version; b=hq8OOyas6UYNmT0nSfwzVGyP7GjyMM7uJLwrW5dK8ICYzfI8L1Rn1cNS02QaK3dx+oWVM4Y2DaoHrdpQg5igtugNlQgrKqW4cylFVD7b0+IyYe9Z4l7Yv9vY2HYeJoDxokFoRK7K8diNxAWjOvcyIIGvssPhlc3rQO0ms9sPIaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwyqJ1Pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E8CC4CED2;
+	Mon,  6 Jan 2025 15:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178540;
-	bh=9HrpxWr8nJA90b/67oNEZoP8TNtzm9fBt8ZFvkM1aeg=;
+	s=korg; t=1736177726;
+	bh=pQJUoaOQXqcmNwLn4r7wCk/7erKaWqPPFgQ/IAYZofM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSZP02oALEN5L8viC8PIbwDg6oxET1lKokf/FeI0qkDUNvAjDzmcCECmsBYI8bpLL
-	 Yja9D/fo6fmXVWxXxTe8K6hUZoTuYX+Hn0qr/JVCqOSOBH16SHXq07Fwe6AW5eUyFt
-	 JAlvZEZut3VQuJcwmqYvJCs4uKVQgQzSYr165nGo=
+	b=NwyqJ1PlB0PUvWD8IEE5XBRpM33lOYazQHG/x7TFa27VMD7a1DoOb320scQgmKJnj
+	 4NbRUdHvJ6YWQ2SlIwqpO+oWRoTfVfb481KRj6vK/nIhsFRDSAvLkdMI2lFJwrg0gL
+	 R8FJbmS7711CaQh0nlGRxUkrjqSQilHAj90H0cfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 014/168] net/smc: check iparea_offset and ipv6_prefixes_cnt when receiving proposal msg
+Subject: [PATCH 6.12 036/156] netdev-genl: avoid empty messages in napi get
 Date: Mon,  6 Jan 2025 16:15:22 +0100
-Message-ID: <20250106151139.001261026@linuxfoundation.org>
+Message-ID: <20250106151143.097187389@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a29e220d3c8edbf0e1beb0f028878a4a85966556 ]
+[ Upstream commit 4a25201aa46ce88e8e31f9ccdec0e4e3dd6bb736 ]
 
-When receiving proposal msg in server, the field iparea_offset
-and the field ipv6_prefixes_cnt in proposal msg are from the
-remote client and can not be fully trusted. Especially the
-field iparea_offset, once exceed the max value, there has the
-chance to access wrong address, and crash may happen.
+Empty netlink responses from do() are not correct (as opposed to
+dump() where not dumping anything is perfectly fine).
+We should return an error if the target object does not exist,
+in this case if the netdev is down we "hide" the NAPI instances.
 
-This patch checks iparea_offset and ipv6_prefixes_cnt before using them.
-
-Fixes: e7b7a64a8493 ("smc: support variable CLC proposal messages")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 27f91aaf49b3 ("netdev-genl: Add netlink framework functions for napi")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241219032833.1165433-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c  | 6 +++++-
- net/smc/smc_clc.c | 4 ++++
- net/smc/smc_clc.h | 6 +++++-
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ net/core/netdev-genl.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index fb299dbc0c26..ef0f264932e1 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1632,6 +1632,8 @@ static int smc_listen_prfx_check(struct smc_sock *new_smc,
- 	if (pclc->hdr.typev1 == SMC_TYPE_N)
- 		return 0;
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
-+	if (!pclc_prfx)
-+		return -EPROTO;
- 	if (smc_clc_prfx_match(newclcsock, pclc_prfx))
- 		return SMC_CLC_DECL_DIFFPREFIX;
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index 7ce22f40db5b..d58270b48cb2 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -228,8 +228,12 @@ int netdev_nl_napi_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 	rcu_read_unlock();
+ 	rtnl_unlock();
  
-@@ -1797,7 +1799,9 @@ static void smc_find_ism_v1_device_serv(struct smc_sock *new_smc,
- 	int rc = 0;
+-	if (err)
++	if (err) {
++		goto err_free_msg;
++	} else if (!rsp->len) {
++		err = -ENOENT;
+ 		goto err_free_msg;
++	}
  
- 	/* check if ISM V1 is available */
--	if (!(ini->smcd_version & SMC_V1) || !smcd_indicated(ini->smc_type_v1))
-+	if (!(ini->smcd_version & SMC_V1) ||
-+	    !smcd_indicated(ini->smc_type_v1) ||
-+	    !pclc_smcd)
- 		goto not_found;
- 	ini->is_smcd = true; /* prepare ISM check */
- 	ini->ism_peer_gid[0] = ntohll(pclc_smcd->ism.gid);
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 6ec1ebe878ae..035e8135ea49 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -49,6 +49,10 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
+ 	return genlmsg_reply(rsp, info);
  
- 	v2_ext = smc_get_clc_v2_ext(pclc);
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
-+	if (!pclc_prfx ||
-+	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
-+		return false;
-+
- 	if (hdr->version == SMC_V1) {
- 		if (hdr->typev1 == SMC_TYPE_N)
- 			return false;
-diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
-index 32d37f7b70f2..986dcd5db3ed 100644
---- a/net/smc/smc_clc.h
-+++ b/net/smc/smc_clc.h
-@@ -264,8 +264,12 @@ struct smc_clc_msg_decline {	/* clc decline message */
- static inline struct smc_clc_msg_proposal_prefix *
- smc_clc_proposal_get_prefix(struct smc_clc_msg_proposal *pclc)
- {
-+	u16 offset = ntohs(pclc->iparea_offset);
-+
-+	if (offset > sizeof(struct smc_clc_msg_smcd))
-+		return NULL;
- 	return (struct smc_clc_msg_proposal_prefix *)
--	       ((u8 *)pclc + sizeof(*pclc) + ntohs(pclc->iparea_offset));
-+	       ((u8 *)pclc + sizeof(*pclc) + offset);
- }
- 
- static inline bool smcr_indicated(int smc_type)
 -- 
 2.39.5
 
