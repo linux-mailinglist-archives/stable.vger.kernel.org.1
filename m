@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D4EA029F7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2280A02C19
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:50:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79B403A6820
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4842E3A2DC4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72496166F07;
-	Mon,  6 Jan 2025 15:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB3C1DE3A0;
+	Mon,  6 Jan 2025 15:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADwwhcj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKdZ/nDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3D715C120;
-	Mon,  6 Jan 2025 15:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998D91DE2A1;
+	Mon,  6 Jan 2025 15:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177262; cv=none; b=GMPvRsaddngHZZCV5KCZqPQaGlXGV21eBmwKvWyBHs+1odLy0FSoHIdj/Ig5DaexORCkEFibMFYjsP2TsR32ra95gC1GjcTljkh4sCRjTXWbOrAnn8aD3C9l+aI18D6yEpx8nZ2/eckjqAF+X3D/AyPFge3u48C1B9yDzfUUhv4=
+	t=1736178558; cv=none; b=P5tMwmXQ6/U2OE5Ao1+iENAB/zIFfn2cNw+9kxtyoHGRrVfKNNUh821eyF+E+Yb4fCy8GvKfiv30zfiUTtsMG6cgeYRPW5vit3ssII+DwEVigJ9xHMa0aQ/LeWzL23dYtBt0gZcc6OEXhNcMu3Cl9nOj0LLRJZAS/+VU81owlcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177262; c=relaxed/simple;
-	bh=J/xnrYvBChV4FW40mIlUIahcTNCu36Fs9fxa3npnwP8=;
+	s=arc-20240116; t=1736178558; c=relaxed/simple;
+	bh=fvXB3rxHBoXCv1fNs9KXPupzCmLobgxyyaxtdu66kTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jG8JiaCbZjbaBFg6NJ+HUH5YDBAijB0ewnJ/8ucdfRRRBHnn9rJ9utW9PEtz2tDE4WRwYR221ECFTGIAwxSVzuqnQMLgyCh//ivyT0LPvZ2RVE1tgKc6JlMkix6chSm62qwScC9GJyMy6BxhbOTgQp9iCcrxU4iYxLbmO4J1Fag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADwwhcj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F34C4CED2;
-	Mon,  6 Jan 2025 15:27:41 +0000 (UTC)
+	 MIME-Version; b=YUViOstVCbG53snVz0ZOxNCu6qdZQBPSgPeznqKreMATldkCgzBhdMvnSlqj37Q7zugIoH0RbIXzsF+98pif6Lmd+KSoIIi2ZrIZzHN6F/Zmp2xAGIV0JgRAuU4Iyqpi9azymNFs69h5k8le3ez9B3sqzpdjHB+HW8seqWpiBnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKdZ/nDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF5AC4CED2;
+	Mon,  6 Jan 2025 15:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177262;
-	bh=J/xnrYvBChV4FW40mIlUIahcTNCu36Fs9fxa3npnwP8=;
+	s=korg; t=1736178558;
+	bh=fvXB3rxHBoXCv1fNs9KXPupzCmLobgxyyaxtdu66kTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADwwhcj34y1rejCdB36+MRODwvoBH/8TGWnkJPBPUmdJtb7LDlocUjdS1aPzp1XkQ
-	 egpnSA2xS7KgsYZdyHnDR8tbXuSarfmuqGpnavfmvY6Q+T8U821PGoN5pvJQN+2mCb
-	 8vcVwrimyJZe/l9g0i22szsODIu+w4/jEmGLTsHw=
+	b=YKdZ/nDrlLGSni/4DorOdjy63Q6rjwSUWAin5MvGooxMKYtRwk1f/BzdLKj35yIeh
+	 Y7J3XfdKK7Xjc2BXn3IBdoxx+3Ol247pgtaiCnP/AhQ670O2YAHKqq1vfwXE2BmW+7
+	 IZ/hK3wwdgQLigdSyJMdLjWQlDxS1sk3QED6dDds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/222] cleanup: Remove address space of returned pointer
+Subject: [PATCH 5.15 002/168] PCI: Use preserve_config in place of pci_flags
 Date: Mon,  6 Jan 2025 16:15:10 +0100
-Message-ID: <20250106151154.610373855@linuxfoundation.org>
+Message-ID: <20250106151138.548891185@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit f730fd535fc51573f982fad629f2fc6b4a0cde2f ]
+[ Upstream commit 7246a4520b4bf1494d7d030166a11b5226f6d508 ]
 
-Guard functions in local_lock.h are defined using DEFINE_GUARD() and
-DEFINE_LOCK_GUARD_1() macros having lock type defined as pointer in
-the percpu address space. The functions, defined by these macros
-return value in generic address space, causing:
+Use preserve_config in place of checking for PCI_PROBE_ONLY flag to enable
+support for "linux,pci-probe-only" on a per host bridge basis.
 
-cleanup.h:157:18: error: return from pointer to non-enclosed address space
+This also obviates the use of adding PCI_REASSIGN_ALL_BUS flag if
+!PCI_PROBE_ONLY, as pci_assign_unassigned_root_bus_resources() takes care
+of reassigning the resources that are not already claimed.
 
-and
-
-cleanup.h:214:18: error: return from pointer to non-enclosed address space
-
-when strict percpu checks are enabled.
-
-Add explicit casts to remove address space of the returned pointer.
-
-Found by GCC's named address space checks.
-
-Fixes: e4ab322fbaaa ("cleanup: Add conditional guard support")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240819074124.143565-1-ubizjak@gmail.com
+Link: https://lore.kernel.org/r/20240508174138.3630283-5-vidyas@nvidia.com
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cleanup.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pci-host-common.c |  4 ----
+ drivers/pci/probe.c                      | 20 +++++++++-----------
+ 2 files changed, 9 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index f0c6d1d45e67..64b8600eb8c0 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -123,7 +123,7 @@ static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
- 	__DEFINE_CLASS_IS_CONDITIONAL(_name, false); \
- 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
- 	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
--	{ return *_T; }
-+	{ return (void *)(__force unsigned long)*_T; }
+diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
+index d3924a44db02..fd3020a399cf 100644
+--- a/drivers/pci/controller/pci-host-common.c
++++ b/drivers/pci/controller/pci-host-common.c
+@@ -73,10 +73,6 @@ int pci_host_common_probe(struct platform_device *pdev)
+ 	if (IS_ERR(cfg))
+ 		return PTR_ERR(cfg);
  
- #define DEFINE_GUARD_COND(_name, _ext, _condlock) \
- 	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true); \
-@@ -204,7 +204,7 @@ static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
- 									\
- static inline void *class_##_name##_lock_ptr(class_##_name##_t *_T)	\
- {									\
--	return _T->lock;						\
-+	return (void *)(__force unsigned long)_T->lock;			\
- }
+-	/* Do not reassign resources if probe only */
+-	if (!pci_has_flag(PCI_PROBE_ONLY))
+-		pci_add_flags(PCI_REASSIGN_ALL_BUS);
+-
+ 	bridge->sysdata = cfg;
+ 	bridge->ops = (struct pci_ops *)&ops->pci_ops;
+ 	bridge->msi_domain = true;
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index dd2134c7c419..cda6650aa3b1 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -3048,20 +3048,18 @@ int pci_host_probe(struct pci_host_bridge *bridge)
  
+ 	bus = bridge->bus;
  
++	/* If we must preserve the resource configuration, claim now */
++	if (bridge->preserve_config)
++		pci_bus_claim_resources(bus);
++
+ 	/*
+-	 * We insert PCI resources into the iomem_resource and
+-	 * ioport_resource trees in either pci_bus_claim_resources()
+-	 * or pci_bus_assign_resources().
++	 * Assign whatever was left unassigned. If we didn't claim above,
++	 * this will reassign everything.
+ 	 */
+-	if (pci_has_flag(PCI_PROBE_ONLY)) {
+-		pci_bus_claim_resources(bus);
+-	} else {
+-		pci_bus_size_bridges(bus);
+-		pci_bus_assign_resources(bus);
++	pci_assign_unassigned_root_bus_resources(bus);
+ 
+-		list_for_each_entry(child, &bus->children, node)
+-			pcie_bus_configure_settings(child);
+-	}
++	list_for_each_entry(child, &bus->children, node)
++		pcie_bus_configure_settings(child);
+ 
+ 	pci_bus_add_devices(bus);
+ 	return 0;
 -- 
 2.39.5
 
