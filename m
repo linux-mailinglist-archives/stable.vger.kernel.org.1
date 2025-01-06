@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F25BA02B4E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB37A0290B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2121F18861B5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CFDF3A4CDD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161501547D8;
-	Mon,  6 Jan 2025 15:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416DD8635E;
+	Mon,  6 Jan 2025 15:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRwdruXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oE66qYEq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76CF44C7C;
-	Mon,  6 Jan 2025 15:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF3C35973;
+	Mon,  6 Jan 2025 15:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178120; cv=none; b=REKOUEjZJUP2E1i7V0BIABb+/HUsTZcD9af2Zmf8MdwlaNWsc4LCOLG/x7UiNX090Tsfuv1fVoHoaPaAiq7wt1u+Uy8iMnSIWoBoI5KKJ/I3Wx9uqQJaum8jYQqS2OAhoNuzMUm7UWuzX8rp498yunDEu+YPbYfI5rvNPmfhfZI=
+	t=1736176759; cv=none; b=kd1+Mdu0RjjO1yolARdqI+D9jmlVrUQygmJo8WM2LzD6Dqy7/SuLATOt4Ngcj9jrTtXVkyLurqD18jfmoswwivkJrDbr9QKqwdWip7UhjTQabepTN/pQQmuNgMPTuuCEb2QnA1dNq4oAZfZEaUYkYKp4fEPYz1m8S9gcFf0WQT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178120; c=relaxed/simple;
-	bh=qCpbp3BVyNRdcUC0mTEuobaA0ke6Ete2n8QFiBHTLDk=;
+	s=arc-20240116; t=1736176759; c=relaxed/simple;
+	bh=Kz4hb3ddqJTd8mEGiPwshJFo6YkJxdb8z6iY7r61znY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFq2qc8FkBtTYHnz4dUtgKMjozq+39XR1cFbXpsXDh9DG1b1lD885Iw+nvxgIX4BYWSW8vhoNg50B2yoUg3V18ymLu3tUxWCQL8RBObshARrsiUAYV0vI0o5jrNS55BPq3DKRM/JUcLlq1ZpeL2OB9HFf5mBy9a2JCa6bj5XGIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRwdruXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE38C4CEDF;
-	Mon,  6 Jan 2025 15:42:00 +0000 (UTC)
+	 MIME-Version; b=C3ebmHxCSBjB1DM4YKbr8wtu92b8XAyZ1sJn83QsaMaVJ3KYNaIqPxEfyMqPeBwdmZQfmhLvqpNw8O6b8b6gPpH1T2YjBS/yRXqow3ClEDrZzYvrpDNwOx71JZUv9szpS1mnyffcHzj7n+/8VqwYcznkJR97jW8KFgooq3yk33Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oE66qYEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9CCC4CED2;
+	Mon,  6 Jan 2025 15:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178120;
-	bh=qCpbp3BVyNRdcUC0mTEuobaA0ke6Ete2n8QFiBHTLDk=;
+	s=korg; t=1736176758;
+	bh=Kz4hb3ddqJTd8mEGiPwshJFo6YkJxdb8z6iY7r61znY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRwdruXr7sVAuhSC5nTrcxWknEOcyavrxtkbMfz0gw9AaVeLy2OzdfzCjmhLytW8D
-	 UqGTLjkYtrOKuGtrhdd2i0YXzhSIA1vaMcCIvt5VdVK/GtrybUhDGpaCn6N9pyPs42
-	 PyTFiXChiECbDEeoTsvHDXejdLbEEKdqbxuO2mMs=
+	b=oE66qYEqBIVsJqzo3NL1DGhpOHiDS1vcCiVoGAik83z/1uB8RqsZczbn/q48+m054
+	 waH/L1DRaCDcRL/qVlBHw1ROiPYAaZUkVxnlag2L7LTPxzRbWYky6eYlLkp5bwyBxA
+	 KI992jKhsADN3d4Kaeky2lgvNeBbLu8/0DnjqrFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 012/138] net/smc: check sndbuf_space again after NOSPACE flag is set in smc_poll
-Date: Mon,  6 Jan 2025 16:15:36 +0100
-Message-ID: <20250106151133.680919007@linuxfoundation.org>
+Subject: [PATCH 6.1 05/81] thunderbolt: Add support for Intel Lunar Lake
+Date: Mon,  6 Jan 2025 16:15:37 +0100
+Message-ID: <20250106151129.641702600@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 679e9ddcf90dbdf98aaaa71a492454654b627bcb ]
+[ Upstream commit 2cd3da4e37453019e21a486d9de3144f46b4fdf7 ]
 
-When application sending data more than sndbuf_space, there have chances
-application will sleep in epoll_wait, and will never be wakeup again. This
-is caused by a race between smc_poll and smc_cdc_tx_handler.
+Intel Lunar Lake has similar integrated Thunderbolt/USB4 controller as
+Intel Meteor Lake with some small differences in the host router (it has
+3 DP IN adapters for instance). Add the Intel Lunar Lake PCI IDs to the
+driver list of supported devices.
 
-application                                      tasklet
-smc_tx_sendmsg(len > sndbuf_space)   |
-epoll_wait for EPOLL_OUT,timeout=0   |
-  smc_poll                           |
-    if (!smc->conn.sndbuf_space)     |
-                                     |  smc_cdc_tx_handler
-                                     |    atomic_add sndbuf_space
-                                     |    smc_tx_sndbuf_nonfull
-                                     |      if (!test_bit SOCK_NOSPACE)
-                                     |        do not sk_write_space;
-      set_bit SOCK_NOSPACE;          |
-    return mask=0;                   |
-
-Application will sleep in epoll_wait as smc_poll returns 0. And
-smc_cdc_tx_handler will not call sk_write_space because the SOCK_NOSPACE
-has not be set. If there is no inflight cdc msg, sk_write_space will not be
-called any more, and application will sleep in epoll_wait forever.
-So check sndbuf_space again after NOSPACE flag is set to break the race.
-
-Fixes: 8dce2786a290 ("net/smc: smc_poll improvements")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/thunderbolt/nhi.c | 4 ++++
+ drivers/thunderbolt/nhi.h | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 664ddf5641de..3a4ae589671a 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2110,6 +2110,13 @@ static __poll_t smc_poll(struct file *file, struct socket *sock,
- 			} else {
- 				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
- 				set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
-+
-+				if (sk->sk_state != SMC_INIT) {
-+					/* Race breaker the same way as tcp_poll(). */
-+					smp_mb__after_atomic();
-+					if (atomic_read(&smc->conn.sndbuf_space))
-+						mask |= EPOLLOUT | EPOLLWRNORM;
-+				}
- 			}
- 			if (atomic_read(&smc->conn.bytes_to_rcv))
- 				mask |= EPOLLIN | EPOLLRDNORM;
+diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
+index 288aaa05d007..5301effa6ab0 100644
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1479,6 +1479,10 @@ static struct pci_device_id nhi_ids[] = {
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_LNL_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
+ 
+diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
+index 0f029ce75882..7a07c7c1a9c2 100644
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -90,6 +90,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
+ #define PCI_DEVICE_ID_INTEL_TGL_H_NHI1			0x9a21
+ #define PCI_DEVICE_ID_INTEL_RPL_NHI0			0xa73e
+ #define PCI_DEVICE_ID_INTEL_RPL_NHI1			0xa76d
++#define PCI_DEVICE_ID_INTEL_LNL_NHI0			0xa833
++#define PCI_DEVICE_ID_INTEL_LNL_NHI1			0xa834
+ 
+ #define PCI_CLASS_SERIAL_USB_USB4			0x0c0340
+ 
 -- 
 2.39.5
 
