@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-107648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C5CA02CD6
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:58:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDFE6A02B2C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C332B7A2A25
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97EE516529E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE907158525;
-	Mon,  6 Jan 2025 15:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA3C1D7E21;
+	Mon,  6 Jan 2025 15:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WApqBn2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8YqavAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6A9145A03;
-	Mon,  6 Jan 2025 15:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0738634A;
+	Mon,  6 Jan 2025 15:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179102; cv=none; b=rFlaLAPnD6kGyzcWzrGuHAyDqlLhHUd1EbtYfRvJKOWiho32l7gqEJxBasb1242+fDrdpUk7RnjOSEpZQqrgOjN0QcgioEDKGWH7duzRHVXpKtR8hjbwh8Axt1k1o7ns0LwSC8NPXnmysse8sXn4MG6PLvVSJ8mgHHb0xFviBQU=
+	t=1736178034; cv=none; b=NzWmDSHG0ccw/AFLMlYFksdY3nojc+AVD1HYANX/MCiatuTi75BYqHek+L7reTDffHZOUutyZBzAQyJIijaT3t44iqbBj6wyhnz4X3iORwYmgKXeM8UnAhtXNEbg4qkssMn2xVxXfHRsxL4148nPmlnUGwKyTsP7W4VbwgkaaDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179102; c=relaxed/simple;
-	bh=ttUpGoJQ2yZ91pzZg4Wy/mybMq60E09iAIidur2o56w=;
+	s=arc-20240116; t=1736178034; c=relaxed/simple;
+	bh=Tj2kzQUseOSg+oWCGQV1rCtpnb3xgLSYw3wXSkQNtr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L3u4DZ7kilNoikRUr/ZTibMHn5GmcOVA0CHjhindMofnFLdbmGTgb0/fcGhACkIDqn4/L0E6sYQQWWBWtjZZwSWBO3WtjP5fsGW28V+fGG63mDsiSsWx6Wzvx4AsoykgvrLGDUZGzbQ4jehA/FzGMdT3vsSw6LuAOOsRMbp1KhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WApqBn2C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5BDC4CED2;
-	Mon,  6 Jan 2025 15:58:21 +0000 (UTC)
+	 MIME-Version; b=K408+9RREtYxtYz/FaGeGc9f2lMGBY3BXgAlymVgrXi7I50QRhSRjJ9GMpD6cM7m0FDTXaY1m+a9FUOUjxZUzYHyDqSIwMOeN5jyyq0P7CUT9mR5H2A14SFpI6kLJ7SHggywSLnx+XkUqqZCOm/gOzqYZTROyDcdQ+sQjWfYCr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8YqavAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702BBC4CED2;
+	Mon,  6 Jan 2025 15:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179102;
-	bh=ttUpGoJQ2yZ91pzZg4Wy/mybMq60E09iAIidur2o56w=;
+	s=korg; t=1736178033;
+	bh=Tj2kzQUseOSg+oWCGQV1rCtpnb3xgLSYw3wXSkQNtr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WApqBn2CpnCBymTegH8pXGL6L7PBX7N32ioCjPpEBNtlQXzvf5QW07pFtZi4X6oyg
-	 T9kBBM0AWNZ3kKNNyzD79aGY1/NK1UN7O4r2ivX9ZWJY8dWbmkuaGSXyj0ORHzLX5e
-	 2dkBN2AFoBvxIIckIq7q1oAZMSyKKIcp4HRVK0Do=
+	b=d8YqavAaAwNuevKoOYXdD1SNfY6INx/G1TumQt+Mm3dPxNSRoMXKt1upvVv5iSmyo
+	 E3Tak4PSxsaaY7qshe9r89D4e1Orwtir4W1Iv959buc7iR1RTGYmUmhdmnNFeAgH8j
+	 Jr414UqhYUF/w9+0nqvZWNm44qKvNMQwBD/Qqzhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.4 28/93] of/irq: Fix using uninitialized variable @addr_len in API of_irq_parse_one()
-Date: Mon,  6 Jan 2025 16:17:04 +0100
-Message-ID: <20250106151129.767781559@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 139/156] mm/damon/core: fix new damon_target objects leaks on damon_commit_targets()
+Date: Mon,  6 Jan 2025 16:17:05 +0100
+Message-ID: <20250106151146.966148375@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 0f7ca6f69354e0c3923bbc28c92d0ecab4d50a3e upstream.
+commit 8debfc5b1aa569d3d2ac836af2553da037611c61 upstream.
 
-of_irq_parse_one() may use uninitialized variable @addr_len as shown below:
+Patch series "mm/damon/core: fix memory leaks and ignored inputs from
+damon_commit_ctx()".
 
-// @addr_len is uninitialized
-int addr_len;
+Due to two bugs in damon_commit_targets() and damon_commit_schemes(),
+which are called from damon_commit_ctx(), some user inputs can be ignored,
+and some mmeory objects can be leaked.  Fix those.
 
-// This operation does not touch @addr_len if it fails.
-addr = of_get_property(device, "reg", &addr_len);
+Note that only DAMON sysfs interface users are affected.  Other DAMON core
+API user modules that more focused more on simple and dedicated production
+usages, including DAMON_RECLAIM and DAMON_LRU_SORT are not using the buggy
+function in the way, so not affected.
 
-// Use uninitialized @addr_len if the operation fails.
-if (addr_len > sizeof(addr_buf))
-	addr_len = sizeof(addr_buf);
 
-// Check the operation result here.
-if (addr)
-	memcpy(addr_buf, addr, addr_len);
+This patch (of 2):
 
-Fix by initializing @addr_len before the operation.
+When new DAMON targets are added via damon_commit_targets(), the newly
+created targets are not deallocated when updating the internal data
+(damon_commit_target()) is failed.  Worse yet, even if the setup is
+successfully done, the new target is not linked to the context.  Hence,
+the new targets are always leaked regardless of the internal data setup
+failure.  Fix the leaks.
 
-Fixes: b739dffa5d57 ("of/irq: Prevent device address out-of-bounds read in interrupt map walk")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241209-of_irq_fix-v1-4-782f1419c8a1@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lkml.kernel.org/r/20241222231222.85060-2-sj@kernel.org
+Fixes: 9cb3d0b9dfce ("mm/damon/core: implement DAMON context commit function")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/damon/core.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -298,6 +298,7 @@ int of_irq_parse_one(struct device_node
- 		return of_irq_parse_oldworld(device, index, out_irq);
- 
- 	/* Get the reg property (if any) */
-+	addr_len = 0;
- 	addr = of_get_property(device, "reg", &addr_len);
- 
- 	/* Prevent out-of-bounds read in case of longer interrupt parent address size */
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -966,8 +966,11 @@ static int damon_commit_targets(
+ 			return -ENOMEM;
+ 		err = damon_commit_target(new_target, false,
+ 				src_target, damon_target_has_pid(src));
+-		if (err)
++		if (err) {
++			damon_destroy_target(new_target);
+ 			return err;
++		}
++		damon_add_target(dst, new_target);
+ 	}
+ 	return 0;
+ }
 
 
 
