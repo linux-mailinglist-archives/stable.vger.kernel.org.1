@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-107472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87953A02C1F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F22FA02B54
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20BE23A8256
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:49:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AB3C7A0346
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CD31DE2A1;
-	Mon,  6 Jan 2025 15:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7F17082A;
+	Mon,  6 Jan 2025 15:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oqYOjiu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unJzpuP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69491DE4F3;
-	Mon,  6 Jan 2025 15:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37755DF71;
+	Mon,  6 Jan 2025 15:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178565; cv=none; b=W4+knR5bv89dMTFT/0q+cvJo/anUiuAynzcjG85oHdveqIHQEs8gx3j6iutr7MD+uphxcTG7af/f3WSNw59cwPHFBUX/0YVEakFLNBrN44R0y/GYG68ah9vPh/OX9NGcP/M5hgW8lZ9qmrF2LtHIM68fewq1+ou5KonzrfoWyFs=
+	t=1736178147; cv=none; b=e0WmQFE3q3VWK+PgDXtn4P+585qUoMEK1aaIk32EnSTE/6FW3JzwoF0PnM737F0C7ZpisKjejHt36WVAsvIwRi35BOUXDaRbkNdSxf6sLPA3vXrPsOPSHrsvemlKnp5vRb7qDO61o0EARnuCpmfc17DAs8/UwAZe80fUPIRKfSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178565; c=relaxed/simple;
-	bh=6LVsUY3V4Q/PyAn0iYsCAq9Gau6rBMCTS6s9rNqzLGg=;
+	s=arc-20240116; t=1736178147; c=relaxed/simple;
+	bh=K4TGMIsv+cWqiJ41RI/UU/3cmictd4LwG/gCFJxfAU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1KgFM/d1gibhmx1Jq5PNnNBb3w5DzEONgRvmezcEiu4zF4JjRxXac/o9kAddWSLSxZ3o9VQFeoaImeoR/2nPD3YJOYwTmbeaDScxqoCzwC98CSCo+pR2JZx5kAFfx5qYsM1VbZaWnIfUVGh+gllD0yfFwRMBEfkApS3TQPYv/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oqYOjiu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAC2C4CED2;
-	Mon,  6 Jan 2025 15:49:23 +0000 (UTC)
+	 MIME-Version; b=ZILmf+Vf8ZnBQshmwBRexmcy/gwL5pilUGhXmf2hbD9rpv37401spmkr0x/C+DnrlTEGVsAIv7ia5urdZc33o9Gq38DkkjiGtNxp7EInc//sCd61IOOYfZBgc0JlrvT/nZZKcTC9PNxTJTTlnc35GKnbq2DUiJxTn4eb5IDzU5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unJzpuP2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA418C4CED2;
+	Mon,  6 Jan 2025 15:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178564;
-	bh=6LVsUY3V4Q/PyAn0iYsCAq9Gau6rBMCTS6s9rNqzLGg=;
+	s=korg; t=1736178147;
+	bh=K4TGMIsv+cWqiJ41RI/UU/3cmictd4LwG/gCFJxfAU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0oqYOjiuDL87At0q6C17yqpwCYY3Tai2G/lO5fF5+X7TsPsRQfNSt0chtnlfeibT6
-	 JRYgpb9nk75jE58CST0Haxx1XQpKB/90VGdgz+MHC7wgqC2kYSijCH00cDVkmwiWfn
-	 UAnEahmLKfMvZ/oGeJ1EObB8IHYm5WOWcIpoXzwk=
+	b=unJzpuP2UX66KbNIeRtv6PtGy2K3g0vBObE62NN9HlSvC+s2RmbzeZe/nkDcMkrDk
+	 yNcmo9MBTX/skS2zWOLiNqucc/aJW1dUgKA+Odpe1wLf+oqS1jzLGza54egp5HuyX0
+	 zdKpbY+xHraYv4pnFM8sTZY5RsJcmNsC+VxvdFTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/168] net: ethernet: bgmac-platform: fix an OF node reference leak
+Subject: [PATCH 5.10 005/138] ALSA: usb: Fix UBSAN warning in parse_audio_unit()
 Date: Mon,  6 Jan 2025 16:15:29 +0100
-Message-ID: <20250106151139.263950766@linuxfoundation.org>
+Message-ID: <20250106151133.420207184@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 0cb2c504d79e7caa3abade3f466750c82ad26f01 ]
+[ Upstream commit 2f38cf730caedaeacdefb7ff35b0a3c1168117f9 ]
 
-The OF node obtained by of_parse_phandle() is not freed. Call
-of_node_put() to balance the refcount.
+A malformed USB descriptor may pass the lengthy mixer description with
+a lot of channels, and this may overflow the 32bit integer shift
+size, as caught by syzbot UBSAN test.  Although this won't cause any
+real trouble, it's better to address.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+This patch introduces a sanity check of the number of channels to bail
+out the parsing when too many channels are found.
 
-Fixes: 1676aba5ef7e ("net: ethernet: bgmac: device tree phy enablement")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241214014912.2810315-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/0000000000000adac5061d3c7355@google.com
+Link: https://patch.msgid.link/20240715123619.26612-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bgmac-platform.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bgmac-platform.c b/drivers/net/ethernet/broadcom/bgmac-platform.c
-index b4381cd41979..3f4e8bac40c1 100644
---- a/drivers/net/ethernet/broadcom/bgmac-platform.c
-+++ b/drivers/net/ethernet/broadcom/bgmac-platform.c
-@@ -171,6 +171,7 @@ static int platform_phy_connect(struct bgmac *bgmac)
- static int bgmac_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-+	struct device_node *phy_node;
- 	struct bgmac *bgmac;
- 	struct resource *regs;
- 	int ret;
-@@ -236,7 +237,9 @@ static int bgmac_probe(struct platform_device *pdev)
- 	bgmac->cco_ctl_maskset = platform_bgmac_cco_ctl_maskset;
- 	bgmac->get_bus_clock = platform_bgmac_get_bus_clock;
- 	bgmac->cmn_maskset32 = platform_bgmac_cmn_maskset32;
--	if (of_parse_phandle(np, "phy-handle", 0)) {
-+	phy_node = of_parse_phandle(np, "phy-handle", 0);
-+	if (phy_node) {
-+		of_node_put(phy_node);
- 		bgmac->phy_connect = platform_phy_connect;
- 	} else {
- 		bgmac->phy_connect = bgmac_phy_connect_direct;
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index b598f8f0d06e..8826a588f5ab 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1932,6 +1932,13 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
+ 		bmaControls = ftr->bmaControls;
+ 	}
+ 
++	if (channels > 32) {
++		usb_audio_info(state->chip,
++			       "usbmixer: too many channels (%d) in unit %d\n",
++			       channels, unitid);
++		return -EINVAL;
++	}
++
+ 	/* parse the source unit */
+ 	err = parse_audio_unit(state, hdr->bSourceID);
+ 	if (err < 0)
 -- 
 2.39.5
 
