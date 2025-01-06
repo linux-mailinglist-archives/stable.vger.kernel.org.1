@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-107698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F089FA02D33
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14364A02D3A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:02:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F8053A1D05
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F3333A455D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8A91DE4D2;
-	Mon,  6 Jan 2025 16:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAAB1DDC10;
+	Mon,  6 Jan 2025 16:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7MeEdkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hq0DzcqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E131D619D;
-	Mon,  6 Jan 2025 16:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAF6145A03;
+	Mon,  6 Jan 2025 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179255; cv=none; b=gIH5mFrUJHPm0fRkJMzBVECB1EakdgvaABu5I8tjfI8EC7BJM32mtaU5Kv+rY+BPBWHy4+Vh99DT+FqET8TDDbq+TASc3nRuyECof0LpY5M8R6uVXZlP9ildAS0zaUpIwuC5S0hY+7rtFhYha4D3R2cjOV/jzAHkldm3KKEsEGw=
+	t=1736179271; cv=none; b=HzomfEZ97KUs54wQ/evhv8zcXy+6/S+2SealPKWpgDonGsTBNS2mTLSqC7gEbFI7dlsfTNR51WHxEizT+HzKxnA0sK1wDJKsD6Nw1urCuykbMzMcFoHvcf6EUpLgksYq7VSLaP14NqUYH21aIc0g+9SXxh20jWjJ248z/S60Q1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179255; c=relaxed/simple;
-	bh=CN40k1Sx0WMdCmPtXW6nwPnzf8xu6d7wbxyZhlLDcTI=;
+	s=arc-20240116; t=1736179271; c=relaxed/simple;
+	bh=ZAGO//mKrutHZTyD2FD9td5XCTnZ5TIGvcOLFYIGsQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOIIP04+M9O8A/t4TEmjp9kFLEyWNBen5vNG0e2GMWEIIi0SKo1qTNtV/5tcuTkQAALgCwZ+BddORJlzUrpUeWHeusEKCQMNpQD1w9KYwBU8fQrIqZ1xCv5mLaizFZQ9rWhbkjo4gVC2FAosNMBADW3ukc+KXSlZlnLaNZLAAAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7MeEdkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30E2C4CED2;
-	Mon,  6 Jan 2025 16:00:54 +0000 (UTC)
+	 MIME-Version; b=CBu8NTRWzSlgTYRgXsUqQp9OLmPSg7j7B1thSW6zywFinhvC9P2rKavLg+QAYSyMF/wSwFV1GIYUNpUjF0Qn2sYBK7MMJ1ejk3thsovcj8x5S2llMMOfGzTa/NUAwP+dofC3LioCNO6rUkgQ4/ZU8r1yGVZMDunrkUKw2PDeTN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hq0DzcqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0D4C4CED2;
+	Mon,  6 Jan 2025 16:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179255;
-	bh=CN40k1Sx0WMdCmPtXW6nwPnzf8xu6d7wbxyZhlLDcTI=;
+	s=korg; t=1736179270;
+	bh=ZAGO//mKrutHZTyD2FD9td5XCTnZ5TIGvcOLFYIGsQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7MeEdkUFBb3G9R5bUWqtLVBn+ZiF6e8LTfLQya3RzMVnWeMvy69U1KpPo2OPJ/Bb
-	 NURCAaelRJFgT3ZsIeagRXgpo5Kdv+Ce+Pc9UKbpkwoiU5fJA0CivG8d8vqq5p1lop
-	 6gKvxSheoX/zhg2jfSCJgE1j5laLwqpVqk8E5MxY=
+	b=hq0DzcqZhqzhEGlKHFUdBdmfl4U45r7IubVO8K1QQbsPQheaI2tZzZks/8pAWMOIS
+	 dLQYuCKlpDwk8EdsU7obCaYqLmXEVPw7fOqjxwMtPguqsmz+qMQqPbeu93/O4N9N8a
+	 6DNdsLfRoJ9/foaRGbKp8r4ArLr7LE0WIsSQbIPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@unisoc.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jing Xia <jing.xia@unisoc.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	Brian Geffon <bgeffon@google.com>,
+	Benoit Lize <lizeb@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 50/93] virtio-blk: dont keep queue frozen during system suspend
-Date: Mon,  6 Jan 2025 16:17:26 +0100
-Message-ID: <20250106151130.591709064@linuxfoundation.org>
+Subject: [PATCH 5.4 51/93] epoll: Add synchronous wakeup support for ep_poll_callback
+Date: Mon,  6 Jan 2025 16:17:27 +0100
+Message-ID: <20250106151130.629862442@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
 References: <20250106151128.686130933@linuxfoundation.org>
@@ -72,70 +70,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
+[ Upstream commit 900bbaae67e980945dec74d36f8afe0de7556d5a ]
 
-Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
-deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
-PM callbacks. And the motivation is to drain inflight IOs before suspending.
+Now, the epoll only use wake_up() interface to wake up task.
+However, sometimes, there are epoll users which want to use
+the synchronous wakeup flag to hint the scheduler, such as
+Android binder driver.
+So add a wake_up_sync() define, and use the wake_up_sync()
+when the sync is true in ep_poll_callback().
 
-block layer's queue freeze looks very handy, but it is also easy to cause
-deadlock, such as, any attempt to call into bio_queue_enter() may run into
-deadlock if the queue is frozen in current context. There are all kinds
-of ->suspend() called in suspend context, so keeping queue frozen in the
-whole suspend context isn't one good idea. And Marek reported lockdep
-warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
-
-[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
-
-Given the motivation is to drain in-flight IOs, it can be done by calling
-freeze & unfreeze, meantime restore to previous behavior by keeping queue
-quiesced during suspend.
-
-Cc: Yi Sun <yi.sun@unisoc.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: virtualization@lists.linux.dev
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Co-developed-by: Jing Xia <jing.xia@unisoc.com>
+Signed-off-by: Jing Xia <jing.xia@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Link: https://lore.kernel.org/r/20240426080548.8203-1-xuewen.yan@unisoc.com
+Tested-by: Brian Geffon <bgeffon@google.com>
+Reviewed-by: Brian Geffon <bgeffon@google.com>
+Reported-by: Benoit Lize <lizeb@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Redefine wake_up_sync(x) as __wake_up_sync(x, TASK_NORMAL, 1) to
+  make it work on 5.4.y ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/eventpoll.c       | 5 ++++-
+ include/linux/wait.h | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 3afc07b59477..b1c5bcae9b31 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -1062,9 +1062,12 @@ static void virtblk_remove(struct virtio_device *vdev)
- static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
-+	struct request_queue *q = vblk->disk->queue;
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 8c0e94183186..569bfff280e4 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -1273,7 +1273,10 @@ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, v
+ 				break;
+ 			}
+ 		}
+-		wake_up(&ep->wq);
++		if (sync)
++			wake_up_sync(&ep->wq);
++		else
++			wake_up(&ep->wq);
+ 	}
+ 	if (waitqueue_active(&ep->poll_wait))
+ 		pwake++;
+diff --git a/include/linux/wait.h b/include/linux/wait.h
+index 03bff85e365f..5b65f720261a 100644
+--- a/include/linux/wait.h
++++ b/include/linux/wait.h
+@@ -213,6 +213,7 @@ void __wake_up_pollfree(struct wait_queue_head *wq_head);
+ #define wake_up_all(x)			__wake_up(x, TASK_NORMAL, 0, NULL)
+ #define wake_up_locked(x)		__wake_up_locked((x), TASK_NORMAL, 1)
+ #define wake_up_all_locked(x)		__wake_up_locked((x), TASK_NORMAL, 0)
++#define wake_up_sync(x)			__wake_up_sync(x, TASK_NORMAL, 1)
  
- 	/* Ensure no requests in virtqueues before deleting vqs. */
--	blk_mq_freeze_queue(vblk->disk->queue);
-+	blk_mq_freeze_queue(q);
-+	blk_mq_quiesce_queue_nowait(q);
-+	blk_mq_unfreeze_queue(q);
- 
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
-@@ -1088,8 +1091,8 @@ static int virtblk_restore(struct virtio_device *vdev)
- 		return ret;
- 
- 	virtio_device_ready(vdev);
-+	blk_mq_unquiesce_queue(vblk->disk->queue);
- 
--	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
+ #define wake_up_interruptible(x)	__wake_up(x, TASK_INTERRUPTIBLE, 1, NULL)
+ #define wake_up_interruptible_nr(x, nr)	__wake_up(x, TASK_INTERRUPTIBLE, nr, NULL)
 -- 
 2.39.5
 
