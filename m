@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-107584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E6DA02CBE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788B2A02B46
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD5323A8E2D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D84E518859B4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647C113C3D6;
-	Mon,  6 Jan 2025 15:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7A3153814;
+	Mon,  6 Jan 2025 15:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vblRen39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LctpTZsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23214182D2;
-	Mon,  6 Jan 2025 15:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8346D158525;
+	Mon,  6 Jan 2025 15:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178907; cv=none; b=cRucFf/SckCxycTRzf2hEjg5aqDdoBe2cdLDZVe6WYuTxPG6hpvgCfiRb0Jbhd/8q07XZViLTrchq8ffvKfIkNauDkyNJYahWYaCLdynjna8qigqGhHwEAg8puQ15BDGG8IR/LlSGDpanJw1VLOgcFyp9FUABUvZHoJ5ZUWhPuQ=
+	t=1736178097; cv=none; b=TAiN/ZpB0KUJGdkCv5anByWpe5EnYYOoMTXLe/vy4tTZMxUJtQL/yeTL2NqOyVG50RvzuZX6XJ055TbdJXd2MlPbRv6BAzd74jWCI5AwD6m6aE2Rdo3SOKXc/CGum/PSfbPROM9IF6NIEwtFu5Xtx5qmnecX/70xhwYXFaSJAKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178907; c=relaxed/simple;
-	bh=dDECWOtUJ8RklySRofhprzKyLDVoJA7QKtNDWtb1KO8=;
+	s=arc-20240116; t=1736178097; c=relaxed/simple;
+	bh=eDbAv4Rcyu/prvxe4brltpbijkTobDBq+NoBP7wTkJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0Q6A1uSD6nSQ7snl0mmdaEu+yCYo8r5JHUQNJGC4C8aIuMssp5BDmB+XddUB+dRmnAEUhZe5pNHMHy0gZxr7amnXt/qloILUPrr+6G+dGDJj65bRpFgWyh4Y4KUSCs+pjJJ8PgFck/OgoYDDEMyRIBq1So1AndEXEAwBRF3MCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vblRen39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83C9C4CED2;
-	Mon,  6 Jan 2025 15:55:06 +0000 (UTC)
+	 MIME-Version; b=NeOLhKeLSKZ/lmcpdDcXvL55Op6+FlAT4oQs5dbS3WIBoQOMoV/M6Qc+tLi+UJGhNeRZyr3jqVUc3o52BbMJkcUxYWJktKU/IxSkm/A2GMAPgUTrlQPcBksun7sXqrMhtvJhPwpcYYnN0h2/THzJ1Wa1Z62+CclAirr9uRjfVFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LctpTZsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72FFC4CED2;
+	Mon,  6 Jan 2025 15:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178907;
-	bh=dDECWOtUJ8RklySRofhprzKyLDVoJA7QKtNDWtb1KO8=;
+	s=korg; t=1736178097;
+	bh=eDbAv4Rcyu/prvxe4brltpbijkTobDBq+NoBP7wTkJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vblRen39qEpXbXeiTxdaGl0NV5vx8ZydLmEZHyeLBaME8lVa931gQ6lIopIHZZ4JI
-	 jei4ZwAunDPzA0/PZhzeayIJCzYnTiB+5kobgM2j7LFhKm7t5MzOuoU3ZKyp/Is45S
-	 Vk5OirKUxYyfy7KQVSOp2AyuFtKaUAO0g2J6prFg=
+	b=LctpTZsFb8iX7THqnVMwJKTHWA/5rOMdbaClxr6QQBp/57hqTtNzPW5rGO6q9jsqg
+	 pPm7kzulXGSz9+BCvXJw47ecEIHPboy9WnW0ZrqT/a5OxfywbY7X55SffcnBf6iFlV
+	 BpBT0G7aUM+kh0jSg6qqIiGRTV7D/jy5E87BrSKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/168] net: fix memory leak in tcp_conn_request()
+	Liu Shixin <liushixin2@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Ken Chen <kenneth.w.chen@intel.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nanyong Sun <sunnanyong@huawei.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 153/156] mm: hugetlb: independent PMD page table shared count
 Date: Mon,  6 Jan 2025 16:17:19 +0100
-Message-ID: <20250106151143.387899934@linuxfoundation.org>
+Message-ID: <20250106151147.493335782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +66,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Liu Shixin <liushixin2@huawei.com>
 
-[ Upstream commit 4f4aa4aa28142d53f8b06585c478476cfe325cfc ]
+commit 59d9094df3d79443937add8700b2ef1a866b1081 upstream.
 
-If inet_csk_reqsk_queue_hash_add() return false, tcp_conn_request() will
-return without free the dst memory, which allocated in af_ops->route_req.
+The folio refcount may be increased unexpectly through try_get_folio() by
+caller such as split_huge_pages.  In huge_pmd_unshare(), we use refcount
+to check whether a pmd page table is shared.  The check is incorrect if
+the refcount is increased by the above caller, and this can cause the page
+table leaked:
 
-Here is the kmemleak stack:
+ BUG: Bad page state in process sh  pfn:109324
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x66 pfn:0x109324
+ flags: 0x17ffff800000000(node=0|zone=2|lastcpupid=0xfffff)
+ page_type: f2(table)
+ raw: 017ffff800000000 0000000000000000 0000000000000000 0000000000000000
+ raw: 0000000000000066 0000000000000000 00000000f2000000 0000000000000000
+ page dumped because: nonzero mapcount
+ ...
+ CPU: 31 UID: 0 PID: 7515 Comm: sh Kdump: loaded Tainted: G    B              6.13.0-rc2master+ #7
+ Tainted: [B]=BAD_PAGE
+ Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+ Call trace:
+  show_stack+0x20/0x38 (C)
+  dump_stack_lvl+0x80/0xf8
+  dump_stack+0x18/0x28
+  bad_page+0x8c/0x130
+  free_page_is_bad_report+0xa4/0xb0
+  free_unref_page+0x3cc/0x620
+  __folio_put+0xf4/0x158
+  split_huge_pages_all+0x1e0/0x3e8
+  split_huge_pages_write+0x25c/0x2d8
+  full_proxy_write+0x64/0xd8
+  vfs_write+0xcc/0x280
+  ksys_write+0x70/0x110
+  __arm64_sys_write+0x24/0x38
+  invoke_syscall+0x50/0x120
+  el0_svc_common.constprop.0+0xc8/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x34/0x128
+  el0t_64_sync_handler+0xc8/0xd0
+  el0t_64_sync+0x190/0x198
 
-unreferenced object 0xffff8881198631c0 (size 240):
-  comm "softirq", pid 0, jiffies 4299266571 (age 1802.392s)
-  hex dump (first 32 bytes):
-    00 10 9b 03 81 88 ff ff 80 98 da bc ff ff ff ff  ................
-    81 55 18 bb ff ff ff ff 00 00 00 00 00 00 00 00  .U..............
-  backtrace:
-    [<ffffffffb93e8d4c>] kmem_cache_alloc+0x60c/0xa80
-    [<ffffffffba11b4c5>] dst_alloc+0x55/0x250
-    [<ffffffffba227bf6>] rt_dst_alloc+0x46/0x1d0
-    [<ffffffffba23050a>] __mkroute_output+0x29a/0xa50
-    [<ffffffffba23456b>] ip_route_output_key_hash+0x10b/0x240
-    [<ffffffffba2346bd>] ip_route_output_flow+0x1d/0x90
-    [<ffffffffba254855>] inet_csk_route_req+0x2c5/0x500
-    [<ffffffffba26b331>] tcp_conn_request+0x691/0x12c0
-    [<ffffffffba27bd08>] tcp_rcv_state_process+0x3c8/0x11b0
-    [<ffffffffba2965c6>] tcp_v4_do_rcv+0x156/0x3b0
-    [<ffffffffba299c98>] tcp_v4_rcv+0x1cf8/0x1d80
-    [<ffffffffba239656>] ip_protocol_deliver_rcu+0xf6/0x360
-    [<ffffffffba2399a6>] ip_local_deliver_finish+0xe6/0x1e0
-    [<ffffffffba239b8e>] ip_local_deliver+0xee/0x360
-    [<ffffffffba239ead>] ip_rcv+0xad/0x2f0
-    [<ffffffffba110943>] __netif_receive_skb_one_core+0x123/0x140
+The issue may be triggered by damon, offline_page, page_idle, etc, which
+will increase the refcount of page table.
 
-Call dst_release() to free the dst memory when
-inet_csk_reqsk_queue_hash_add() return false in tcp_conn_request().
+1. The page table itself will be discarded after reporting the
+   "nonzero mapcount".
 
-Fixes: ff46e3b44219 ("Fix race for duplicate reqsk on identical SYN")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20241219072859.3783576-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2. The HugeTLB page mapped by the page table miss freeing since we
+   treat the page table as shared and a shared page table will not be
+   unmapped.
+
+Fix it by introducing independent PMD page table shared count.  As
+described by comment, pt_index/pt_mm/pt_frag_refcount are used for s390
+gmap, x86 pgds and powerpc, pt_share_count is used for x86/arm64/riscv
+pmds, so we can reuse the field as pt_share_count.
+
+Link: https://lkml.kernel.org/r/20241216071147.3984217-1-liushixin2@huawei.com
+Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Ken Chen <kenneth.w.chen@intel.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/mm.h       |    1 +
+ include/linux/mm_types.h |   30 ++++++++++++++++++++++++++++++
+ mm/hugetlb.c             |   16 +++++++---------
+ 3 files changed, 38 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 3e7533f64512..6bd28ac949b4 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7059,6 +7059,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
- 			if (unlikely(!inet_csk_reqsk_queue_hash_add(sk, req,
- 								    req->timeout))) {
- 				reqsk_free(req);
-+				dst_release(dst);
- 				return 0;
- 			}
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3100,6 +3100,7 @@ static inline bool pagetable_pmd_ctor(st
+ 	if (!pmd_ptlock_init(ptdesc))
+ 		return false;
+ 	__folio_set_pgtable(folio);
++	ptdesc_pmd_pts_init(ptdesc);
+ 	lruvec_stat_add_folio(folio, NR_PAGETABLE);
+ 	return true;
+ }
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -445,6 +445,7 @@ FOLIO_MATCH(compound_head, _head_2a);
+  * @pt_index:         Used for s390 gmap.
+  * @pt_mm:            Used for x86 pgds.
+  * @pt_frag_refcount: For fragmented page table tracking. Powerpc only.
++ * @pt_share_count:   Used for HugeTLB PMD page table share count.
+  * @_pt_pad_2:        Padding to ensure proper alignment.
+  * @ptl:              Lock for the page table.
+  * @__page_type:      Same as page->page_type. Unused for page tables.
+@@ -471,6 +472,9 @@ struct ptdesc {
+ 		pgoff_t pt_index;
+ 		struct mm_struct *pt_mm;
+ 		atomic_t pt_frag_refcount;
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++		atomic_t pt_share_count;
++#endif
+ 	};
  
--- 
-2.39.5
-
+ 	union {
+@@ -516,6 +520,32 @@ static_assert(sizeof(struct ptdesc) <= s
+ 	const struct page *:		(const struct ptdesc *)(p),	\
+ 	struct page *:			(struct ptdesc *)(p)))
+ 
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
++{
++	atomic_set(&ptdesc->pt_share_count, 0);
++}
++
++static inline void ptdesc_pmd_pts_inc(struct ptdesc *ptdesc)
++{
++	atomic_inc(&ptdesc->pt_share_count);
++}
++
++static inline void ptdesc_pmd_pts_dec(struct ptdesc *ptdesc)
++{
++	atomic_dec(&ptdesc->pt_share_count);
++}
++
++static inline int ptdesc_pmd_pts_count(struct ptdesc *ptdesc)
++{
++	return atomic_read(&ptdesc->pt_share_count);
++}
++#else
++static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
++{
++}
++#endif
++
+ /*
+  * Used for sizing the vmemmap region on some architectures
+  */
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7200,7 +7200,7 @@ pte_t *huge_pmd_share(struct mm_struct *
+ 			spte = hugetlb_walk(svma, saddr,
+ 					    vma_mmu_pagesize(svma));
+ 			if (spte) {
+-				get_page(virt_to_page(spte));
++				ptdesc_pmd_pts_inc(virt_to_ptdesc(spte));
+ 				break;
+ 			}
+ 		}
+@@ -7215,7 +7215,7 @@ pte_t *huge_pmd_share(struct mm_struct *
+ 				(pmd_t *)((unsigned long)spte & PAGE_MASK));
+ 		mm_inc_nr_pmds(mm);
+ 	} else {
+-		put_page(virt_to_page(spte));
++		ptdesc_pmd_pts_dec(virt_to_ptdesc(spte));
+ 	}
+ 	spin_unlock(&mm->page_table_lock);
+ out:
+@@ -7227,10 +7227,6 @@ out:
+ /*
+  * unmap huge page backed by shared pte.
+  *
+- * Hugetlb pte page is ref counted at the time of mapping.  If pte is shared
+- * indicated by page_count > 1, unmap is achieved by clearing pud and
+- * decrementing the ref count. If count == 1, the pte page is not shared.
+- *
+  * Called with page table lock held.
+  *
+  * returns: 1 successfully unmapped a shared pte page
+@@ -7239,18 +7235,20 @@ out:
+ int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
+ 					unsigned long addr, pte_t *ptep)
+ {
++	unsigned long sz = huge_page_size(hstate_vma(vma));
+ 	pgd_t *pgd = pgd_offset(mm, addr);
+ 	p4d_t *p4d = p4d_offset(pgd, addr);
+ 	pud_t *pud = pud_offset(p4d, addr);
+ 
+ 	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+ 	hugetlb_vma_assert_locked(vma);
+-	BUG_ON(page_count(virt_to_page(ptep)) == 0);
+-	if (page_count(virt_to_page(ptep)) == 1)
++	if (sz != PMD_SIZE)
++		return 0;
++	if (!ptdesc_pmd_pts_count(virt_to_ptdesc(ptep)))
+ 		return 0;
+ 
+ 	pud_clear(pud);
+-	put_page(virt_to_page(ptep));
++	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
+ 	mm_dec_nr_pmds(mm);
+ 	return 1;
+ }
 
 
 
