@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79715A02AB3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E4FA028FC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B5871881574
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DAEE188171F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C80D86332;
-	Mon,  6 Jan 2025 15:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AA713D893;
+	Mon,  6 Jan 2025 15:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0CMw9KB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wESzf3i/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4981573451;
-	Mon,  6 Jan 2025 15:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA00136326;
+	Mon,  6 Jan 2025 15:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177787; cv=none; b=hWQJs//0zAN/UaJEYoVIjoGBM4WCwSI6/6UVe3Zah/xJ+dnd/cWJqaadOt+5k34zhCsREfj0FbwKbRWcBXlu8taAbLm4vkVokrYFj7ztHsS4X1bNdqUeuLdo//9U6cJHnh/SfKMexiMpAm+a9szLxmPgxf4qTY4/r88XC8PTa18=
+	t=1736176724; cv=none; b=ZnrX7iryKOEvxcuiXHTSCen79llszFA9pmQEoMuxaG70stHAuTYGRPWkq2GeUZfXZDvJaFO7XXh+L6nzTfGozf/NWTb90vErBSqWDQTfqUz5HZGQEbIggMr7bGjx8XcQuCJ23h51i0B3PNzQ54gYekccW9mHeeYFqM10Kt0D2eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177787; c=relaxed/simple;
-	bh=XS1jucNtSn5WkkIxXQns7KSeIsAe359VHQBWY72Vw04=;
+	s=arc-20240116; t=1736176724; c=relaxed/simple;
+	bh=le3Y3HjTJaIk0Ycj7PF6kesix4CJ2/lGcImpxyrHe5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyuGYLieMRicvRgiJVLGbVaZ9GkKL2bXF82oKj3YOVlaMQqZTXR85tJU6y6UKARzEvDJOq01+117pXVGCe5aXcoQ/yJyzqIkk9xaOwDhbpfS0okZeGY6P5TWt2PIXRfKhDR4ceQgZuhRIgepKrFasNWoJEvqxctE7UNVF29u3UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0CMw9KB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596DFC4CED2;
-	Mon,  6 Jan 2025 15:36:26 +0000 (UTC)
+	 MIME-Version; b=Wq2iqyVE31tULEMocIULycOVl9JkcqQIrF313Vb5FXVt26uNH+Ta0Xh1dR5LyZGqIKixeSA66B6iDXme4hICKGXdTfPrhRdU8k0rR9E2iCFWoHlbZMS5NRP73FFuL1HSDV41gbWaUqiTO45LcFOq2IIufyqHHugfoCHEzmIEfTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wESzf3i/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524ABC4CED2;
+	Mon,  6 Jan 2025 15:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177786;
-	bh=XS1jucNtSn5WkkIxXQns7KSeIsAe359VHQBWY72Vw04=;
+	s=korg; t=1736176723;
+	bh=le3Y3HjTJaIk0Ycj7PF6kesix4CJ2/lGcImpxyrHe5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0CMw9KBzaoEXuiGx3hG3kzet4jvXdz/AN6dY8QUIUV7MwpikskkolrL6QycQb2Xd
-	 xDLLAE1lYMTIIep+U2807F4wyC9L6vxaJ8yTpDf9O9//YviXsSiBX4wx6kVggNa8JS
-	 11cx2sCg8WP3z7w0MGEY52NPNkXtKdQ9yWeeQWvI=
+	b=wESzf3i/RsyV00rcHGEQV+p3V25jBfeRKr2wDlM8WfutNKkli+pvHDhkKAI9WY/Xb
+	 lQsUDeJAV4hnCac8wUQ8ibtJxMULRYXao+fi051Z2mrrCme1wfGC4qgHWeX0nSGUpo
+	 XGB6MNRQpoLfazPDfmlbiCrBZO+46V514dUcmjvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/156] netfilter: nft_set_hash: unaligned atomic read on struct nft_set_ext
+Subject: [PATCH 6.1 11/81] net: mctp: handle skb cleanup on sock_queue failures
 Date: Mon,  6 Jan 2025 16:15:43 +0100
-Message-ID: <20250106151143.883565020@linuxfoundation.org>
+Message-ID: <20250106151129.865644705@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 542ed8145e6f9392e3d0a86a0e9027d2ffd183e4 ]
+[ Upstream commit ce1219c3f76bb131d095e90521506d3c6ccfa086 ]
 
-Access to genmask field in struct nft_set_ext results in unaligned
-atomic read:
+Currently, we don't use the return value from sock_queue_rcv_skb, which
+means we may leak skbs if a message is not successfully queued to a
+socket.
 
-[   72.130109] Unable to handle kernel paging request at virtual address ffff0000c2bb708c
-[   72.131036] Mem abort info:
-[   72.131213]   ESR = 0x0000000096000021
-[   72.131446]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   72.132209]   SET = 0, FnV = 0
-[   72.133216]   EA = 0, S1PTW = 0
-[   72.134080]   FSC = 0x21: alignment fault
-[   72.135593] Data abort info:
-[   72.137194]   ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
-[   72.142351]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   72.145989]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   72.150115] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000237d27000
-[   72.154893] [ffff0000c2bb708c] pgd=0000000000000000, p4d=180000023ffff403, pud=180000023f84b403, pmd=180000023f835403,
-+pte=0068000102bb7707
-[   72.163021] Internal error: Oops: 0000000096000021 [#1] SMP
-[...]
-[   72.170041] CPU: 7 UID: 0 PID: 54 Comm: kworker/7:0 Tainted: G            E      6.13.0-rc3+ #2
-[   72.170509] Tainted: [E]=UNSIGNED_MODULE
-[   72.170720] Hardware name: QEMU QEMU Virtual Machine, BIOS edk2-stable202302-for-qemu 03/01/2023
-[   72.171192] Workqueue: events_power_efficient nft_rhash_gc [nf_tables]
-[   72.171552] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   72.171915] pc : nft_rhash_gc+0x200/0x2d8 [nf_tables]
-[   72.172166] lr : nft_rhash_gc+0x128/0x2d8 [nf_tables]
-[   72.172546] sp : ffff800081f2bce0
-[   72.172724] x29: ffff800081f2bd40 x28: ffff0000c2bb708c x27: 0000000000000038
-[   72.173078] x26: ffff0000c6780ef0 x25: ffff0000c643df00 x24: ffff0000c6778f78
-[   72.173431] x23: 000000000000001a x22: ffff0000c4b1f000 x21: ffff0000c6780f78
-[   72.173782] x20: ffff0000c2bb70dc x19: ffff0000c2bb7080 x18: 0000000000000000
-[   72.174135] x17: ffff0000c0a4e1c0 x16: 0000000000003000 x15: 0000ac26d173b978
-[   72.174485] x14: ffffffffffffffff x13: 0000000000000030 x12: ffff0000c6780ef0
-[   72.174841] x11: 0000000000000000 x10: ffff800081f2bcf8 x9 : ffff0000c3000000
-[   72.175193] x8 : 00000000000004be x7 : 0000000000000000 x6 : 0000000000000000
-[   72.175544] x5 : 0000000000000040 x4 : ffff0000c3000010 x3 : 0000000000000000
-[   72.175871] x2 : 0000000000003a98 x1 : ffff0000c2bb708c x0 : 0000000000000004
-[   72.176207] Call trace:
-[   72.176316]  nft_rhash_gc+0x200/0x2d8 [nf_tables] (P)
-[   72.176653]  process_one_work+0x178/0x3d0
-[   72.176831]  worker_thread+0x200/0x3f0
-[   72.176995]  kthread+0xe8/0xf8
-[   72.177130]  ret_from_fork+0x10/0x20
-[   72.177289] Code: 54fff984 d503201f d2800080 91003261 (f820303f)
-[   72.177557] ---[ end trace 0000000000000000 ]---
+Instead, ensure that we're freeing the skb where the sock hasn't
+otherwise taken ownership of the skb by adding checks on the
+sock_queue_rcv_skb() to invoke a kfree on failure.
 
-Align struct nft_set_ext to word size to address this and
-documentation it.
+In doing so, rather than using the 'rc' value to trigger the
+kfree_skb(), use the skb pointer itself, which is more explicit.
 
-pahole reports that this increases the size of elements for rhash and
-pipapo in 8 bytes on x86_64.
+Also, add a kunit test for the sock delivery failure cases.
 
-Fixes: 7ffc7481153b ("netfilter: nft_set_hash: skip duplicated elements pending gc run")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 4a992bbd3650 ("mctp: Implement message fragmentation & reassembly")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20241218-mctp-next-v2-1-1c1729645eaa@codeconstruct.com.au
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/mctp/route.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 91ae20cb7648..471c353d32a4 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -733,15 +733,18 @@ struct nft_set_ext_tmpl {
- /**
-  *	struct nft_set_ext - set extensions
-  *
-- *	@genmask: generation mask
-+ *	@genmask: generation mask, but also flags (see NFT_SET_ELEM_DEAD_BIT)
-  *	@offset: offsets of individual extension types
-  *	@data: beginning of extension data
-+ *
-+ *	This structure must be aligned to word size, otherwise atomic bitops
-+ *	on genmask field can cause alignment failure on some archs.
-  */
- struct nft_set_ext {
- 	u8	genmask;
- 	u8	offset[NFT_SET_EXT_NUM];
- 	char	data[];
--};
-+} __aligned(BITS_PER_LONG / 8);
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index ea7cb9973128..e72cdd4ce588 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -334,8 +334,13 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 	msk = NULL;
+ 	rc = -EINVAL;
  
- static inline void nft_set_ext_prepare(struct nft_set_ext_tmpl *tmpl)
- {
+-	/* we may be receiving a locally-routed packet; drop source sk
+-	 * accounting
++	/* We may be receiving a locally-routed packet; drop source sk
++	 * accounting.
++	 *
++	 * From here, we will either queue the skb - either to a frag_queue, or
++	 * to a receiving socket. When that succeeds, we clear the skb pointer;
++	 * a non-NULL skb on exit will be otherwise unowned, and hence
++	 * kfree_skb()-ed.
+ 	 */
+ 	skb_orphan(skb);
+ 
+@@ -389,7 +394,9 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 		 * pending key.
+ 		 */
+ 		if (flags & MCTP_HDR_FLAG_EOM) {
+-			sock_queue_rcv_skb(&msk->sk, skb);
++			rc = sock_queue_rcv_skb(&msk->sk, skb);
++			if (!rc)
++				skb = NULL;
+ 			if (key) {
+ 				/* we've hit a pending reassembly; not much we
+ 				 * can do but drop it
+@@ -398,7 +405,6 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 						   MCTP_TRACE_KEY_REPLIED);
+ 				key = NULL;
+ 			}
+-			rc = 0;
+ 			goto out_unlock;
+ 		}
+ 
+@@ -425,8 +431,10 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 			 * this function.
+ 			 */
+ 			rc = mctp_key_add(key, msk);
+-			if (!rc)
++			if (!rc) {
+ 				trace_mctp_key_acquire(key);
++				skb = NULL;
++			}
+ 
+ 			/* we don't need to release key->lock on exit, so
+ 			 * clean up here and suppress the unlock via
+@@ -444,6 +452,8 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 				key = NULL;
+ 			} else {
+ 				rc = mctp_frag_queue(key, skb);
++				if (!rc)
++					skb = NULL;
+ 			}
+ 		}
+ 
+@@ -458,12 +468,19 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 		else
+ 			rc = mctp_frag_queue(key, skb);
+ 
++		if (rc)
++			goto out_unlock;
++
++		/* we've queued; the queue owns the skb now */
++		skb = NULL;
++
+ 		/* end of message? deliver to socket, and we're done with
+ 		 * the reassembly/response key
+ 		 */
+-		if (!rc && flags & MCTP_HDR_FLAG_EOM) {
+-			sock_queue_rcv_skb(key->sk, key->reasm_head);
+-			key->reasm_head = NULL;
++		if (flags & MCTP_HDR_FLAG_EOM) {
++			rc = sock_queue_rcv_skb(key->sk, key->reasm_head);
++			if (!rc)
++				key->reasm_head = NULL;
+ 			__mctp_key_done_in(key, net, f, MCTP_TRACE_KEY_REPLIED);
+ 			key = NULL;
+ 		}
+@@ -482,8 +499,7 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 	if (any_key)
+ 		mctp_key_unref(any_key);
+ out:
+-	if (rc)
+-		kfree_skb(skb);
++	kfree_skb(skb);
+ 	return rc;
+ }
+ 
 -- 
 2.39.5
 
