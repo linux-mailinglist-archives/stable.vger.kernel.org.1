@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC6E4A02C6C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D1EA02B18
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 130C07A0484
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F120A1882C08
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CAC158525;
-	Mon,  6 Jan 2025 15:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14E7156886;
+	Mon,  6 Jan 2025 15:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zWqwC26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqBzkjn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B9D156237;
-	Mon,  6 Jan 2025 15:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFBD155352;
+	Mon,  6 Jan 2025 15:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178847; cv=none; b=ouPoTSKX1mEIIt4oCNwWIWxR49P4jthz0fZemsS7qmEHwfDgauMMCnnw2Yf+Kn6Qz9DxSWv20lOXAt20nr6rt8+no+gkXT5pGN1fWFCXXZPUTcKJmkd1C594CHxlOLgW0xCIpopuMRc1QTE/m7szWf6mEbh+XXqiyg8UsWKM8tY=
+	t=1736178022; cv=none; b=RZRALO93Gju/1fxRnn9UDpRsQbdN7rlHr51jEk0r6SyQYqPvmdYfl0MNZ43wJ4HcF3we8eWMDcIYddvM6aWzsP8dqs/T3xYrSutiWv/5vY9cJtduXLd9O+zeDRvWO37t9NqrBe4p84xme6x1VK3k0iMkD7zT5DM9utDAJynnBiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178847; c=relaxed/simple;
-	bh=y4zQQlN00NQoaXa6qfbB/EIwxqaNIR5XMiJeF2/MoyM=;
+	s=arc-20240116; t=1736178022; c=relaxed/simple;
+	bh=YEhG7tSAAxB+1mT6werUkckV6UtZcj/xka7JawLp+1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7cZk/rSmvyHS7eLdmRLkKnA2O065hNSUerPyiYInUrY24db6qbSnhieBJhwrcaggus8Ezyp28uHgRQoGNIxgJITpN22pMIzXdz6y2Z2ByITKRCwHDFCz94DA7qmaLHrN9SXL70rvrCLRmpne1bdEbSy7Zw8TFq5dGUMFtjCkN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zWqwC26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA4FC4CED2;
-	Mon,  6 Jan 2025 15:54:06 +0000 (UTC)
+	 MIME-Version; b=rsyID4VWGKN5ECANtbwHAj0FTOBo/oqwfRW7EQE0BX9xdk5mPX4rKECIoY0fULMaoUE0oNmgAiJBMR77FwDJ5QLelhhifNnDFFpBuBCqIB87UAXRYGp68MsdHX5TyNIE/rHE/Hz6iDl5DAwXMKKPNDUZsNpO8Q7ES8ZIPVT1SDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqBzkjn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D403C4CED2;
+	Mon,  6 Jan 2025 15:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178847;
-	bh=y4zQQlN00NQoaXa6qfbB/EIwxqaNIR5XMiJeF2/MoyM=;
+	s=korg; t=1736178021;
+	bh=YEhG7tSAAxB+1mT6werUkckV6UtZcj/xka7JawLp+1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zWqwC269dIOoT/hZnRvlFNxzsuLdY/tWuwLKWNgWR/DaA3da8g4iL52z4JZD9qY0
-	 G0M4jGITyrNi+cNpwGafIpFIN2rf7ZCcRKuB01k2R252SP83OXhP8nEYPeqL3s7mis
-	 9pOkW5CwCAiZ1Ss3UiMpNx6CwBcQb1t0AuOFu8AI=
+	b=MqBzkjn3sYKWxYSHIpqobnlPzrmybtWRQ6he2BRZm4hRTGjfLYSQ+GogEJqQjvxkQ
+	 U1xV0NjOgOcTtUR77v3BQckA1+3j+d4ohT6UFXW57tvOxLlCG2QJPUn48WBG8jf/hy
+	 8rq4xA/LilTrr1EAnDwJd1hRHv8uXUmNEfWoIMc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/168] usb: xhci: Limit Stop Endpoint retries
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 135/156] wifi: iwlwifi: mvm: Fix __counted_by usage in cfg80211_wowlan_nd_*
 Date: Mon,  6 Jan 2025 16:17:01 +0100
-Message-ID: <20250106151142.722095819@linuxfoundation.org>
+Message-ID: <20250106151146.817477004@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,154 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 42b7581376015c1bbcbe5831f043cd0ac119d028 ]
+commit cc0c53f4fac562efb3aca2bc493515e77642ae33 upstream.
 
-Some host controllers fail to atomically transition an endpoint to the
-Running state on a doorbell ring and enter a hidden "Restarting" state,
-which looks very much like Stopped, with the important difference that
-it will spontaneously transition to Running anytime soon.
+Both struct cfg80211_wowlan_nd_match and struct cfg80211_wowlan_nd_info
+pre-allocate space for channels and matches, but then may end up using
+fewer that the full allocation. Shrink the associated counter
+(n_channels and n_matches) after counting the results. This avoids
+compile-time (and run-time) warnings from __counted_by. (The counter
+member needs to be updated _before_ accessing the array index.)
 
-A Stop Endpoint command queued in the Restarting state typically fails
-with Context State Error and the completion handler sees the Endpoint
-Context State as either still Stopped or already Running. Even a case
-of Halted was observed, when an error occurred right after the restart.
+Seen with coming GCC 15:
 
-The Halted state is already recovered from by resetting the endpoint.
-The Running state is handled by retrying Stop Endpoint.
+drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function 'iwl_mvm_query_set_freqs':
+drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2877:66: warning: operation on 'match->n_channels' may be undefined [-Wsequence-point]
+ 2877 |                                 match->channels[match->n_channels++] =
+      |                                                 ~~~~~~~~~~~~~~~~~^~
+drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2885:66: warning: operation on 'match->n_channels' may be undefined [-Wsequence-point]
+ 2885 |                                 match->channels[match->n_channels++] =
+      |                                                 ~~~~~~~~~~~~~~~~~^~
+drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function 'iwl_mvm_query_netdetect_reasons':
+drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2982:58: warning: operation on 'net_detect->n_matches' may be undefined [-Wsequence-point]
+ 2982 |                 net_detect->matches[net_detect->n_matches++] = match;
+      |                                     ~~~~~~~~~~~~~~~~~~~~~^~
 
-The Stopped state was recognized as a problem on NEC controllers and
-worked around also by retrying, because the endpoint soon restarts and
-then stops for good. But there is a risk: the command may fail if the
-endpoint is "stopped for good" already, and retries will fail forever.
-
-The possibility of this was not realized at the time, but a number of
-cases were discovered later and reproduced. Some proved difficult to
-deal with, and it is outright impossible to predict if an endpoint may
-fail to ever start at all due to a hardware bug. One such bug (albeit
-on ASM3142, not on NEC) was found to be reliably triggered simply by
-toggling an AX88179 NIC up/down in a tight loop for a few seconds.
-
-An endless retries storm is quite nasty. Besides putting needless load
-on the xHC and CPU, it causes URBs never to be given back, paralyzing
-the device and connection/disconnection logic for the whole bus if the
-device is unplugged. User processes waiting for URBs become unkillable,
-drivers and kworker threads lock up and xhci_hcd cannot be reloaded.
-
-For peace of mind, impose a timeout on Stop Endpoint retries in this
-case. If they don't succeed in 100ms, consider the endpoint stopped
-permanently for some reason and just give back the unlinked URBs. This
-failure case is rare already and work is under way to make it rarer.
-
-Start this work today by also handling one simple case of race with
-Reset Endpoint, because it costs just two lines to implement.
-
-Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
-CC: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-32-mathias.nyman@linux.intel.com
+Cc: stable@vger.kernel.org
+Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://patch.msgid.link/20240619211233.work.355-kees@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: e21ebe51af68 ("xhci: Turn NEC specific quirk for handling Stop Endpoint errors generic")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 28 ++++++++++++++++++++++++----
- drivers/usb/host/xhci.c      |  2 ++
- drivers/usb/host/xhci.h      |  1 +
- 3 files changed, 27 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 29faa2d5c766..2694d7bf48a7 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -52,6 +52,7 @@
-  *   endpoint rings; it generates events on the event ring for these.
-  */
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -2871,6 +2871,7 @@ static void iwl_mvm_query_set_freqs(stru
+ 				    int idx)
+ {
+ 	int i;
++	int n_channels = 0;
  
-+#include <linux/jiffies.h>
- #include <linux/scatterlist.h>
- #include <linux/slab.h>
- #include <linux/dma-mapping.h>
-@@ -1150,16 +1151,35 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			return;
- 		case EP_STATE_STOPPED:
- 			/*
--			 * NEC uPD720200 sometimes sets this state and fails with
--			 * Context Error while continuing to process TRBs.
--			 * Be conservative and trust EP_CTX_STATE on other chips.
-+			 * Per xHCI 4.6.9, Stop Endpoint command on a Stopped
-+			 * EP is a Context State Error, and EP stays Stopped.
-+			 *
-+			 * But maybe it failed on Halted, and somebody ran Reset
-+			 * Endpoint later. EP state is now Stopped and EP_HALTED
-+			 * still set because Reset EP handler will run after us.
-+			 */
-+			if (ep->ep_state & EP_HALTED)
-+				break;
-+			/*
-+			 * On some HCs EP state remains Stopped for some tens of
-+			 * us to a few ms or more after a doorbell ring, and any
-+			 * new Stop Endpoint fails without aborting the restart.
-+			 * This handler may run quickly enough to still see this
-+			 * Stopped state, but it will soon change to Running.
-+			 *
-+			 * Assume this bug on unexpected Stop Endpoint failures.
-+			 * Keep retrying until the EP starts and stops again, on
-+			 * chips where this is known to help. Wait for 100ms.
- 			 */
- 			if (!(xhci->quirks & XHCI_NEC_HOST))
- 				break;
-+			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
-+				break;
- 			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
--			xhci_dbg(xhci, "Stop ep completion ctx error, ep is running\n");
-+			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
-+					GET_EP_CTX_STATE(ep_ctx));
+ 	if (fw_has_api(&mvm->fw->ucode_capa,
+ 		       IWL_UCODE_TLV_API_SCAN_OFFLOAD_CHANS)) {
+@@ -2879,7 +2880,7 @@ static void iwl_mvm_query_set_freqs(stru
  
- 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 			if (!command)
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index eb12e4c174ea..58483d1e5d3f 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -8,6 +8,7 @@
-  * Some code borrowed from the Linux EHCI driver.
-  */
+ 		for (i = 0; i < SCAN_OFFLOAD_MATCHING_CHANNELS_LEN * 8; i++)
+ 			if (matches[idx].matching_channels[i / 8] & (BIT(i % 8)))
+-				match->channels[match->n_channels++] =
++				match->channels[n_channels++] =
+ 					mvm->nd_channels[i]->center_freq;
+ 	} else {
+ 		struct iwl_scan_offload_profile_match_v1 *matches =
+@@ -2887,9 +2888,11 @@ static void iwl_mvm_query_set_freqs(stru
  
-+#include <linux/jiffies.h>
- #include <linux/pci.h>
- #include <linux/iommu.h>
- #include <linux/iopoll.h>
-@@ -1891,6 +1892,7 @@ static int xhci_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
- 			ret = -ENOMEM;
- 			goto done;
- 		}
-+		ep->stop_time = jiffies;
- 		ep->ep_state |= EP_STOP_CMD_PENDING;
- 		ep->stop_cmd_timer.expires = jiffies +
- 			XHCI_STOP_EP_CMD_TIMEOUT * HZ;
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 298938eca163..67d5ef952d6a 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -717,6 +717,7 @@ struct xhci_virt_ep {
- 	/* Bandwidth checking storage */
- 	struct xhci_bw_info	bw_info;
- 	struct list_head	bw_endpoint_list;
-+	unsigned long		stop_time;
- 	/* Isoch Frame ID checking storage */
- 	int			next_frame_id;
- 	/* Use new Isoch TRB layout needed for extended TBC support */
--- 
-2.39.5
-
+ 		for (i = 0; i < SCAN_OFFLOAD_MATCHING_CHANNELS_LEN_V1 * 8; i++)
+ 			if (matches[idx].matching_channels[i / 8] & (BIT(i % 8)))
+-				match->channels[match->n_channels++] =
++				match->channels[n_channels++] =
+ 					mvm->nd_channels[i]->center_freq;
+ 	}
++	/* We may have ended up with fewer channels than we allocated. */
++	match->n_channels = n_channels;
+ }
+ 
+ /**
+@@ -2970,6 +2973,8 @@ static void iwl_mvm_query_netdetect_reas
+ 			     GFP_KERNEL);
+ 	if (!net_detect || !n_matches)
+ 		goto out_report_nd;
++	net_detect->n_matches = n_matches;
++	n_matches = 0;
+ 
+ 	for_each_set_bit(i, &matched_profiles, mvm->n_nd_match_sets) {
+ 		struct cfg80211_wowlan_nd_match *match;
+@@ -2983,8 +2988,9 @@ static void iwl_mvm_query_netdetect_reas
+ 				GFP_KERNEL);
+ 		if (!match)
+ 			goto out_report_nd;
++		match->n_channels = n_channels;
+ 
+-		net_detect->matches[net_detect->n_matches++] = match;
++		net_detect->matches[n_matches++] = match;
+ 
+ 		/* We inverted the order of the SSIDs in the scan
+ 		 * request, so invert the index here.
+@@ -2999,6 +3005,8 @@ static void iwl_mvm_query_netdetect_reas
+ 
+ 		iwl_mvm_query_set_freqs(mvm, d3_data->nd_results, match, i);
+ 	}
++	/* We may have fewer matches than we allocated. */
++	net_detect->n_matches = n_matches;
+ 
+ out_report_nd:
+ 	wakeup.net_detect = net_detect;
 
 
 
