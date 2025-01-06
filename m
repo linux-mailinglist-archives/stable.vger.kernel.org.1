@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE966A02C86
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9724A02D19
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E7621887C7C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1177F3A63D1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B80182D2;
-	Mon,  6 Jan 2025 15:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C808145A03;
+	Mon,  6 Jan 2025 15:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ixunw7OU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEl+gxtt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBFF14A60D;
-	Mon,  6 Jan 2025 15:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4E0282F5;
+	Mon,  6 Jan 2025 15:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178910; cv=none; b=bUHXVzRCJuEu9daQcSKuktunacWtY+BUdzw9eQ6qm7swHCX83nAv1mxq9LiRHkMTA64Qu4qWMOsD4ZRziieIPhChn9FTeh2UQyPGVuJ9r63TfuBtS/XpoH1qRxkjrXgOlm1334c+ZvRJ98NkG6zzWSqHn/I9UNym4crBN2A16gE=
+	t=1736179160; cv=none; b=njfdTQepxdJhwwcurSPJ+0CuII9y0WBfit6pg4O41fcByT51M/9znTpA9ODecuG9duM8BkvZNmNcjBU6i0OMZwnCKfdZF8ZOPOvYeA/DcVkQgz9IsMcEQ430fjJ9fBKKRZR01K2ja3H1CqHZf+IZhf1qfmkzmTPlQZTOWYvCCDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178910; c=relaxed/simple;
-	bh=AlNueF/5GDaA1cF0Z8NsZOfen5gWjeVo29IaQ9CfiRU=;
+	s=arc-20240116; t=1736179160; c=relaxed/simple;
+	bh=HzJrOGO7SSi8SJQ20OuxS2v6x1yNn+TjTH2N9Ey8ZCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDMlHIjIis/mY+GT6ax0MPhDT/cJyvgkDYu6EEERZ0MkjvBbEAz0BwGvUtVKVDV/w5BJqQ0MRsoMi9uURXdOz2zPq7pa2eEvcHAiTxlAYJESzBPSkfVI6T/YyOVA2nt4y6VeX7rSNtgo7WPTx8jAQe0et4yqC6rJ3G20dbusT/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ixunw7OU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FF1C4CED6;
-	Mon,  6 Jan 2025 15:55:09 +0000 (UTC)
+	 MIME-Version; b=iNmjZyQKBx7XuA7kMyeooIRDO8krfDe4RR87GwmTkWuKJZP49g0b4h9I6EnAhXYxvaNsFrufEy+iQYf8Ky3rZzTKt3k770hvB5bagqPcoOGWNa+WSn9O4tfevYOtpyc/0IslJqck04cof7HBR6LLl+ViGhh5/ip7aV+zzcAQ6Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEl+gxtt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736E2C4CED2;
+	Mon,  6 Jan 2025 15:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178910;
-	bh=AlNueF/5GDaA1cF0Z8NsZOfen5gWjeVo29IaQ9CfiRU=;
+	s=korg; t=1736179159;
+	bh=HzJrOGO7SSi8SJQ20OuxS2v6x1yNn+TjTH2N9Ey8ZCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ixunw7OU3s8ROBgw8nTmo22W7QzthioMRvzzHQvInf8KuiTZIYNkoPQ2Q1BJVucSk
-	 zwaHwwjUVDHJ6WlRC0PM+4elAAsJZ60RmAbC68T4XydIc5tm2UoYf9BXMxI1G2mkoh
-	 DjEtXSoeudoZAKoG4MCyza20Q69Pn8ET4sLBnHyI=
+	b=mEl+gxtt5NEPwcvbnEyxwSny7FpEpyQdTwmeSy97Qr+vNmojiiXUkaP30nxYbomhO
+	 2bbIs5QcPchd1tFoTgeXc0fDxz0e3mRcsuRgOpZcJPnSv8CZYwY9SlWFvzFk3Oe9//
+	 +9WXagoD6e7YFUwLJqEkVnYKDqKZ87HoB4N2cKgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Marushkin <hfggklm@gmail.com>,
-	Ilya Shchipletsov <rabbelkin@mail.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/168] netrom: check buffer length before accessing it
+Subject: [PATCH 5.4 44/93] tracing/kprobe: Make trace_kprobes module callback called after jump_label update
 Date: Mon,  6 Jan 2025 16:17:20 +0100
-Message-ID: <20250106151143.424828211@linuxfoundation.org>
+Message-ID: <20250106151130.364099423@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Shchipletsov <rabbelkin@mail.ru>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit a4fd163aed2edd967a244499754dec991d8b4c7d ]
+[ Upstream commit d685d55dfc86b1a4bdcec77c3c1f8a83f181264e ]
 
-Syzkaller reports an uninit value read from ax25cmp when sending raw message
-through ieee802154 implementation.
+Make sure the trace_kprobe's module notifer callback function is called
+after jump_label's callback is called. Since the trace_kprobe's callback
+eventually checks jump_label address during registering new kprobe on
+the loading module, jump_label must be updated before this registration
+happens.
 
-=====================================================
-BUG: KMSAN: uninit-value in ax25cmp+0x3a5/0x460 net/ax25/ax25_addr.c:119
- ax25cmp+0x3a5/0x460 net/ax25/ax25_addr.c:119
- nr_dev_get+0x20e/0x450 net/netrom/nr_route.c:601
- nr_route_frame+0x1a2/0xfc0 net/netrom/nr_route.c:774
- nr_xmit+0x5a/0x1c0 net/netrom/nr_dev.c:144
- __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
- netdev_start_xmit include/linux/netdevice.h:4954 [inline]
- xmit_one net/core/dev.c:3548 [inline]
- dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3564
- __dev_queue_xmit+0x33b8/0x5130 net/core/dev.c:4349
- dev_queue_xmit include/linux/netdevice.h:3134 [inline]
- raw_sendmsg+0x654/0xc10 net/ieee802154/socket.c:299
- ieee802154_sock_sendmsg+0x91/0xc0 net/ieee802154/socket.c:96
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
- __sys_sendmsg net/socket.c:2667 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+Link: https://lore.kernel.org/all/173387585556.995044.3157941002975446119.stgit@devnote2/
 
-Uninit was created at:
- slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
- slab_alloc_node mm/slub.c:3478 [inline]
- kmem_cache_alloc_node+0x5e9/0xb10 mm/slub.c:3523
- kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:560
- __alloc_skb+0x318/0x740 net/core/skbuff.c:651
- alloc_skb include/linux/skbuff.h:1286 [inline]
- alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6334
- sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2780
- sock_alloc_send_skb include/net/sock.h:1884 [inline]
- raw_sendmsg+0x36d/0xc10 net/ieee802154/socket.c:282
- ieee802154_sock_sendmsg+0x91/0xc0 net/ieee802154/socket.c:96
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
- __sys_sendmsg net/socket.c:2667 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-CPU: 0 PID: 5037 Comm: syz-executor166 Not tainted 6.7.0-rc7-syzkaller-00003-gfbafc3e621c3 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-=====================================================
-
-This issue occurs because the skb buffer is too small, and it's actual
-allocation is aligned. This hides an actual issue, which is that nr_route_frame
-does not validate the buffer size before using it.
-
-Fix this issue by checking skb->len before accessing any fields in skb->data.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Nikita Marushkin <hfggklm@gmail.com>
-Signed-off-by: Nikita Marushkin <hfggklm@gmail.com>
-Signed-off-by: Ilya Shchipletsov <rabbelkin@mail.ru>
-Link: https://patch.msgid.link/20241219082308.3942-1-rabbelkin@mail.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 614243181050 ("tracing/kprobes: Support module init function probing")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_route.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/trace_kprobe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netrom/nr_route.c b/net/netrom/nr_route.c
-index dc39ae20c6aa..782a6e0d1b6e 100644
---- a/net/netrom/nr_route.c
-+++ b/net/netrom/nr_route.c
-@@ -754,6 +754,12 @@ int nr_route_frame(struct sk_buff *skb, ax25_cb *ax25)
- 	int ret;
- 	struct sk_buff *skbn;
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index c966638fb62c..56d22752a52e 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -703,7 +703,7 @@ static int trace_kprobe_module_callback(struct notifier_block *nb,
  
-+	/*
-+	 * Reject malformed packets early. Check that it contains at least 2
-+	 * addresses and 1 byte more for Time-To-Live
-+	 */
-+	if (skb->len < 2 * sizeof(ax25_address) + 1)
-+		return 0;
+ static struct notifier_block trace_kprobe_module_nb = {
+ 	.notifier_call = trace_kprobe_module_callback,
+-	.priority = 1	/* Invoked after kprobe module callback */
++	.priority = 2	/* Invoked after kprobe and jump_label module callback */
+ };
  
- 	nr_src  = (ax25_address *)(skb->data + 0);
- 	nr_dest = (ax25_address *)(skb->data + 7);
+ /* Convert certain expected symbols into '_' when generating event names */
 -- 
 2.39.5
 
