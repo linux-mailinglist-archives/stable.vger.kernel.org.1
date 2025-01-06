@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-107405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A850AA02BDC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:47:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A5DA02C45
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB3303A176C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7005E1887336
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D1E13B592;
-	Mon,  6 Jan 2025 15:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D79142E7C;
+	Mon,  6 Jan 2025 15:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oy6T7swS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUcfv1pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08621DE4C7;
-	Mon,  6 Jan 2025 15:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425761422DD;
+	Mon,  6 Jan 2025 15:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178365; cv=none; b=ryrl4AYKyZ5Wulx+ZpQLMSeGSGu2VVHSniZYm6LDCtaC01fGPkPWpH4G0u50StC+5/2pmAY9iWiE4jF3t9bpw8ZGlCqzC5EBYloLSfT6+P2Q+pcIFWGuf12WiNOkOUDrBhfZPUnQMID3fuzXdDugoW/wMvYYAZKXfZXTMy/PAog=
+	t=1736178739; cv=none; b=oPoNh4b0tYViy6L6ralx262KuFl5iB8uzFLnmLLCIqO8JuGPHMQLN91X+hyuj6FZ/y4PVExgiZkH2zBv0ycHf2DGLUjxtOI9ypkn4H9eYOkcww00tdYLHGBUlB2pIQyTar6uo3g96ViEKooigavAsvuju7nTQMAFS8hUTrDc9iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178365; c=relaxed/simple;
-	bh=um6bsh4EH+WwIldYpJO8w7M+DkMMivOi7+eeABMLYKI=;
+	s=arc-20240116; t=1736178739; c=relaxed/simple;
+	bh=WCFfc3QsZHYwaNMBmKndLH4uQlWsWKIAh+fQDhW6CfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FiinXl0wifkhcMXVGm2zUX7yzKbLyMTuoGTL+wkZ4C4F06gi25YjbvLg3Q8jJCZ3XxQxH/mduKOm3k+mK0cKzQCJWJc9QnXmqpnK6glP8190TvHFDFU6anNyMnWnTMSQCKoQSE0cwSwSM2Am6p2Srib8Aek12SfU2ht7m+qE4XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oy6T7swS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B61EC4CED2;
-	Mon,  6 Jan 2025 15:46:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bN4ZZEJBkIJzFDPW0zGPPye+Fxbc7b0/ldA5UlV0kAt88LpS5eIWrMCU0o+Txs6RvWRLNUyzL51OUO7UXN62m9pEej6UNHjV3GXP3g/tskKl05/9dagoqFcNa/T1xdtquQ+6n22LPWyKFi41Z0p2X+U2mKF7UziF8dpDoliHtRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUcfv1pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729B1C4CED2;
+	Mon,  6 Jan 2025 15:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178364;
-	bh=um6bsh4EH+WwIldYpJO8w7M+DkMMivOi7+eeABMLYKI=;
+	s=korg; t=1736178737;
+	bh=WCFfc3QsZHYwaNMBmKndLH4uQlWsWKIAh+fQDhW6CfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oy6T7swSamoYdwzI3504Fm1b9AbyOAe1sPfKVEu7g3Ve6Q27wRkZZJ+IGYU/O417b
-	 PYWrsB+LWYMvVdf85L039QuE6RP2P3fBcOXuj9zxLXnYsbh/vjsZOIcbi0sI2I6pcI
-	 i4vYCAk+Z0hIBEiHHbsTPwChb+c/GF7YY2Wvp3OE=
+	b=lUcfv1plQhtOdt/1MIV5+JpFYjv/nlulUrzUEK99BTtyiLgAGUvomELK1kEHRehWy
+	 a4skw8kOxOqp1jRSj0+nlUK9iGz67hKjnxZ/WR0ZhnDTjzN2jLXiF/W/FPDmr2Oubi
+	 UhR6vWFIXRloIQZOFDvwr6WOX20JaeihmhGcrmR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -52,12 +52,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johan Hovold <johan+linaro@kernel.org>,
 	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 052/138] phy: core: Fix that API devm_phy_put() fails to release the phy
+Subject: [PATCH 5.15 068/168] phy: core: Fix that API devm_phy_put() fails to release the phy
 Date: Mon,  6 Jan 2025 16:16:16 +0100
-Message-ID: <20250106151135.205103339@linuxfoundation.org>
+Message-ID: <20250106151141.033979639@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -123,7 +123,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -620,7 +620,7 @@ void devm_phy_put(struct device *dev, st
+@@ -650,7 +650,7 @@ void devm_phy_put(struct device *dev, st
  	if (!phy)
  		return;
  
