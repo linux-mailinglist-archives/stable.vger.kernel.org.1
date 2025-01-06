@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B1EA02A6B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3EEA02C53
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05769164E49
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43051188760E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111728634A;
-	Mon,  6 Jan 2025 15:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75F017625C;
+	Mon,  6 Jan 2025 15:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srUwYJqU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xdtx9XUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E377603F;
-	Mon,  6 Jan 2025 15:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854A71607AA;
+	Mon,  6 Jan 2025 15:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177623; cv=none; b=cYk2SS7CBPJ3/Ul1+pF/Fei2mmSi1nDQbRFBM1vpRNWZ7RQXskVkIoHKvVRdARVaJA6Nzivvz4fCYRSRyD4+PXVKC0akEpQ4MDp+68C4gn3bRIkN8LUGR4aofPc07qls15+01WHBW0vtZzxGc0jOgVCEphmSoh6si7/kvZuzKjg=
+	t=1736178782; cv=none; b=ka8QDkwrXzNUGe3HbZm8eT7f3KJFjV2Sy36yCLSCs1bgk/HAXC8SJM/kXzb1RWvzbcVo8uae/r+nUnxNMv1ElGCKd9bx46ZJ8amiFEtGGR5l1L9ugdBDn8K3GHX3DP43ckaM990nGMIZ5qwSzmVbDZlP4B1g8Q80iM/U2dSbaM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177623; c=relaxed/simple;
-	bh=WNFPotg1tlDDPRdjMe3Qy/fbEp6uRlAZyZ64oS3oJGo=;
+	s=arc-20240116; t=1736178782; c=relaxed/simple;
+	bh=HgVqZzxzskBqEhkjK8exEA9xBfI2gUH7PQE5GuZFlnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tl3GuzhrctyqHQfkNQkRTK92LR4uuvcpEc9czuUtjgXVjfcKuLTDGFxjG6cz32WY/aQiXCVYJWROMKqAjYIvvPqk02vimF1rDB9erGqtKwd0h140EYCYDD/Ei69Ybq58U2h1kysjbYsdrObfV8dInZgpf4T41oP612O9dadtiqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srUwYJqU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A9DC4CED2;
-	Mon,  6 Jan 2025 15:33:42 +0000 (UTC)
+	 MIME-Version; b=TKRkGKXN77V01OWGo9rvTrdxguYruM3s4Ab8dHmOQ8+Z2ZSNMVjUqZbjvY+d7TJvF3VdI+ISB9n6qAeBPJLo9Z4zsuq0v35ZIH8+PjMQtbMXEtZM5TVlBQwgw65Ot3FLfOybZmlLeww6gZQTx5BGrH5H1Pm8QynuQAYCOg51Uew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xdtx9XUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06658C4CED2;
+	Mon,  6 Jan 2025 15:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177623;
-	bh=WNFPotg1tlDDPRdjMe3Qy/fbEp6uRlAZyZ64oS3oJGo=;
+	s=korg; t=1736178782;
+	bh=HgVqZzxzskBqEhkjK8exEA9xBfI2gUH7PQE5GuZFlnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srUwYJqUnIuMrLCDjJXSvFSrOAVlid5DEMnIY9nRkvyW+/47U5cPLj+10QjbUHdiK
-	 9JmBTDS7uusEwPKAcWGVt1i20zjpaiWsU6+7khJzkNRFYUmlpixg3QiQwXGS0MuCOm
-	 C8G6Z+ZHMuTuORJ2TUVWdFgcxbqGxa89Glf8XtZE=
+	b=Xdtx9XUyJEd539IFcaK+P7+L0gHpYTDP9XcCxvpVLXtac2y+77z5uTJ68mAtTNYJQ
+	 CEiHjZZnLaJQlfUxKEAJ63ZtiAPzhtUo5CLshwfqB720iQ9PTEPr+wdjKUhP63gyzY
+	 DXhcwgcJRafEZsa03TJdtJYwSDcHqzXpnwWdA8uQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jordy Zomer <jordyzomer@google.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/222] seq_buf: Make DECLARE_SEQ_BUF() usable
+Subject: [PATCH 5.15 090/168] ksmbd: fix Out-of-Bounds Write in ksmbd_vfs_stream_write
 Date: Mon,  6 Jan 2025 16:16:38 +0100
-Message-ID: <20250106151158.105354644@linuxfoundation.org>
+Message-ID: <20250106151141.863137627@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Jordy Zomer <jordyzomer@google.com>
 
-[ Upstream commit 7a8e9cdf9405819105ae7405cd91e482bf574b01 ]
+[ Upstream commit 313dab082289e460391c82d855430ec8a28ddf81 ]
 
-Using the address operator on the array doesn't work:
+An offset from client could be a negative value, It could allows
+to write data outside the bounds of the allocated buffer.
+Note that this issue is coming when setting
+'vfs objects = streams_xattr parameter' in ksmbd.conf.
 
-./include/linux/seq_buf.h:27:27: error: initialization of ‘char *’
-  from incompatible pointer type ‘char (*)[128]’
-  [-Werror=incompatible-pointer-types]
-   27 |                 .buffer = &__ ## NAME ## _buffer,       \
-      |                           ^
-
-Apart from fixing that, we can improve DECLARE_SEQ_BUF() by using a
-compound literal to define the buffer array without attaching a name
-to it. This makes the macro a single statement, allowing constructs
-such as:
-
-  static DECLARE_SEQ_BUF(my_seq_buf, MYSB_SIZE);
-
-to work as intended.
-
-Link: https://lkml.kernel.org/r/20240116-declare-seq-buf-fix-v1-1-915db4692f32@linux.ibm.com
-
-Cc: stable@vger.kernel.org
-Acked-by: Kees Cook <keescook@chromium.org>
-Fixes: dcc4e5728eea ("seq_buf: Introduce DECLARE_SEQ_BUF and seq_buf_str()")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Jordy Zomer <jordyzomer@google.com>
+Signed-off-by: Jordy Zomer <jordyzomer@google.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/seq_buf.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ksmbd/smb2pdu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/seq_buf.h b/include/linux/seq_buf.h
-index d9db59f420a4..468d8c5eef4a 100644
---- a/include/linux/seq_buf.h
-+++ b/include/linux/seq_buf.h
-@@ -22,9 +22,8 @@ struct seq_buf {
- };
- 
- #define DECLARE_SEQ_BUF(NAME, SIZE)			\
--	char __ ## NAME ## _buffer[SIZE] = "";		\
- 	struct seq_buf NAME = {				\
--		.buffer = &__ ## NAME ## _buffer,	\
-+		.buffer = (char[SIZE]) { 0 },		\
- 		.size = SIZE,				\
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 35914c9809aa..0f97830d1ebc 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -6567,6 +6567,8 @@ int smb2_write(struct ksmbd_work *work)
  	}
  
+ 	offset = le64_to_cpu(req->Offset);
++	if (offset < 0)
++		return -EINVAL;
+ 	length = le32_to_cpu(req->Length);
+ 
+ 	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
 -- 
 2.39.5
 
