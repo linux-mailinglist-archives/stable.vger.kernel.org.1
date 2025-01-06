@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-107324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5DFA02B4F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:42:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F59A02A1C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C04918858AE
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1053A7203
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5AB1D5CE5;
-	Mon,  6 Jan 2025 15:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E410718A6C1;
+	Mon,  6 Jan 2025 15:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnRgnVZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pzop9idb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C750A8634A;
-	Mon,  6 Jan 2025 15:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92151146D40;
+	Mon,  6 Jan 2025 15:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178123; cv=none; b=GBSu6hgtgSOgS+PQlKb0QRvAExmogtGrD8rzZyY/AAcaTDny8xZXQ7CeGAgNgDpJ8RsGxgrUlvgxn86rSIU961UbZzp3ylO7JUaX10umX+4XO8uk1AoDPqrHFM66OcJlDB6cM41RhtjKstyerdOO6ijcokNIJlW2dg6KTLc+wUo=
+	t=1736177345; cv=none; b=s3xhq16xjWdhRVBLTbT81p3uTwIcSYw1QrmxKHtm+U6FsDMVFWAwh7ZZ/7IPNLPLvB5U1jI3qfjssHemykNFyjPHKyGK+2ECl26e35JhsuZyBUEQ2I/30H1P/L3w4mcjBu/fzg6YX0B3d8PyfSnTaaqmjQHdxshP+epefaDsNos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178123; c=relaxed/simple;
-	bh=XZBoBPFN4B8HBtZmAISGQ6FPUdE62NcO2vF8822rEX4=;
+	s=arc-20240116; t=1736177345; c=relaxed/simple;
+	bh=xLBwBUukk027eRt3p3ROpz4CYVDpeOoPkLOkNDzG1Rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2ruwqw6bmAmeQGVSLdzeOzYKxketz+2AFJIVRBbl+9eNcalQ6V2a+g/EZK0FjZs+8tqb3hGa/ZAYzCYGSskExcAIRLk/MFW19aVHlvdPLMPqds6I04AuAsm78cChOs4ogd2eluzROcdkOY3R36hCUchvHKOEIGCt8fTsqzo0eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnRgnVZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C973C4CED6;
-	Mon,  6 Jan 2025 15:42:03 +0000 (UTC)
+	 MIME-Version; b=c2LlQA34VMtCfYC9wyAkLUGalTINf3AQe+QVPW2tQSOBpheUImAFY2yfEj/QGOw2iG4yTOU5hL4NYB9DHseoS41CFv03FaDaaKFtsMr0JmRPyVrwSYpIr6GxZSXJ3JlKD66WKFZQakxicuuaCRb3iKkm+76r78Pxg9bl4u/s6j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pzop9idb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40BBC4CED2;
+	Mon,  6 Jan 2025 15:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178123;
-	bh=XZBoBPFN4B8HBtZmAISGQ6FPUdE62NcO2vF8822rEX4=;
+	s=korg; t=1736177344;
+	bh=xLBwBUukk027eRt3p3ROpz4CYVDpeOoPkLOkNDzG1Rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fnRgnVZvLQLIzPs51Lo+5PSbsndJ6JgU+Q9Ausq813MpAUpYPBFWFvxNQV+js7Ygy
-	 7NhrI44B7Mi5zNQMfjDT1jgmOdFPMriBvW1l4mZZDBNQ16PXEXqlUt1VZJ7LMcQvk6
-	 SbfkUDzsyxFwXW+iaDzK1qtfRKHV5NCF7sAQ+6Qg=
+	b=Pzop9idbugU7L7wgIC9Rm5TwN60kFhxX0bIQ8FEdkcCRJhTT6XNmlkAoY58KzaknY
+	 PdGym9XETRfvXw0vJkTDABykJLbKFGW0Uzw5OEdcD0BGjpPqfK1oULlO/KaE1X/mqe
+	 CIQ1CPO9OyJfdAcpYGw1GXaoGB+/Bv/N8wWTlg4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/138] net/smc: check iparea_offset and ipv6_prefixes_cnt when receiving proposal msg
+Subject: [PATCH 6.6 133/222] RDMA/bnxt_re: Fix the check for 9060 condition
 Date: Mon,  6 Jan 2025 16:15:37 +0100
-Message-ID: <20250106151133.720655575@linuxfoundation.org>
+Message-ID: <20250106151155.803302677@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit a29e220d3c8edbf0e1beb0f028878a4a85966556 ]
+[ Upstream commit 38651476e46e088598354510502c383e932e2297 ]
 
-When receiving proposal msg in server, the field iparea_offset
-and the field ipv6_prefixes_cnt in proposal msg are from the
-remote client and can not be fully trusted. Especially the
-field iparea_offset, once exceed the max value, there has the
-chance to access wrong address, and crash may happen.
+The check for 9060 condition should only be made for legacy chips.
 
-This patch checks iparea_offset and ipv6_prefixes_cnt before using them.
-
-Fixes: e7b7a64a8493 ("smc: support variable CLC proposal messages")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 9152e0b722b2 ("RDMA/bnxt_re: HW workarounds for handling specific conditions")
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241211083931.968831-2-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c  | 6 +++++-
- net/smc/smc_clc.c | 4 ++++
- net/smc/smc_clc.h | 6 +++++-
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 3a4ae589671a..0e0a12f4bb61 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1422,6 +1422,8 @@ static int smc_listen_prfx_check(struct smc_sock *new_smc,
- 	if (pclc->hdr.typev1 == SMC_TYPE_N)
- 		return 0;
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
-+	if (!pclc_prfx)
-+		return -EPROTO;
- 	if (smc_clc_prfx_match(newclcsock, pclc_prfx))
- 		return SMC_CLC_DECL_DIFFPREFIX;
- 
-@@ -1578,7 +1580,9 @@ static void smc_find_ism_v1_device_serv(struct smc_sock *new_smc,
- 	struct smc_clc_msg_smcd *pclc_smcd = smc_get_clc_msg_smcd(pclc);
- 
- 	/* check if ISM V1 is available */
--	if (!(ini->smcd_version & SMC_V1) || !smcd_indicated(ini->smc_type_v1))
-+	if (!(ini->smcd_version & SMC_V1) ||
-+	    !smcd_indicated(ini->smc_type_v1) ||
-+	    !pclc_smcd)
- 		goto not_found;
- 	ini->is_smcd = true; /* prepare ISM check */
- 	ini->ism_peer_gid[0] = ntohll(pclc_smcd->ism.gid);
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 5ee5b2ce29a6..32cbdc321aec 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -49,6 +49,10 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
- 
- 	v2_ext = smc_get_clc_v2_ext(pclc);
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
-+	if (!pclc_prfx ||
-+	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
-+		return false;
-+
- 	if (hdr->version == SMC_V1) {
- 		if (hdr->typev1 == SMC_TYPE_N)
- 			return false;
-diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
-index c579d1d5995a..a57a3489df4a 100644
---- a/net/smc/smc_clc.h
-+++ b/net/smc/smc_clc.h
-@@ -259,8 +259,12 @@ struct smc_clc_msg_decline {	/* clc decline message */
- static inline struct smc_clc_msg_proposal_prefix *
- smc_clc_proposal_get_prefix(struct smc_clc_msg_proposal *pclc)
- {
-+	u16 offset = ntohs(pclc->iparea_offset);
-+
-+	if (offset > sizeof(struct smc_clc_msg_smcd))
-+		return NULL;
- 	return (struct smc_clc_msg_proposal_prefix *)
--	       ((u8 *)pclc + sizeof(*pclc) + ntohs(pclc->iparea_offset));
-+	       ((u8 *)pclc + sizeof(*pclc) + offset);
- }
- 
- static inline bool smcr_indicated(int smc_type)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index d38e7880cebb..8997f359b58b 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -2536,10 +2536,12 @@ static int bnxt_qplib_cq_process_req(struct bnxt_qplib_cq *cq,
+ 			bnxt_qplib_add_flush_qp(qp);
+ 		} else {
+ 			/* Before we complete, do WA 9060 */
+-			if (do_wa9060(qp, cq, cq_cons, sq->swq_last,
+-				      cqe_sq_cons)) {
+-				*lib_qp = qp;
+-				goto out;
++			if (!bnxt_qplib_is_chip_gen_p5_p7(qp->cctx)) {
++				if (do_wa9060(qp, cq, cq_cons, sq->swq_last,
++					      cqe_sq_cons)) {
++					*lib_qp = qp;
++					goto out;
++				}
+ 			}
+ 			if (swq->flags & SQ_SEND_FLAGS_SIGNAL_COMP) {
+ 				cqe->status = CQ_REQ_STATUS_OK;
 -- 
 2.39.5
 
