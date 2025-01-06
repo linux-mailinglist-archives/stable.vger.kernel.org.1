@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00643A02A5B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F16A02B0B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386831885EE4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 390313A3C73
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B251DED59;
-	Mon,  6 Jan 2025 15:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6B015B0E2;
+	Mon,  6 Jan 2025 15:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isOccKeJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJkWucYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7581DDC1B;
-	Mon,  6 Jan 2025 15:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD3C159565;
+	Mon,  6 Jan 2025 15:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177537; cv=none; b=caBQ1rgA4NEB/pfLOpHIexgRKU+/dAINULdLwh/ig+++5zsa0Ec2/9ic+/GaL5zKtJ5/BC3HV8FJkJ6saToEk517LgJdjc6eVEtYk/TxB3WNtN64nJAni/DRibUPFuhLzE/PyPuWB/H5ElSwGo7eyTkdSHPzok+GF16Dn0FvOqg=
+	t=1736177918; cv=none; b=E/xblXgCT7VMP6v6OJ2SuanvUvTBpRijuS1+XndbFU81C6kwKqsHdEDkzfR2UGfqJumt0ANW9BsdvyQhU+UnfmfTDiPSa+8wUuZ9ujZYZeNDNAVmvN73/Nbs3Wp471Vksa2fXnVgOQo5K9R8n/IxeytWxSehFtgaMGjrDnHZubs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177537; c=relaxed/simple;
-	bh=DGbBPUf4R0htiSZydyVT9TW5aEHogxSYYjFnGvkL/bs=;
+	s=arc-20240116; t=1736177918; c=relaxed/simple;
+	bh=srrWm9h3W0f/Uyxms1aeedWNqBErvPqNoAs5OcQ+q4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAFv7f3h6upNBIttHIUs1ubsbMXC0a71sKIbeC20c4hxiBJVsnXNgiyCtroVGQ5P5mPGCpEoDYT+5ubVQknjUxiv7Fv/I7UmIKx7EXuaAhlQ9+wGW/NqS7uwzxb5PL4DpFYCIdgiiwET5YLfhCEP35TIUmmXS2ybWXoMX/XMbMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isOccKeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C15AC4CEDF;
-	Mon,  6 Jan 2025 15:32:16 +0000 (UTC)
+	 MIME-Version; b=YW9B1scwllCZRyjpJiNYcATCtJpbm+z681wuK7tZDmepZmFeZabq2FemykW92aD6t8+WVbAFR39hEjkh7/ULOH5hTw8pJ4C1ATfz9VgB5UoOXdM1kMRdRIlIbxobV7k+cR/Su9alghLBiPLyLtcj4PaJE9BRCCxmmLezvWM4hiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJkWucYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF348C4CED2;
+	Mon,  6 Jan 2025 15:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177536;
-	bh=DGbBPUf4R0htiSZydyVT9TW5aEHogxSYYjFnGvkL/bs=;
+	s=korg; t=1736177918;
+	bh=srrWm9h3W0f/Uyxms1aeedWNqBErvPqNoAs5OcQ+q4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isOccKeJFLrZ5AJLPLK1ecJypRd5rYLw5PlG/XfUyAqiHcoDefbo45QZ/UbWM65O7
-	 s08QyYtqvxNrQE1Jpm+1FVTUQSlHkOAkZ8hZPqyXUnHLc4rTbegoYmtYnS06+wlA5R
-	 //p7z2vZUMFsuFlo812TBoCfs0501X29ucITuWbc=
+	b=UJkWucYJHZW5QLPk/8JaQEjAVmThVu5myib239v4GGrMQIa6TxJ6EAZWSV+7E82/I
+	 69u7BeMEPRW4rH6/6l2DPFQqUGCSXk10yj34XziUA9UsaABOUaHaqfiDRTkbNty/WV
+	 bIi7R5Db8kN7uyZsCKIO0842xh/p5EdRrixBug4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Pastor <antonio.pastor@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/222] net: llc: reset skb->transport_header
-Date: Mon,  6 Jan 2025 16:16:08 +0100
-Message-ID: <20250106151156.973498259@linuxfoundation.org>
+Subject: [PATCH 6.12 083/156] ALSA: hda: cs35l56: Remove calls to cs35l56_force_sync_asp1_registers_from_cache()
+Date: Mon,  6 Jan 2025 16:16:09 +0100
+Message-ID: <20250106151144.857515245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Pastor <antonio.pastor@gmail.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit a024e377efed31ecfb39210bed562932321345b3 ]
+[ Upstream commit 47b17ba05a463b22fa79f132e6f6899d53538802 ]
 
-802.2+LLC+SNAP frames received by napi_complete_done with GRO and DSA
-have skb->transport_header set two bytes short, or pointing 2 bytes
-before network_header & skb->data. As snap_rcv expects transport_header
-to point to SNAP header (OID:PID) after LLC processing advances offset
-over LLC header (llc_rcv & llc_fixup_skb), code doesn't find a match
-and packet is dropped.
+Commit 5d7e328e20b3 ("ASoC: cs35l56: Revert support for dual-ownership
+of ASP registers")
+replaced cs35l56_force_sync_asp1_registers_from_cache() with a dummy
+implementation so that the HDA driver would continue to build.
 
-Between napi_complete_done and snap_rcv, transport_header is not used
-until __netif_receive_skb_core, where originally it was being reset.
-Commit fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-only does so if not set, on the assumption the value was set correctly
-by GRO (and also on assumption that "network stacks usually reset the
-transport header anyway"). Afterwards it is moved forward by
-llc_fixup_skb.
+Remove the calls from HDA and remove the stub function.
 
-Locally generated traffic shows up at __netif_receive_skb_core with no
-transport_header set and is processed without issue. On a setup with
-GRO but no DSA, transport_header and network_header are both set to
-point to skb->data which is also correct.
-
-As issue is LLC specific, to avoid impacting non-LLC traffic, and to
-follow up on original assumption made on previous code change,
-llc_fixup_skb to reset the offset after skb pull. llc_fixup_skb
-assumes the LLC header is at skb->data, and by definition SNAP header
-immediately follows.
-
-Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241225010723.2830290-1-antonio.pastor@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20241206105757.718750-1-rf@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/llc/llc_input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/sound/cs35l56.h     | 6 ------
+ sound/pci/hda/cs35l56_hda.c | 8 --------
+ 2 files changed, 14 deletions(-)
 
-diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
-index 51bccfb00a9c..61b0159b2fbe 100644
---- a/net/llc/llc_input.c
-+++ b/net/llc/llc_input.c
-@@ -124,8 +124,8 @@ static inline int llc_fixup_skb(struct sk_buff *skb)
- 	if (unlikely(!pskb_may_pull(skb, llc_len)))
- 		return 0;
+diff --git a/include/sound/cs35l56.h b/include/sound/cs35l56.h
+index 94e8185c4795..3dc7a1551ac3 100644
+--- a/include/sound/cs35l56.h
++++ b/include/sound/cs35l56.h
+@@ -271,12 +271,6 @@ struct cs35l56_base {
+ 	struct gpio_desc *reset_gpio;
+ };
  
--	skb->transport_header += llc_len;
- 	skb_pull(skb, llc_len);
-+	skb_reset_transport_header(skb);
- 	if (skb->protocol == htons(ETH_P_802_2)) {
- 		__be16 pdulen;
- 		s32 data_size;
+-/* Temporary to avoid a build break with the HDA driver */
+-static inline int cs35l56_force_sync_asp1_registers_from_cache(struct cs35l56_base *cs35l56_base)
+-{
+-	return 0;
+-}
+-
+ static inline bool cs35l56_is_otp_register(unsigned int reg)
+ {
+ 	return (reg >> 16) == 3;
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index e3ac0e23ae32..7baf3b506eef 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -151,10 +151,6 @@ static int cs35l56_hda_runtime_resume(struct device *dev)
+ 		}
+ 	}
+ 
+-	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
+-	if (ret)
+-		goto err;
+-
+ 	return 0;
+ 
+ err:
+@@ -1059,9 +1055,6 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int hid, int id)
+ 
+ 	regmap_multi_reg_write(cs35l56->base.regmap, cs35l56_hda_dai_config,
+ 			       ARRAY_SIZE(cs35l56_hda_dai_config));
+-	ret = cs35l56_force_sync_asp1_registers_from_cache(&cs35l56->base);
+-	if (ret)
+-		goto dsp_err;
+ 
+ 	/*
+ 	 * By default only enable one ASP1TXn, where n=amplifier index,
+@@ -1087,7 +1080,6 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int hid, int id)
+ 
+ pm_err:
+ 	pm_runtime_disable(cs35l56->base.dev);
+-dsp_err:
+ 	cs_dsp_remove(&cs35l56->cs_dsp);
+ err:
+ 	gpiod_set_value_cansleep(cs35l56->base.reset_gpio, 0);
 -- 
 2.39.5
 
