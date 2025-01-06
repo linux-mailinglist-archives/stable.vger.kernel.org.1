@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-107597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779BBA02C9A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F188AA02D02
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2CF91885436
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78F851881C4F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78A1154C04;
-	Mon,  6 Jan 2025 15:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBB1166F1B;
+	Mon,  6 Jan 2025 15:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQzP/ays"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgcFD8Qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7353F81728;
-	Mon,  6 Jan 2025 15:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687F186332;
+	Mon,  6 Jan 2025 15:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178951; cv=none; b=QZuuEZz+sWxdRfu2yuJwBYCVeZNx8xU5lWUm4R866C7GRu9UOVDzmUxvXxwgklHmDgieEO7I3XxTmavs/S+Tu6K4GQjWGQMNlB5m5bem+O4R3E6wqGHOQ0OtRcEaumSEMwwAiC0JwkbgnDaqIS633SYDH3XqCPqGcq5cJ/SadCU=
+	t=1736179195; cv=none; b=VBIxlP300uSXTFmR6/hMX2PPFQadv/SKDWKFE1wFAZv7NIV0Je5wY4eqOHn1JsK9kjEJPzX7Q9Zo9loeuoz2PNpbtrSK5g6TLbJ+Ic6OqWY7BDfxg9CtmAA2bvhVm6ZYBQgVjXzYWajpIvz0C6b4GPcdm4PSAnFsIqTVkgSRjxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178951; c=relaxed/simple;
-	bh=hjKqbXSBYBVcm6WeUzR9yNUlIx1f7dUn6RUi81Nw0ic=;
+	s=arc-20240116; t=1736179195; c=relaxed/simple;
+	bh=15nmrGVSfN5UXTqhrHpVUhNy5ncOCgbiMNxUs6yJqko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uoWH0ux2aBQzrAwkMjxkGdjQ2KKPe5Ej0svjOc/bkbndLbIpd6a9Th8+ANYh+ar8X9I3tqdXgetlkJqDYVrM1bXNpmb7CN+brLSVpEAYOkDrDC3a0Z9SXPMGgQoUcJV64PtSPFrCYqm7icBMam0JF2JkOkKtYyqX22vHUIM/AXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQzP/ays; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC12C4CED2;
-	Mon,  6 Jan 2025 15:55:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OyGSLQX6bDca7tRv92lSxyWA0yEjoZn7dlra8jRYeoPWUbqC8QsA5UQ/h4eYqcqysSJle1aqSD43D+5EDUFrCVOR6m58qgv4EOFApMMkRuiAZm/uEyjvg6mgxvO3WDH9C1AvFrpE8zwqLm/2ZywIZRlBXbrrylUEYYlBMiQ5Enk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgcFD8Qf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3A8C4CED2;
+	Mon,  6 Jan 2025 15:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178951;
-	bh=hjKqbXSBYBVcm6WeUzR9yNUlIx1f7dUn6RUi81Nw0ic=;
+	s=korg; t=1736179195;
+	bh=15nmrGVSfN5UXTqhrHpVUhNy5ncOCgbiMNxUs6yJqko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lQzP/aysFGGzmQ6jE93FY/vRs6j/finBAa/BXiv6WCuhvwE3aG+mM9uHyHXntni2j
-	 GVaQE+DIIH+MJrmhD5chVgqUgGTW1XNcvc6pjLLIKixwu1EZ8PrE5vNnd+3a56X6VB
-	 XtKe0DpAH+xcIPM29Nm2WtXE07cGqwxtrChcjybM=
+	b=CgcFD8QfZPJ82we19NVz/iyRiV6ZN4t5bWz3gLzt+qAYxM5Ke1CODkGDIE3gFFEvo
+	 QTJ7jyQEKmexRCDdb6XmBIzeRZR810sizL1hw2Yum9MkGQ6L2DGCsMiTdXY923aG5c
+	 2sYJ1CwMW99Rhuq7se1j9VJm2i7a10TkU+tIGF2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8517da8635307182c8a5@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/168] btrfs: fix use-after-free when COWing tree bock and tracing is enabled
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 58/93] tracing: Constify string literal data member in struct trace_event_call
 Date: Mon,  6 Jan 2025 16:17:34 +0100
-Message-ID: <20250106151143.950865606@linuxfoundation.org>
+Message-ID: <20250106151130.894613868@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +67,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Christian Göttsche <cgzones@googlemail.com>
 
-[ Upstream commit 44f52bbe96dfdbe4aca3818a2534520082a07040 ]
+commit 452f4b31e3f70a52b97890888eeb9eaa9a87139a upstream.
 
-When a COWing a tree block, at btrfs_cow_block(), and we have the
-tracepoint trace_btrfs_cow_block() enabled and preemption is also enabled
-(CONFIG_PREEMPT=y), we can trigger a use-after-free in the COWed extent
-buffer while inside the tracepoint code. This is because in some paths
-that call btrfs_cow_block(), such as btrfs_search_slot(), we are holding
-the last reference on the extent buffer @buf so btrfs_force_cow_block()
-drops the last reference on the @buf extent buffer when it calls
-free_extent_buffer_stale(buf), which schedules the release of the extent
-buffer with RCU. This means that if we are on a kernel with preemption,
-the current task may be preempted before calling trace_btrfs_cow_block()
-and the extent buffer already released by the time trace_btrfs_cow_block()
-is called, resulting in a use-after-free.
+The name member of the struct trace_event_call is assigned with
+generated string literals; declare them pointer to read-only.
 
-Fix this by moving the trace_btrfs_cow_block() from btrfs_cow_block() to
-btrfs_force_cow_block() before the COWed extent buffer is freed.
-This also has a side effect of invoking the tracepoint in the tree defrag
-code, at defrag.c:btrfs_realloc_node(), since btrfs_force_cow_block() is
-called there, but this is fine and it was actually missing there.
+Reported by clang:
 
-Reported-by: syzbot+8517da8635307182c8a5@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/6759a9b9.050a0220.1ac542.000d.GAE@google.com/
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    security/landlock/syscalls.c:179:1: warning: initializing 'char *' with an expression of type 'const char[34]' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+      179 | SYSCALL_DEFINE3(landlock_create_ruleset,
+          | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      180 |                 const struct landlock_ruleset_attr __user *const, attr,
+          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      181 |                 const size_t, size, const __u32, flags)
+          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:226:36: note: expanded from macro 'SYSCALL_DEFINE3'
+      226 | #define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)
+          |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:234:2: note: expanded from macro 'SYSCALL_DEFINEx'
+      234 |         SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \
+          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:184:2: note: expanded from macro 'SYSCALL_METADATA'
+      184 |         SYSCALL_TRACE_ENTER_EVENT(sname);                       \
+          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:151:30: note: expanded from macro 'SYSCALL_TRACE_ENTER_EVENT'
+      151 |                         .name                   = "sys_enter"#sname,    \
+          |                                                   ^~~~~~~~~~~~~~~~~
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mickaël Salaün <mic@digikod.net>
+Cc: Günther Noack <gnoack@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/20241125105028.42807-1-cgoettsche@seltendoof.de
+Fixes: b77e38aa240c3 ("tracing: add event trace infrastructure")
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ include/linux/trace_events.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 42562c61f52e..b12c5ca0580e 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -502,6 +502,8 @@ int btrfs_force_cow_block(struct btrfs_trans_handle *trans,
- 		btrfs_free_tree_block(trans, btrfs_root_id(root), buf,
- 				      parent_start, last_ref);
- 	}
-+
-+	trace_btrfs_cow_block(root, buf, cow);
- 	if (unlock_orig)
- 		btrfs_tree_unlock(buf);
- 	free_extent_buffer_stale(buf);
-@@ -553,7 +555,6 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
- {
- 	struct btrfs_fs_info *fs_info = root->fs_info;
- 	u64 search_start;
--	int ret;
- 
- 	if (unlikely(test_bit(BTRFS_ROOT_DELETING, &root->state))) {
- 		btrfs_abort_transaction(trans, -EUCLEAN);
-@@ -594,12 +595,8 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 	 * Also We don't care about the error, as it's handled internally.
- 	 */
- 	btrfs_qgroup_trace_subtree_after_cow(trans, root, buf);
--	ret = btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
--				    cow_ret, search_start, 0, nest);
--
--	trace_btrfs_cow_block(root, buf, *cow_ret);
--
--	return ret;
-+	return btrfs_force_cow_block(trans, root, buf, parent, parent_slot,
-+				     cow_ret, search_start, 0, nest);
- }
- ALLOW_ERROR_INJECTION(btrfs_cow_block, ERRNO);
- 
--- 
-2.39.5
-
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -255,7 +255,7 @@ struct trace_event_call {
+ 	struct list_head	list;
+ 	struct trace_event_class *class;
+ 	union {
+-		char			*name;
++		const char		*name;
+ 		/* Set TRACE_EVENT_FL_TRACEPOINT flag when using "tp" */
+ 		struct tracepoint	*tp;
+ 	};
 
 
 
