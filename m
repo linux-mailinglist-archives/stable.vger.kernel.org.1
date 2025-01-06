@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-106909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D77A02949
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D22DA02C2E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C0183A4D14
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EC021886DA1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1352B14900B;
-	Mon,  6 Jan 2025 15:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27795165F1F;
+	Mon,  6 Jan 2025 15:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSOo3y8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sc7C1dh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF18136E09;
-	Mon,  6 Jan 2025 15:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D764113DB9F;
+	Mon,  6 Jan 2025 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176877; cv=none; b=WbWg2v+NQtZ3xahs/inP0gimpXbVpGd063llZrmH/ma1TGKfuOTN1gbgj8+9pYzC6JntElmHU3VQjdikRRMbn6UZzP4YCr720yhg43avpIaLYW9dTt1GrjIZQK6aitul3VWNde9c7U6o7dBCED6PlBnqfRS3JZ6CyoJ+B6raisE=
+	t=1736178664; cv=none; b=YLKTHpR4HV82EPNJ62CICpuk5SIrSm/0a01+FtP58EHjSoavKDZEG/kfXWTXO3orC5p/uhb92mcHqjpw0q3Renku95JmtDk1jmOp4NyyVI45TPftwydekHqyU0W2yLpS9GJbJUk4ssmmLOErAnbxtNiN5G438iZHhX/SAWZ6eBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176877; c=relaxed/simple;
-	bh=2gFief8vLeOr+4ci3sYDNeKlDYLRILCBRoJM77oKhsY=;
+	s=arc-20240116; t=1736178664; c=relaxed/simple;
+	bh=QRZ6CN5AYuqMPG2+ciuQa5rVzampT3mf7i3wJvHyp7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ly2XxjauYg8DV6iY5NOxr1Dq0W6zRPldu5QL36Dsk4fV/bVXjsq4v30ErfFibFXc0zS2YAgnH8lU8uk5e0K8faM30E1InQ9luXP7i5Q7wOF4HsNRtWdi+cabgujiAVMzBlul3YaVE9pkN/5QRHBbxq5qLJ0DRY8XBTyWv189rUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSOo3y8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B11C4CEDF;
-	Mon,  6 Jan 2025 15:21:17 +0000 (UTC)
+	 MIME-Version; b=q1FqHe6TsAqbngjlsILShNOGjCZnj98M4rWDzbJo18YqZa8oj1oT9N34IqdeN3njNEZ2gG0DBy0o3wLL55ivSaID7YAgkkx/NlMoh93iI2CNrmXW46QPFQaHkXB84z2+MCLLXu0RIXuSI4gzZlog+UuUNDSx7J+ghSCTLepXdB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sc7C1dh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BA6C4CEDF;
+	Mon,  6 Jan 2025 15:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176877;
-	bh=2gFief8vLeOr+4ci3sYDNeKlDYLRILCBRoJM77oKhsY=;
+	s=korg; t=1736178664;
+	bh=QRZ6CN5AYuqMPG2+ciuQa5rVzampT3mf7i3wJvHyp7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qSOo3y8kNnLcy5ezWwrIDNfVqBsKYfzwwh4C+4NNmrfQL0BjhBtrbY3/kOJTSLwlk
-	 PQRQU/ArM07l3RketkNUz1Cs1PUrzX2oUVs+L3oaFEyXLaAPOgWOMsr4aYm+3kICUD
-	 AEYT1kjGbA22vWUfeBfgWGmc9VeaxyNmG3bcafq0=
+	b=sc7C1dh1gFqCRYqvNlgkqZ7fmHRRV/vOe1aS1Lr/G/pUt44b4qWWWa5ZUnwznpp0b
+	 nARS2nZ6Vr3vU9hZJij+KsJzeGD9EzDNxAPqHPI3mWYqOJj0lpT3dguwe5rRpnwsDj
+	 8E2kZAPr/OcOSnNrPivF3I7sQ6frCdTjqbSHb6u8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/81] net: stmmac: restructure the error path of stmmac_probe_config_dt()
+	Herve Codina <herve.codina@bootlin.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.15 052/168] of: Fix error path in of_parse_phandle_with_args_map()
 Date: Mon,  6 Jan 2025 16:16:00 +0100
-Message-ID: <20250106151130.501327358@linuxfoundation.org>
+Message-ID: <20250106151140.428880384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 2b6ffcd7873b7e8a62c3e15a6f305bfc747c466b ]
+commit d7dfa7fde63dde4d2ec0083133efe2c6686c03ff upstream.
 
-Current implementation of stmmac_probe_config_dt() does not release the
-OF node reference obtained by of_parse_phandle() in some error paths.
-The problem is that some error paths call stmmac_remove_config_dt() to
-clean up but others use and unwind ladder.  These two types of error
-handling have not kept in sync and have been a recurring source of bugs.
-Re-write the error handling in stmmac_probe_config_dt() to use an unwind
-ladder. Consequently, stmmac_remove_config_dt() is not needed anymore,
-thus remove it.
+The current code uses some 'goto put;' to cancel the parsing operation
+and can lead to a return code value of 0 even on error cases.
 
-This bug was found by an experimental verification tool that I am
-developing.
+Indeed, some goto calls are done from a loop without setting the ret
+value explicitly before the goto call and so the ret value can be set to
+0 due to operation done in previous loop iteration. For instance match
+can be set to 0 in the previous loop iteration (leading to a new
+iteration) but ret can also be set to 0 it the of_property_read_u32()
+call succeed. In that case if no match are found or if an error is
+detected the new iteration, the return value can be wrongly 0.
 
-Fixes: 4838a5405028 ("net: stmmac: Fix wrapper drivers not detecting PHY")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241219024119.2017012-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid those cases setting the ret value explicitly before the goto
+calls.
+
+Fixes: bd6f2fd5a1d5 ("of: Support parsing phandle argument lists through a nexus node")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20241202165819.158681-1-herve.codina@bootlin.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/stmicro/stmmac/stmmac_platform.c | 27 ++++++++++++-------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/of/base.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index e7e7d388399d..c368ef3cd9cb 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -473,8 +473,10 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 		dev_warn(&pdev->dev, "snps,phy-addr property is deprecated\n");
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1620,8 +1620,10 @@ int of_parse_phandle_with_args_map(const
+ 			map_len--;
  
- 	rc = stmmac_mdio_setup(plat, np, &pdev->dev);
--	if (rc)
--		return ERR_PTR(rc);
-+	if (rc) {
-+		ret = ERR_PTR(rc);
-+		goto error_put_phy;
-+	}
+ 			/* Check if not found */
+-			if (!new)
++			if (!new) {
++				ret = -EINVAL;
+ 				goto put;
++			}
  
- 	of_property_read_u32(np, "tx-fifo-depth", &plat->tx_fifo_size);
+ 			if (!of_device_is_available(new))
+ 				match = 0;
+@@ -1631,17 +1633,20 @@ int of_parse_phandle_with_args_map(const
+ 				goto put;
  
-@@ -560,8 +562,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	dma_cfg = devm_kzalloc(&pdev->dev, sizeof(*dma_cfg),
- 			       GFP_KERNEL);
- 	if (!dma_cfg) {
--		stmmac_remove_config_dt(pdev, plat);
--		return ERR_PTR(-ENOMEM);
-+		ret = ERR_PTR(-ENOMEM);
-+		goto error_put_mdio;
- 	}
- 	plat->dma_cfg = dma_cfg;
+ 			/* Check for malformed properties */
+-			if (WARN_ON(new_size > MAX_PHANDLE_ARGS))
+-				goto put;
+-			if (map_len < new_size)
++			if (WARN_ON(new_size > MAX_PHANDLE_ARGS) ||
++			    map_len < new_size) {
++				ret = -EINVAL;
+ 				goto put;
++			}
  
-@@ -589,8 +591,8 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 			/* Move forward by new node's #<list>-cells amount */
+ 			map += new_size;
+ 			map_len -= new_size;
+ 		}
+-		if (!match)
++		if (!match) {
++			ret = -ENOENT;
+ 			goto put;
++		}
  
- 	rc = stmmac_mtl_setup(pdev, plat);
- 	if (rc) {
--		stmmac_remove_config_dt(pdev, plat);
--		return ERR_PTR(rc);
-+		ret = ERR_PTR(rc);
-+		goto error_put_mdio;
- 	}
- 
- 	/* clock setup */
-@@ -642,6 +644,10 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	clk_disable_unprepare(plat->pclk);
- error_pclk_get:
- 	clk_disable_unprepare(plat->stmmac_clk);
-+error_put_mdio:
-+	of_node_put(plat->mdio_node);
-+error_put_phy:
-+	of_node_put(plat->phy_node);
- 
- 	return ret;
- }
-@@ -650,16 +656,17 @@ static void devm_stmmac_remove_config_dt(void *data)
- {
- 	struct plat_stmmacenet_data *plat = data;
- 
--	/* Platform data argument is unused */
--	stmmac_remove_config_dt(NULL, plat);
-+	clk_disable_unprepare(plat->stmmac_clk);
-+	clk_disable_unprepare(plat->pclk);
-+	of_node_put(plat->mdio_node);
-+	of_node_put(plat->phy_node);
- }
- 
- /**
-  * devm_stmmac_probe_config_dt
-  * @pdev: platform_device structure
-  * @mac: MAC address to use
-- * Description: Devres variant of stmmac_probe_config_dt(). Does not require
-- * the user to call stmmac_remove_config_dt() at driver detach.
-+ * Description: Devres variant of stmmac_probe_config_dt().
-  */
- struct plat_stmmacenet_data *
- devm_stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
--- 
-2.39.5
-
+ 		/* Get the <list>-map-pass-thru property (optional) */
+ 		pass = of_get_property(cur, pass_name, NULL);
 
 
 
