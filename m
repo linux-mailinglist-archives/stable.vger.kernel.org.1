@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-107399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887A7A02BC1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BADC8A02A33
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 761BD164EA3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3525164AAB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2048E1DE4CE;
-	Mon,  6 Jan 2025 15:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C05E1DE2C7;
+	Mon,  6 Jan 2025 15:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ax4Azl4B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbtJwow8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34031DE2BF;
-	Mon,  6 Jan 2025 15:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB35A1DC9BC;
+	Mon,  6 Jan 2025 15:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178346; cv=none; b=luaoIsK2w6evHZPiI0U6SX6vjGmMDop6n0dNObhQJv27uKtEGcMZrVPn3I/NTUqIcntGqJ6lctRc9SOCZZR/9qF7xc6S4l4vS/P5ffd3HLuFuvRVig1F/OrZ6UQ/2GCXmTNMuGl4UM7b7+F59XGKOmaXp7KCVdrIhDyEOKSXPko=
+	t=1736177480; cv=none; b=n/j6y17wb4xvWPWyKbmA/Q3PetCNORBFKKk80hAFZ1DpdB+WISi2fvj4WNdjJgPQBFWF6hyzv4st/V+rIqYP3AbNwFxb8M5OXSIy9Hvngsm+0lFyIycVxYrtmffPnKMHuKMx235R+QCkIdbw2HzR8VN/+vNAPmXTZunZL0KsOfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178346; c=relaxed/simple;
-	bh=f+jeM2IqWXC8BSiyqcUKDBn19dS6XV75qSRWEV/McIM=;
+	s=arc-20240116; t=1736177480; c=relaxed/simple;
+	bh=BtmpgpG6aTgmrD/VfyF+IZ/4cEyAh9REbD5EDm7JcPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOSWCqwhwThbORkqbkJYw6yePalHHAm4dk72iX19pdO9DJ29pJSIFsJMC2JlmUDbA/ir2tIe8if2w3fLLK704PsXWrXJ1PgRwZkbJYLj7IOI1jTzS+dL8vm0BCmg71X+sWtcGYsjHT053y0OkDQfTq4RTFeVNdUkDfRaEPAwXSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ax4Azl4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E817C4CED2;
-	Mon,  6 Jan 2025 15:45:46 +0000 (UTC)
+	 MIME-Version; b=talCiabaSi4O9+zkjM6lDg0hAPkw8sDpL7lmuWQgkKlqoUCm6YtYW3/kekcuBZr1fsZBqzIeVhxVhupGDcj79YpmDHezjHcgZDZHZR1Kfi3Sk7RO1YLAps6a+mAiLubT8spnbRWCQw95e5baLWu4atgfv+Gtyo8qGKCZfD9ZwJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbtJwow8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83821C4CED2;
+	Mon,  6 Jan 2025 15:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178346;
-	bh=f+jeM2IqWXC8BSiyqcUKDBn19dS6XV75qSRWEV/McIM=;
+	s=korg; t=1736177480;
+	bh=BtmpgpG6aTgmrD/VfyF+IZ/4cEyAh9REbD5EDm7JcPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ax4Azl4B6a/ZdRtvXxG1RxsCczHZyLmbzjVQ12yFC69In/khkVCd85igPue3bMwus
-	 scCbfjA3tIw4l0F8PJOwWADVrTncUOJ/nHbn+ZijOiwz1XZfnqTR9uB2ZN2Ldm2qKt
-	 kWnIOzhAba54Dc6pxo3EYLB2ZiEzsrPzm1ljdxoc=
+	b=RbtJwow8Q0wdBm9ykNuDwdLjbLQVVa2Hv+7Mq9pJds7ewpboKXA/WOwtKTA7ctKKO
+	 9hKbIMc4Dx8CZ5Cpj/5uUZHagflJxP5gTZC1AqkMDbbFb0w0H6aHkHYlgaIt547kT8
+	 Tn11mhqPQN49U8CLpFI43zRMSlRBPsP04u8IF54k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 056/138] dmaengine: at_xdmac: avoid null_prt_deref in at_xdmac_prep_dma_memset
+	syzbot+47e761d22ecf745f72b9@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Tom Herbert <tom@herbertland.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 176/222] ila: serialize calls to nf_register_net_hooks()
 Date: Mon,  6 Jan 2025 16:16:20 +0100
-Message-ID: <20250106151135.356087145@linuxfoundation.org>
+Message-ID: <20250106151157.426596975@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit c43ec96e8d34399bd9dab2f2dc316b904892133f upstream.
+[ Upstream commit 260466b576bca0081a7d4acecc8e93687aa22d0e ]
 
-The at_xdmac_memset_create_desc may return NULL, which will lead to a
-null pointer dereference. For example, the len input is error, or the
-atchan->free_descs_list is empty and memory is exhausted. Therefore, add
-check to avoid this.
+syzbot found a race in ila_add_mapping() [1]
 
-Fixes: b206d9a23ac7 ("dmaengine: xdmac: Add memset support")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Link: https://lore.kernel.org/r/20241029082845.1185380-1-chenridong@huaweicloud.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+commit 031ae72825ce ("ila: call nf_unregister_net_hooks() sooner")
+attempted to fix a similar issue.
+
+Looking at the syzbot repro, we have concurrent ILA_CMD_ADD commands.
+
+Add a mutex to make sure at most one thread is calling nf_register_net_hooks().
+
+[1]
+ BUG: KASAN: slab-use-after-free in rht_key_hashfn include/linux/rhashtable.h:159 [inline]
+ BUG: KASAN: slab-use-after-free in __rhashtable_lookup.constprop.0+0x426/0x550 include/linux/rhashtable.h:604
+Read of size 4 at addr ffff888028f40008 by task dhcpcd/5501
+
+CPU: 1 UID: 0 PID: 5501 Comm: dhcpcd Not tainted 6.13.0-rc4-syzkaller-00054-gd6ef8b40d075 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <IRQ>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0xc3/0x620 mm/kasan/report.c:489
+  kasan_report+0xd9/0x110 mm/kasan/report.c:602
+  rht_key_hashfn include/linux/rhashtable.h:159 [inline]
+  __rhashtable_lookup.constprop.0+0x426/0x550 include/linux/rhashtable.h:604
+  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
+  rhashtable_lookup_fast include/linux/rhashtable.h:672 [inline]
+  ila_lookup_wildcards net/ipv6/ila/ila_xlat.c:127 [inline]
+  ila_xlat_addr net/ipv6/ila/ila_xlat.c:652 [inline]
+  ila_nf_input+0x1ee/0x620 net/ipv6/ila/ila_xlat.c:185
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xbb/0x200 net/netfilter/core.c:626
+  nf_hook.constprop.0+0x42e/0x750 include/linux/netfilter.h:269
+  NF_HOOK include/linux/netfilter.h:312 [inline]
+  ipv6_rcv+0xa4/0x680 net/ipv6/ip6_input.c:309
+  __netif_receive_skb_one_core+0x12e/0x1e0 net/core/dev.c:5672
+  __netif_receive_skb+0x1d/0x160 net/core/dev.c:5785
+  process_backlog+0x443/0x15f0 net/core/dev.c:6117
+  __napi_poll.constprop.0+0xb7/0x550 net/core/dev.c:6883
+  napi_poll net/core/dev.c:6952 [inline]
+  net_rx_action+0xa94/0x1010 net/core/dev.c:7074
+  handle_softirqs+0x213/0x8f0 kernel/softirq.c:561
+  __do_softirq kernel/softirq.c:595 [inline]
+  invoke_softirq kernel/softirq.c:435 [inline]
+  __irq_exit_rcu+0x109/0x170 kernel/softirq.c:662
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+  sysvec_apic_timer_interrupt+0xa4/0xc0 arch/x86/kernel/apic/apic.c:1049
+
+Fixes: 7f00feaf1076 ("ila: Add generic ILA translation facility")
+Reported-by: syzbot+47e761d22ecf745f72b9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6772c9ae.050a0220.2f3838.04c7.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Tom Herbert <tom@herbertland.com>
+Link: https://patch.msgid.link/20241230162849.2795486-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/ila/ila_xlat.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -1220,6 +1220,8 @@ at_xdmac_prep_dma_memset(struct dma_chan
- 		return NULL;
+diff --git a/net/ipv6/ila/ila_xlat.c b/net/ipv6/ila/ila_xlat.c
+index 534a4498e280..fff09f5a796a 100644
+--- a/net/ipv6/ila/ila_xlat.c
++++ b/net/ipv6/ila/ila_xlat.c
+@@ -200,6 +200,8 @@ static const struct nf_hook_ops ila_nf_hook_ops[] = {
+ 	},
+ };
  
- 	desc = at_xdmac_memset_create_desc(chan, atchan, dest, len, value);
-+	if (!desc)
-+		return NULL;
- 	list_add_tail(&desc->desc_node, &desc->descs_list);
++static DEFINE_MUTEX(ila_mutex);
++
+ static int ila_add_mapping(struct net *net, struct ila_xlat_params *xp)
+ {
+ 	struct ila_net *ilan = net_generic(net, ila_net_id);
+@@ -207,16 +209,20 @@ static int ila_add_mapping(struct net *net, struct ila_xlat_params *xp)
+ 	spinlock_t *lock = ila_get_lock(ilan, xp->ip.locator_match);
+ 	int err = 0, order;
  
- 	desc->tx_dma_desc.cookie = -EBUSY;
+-	if (!ilan->xlat.hooks_registered) {
++	if (!READ_ONCE(ilan->xlat.hooks_registered)) {
+ 		/* We defer registering net hooks in the namespace until the
+ 		 * first mapping is added.
+ 		 */
+-		err = nf_register_net_hooks(net, ila_nf_hook_ops,
+-					    ARRAY_SIZE(ila_nf_hook_ops));
++		mutex_lock(&ila_mutex);
++		if (!ilan->xlat.hooks_registered) {
++			err = nf_register_net_hooks(net, ila_nf_hook_ops,
++						ARRAY_SIZE(ila_nf_hook_ops));
++			if (!err)
++				WRITE_ONCE(ilan->xlat.hooks_registered, true);
++		}
++		mutex_unlock(&ila_mutex);
+ 		if (err)
+ 			return err;
+-
+-		ilan->xlat.hooks_registered = true;
+ 	}
+ 
+ 	ila = kzalloc(sizeof(*ila), GFP_KERNEL);
+-- 
+2.39.5
+
 
 
 
