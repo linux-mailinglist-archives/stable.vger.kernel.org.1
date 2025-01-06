@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-107249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F501A02B04
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE49EA02C75
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED8C3A6955
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E489D164667
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2BD14D28C;
-	Mon,  6 Jan 2025 15:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7351448F2;
+	Mon,  6 Jan 2025 15:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8xtsDvK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIt45HHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D4A158525;
-	Mon,  6 Jan 2025 15:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FB381728;
+	Mon,  6 Jan 2025 15:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177900; cv=none; b=j3vQ36E1MeEbdIigYY/EOmJFNcIMK+bIrmF3bPdtH5yiIglGix5Gm1q0Nt4kAd/iNPCGC0iMVA63Y3ZIk/g53a2V4UBYF9KRgowjE+7PrAmR1Dp0oDtsewgDzrkqWJxm+x54mWon/fEA579TMo1EqHbchVKnNPwylOZgfXxI2is=
+	t=1736178824; cv=none; b=rhPtx0qrO1JaD14tivKnHWVyow502meSjdynBCDJvDAHKk7QRjoK+rYLsjyhCHt6M6F09r+nchI4D9ur09zpCXM8Qud3Z9dbYjuh60XGudwT//AUywnWX3hE6vCBBirmh0k3/qOf5rC2v4D320/Mh8ckRBdZ+eaurYxWWuZwy1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177900; c=relaxed/simple;
-	bh=HrY0rkXhVgWiGVDQg2USHIWPLuuk5sQqRjSWpgEUt6Q=;
+	s=arc-20240116; t=1736178824; c=relaxed/simple;
+	bh=LMEqeSQ2oINxim4yPTLM6KNmErOzAP+HM4Q4VpcFBbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jh7hnxe7POMxGTH4VE+OUnsDeIxT3uXhs5SVCiKhb2W3/6IBRzJ/i/hqRJExaDL/qfZdtPAMKgrUxncZBjlQO6ptQccKRNIg7kMZOMcWo6/VNerlno2gl0Zpi9VHiDM1qzbQdQIKNwdjJcOFTEMPCPu1ks/brn0duZHlJVC5LIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8xtsDvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE45C4CED2;
-	Mon,  6 Jan 2025 15:38:19 +0000 (UTC)
+	 MIME-Version; b=TNcJ/j2JqQCXftX9FXvUVQPV7sEZqWK+LEilalLdLt3TYrkIF3a4uxyGnS07yFLLMNxzWrBwiyne9CEhHfONS0GyNk3xbRJdYUmPYi6Prtzbni5/RtC1QazlXihrL+MqLiQq9X9pMNvvS4y2zVaxRsYSrCORESMWt3CxFrWfevM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIt45HHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59337C4CED2;
+	Mon,  6 Jan 2025 15:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177900;
-	bh=HrY0rkXhVgWiGVDQg2USHIWPLuuk5sQqRjSWpgEUt6Q=;
+	s=korg; t=1736178823;
+	bh=LMEqeSQ2oINxim4yPTLM6KNmErOzAP+HM4Q4VpcFBbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8xtsDvK3hdCWFlSaWTIGY7BC9yR9saLKKATV8ElGyNPmHpbBBD7nmV9PT4HNiQJk
-	 /kmh2bzE6GvJ7QHhpOSN1VMerUeaEJj/kBY23SI+a8iI5/eFPweVNN4nnS4r16zpuu
-	 GQ5V6cqLMMaywtHmTXFHErXyjSX44HM7NHwifcpc=
+	b=mIt45HHsiKVqdyLSqF6n6lrD0xL4DIExka8SPB4wP9j0Ruo+Kk34c5XKoXUh/P3GQ
+	 2gZOABOU302BsiXUnyB0TLeKRAg+6VHPflUFeOGyRCOq0ZqTFcnqFMgCiPH3ixErWk
+	 efXX4HqOYEQdqkM6eEiBczZ99e6EY+4INgd7m3Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Shahab Vahedi <list+bpf@vahedi.org>,
-	Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/156] ARC: bpf: Correct conditional check in check_jmp_32
+	Chen Ridong <chenridong@huawei.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 073/168] dmaengine: at_xdmac: avoid null_prt_deref in at_xdmac_prep_dma_memset
 Date: Mon,  6 Jan 2025 16:16:21 +0100
-Message-ID: <20250106151145.302314405@linuxfoundation.org>
+Message-ID: <20250106151141.224320764@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 7dd9eb6ba88964b091b89855ce7d2a12405013af ]
+commit c43ec96e8d34399bd9dab2f2dc316b904892133f upstream.
 
-The original code checks 'if (ARC_CC_AL)', which is always true since
-ARC_CC_AL is a constant. This makes the check redundant and likely
-obscures the intention of verifying whether the jump is conditional.
+The at_xdmac_memset_create_desc may return NULL, which will lead to a
+null pointer dereference. For example, the len input is error, or the
+atchan->free_descs_list is empty and memory is exhausted. Therefore, add
+check to avoid this.
 
-Updates the code to check cond == ARC_CC_AL instead, reflecting the intent
-to differentiate conditional from unconditional jumps.
-
-Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Acked-by: Shahab Vahedi <list+bpf@vahedi.org>
-Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b206d9a23ac7 ("dmaengine: xdmac: Add memset support")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Link: https://lore.kernel.org/r/20241029082845.1185380-1-chenridong@huaweicloud.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arc/net/bpf_jit_arcv2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/at_xdmac.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arc/net/bpf_jit_arcv2.c b/arch/arc/net/bpf_jit_arcv2.c
-index 4458e409ca0a..6d989b6d88c6 100644
---- a/arch/arc/net/bpf_jit_arcv2.c
-+++ b/arch/arc/net/bpf_jit_arcv2.c
-@@ -2916,7 +2916,7 @@ bool check_jmp_32(u32 curr_off, u32 targ_off, u8 cond)
- 	addendum = (cond == ARC_CC_AL) ? 0 : INSN_len_normal;
- 	disp = get_displacement(curr_off + addendum, targ_off);
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -1280,6 +1280,8 @@ at_xdmac_prep_dma_memset(struct dma_chan
+ 		return NULL;
  
--	if (ARC_CC_AL)
-+	if (cond == ARC_CC_AL)
- 		return is_valid_far_disp(disp);
- 	else
- 		return is_valid_near_disp(disp);
--- 
-2.39.5
-
+ 	desc = at_xdmac_memset_create_desc(chan, atchan, dest, len, value);
++	if (!desc)
++		return NULL;
+ 	list_add_tail(&desc->desc_node, &desc->descs_list);
+ 
+ 	desc->tx_dma_desc.cookie = -EBUSY;
 
 
 
