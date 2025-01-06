@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-107592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E34A02CC6
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAACBA02D21
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB35F3A21EC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E59E3A6A12
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EFF13C3D6;
-	Mon,  6 Jan 2025 15:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF85F1482F2;
+	Mon,  6 Jan 2025 15:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CExNvHaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLObWX5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE7F182D2;
-	Mon,  6 Jan 2025 15:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A463A13B592;
+	Mon,  6 Jan 2025 15:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178934; cv=none; b=T8TZumLaWG5jgyVDK1TKHXTC7VOcAlsJox+pma/cxJog3s9JBzZUHrTBAq/we6Mmu/WPjAYGOfdONT399zuJ9KRmy5POeVRYCX4RdEWXAIXOKT2t4sHq2gKlQa8R2VLc7P9DnTLkWjJG91sYZMzZuGWQIQM1wVVFaRaG/ZTA0uI=
+	t=1736179180; cv=none; b=hJ6NmHht9TBdN2XVoH6YkwqgUORkQoHmAHP5PB894ilVL4pIA1OoZ18HjE6vT9oEIiV9E7ayuV89yciYekVYVRmlqmqccSCs0weiqKFucEuTEJGGWXmGKgRF9o1CP1mvnqCsRZ1OmyoZvEISh5a4mopCRQRC1IA+8uLl67PL8Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178934; c=relaxed/simple;
-	bh=OsXOUaXZfM3kMkwI2f0tIMZXn8Ma38Jz+aOiEx2c7a4=;
+	s=arc-20240116; t=1736179180; c=relaxed/simple;
+	bh=eMWtu07VCHOQG8iy0jTTv1FTnUsWlzs9WNT9wpiUix8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgjI6V5s+HMqWfU9cH9wgiWGfeMevdBg+qIwsagG+vk/seoY22mXG2Ajucr9LMTXAykxASkKt7y1/IDGwTWRgGv+CPLmfgxPWs+cg45hGTJNDPMJHpLacVPWRXLOwupnYQMAURqqst0VhIusuSEdaOqCzGtmpmFw0tCr3f/WT/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CExNvHaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996E4C4CED2;
-	Mon,  6 Jan 2025 15:55:33 +0000 (UTC)
+	 MIME-Version; b=CX/jI2BITJF7Ft1bghqbVwq6lBtuyX9Zb9Wlu8WqMupFS7PrheslZnIBUfJAMq8XSoSN+b5JowLkWTiQFC8+wAvsbtDATEumfdCDme/iv87Xp8q/h4g8VYri7q4plg8K5RCR/5BWOcvHsriVQ/0S1syrrVvjTWTUZhqKJXhryro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLObWX5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBE3C4CED2;
+	Mon,  6 Jan 2025 15:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178934;
-	bh=OsXOUaXZfM3kMkwI2f0tIMZXn8Ma38Jz+aOiEx2c7a4=;
+	s=korg; t=1736179180;
+	bh=eMWtu07VCHOQG8iy0jTTv1FTnUsWlzs9WNT9wpiUix8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CExNvHaLKdY9flkrFoilNIHMArF01XQWrciex0nMlHLBzRQWetCOy9OGjQ2O2AxAZ
-	 6hJ/u/Aet8YAuzlWnDQTQ9q7AtpRDgdtv81U8oHhdBgMQEFyKPE/IBJIQgdEbYOYlJ
-	 emxiGMtwl9Ciqyhj+dzg5MtpcJOOPKx0smln/TvY=
+	b=XLObWX5tYvlCBcd1cPCEihCRslmDqLKyRcmyU81iq0ffRGiikZOIBNbBUhyDeinsO
+	 LxeHGRPW5edMLD9G1reyL8Pjo+6FTDvc7248nD2ZhhGgi6rlZhdy8fx9B2iMpdNRUk
+	 0kg48b4ghgkcCetZ4MO/6JmeHj86CrkT+ODz1K94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 109/168] thunderbolt: Add Intel Barlow Ridge PCI ID
+	Mank Wang <mank.wang@netprisma.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 21/93] USB: serial: option: add Netprisma LCUK54 modules for WWAN Ready
 Date: Mon,  6 Jan 2025 16:16:57 +0100
-Message-ID: <20250106151142.573365869@linuxfoundation.org>
+Message-ID: <20250106151129.504089906@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Mank Wang <mank.wang@netprisma.com>
 
-[ Upstream commit 6f14a210661ce03988ef4ed3c8402037c8e06539 ]
+commit aa954ae08262bb5cd6ab18dd56a0b58c1315db8b upstream.
 
-Intel Barlow Ridge is the first USB4 v2 controller from Intel. The
-controller exposes standard USB4 PCI class ID in typical configurations,
-however there is a way to configure it so that it uses a special class
-ID to allow using s different driver than the Windows inbox one. For
-this reason add the Barlow Ridge PCI ID to the Linux driver too so that
-the driver can attach regardless of the class ID.
+LCUK54-WRD's pid/vid
+0x3731/0x010a
+0x3731/0x010c
 
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+LCUK54-WWD's pid/vid
+0x3731/0x010b
+0x3731/0x010d
+
+Above products use the exact same interface layout and option
+driver:
+MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+
+T:  Bus=01 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=3731 ProdID=0101 Rev= 5.04
+S:  Manufacturer=NetPrisma
+S:  Product=LCUK54-WRD
+S:  SerialNumber=feeba631
+C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Mank Wang <mank.wang@netprisma.com>
+[ johan: use lower case hex notation ]
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c | 2 ++
- drivers/thunderbolt/nhi.h | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/usb/serial/option.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
-index 3b47eb2397a1..1350223088d8 100644
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1447,6 +1447,8 @@ static struct pci_device_id nhi_ids[] = {
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_MTL_P_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
- 
- 	/* Any USB4 compliant host */
- 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_USB4, ~0) },
-diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
-index b0718020c6f5..c15a0c46c9cf 100644
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -75,6 +75,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
- #define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
- #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
-+#define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI	0x5781
-+#define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI	0x5784
- #define PCI_DEVICE_ID_INTEL_MTL_M_NHI0			0x7eb2
- #define PCI_DEVICE_ID_INTEL_MTL_P_NHI0			0x7ec2
- #define PCI_DEVICE_ID_INTEL_MTL_P_NHI1			0x7ec3
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2377,6 +2377,18 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Golbal EDU */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0116, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for WWAN Ready */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010a, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for WWAN Ready */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010b, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WRD for WWAN Ready */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010c, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for WWAN Ready */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x010d, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
 
 
 
