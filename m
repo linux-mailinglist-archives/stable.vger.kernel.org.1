@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-107301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5E0A02B2D
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B5EA02D10
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601EA188205C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ADB93A1965
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8A41DC9BC;
-	Mon,  6 Jan 2025 15:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B54F81728;
+	Mon,  6 Jan 2025 15:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4IxmqVp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crrvzxfr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F07A1DACBB;
-	Mon,  6 Jan 2025 15:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D9F282F5;
+	Mon,  6 Jan 2025 15:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178054; cv=none; b=OkiWkWWQJGL7XKD6TxTMn9BLmaNh/56CayJsH8WRPI+LKN9TJBx9ZtBIppPgsmnrqiQCSCiOHO4ngBhc5p+YXY9RsQzR6MXOI3pZJqavx2kYHjp6kQRs0Jxqq+WBJH1YCtMa+Ija5suMpOG0a/TbPeO64IGyhjXa5zjdf6K3BVk=
+	t=1736179128; cv=none; b=DDdQKgZe7IW5mxoP/FTr/i4ZL2UCtMYgst1d3xcWaryyt+9LpAsHm6L7jWsldlVoqGMX2MT+oMhntEn7GinQutaGc7Kf/EwLM2y+r/BHABSOsSpIg5jaJRSzHzbQWKkgu3kmbKkgGGIurxcyzuxr136P6CQ40Kvj3JiFc4VdfEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178054; c=relaxed/simple;
-	bh=pApsc5N1adOkT7epJvQX/vh508eBuRvFncwtjDzycGk=;
+	s=arc-20240116; t=1736179128; c=relaxed/simple;
+	bh=Xd1jWLXuuBhq3N1d+m91S8F3dTdckB2HQMV54yUw/B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9ale3zbKgXlH7Z9Sv8Stm0vy8t6ccxDTuHamiAfpVFNMqhZ8vZ8BXiXLrLBZ+ok3o9deebtAVcYTWZ0dHzUqAaFfURxoCLJ8CY0+nnBwBsiJYdtSPYaF7+AsE6qkaDUbwiR9c+Pi1QRgUfehVXjNRC1jcRnFu9C6iqPRTK0/bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4IxmqVp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275F5C4CED2;
-	Mon,  6 Jan 2025 15:40:53 +0000 (UTC)
+	 MIME-Version; b=CN6My+C0fR2vAx4zOEWjNQdappI86Z3czouOvohLX2gsSWm5RWUWeyj3z4PMCmKxY5FqPtSykqhGBIx+3oC8/cUMWCa/abiOJJRqewhwXRblraQ9FUdAWfSIEupxqsIenvmV4og+PrNTlpPWweLTch0o8O0EzL23+vvf4u2aPQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crrvzxfr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84976C4CED6;
+	Mon,  6 Jan 2025 15:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178054;
-	bh=pApsc5N1adOkT7epJvQX/vh508eBuRvFncwtjDzycGk=;
+	s=korg; t=1736179127;
+	bh=Xd1jWLXuuBhq3N1d+m91S8F3dTdckB2HQMV54yUw/B0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4IxmqVpEq2oI2xn4/1tORO4AWIdKjFENgFDRigv3xmcuRCHmYIWhONjFTm7JNKf+
-	 hdpLHZdMteWn+dyCf6Tj8NmSFXS7uTQ6fZiFbOEzqS/f1cfqT44pW9mPOWWWr69VJY
-	 vmv2A4o+qnAxhLn3ywbnfDHBqgP+oA4CG4UEj774=
+	b=crrvzxfrEmH75sxPJrgcFySlvJeocVP0PbZIymBzwZY4Z+qjPm7MhXNp3VoxWHYC/
+	 Gu5pNTjVzgphWr3dyl1+AA1loyI/2rZ8oDO3t9Z52PNTbb9WRT6WJUbQWzsNaAs02S
+	 czH9ZA8kp8UaPTfI0Emgo8FWOT7gRGTItx4NPYhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Washington <joshwash@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Shailend Chand <shailend@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.12 145/156] gve: guard XSK operations on the existence of queues
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 35/93] nfsd: restore callback functionality for NFSv4.0
 Date: Mon,  6 Jan 2025 16:17:11 +0100
-Message-ID: <20250106151147.189983041@linuxfoundation.org>
+Message-ID: <20250106151130.028513493@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: NeilBrown <neilb@suse.de>
 
-commit 40338d7987d810fcaa95c500b1068a52b08eec9b upstream.
+[ Upstream commit 7917f01a286ce01e9c085e24468421f596ee1a0c ]
 
-This patch predicates the enabling and disabling of XSK pools on the
-existence of queues. As it stands, if the interface is down, disabling
-or enabling XSK pools would result in a crash, as the RX queue pointer
-would be NULL. XSK pool registration will occur as part of the next
-interface up.
+A recent patch inadvertently broke callbacks for NFSv4.0.
 
-Similarly, xsk_wakeup needs be guarded against queues disappearing
-while the function is executing, so a check against the
-GVE_PRIV_FLAGS_NAPI_ENABLED flag is added to synchronize with the
-disabling of the bit and the synchronize_net() in gve_turndown.
+In the 4.0 case we do not expect a session to be found but still need to
+call setup_callback_client() which will not try to dereference it.
 
-Fixes: fd8e40321a12 ("gve: Add AF_XDP zero-copy support for GQI-QPL format")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Shailend Chand <shailend@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch moves the check for failure to find a session into the 4.1+
+branch of setup_callback_client()
+
+Fixes: 1e02c641c3a4 ("NFSD: Prevent NULL dereference in nfsd4_process_cb_update()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c |   22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ fs/nfsd/nfs4callback.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1631,8 +1631,8 @@ static int gve_xsk_pool_enable(struct ne
- 	if (err)
- 		return err;
+diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
+index 55128de1a89d..d490f28aa7f6 100644
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -878,7 +878,7 @@ static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *c
+ 		args.authflavor = clp->cl_cred.cr_flavor;
+ 		clp->cl_cb_ident = conn->cb_ident;
+ 	} else {
+-		if (!conn->cb_xprt)
++		if (!conn->cb_xprt || !ses)
+ 			return -EINVAL;
+ 		clp->cl_cb_session = ses;
+ 		args.bc_xprt = conn->cb_xprt;
+@@ -1229,8 +1229,6 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
+ 		ses = c->cn_session;
+ 	}
+ 	spin_unlock(&clp->cl_lock);
+-	if (!c)
+-		return;
  
--	/* If XDP prog is not installed, return */
--	if (!priv->xdp_prog)
-+	/* If XDP prog is not installed or interface is down, return. */
-+	if (!priv->xdp_prog || !netif_running(dev))
- 		return 0;
- 
- 	rx = &priv->rx[qid];
-@@ -1677,21 +1677,16 @@ static int gve_xsk_pool_disable(struct n
- 	if (qid >= priv->rx_cfg.num_queues)
- 		return -EINVAL;
- 
--	/* If XDP prog is not installed, unmap DMA and return */
--	if (!priv->xdp_prog)
-+	/* If XDP prog is not installed or interface is down, unmap DMA and
-+	 * return.
-+	 */
-+	if (!priv->xdp_prog || !netif_running(dev))
- 		goto done;
- 
--	tx_qid = gve_xdp_tx_queue_id(priv, qid);
--	if (!netif_running(dev)) {
--		priv->rx[qid].xsk_pool = NULL;
--		xdp_rxq_info_unreg(&priv->rx[qid].xsk_rxq);
--		priv->tx[tx_qid].xsk_pool = NULL;
--		goto done;
--	}
--
- 	napi_rx = &priv->ntfy_blocks[priv->rx[qid].ntfy_id].napi;
- 	napi_disable(napi_rx); /* make sure current rx poll is done */
- 
-+	tx_qid = gve_xdp_tx_queue_id(priv, qid);
- 	napi_tx = &priv->ntfy_blocks[priv->tx[tx_qid].ntfy_id].napi;
- 	napi_disable(napi_tx); /* make sure current tx poll is done */
- 
-@@ -1719,6 +1714,9 @@ static int gve_xsk_wakeup(struct net_dev
- 	struct gve_priv *priv = netdev_priv(dev);
- 	int tx_queue_id = gve_xdp_tx_queue_id(priv, queue_id);
- 
-+	if (!gve_get_napi_enabled(priv))
-+		return -ENETDOWN;
-+
- 	if (queue_id >= priv->rx_cfg.num_queues || !priv->xdp_prog)
- 		return -EINVAL;
- 
+ 	err = setup_callback_client(clp, &conn, ses);
+ 	if (err) {
+-- 
+2.39.5
+
 
 
 
