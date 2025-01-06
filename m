@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE1AA02C29
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:51:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A23E0A02AB5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 349E4165492
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E3A87A2422
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F361DD0FE;
-	Mon,  6 Jan 2025 15:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2981014D28C;
+	Mon,  6 Jan 2025 15:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0OjAOPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnvmCuzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AD813B592;
-	Mon,  6 Jan 2025 15:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AFF7405A;
+	Mon,  6 Jan 2025 15:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178611; cv=none; b=QkeOeo4MC4j/1dR24NfeghBv6gxTpmBhFP0IzWy8C05eeiKjA7/WkLOI1RMMrR1pt6NtiOvf1wEReJFYXwwSBZgObxWnz0ks9wnvKdzPvWSkN4jbVK5VlssI9j8tDKBoIZ4W8e70oPvk+1zsKFgjc5SgRGUlzXXt10EXwEKf57g=
+	t=1736177697; cv=none; b=TpbcVVxkp7T9wCihAqhgdUeToYX4TMV/pS8LdIs+/4f2M+Dn/nJSvFmWQ++o8bDKGJxz+zUqmfoQhL3jfDLoxteEK1e5fTG9scKc7WRzsEAi2KuwYAwx+EdaL9NxeyK1TzsLf+lYemLkuoPgGpn++xeOFSKirthHgtJwXXXp0MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178611; c=relaxed/simple;
-	bh=X6DLRzdAp8HP0EbiLTtbsLLMv2D8yB8w5ERFyhlBqDI=;
+	s=arc-20240116; t=1736177697; c=relaxed/simple;
+	bh=dgl5lU4HL0RdDI2DK5X8zYai+C8Q/+WyFj18QOOOcTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pc5BJnONIkg0lPbsjRSoWRr1vMjMzlkWTMfk4nkJ2+1wInwLV4d781Saa8RIowfdgP178tMIN+q04lNUlJnyW2TEMa4ftTFPp1+/Alnp2WMsH5xHYhbXSopZuLz3gpfRVyfKi0g0umUqAEYP8te4KxDnAN0Kt3Hu4O1qoWZcI8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0OjAOPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668BEC4CED2;
-	Mon,  6 Jan 2025 15:50:10 +0000 (UTC)
+	 MIME-Version; b=YJ03YaYs8ua9Mi8ChNXEcGNHNict63cz8Biwo/rGRhLRpUw8Ae/lUtcmV4lAR5uSMUNdpLeMcGUl1FElkUQLobXEvdp+k4PgtabW9ymdX61JQtWPr86pG1JnvepY7tMkdamjWeC0wIcikxDMTqClEw7CU3JD9C8a6Mw4T9BoqqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnvmCuzv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56039C4CED2;
+	Mon,  6 Jan 2025 15:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178610;
-	bh=X6DLRzdAp8HP0EbiLTtbsLLMv2D8yB8w5ERFyhlBqDI=;
+	s=korg; t=1736177697;
+	bh=dgl5lU4HL0RdDI2DK5X8zYai+C8Q/+WyFj18QOOOcTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0OjAOPi94axUUjxeSzN+wmMZAZ0gJgV22DeQHVIogbDt8hNbiO9k68Wz4usz1AmV
-	 qUCGZjev8af7KyY3xSAVgPPIKjs2T4EQUZz7eOcQiaRBWU9UJiNSbNXcr1L8Ku55h1
-	 7v6N8krd/F8/dFm6NPymUhTemQLx5//R4FNOAywI=
+	b=FnvmCuzvB4wBP4nSo0LL5QOIQVYuYO1LVvVN5k3S9voZURpFXiEZ5nIYbr0M0YErt
+	 LBxyEEb9L7oW0uVfnVR7PAQeVquuhWZPvygvAVeICfg4cjp4fLG41KNk4TlfwD31g0
+	 kCvOuSWBlTohoW1t+UMGqhEocURH+Sh9PLwHjbNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Peter Chen <peter.chen@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 005/168] usb: cdns3: Add quirk flag to enable suspend residency
+Subject: [PATCH 6.12 027/156] RDMA/bnxt_re: Disable use of reserved wqes
 Date: Mon,  6 Jan 2025 16:15:13 +0100
-Message-ID: <20250106151138.662703777@linuxfoundation.org>
+Message-ID: <20250106151142.763450347@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 0aca19e4037a4143273e90f1b44666b78b4dde9b ]
+[ Upstream commit d5a38bf2f35979537c526acbc56bc435ed40685f ]
 
-Some platforms (e.g. ti,j721e-usb, ti,am64-usb) require
-this bit to be set to workaround a lockup issue with PHY
-short suspend intervals [1]. Add a platform quirk flag
-to indicate if Suspend Residency should be enabled.
+Disabling the reserved wqes logic for Gen P5/P7 devices
+because this workaround is required only for legacy devices.
 
-[1] - https://www.ti.com/lit/er/sprz457h/sprz457h.pdf
-i2409 - USB: USB2 PHY locks up due to short suspend
-
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240516044537.16801-2-r-gunasekaran@ti.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ecb53febfcad ("RDMA/bnxt_en: Enable RDMA driver support for 57500 chip")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241217102649.1377704-3-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/core.h |  1 +
- drivers/usb/cdns3/drd.c  | 10 +++++++++-
- drivers/usb/cdns3/drd.h  |  3 +++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
-index 1726799367d1..7d4b8311051d 100644
---- a/drivers/usb/cdns3/core.h
-+++ b/drivers/usb/cdns3/core.h
-@@ -44,6 +44,7 @@ struct cdns3_platform_data {
- 			bool suspend, bool wakeup);
- 	unsigned long quirks;
- #define CDNS3_DEFAULT_PM_RUNTIME_ALLOW	BIT(0)
-+#define CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE	BIT(1)
- };
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 63706d6d121c..b273db59454e 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -130,11 +130,13 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+ 		sb->max_qp_init_rd_atom > BNXT_QPLIB_MAX_OUT_RD_ATOM ?
+ 		BNXT_QPLIB_MAX_OUT_RD_ATOM : sb->max_qp_init_rd_atom;
+ 	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr) - 1;
+-	/*
+-	 * 128 WQEs needs to be reserved for the HW (8916). Prevent
+-	 * reporting the max number
+-	 */
+-	attr->max_qp_wqes -= BNXT_QPLIB_RESERVED_QP_WRS + 1;
++	if (!bnxt_qplib_is_chip_gen_p5_p7(rcfw->res->cctx)) {
++		/*
++		 * 128 WQEs needs to be reserved for the HW (8916). Prevent
++		 * reporting the max number on legacy devices
++		 */
++		attr->max_qp_wqes -= BNXT_QPLIB_RESERVED_QP_WRS + 1;
++	}
  
- /**
-diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
-index 33ba30f79b33..8e19ee72c120 100644
---- a/drivers/usb/cdns3/drd.c
-+++ b/drivers/usb/cdns3/drd.c
-@@ -385,7 +385,7 @@ static irqreturn_t cdns_drd_irq(int irq, void *data)
- int cdns_drd_init(struct cdns *cdns)
- {
- 	void __iomem *regs;
--	u32 state;
-+	u32 state, reg;
- 	int ret;
- 
- 	regs = devm_ioremap_resource(cdns->dev, &cdns->otg_res);
-@@ -429,6 +429,14 @@ int cdns_drd_init(struct cdns *cdns)
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_v1_regs->ien;
- 			writel(1, &cdns->otg_v1_regs->simulate);
-+
-+			if (cdns->pdata &&
-+			    (cdns->pdata->quirks & CDNS3_DRD_SUSPEND_RESIDENCY_ENABLE)) {
-+				reg = readl(&cdns->otg_v1_regs->susp_ctrl);
-+				reg |= SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE;
-+				writel(reg, &cdns->otg_v1_regs->susp_ctrl);
-+			}
-+
- 			cdns->version  = CDNS3_CONTROLLER_V1;
- 		} else {
- 			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
-diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
-index d72370c321d3..1e2aee14d629 100644
---- a/drivers/usb/cdns3/drd.h
-+++ b/drivers/usb/cdns3/drd.h
-@@ -193,6 +193,9 @@ struct cdns_otg_irq_regs {
- /* OTGREFCLK - bitmasks */
- #define OTGREFCLK_STB_CLK_SWITCH_EN	BIT(31)
- 
-+/* SUPS_CTRL - bitmasks */
-+#define SUSP_CTRL_SUSPEND_RESIDENCY_ENABLE	BIT(17)
-+
- /* OVERRIDE - bitmasks */
- #define OVERRIDE_IDPULLUP		BIT(0)
- /* Only for CDNS3_CONTROLLER_V0 version */
+ 	attr->max_qp_sges = cctx->modes.wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE ?
+ 			    min_t(u32, sb->max_sge_var_wqe, BNXT_VAR_MAX_SGE) : 6;
 -- 
 2.39.5
 
