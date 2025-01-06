@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-107457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58340A02BF0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1C0A02D01
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B46E7A12CF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7154B18820A2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1592A13B592;
-	Mon,  6 Jan 2025 15:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2324D1DD9AD;
+	Mon,  6 Jan 2025 15:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7N6Pb3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEmMzBQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE642040;
-	Mon,  6 Jan 2025 15:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02CD1DD539;
+	Mon,  6 Jan 2025 15:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178519; cv=none; b=KF+6QacsvCmUcHk8oNOHiK5y7u/RPf+SgP6G1Laq4gcgGPBgVyaNn88mAFzmK9Y5FuuoXtWDPce767Eo1+tABoteBF5WL3JKdR5WTh1UaS8jg7cwm2WAf62tI5j3C8rmwjc92d6gaGA4vvMt8FOeU2BQUYnthG9SwUcHx2pcPfU=
+	t=1736179192; cv=none; b=jhDjMWFl49TPhMK6e7nWjBVRCp0/MH4yLmp1itCZQu/NL5eGlRt+yTfVzL4M6dPGdP5ioMcymLoslee+tg5W1IQ7c6VqLGloqMVimsHfebE53lJmaPldiWJfKRt0H4rC7DN3DELEH7R0fMsZgcGsKxBxwbEMOb/FagxOr8owiAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178519; c=relaxed/simple;
-	bh=5VLFm6F8j4JojQa1uUjp6KK4oYg9U3CuNy6v2KlEEmA=;
+	s=arc-20240116; t=1736179192; c=relaxed/simple;
+	bh=Q4fDaftEIIVe71f3flseVxIU8FCnzWLkg5026lIk0t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uD5/9qtT7Has+wQqk7B1hsV7g8DAcUTQP6oEqD1fkolBT41cOkJEasjes7VWCEKfpd9d5uZIDnqgUpQO4Ro3fe9neaPK5CYxYQn7YcEZmFxQKULuBdh3+FmmyTXh+UGWeyBa0tyGtzlYHVvLRmkPYm3ECWm1i0eiUkJ0MhPmJCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7N6Pb3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1E1C4CED2;
-	Mon,  6 Jan 2025 15:48:39 +0000 (UTC)
+	 MIME-Version; b=jpFk8B8vqCsPOXhTVl6XFf66+wjOMaktt9EoJnws3tGKouHakViZJ7ZDoWh9F8oi5kQwsZq7ZIrQVHIkJec1gLbMLCfTwxA5NL78TFYim4qEM62WPA/x9gYq93+lDigmmoa0zAu0tUmJtUdwK8+UNOkaTIZE8SYHfxKE9kVbCCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEmMzBQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6C7C4CED2;
+	Mon,  6 Jan 2025 15:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178519;
-	bh=5VLFm6F8j4JojQa1uUjp6KK4oYg9U3CuNy6v2KlEEmA=;
+	s=korg; t=1736179192;
+	bh=Q4fDaftEIIVe71f3flseVxIU8FCnzWLkg5026lIk0t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7N6Pb3yuUVAyL+yjhVGlTc13BF3hTFqf0EhVAwHRyRJB51IsRxEXUT5UqMlevSv6
-	 TBV2HEewFal1a3M38wwuCEJEPkpUJy8JMAfKW1cAKwKF1YIlgdnAh6wOGLZ5Bt0a8k
-	 4PNDXk7mnIZBdyABaLkXZIUNZDiga7KaDMqZ+E2w=
+	b=nEmMzBQqwoQC0ut6+/6IwIJQr6iGkiq8y97us2cDMpmgAO73zxxkiLTdFGDs9Y1fD
+	 gH5TP2Fh6F8rFy/UGg/r8KpmUcqw5H4hwXORw3B2Ljchscl5SIPatnqWpLmNyos+bQ
+	 UobRReY5oJQhJlvWctePl0dNU3icBpHGaCiZ5R+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/138] btrfs: locking: remove the recursion handling code
+	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Srish Srinivasan <srishwap4@gmail.com>
+Subject: [PATCH 5.4 57/93] bpf: fix recursive lock when verdict program return SK_PASS
 Date: Mon,  6 Jan 2025 16:17:33 +0100
-Message-ID: <20250106151138.117477287@linuxfoundation.org>
+Message-ID: <20250106151130.856253891@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +66,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit 4048daedb910f83f080c6bb03c78af794aebdff5 ]
+commit 8ca2a1eeadf09862190b2810697702d803ceef2d upstream.
 
-Now that we're no longer using recursion, rip out all of the supporting
-code.  Follow up patches will clean up the callers of these functions.
+When the stream_verdict program returns SK_PASS, it places the received skb
+into its own receive queue, but a recursive lock eventually occurs, leading
+to an operating system deadlock. This issue has been present since v6.9.
 
-The extent_buffer::lock_owner is still retained as it allows safety
-checks in btrfs_init_new_buffer for the case that the free space cache
-is corrupted and we try to allocate a block that we are currently using
-and have locked in the path.
+'''
+sk_psock_strp_data_ready
+    write_lock_bh(&sk->sk_callback_lock)
+    strp_data_ready
+      strp_read_sock
+        read_sock -> tcp_read_sock
+          strp_recv
+            cb.rcv_msg -> sk_psock_strp_read
+              # now stream_verdict return SK_PASS without peer sock assign
+              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
+              sk_psock_verdict_apply
+                sk_psock_skb_ingress_self
+                  sk_psock_skb_ingress_enqueue
+                    sk_psock_data_ready
+                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 97e86631bccd ("btrfs: don't set lock_owner when locking extent buffer for reading")
+'''
+
+This topic has been discussed before, but it has not been fixed.
+Previous discussion:
+https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
+
+Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
+Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[srish: Apply to stable branch linux-5.10.y]
+Signed-off-by: Srish Srinivasan <srishwap4@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/locking.c | 68 +++-------------------------------------------
- 1 file changed, 4 insertions(+), 64 deletions(-)
+ net/core/skmsg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/locking.c b/fs/btrfs/locking.c
-index 5260660b655a..1e36a66fcefa 100644
---- a/fs/btrfs/locking.c
-+++ b/fs/btrfs/locking.c
-@@ -25,43 +25,18 @@
-  * - reader/reader sharing
-  * - try-lock semantics for readers and writers
-  *
-- * Additionally we need one level nesting recursion, see below. The rwsem
-- * implementation does opportunistic spinning which reduces number of times the
-- * locking task needs to sleep.
-- *
-- *
-- * Lock recursion
-- * --------------
-- *
-- * A write operation on a tree might indirectly start a look up on the same
-- * tree.  This can happen when btrfs_cow_block locks the tree and needs to
-- * lookup free extents.
-- *
-- * btrfs_cow_block
-- *   ..
-- *   alloc_tree_block_no_bg_flush
-- *     btrfs_alloc_tree_block
-- *       btrfs_reserve_extent
-- *         ..
-- *         load_free_space_cache
-- *           ..
-- *           btrfs_lookup_file_extent
-- *             btrfs_search_slot
-- *
-+ * The rwsem implementation does opportunistic spinning which reduces number of
-+ * times the locking task needs to sleep.
-  */
- 
- /*
-  * __btrfs_tree_read_lock - lock extent buffer for read
-  * @eb:		the eb to be locked
-  * @nest:	the nesting level to be used for lockdep
-- * @recurse:	if this lock is able to be recursed
-+ * @recurse:	unused
-  *
-  * This takes the read lock on the extent buffer, using the specified nesting
-  * level for lockdep purposes.
-- *
-- * If you specify recurse = true, then we will allow this to be taken if we
-- * currently own the lock already.  This should only be used in specific
-- * usecases, and the subsequent unlock will not change the state of the lock.
-  */
- void __btrfs_tree_read_lock(struct extent_buffer *eb, enum btrfs_lock_nesting nest,
- 			    bool recurse)
-@@ -71,31 +46,7 @@ void __btrfs_tree_read_lock(struct extent_buffer *eb, enum btrfs_lock_nesting ne
- 	if (trace_btrfs_tree_read_lock_enabled())
- 		start_ns = ktime_get_ns();
- 
--	if (unlikely(recurse)) {
--		/* First see if we can grab the lock outright */
--		if (down_read_trylock(&eb->lock))
--			goto out;
--
--		/*
--		 * Ok still doesn't necessarily mean we are already holding the
--		 * lock, check the owner.
--		 */
--		if (eb->lock_owner != current->pid) {
--			down_read_nested(&eb->lock, nest);
--			goto out;
--		}
--
--		/*
--		 * Ok we have actually recursed, but we should only be recursing
--		 * once, so blow up if we're already recursed, otherwise set
--		 * ->lock_recursed and carry on.
--		 */
--		BUG_ON(eb->lock_recursed);
--		eb->lock_recursed = true;
--		goto out;
--	}
- 	down_read_nested(&eb->lock, nest);
--out:
- 	eb->lock_owner = current->pid;
- 	trace_btrfs_tree_read_lock(eb, start_ns);
- }
-@@ -136,22 +87,11 @@ int btrfs_try_tree_write_lock(struct extent_buffer *eb)
- }
- 
- /*
-- * Release read lock.  If the read lock was recursed then the lock stays in the
-- * original state that it was before it was recursively locked.
-+ * Release read lock.
-  */
- void btrfs_tree_read_unlock(struct extent_buffer *eb)
- {
- 	trace_btrfs_tree_read_unlock(eb);
--	/*
--	 * if we're nested, we have the write lock.  No new locking
--	 * is needed as long as we are the lock owner.
--	 * The write unlock will do a barrier for us, and the lock_recursed
--	 * field only matters to the lock owner.
--	 */
--	if (eb->lock_recursed && current->pid == eb->lock_owner) {
--		eb->lock_recursed = false;
--		return;
--	}
- 	eb->lock_owner = 0;
- 	up_read(&eb->lock);
- }
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index a606ad8e8be2..dfc2e4d6a7a0 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -904,9 +904,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
+ 		if (tls_sw_has_ctx_rx(sk)) {
+ 			psock->parser.saved_data_ready(sk);
+ 		} else {
+-			write_lock_bh(&sk->sk_callback_lock);
++			read_lock_bh(&sk->sk_callback_lock);
+ 			strp_data_ready(&psock->parser.strp);
+-			write_unlock_bh(&sk->sk_callback_lock);
++			read_unlock_bh(&sk->sk_callback_lock);
+ 		}
+ 	}
+ 	rcu_read_unlock();
 -- 
 2.39.5
 
