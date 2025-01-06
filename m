@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357A3A02B44
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE418A02CBD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 736011881FAD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E0A3A8CAD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950ED1DA100;
-	Mon,  6 Jan 2025 15:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA4281728;
+	Mon,  6 Jan 2025 15:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsqTPI5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLCzmjxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AB914A617;
-	Mon,  6 Jan 2025 15:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F0F1DA60B;
+	Mon,  6 Jan 2025 15:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178091; cv=none; b=fjWn/jGUCHCqkHoKqoVE8CDtiouogtM73Ounzk6KrBeq/n2i9bz6NUXsZCd9bL46EGPp46VWrU1ckKoL2jcOu4jWdkZc6ozX0IHeSpZJBa0nKSkCnMqgQkj4KrlqVYuwndrA7tFzNoE4h8v+Ii01fdGNnZyYz5dVpzM4joN+WdE=
+	t=1736178898; cv=none; b=fQCUhHITjQVnVvE6XGlAJxEMFVrma2Xb4+r1u+ruAaK0GkGAYFK6PRVqA0vhdyC7hNcfRaWR7wkApE5Tqreuqp3EM1yghpGMnGmbPCMkRTb7QfdNB4Rr5lw3+78DMSd2O12uG3jjCY+zxdXzvi3NwwpfOLXKcRegjChOFsqrAkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178091; c=relaxed/simple;
-	bh=7xqtPpdkWPPCGlC2Z4Q22BzgwA7zM+hoaCuMaRlSGJQ=;
+	s=arc-20240116; t=1736178898; c=relaxed/simple;
+	bh=Bl/gVxjesZ4Ed4uzL4HLXE9ECxbv1T5GCGPRMx4n35E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrnFR954PbOKNlWCydcVNuNKzAKDCSxCNq/6KCuqr7fQmkAu3srNJYDoIR7ZyM6KzI4D9ikJnybJqfl9S9RDozyhToiAa9Yd2Df9QePPSiOzuAP3bNbXC1ur2i0ko0ZA7grneiQX9LUPpZCMriwQ8pY6sMxWOZ+4DvUHblCiiyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsqTPI5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B901EC4CED2;
-	Mon,  6 Jan 2025 15:41:30 +0000 (UTC)
+	 MIME-Version; b=TC/IwfJzx5C4ksuKnEApGevOdedMmDLGtzElNKLLwSsJ5tIZKC1IEqlmh3rvQsexB4+WYrcUO8ynHcfDOQVVMqgZhhV8fwNYEGYKrzKC/++40SsX/216OhGJK3dgKheYl/DaswzEAAWMw97gnM7xde9wCnQ2WWsbQFpchwAXPdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLCzmjxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C5FC4CED2;
+	Mon,  6 Jan 2025 15:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178091;
-	bh=7xqtPpdkWPPCGlC2Z4Q22BzgwA7zM+hoaCuMaRlSGJQ=;
+	s=korg; t=1736178898;
+	bh=Bl/gVxjesZ4Ed4uzL4HLXE9ECxbv1T5GCGPRMx4n35E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsqTPI5XCKRFhmC5cMZ+Bk0XlSH5Udu9wkl2/KTJMs/nL+1tWW1EtEG3Z7haG/gO/
-	 aCquickxDTnlW+Y1RhvV+KpBML1oKKmrwot2PLw+XJsbwPwgvlsZQuiMGpdLvKrqyg
-	 /VbGchZ7tns4ceme7DDn+Rq4K5hJTA96cG/nDsxw=
+	b=gLCzmjxMtrusOKqzjFz7Y+SswarnlT2PrRDa5ri0QadSaRyiTe1syj0nAA/wElAlR
+	 SBUi+HEwQEBSPiOjgW9YHE3OjWMy7BRqQzLW+6Hk4gPbSpUmlUwrm72qqjAr4cPh0o
+	 nD7U3xZc+dfKvftHxVfni1CX344CcqyUka1t7T18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seiji Nishikawa <snishika@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 151/156] mm: vmscan: account for free pages to prevent infinite Loop in throttle_direct_reclaim()
+	Serge Semin <fancer.lancer@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 129/168] net: stmmac: dont create a MDIO bus if unnecessary
 Date: Mon,  6 Jan 2025 16:17:17 +0100
-Message-ID: <20250106151147.418914033@linuxfoundation.org>
+Message-ID: <20250106151143.314171090@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +64,253 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seiji Nishikawa <snishika@redhat.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-commit 6aaced5abd32e2a57cd94fd64f824514d0361da8 upstream.
+[ Upstream commit f3c2caacee824ce4a331cdafb0b8dc8e987f105e ]
 
-The task sometimes continues looping in throttle_direct_reclaim() because
-allow_direct_reclaim(pgdat) keeps returning false.
+Currently a MDIO bus is created if the devicetree description is either:
 
- #0 [ffff80002cb6f8d0] __switch_to at ffff8000080095ac
- #1 [ffff80002cb6f900] __schedule at ffff800008abbd1c
- #2 [ffff80002cb6f990] schedule at ffff800008abc50c
- #3 [ffff80002cb6f9b0] throttle_direct_reclaim at ffff800008273550
- #4 [ffff80002cb6fa20] try_to_free_pages at ffff800008277b68
- #5 [ffff80002cb6fae0] __alloc_pages_nodemask at ffff8000082c4660
- #6 [ffff80002cb6fc50] alloc_pages_vma at ffff8000082e4a98
- #7 [ffff80002cb6fca0] do_anonymous_page at ffff80000829f5a8
- #8 [ffff80002cb6fce0] __handle_mm_fault at ffff8000082a5974
- #9 [ffff80002cb6fd90] handle_mm_fault at ffff8000082a5bd4
+    1. Not fixed-link
+    2. fixed-link but contains a MDIO bus as well
 
-At this point, the pgdat contains the following two zones:
+The "1" case above isn't always accurate. If there's a phy-handle,
+it could be referencing a phy on another MDIO controller's bus[1]. In
+this case, where the MDIO bus is not described at all, currently
+stmmac will make a MDIO bus and scan its address space to discover
+phys (of which there are none). This process takes time scanning a bus
+that is known to be empty, delaying time to complete probe.
 
-        NODE: 4  ZONE: 0  ADDR: ffff00817fffe540  NAME: "DMA32"
-          SIZE: 20480  MIN/LOW/HIGH: 11/28/45
-          VM_STAT:
-                NR_FREE_PAGES: 359
-        NR_ZONE_INACTIVE_ANON: 18813
-          NR_ZONE_ACTIVE_ANON: 0
-        NR_ZONE_INACTIVE_FILE: 50
-          NR_ZONE_ACTIVE_FILE: 0
-          NR_ZONE_UNEVICTABLE: 0
-        NR_ZONE_WRITE_PENDING: 0
-                     NR_MLOCK: 0
-                    NR_BOUNCE: 0
-                   NR_ZSPAGES: 0
-            NR_FREE_CMA_PAGES: 0
+There are also a lot of upstream devicetrees[2] that expect a MDIO bus
+to be created, scanned for phys, and the first one found connected
+to the MAC. This case can be inferred from the platform description by
+not having a phy-handle && not being fixed-link. This hits case "1" in
+the current driver's logic, and must be handled in any logic change here
+since it is a valid legacy dt-binding.
 
-        NODE: 4  ZONE: 1  ADDR: ffff00817fffec00  NAME: "Normal"
-          SIZE: 8454144  PRESENT: 98304  MIN/LOW/HIGH: 68/166/264
-          VM_STAT:
-                NR_FREE_PAGES: 146
-        NR_ZONE_INACTIVE_ANON: 94668
-          NR_ZONE_ACTIVE_ANON: 3
-        NR_ZONE_INACTIVE_FILE: 735
-          NR_ZONE_ACTIVE_FILE: 78
-          NR_ZONE_UNEVICTABLE: 0
-        NR_ZONE_WRITE_PENDING: 0
-                     NR_MLOCK: 0
-                    NR_BOUNCE: 0
-                   NR_ZSPAGES: 0
-            NR_FREE_CMA_PAGES: 0
+Let's improve the logic to create a MDIO bus if either:
 
-In allow_direct_reclaim(), while processing ZONE_DMA32, the sum of
-inactive/active file-backed pages calculated in zone_reclaimable_pages()
-based on the result of zone_page_state_snapshot() is zero.
+    - Devicetree contains a MDIO bus
+    - !fixed-link && !phy-handle (legacy handling)
 
-Additionally, since this system lacks swap, the calculation of inactive/
-active anonymous pages is skipped.
+This way the case where no MDIO bus should be made is handled, as well
+as retaining backwards compatibility with the valid cases.
 
-        crash> p nr_swap_pages
-        nr_swap_pages = $1937 = {
-          counter = 0
-        }
+Below devicetree snippets can be found that explain some of
+the cases above more concretely.
 
-As a result, ZONE_DMA32 is deemed unreclaimable and skipped, moving on to
-the processing of the next zone, ZONE_NORMAL, despite ZONE_DMA32 having
-free pages significantly exceeding the high watermark.
+Here's[0] a devicetree example where the MAC is both fixed-link and
+driving a switch on MDIO (case "2" above). This needs a MDIO bus to
+be created:
 
-The problem is that the pgdat->kswapd_failures hasn't been incremented.
+    &fec1 {
+            phy-mode = "rmii";
 
-        crash> px ((struct pglist_data *) 0xffff00817fffe540)->kswapd_failures
-        $1935 = 0x0
+            fixed-link {
+                    speed = <100>;
+                    full-duplex;
+            };
 
-This is because the node deemed balanced.  The node balancing logic in
-balance_pgdat() evaluates all zones collectively.  If one or more zones
-(e.g., ZONE_DMA32) have enough free pages to meet their watermarks, the
-entire node is deemed balanced.  This causes balance_pgdat() to exit early
-before incrementing the kswapd_failures, as it considers the overall
-memory state acceptable, even though some zones (like ZONE_NORMAL) remain
-under significant pressure.
+            mdio1: mdio {
+                    switch0: switch0@0 {
+                            compatible = "marvell,mv88e6190";
+                            pinctrl-0 = <&pinctrl_gpio_switch0>;
+                    };
+            };
+    };
 
+Here's[1] an example where there is no MDIO bus or fixed-link for
+the ethernet1 MAC, so no MDIO bus should be created since ethernet0
+is the MDIO master for ethernet1's phy:
 
-The patch ensures that zone_reclaimable_pages() includes free pages
-(NR_FREE_PAGES) in its calculation when no other reclaimable pages are
-available (e.g., file-backed or anonymous pages).  This change prevents
-zones like ZONE_DMA32, which have sufficient free pages, from being
-mistakenly deemed unreclaimable.  By doing so, the patch ensures proper
-node balancing, avoids masking pressure on other zones like ZONE_NORMAL,
-and prevents infinite loops in throttle_direct_reclaim() caused by
-allow_direct_reclaim(pgdat) repeatedly returning false.
+    &ethernet0 {
+            phy-mode = "sgmii";
+            phy-handle = <&sgmii_phy0>;
 
+            mdio {
+                    compatible = "snps,dwmac-mdio";
+                    sgmii_phy0: phy@8 {
+                            compatible = "ethernet-phy-id0141.0dd4";
+                            reg = <0x8>;
+                            device_type = "ethernet-phy";
+                    };
 
-The kernel hangs due to a task stuck in throttle_direct_reclaim(), caused
-by a node being incorrectly deemed balanced despite pressure in certain
-zones, such as ZONE_NORMAL.  This issue arises from
-zone_reclaimable_pages() returning 0 for zones without reclaimable file-
-backed or anonymous pages, causing zones like ZONE_DMA32 with sufficient
-free pages to be skipped.
+                    sgmii_phy1: phy@a {
+                            compatible = "ethernet-phy-id0141.0dd4";
+                            reg = <0xa>;
+                            device_type = "ethernet-phy";
+                    };
+            };
+    };
 
-The lack of swap or reclaimable pages results in ZONE_DMA32 being ignored
-during reclaim, masking pressure in other zones.  Consequently,
-pgdat->kswapd_failures remains 0 in balance_pgdat(), preventing fallback
-mechanisms in allow_direct_reclaim() from being triggered, leading to an
-infinite loop in throttle_direct_reclaim().
+    &ethernet1 {
+            phy-mode = "sgmii";
+            phy-handle = <&sgmii_phy1>;
+    };
 
-This patch modifies zone_reclaimable_pages() to account for free pages
-(NR_FREE_PAGES) when no other reclaimable pages exist.  This ensures zones
-with sufficient free pages are not skipped, enabling proper balancing and
-reclaim behavior.
+Finally there's descriptions like this[2] which don't describe the
+MDIO bus but expect it to be created and the whole address space
+scanned for a phy since there's no phy-handle or fixed-link described:
 
-[akpm@linux-foundation.org: coding-style cleanups]
-Link: https://lkml.kernel.org/r/20241130164346.436469-1-snishika@redhat.com
-Link: https://lkml.kernel.org/r/20241130161236.433747-2-snishika@redhat.com
-Fixes: 5a1c84b404a7 ("mm: remove reclaim and compaction retry approximations")
-Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    &gmac {
+            phy-supply = <&vcc_lan>;
+            phy-mode = "rmii";
+            snps,reset-gpio = <&gpio3 RK_PB4 GPIO_ACTIVE_HIGH>;
+            snps,reset-active-low;
+            snps,reset-delays-us = <0 10000 1000000>;
+    };
+
+[0] https://elixir.bootlin.com/linux/v6.5-rc5/source/arch/arm/boot/dts/nxp/vf/vf610-zii-ssmb-dtu.dts
+[1] https://elixir.bootlin.com/linux/v6.6-rc5/source/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
+[2] https://elixir.bootlin.com/linux/v6.6-rc5/source/arch/arm64/boot/dts/rockchip/rk3368-r88.dts#L164
+
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Co-developed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2b6ffcd7873b ("net: stmmac: restructure the error path of stmmac_probe_config_dt()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmscan.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../ethernet/stmicro/stmmac/stmmac_platform.c | 91 +++++++++++--------
+ 1 file changed, 54 insertions(+), 37 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -374,7 +374,14 @@ unsigned long zone_reclaimable_pages(str
- 	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
- 		nr += zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_ANON) +
- 			zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_ANON);
--
-+	/*
-+	 * If there are no reclaimable file-backed or anonymous pages,
-+	 * ensure zones with sufficient free pages are not skipped.
-+	 * This prevents zones like DMA32 from being ignored in reclaim
-+	 * scenarios where they can still help alleviate memory pressure.
-+	 */
-+	if (nr == 0)
-+		nr = zone_page_state_snapshot(zone, NR_FREE_PAGES);
- 	return nr;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 196fb1ddbec0..7f816f0cf9a5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -294,62 +294,80 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
  }
  
+ /**
+- * stmmac_dt_phy - parse device-tree driver parameters to allocate PHY resources
+- * @plat: driver data platform structure
+- * @np: device tree node
+- * @dev: device pointer
+- * Description:
+- * The mdio bus will be allocated in case of a phy transceiver is on board;
+- * it will be NULL if the fixed-link is configured.
+- * If there is the "snps,dwmac-mdio" sub-node the mdio will be allocated
+- * in any case (for DSA, mdio must be registered even if fixed-link).
+- * The table below sums the supported configurations:
+- *	-------------------------------
+- *	snps,phy-addr	|     Y
+- *	-------------------------------
+- *	phy-handle	|     Y
+- *	-------------------------------
+- *	fixed-link	|     N
+- *	-------------------------------
+- *	snps,dwmac-mdio	|
+- *	  even if	|     Y
+- *	fixed-link	|
+- *	-------------------------------
++ * stmmac_of_get_mdio() - Gets the MDIO bus from the devicetree.
++ * @np: devicetree node
+  *
+- * It returns 0 in case of success otherwise -ENODEV.
++ * The MDIO bus will be searched for in the following ways:
++ * 1. The compatible is "snps,dwc-qos-ethernet-4.10" && a "mdio" named
++ *    child node exists
++ * 2. A child node with the "snps,dwmac-mdio" compatible is present
++ *
++ * Return: The MDIO node if present otherwise NULL
+  */
+-static int stmmac_dt_phy(struct plat_stmmacenet_data *plat,
+-			 struct device_node *np, struct device *dev)
++static struct device_node *stmmac_of_get_mdio(struct device_node *np)
+ {
+-	bool mdio = !of_phy_is_fixed_link(np);
+ 	static const struct of_device_id need_mdio_ids[] = {
+ 		{ .compatible = "snps,dwc-qos-ethernet-4.10" },
+ 		{},
+ 	};
++	struct device_node *mdio_node = NULL;
+ 
+ 	if (of_match_node(need_mdio_ids, np)) {
+-		plat->mdio_node = of_get_child_by_name(np, "mdio");
++		mdio_node = of_get_child_by_name(np, "mdio");
+ 	} else {
+ 		/**
+ 		 * If snps,dwmac-mdio is passed from DT, always register
+ 		 * the MDIO
+ 		 */
+-		for_each_child_of_node(np, plat->mdio_node) {
+-			if (of_device_is_compatible(plat->mdio_node,
++		for_each_child_of_node(np, mdio_node) {
++			if (of_device_is_compatible(mdio_node,
+ 						    "snps,dwmac-mdio"))
+ 				break;
+ 		}
+ 	}
+ 
+-	if (plat->mdio_node) {
++	return mdio_node;
++}
++
++/**
++ * stmmac_mdio_setup() - Populate platform related MDIO structures.
++ * @plat: driver data platform structure
++ * @np: devicetree node
++ * @dev: device pointer
++ *
++ * This searches for MDIO information from the devicetree.
++ * If an MDIO node is found, it's assigned to plat->mdio_node and
++ * plat->mdio_bus_data is allocated.
++ * If no connection can be determined, just plat->mdio_bus_data is allocated
++ * to indicate a bus should be created and scanned for a phy.
++ * If it's determined there's no MDIO bus needed, both are left NULL.
++ *
++ * This expects that plat->phy_node has already been searched for.
++ *
++ * Return: 0 on success, errno otherwise.
++ */
++static int stmmac_mdio_setup(struct plat_stmmacenet_data *plat,
++			     struct device_node *np, struct device *dev)
++{
++	bool legacy_mdio;
++
++	plat->mdio_node = stmmac_of_get_mdio(np);
++	if (plat->mdio_node)
+ 		dev_dbg(dev, "Found MDIO subnode\n");
+-		mdio = true;
+-	}
+ 
+-	if (mdio) {
+-		plat->mdio_bus_data =
+-			devm_kzalloc(dev, sizeof(struct stmmac_mdio_bus_data),
+-				     GFP_KERNEL);
++	/* Legacy devicetrees allowed for no MDIO bus description and expect
++	 * the bus to be scanned for devices. If there's no phy or fixed-link
++	 * described assume this is the case since there must be something
++	 * connected to the MAC.
++	 */
++	legacy_mdio = !of_phy_is_fixed_link(np) && !plat->phy_node;
++	if (legacy_mdio)
++		dev_info(dev, "Deprecated MDIO bus assumption used\n");
++
++	if (plat->mdio_node || legacy_mdio) {
++		plat->mdio_bus_data = devm_kzalloc(dev,
++						   sizeof(*plat->mdio_bus_data),
++						   GFP_KERNEL);
+ 		if (!plat->mdio_bus_data)
+ 			return -ENOMEM;
+ 
+@@ -453,8 +471,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	if (of_property_read_u32(np, "snps,phy-addr", &plat->phy_addr) == 0)
+ 		dev_warn(&pdev->dev, "snps,phy-addr property is deprecated\n");
+ 
+-	/* To Configure PHY by using all device-tree supported properties */
+-	rc = stmmac_dt_phy(plat, np, &pdev->dev);
++	rc = stmmac_mdio_setup(plat, np, &pdev->dev);
+ 	if (rc)
+ 		return ERR_PTR(rc);
+ 
+-- 
+2.39.5
+
 
 
 
