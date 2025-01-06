@@ -1,163 +1,95 @@
-Return-Path: <stable+bounces-106851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A86A02771
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:07:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044F6A02783
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:09:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C32C91630EB
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:07:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83CF218822D3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 14:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DB5762D0;
-	Mon,  6 Jan 2025 14:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E178F1DE3A7;
+	Mon,  6 Jan 2025 14:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lYp1U3Yq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y6ubN1eH"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0E139FCE;
-	Mon,  6 Jan 2025 14:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B621DE2DA
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 14:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736172444; cv=none; b=F2W0BFzBEzQvgER4IBEFq6n6TRNBlLjImDnoIUBiUVh5CUxBGIeTpG6FH15LMOhBfQD+k606AZODcqvYpqB3lO9R6nreHLO74Oz1CqyNg8G1n2ZxbctkEaN6pO0s6Uz6vyTvmZtPdsciEB4Mwqj/Wi3fj4ZmjegwEy00tVkAe0I=
+	t=1736172533; cv=none; b=sWlF7Y+2xcMTisM4kEBlFWzz7rXO2MjgVgLI85Ud27QtMCSpy/UJT4/YoLeKW4u5+knPA068sOGRsubqVqeyGxbwllZadpnVBqgJHg48yLrgDmULUabN2xvEeYu9Wb2sh4eFExkTcoCL06iECL/VOy6k+WKfXV7UVO/2uH3VBGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736172444; c=relaxed/simple;
-	bh=/9C/B/LcemZhglova26kzWe8CHKOrQjAUztr9Jd9fTs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J6zr23mGqCT5DEpX50oi2hV02Z+QoXV17yYztNpVFCwi5TFBhcjB9f48vSvG9wh8xGqcJT/39lGYZzs7jjkBdLyuP8XzNoWKEB7RNcYMZI7HiH0NH8SGgS2rMBKOYActxduGfhwLvhk/RHky//9sG+fI8pgh4HA2fTRmZlM0zM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lYp1U3Yq; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 505NaqEp007181;
-	Mon, 6 Jan 2025 14:07:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-description:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=KeXVtT
-	MY9ysxosD9h4kHGx7Wr7hGM/QRUps34uop+M8=; b=lYp1U3YqgwloOXPMav/0UT
-	UvXGUVJc8FNUto/qpfKqwkWWhv7wbNWpz5mIkHKt6+PZozLwcYCoP05TbfUEhC2i
-	bQUmpN3kUOaogOLFWaB8MYOQTolWfzqTACF5PtMTEukJ1itX8q2H8RaWLBaaEegD
-	z5eiuG56VmrsKlQVdaz/WR8j9GyOZLUGdgztHDR+hNWWDARw6+hSISEPz9MT6eMZ
-	fUg0waCy7wNmj3JWDbBzgj6tY4Y7XwietmbnGy4dYK+DW0DOBjUwawtso39x3MGu
-	7e1LbiP14nKiTRH6WyLoTqeyfU4SBjZqfGefbODhwEwoWoa7oZtyMSGsQ0M6qXCA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4403wajtj0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 14:07:14 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 506B34J5015795;
-	Mon, 6 Jan 2025 14:07:14 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ygtknuvk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 14:07:14 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 506E7CXG57016730
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Jan 2025 14:07:12 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 052A920043;
-	Mon,  6 Jan 2025 14:07:12 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D86C520040;
-	Mon,  6 Jan 2025 14:07:11 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  6 Jan 2025 14:07:11 +0000 (GMT)
-Date: Mon, 6 Jan 2025 15:07:08 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Koichiro Den <koichiro.den@canonical.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org
-Subject: Re: Linux 6.13-rc6
-Message-ID: <Z3vjjDsjZAfqLI6N@tuxmaker.boeblingen.de.ibm.com>
-References: <CAHk-=wgjfaLyhU2L84XbkY+Jj47hryY_f1SBxmnnZi4QOJKGaw@mail.gmail.com>
- <20250106131817.GAZ3vYGVr3-hWFFPLj@fat_crate.local>
+	s=arc-20240116; t=1736172533; c=relaxed/simple;
+	bh=tbZDcAHgBPAmgkU05bxJQHp5wnDiBANbUfwHcrvnQxQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WM73WxyZ3OBqjHwQdLo7eQ/ELkQKt/BQrDu/FIqYCqcY5vhpGIhRw92D2JwvAFDj7Vr2jyLfP9QH2IocvYFye0InY44ZGMX0QTA0ue3Q9A/UjPtIIJ8akiJc3kNpwZ1Vnq4l+5j6p2Mn/PZHHGXukhPOiIHRDrvCendUQded5F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y6ubN1eH; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-71e2bb84fe3so7600036a34.1
+        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 06:08:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736172531; x=1736777331; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=tbZDcAHgBPAmgkU05bxJQHp5wnDiBANbUfwHcrvnQxQ=;
+        b=Y6ubN1eHwOeKeWqTZcjbA3WAAB2Fsznx1+Gv24RzOOf4v6+qkhPSB5ReIwBczEQXcC
+         Pyb2rr8D9W+5SKk5jcD/N5yIHEyJGBlQP9W1lC9QHkHmF+WCpdSKPorXkx1B+JrjwSWi
+         Bw3ztFEFKoOk+tTPyi4Rq5/So8LPfsPmzgGe7ZM92CxBxaN0ExKDSKRJWmUnM85WTN1S
+         66S1iRYeCDQVQMbUlaVG7PZmF4VUb12zmqs6etIwsYVsGJIxcO1pxu5hElqOW2yWnxy+
+         wtGTG+k6VB3YPL79MnpEWQc4eIsuLeKoPhswL9f1qpXlYhip4iddzH2dN4IGIgYT3p0C
+         JW/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736172531; x=1736777331;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tbZDcAHgBPAmgkU05bxJQHp5wnDiBANbUfwHcrvnQxQ=;
+        b=iv7mVU3g6KSDD5RK/NSVRoK8FE5HUydIEBXk5kzLmcTDKfDBN2xfxBS2de0T0++A+K
+         +en7uFpCxnrlj4RxKhlg/kq74k6iQoYU7KYf1LkRyo1leuOdIWmq+yI7aE+lkZ/KrRC4
+         u2fT8+AfjZaw6MrAchURT2imQ5wIYvqeo0r8qSWs074yUCtvoq8gIEGgqto42hOGZ0Th
+         sl7+1LPA9dejs0fuTylyi2DNqb69LV6dptbM2yr9NJJQKmF5bkoVCY/M2SvoE+g8bVUz
+         2a5y8Lx9YuOz3Tq7bPpbu9oT4JIKtDOfK8/S0Q48i7xaEp6s6+OuD1Q1u3ymlZ4b4Mb7
+         ty3A==
+X-Gm-Message-State: AOJu0Yxukfvc2rFwi4Hcbxn911VQZnRkdG4iHqC5iE4gd5dlvAE2Xkil
+	Ku0yOZqgS88r4XYTT83x0rTUV2s5d2cbw/5qiJyelMSTB7hQD3ZQ7khGUOsB6uK2CE30v9Th9oF
+	Ks6VSbKG8qXMbCWdNUda08EfBLh0+ff0DCDbY7A==
+X-Gm-Gg: ASbGnctvOcua9hV5Mx2f3uevn/YXc2+f/10/HdbsS2817iwK6AMdT3mMCguhyAyfNXV
+	TAuFbjtw7+Q58GMDnMmfp8iNypVVNADpAoDH+Szc=
+X-Google-Smtp-Source: AGHT+IGAkaBZlNY9VngboPF+eheC4Yc8noNMlZqFBZLxX8frESJbZBHf76+UZ6tozxGudqxoz4GhoQ4srwSQvNLU2rI=
+X-Received: by 2002:a05:6830:6c85:b0:721:b7ab:262e with SMTP id
+ 46e09a7af769-721b7ab2694mr5457036a34.14.1736172531311; Mon, 06 Jan 2025
+ 06:08:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Description: Re: Linux 6.13-rc6
-Content-Disposition: inline
-In-Reply-To: <20250106131817.GAZ3vYGVr3-hWFFPLj@fat_crate.local>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LimqS1myUG2y4b7FJWApvxjnj72vJv-q
-X-Proofpoint-ORIG-GUID: LimqS1myUG2y4b7FJWApvxjnj72vJv-q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=419
- lowpriorityscore=0 spamscore=0 suspectscore=0 bulkscore=0 mlxscore=0
- clxscore=1011 adultscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501060124
+References: <20250103004519.474274-1-sashal@kernel.org> <CADrjBPo_oiqboE4jAemR_2AjxJtSgMLpS8_ShWcX8wJLB4rszg@mail.gmail.com>
+ <2025010457-runaround-wriggly-d117@gregkh> <2025010616-exemplary-had-8699@gregkh>
+In-Reply-To: <2025010616-exemplary-had-8699@gregkh>
+From: Peter Griffin <peter.griffin@linaro.org>
+Date: Mon, 6 Jan 2025 14:08:40 +0000
+Message-ID: <CADrjBPqKzFGdMkQ_6f4g5Ua+WwPFx+pYMErrtF4d0k3CnQhMpg@mail.gmail.com>
+Subject: Re: Patch "watchdog: s3c2410_wdt: use exynos_get_pmu_regmap_by_phandle()
+ for PMU regs" has been added to the 6.6-stable tree
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jan 06, 2025 at 02:18:17PM +0100, Borislav Petkov wrote:
+[..]
+> >
+> > Ok, then we should just drop both, I can do that if you want me to.
+>
+> Now dropped.
 
-Hi All,
-
-> Something not well baked managed to sneak in and it is tagged for stable:
-> 
-> adcfb264c3ed ("vmstat: disable vmstat_work on vmstat_cpu_down_prep()")
-> 
-> Reverting it fixes the warn splat below.
-> 
-> [    0.310373] smpboot: x86: Booting SMP configuration:
-> [    0.311074] .... node  #0, CPUs:        #1  #2  #3  #4  #5  #6  #7  #8  #9 #10 #11 #12 #13 #14 #15
-> [    0.313798] ------------[ cut here ]------------
-> [    0.317530] workqueue: work disable count underflowed
-> [    0.317530] WARNING: CPU: 1 PID: 21 at kernel/workqueue.c:4317 enable_work+0xa4/0xb0
-> [    0.317530] Modules linked in:
-> [    0.317530] CPU: 1 UID: 0 PID: 21 Comm: cpuhp/1 Not tainted 6.13.0-rc6 #11
-...
-
-JFYI, hitting the same on s390:
-
-[    0.176304] smp: Bringing up secondary CPUs ...
-[    0.186596] ------------[ cut here ]------------
-[    0.186603] workqueue: work disable count underflowed
-[    0.186606] WARNING: CPU: 1 PID: 21 at kernel/workqueue.c:4317 enable_work+0x10a/0x120
-[    0.186613] Modules linked in:
-[    0.186615] CPU: 1 UID: 0 PID: 21 Comm: cpuhp/1 Not tainted 6.13.0-rc6 #206
-[    0.186619] Hardware name: IBM 3931 A01 701 (KVM/Linux)
-[    0.186621] Krnl PSW : 0404c00180000000 00000308470979ee (enable_work+0x10e/0x120)
-[    0.186626]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-[    0.186629] Krnl GPRS: 00000308484bf9b8 00000308484bf9b0 0000000000000029 00000308484bf9b8
-[    0.186632]            000002884717ba08 000002884717ba00 000003084726e5e0 000000000073e180
-[    0.186634]            000000007fffffff 0000000000000000 0000000000000000 000000007af24840
-[    0.186637]            0000000000e3a300 0000000000e3a300 00000308470979ea 000002884717bc60
-[    0.186685] Krnl Code: 00000308470979de: c02000846cd0	larl	%r2,000003084812537e
-[    0.186685]            00000308470979e4: c0e5fffee146	brasl	%r14,0000030847073c70
-[    0.186685]           #00000308470979ea: af000000		mc	0,0
-[    0.186685]           >00000308470979ee: a7080000		lhi	%r0,0
-[    0.186685]            00000308470979f2: a7f4ffb2		brc	15,0000030847097956
-[    0.186685]            00000308470979f6: 0707		bcr	0,%r7
-[    0.186685]            00000308470979f8: 0707		bcr	0,%r7
-[    0.186685]            00000308470979fa: 0707		bcr	0,%r7
-[    0.186708] Call Trace:
-[    0.186710]  [<00000308470979ee>] enable_work+0x10e/0x120
-[    0.186714] ([<00000308470979ea>] enable_work+0x10a/0x120)
-[    0.186718]  [<000003084726e64c>] vmstat_cpu_online+0x6c/0x90
-[    0.186722]  [<0000030847075d9a>] cpuhp_invoke_callback+0x16a/0x4d0
-[    0.186725]  [<0000030847076832>] cpuhp_thread_fun+0xc2/0x250
-[    0.186728]  [<00000308470a8424>] smpboot_thread_fn+0xe4/0x1b0
-[    0.186731]  [<00000308470a0d46>] kthread+0x126/0x130
-[    0.186735]  [<000003084702508c>] __ret_from_fork+0x3c/0x60
-[    0.186738]  [<0000030847d3a582>] ret_from_fork+0xa/0x38
-[    0.186742] Last Breaking-Event-Address:
-[    0.186743]  [<0000030847073d62>] __warn_printk+0xf2/0x100
-[    0.186746] Kernel panic - not syncing: kernel: panic_on_warn set ...
-[    0.186749] CPU: 1 UID: 0 PID: 21 Comm: cpuhp/1 Not tainted 6.13.0-rc6 #206
-
-Thanks!
+Thanks Greg
 
