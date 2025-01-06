@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-107325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66878A02B6E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4CBA02A23
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061FA3A754C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 429AA3A725E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543981422DD;
-	Mon,  6 Jan 2025 15:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD4C1D86F1;
+	Mon,  6 Jan 2025 15:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuzmeHTf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFt88max"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1233060890;
-	Mon,  6 Jan 2025 15:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B4686347;
+	Mon,  6 Jan 2025 15:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178127; cv=none; b=N3CQ94sVlHdKbkrYg6Z/HlXJgIICPbwuPlIad/8iEDJ/XONUA+z6zUeie5P+d3/sUIKLr3PyXxNyeyw2JdlzJ6RVDebr6zAPBK+BmUaN+uvLVUsz2JMmNk/8YX4JhcZ3dg4VUIfPVBdCiQFBvhi7PuV2Xpg5/DsSewfITVWLXj8=
+	t=1736177348; cv=none; b=tcuj/nLyY4sL0kLDAMpjqjTLQNhy0/KbNrSfwhel1mMIlWu9J93GbvR0pdtpERE+lDXVO4u1kzzujJY7zhJxgeLsvfeuRmRZMQqwjrU/zgRiGAH795ZQtpd0xgOazC4zRuK9cJbyeWomuSLZGnz1keBhHAjL+hfrT+d55RfSPfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178127; c=relaxed/simple;
-	bh=pMg1fGS7f4UH7lJn/bRBHz4JABjaTkbmV+Zxf26TcPQ=;
+	s=arc-20240116; t=1736177348; c=relaxed/simple;
+	bh=pXoM0AwuSiqG50WabOQi6eJAXuqFNbR3WR55UYYnWWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KiFuKYOa315IEJQPZ1tP6uOmgCZLiylUw4A2Rc4qbYiVa7g3jVglKB5tkb5DupvxD5mZZFciGq255LjkApp11k8JUewVwxex6J3BbyRASJNkNDY5BIJoE/hFY2PM0IWpna2bJ9KNuHFrgJwGaY8LqXvxMCZwXOzEeOUh5jyhMus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuzmeHTf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4634DC4CED2;
-	Mon,  6 Jan 2025 15:42:06 +0000 (UTC)
+	 MIME-Version; b=lMoheGm0zcQ+d2C5FWYoHM2mi5+tR5eQTLVjgAqKAbp5cKp/WsLr36At+vV0Mgc0odqY4sflYVlkld7BsNJI1E2+SPybfH25F+RLkovkyF6w/PhCXvKkb1gOWpGWHyd2Ll3qGO5zcD5tnTm3fEIxAHM+an97WXRqfg7bKxhlyWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFt88max; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94211C4CED6;
+	Mon,  6 Jan 2025 15:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178126;
-	bh=pMg1fGS7f4UH7lJn/bRBHz4JABjaTkbmV+Zxf26TcPQ=;
+	s=korg; t=1736177347;
+	bh=pXoM0AwuSiqG50WabOQi6eJAXuqFNbR3WR55UYYnWWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WuzmeHTf4svypjdJmBBqdzIYMEuaBDQ4EZP7cGFQYos3YAJoLJwS+cO7zcy+Cojdq
-	 zJKqko3enUKWdWRwLHQCbMMpsGC3ZTMshW5zyXxacxh7uCOcP6hfB4RDQ9EPNdXc69
-	 SUMwTyY1zljlLMIM3gZbSH72IBUjq6/WxdQ5bipI=
+	b=jFt88maxdl4sDsFGbhGSb8Nm3AlElBxKz8F4M/FZcQiHHDd5nLlb//lxEr/WjPWux
+	 +1vdxHl/bUJx7gqIX0JkpOPSBJoChEbDc5vbndVfwGYIUGVt8lKO73UUfPVsD84VEX
+	 hnQEroNGZFXJt5lkNtgeZgbu1V/2S41piqicR5Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/138] net/smc: check return value of sock_recvmsg when draining clc data
+Subject: [PATCH 6.6 134/222] RDMA/bnxt_re: Add check for path mtu in modify_qp
 Date: Mon,  6 Jan 2025 16:15:38 +0100
-Message-ID: <20250106151133.758201499@linuxfoundation.org>
+Message-ID: <20250106151155.840430332@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit c5b8ee5022a19464783058dc6042e8eefa34e8cd ]
+[ Upstream commit 798653a0ee30d3cd495099282751c0f248614ae7 ]
 
-When receiving clc msg, the field length in smc_clc_msg_hdr indicates the
-length of msg should be received from network and the value should not be
-fully trusted as it is from the network. Once the value of length exceeds
-the value of buflen in function smc_clc_wait_msg it may run into deadloop
-when trying to drain the remaining data exceeding buflen.
+When RDMA app configures path MTU, add a check in modify_qp verb
+to make sure that it doesn't go beyond interface MTU. If this
+check fails, driver will fail the modify_qp verb.
 
-This patch checks the return value of sock_recvmsg when draining data in
-case of deadloop in draining.
-
-Fixes: fb4f79264c0f ("net/smc: tolerate future SMCD versions")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241211083931.968831-3-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 26 +++++++++++++-----------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 32cbdc321aec..2aa69e29fa1d 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -427,6 +427,11 @@ int smc_clc_wait_msg(struct smc_sock *smc, void *buf, int buflen,
- 						SMC_CLC_RECV_BUF_LEN : datlen;
- 		iov_iter_kvec(&msg.msg_iter, READ, &vec, 1, recvlen);
- 		len = sock_recvmsg(smc->clcsock, &msg, krflags);
-+		if (len < recvlen) {
-+			smc->sk.sk_err = EPROTO;
-+			reason_code = -EPROTO;
-+			goto out;
-+		}
- 		datlen -= len;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index fb6f15bb9d4f..9bf00fb666d7 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2055,18 +2055,20 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
+ 		}
  	}
- 	if (clcm->type == SMC_CLC_DECLINE) {
+ 
+-	if (qp_attr_mask & IB_QP_PATH_MTU) {
+-		qp->qplib_qp.modify_flags |=
+-				CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
+-		qp->qplib_qp.path_mtu = __from_ib_mtu(qp_attr->path_mtu);
+-		qp->qplib_qp.mtu = ib_mtu_enum_to_int(qp_attr->path_mtu);
+-	} else if (qp_attr->qp_state == IB_QPS_RTR) {
+-		qp->qplib_qp.modify_flags |=
+-			CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
+-		qp->qplib_qp.path_mtu =
+-			__from_ib_mtu(iboe_get_mtu(rdev->netdev->mtu));
+-		qp->qplib_qp.mtu =
+-			ib_mtu_enum_to_int(iboe_get_mtu(rdev->netdev->mtu));
++	if (qp_attr->qp_state == IB_QPS_RTR) {
++		enum ib_mtu qpmtu;
++
++		qpmtu = iboe_get_mtu(rdev->netdev->mtu);
++		if (qp_attr_mask & IB_QP_PATH_MTU) {
++			if (ib_mtu_enum_to_int(qp_attr->path_mtu) >
++			    ib_mtu_enum_to_int(qpmtu))
++				return -EINVAL;
++			qpmtu = qp_attr->path_mtu;
++		}
++
++		qp->qplib_qp.modify_flags |= CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
++		qp->qplib_qp.path_mtu = __from_ib_mtu(qpmtu);
++		qp->qplib_qp.mtu = ib_mtu_enum_to_int(qpmtu);
+ 	}
+ 
+ 	if (qp_attr_mask & IB_QP_TIMEOUT) {
 -- 
 2.39.5
 
