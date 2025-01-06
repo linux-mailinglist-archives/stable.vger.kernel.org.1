@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-106858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FF5A028FA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEAC2A02A0F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47A8D161935
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:18:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D035D16493D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F53913D893;
-	Mon,  6 Jan 2025 15:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B681DC759;
+	Mon,  6 Jan 2025 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0izLYVa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIYtQn2N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACAF13B58F;
-	Mon,  6 Jan 2025 15:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32050155300;
+	Mon,  6 Jan 2025 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176717; cv=none; b=dKTx7dCOFCC+ETIqO9vYdGflkE/6+N3ytZRBY6AQrz9KgiAOGSr2HRaIcVG6ODGabtTT7yUDiFo0WOT/8d79gIPy1GVybt58zL+1ImgRDHEL8/8ztzPdt3FUfec+th5XDc0k8BI2X8IBqljoK8RRGzAnmsXP0nZW57RyjcNoqwc=
+	t=1736177424; cv=none; b=Kbwh4pb0gdaa6KdiYePcA26nH0JMmIenR2sPGqXaUYFWodeSXgyiKocvwodMTztgfTNqWaf03fWJ22mZsJ4nqs7cxja7xRrltczv3BZIC0zehexaW17KDkqhaO0/KalCD+DvemONBG72ciD6KKt4qP4f3GSh2F2fuHPBoT4blFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176717; c=relaxed/simple;
-	bh=iaBe/MfThx4GQC8RU0sObB6qgkzWH3frvf4t+x4rsMQ=;
+	s=arc-20240116; t=1736177424; c=relaxed/simple;
+	bh=xtY7UjNY/pD7uiUD6h9un0j8Ew5smzqadlupcLebrPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mk1gkR5JG6duHdIczuncYOL6e1wuVBxH2UNT/vAraXQ02Yo9iaVmqXmRNxku4F71rR9QSdrYkxgquzzwuZXlEMbQ75ZJNsYgJsoYPzKzluvpmJf9DMBYubUyNw5islegCtjOwCm03zI5UXU/HUmZ5T5gcZZwRVl2yKtnjYwpkVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0izLYVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB169C4CED2;
-	Mon,  6 Jan 2025 15:18:36 +0000 (UTC)
+	 MIME-Version; b=a+YrtAK5MMIFx8a05zNEFCnf55LmxK+fe2Ek1oUZhpShiMEhb82iqfpVyRQOIS8MFkrrSbMW4p9kxA/iulQ/VpbrzNPUpzKWdcN912/U561drrq0UfT/km4rehnBmtDWyzG8cMxl02sKZMes4Uls2jQlRX1GOncheCl+1TmZybs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIYtQn2N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0515C4CED2;
+	Mon,  6 Jan 2025 15:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176717;
-	bh=iaBe/MfThx4GQC8RU0sObB6qgkzWH3frvf4t+x4rsMQ=;
+	s=korg; t=1736177424;
+	bh=xtY7UjNY/pD7uiUD6h9un0j8Ew5smzqadlupcLebrPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0izLYVardHaIoXpliE3Syp9ueoWRG2oBuDMSTuPyiCN0OnIk+lSGEu3slD7c5UMq
-	 gcgWIC1uB2e0uWdFfqlCdmvSyDzXrpASWMa7Gaud8L11VpDlgqm/sdqWoMslTvaYDW
-	 GqZG/AJUv1BtkrGsnn0iyp6AXtMDcig1ltBhJ1UY=
+	b=IIYtQn2NlJjVECC0UVs0i+/D6N6cszapMzwa8ao8ArSaH6B89HFFKCUSHjFKl8QDo
+	 QDgzvA0ZO0wohSG2KEYVD3UUIOWPITfzt8+u4KsduLNjJ+K8NevRHGx4xNzJa++eda
+	 BwHDqHhUISL53rvvqnqZ9lHvCbcucOd/20vOqjbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.1 01/81] x86/hyperv: Fix hv tsc page based sched_clock for hibernation
+	Mark Bloch <mbloch@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 129/222] RDMA/mlx5: Enforce same type port association for multiport RoCE
 Date: Mon,  6 Jan 2025 16:15:33 +0100
-Message-ID: <20250106151129.492910950@linuxfoundation.org>
+Message-ID: <20250106151155.654101900@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Jain <namjain@linux.microsoft.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit bcc80dec91ee745b3d66f3e48f0ec2efdea97149 upstream.
+[ Upstream commit e05feab22fd7dabcd6d272c4e2401ec1acdfdb9b ]
 
-read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
-bigger than the variable hv_sched_clock_offset, which is cached during
-early boot, but depending on the timing this assumption may be false
-when a hibernated VM starts again (the clock counter starts from 0
-again) and is resuming back (Note: hv_init_tsc_clocksource() is not
-called during hibernation/resume); consequently,
-read_hv_sched_clock_tsc() may return a negative integer (which is
-interpreted as a huge positive integer since the return type is u64)
-and new kernel messages are prefixed with huge timestamps before
-read_hv_sched_clock_tsc() grows big enough (which typically takes
-several seconds).
+Different core device types such as PFs and VFs shouldn't be affiliated
+together since they have different capabilities, fix that by enforcing
+type check before doing the affiliation.
 
-Fix the issue by saving the Hyper-V clock counter just before the
-suspend, and using it to correct the hv_sched_clock_offset in
-resume. This makes hv tsc page based sched_clock continuous and ensures
-that post resume, it starts from where it left off during suspend.
-Override x86_platform.save_sched_clock_state and
-x86_platform.restore_sched_clock_state routines to correct this as soon
-as possible.
-
-Note: if Invariant TSC is available, the issue doesn't happen because
-1) we don't register read_hv_sched_clock_tsc() for sched clock:
-See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
-clocksource and sched clock setup");
-2) the common x86 code adjusts TSC similarly: see
-__restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
-x86_platform.restore_sched_clock_state().
-
-Cc: stable@vger.kernel.org
-Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation")
-Co-developed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20240917053917.76787-1-namjain@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240917053917.76787-1-namjain@linux.microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32f69e4be269 ("{net, IB}/mlx5: Manage port association for multiport RoCE")
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Link: https://patch.msgid.link/88699500f690dff1c1852c1ddb71f8a1cc8b956e.1733233480.git.leonro@nvidia.com
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mshyperv.c     |   58 +++++++++++++++++++++++++++++++++++++
- drivers/clocksource/hyperv_timer.c |   14 ++++++++
- include/clocksource/hyperv_timer.h |    2 +
- 3 files changed, 73 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/main.c | 6 ++++--
+ include/linux/mlx5/driver.h       | 6 ++++++
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -152,6 +152,63 @@ static void hv_machine_crash_shutdown(st
- 	hyperv_cleanup();
- }
- #endif /* CONFIG_KEXEC_CORE */
-+
-+static u64 hv_ref_counter_at_suspend;
-+static void (*old_save_sched_clock_state)(void);
-+static void (*old_restore_sched_clock_state)(void);
-+
-+/*
-+ * Hyper-V clock counter resets during hibernation. Save and restore clock
-+ * offset during suspend/resume, while also considering the time passed
-+ * before suspend. This is to make sure that sched_clock using hv tsc page
-+ * based clocksource, proceeds from where it left off during suspend and
-+ * it shows correct time for the timestamps of kernel messages after resume.
-+ */
-+static void save_hv_clock_tsc_state(void)
-+{
-+	hv_ref_counter_at_suspend = hv_read_reference_counter();
-+}
-+
-+static void restore_hv_clock_tsc_state(void)
-+{
-+	/*
-+	 * Adjust the offsets used by hv tsc clocksource to
-+	 * account for the time spent before hibernation.
-+	 * adjusted value = reference counter (time) at suspend
-+	 *                - reference counter (time) now.
-+	 */
-+	hv_adj_sched_clock_offset(hv_ref_counter_at_suspend - hv_read_reference_counter());
-+}
-+
-+/*
-+ * Functions to override save_sched_clock_state and restore_sched_clock_state
-+ * functions of x86_platform. The Hyper-V clock counter is reset during
-+ * suspend-resume and the offset used to measure time needs to be
-+ * corrected, post resume.
-+ */
-+static void hv_save_sched_clock_state(void)
-+{
-+	old_save_sched_clock_state();
-+	save_hv_clock_tsc_state();
-+}
-+
-+static void hv_restore_sched_clock_state(void)
-+{
-+	restore_hv_clock_tsc_state();
-+	old_restore_sched_clock_state();
-+}
-+
-+static void __init x86_setup_ops_for_tsc_pg_clock(void)
-+{
-+	if (!(ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE))
-+		return;
-+
-+	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
-+	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
-+
-+	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
-+	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
-+}
- #endif /* CONFIG_HYPERV */
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index c510484e024b..ada7dbf8eb1c 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -3372,7 +3372,8 @@ static int mlx5_ib_init_multiport_master(struct mlx5_ib_dev *dev)
+ 		list_for_each_entry(mpi, &mlx5_ib_unaffiliated_port_list,
+ 				    list) {
+ 			if (dev->sys_image_guid == mpi->sys_image_guid &&
+-			    (mlx5_core_native_port_num(mpi->mdev) - 1) == i) {
++			    (mlx5_core_native_port_num(mpi->mdev) - 1) == i &&
++			    mlx5_core_same_coredev_type(dev->mdev, mpi->mdev)) {
+ 				bound = mlx5_ib_bind_slave_port(dev, mpi);
+ 			}
  
- static uint32_t  __init ms_hyperv_platform(void)
-@@ -454,6 +511,7 @@ static void __init ms_hyperv_init_platfo
+@@ -4406,7 +4407,8 @@ static int mlx5r_mp_probe(struct auxiliary_device *adev,
  
- 	/* Register Hyper-V specific clocksource */
- 	hv_init_clocksource();
-+	x86_setup_ops_for_tsc_pg_clock();
- #endif
- 	/*
- 	 * TSC should be marked as unstable only after Hyper-V
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -27,7 +27,8 @@
- #include <asm/mshyperv.h>
+ 	mutex_lock(&mlx5_ib_multiport_mutex);
+ 	list_for_each_entry(dev, &mlx5_ib_dev_list, ib_dev_list) {
+-		if (dev->sys_image_guid == mpi->sys_image_guid)
++		if (dev->sys_image_guid == mpi->sys_image_guid &&
++		    mlx5_core_same_coredev_type(dev->mdev, mpi->mdev))
+ 			bound = mlx5_ib_bind_slave_port(dev, mpi);
  
- static struct clock_event_device __percpu *hv_clock_event;
--static u64 hv_sched_clock_offset __ro_after_init;
-+/* Note: offset can hold negative values after hibernation. */
-+static u64 hv_sched_clock_offset __read_mostly;
- 
- /*
-  * If false, we're using the old mechanism for stimer0 interrupts
-@@ -417,6 +418,17 @@ static void resume_hv_clock_tsc(struct c
- 	hv_set_register(HV_REGISTER_REFERENCE_TSC, tsc_msr.as_uint64);
+ 		if (bound) {
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index ffb98bc43b2d..38a8ff9c685c 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -1225,6 +1225,12 @@ static inline bool mlx5_core_is_vf(const struct mlx5_core_dev *dev)
+ 	return dev->coredev_type == MLX5_COREDEV_VF;
  }
  
-+/*
-+ * Called during resume from hibernation, from overridden
-+ * x86_platform.restore_sched_clock_state routine. This is to adjust offsets
-+ * used to calculate time for hv tsc page based sched_clock, to account for
-+ * time spent before hibernation.
-+ */
-+void hv_adj_sched_clock_offset(u64 offset)
++static inline bool mlx5_core_same_coredev_type(const struct mlx5_core_dev *dev1,
++					       const struct mlx5_core_dev *dev2)
 +{
-+	hv_sched_clock_offset -= offset;
++	return dev1->coredev_type == dev2->coredev_type;
 +}
 +
- #ifdef HAVE_VDSO_CLOCKMODE_HVCLOCK
- static int hv_cs_enable(struct clocksource *cs)
+ static inline bool mlx5_core_is_ecpf(const struct mlx5_core_dev *dev)
  {
---- a/include/clocksource/hyperv_timer.h
-+++ b/include/clocksource/hyperv_timer.h
-@@ -34,6 +34,8 @@ extern void hv_init_clocksource(void);
- 
- extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
- 
-+extern void hv_adj_sched_clock_offset(u64 offset);
-+
- static inline notrace u64
- hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg, u64 *cur_tsc)
- {
+ 	return dev->caps.embedded_cpu;
+-- 
+2.39.5
+
 
 
 
