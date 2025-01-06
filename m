@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-107542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79081A02C6B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:54:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B259A02CC7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F83D166B36
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86EC31887BFF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF891DDC2C;
-	Mon,  6 Jan 2025 15:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E3F13B592;
+	Mon,  6 Jan 2025 15:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrJiCCxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1LgL6Q1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6351DDC1F;
-	Mon,  6 Jan 2025 15:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9E76088F;
+	Mon,  6 Jan 2025 15:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178785; cv=none; b=gRD5wbk8jLZa/5bpykCY9P6oQe6p2YM49/UKCijmrpofGDKLnJl3I4uIBb0iIskfRSF+2SxdarHmeztQCq2Djw2ikBlwCVNSJOcbx2Gk5c372iq1PBik1D6oiuU5L3BDCC5Lb/m44pSz4VySb3eUI9MXx6eNp5+ioCIjaArsIlc=
+	t=1736179061; cv=none; b=GVR9phEDrxSSvnvkFknPNkU4O6mY4tF1uulpxf7Hz7LptYOnoHfsoYFN879EGotlTXLeA7DEW1YUvoruQa/+tyukRki6hlO0ztKq8k6RB6XNLtxU1FWxzBhh+FD8cTLpyZ9teJl8/VakLOK5wesHEnQJLtFQvn+crAAmt96Pq54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178785; c=relaxed/simple;
-	bh=+lGotaIvodxhL9DnrzrlcIiXyHg6y8cbANKDzbuakFk=;
+	s=arc-20240116; t=1736179061; c=relaxed/simple;
+	bh=h8SmvPzjKRu3AmOniGkd8Td5yQj/73UVjTQK6b4ejmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDhP3MRElRvYVpPl7T6FFBn4v0Cgr/yABo0vZkARwZluvZCyyYS/8bHSiVVReQJOkA7y+GbxvvnHe0MoN0SYwl/fSANOdeTpHMPIN2WO0tZWDshDjjkFnZBOuu5KigMuhj6Iw8LB+LdPl1xp3SZewmNCOOmqT38WUXBpB43BNXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrJiCCxL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA48C4CEDF;
-	Mon,  6 Jan 2025 15:53:04 +0000 (UTC)
+	 MIME-Version; b=f7QB4yPUklW/PPiMp+lYEziodDOV1nhvt1Saah+CeXLvwDcubdDJydSYTDO8d3womOKBwDDu2DaHGo/SIrxSUPGisWBYdGRX1qf5DbsD+pMutCY1Bs95pBpdEFeqldJM1rCsIcmEl6Db3vTMr9aEtnnjn/yFuOEzQDutcC5poGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1LgL6Q1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3DAC4CED2;
+	Mon,  6 Jan 2025 15:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178785;
-	bh=+lGotaIvodxhL9DnrzrlcIiXyHg6y8cbANKDzbuakFk=;
+	s=korg; t=1736179060;
+	bh=h8SmvPzjKRu3AmOniGkd8Td5yQj/73UVjTQK6b4ejmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FrJiCCxLucbT7EzUbTmRUp6YBFYZjmo8GWmbHGe5Hag05/FttXLjLSKYe5rh5zYnD
-	 KxFvsPib2M+wkFznpWTbiv/vxH8cpEo0iUwglyFKUFVrI8Ov47SaKBMks0o6SSAeyj
-	 FWu861xuujLwmJBdKMMby7w4eQfEUIZc7O49iTnA=
+	b=W1LgL6Q1BQTjyV41OTM6JBkGvnTYsZ0cCVXMXMSQ41evB3wfJE/G8j0KWS/9beEW1
+	 2p8BN2091kjTO3rgr6PPMiabmLQYS1W/HSH3ZoHdKzSKXmQoy32ysDOnQNLw+o87zt
+	 jMz6+VuvxFaRkPdHTVxg5x7lYIe5drSRq2BDaxsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Peterson Guo <peterson.guo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 091/168] drm/amd/display: Add a left edge pixel if in YCbCr422 or YCbCr420 and odm
+Subject: [PATCH 5.4 03/93] PCI/AER: Disable AER service on suspend
 Date: Mon,  6 Jan 2025 16:16:39 +0100
-Message-ID: <20250106151141.902285619@linuxfoundation.org>
+Message-ID: <20250106151128.821714701@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peterson Guo <peterson.guo@amd.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-[ Upstream commit 63e7ee677c74e981257cedfdd8543510d09096ba ]
+[ Upstream commit 5afc2f763edc5daae4722ee46fea4e627d01fa90 ]
 
-[WHY]
-On some cards when odm is used, the monitor will have 2 separate pipes
-split vertically. When compression is used on the YCbCr colour space on
-the second pipe to have correct colours, we need to read a pixel from the
-end of first pipe to accurately display colours. Hardware was programmed
-properly to account for this extra pixel but it was not calculated
-properly in software causing a split screen on some monitors.
+If the link is powered off during suspend, electrical noise may cause
+errors that are logged via AER.  If the AER interrupt is enabled and shares
+an IRQ with PME, that causes a spurious wakeup during suspend.
 
-[HOW]
-The fix adjusts the second pipe's viewport and timings if the pixel
-encoding is YCbCr422 or YCbCr420.
+Disable the AER interrupt during suspend to prevent this.  Clear error
+status before re-enabling IRQ interrupts during resume so we don't get an
+interrupt for errors that occurred during the suspend/resume process.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: George Shen <george.shen@amd.com>
-Signed-off-by: Peterson Guo <peterson.guo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
+Link: https://lore.kernel.org/r/20240416043225.1462548-2-kai.heng.feng@canonical.com
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+[bhelgaas: drop pci_ancestor_pr3_present() etc, commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dcn20/dcn20_resource.c | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
-index 04b370e7e732..6688c40f3c70 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
-@@ -1899,6 +1899,7 @@ bool dcn20_split_stream_for_odm(
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 6b5c9f7916fa..ee38ca162a7c 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1407,6 +1407,22 @@ static int aer_probe(struct pcie_device *dev)
+ 	return 0;
+ }
  
- 	if (prev_odm_pipe->plane_state) {
- 		struct scaler_data *sd = &prev_odm_pipe->plane_res.scl_data;
-+		struct output_pixel_processor *opp = next_odm_pipe->stream_res.opp;
- 		int new_width;
++static int aer_suspend(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_disable_rootport(rpc);
++	return 0;
++}
++
++static int aer_resume(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_enable_rootport(rpc);
++	return 0;
++}
++
+ /**
+  * aer_root_reset - reset link on Root Port
+  * @dev: pointer to Root Port's pci_dev data structure
+@@ -1447,6 +1463,8 @@ static struct pcie_port_service_driver aerdriver = {
+ 	.service	= PCIE_PORT_SERVICE_AER,
  
- 		/* HACTIVE halved for odm combine */
-@@ -1932,7 +1933,28 @@ bool dcn20_split_stream_for_odm(
- 		sd->viewport_c.x += dc_fixpt_floor(dc_fixpt_mul_int(
- 				sd->ratios.horz_c, sd->h_active - sd->recout.x));
- 		sd->recout.x = 0;
-+
-+		/*
-+		 * When odm is used in YcbCr422 or 420 colour space, a split screen
-+		 * will be seen with the previous calculations since the extra left
-+		 *  edge pixel is accounted for in fmt but not in viewport.
-+		 *
-+		 * Below are calculations which fix the split by fixing the calculations
-+		 * if there is an extra left edge pixel.
-+		 */
-+		if (opp && opp->funcs->opp_get_left_edge_extra_pixel_count
-+				&& opp->funcs->opp_get_left_edge_extra_pixel_count(
-+					opp, next_odm_pipe->stream->timing.pixel_encoding,
-+					resource_is_pipe_type(next_odm_pipe, OTG_MASTER)) == 1) {
-+			sd->h_active += 1;
-+			sd->recout.width += 1;
-+			sd->viewport.x -= dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
-+			sd->viewport_c.x -= dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
-+			sd->viewport_c.width += dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
-+			sd->viewport.width += dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
-+		}
- 	}
-+
- 	if (!next_odm_pipe->top_pipe)
- 		next_odm_pipe->stream_res.opp = pool->opps[next_odm_pipe->pipe_idx];
- 	else
-@@ -2905,6 +2927,7 @@ bool dcn20_fast_validate_bw(
- 			ASSERT(0);
- 		}
- 	}
-+
- 	/* Actual dsc count per stream dsc validation*/
- 	if (!dcn20_validate_dsc(dc, context)) {
- 		context->bw_ctx.dml.vba.ValidationStatus[context->bw_ctx.dml.vba.soc.num_states] =
+ 	.probe		= aer_probe,
++	.suspend	= aer_suspend,
++	.resume		= aer_resume,
+ 	.remove		= aer_remove,
+ 	.reset_link	= aer_root_reset,
+ };
 -- 
 2.39.5
 
