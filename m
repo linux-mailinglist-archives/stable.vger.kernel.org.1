@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-107572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919B4A02C8B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AB1A02955
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE59C166F45
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E53B1885C92
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F29156237;
-	Mon,  6 Jan 2025 15:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C956814900B;
+	Mon,  6 Jan 2025 15:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seY99ov+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQL8+KN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BE539FCE;
-	Mon,  6 Jan 2025 15:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868308634A;
+	Mon,  6 Jan 2025 15:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178871; cv=none; b=jtmUqgUXPMVBJ5hqtVUcInc1E5LGGBZeWuSEPtutY7GPbcLJLEfj+ctjuGrJHPUmKxsCdimPLEph3ttc+RXKyUbeqxX0qmffddojJsbNP8QsLbdKq8XbW4XjPaFCqw5eTZsjosE6p9/AyGuWCBwU45mUk0bGcnUzG/w20Q4aEvU=
+	t=1736176939; cv=none; b=qwcde3ePUR0duxzrxROaholMrqHce+R+/IutRxA/ZTXPy9b1ro6BvrHSQqkrkDFkaKeu4f+5y4pGx+nWDqTmwlrgo0Ve6Qt9pHcixoFG2rKX18md3UBNeDNT7CCpW4FaM0nOwh+J+nV2puz1juTtXgmL781y9afnBpF2J+PAt90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178871; c=relaxed/simple;
-	bh=JIdSS6TiV7XLrK+VHPCffdB/SCeN0vaKYYVBbm1v1B8=;
+	s=arc-20240116; t=1736176939; c=relaxed/simple;
+	bh=VRzyi+4KNFW0E6xojgcXjswsfrVjWyuJlvXr97es+Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h00lcUi308NH16Mx1AyhvGsbWcJN9qfIS1N+K5DHEksm4+S6/kQF+48mhmfgHUnJCyfHJwP/CA7By0w2y2o6cgUlAwRgCQh/YA4q2HyfsZpGu3v5zw3Vsc1TmubNjaJmMjhNhU7z6Nw5XwbCsVqKy8r2ddNXZsCni2JVhRVlMho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seY99ov+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD33C4CED2;
-	Mon,  6 Jan 2025 15:54:30 +0000 (UTC)
+	 MIME-Version; b=alIyqA0KAq4xABwhEzjvuPeMPuqSfM5UnmYzkdSnQzmnZ2Efn81VgqGOSARCj87yRg42vTqWZ9z7jwgB9VnyU2YIjc85qGfmYgq4QWKshTBsIckDzBTa+/N1oPh36i7fvYy1n4ZWQvWbP/3sxXQGqyewYAaF17CTeQYG/mpfjlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQL8+KN8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064EBC4CEDF;
+	Mon,  6 Jan 2025 15:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178871;
-	bh=JIdSS6TiV7XLrK+VHPCffdB/SCeN0vaKYYVBbm1v1B8=;
+	s=korg; t=1736176939;
+	bh=VRzyi+4KNFW0E6xojgcXjswsfrVjWyuJlvXr97es+Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=seY99ov+jlXJKpv3nVS0C60E1DWWuyuk48fsq7OMohKDheT2VUTLtfn1uQ10OMHbA
-	 DMZp/E4F7e7D+CKcTZzKDTQDnLuUz6WT3mkzoPZN9Whw59RgnvWcDsHcq386C5MfGd
-	 nVtalBMQ+3az3gKtJ8+N/HIpjOtqZtecQdYxAWVk=
+	b=oQL8+KN8OUEldMdUsKjoxkAbBLWQj+wWi2gAkt6fbk+byuXWfskvgtMJEL2uFWmzY
+	 aSSdlu4ysSn6JhE1dgwuVdqk1fvEnEN8VUwKh6Z5/MEhpYI6KqjGYr/VbviV6lXTUo
+	 YPQv68e9Dfb0sJOTOUQn6WjqvRhm2ia9dKrXEKcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	syzbot+38a095a81f30d82884c1@syzkaller.appspotmail.com,
 	Paolo Abeni <pabeni@redhat.com>,
-	Peilin He <he.peilin@zte.com.cn>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Kun Jiang <jiang.kun2@zte.com.cn>,
-	Fan Yu <fan.yu9@zte.com.cn>,
-	Yutan Qiu <qiu.yutan@zte.com.cn>,
-	Yaxin Wang <wang.yaxin@zte.com.cn>,
-	tuqiang <tu.qiang35@zte.com.cn>,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	ye xingchen <ye.xingchen@zte.com.cn>,
-	Yunkai Zhang <zhang.yunkai@zte.com.cn>
-Subject: [PATCH 5.15 103/168] net: dsa: improve shutdown sequence
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 79/81] mptcp: fix TCP options overflow.
 Date: Mon,  6 Jan 2025 16:16:51 +0100
-Message-ID: <20250106151142.351194812@linuxfoundation.org>
+Message-ID: <20250106151132.409280652@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,135 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 6c24a03a61a245fe34d47582898331fa034b6ccd upstream.
+commit cbb26f7d8451fe56ccac802c6db48d16240feebd upstream.
 
-Alexander Sverdlin presents 2 problems during shutdown with the
-lan9303 driver. One is specific to lan9303 and the other just happens
-to reproduce there.
+Syzbot reported the following splat:
 
-The first problem is that lan9303 is unique among DSA drivers in that it
-calls dev_get_drvdata() at "arbitrary runtime" (not probe, not shutdown,
-not remove):
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 UID: 0 PID: 5836 Comm: sshd Not tainted 6.13.0-rc3-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
+RIP: 0010:_compound_head include/linux/page-flags.h:242 [inline]
+RIP: 0010:put_page+0x23/0x260 include/linux/mm.h:1552
+Code: 90 90 90 90 90 90 90 55 41 57 41 56 53 49 89 fe 48 bd 00 00 00 00 00 fc ff df e8 f8 5e 12 f8 49 8d 5e 08 48 89 d8 48 c1 e8 03 <80> 3c 28 00 74 08 48 89 df e8 8f c7 78 f8 48 8b 1b 48 89 de 48 83
+RSP: 0000:ffffc90003916c90 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000008 RCX: ffff888030458000
+RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: ffffffff898ca81d R09: 1ffff110054414ac
+R10: dffffc0000000000 R11: ffffed10054414ad R12: 0000000000000007
+R13: ffff88802a20a542 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007f34f496e800(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f9d6ec9ec28 CR3: 000000004d260000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ skb_page_unref include/linux/skbuff_ref.h:43 [inline]
+ __skb_frag_unref include/linux/skbuff_ref.h:56 [inline]
+ skb_release_data+0x483/0x8a0 net/core/skbuff.c:1119
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __kfree_skb+0x55/0x70 net/core/skbuff.c:1204
+ tcp_clean_rtx_queue net/ipv4/tcp_input.c:3436 [inline]
+ tcp_ack+0x2442/0x6bc0 net/ipv4/tcp_input.c:4032
+ tcp_rcv_state_process+0x8eb/0x44e0 net/ipv4/tcp_input.c:6805
+ tcp_v4_do_rcv+0x77d/0xc70 net/ipv4/tcp_ipv4.c:1939
+ tcp_v4_rcv+0x2dc0/0x37f0 net/ipv4/tcp_ipv4.c:2351
+ ip_protocol_deliver_rcu+0x22e/0x440 net/ipv4/ip_input.c:205
+ ip_local_deliver_finish+0x341/0x5f0 net/ipv4/ip_input.c:233
+ NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+ NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+ __netif_receive_skb_one_core net/core/dev.c:5672 [inline]
+ __netif_receive_skb+0x2bf/0x650 net/core/dev.c:5785
+ process_backlog+0x662/0x15b0 net/core/dev.c:6117
+ __napi_poll+0xcb/0x490 net/core/dev.c:6883
+ napi_poll net/core/dev.c:6952 [inline]
+ net_rx_action+0x89b/0x1240 net/core/dev.c:7074
+ handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
+ __do_softirq kernel/softirq.c:595 [inline]
+ invoke_softirq kernel/softirq.c:435 [inline]
+ __irq_exit_rcu+0xf7/0x220 kernel/softirq.c:662
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+ sysvec_apic_timer_interrupt+0x57/0xc0 arch/x86/kernel/apic/apic.c:1049
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0033:0x7f34f4519ad5
+Code: 85 d2 74 0d 0f 10 02 48 8d 54 24 20 0f 11 44 24 20 64 8b 04 25 18 00 00 00 85 c0 75 27 41 b8 08 00 00 00 b8 0f 01 00 00 0f 05 <48> 3d 00 f0 ff ff 76 75 48 8b 15 24 73 0d 00 f7 d8 64 89 02 48 83
+RSP: 002b:00007ffec5b32ce0 EFLAGS: 00000246
+RAX: 0000000000000001 RBX: 00000000000668a0 RCX: 00007f34f4519ad5
+RDX: 00007ffec5b32d00 RSI: 0000000000000004 RDI: 0000564f4bc6cae0
+RBP: 0000564f4bc6b5a0 R08: 0000000000000008 R09: 0000000000000000
+R10: 00007ffec5b32de8 R11: 0000000000000246 R12: 0000564f48ea8aa4
+R13: 0000000000000001 R14: 0000564f48ea93e8 R15: 00007ffec5b32d68
+ </TASK>
 
-phy_state_machine()
--> ...
-   -> dsa_user_phy_read()
-      -> ds->ops->phy_read()
-         -> lan9303_phy_read()
-            -> chip->ops->phy_read()
-               -> lan9303_mdio_phy_read()
-                  -> dev_get_drvdata()
+Eric noted a probable shinfo->nr_frags corruption, which indeed
+occurs.
 
-But we never stop the phy_state_machine(), so it may continue to run
-after dsa_switch_shutdown(). Our common pattern in all DSA drivers is
-to set drvdata to NULL to suppress the remove() method that may come
-afterwards. But in this case it will result in an NPD.
+The root cause is a buggy MPTCP option len computation in some
+circumstances: the ADD_ADDR option should be mutually exclusive
+with DSS since the blamed commit.
 
-The second problem is that the way in which we set
-dp->conduit->dsa_ptr = NULL; is concurrent with receive packet
-processing. dsa_switch_rcv() checks once whether dev->dsa_ptr is NULL,
-but afterwards, rather than continuing to use that non-NULL value,
-dev->dsa_ptr is dereferenced again and again without NULL checks:
-dsa_conduit_find_user() and many other places. In between dereferences,
-there is no locking to ensure that what was valid once continues to be
-valid.
+Still, mptcp_established_options_add_addr() tries to set the
+relevant info in mptcp_out_options, if the remaining space is
+large enough even when DSS is present.
 
-Both problems have the common aspect that closing the conduit interface
-solves them.
+Since the ADD_ADDR infos and the DSS share the same union
+fields, adding first corrupts the latter. In the worst-case
+scenario, such corruption increases the DSS binary layout,
+exceeding the computed length and possibly overwriting the
+skb shared info.
 
-In the first case, dev_close(conduit) triggers the NETDEV_GOING_DOWN
-event in dsa_user_netdevice_event() which closes user ports as well.
-dsa_port_disable_rt() calls phylink_stop(), which synchronously stops
-the phylink state machine, and ds->ops->phy_read() will thus no longer
-call into the driver after this point.
+Address the issue by enforcing mutual exclusion in
+mptcp_established_options_add_addr(), too.
 
-In the second case, dev_close(conduit) should do this, as per
-Documentation/networking/driver.rst:
-
-| Quiescence
-| ----------
-|
-| After the ndo_stop routine has been called, the hardware must
-| not receive or transmit any data.  All in flight packets must
-| be aborted. If necessary, poll or wait for completion of
-| any reset commands.
-
-So it should be sufficient to ensure that later, when we zeroize
-conduit->dsa_ptr, there will be no concurrent dsa_switch_rcv() call
-on this conduit.
-
-The addition of the netif_device_detach() function is to ensure that
-ioctls, rtnetlinks and ethtool requests on the user ports no longer
-propagate down to the driver - we're no longer prepared to handle them.
-
-The race condition actually did not exist when commit 0650bf52b31f
-("net: dsa: be compatible with masters which unregister on shutdown")
-first introduced dsa_switch_shutdown(). It was created later, when we
-stopped unregistering the user interfaces from a bad spot, and we just
-replaced that sequence with a racy zeroization of conduit->dsa_ptr
-(one which doesn't ensure that the interfaces aren't up).
-
-Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Closes: https://lore.kernel.org/netdev/2d2e3bba17203c14a5ffdabc174e3b6bbb9ad438.camel@siemens.com/
-Closes: https://lore.kernel.org/netdev/c1bf4de54e829111e0e4a70e7bd1cf523c9550ff.camel@siemens.com/
-Fixes: ee534378f005 ("net: dsa: fix panic when DSA master device unbinds on shutdown")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20240913203549.3081071-1-vladimir.oltean@nxp.com
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+38a095a81f30d82884c1@syzkaller.appspotmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/538
+Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Peilin He <he.peilin@zte.com.cn>
-Reviewed-by: xu xin <xu.xin16@zte.com.cn>
-Signed-off-by: Kun Jiang <jiang.kun2@zte.com.cn>
-Cc: Fan Yu <fan.yu9@zte.com.cn>
-Cc: Yutan Qiu <qiu.yutan@zte.com.cn>
-Cc: Yaxin Wang <wang.yaxin@zte.com.cn>
-Cc: tuqiang <tu.qiang35@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Cc: ye xingchen <ye.xingchen@zte.com.cn>
-Cc: Yunkai Zhang <zhang.yunkai@zte.com.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/025d9df8cde3c9a557befc47e9bc08fbbe3476e5.1734771049.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/dsa2.c |    7 +++++++
+ net/mptcp/options.c |    7 +++++++
  1 file changed, 7 insertions(+)
 
---- a/net/dsa/dsa2.c
-+++ b/net/dsa/dsa2.c
-@@ -1656,6 +1656,7 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch)
- void dsa_switch_shutdown(struct dsa_switch *ds)
- {
- 	struct net_device *master, *slave_dev;
-+	LIST_HEAD(close_list);
- 	struct dsa_port *dp;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -665,8 +665,15 @@ static bool mptcp_established_options_ad
+ 		    &echo, &drop_other_suboptions))
+ 		return false;
  
- 	mutex_lock(&dsa2_mutex);
-@@ -1665,6 +1666,11 @@ void dsa_switch_shutdown(struct dsa_swit
- 
- 	rtnl_lock();
- 
-+	dsa_switch_for_each_cpu_port(dp, ds)
-+		list_add(&dp->master->close_list, &close_list);
++	/*
++	 * Later on, mptcp_write_options() will enforce mutually exclusion with
++	 * DSS, bail out if such option is set and we can't drop it.
++	 */
+ 	if (drop_other_suboptions)
+ 		remaining += opt_size;
++	else if (opts->suboptions & OPTION_MPTCP_DSS)
++		return false;
 +
-+	dev_close_many(&close_list, true);
-+
- 	list_for_each_entry(dp, &ds->dst->ports, list) {
- 		if (dp->ds != ds)
- 			continue;
-@@ -1675,6 +1681,7 @@ void dsa_switch_shutdown(struct dsa_swit
- 		master = dp->cpu_dp->master;
- 		slave_dev = dp->slave;
- 
-+		netif_device_detach(slave_dev);
- 		netdev_upper_dev_unlink(master, slave_dev);
- 	}
- 
+ 	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
+ 	if (remaining < len)
+ 		return false;
 
 
 
