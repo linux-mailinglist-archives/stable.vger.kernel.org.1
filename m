@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69662A02B23
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B563DA02BC4
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67E103A4DE5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 045CE1624DF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA0414A617;
-	Mon,  6 Jan 2025 15:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AA71DACBB;
+	Mon,  6 Jan 2025 15:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jpl2RF5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYDMTt/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08174148316;
-	Mon,  6 Jan 2025 15:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE36F1DE4CE;
+	Mon,  6 Jan 2025 15:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177990; cv=none; b=U1Fwlzj9OsYM61MEj7dKfhwAXZQ8nakplbH3+7Zw9EY9CHN8fDDOJI6t7rs2o2o/UGE+Dq9MX4EIXy5fgScSDTW9++cHQHRLW+ILCoHztMuTOh8fnqj1xUMz14sEjTVTWMJ+993kEG73clayITk9Civt3dVXcFmD2jtJqqbSNP4=
+	t=1736178368; cv=none; b=LAYTfaGzRvjKKtW3zqDNxQUvVZEMvb55WIDAkhNgRtXV8/9IjPO3NzcU+/BhWpiwFGhF6jPtSI4fEfk0SHFjzVcSv6JL2yCc/m3r+eHVdnEx5MAC0j4rQwZdjKW3OoBehwjWKyTOyVjvgfxvXzpfvH6dgGfUpmxfVXBK51p7Br8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177990; c=relaxed/simple;
-	bh=QMVYgPcVzazC5Jcahhof674QxX3QxkC6GMwgpLzq19Q=;
+	s=arc-20240116; t=1736178368; c=relaxed/simple;
+	bh=RZNHL8a9INdEChnFxoN9hFF6UZRE/Is/Pz7yi9qTJn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3PS5A9yaO05cPHDWxfP0r0d5dqyI7dMwLf4MFq/K7pqgHqrLVXKcNTi2xXj82tG5o1SZNFBjVa+zqfc8o9+ioh1qvXo6ikrWi1Brhw+CS3PoSvte/f1C01NtAJ2dn8fBCYWPh+yIMHqrCxoT8LY3bUo03jxCm/spb3lJmsHoBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jpl2RF5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26163C4CED2;
-	Mon,  6 Jan 2025 15:39:48 +0000 (UTC)
+	 MIME-Version; b=SAHsQTCHIRxdrBR9asZe6szhwoSPIO2MPtDXcK+b7Lrx3/s0xV1J3ty4W6Ux+CWd0XSfc5geGs38DMI4ga6moc22P9CKDGPFj03aUTeDfF/YKrSAGeuyDmRxNCD1ePTDq1lLsw9DpKL233RJSoQNVbYPjh8cDpoa0tgFIsYn78c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYDMTt/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB47C4CED2;
+	Mon,  6 Jan 2025 15:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177989;
-	bh=QMVYgPcVzazC5Jcahhof674QxX3QxkC6GMwgpLzq19Q=;
+	s=korg; t=1736178367;
+	bh=RZNHL8a9INdEChnFxoN9hFF6UZRE/Is/Pz7yi9qTJn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jpl2RF5CGxJ9DmtPRSCBPa+aiThHKVP4ig2Wf14Bs1+PeTaNUHcVMXaRKmdetvZWY
-	 aP3p/NmUdJ+Xs9iqlMUulVWfyETfx3Fd9u9HIrNe+6nzqDJHa6yWN/vcQJWwdOwOKv
-	 mDGu4ddy3z3kFeUwkfh43BRRty+H3OCGKul7ajXs=
+	b=nYDMTt/VJIQJ6GZoPpYNymTm1cYzzmO8S2mffwhQQsYv6ZLW9a9ykp2LMvtQJvGo3
+	 8aDWQXlgf3vWZyhyq9dcPhGaueHZ+U2ILt4p/lvJqXeMI7UEjREyOT7k48V+lRgnqk
+	 DB8fkNfhYQQWIlwN10UPBo3ItW/HxJCxcyTkCAYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.12 125/156] RDMA/uverbs: Prevent integer overflow issue
+	George D Sworo <george.d.sworo@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 087/138] thunderbolt: Add support for Intel Raptor Lake
 Date: Mon,  6 Jan 2025 16:16:51 +0100
-Message-ID: <20250106151146.440082840@linuxfoundation.org>
+Message-ID: <20250106151136.527516309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: George D Sworo <george.d.sworo@intel.com>
 
-commit d0257e089d1bbd35c69b6c97ff73e3690ab149a9 upstream.
+[ Upstream commit 7ec58378a985618909ffae18e4ac0de2ae625f33 ]
 
-In the expression "cmd.wqe_size * cmd.wr_count", both variables are u32
-values that come from the user so the multiplication can lead to integer
-wrapping.  Then we pass the result to uverbs_request_next_ptr() which also
-could potentially wrap.  The "cmd.sge_count * sizeof(struct ib_uverbs_sge)"
-multiplication can also overflow on 32bit systems although it's fine on
-64bit systems.
+Intel Raptor Lake has the same integrated Thunderbolt/USB4 controller as
+Intel Alder Lake. By default it is still using firmware based connection
+manager so we can use most of the Alder Lake flows.
 
-This patch does two things.  First, I've re-arranged the condition in
-uverbs_request_next_ptr() so that the use controlled variable "len" is on
-one side of the comparison by itself without any math.  Then I've modified
-all the callers to use size_mul() for the multiplications.
-
-Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/b8765ab3-c2da-4611-aae0-ddd6ba173d23@stanley.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: George D Sworo <george.d.sworo@intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Stable-dep-of: 8644b48714dc ("thunderbolt: Add support for Intel Panther Lake-M/P")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/thunderbolt/icm.c | 2 ++
+ drivers/thunderbolt/nhi.c | 4 ++++
+ drivers/thunderbolt/nhi.h | 2 ++
+ 3 files changed, 8 insertions(+)
 
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -161,7 +161,7 @@ static const void __user *uverbs_request
- {
- 	const void __user *res = iter->cur;
+diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
+index b038e530d6cb..eab5199ccc5b 100644
+--- a/drivers/thunderbolt/icm.c
++++ b/drivers/thunderbolt/icm.c
+@@ -2292,6 +2292,8 @@ struct tb *icm_probe(struct tb_nhi *nhi)
+ 	case PCI_DEVICE_ID_INTEL_TGL_H_NHI1:
+ 	case PCI_DEVICE_ID_INTEL_ADL_NHI0:
+ 	case PCI_DEVICE_ID_INTEL_ADL_NHI1:
++	case PCI_DEVICE_ID_INTEL_RPL_NHI0:
++	case PCI_DEVICE_ID_INTEL_RPL_NHI1:
+ 		icm->is_supported = icm_tgl_is_supported;
+ 		icm->driver_ready = icm_icl_driver_ready;
+ 		icm->set_uuid = icm_icl_set_uuid;
+diff --git a/drivers/thunderbolt/nhi.c b/drivers/thunderbolt/nhi.c
+index 1e732d2d15ad..d41ff5e0f9ca 100644
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1353,6 +1353,10 @@ static struct pci_device_id nhi_ids[] = {
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ADL_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_RPL_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_RPL_NHI1),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
  
--	if (iter->cur + len > iter->end)
-+	if (len > iter->end - iter->cur)
- 		return (void __force __user *)ERR_PTR(-ENOSPC);
- 	iter->cur += len;
- 	return res;
-@@ -2010,11 +2010,13 @@ static int ib_uverbs_post_send(struct uv
- 	ret = uverbs_request_start(attrs, &iter, &cmd, sizeof(cmd));
- 	if (ret)
- 		return ret;
--	wqes = uverbs_request_next_ptr(&iter, cmd.wqe_size * cmd.wr_count);
-+	wqes = uverbs_request_next_ptr(&iter, size_mul(cmd.wqe_size,
-+						       cmd.wr_count));
- 	if (IS_ERR(wqes))
- 		return PTR_ERR(wqes);
--	sgls = uverbs_request_next_ptr(
--		&iter, cmd.sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(&iter,
-+				       size_mul(cmd.sge_count,
-+						sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return PTR_ERR(sgls);
- 	ret = uverbs_request_finish(&iter);
-@@ -2200,11 +2202,11 @@ ib_uverbs_unmarshall_recv(struct uverbs_
- 	if (wqe_size < sizeof(struct ib_uverbs_recv_wr))
- 		return ERR_PTR(-EINVAL);
+ 	/* Any USB4 compliant host */
+ 	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_USB4, ~0) },
+diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
+index 5091677b3f4b..01190d9ced16 100644
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -81,6 +81,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
+ #define PCI_DEVICE_ID_INTEL_TGL_NHI1			0x9a1d
+ #define PCI_DEVICE_ID_INTEL_TGL_H_NHI0			0x9a1f
+ #define PCI_DEVICE_ID_INTEL_TGL_H_NHI1			0x9a21
++#define PCI_DEVICE_ID_INTEL_RPL_NHI0			0xa73e
++#define PCI_DEVICE_ID_INTEL_RPL_NHI1			0xa76d
  
--	wqes = uverbs_request_next_ptr(iter, wqe_size * wr_count);
-+	wqes = uverbs_request_next_ptr(iter, size_mul(wqe_size, wr_count));
- 	if (IS_ERR(wqes))
- 		return ERR_CAST(wqes);
--	sgls = uverbs_request_next_ptr(
--		iter, sge_count * sizeof(struct ib_uverbs_sge));
-+	sgls = uverbs_request_next_ptr(iter, size_mul(sge_count,
-+						      sizeof(struct ib_uverbs_sge)));
- 	if (IS_ERR(sgls))
- 		return ERR_CAST(sgls);
- 	ret = uverbs_request_finish(iter);
+ #define PCI_CLASS_SERIAL_USB_USB4			0x0c0340
+ 
+-- 
+2.39.5
+
 
 
 
