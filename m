@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-107466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4063AA02C0F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:50:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F8CA02AA5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B56E3A7425
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:49:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C6351650EA
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013FB15A842;
-	Mon,  6 Jan 2025 15:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B31D156886;
+	Mon,  6 Jan 2025 15:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/T9xxHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STTNpgdx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEF51547F3;
-	Mon,  6 Jan 2025 15:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5880486332;
+	Mon,  6 Jan 2025 15:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178546; cv=none; b=DtW6cvs0cnfke7RFjSZqoTB1HDjXMg495zcWZW+vRgawzGCmt+oiufAXWXaqKg4OQmk1slBYjpJJ3Vt2JnFRAQUqQM/tW0Pd4jBVoXFsttx/qiESLpW+7YvgvTsbpB53c2QiT6FoaZlM8f2Js2VzZkqv7z0fjJQznHlY5ansS6w=
+	t=1736177733; cv=none; b=L7IgZ/FFM9VniJu6XGDD7rfdO1/dGBZqkrNqetos68MDokqXqzlg9pLZzPYhbLxS7UtgQvpU1byIB9NP3cD8XRqjEb29WFz2F9CfVCiAuAK6mUUkXQ3LCsYDsigLyHvns8fwzJlAQ8xVPvy9gLvdsyy0lGSURj4rEskEvO6965U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178546; c=relaxed/simple;
-	bh=h66BB7ZzPPha3uLIcqgzc4Uuhlq7hzAoVsGOSUzmbTg=;
+	s=arc-20240116; t=1736177733; c=relaxed/simple;
+	bh=C9LwLldevINXyPcPUhAtKzJucy6aVggP+TxQQ1bt9Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3W8lVPFu577AjEuSb21rNlS65BgPAZzt/Vmpovpz7SEcTLplQ/sAliQkSUh3ETLGmMNomP6rWnQzKb/NQcggGfhVcbOJjLXPI+8ponrnANFd3eeR66TZnfB15qoiDnyplj+Oe18pfiK2fhbIyRRhldkIMr2H3bYF5pxk8Dhijo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/T9xxHl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34FD7C4CED2;
-	Mon,  6 Jan 2025 15:49:06 +0000 (UTC)
+	 MIME-Version; b=pAzADFW25N3qUh1md8rq+gbQLvvI2/IcOGHzO/hZLSzHO49NvrWtJw0ScJJo9pAdTqQsQrpLOvCXi4MGpPvhe45CLkzV8+HUBmlomNfKfeoWFYRuUc0iOtngNLZli2Hcp7RqjaOSkU+Ln+hqZAcuktG5nbjjL6GYsrsgBeggrRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STTNpgdx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89553C4CED2;
+	Mon,  6 Jan 2025 15:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178546;
-	bh=h66BB7ZzPPha3uLIcqgzc4Uuhlq7hzAoVsGOSUzmbTg=;
+	s=korg; t=1736177732;
+	bh=C9LwLldevINXyPcPUhAtKzJucy6aVggP+TxQQ1bt9Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/T9xxHlmZNVJtBpwUmcfkHb9QxUbkyhoq/iedp8oW6KoPBYgw2X42+v/A27vZOy7
-	 ZoIEMtaqZ2PMCzIImZ9H13BuG9gdy9FH1uEflcW4AayH6sOwzZwQbG1cdAeHKASVnd
-	 PkdFt36hp8IggWO1lxo/gK2C8RBMJU8QtyzeG6FE=
+	b=STTNpgdx8vKlG+1O1R9+BvkpA2SlWzueH4vZ7gbibXOlMNYI675eNIpUK44KqqFG3
+	 tw0wUu3SsJK4ErzovZe0vidDFBL5duUtESyvzt0MMHwIsBvCIIiJ+dwetqbimO3Mh6
+	 qOvV+MK7G55gAGQrDMC2Edn8iTzm5mfrSRtmShBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/168] net/smc: check return value of sock_recvmsg when draining clc data
+Subject: [PATCH 6.12 038/156] RDMA/hns: Fix accessing invalid dip_ctx during destroying QP
 Date: Mon,  6 Jan 2025 16:15:24 +0100
-Message-ID: <20250106151139.076294983@linuxfoundation.org>
+Message-ID: <20250106151143.172219384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit c5b8ee5022a19464783058dc6042e8eefa34e8cd ]
+[ Upstream commit 0572eccf239ce4bd89bd531767ec5ab20e249290 ]
 
-When receiving clc msg, the field length in smc_clc_msg_hdr indicates the
-length of msg should be received from network and the value should not be
-fully trusted as it is from the network. Once the value of length exceeds
-the value of buflen in function smc_clc_wait_msg it may run into deadloop
-when trying to drain the remaining data exceeding buflen.
+If it fails to modify QP to RTR, dip_ctx will not be attached. And
+during detroying QP, the invalid dip_ctx pointer will be accessed.
 
-This patch checks the return value of sock_recvmsg when draining data in
-case of deadloop in draining.
-
-Fixes: fb4f79264c0f ("net/smc: tolerate future SMCD versions")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: faa62440a577 ("RDMA/hns: Fix different dgids mapping to the same dip_idx")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241220055249.146943-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 035e8135ea49..52a0ba939c91 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -427,6 +427,11 @@ int smc_clc_wait_msg(struct smc_sock *smc, void *buf, int buflen,
- 						SMC_CLC_RECV_BUF_LEN : datlen;
- 		iov_iter_kvec(&msg.msg_iter, READ, &vec, 1, recvlen);
- 		len = sock_recvmsg(smc->clcsock, &msg, krflags);
-+		if (len < recvlen) {
-+			smc->sk.sk_err = EPROTO;
-+			reason_code = -EPROTO;
-+			goto out;
-+		}
- 		datlen -= len;
- 	}
- 	if (clcm->type == SMC_CLC_DECLINE) {
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 697b17cca02e..6dddadb90e02 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -5619,6 +5619,9 @@ static void put_dip_ctx_idx(struct hns_roce_dev *hr_dev,
+ {
+ 	struct hns_roce_dip *hr_dip = hr_qp->dip;
+ 
++	if (!hr_dip)
++		return;
++
+ 	xa_lock(&hr_dev->qp_table.dip_xa);
+ 
+ 	hr_dip->qp_cnt--;
 -- 
 2.39.5
 
