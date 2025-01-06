@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-107319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117A5A02B5B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4913FA02C91
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADCE4164F69
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1152D164FD8
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69CE60890;
-	Mon,  6 Jan 2025 15:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8010514A617;
+	Mon,  6 Jan 2025 15:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJeOGIoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXnkKusS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E93C1DC991;
-	Mon,  6 Jan 2025 15:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8D18634A;
+	Mon,  6 Jan 2025 15:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178109; cv=none; b=l+u0HxRij+XpXj+ScZdVarTPzn0Ea94Dmfa7FOWJRDvkJGckuipanjFpEXUcSTQpKqyQK8uKL1RIDZ9adfvt3i0qZCqEed3uXTXuCDOTy47SGycSdDT9hDKB1N4/e6JKIcTkmgGodXP5hXSMsrgjZrnJ1SgwS5CI/3ge5vPLxyo=
+	t=1736178892; cv=none; b=DFl8G+v7dd/5Z/pu7ovu3MwwQxopqUQM9xPu5bhxCbp8+dT/YB7iYKGjIwFMBqh8WInd+iDZv4E7j8Qf7+I+bLukBQON0k/PUwLSy9yKEAT5JdB3m7obQrmyfRkdXg7+OSn9oOWbOJEW5RBV+uo8mRMc0PAmElDj3ckeGbRYpss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178109; c=relaxed/simple;
-	bh=LY0HngiNfZSTAFBIAx/34OC3+3tUnwz42gVYLujm/GQ=;
+	s=arc-20240116; t=1736178892; c=relaxed/simple;
+	bh=+nbsGlP9PxXbtdNtyXV03zJeted4ZU6NoeH6ZPHNcRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+yO2gdWQ2kBT2V6M9BRVI8Xduo5oWzClwd8Lff5v5CZAgBzwTxlHyzMqUadL0yNgCC/kXOW/CaJjctk0bBz3J2bLkCTfazUtXsRs+0ASk50Y8Yn5XTphQ7TPm6PRCb6Q1S2u9SeeDbXvMb9AQpc9zm5cyhNQMxI3S8Vwqyd7O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJeOGIoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89481C4CED6;
-	Mon,  6 Jan 2025 15:41:48 +0000 (UTC)
+	 MIME-Version; b=WuHTJ44l4YUirLjLBTxSVuvb2xQUIyBBD8hfD75KwQRJWG8wFpD5O4j4qKWEN7vcoW8DLw5vIrrMSLFscbtI9Y3DBudaXr6FL6BPlqr13YjIbFg+ed5VJQcspPrqclJQNW8yRT3g1P0tndTqQjX/ZKfGBrvVdhozyFjZ8iitdTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXnkKusS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5331C4CED2;
+	Mon,  6 Jan 2025 15:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178108;
-	bh=LY0HngiNfZSTAFBIAx/34OC3+3tUnwz42gVYLujm/GQ=;
+	s=korg; t=1736178892;
+	bh=+nbsGlP9PxXbtdNtyXV03zJeted4ZU6NoeH6ZPHNcRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJeOGIoQk+L7yOilnW7NKG1SC4UI3oR4Go4AU0FTCQfdictZfnR38NKzg7OnyQYVj
-	 lzVr4n4J8w0mPaQcs4RiONQzgvU2zVF5Tb72LXej/0cGWMcjcGCtKRKyTN177lab29
-	 nSTB0siuebqcgctKiWT1d0K1Glh3ZWJLIP5u/uRI=
+	b=FXnkKusSNxrR8iAT5GWHr4ofzrhgF1eeriise8ytDiDqOLjx8sxRR+MXrRKviV7YH
+	 jnOd/YQ+0gplxuJoHLEZsZajcysMB3NWS04ge7roE1zxusk4+I9T2lfcoUqh08SmZY
+	 V4C2Vz1FrW+6jc+TM6h4AkViNm0keDlIIk3r9Xqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 149/156] mm/readahead: fix large folio support in async readahead
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 127/168] RDMA/hns: Fix missing flush CQE for DWQE
 Date: Mon,  6 Jan 2025 16:17:15 +0100
-Message-ID: <20250106151147.340891217@linuxfoundation.org>
+Message-ID: <20250106151143.240305167@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-commit 158cdce87c8c172787063998ad5dd3e2f658b963 upstream.
+[ Upstream commit e3debdd48423d3d75b9d366399228d7225d902cd ]
 
-When testing large folio support with XFS on our servers, we observed that
-only a few large folios are mapped when reading large files via mmap.
-After a thorough analysis, I identified it was caused by the
-`/sys/block/*/queue/read_ahead_kb` setting.  On our test servers, this
-parameter is set to 128KB.  After I tune it to 2MB, the large folio can
-work as expected.  However, I believe the large folio behavior should not
-be dependent on the value of read_ahead_kb.  It would be more robust if
-the kernel can automatically adopt to it.
+Flush CQE handler has not been called if QP state gets into errored
+mode in DWQE path. So, the new added outstanding WQEs will never be
+flushed.
 
-With /sys/block/*/queue/read_ahead_kb set to 128KB and performing a
-sequential read on a 1GB file using MADV_HUGEPAGE, the differences in
-/proc/meminfo are as follows:
+It leads to a hung task timeout when using NFS over RDMA:
+    __switch_to+0x7c/0xd0
+    __schedule+0x350/0x750
+    schedule+0x50/0xf0
+    schedule_timeout+0x2c8/0x340
+    wait_for_common+0xf4/0x2b0
+    wait_for_completion+0x20/0x40
+    __ib_drain_sq+0x140/0x1d0 [ib_core]
+    ib_drain_sq+0x98/0xb0 [ib_core]
+    rpcrdma_xprt_disconnect+0x68/0x270 [rpcrdma]
+    xprt_rdma_close+0x20/0x60 [rpcrdma]
+    xprt_autoclose+0x64/0x1cc [sunrpc]
+    process_one_work+0x1d8/0x4e0
+    worker_thread+0x154/0x420
+    kthread+0x108/0x150
+    ret_from_fork+0x10/0x18
 
-- before this patch
-  FileHugePages:     18432 kB
-  FilePmdMapped:      4096 kB
-
-- after this patch
-  FileHugePages:   1067008 kB
-  FilePmdMapped:   1048576 kB
-
-This shows that after applying the patch, the entire 1GB file is mapped to
-huge pages.  The stable list is CCed, as without this patch, large folios
-don't function optimally in the readahead path.
-
-It's worth noting that if read_ahead_kb is set to a larger value that
-isn't aligned with huge page sizes (e.g., 4MB + 128KB), it may still fail
-to map to hugepages.
-
-Link: https://lkml.kernel.org/r/20241108141710.9721-1-laoar.shao@gmail.com
-Link: https://lkml.kernel.org/r/20241206083025.3478-1-laoar.shao@gmail.com
-Fixes: 4687fdbb805a ("mm/filemap: Support VM_HUGEPAGE for file mappings")
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Tested-by: kernel test robot <oliver.sang@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 01584a5edcc4 ("RDMA/hns: Add support of direct wqe")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241220055249.146943-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/readahead.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -641,7 +641,11 @@ void page_cache_async_ra(struct readahea
- 			1UL << order);
- 	if (index == expected) {
- 		ra->start += ra->size;
--		ra->size = get_next_ra_size(ra, max_pages);
-+		/*
-+		 * In the case of MADV_HUGEPAGE, the actual size might exceed
-+		 * the readahead window.
-+		 */
-+		ra->size = max(ra->size, get_next_ra_size(ra, max_pages));
- 		ra->async_size = ra->size;
- 		goto readit;
- 	}
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index aa0e5076f02a..4f2e8f9d228b 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -656,6 +656,10 @@ static void write_dwqe(struct hns_roce_dev *hr_dev, struct hns_roce_qp *qp,
+ #define HNS_ROCE_SL_SHIFT 2
+ 	struct hns_roce_v2_rc_send_wqe *rc_sq_wqe = wqe;
+ 
++	if (unlikely(qp->state == IB_QPS_ERR)) {
++		flush_cqe(hr_dev, qp);
++		return;
++	}
+ 	/* All kinds of DirectWQE have the same header field layout */
+ 	hr_reg_enable(rc_sq_wqe, RC_SEND_WQE_FLAG);
+ 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_DB_SL_L, qp->sl);
+-- 
+2.39.5
+
 
 
 
