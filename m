@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53C4A02BE5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5EBA02CA6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CA181886CD4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B265118866B1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74BD1494C3;
-	Mon,  6 Jan 2025 15:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46103145A03;
+	Mon,  6 Jan 2025 15:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xD+vfQjs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwDj2szW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A48D13B592;
-	Mon,  6 Jan 2025 15:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0265A81728;
+	Mon,  6 Jan 2025 15:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178489; cv=none; b=b3DZjcCmYIrVlPYxDyAPxwWzSySjA6e7y6AAtnIdPMtgUqBdyb1eVM0QaVyB/tS00D4KrXgmivC8zv7VQjFSIkNnb2eIb/I970lmG/z1h6kxYFigUMLQG/6heo05PryNiikDbSbtKp1jK0t/X7ddKOIhpqluJKFRITadzR+ayvc=
+	t=1736178972; cv=none; b=TUdUqh2C39DlilVm+Mk2NpzROI1M0teGvnUHaY4npJnFplHioTpA6a24/HkMNRUJnDbSaiQEqk3bf+oX1JXyEEfyPtlzyWaCHo4j1xLcFYzvelUAgxzeTHZhxj11wNQ3euaOQYC/p6XcVU+9YcibcDpyTAdGimkc2uoXIpzv7Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178489; c=relaxed/simple;
-	bh=m7TVCyCE1GoogQPGR1TZA/n4GAR8SlZjnys4/MeFCjk=;
+	s=arc-20240116; t=1736178972; c=relaxed/simple;
+	bh=VErRxX8eI7sO24nFHpldGK1wU6LWwA0Fl/3HAw5i9dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrIH80U7a63gyZ3MCiRLhJ9Te1deDKxReoGTOQMCDWg4m0O3Fmmbs4PvB9x99mQWbz7Cp/reBIokLGhpuyV3FkPflnCmbltIMnoiWz0tCbotuQoZHeDTFVkP2dEC/c2c+CSWgIHDh9cvhXx3iygwD2ZLZA9p8ImhToZb8N144pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xD+vfQjs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E3FC4CED2;
-	Mon,  6 Jan 2025 15:48:08 +0000 (UTC)
+	 MIME-Version; b=tTW6LHzzTtmKFWBVY/btvq6ycbqElpvuwp0ewjazMJBz3ttL7yDgXFkyli5N3Pin28nagzt68eMcig2ZH7f5m0SPmnsIwqk9/zDqTyCMj/1ZUohZY4toXZoFlYP9EehH4EWulLlMTwcbvqhRuzlWVANpwE71Ttf3ojodT+wxF7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwDj2szW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F11C4CED2;
+	Mon,  6 Jan 2025 15:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178489;
-	bh=m7TVCyCE1GoogQPGR1TZA/n4GAR8SlZjnys4/MeFCjk=;
+	s=korg; t=1736178971;
+	bh=VErRxX8eI7sO24nFHpldGK1wU6LWwA0Fl/3HAw5i9dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xD+vfQjsYPfyYqznCWrP+c9T6dCQNyyquB46MQH5cvNMMJTqffKqkzu8cEssaSN98
-	 MqTByoj17sw+o+yyV1mxhkgwfvZUbqMzv+cfE8F3kQw++sOMcITAcJmA/OHm2GoTrU
-	 fP/L5o/E0a312oPPHNm2i3Nfdijd4HcDrKwKCNns=
+	b=xwDj2szWCyt5w3WqxRAtdT+UO5pbqKUEZfIhJi568ribexbRWq2qIILIVj+sQiq4t
+	 GYw+BrbOzQvxDEb4WpDBN+8IK+eoVPJA2t0vfyHpmb6s/xj7rjwDUMUy0KqV96eYUt
+	 YIqYxwgVytxUCA1g1yx/jOMUmFcVTrVBw2kvsBpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 136/138] net/sctp: Prevent autoclose integer overflow in sctp_association_init()
-Date: Mon,  6 Jan 2025 16:17:40 +0100
-Message-ID: <20250106151138.382077325@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 153/168] sound: usb: format: dont warn that raw DSD is unsupported
+Date: Mon,  6 Jan 2025 16:17:41 +0100
+Message-ID: <20250106151144.213569926@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Adrian Ratiu <adrian.ratiu@collabora.com>
 
-commit 4e86729d1ff329815a6e8a920cb554a1d4cb5b8d upstream.
+[ Upstream commit b50a3e98442b8d72f061617c7f7a71f7dba19484 ]
 
-While by default max_autoclose equals to INT_MAX / HZ, one may set
-net.sctp.max_autoclose to UINT_MAX. There is code in
-sctp_association_init() that can consequently trigger overflow.
+UAC 2 & 3 DAC's set bit 31 of the format to signal support for a
+RAW_DATA type, typically used for DSD playback.
 
-Cc: stable@vger.kernel.org
-Fixes: 9f70f46bd4c7 ("sctp: properly latch and use autoclose value from sock to association")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20241219162114.2863827-1-kniv@yandex-team.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is correctly tested by (format & UAC*_FORMAT_TYPE_I_RAW_DATA),
+fp->dsd_raw = true; and call snd_usb_interface_dsd_format_quirks(),
+however a confusing and unnecessary message gets printed because
+the bit is not properly tested in the last "unsupported" if test:
+if (format & ~0x3F) { ... }
+
+For example the output:
+
+usb 7-1: new high-speed USB device number 5 using xhci_hcd
+usb 7-1: New USB device found, idVendor=262a, idProduct=9302, bcdDevice=0.01
+usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
+usb 7-1: Product: TC44C
+usb 7-1: Manufacturer: TC44C
+usb 7-1: SerialNumber: 5000000001
+hid-generic 0003:262A:9302.001E: No inputs registered, leaving
+hid-generic 0003:262A:9302.001E: hidraw6: USB HID v1.00 Device [DDHIFI TC44C] on usb-0000:08:00.3-1/input0
+usb 7-1: 2:4 : unsupported format bits 0x100000000
+
+This last "unsupported format" is actually wrong: we know the
+format is a RAW_DATA which we assume is DSD, so there is no need
+to print the confusing message.
+
+This we unset bit 31 of the format after recognizing it, to avoid
+the message.
+
+Suggested-by: Takashi Iwai <tiwai@suse.com>
+Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
+Link: https://patch.msgid.link/20241209090529.16134-2-adrian.ratiu@collabora.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/associola.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/format.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -134,7 +134,8 @@ static struct sctp_association *sctp_ass
- 		= 5 * asoc->rto_max;
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index 3b45d0ee7693..3b3a5ea6fcbf 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -60,6 +60,8 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
+ 			/* flag potentially raw DSD capable altsettings */
+ 			fp->dsd_raw = true;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC2_FORMAT_TYPE_I_RAW_DATA;
+ 		}
  
- 	asoc->timeouts[SCTP_EVENT_TIMEOUT_SACK] = asoc->sackdelay;
--	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] = sp->autoclose * HZ;
-+	asoc->timeouts[SCTP_EVENT_TIMEOUT_AUTOCLOSE] =
-+		(unsigned long)sp->autoclose * HZ;
+ 		format <<= 1;
+@@ -71,8 +73,11 @@ static u64 parse_audio_format_i_type(struct snd_usb_audio *chip,
+ 		sample_width = as->bBitResolution;
+ 		sample_bytes = as->bSubslotSize;
  
- 	/* Initializes the timers */
- 	for (i = SCTP_EVENT_TIMEOUT_NONE; i < SCTP_NUM_TIMEOUT_TYPES; ++i)
+-		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA)
++		if (format & UAC3_FORMAT_TYPE_I_RAW_DATA) {
+ 			pcm_formats |= SNDRV_PCM_FMTBIT_SPECIAL;
++			/* clear special format bit to avoid "unsupported format" msg below */
++			format &= ~UAC3_FORMAT_TYPE_I_RAW_DATA;
++		}
+ 
+ 		format <<= 1;
+ 		break;
+-- 
+2.39.5
+
 
 
 
