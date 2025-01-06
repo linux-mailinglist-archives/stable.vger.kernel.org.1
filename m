@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-107054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5172A02A11
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D0FA02AC3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 486FD3A70AF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:28:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA0647A2FBC
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B83C35973;
-	Mon,  6 Jan 2025 15:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86CA155325;
+	Mon,  6 Jan 2025 15:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyFufBMG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdicRB1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEE2148316;
-	Mon,  6 Jan 2025 15:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7461A60890;
+	Mon,  6 Jan 2025 15:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177315; cv=none; b=r6pISltTd1SPysHvkxBZbc9ZYiJlQtVX9zv3ydlGWmEyNfJjz8lLUKSakXXA3G9OoSG/f9+6hEv/x6cO7ik3VZtz6JaXWGKDniRzVmTLxaFmnpPMNSY3iU3QH4ZtGS0ngzCwLvHAGZBuJgyTWkp0UESZeN9H26sPagOCFxFnPH4=
+	t=1736177736; cv=none; b=fgQv4AMICWolZEvOJX2krtmZEOzl9rAzfCrp09FlpmzXc2JdLVKjo+Xxvpj2amYWDffJ5GCf3r/+vQh7if4CJSOehbQMm7CqOO3XLH9cOUihWUO81QWoyIXggaHAeDjQqDKb7bEP9uP3p7ob1fiUGQkq8Jf6SizpfzJfwSmVgHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177315; c=relaxed/simple;
-	bh=lenJExk+kbdKjgzWXIJHTeQtsPVzl/HOwXd5DuSEzws=;
+	s=arc-20240116; t=1736177736; c=relaxed/simple;
+	bh=wq6KDaaTX3oMIIKAiTu+F/SZC14R16ctOP6jVIwnggM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9tIxeQ7JSiAF4Mn1wJ2uPlBZKBWe2x89i1o3gKnqFla8iMrngCmuTSc2tomD5Xrd5GHBVeU4uuFTLDqRxtve6bIyyCjciRpeD0nLZcLgXIBVkxmjpLCzq1nEzU/3VYuCYBOtTOWDBPO5HMyjXIbgJkd46x2nOQTcxyQ6JOG45E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyFufBMG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBBEC4CED2;
-	Mon,  6 Jan 2025 15:28:33 +0000 (UTC)
+	 MIME-Version; b=fs/IXV/hn48wj7pkQKup9p7aaa1Zj+vNWi2FLKoy8c/qfYjc+axwL5qjVDDqbBtzYTAQVYOTnZmIkEGPre65sUrVdw1i20Y0FkB62GG4v5tqWsdaORY/EOrrsBXm2V99U6rtdZT7Bvz4xmvMpK5nC4+uZ9JA4Fu7AC1vR4qX9P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdicRB1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82303C4CED2;
+	Mon,  6 Jan 2025 15:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177314;
-	bh=lenJExk+kbdKjgzWXIJHTeQtsPVzl/HOwXd5DuSEzws=;
+	s=korg; t=1736177735;
+	bh=wq6KDaaTX3oMIIKAiTu+F/SZC14R16ctOP6jVIwnggM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyFufBMGVEUxGs2HHcYGfpGwHKiZcFt9KqZ6gcxHghp6ayzFqX7XBa8EG62+MSYsE
-	 FCoVn8/BSLmZhevntJxcqOK6B10J6C2WibD5Nk1CiZqBjfrMa56rT00FME/VdKqCqb
-	 c12P7036e+EmT35fo0V3IQQ3O7zyDUm4pf1Y+uX4=
+	b=IdicRB1QzYF+aR8klKdNGfofWo4waq3b1M52DJc1TCjrpXiCQ87R3d5VvBK2rVpex
+	 Xm1MlF7X7OXRuyHE/91l7zqFnQNX6UD9EfouoTn/cCuqvp5YwTmnuaojLY/PBXQlfl
+	 +GcTqtmpNKgUXQm5DfV8aMxy0LrWPmybaHLHAGQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Justin Stitt <justinstitt@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Petr Mladek <pmladek@suse.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/222] tracing: Move readpos from seq_buf to trace_seq
+Subject: [PATCH 6.12 039/156] RDMA/hns: Fix warning storm caused by invalid input in IO path
 Date: Mon,  6 Jan 2025 16:15:25 +0100
-Message-ID: <20250106151155.189727379@linuxfoundation.org>
+Message-ID: <20250106151143.209039752@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,206 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit d0ed46b60396cfa7e0056f55e1ce0b43c7db57b6 ]
+[ Upstream commit fa5c4ba8cdbfd2c2d6422e001311c8213283ebbf ]
 
-To make seq_buf more lightweight as a string buf, move the readpos member
-from seq_buf to its container, trace_seq.  That puts the responsibility
-of maintaining the readpos entirely in the tracing code.  If some future
-users want to package up the readpos with a seq_buf, we can define a
-new struct then.
+WARN_ON() is called in the IO path. And it could lead to a warning
+storm. Use WARN_ON_ONCE() instead of WARN_ON().
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231020033545.2587554-2-willy@infradead.org
-
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
+Fixes: 12542f1de179 ("RDMA/hns: Refactor process about opcode in post_send()")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241220055249.146943-4-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/seq_buf.h   |  5 +----
- include/linux/trace_seq.h |  2 ++
- kernel/trace/trace.c      | 10 +++++-----
- kernel/trace/trace_seq.c  |  6 +++++-
- lib/seq_buf.c             | 22 ++++++++++------------
- 5 files changed, 23 insertions(+), 22 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/seq_buf.h b/include/linux/seq_buf.h
-index 515d7fcb9634..a0fb013cebdf 100644
---- a/include/linux/seq_buf.h
-+++ b/include/linux/seq_buf.h
-@@ -14,19 +14,16 @@
-  * @buffer:	pointer to the buffer
-  * @size:	size of the buffer
-  * @len:	the amount of data inside the buffer
-- * @readpos:	The next position to read in the buffer.
-  */
- struct seq_buf {
- 	char			*buffer;
- 	size_t			size;
- 	size_t			len;
--	loff_t			readpos;
- };
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 6dddadb90e02..d0469d27c63c 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -468,7 +468,7 @@ static inline int set_ud_wqe(struct hns_roce_qp *qp,
+ 	valid_num_sge = calc_wr_sge_num(wr, &msg_len);
  
- static inline void seq_buf_clear(struct seq_buf *s)
- {
- 	s->len = 0;
--	s->readpos = 0;
- }
+ 	ret = set_ud_opcode(ud_sq_wqe, wr);
+-	if (WARN_ON(ret))
++	if (WARN_ON_ONCE(ret))
+ 		return ret;
  
- static inline void
-@@ -143,7 +140,7 @@ extern __printf(2, 0)
- int seq_buf_vprintf(struct seq_buf *s, const char *fmt, va_list args);
- extern int seq_buf_print_seq(struct seq_file *m, struct seq_buf *s);
- extern int seq_buf_to_user(struct seq_buf *s, char __user *ubuf,
--			   int cnt);
-+			   size_t start, int cnt);
- extern int seq_buf_puts(struct seq_buf *s, const char *str);
- extern int seq_buf_putc(struct seq_buf *s, unsigned char c);
- extern int seq_buf_putmem(struct seq_buf *s, const void *mem, unsigned int len);
-diff --git a/include/linux/trace_seq.h b/include/linux/trace_seq.h
-index 6be92bf559fe..3691e0e76a1a 100644
---- a/include/linux/trace_seq.h
-+++ b/include/linux/trace_seq.h
-@@ -14,6 +14,7 @@
- struct trace_seq {
- 	char			buffer[PAGE_SIZE];
- 	struct seq_buf		seq;
-+	size_t			readpos;
- 	int			full;
- };
+ 	ud_sq_wqe->msg_len = cpu_to_le32(msg_len);
+@@ -572,7 +572,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
+ 	rc_sq_wqe->msg_len = cpu_to_le32(msg_len);
  
-@@ -22,6 +23,7 @@ trace_seq_init(struct trace_seq *s)
- {
- 	seq_buf_init(&s->seq, s->buffer, PAGE_SIZE);
- 	s->full = 0;
-+	s->readpos = 0;
- }
+ 	ret = set_rc_opcode(hr_dev, rc_sq_wqe, wr);
+-	if (WARN_ON(ret))
++	if (WARN_ON_ONCE(ret))
+ 		return ret;
  
- /**
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 220903117c51..83f6ef4d7419 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1731,15 +1731,15 @@ static ssize_t trace_seq_to_buffer(struct trace_seq *s, void *buf, size_t cnt)
- {
- 	int len;
- 
--	if (trace_seq_used(s) <= s->seq.readpos)
-+	if (trace_seq_used(s) <= s->readpos)
- 		return -EBUSY;
- 
--	len = trace_seq_used(s) - s->seq.readpos;
-+	len = trace_seq_used(s) - s->readpos;
- 	if (cnt > len)
- 		cnt = len;
--	memcpy(buf, s->buffer + s->seq.readpos, cnt);
-+	memcpy(buf, s->buffer + s->readpos, cnt);
- 
--	s->seq.readpos += cnt;
-+	s->readpos += cnt;
- 	return cnt;
- }
- 
-@@ -7011,7 +7011,7 @@ tracing_read_pipe(struct file *filp, char __user *ubuf,
- 
- 	/* Now copy what we have to the user */
- 	sret = trace_seq_to_user(&iter->seq, ubuf, cnt);
--	if (iter->seq.seq.readpos >= trace_seq_used(&iter->seq))
-+	if (iter->seq.readpos >= trace_seq_used(&iter->seq))
- 		trace_seq_init(&iter->seq);
- 
- 	/*
-diff --git a/kernel/trace/trace_seq.c b/kernel/trace/trace_seq.c
-index bac06ee3b98b..7be97229ddf8 100644
---- a/kernel/trace/trace_seq.c
-+++ b/kernel/trace/trace_seq.c
-@@ -370,8 +370,12 @@ EXPORT_SYMBOL_GPL(trace_seq_path);
-  */
- int trace_seq_to_user(struct trace_seq *s, char __user *ubuf, int cnt)
- {
-+	int ret;
- 	__trace_seq_init(s);
--	return seq_buf_to_user(&s->seq, ubuf, cnt);
-+	ret = seq_buf_to_user(&s->seq, ubuf, s->readpos, cnt);
-+	if (ret > 0)
-+		s->readpos += ret;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(trace_seq_to_user);
- 
-diff --git a/lib/seq_buf.c b/lib/seq_buf.c
-index 45c450f423fa..b7477aefff53 100644
---- a/lib/seq_buf.c
-+++ b/lib/seq_buf.c
-@@ -324,23 +324,24 @@ int seq_buf_path(struct seq_buf *s, const struct path *path, const char *esc)
-  * seq_buf_to_user - copy the sequence buffer to user space
-  * @s: seq_buf descriptor
-  * @ubuf: The userspace memory location to copy to
-+ * @start: The first byte in the buffer to copy
-  * @cnt: The amount to copy
-  *
-  * Copies the sequence buffer into the userspace memory pointed to
-- * by @ubuf. It starts from the last read position (@s->readpos)
-- * and writes up to @cnt characters or till it reaches the end of
-- * the content in the buffer (@s->len), which ever comes first.
-+ * by @ubuf. It starts from @start and writes up to @cnt characters
-+ * or until it reaches the end of the content in the buffer (@s->len),
-+ * whichever comes first.
-  *
-  * On success, it returns a positive number of the number of bytes
-  * it copied.
-  *
-  * On failure it returns -EBUSY if all of the content in the
-  * sequence has been already read, which includes nothing in the
-- * sequence (@s->len == @s->readpos).
-+ * sequence (@s->len == @start).
-  *
-  * Returns -EFAULT if the copy to userspace fails.
-  */
--int seq_buf_to_user(struct seq_buf *s, char __user *ubuf, int cnt)
-+int seq_buf_to_user(struct seq_buf *s, char __user *ubuf, size_t start, int cnt)
- {
- 	int len;
- 	int ret;
-@@ -350,20 +351,17 @@ int seq_buf_to_user(struct seq_buf *s, char __user *ubuf, int cnt)
- 
- 	len = seq_buf_used(s);
- 
--	if (len <= s->readpos)
-+	if (len <= start)
- 		return -EBUSY;
- 
--	len -= s->readpos;
-+	len -= start;
- 	if (cnt > len)
- 		cnt = len;
--	ret = copy_to_user(ubuf, s->buffer + s->readpos, cnt);
-+	ret = copy_to_user(ubuf, s->buffer + start, cnt);
- 	if (ret == cnt)
- 		return -EFAULT;
- 
--	cnt -= ret;
--
--	s->readpos += cnt;
--	return cnt;
-+	return cnt - ret;
- }
- 
- /**
+ 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
 -- 
 2.39.5
 
