@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-106931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EF3A0295B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587CDA02A76
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19D291885567
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 720177A2C89
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DFC1547F2;
-	Mon,  6 Jan 2025 15:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0FF1DB37B;
+	Mon,  6 Jan 2025 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnprFfdy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRTJOj+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71563146D6B;
-	Mon,  6 Jan 2025 15:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CA6DF71;
+	Mon,  6 Jan 2025 15:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176945; cv=none; b=IRuVzy8Kf84hKD9w+eZTEYc22epazbpRMYdZoPdZp+P0Ljvt67JJdFnvu4Vh+sfVmHlelJdzH3K+vvSgPCHQjYXSeEFt8EE8iSSn8rQKNHmzbL8028GuzjfEh6dDhgvLIQQOHC0zHKvLrRLPDyX5Uhb86CfR00+ILoFH3WE9Duc=
+	t=1736177575; cv=none; b=Fg1bqvrkeGLoTrLx4z39hkpWVsbJo9dDoNNatD2oXwZbhKzhd70SRcfdxdMlltGbznDR7ky8j6EMMVJEZXFPRsxep24BU7N3P6kF4+a6x5WpjW7+MxBaqdqhfn16TAW0yfr2jZg607STN7gEcYHLPMoN9CIkvjZp+Q2I28VBHck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176945; c=relaxed/simple;
-	bh=If8srUaQw4qDGJ3/OiQ59Hc01gAyBsWcxpIHK99Ir5E=;
+	s=arc-20240116; t=1736177575; c=relaxed/simple;
+	bh=VLeKeYUiuMVW7bzfJGKDj5tqGE8QYVXbxlUiIXvoa4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0FPtQiIlpArq1FXDskhE+B5y5oZ2YQAOzLfoER28HkLKq4o9C5SNZojO7/MWOmcG1nH0fseezOhWDgEdQJfHcUsMnnqtUMrrp2XSB3Q2xbTjmVaSIOGU4LV1XDnDEdh3Zu56xHnEr8PPkh/G1EWxfOz1XOLQcLS0do4GN3ao5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnprFfdy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAC4C4CED2;
-	Mon,  6 Jan 2025 15:22:24 +0000 (UTC)
+	 MIME-Version; b=kSZm42z1O223jntCn1NeyUvuMOcvdamHD7qgXpWiBMptfaF9ZfPOO1SeV6p7zS9Rl94kDnx+wj3TMZdDAuGMwGfSZy4d4/aBZYcbNPj048zeX/zAZWtu6rTaaJg77n2321pn5zv9WYuGdRsQ+4Q+CSSGSH8LA1PUzfKx992rHEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRTJOj+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01093C4CED2;
+	Mon,  6 Jan 2025 15:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176945;
-	bh=If8srUaQw4qDGJ3/OiQ59Hc01gAyBsWcxpIHK99Ir5E=;
+	s=korg; t=1736177575;
+	bh=VLeKeYUiuMVW7bzfJGKDj5tqGE8QYVXbxlUiIXvoa4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GnprFfdyVpbd/Ecj7T+l8XTlYhR1ij8/R6X35Lmas2H6G3xOur/jNm3m09ZIuGUu9
-	 S+/z6kwiNUdqUd7pToVAqqAgqVjKWyTOjuFWwgyvkGXUv+Mr/skzcQBk2on3+OSpBO
-	 eCURHAJjAM0l/HymCisv+vtZu165zX3pC63DNVXU=
+	b=WRTJOj+ii0CeAwIykx1w1pnaI5zHnM1C/Bv7+/nO+l9tIMI1/CHEs7pDLpVP/45BM
+	 oze6rPUv1D2mBKRwhV+yElggUGAHIkOI5R+Pi7de6/OAp8PZmPoYMeXzOjgwp2/W6H
+	 U1fZZmwPvzFmgpCFBuAh9mTOMl+hgyK0l+Mktc0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 81/81] mptcp: dont always assume copied data in mptcp_cleanup_rbuf()
+	Hien Huynh <hien.huynh.px@renesas.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Adam Ford <aford173@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.6 209/222] drm: adv7511: Drop dsi single lane support
 Date: Mon,  6 Jan 2025 16:16:53 +0100
-Message-ID: <20250106151132.485412831@linuxfoundation.org>
+Message-ID: <20250106151158.676143713@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 551844f26da2a9f76c0a698baaffa631d1178645 upstream.
+commit 79d67c499c3f886202a40c5cb27e747e4fa4d738 upstream.
 
-Under some corner cases the MPTCP protocol can end-up invoking
-mptcp_cleanup_rbuf() when no data has been copied, but such helper
-assumes the opposite condition.
+As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
+unsupported 1-lane.
 
-Explicitly drop such assumption and performs the costly call only
-when strictly needed - before releasing the msk socket lock.
+[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
+[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
 
-Fixes: fd8976790a6c ("mptcp: be careful on MPTCP-level ack.")
+Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-2-8608af434ceb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-4-biju.das.jz@bp.renesas.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/bridge/adv7511/adv7533.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -538,13 +538,13 @@ static void mptcp_send_ack(struct mptcp_
- 		mptcp_subflow_send_ack(mptcp_subflow_tcp_sock(subflow));
- }
+--- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+@@ -175,7 +175,7 @@ int adv7533_parse_dt(struct device_node
  
--static void mptcp_subflow_cleanup_rbuf(struct sock *ssk)
-+static void mptcp_subflow_cleanup_rbuf(struct sock *ssk, int copied)
- {
- 	bool slow;
+ 	of_property_read_u32(np, "adi,dsi-lanes", &num_lanes);
  
- 	slow = lock_sock_fast(ssk);
- 	if (tcp_can_send_ack(ssk))
--		tcp_cleanup_rbuf(ssk, 1);
-+		tcp_cleanup_rbuf(ssk, copied);
- 	unlock_sock_fast(ssk, slow);
- }
+-	if (num_lanes < 1 || num_lanes > 4)
++	if (num_lanes < 2 || num_lanes > 4)
+ 		return -EINVAL;
  
-@@ -561,7 +561,7 @@ static bool mptcp_subflow_could_cleanup(
- 			      (ICSK_ACK_PUSHED2 | ICSK_ACK_PUSHED)));
- }
- 
--static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
-+static void mptcp_cleanup_rbuf(struct mptcp_sock *msk, int copied)
- {
- 	int old_space = READ_ONCE(msk->old_wspace);
- 	struct mptcp_subflow_context *subflow;
-@@ -569,14 +569,14 @@ static void mptcp_cleanup_rbuf(struct mp
- 	int space =  __mptcp_space(sk);
- 	bool cleanup, rx_empty;
- 
--	cleanup = (space > 0) && (space >= (old_space << 1));
--	rx_empty = !__mptcp_rmem(sk);
-+	cleanup = (space > 0) && (space >= (old_space << 1)) && copied;
-+	rx_empty = !__mptcp_rmem(sk) && copied;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		if (cleanup || mptcp_subflow_could_cleanup(ssk, rx_empty))
--			mptcp_subflow_cleanup_rbuf(ssk);
-+			mptcp_subflow_cleanup_rbuf(ssk, copied);
- 	}
- }
- 
-@@ -2195,9 +2195,6 @@ static int mptcp_recvmsg(struct sock *sk
- 
- 		copied += bytes_read;
- 
--		/* be sure to advertise window change */
--		mptcp_cleanup_rbuf(msk);
--
- 		if (skb_queue_empty(&msk->receive_queue) && __mptcp_move_skbs(msk))
- 			continue;
- 
-@@ -2249,6 +2246,7 @@ static int mptcp_recvmsg(struct sock *sk
- 		}
- 
- 		pr_debug("block timeout %ld\n", timeo);
-+		mptcp_cleanup_rbuf(msk, copied);
- 		err = sk_wait_data(sk, &timeo, NULL);
- 		if (err < 0) {
- 			err = copied ? : err;
-@@ -2256,6 +2254,8 @@ static int mptcp_recvmsg(struct sock *sk
- 		}
- 	}
- 
-+	mptcp_cleanup_rbuf(msk, copied);
-+
- out_err:
- 	if (cmsg_flags && copied >= 0) {
- 		if (cmsg_flags & MPTCP_CMSG_TS)
+ 	adv->num_dsi_lanes = num_lanes;
 
 
 
