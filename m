@@ -1,137 +1,95 @@
-Return-Path: <stable+bounces-106795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC50A02221
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:48:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1199A02258
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 11:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFA8161A81
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 09:48:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18271630FD
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 10:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6DA1D63E8;
-	Mon,  6 Jan 2025 09:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDA11DA112;
+	Mon,  6 Jan 2025 10:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="u8ATxVr2"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="H6G+hVW6"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AECB1E505;
-	Mon,  6 Jan 2025 09:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DE91D935C;
+	Mon,  6 Jan 2025 10:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736156883; cv=none; b=WJMRwcGFiXPHOgcptSZ8P2GHT5O8dEKCqyvzt6lNSCEhwedFLfI136DsY2bnGDK3ghwT649ywtm2oVU7cBHx/yw87DYVwZLKj6sYZ/KAdq24Km5S4T2dqxKhuu2ccHSy0Q6ej88iqEJ+L/RgQ3vM0W6I6agf7jyAMBejzaaFAMY=
+	t=1736157607; cv=none; b=XoyKVllFICVzhz9avzGOzSlJQWLrkEDUadEXZVQLon6hyNW3Ga3rqRTHsZwzLjBYrApAKkevNRMlvGPbONof/ZpU1gQ9p+te3qhXM1wc2FzkVD9xlIgw5dhHqADy4LOUozMOU0adqS6PfeDz1rbjcJAA0i2ziaHbs2hxKnDjspM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736156883; c=relaxed/simple;
-	bh=dLaxgmYswkSXZkUjlNDNc1tA8moJz1GSU3CEBXpHlmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DPxoHAos1reTP2fX/d47M5MBqq7EHYSiYuyg7zBDfYkvB+PIi6bBBteOWjkfjeJqrULQoYnyx9ENNErcm3i3rTbiB8ASDgNT3Rq+CbXKXJn2hHdsofx9HR6WMOg9jEJq+lYOsjYyNLzcQ6Oiw+ho+/UHeRqOxWeSwOVj6Gw2jLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=u8ATxVr2; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UB3S6kcd+Omc6ye56NC6ow7U03F1ihd9mp0kuIOyzfY=; b=u8ATxVr2+q/It4195z3R2JW17Z
-	n4BxjFVG9gkVWLrh+y8ahgYOsghmOyC185Cuk1U6JQic3S+wpsSwzBvL+Zs2ffOdF85PPuO4E4/K7
-	Hc9SUbiuqnbYc3LksInEkcZIXA/MiaVK+C8GGrjiqTNepW2nC9cefkXyPRH5SzMVgn/tsa4y+I1iz
-	FYzPy28nKJHKOxdlLs5CEycDC0czUMHCLosz/2v30z0h/1icHpZtDFjwAms7vv/d8KLzZ14YKQnyP
-	oc585AlVHEEenpQ2PnVbF1de9w0VXnr0v2asZSFBjB4GG3mvwdFjMhk6FxIyHYxQgI/BjfM424GS9
-	KeOZ62Bg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39272)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tUjiH-0005bA-2h;
-	Mon, 06 Jan 2025 09:47:57 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tUjiG-0004B1-2W;
-	Mon, 06 Jan 2025 09:47:56 +0000
-Date: Mon, 6 Jan 2025 09:47:56 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] [ARM] fix reference leak in locomo_init_one_child()
-Message-ID: <Z3umzMg6SbHh75vI@shell.armlinux.org.uk>
-References: <20250106074743.313384-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1736157607; c=relaxed/simple;
+	bh=odrdTO5O0rEniTcE1eV7WzfcuDhinmrYoT91areJi24=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=G+TY7q8RRrroKSRzGV1zhje/7svM717+9yYgmnZcHv1GWPYzBUqilRGtD5tTwYxkivFJy5Yr2VKRMtMBC0iWg0pWxWBHypY3FjuA7FbuyZr35coGBVykDmsUf42DkZx2JyRG9h1VYphl4GY8z8upN/deXG67g6Rbp/zdXU5Hnds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=H6G+hVW6; arc=none smtp.client-ip=162.62.57.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1736157292; bh=No06V+8q8JBfJr+GfYmrVNeP1TRqGKgHXiwOwFF1FP0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=H6G+hVW6l4Bs+LhwEJJJ355nA223im7jvAK1VfOrRRg/UrGOE+VfzNyTnEegYbH90
+	 6Mz3I1wEAv3R8fu4cAdscyEyrJxOZxe5hNzG1BjOgtc4S+s7AbkR0woZ4pX8zp2yqZ
+	 dZ9y2hLyDPUpRuCtoM6LbIKkX1tCjf1VCAaTY0vI=
+Received: from localhost.localdomain ([101.227.46.164])
+	by newxmesmtplogicsvrszc25-0.qq.com (NewEsmtp) with SMTP
+	id C2902420; Mon, 06 Jan 2025 17:48:41 +0800
+X-QQ-mid: xmsmtpt1736156921tcpukmmgq
+Message-ID: <tencent_C5D662949D58221F89531E4CC3CE72879507@qq.com>
+X-QQ-XMAILINFO: NnA3IMNPwBd+w/Yg1uKuc/Ew4ioUNz+bURqbe8urInqzl+oq1pi4fpDds/i+Y8
+	 /1PlJPF+nhxfkeoXv6giLUYUjkvULTCI0qRxw1IKU+ESV7REOj41O1LVVxcrzsS3CxXu115+nYWl
+	 ONFmsnQu2Fd0wJaBxVXzI5Rsc+tXIhVQSvBJezjnwTZb5ie+LbO05GIl5Y0b325VhkOJS8xfbCwL
+	 dJus1EQwaszpBzqgTHYjbkT7hh4BUvgE44gobqLa+ImEpwtA6uNwWDBplkU9+g4lIkHqPqCLxIKt
+	 8GAGtdWfWIH9V3wQPHx/HfZuFJE4WRWeiRdXUp8bxgfUmR5SM1iZKFw+9JTg8Or1UvcP3835LwjC
+	 oVJgx69BFFx3ny+3ZMae5cH9+BdMURJEaOCSMkiZakHKztMLKgi7YHxtuFJI9EEZ8Z3S4VuVuOJK
+	 OMDyoeAcseCf8rDujwd2LILSzDmykqzdo+qkAgvoPpPZX1FMx/7TvUoHUdpmaN8rxFz6Lsl43TNx
+	 Y1MGjTPNEoGjbqo84WLsxlKcep8naUBlALo6pi4g86pBVBSpcRHEVI+zEJJpWiv8P1eldiCBohKW
+	 NvH0Rx0Kvce8twWL0ubtKzFodL3T5Y01I6HsoW5WusskIGCiDV3FR3YqL8BII1e1uGnGANLAPEYl
+	 kAdV9KK3xYlPmNbnVkhOWhx9mArvndeAx/2ErZBNv4ZGUN4JZiVo/ktY7Z8w9sCtm2rPYzm79/6b
+	 /aOzbUszkpS653kAO7cqfdKh6LUQCLHz1IzkI1yep+q+sHh//9ZfLz4dHEitQQwGzcNIg2UKCAmR
+	 AFPWWiP3NG6Dt4s/iTzj5QdgQb/5Ulru+04LEJpg5IisYXMfY/W1aSXJA6hxMK1grqKVp7v7+3nt
+	 9cNUH+w7ZeURz2bd9beUI3EfpQD8hhEdlnznGQ1V67Ud/n1IFnws5fuKpi+jntO3ZSbvyDK/9/38
+	 /R1/OtdylHioG3tqU8Rn7sA557aJKmqOClf8EBjAv0GWr9DlavQyrwwbP7QfT4d38Me6krlu0EDv
+	 DZWC1jZDwPRcJlqXX03xGAGX0cS6wcKq3Zzq3T1g==
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+From: wujing <realwujing@qq.com>
+To: peterz@infradead.org
+Cc: gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	mingo@redhat.com,
+	realwujing@qq.com,
+	sasha.levin@linux.microsoft.com,
+	stable@vger.kernel.org,
+	yuanql9@chinatelecom.cn
+Subject: Re: [PATCH] sched/fair: Fix ksmd and kthreadd running on isolated CPU0 on arm64 systems
+Date: Mon,  6 Jan 2025 17:48:40 +0800
+X-OQ-MSGID: <20250106094840.123528-1-realwujing@qq.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250106092134.GA20870@noisy.programming.kicks-ass.net>
+References: <20250106092134.GA20870@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250106074743.313384-1-make24@iscas.ac.cn>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 06, 2025 at 03:47:43PM +0800, Ma Ke wrote:
-> Once device_register() failed, we should call put_device() to
-> decrement reference count for cleanup. Or it could cause memory leak.
-> 
-> device_register() includes device_add(). As comment of device_add()
-> says, 'if device_add() succeeds, you should call device_del() when you
-> want to get rid of it. If device_add() has not succeeded, use only
-> put_device() to drop the reference count'.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - modified the patch as suggestions.
-> ---
->  arch/arm/common/locomo.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/arm/common/locomo.c b/arch/arm/common/locomo.c
-> index 309b74783468..9e48cbb2568e 100644
-> --- a/arch/arm/common/locomo.c
-> +++ b/arch/arm/common/locomo.c
-> @@ -253,6 +253,8 @@ locomo_init_one_child(struct locomo *lchip, struct locomo_dev_info *info)
->  
->  	ret = device_register(&dev->dev);
->  	if (ret) {
-> +		put_device(&dev->dev);
-> +		return ret;
->   out:
->  		kfree(dev);
->  	}
+The reason this issue does not occur on x86 architecture is that x86 does not 
+use the `select_idle_cpu` function for core selection. Instead, it uses the
+`select_idle_smt` function. However, there is still an issue on x86 where 
+isolated cores are not properly excluded. My other commit, 
+`sched/fair: Correct CPU selection from isolated domain`, addresses the issue 
+of isolated cores on x86.
 
-This makes the code layout quite horrible.
+> Your subject explicitly mentions arm64, however there is absolutely
+> nothing arm64 specific to this patch, as such the subject is just plain
+> wrong.
 
-Instead, I suggest:
-
-	dev = kzalloc(sizeof(...)...
--	if (!dev) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!dev)
-+		return -ENOMEM;
-
-...
-
-	ret = device_register(&dev->dev);
--	if (ret) {
-- out:
--		kfree(dev);
--	}
-+	if (ret)
-+		put_device(&dev->dev);
-
-Thanks.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
