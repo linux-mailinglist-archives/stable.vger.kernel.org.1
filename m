@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-107637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A98BA02CCA
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CC7A02C93
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7C7165A4E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:57:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C2143A1BD5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF8D13B592;
-	Mon,  6 Jan 2025 15:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC9E78F2B;
+	Mon,  6 Jan 2025 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLDjYJBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpqLQppg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577B9BA34;
-	Mon,  6 Jan 2025 15:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B08313AD11;
+	Mon,  6 Jan 2025 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179069; cv=none; b=fr6bAxTG3O3M+K2EkdztWei1NSMQUxKg4GAQKDoJdJY7yA48sAQ/8wmB1PKgiBSDHX1xSQtCn5v9q4dHERu8EJvSC3vbt7oTKFcmZRdY+Qq2nll21yHItU9sKjgrdUJ68u2JE1RwoOed7xkdo/vimDHwTKqFb/GGKnKIIbxLukQ=
+	t=1736178797; cv=none; b=YJRAOHz3gHdXAkcB+G+E/EoSTkJIiwSsA+bl90L1DIo3T1BVFKdxPNv//1ajI1XX/jG8Cuu6y9HhwGBi82pjmFwp2kpH5D86VsW1ZLBjb348WNcYEDf4oJqJInoOQIlwITd6lnm33w2bDK9z4KYn2fZWv86Yv6uT392qIgvpznA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179069; c=relaxed/simple;
-	bh=EVuctLCK9ZVq5IQQpbZxBBN73V6ePcmp32+nLslKnA4=;
+	s=arc-20240116; t=1736178797; c=relaxed/simple;
+	bh=OaaTrbdneS0/j5LMCrxwJHPKgLT0yPib1cGn9Ij53rU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhuThNLYqVFxGTBMJUqWE7NL2qaRa7/ey9z57s8oCmbCHPt9C1iCgTmVVDtpWq5WTOfXsE31L5HbJLmpF93v05fB+3T0Q7bgG5equMfxEcdHACxR90zFZQak8XM+Z0D4F3nNNpdpE13VIkeKY/nRPmOPaFa0jIhTspS73x1vXgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLDjYJBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D194AC4CED2;
-	Mon,  6 Jan 2025 15:57:48 +0000 (UTC)
+	 MIME-Version; b=kdAUJYTRdFuJk+NXzyp8Qt02ulJy4uqccdhanBUBmLqPq6fsnF+h1iCUsbvDgrw4Snfb5rJ56StSE+8Kr6OVUMU8V2eK7gM+QuENm5g40SYo9I2cSTax4S/pMkTBoEgaK4G6/NOOLESEtDU6XDWKaRVkgorWQgcO1OYeojcAfH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpqLQppg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2846C4CED2;
+	Mon,  6 Jan 2025 15:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179069;
-	bh=EVuctLCK9ZVq5IQQpbZxBBN73V6ePcmp32+nLslKnA4=;
+	s=korg; t=1736178797;
+	bh=OaaTrbdneS0/j5LMCrxwJHPKgLT0yPib1cGn9Ij53rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLDjYJBiBglcFrxTG+LG0czkXGWpsHjareZxWMfZJKd4EPI085Tl65bp7lOaVDJRg
-	 ol20GIPNk4PnoOyPsgjeOwYlNtzPvL4Hd+07e5K+dzfaqRtAOGzwXv9x8fgFG5Ueuq
-	 j1CYxtkOx2ID4Zvdq8/Ihf4zLGoL0EKQijLfSVso=
+	b=PpqLQppglDj8FQ8pdqmgS4GvaSCIbikSL9bSONBZbaqmKgBmkkLSy+ZnNStk+pmGK
+	 PlBycF+hdTbYbFJYslx84TgtzIK8QfCWOZNIsqKLBo7/+AalppurhTF32qbOS2Y2Wy
+	 EXhsU0pYoqpC/Ww+B50z07x9TIp801Fpeh0InOjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/93] i2c: pnx: Fix timeout in wait functions
-Date: Mon,  6 Jan 2025 16:16:42 +0100
-Message-ID: <20250106151128.935219293@linuxfoundation.org>
+Subject: [PATCH 5.15 095/168] lib: stackinit: hide never-taken branch from compiler
+Date: Mon,  6 Jan 2025 16:16:43 +0100
+Message-ID: <20250106151142.051759135@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 7363f2d4c18557c99c536b70489187bb4e05c412 ]
+[ Upstream commit 5c3793604f91123bf49bc792ce697a0bef4c173c ]
 
-Since commit f63b94be6942 ("i2c: pnx: Fix potential deadlock warning
-from del_timer_sync() call in isr") jiffies are stored in
-i2c_pnx_algo_data.timeout, but wait_timeout and wait_reset are still
-using it as milliseconds. Convert jiffies back to milliseconds to wait
-for the expected amount of time.
+The never-taken branch leads to an invalid bounds condition, which is by
+design. To avoid the unwanted warning from the compiler, hide the
+variable from the optimizer.
 
-Fixes: f63b94be6942 ("i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr")
-Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+../lib/stackinit_kunit.c: In function 'do_nothing_u16_zero':
+../lib/stackinit_kunit.c:51:49: error: array subscript 1 is outside array bounds of 'u16[0]' {aka 'short unsigned int[]'} [-Werror=array-bounds=]
+   51 | #define DO_NOTHING_RETURN_SCALAR(ptr)           *(ptr)
+      |                                                 ^~~~~~
+../lib/stackinit_kunit.c:219:24: note: in expansion of macro 'DO_NOTHING_RETURN_SCALAR'
+  219 |                 return DO_NOTHING_RETURN_ ## which(ptr + 1);    \
+      |                        ^~~~~~~~~~~~~~~~~~
+
+Link: https://lkml.kernel.org/r/20241117113813.work.735-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pnx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/test_stackinit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
-index 4d09665a72e5..6ba534c983de 100644
---- a/drivers/i2c/busses/i2c-pnx.c
-+++ b/drivers/i2c/busses/i2c-pnx.c
-@@ -95,7 +95,7 @@ enum {
- 
- static inline int wait_timeout(struct i2c_pnx_algo_data *data)
- {
--	long timeout = data->timeout;
-+	long timeout = jiffies_to_msecs(data->timeout);
- 	while (timeout > 0 &&
- 			(ioread32(I2C_REG_STS(data)) & mstatus_active)) {
- 		mdelay(1);
-@@ -106,7 +106,7 @@ static inline int wait_timeout(struct i2c_pnx_algo_data *data)
- 
- static inline int wait_reset(struct i2c_pnx_algo_data *data)
- {
--	long timeout = data->timeout;
-+	long timeout = jiffies_to_msecs(data->timeout);
- 	while (timeout > 0 &&
- 			(ioread32(I2C_REG_CTL(data)) & mcntrl_reset)) {
- 		mdelay(1);
+diff --git a/lib/test_stackinit.c b/lib/test_stackinit.c
+index a3c74e6a21ff..56653c6a2a61 100644
+--- a/lib/test_stackinit.c
++++ b/lib/test_stackinit.c
+@@ -259,6 +259,7 @@ static noinline __init int test_ ## name (void)			\
+ static noinline __init DO_NOTHING_TYPE_ ## which(var_type)	\
+ do_nothing_ ## name(var_type *ptr)				\
+ {								\
++	OPTIMIZER_HIDE_VAR(ptr);				\
+ 	/* Will always be true, but compiler doesn't know. */	\
+ 	if ((unsigned long)ptr > 0x2)				\
+ 		return DO_NOTHING_RETURN_ ## which(ptr);	\
 -- 
 2.39.5
 
