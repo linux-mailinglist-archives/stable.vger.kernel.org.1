@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157DBA02BA9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11ED9A02947
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42555165160
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6AEA18863B6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2624E18B46A;
-	Mon,  6 Jan 2025 15:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB2615252D;
+	Mon,  6 Jan 2025 15:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTndIUjk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1fLvRkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D6E1D5CE5;
-	Mon,  6 Jan 2025 15:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF5D200A3;
+	Mon,  6 Jan 2025 15:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178294; cv=none; b=BtdYHW4j2IVdTkjFpID2Rrmgo0UuJtodXBgAUIV8HpboherCYFayOtmYU37okGU8i0WGVfEYhwqtdCYQlqQIK2qCLoy5Y9/sFJUbp8ZOmiojTAdCDckEfdB3Fj//l44t5l+Cp2WEWutPcavB5+LBkK1lahPyt02vl5IZ6VRVTps=
+	t=1736176886; cv=none; b=GCmORKIziNWXGmuI86YZzSH18SrxEVqfATBNHVJesy3fUkWhc8RGkXbybuS9LtjlwiMjde7wstMybx4lThKN3PWpD+Voq8tHF62PhhwkeYESPNPE6/7ip0ge16zQeI3sgPXYRJayGuvDH03kQg3HOBRogF17a1lhi852f+7ESp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178294; c=relaxed/simple;
-	bh=NAZ1fKWRNQzxdNnjQ7MfJ6Yt08x1F5IAkzBoC6o9j00=;
+	s=arc-20240116; t=1736176886; c=relaxed/simple;
+	bh=kOpVS96u8v5qY9mL/G5oyIOOWLErJp8sxwg5w4CT2/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/1pcuTeCK8X6hRrCDvZPLttKuYndPUe3n01TMoXK/8Uyzz2vIHegaxKGbAY5sXvxLxA2fjY8goXdu5cue8FVA8lhow++xxl6LSXFIJUVMtoMk0FXkous4Szw5Z6E2fKsIL0bHTE2lqnHAJghcIfNRwRLIuXl0lav8+5tFN9kEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTndIUjk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B7BC4CED2;
-	Mon,  6 Jan 2025 15:44:54 +0000 (UTC)
+	 MIME-Version; b=eL4QEAtPqsVEhQ1gPbMGyXPe41GP9KU0tARlpWvHWKvNZ8MhrhqqH8igu62JNGzDCNNRXbPUIHFqY2HCoqq07bpYWhLjXb6JRoyMs+hmxxPZqHQjlCJ0H4KKr7FI8zsxGn7jkloeAwT/oKiMsLm1uyNV7EoYuMXQPfdqypC1CiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1fLvRkS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F760C4CED2;
+	Mon,  6 Jan 2025 15:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178294;
-	bh=NAZ1fKWRNQzxdNnjQ7MfJ6Yt08x1F5IAkzBoC6o9j00=;
+	s=korg; t=1736176886;
+	bh=kOpVS96u8v5qY9mL/G5oyIOOWLErJp8sxwg5w4CT2/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTndIUjkpzUUGElBUhA2ZjodquZGagsPSMvTHMchdnuHnLOZp++mWR9cXeLdrcUps
-	 khhTW6sFDI1Rz7RIGZqpqNrDlqOSqBPdydhmXzQ58q1cktcjMw2M6FnatPGY/Rc8tU
-	 nf4TQALOE/spQ6RyMyX65l8+FpZqyzZKvF88PChc=
+	b=H1fLvRkSBKIAzmsFZnsNH+8cSoTfTcQjqq9PC3dY8zzxa67zQ8fqmTJi8m9hicPCG
+	 w1VRbr/CW5bEYhRcEu8mOxRCZfMx/Er0uyBIbgY2dsasBfGuj/+JadGisy9Xdr10xK
+	 7YmhNVMTtduiMrvAt6gnM+UatA4K0v6PXqrMXmrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Averin <vvs@virtuozzo.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/138] ipv6: use skb_expand_head in ip6_xmit
+Subject: [PATCH 6.1 63/81] irqchip/gic: Correct declaration of *percpu_base pointer in union gic_base
 Date: Mon,  6 Jan 2025 16:16:35 +0100
-Message-ID: <20250106151135.922633793@linuxfoundation.org>
+Message-ID: <20250106151131.813873284@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
-References: <20250106151133.209718681@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Averin <vvs@virtuozzo.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 0c9f227bee11910a49e1d159abe102d06e3745d5 ]
+[ Upstream commit a1855f1b7c33642c9f7a01991fb763342a312e9b ]
 
-Unlike skb_realloc_headroom, new helper skb_expand_head
-does not allocate a new skb if possible.
+percpu_base is used in various percpu functions that expect variable in
+__percpu address space. Correct the declaration of percpu_base to
 
-Additionally this patch replaces commonly used dereferencing with variables.
+void __iomem * __percpu *percpu_base;
 
-Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-(cherry picked from commit 0c9f227bee11910a49e1d159abe102d06e3745d5)
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+to declare the variable as __percpu pointer.
+
+The patch fixes several sparse warnings:
+
+irq-gic.c:1172:44: warning: incorrect type in assignment (different address spaces)
+irq-gic.c:1172:44:    expected void [noderef] __percpu *[noderef] __iomem *percpu_base
+irq-gic.c:1172:44:    got void [noderef] __iomem *[noderef] __percpu *
+...
+irq-gic.c:1231:43: warning: incorrect type in argument 1 (different address spaces)
+irq-gic.c:1231:43:    expected void [noderef] __percpu *__pdata
+irq-gic.c:1231:43:    got void [noderef] __percpu *[noderef] __iomem *percpu_base
+
+There were no changes in the resulting object files.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/all/20241213145809.2918-2-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ drivers/irqchip/irq-gic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 7806963b4539..a8475848d038 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -254,6 +254,8 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 	const struct ipv6_pinfo *np = inet6_sk(sk);
- 	struct in6_addr *first_hop = &fl6->daddr;
- 	struct dst_entry *dst = skb_dst(skb);
-+	struct net_device *dev = dst->dev;
-+	struct inet6_dev *idev = ip6_dst_idev(dst);
- 	unsigned int head_room;
- 	struct ipv6hdr *hdr;
- 	u8  proto = fl6->flowi6_proto;
-@@ -261,22 +263,16 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 	int hlimit = -1;
- 	u32 mtu;
+diff --git a/drivers/irqchip/irq-gic.c b/drivers/irqchip/irq-gic.c
+index 4c7bae0ec8f9..867b282fa95d 100644
+--- a/drivers/irqchip/irq-gic.c
++++ b/drivers/irqchip/irq-gic.c
+@@ -63,7 +63,7 @@ static void gic_check_cpu_features(void)
  
--	head_room = sizeof(struct ipv6hdr) + LL_RESERVED_SPACE(dst->dev);
-+	head_room = sizeof(struct ipv6hdr) + LL_RESERVED_SPACE(dev);
- 	if (opt)
- 		head_room += opt->opt_nflen + opt->opt_flen;
+ union gic_base {
+ 	void __iomem *common_base;
+-	void __percpu * __iomem *percpu_base;
++	void __iomem * __percpu *percpu_base;
+ };
  
--	if (unlikely(skb_headroom(skb) < head_room)) {
--		struct sk_buff *skb2 = skb_realloc_headroom(skb, head_room);
--		if (!skb2) {
--			IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)),
--				      IPSTATS_MIB_OUTDISCARDS);
--			kfree_skb(skb);
-+	if (unlikely(head_room > skb_headroom(skb))) {
-+		skb = skb_expand_head(skb, head_room);
-+		if (!skb) {
-+			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
- 			return -ENOBUFS;
- 		}
--		if (skb->sk)
--			skb_set_owner_w(skb2, skb->sk);
--		consume_skb(skb);
--		skb = skb2;
- 	}
- 
- 	if (opt) {
-@@ -318,8 +314,7 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 
- 	mtu = dst_mtu(dst);
- 	if ((skb->len <= mtu) || skb->ignore_df || skb_is_gso(skb)) {
--		IP6_UPD_PO_STATS(net, ip6_dst_idev(skb_dst(skb)),
--			      IPSTATS_MIB_OUT, skb->len);
-+		IP6_UPD_PO_STATS(net, idev, IPSTATS_MIB_OUT, skb->len);
- 
- 		/* if egress device is enslaved to an L3 master device pass the
- 		 * skb to its handler for processing
-@@ -332,17 +327,17 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 		 * we promote our socket to non const
- 		 */
- 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
--			       net, (struct sock *)sk, skb, NULL, dst->dev,
-+			       net, (struct sock *)sk, skb, NULL, dev,
- 			       dst_output);
- 	}
- 
--	skb->dev = dst->dev;
-+	skb->dev = dev;
- 	/* ipv6_local_error() does not require socket lock,
- 	 * we promote our socket to non const
- 	 */
- 	ipv6_local_error((struct sock *)sk, EMSGSIZE, fl6, mtu);
- 
--	IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_FRAGFAILS);
-+	IP6_INC_STATS(net, idev, IPSTATS_MIB_FRAGFAILS);
- 	kfree_skb(skb);
- 	return -EMSGSIZE;
- }
+ struct gic_chip_data {
 -- 
 2.39.5
 
