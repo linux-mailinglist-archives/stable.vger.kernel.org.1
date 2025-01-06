@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-106937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B403DA02961
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A912A02BB7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:46:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BFC51633F4
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 051533A4985
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B6E1547E3;
-	Mon,  6 Jan 2025 15:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3031514F6;
+	Mon,  6 Jan 2025 15:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m67Pz+/e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcwY2GVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235708634A;
-	Mon,  6 Jan 2025 15:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C271607AA;
+	Mon,  6 Jan 2025 15:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176963; cv=none; b=uMYTFEu0VIv7Few+1LbRvl2B/mynEB5LA26Wy9MNtta1AVucKJBUyLuOBO6C/GUgIlqZ1DnssiuEZkcDkWmc5rtR+MS13PaVCfRpIedsjFluMgvgkbDWfuptNjJ9o6YQSYU+MaO4gy07QJN91SaJl83BvZRg4kBcYzOwFQjJxF8=
+	t=1736178289; cv=none; b=bQqjrRaeHE8stgjWU6hoL6sFv1QDzIrdm4BxG8Ci7KGqmlFe+P91CVI7Ol6OAjy/g4G5RIfqtPWqQeKacXvsw5KScG+zMOdpR+TA0ZvbGHcUpRMbR6jdk2bPq45dIfxHiplA8Fnyf8mqrgCXCqQjJNxPPbaEahgSi4kNxENWP7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176963; c=relaxed/simple;
-	bh=shyRBTbFq96rWAvuUFZyxJF9fAaRvi9/E5OtAdsnb70=;
+	s=arc-20240116; t=1736178289; c=relaxed/simple;
+	bh=gO+AILaL3oTM1BFBnZ7bnGjn1O10Pnb6UEHrkOAdRAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InVbT4oMmbWeiR69WHgPkMZHlGAZl16lVSEIaRRd+YgTMYCskNFLQkv9a70KyKCa+V/Ot/vke2qsJ/NbonEH6AgAl7FJdb1T+r+S8wYK6/x/OqOnuE5qPvS9H48D4wxA3E26IWXZIwkIeBwM/VFi+Z3vXt4xQ/qhY2YgNyu1SJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m67Pz+/e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2B7C4CED2;
-	Mon,  6 Jan 2025 15:22:42 +0000 (UTC)
+	 MIME-Version; b=Xx4cuwbg+xFCewLSYfJhlcMZKYp8i3Kva/Lzw/XBtPPXKopN4GFC49wWl/laOx3/hjQtYXh+Y8vFKNxH08Icf77Wl+GRKmzqdhCvySN7sGtRdi7HBog81Jt917pH7/UfoROu5nVWg0tDxsBd7M9OOC+WrrVhboJwf1HNXlV3Cx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcwY2GVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3B5C4CED2;
+	Mon,  6 Jan 2025 15:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176963;
-	bh=shyRBTbFq96rWAvuUFZyxJF9fAaRvi9/E5OtAdsnb70=;
+	s=korg; t=1736178288;
+	bh=gO+AILaL3oTM1BFBnZ7bnGjn1O10Pnb6UEHrkOAdRAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m67Pz+/eNrfC5W+34JdCgSAc8avH+7Nr0XU0n64XRtFBRqfNvs44BhCk3vqZVvZDb
-	 LEgrhw3U2KoyFWyNump9fcbU2P0KL/28oisymUS5kF1FT3V6XC4Epwy6TC5MMp+Qf1
-	 Cst1UPtui549mr8X6vlPAD7t/ZMhJ0yMqhr5xxSg=
+	b=IcwY2GVH/rju7BjVLw33SnAx8LAZzX9xS9zNIVFgkjyUD1h9VEP6EGsyAvBL6P59D
+	 gTuzJr86w+7DM2QdsCNHUkDBl6BThiOpISXZ+4a8Rhkon6YxZP9pX/iDNhpJeFhzSY
+	 BDnQPFN0Z5to+wmaWnp7OpCRGK6X57+d2kp1X2hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vasily Averin <vvs@virtuozzo.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 61/81] net: usb: qmi_wwan: add Telit FE910C04 compositions
+Subject: [PATCH 5.10 069/138] skbuff: introduce skb_expand_head()
 Date: Mon,  6 Jan 2025 16:16:33 +0100
-Message-ID: <20250106151131.738577500@linuxfoundation.org>
+Message-ID: <20250106151135.845720870@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Vasily Averin <vvs@virtuozzo.com>
 
-[ Upstream commit 3b58b53a26598209a7ad8259a5114ce71f7c3d64 ]
+[ Upstream commit f1260ff15a71b8fc122b2c9abd8a7abffb6e0168 ]
 
-Add the following Telit FE910C04 compositions:
+Like skb_realloc_headroom(), new helper increases headroom of specified skb.
+Unlike skb_realloc_headroom(), it does not allocate a new skb if possible;
+copies skb->sk on new skb when as needed and frees original skb in case
+of failures.
 
-0x10c0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 13 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+This helps to simplify ip[6]_finish_output2() and a few other similar cases.
 
-0x10c4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-0x10c8: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c8 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Link: https://patch.msgid.link/20241209151821.3688829-1-dnlplm@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit f1260ff15a71b8fc122b2c9abd8a7abffb6e0168)
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/skbuff.h |  1 +
+ net/core/skbuff.c      | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 8b9e2888b310..65aefebdf9a9 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1372,6 +1372,9 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a9, 0)}, /* Telit FN920C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c0, 0)}, /* Telit FE910C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c4, 0)}, /* Telit FE910C04 */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10c8, 0)}, /* Telit FE910C04 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1100, 3)},	/* Telit ME910 */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1101, 3)},	/* Telit ME910 dual modem */
- 	{QMI_FIXED_INTF(0x1bc7, 0x1200, 5)},	/* Telit LE920 */
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 31ae4b74d435..3248e4aeec03 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -1166,6 +1166,7 @@ static inline struct sk_buff *__pskb_copy(struct sk_buff *skb, int headroom,
+ int pskb_expand_head(struct sk_buff *skb, int nhead, int ntail, gfp_t gfp_mask);
+ struct sk_buff *skb_realloc_headroom(struct sk_buff *skb,
+ 				     unsigned int headroom);
++struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom);
+ struct sk_buff *skb_copy_expand(const struct sk_buff *skb, int newheadroom,
+ 				int newtailroom, gfp_t priority);
+ int __must_check skb_to_sgvec_nomark(struct sk_buff *skb, struct scatterlist *sg,
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index b0c2d6f01800..fa3ea287d6ec 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -1732,6 +1732,48 @@ struct sk_buff *skb_realloc_headroom(struct sk_buff *skb, unsigned int headroom)
+ }
+ EXPORT_SYMBOL(skb_realloc_headroom);
+ 
++/**
++ *	skb_expand_head - reallocate header of &sk_buff
++ *	@skb: buffer to reallocate
++ *	@headroom: needed headroom
++ *
++ *	Unlike skb_realloc_headroom, this one does not allocate a new skb
++ *	if possible; copies skb->sk to new skb as needed
++ *	and frees original skb in case of failures.
++ *
++ *	It expect increased headroom and generates warning otherwise.
++ */
++
++struct sk_buff *skb_expand_head(struct sk_buff *skb, unsigned int headroom)
++{
++	int delta = headroom - skb_headroom(skb);
++
++	if (WARN_ONCE(delta <= 0,
++		      "%s is expecting an increase in the headroom", __func__))
++		return skb;
++
++	/* pskb_expand_head() might crash, if skb is shared */
++	if (skb_shared(skb)) {
++		struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
++
++		if (likely(nskb)) {
++			if (skb->sk)
++				skb_set_owner_w(nskb, skb->sk);
++			consume_skb(skb);
++		} else {
++			kfree_skb(skb);
++		}
++		skb = nskb;
++	}
++	if (skb &&
++	    pskb_expand_head(skb, SKB_DATA_ALIGN(delta), 0, GFP_ATOMIC)) {
++		kfree_skb(skb);
++		skb = NULL;
++	}
++	return skb;
++}
++EXPORT_SYMBOL(skb_expand_head);
++
+ /**
+  *	skb_copy_expand	-	copy and expand sk_buff
+  *	@skb: buffer to copy
 -- 
 2.39.5
 
