@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-107616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59604A02CB2
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B7DA02D17
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D516F1887AD3
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:56:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD9D11882E33
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6505213B59A;
-	Mon,  6 Jan 2025 15:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D68E145A03;
+	Mon,  6 Jan 2025 16:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/8vsLgC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vByPSDS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BC586332;
-	Mon,  6 Jan 2025 15:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A111DC9AD;
+	Mon,  6 Jan 2025 16:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179007; cv=none; b=Esy3XmSJbvEtLR1UYRp//sGnpXIXNjcqWnkMZUcPlJ8okQJ0YzCMgC2WSHq+mJNz5JIDyJLVpjk08a4Bgk/1RdYbWnAA8ErueVg+jFHsBlpwkpwbErhu8FDOJKQNLSPMLw2pszl5IDLLYIetdTN3e2eushqgX1CUQfEpBhCN8pA=
+	t=1736179252; cv=none; b=IjSnjYikdoO46C5fa8OUTHgCF3Rpq4Z+V9G4edEj6hvLd4AApbt/aIy/pU2O5lqAYSQrbE1Ye1AjOnCwZkoc/IZzn+Ruy8yYAZPCzSl+WeJK6gfqzlzFFbMO10wsIjs4FMHMxCV5Uuld87ZNauG7GD7syUCaD9U2ba6ny5cCpTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179007; c=relaxed/simple;
-	bh=2sknJLy5kzibUkY8/O4+HuicBGVoQkOIfaQ+qNicZbc=;
+	s=arc-20240116; t=1736179252; c=relaxed/simple;
+	bh=6ExPja9xjAAO43dvHJYU+yzvrvUJxs/Ga+MPv6SmRj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXOxwQmFnuGXM0dJdEL2R9Nd2OPlnyfwHv6jz8eRyuJ9IUVnsBYJRjGeZEJvq6BpulKgzcUPUllBXfYKA1kYiuksvZlHZWo79wK8r05xpEdRZvpKzblO/l7W6H6b1XIz8s2BMIaFusMlsM7D3iqujzgUJRToBdNUKVFFOx5tpzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/8vsLgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F7EC4CED2;
-	Mon,  6 Jan 2025 15:56:46 +0000 (UTC)
+	 MIME-Version; b=BIh0Z64fclQKjKHDH7C2vIURzx67b4EcWksi/HEiS18FKoC5KQ9TcBQwp+xVwiVns08Q5Vz04+9Hs7rPBStmiLHpBOqtckH7fT00OuRFvpyjnqMhQV4iIsnIDPmk3XyRUd3gH3ckb70ArawvoZKIwlwp9hnQgYp91OfMScrara0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vByPSDS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B187EC4CEE1;
+	Mon,  6 Jan 2025 16:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179007;
-	bh=2sknJLy5kzibUkY8/O4+HuicBGVoQkOIfaQ+qNicZbc=;
+	s=korg; t=1736179252;
+	bh=6ExPja9xjAAO43dvHJYU+yzvrvUJxs/Ga+MPv6SmRj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/8vsLgCDTvbwkZDuLq7OZ0M3eo2ZwrKSMejsBFzgBxj4Tvu8Vyx4oIe6GyqKQFbG
-	 IdHKijaT6pH1kBHjMMb4MPK9UaVismCnSRBFsqZc+jOXHjhAeIP32pJjnUHCWEvrRx
-	 lMU5zmLxfHVkmGbjO6Trhs9OZkmkrxgX8/OVEd3w=
+	b=vByPSDS+Ddv5JIVOVsR9rqQtBlA0h4+thMck2XvaPCzmNnsRWQrrWsOePWzWc1CeI
+	 e/1gFJ9l252AZmzjfgKGYLsGenC6cH/DmggTyl7KRrJS6S1OLC8T3N8uFnGM4cbGgc
+	 DQtY1ybRGdK+soF+C7rhJFZrZjJDEuwXPfgjZMXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pascal Hambourg <pascal@plouf.fr.eu.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 164/168] sky2: Add device ID 11ab:4373 for Marvell 88E8075
+	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 76/93] ALSA: usb-audio: US16x08: Initialize array before use
 Date: Mon,  6 Jan 2025 16:17:52 +0100
-Message-ID: <20250106151144.622370973@linuxfoundation.org>
+Message-ID: <20250106151131.574445041@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pascal Hambourg <pascal@plouf.fr.eu.org>
+From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
 
-commit 03c8d0af2e409e15c16130b185e12b5efba0a6b9 upstream.
+[ Upstream commit b06a6187ef983f501e93faa56209169752d3bde3 ]
 
-A Marvell 88E8075 ethernet controller has this device ID instead of
-11ab:4370 and works fine with the sky2 driver.
+Initialize meter_urb array before use in mixer_us16x08.c.
 
-Signed-off-by: Pascal Hambourg <pascal@plouf.fr.eu.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/10165a62-99fb-4be6-8c64-84afd6234085@plouf.fr.eu.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CID 1410197: (#1 of 1): Uninitialized scalar variable (UNINIT)
+uninit_use_in_call: Using uninitialized value *meter_urb when
+calling get_meter_levels_from_urb.
+
+Coverity Link:
+https://scan7.scan.coverity.com/#/project-view/52849/11354?selectedIssue=1410197
+
+Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
+Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+Link: https://patch.msgid.link/20241229060240.1642-1-tanyaagarwal25699@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/sky2.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/mixer_us16x08.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/marvell/sky2.c
-+++ b/drivers/net/ethernet/marvell/sky2.c
-@@ -130,6 +130,7 @@ static const struct pci_device_id sky2_i
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436C) }, /* 88E8072 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436D) }, /* 88E8055 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4370) }, /* 88E8075 */
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4373) }, /* 88E8075 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4380) }, /* 88E8057 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4381) }, /* 88E8059 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4382) }, /* 88E8079 */
+diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
+index c6c834ac83ac..eb59a59dcdbf 100644
+--- a/sound/usb/mixer_us16x08.c
++++ b/sound/usb/mixer_us16x08.c
+@@ -687,7 +687,7 @@ static int snd_us16x08_meter_get(struct snd_kcontrol *kcontrol,
+ 	struct usb_mixer_elem_info *elem = kcontrol->private_data;
+ 	struct snd_usb_audio *chip = elem->head.mixer->chip;
+ 	struct snd_us16x08_meter_store *store = elem->private_data;
+-	u8 meter_urb[64];
++	u8 meter_urb[64] = {0};
+ 
+ 	switch (kcontrol->private_value) {
+ 	case 0: {
+-- 
+2.39.5
+
 
 
 
