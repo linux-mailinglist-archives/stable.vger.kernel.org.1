@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-106865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A99A02901
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:19:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85499A02C43
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D97973A4B52
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:18:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CE091887468
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A158635E;
-	Mon,  6 Jan 2025 15:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28B81448F2;
+	Mon,  6 Jan 2025 15:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHEOuUwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6reAhic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E1F200A3;
-	Mon,  6 Jan 2025 15:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF6613AD11;
+	Mon,  6 Jan 2025 15:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176740; cv=none; b=cRDWMuAisUSB6fdEee2Shn1aU8ATTGy2Zyvdhi4jGcBHiV1/uqaSIe1Ma2WHyxwdUcFSFvcnH59/GRiCWh/GNwsX2J33k/EQS2DVyAZhONf7BJP/ktNZ68S/FJEcWXJ4XedLPAz/Z4uSqqwvOp7i03qIyyScP+bCo3FVFrr2s8I=
+	t=1736178726; cv=none; b=poUl12vU+M6OxflcLD/lRSn9Ww8CrKxMOFZZf5KSZo+yNneXuzRK1nNCUqjZqY1MIR83R4lbSJ9m5xZ4Op/TfNmKiLg8Vih09Q+aWRaX4WmQ1HHpo73+r1FwMASjjuclzygyj+zUrfC4Spu3jMBCP1M5vBBIxbeD0L+G3zkZYHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176740; c=relaxed/simple;
-	bh=x+yQuJvfmYTA4774P2y8BMLeQEjX5HezsxA3ns+nHyA=;
+	s=arc-20240116; t=1736178726; c=relaxed/simple;
+	bh=nBd8BdUq7/tHbsMhBEUGfDOj5TRMQ5W6hfMzu53YHVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwNcmy9yDhwpfpOhWi+RSeJmNRJ+S9qpjbQ/T7c+8ZiprC0N337YrPBPMB+vRkxtor42NjicpDEtiWvLEr7YLVAW5z+txQqSxGJN+9/PDTfFawi9M8p98VrJNHOUhXENb6gpA7HgETxtzVaQH0wCw29nb77V+6dBHiRk4cS2+V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHEOuUwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF78C4CED2;
-	Mon,  6 Jan 2025 15:18:58 +0000 (UTC)
+	 MIME-Version; b=X+rgVD9PQd0TtWcbEEneceTTHvMyzwx/VhT0q6hAledQ2yo/n+J+Lhcdrd3A/cC8T9zbi331zwnd5LcY9xYjjonUdCvBujNy5qNKBKGQORAe6SRqPaglxi3ez7eBFQWhfeuR3LKkok4rU3KobRubxASzMpKC8BN24yL67XfgP8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6reAhic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B96C4CED2;
+	Mon,  6 Jan 2025 15:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176739;
-	bh=x+yQuJvfmYTA4774P2y8BMLeQEjX5HezsxA3ns+nHyA=;
+	s=korg; t=1736178726;
+	bh=nBd8BdUq7/tHbsMhBEUGfDOj5TRMQ5W6hfMzu53YHVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHEOuUwq4dpiDk4jIVmpjgIsg9yQZdCiv7TiQj529Y5TzY2p+D5dSUs9mVH1OXITa
-	 YELdkqx+7jgo2il3dDyXdhRPzsCL8LDxJfTsjBv+b4SpzvA3BPd4CMIKqcxInw8Clu
-	 XvE59bkeSjlAKKmUDhRhX5/8CJJPY1fhgirW6jkE=
+	b=C6reAhic6WbvnhHf86qg+By3AcUoEeGhdeRlbULqWwiszB7XQyneNowFXLcNRaU/n
+	 ZWwiyT/wXjwBZ6izQFRdXe2p2xV6EJG4mbO9vpaHm8mEtkafSCYIgsgzcF3x9wcRts
+	 aQ7lYPpZI090xNsYAJbhRPFjGrT3y2/O+b5gR3zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 16/81] RDMA/bnxt_re: Fix the locking while accessing the QP table
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 5.15 040/168] sh: clk: Fix clk_enable() to return 0 on NULL clk
 Date: Mon,  6 Jan 2025 16:15:48 +0100
-Message-ID: <20250106151130.050723086@linuxfoundation.org>
+Message-ID: <20250106151139.977160669@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 9272cba0ded71b5a2084da3004ec7806b8cb7fd2 ]
+commit ff30bd6a6618e979b16977617371c0f28a95036e upstream.
 
-QP table handling is synchronized with destroy QP and Async
-event from the HW. The same needs to be synchronized
-during create_qp also. Use the same lock in create_qp also.
+On SH, devm_clk_get_optional_enabled() fails with -EINVAL if the clock
+is not found.  This happens because __devm_clk_get() assumes it can pass
+a NULL clock pointer (as returned by clk_get_optional()) to the init()
+function (clk_prepare_enable() in this case), while the SH
+implementation of clk_enable() considers that an error.
 
-Fixes: 76d3ddff7153 ("RDMA/bnxt_re: synchronize the qp-handle table array")
-Fixes: f218d67ef004 ("RDMA/bnxt_re: Allow posting when QPs are in error")
-Fixes: 84cf229f4001 ("RDMA/bnxt_re: Fix the qp table indexing")
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241217102649.1377704-6-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by making the SH clk_enable() implementation return zero
+instead, like the Common Clock Framework does.
+
+Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/b53e6b557b4240579933b3359dda335ff94ed5af.1675354849.git.geert+renesas@glider.be
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/sh/clk/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 7bd7ac8d52e6..23f9a48828dc 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1149,9 +1149,11 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
- 		rq->dbinfo.db = qp->dpi->dbr;
- 		rq->dbinfo.max_slot = bnxt_qplib_set_rq_max_slot(rq->wqe_size);
- 	}
-+	spin_lock_bh(&rcfw->tbl_lock);
- 	tbl_indx = map_qp_id_to_tbl_indx(qp->id, rcfw);
- 	rcfw->qp_tbl[tbl_indx].qp_id = qp->id;
- 	rcfw->qp_tbl[tbl_indx].qp_handle = (void *)qp;
-+	spin_unlock_bh(&rcfw->tbl_lock);
+--- a/drivers/sh/clk/core.c
++++ b/drivers/sh/clk/core.c
+@@ -295,7 +295,7 @@ int clk_enable(struct clk *clk)
+ 	int ret;
  
- 	return 0;
- fail:
--- 
-2.39.5
-
+ 	if (!clk)
+-		return -EINVAL;
++		return 0;
+ 
+ 	spin_lock_irqsave(&clock_lock, flags);
+ 	ret = __clk_enable(clk);
 
 
 
