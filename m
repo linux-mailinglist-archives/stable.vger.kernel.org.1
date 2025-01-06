@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-106935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1957EA0295F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:22:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCF5A02C60
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09FFF163694
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:22:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D07F01670BF
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9276148838;
-	Mon,  6 Jan 2025 15:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9804E39FCE;
+	Mon,  6 Jan 2025 15:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKnjUf2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOZ83aKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68853146D6B;
-	Mon,  6 Jan 2025 15:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529C213AD20;
+	Mon,  6 Jan 2025 15:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176957; cv=none; b=dtiJScDUCsTyB4lUTNQAzXvYUoToMpdq8BRjm9ZnH7N8GUFATsjNoijzTPsWU9sW0YcYVI68g+Lpgsf80E6bkt5p6+FKbGFWirYWzhjzFl+BigWPxN/hCFnUtc03gvJsfVEk8gtulOlZXamTMg2lQFqsSR7uGiC3L3xdbMMmLxU=
+	t=1736178759; cv=none; b=F6tpHs88d8/ogD/JlI9QkN3GKpe7AWbii/NwMa3vPTdWxUAbrmjWvTBOzw17vkLEk+8n0HHpoLLPqZo9ifWXlGrUUS7gSzeMxFhXPOv0QidL2IrY6JSRPBSffrQkXM0RQIqfe6CwRv6A3SyrByx36quNIyluSW0I6ANgJZCHiWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176957; c=relaxed/simple;
-	bh=RFjsFZ/YtpsOVNz/mai2c2brkR9rC7IoeTLEUcUwafg=;
+	s=arc-20240116; t=1736178759; c=relaxed/simple;
+	bh=aJZyl3JRfehfEo25KXRD1hgUqTH5x5tQDdJd4ydN1JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2WTKmy4HfQ61fcqHnbB25P29f5VxgCvH+jNW88G7K0/mN2SLxfMFxloC5kIocRbw6BNVxq7einxa/MKNc9Rog5DUet7yCrxC5MmBFJiursb7xAnN8cK51JIHd0gygPlB5529elYQK7rpUJaOtNApbjKEQY0FP8rdRNMAXXIh1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKnjUf2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D163C4CED2;
-	Mon,  6 Jan 2025 15:22:36 +0000 (UTC)
+	 MIME-Version; b=Yvw8j9/WlZPc6nHmBt8BHGCPhpvTPlDOvXmVEc+wgc124CJhMxiWPmolBmCUiHZx6w41VPBNzWXUMd+8a5MBNUaO9HYnVH1JDnwUv1Xo+nI890EVLk6l7IJggBMnieYnRAQD9DuJrEr0exKq1CwuIVJrV4qQ73AJZx1MuoGDoOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOZ83aKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D6DC4CED2;
+	Mon,  6 Jan 2025 15:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176957;
-	bh=RFjsFZ/YtpsOVNz/mai2c2brkR9rC7IoeTLEUcUwafg=;
+	s=korg; t=1736178758;
+	bh=aJZyl3JRfehfEo25KXRD1hgUqTH5x5tQDdJd4ydN1JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKnjUf2mCqrHlq2nTczQeU6TxqnsQr7eN2liKiYxhZ6hb2u7khnZb84egACNYkOwC
-	 zc4E72U0NExGmGM9YNuIO+h8v5GmUfYIEn0Zj66GczIwUd5KJ21gFqErc8OF4OAOLu
-	 IfjRokzCODjV+I3rp4PZLg5945iDqu+w2OpegZ0E=
+	b=UOZ83aKNevEb4CV9hD1vU6C6GZBaB3cWTvkgWrw2EATNCpehcEfCKdWnfV3Usp+Wb
+	 SDUg8zUK5mNGXsS/XuGmh6vqnmMeH0q2mMHg/rXNEIG+lTWU8kxzD7tniGEWNNUram
+	 qO2ZB79UHNxKU+RRmai6tz8Mq4BxDLjudhxZEN8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Cathy Avery <cavery@redhat.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 59/81] bpf: fix potential error return
+Subject: [PATCH 5.15 083/168] scsi: storvsc: Do not flag MAINTENANCE_IN return of SRB_STATUS_DATA_OVERRUN as an error
 Date: Mon,  6 Jan 2025 16:16:31 +0100
-Message-ID: <20250106151131.663057837@linuxfoundation.org>
+Message-ID: <20250106151141.598069673@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Cathy Avery <cavery@redhat.com>
 
-[ Upstream commit c4441ca86afe4814039ee1b32c39d833c1a16bbc ]
+[ Upstream commit b1aee7f034615b6824d2c70ddb37ef9fc23493b7 ]
 
-The bpf_remove_insns() function returns WARN_ON_ONCE(error), where
-error is a result of bpf_adj_branches(), and thus should be always 0
-However, if for any reason it is not 0, then it will be converted to
-boolean by WARN_ON_ONCE and returned to user space as 1, not an actual
-error value. Fix this by returning the original err after the WARN check.
+This partially reverts commit 812fe6420a6e ("scsi: storvsc: Handle
+additional SRB status values").
 
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241210114245.836164-1-aspsk@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+HyperV does not support MAINTENANCE_IN resulting in FC passthrough
+returning the SRB_STATUS_DATA_OVERRUN value. Now that
+SRB_STATUS_DATA_OVERRUN is treated as an error, multipath ALUA paths go
+into a faulty state as multipath ALUA submits RTPG commands via
+MAINTENANCE_IN.
+
+[    3.215560] hv_storvsc 1d69d403-9692-4460-89f9-a8cbcc0f94f3:
+tag#230 cmd 0xa3 status: scsi 0x0 srb 0x12 hv 0xc0000001
+[    3.215572] scsi 1:0:0:32: alua: rtpg failed, result 458752
+
+Make MAINTENANCE_IN return success to avoid the error path as is
+currently done with INQUIRY and MODE_SENSE.
+
+Suggested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Cathy Avery <cavery@redhat.com>
+Link: https://lore.kernel.org/r/20241127181324.3318443-1-cavery@redhat.com
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/scsi/storvsc_drv.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 0ea0d50a7c16..83b416af4da1 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -523,6 +523,8 @@ struct bpf_prog *bpf_patch_insn_single(struct bpf_prog *prog, u32 off,
+diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
+index 4ea119afd9db..ff1735e3127d 100644
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -155,6 +155,8 @@ static int sense_buffer_size = PRE_WIN8_STORVSC_SENSE_BUFFER_SIZE;
+ */
+ static int vmstor_proto_version;
  
- int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
- {
-+	int err;
++static bool hv_dev_is_fc(struct hv_device *hv_dev);
 +
- 	/* Branch offsets can't overflow when program is shrinking, no need
- 	 * to call bpf_adj_branches(..., true) here
+ #define STORVSC_LOGGING_NONE	0
+ #define STORVSC_LOGGING_ERROR	1
+ #define STORVSC_LOGGING_WARN	2
+@@ -1192,6 +1194,7 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
+ 	 * not correctly handle:
+ 	 * INQUIRY command with page code parameter set to 0x80
+ 	 * MODE_SENSE command with cmd[2] == 0x1c
++	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
+ 	 *
+ 	 * Setup srb and scsi status so this won't be fatal.
+ 	 * We do this so we can distinguish truly fatal failues
+@@ -1199,7 +1202,9 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
  	 */
-@@ -530,7 +532,9 @@ int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
- 		sizeof(struct bpf_insn) * (prog->len - off - cnt));
- 	prog->len -= cnt;
  
--	return WARN_ON_ONCE(bpf_adj_branches(prog, off, off + cnt, off, false));
-+	err = bpf_adj_branches(prog, off, off + cnt, off, false);
-+	WARN_ON_ONCE(err);
-+	return err;
- }
- 
- static void bpf_prog_kallsyms_del_subprogs(struct bpf_prog *fp)
+ 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
+-	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE)) {
++	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
++	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
++	   hv_dev_is_fc(device))) {
+ 		vstor_packet->vm_srb.scsi_status = 0;
+ 		vstor_packet->vm_srb.srb_status = SRB_STATUS_SUCCESS;
+ 	}
 -- 
 2.39.5
 
