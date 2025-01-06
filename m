@@ -1,156 +1,145 @@
-Return-Path: <stable+bounces-107751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F00EA03016
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:01:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E770EA03073
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 20:21:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A45E81885F14
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:01:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70BDC3A175A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 19:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515C71DF748;
-	Mon,  6 Jan 2025 19:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21341DF99C;
+	Mon,  6 Jan 2025 19:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WS23p4cj"
+	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="EvFfMhRK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A394503C
-	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 19:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A684D8DA;
+	Mon,  6 Jan 2025 19:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736190042; cv=none; b=sK3ACmVxFFE01sqFHTg4+OMMQuQe+B8tGdCicH1psrDdpdPY/Fz/JzEud/RNDeWlCGI6ZAB4ewP4waI9WWtH2MmHPFrKfZV/Yfdso74Nf0nQpidxcPSZ2E8PPye0i7y+sB4hmL3Bej9MsyNOJAklpuytcX2zxo6gQvvhx13N48Q=
+	t=1736191267; cv=none; b=sQp2msD8f9b8cf0GsOzcf0jl+5WUcijFPb2Qb7Egzkoah8v9WTO8xQRpUr8AiwJunL5zj+dSNpsTYRW516sG1WGkC6ZJCCU3dFvwwnbkrRt+xmbGkzqrKU+SnMoNy679NuF0+Vo+7OuUuDkhNSgKVHbpr4nP1UXbzhL9ax0a9/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736190042; c=relaxed/simple;
-	bh=B7rVRS91AqCk9yDGpsv3634h2LOcw/WLlfQL1LFLPMs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=euk120KGmfF8IzXUSmUznuGk6Dh8l44ti58AigDYBKdCM615GbOIVnRJYVlC1nOuGCBFzMy+Wi3j7fDRd7/B9qmIUEK4z+g7xc8fDGU30KO2v3lzVuJlwYmhfkhDNxgH9UI1KLk3cKBxnJR2+sNCM2DQPQmfy7ZEHI3KujlE7lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WS23p4cj; arc=none smtp.client-ip=209.85.217.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-4aff78a39e1so4241520137.1
-        for <stable@vger.kernel.org>; Mon, 06 Jan 2025 11:00:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736190039; x=1736794839; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/SamHPw263yrqg1TIgcL3Fr0uDVcwI04kQhRloNiwTU=;
-        b=WS23p4cj+QMbGcFc7AI/LSfDzB8ykseywrvXk6LB0gAzL/cRp1Lm/tyBzK1PlVJhE6
-         hL2mApDI5yYv0ynlY3OaBE4tyPij8QMQm6PzO+0aCMKOt4wP0RN3Zuu05zGplQiqBsfr
-         /fG9QRVY94AoJnAzvyCh9bdDVRRQnri+3GiABcBNi11A60NmL+/7agFKPo7tvbeCIeMq
-         nyAkqfUruwMmpO6W8xgb/iVwkWZv52kwwYJ8fLEEZT3i0d9e58wcpJ4WVPRWISH015ap
-         Gd/A6aCuG7wQtvuiCimq3bPWMCcG0/UntmrnMpvyylKtcygBFntFzH5zVdMQinrAjr52
-         swjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736190039; x=1736794839;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/SamHPw263yrqg1TIgcL3Fr0uDVcwI04kQhRloNiwTU=;
-        b=PX/yoZLR/aMWqLwJNxsXMayoRs+MZ6UIeLZSAXk0pzrVbXlp1TZiZG3CfhP/SdhZaj
-         v3IqyP9VyTTEZ8ur40hz0QSrECCCJ0w3uKlP4NNV+wjpyGPjai7JoCPTAgjo+ovcoWDB
-         PF+xYyihErheI32v8P2nwgKBymBHDRYpSueYJ7zhYaUqCD9UPYiblRUxisepOwp80m6B
-         TSF7z9XkFsgeX0fZXphFrLscg5JMECYuTB5NSxuVDA31et3DNSxI3uOy1dqNbPG+pqy2
-         lID55NtejrZHtdr43pftB9gYDqYVfaqTHbDBwBg6RlEQhuV//UHaNpX95BZbdLvxv27Z
-         OleQ==
-X-Gm-Message-State: AOJu0YxyQRNqKa2E2WQBR/le9c4zRDOENGZeWvdj6WKwDY7kPEefOEH4
-	+SX3XOMvkL9fO/3lwy1oXS9WJV7X60LDEpACAIh4SZ2r1Hp4IGCMO6O1XvEJ1kTQTrzIoSuNI4N
-	M8ARA/HOm8JVEnGklOr1W3RN9I3WtjsnH0LoyJA==
-X-Gm-Gg: ASbGnctIeFcqenT2ZllfnacQyYo7o11I16+9H+zsziN0Nd219DOjnhp28nqsyOgCKju
-	NHdnqXnVSumj4u464Sn1aVmmZr/InBkwdSLc3gMcR9tyqpQ1rC5DValW44jW76ijEQQI=
-X-Google-Smtp-Source: AGHT+IEfg6L+vAJ+W155bbYhFlBN7EQr9HoPXCxPpXMxSiDpusoK6g29Za4uGp8RgqzdfD1PvvZDhU7iPn1gVCTFucc=
-X-Received: by 2002:a05:6102:3ed4:b0:4af:a98a:bd67 with SMTP id
- ada2fe7eead31-4b2cc313aaamr52272787137.3.1736190038068; Mon, 06 Jan 2025
- 11:00:38 -0800 (PST)
+	s=arc-20240116; t=1736191267; c=relaxed/simple;
+	bh=4ySUSAJ0vB6Fw+bFb5+oI1l044QaOGC+UqVjSNduFgw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=kSbZAEuAIhYvxmWUh7Rikn/krKm0HFSNx9SRL9+PPxnOJ5h9S/CaVWTuZrgbj15lA2i0SD4OqFsu9UlEghqbEQhfM7GBbQvw9t/B5VrHCEdcrsPVJy+6XdBeyv4XLOOHTYXnmvRAmj4ATNBAq1YwEntv9MRYBXkB+b8BSPf3dZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=EvFfMhRK; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4YRkKy25yPz9sTm;
+	Mon,  6 Jan 2025 20:11:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
+	s=MBO0001; t=1736190662;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NRmWwyUBRYp+VaPBjk2Ubbo32d54ltoCUzwiU82RV3g=;
+	b=EvFfMhRKeTxgExEJ1eMmKhIE919wSuoQI99WzFqXxrwL39ZsmdzIoKQ4un8DHG+Gexea61
+	NWSS0fYr2vxjJOxQEW8f5JDQdSp1E3xDFFiWNnIAV9xAUYzeIzKbJVxIQ0fjk2DiVJb/Lk
+	tTx8E6GAiJOByTUW6w6lSQQQ7qfJ75j2iiyomBN7FdOL1iRqmmFUz4bSOJcONWR4JtdTsy
+	JR9r+KJjs6mTV7xtTRVggGIMUn8lfVtKMea/X0HeL23D/aLNN2Nj7XaBw3FxzxFQ4t5GUb
+	ONqrX+FcCZzVyWsU0tv+hDcG4fuXANu+rysNT8BRS3I3sII31foPc8vc5XIBhg==
+From: Frank Oltmanns <frank@oltmanns.dev>
+To: Stephan Gerhold <stephan.gerhold@linaro.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,  Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>,  Bjorn Andersson <andersson@kernel.org>,
+  Konrad Dybcio <konradybcio@kernel.org>,  Chris Lew
+ <quic_clew@quicinc.com>,  Abel Vesa <abel.vesa@linaro.org>,
+  linux-arm-msm@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  regressions@lists.linux.dev,  stable@vger.kernel.org
+Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
+In-Reply-To: <Zwj3jDhc9fRoCCn6@linaro.org> (Stephan Gerhold's message of "Fri,
+	11 Oct 2024 12:01:48 +0200")
+References: <20241010074246.15725-1-johan+linaro@kernel.org>
+	<Zwj3jDhc9fRoCCn6@linaro.org>
+Date: Mon, 06 Jan 2025 20:10:52 +0100
+Message-ID: <87wmf7ahc3.fsf@oltmanns.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250106151150.585603565@linuxfoundation.org>
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 7 Jan 2025 00:30:26 +0530
-X-Gm-Features: AbW1kvZgDTF2dX-LsDqh7ToTptDXowuCxSxrU1wO36mVYDFbBVHHVuYoi_0Rmp8
-Message-ID: <CA+G9fYuJA5eUxunLVyws_J6YNuZdyVUjTGGgGyPwFMgCHUpsnA@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/222] 6.6.70-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, linux-i2c@vger.kernel.org, andi.shyti@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 4YRkKy25yPz9sTm
 
-On Mon, 6 Jan 2025 at 20:53, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On 2024-10-11 at 12:01:48 +0200, Stephan Gerhold <stephan.gerhold@linaro.org> wrote:
+> On Thu, Oct 10, 2024 at 09:42:46AM +0200, Johan Hovold wrote:
+>> When using the in-kernel pd-mapper on x1e80100, client drivers often
+>> fail to communicate with the firmware during boot, which specifically
+>> breaks battery and USB-C altmode notifications. This has been observed
+>> to happen on almost every second boot (41%) but likely depends on probe
+>> order:
+>>
+>>     pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
+>>     pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
+>>
+>>     ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI read request: -125
+>>
+>>     qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
+>>
+>> In the same setup audio also fails to probe albeit much more rarely:
+>>
+>>     PDR: avs/audio get domain list txn wait failed: -110
+>>     PDR: service lookup for avs/audio failed: -110
+>>
+>> Chris Lew has provided an analysis and is working on a fix for the
+>> ECANCELED (125) errors, but it is not yet clear whether this will also
+>> address the audio regression.
+>>
+>> Even if this was first observed on x1e80100 there is currently no reason
+>> to believe that these issues are specific to that platform.
+>>
+>> Disable the in-kernel pd-mapper for now, and make sure to backport this
+>> to stable to prevent users and distros from migrating away from the
+>> user-space service.
+>>
+>> Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
+>> Cc: stable@vger.kernel.org	# 6.11
+>> Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/
+>> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+>> ---
+>>
+>> It's now been over two months since I reported this regression, and even
+>> if we seem to be making some progress on at least some of these issues I
+>> think we need disable the pd-mapper temporarily until the fixes are in
+>> place (e.g. to prevent distros from dropping the user-space service).
+>>
 >
-> This is the start of the stable review cycle for the 6.6.70 release.
-> There are 222 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> This is just a random thought, but I wonder if we could insert a delay
+> somewhere as temporary workaround to make the in-kernel pd-mapper more
+> reliable. I just tried replicating the userspace pd-mapper timing on
+> X1E80100 CRD by:
 >
-> Responses should be made by Wed, 08 Jan 2025 15:11:04 +0000.
-> Anything received after that time might be too late.
+>  1. Disabling auto-loading of qcom_pd_mapper
+>     (modprobe.blacklist=qcom_pd_mapper)
+>  2. Adding a systemd service that does nothing except running
+>     "modprobe qcom_pd_mapper" at the same point in time where the
+>     userspace pd-mapper would usually be started.
+
+Thank you so much for this idea. I'm currently using this workaround on
+my sdm845 device (where the in-kernel pd-mapper is breaking the
+out-of-tree call audio functionality).
+
+Is there any work going on on making the timing of the in-kernel
+pd-mapper more reliable?
+
+Cheers,
+  Frank
+
+> This seems to work quite well for me, I haven't seen any of the
+> mentioned errors anymore in a couple of boot tests. Clearly, there is no
+> actual bug in the in-kernel pd-mapper, only worse timing.
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.70-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
-
-The following build errors were noticed while building the
-allmodconfig builds on arm64 on the stable-rc linux-6.6.y
-branch.
-
-This is first seen on 5652330123c6a64b444f3012d9c9013742a872e7.
-GOOD: v6.6.69
-BAD: 5652330123c6a64b444f3012d9c9013742a872e7
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Build error:
-============
-drivers/i2c/busses/i2c-xgene-slimpro.c:95: error: "PCC_SIGNATURE"
-redefined [-Werror]
-   95 | #define PCC_SIGNATURE                   0x50424300
-      |
-In file included from drivers/i2c/busses/i2c-xgene-slimpro.c:12:
-include/acpi/pcc.h:23: note: this is the location of the previous definition
-   23 | #define PCC_SIGNATURE                   0x50434300
-      |
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:243: drivers/i2c/busses/i2c-xgene
-
-
-Links:
--------
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.69-223-g5652330123c6/testrun/26613311/suite/build/test/gcc-13-allmodconfig/log
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.69-223-g5652330123c6/testrun/26613311/suite/build/test/gcc-13-allmodconfig/details/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.69-223-g5652330123c6/testrun/26613311/suite/build/test/gcc-13-allmodconfig/history/
-
-metadata:
-----
-  git sha: 5652330123c6a64b444f3012d9c9013742a872e7
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2rGGBoqD6FxSfg6IKJLK43h9cCM/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2rGGBoqD6FxSfg6IKJLK43h9cCM/
-  toolchain: clang, gcc-13, gcc-8
-  arch: arm64
-  config: allmodconfig
-
---
-Linaro LKFT
-https://lkft.linaro.org
+> Thanks,
+> Stephan
 
