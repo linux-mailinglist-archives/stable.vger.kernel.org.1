@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-107114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8466A02A3B
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1041A0293D
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25F76164CEF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A1D07A039B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D3E1DE4EB;
-	Mon,  6 Jan 2025 15:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E84814900B;
+	Mon,  6 Jan 2025 15:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVqjXlmV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rf76DJpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7021DDA3C;
-	Mon,  6 Jan 2025 15:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5E338FB9;
+	Mon,  6 Jan 2025 15:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177499; cv=none; b=DxiNPpMFUZ9CW0J0ZcLga7GBAGtdoMicvqGkG7bUvq6ZcQuA/iH9MpmsjE35MJEaYsSGbny0wH9NUwK9S/aSBQ7Tp8f0VauyY+3Y4VDufANMkDKVukkJSlDwEOc1zAnzQ0D5P0vWnIqEWhSFBdzlxPLuReWiabSJoEJAZM2mey4=
+	t=1736176884; cv=none; b=TcYH9144mUh3c5G+SZqnML41gcFroh2903gNuHYQVIabHNSvbvclVKwrZ36DuNdDXGy3gvvIQDuhA580frwToDg3ohaPVZagMrKGiPA651py2qXEgkG34LIoa58Ym9W1gGuSyi0JWx6CcvB3pRGY6a70iKceP/dn+Hv1e6urMZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177499; c=relaxed/simple;
-	bh=icPD5Bnac31qbsbY8s/N0ZKAlYKGJC70XjT/q3dgAGk=;
+	s=arc-20240116; t=1736176884; c=relaxed/simple;
+	bh=VKSZMTuVK6S2o+vcZbkW3Uv48AjHMQ9S5LO+ylQtI6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZL1R97DReWw6hGTmMv6nmD9ufxDrckf52IFgPXuH2e1vaG3rI6S3KlpmlQpn+YbzyozmEB2Fu1CbV6qqeMhLk4qc3vDHZOXOKNg1Zs0VcZf1IsHgJxqkYdD09y/FrAcshJSYelBofo8DBkVB9Y1AnPCyoKMGByivmsuOlqn0dk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVqjXlmV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4FFC4CED2;
-	Mon,  6 Jan 2025 15:31:37 +0000 (UTC)
+	 MIME-Version; b=MdWcGddU/2MbCoVjHEhXB6G9z9jAnTndKNpHj2SQDeQBR4ZGTnYfhAVAtI9eidH18pfUAch/mOFEoRNyh8ZuSyYbzIkeTsyNRtbSm0vZ+R3pIULKYKk5MjKWvE9iVqOsb05RRP7TsVajPWi1oHg4qpnPkKbQkFx9al4QcojEfwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rf76DJpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CECC4CEE1;
+	Mon,  6 Jan 2025 15:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177498;
-	bh=icPD5Bnac31qbsbY8s/N0ZKAlYKGJC70XjT/q3dgAGk=;
+	s=korg; t=1736176883;
+	bh=VKSZMTuVK6S2o+vcZbkW3Uv48AjHMQ9S5LO+ylQtI6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVqjXlmVFSmv9HbReRgyHXfja0wrMkLpxzyCvK+FMvcRGH2a0ToSA4YJkkftv8JqP
-	 bGhbIiHLmPMGctwvmL38ugEVOIlqUXb6XhY5DM0PBHje0DwGfl7p11ohDRhXBx9huQ
-	 uow7UbKNg5/eeSYNMh0E31JGh0Lr8jRQoMTJkNCY=
+	b=rf76DJpVhRHgRN5wjwGwqSw2boS5F/RMASPTGsq6gisA2kuyDA63eItMg0HrQI/oH
+	 ewtgeaDfp1QLomGsyyPUbhsHJVDID16Gpe7dNv1gE+l7XyEZ7Ze1dYLb1plU4gzDXy
+	 n7XOwqSzFGhYjugDMLXnNRSkK/UN0S5v5g07uMc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Prike Liang <Prike.Liang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/222] ALSA: hda/ca0132: Use standard HD-audio quirk matching helpers
+Subject: [PATCH 6.1 54/81] drm/amdkfd: Correct the migration DMA map direction
 Date: Mon,  6 Jan 2025 16:16:26 +0100
-Message-ID: <20250106151157.656114753@linuxfoundation.org>
+Message-ID: <20250106151131.474069892@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,146 +61,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit 7c005292e20ac53dfa601bf2a7375fd4815511ad ]
+[ Upstream commit 5c3de6b02d38eb9386edf50490e050bb44398e40 ]
 
-CA0132 used the PCI SSID lookup helper that doesn't support the model
-string matching or quirk aliasing.
+The SVM DMA device map direction should be set the same as
+the DMA unmap setting, otherwise the DMA core will report
+the following warning.
 
-Replace it with the standard HD-audio quirk helpers for supporting
-those, and add the definition of the model strings for supported
-quirks, too.  There should be no visible change to the outside for the
-working system, but the driver will parse the model option and apply
-the quirk based on it from now on.
+Before finialize this solution, there're some discussion on
+the DMA mapping type(stream-based or coherent) in this KFD
+migration case, followed by https://lore.kernel.org/all/04d4ab32
+-45a1-4b88-86ee-fb0f35a0ca40@amd.com/T/.
 
-Link: https://patch.msgid.link/20241207133754.3658-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+As there's no dma_sync_single_for_*() in the DMA buffer accessed
+that because this migration operation should be sync properly and
+automatically. Give that there's might not be a performance problem
+in various cache sync policy of DMA sync. Therefore, in order to
+simplify the DMA direction setting alignment, let's set the DMA map
+direction as BIDIRECTIONAL.
+
+[  150.834218] WARNING: CPU: 8 PID: 1812 at kernel/dma/debug.c:1028 check_u=
+nmap+0x1cc/0x930
+[  150.834225] Modules linked in: amdgpu(OE) amdxcp drm_exec(OE) gpu_sched =
+drm_buddy(OE) drm_ttm_helper(OE) ttm(OE) drm_suballoc_helper(OE) drm_displa=
+y_helper(OE) drm_kms_helper(OE) i2c_algo_bit rpcsec_gss_krb5 auth_rpcgss nf=
+sv4 nfs lockd grace netfs xt_conntrack xt_MASQUERADE nf_conntrack_netlink x=
+frm_user xfrm_algo iptable_nat xt_addrtype iptable_filter br_netfilter nvme=
+_fabrics overlay nfnetlink_cttimeout nfnetlink openvswitch nsh nf_conncount=
+ nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c bridge stp llc=
+ sch_fq_codel intel_rapl_msr amd_atl intel_rapl_common snd_hda_codec_realte=
+k snd_hda_codec_generic snd_hda_scodec_component snd_hda_codec_hdmi snd_hda=
+_intel snd_intel_dspcfg edac_mce_amd snd_pci_acp6x snd_hda_codec snd_acp_co=
+nfig snd_hda_core snd_hwdep snd_soc_acpi kvm_amd sunrpc snd_pcm kvm binfmt_=
+misc snd_seq_midi crct10dif_pclmul snd_seq_midi_event ghash_clmulni_intel s=
+ha512_ssse3 snd_rawmidi nls_iso8859_1 sha256_ssse3 sha1_ssse3 snd_seq aesni=
+_intel snd_seq_device crypto_simd snd_timer cryptd input_leds
+[  150.834310]  wmi_bmof serio_raw k10temp rapl snd sp5100_tco ipmi_devintf=
+ soundcore ccp ipmi_msghandler cm32181 industrialio mac_hid msr parport_pc =
+ppdev lp parport efi_pstore drm(OE) ip_tables x_tables pci_stub crc32_pclmu=
+l nvme ahci libahci i2c_piix4 r8169 nvme_core i2c_designware_pci realtek i2=
+c_ccgx_ucsi video wmi hid_generic cdc_ether usbnet usbhid hid r8152 mii
+[  150.834354] CPU: 8 PID: 1812 Comm: rocrtst64 Tainted: G           OE    =
+  6.10.0-custom #492
+[  150.834358] Hardware name: AMD Majolica-RN/Majolica-RN, BIOS RMJ1009A 06=
+/13/2021
+[  150.834360] RIP: 0010:check_unmap+0x1cc/0x930
+[  150.834363] Code: c0 4c 89 4d c8 e8 34 bf 86 00 4c 8b 4d c8 4c 8b 45 c0 =
+48 8b 4d b8 48 89 c6 41 57 4c 89 ea 48 c7 c7 80 49 b4 84 e8 b4 81 f3 ff <0f=
+> 0b 48 c7 c7 04 83 ac 84 e8 76 ba fc ff 41 8b 76 4c 49 8d 7e 50
+[  150.834365] RSP: 0018:ffffaac5023739e0 EFLAGS: 00010086
+[  150.834368] RAX: 0000000000000000 RBX: ffffffff8566a2e0 RCX: 00000000000=
+00027
+[  150.834370] RDX: ffff8f6a8f621688 RSI: 0000000000000001 RDI: ffff8f6a8f6=
+21680
+[  150.834372] RBP: ffffaac502373a30 R08: 00000000000000c9 R09: ffffaac5023=
+73850
+[  150.834373] R10: ffffaac502373848 R11: ffffffff84f46328 R12: ffffaac5023=
+73a40
+[  150.834375] R13: ffff8f6741045330 R14: ffff8f6741a77700 R15: ffffffff84a=
+c831b
+[  150.834377] FS:  00007faf0fc94c00(0000) GS:ffff8f6a8f600000(0000) knlGS:=
+0000000000000000
+[  150.834379] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  150.834381] CR2: 00007faf0b600020 CR3: 000000010a52e000 CR4: 00000000003=
+50ef0
+[  150.834383] Call Trace:
+[  150.834385]  <TASK>
+[  150.834387]  ? show_regs+0x6d/0x80
+[  150.834393]  ? __warn+0x8c/0x140
+[  150.834397]  ? check_unmap+0x1cc/0x930
+[  150.834400]  ? report_bug+0x193/0x1a0
+[  150.834406]  ? handle_bug+0x46/0x80
+[  150.834410]  ? exc_invalid_op+0x1d/0x80
+[  150.834413]  ? asm_exc_invalid_op+0x1f/0x30
+[  150.834420]  ? check_unmap+0x1cc/0x930
+[  150.834425]  debug_dma_unmap_page+0x86/0x90
+[  150.834431]  ? srso_return_thunk+0x5/0x5f
+[  150.834435]  ? rmap_walk+0x28/0x50
+[  150.834438]  ? srso_return_thunk+0x5/0x5f
+[  150.834441]  ? remove_migration_ptes+0x79/0x80
+[  150.834445]  ? srso_return_thunk+0x5/0x5f
+[  150.834448]  dma_unmap_page_attrs+0xfa/0x1d0
+[  150.834453]  svm_range_dma_unmap_dev+0x8a/0xf0 [amdgpu]
+[  150.834710]  svm_migrate_ram_to_vram+0x361/0x740 [amdgpu]
+[  150.834914]  svm_migrate_to_vram+0xa8/0xe0 [amdgpu]
+[  150.835111]  svm_range_set_attr+0xff2/0x1450 [amdgpu]
+[  150.835311]  svm_ioctl+0x4a/0x50 [amdgpu]
+[  150.835510]  kfd_ioctl_svm+0x54/0x90 [amdgpu]
+[  150.835701]  kfd_ioctl+0x3c2/0x530 [amdgpu]
+[  150.835888]  ? __pfx_kfd_ioctl_svm+0x10/0x10 [amdgpu]
+[  150.836075]  ? srso_return_thunk+0x5/0x5f
+[  150.836080]  ? tomoyo_file_ioctl+0x20/0x30
+[  150.836086]  __x64_sys_ioctl+0x9c/0xd0
+[  150.836091]  x64_sys_call+0x1219/0x20d0
+[  150.836095]  do_syscall_64+0x51/0x120
+[  150.836098]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  150.836102] RIP: 0033:0x7faf0f11a94f
+[  150.836105] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 =
+00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41=
+> 89 c0 3d 00 f0 ff ff 77 1f 48 8b 44 24 18 64 48 2b 04 25 28 00
+[  150.836107] RSP: 002b:00007ffeced26bc0 EFLAGS: 00000246 ORIG_RAX: 000000=
+0000000010
+[  150.836110] RAX: ffffffffffffffda RBX: 000055c683528fb0 RCX: 00007faf0f1=
+1a94f
+[  150.836112] RDX: 00007ffeced26c60 RSI: 00000000c0484b20 RDI: 00000000000=
+00003
+[  150.836114] RBP: 00007ffeced26c50 R08: 0000000000000000 R09: 00000000000=
+00001
+[  150.836115] R10: 0000000000000032 R11: 0000000000000246 R12: 000055c6835=
+28bd0
+[  150.836117] R13: 0000000000000000 R14: 0000000000000021 R15: 00000000000=
+00000
+[  150.836122]  </TASK>
+[  150.836124] ---[ end trace 0000000000000000 ]---
+
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_ca0132.c | 37 ++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index 748a3c40966e..27e48fdbbf3a 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -1134,7 +1134,6 @@ struct ca0132_spec {
- 
- 	struct hda_codec *codec;
- 	struct delayed_work unsol_hp_work;
--	int quirk;
- 
- #ifdef ENABLE_TUNING_CONTROLS
- 	long cur_ctl_vals[TUNING_CTLS_COUNT];
-@@ -1166,7 +1165,6 @@ struct ca0132_spec {
-  * CA0132 quirks table
-  */
- enum {
--	QUIRK_NONE,
- 	QUIRK_ALIENWARE,
- 	QUIRK_ALIENWARE_M17XR4,
- 	QUIRK_SBZ,
-@@ -1176,10 +1174,11 @@ enum {
- 	QUIRK_R3D,
- 	QUIRK_AE5,
- 	QUIRK_AE7,
-+	QUIRK_NONE = HDA_FIXUP_ID_NOT_SET,
- };
- 
- #ifdef CONFIG_PCI
--#define ca0132_quirk(spec)		((spec)->quirk)
-+#define ca0132_quirk(spec)		((spec)->codec->fixup_id)
- #define ca0132_use_pci_mmio(spec)	((spec)->use_pci_mmio)
- #define ca0132_use_alt_functions(spec)	((spec)->use_alt_functions)
- #define ca0132_use_alt_controls(spec)	((spec)->use_alt_controls)
-@@ -1293,7 +1292,7 @@ static const struct hda_pintbl ae7_pincfgs[] = {
- 	{}
- };
- 
--static const struct snd_pci_quirk ca0132_quirks[] = {
-+static const struct hda_quirk ca0132_quirks[] = {
- 	SND_PCI_QUIRK(0x1028, 0x057b, "Alienware M17x R4", QUIRK_ALIENWARE_M17XR4),
- 	SND_PCI_QUIRK(0x1028, 0x0685, "Alienware 15 2015", QUIRK_ALIENWARE),
- 	SND_PCI_QUIRK(0x1028, 0x0688, "Alienware 17 2015", QUIRK_ALIENWARE),
-@@ -1316,6 +1315,19 @@ static const struct snd_pci_quirk ca0132_quirks[] = {
- 	{}
- };
- 
-+static const struct hda_model_fixup ca0132_quirk_models[] = {
-+	{ .id = QUIRK_ALIENWARE, .name = "alienware" },
-+	{ .id = QUIRK_ALIENWARE_M17XR4, .name = "alienware-m17xr4" },
-+	{ .id = QUIRK_SBZ, .name = "sbz" },
-+	{ .id = QUIRK_ZXR, .name = "zxr" },
-+	{ .id = QUIRK_ZXR_DBPRO, .name = "zxr-dbpro" },
-+	{ .id = QUIRK_R3DI, .name = "r3di" },
-+	{ .id = QUIRK_R3D, .name = "r3d" },
-+	{ .id = QUIRK_AE5, .name = "ae5" },
-+	{ .id = QUIRK_AE7, .name = "ae7" },
-+	{}
-+};
-+
- /* Output selection quirk info structures. */
- #define MAX_QUIRK_MMIO_GPIO_SET_VALS 3
- #define MAX_QUIRK_SCP_SET_VALS 2
-@@ -9962,17 +9974,15 @@ static int ca0132_prepare_verbs(struct hda_codec *codec)
-  */
- static void sbz_detect_quirk(struct hda_codec *codec)
- {
--	struct ca0132_spec *spec = codec->spec;
--
- 	switch (codec->core.subsystem_id) {
- 	case 0x11020033:
--		spec->quirk = QUIRK_ZXR;
-+		codec->fixup_id = QUIRK_ZXR;
- 		break;
- 	case 0x1102003f:
--		spec->quirk = QUIRK_ZXR_DBPRO;
-+		codec->fixup_id = QUIRK_ZXR_DBPRO;
- 		break;
- 	default:
--		spec->quirk = QUIRK_SBZ;
-+		codec->fixup_id = QUIRK_SBZ;
- 		break;
- 	}
- }
-@@ -9981,7 +9991,6 @@ static int patch_ca0132(struct hda_codec *codec)
- {
- 	struct ca0132_spec *spec;
- 	int err;
--	const struct snd_pci_quirk *quirk;
- 
- 	codec_dbg(codec, "patch_ca0132\n");
- 
-@@ -9992,11 +10001,7 @@ static int patch_ca0132(struct hda_codec *codec)
- 	spec->codec = codec;
- 
- 	/* Detect codec quirk */
--	quirk = snd_pci_quirk_lookup(codec->bus->pci, ca0132_quirks);
--	if (quirk)
--		spec->quirk = quirk->value;
--	else
--		spec->quirk = QUIRK_NONE;
-+	snd_hda_pick_fixup(codec, ca0132_quirk_models, ca0132_quirks, NULL);
- 	if (ca0132_quirk(spec) == QUIRK_SBZ)
- 		sbz_detect_quirk(codec);
- 
-@@ -10073,7 +10078,7 @@ static int patch_ca0132(struct hda_codec *codec)
- 		spec->mem_base = pci_iomap(codec->bus->pci, 2, 0xC20);
- 		if (spec->mem_base == NULL) {
- 			codec_warn(codec, "pci_iomap failed! Setting quirk to QUIRK_NONE.");
--			spec->quirk = QUIRK_NONE;
-+			codec->fixup_id = QUIRK_NONE;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd=
+/amdkfd/kfd_migrate.c
+index 8a7705db0b9a..a7ed47cb5bf6 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -324,7 +324,7 @@ svm_migrate_copy_to_vram(struct amdgpu_device *adev, st=
+ruct svm_range *prange,
+ 		spage =3D migrate_pfn_to_page(migrate->src[i]);
+ 		if (spage && !is_zone_device_page(spage)) {
+ 			src[i] =3D dma_map_page(dev, spage, 0, PAGE_SIZE,
+-					      DMA_TO_DEVICE);
++					      DMA_BIDIRECTIONAL);
+ 			r =3D dma_mapping_error(dev, src[i]);
+ 			if (r) {
+ 				dev_err(adev->dev, "%s: fail %d dma_map_page\n",
+@@ -623,7 +623,7 @@ svm_migrate_copy_to_ram(struct amdgpu_device *adev, str=
+uct svm_range *prange,
+ 			goto out_oom;
  		}
- 	}
- #endif
--- 
+=20
+-		dst[i] =3D dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_FROM_DEVICE);
++		dst[i] =3D dma_map_page(dev, dpage, 0, PAGE_SIZE, DMA_BIDIRECTIONAL);
+ 		r =3D dma_mapping_error(dev, dst[i]);
+ 		if (r) {
+ 			dev_err(adev->dev, "%s: fail %d dma_map_page\n", __func__, r);
+--=20
 2.39.5
 
 
