@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55D0A029FD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9EEA02B67
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86141649D9
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A7DB160D52
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492C413775E;
-	Mon,  6 Jan 2025 15:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F60157E82;
+	Mon,  6 Jan 2025 15:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SACQRiz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8c/wtJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0498935973;
-	Mon,  6 Jan 2025 15:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B28DF71;
+	Mon,  6 Jan 2025 15:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177353; cv=none; b=FZ7TiACJlfFxSjV/jym3B96dSxnEQa3v/ONqqazzLMYHtKbQMc+IeRGjRwEydNT0I15kQgImpopY3L+mGxW6MQ/l2G2lD7eKcZ8ClKMqXbQitdTEEWT7LhT+cH+8lP0Hb3IRkvBLurLdLLLtk+YRTqqZIpPIBOcBAUFMpHjWiZ4=
+	t=1736178135; cv=none; b=lG4z6+OolJ/pEIsBPcO+cCNVPZ3P+ECdUKXIhq/8pWkhl10MvRMzRVsLTa47m+I9NKX4C+OA8E7XBDhDRZFcHnG40v191n31GXi0tW1kjqN0iI4CtXJJE3ip8eqk8tZxUivWWn49CexP6RH/lLZWCDv464DK16Hdxyj6K4ieQl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177353; c=relaxed/simple;
-	bh=Yp4tb0Jihn4tGMTFzAWjJUG6V92CvnkSV6314nhDA8E=;
+	s=arc-20240116; t=1736178135; c=relaxed/simple;
+	bh=0lSMRdDokC6BuvealOXeLMSDPnHLhm9W4Tf2NWjnxCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKh03dJXT4BluLl5+EH1EaKBV9tK0BgLQWv349b6G5neUdApLMdANixUaK19G2KV9g9Gh+CZGFynWZJjOuKT2wdmfglbnroXCtydrJ2oRxD/tfsyCzg6msnOTYZDaRKZi4hJ7zXOi+8sA8hlYCttZlz6EM7n0krpeK9g0ERb/HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SACQRiz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA00C4CED2;
-	Mon,  6 Jan 2025 15:29:12 +0000 (UTC)
+	 MIME-Version; b=iX3vs6oRLm7p8g4qBPaux1bN9yJSbpGbQwpDhuYDoH4OPCq+x4KG17jxz+95hMaaewDToBTU9Z2VoQPGSqVizdCHijbw86mGrociakBOC95SinL/bIBTCDbKslzjBoRngj8fC8sOzlnndOZ9c86zVVfoUhwlg7ltHpHx9OgKw0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8c/wtJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AC1C4CED2;
+	Mon,  6 Jan 2025 15:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177352;
-	bh=Yp4tb0Jihn4tGMTFzAWjJUG6V92CvnkSV6314nhDA8E=;
+	s=korg; t=1736178135;
+	bh=0lSMRdDokC6BuvealOXeLMSDPnHLhm9W4Tf2NWjnxCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0SACQRiz9gAYKbebCro9Tw8lxGe3TP71zwLUIQdpW8jLFAm5nRbEDrJvgtGEIrVDD
-	 0sEeOj/I+MDhwXIn2eyE6lQfMlN6iLz2BR4ZqWuoSDpvQAgdgPBe90XbShcQxC4F4O
-	 +FBSo3wxTDnCv3c4L83cU9uXDeIPnZo1PisG91qk=
+	b=I8c/wtJePVJRH0N1kvtz1Lei32mWqEjmw99rKaUIXBD10ubyEjMdu17sOtwzLjEvc
+	 0qLG6TLwEMvmfbihp2EMRF8/75CVVW2sXrRi5pYRcSGHGkLFRONGlG1btoR3bAOeym
+	 BTv0TXkqvyloa3wPVdZnCRWv3d+wOJxJaJz8IVAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/222] RDMA/bnxt_re: Fix max_qp_wrs reported
-Date: Mon,  6 Jan 2025 16:15:40 +0100
-Message-ID: <20250106151155.914768253@linuxfoundation.org>
+Subject: [PATCH 5.10 017/138] ionic: use ee->offset when returning sprom data
+Date: Mon,  6 Jan 2025 16:15:41 +0100
+Message-ID: <20250106151133.871862360@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 40be32303ec829ea12f9883e499bfd3fe9e52baf ]
+[ Upstream commit b096d62ba1323391b2db98b7704e2468cf3b1588 ]
 
-While creating qps, driver adds one extra entry to the sq size
-passed by the ULPs in order to avoid queue full condition.
-When ULPs creates QPs with max_qp_wr reported, driver creates
-QP with 1 more than the max_wqes supported by HW. Create QP fails
-in this case. To avoid this error, reduce 1 entry in max_qp_wqes
-and report it to the stack.
+Some calls into ionic_get_module_eeprom() don't use a single
+full buffer size, but instead multiple calls with an offset.
+Teach our driver to use the offset correctly so we can
+respond appropriately to the caller.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241217102649.1377704-2-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 4d03e00a2140 ("ionic: Add initial ethtool support")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20241212213157.12212-4-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index 420f8613bcd5..0f6bae009af1 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -127,7 +127,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
- 	attr->max_qp_init_rd_atom =
- 		sb->max_qp_init_rd_atom > BNXT_QPLIB_MAX_OUT_RD_ATOM ?
- 		BNXT_QPLIB_MAX_OUT_RD_ATOM : sb->max_qp_init_rd_atom;
--	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr);
-+	attr->max_qp_wqes = le16_to_cpu(sb->max_qp_wr) - 1;
- 	/*
- 	 * 128 WQEs needs to be reserved for the HW (8916). Prevent
- 	 * reporting the max number
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 8e5b01af85ed..d0a613fac9ff 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -835,8 +835,8 @@ static int ionic_get_module_eeprom(struct net_device *netdev,
+ 	len = min_t(u32, sizeof(xcvr->sprom), ee->len);
+ 
+ 	do {
+-		memcpy(data, xcvr->sprom, len);
+-		memcpy(tbuf, xcvr->sprom, len);
++		memcpy(data, &xcvr->sprom[ee->offset], len);
++		memcpy(tbuf, &xcvr->sprom[ee->offset], len);
+ 
+ 		/* Let's make sure we got a consistent copy */
+ 		if (!memcmp(data, tbuf, len))
 -- 
 2.39.5
 
