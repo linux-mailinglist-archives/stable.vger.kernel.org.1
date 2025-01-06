@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5638DA02C3E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F7CA02A30
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1166216559E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:51:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA90B1885132
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93391DE8AB;
-	Mon,  6 Jan 2025 15:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42CE15958A;
+	Mon,  6 Jan 2025 15:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vi4qUTax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGqyjB/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D7F149C7B;
-	Mon,  6 Jan 2025 15:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DED1547D8;
+	Mon,  6 Jan 2025 15:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178657; cv=none; b=HJ2mxxPZKJP7ddbzG4cos11Nba/WtiPH81Kq91Li15BMXYG/5E/inEtz8RAKbhuBn9vwYnxtvXZAhnMH0HTGeh1goJU0YW/JnUPamjJkLWEgLViR2aEL5UxJsN0CvhQq1GQf7+aG+LYHu5IeHBHgJmDs7BnfqTz8WXbh2GydvNg=
+	t=1736177412; cv=none; b=k8c2jp0qQepfMTt+nyzjUwBOLubhrE6Uu8JZUsiUO2Uf/RlmFqcqclTu/OV7wS6N38uB8+kPpOKoIQeNQJ+unyqZT9pM5CC1RL6fbjLhTf4eOOdVHGHBn5ZnhmKJ9ptnDAgmYWPIyDWn77jJM0monD5n4H7Mq35vwQkge5cSB9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178657; c=relaxed/simple;
-	bh=Scrcg/ETeZQbUGi6GfNcu9HR9bH7wkhwwbJl6bN/sfs=;
+	s=arc-20240116; t=1736177412; c=relaxed/simple;
+	bh=kdhCXqJhZQ/uPSujsJDMpxN0p1zGxywuzVzP0Hwf7JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/TbuaHFUkoWr5zmyFrntAmMRXe5cdkX8PDTfg0cwvg1qKXUeBBJluGD1dj30PwPwfFzk3WKLm9fUchiFfghgotz+tFH631jHjQrdgT1twK/DPvsg8bYwu5HADYPqBsVCyArPJyuhl6GtrnsmoHu6LNpScX/ieC0cWIDmTibiGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vi4qUTax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD63C4CEDF;
-	Mon,  6 Jan 2025 15:50:56 +0000 (UTC)
+	 MIME-Version; b=NdK/5BVOOiRb2sZ+IpkKVt2aTkNReKAORP4L6Keyd03lpyynlMAM8cCPOXsrtTxxXK3P/vXrZDZJGkpWdDyaFTW+yZASEWIs6gswDUrvQicTJ1lGhThRZky2uQSGgIXEYau6xEXLxAO+GWW9SN81gwNEPfbPT+Ek5QSRfUh6NaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGqyjB/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE19EC4CED2;
+	Mon,  6 Jan 2025 15:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178657;
-	bh=Scrcg/ETeZQbUGi6GfNcu9HR9bH7wkhwwbJl6bN/sfs=;
+	s=korg; t=1736177412;
+	bh=kdhCXqJhZQ/uPSujsJDMpxN0p1zGxywuzVzP0Hwf7JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vi4qUTax4GbtdldvajPuGzaRRTd1N+wWSoYdj+GLezKYkUXQEWqq+De6uC/I4N83V
-	 sVLY/APJ6MeuBNbyqoz/AZAxEpsKAwE/Ldsol77rDXhPmzeUshE+tDMY9snX+tH7cd
-	 krLAwTA4PsmSK7YkK77gYha1XIYBt61S17roVxNw=
+	b=FGqyjB/MBAVe+cU8IwY8zBi7QMyfaU+z4/A+201IMLCz2JiugzLW7TbNGxWsf6op5
+	 LC4M9rIdqVzVNfTO9BiLplibxBScNr5xMyRzGLVNIMiAtFgPKSQVILntyy7f6fUN8F
+	 lo0ZFcsgXPc5KoE+GESfxGi1Og1xIz0Jpw6zAeMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+9260555647a5132edd48@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 050/168] nilfs2: prevent use of deleted inode
+	Ido Schimmel <idosch@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 154/222] ipv4: ip_tunnel: Unmask upper DSCP bits in ip_tunnel_bind_dev()
 Date: Mon,  6 Jan 2025 16:15:58 +0100
-Message-ID: <20250106151140.353620979@linuxfoundation.org>
+Message-ID: <20250106151156.593622101@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 901ce9705fbb9f330ff1f19600e5daf9770b0175 upstream.
+[ Upstream commit e7191e517a03d025405c7df730b400ad4118474e ]
 
-syzbot reported a WARNING in nilfs_rmdir. [1]
+Unmask the upper DSCP bits when initializing an IPv4 flow key via
+ip_tunnel_init_flow() before passing it to ip_route_output_key() so that
+in the future we could perform the FIB lookup according to the full DSCP
+value.
 
-Because the inode bitmap is corrupted, an inode with an inode number that
-should exist as a ".nilfs" file was reassigned by nilfs_mkdir for "file0",
-causing an inode duplication during execution.  And this causes an
-underflow of i_nlink in rmdir operations.
-
-The inode is used twice by the same task to unmount and remove directories
-".nilfs" and "file0", it trigger warning in nilfs_rmdir.
-
-Avoid to this issue, check i_nlink in nilfs_iget(), if it is 0, it means
-that this inode has been deleted, and iput is executed to reclaim it.
-
-[1]
-WARNING: CPU: 1 PID: 5824 at fs/inode.c:407 drop_nlink+0xc4/0x110 fs/inode.c:407
-...
-Call Trace:
- <TASK>
- nilfs_rmdir+0x1b0/0x250 fs/nilfs2/namei.c:342
- vfs_rmdir+0x3a3/0x510 fs/namei.c:4394
- do_rmdir+0x3b5/0x580 fs/namei.c:4453
- __do_sys_rmdir fs/namei.c:4472 [inline]
- __se_sys_rmdir fs/namei.c:4470 [inline]
- __x64_sys_rmdir+0x47/0x50 fs/namei.c:4470
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Link: https://lkml.kernel.org/r/20241209065759.6781-1-konishi.ryusuke@gmail.com
-Fixes: d25006523d0b ("nilfs2: pathname operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9260555647a5132edd48
-Tested-by: syzbot+9260555647a5132edd48@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: b5a7b661a073 ("net: Fix netns for ip_tunnel_init_flow()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/inode.c |    8 +++++++-
- fs/nilfs2/namei.c |    5 +++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ net/ipv4/ip_tunnel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -618,8 +618,14 @@ struct inode *nilfs_iget(struct super_bl
- 	inode = nilfs_iget_locked(sb, root, ino);
- 	if (unlikely(!inode))
- 		return ERR_PTR(-ENOMEM);
--	if (!(inode->i_state & I_NEW))
-+
-+	if (!(inode->i_state & I_NEW)) {
-+		if (!inode->i_nlink) {
-+			iput(inode);
-+			return ERR_PTR(-ESTALE);
-+		}
- 		return inode;
-+	}
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 0f5cfe3caa2e..571cf7c2fa28 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -293,7 +293,7 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
  
- 	err = __nilfs_read_inode(sb, root, ino, inode);
- 	if (unlikely(err)) {
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -67,6 +67,11 @@ nilfs_lookup(struct inode *dir, struct d
- 		inode = NULL;
- 	} else {
- 		inode = nilfs_iget(dir->i_sb, NILFS_I(dir)->i_root, ino);
-+		if (inode == ERR_PTR(-ESTALE)) {
-+			nilfs_error(dir->i_sb,
-+					"deleted inode referenced: %lu", ino);
-+			return ERR_PTR(-EIO);
-+		}
- 	}
+ 		ip_tunnel_init_flow(&fl4, iph->protocol, iph->daddr,
+ 				    iph->saddr, tunnel->parms.o_key,
+-				    RT_TOS(iph->tos), dev_net(dev),
++				    iph->tos & INET_DSCP_MASK, dev_net(dev),
+ 				    tunnel->parms.link, tunnel->fwmark, 0, 0);
+ 		rt = ip_route_output_key(tunnel->net, &fl4);
  
- 	return d_splice_alias(inode, dentry);
+-- 
+2.39.5
+
 
 
 
