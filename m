@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-107526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A5DA02C45
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:52:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD19A02931
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7005E1887336
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 994EA1640C1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D79142E7C;
-	Mon,  6 Jan 2025 15:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5CF126C05;
+	Mon,  6 Jan 2025 15:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUcfv1pl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeUfuk8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425761422DD;
-	Mon,  6 Jan 2025 15:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98970132117;
+	Mon,  6 Jan 2025 15:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178739; cv=none; b=oPoNh4b0tYViy6L6ralx262KuFl5iB8uzFLnmLLCIqO8JuGPHMQLN91X+hyuj6FZ/y4PVExgiZkH2zBv0ycHf2DGLUjxtOI9ypkn4H9eYOkcww00tdYLHGBUlB2pIQyTar6uo3g96ViEKooigavAsvuju7nTQMAFS8hUTrDc9iI=
+	t=1736176832; cv=none; b=V2ELjiPC6KccNzs1ANWAze41vldJJNPMPNd7FTQTPi2tQzJ7YdfCsXAhlvVo8G22M3hAMxWRFXNA0ju89HDGgzpksUKhKpGMAjSa625PoXzpfobghUkrSGuJoCZYIeDkaDQt1vdwG+RkMSyb5liAZ6fFPdG9aSReuUcwXVAqUpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178739; c=relaxed/simple;
-	bh=WCFfc3QsZHYwaNMBmKndLH4uQlWsWKIAh+fQDhW6CfU=;
+	s=arc-20240116; t=1736176832; c=relaxed/simple;
+	bh=llaxGU5nJubqKnUqK/oH2tXvyR1E+h7JKap7pcn4KqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bN4ZZEJBkIJzFDPW0zGPPye+Fxbc7b0/ldA5UlV0kAt88LpS5eIWrMCU0o+Txs6RvWRLNUyzL51OUO7UXN62m9pEej6UNHjV3GXP3g/tskKl05/9dagoqFcNa/T1xdtquQ+6n22LPWyKFi41Z0p2X+U2mKF7UziF8dpDoliHtRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUcfv1pl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729B1C4CED2;
-	Mon,  6 Jan 2025 15:52:17 +0000 (UTC)
+	 MIME-Version; b=kgOJvsTZhxI0ITBgi8ScbLe3S9uzmjuZzXBItFNwJeA3YUcMimYjMwZJjxdoeLhHFZJCc8Isjd7b/SN6w2sp284kQlYgxdLOjHo5rCLqCuF+pUA9tpvug0RlX4UoSrMsWa1CNdEiWRf7Vr6s1ebp68dNA4ZyCmeNHA/f3Nd+g74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeUfuk8I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F7DC4CED2;
+	Mon,  6 Jan 2025 15:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178737;
-	bh=WCFfc3QsZHYwaNMBmKndLH4uQlWsWKIAh+fQDhW6CfU=;
+	s=korg; t=1736176832;
+	bh=llaxGU5nJubqKnUqK/oH2tXvyR1E+h7JKap7pcn4KqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUcfv1plQhtOdt/1MIV5+JpFYjv/nlulUrzUEK99BTtyiLgAGUvomELK1kEHRehWy
-	 a4skw8kOxOqp1jRSj0+nlUK9iGz67hKjnxZ/WR0ZhnDTjzN2jLXiF/W/FPDmr2Oubi
-	 UhR6vWFIXRloIQZOFDvwr6WOX20JaeihmhGcrmR0=
+	b=SeUfuk8IMPWtG30AphqhLSvuSpHfhoPLhUcayPSxeqWEPn7OvPFyDs37AQwSZhWmK
+	 DHSjo8xEvgTntAUlVGKNJw7lEW16C1b1VGSgj9lM1PhBlhwfOSNCQQ2tF+Hno2+axG
+	 1rjXW51KQXB8CrCDxCOpQb+S7aIAFZ3k9bv4f5MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot <syzkaller@googlegroups.com>,
 	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 068/168] phy: core: Fix that API devm_phy_put() fails to release the phy
-Date: Mon,  6 Jan 2025 16:16:16 +0100
-Message-ID: <20250106151141.033979639@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 45/81] net: reenable NETIF_F_IPV6_CSUM offload for BIG TCP packets
+Date: Mon,  6 Jan 2025 16:16:17 +0100
+Message-ID: <20250106151131.136553415@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
+References: <20250106151129.433047073@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +62,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Willem de Bruijn <willemb@google.com>
 
-commit fe4bfa9b6d7bd752bfe4700c937f235aa8ce997b upstream.
+[ Upstream commit 68e068cabd2c6c533ef934c2e5151609cf6ecc6d ]
 
-For devm_phy_put(), its comment says it needs to invoke phy_put() to
-release the phy, but it will not actually invoke the function since
-devres_destroy() does not call devm_phy_release(), and the missing
-phy_put() call will cause:
+The blamed commit disabled hardware offoad of IPv6 packets with
+extension headers on devices that advertise NETIF_F_IPV6_CSUM,
+based on the definition of that feature in skbuff.h:
 
-- The phy fails to be released.
-- devm_phy_put() can not fully undo what API devm_phy_get() does.
-- Leak refcount of both the module and device for below typical usage:
+ *   * - %NETIF_F_IPV6_CSUM
+ *     - Driver (device) is only able to checksum plain
+ *       TCP or UDP packets over IPv6. These are specifically
+ *       unencapsulated packets of the form IPv6|TCP or
+ *       IPv6|UDP where the Next Header field in the IPv6
+ *       header is either TCP or UDP. IPv6 extension headers
+ *       are not supported with this feature. This feature
+ *       cannot be set in features for a device with
+ *       NETIF_F_HW_CSUM also set. This feature is being
+ *       DEPRECATED (see below).
 
-  devm_phy_get(); // or its variant
-  ...
-  err = do_something();
-  if (err)
-      goto err_out;
-  ...
-  err_out:
-  devm_phy_put(); // leak refcount here
+The change causes skb_warn_bad_offload to fire for BIG TCP
+packets.
 
-  The file(s) affected by this issue are shown below since they have such
-  typical usage.
-  drivers/pci/controller/cadence/pcie-cadence.c
-  drivers/net/ethernet/ti/am65-cpsw-nuss.c
+[  496.310233] WARNING: CPU: 13 PID: 23472 at net/core/dev.c:3129 skb_warn_bad_offload+0xc4/0xe0
 
-Fix by using devres_release() instead of devres_destroy() within the API.
+[  496.310297]  ? skb_warn_bad_offload+0xc4/0xe0
+[  496.310300]  skb_checksum_help+0x129/0x1f0
+[  496.310303]  skb_csum_hwoffload_help+0x150/0x1b0
+[  496.310306]  validate_xmit_skb+0x159/0x270
+[  496.310309]  validate_xmit_skb_list+0x41/0x70
+[  496.310312]  sch_direct_xmit+0x5c/0x250
+[  496.310317]  __qdisc_run+0x388/0x620
 
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
-Cc: stable@vger.kernel.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Krzysztof Wilczyński <kw@linux.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-1-40ae28f5015a@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BIG TCP introduced an IPV6_TLV_JUMBO IPv6 extension header to
+communicate packet length, as this is an IPv6 jumbogram. But, the
+feature is only enabled on devices that support BIG TCP TSO. The
+header is only present for PF_PACKET taps like tcpdump, and not
+transmitted by physical devices.
+
+For this specific case of extension headers that are not
+transmitted, return to the situation before the blamed commit
+and support hardware offload.
+
+ipv6_has_hopopt_jumbo() tests not only whether this header is present,
+but also that it is the only extension header before a terminal (L4)
+header.
+
+Fixes: 04c20a9356f2 ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reported-by: Eric Dumazet <edumazet@google.com>
+Closes: https://lore.kernel.org/netdev/CANn89iK1hdC3Nt8KPhOtTF8vCPc1AHDCtse_BTNki1pWxAByTQ@mail.gmail.com/
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250101164909.1331680-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/dev.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -650,7 +650,7 @@ void devm_phy_put(struct device *dev, st
- 	if (!phy)
- 		return;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 2ee1a535b3cb..90559cb66803 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3679,8 +3679,10 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
  
--	r = devres_destroy(dev, devm_phy_release, devm_phy_match, phy);
-+	r = devres_release(dev, devm_phy_release, devm_phy_match, phy);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY resource\n");
- }
- EXPORT_SYMBOL_GPL(devm_phy_put);
+ 	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
+ 		if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
+-		    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
++		    skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
++		    !ipv6_has_hopopt_jumbo(skb))
+ 			goto sw_checksum;
++
+ 		switch (skb->csum_offset) {
+ 		case offsetof(struct tcphdr, check):
+ 		case offsetof(struct udphdr, check):
+-- 
+2.39.5
+
 
 
 
