@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-107656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B5EA02D10
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E72A02CB6
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ADB93A1965
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:58:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4BAD3A855F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B54F81728;
-	Mon,  6 Jan 2025 15:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D36581728;
+	Mon,  6 Jan 2025 15:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crrvzxfr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVlpHRry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D9F282F5;
-	Mon,  6 Jan 2025 15:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564C5145A03;
+	Mon,  6 Jan 2025 15:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179128; cv=none; b=DDdQKgZe7IW5mxoP/FTr/i4ZL2UCtMYgst1d3xcWaryyt+9LpAsHm6L7jWsldlVoqGMX2MT+oMhntEn7GinQutaGc7Kf/EwLM2y+r/BHABSOsSpIg5jaJRSzHzbQWKkgu3kmbKkgGGIurxcyzuxr136P6CQ40Kvj3JiFc4VdfEE=
+	t=1736178880; cv=none; b=UGcoR5U+jSPZ8LDBXy6PeySc2sscn1K4XXT4B1L6nrhPfD/hQ1IcVTJtCR/eN3uUrIc6u4OXA3Ng1SbNjfLJmBrwq1V6xtYX4D/66sNAzCfO0FVZV5DfCka26oBIwa/VWcQypTnkp+T1GheGsj+0kjVbifqXN6SaHYLxWBIOVgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179128; c=relaxed/simple;
-	bh=Xd1jWLXuuBhq3N1d+m91S8F3dTdckB2HQMV54yUw/B0=;
+	s=arc-20240116; t=1736178880; c=relaxed/simple;
+	bh=TmCZKh+gJQY2THidZVndLv/RjFUvLRoBnJ36HmgRp2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CN6My+C0fR2vAx4zOEWjNQdappI86Z3czouOvohLX2gsSWm5RWUWeyj3z4PMCmKxY5FqPtSykqhGBIx+3oC8/cUMWCa/abiOJJRqewhwXRblraQ9FUdAWfSIEupxqsIenvmV4og+PrNTlpPWweLTch0o8O0EzL23+vvf4u2aPQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crrvzxfr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84976C4CED6;
-	Mon,  6 Jan 2025 15:58:47 +0000 (UTC)
+	 MIME-Version; b=J3aOiCf33osqj2KKwgYg25OodvRusOefElRIkiPkXRqvmvQkPUZAdIi8IceGOoA3Ex+fKPcCCxtmN4cQwVOHqV/U1X39SHH28IqT40UvPWFcuo8RAV7myZ0VhBweX8EaEfabyPT2rJluPk2mgtI5Png10vxzjQLAhY0XRjuaSLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVlpHRry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71B1C4CED2;
+	Mon,  6 Jan 2025 15:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179127;
-	bh=Xd1jWLXuuBhq3N1d+m91S8F3dTdckB2HQMV54yUw/B0=;
+	s=korg; t=1736178880;
+	bh=TmCZKh+gJQY2THidZVndLv/RjFUvLRoBnJ36HmgRp2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crrvzxfrEmH75sxPJrgcFySlvJeocVP0PbZIymBzwZY4Z+qjPm7MhXNp3VoxWHYC/
-	 Gu5pNTjVzgphWr3dyl1+AA1loyI/2rZ8oDO3t9Z52PNTbb9WRT6WJUbQWzsNaAs02S
-	 czH9ZA8kp8UaPTfI0Emgo8FWOT7gRGTItx4NPYhg=
+	b=KVlpHRryHXeYs5829+koLe7aRj1NzESlJAmpZBGJGaQjkSFJPqsBiCXBj0cJZ0/aI
+	 8WqygtKvzS3sRS3OCRH9A9o7Srg7Doh0ta1LkwenRNIhYw2qI0bny/hnXB2G6InZ86
+	 0YJ3YapicmucF8UfAiaoxBWb0uHl1xLX28s+9uaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Yixing Liu <liuyixing1@huawei.com>,
+	Haoyue Xu <xuhaoyue1@hisilicon.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 35/93] nfsd: restore callback functionality for NFSv4.0
+Subject: [PATCH 5.15 123/168] RDMA/hns: Remove redundant attr_mask in modify_qp_init_to_init()
 Date: Mon,  6 Jan 2025 16:17:11 +0100
-Message-ID: <20250106151130.028513493@linuxfoundation.org>
+Message-ID: <20250106151143.092928226@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Yixing Liu <liuyixing1@huawei.com>
 
-[ Upstream commit 7917f01a286ce01e9c085e24468421f596ee1a0c ]
+[ Upstream commit bb4874af19686019d0dafd58726ed7b4058663ca ]
 
-A recent patch inadvertently broke callbacks for NFSv4.0.
+The attr_mask variable is not used in the function,
+so remove it.
 
-In the 4.0 case we do not expect a session to be found but still need to
-call setup_callback_client() which will not try to dereference it.
-
-This patch moves the check for failure to find a session into the 4.1+
-branch of setup_callback_client()
-
-Fixes: 1e02c641c3a4 ("NFSD: Prevent NULL dereference in nfsd4_process_cb_update()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20220922123315.3732205-5-xuhaoyue1@hisilicon.com
+Signed-off-by: Yixing Liu <liuyixing1@huawei.com>
+Signed-off-by: Haoyue Xu <xuhaoyue1@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: 8673a6c2d9e4 ("RDMA/hns: Fix mapping error of zero-hop WQE buffer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4callback.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index 55128de1a89d..d490f28aa7f6 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -878,7 +878,7 @@ static int setup_callback_client(struct nfs4_client *clp, struct nfs4_cb_conn *c
- 		args.authflavor = clp->cl_cred.cr_flavor;
- 		clp->cl_cb_ident = conn->cb_ident;
- 	} else {
--		if (!conn->cb_xprt)
-+		if (!conn->cb_xprt || !ses)
- 			return -EINVAL;
- 		clp->cl_cb_session = ses;
- 		args.bc_xprt = conn->cb_xprt;
-@@ -1229,8 +1229,6 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
- 		ses = c->cn_session;
- 	}
- 	spin_unlock(&clp->cl_lock);
--	if (!c)
--		return;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index c013e96f956e..6fdd563c9b9e 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -4073,7 +4073,6 @@ static inline int get_pdn(struct ib_pd *ib_pd)
  
- 	err = setup_callback_client(clp, &conn, ses);
- 	if (err) {
+ static void modify_qp_reset_to_init(struct ib_qp *ibqp,
+ 				    const struct ib_qp_attr *attr,
+-				    int attr_mask,
+ 				    struct hns_roce_v2_qp_context *context,
+ 				    struct hns_roce_v2_qp_context *qpc_mask)
+ {
+@@ -4137,7 +4136,7 @@ static void modify_qp_reset_to_init(struct ib_qp *ibqp,
+ }
+ 
+ static void modify_qp_init_to_init(struct ib_qp *ibqp,
+-				   const struct ib_qp_attr *attr, int attr_mask,
++				   const struct ib_qp_attr *attr,
+ 				   struct hns_roce_v2_qp_context *context,
+ 				   struct hns_roce_v2_qp_context *qpc_mask)
+ {
+@@ -4792,11 +4791,9 @@ static int hns_roce_v2_set_abs_fields(struct ib_qp *ibqp,
+ 
+ 	if (cur_state == IB_QPS_RESET && new_state == IB_QPS_INIT) {
+ 		memset(qpc_mask, 0, hr_dev->caps.qpc_sz);
+-		modify_qp_reset_to_init(ibqp, attr, attr_mask, context,
+-					qpc_mask);
++		modify_qp_reset_to_init(ibqp, attr, context, qpc_mask);
+ 	} else if (cur_state == IB_QPS_INIT && new_state == IB_QPS_INIT) {
+-		modify_qp_init_to_init(ibqp, attr, attr_mask, context,
+-				       qpc_mask);
++		modify_qp_init_to_init(ibqp, attr, context, qpc_mask);
+ 	} else if (cur_state == IB_QPS_INIT && new_state == IB_QPS_RTR) {
+ 		ret = modify_qp_init_to_rtr(ibqp, attr, attr_mask, context,
+ 					    qpc_mask);
 -- 
 2.39.5
 
