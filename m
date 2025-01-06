@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-107310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8F3A02B5E
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:43:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69662A02B23
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F04B3A2CD7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67E103A4DE5
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AC11C5F11;
-	Mon,  6 Jan 2025 15:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA0414A617;
+	Mon,  6 Jan 2025 15:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsaGcskH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jpl2RF5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1341ADFE3;
-	Mon,  6 Jan 2025 15:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08174148316;
+	Mon,  6 Jan 2025 15:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178082; cv=none; b=jilkJRL0Mjp4ejBv1+VLJaPwv2ATucYmVM0JlQs6RQqsucdTAeQtvCXXnXZfhThg+cSzM53skTplQO7r65InpPHjXrQPyee8OtC5stxtJd2m+aCauGZKVt4BSvhtQEZwLucoLSyCpojiDAmL+5eA4m7V0/7X50QPrUXdAFfezxI=
+	t=1736177990; cv=none; b=U1Fwlzj9OsYM61MEj7dKfhwAXZQ8nakplbH3+7Zw9EY9CHN8fDDOJI6t7rs2o2o/UGE+Dq9MX4EIXy5fgScSDTW9++cHQHRLW+ILCoHztMuTOh8fnqj1xUMz14sEjTVTWMJ+993kEG73clayITk9Civt3dVXcFmD2jtJqqbSNP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178082; c=relaxed/simple;
-	bh=rBB4ffMLEdnILfBffsHlDM22aDV3TXFUT48X3s0AEiQ=;
+	s=arc-20240116; t=1736177990; c=relaxed/simple;
+	bh=QMVYgPcVzazC5Jcahhof674QxX3QxkC6GMwgpLzq19Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+qx3Ux4gHREoPRJvF3N9z+35OMptfuOd3vstoTR3Bw8acOk0I+Cq4hzNThReJ+SgcirU+PbjLyBeRUEgCL4ffOiILeuellNiNviUvef+gFK6UdFJLZWdTN2qlGIIoE4eD5yCDW1LI5BETDj3dHgFqRszLhKxgHp5XulfeDBMeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsaGcskH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E7FC4CED2;
-	Mon,  6 Jan 2025 15:41:21 +0000 (UTC)
+	 MIME-Version; b=U3PS5A9yaO05cPHDWxfP0r0d5dqyI7dMwLf4MFq/K7pqgHqrLVXKcNTi2xXj82tG5o1SZNFBjVa+zqfc8o9+ioh1qvXo6ikrWi1Brhw+CS3PoSvte/f1C01NtAJ2dn8fBCYWPh+yIMHqrCxoT8LY3bUo03jxCm/spb3lJmsHoBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jpl2RF5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26163C4CED2;
+	Mon,  6 Jan 2025 15:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178082;
-	bh=rBB4ffMLEdnILfBffsHlDM22aDV3TXFUT48X3s0AEiQ=;
+	s=korg; t=1736177989;
+	bh=QMVYgPcVzazC5Jcahhof674QxX3QxkC6GMwgpLzq19Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsaGcskH59DrU90FtI/bLj4/tUTFa3cEySk1HMu1zN9RH0OPYARGoRJOgSJc7Cbyz
-	 ut4bXPwYhjuSj4RaPfuubVfJPTE4qk5tGZUVzdMqCjfbmt69Ej/1xjX7YpgtF7hawb
-	 bpA76fc7DTuiK2OhgaEH7xTzlHEtViN4B/CrEvl4=
+	b=Jpl2RF5CGxJ9DmtPRSCBPa+aiThHKVP4ig2Wf14Bs1+PeTaNUHcVMXaRKmdetvZWY
+	 aP3p/NmUdJ+Xs9iqlMUulVWfyETfx3Fd9u9HIrNe+6nzqDJHa6yWN/vcQJWwdOwOKv
+	 mDGu4ddy3z3kFeUwkfh43BRRty+H3OCGKul7ajXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Ihor Solodrai <ihor.solodrai@pm.me>
-Subject: [PATCH 6.12 124/156] sched_ext: Fix invalid irq restore in scx_ops_bypass()
-Date: Mon,  6 Jan 2025 16:16:50 +0100
-Message-ID: <20250106151146.401182127@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.12 125/156] RDMA/uverbs: Prevent integer overflow issue
+Date: Mon,  6 Jan 2025 16:16:51 +0100
+Message-ID: <20250106151146.440082840@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
 References: <20250106151141.738050441@linuxfoundation.org>
@@ -65,57 +65,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 18b2093f4598d8ee67a8153badc93f0fa7686b8a upstream.
+commit d0257e089d1bbd35c69b6c97ff73e3690ab149a9 upstream.
 
-While adding outer irqsave/restore locking, 0e7ffff1b811 ("scx: Fix raciness
-in scx_ops_bypass()") forgot to convert an inner rq_unlock_irqrestore() to
-rq_unlock() which could re-enable IRQ prematurely leading to the following
-warning:
+In the expression "cmd.wqe_size * cmd.wr_count", both variables are u32
+values that come from the user so the multiplication can lead to integer
+wrapping.  Then we pass the result to uverbs_request_next_ptr() which also
+could potentially wrap.  The "cmd.sge_count * sizeof(struct ib_uverbs_sge)"
+multiplication can also overflow on 32bit systems although it's fine on
+64bit systems.
 
-  raw_local_irq_restore() called with IRQs enabled
-  WARNING: CPU: 1 PID: 96 at kernel/locking/irqflag-debug.c:10 warn_bogus_irq_restore+0x30/0x40
-  ...
-  Sched_ext: create_dsq (enabling)
-  pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : warn_bogus_irq_restore+0x30/0x40
-  lr : warn_bogus_irq_restore+0x30/0x40
-  ...
-  Call trace:
-   warn_bogus_irq_restore+0x30/0x40 (P)
-   warn_bogus_irq_restore+0x30/0x40 (L)
-   scx_ops_bypass+0x224/0x3b8
-   scx_ops_enable.isra.0+0x2c8/0xaa8
-   bpf_scx_reg+0x18/0x30
-  ...
-  irq event stamp: 33739
-  hardirqs last  enabled at (33739): [<ffff8000800b699c>] scx_ops_bypass+0x174/0x3b8
-  hardirqs last disabled at (33738): [<ffff800080d48ad4>] _raw_spin_lock_irqsave+0xb4/0xd8
+This patch does two things.  First, I've re-arranged the condition in
+uverbs_request_next_ptr() so that the use controlled variable "len" is on
+one side of the comparison by itself without any math.  Then I've modified
+all the callers to use size_mul() for the multiplications.
 
-Drop the stray _irqrestore().
-
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reported-by: Ihor Solodrai <ihor.solodrai@pm.me>
-Link: http://lkml.kernel.org/r/qC39k3UsonrBYD_SmuxHnZIQLsuuccoCrkiqb_BT7DvH945A1_LZwE4g-5Pu9FcCtqZt4lY1HhIPi0homRuNWxkgo1rgP3bkxa0donw8kV4=@pm.me
-Fixes: 0e7ffff1b811 ("scx: Fix raciness in scx_ops_bypass()")
-Cc: stable@vger.kernel.org # v6.12
+Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/b8765ab3-c2da-4611-aae0-ddd6ba173d23@stanley.mountain
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/core/uverbs_cmd.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4367,7 +4367,7 @@ static void scx_ops_bypass(bool bypass)
- 		 * sees scx_rq_bypassing() before moving tasks to SCX.
- 		 */
- 		if (!scx_enabled()) {
--			rq_unlock_irqrestore(rq, &rf);
-+			rq_unlock(rq, &rf);
- 			continue;
- 		}
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -161,7 +161,7 @@ static const void __user *uverbs_request
+ {
+ 	const void __user *res = iter->cur;
  
+-	if (iter->cur + len > iter->end)
++	if (len > iter->end - iter->cur)
+ 		return (void __force __user *)ERR_PTR(-ENOSPC);
+ 	iter->cur += len;
+ 	return res;
+@@ -2010,11 +2010,13 @@ static int ib_uverbs_post_send(struct uv
+ 	ret = uverbs_request_start(attrs, &iter, &cmd, sizeof(cmd));
+ 	if (ret)
+ 		return ret;
+-	wqes = uverbs_request_next_ptr(&iter, cmd.wqe_size * cmd.wr_count);
++	wqes = uverbs_request_next_ptr(&iter, size_mul(cmd.wqe_size,
++						       cmd.wr_count));
+ 	if (IS_ERR(wqes))
+ 		return PTR_ERR(wqes);
+-	sgls = uverbs_request_next_ptr(
+-		&iter, cmd.sge_count * sizeof(struct ib_uverbs_sge));
++	sgls = uverbs_request_next_ptr(&iter,
++				       size_mul(cmd.sge_count,
++						sizeof(struct ib_uverbs_sge)));
+ 	if (IS_ERR(sgls))
+ 		return PTR_ERR(sgls);
+ 	ret = uverbs_request_finish(&iter);
+@@ -2200,11 +2202,11 @@ ib_uverbs_unmarshall_recv(struct uverbs_
+ 	if (wqe_size < sizeof(struct ib_uverbs_recv_wr))
+ 		return ERR_PTR(-EINVAL);
+ 
+-	wqes = uverbs_request_next_ptr(iter, wqe_size * wr_count);
++	wqes = uverbs_request_next_ptr(iter, size_mul(wqe_size, wr_count));
+ 	if (IS_ERR(wqes))
+ 		return ERR_CAST(wqes);
+-	sgls = uverbs_request_next_ptr(
+-		iter, sge_count * sizeof(struct ib_uverbs_sge));
++	sgls = uverbs_request_next_ptr(iter, size_mul(sge_count,
++						      sizeof(struct ib_uverbs_sge)));
+ 	if (IS_ERR(sgls))
+ 		return ERR_CAST(sgls);
+ 	ret = uverbs_request_finish(iter);
 
 
 
