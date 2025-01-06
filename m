@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-106860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E4FA028FC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:18:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DA2A02A27
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DAEE188171F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 466CE3A3B78
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AA713D893;
-	Mon,  6 Jan 2025 15:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2998514D28C;
+	Mon,  6 Jan 2025 15:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wESzf3i/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdOopKmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA00136326;
-	Mon,  6 Jan 2025 15:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D985212F399;
+	Mon,  6 Jan 2025 15:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736176724; cv=none; b=ZnrX7iryKOEvxcuiXHTSCen79llszFA9pmQEoMuxaG70stHAuTYGRPWkq2GeUZfXZDvJaFO7XXh+L6nzTfGozf/NWTb90vErBSqWDQTfqUz5HZGQEbIggMr7bGjx8XcQuCJ23h51i0B3PNzQ54gYekccW9mHeeYFqM10Kt0D2eQ=
+	t=1736177361; cv=none; b=kIbXq7PtinarzBzsF+ySLWgIJpdgkIMxzcp0YkVaeBWcwk4Gn0VldbqZ9q+no6hlOC7S+AC7rwj8Rf1SjBWBBfxB3sMc8jPHUx24PjJlkoDuPF5MkfVaoWszxshqcXuHy0SrDUKqPjTGl8T68O1iavWXLBfw2Q2EYTwvvDKkR7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736176724; c=relaxed/simple;
-	bh=le3Y3HjTJaIk0Ycj7PF6kesix4CJ2/lGcImpxyrHe5I=;
+	s=arc-20240116; t=1736177361; c=relaxed/simple;
+	bh=tPSiHTOuhca7lIqWSKtuPR8m1GsVegW9GqbF6gM8c9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wq2iqyVE31tULEMocIULycOVl9JkcqQIrF313Vb5FXVt26uNH+Ta0Xh1dR5LyZGqIKixeSA66B6iDXme4hICKGXdTfPrhRdU8k0rR9E2iCFWoHlbZMS5NRP73FFuL1HSDV41gbWaUqiTO45LcFOq2IIufyqHHugfoCHEzmIEfTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wESzf3i/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524ABC4CED2;
-	Mon,  6 Jan 2025 15:18:43 +0000 (UTC)
+	 MIME-Version; b=qnEWygEspI0fIXgnwMitBR5KTU+vxJPj2uNeRyU3jkxe/k3qqts6EWfBT8Z/ApBqmLDsskwHrHmp2xmKqNKBU+aqb9VAR8TbkHGBnGqFl2aj6a2cTlALsNpK4xmVz4yxHmwZgqgtW8A6RHyU+nROIbgJEWVifI7wY/j8+8bFvH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdOopKmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B823C4CED6;
+	Mon,  6 Jan 2025 15:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736176723;
-	bh=le3Y3HjTJaIk0Ycj7PF6kesix4CJ2/lGcImpxyrHe5I=;
+	s=korg; t=1736177361;
+	bh=tPSiHTOuhca7lIqWSKtuPR8m1GsVegW9GqbF6gM8c9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wESzf3i/RsyV00rcHGEQV+p3V25jBfeRKr2wDlM8WfutNKkli+pvHDhkKAI9WY/Xb
-	 lQsUDeJAV4hnCac8wUQ8ibtJxMULRYXao+fi051Z2mrrCme1wfGC4qgHWeX0nSGUpo
-	 XGB6MNRQpoLfazPDfmlbiCrBZO+46V514dUcmjvo=
+	b=LdOopKmFsh1b69pAv2sFx6H1lQY2ho3r7zZ74YDqC+UFkkObqIRG/P6J2ULREICoR
+	 YtZGYsH8X4jQTqitLcpHzsZjLFSm0Y9KbAd4eMu8zq4Ni211D+3KkKF6JknfdkVGAp
+	 O6v+4pD8sHL8cDzTvN+VBXPzs0hxoIo2zl0+j+vU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 11/81] net: mctp: handle skb cleanup on sock_queue failures
+Subject: [PATCH 6.6 139/222] RDMA/bnxt_re: Add send queue size check for variable wqe
 Date: Mon,  6 Jan 2025 16:15:43 +0100
-Message-ID: <20250106151129.865644705@linuxfoundation.org>
+Message-ID: <20250106151156.029390528@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151129.433047073@linuxfoundation.org>
-References: <20250106151129.433047073@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
 
-[ Upstream commit ce1219c3f76bb131d095e90521506d3c6ccfa086 ]
+[ Upstream commit d13be54dc18baee7a3e44349b80755a8c8205d3f ]
 
-Currently, we don't use the return value from sock_queue_rcv_skb, which
-means we may leak skbs if a message is not successfully queued to a
-socket.
+For the fixed WQE case, HW supports 0xFFFF WQEs.
+For variable Size WQEs, HW treats this number as
+the 16 bytes slots. The maximum supported WQEs
+needs to be adjusted based on the number of slots.
+Set a maximum WQE limit for variable WQE scenario.
 
-Instead, ensure that we're freeing the skb where the sock hasn't
-otherwise taken ownership of the skb by adding checks on the
-sock_queue_rcv_skb() to invoke a kfree on failure.
-
-In doing so, rather than using the 'rc' value to trigger the
-kfree_skb(), use the skb pointer itself, which is more explicit.
-
-Also, add a kunit test for the sock delivery failure cases.
-
-Fixes: 4a992bbd3650 ("mctp: Implement message fragmentation & reassembly")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20241218-mctp-next-v2-1-1c1729645eaa@codeconstruct.com.au
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: de1d364c3815 ("RDMA/bnxt_re: Add support for Variable WQE in Genp7 adapters")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241217102649.1377704-4-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/route.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_sp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index ea7cb9973128..e72cdd4ce588 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -334,8 +334,13 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 	msk = NULL;
- 	rc = -EINVAL;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+index 577a6eaca4ce..74c3f6b26c4d 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
+@@ -138,6 +138,10 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+ 		attr->max_qp_wqes -= BNXT_QPLIB_RESERVED_QP_WRS + 1;
+ 	}
  
--	/* we may be receiving a locally-routed packet; drop source sk
--	 * accounting
-+	/* We may be receiving a locally-routed packet; drop source sk
-+	 * accounting.
-+	 *
-+	 * From here, we will either queue the skb - either to a frag_queue, or
-+	 * to a receiving socket. When that succeeds, we clear the skb pointer;
-+	 * a non-NULL skb on exit will be otherwise unowned, and hence
-+	 * kfree_skb()-ed.
- 	 */
- 	skb_orphan(skb);
- 
-@@ -389,7 +394,9 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 		 * pending key.
- 		 */
- 		if (flags & MCTP_HDR_FLAG_EOM) {
--			sock_queue_rcv_skb(&msk->sk, skb);
-+			rc = sock_queue_rcv_skb(&msk->sk, skb);
-+			if (!rc)
-+				skb = NULL;
- 			if (key) {
- 				/* we've hit a pending reassembly; not much we
- 				 * can do but drop it
-@@ -398,7 +405,6 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 						   MCTP_TRACE_KEY_REPLIED);
- 				key = NULL;
- 			}
--			rc = 0;
- 			goto out_unlock;
- 		}
- 
-@@ -425,8 +431,10 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 			 * this function.
- 			 */
- 			rc = mctp_key_add(key, msk);
--			if (!rc)
-+			if (!rc) {
- 				trace_mctp_key_acquire(key);
-+				skb = NULL;
-+			}
- 
- 			/* we don't need to release key->lock on exit, so
- 			 * clean up here and suppress the unlock via
-@@ -444,6 +452,8 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 				key = NULL;
- 			} else {
- 				rc = mctp_frag_queue(key, skb);
-+				if (!rc)
-+					skb = NULL;
- 			}
- 		}
- 
-@@ -458,12 +468,19 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 		else
- 			rc = mctp_frag_queue(key, skb);
- 
-+		if (rc)
-+			goto out_unlock;
++	/* Adjust for max_qp_wqes for variable wqe */
++	if (cctx->modes.wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE)
++		attr->max_qp_wqes = BNXT_VAR_MAX_WQE - 1;
 +
-+		/* we've queued; the queue owns the skb now */
-+		skb = NULL;
-+
- 		/* end of message? deliver to socket, and we're done with
- 		 * the reassembly/response key
- 		 */
--		if (!rc && flags & MCTP_HDR_FLAG_EOM) {
--			sock_queue_rcv_skb(key->sk, key->reasm_head);
--			key->reasm_head = NULL;
-+		if (flags & MCTP_HDR_FLAG_EOM) {
-+			rc = sock_queue_rcv_skb(key->sk, key->reasm_head);
-+			if (!rc)
-+				key->reasm_head = NULL;
- 			__mctp_key_done_in(key, net, f, MCTP_TRACE_KEY_REPLIED);
- 			key = NULL;
- 		}
-@@ -482,8 +499,7 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 	if (any_key)
- 		mctp_key_unref(any_key);
- out:
--	if (rc)
--		kfree_skb(skb);
-+	kfree_skb(skb);
- 	return rc;
- }
- 
+ 	attr->max_qp_sges = cctx->modes.wqe_mode == BNXT_QPLIB_WQE_MODE_VARIABLE ?
+ 			    min_t(u32, sb->max_sge_var_wqe, BNXT_VAR_MAX_SGE) : 6;
+ 	attr->max_cq = le32_to_cpu(sb->max_cq);
 -- 
 2.39.5
 
