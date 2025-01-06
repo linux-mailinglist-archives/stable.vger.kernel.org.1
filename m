@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-107309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC9DA02B42
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94592A02CA0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DAD31885F2F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6ABE164569
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5557C1D934B;
-	Mon,  6 Jan 2025 15:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBEF156237;
+	Mon,  6 Jan 2025 15:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFTn2x3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrMUZ88b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076B61D5CE5;
-	Mon,  6 Jan 2025 15:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F24013B59A;
+	Mon,  6 Jan 2025 15:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178079; cv=none; b=UMesM9zSs5G0M5wrPUBCfImtbZQJuI30KQrwIaYw3L1Jjm32HSykRA+2yMzK9Raydq/DjKBXaghomau6dVpAv5Ki/bSGli1AHGyrp9KVbdVR67FxlSXqDOqz7pYHEM4BSF+8Wbr41NV2gOyfO/d0M6pRzJfGjyyS1RlKFTlfFX0=
+	t=1736178941; cv=none; b=dZbbnlqPJuP2FUZQoYYfl3p6qTTBfmYMa1crvfZ3V7HaVTPfIaD8bFME70VhhKjgtcTp9D4mM+7ptY+8jPqcQSL1jdEGlYC8h8fQSL2k74IE/0F+oQsVWWXhZ6uMBAG6eZPTK+FxOXOIi/0qN5DO5MvcKEss4cGAUyHf5sSPYXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178079; c=relaxed/simple;
-	bh=kZI0lXgsdvEQYSbaaRGEv733VakyarErqlDM0epyU0c=;
+	s=arc-20240116; t=1736178941; c=relaxed/simple;
+	bh=vZcG2qUVvpil5sqQnqGomtdB3/poxVF1rcBhy5jP3UI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5p63KksV8o2z70cA/l07taB1WQfHd+/f6w7cUY9KoboD1ZodBK+K5WAUGWIWBkVpdACRKv5UBf5u9fsNsnLwiWvscj8cRkQjC5xWcNLgndGHmN+nJaTyWk2cL+dty1kl8jAwgjR6Goy8232VBIwzNzOPvkRZ3uMRGv+1JY/43I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFTn2x3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B35C4CEDF;
-	Mon,  6 Jan 2025 15:41:18 +0000 (UTC)
+	 MIME-Version; b=CxDUZXt7pszI/WrCqKUckcAZUB8N5E3uLOfm33PW508MjZkqOr4pluiKeFNw8Z0BnnNOm3M2skYz56zDLSLVj6yi7dOhSyGLS2jFr+0SBqsNVGf4u++XZk3dKnW6Q+2uaIuowxeCXYewaMib3Rwdv/xKFZR3ZRTyG2pQcjr3bdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrMUZ88b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EFDC4CED2;
+	Mon,  6 Jan 2025 15:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178078;
-	bh=kZI0lXgsdvEQYSbaaRGEv733VakyarErqlDM0epyU0c=;
+	s=korg; t=1736178941;
+	bh=vZcG2qUVvpil5sqQnqGomtdB3/poxVF1rcBhy5jP3UI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFTn2x3NWhfQ0IQVceEs6vL831ApesPE/s1QT6ZrhDcIC0z6ep9XaqLZzNVhxEEOu
-	 Ax+EUNCOVovCn3JCjE3ue35h0Yv06n2aHQ96MIWE1Q+qforry8XLmln0AW1SLwv9iP
-	 p1WhOYHWRpn/tb9mjOOUXv5wqveQ5Pl+9YOe6fhg=
+	b=GrMUZ88bHSlrEXAXlj0+UxGgXmE9vZeZhv/UMlU+wuAAE7vIgi3Y3hsFMUkKnmGbK
+	 e5I2FsyfPIIyx+/tbqtKxqSNjjFACPDRGQQ9Htf3nBHkZO+aiBQKBdJKgFA4VRcOrA
+	 1Ibo5xwvetcc8ArqK24vGnakq5qtCKNG332H9Mr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Ching-Chun (Jim) Huang" <jserv@ccns.ncku.edu.tw>,
-	chuang@cs.nycu.edu.tw,
-	Ingo Molnar <mingo@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Shile Zhang <shile.zhang@linux.alibaba.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 123/156] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 101/168] btrfs: avoid monopolizing a core when activating a swap file
 Date: Mon,  6 Jan 2025 16:16:49 +0100
-Message-ID: <20250106151146.363755794@linuxfoundation.org>
+Message-ID: <20250106151142.276177407@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 0210d251162f4033350a94a43f95b1c39ec84a90 upstream.
+commit 2c8507c63f5498d4ee4af404a8e44ceae4345056 upstream.
 
-The orc_sort_cmp() function, used with qsort(), previously violated the
-symmetry and transitivity rules required by the C standard.  Specifically,
-when both entries are ORC_TYPE_UNDEFINED, it could result in both a < b
-and b < a, which breaks the required symmetry and transitivity.  This can
-lead to undefined behavior and incorrect sorting results, potentially
-causing memory corruption in glibc implementations [1].
+During swap activation we iterate over the extents of a file and we can
+have many thousands of them, so we can end up in a busy loop monopolizing
+a core. Avoid this by doing a voluntary reschedule after processing each
+extent.
 
-Symmetry: If x < y, then y > x.
-Transitivity: If x < y and y < z, then x < z.
-
-Fix the comparison logic to return 0 when both entries are
-ORC_TYPE_UNDEFINED, ensuring compliance with qsort() requirements.
-
-Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-Link: https://lkml.kernel.org/r/20241226140332.2670689-1-visitorckw@gmail.com
-Fixes: 57fa18994285 ("scripts/sorttable: Implement build-time ORC unwind table sorting")
-Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
-Cc: <chuang@cs.nycu.edu.tw>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Shile Zhang <shile.zhang@linux.alibaba.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/sorttable.h |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/inode.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -110,7 +110,7 @@ static inline unsigned long orc_ip(const
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -7698,6 +7698,8 @@ noinline int can_nocow_extent(struct ino
+ 			ret = -EAGAIN;
+ 			goto out;
+ 		}
++
++		cond_resched();
+ 	}
  
- static int orc_sort_cmp(const void *_a, const void *_b)
- {
--	struct orc_entry *orc_a;
-+	struct orc_entry *orc_a, *orc_b;
- 	const int *a = g_orc_ip_table + *(int *)_a;
- 	const int *b = g_orc_ip_table + *(int *)_b;
- 	unsigned long a_val = orc_ip(a);
-@@ -128,6 +128,9 @@ static int orc_sort_cmp(const void *_a,
- 	 * whitelisted .o files which didn't get objtool generation.
- 	 */
- 	orc_a = g_orc_table + (a - g_orc_ip_table);
-+	orc_b = g_orc_table + (b - g_orc_ip_table);
-+	if (orc_a->type == ORC_TYPE_UNDEFINED && orc_b->type == ORC_TYPE_UNDEFINED)
-+		return 0;
- 	return orc_a->type == ORC_TYPE_UNDEFINED ? -1 : 1;
- }
- 
+ 	btrfs_release_path(path);
 
 
 
