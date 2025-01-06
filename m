@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-107028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F5BA029E0
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4826AA029A0
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7710818860B5
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39B07164488
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9352C15C120;
-	Mon,  6 Jan 2025 15:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E651DB360;
+	Mon,  6 Jan 2025 15:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptGZrCF+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCx9RpYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB6158DC5;
-	Mon,  6 Jan 2025 15:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CB91CBA02;
+	Mon,  6 Jan 2025 15:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177235; cv=none; b=TLC5l1eeEuh4UO/l0+Dd/Q0RLjFPG9usJIn4RuykEi9IlGATbe25JMbm0U4eVC+v80uumFj9+m3yLn/q0rycm9X+9P/ToXpAyeRc9tUlew4xcBDHaf0K6poEyYFlmj24s7A2d8a0CkGdt031fgEuqg8ol35QUTgl8vLVAD58pTI=
+	t=1736177137; cv=none; b=dmms/5eNPLSkQKjJgqk1W5gQzpXmCq2fGmsiMURHvDPWr4PxuCudAG8tm6wCiCrg08LNBo5bhurWFcsXivHOQ7Kjvgar1BpaFIjjRAjH4yDdgg+z1/7Tuq35yGPrWcu1KY2waJHzKXREryZIR5nn0BEADOSFHWiHKCAoQNLxMpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177235; c=relaxed/simple;
-	bh=3RpcHIG7XfOn/5mWJdQL3PalmblX5norgdtZjdfk7io=;
+	s=arc-20240116; t=1736177137; c=relaxed/simple;
+	bh=EWHH1M5CTHVYER+vjzsVTVeNzNFicOE9Bi1fYBa2b5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8FL4V/CgM4/4X7RARG92n+1fqZJS3gJy/DnV+Nf9n3JEfKqMQ0Z0bs6jbDC3vIfvXlYBCN8iT0GbaPxAtUxqWzH3xafoew8vwQuXqNEURAO1I8qiwuKXPby9x9cePqU72jMvoa/QHmYYOODh5AEP5XA2UvZRO/6qnrN15Fjs5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptGZrCF+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB05C4CED2;
-	Mon,  6 Jan 2025 15:27:14 +0000 (UTC)
+	 MIME-Version; b=qEuaxGxiWqxXNSCnBJIYm2HrjARYy6QR2tIEs7r0MlECVqgKRZ2E+86GIeHMSbRcxwu5iY/cohr1dfltX56Vu1PQ3WOArmW1HMO6eWkg6Dbb2irwwBLUkUf0zstFD/8V8S03NIV3xnGWqfiAPxhPLghvM4mzlv6z5nCW5FNZOh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCx9RpYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A61AC4CED2;
+	Mon,  6 Jan 2025 15:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177235;
-	bh=3RpcHIG7XfOn/5mWJdQL3PalmblX5norgdtZjdfk7io=;
+	s=korg; t=1736177136;
+	bh=EWHH1M5CTHVYER+vjzsVTVeNzNFicOE9Bi1fYBa2b5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptGZrCF+dBNgw8iFrn8gAQ7+DBDPwdmufc9iNnkO0msxvYRVjgS62XSJIl7qH5+gT
-	 VxrYiP8kXwlQxZQMn4mXcLceuP6VE+WyLc8ctzTrSNFppRXrgmpDtWrJQkUxmkXZe2
-	 qmrYSCuVoGZplMztdumQQUZdqxxaNRgK6+AMohgg=
+	b=cCx9RpYksTghPUVTjAQhGjcZXmQ2NcvtObbmdmpXhE9VfmT5KHA42uu82QR/9DekJ
+	 QwUqblfZGU76zbRfS5SFvrs8jr56BmOtWjSEZZFEjRLgGyrU2a0VWqOQIwIzvlu7vJ
+	 9i+y1VOOtHQJvmibU+zv386Q8dNAgmiddjcrfCdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/222] remoteproc: qcom: pas: enable SAR2130P audio DSP support
-Date: Mon,  6 Jan 2025 16:14:19 +0100
-Message-ID: <20250106151152.688374795@linuxfoundation.org>
+Subject: [PATCH 6.6 056/222] fs/ntfs3: Implement fallocate for compressed files
+Date: Mon,  6 Jan 2025 16:14:20 +0100
+Message-ID: <20250106151152.726991041@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
 References: <20250106151150.585603565@linuxfoundation.org>
@@ -67,34 +65,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 009e288c989b3fe548a45c82da407d7bd00418a9 ]
+[ Upstream commit 9a2d6a40b8a1a6fa62eaf47ceee10a5eef62284c ]
 
-Enable support for the Audio DSP on the Qualcomm SAR2130P platform,
-reusing the SM8350 resources.
-
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241027-sar2130p-adsp-v1-3-bd204e39d24e@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Stable-dep-of: e2705dd3d16d ("fs/ntfs3: Fix warning in ni_fiemap")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ntfs3/attrib.c | 25 +++++++++++++++----------
+ fs/ntfs3/inode.c  |  3 ++-
+ 2 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 4a73723e375a..fd6bf9e77afc 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -1255,6 +1255,7 @@ static const struct of_device_id adsp_of_match[] = {
- 	{ .compatible = "qcom,sa8775p-cdsp1-pas", .data = &sa8775p_cdsp1_resource},
- 	{ .compatible = "qcom,sa8775p-gpdsp0-pas", .data = &sa8775p_gpdsp0_resource},
- 	{ .compatible = "qcom,sa8775p-gpdsp1-pas", .data = &sa8775p_gpdsp1_resource},
-+	{ .compatible = "qcom,sar2130p-adsp-pas", .data = &sm8350_adsp_resource},
- 	{ .compatible = "qcom,sc7180-adsp-pas", .data = &sm8250_adsp_resource},
- 	{ .compatible = "qcom,sc7180-mpss-pas", .data = &mpss_resource_init},
- 	{ .compatible = "qcom,sc7280-mpss-pas", .data = &mpss_resource_init},
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index fc6cea60044e..582628b9b796 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -977,15 +977,17 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
+ 		goto out;
+ 
+ 	/* Check for compressed frame. */
+-	err = attr_is_frame_compressed(ni, attr, vcn >> NTFS_LZNT_CUNIT, &hint);
++	err = attr_is_frame_compressed(ni, attr_b, vcn >> NTFS_LZNT_CUNIT,
++				       &hint);
+ 	if (err)
+ 		goto out;
+ 
+ 	if (hint) {
+ 		/* if frame is compressed - don't touch it. */
+ 		*lcn = COMPRESSED_LCN;
+-		*len = hint;
+-		err = -EOPNOTSUPP;
++		/* length to the end of frame. */
++		*len = NTFS_LZNT_CLUSTERS - (vcn & (NTFS_LZNT_CLUSTERS - 1));
++		err = 0;
+ 		goto out;
+ 	}
+ 
+@@ -1028,16 +1030,16 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
+ 
+ 		/* Check if 'vcn' and 'vcn0' in different attribute segments. */
+ 		if (vcn < svcn || evcn1 <= vcn) {
+-			/* Load attribute for truncated vcn. */
+-			attr = ni_find_attr(ni, attr_b, &le, ATTR_DATA, NULL, 0,
+-					    &vcn, &mi);
+-			if (!attr) {
++			struct ATTRIB *attr2;
++			/* Load runs for truncated vcn. */
++			attr2 = ni_find_attr(ni, attr_b, &le_b, ATTR_DATA, NULL,
++					     0, &vcn, &mi);
++			if (!attr2) {
+ 				err = -EINVAL;
+ 				goto out;
+ 			}
+-			svcn = le64_to_cpu(attr->nres.svcn);
+-			evcn1 = le64_to_cpu(attr->nres.evcn) + 1;
+-			err = attr_load_runs(attr, ni, run, NULL);
++			evcn1 = le64_to_cpu(attr2->nres.evcn) + 1;
++			err = attr_load_runs(attr2, ni, run, NULL);
+ 			if (err)
+ 				goto out;
+ 		}
+@@ -1530,6 +1532,9 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 
+ /*
+  * attr_is_frame_compressed - Used to detect compressed frame.
++ *
++ * attr - base (primary) attribute segment.
++ * Only base segments contains valid 'attr->nres.c_unit'
+  */
+ int attr_is_frame_compressed(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 			     CLST frame, CLST *clst_data)
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 52b80fd15914..af7c0cbba74e 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -604,7 +604,8 @@ static noinline int ntfs_get_block_vbo(struct inode *inode, u64 vbo,
+ 
+ 	bytes = ((u64)len << cluster_bits) - off;
+ 
+-	if (lcn == SPARSE_LCN) {
++	if (lcn >= sbi->used.bitmap.nbits) {
++		/* This case includes resident/compressed/sparse. */
+ 		if (!create) {
+ 			if (bh->b_size > bytes)
+ 				bh->b_size = bytes;
 -- 
 2.39.5
 
