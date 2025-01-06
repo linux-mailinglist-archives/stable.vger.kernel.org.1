@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-107035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9546FA029CD
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B09D6A02AB1
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78435162026
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:27:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E26164FB3
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689E715A86A;
-	Mon,  6 Jan 2025 15:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FF9136E09;
+	Mon,  6 Jan 2025 15:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yl5ggc9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CiIZ5Cs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A0D469D;
-	Mon,  6 Jan 2025 15:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07732BA34;
+	Mon,  6 Jan 2025 15:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177256; cv=none; b=oAXV7fDGRqhuKmri54fCpS1R4vKeuqW0KBGnPXt+AvBCvyLhpH5K8cN+8sSaevu3zQ+POHM4kF6dCumLOJWiUpCaG5Up9sDqFYYjHLWczze4BX1K101C4Ick+wUPPTFQGgF9rHa5kMH6yS7n/DTrUX7mQE/r/aL4Ab7JkWWvYyM=
+	t=1736177778; cv=none; b=Zm9c8AB+sx0Y0Bi+91H6JmBy6Y+sKlLeYP2XvcRUGqEGxfS6MW3oOTY7QZy4gl03N4bh+WvIvzMR4wZZDpj9vUNo/6ochNOOfAYCP7Wuz4DJHvD2kB2bcE2h3qLR6ZsfkZT2kllQv4QQUMZNmicWgZ7lUTYz9fY8tBbD//EaFt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177256; c=relaxed/simple;
-	bh=9lXgiqLczTgGNVS1K4ea8A4vfscoXiH5VrKp0hOPMKc=;
+	s=arc-20240116; t=1736177778; c=relaxed/simple;
+	bh=Bwj9xlvnlZFeWvfqCQx/VNdtwxMunp/q+8E5jov+qeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7+rqUHGCv0slarPyusYJL9pBSxDlcKvBda6qtM+oCvMXgFtVg6udAqXqM0L/y8wmYRLUTh6+aLdvSnJDo3H2xDrBpyizLCJHGTN8F4JlSkIXkE9uQ/R4XDInBpT8yx1bmGXKjsh3mDBc6LMWr5J1Skuat5YOMacIJfqKVaCxp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yl5ggc9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AC9C4CEDF;
-	Mon,  6 Jan 2025 15:27:35 +0000 (UTC)
+	 MIME-Version; b=grUmvqbXfCiNQUxI7HY1+fqpvobdVczjXUniOLYiYKThAN5V+UXTdPb9LqQAWKoshj0pn4kQt8ERuoVxZjTZmsjUt1pcyMJkzBrDYomkUosSgva/ttoYFQKcVf8J22I6hF9AFPLt2MNb0QjP6h/oIcxuLgL7v7FtXVZUXGpC7lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CiIZ5Cs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447DFC4CED2;
+	Mon,  6 Jan 2025 15:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177256;
-	bh=9lXgiqLczTgGNVS1K4ea8A4vfscoXiH5VrKp0hOPMKc=;
+	s=korg; t=1736177777;
+	bh=Bwj9xlvnlZFeWvfqCQx/VNdtwxMunp/q+8E5jov+qeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yl5ggc9SPQw8kzvIp3C6T13dDR3iWxa8eydnLwJUiGtU0FfeovRIbB6WL7CysOV3b
-	 ok20UNf3shoH6jl/21pH8EXXD/1PHKHSvmLw95KLt5lGvGHY16hf+UL3OhftIB7UCo
-	 DhMIJVXWfp5P3D2LgrCsH5yzFoe78Mwb4Vb37E/Q=
+	b=CiIZ5Cs7Isqg3TJceIveIgirxKiCPEDqln3XPzSs5WyGpb+83HW/YZ/TLh3TkVpmL
+	 /o/SfahdLclJ4UtRPjc2jSNu/aYiXe8HSd+xQlmsIqkPe0NU7shP3fIZt5uRCJtxwB
+	 BK5elm/IodR/0pnEzxMEQEDgdjAVv8//XN/I+TpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/222] memblock: make memblock_set_node() also warn about use of MAX_NUMNODES
+Subject: [PATCH 6.12 022/156] RDMA/bnxt_re: Add check for path mtu in modify_qp
 Date: Mon,  6 Jan 2025 16:15:08 +0100
-Message-ID: <20250106151154.534272256@linuxfoundation.org>
+Message-ID: <20250106151142.578498415@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit e0eec24e2e199873f43df99ec39773ad3af2bff7 ]
+[ Upstream commit 798653a0ee30d3cd495099282751c0f248614ae7 ]
 
-On an (old) x86 system with SRAT just covering space above 4Gb:
+When RDMA app configures path MTU, add a check in modify_qp verb
+to make sure that it doesn't go beyond interface MTU. If this
+check fails, driver will fail the modify_qp verb.
 
-    ACPI: SRAT: Node 0 PXM 0 [mem 0x100000000-0xfffffffff] hotplug
-
-the commit referenced below leads to this NUMA configuration no longer
-being refused by a CONFIG_NUMA=y kernel (previously
-
-    NUMA: nodes only cover 6144MB of your 8185MB e820 RAM. Not used.
-    No NUMA configuration found
-    Faking a node at [mem 0x0000000000000000-0x000000027fffffff]
-
-was seen in the log directly after the message quoted above), because of
-memblock_validate_numa_coverage() checking for NUMA_NO_NODE (only). This
-in turn led to memblock_alloc_range_nid()'s warning about MAX_NUMNODES
-triggering, followed by a NULL deref in memmap_init() when trying to
-access node 64's (NODE_SHIFT=6) node data.
-
-To compensate said change, make memblock_set_node() warn on and adjust
-a passed in value of MAX_NUMNODES, just like various other functions
-already do.
-
-Fixes: ff6c3d81f2e8 ("NUMA: optimize detection of memory with no node id assigned by firmware")
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1c8a058c-5365-4f27-a9f1-3aeb7fb3e7b2@suse.com
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/20241211083931.968831-3-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memblock.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 26 +++++++++++++-----------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 87a2b4340ce4..ba64b47b7c3b 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1321,6 +1321,10 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
- 	int start_rgn, end_rgn;
- 	int i, ret;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 390162018647..a4134a288077 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2107,18 +2107,20 @@ int bnxt_re_modify_qp(struct ib_qp *ib_qp, struct ib_qp_attr *qp_attr,
+ 		}
+ 	}
  
-+	if (WARN_ONCE(nid == MAX_NUMNODES,
-+		      "Usage of MAX_NUMNODES is deprecated. Use NUMA_NO_NODE instead\n"))
-+		nid = NUMA_NO_NODE;
+-	if (qp_attr_mask & IB_QP_PATH_MTU) {
+-		qp->qplib_qp.modify_flags |=
+-				CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
+-		qp->qplib_qp.path_mtu = __from_ib_mtu(qp_attr->path_mtu);
+-		qp->qplib_qp.mtu = ib_mtu_enum_to_int(qp_attr->path_mtu);
+-	} else if (qp_attr->qp_state == IB_QPS_RTR) {
+-		qp->qplib_qp.modify_flags |=
+-			CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
+-		qp->qplib_qp.path_mtu =
+-			__from_ib_mtu(iboe_get_mtu(rdev->netdev->mtu));
+-		qp->qplib_qp.mtu =
+-			ib_mtu_enum_to_int(iboe_get_mtu(rdev->netdev->mtu));
++	if (qp_attr->qp_state == IB_QPS_RTR) {
++		enum ib_mtu qpmtu;
 +
- 	ret = memblock_isolate_range(type, base, size, &start_rgn, &end_rgn);
- 	if (ret)
- 		return ret;
++		qpmtu = iboe_get_mtu(rdev->netdev->mtu);
++		if (qp_attr_mask & IB_QP_PATH_MTU) {
++			if (ib_mtu_enum_to_int(qp_attr->path_mtu) >
++			    ib_mtu_enum_to_int(qpmtu))
++				return -EINVAL;
++			qpmtu = qp_attr->path_mtu;
++		}
++
++		qp->qplib_qp.modify_flags |= CMDQ_MODIFY_QP_MODIFY_MASK_PATH_MTU;
++		qp->qplib_qp.path_mtu = __from_ib_mtu(qpmtu);
++		qp->qplib_qp.mtu = ib_mtu_enum_to_int(qpmtu);
+ 	}
+ 
+ 	if (qp_attr_mask & IB_QP_TIMEOUT) {
 -- 
 2.39.5
 
