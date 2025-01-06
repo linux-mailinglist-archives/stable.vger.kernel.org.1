@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-107306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0451A02B3A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E0EA02C99
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0E861885B04
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC6993A6FAE
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06931DE2A1;
-	Mon,  6 Jan 2025 15:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AC714A095;
+	Mon,  6 Jan 2025 15:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxidUQE8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZTVNDtR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8787F166F1B;
-	Mon,  6 Jan 2025 15:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DC013AD11;
+	Mon,  6 Jan 2025 15:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178069; cv=none; b=ihk+axF9awaOksqSmpJvK8JyFTxdCvk6IPLVkCZjlok/Oz0kTAJwdt+4WWggPq9qK3faJYGiVi6vY9dvo/EvESRWrMQLnRAGkB7U4Cgg4MvsBQGHfu+xIybr7n4gKU7/+72JYALrdqKOAVBPXlmL18jlAVHZZ+KrXhGB91mUaos=
+	t=1736178809; cv=none; b=gXxDVDWtlNxhjHA+j8lW8LTfwovrqWQDHNwdeW+kVqVMnwnYQE8z1HZ0IMeipKQNZ4MKPLGNfXcL+tLe6/QHgMlig5kXCAbhN7Jiqcfs0ApJoUaXh0CfP3aUZwRrSCQBjm110ybnGF/VIVC+KmpQOTZ/r1rb+xZiXD6XvvaSESM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178069; c=relaxed/simple;
-	bh=N2A1copJgjsq1eF2svn6WIYPVjlQEuuSLer6qgZHvMQ=;
+	s=arc-20240116; t=1736178809; c=relaxed/simple;
+	bh=ZXlGAn6oL3JtqRvNbp+gAHBorNj7O/kJkYHunlNIkZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+KUsDL1f781qCoE5MULhAAOaZmp7HhgvMldy5CA1UT3PKYNFO1ffCRd4yrj2KroghMp8Ow2+ZydKG0HlMa98POar2lovtDf12x/3Rql7aLWxHgdS4ur5E06Lnb1VYxS4MQodlodvOAJHXQjbJC0D3d6rAfKTxniU+FNc+J0m9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxidUQE8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3DDC4CED2;
-	Mon,  6 Jan 2025 15:41:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PKCWpZkQBTlwaTardVSuTdGJsyW9UGlG/MQ3dFnzfnsdHUIsJXNNwtpWiPmRM7/7hXvxnVTdc95tmrRJ12jcxkR4rotZdggg2Mrew70wbVkHOyBWpbD1qukfjXIVCZ9A5k7V9G9iothfi4d+lcZGRU3E1+6ezsxY7tOW0jpbXyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZTVNDtR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A704C4CED2;
+	Mon,  6 Jan 2025 15:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178069;
-	bh=N2A1copJgjsq1eF2svn6WIYPVjlQEuuSLer6qgZHvMQ=;
+	s=korg; t=1736178808;
+	bh=ZXlGAn6oL3JtqRvNbp+gAHBorNj7O/kJkYHunlNIkZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxidUQE8QWlaEFNc3veBrtSg7hqzcDZ2acb6rjDgXFSdlIrw7HVUXrX0yBJRFlgZs
-	 oXPWrdoDPmNpea/3RqMXmoc2EELoGH0fAXXZD1LHL16+lIu8eXryd/k5O6OxxKpd+K
-	 fhFYqjJeyxcLSqKpxIOoWfDlof+24SbFG3tQKL1g=
+	b=hZTVNDtRS88C5yaw0WI80gv5WEX4rPkQhRYcIRij97tLQl8+q/NbtFvssI0Q2b4x9
+	 Rri6bh4IKUljVuH+PQdOTPsaq6BCa3olVWVt0jCh5MqTWDiJLCxl+OLmy+O6COARz/
+	 ai0/FM4S0prNyJ5TSPcrZ8hxY/fUe/BYOb1RAYNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Marco Elver <elver@google.com>,
-	Aleksandr Nogikh <nogikh@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 120/156] kcov: mark in_softirq_really() as __always_inline
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 098/168] tracing: Constify string literal data member in struct trace_event_call
 Date: Mon,  6 Jan 2025 16:16:46 +0100
-Message-ID: <20250106151146.249110949@linuxfoundation.org>
+Message-ID: <20250106151142.164378213@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
+References: <20250106151138.451846855@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +67,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Christian Göttsche <cgzones@googlemail.com>
 
-commit cb0ca08b326aa03f87fe94bb91872ce8d2ef1ed8 upstream.
+commit 452f4b31e3f70a52b97890888eeb9eaa9a87139a upstream.
 
-If gcc decides not to inline in_softirq_really(), objtool warns about a
-function call with UACCESS enabled:
+The name member of the struct trace_event_call is assigned with
+generated string literals; declare them pointer to read-only.
 
-kernel/kcov.o: warning: objtool: __sanitizer_cov_trace_pc+0x1e: call to in_softirq_really() with UACCESS enabled
-kernel/kcov.o: warning: objtool: check_kcov_mode+0x11: call to in_softirq_really() with UACCESS enabled
+Reported by clang:
 
-Mark this as __always_inline to avoid the problem.
+    security/landlock/syscalls.c:179:1: warning: initializing 'char *' with an expression of type 'const char[34]' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+      179 | SYSCALL_DEFINE3(landlock_create_ruleset,
+          | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      180 |                 const struct landlock_ruleset_attr __user *const, attr,
+          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      181 |                 const size_t, size, const __u32, flags)
+          |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:226:36: note: expanded from macro 'SYSCALL_DEFINE3'
+      226 | #define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)
+          |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:234:2: note: expanded from macro 'SYSCALL_DEFINEx'
+      234 |         SYSCALL_METADATA(sname, x, __VA_ARGS__)                 \
+          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:184:2: note: expanded from macro 'SYSCALL_METADATA'
+      184 |         SYSCALL_TRACE_ENTER_EVENT(sname);                       \
+          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ./include/linux/syscalls.h:151:30: note: expanded from macro 'SYSCALL_TRACE_ENTER_EVENT'
+      151 |                         .name                   = "sys_enter"#sname,    \
+          |                                                   ^~~~~~~~~~~~~~~~~
 
-Link: https://lkml.kernel.org/r/20241217071814.2261620-1-arnd@kernel.org
-Fixes: 7d4df2dad312 ("kcov: properly check for softirq context")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Aleksandr Nogikh <nogikh@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mickaël Salaün <mic@digikod.net>
+Cc: Günther Noack <gnoack@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/20241125105028.42807-1-cgoettsche@seltendoof.de
+Fixes: b77e38aa240c3 ("tracing: add event trace infrastructure")
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kcov.c |    2 +-
+ include/linux/trace_events.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/kcov.c
-+++ b/kernel/kcov.c
-@@ -166,7 +166,7 @@ static void kcov_remote_area_put(struct
-  * Unlike in_serving_softirq(), this function returns false when called during
-  * a hardirq or an NMI that happened in the softirq context.
-  */
--static inline bool in_softirq_really(void)
-+static __always_inline bool in_softirq_really(void)
- {
- 	return in_serving_softirq() && !in_hardirq() && !in_nmi();
- }
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -347,7 +347,7 @@ struct trace_event_call {
+ 	struct list_head	list;
+ 	struct trace_event_class *class;
+ 	union {
+-		char			*name;
++		const char		*name;
+ 		/* Set TRACE_EVENT_FL_TRACEPOINT flag when using "tp" */
+ 		struct tracepoint	*tp;
+ 	};
 
 
 
