@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-107518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7485AA02C55
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617A8A02B8F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:45:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E78F3166D89
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:52:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 457FB16564E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979F21DED73;
-	Mon,  6 Jan 2025 15:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7C7146D6B;
+	Mon,  6 Jan 2025 15:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQguavMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0iiNrld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC331DED6F;
-	Mon,  6 Jan 2025 15:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7BB7082A;
+	Mon,  6 Jan 2025 15:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178714; cv=none; b=AO46dsyPAisLvID2jLEpFNTtrtkTjcbSbebWRO9b1NlZoqF6cadnuIZsWqF6ENZhMejA+y6hd6943SQXmMDU59TcIYc6xlyT+Labcy7rvkN+FrX6mMWTXJ0ZrHhlIpXGc/9VLAOeSUDortNKBPPYV+yn9ZVVWN/f8EA/9LZrotY=
+	t=1736178238; cv=none; b=NwKLexGHauoXObpVIgLpf+yvZn3sdaIPkC22rLXS1ZJ2dKBivPPtH0sdaFfZgdUv7i8k8/2mbDjQkOOeldovblU0MY/qIqHcsbsiM4hspKst5ABc6OVQ86vmvzZXzu0tpq8DnsQfVQeWaX7wsF157UxoATx/Y497qryk0X+dVc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178714; c=relaxed/simple;
-	bh=6UGxDKMPe5RL+0neHQzqLFDNN+J/SAwvqlCF4TOD9Y0=;
+	s=arc-20240116; t=1736178238; c=relaxed/simple;
+	bh=w1wF2ycml1Fb84syq4TTe8oFmarW5v4bpR1QZhcYmHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EHX8qPq0Exq9eM/CbXCqhLyYJi/qyZiWFQxGy9YmDet/n1gHPnh7CHZTOQBe9rtisuTyqsc83A6SdZdZ2bKLzIhm2oOufSLK6RL/xrCVCMqfI9BczNDrqC4ZeeThYsyjBJ/P4Np/iJXbRWMZ1EujJRre+9nmoi+ld+GvMtJjYAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQguavMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C96C4CED2;
-	Mon,  6 Jan 2025 15:51:53 +0000 (UTC)
+	 MIME-Version; b=X+IIBbJbyWNFezuY/fS2RRQ6GUet/prrdkeGWIffy4yyhKWcl+UtbvLxHjBKd+0BGFSQooPDsvBt7lLB4VcuY8wNriXvNQlMI6aOQH9bNPGrc6f4X8AGlWTpIKRgIigpW1BsvL4c21zD532QK7aRcjiBKIhl9ns6JBWVHg9VZIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0iiNrld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86966C4CED2;
+	Mon,  6 Jan 2025 15:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178714;
-	bh=6UGxDKMPe5RL+0neHQzqLFDNN+J/SAwvqlCF4TOD9Y0=;
+	s=korg; t=1736178237;
+	bh=w1wF2ycml1Fb84syq4TTe8oFmarW5v4bpR1QZhcYmHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQguavMe9/f/PBEk90/TbWhZORN2ao3SWzHbsFId0j0ycFpNWT/V9fqtNZcLRTtOr
-	 /Xl2wkUfnDsPCbjmgXxzcqWC0KAoRRBJB4ScvBwnJ8j2DRKMtIHugZfhmRgXsuiGv8
-	 qMt9E49bnd6t2J86H3PCqyERJnx1YJoPhcVFPYMw=
+	b=b0iiNrldEqhAv8ZZxencq19TWveK6L163iwdo+JEjUDGo31XQjBr7mow8Hxjn10/O
+	 wBWXoxHGFuffatUab0T5sVgQCdofnLEjOK9FLvOc+MRWlZs6HdVCB3gHya9WnEtMlG
+	 rWZzidIfU5Uw3HzP+eXaZ+YeeSOoB3qKCAkLB1RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johan Hovold <johan+linaro@kernel.org>,
 	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 066/168] phy: core: Fix an OF node refcount leakage in _of_phy_get()
+Subject: [PATCH 5.10 050/138] phy: core: Fix an OF node refcount leakage in _of_phy_get()
 Date: Mon,  6 Jan 2025 16:16:14 +0100
-Message-ID: <20250106151140.953373720@linuxfoundation.org>
+Message-ID: <20250106151135.130411100@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -90,7 +90,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/phy/phy-core.c
 +++ b/drivers/phy/phy-core.c
-@@ -537,8 +537,10 @@ static struct phy *_of_phy_get(struct de
+@@ -507,8 +507,10 @@ static struct phy *_of_phy_get(struct de
  		return ERR_PTR(-ENODEV);
  
  	/* This phy type handled by the usb-phy subsystem for now */
@@ -103,7 +103,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	mutex_lock(&phy_provider_mutex);
  	phy_provider = of_phy_provider_lookup(args.np);
-@@ -560,6 +562,7 @@ out_put_module:
+@@ -530,6 +532,7 @@ out_put_module:
  
  out_unlock:
  	mutex_unlock(&phy_provider_mutex);
