@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-107140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587CDA02A76
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:34:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF805A02D1C
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:01:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 720177A2C89
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F63B3A3E9F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0FF1DB37B;
-	Mon,  6 Jan 2025 15:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013F314A617;
+	Mon,  6 Jan 2025 15:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRTJOj+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4mKkqWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CA6DF71;
-	Mon,  6 Jan 2025 15:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C261482F2;
+	Mon,  6 Jan 2025 15:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177575; cv=none; b=Fg1bqvrkeGLoTrLx4z39hkpWVsbJo9dDoNNatD2oXwZbhKzhd70SRcfdxdMlltGbznDR7ky8j6EMMVJEZXFPRsxep24BU7N3P6kF4+a6x5WpjW7+MxBaqdqhfn16TAW0yfr2jZg607STN7gEcYHLPMoN9CIkvjZp+Q2I28VBHck=
+	t=1736179171; cv=none; b=D9DxRjCDEWhe+uE8gbj/dXdQCWwVhRHbmzgER0I7kU9zpDvDjEGlm5eeuSyEDwrL5lkgYzVYb80g3EiaBBQmGoeiyuq1yiiA87kICsoIEgNKUZMRsazsX247/dj1m2n1y7W/dEz2Nm/xjizkBsgPJ6gjdP5D8DrfxBWpvpYuyAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177575; c=relaxed/simple;
-	bh=VLeKeYUiuMVW7bzfJGKDj5tqGE8QYVXbxlUiIXvoa4g=;
+	s=arc-20240116; t=1736179171; c=relaxed/simple;
+	bh=nBTZVHp65eOEUq6XZ8MVHLkB6E905vDAMt6u8/jg9XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSZm42z1O223jntCn1NeyUvuMOcvdamHD7qgXpWiBMptfaF9ZfPOO1SeV6p7zS9Rl94kDnx+wj3TMZdDAuGMwGfSZy4d4/aBZYcbNPj048zeX/zAZWtu6rTaaJg77n2321pn5zv9WYuGdRsQ+4Q+CSSGSH8LA1PUzfKx992rHEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRTJOj+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01093C4CED2;
-	Mon,  6 Jan 2025 15:32:54 +0000 (UTC)
+	 MIME-Version; b=sDqNwon86SB7yFrxBzI42lKcZSusvkld7GgZ4BsLzwpdrP2+uPk+Fu4oPIwxV2HtBuWC3ttMJdsy8A1+xJYAGo8QMwD2LAF3M3qZDQH3+ztk2/xqzRowdp3/Iofu/OEc29b424wNpa8UuQGK3a9ds4fobYMCzYpo+zZ5dcy6xAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4mKkqWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0A6C4CEE1;
+	Mon,  6 Jan 2025 15:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177575;
-	bh=VLeKeYUiuMVW7bzfJGKDj5tqGE8QYVXbxlUiIXvoa4g=;
+	s=korg; t=1736179171;
+	bh=nBTZVHp65eOEUq6XZ8MVHLkB6E905vDAMt6u8/jg9XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRTJOj+ii0CeAwIykx1w1pnaI5zHnM1C/Bv7+/nO+l9tIMI1/CHEs7pDLpVP/45BM
-	 oze6rPUv1D2mBKRwhV+yElggUGAHIkOI5R+Pi7de6/OAp8PZmPoYMeXzOjgwp2/W6H
-	 U1fZZmwPvzFmgpCFBuAh9mTOMl+hgyK0l+Mktc0U=
+	b=g4mKkqWjYhVHh52SCY/wcbtZSem00U1F74Oki5zrOw6jdwfb95r6mF6Mb1YTEJvpQ
+	 kDuHxstvLh9MSdqZHiUcTskvj7vpFqjJrBLD3Sxr/FaHxeCvfVuGV8SI5T7+MfJ0UX
+	 viL1PpCbs54BMND9gxhvRXRRaXl+i6gk7t880UJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hien Huynh <hien.huynh.px@renesas.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Adam Ford <aford173@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.6 209/222] drm: adv7511: Drop dsi single lane support
-Date: Mon,  6 Jan 2025 16:16:53 +0100
-Message-ID: <20250106151158.676143713@linuxfoundation.org>
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.4 18/93] efivarfs: Fix error on non-existent file
+Date: Mon,  6 Jan 2025 16:16:54 +0100
+Message-ID: <20250106151129.391075440@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
+References: <20250106151128.686130933@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 
-commit 79d67c499c3f886202a40c5cb27e747e4fa4d738 upstream.
+commit 2ab0837cb91b7de507daa145d17b3b6b2efb3abf upstream.
 
-As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
-unsupported 1-lane.
+When looking up a non-existent file, efivarfs returns -EINVAL if the
+file does not conform to the NAME-GUID format and -ENOENT if it does.
+This is caused by efivars_d_hash() returning -EINVAL if the name is not
+formatted correctly.  This error is returned before simple_lookup()
+returns a negative dentry, and is the error value that the user sees.
 
-[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
-[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
+Fix by removing this check.  If the file does not exist, simple_lookup()
+will return a negative dentry leading to -ENOENT and efivarfs_create()
+already has a validity check before it creates an entry (and will
+correctly return -EINVAL)
 
-Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
-Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-4-biju.das.jz@bp.renesas.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: <stable@vger.kernel.org>
+[ardb: make efivarfs_valid_name() static]
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7533.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/efivarfs/inode.c    |    2 +-
+ fs/efivarfs/internal.h |    1 -
+ fs/efivarfs/super.c    |    3 ---
+ 3 files changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-@@ -175,7 +175,7 @@ int adv7533_parse_dt(struct device_node
+--- a/fs/efivarfs/inode.c
++++ b/fs/efivarfs/inode.c
+@@ -43,7 +43,7 @@ struct inode *efivarfs_get_inode(struct
+  *
+  *	VariableName-12345678-1234-1234-1234-1234567891bc
+  */
+-bool efivarfs_valid_name(const char *str, int len)
++static bool efivarfs_valid_name(const char *str, int len)
+ {
+ 	const char *s = str + len - EFI_VARIABLE_GUID_LEN;
  
- 	of_property_read_u32(np, "adi,dsi-lanes", &num_lanes);
+--- a/fs/efivarfs/internal.h
++++ b/fs/efivarfs/internal.h
+@@ -10,7 +10,6 @@
  
--	if (num_lanes < 1 || num_lanes > 4)
-+	if (num_lanes < 2 || num_lanes > 4)
- 		return -EINVAL;
+ extern const struct file_operations efivarfs_file_operations;
+ extern const struct inode_operations efivarfs_dir_inode_operations;
+-extern bool efivarfs_valid_name(const char *str, int len);
+ extern struct inode *efivarfs_get_inode(struct super_block *sb,
+ 			const struct inode *dir, int mode, dev_t dev,
+ 			bool is_removable);
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -63,9 +63,6 @@ static int efivarfs_d_hash(const struct
+ 	const unsigned char *s = qstr->name;
+ 	unsigned int len = qstr->len;
  
- 	adv->num_dsi_lanes = num_lanes;
+-	if (!efivarfs_valid_name(s, len))
+-		return -EINVAL;
+-
+ 	while (len-- > EFI_VARIABLE_GUID_LEN)
+ 		hash = partial_name_hash(*s++, hash);
+ 
 
 
 
