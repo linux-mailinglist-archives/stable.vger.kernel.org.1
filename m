@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-107250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D6EA02B06
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:39:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 137DCA02A3F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:32:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD1203A2F34
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:38:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E82D1885D8F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5A41474A0;
-	Mon,  6 Jan 2025 15:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B441DE4D6;
+	Mon,  6 Jan 2025 15:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2siZV4ZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IejBlxK3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B17DDF71;
-	Mon,  6 Jan 2025 15:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4851DE3AB;
+	Mon,  6 Jan 2025 15:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177903; cv=none; b=cepgsgYt3ve5qonttpmDG4TfOt07GwGJc8Q6CYa/YXf5EfWYVzmfAjEBlKa7YUE6OH3RY6uLb4vpaVNUOYHTlmEM6a7vRSOTRtLjFRDABhfkCKQstuoN+WtzhrRQLdoVFnUo7CbiV/fwhhbxZ5d0bdJ3qLnaplNdRXVSHunLisE=
+	t=1736177486; cv=none; b=fKidLeB3tt9PFHkAqtmSkc1b1rhV5HD6HVw+r9k8FkbySWWo8M1JYIOi+RuFcnZ3ipOe5UL0pB7TQzhP30czgUq4c0hjPwHiKyge2oFf/+lBTUxe4kLFoWoA6piJOUNcH8RaoqfGRUtS1YMXMNMY8IJzGQf5PBXy4L8ZDtg1Cl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177903; c=relaxed/simple;
-	bh=hDgofmx0Obl3t+BrCvno83iQ/31/SYezSMAb7FF41rE=;
+	s=arc-20240116; t=1736177486; c=relaxed/simple;
+	bh=sifCx0nxEPa4n8WjSBtjFp53f0dn8XqnP0TcsGDC7TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hl5bvWdTU78MYTtv3HEieTN4aesOk9719kFUDnhw//T3sDR9jJ+w2dX5Hfo1QYguyydQQzEkpW7AFncKlX8j3bdpNEBlk60AejRFHB3E60vRaROWe1xFTt7A8mrlu0TBn9lJbuL9Rr87STWgEzAw8HfFpnyGZgck4yQiI5wifVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2siZV4ZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7B4C4CED2;
-	Mon,  6 Jan 2025 15:38:22 +0000 (UTC)
+	 MIME-Version; b=jxZr1zAwspFLvsEPvi3zPFF0d/obW3blqbZHpLuRq9Rzhxkhq1uvYA1xY2AuHKv00nGivTF0X7xq30QfQVRdKZy/yEMTJ7SLjMTHsYKtp0/YxFoXYtRaAfafGVZxWu5zgPaDI//yRRElBwzVy1mLHVTwANsrCqKixbA1jTJivRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IejBlxK3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425C9C4CED2;
+	Mon,  6 Jan 2025 15:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177903;
-	bh=hDgofmx0Obl3t+BrCvno83iQ/31/SYezSMAb7FF41rE=;
+	s=korg; t=1736177486;
+	bh=sifCx0nxEPa4n8WjSBtjFp53f0dn8XqnP0TcsGDC7TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2siZV4ZARODzIGqm11lF4EpMCxr2UfWA8COcezUSAmEsNRZ2KLpyygKZs+aTkjOar
-	 yt1qOa/ZZ9xy+7nN2UhdRx/ivWzL/Bb7fa8/msgL4iSJBh3COfBGToMuueWU4iE0eR
-	 l7tl8WcOoz3gKQ2tEdodgVwWFZLwDtZXwvtf5w/o=
+	b=IejBlxK3M32LrDzUWA3RMeM4thTZdi11jctuxDx71xkQIMU23Lr3fYfzy+koPw70n
+	 i6RCrvLEjaRhaEJE2nhu+T57be6s93pKpBirLTwezenlkfQBgnCdLsO2GCVZnlB4TT
+	 G23meDiGXMQf2rRMpB60S9mqcxQN2Nc0vNEs70Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Issam Hamdi <ih@simonwunderlich.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/156] bpf: fix potential error return
+Subject: [PATCH 6.6 178/222] wifi: mac80211: fix mbss changed flags corruption on 32 bit systems
 Date: Mon,  6 Jan 2025 16:16:22 +0100
-Message-ID: <20250106151145.341899934@linuxfoundation.org>
+Message-ID: <20250106151157.505647364@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Issam Hamdi <ih@simonwunderlich.de>
 
-[ Upstream commit c4441ca86afe4814039ee1b32c39d833c1a16bbc ]
+[ Upstream commit 49dba1ded8dd5a6a12748631403240b2ab245c34 ]
 
-The bpf_remove_insns() function returns WARN_ON_ONCE(error), where
-error is a result of bpf_adj_branches(), and thus should be always 0
-However, if for any reason it is not 0, then it will be converted to
-boolean by WARN_ON_ONCE and returned to user space as 1, not an actual
-error value. Fix this by returning the original err after the WARN check.
+On 32-bit systems, the size of an unsigned long is 4 bytes,
+while a u64 is 8 bytes. Therefore, when using
+or_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE),
+the code is incorrectly searching for a bit in a 32-bit
+variable that is expected to be 64 bits in size,
+leading to incorrect bit finding.
 
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241210114245.836164-1-aspsk@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Solution: Ensure that the size of the bits variable is correctly
+adjusted for each architecture.
+
+ Call Trace:
+  ? show_regs+0x54/0x58
+  ? __warn+0x6b/0xd4
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? report_bug+0x113/0x150
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x44
+  ? exc_invalid_op+0x18/0x50
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? exc_overflow+0x30/0x30
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? ieee80211_mesh_work+0xff/0x260 [mac80211]
+  ? cfg80211_wiphy_work+0x72/0x98 [cfg80211]
+  ? process_one_work+0xf1/0x1fc
+  ? worker_thread+0x2c0/0x3b4
+  ? kthread+0xc7/0xf0
+  ? mod_delayed_work_on+0x4c/0x4c
+  ? kthread_complete_and_exit+0x14/0x14
+  ? ret_from_fork+0x24/0x38
+  ? kthread_complete_and_exit+0x14/0x14
+  ? ret_from_fork_asm+0xf/0x14
+  ? entry_INT80_32+0xf0/0xf0
+
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+Link: https://patch.msgid.link/20241125162920.2711462-1-ih@simonwunderlich.de
+[restore no-op path for no changes]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/mac80211/mesh.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 233ea78f8f1b..3af5f42ea791 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -539,6 +539,8 @@ struct bpf_prog *bpf_patch_insn_single(struct bpf_prog *prog, u32 off,
- 
- int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 25223184d6e5..a5e7edd2f2d1 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1173,14 +1173,14 @@ void ieee80211_mbss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 				       u64 changed)
  {
-+	int err;
-+
- 	/* Branch offsets can't overflow when program is shrinking, no need
- 	 * to call bpf_adj_branches(..., true) here
- 	 */
-@@ -546,7 +548,9 @@ int bpf_remove_insns(struct bpf_prog *prog, u32 off, u32 cnt)
- 		sizeof(struct bpf_insn) * (prog->len - off - cnt));
- 	prog->len -= cnt;
+ 	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
+-	unsigned long bits = changed;
++	unsigned long bits[] = { BITMAP_FROM_U64(changed) };
+ 	u32 bit;
  
--	return WARN_ON_ONCE(bpf_adj_branches(prog, off, off + cnt, off, false));
-+	err = bpf_adj_branches(prog, off, off + cnt, off, false);
-+	WARN_ON_ONCE(err);
-+	return err;
- }
+-	if (!bits)
++	if (!changed)
+ 		return;
  
- static void bpf_prog_kallsyms_del_subprogs(struct bpf_prog *fp)
+ 	/* if we race with running work, worst case this work becomes a noop */
+-	for_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE)
++	for_each_set_bit(bit, bits, sizeof(changed) * BITS_PER_BYTE)
+ 		set_bit(bit, ifmsh->mbss_changed);
+ 	set_bit(MESH_WORK_MBSS_CHANGED, &ifmsh->wrkq_flags);
+ 	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
 -- 
 2.39.5
 
