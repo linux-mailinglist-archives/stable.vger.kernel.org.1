@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-107551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCBBA02C5A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:53:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D90A02A71
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0908B1887710
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:53:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FCA67A2B98
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAC88634A;
-	Mon,  6 Jan 2025 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0751CBA02;
+	Mon,  6 Jan 2025 15:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vULkw2nS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdfMOWSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086D01369B4;
-	Mon,  6 Jan 2025 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1A41D86F1;
+	Mon,  6 Jan 2025 15:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178812; cv=none; b=DydUpNtFpZ9JgbXVIvCjwfm8gXs+qaNfc9FscYDynKX3cLSr7hteRZ5QfM4tW9C5EzqwoMUlKE2q416CFu3DiVbYkbJkX2CaKV7WasZh789Hp4iqVgNng+5Y1f4DTahuNuoLgtftSCWflA6ZSeAWIu5RbZk8jN5W+hyrDIB6gRg=
+	t=1736177557; cv=none; b=EJ+gpPyJ6PIhSMYPRKiBFMXmvJw5/Q0Q7UiAxuJpqDKliOt0ufjMfTKX9k3+fGyJjrlV2A9NuavXVrhgpg5dJTGXiu//ueFuo5Nb+20QkK/mTZBoaBnOcrHSslqXMfiErmnLvz5T579WhGrsMHeAXGJUwx+9KImDXUG/J+TUd5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178812; c=relaxed/simple;
-	bh=3hpsOB9Q/YcG7dBvxEXa3HoaYkV9xe6UA5ZqKMcpLlg=;
+	s=arc-20240116; t=1736177557; c=relaxed/simple;
+	bh=ELo5rd5fPRUf9o/SwScdwtOPggdyRAqZlHABHpBbJcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FGKmwGYGKAn96vWzudMBzA9oK6eUMxo/zEZ4FQreb6KJguFIriLR9hogjTIqKO9+BBH8yC8t2K62G5qVbtVe4h9WeLZUS1QR7aEzfU+k+SX7134e3k/oEj+YgVD0f/DJUezilga+8zFmmZvhwFm+b5K5fGLRVnfvPqW65ad4gfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vULkw2nS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E42C4CED2;
-	Mon,  6 Jan 2025 15:53:31 +0000 (UTC)
+	 MIME-Version; b=bEbyQA599PNiSiUqIkBR0c59ER6cRyPsRQJOuybcvCl1YYIYKb73qUtO66iCOr5jIimHMu8RNhWVURG42UTAMNvCLXzH/UcFoc2GlxzFFrSE1ONXofq49DzfzZSdOkPsTzIYYArKKoA+7yFLskHu9bL8GP/Xkldgy9y1V1HgwME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdfMOWSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE437C4CED6;
+	Mon,  6 Jan 2025 15:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178811;
-	bh=3hpsOB9Q/YcG7dBvxEXa3HoaYkV9xe6UA5ZqKMcpLlg=;
+	s=korg; t=1736177557;
+	bh=ELo5rd5fPRUf9o/SwScdwtOPggdyRAqZlHABHpBbJcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vULkw2nSusixe1d7YelCbeuApgbk3RQWt+1LENgXKFSUScr4cbVry3ndhrr6ZkTGD
-	 /PiQ48lHCVOPNzPPxKlkqjbwtnhJjYyLY3wqoqqUSsY63PIErHJJG690qlHDGexthG
-	 eF4kcWV3hsGp4pBwBMejeLy3kHERpldQjM9lgLss=
+	b=cdfMOWSBCp+bFiOjpe0m66j7Sm2zhve7QQ1VV9brpT+Kf2KMq0oH4+rnbdb1vMttP
+	 /8DFpxCujBUE7CdL3BO3YK1tpAhM56Bspmk/Hg+P4J3vFdhlqv1atb+MmezR1e+V1E
+	 WJVDE8614+wNdafideZz/BfKJa+7y+bIkPziEEL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 099/168] tracing: Prevent bad count for tracing_cpumask_write
+	Arnd Bergmann <arnd@arndb.de>,
+	Marco Elver <elver@google.com>,
+	Aleksandr Nogikh <nogikh@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 203/222] kcov: mark in_softirq_really() as __always_inline
 Date: Mon,  6 Jan 2025 16:16:47 +0100
-Message-ID: <20250106151142.201793507@linuxfoundation.org>
+Message-ID: <20250106151158.446580657@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +67,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 98feccbf32cfdde8c722bc4587aaa60ee5ac33f0 upstream.
+commit cb0ca08b326aa03f87fe94bb91872ce8d2ef1ed8 upstream.
 
-If a large count is provided, it will trigger a warning in bitmap_parse_user.
-Also check zero for it.
+If gcc decides not to inline in_softirq_really(), objtool warns about a
+function call with UACCESS enabled:
 
-Cc: stable@vger.kernel.org
-Fixes: 9e01c1b74c953 ("cpumask: convert kernel trace functions")
-Link: https://lore.kernel.org/20241216073238.2573704-1-lizhi.xu@windriver.com
-Reported-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0aecfd34fb878546f3fd
-Tested-by: syzbot+0aecfd34fb878546f3fd@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+kernel/kcov.o: warning: objtool: __sanitizer_cov_trace_pc+0x1e: call to in_softirq_really() with UACCESS enabled
+kernel/kcov.o: warning: objtool: check_kcov_mode+0x11: call to in_softirq_really() with UACCESS enabled
+
+Mark this as __always_inline to avoid the problem.
+
+Link: https://lkml.kernel.org/r/20241217071814.2261620-1-arnd@kernel.org
+Fixes: 7d4df2dad312 ("kcov: properly check for softirq context")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Aleksandr Nogikh <nogikh@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/kcov.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5250,6 +5250,9 @@ tracing_cpumask_write(struct file *filp,
- 	cpumask_var_t tracing_cpumask_new;
- 	int err;
- 
-+	if (count == 0 || count > KMALLOC_MAX_SIZE)
-+		return -EINVAL;
-+
- 	if (!zalloc_cpumask_var(&tracing_cpumask_new, GFP_KERNEL))
- 		return -ENOMEM;
- 
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -165,7 +165,7 @@ static void kcov_remote_area_put(struct
+  * Unlike in_serving_softirq(), this function returns false when called during
+  * a hardirq or an NMI that happened in the softirq context.
+  */
+-static inline bool in_softirq_really(void)
++static __always_inline bool in_softirq_really(void)
+ {
+ 	return in_serving_softirq() && !in_hardirq() && !in_nmi();
+ }
 
 
 
