@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-107142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754CFA02A5C
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:33:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA9AA02B2A
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:41:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52092164484
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0BB23A6A52
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7E015C120;
-	Mon,  6 Jan 2025 15:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B4D1D88AC;
+	Mon,  6 Jan 2025 15:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRCo336K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkNZ8e9r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCBC146D40;
-	Mon,  6 Jan 2025 15:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A97B155352;
+	Mon,  6 Jan 2025 15:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177581; cv=none; b=dyeN4CGVgsL9Q8visR0/35z0r/M2R4whqw0tedBIDwqCfbdX49cOshLiKoLdSg/Ak5HLNPuRAC8anNacZ2qsBKM7lgo6WxYzKqMBrAc+2NbIvR2qIwJhXT3IzNNI1zvoI046gD8uthzfpjlvK+tDT4GGAa4NoKcfUI7gLhy6JcI=
+	t=1736177998; cv=none; b=bLxZ5Zz/WlBfP6eVCh8ewOdpHF62KfckoZvReQr2eh8MSQGDxZHX7gW/rJNrycbg7EHh/PpPizlUWFLnxXEl2Ve0ivfioqzxsHSleEIoreMKCmEfQtZOeiwCVVLAqoiMDfqhvF9MLBLEBrAisIInDDo9gOJKibBXLBZcxzgG6ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177581; c=relaxed/simple;
-	bh=TzSknap+OxCCiJT6z7KFjMGSN7SZI+JMS9fnHTpnAWw=;
+	s=arc-20240116; t=1736177998; c=relaxed/simple;
+	bh=5nfVyHtmUIR7pY1V1nxEaR13TayNzVmil/9z2eTwFRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5xmvply0Jxw6f3z17wgQvvqTA6VsXlCwd9hPj87oJXcEy3579pzsodtL8+TdabZYTIALpLB4Vh14tAlGOtFZMvNE5ZZnlHCmTkdL1VsbO1OEp7cPd8c8rVSlrt7Y7HWmPOGkt5TNxJh8R3mm7Pl4T1trZffJN1A2MQj3s8l0QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRCo336K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C73C4CED2;
-	Mon,  6 Jan 2025 15:33:00 +0000 (UTC)
+	 MIME-Version; b=IUix9oo1SOoaWjVXgSLgseOLNyKRn35DkeUfsiC3gHf15mRvGHKHyx/qpTKu17Cn6CmMKDqB4IEEAmzM4vs8LzD5aWSaGSP8BU8cEaanA+MYElZv6zwJfM6lnyWH2S+xhqWrsv2KhlSIs6N7woO6iAHcg7iAvf84E3+DX2imHRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkNZ8e9r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE21C4CED2;
+	Mon,  6 Jan 2025 15:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177581;
-	bh=TzSknap+OxCCiJT6z7KFjMGSN7SZI+JMS9fnHTpnAWw=;
+	s=korg; t=1736177998;
+	bh=5nfVyHtmUIR7pY1V1nxEaR13TayNzVmil/9z2eTwFRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRCo336K+lpwduycGbPNRvgnv6ZGTSmYIOvc34djJ4sFZPlp6OYovEqx6Q0JSavb0
-	 x/8aAV0dbGC8jfcG6j7RcmcjGEfwwEVS2K+Sq5pqYQ/OGm3IuWEB51oG3WoQJu1Tv1
-	 uAnawWwo6y6AO7LZX0V3hu6xkporlompvu+BYTKo=
+	b=FkNZ8e9rw6qA70gXdOoe4HKqlvnS/gtZOMZMH/q3376Kah5IX01GuwS1S+NtXrF2O
+	 QGRsIQouSXHBcZHkUzkV14yA7qo3hBvuF+LbpgNvxUK99k2SXeLoD7OJj1kcoEpXta
+	 JfnNefKF0KvhUdArWvWqTYKdRsclshjy+c1y7tn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.6 210/222] dt-bindings: display: adi,adv7533: Drop single lane support
+	Pascal Hambourg <pascal@plouf.fr.eu.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 128/156] sky2: Add device ID 11ab:4373 for Marvell 88E8075
 Date: Mon,  6 Jan 2025 16:16:54 +0100
-Message-ID: <20250106151158.714903498@linuxfoundation.org>
+Message-ID: <20250106151146.553966450@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Pascal Hambourg <pascal@plouf.fr.eu.org>
 
-commit ee8f9ed57a397605434caeef351bafa3ec4dfdd4 upstream.
+commit 03c8d0af2e409e15c16130b185e12b5efba0a6b9 upstream.
 
-As per [1] and [2], ADV7535/7533 supports only 2-, 3-, or 4-lane. Drop
-unsupported 1-lane from bindings.
+A Marvell 88E8075 ethernet controller has this device ID instead of
+11ab:4370 and works fine with the sky2 driver.
 
-[1] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7535.pdf
-[2] https://www.analog.com/media/en/technical-documentation/data-sheets/ADV7533.pdf
-
-Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Signed-off-by: Pascal Hambourg <pascal@plouf.fr.eu.org>
 Cc: stable@vger.kernel.org
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-3-biju.das.jz@bp.renesas.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patch.msgid.link/10165a62-99fb-4be6-8c64-84afd6234085@plouf.fr.eu.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/sky2.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/adi,adv7533.yaml
-@@ -87,7 +87,7 @@ properties:
-   adi,dsi-lanes:
-     description: Number of DSI data lanes connected to the DSI host.
-     $ref: /schemas/types.yaml#/definitions/uint32
--    enum: [ 1, 2, 3, 4 ]
-+    enum: [ 2, 3, 4 ]
- 
-   ports:
-     description:
+--- a/drivers/net/ethernet/marvell/sky2.c
++++ b/drivers/net/ethernet/marvell/sky2.c
+@@ -130,6 +130,7 @@ static const struct pci_device_id sky2_i
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436C) }, /* 88E8072 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x436D) }, /* 88E8055 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4370) }, /* 88E8075 */
++	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4373) }, /* 88E8075 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4380) }, /* 88E8057 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4381) }, /* 88E8059 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4382) }, /* 88E8079 */
 
 
 
