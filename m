@@ -1,57 +1,89 @@
-Return-Path: <stable+bounces-106774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-106775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543ADA01D6A
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 03:30:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A95A01E30
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 04:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D485D3A3EC1
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 02:30:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E18E1883622
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 03:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E657081C;
-	Mon,  6 Jan 2025 02:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8927619067A;
+	Mon,  6 Jan 2025 03:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="cw3mFBp+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DF583A14;
-	Mon,  6 Jan 2025 02:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088161D5CF4
+	for <stable@vger.kernel.org>; Mon,  6 Jan 2025 03:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736130607; cv=none; b=sx0ZGRPDJTLrzI97QzpJfCU6TJ3xUjdcGhqO9myaCQ9TMPrX0a20pQkXyx8vwF1p6hd1qHIzMqDdFp8neUOymkMASDpjpfw2JeqUKvMtbHggdLVq5dUUL4Eg5Lo48v9bO2p3gRgQg9X+0vQhwcWUbotj70/PYQ2D8VztvPa9VwU=
+	t=1736134318; cv=none; b=ISXoPOUs//S79cyrELhfq4GoLVe1BwMltqufiI9LjQ/ixpu90iMZnxPLQ8uvTFpiJqPASFWqUfJoTVHy5yomgDqwTBn98GHxmhF9/pyL5mWJNSEr3w/uyKhPOHyunrcuTBMZYwPaie230KrP/+8iZdjssI+T0QOie3D8qvnE0UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736130607; c=relaxed/simple;
-	bh=gGuMJ92PYZy3HEuYFvppELisL4T31dzQN/iD8h7ITY4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oOt9KQloSj4x3VuYN6wj5BwaoHRrw+KOXxehP1VoknrfcUPaQ4iTfREk745pyJr2cY45H3sNeU71mwrcM4jfFaakOuEJuTrAHYS1vX1gQ0/SF2WMYbo9bYXDVPBNKb+IOtybL66sqk+TDtyou4cnCIGtAp/qMz1+97RC7xHuLbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5062IFhS024094;
-	Mon, 6 Jan 2025 02:29:44 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43xuy8hbn7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 06 Jan 2025 02:29:43 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Sun, 5 Jan 2025 18:29:42 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Sun, 5 Jan 2025 18:29:40 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <kxwang23@m.fudan.edu.cn>, <alexandre.belloni@bootlin.com>,
-        <patches@lists.linux.dev>, <pgaj@cadence.com>,
-        <linux-i3c@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.1.y] i3c: master: cdns: Fix use after free vulnerability in cdns_i3c_master Driver Due to Race Condition
-Date: Mon, 6 Jan 2025 10:29:39 +0800
-Message-ID: <20250106022939.2197708-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1736134318; c=relaxed/simple;
+	bh=TjsGZu1BkZh8/ajVsU6A9ih+QvR83X2ElBnNxJt0u5g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jt55gsuN0GDc3Y3wsN9DQuw6EyoApLdwKgClYC9vGbQNx6Tx+f4kEURtSvBSQSf2oAtbJd3enQ985Aiy8kwptDvlwPOahNs9auThEivqSosqAqzcHBKBwbj2F0hBHkHt3FkWObDo4GWJbYMEv92dadYkVPtQO1K8Jtr1ShYBWSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=cw3mFBp+; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-21628b3fe7dso191753725ad.3
+        for <stable@vger.kernel.org>; Sun, 05 Jan 2025 19:31:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1736134304; x=1736739104; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=L52rvo+Xinet56DqCazfsooXe+eXMDS7wR/C1rggopk=;
+        b=cw3mFBp+KqTgwsb+zVCwE2I7UlecRFuhcDMdtyWFamERj2wfBHxu0MBEkhkOLbQLOm
+         QGFu7U9vxqvrT5BoztAqLeWmOWieCxvwQh7GRjjPZUqtUZMV+lQSOid1JBGIJhWdNTjX
+         7VLnxM4zjnk32XCriuchaECoPZdwyG4uhRVI4eHLP4zv5yecmuNbJgXgPL7UD8cr1GLC
+         LOR4bcpsiEIabW6nt0NsdiqKHqorPalMdKFVBBWABgLGEhb48Uu3xaCMf9wcauf9FzqH
+         rEeHCFihIIZNcgr3RYEZiQGfXOKsrGQOewZuQLZDw09rLq/Dtz7djYoNJdDvgwhy1Hr9
+         WROA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736134304; x=1736739104;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=L52rvo+Xinet56DqCazfsooXe+eXMDS7wR/C1rggopk=;
+        b=moHzJJaH4bFhMlIE0VNke5Vn3aiUUwCL6XKFpJam52U7yFLFUt7OMdgyv1xm3Ak5kS
+         cZgeeYCuN+5dvbEifayAmBSB4ZTigQWPJ4nr1b4PeXkqTSIhi1KgK5H/TWNiuxe2LXwa
+         emWqUJXgRYL3cjs6m3bK5mXED7VG2u1T5uD43s/bMKLJNfZ/j2sUddEXJIwiNrdHgdOB
+         fwYxGElQl7lcfo/VTvSpLEY60iUjGuLJPu7HNbmzQlT75Ixi2wRv8COpogP+sNQXArcT
+         DZP5yfx6mrxZUEuhhqNQsI5ZwNqD8zcmYfGbEeH0LDyC4mxqFOAXumY+mb/YPgif7gW9
+         kZYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvSmHbgwXTs4lg/cU9sQX651Njo9ac65V3I0xk1E07BzShqpXsHyXOtww+PQ+M8btS+Im8LXk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzezjTFLKoKtAcCDGK7hj1lMwjoeCvqwas42hgLatEBpb6yG7Gc
+	Mnwir5uKguVaLgcaB2LZuGkQH4YDZXE0/67OQANJnHTxpVqTYXuKxnB/bNPTnKQ=
+X-Gm-Gg: ASbGncug4X0+2PtPGH7i/c8ue5kv+dq8w/mSVhuO7Fr3n6T4//fd8/BmXeUfs1SyO0w
+	iRR8Szo5zhef3hNo3wwSvz3lRiSUgDip9WNDswBX5F8WZ3XZCLCoXPYxq7ohp1jo2XQBY+mQUaq
+	wSmONEBTfW6JQWlucVukbNDHjCHRAl+gusIoRWzU2+StbiLq7Y0H6+sJ/aI9V0gnfieY9lkAE+H
+	eo7AzzSid4FIJMRqRfyAN0MqknkdmB62tZOh3YaeBWL6Ff0Z665rrkzRxtbT1fsBju6uuWRax5S
+	hmDOYWVhnRnTNQ==
+X-Google-Smtp-Source: AGHT+IHTDND3pNhNoEGlfFUQ2ez1LpWF/jUmJRoSp+psOxVg/ZgzMtJNsV0Qtt4Wu/gpBrf77MNeZA==
+X-Received: by 2002:a05:6a20:6f06:b0:1e1:b014:aec9 with SMTP id adf61e73a8af0-1e5e080c77fmr89285785637.29.1736134304340;
+        Sun, 05 Jan 2025 19:31:44 -0800 (PST)
+Received: from PXLDJ45XCM.bytedance.net ([61.213.176.11])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8dbb87sm30391698b3a.113.2025.01.05.19.31.40
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 05 Jan 2025 19:31:43 -0800 (PST)
+From: Muchun Song <songmuchun@bytedance.com>
+To: muchun.song@linux.dev,
+	brauner@kernel.org,
+	lihongbo22@huawei.com,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	stable@vger.kernel.org,
+	Cheung Wall <zzqq0103.hey@gmail.com>
+Subject: [PATCH] hugetlb: fix NULL pointer dereference in trace_hugetlbfs_alloc_inode
+Date: Mon,  6 Jan 2025 11:31:17 +0800
+Message-Id: <20250106033118.4640-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,68 +91,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: e0ho8VlNoWscS696RmN_Fol9-_JgStdR
-X-Authority-Analysis: v=2.4 cv=NpYrc9dJ c=1 sm=1 tr=0 ts=677b4017 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=VdSt8ZQiCzkA:10 a=VwQbUJbxAAAA:8 a=P-IC7800AAAA:8 a=t7CeM3EgAAAA:8 a=7vRtop612t4TABFKEpQA:9 a=d3PnA9EDa4IxuAV0gXij:22
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: e0ho8VlNoWscS696RmN_Fol9-_JgStdR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-02_03,2025-01-02_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- malwarescore=0 mlxscore=0 adultscore=0 priorityscore=1501 spamscore=0
- mlxlogscore=798 bulkscore=0 impostorscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.21.0-2411120000 definitions=main-2501060020
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+hugetlb_file_setup() will pass a NULL @dir to hugetlbfs_get_inode(), so
+we will access a NULL pointer for @dir. Fix it and set __entry->dr to
+0 if @dir is NULL. Because ->i_ino cannot be 0 (see get_next_ino()),
+there is no confusing if user sees a 0 inode number.
 
-[ Upstream commit 609366e7a06d035990df78f1562291c3bf0d4a12 ]
-
-In the cdns_i3c_master_probe function, &master->hj_work is bound with
-cdns_i3c_master_hj. And cdns_i3c_master_interrupt can call
-cnds_i3c_master_demux_ibis function to start the work.
-
-If we remove the module which will call cdns_i3c_master_remove to
-make cleanup, it will free master->base through i3c_master_unregister
-while the work mentioned above will be used. The sequence of operations
-that may lead to a UAF bug is as follows:
-
-CPU0                                      CPU1
-
-                                     | cdns_i3c_master_hj
-cdns_i3c_master_remove               |
-i3c_master_unregister(&master->base) |
-device_unregister(&master->dev)      |
-device_release                       |
-//free master->base                  |
-                                     | i3c_master_do_daa(&master->base)
-                                     | //use master->base
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in cdns_i3c_master_remove.
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Link: https://lore.kernel.org/r/20240911153544.848398-1-kxwang23@m.fudan.edu.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Fixes: 318580ad7f28 ("hugetlbfs: support tracepoint")
+Cc: stable@vger.kernel.org
+Reported-by: Cheung Wall <zzqq0103.hey@gmail.com>
+Closes: https://lore.kernel.org/linux-mm/02858D60-43C1-4863-A84F-3C76A8AF1F15@linux.dev/T/#
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- drivers/i3c/master/i3c-master-cdns.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/trace/events/hugetlbfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
-index 35b90bb686ad..c5a37f58079a 100644
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -1667,6 +1667,7 @@ static int cdns_i3c_master_remove(struct platform_device *pdev)
- {
- 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
+diff --git a/include/trace/events/hugetlbfs.h b/include/trace/events/hugetlbfs.h
+index 8331c904a9ba8..59605dfaeeb43 100644
+--- a/include/trace/events/hugetlbfs.h
++++ b/include/trace/events/hugetlbfs.h
+@@ -23,7 +23,7 @@ TRACE_EVENT(hugetlbfs_alloc_inode,
+ 	TP_fast_assign(
+ 		__entry->dev		= inode->i_sb->s_dev;
+ 		__entry->ino		= inode->i_ino;
+-		__entry->dir		= dir->i_ino;
++		__entry->dir		= dir ? dir->i_ino : 0;
+ 		__entry->mode		= mode;
+ 	),
  
-+	cancel_work_sync(&master->hj_work);
- 	i3c_master_unregister(&master->base);
- 
- 	clk_disable_unprepare(master->sysclk);
 -- 
-2.25.1
+2.20.1
 
 
