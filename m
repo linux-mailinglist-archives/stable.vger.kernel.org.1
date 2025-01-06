@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-107072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16635A02A00
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:29:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9316A02AB7
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 028F81644DF
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91DE7164FF2
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BC886328;
-	Mon,  6 Jan 2025 15:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B44682D98;
+	Mon,  6 Jan 2025 15:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JepwRjql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwCxTovz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46D282D98;
-	Mon,  6 Jan 2025 15:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC857BA34;
+	Mon,  6 Jan 2025 15:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177367; cv=none; b=IssLzWlRVPdNj0CLbCuZo3+86LkaP0WAvcoqGyKAPWjCEWlBe/YYYTiNAbCb6r+ycKIC/3Va3pBmvvDV1CNY9Y0sbx0Q1DWmC1VLVBVgm3HdSbfSxNXisbfrenAUeKqhTgMOAWhTJ3YLs4y23gd1M4npmFj38TE7qRLyeILrJcU=
+	t=1736177792; cv=none; b=tQ9JceOwOiH6frzvQnvKrt/PwdYBJHiiqU5JRX7VVH2sUgrmyhrsDex49ajBJnuzqzlp/d0pS/Zj4qqf8aGtPc+SvfnPJgwPw9rywkUTxkXyrEK6uGUxPI6JdnDakDNNQua5UGlUX2nAJHg9Cdsf+RXe5RWh98rnZ+JwUbXQP4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177367; c=relaxed/simple;
-	bh=3G0T8udXNz47pG1AanLYMgOUHA+AsLx9O/tG6MOliJs=;
+	s=arc-20240116; t=1736177792; c=relaxed/simple;
+	bh=Cj6vnfH/NVht5W2SNqSNQBhhCt4YQn2eRWHyf9o/DTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+52En6epG13ytOxF9scJqD0y32x5ft7um13C4NDRKUVikHK7fvxDjJInDbttiThl8gYUpLzbGGd52xBJGbs2s2UQkWJZcuWR5B8fcrDxJ+FCHq3ZNumq7nq3AclGXcQeHAABHFbs3DGSlb1FuFJTAKkdhuGEfmwJGNG9Ip1jjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JepwRjql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487FFC4CED2;
-	Mon,  6 Jan 2025 15:29:27 +0000 (UTC)
+	 MIME-Version; b=L5HRVJgpOzRzQxpV0AbKeIpBjujUsS2qI0WTAZoDDIkV4ZZg/SjNiIJ8B6K8OWDxCBnI3tMgc3HnrlWNJcysOeAoY5+T+vjMx3BoYYyDigbTbJT/zqFhy7USGquJFuP8VEmGT2KgfxAcYrGnnPKAoaUeJWGu7Vfi5XKxiNWvTLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwCxTovz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A30C4CED2;
+	Mon,  6 Jan 2025 15:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177367;
-	bh=3G0T8udXNz47pG1AanLYMgOUHA+AsLx9O/tG6MOliJs=;
+	s=korg; t=1736177792;
+	bh=Cj6vnfH/NVht5W2SNqSNQBhhCt4YQn2eRWHyf9o/DTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JepwRjqlH6dvOcBDPKzi9VimVCSVwy4R/NI1za20i+M2alBBVR6opLKk3ER4WwUnk
-	 RYyCteI1ArNZ51QN4hB6vqOeuczL/yBL2DR+rMrWKTupIWci4yfIs8qPq68gA++bee
-	 v6LWiduK2vPHJBIe/nKQcQ4sZaAiCUJpmw+4J2VY=
+	b=IwCxTovzmuVypaBhKB7TEaZsTUKDxzyhL/a0aRh/8mctrOALTfX2uMrX2Wm9b6747
+	 rFE3GdhtboxOx4y7PDIAQRSHbOjTmBObeRhbqecLU5HBXOhmBboGsZqQ0/qcdEIuNx
+	 Z6JJHKeQ5P3GzmKDyC5Ar0M3+DQcJBQMnsf7+a0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+ff4aab278fa7e27e0f9e@syzkaller.appspotmail.com,
+	Leo Stone <leocstone@gmail.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/222] RDMA/bnxt_re: Fix the locking while accessing the QP table
+Subject: [PATCH 6.12 059/156] nvmet: Dont overflow subsysnqn
 Date: Mon,  6 Jan 2025 16:15:45 +0100
-Message-ID: <20250106151156.104943600@linuxfoundation.org>
+Message-ID: <20250106151143.961380497@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
-References: <20250106151150.585603565@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Leo Stone <leocstone@gmail.com>
 
-[ Upstream commit 9272cba0ded71b5a2084da3004ec7806b8cb7fd2 ]
+[ Upstream commit 4db3d750ac7e894278ef1cb1c53cc7d883060496 ]
 
-QP table handling is synchronized with destroy QP and Async
-event from the HW. The same needs to be synchronized
-during create_qp also. Use the same lock in create_qp also.
+nvmet_root_discovery_nqn_store treats the subsysnqn string like a fixed
+size buffer, even though it is dynamically allocated to the size of the
+string.
 
-Fixes: 76d3ddff7153 ("RDMA/bnxt_re: synchronize the qp-handle table array")
-Fixes: f218d67ef004 ("RDMA/bnxt_re: Allow posting when QPs are in error")
-Fixes: 84cf229f4001 ("RDMA/bnxt_re: Fix the qp table indexing")
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20241217102649.1377704-6-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Create a new string with kstrndup instead of using the old buffer.
+
+Reported-by: syzbot+ff4aab278fa7e27e0f9e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ff4aab278fa7e27e0f9e
+Fixes: 95409e277d83 ("nvmet: implement unique discovery NQN")
+Signed-off-by: Leo Stone <leocstone@gmail.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/target/configfs.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 1355061d698d..871a49315c88 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1161,9 +1161,11 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
- 		rq->dbinfo.db = qp->dpi->dbr;
- 		rq->dbinfo.max_slot = bnxt_qplib_set_rq_max_slot(rq->wqe_size);
- 	}
-+	spin_lock_bh(&rcfw->tbl_lock);
- 	tbl_indx = map_qp_id_to_tbl_indx(qp->id, rcfw);
- 	rcfw->qp_tbl[tbl_indx].qp_id = qp->id;
- 	rcfw->qp_tbl[tbl_indx].qp_handle = (void *)qp;
-+	spin_unlock_bh(&rcfw->tbl_lock);
+diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
+index 685e89b35d33..cfbab198693b 100644
+--- a/drivers/nvme/target/configfs.c
++++ b/drivers/nvme/target/configfs.c
+@@ -2227,12 +2227,17 @@ static ssize_t nvmet_root_discovery_nqn_store(struct config_item *item,
+ 		const char *page, size_t count)
+ {
+ 	struct list_head *entry;
++	char *old_nqn, *new_nqn;
+ 	size_t len;
  
- 	return 0;
- fail:
+ 	len = strcspn(page, "\n");
+ 	if (!len || len > NVMF_NQN_FIELD_LEN - 1)
+ 		return -EINVAL;
+ 
++	new_nqn = kstrndup(page, len, GFP_KERNEL);
++	if (!new_nqn)
++		return -ENOMEM;
++
+ 	down_write(&nvmet_config_sem);
+ 	list_for_each(entry, &nvmet_subsystems_group.cg_children) {
+ 		struct config_item *item =
+@@ -2241,13 +2246,15 @@ static ssize_t nvmet_root_discovery_nqn_store(struct config_item *item,
+ 		if (!strncmp(config_item_name(item), page, len)) {
+ 			pr_err("duplicate NQN %s\n", config_item_name(item));
+ 			up_write(&nvmet_config_sem);
++			kfree(new_nqn);
+ 			return -EINVAL;
+ 		}
+ 	}
+-	memset(nvmet_disc_subsys->subsysnqn, 0, NVMF_NQN_FIELD_LEN);
+-	memcpy(nvmet_disc_subsys->subsysnqn, page, len);
++	old_nqn = nvmet_disc_subsys->subsysnqn;
++	nvmet_disc_subsys->subsysnqn = new_nqn;
+ 	up_write(&nvmet_config_sem);
+ 
++	kfree(old_nqn);
+ 	return len;
+ }
+ 
 -- 
 2.39.5
 
