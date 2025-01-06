@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA978A02ABC
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:36:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF81A02A0B
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:30:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96536165080
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:36:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38C467A20FB
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F0C155325;
-	Mon,  6 Jan 2025 15:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06983156237;
+	Mon,  6 Jan 2025 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm2mQ2yJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfFbTXrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95DC143C7E;
-	Mon,  6 Jan 2025 15:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A956A146D40;
+	Mon,  6 Jan 2025 15:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736177795; cv=none; b=X8QZ0PuvGIkod0LJr2MX6tICM55n1e7kQAptjdWgA9K9i+jYqMunpQvVgOX/zQo/b7mdQ4IClSSHtV0g4yerdvS9f32wltAvS/6pgQA6OQBbJdL2+uwKF1NcmG850BSRQC4B5amIlGci32cFhC9fmw5t0JUW84Q3bPsetCMi1lM=
+	t=1736177370; cv=none; b=UyUFFDK0yCu6g8zotjmRXjjXo+G0Cf5dAJAZN917TchEEeReSoRqeP7FcVRBdTiq+VBOtF8gxNfETtQlrUjKMA7MFL/R+RZZBAGXtU36wmn9OHAiGsNAreBBLC+p9CZ91iY2AB/Zx9Jg8JF5tHguPtxtlltFa0CRKcwgXWGchEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736177795; c=relaxed/simple;
-	bh=O7SDQ9Devqd4j8qamhd5OoPUcUFw4KAFe3JqlA3wvjo=;
+	s=arc-20240116; t=1736177370; c=relaxed/simple;
+	bh=76iYJ/grmIxY4bACiJ4brKPno8vrCrelHVVRSSy9jUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KN0w0t3a3KZwuUcYfmafQq+CB74KOY7eJwH4pAQmo0ElbVlYTt1Fv/pBMyfD9rpfOJzMu7tqgsL0ncDYszNcLDSKJpYZA88YElgXH5H0X7ITKNEM7a7p7SPDg3UH2XbcgNOuGfBZsoXdxRjufvMnexzsuXT5vSLi2F5niB9bDqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm2mQ2yJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C4CC4CED6;
-	Mon,  6 Jan 2025 15:36:35 +0000 (UTC)
+	 MIME-Version; b=dJh9HM27hDOVOcA5Qduw8ptnGhhyTL0S74cUrn9XROFsqwRFa7sdsT71aj3myXNu6VBYGuq9/yoLvO0IbLdw+BYJz/gmf9P3KGH482WUfvnVy/Xct+GrEc5IHuu3TaLNbfY6JlbaCQSqqs9jXFe3f9ZR2ixyuFT21gYLV94CSBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfFbTXrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322D7C4CED2;
+	Mon,  6 Jan 2025 15:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736177795;
-	bh=O7SDQ9Devqd4j8qamhd5OoPUcUFw4KAFe3JqlA3wvjo=;
+	s=korg; t=1736177370;
+	bh=76iYJ/grmIxY4bACiJ4brKPno8vrCrelHVVRSSy9jUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fm2mQ2yJBPdJZFUM05rroS3DIb3OM6d41JTNQglxs74aTIhqYm6ZwnnyPIArgD6s6
-	 ZVR1hOQ+9vHoEnFAD+feukaTMtlQIuyw6o4OiboGO+T1MQq6T1D2OZVEJn4i/ArwvK
-	 Tvj7ij9wHFlKrZBv6FDejlNgYCq5LeyREWgROt00=
+	b=NfFbTXrJc/CVBRmUbouG8sUNYYPk0PSmraySA8fF3PHVUdTpYCEfLOFdHoDEs80tz
+	 cnxKoCET2fwfILPVOFgYpgDBBAjE5UtqeeJ7/MmlsBEa/EmVKpE5T6hY4l6KBxucKx
+	 7qTZvMONhxTIENYsKp6zwfmn8Y7yp4lBdjs4cvaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tanya Agarwal <tanyaagarwal25699@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Stefan Ekenberg <stefan.ekenberg@axis.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/156] ALSA: usb-audio: US16x08: Initialize array before use
+Subject: [PATCH 6.6 142/222] drm/bridge: adv7511_audio: Update Audio InfoFrame properly
 Date: Mon,  6 Jan 2025 16:15:46 +0100
-Message-ID: <20250106151143.998161485@linuxfoundation.org>
+Message-ID: <20250106151156.142057796@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
-References: <20250106151141.738050441@linuxfoundation.org>
+In-Reply-To: <20250106151150.585603565@linuxfoundation.org>
+References: <20250106151150.585603565@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tanya Agarwal <tanyaagarwal25699@gmail.com>
+From: Stefan Ekenberg <stefan.ekenberg@axis.com>
 
-[ Upstream commit b06a6187ef983f501e93faa56209169752d3bde3 ]
+[ Upstream commit 902806baf3c1e8383c1fe3ff0b6042b8cb5c2707 ]
 
-Initialize meter_urb array before use in mixer_us16x08.c.
+AUDIO_UPDATE bit (Bit 5 of MAIN register 0x4A) needs to be set to 1
+while updating Audio InfoFrame information and then set to 0 when done.
+Otherwise partially updated Audio InfoFrames could be sent out. Two
+cases where this rule were not followed are fixed:
+ - In adv7511_hdmi_hw_params() make sure AUDIO_UPDATE bit is updated
+   before/after setting ADV7511_REG_AUDIO_INFOFRAME.
+ - In audio_startup() use the correct register for clearing
+   AUDIO_UPDATE bit.
 
-CID 1410197: (#1 of 1): Uninitialized scalar variable (UNINIT)
-uninit_use_in_call: Using uninitialized value *meter_urb when
-calling get_meter_levels_from_urb.
+The problem with corrupted audio infoframes were discovered by letting
+a HDMI logic analyser check the output of ADV7535.
 
-Coverity Link:
-https://scan7.scan.coverity.com/#/project-view/52849/11354?selectedIssue=1410197
+Note that this patchs replaces writing REG_GC(1) with
+REG_INFOFRAME_UPDATE. Bit 5 of REG_GC(1) is positioned within field
+GC_PP[3:0] and that field doesn't control audio infoframe and is read-
+only. My conclusion therefore was that the author if this code meant to
+clear bit 5 of REG_INFOFRAME_UPDATE from the very beginning.
 
-Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
-Signed-off-by: Tanya Agarwal <tanyaagarwal25699@gmail.com>
-Link: https://patch.msgid.link/20241229060240.1642-1-tanyaagarwal25699@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+Fixes: 53c515befe28 ("drm/bridge: adv7511: Add Audio support")
+Signed-off-by: Stefan Ekenberg <stefan.ekenberg@axis.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119-adv7511-audio-info-frame-v4-1-4ae68e76c89c@axis.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_us16x08.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
-index 6eb7d93b358d..20ac32635f1f 100644
---- a/sound/usb/mixer_us16x08.c
-+++ b/sound/usb/mixer_us16x08.c
-@@ -687,7 +687,7 @@ static int snd_us16x08_meter_get(struct snd_kcontrol *kcontrol,
- 	struct usb_mixer_elem_info *elem = kcontrol->private_data;
- 	struct snd_usb_audio *chip = elem->head.mixer->chip;
- 	struct snd_us16x08_meter_store *store = elem->private_data;
--	u8 meter_urb[64];
-+	u8 meter_urb[64] = {0};
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+index 61f4a38e7d2b..8f786592143b 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+@@ -153,7 +153,16 @@ static int adv7511_hdmi_hw_params(struct device *dev, void *data,
+ 			   ADV7511_AUDIO_CFG3_LEN_MASK, len);
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_I2C_FREQ_ID_CFG,
+ 			   ADV7511_I2C_FREQ_ID_CFG_RATE_MASK, rate << 4);
+-	regmap_write(adv7511->regmap, 0x73, 0x1);
++
++	/* send current Audio infoframe values while updating */
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++			   BIT(5), BIT(5));
++
++	regmap_write(adv7511->regmap, ADV7511_REG_AUDIO_INFOFRAME(0), 0x1);
++
++	/* use Audio infoframe updated info */
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
++			   BIT(5), 0);
  
- 	switch (kcontrol->private_value) {
- 	case 0: {
+ 	return 0;
+ }
+@@ -184,8 +193,9 @@ static int audio_startup(struct device *dev, void *data)
+ 	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(0),
+ 				BIT(7) | BIT(6), BIT(7));
+ 	/* use Audio infoframe updated info */
+-	regmap_update_bits(adv7511->regmap, ADV7511_REG_GC(1),
++	regmap_update_bits(adv7511->regmap, ADV7511_REG_INFOFRAME_UPDATE,
+ 				BIT(5), 0);
++
+ 	/* enable SPDIF receiver */
+ 	if (adv7511->audio_source == ADV7511_AUDIO_SOURCE_SPDIF)
+ 		regmap_update_bits(adv7511->regmap, ADV7511_REG_AUDIO_CONFIG,
 -- 
 2.39.5
 
