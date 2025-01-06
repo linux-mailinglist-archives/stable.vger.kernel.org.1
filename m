@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-107681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8054DA02D05
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 17:00:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA03A02C01
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02206188303F
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:00:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5BA3A5417
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6783012F399;
-	Mon,  6 Jan 2025 16:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149A9149C7B;
+	Mon,  6 Jan 2025 15:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws2STI3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Qk1IHu5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2336E1A8F79;
-	Mon,  6 Jan 2025 16:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C445D42040;
+	Mon,  6 Jan 2025 15:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736179204; cv=none; b=RUGfB/iD18Cf096W+/Ii7bLb6eT5NCD5eEgGs5SMxc/5cosE5TQqsnHpME4fVR3h+6/v3rN96Ul8NxWRbB3eIFmoCPCj7W6CddWXcoz8LXksc26uWnhnWV9l95MvYpsSyIkNttQ4JJCdbd/V5zZsydd6q2zEl0CjuWyJusC8ZlE=
+	t=1736178480; cv=none; b=XgD7RG08kzjgwcS4NsOfKKXCT6VykdbeF2P5fvYwso/MtkLSJZQCDF1NLL0MEzO+AB8D19Pg8foGoFAewnaQOLUyTH76IuwlCIgl2mqrr/ukYRITe5L41ftDk0gFxsnUe0FM2XfcCq8GluzSICwJod/0vwZQ8cBcJWvlGseEMeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736179204; c=relaxed/simple;
-	bh=tR0ULnQT4PMamV1w8U5qy5iCx7PUBuFKmeDPIPdI2Z0=;
+	s=arc-20240116; t=1736178480; c=relaxed/simple;
+	bh=5Le5pmZUgGeRmp9P23/rfgcGx/ZiQrLNyDxTUPVCAy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRFn8NEv+WMorPUO2+BZva/pVmlojgDD8pAHstz9jJmEfNKFNYoc+NeGgM+PNrzucfaaZkQX7pjk3was2cd1XW55qqhTx9jg2vXOcIJUcx1rv/UDL0NymN227WjeeMgLpT1uTTsLe1Vkh55+G3QyIgc6EUQvo4uZCQCywnSjq/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws2STI3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFD9C4CED2;
-	Mon,  6 Jan 2025 16:00:03 +0000 (UTC)
+	 MIME-Version; b=RsxMNXP5SE6Y5iQ/+NmPZE7YroCZJAmGqfEC1sU+7pRML67oJ2iIRnHF0Cj9bIp0Gf+ZnyN3EpM1K+BdVuDqURmY1cxYIxuyE6C4aiT5Dtl4MUhWH8ZAFO4jt2vSojwFay9QavdwhnRgJXZBDfJtJ4+EY5G7VPZs0IznUxtcDCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Qk1IHu5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED24BC4CED2;
+	Mon,  6 Jan 2025 15:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736179204;
-	bh=tR0ULnQT4PMamV1w8U5qy5iCx7PUBuFKmeDPIPdI2Z0=;
+	s=korg; t=1736178480;
+	bh=5Le5pmZUgGeRmp9P23/rfgcGx/ZiQrLNyDxTUPVCAy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ws2STI3p5ZMHAZ5wOUaqDyuHknxOnFK2GUSGe2NCcx6cBUvc9We3W1ZMoVagLcLMk
-	 9IjpE2kRAc0nDTApZemWCDR5aH/EEffg0e9do2yCHyURoDPkC75c+4lf7ogNHYj3BG
-	 H+XtOk0y1iLWy7hW4+5vqj6Vd+9YtWHfGSTm0ZY0=
+	b=2Qk1IHu5de/1d0/NAhaRB4xVERjFcdnopTteGMYy/TueSAdsHi1LRou9kN+/t6gxj
+	 TW5EMqcnupBaCBxzKnZZZeznYPbVCrVKkwg2OQZ5C1Zd8dgcrda2pEUoFzZfzuFPFM
+	 XUfxOHVTsxxlQtyIDDcWYHOUlwg8W+qOBOS/PI18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Vasily Averin <vasily.averin@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 61/93] ipv6: prevent possible UAF in ip6_xmit()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 5.10 133/138] RDMA/uverbs: Prevent integer overflow issue
 Date: Mon,  6 Jan 2025 16:17:37 +0100
-Message-ID: <20250106151131.008803986@linuxfoundation.org>
+Message-ID: <20250106151138.268701511@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151128.686130933@linuxfoundation.org>
-References: <20250106151128.686130933@linuxfoundation.org>
+In-Reply-To: <20250106151133.209718681@linuxfoundation.org>
+References: <20250106151133.209718681@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 2d5ff7e339d04622d8282661df36151906d0e1c7 upstream.
+commit d0257e089d1bbd35c69b6c97ff73e3690ab149a9 upstream.
 
-If skb_expand_head() returns NULL, skb has been freed
-and the associated dst/idev could also have been freed.
+In the expression "cmd.wqe_size * cmd.wr_count", both variables are u32
+values that come from the user so the multiplication can lead to integer
+wrapping.  Then we pass the result to uverbs_request_next_ptr() which also
+could potentially wrap.  The "cmd.sge_count * sizeof(struct ib_uverbs_sge)"
+multiplication can also overflow on 32bit systems although it's fine on
+64bit systems.
 
-We must use rcu_read_lock() to prevent a possible UAF.
+This patch does two things.  First, I've re-arranged the condition in
+uverbs_request_next_ptr() so that the use controlled variable "len" is on
+one side of the comparison by itself without any math.  Then I've modified
+all the callers to use size_mul() for the multiplications.
 
-Fixes: 0c9f227bee11 ("ipv6: use skb_expand_head in ip6_xmit")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Vasily Averin <vasily.averin@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240820160859.3786976-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/b8765ab3-c2da-4611-aae0-ddd6ba173d23@stanley.mountain
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_output.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/core/uverbs_cmd.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -271,11 +271,15 @@ int ip6_xmit(const struct sock *sk, stru
- 		head_room += opt->opt_nflen + opt->opt_flen;
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -161,7 +161,7 @@ static const void __user *uverbs_request
+ {
+ 	const void __user *res = iter->cur;
  
- 	if (unlikely(head_room > skb_headroom(skb))) {
-+		/* Make sure idev stays alive */
-+		rcu_read_lock();
- 		skb = skb_expand_head(skb, head_room);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
-+			rcu_read_unlock();
- 			return -ENOBUFS;
- 		}
-+		rcu_read_unlock();
- 	}
+-	if (iter->cur + len > iter->end)
++	if (len > iter->end - iter->cur)
+ 		return (void __force __user *)ERR_PTR(-ENOSPC);
+ 	iter->cur += len;
+ 	return res;
+@@ -2004,11 +2004,13 @@ static int ib_uverbs_post_send(struct uv
+ 	ret = uverbs_request_start(attrs, &iter, &cmd, sizeof(cmd));
+ 	if (ret)
+ 		return ret;
+-	wqes = uverbs_request_next_ptr(&iter, cmd.wqe_size * cmd.wr_count);
++	wqes = uverbs_request_next_ptr(&iter, size_mul(cmd.wqe_size,
++						       cmd.wr_count));
+ 	if (IS_ERR(wqes))
+ 		return PTR_ERR(wqes);
+-	sgls = uverbs_request_next_ptr(
+-		&iter, cmd.sge_count * sizeof(struct ib_uverbs_sge));
++	sgls = uverbs_request_next_ptr(&iter,
++				       size_mul(cmd.sge_count,
++						sizeof(struct ib_uverbs_sge)));
+ 	if (IS_ERR(sgls))
+ 		return PTR_ERR(sgls);
+ 	ret = uverbs_request_finish(&iter);
+@@ -2194,11 +2196,11 @@ ib_uverbs_unmarshall_recv(struct uverbs_
+ 	if (wqe_size < sizeof (struct ib_uverbs_recv_wr))
+ 		return ERR_PTR(-EINVAL);
  
- 	if (opt) {
+-	wqes = uverbs_request_next_ptr(iter, wqe_size * wr_count);
++	wqes = uverbs_request_next_ptr(iter, size_mul(wqe_size, wr_count));
+ 	if (IS_ERR(wqes))
+ 		return ERR_CAST(wqes);
+-	sgls = uverbs_request_next_ptr(
+-		iter, sge_count * sizeof(struct ib_uverbs_sge));
++	sgls = uverbs_request_next_ptr(iter, size_mul(sge_count,
++						      sizeof(struct ib_uverbs_sge)));
+ 	if (IS_ERR(sgls))
+ 		return ERR_CAST(sgls);
+ 	ret = uverbs_request_finish(iter);
 
 
 
