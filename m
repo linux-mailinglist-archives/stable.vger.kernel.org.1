@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-107461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2819AA02BF7
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:48:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FD7A02A9E
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 16:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ECEA1885A40
-	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:48:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8B96164E9F
+	for <lists+stable@lfdr.de>; Mon,  6 Jan 2025 15:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00216136E37;
-	Mon,  6 Jan 2025 15:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8907D155325;
+	Mon,  6 Jan 2025 15:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zua8DBF3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luFXdb1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA85D6088F;
-	Mon,  6 Jan 2025 15:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404C01791F4;
+	Mon,  6 Jan 2025 15:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736178531; cv=none; b=RTW/CifxjThn6z7/IUbLmaqI/fNSUgoLiox4/NL/lhXb87ZpQbLt5+yi23yHwYUbSZCn+SiuX3v1IAmcEGE6kh1uBzBoYjzcFwh/kgj2wwGjTP8SVtvQHQCK18DWnhCE/sX8fY+lAsH+D57wmCfBa66LFi8Mlh4KkcKHTb3dlmE=
+	t=1736177718; cv=none; b=pbc86WFa/VKXlNU+G7TArf9qB/QMsolntv6VYgeTlUjjwdbyM9TcbWYGTy7x78EPBWjmg8ICM8mO46xoA+H2hXoG1A/vPjBKlHn4Xyuy5nEF+Qv/UTw8H43XOJDDEEquqNUPjKF8mToFt4uKsCFL2HxfeD48qoQs3JViJ9pQsiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736178531; c=relaxed/simple;
-	bh=n+FHlN0IMS75guDQCM7ZZgcvrBS39JI6nq9gthr2bJ4=;
+	s=arc-20240116; t=1736177718; c=relaxed/simple;
+	bh=s9pXtHeRUo7p4twRy8M6hl7CqM4fgUE0aDq+TY9rDes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7IsW7Ngv/OTNgyzwLJzlOHXOYRjrdYHCD0TnW/La9hTPnzWB8zlo2h1Zo9im9z/ZacaU88lbvK71w+btxzdswppKwVfZNuCnEQebnmtCUuHOOvrOxscXSkAHdejxpfhRc1EJ081YqTkaEo9GOhOjAlTjRy1EoNGzmCEw2rSiMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zua8DBF3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A55C4CED2;
-	Mon,  6 Jan 2025 15:48:51 +0000 (UTC)
+	 MIME-Version; b=rftU6b/obp2KerD6Vdct05sUHxATDGLMkGN32dNCbxlHplfCg5lMVX8OKt/A9WbarpX50oYsUF3Fg0q4j9NENmSCbhDc0u+oT3PSU0GEAeGAjK2ctntnWDQkqWhhY4rbtjY458LbVMFvgTVJPBv+L0VF6EnrpXppR8xQTjy78Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luFXdb1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C44C4CED2;
+	Mon,  6 Jan 2025 15:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736178531;
-	bh=n+FHlN0IMS75guDQCM7ZZgcvrBS39JI6nq9gthr2bJ4=;
+	s=korg; t=1736177718;
+	bh=s9pXtHeRUo7p4twRy8M6hl7CqM4fgUE0aDq+TY9rDes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zua8DBF3D7h/lTalwt8qxtcDXjFJAWzCGDuWr+JVlWjKyZ6MjA1f0sgcBKTW4MUKd
-	 K3TpQnVkPhbzDEnjgV0YNIF9q5cX51dfQvaJ7i86u3fbNRY8zAwTpGsAqTuDos9+xA
-	 DtfPIBnuqMVF0KyVX1/jJVWpxOYaLUaX1JTurv+A=
+	b=luFXdb1Nxocx3KD/s51JcEzJtk4WNqTaJT1ly86ivG4ffr2d/uA7BdEChXA6GjoVj
+	 TRZWIj+t1Y58jOZkuVIodvbxYEB8mB+dSI4MocekWLtym202AtQS0QyuSk2dVhBxmt
+	 v+/kPEOdUDIUjYTTL0T/YZIxxjVTt7UyR1UlohJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Tristram Ha <tristram.ha@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 011/168] i2c: pnx: Fix timeout in wait functions
+Subject: [PATCH 6.12 033/156] net: dsa: microchip: Fix KSZ9477 set_ageing_time function
 Date: Mon,  6 Jan 2025 16:15:19 +0100
-Message-ID: <20250106151138.889110855@linuxfoundation.org>
+Message-ID: <20250106151142.985272106@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250106151138.451846855@linuxfoundation.org>
-References: <20250106151138.451846855@linuxfoundation.org>
+In-Reply-To: <20250106151141.738050441@linuxfoundation.org>
+References: <20250106151141.738050441@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+From: Tristram Ha <tristram.ha@microchip.com>
 
-[ Upstream commit 7363f2d4c18557c99c536b70489187bb4e05c412 ]
+[ Upstream commit 262bfba8ab820641c8cfbbf03b86d6c00242c078 ]
 
-Since commit f63b94be6942 ("i2c: pnx: Fix potential deadlock warning
-from del_timer_sync() call in isr") jiffies are stored in
-i2c_pnx_algo_data.timeout, but wait_timeout and wait_reset are still
-using it as milliseconds. Convert jiffies back to milliseconds to wait
-for the expected amount of time.
+The aging count is not a simple 11-bit value but comprises a 3-bit
+multiplier and an 8-bit second count.  The code tries to use the
+original multiplier which is 4 as the second count is still 300 seconds
+by default.
 
-Fixes: f63b94be6942 ("i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr")
-Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 2c119d9982b1 ("net: dsa: microchip: add the support for set_ageing_time")
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241218020224.70590-2-Tristram.Ha@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pnx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/microchip/ksz9477.c     | 47 +++++++++++++++++++------
+ drivers/net/dsa/microchip/ksz9477_reg.h |  4 +--
+ 2 files changed, 37 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
-index d2c09b0fdf52..ab87bef50402 100644
---- a/drivers/i2c/busses/i2c-pnx.c
-+++ b/drivers/i2c/busses/i2c-pnx.c
-@@ -95,7 +95,7 @@ enum {
+diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
+index 0ba658a72d8f..22556d339d6e 100644
+--- a/drivers/net/dsa/microchip/ksz9477.c
++++ b/drivers/net/dsa/microchip/ksz9477.c
+@@ -2,7 +2,7 @@
+ /*
+  * Microchip KSZ9477 switch driver main logic
+  *
+- * Copyright (C) 2017-2019 Microchip Technology Inc.
++ * Copyright (C) 2017-2024 Microchip Technology Inc.
+  */
  
- static inline int wait_timeout(struct i2c_pnx_algo_data *data)
+ #include <linux/kernel.h>
+@@ -983,26 +983,51 @@ void ksz9477_get_caps(struct ksz_device *dev, int port,
+ int ksz9477_set_ageing_time(struct ksz_device *dev, unsigned int msecs)
  {
--	long timeout = data->timeout;
-+	long timeout = jiffies_to_msecs(data->timeout);
- 	while (timeout > 0 &&
- 			(ioread32(I2C_REG_STS(data)) & mstatus_active)) {
- 		mdelay(1);
-@@ -106,7 +106,7 @@ static inline int wait_timeout(struct i2c_pnx_algo_data *data)
+ 	u32 secs = msecs / 1000;
+-	u8 value;
+-	u8 data;
++	u8 data, mult, value;
++	u32 max_val;
+ 	int ret;
  
- static inline int wait_reset(struct i2c_pnx_algo_data *data)
- {
--	long timeout = data->timeout;
-+	long timeout = jiffies_to_msecs(data->timeout);
- 	while (timeout > 0 &&
- 			(ioread32(I2C_REG_CTL(data)) & mcntrl_reset)) {
- 		mdelay(1);
+-	value = FIELD_GET(SW_AGE_PERIOD_7_0_M, secs);
++#define MAX_TIMER_VAL	((1 << 8) - 1)
+ 
+-	ret = ksz_write8(dev, REG_SW_LUE_CTRL_3, value);
+-	if (ret < 0)
+-		return ret;
++	/* The aging timer comprises a 3-bit multiplier and an 8-bit second
++	 * value.  Either of them cannot be zero.  The maximum timer is then
++	 * 7 * 255 = 1785 seconds.
++	 */
++	if (!secs)
++		secs = 1;
+ 
+-	data = FIELD_GET(SW_AGE_PERIOD_10_8_M, secs);
++	/* Return error if too large. */
++	else if (secs > 7 * MAX_TIMER_VAL)
++		return -EINVAL;
+ 
+ 	ret = ksz_read8(dev, REG_SW_LUE_CTRL_0, &value);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	value &= ~SW_AGE_CNT_M;
+-	value |= FIELD_PREP(SW_AGE_CNT_M, data);
++	/* Check whether there is need to update the multiplier. */
++	mult = FIELD_GET(SW_AGE_CNT_M, value);
++	max_val = MAX_TIMER_VAL;
++	if (mult > 0) {
++		/* Try to use the same multiplier already in the register as
++		 * the hardware default uses multiplier 4 and 75 seconds for
++		 * 300 seconds.
++		 */
++		max_val = DIV_ROUND_UP(secs, mult);
++		if (max_val > MAX_TIMER_VAL || max_val * mult != secs)
++			max_val = MAX_TIMER_VAL;
++	}
++
++	data = DIV_ROUND_UP(secs, max_val);
++	if (mult != data) {
++		value &= ~SW_AGE_CNT_M;
++		value |= FIELD_PREP(SW_AGE_CNT_M, data);
++		ret = ksz_write8(dev, REG_SW_LUE_CTRL_0, value);
++		if (ret < 0)
++			return ret;
++	}
+ 
+-	return ksz_write8(dev, REG_SW_LUE_CTRL_0, value);
++	value = DIV_ROUND_UP(secs, data);
++	return ksz_write8(dev, REG_SW_LUE_CTRL_3, value);
+ }
+ 
+ void ksz9477_port_queue_split(struct ksz_device *dev, int port)
+diff --git a/drivers/net/dsa/microchip/ksz9477_reg.h b/drivers/net/dsa/microchip/ksz9477_reg.h
+index 04235c22bf40..ff579920078e 100644
+--- a/drivers/net/dsa/microchip/ksz9477_reg.h
++++ b/drivers/net/dsa/microchip/ksz9477_reg.h
+@@ -2,7 +2,7 @@
+ /*
+  * Microchip KSZ9477 register definitions
+  *
+- * Copyright (C) 2017-2018 Microchip Technology Inc.
++ * Copyright (C) 2017-2024 Microchip Technology Inc.
+  */
+ 
+ #ifndef __KSZ9477_REGS_H
+@@ -165,8 +165,6 @@
+ #define SW_VLAN_ENABLE			BIT(7)
+ #define SW_DROP_INVALID_VID		BIT(6)
+ #define SW_AGE_CNT_M			GENMASK(5, 3)
+-#define SW_AGE_CNT_S			3
+-#define SW_AGE_PERIOD_10_8_M		GENMASK(10, 8)
+ #define SW_RESV_MCAST_ENABLE		BIT(2)
+ #define SW_HASH_OPTION_M		0x03
+ #define SW_HASH_OPTION_CRC		1
 -- 
 2.39.5
 
